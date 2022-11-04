@@ -1,0 +1,14 @@
+syntax = "proto3";
+package fairyring.fairyring;
+
+import "gogoproto/gogo.proto";
+import "fairyring/fairyring/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "fairyring/x/fairyring/types";
+
+// GenesisState defines the fairyring module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}
