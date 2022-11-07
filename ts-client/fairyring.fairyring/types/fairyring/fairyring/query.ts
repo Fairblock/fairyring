@@ -1,6 +1,8 @@
 /* eslint-disable */
+import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
+import { KeyShare } from "./key_share";
 import { Params } from "./params";
 import { ValidatorSet } from "./validator_set";
 
@@ -30,6 +32,24 @@ export interface QueryAllValidatorSetRequest {
 
 export interface QueryAllValidatorSetResponse {
   validatorSet: ValidatorSet[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetKeyShareRequest {
+  validator: string;
+  blockHeight: number;
+}
+
+export interface QueryGetKeyShareResponse {
+  keyShare: KeyShare | undefined;
+}
+
+export interface QueryAllKeyShareRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllKeyShareResponse {
+  keyShare: KeyShare[];
   pagination: PageResponse | undefined;
 }
 
@@ -335,6 +355,228 @@ export const QueryAllValidatorSetResponse = {
   },
 };
 
+function createBaseQueryGetKeyShareRequest(): QueryGetKeyShareRequest {
+  return { validator: "", blockHeight: 0 };
+}
+
+export const QueryGetKeyShareRequest = {
+  encode(message: QueryGetKeyShareRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.validator !== "") {
+      writer.uint32(10).string(message.validator);
+    }
+    if (message.blockHeight !== 0) {
+      writer.uint32(16).uint64(message.blockHeight);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetKeyShareRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetKeyShareRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.validator = reader.string();
+          break;
+        case 2:
+          message.blockHeight = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetKeyShareRequest {
+    return {
+      validator: isSet(object.validator) ? String(object.validator) : "",
+      blockHeight: isSet(object.blockHeight) ? Number(object.blockHeight) : 0,
+    };
+  },
+
+  toJSON(message: QueryGetKeyShareRequest): unknown {
+    const obj: any = {};
+    message.validator !== undefined && (obj.validator = message.validator);
+    message.blockHeight !== undefined && (obj.blockHeight = Math.round(message.blockHeight));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetKeyShareRequest>, I>>(object: I): QueryGetKeyShareRequest {
+    const message = createBaseQueryGetKeyShareRequest();
+    message.validator = object.validator ?? "";
+    message.blockHeight = object.blockHeight ?? 0;
+    return message;
+  },
+};
+
+function createBaseQueryGetKeyShareResponse(): QueryGetKeyShareResponse {
+  return { keyShare: undefined };
+}
+
+export const QueryGetKeyShareResponse = {
+  encode(message: QueryGetKeyShareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.keyShare !== undefined) {
+      KeyShare.encode(message.keyShare, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetKeyShareResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetKeyShareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.keyShare = KeyShare.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetKeyShareResponse {
+    return { keyShare: isSet(object.keyShare) ? KeyShare.fromJSON(object.keyShare) : undefined };
+  },
+
+  toJSON(message: QueryGetKeyShareResponse): unknown {
+    const obj: any = {};
+    message.keyShare !== undefined && (obj.keyShare = message.keyShare ? KeyShare.toJSON(message.keyShare) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetKeyShareResponse>, I>>(object: I): QueryGetKeyShareResponse {
+    const message = createBaseQueryGetKeyShareResponse();
+    message.keyShare = (object.keyShare !== undefined && object.keyShare !== null)
+      ? KeyShare.fromPartial(object.keyShare)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllKeyShareRequest(): QueryAllKeyShareRequest {
+  return { pagination: undefined };
+}
+
+export const QueryAllKeyShareRequest = {
+  encode(message: QueryAllKeyShareRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllKeyShareRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllKeyShareRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllKeyShareRequest {
+    return { pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined };
+  },
+
+  toJSON(message: QueryAllKeyShareRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllKeyShareRequest>, I>>(object: I): QueryAllKeyShareRequest {
+    const message = createBaseQueryAllKeyShareRequest();
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllKeyShareResponse(): QueryAllKeyShareResponse {
+  return { keyShare: [], pagination: undefined };
+}
+
+export const QueryAllKeyShareResponse = {
+  encode(message: QueryAllKeyShareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.keyShare) {
+      KeyShare.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllKeyShareResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllKeyShareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.keyShare.push(KeyShare.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllKeyShareResponse {
+    return {
+      keyShare: Array.isArray(object?.keyShare) ? object.keyShare.map((e: any) => KeyShare.fromJSON(e)) : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllKeyShareResponse): unknown {
+    const obj: any = {};
+    if (message.keyShare) {
+      obj.keyShare = message.keyShare.map((e) => e ? KeyShare.toJSON(e) : undefined);
+    } else {
+      obj.keyShare = [];
+    }
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllKeyShareResponse>, I>>(object: I): QueryAllKeyShareResponse {
+    const message = createBaseQueryAllKeyShareResponse();
+    message.keyShare = object.keyShare?.map((e) => KeyShare.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -343,6 +585,10 @@ export interface Query {
   ValidatorSet(request: QueryGetValidatorSetRequest): Promise<QueryGetValidatorSetResponse>;
   /** Queries a list of ValidatorSet items. */
   ValidatorSetAll(request: QueryAllValidatorSetRequest): Promise<QueryAllValidatorSetResponse>;
+  /** Queries a KeyShare by index. */
+  KeyShare(request: QueryGetKeyShareRequest): Promise<QueryGetKeyShareResponse>;
+  /** Queries a list of KeyShare items. */
+  KeyShareAll(request: QueryAllKeyShareRequest): Promise<QueryAllKeyShareResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -352,6 +598,8 @@ export class QueryClientImpl implements Query {
     this.Params = this.Params.bind(this);
     this.ValidatorSet = this.ValidatorSet.bind(this);
     this.ValidatorSetAll = this.ValidatorSetAll.bind(this);
+    this.KeyShare = this.KeyShare.bind(this);
+    this.KeyShareAll = this.KeyShareAll.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -370,11 +618,42 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("fairyring.fairyring.Query", "ValidatorSetAll", data);
     return promise.then((data) => QueryAllValidatorSetResponse.decode(new _m0.Reader(data)));
   }
+
+  KeyShare(request: QueryGetKeyShareRequest): Promise<QueryGetKeyShareResponse> {
+    const data = QueryGetKeyShareRequest.encode(request).finish();
+    const promise = this.rpc.request("fairyring.fairyring.Query", "KeyShare", data);
+    return promise.then((data) => QueryGetKeyShareResponse.decode(new _m0.Reader(data)));
+  }
+
+  KeyShareAll(request: QueryAllKeyShareRequest): Promise<QueryAllKeyShareResponse> {
+    const data = QueryAllKeyShareRequest.encode(request).finish();
+    const promise = this.rpc.request("fairyring.fairyring.Query", "KeyShareAll", data);
+    return promise.then((data) => QueryAllKeyShareResponse.decode(new _m0.Reader(data)));
+  }
 }
 
 interface Rpc {
   request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
 }
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
@@ -386,6 +665,18 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

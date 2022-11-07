@@ -11,6 +11,7 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		ValidatorSetList: []ValidatorSet{},
+		KeyShareList:     []KeyShare{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -28,6 +29,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for validatorSet")
 		}
 		validatorSetIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in keyShare
+	keyShareIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.KeyShareList {
+		index := string(KeyShareKey(elem.Validator, elem.BlockHeight))
+		if _, ok := keyShareIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for keyShare")
+		}
+		keyShareIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

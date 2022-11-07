@@ -22,6 +22,16 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
+		KeyShareList: []types.KeyShare{
+			{
+				Validator:   "0",
+				BlockHeight: 0,
+			},
+			{
+				Validator:   "1",
+				BlockHeight: 1,
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -34,5 +44,6 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(got)
 
 	require.ElementsMatch(t, genesisState.ValidatorSetList, got.ValidatorSetList)
+	require.ElementsMatch(t, genesisState.KeyShareList, got.KeyShareList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

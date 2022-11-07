@@ -30,6 +30,16 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
+				KeyShareList: []types.KeyShare{
+					{
+						Validator:   "0",
+						BlockHeight: 0,
+					},
+					{
+						Validator:   "1",
+						BlockHeight: 1,
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -43,6 +53,22 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 					{
 						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated keyShare",
+			genState: &types.GenesisState{
+				KeyShareList: []types.KeyShare{
+					{
+						Validator:   "0",
+						BlockHeight: 0,
+					},
+					{
+						Validator:   "0",
+						BlockHeight: 0,
 					},
 				},
 			},

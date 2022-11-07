@@ -1,10 +1,11 @@
 import { Client, registry, MissingWalletError } from 'fairyring-client-ts'
 
+import { KeyShare } from "fairyring-client-ts/fairyring.fairyring/types"
 import { Params } from "fairyring-client-ts/fairyring.fairyring/types"
 import { ValidatorSet } from "fairyring-client-ts/fairyring.fairyring/types"
 
 
-export { Params, ValidatorSet };
+export { KeyShare, Params, ValidatorSet };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -38,8 +39,11 @@ const getDefaultState = () => {
 				Params: {},
 				ValidatorSet: {},
 				ValidatorSetAll: {},
+				KeyShare: {},
+				KeyShareAll: {},
 				
 				_Structure: {
+						KeyShare: getStructure(KeyShare.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						ValidatorSet: getStructure(ValidatorSet.fromPartial({})),
 						
@@ -87,6 +91,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.ValidatorSetAll[JSON.stringify(params)] ?? {}
+		},
+				getKeyShare: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.KeyShare[JSON.stringify(params)] ?? {}
+		},
+				getKeyShareAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.KeyShareAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -187,6 +203,54 @@ export default {
 				return getters['getValidatorSetAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryValidatorSetAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryKeyShare({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.FairyringFairyring.query.queryKeyShare( key.validator,  key.blockHeight)).data
+				
+					
+				commit('QUERY', { query: 'KeyShare', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryKeyShare', payload: { options: { all }, params: {...key},query }})
+				return getters['getKeyShare']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryKeyShare API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryKeyShareAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.FairyringFairyring.query.queryKeyShareAll(query ?? undefined)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await client.FairyringFairyring.query.queryKeyShareAll({...query ?? {}, 'pagination.key':(<any> value).pagination.next_key} as any)).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'KeyShareAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryKeyShareAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getKeyShareAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryKeyShareAll API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

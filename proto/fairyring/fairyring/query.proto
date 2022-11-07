@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "fairyring/fairyring/params.proto";
 import "fairyring/fairyring/validator_set.proto";
+import "fairyring/fairyring/key_share.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "fairyring/x/fairyring/types";
@@ -24,6 +25,16 @@ service Query {
 	// Queries a list of ValidatorSet items.
 	rpc ValidatorSetAll(QueryAllValidatorSetRequest) returns (QueryAllValidatorSetResponse) {
 		option (google.api.http).get = "/fairyring/fairyring/validator_set";
+	}
+
+// Queries a KeyShare by index.
+	rpc KeyShare(QueryGetKeyShareRequest) returns (QueryGetKeyShareResponse) {
+		option (google.api.http).get = "/fairyring/fairyring/key_share/{validator}/{blockHeight}";
+	}
+
+	// Queries a list of KeyShare items.
+	rpc KeyShareAll(QueryAllKeyShareRequest) returns (QueryAllKeyShareResponse) {
+		option (google.api.http).get = "/fairyring/fairyring/key_share";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -53,6 +64,25 @@ message QueryAllValidatorSetRequest {
 
 message QueryAllValidatorSetResponse {
 	repeated ValidatorSet validatorSet = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetKeyShareRequest {
+	  string validator = 1;
+  uint64 blockHeight = 2;
+
+}
+
+message QueryGetKeyShareResponse {
+	KeyShare keyShare = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllKeyShareRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllKeyShareResponse {
+	repeated KeyShare keyShare = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

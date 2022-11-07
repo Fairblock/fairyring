@@ -34164,6 +34164,195 @@ paths:
           format: int64
       tags:
         - Query
+  /fairyring/fairyring/key_share:
+    get:
+      summary: Queries a list of KeyShare items.
+      operationId: FairyringFairyringKeyShareAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              keyShare:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    validator:
+                      type: string
+                    blockHeight:
+                      type: string
+                      format: uint64
+                    keyShare:
+                      type: string
+                    receivedTimestamp:
+                      type: string
+                      format: uint64
+                    receivedBlockHeight:
+                      type: string
+                      format: uint64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    description: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently. It will be empty if
+                      there are no more results.
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /fairyring/fairyring/key_share/{validator}/{blockHeight}:
+    get:
+      summary: Queries a KeyShare by index.
+      operationId: FairyringFairyringKeyShare
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              keyShare:
+                type: object
+                properties:
+                  validator:
+                    type: string
+                  blockHeight:
+                    type: string
+                    format: uint64
+                  keyShare:
+                    type: string
+                  receivedTimestamp:
+                    type: string
+                    format: uint64
+                  receivedBlockHeight:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: validator
+          in: path
+          required: true
+          type: string
+        - name: blockHeight
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
   /fairyring/fairyring/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -70567,6 +70756,22 @@ definitions:
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
     description: Period defines a length of time and amount of coins that will vest.
+  fairyring.fairyring.KeyShare:
+    type: object
+    properties:
+      validator:
+        type: string
+      blockHeight:
+        type: string
+        format: uint64
+      keyShare:
+        type: string
+      receivedTimestamp:
+        type: string
+        format: uint64
+      receivedBlockHeight:
+        type: string
+        format: uint64
   fairyring.fairyring.MsgRegisterValidatorResponse:
     type: object
     properties:
@@ -70577,6 +70782,53 @@ definitions:
   fairyring.fairyring.Params:
     type: object
     description: Params defines the parameters for the module.
+  fairyring.fairyring.QueryAllKeyShareResponse:
+    type: object
+    properties:
+      keyShare:
+        type: array
+        items:
+          type: object
+          properties:
+            validator:
+              type: string
+            blockHeight:
+              type: string
+              format: uint64
+            keyShare:
+              type: string
+            receivedTimestamp:
+              type: string
+              format: uint64
+            receivedBlockHeight:
+              type: string
+              format: uint64
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            description: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently. It will be empty if
+              there are no more results.
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   fairyring.fairyring.QueryAllValidatorSetResponse:
     type: object
     properties:
@@ -70617,6 +70869,25 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  fairyring.fairyring.QueryGetKeyShareResponse:
+    type: object
+    properties:
+      keyShare:
+        type: object
+        properties:
+          validator:
+            type: string
+          blockHeight:
+            type: string
+            format: uint64
+          keyShare:
+            type: string
+          receivedTimestamp:
+            type: string
+            format: uint64
+          receivedBlockHeight:
+            type: string
+            format: uint64
   fairyring.fairyring.QueryGetValidatorSetResponse:
     type: object
     properties:

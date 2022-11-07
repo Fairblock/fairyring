@@ -9,6 +9,20 @@
  * ---------------------------------------------------------------
  */
 
+export interface FairyringKeyShare {
+  validator?: string;
+
+  /** @format uint64 */
+  blockHeight?: string;
+  keyShare?: string;
+
+  /** @format uint64 */
+  receivedTimestamp?: string;
+
+  /** @format uint64 */
+  receivedBlockHeight?: string;
+}
+
 export interface FairyringMsgRegisterValidatorResponse {
   creator?: string;
 }
@@ -19,6 +33,21 @@ export type FairyringMsgSendKeyshareResponse = object;
  * Params defines the parameters for the module.
  */
 export type FairyringParams = object;
+
+export interface FairyringQueryAllKeyShareResponse {
+  keyShare?: FairyringKeyShare[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 export interface FairyringQueryAllValidatorSetResponse {
   validatorSet?: FairyringValidatorSet[];
@@ -33,6 +62,10 @@ export interface FairyringQueryAllValidatorSetResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface FairyringQueryGetKeyShareResponse {
+  keyShare?: FairyringKeyShare;
 }
 
 export interface FairyringQueryGetValidatorSetResponse {
@@ -261,6 +294,48 @@ export class HttpClient<SecurityDataType = unknown> {
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryKeyShareAll
+   * @summary Queries a list of KeyShare items.
+   * @request GET:/fairyring/fairyring/key_share
+   */
+  queryKeyShareAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FairyringQueryAllKeyShareResponse, RpcStatus>({
+      path: `/fairyring/fairyring/key_share`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryKeyShare
+   * @summary Queries a KeyShare by index.
+   * @request GET:/fairyring/fairyring/key_share/{validator}/{blockHeight}
+   */
+  queryKeyShare = (validator: string, blockHeight: string, params: RequestParams = {}) =>
+    this.request<FairyringQueryGetKeyShareResponse, RpcStatus>({
+      path: `/fairyring/fairyring/key_share/${validator}/${blockHeight}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *

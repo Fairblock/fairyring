@@ -1,0 +1,14 @@
+syntax = "proto3";
+package fairyring.fairyring;
+
+option go_package = "fairyring/x/fairyring/types";
+
+message KeyShare {
+  string validator = 1; 
+  uint64 blockHeight = 2; 
+  string keyShare = 3; 
+  uint64 receivedTimestamp = 4; 
+  uint64 receivedBlockHeight = 5; 
+  
+}
+

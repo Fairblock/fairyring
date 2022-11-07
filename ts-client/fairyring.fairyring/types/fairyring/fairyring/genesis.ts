@@ -1,5 +1,6 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
+import { KeyShare } from "./key_share";
 import { Params } from "./params";
 import { ValidatorSet } from "./validator_set";
 
@@ -7,15 +8,14 @@ export const protobufPackage = "fairyring.fairyring";
 
 /** GenesisState defines the fairyring module's genesis state. */
 export interface GenesisState {
-  params:
-    | Params
-    | undefined;
-  /** this line is used by starport scaffolding # genesis/proto/state */
+  params: Params | undefined;
   validatorSetList: ValidatorSet[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  keyShareList: KeyShare[];
 }
 
 function createBaseGenesisState(): GenesisState {
-  return { params: undefined, validatorSetList: [] };
+  return { params: undefined, validatorSetList: [], keyShareList: [] };
 }
 
 export const GenesisState = {
@@ -25,6 +25,9 @@ export const GenesisState = {
     }
     for (const v of message.validatorSetList) {
       ValidatorSet.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    for (const v of message.keyShareList) {
+      KeyShare.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -42,6 +45,9 @@ export const GenesisState = {
         case 2:
           message.validatorSetList.push(ValidatorSet.decode(reader, reader.uint32()));
           break;
+        case 3:
+          message.keyShareList.push(KeyShare.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -56,6 +62,9 @@ export const GenesisState = {
       validatorSetList: Array.isArray(object?.validatorSetList)
         ? object.validatorSetList.map((e: any) => ValidatorSet.fromJSON(e))
         : [],
+      keyShareList: Array.isArray(object?.keyShareList)
+        ? object.keyShareList.map((e: any) => KeyShare.fromJSON(e))
+        : [],
     };
   },
 
@@ -67,6 +76,11 @@ export const GenesisState = {
     } else {
       obj.validatorSetList = [];
     }
+    if (message.keyShareList) {
+      obj.keyShareList = message.keyShareList.map((e) => e ? KeyShare.toJSON(e) : undefined);
+    } else {
+      obj.keyShareList = [];
+    }
     return obj;
   },
 
@@ -76,6 +90,7 @@ export const GenesisState = {
       ? Params.fromPartial(object.params)
       : undefined;
     message.validatorSetList = object.validatorSetList?.map((e) => ValidatorSet.fromPartial(e)) || [];
+    message.keyShareList = object.keyShareList?.map((e) => KeyShare.fromPartial(e)) || [];
     return message;
   },
 };
