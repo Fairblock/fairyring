@@ -14,6 +14,11 @@ const (
 	MemStoreKey = "mem_fairyring"
 )
 
+const (
+	RegisteredValidatorEventType    = "new validator registered"
+	RegisteredValidatorEventCreator = "creator"
+)
+
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }

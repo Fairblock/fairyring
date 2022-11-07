@@ -16,6 +16,7 @@ message MsgRegisterValidator {
 }
 
 message MsgRegisterValidatorResponse {
+  string creator = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

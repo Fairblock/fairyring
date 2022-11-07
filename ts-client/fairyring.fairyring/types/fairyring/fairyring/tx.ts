@@ -8,6 +8,7 @@ export interface MsgRegisterValidator {
 }
 
 export interface MsgRegisterValidatorResponse {
+  creator: string;
 }
 
 function createBaseMsgRegisterValidator(): MsgRegisterValidator {
@@ -58,11 +59,14 @@ export const MsgRegisterValidator = {
 };
 
 function createBaseMsgRegisterValidatorResponse(): MsgRegisterValidatorResponse {
-  return {};
+  return { creator: "" };
 }
 
 export const MsgRegisterValidatorResponse = {
-  encode(_: MsgRegisterValidatorResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgRegisterValidatorResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
     return writer;
   },
 
@@ -73,6 +77,9 @@ export const MsgRegisterValidatorResponse = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -81,17 +88,19 @@ export const MsgRegisterValidatorResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgRegisterValidatorResponse {
-    return {};
+  fromJSON(object: any): MsgRegisterValidatorResponse {
+    return { creator: isSet(object.creator) ? String(object.creator) : "" };
   },
 
-  toJSON(_: MsgRegisterValidatorResponse): unknown {
+  toJSON(message: MsgRegisterValidatorResponse): unknown {
     const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<MsgRegisterValidatorResponse>, I>>(_: I): MsgRegisterValidatorResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgRegisterValidatorResponse>, I>>(object: I): MsgRegisterValidatorResponse {
     const message = createBaseMsgRegisterValidatorResponse();
+    message.creator = object.creator ?? "";
     return message;
   },
 };

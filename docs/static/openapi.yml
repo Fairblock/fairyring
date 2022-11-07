@@ -70569,6 +70569,9 @@ definitions:
     description: Period defines a length of time and amount of coins that will vest.
   fairyring.fairyring.MsgRegisterValidatorResponse:
     type: object
+    properties:
+      creator:
+        type: string
   fairyring.fairyring.Params:
     type: object
     description: Params defines the parameters for the module.

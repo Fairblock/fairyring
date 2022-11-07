@@ -9,7 +9,9 @@
  * ---------------------------------------------------------------
  */
 
-export type FairyringMsgRegisterValidatorResponse = object;
+export interface FairyringMsgRegisterValidatorResponse {
+  creator?: string;
+}
 
 /**
  * Params defines the parameters for the module.
