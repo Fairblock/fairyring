@@ -70572,6 +70572,8 @@ definitions:
     properties:
       creator:
         type: string
+  fairyring.fairyring.MsgSendKeyshareResponse:
+    type: object
   fairyring.fairyring.Params:
     type: object
     description: Params defines the parameters for the module.

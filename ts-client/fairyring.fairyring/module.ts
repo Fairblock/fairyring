@@ -7,10 +7,17 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
+import { MsgSendKeyshare } from "./types/fairyring/fairyring/tx";
 import { MsgRegisterValidator } from "./types/fairyring/fairyring/tx";
 
 
-export { MsgRegisterValidator };
+export { MsgSendKeyshare, MsgRegisterValidator };
+
+type sendMsgSendKeyshareParams = {
+  value: MsgSendKeyshare,
+  fee?: StdFee,
+  memo?: string
+};
 
 type sendMsgRegisterValidatorParams = {
   value: MsgRegisterValidator,
@@ -18,6 +25,10 @@ type sendMsgRegisterValidatorParams = {
   memo?: string
 };
 
+
+type msgSendKeyshareParams = {
+  value: MsgSendKeyshare,
+};
 
 type msgRegisterValidatorParams = {
   value: MsgRegisterValidator,
@@ -41,6 +52,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
+		async sendMsgSendKeyshare({ value, fee, memo }: sendMsgSendKeyshareParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgSendKeyshare: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgSendKeyshare({ value: MsgSendKeyshare.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgSendKeyshare: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		async sendMsgRegisterValidator({ value, fee, memo }: sendMsgRegisterValidatorParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgRegisterValidator: Unable to sign Tx. Signer is not present.')
@@ -55,6 +80,14 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		
+		msgSendKeyshare({ value }: msgSendKeyshareParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.fairyring.MsgSendKeyshare", value: MsgSendKeyshare.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgSendKeyshare: Could not create message: ' + e.message)
+			}
+		},
 		
 		msgRegisterValidator({ value }: msgRegisterValidatorParams): EncodeObject {
 			try {

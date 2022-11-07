@@ -28,6 +28,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgRegisterValidator int = 100
 
+	opWeightMsgSendKeyshare = "op_weight_msg_send_keyshare"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgSendKeyshare int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -71,6 +75,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgRegisterValidator,
 		fairyringsimulation.SimulateMsgRegisterValidator(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgSendKeyshare int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgSendKeyshare, &weightMsgSendKeyshare, nil,
+		func(_ *rand.Rand) {
+			weightMsgSendKeyshare = defaultWeightMsgSendKeyshare
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgSendKeyshare,
+		fairyringsimulation.SimulateMsgSendKeyshare(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

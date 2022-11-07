@@ -8,6 +8,7 @@ option go_package = "fairyring/x/fairyring/types";
 // Msg defines the Msg service.
 service Msg {
       rpc RegisterValidator(MsgRegisterValidator) returns (MsgRegisterValidatorResponse);
+  rpc SendKeyshare(MsgSendKeyshare) returns (MsgSendKeyshareResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -17,6 +18,15 @@ message MsgRegisterValidator {
 
 message MsgRegisterValidatorResponse {
   string creator = 1;
+}
+
+message MsgSendKeyshare {
+  string creator = 1;
+  string message = 2;
+  uint64 blockHeight = 3;
+}
+
+message MsgSendKeyshareResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
