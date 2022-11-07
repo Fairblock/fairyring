@@ -1,0 +1,12 @@
+syntax = "proto3";
+package fairyring.fairyring;
+
+option go_package = "fairyring/x/fairyring/types";
+
+message ValidatorSet {
+  string index = 1; 
+  string validator = 2; 
+  bool isActive = 3; 
+  
+}
+
