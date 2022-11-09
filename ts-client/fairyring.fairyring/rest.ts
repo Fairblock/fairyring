@@ -27,7 +27,15 @@ export interface FairyringMsgRegisterValidatorResponse {
   creator?: string;
 }
 
-export type FairyringMsgSendKeyshareResponse = object;
+export interface FairyringMsgSendKeyshareResponse {
+  keyshare?: string;
+
+  /** @format uint64 */
+  receivedBlockHeight?: string;
+
+  /** @format uint64 */
+  actualBlockHeight?: string;
+}
 
 /**
  * Params defines the parameters for the module.

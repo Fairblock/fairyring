@@ -27,6 +27,10 @@ message MsgSendKeyshare {
 }
 
 message MsgSendKeyshareResponse {
+  string creator = 1;
+  string keyshare = 2;
+  uint64 blockHeight = 3;
+  uint64 receivedBlockHeight = 4;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

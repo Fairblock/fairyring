@@ -176,6 +176,10 @@ func (m *MsgSendKeyshare) GetBlockHeight() uint64 {
 }
 
 type MsgSendKeyshareResponse struct {
+	Creator             string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Keyshare            string `protobuf:"bytes,2,opt,name=keyshare,proto3" json:"keyshare,omitempty"`
+	BlockHeight         uint64 `protobuf:"varint,3,opt,name=blockHeight,proto3" json:"blockHeight,omitempty"`
+	ReceivedBlockHeight uint64 `protobuf:"varint,4,opt,name=receivedBlockHeight,proto3" json:"receivedBlockHeight,omitempty"`
 }
 
 func (m *MsgSendKeyshareResponse) Reset()         { *m = MsgSendKeyshareResponse{} }
@@ -211,6 +215,34 @@ func (m *MsgSendKeyshareResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgSendKeyshareResponse proto.InternalMessageInfo
 
+func (m *MsgSendKeyshareResponse) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgSendKeyshareResponse) GetKeyshare() string {
+	if m != nil {
+		return m.Keyshare
+	}
+	return ""
+}
+
+func (m *MsgSendKeyshareResponse) GetBlockHeight() uint64 {
+	if m != nil {
+		return m.BlockHeight
+	}
+	return 0
+}
+
+func (m *MsgSendKeyshareResponse) GetReceivedBlockHeight() uint64 {
+	if m != nil {
+		return m.ReceivedBlockHeight
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*MsgRegisterValidator)(nil), "fairyring.fairyring.MsgRegisterValidator")
 	proto.RegisterType((*MsgRegisterValidatorResponse)(nil), "fairyring.fairyring.MsgRegisterValidatorResponse")
@@ -221,7 +253,7 @@ func init() {
 func init() { proto.RegisterFile("fairyring/fairyring/tx.proto", fileDescriptor_81bbbe0b7e04e8d2) }
 
 var fileDescriptor_81bbbe0b7e04e8d2 = []byte{
-	// 269 bytes of a gzipped FileDescriptorProto
+	// 304 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x49, 0x4b, 0xcc, 0x2c,
 	0xaa, 0x2c, 0xca, 0xcc, 0x4b, 0xd7, 0x47, 0xb0, 0x4a, 0x2a, 0xf4, 0x0a, 0x8a, 0xf2, 0x4b, 0xf2,
 	0x85, 0x84, 0xe1, 0x62, 0x7a, 0x70, 0x96, 0x92, 0x01, 0x97, 0x88, 0x6f, 0x71, 0x7a, 0x50, 0x6a,
@@ -231,14 +263,16 @@ var fileDescriptor_81bbbe0b7e04e8d2 = []byte{
 	0x67, 0x3a, 0x17, 0xbf, 0x6f, 0x71, 0x7a, 0x70, 0x6a, 0x5e, 0x8a, 0x77, 0x6a, 0x65, 0x71, 0x46,
 	0x62, 0x11, 0x1e, 0xc5, 0x20, 0x99, 0xdc, 0xd4, 0xe2, 0xe2, 0xc4, 0xf4, 0x54, 0x09, 0x26, 0x88,
 	0x0c, 0x94, 0x2b, 0xa4, 0xc0, 0xc5, 0x9d, 0x94, 0x93, 0x9f, 0x9c, 0xed, 0x91, 0x9a, 0x99, 0x9e,
-	0x51, 0x22, 0xc1, 0xac, 0xc0, 0xa8, 0xc1, 0x12, 0x84, 0x2c, 0xa4, 0x24, 0xc9, 0x25, 0x8e, 0x66,
-	0x11, 0xcc, 0x75, 0x46, 0x77, 0x18, 0xb9, 0x98, 0x7d, 0x8b, 0xd3, 0x85, 0x0a, 0xb9, 0x04, 0x31,
-	0x3d, 0xad, 0xa9, 0x87, 0x25, 0x88, 0xf4, 0xb0, 0xf9, 0x56, 0xca, 0x90, 0x68, 0xa5, 0xf0, 0x80,
-	0x49, 0xe2, 0xe2, 0x41, 0xf1, 0xbb, 0x0a, 0x2e, 0x23, 0x90, 0x55, 0x49, 0xe9, 0x10, 0xa3, 0x0a,
-	0x66, 0x87, 0x93, 0xe9, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7,
-	0x38, 0xe1, 0xb1, 0x1c, 0xc3, 0x85, 0xc7, 0x72, 0x0c, 0x37, 0x1e, 0xcb, 0x31, 0x44, 0x49, 0x23,
-	0x52, 0x44, 0x05, 0x72, 0xea, 0xa8, 0x2c, 0x48, 0x2d, 0x4e, 0x62, 0x03, 0xa7, 0x10, 0x63, 0x40,
-	0x00, 0x00, 0x00, 0xff, 0xff, 0x73, 0x1f, 0xfa, 0x6c, 0x41, 0x02, 0x00, 0x00,
+	0x51, 0x22, 0xc1, 0xac, 0xc0, 0xa8, 0xc1, 0x12, 0x84, 0x2c, 0xa4, 0xb4, 0x98, 0x91, 0x4b, 0x1c,
+	0xcd, 0x26, 0xc2, 0xce, 0x13, 0x92, 0xe2, 0xe2, 0xc8, 0x86, 0xaa, 0x86, 0x5a, 0x09, 0xe7, 0x13,
+	0xb6, 0x53, 0xc8, 0x80, 0x4b, 0xb8, 0x28, 0x35, 0x39, 0x35, 0xb3, 0x2c, 0x35, 0xc5, 0x09, 0x49,
+	0x25, 0x0b, 0x58, 0x25, 0x36, 0x29, 0xa3, 0x3b, 0x8c, 0x5c, 0xcc, 0xbe, 0xc5, 0xe9, 0x42, 0x85,
+	0x5c, 0x82, 0x98, 0xe1, 0xaf, 0xa9, 0x87, 0x25, 0xb6, 0xf4, 0xb0, 0x05, 0xbc, 0x94, 0x21, 0xd1,
+	0x4a, 0xe1, 0x81, 0x90, 0xc4, 0xc5, 0x83, 0x12, 0x0d, 0x2a, 0xb8, 0x8c, 0x40, 0x56, 0x25, 0xa5,
+	0x43, 0x8c, 0x2a, 0x98, 0x1d, 0x4e, 0xa6, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8,
+	0xe0, 0x91, 0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17, 0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7,
+	0x10, 0x25, 0x8d, 0x48, 0x9c, 0x15, 0xc8, 0x09, 0xb5, 0xb2, 0x20, 0xb5, 0x38, 0x89, 0x0d, 0x9c,
+	0x58, 0x8d, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0xf1, 0xd4, 0xa3, 0xdf, 0xcc, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -479,6 +513,30 @@ func (m *MsgSendKeyshareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	_ = i
 	var l int
 	_ = l
+	if m.ReceivedBlockHeight != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.ReceivedBlockHeight))
+		i--
+		dAtA[i] = 0x20
+	}
+	if m.BlockHeight != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.BlockHeight))
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.Keyshare) > 0 {
+		i -= len(m.Keyshare)
+		copy(dAtA[i:], m.Keyshare)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Keyshare)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -545,6 +603,20 @@ func (m *MsgSendKeyshareResponse) Size() (n int) {
 	}
 	var l int
 	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Keyshare)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.BlockHeight != 0 {
+		n += 1 + sovTx(uint64(m.BlockHeight))
+	}
+	if m.ReceivedBlockHeight != 0 {
+		n += 1 + sovTx(uint64(m.ReceivedBlockHeight))
+	}
 	return n
 }
 
@@ -880,6 +952,108 @@ func (m *MsgSendKeyshareResponse) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: MsgSendKeyshareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Keyshare", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Keyshare = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BlockHeight", wireType)
+			}
+			m.BlockHeight = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.BlockHeight |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReceivedBlockHeight", wireType)
+			}
+			m.ReceivedBlockHeight = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ReceivedBlockHeight |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])

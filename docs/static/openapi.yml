@@ -70779,6 +70779,15 @@ definitions:
         type: string
   fairyring.fairyring.MsgSendKeyshareResponse:
     type: object
+    properties:
+      keyshare:
+        type: string
+      receivedBlockHeight:
+        type: string
+        format: uint64
+      actualBlockHeight:
+        type: string
+        format: uint64
   fairyring.fairyring.Params:
     type: object
     description: Params defines the parameters for the module.

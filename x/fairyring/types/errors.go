@@ -10,4 +10,5 @@ import (
 var (
 	ErrSample                     = sdkerrors.Register(ModuleName, 1100, "sample error")
 	ErrValidatorAlreadyRegistered = sdkerrors.Register(ModuleName, 1101, "validator already registered")
+	ErrValidatorNotRegistered     = sdkerrors.Register(ModuleName, 1102, "validator not registered")
 )

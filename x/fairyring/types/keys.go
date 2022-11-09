@@ -19,6 +19,14 @@ const (
 	RegisteredValidatorEventCreator = "creator"
 )
 
+const (
+	SendKeyshareEventType                = "keyshare sent"
+	SendKeyshareEventValidator           = "validator"
+	SendKeyshareEventKeyshareBlockHeight = "keyshare block height"
+	SendKeyshareEventReceivedBlockHeight = "received block height"
+	SendKeyshareEventMessage             = "keyshare message"
+)
+
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }

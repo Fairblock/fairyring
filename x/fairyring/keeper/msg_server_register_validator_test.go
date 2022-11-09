@@ -41,6 +41,16 @@ func TestRegisterValidator(t *testing.T) {
 		Validator: alice,
 		IsActive:  true,
 	}, aliceValidator)
+
+	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
+	require.Len(t, events, 1)
+	event := events[0]
+	require.EqualValues(t, sdk.StringEvent{
+		Type: "new validator registered",
+		Attributes: []sdk.Attribute{
+			{Key: "creator", Value: alice},
+		},
+	}, event)
 }
 
 func TestDupicateRegister(t *testing.T) {
@@ -49,7 +59,18 @@ func TestDupicateRegister(t *testing.T) {
 		Creator: alice,
 	})
 
+	ctx := sdk.UnwrapSDKContext(context)
+
 	require.Nil(t, err)
+	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
+	require.Len(t, events, 1)
+	event := events[0]
+	require.EqualValues(t, sdk.StringEvent{
+		Type: "new validator registered",
+		Attributes: []sdk.Attribute{
+			{Key: "creator", Value: alice},
+		},
+	}, event)
 
 	aliceRegisterResponse2, err2 := msgServer.RegisterValidator(context, &types.MsgRegisterValidator{
 		Creator: alice,
@@ -57,4 +78,6 @@ func TestDupicateRegister(t *testing.T) {
 
 	require.Nil(t, aliceRegisterResponse2)
 	require.True(t, types.ErrValidatorAlreadyRegistered.Is(err2))
+	events = sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
+	require.Len(t, events, 1)
 }
