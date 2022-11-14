@@ -70780,12 +70780,14 @@ definitions:
   fairyring.fairyring.MsgSendKeyshareResponse:
     type: object
     properties:
+      creator:
+        type: string
       keyshare:
         type: string
-      receivedBlockHeight:
+      blockHeight:
         type: string
         format: uint64
-      actualBlockHeight:
+      receivedBlockHeight:
         type: string
         format: uint64
   fairyring.fairyring.Params:

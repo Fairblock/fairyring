@@ -19,9 +19,10 @@ export interface MsgSendKeyshare {
 }
 
 export interface MsgSendKeyshareResponse {
+  creator: string;
   keyshare: string;
+  blockHeight: number;
   receivedBlockHeight: number;
-  actualBlockHeight: number;
 }
 
 function createBaseMsgRegisterValidator(): MsgRegisterValidator {
@@ -186,19 +187,22 @@ export const MsgSendKeyshare = {
 };
 
 function createBaseMsgSendKeyshareResponse(): MsgSendKeyshareResponse {
-  return { keyshare: "", receivedBlockHeight: 0, actualBlockHeight: 0 };
+  return { creator: "", keyshare: "", blockHeight: 0, receivedBlockHeight: 0 };
 }
 
 export const MsgSendKeyshareResponse = {
   encode(message: MsgSendKeyshareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
     if (message.keyshare !== "") {
-      writer.uint32(10).string(message.keyshare);
+      writer.uint32(18).string(message.keyshare);
+    }
+    if (message.blockHeight !== 0) {
+      writer.uint32(24).uint64(message.blockHeight);
     }
     if (message.receivedBlockHeight !== 0) {
-      writer.uint32(16).uint64(message.receivedBlockHeight);
-    }
-    if (message.actualBlockHeight !== 0) {
-      writer.uint32(24).uint64(message.actualBlockHeight);
+      writer.uint32(32).uint64(message.receivedBlockHeight);
     }
     return writer;
   },
@@ -211,13 +215,16 @@ export const MsgSendKeyshareResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.keyshare = reader.string();
+          message.creator = reader.string();
           break;
         case 2:
-          message.receivedBlockHeight = longToNumber(reader.uint64() as Long);
+          message.keyshare = reader.string();
           break;
         case 3:
-          message.actualBlockHeight = longToNumber(reader.uint64() as Long);
+          message.blockHeight = longToNumber(reader.uint64() as Long);
+          break;
+        case 4:
+          message.receivedBlockHeight = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -229,25 +236,28 @@ export const MsgSendKeyshareResponse = {
 
   fromJSON(object: any): MsgSendKeyshareResponse {
     return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
       keyshare: isSet(object.keyshare) ? String(object.keyshare) : "",
+      blockHeight: isSet(object.blockHeight) ? Number(object.blockHeight) : 0,
       receivedBlockHeight: isSet(object.receivedBlockHeight) ? Number(object.receivedBlockHeight) : 0,
-      actualBlockHeight: isSet(object.actualBlockHeight) ? Number(object.actualBlockHeight) : 0,
     };
   },
 
   toJSON(message: MsgSendKeyshareResponse): unknown {
     const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
     message.keyshare !== undefined && (obj.keyshare = message.keyshare);
+    message.blockHeight !== undefined && (obj.blockHeight = Math.round(message.blockHeight));
     message.receivedBlockHeight !== undefined && (obj.receivedBlockHeight = Math.round(message.receivedBlockHeight));
-    message.actualBlockHeight !== undefined && (obj.actualBlockHeight = Math.round(message.actualBlockHeight));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgSendKeyshareResponse>, I>>(object: I): MsgSendKeyshareResponse {
     const message = createBaseMsgSendKeyshareResponse();
+    message.creator = object.creator ?? "";
     message.keyshare = object.keyshare ?? "";
+    message.blockHeight = object.blockHeight ?? 0;
     message.receivedBlockHeight = object.receivedBlockHeight ?? 0;
-    message.actualBlockHeight = object.actualBlockHeight ?? 0;
     return message;
   },
 };

@@ -15,16 +15,16 @@ const (
 )
 
 const (
-	RegisteredValidatorEventType    = "new validator registered"
+	RegisteredValidatorEventType    = "new validator-registered"
 	RegisteredValidatorEventCreator = "creator"
 )
 
 const (
-	SendKeyshareEventType                = "keyshare sent"
+	SendKeyshareEventType                = "keyshare-sent"
 	SendKeyshareEventValidator           = "validator"
-	SendKeyshareEventKeyshareBlockHeight = "keyshare block height"
-	SendKeyshareEventReceivedBlockHeight = "received block height"
-	SendKeyshareEventMessage             = "keyshare message"
+	SendKeyshareEventKeyshareBlockHeight = "keyshare-block-height"
+	SendKeyshareEventReceivedBlockHeight = "received-block-height"
+	SendKeyshareEventMessage             = "keyshare-message"
 )
 
 func KeyPrefix(p string) []byte {

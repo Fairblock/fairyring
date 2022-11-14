@@ -89,3 +89,43 @@ func TestNotRegisteredSend(t *testing.T) {
 
 	require.True(t, types.ErrValidatorNotRegistered.Is(err))
 }
+
+func TestMultipleSends(t *testing.T) {
+	msgServer, keeper, context := setupMsgServerSendKeyshare(t)
+
+	ctx := sdk.UnwrapSDKContext(context)
+
+	registerResponse, err := msgServer.RegisterValidator(context, &types.MsgRegisterValidator{
+		Creator: alice,
+	})
+
+	require.Nil(t, err)
+	require.EqualValues(t, types.MsgRegisterValidatorResponse{
+		Creator: alice,
+	}, *registerResponse)
+
+	blockHeight := uint64(ctx.BlockHeight())
+
+	_, err1 := msgServer.SendKeyshare(context, &types.MsgSendKeyshare{
+		Creator:     alice,
+		BlockHeight: blockHeight,
+		Message:     "testing 1",
+	})
+
+	require.Nil(t, err1)
+
+	_, err2 := msgServer.SendKeyshare(context, &types.MsgSendKeyshare{
+		Creator:     alice,
+		BlockHeight: blockHeight,
+		Message:     "testing2",
+	})
+
+	require.Nil(t, err2)
+
+	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
+	require.Len(t, events, 2)
+
+	keyshare, found := keeper.GetKeyShare(ctx, alice, blockHeight)
+	require.True(t, found)
+	require.EqualValues(t, "testing2", keyshare.GetKeyShare())
+}

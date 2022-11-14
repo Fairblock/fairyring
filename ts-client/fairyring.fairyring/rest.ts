@@ -28,13 +28,14 @@ export interface FairyringMsgRegisterValidatorResponse {
 }
 
 export interface FairyringMsgSendKeyshareResponse {
+  creator?: string;
   keyshare?: string;
 
   /** @format uint64 */
-  receivedBlockHeight?: string;
+  blockHeight?: string;
 
   /** @format uint64 */
-  actualBlockHeight?: string;
+  receivedBlockHeight?: string;
 }
 
 /**

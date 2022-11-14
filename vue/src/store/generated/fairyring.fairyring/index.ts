@@ -256,19 +256,6 @@ export default {
 		},
 		
 		
-		async sendMsgRegisterValidator({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const result = await client.FairyringFairyring.tx.sendMsgRegisterValidator({ value, fee: {amount: fee, gas: "200000"}, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRegisterValidator:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgRegisterValidator:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendMsgSendKeyshare({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -282,20 +269,20 @@ export default {
 				}
 			}
 		},
-		
-		async MsgRegisterValidator({ rootGetters }, { value }) {
+		async sendMsgRegisterValidator({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringFairyring.tx.msgRegisterValidator({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const result = await client.FairyringFairyring.tx.sendMsgRegisterValidator({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgRegisterValidator:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgRegisterValidator:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:MsgRegisterValidator:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		
 		async MsgSendKeyshare({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -306,6 +293,19 @@ export default {
 					throw new Error('TxClient:MsgSendKeyshare:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgSendKeyshare:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgRegisterValidator({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringFairyring.tx.msgRegisterValidator({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRegisterValidator:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgRegisterValidator:Create Could not create message: ' + e.message)
 				}
 			}
 		},
