@@ -9,7 +9,8 @@ var _ binary.ByteOrder
 
 const (
 	// EncryptedTxKeyPrefix is the prefix to retrieve all EncryptedTx
-	EncryptedTxKeyPrefix = "EncryptedTx/value/"
+	EncryptedTxKeyPrefix      = "EncryptedTx/value/"
+	EncryptedTxKeyCountPrefix = "EncryptedTx/count/"
 )
 
 // EncryptedTxKey returns the store key to retrieve a EncryptedTx from the index fields
@@ -53,7 +54,7 @@ func EncryptedTxCountKey(
 
 	heightBytes := []byte(strconv.FormatUint(blockHeight, 10))
 	key = append(key, heightBytes...)
-	key = append(key, []byte("/count/")...)
+	key = append(key, []byte("/")...)
 
 	return key
 }

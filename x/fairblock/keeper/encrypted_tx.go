@@ -52,10 +52,25 @@ func (k Keeper) GetEncryptedTxAllFromHeight(
 
 ) (list []types.EncryptedTx) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyPrefix))
-
 	iterator := sdk.KVStorePrefixIterator(store, types.EncryptedTxAllFromHeightKey(
 		targetHeight,
 	))
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.EncryptedTx
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+
+	return
+}
+
+// GetAllEncryptedTx returns all encryptedTx
+func (k Keeper) GetAllEncryptedTx(ctx sdk.Context) (list []types.EncryptedTx) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 
@@ -82,27 +97,11 @@ func (k Keeper) RemoveEncryptedTx(
 	))
 }
 
-// GetAllEncryptedTx returns all encryptedTx
-func (k Keeper) GetAllEncryptedTx(ctx sdk.Context) (list []types.EncryptedTx) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyPrefix))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
-
-	defer iterator.Close()
-
-	for ; iterator.Valid(); iterator.Next() {
-		var val types.EncryptedTx
-		k.cdc.MustUnmarshal(iterator.Value(), &val)
-		list = append(list, val)
-	}
-
-	return
-}
-
 func (k Keeper) GetEncryptedTxCount(
 	ctx sdk.Context,
 	targetHeight uint64,
 ) uint64 {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyPrefix))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyCountPrefix))
 
 	bz := store.Get(types.EncryptedTxCountKey(
 		targetHeight,
@@ -120,7 +119,7 @@ func (k Keeper) SetEncryptedTxCount(
 	targetHeight uint64,
 	count uint64,
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyPrefix))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyCountPrefix))
 
 	bz := make([]byte, 8)
 	binary.BigEndian.PutUint64(bz, count)
