@@ -7,10 +7,21 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
+import { MsgSubmitEncryptedTx } from "./types/fairyring/fairblock/tx";
 
 
-export {  };
+export { MsgSubmitEncryptedTx };
 
+type sendMsgSubmitEncryptedTxParams = {
+  value: MsgSubmitEncryptedTx,
+  fee?: StdFee,
+  memo?: string
+};
+
+
+type msgSubmitEncryptedTxParams = {
+  value: MsgSubmitEncryptedTx,
+};
 
 
 export const registry = new Registry(msgTypes);
@@ -30,6 +41,28 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
+		async sendMsgSubmitEncryptedTx({ value, fee, memo }: sendMsgSubmitEncryptedTxParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgSubmitEncryptedTx: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgSubmitEncryptedTx({ value: MsgSubmitEncryptedTx.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgSubmitEncryptedTx: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		
+		msgSubmitEncryptedTx({ value }: msgSubmitEncryptedTxParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.fairblock.MsgSubmitEncryptedTx", value: MsgSubmitEncryptedTx.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgSubmitEncryptedTx: Could not create message: ' + e.message)
+			}
+		},
 		
 	}
 };

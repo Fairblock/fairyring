@@ -18,6 +18,8 @@ export interface FairblockEncryptedTx {
   data?: string;
 }
 
+export type FairblockMsgSubmitEncryptedTxResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */

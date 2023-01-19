@@ -7,7 +7,17 @@ option go_package = "fairyring/x/fairblock/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc SubmitEncryptedTx(MsgSubmitEncryptedTx) returns (MsgSubmitEncryptedTxResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgSubmitEncryptedTx {
+  string creator = 1;
+  string data = 2;
+  uint64 targetBlockHeight = 3;
+}
+
+message MsgSubmitEncryptedTxResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

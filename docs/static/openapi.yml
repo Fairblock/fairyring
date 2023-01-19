@@ -69792,6 +69792,8 @@ definitions:
         format: uint64
       data:
         type: string
+  fairyring.fairblock.MsgSubmitEncryptedTxResponse:
+    type: object
   fairyring.fairblock.Params:
     type: object
     description: Params defines the parameters for the module.
