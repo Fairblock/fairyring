@@ -1,6 +1,8 @@
 syntax = "proto3";
 package fairyring.fairblock;
 
+import "gogoproto/gogo.proto";
+
 option go_package = "fairyring/x/fairblock/types";
 
 message EncryptedTx {
@@ -10,3 +12,6 @@ message EncryptedTx {
   string creator = 4;
 }
 
+message EncryptedTxArray {
+  repeated EncryptedTx encryptedTx = 1 [(gogoproto.nullable) = false];
+}

@@ -16,7 +16,7 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 		Creator:      msg.Creator,
 	}
 
-	k.SetEncryptedTx(ctx, encryptedTx)
+	k.AppendEncryptedTx(ctx, encryptedTx)
 
 	// Emit event after appended ?
 

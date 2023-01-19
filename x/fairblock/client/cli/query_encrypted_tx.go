@@ -51,11 +51,6 @@ func CmdListEncryptedTxFromBlock() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
-			pageReq, err := client.ReadPageRequest(cmd.Flags())
-			if err != nil {
-				return err
-			}
-
 			queryClient := types.NewQueryClient(clientCtx)
 
 			argTargetHeight, err := cast.ToUint64E(args[0])
@@ -65,7 +60,6 @@ func CmdListEncryptedTxFromBlock() *cobra.Command {
 
 			params := &types.QueryAllEncryptedTxFromHeightRequest{
 				TargetHeight: argTargetHeight,
-				Pagination:   pageReq,
 			}
 
 			res, err := queryClient.EncryptedTxAllFromHeight(context.Background(), params)

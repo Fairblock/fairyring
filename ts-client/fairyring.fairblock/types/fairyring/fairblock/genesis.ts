@@ -1,6 +1,6 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
-import { EncryptedTx } from "./encrypted_tx";
+import { EncryptedTxArray } from "./encrypted_tx";
 import { Params } from "./params";
 
 export const protobufPackage = "fairyring.fairblock";
@@ -10,11 +10,11 @@ export interface GenesisState {
   params: Params | undefined;
   portId: string;
   /** this line is used by starport scaffolding # genesis/proto/state */
-  encryptedTxList: EncryptedTx[];
+  encryptedTxArray: EncryptedTxArray[];
 }
 
 function createBaseGenesisState(): GenesisState {
-  return { params: undefined, portId: "", encryptedTxList: [] };
+  return { params: undefined, portId: "", encryptedTxArray: [] };
 }
 
 export const GenesisState = {
@@ -25,8 +25,8 @@ export const GenesisState = {
     if (message.portId !== "") {
       writer.uint32(18).string(message.portId);
     }
-    for (const v of message.encryptedTxList) {
-      EncryptedTx.encode(v!, writer.uint32(26).fork()).ldelim();
+    for (const v of message.encryptedTxArray) {
+      EncryptedTxArray.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -45,7 +45,7 @@ export const GenesisState = {
           message.portId = reader.string();
           break;
         case 3:
-          message.encryptedTxList.push(EncryptedTx.decode(reader, reader.uint32()));
+          message.encryptedTxArray.push(EncryptedTxArray.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -59,8 +59,8 @@ export const GenesisState = {
     return {
       params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
       portId: isSet(object.portId) ? String(object.portId) : "",
-      encryptedTxList: Array.isArray(object?.encryptedTxList)
-        ? object.encryptedTxList.map((e: any) => EncryptedTx.fromJSON(e))
+      encryptedTxArray: Array.isArray(object?.encryptedTxArray)
+        ? object.encryptedTxArray.map((e: any) => EncryptedTxArray.fromJSON(e))
         : [],
     };
   },
@@ -69,10 +69,10 @@ export const GenesisState = {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     message.portId !== undefined && (obj.portId = message.portId);
-    if (message.encryptedTxList) {
-      obj.encryptedTxList = message.encryptedTxList.map((e) => e ? EncryptedTx.toJSON(e) : undefined);
+    if (message.encryptedTxArray) {
+      obj.encryptedTxArray = message.encryptedTxArray.map((e) => e ? EncryptedTxArray.toJSON(e) : undefined);
     } else {
-      obj.encryptedTxList = [];
+      obj.encryptedTxArray = [];
     }
     return obj;
   },
@@ -83,7 +83,7 @@ export const GenesisState = {
       ? Params.fromPartial(object.params)
       : undefined;
     message.portId = object.portId ?? "";
-    message.encryptedTxList = object.encryptedTxList?.map((e) => EncryptedTx.fromPartial(e)) || [];
+    message.encryptedTxArray = object.encryptedTxArray?.map((e) => EncryptedTxArray.fromPartial(e)) || [];
     return message;
   },
 };

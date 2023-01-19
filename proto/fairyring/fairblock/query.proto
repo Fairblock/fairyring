@@ -58,18 +58,16 @@ message QueryAllEncryptedTxRequest {
 }
 
 message QueryAllEncryptedTxResponse {
-	repeated EncryptedTx encryptedTx = 1 [(gogoproto.nullable) = false];
+	repeated EncryptedTxArray encryptedTxArray = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 message QueryAllEncryptedTxFromHeightRequest {
 	uint64 targetHeight = 1;
-	cosmos.base.query.v1beta1.PageRequest pagination = 2;
 }
 
 message QueryAllEncryptedTxFromHeightResponse {
-	repeated EncryptedTx encryptedTx = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+	EncryptedTxArray encryptedTxArray = 1 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

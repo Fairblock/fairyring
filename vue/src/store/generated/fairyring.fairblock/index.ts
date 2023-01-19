@@ -1,12 +1,13 @@
 import { Client, registry, MissingWalletError } from 'fairyring-client-ts'
 
 import { EncryptedTx } from "fairyring-client-ts/fairyring.fairblock/types"
+import { EncryptedTxArray } from "fairyring-client-ts/fairyring.fairblock/types"
 import { FairblockPacketData } from "fairyring-client-ts/fairyring.fairblock/types"
 import { NoData } from "fairyring-client-ts/fairyring.fairblock/types"
 import { Params } from "fairyring-client-ts/fairyring.fairblock/types"
 
 
-export { EncryptedTx, FairblockPacketData, NoData, Params };
+export { EncryptedTx, EncryptedTxArray, FairblockPacketData, NoData, Params };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -44,6 +45,7 @@ const getDefaultState = () => {
 				
 				_Structure: {
 						EncryptedTx: getStructure(EncryptedTx.fromPartial({})),
+						EncryptedTxArray: getStructure(EncryptedTxArray.fromPartial({})),
 						FairblockPacketData: getStructure(FairblockPacketData.fromPartial({})),
 						NoData: getStructure(NoData.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
@@ -212,13 +214,9 @@ export default {
 			try {
 				const key = params ?? {};
 				const client = initClient(rootGetters);
-				let value= (await client.FairyringFairblock.query.queryEncryptedTxAllFromHeight( key.targetHeight, query ?? undefined)).data
+				let value= (await client.FairyringFairblock.query.queryEncryptedTxAllFromHeight( key.targetHeight)).data
 				
 					
-				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
-					let next_values=(await client.FairyringFairblock.query.queryEncryptedTxAllFromHeight( key.targetHeight, {...query ?? {}, 'pagination.key':(<any> value).pagination.next_key} as any)).data
-					value = mergeResults(value, next_values);
-				}
 				commit('QUERY', { query: 'EncryptedTxAllFromHeight', key: { params: {...key}, query}, value })
 				if (subscribe) commit('SUBSCRIBE', { action: 'QueryEncryptedTxAllFromHeight', payload: { options: { all }, params: {...key},query }})
 				return getters['getEncryptedTxAllFromHeight']( { params: {...key}, query}) ?? {}

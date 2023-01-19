@@ -11,8 +11,8 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		PortId:          PortID,
-		EncryptedTxList: []EncryptedTx{},
+		PortId:           PortID,
+		EncryptedTxArray: []EncryptedTxArray{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -24,17 +24,18 @@ func (gs GenesisState) Validate() error {
 	if err := host.PortIdentifierValidator(gs.PortId); err != nil {
 		return err
 	}
-	// Check for duplicated index in encryptedTx
-	encryptedTxIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.EncryptedTxList {
-		index := string(EncryptedTxKey(elem.TargetHeight, elem.Index))
-		if _, ok := encryptedTxIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for encryptedTx")
+	encryptedTxArrIndexMap := make(map[string]struct{})
+	for _, elem := range gs.EncryptedTxArray {
+		if len(elem.EncryptedTx) < 1 {
+			continue
 		}
-		encryptedTxIndexMap[index] = struct{}{}
+		index := string(EncryptedTxAllFromHeightKey(elem.EncryptedTx[0].TargetHeight))
+		if _, ok := encryptedTxArrIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for encryptedTxArr")
+		}
+		encryptedTxArrIndexMap[index] = struct{}{}
 	}
-	// this line is used by starport scaffolding # genesis/types/validate
 
 	return gs.Params.Validate()
 }

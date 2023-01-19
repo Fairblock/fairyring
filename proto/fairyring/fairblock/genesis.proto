@@ -12,6 +12,6 @@ option go_package = "fairyring/x/fairblock/types";
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   string port_id = 2;
-  repeated EncryptedTx encryptedTxList = 3 [(gogoproto.nullable) = false];
+  repeated EncryptedTxArray encryptedTxArray = 3 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

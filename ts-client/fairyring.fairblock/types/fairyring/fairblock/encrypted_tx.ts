@@ -11,6 +11,10 @@ export interface EncryptedTx {
   creator: string;
 }
 
+export interface EncryptedTxArray {
+  encryptedTx: EncryptedTx[];
+}
+
 function createBaseEncryptedTx(): EncryptedTx {
   return { targetHeight: 0, index: 0, data: "", creator: "" };
 }
@@ -83,6 +87,61 @@ export const EncryptedTx = {
     message.index = object.index ?? 0;
     message.data = object.data ?? "";
     message.creator = object.creator ?? "";
+    return message;
+  },
+};
+
+function createBaseEncryptedTxArray(): EncryptedTxArray {
+  return { encryptedTx: [] };
+}
+
+export const EncryptedTxArray = {
+  encode(message: EncryptedTxArray, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.encryptedTx) {
+      EncryptedTx.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EncryptedTxArray {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEncryptedTxArray();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.encryptedTx.push(EncryptedTx.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EncryptedTxArray {
+    return {
+      encryptedTx: Array.isArray(object?.encryptedTx)
+        ? object.encryptedTx.map((e: any) => EncryptedTx.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: EncryptedTxArray): unknown {
+    const obj: any = {};
+    if (message.encryptedTx) {
+      obj.encryptedTx = message.encryptedTx.map((e) => e ? EncryptedTx.toJSON(e) : undefined);
+    } else {
+      obj.encryptedTx = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EncryptedTxArray>, I>>(object: I): EncryptedTxArray {
+    const message = createBaseEncryptedTxArray();
+    message.encryptedTx = object.encryptedTx?.map((e) => EncryptedTx.fromPartial(e)) || [];
     return message;
   },
 };
