@@ -22,9 +22,35 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
 				PortId: types.PortID,
+				EncryptedTxList: []types.EncryptedTx{
+					{
+						TargetHeight: 0,
+						Index:        0,
+					},
+					{
+						TargetHeight: 1,
+						Index:        1,
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
+		},
+		{
+			desc: "duplicated encryptedTx",
+			genState: &types.GenesisState{
+				EncryptedTxList: []types.EncryptedTx{
+					{
+						TargetHeight: 0,
+						Index:        0,
+					},
+					{
+						TargetHeight: 0,
+						Index:        0,
+					},
+				},
+			},
+			valid: false,
 		},
 		// this line is used by starport scaffolding # types/genesis/testcase
 	} {

@@ -1,0 +1,12 @@
+syntax = "proto3";
+package fairyring.fairblock;
+
+option go_package = "fairyring/x/fairblock/types";
+
+message EncryptedTx {
+  uint64 targetHeight = 1; 
+  uint64 index = 2; 
+  string data = 3; 
+  
+}
+
