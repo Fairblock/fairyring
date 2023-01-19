@@ -35,6 +35,16 @@ export interface QueryAllEncryptedTxResponse {
   pagination: PageResponse | undefined;
 }
 
+export interface QueryAllEncryptedTxFromHeightRequest {
+  targetHeight: number;
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllEncryptedTxFromHeightResponse {
+  encryptedTx: EncryptedTx[];
+  pagination: PageResponse | undefined;
+}
+
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
@@ -348,6 +358,138 @@ export const QueryAllEncryptedTxResponse = {
   },
 };
 
+function createBaseQueryAllEncryptedTxFromHeightRequest(): QueryAllEncryptedTxFromHeightRequest {
+  return { targetHeight: 0, pagination: undefined };
+}
+
+export const QueryAllEncryptedTxFromHeightRequest = {
+  encode(message: QueryAllEncryptedTxFromHeightRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.targetHeight !== 0) {
+      writer.uint32(8).uint64(message.targetHeight);
+    }
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllEncryptedTxFromHeightRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllEncryptedTxFromHeightRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.targetHeight = longToNumber(reader.uint64() as Long);
+          break;
+        case 2:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllEncryptedTxFromHeightRequest {
+    return {
+      targetHeight: isSet(object.targetHeight) ? Number(object.targetHeight) : 0,
+      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllEncryptedTxFromHeightRequest): unknown {
+    const obj: any = {};
+    message.targetHeight !== undefined && (obj.targetHeight = Math.round(message.targetHeight));
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllEncryptedTxFromHeightRequest>, I>>(
+    object: I,
+  ): QueryAllEncryptedTxFromHeightRequest {
+    const message = createBaseQueryAllEncryptedTxFromHeightRequest();
+    message.targetHeight = object.targetHeight ?? 0;
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllEncryptedTxFromHeightResponse(): QueryAllEncryptedTxFromHeightResponse {
+  return { encryptedTx: [], pagination: undefined };
+}
+
+export const QueryAllEncryptedTxFromHeightResponse = {
+  encode(message: QueryAllEncryptedTxFromHeightResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.encryptedTx) {
+      EncryptedTx.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllEncryptedTxFromHeightResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllEncryptedTxFromHeightResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.encryptedTx.push(EncryptedTx.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllEncryptedTxFromHeightResponse {
+    return {
+      encryptedTx: Array.isArray(object?.encryptedTx)
+        ? object.encryptedTx.map((e: any) => EncryptedTx.fromJSON(e))
+        : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllEncryptedTxFromHeightResponse): unknown {
+    const obj: any = {};
+    if (message.encryptedTx) {
+      obj.encryptedTx = message.encryptedTx.map((e) => e ? EncryptedTx.toJSON(e) : undefined);
+    } else {
+      obj.encryptedTx = [];
+    }
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllEncryptedTxFromHeightResponse>, I>>(
+    object: I,
+  ): QueryAllEncryptedTxFromHeightResponse {
+    const message = createBaseQueryAllEncryptedTxFromHeightResponse();
+    message.encryptedTx = object.encryptedTx?.map((e) => EncryptedTx.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -356,6 +498,10 @@ export interface Query {
   EncryptedTx(request: QueryGetEncryptedTxRequest): Promise<QueryGetEncryptedTxResponse>;
   /** Queries a list of EncryptedTx items. */
   EncryptedTxAll(request: QueryAllEncryptedTxRequest): Promise<QueryAllEncryptedTxResponse>;
+  /** Queries a list of EncryptedTx items. */
+  EncryptedTxAllFromHeight(
+    request: QueryAllEncryptedTxFromHeightRequest,
+  ): Promise<QueryAllEncryptedTxFromHeightResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -365,6 +511,7 @@ export class QueryClientImpl implements Query {
     this.Params = this.Params.bind(this);
     this.EncryptedTx = this.EncryptedTx.bind(this);
     this.EncryptedTxAll = this.EncryptedTxAll.bind(this);
+    this.EncryptedTxAllFromHeight = this.EncryptedTxAllFromHeight.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -382,6 +529,14 @@ export class QueryClientImpl implements Query {
     const data = QueryAllEncryptedTxRequest.encode(request).finish();
     const promise = this.rpc.request("fairyring.fairblock.Query", "EncryptedTxAll", data);
     return promise.then((data) => QueryAllEncryptedTxResponse.decode(new _m0.Reader(data)));
+  }
+
+  EncryptedTxAllFromHeight(
+    request: QueryAllEncryptedTxFromHeightRequest,
+  ): Promise<QueryAllEncryptedTxFromHeightResponse> {
+    const data = QueryAllEncryptedTxFromHeightRequest.encode(request).finish();
+    const promise = this.rpc.request("fairyring.fairblock.Query", "EncryptedTxAllFromHeight", data);
+    return promise.then((data) => QueryAllEncryptedTxFromHeightResponse.decode(new _m0.Reader(data)));
   }
 }
 

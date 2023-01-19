@@ -8,10 +8,11 @@ export interface EncryptedTx {
   targetHeight: number;
   index: number;
   data: string;
+  creator: string;
 }
 
 function createBaseEncryptedTx(): EncryptedTx {
-  return { targetHeight: 0, index: 0, data: "" };
+  return { targetHeight: 0, index: 0, data: "", creator: "" };
 }
 
 export const EncryptedTx = {
@@ -24,6 +25,9 @@ export const EncryptedTx = {
     }
     if (message.data !== "") {
       writer.uint32(26).string(message.data);
+    }
+    if (message.creator !== "") {
+      writer.uint32(34).string(message.creator);
     }
     return writer;
   },
@@ -44,6 +48,9 @@ export const EncryptedTx = {
         case 3:
           message.data = reader.string();
           break;
+        case 4:
+          message.creator = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -57,6 +64,7 @@ export const EncryptedTx = {
       targetHeight: isSet(object.targetHeight) ? Number(object.targetHeight) : 0,
       index: isSet(object.index) ? Number(object.index) : 0,
       data: isSet(object.data) ? String(object.data) : "",
+      creator: isSet(object.creator) ? String(object.creator) : "",
     };
   },
 
@@ -65,6 +73,7 @@ export const EncryptedTx = {
     message.targetHeight !== undefined && (obj.targetHeight = Math.round(message.targetHeight));
     message.index !== undefined && (obj.index = Math.round(message.index));
     message.data !== undefined && (obj.data = message.data);
+    message.creator !== undefined && (obj.creator = message.creator);
     return obj;
   },
 
@@ -73,6 +82,7 @@ export const EncryptedTx = {
     message.targetHeight = object.targetHeight ?? 0;
     message.index = object.index ?? 0;
     message.data = object.data ?? "";
+    message.creator = object.creator ?? "";
     return message;
   },
 };

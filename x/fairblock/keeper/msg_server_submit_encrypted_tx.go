@@ -10,8 +10,15 @@ import (
 func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmitEncryptedTx) (*types.MsgSubmitEncryptedTxResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	encryptedTx := types.EncryptedTx{
+		TargetHeight: msg.TargetBlockHeight,
+		Data:         msg.Data,
+		Creator:      msg.Creator,
+	}
+
+	k.SetEncryptedTx(ctx, encryptedTx)
+
+	// Emit event after appended ?
 
 	return &types.MsgSubmitEncryptedTxResponse{}, nil
 }

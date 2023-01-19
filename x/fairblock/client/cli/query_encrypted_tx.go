@@ -43,6 +43,46 @@ func CmdListEncryptedTx() *cobra.Command {
 	return cmd
 }
 
+func CmdListEncryptedTxFromBlock() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "list-encrypted-tx-from-block",
+		Short: "list all EncryptedTx from block",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx := client.GetClientContextFromCmd(cmd)
+
+			pageReq, err := client.ReadPageRequest(cmd.Flags())
+			if err != nil {
+				return err
+			}
+
+			queryClient := types.NewQueryClient(clientCtx)
+
+			argTargetHeight, err := cast.ToUint64E(args[0])
+			if err != nil {
+				return err
+			}
+
+			params := &types.QueryAllEncryptedTxFromHeightRequest{
+				TargetHeight: argTargetHeight,
+				Pagination:   pageReq,
+			}
+
+			res, err := queryClient.EncryptedTxAllFromHeight(context.Background(), params)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddPaginationFlagsToCmd(cmd, cmd.Use)
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
 func CmdShowEncryptedTx() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-encrypted-tx [target-height] [index]",

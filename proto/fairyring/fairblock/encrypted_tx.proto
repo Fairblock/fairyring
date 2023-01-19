@@ -7,6 +7,6 @@ message EncryptedTx {
   uint64 targetHeight = 1; 
   uint64 index = 2; 
   string data = 3; 
-  
+  string creator = 4;
 }
 

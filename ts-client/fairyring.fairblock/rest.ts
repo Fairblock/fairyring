@@ -16,6 +16,7 @@ export interface FairblockEncryptedTx {
   /** @format uint64 */
   index?: string;
   data?: string;
+  creator?: string;
 }
 
 export type FairblockMsgSubmitEncryptedTxResponse = object;
@@ -24,6 +25,21 @@ export type FairblockMsgSubmitEncryptedTxResponse = object;
  * Params defines the parameters for the module.
  */
 export type FairblockParams = object;
+
+export interface FairblockQueryAllEncryptedTxFromHeightResponse {
+  encryptedTx?: FairblockEncryptedTx[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 export interface FairblockQueryAllEncryptedTxResponse {
   encryptedTx?: FairblockEncryptedTx[];
@@ -280,6 +296,33 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   ) =>
     this.request<FairblockQueryAllEncryptedTxResponse, RpcStatus>({
       path: `/fairyring/fairblock/encrypted_tx`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryEncryptedTxAllFromHeight
+   * @summary Queries a list of EncryptedTx items.
+   * @request GET:/fairyring/fairblock/encrypted_tx/{targetHeight}
+   */
+  queryEncryptedTxAllFromHeight = (
+    targetHeight: string,
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FairblockQueryAllEncryptedTxFromHeightResponse, RpcStatus>({
+      path: `/fairyring/fairblock/encrypted_tx/${targetHeight}`,
       method: "GET",
       query: query,
       format: "json",

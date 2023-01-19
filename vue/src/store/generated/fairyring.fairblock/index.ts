@@ -40,6 +40,7 @@ const getDefaultState = () => {
 				Params: {},
 				EncryptedTx: {},
 				EncryptedTxAll: {},
+				EncryptedTxAllFromHeight: {},
 				
 				_Structure: {
 						EncryptedTx: getStructure(EncryptedTx.fromPartial({})),
@@ -91,6 +92,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.EncryptedTxAll[JSON.stringify(params)] ?? {}
+		},
+				getEncryptedTxAllFromHeight: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.EncryptedTxAllFromHeight[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -191,6 +198,32 @@ export default {
 				return getters['getEncryptedTxAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryEncryptedTxAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryEncryptedTxAllFromHeight({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.FairyringFairblock.query.queryEncryptedTxAllFromHeight( key.targetHeight, query ?? undefined)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await client.FairyringFairblock.query.queryEncryptedTxAllFromHeight( key.targetHeight, {...query ?? {}, 'pagination.key':(<any> value).pagination.next_key} as any)).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'EncryptedTxAllFromHeight', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryEncryptedTxAllFromHeight', payload: { options: { all }, params: {...key},query }})
+				return getters['getEncryptedTxAllFromHeight']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryEncryptedTxAllFromHeight API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

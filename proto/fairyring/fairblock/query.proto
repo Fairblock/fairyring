@@ -26,6 +26,11 @@ service Query {
 		option (google.api.http).get = "/fairyring/fairblock/encrypted_tx";
 	}
 
+	// Queries a list of EncryptedTx items.
+	rpc EncryptedTxAllFromHeight(QueryAllEncryptedTxFromHeightRequest) returns (QueryAllEncryptedTxFromHeightResponse) {
+		option (google.api.http).get = "/fairyring/fairblock/encrypted_tx/{targetHeight}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -40,7 +45,7 @@ message QueryParamsResponse {
 
 message QueryGetEncryptedTxRequest {
 	  uint64 targetHeight = 1;
-  uint64 index = 2;
+  	uint64 index = 2;
 
 }
 
@@ -53,6 +58,16 @@ message QueryAllEncryptedTxRequest {
 }
 
 message QueryAllEncryptedTxResponse {
+	repeated EncryptedTx encryptedTx = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryAllEncryptedTxFromHeightRequest {
+	uint64 targetHeight = 1;
+	cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+message QueryAllEncryptedTxFromHeightResponse {
 	repeated EncryptedTx encryptedTx = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
