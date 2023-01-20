@@ -7,7 +7,10 @@ import (
 )
 
 // AppendEncryptedTx append a specific encryptedTx in the store
-func (k Keeper) AppendEncryptedTx(ctx sdk.Context, encryptedTx types.EncryptedTx) {
+func (k Keeper) AppendEncryptedTx(
+	ctx sdk.Context,
+	encryptedTx types.EncryptedTx,
+) uint64 {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyPrefix))
 
 	var allTxsFromHeight types.EncryptedTxArray
@@ -26,6 +29,8 @@ func (k Keeper) AppendEncryptedTx(ctx sdk.Context, encryptedTx types.EncryptedTx
 	store.Set(types.EncryptedTxAllFromHeightKey(
 		encryptedTx.TargetHeight,
 	), parsedEncryptedTxArr)
+
+	return encryptedTx.Index
 }
 
 // SetEncryptedTx add a specific encryptedTx in the store from its index
