@@ -30,7 +30,7 @@ func networkWithEncryptedTxObjects(t *testing.T, n int) (*network.Network, []typ
 	for i := 0; i < n; i++ {
 		encryptedTxArr := types.EncryptedTxArray{
 			EncryptedTx: []types.EncryptedTx{
-				types.EncryptedTx{
+				{
 					TargetHeight: uint64(i),
 					Index:        0,
 				},
