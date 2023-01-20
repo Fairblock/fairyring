@@ -25,6 +25,30 @@ var (
 	PortKey = KeyPrefix("fairblock-port-")
 )
 
+const (
+	SubmittedEncryptedTxEventType         = "new-encrypted-tx-submitted"
+	SubmittedEncryptedTxEventCreator      = "new-encrypted-tx-creator"
+	SubmittedEncryptedTxEventTargetHeight = "new-encrypted-tx-target-height"
+	SubmittedEncryptedTxEventIndex        = "new-encrypted-tx-index"
+	SubmittedEncryptedTxEventData         = "new-encrypted-tx-data"
+)
+
+const (
+	EncryptedTxExecutedEventType    = "executed-encrypted-tx"
+	EncryptedTxExecutedEventCreator = "executed-encrypted-tx-creator"
+	EncryptedTxExecutedEventHeight  = "executed-encrypted-tx-target-height"
+	EncryptedTxExecutedEventIndex   = "executed-encrypted-tx-index"
+	EncryptedTxExecutedEventData    = "executed-encrypted-tx-data"
+)
+
+const (
+	EncryptedTxRevertedEventType    = "reverted-encrypted-tx"
+	EncryptedTxRevertedEventCreator = "reverted-encrypted-tx-creator"
+	EncryptedTxRevertedEventHeight  = "reverted-encrypted-tx-target-height"
+	EncryptedTxRevertedEventIndex   = "reverted-encrypted-tx-index"
+	EncryptedTxRevertedEventData    = "reverted-encrypted-tx-data"
+)
+
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
