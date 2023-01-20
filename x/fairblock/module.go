@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strconv"
+
 	// this line is used by starport scaffolding # 1
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
@@ -153,7 +155,31 @@ func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.Raw
 func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
-func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
+func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
+	// TODO: Update to use IBC to get fairyring current block height
+	arr := am.keeper.GetEncryptedTxAllFromHeight(ctx, uint64(ctx.BlockHeight()))
+
+	for _, eachTx := range arr.EncryptedTx {
+		// TODO: Execute Tx here, just emit event for now
+		// TODO: What to do to all the txs in previous height ?
+
+		// Remove Tx from state after execution
+		am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
+		/// For now, after removal, the encrypted tx will become an empty array
+		/// Or Remove the entire tx array of current height
+		/// instead removing it one by one ?
+
+		// Emit event for tx execution
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(types.EncryptedTxExecutedEventType,
+				sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
+				sdk.NewAttribute(types.EncryptedTxExecutedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+				sdk.NewAttribute(types.EncryptedTxExecutedEventData, eachTx.Data),
+				sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+			),
+		)
+	}
+}
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
