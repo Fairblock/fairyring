@@ -26,11 +26,17 @@ func (gs GenesisState) Validate() error {
 	}
 
 	encryptedTxArrIndexMap := make(map[string]struct{})
-	for _, elem := range gs.EncryptedTxArray {
-		if len(elem.EncryptedTx) < 1 {
-			continue
+	for height, elem := range gs.EncryptedTxArray {
+		for index, item := range elem.EncryptedTx {
+			if item.Index != uint64(index) {
+				return fmt.Errorf("encrypted tx index does not match")
+			}
+
+			if item.TargetHeight != uint64(height) {
+				return fmt.Errorf("encrypted tx target height does not match")
+			}
 		}
-		index := string(EncryptedTxAllFromHeightKey(elem.EncryptedTx[0].TargetHeight))
+		index := string(EncryptedTxAllFromHeightKey(uint64(height)))
 		if _, ok := encryptedTxArrIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for encryptedTxArr")
 		}
