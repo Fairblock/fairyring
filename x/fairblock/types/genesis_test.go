@@ -22,14 +22,30 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
 				PortId: types.PortID,
-				EncryptedTxList: []types.EncryptedTx{
+				EncryptedTxArray: []types.EncryptedTxArray{
 					{
-						TargetHeight: 0,
-						Index:        0,
+						EncryptedTx: []types.EncryptedTx{
+							{
+								TargetHeight: 0,
+								Index:        0,
+							},
+							{
+								TargetHeight: 0,
+								Index:        1,
+							},
+						},
 					},
 					{
-						TargetHeight: 1,
-						Index:        1,
+						EncryptedTx: []types.EncryptedTx{
+							{
+								TargetHeight: 1,
+								Index:        0,
+							},
+							{
+								TargetHeight: 1,
+								Index:        1,
+							},
+						},
 					},
 				},
 				// this line is used by starport scaffolding # types/genesis/validField
@@ -39,14 +55,30 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "duplicated encryptedTx",
 			genState: &types.GenesisState{
-				EncryptedTxList: []types.EncryptedTx{
+				EncryptedTxArray: []types.EncryptedTxArray{
 					{
-						TargetHeight: 0,
-						Index:        0,
+						EncryptedTx: []types.EncryptedTx{
+							{
+								TargetHeight: 0,
+								Index:        0,
+							},
+							{
+								TargetHeight: 0,
+								Index:        0,
+							},
+						},
 					},
 					{
-						TargetHeight: 0,
-						Index:        0,
+						EncryptedTx: []types.EncryptedTx{
+							{
+								TargetHeight: 0,
+								Index:        0,
+							},
+							{
+								TargetHeight: 0,
+								Index:        0,
+							},
+						},
 					},
 				},
 			},
