@@ -31,18 +31,18 @@ func TestEncryptedTxQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetEncryptedTxRequest{
-				TargetHeight: msgs[0].TargetHeight,
-				Index:        msgs[0].Index,
+				TargetHeight: msgs[0].EncryptedTx[0].TargetHeight,
+				Index:        msgs[0].EncryptedTx[0].Index,
 			},
-			response: &types.QueryGetEncryptedTxResponse{EncryptedTx: msgs[0]},
+			response: &types.QueryGetEncryptedTxResponse{EncryptedTx: msgs[0].EncryptedTx[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetEncryptedTxRequest{
-				TargetHeight: msgs[1].TargetHeight,
-				Index:        msgs[1].Index,
+				TargetHeight: msgs[1].EncryptedTx[0].TargetHeight,
+				Index:        msgs[1].EncryptedTx[0].Index,
 			},
-			response: &types.QueryGetEncryptedTxResponse{EncryptedTx: msgs[1]},
+			response: &types.QueryGetEncryptedTxResponse{EncryptedTx: msgs[1].EncryptedTx[0]},
 		},
 		{
 			desc: "KeyNotFound",
@@ -92,10 +92,10 @@ func TestEncryptedTxQueryPaginated(t *testing.T) {
 		for i := 0; i < len(msgs); i += step {
 			resp, err := keeper.EncryptedTxAll(wctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.EncryptedTx), step)
+			require.LessOrEqual(t, len(resp.EncryptedTxArray), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.EncryptedTx),
+				nullify.Fill(resp.EncryptedTxArray),
 			)
 		}
 	})
@@ -105,10 +105,10 @@ func TestEncryptedTxQueryPaginated(t *testing.T) {
 		for i := 0; i < len(msgs); i += step {
 			resp, err := keeper.EncryptedTxAll(wctx, request(next, 0, uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.EncryptedTx), step)
+			require.LessOrEqual(t, len(resp.EncryptedTxArray), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.EncryptedTx),
+				nullify.Fill(resp.EncryptedTxArray),
 			)
 			next = resp.Pagination.NextKey
 		}
@@ -119,7 +119,7 @@ func TestEncryptedTxQueryPaginated(t *testing.T) {
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
 			nullify.Fill(msgs),
-			nullify.Fill(resp.EncryptedTx),
+			nullify.Fill(resp.EncryptedTxArray),
 		)
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
