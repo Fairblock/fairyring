@@ -21,24 +21,28 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func networkWithEncryptedTxObjects(t *testing.T, n int) (*network.Network, []types.EncryptedTx) {
+func networkWithEncryptedTxObjects(t *testing.T, n int) (*network.Network, []types.EncryptedTxArray) {
 	t.Helper()
 	cfg := network.DefaultConfig()
 	state := types.GenesisState{}
 	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
 	for i := 0; i < n; i++ {
-		encryptedTx := types.EncryptedTx{
-			TargetHeight: uint64(i),
-			Index:        uint64(i),
+		encryptedTxArr := types.EncryptedTxArray{
+			EncryptedTx: []types.EncryptedTx{
+				types.EncryptedTx{
+					TargetHeight: uint64(i),
+					Index:        0,
+				},
+			},
 		}
-		nullify.Fill(&encryptedTx)
-		state.EncryptedTxList = append(state.EncryptedTxList, encryptedTx)
+		nullify.Fill(&encryptedTxArr)
+		state.EncryptedTxArray = append(state.EncryptedTxArray, encryptedTxArr)
 	}
 	buf, err := cfg.Codec.MarshalJSON(&state)
 	require.NoError(t, err)
 	cfg.GenesisState[types.ModuleName] = buf
-	return network.New(t, cfg), state.EncryptedTxList
+	return network.New(t, cfg), state.EncryptedTxArray
 }
 
 func TestShowEncryptedTx(t *testing.T) {
@@ -59,11 +63,11 @@ func TestShowEncryptedTx(t *testing.T) {
 	}{
 		{
 			desc:           "found",
-			idTargetHeight: objs[0].TargetHeight,
-			idIndex:        objs[0].Index,
+			idTargetHeight: objs[0].EncryptedTx[0].TargetHeight,
+			idIndex:        objs[0].EncryptedTx[0].Index,
 
 			args: common,
-			obj:  objs[0],
+			obj:  objs[0].EncryptedTx[0],
 		},
 		{
 			desc:           "not found",
@@ -126,10 +130,10 @@ func TestListEncryptedTx(t *testing.T) {
 			require.NoError(t, err)
 			var resp types.QueryAllEncryptedTxResponse
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-			require.LessOrEqual(t, len(resp.EncryptedTx), step)
+			require.LessOrEqual(t, len(resp.EncryptedTxArray), step)
 			require.Subset(t,
 				nullify.Fill(objs),
-				nullify.Fill(resp.EncryptedTx),
+				nullify.Fill(resp.EncryptedTxArray),
 			)
 		}
 	})
@@ -142,10 +146,10 @@ func TestListEncryptedTx(t *testing.T) {
 			require.NoError(t, err)
 			var resp types.QueryAllEncryptedTxResponse
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-			require.LessOrEqual(t, len(resp.EncryptedTx), step)
+			require.LessOrEqual(t, len(resp.EncryptedTxArray), step)
 			require.Subset(t,
 				nullify.Fill(objs),
-				nullify.Fill(resp.EncryptedTx),
+				nullify.Fill(resp.EncryptedTxArray),
 			)
 			next = resp.Pagination.NextKey
 		}
@@ -160,7 +164,7 @@ func TestListEncryptedTx(t *testing.T) {
 		require.Equal(t, len(objs), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
 			nullify.Fill(objs),
-			nullify.Fill(resp.EncryptedTx),
+			nullify.Fill(resp.EncryptedTxArray),
 		)
 	})
 }
