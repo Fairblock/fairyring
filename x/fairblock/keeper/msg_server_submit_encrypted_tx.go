@@ -11,6 +11,19 @@ import (
 func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmitEncryptedTx) (*types.MsgSubmitEncryptedTxResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	if msg.TargetBlockHeight <= uint64(ctx.BlockHeight()) {
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(types.EncryptedTxRevertedEventType,
+				sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, msg.Creator),
+				sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(msg.TargetBlockHeight, 10)),
+				sdk.NewAttribute(types.EncryptedTxRevertedEventData, msg.Data),
+				sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, "0"),
+			),
+		)
+
+		return nil, types.ErrInvalidTargetBlockHeight
+	}
+
 	encryptedTx := types.EncryptedTx{
 		TargetHeight: msg.TargetBlockHeight,
 		Data:         msg.Data,
