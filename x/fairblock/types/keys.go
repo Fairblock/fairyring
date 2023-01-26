@@ -22,7 +22,9 @@ const (
 
 var (
 	// PortKey defines the key to store the port ID in store
-	PortKey = KeyPrefix("fairblock-port-")
+	PortKey         = KeyPrefix("fairblock-port-")
+	ChannelKey      = KeyPrefix("fairblock-channel-")
+	LatestHeightKey = KeyPrefix("fairblock-latest-height-")
 )
 
 const (

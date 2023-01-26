@@ -43,6 +43,13 @@ export interface QueryAllEncryptedTxFromHeightResponse {
   encryptedTxArray: EncryptedTxArray | undefined;
 }
 
+export interface QueryLatestHeightRequest {
+}
+
+export interface QueryLatestHeightResponse {
+  height: number;
+}
+
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
@@ -460,6 +467,92 @@ export const QueryAllEncryptedTxFromHeightResponse = {
   },
 };
 
+function createBaseQueryLatestHeightRequest(): QueryLatestHeightRequest {
+  return {};
+}
+
+export const QueryLatestHeightRequest = {
+  encode(_: QueryLatestHeightRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLatestHeightRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryLatestHeightRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryLatestHeightRequest {
+    return {};
+  },
+
+  toJSON(_: QueryLatestHeightRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryLatestHeightRequest>, I>>(_: I): QueryLatestHeightRequest {
+    const message = createBaseQueryLatestHeightRequest();
+    return message;
+  },
+};
+
+function createBaseQueryLatestHeightResponse(): QueryLatestHeightResponse {
+  return { height: 0 };
+}
+
+export const QueryLatestHeightResponse = {
+  encode(message: QueryLatestHeightResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.height !== 0) {
+      writer.uint32(8).uint64(message.height);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLatestHeightResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryLatestHeightResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.height = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryLatestHeightResponse {
+    return { height: isSet(object.height) ? Number(object.height) : 0 };
+  },
+
+  toJSON(message: QueryLatestHeightResponse): unknown {
+    const obj: any = {};
+    message.height !== undefined && (obj.height = Math.round(message.height));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryLatestHeightResponse>, I>>(object: I): QueryLatestHeightResponse {
+    const message = createBaseQueryLatestHeightResponse();
+    message.height = object.height ?? 0;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -472,6 +565,8 @@ export interface Query {
   EncryptedTxAllFromHeight(
     request: QueryAllEncryptedTxFromHeightRequest,
   ): Promise<QueryAllEncryptedTxFromHeightResponse>;
+  /** Queries a list of LatestHeight items. */
+  LatestHeight(request: QueryLatestHeightRequest): Promise<QueryLatestHeightResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -482,6 +577,7 @@ export class QueryClientImpl implements Query {
     this.EncryptedTx = this.EncryptedTx.bind(this);
     this.EncryptedTxAll = this.EncryptedTxAll.bind(this);
     this.EncryptedTxAllFromHeight = this.EncryptedTxAllFromHeight.bind(this);
+    this.LatestHeight = this.LatestHeight.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -507,6 +603,12 @@ export class QueryClientImpl implements Query {
     const data = QueryAllEncryptedTxFromHeightRequest.encode(request).finish();
     const promise = this.rpc.request("fairyring.fairblock.Query", "EncryptedTxAllFromHeight", data);
     return promise.then((data) => QueryAllEncryptedTxFromHeightResponse.decode(new _m0.Reader(data)));
+  }
+
+  LatestHeight(request: QueryLatestHeightRequest): Promise<QueryLatestHeightResponse> {
+    const data = QueryLatestHeightRequest.encode(request).finish();
+    const promise = this.rpc.request("fairyring.fairblock.Query", "LatestHeight", data);
+    return promise.then((data) => QueryLatestHeightResponse.decode(new _m0.Reader(data)));
   }
 }
 

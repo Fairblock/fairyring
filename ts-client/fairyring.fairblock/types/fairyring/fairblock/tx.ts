@@ -13,6 +13,16 @@ export interface MsgSubmitEncryptedTx {
 export interface MsgSubmitEncryptedTxResponse {
 }
 
+export interface MsgSendCurrentHeight {
+  creator: string;
+  port: string;
+  channelID: string;
+  timeoutTimestamp: number;
+}
+
+export interface MsgSendCurrentHeightResponse {
+}
+
 function createBaseMsgSubmitEncryptedTx(): MsgSubmitEncryptedTx {
   return { creator: "", data: "", targetBlockHeight: 0 };
 }
@@ -119,10 +129,126 @@ export const MsgSubmitEncryptedTxResponse = {
   },
 };
 
+function createBaseMsgSendCurrentHeight(): MsgSendCurrentHeight {
+  return { creator: "", port: "", channelID: "", timeoutTimestamp: 0 };
+}
+
+export const MsgSendCurrentHeight = {
+  encode(message: MsgSendCurrentHeight, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.port !== "") {
+      writer.uint32(18).string(message.port);
+    }
+    if (message.channelID !== "") {
+      writer.uint32(26).string(message.channelID);
+    }
+    if (message.timeoutTimestamp !== 0) {
+      writer.uint32(32).uint64(message.timeoutTimestamp);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSendCurrentHeight {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSendCurrentHeight();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.port = reader.string();
+          break;
+        case 3:
+          message.channelID = reader.string();
+          break;
+        case 4:
+          message.timeoutTimestamp = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSendCurrentHeight {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      port: isSet(object.port) ? String(object.port) : "",
+      channelID: isSet(object.channelID) ? String(object.channelID) : "",
+      timeoutTimestamp: isSet(object.timeoutTimestamp) ? Number(object.timeoutTimestamp) : 0,
+    };
+  },
+
+  toJSON(message: MsgSendCurrentHeight): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.port !== undefined && (obj.port = message.port);
+    message.channelID !== undefined && (obj.channelID = message.channelID);
+    message.timeoutTimestamp !== undefined && (obj.timeoutTimestamp = Math.round(message.timeoutTimestamp));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgSendCurrentHeight>, I>>(object: I): MsgSendCurrentHeight {
+    const message = createBaseMsgSendCurrentHeight();
+    message.creator = object.creator ?? "";
+    message.port = object.port ?? "";
+    message.channelID = object.channelID ?? "";
+    message.timeoutTimestamp = object.timeoutTimestamp ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgSendCurrentHeightResponse(): MsgSendCurrentHeightResponse {
+  return {};
+}
+
+export const MsgSendCurrentHeightResponse = {
+  encode(_: MsgSendCurrentHeightResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSendCurrentHeightResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSendCurrentHeightResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgSendCurrentHeightResponse {
+    return {};
+  },
+
+  toJSON(_: MsgSendCurrentHeightResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgSendCurrentHeightResponse>, I>>(_: I): MsgSendCurrentHeightResponse {
+    const message = createBaseMsgSendCurrentHeightResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   SubmitEncryptedTx(request: MsgSubmitEncryptedTx): Promise<MsgSubmitEncryptedTxResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  SendCurrentHeight(request: MsgSendCurrentHeight): Promise<MsgSendCurrentHeightResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -130,11 +256,18 @@ export class MsgClientImpl implements Msg {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.SubmitEncryptedTx = this.SubmitEncryptedTx.bind(this);
+    this.SendCurrentHeight = this.SendCurrentHeight.bind(this);
   }
   SubmitEncryptedTx(request: MsgSubmitEncryptedTx): Promise<MsgSubmitEncryptedTxResponse> {
     const data = MsgSubmitEncryptedTx.encode(request).finish();
     const promise = this.rpc.request("fairyring.fairblock.Msg", "SubmitEncryptedTx", data);
     return promise.then((data) => MsgSubmitEncryptedTxResponse.decode(new _m0.Reader(data)));
+  }
+
+  SendCurrentHeight(request: MsgSendCurrentHeight): Promise<MsgSendCurrentHeightResponse> {
+    const data = MsgSendCurrentHeight.encode(request).finish();
+    const promise = this.rpc.request("fairyring.fairblock.Msg", "SendCurrentHeight", data);
+    return promise.then((data) => MsgSendCurrentHeightResponse.decode(new _m0.Reader(data)));
   }
 }
 

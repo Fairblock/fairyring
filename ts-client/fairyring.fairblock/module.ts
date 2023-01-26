@@ -8,9 +8,10 @@ import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
 import { MsgSubmitEncryptedTx } from "./types/fairyring/fairblock/tx";
+import { MsgSendCurrentHeight } from "./types/fairyring/fairblock/tx";
 
 
-export { MsgSubmitEncryptedTx };
+export { MsgSubmitEncryptedTx, MsgSendCurrentHeight };
 
 type sendMsgSubmitEncryptedTxParams = {
   value: MsgSubmitEncryptedTx,
@@ -18,9 +19,19 @@ type sendMsgSubmitEncryptedTxParams = {
   memo?: string
 };
 
+type sendMsgSendCurrentHeightParams = {
+  value: MsgSendCurrentHeight,
+  fee?: StdFee,
+  memo?: string
+};
+
 
 type msgSubmitEncryptedTxParams = {
   value: MsgSubmitEncryptedTx,
+};
+
+type msgSendCurrentHeightParams = {
+  value: MsgSendCurrentHeight,
 };
 
 
@@ -55,12 +66,34 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendMsgSendCurrentHeight({ value, fee, memo }: sendMsgSendCurrentHeightParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgSendCurrentHeight: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgSendCurrentHeight({ value: MsgSendCurrentHeight.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgSendCurrentHeight: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		
 		msgSubmitEncryptedTx({ value }: msgSubmitEncryptedTxParams): EncodeObject {
 			try {
 				return { typeUrl: "/fairyring.fairblock.MsgSubmitEncryptedTx", value: MsgSubmitEncryptedTx.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgSubmitEncryptedTx: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgSendCurrentHeight({ value }: msgSendCurrentHeightParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.fairblock.MsgSendCurrentHeight", value: MsgSendCurrentHeight.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgSendCurrentHeight: Could not create message: ' + e.message)
 			}
 		},
 		

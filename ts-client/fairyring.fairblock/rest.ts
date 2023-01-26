@@ -23,6 +23,8 @@ export interface FairblockEncryptedTxArray {
   encryptedTx?: FairblockEncryptedTx[];
 }
 
+export type FairblockMsgSendCurrentHeightResponse = object;
+
 export type FairblockMsgSubmitEncryptedTxResponse = object;
 
 /**
@@ -51,6 +53,11 @@ export interface FairblockQueryAllEncryptedTxResponse {
 
 export interface FairblockQueryGetEncryptedTxResponse {
   encryptedTx?: FairblockEncryptedTx;
+}
+
+export interface FairblockQueryLatestHeightResponse {
+  /** @format uint64 */
+  height?: string;
 }
 
 /**
@@ -322,6 +329,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryEncryptedTx = (targetHeight: string, index: string, params: RequestParams = {}) =>
     this.request<FairblockQueryGetEncryptedTxResponse, RpcStatus>({
       path: `/fairyring/fairblock/encrypted_tx/${targetHeight}/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryLatestHeight
+   * @summary Queries a list of LatestHeight items.
+   * @request GET:/fairyring/fairblock/latest_height
+   */
+  queryLatestHeight = (params: RequestParams = {}) =>
+    this.request<FairblockQueryLatestHeightResponse, RpcStatus>({
+      path: `/fairyring/fairblock/latest_height`,
       method: "GET",
       format: "json",
       ...params,

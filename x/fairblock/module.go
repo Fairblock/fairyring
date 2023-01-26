@@ -157,7 +157,25 @@ func (AppModule) ConsensusVersion() uint64 { return 1 }
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	// TODO: Update to use IBC to get fairyring current block height
-	arr := am.keeper.GetEncryptedTxAllFromHeight(ctx, uint64(ctx.BlockHeight()))
+	err := am.keeper.QueryFairyringCurrentHeight(ctx)
+	if err != nil {
+		am.keeper.Logger(ctx).Info("Beginblocker get height err", err)
+		am.keeper.Logger(ctx).Info(err.Error())
+		return
+	}
+
+	// height := am.keeper.GetLatestHeight(ctx)
+	strHeight := am.keeper.GetLatestHeight(ctx)
+	height, err := strconv.ParseUint(strHeight, 10, 64)
+
+	if err != nil {
+		am.keeper.Logger(ctx).Info("Beginblocker error parse height")
+		am.keeper.Logger(ctx).Info(err.Error())
+		am.keeper.Logger(ctx).Info(strHeight)
+		return
+	}
+
+	arr := am.keeper.GetEncryptedTxAllFromHeight(ctx, height)
 
 	for _, eachTx := range arr.EncryptedTx {
 		// TODO: Execute Tx here, just emit event for now

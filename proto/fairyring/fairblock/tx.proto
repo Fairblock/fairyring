@@ -8,6 +8,7 @@ option go_package = "fairyring/x/fairblock/types";
 // Msg defines the Msg service.
 service Msg {
       rpc SubmitEncryptedTx(MsgSubmitEncryptedTx) returns (MsgSubmitEncryptedTxResponse);
+  rpc SendCurrentHeight(MsgSendCurrentHeight) returns (MsgSendCurrentHeightResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -20,4 +21,13 @@ message MsgSubmitEncryptedTx {
 message MsgSubmitEncryptedTxResponse {
 }
 
+message MsgSendCurrentHeight {
+  string creator = 1;
+  string port = 2;
+  string channelID = 3;
+  uint64 timeoutTimestamp = 4;
+}
+
+message MsgSendCurrentHeightResponse {
+}
 // this line is used by starport scaffolding # proto/tx/message

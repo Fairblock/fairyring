@@ -4,10 +4,12 @@ import { EncryptedTx } from "fairyring-client-ts/fairyring.fairblock/types"
 import { EncryptedTxArray } from "fairyring-client-ts/fairyring.fairblock/types"
 import { FairblockPacketData } from "fairyring-client-ts/fairyring.fairblock/types"
 import { NoData } from "fairyring-client-ts/fairyring.fairblock/types"
+import { CurrentHeightPacketData } from "fairyring-client-ts/fairyring.fairblock/types"
+import { CurrentHeightPacketAck } from "fairyring-client-ts/fairyring.fairblock/types"
 import { Params } from "fairyring-client-ts/fairyring.fairblock/types"
 
 
-export { EncryptedTx, EncryptedTxArray, FairblockPacketData, NoData, Params };
+export { EncryptedTx, EncryptedTxArray, FairblockPacketData, NoData, CurrentHeightPacketData, CurrentHeightPacketAck, Params };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -42,12 +44,15 @@ const getDefaultState = () => {
 				EncryptedTx: {},
 				EncryptedTxAll: {},
 				EncryptedTxAllFromHeight: {},
+				LatestHeight: {},
 				
 				_Structure: {
 						EncryptedTx: getStructure(EncryptedTx.fromPartial({})),
 						EncryptedTxArray: getStructure(EncryptedTxArray.fromPartial({})),
 						FairblockPacketData: getStructure(FairblockPacketData.fromPartial({})),
 						NoData: getStructure(NoData.fromPartial({})),
+						CurrentHeightPacketData: getStructure(CurrentHeightPacketData.fromPartial({})),
+						CurrentHeightPacketAck: getStructure(CurrentHeightPacketAck.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						
 		},
@@ -100,6 +105,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.EncryptedTxAllFromHeight[JSON.stringify(params)] ?? {}
+		},
+				getLatestHeight: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.LatestHeight[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -227,6 +238,41 @@ export default {
 		},
 		
 		
+		
+		
+		 		
+		
+		
+		async QueryLatestHeight({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.FairyringFairblock.query.queryLatestHeight()).data
+				
+					
+				commit('QUERY', { query: 'LatestHeight', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryLatestHeight', payload: { options: { all }, params: {...key},query }})
+				return getters['getLatestHeight']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryLatestHeight API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		async sendMsgSendCurrentHeight({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const result = await client.FairyringFairblock.tx.sendMsgSendCurrentHeight({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSendCurrentHeight:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgSendCurrentHeight:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendMsgSubmitEncryptedTx({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -241,6 +287,19 @@ export default {
 			}
 		},
 		
+		async MsgSendCurrentHeight({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringFairblock.tx.msgSendCurrentHeight({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSendCurrentHeight:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgSendCurrentHeight:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		async MsgSubmitEncryptedTx({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)

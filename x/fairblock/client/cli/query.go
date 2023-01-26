@@ -28,6 +28,8 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdListEncryptedTx())
 	cmd.AddCommand(CmdListEncryptedTxFromBlock())
 	cmd.AddCommand(CmdShowEncryptedTx())
+	cmd.AddCommand(CmdLatestHeight())
+
 	// this line is used by starport scaffolding # 1
 
 	return cmd

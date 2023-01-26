@@ -31,6 +31,11 @@ service Query {
 		option (google.api.http).get = "/fairyring/fairblock/encrypted_tx/{targetHeight}";
 	}
 
+// Queries a list of LatestHeight items.
+	rpc LatestHeight(QueryLatestHeightRequest) returns (QueryLatestHeightResponse) {
+		option (google.api.http).get = "/fairyring/fairblock/latest_height";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -68,6 +73,13 @@ message QueryAllEncryptedTxFromHeightRequest {
 
 message QueryAllEncryptedTxFromHeightResponse {
 	EncryptedTxArray encryptedTxArray = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryLatestHeightRequest {
+}
+
+message QueryLatestHeightResponse {
+  uint64 height = 1;
 }
 
 // this line is used by starport scaffolding # 3

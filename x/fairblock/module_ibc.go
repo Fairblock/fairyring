@@ -110,6 +110,7 @@ func (im IBCModule) OnChanOpenConfirm(
 	portID,
 	channelID string,
 ) error {
+	im.keeper.SetChannel(ctx, channelID)
 	return nil
 }
 
@@ -149,7 +150,26 @@ func (im IBCModule) OnRecvPacket(
 
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
-	// this line is used by starport scaffolding # ibc/packet/module/recv
+	case *types.FairblockPacketData_CurrentHeightPacket:
+		packetAck, err := im.keeper.OnRecvCurrentHeightPacket(ctx, modulePacket, *packet.CurrentHeightPacket)
+		if err != nil {
+			ack = channeltypes.NewErrorAcknowledgement(err)
+		} else {
+			// Encode packet acknowledgment
+			packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
+			if err != nil {
+				return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error()))
+			}
+			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+		}
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeCurrentHeightPacket,
+				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+			),
+		)
+		// this line is used by starport scaffolding # ibc/packet/module/recv
 	default:
 		err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return channeltypes.NewErrorAcknowledgement(err)
@@ -182,7 +202,13 @@ func (im IBCModule) OnAcknowledgementPacket(
 
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
-	// this line is used by starport scaffolding # ibc/packet/module/ack
+	case *types.FairblockPacketData_CurrentHeightPacket:
+		err := im.keeper.OnAcknowledgementCurrentHeightPacket(ctx, modulePacket, *packet.CurrentHeightPacket, ack)
+		if err != nil {
+			return err
+		}
+		eventType = types.EventTypeCurrentHeightPacket
+		// this line is used by starport scaffolding # ibc/packet/module/ack
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
@@ -229,7 +255,12 @@ func (im IBCModule) OnTimeoutPacket(
 
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
-	// this line is used by starport scaffolding # ibc/packet/module/timeout
+	case *types.FairblockPacketData_CurrentHeightPacket:
+		err := im.keeper.OnTimeoutCurrentHeightPacket(ctx, modulePacket, *packet.CurrentHeightPacket)
+		if err != nil {
+			return err
+		}
+		// this line is used by starport scaffolding # ibc/packet/module/timeout
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
