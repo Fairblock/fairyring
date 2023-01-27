@@ -528,7 +528,15 @@ func New(
 		&app.IBCKeeper.PortKeeper,
 		scopedFairblockKeeper,
 	)
-	fairblockModule := fairblockmodule.NewAppModule(appCodec, app.FairblockKeeper, app.AccountKeeper, app.BankKeeper)
+	fairblockModule := fairblockmodule.NewAppModule(
+		appCodec,
+
+		app.FairblockKeeper,
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.BaseApp.DeliverTx,
+		app.BaseApp.CheckTx,
+	)
 
 	fairblockIBCModule := fairblockmodule.NewIBCModule(app.FairblockKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/types/tx"
 	"strconv"
 
 	// this line is used by starport scaffolding # 1
@@ -36,12 +37,13 @@ var (
 
 // AppModuleBasic implements the AppModuleBasic interface that defines the independent methods a Cosmos SDK module needs to implement.
 type AppModuleBasic struct {
-	cdc codec.BinaryCodec
+	cdc     codec.BinaryCodec
+	cdcJson codec.JSONCodec
 }
 
-func NewAppModuleBasic(cdc codec.BinaryCodec) AppModuleBasic {
-	return AppModuleBasic{cdc: cdc}
-}
+//func NewAppModuleBasic(cdc codec.BinaryCodec) AppModuleBasic {
+//	return AppModuleBasic{cdc: cdc}
+//}
 
 // Name returns the name of the module as a string
 func (AppModuleBasic) Name() string {
@@ -91,6 +93,9 @@ func (AppModuleBasic) GetQueryCmd() *cobra.Command {
 // AppModule
 // ----------------------------------------------------------------------------
 
+type deliverTxFn func(abci.RequestDeliverTx) abci.ResponseDeliverTx
+type checkTxFn func(abci.RequestCheckTx) abci.ResponseCheckTx
+
 // AppModule implements the AppModule interface that defines the inter-dependent methods that modules need to implement
 type AppModule struct {
 	AppModuleBasic
@@ -98,6 +103,9 @@ type AppModule struct {
 	keeper        keeper.Keeper
 	accountKeeper types.AccountKeeper
 	bankKeeper    types.BankKeeper
+
+	deliverTx deliverTxFn
+	checkTx   checkTxFn
 }
 
 func NewAppModule(
@@ -105,12 +113,16 @@ func NewAppModule(
 	keeper keeper.Keeper,
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
+	deliverTx deliverTxFn,
+	checkTx checkTxFn,
 ) AppModule {
 	return AppModule{
-		AppModuleBasic: NewAppModuleBasic(cdc),
+		AppModuleBasic: AppModuleBasic{cdc: cdc, cdcJson: cdc},
 		keeper:         keeper,
 		accountKeeper:  accountKeeper,
 		bankKeeper:     bankKeeper,
+		deliverTx:      deliverTx,
+		checkTx:        checkTx,
 	}
 }
 
@@ -156,32 +168,59 @@ func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
-	// TODO: Update to use IBC to get fairyring current block height
-	err := am.keeper.QueryFairyringCurrentHeight(ctx)
-	if err != nil {
-		am.keeper.Logger(ctx).Info("Beginblocker get height err", err)
-		am.keeper.Logger(ctx).Info(err.Error())
-		return
-	}
+
+	//err := am.keeper.QueryFairyringCurrentHeight(ctx)
+	//if err != nil {
+	//	am.keeper.Logger(ctx).Info("Beginblocker get height err", err)
+	//	am.keeper.Logger(ctx).Info(err.Error())
+	//	return
+	//}
 
 	// height := am.keeper.GetLatestHeight(ctx)
-	strHeight := am.keeper.GetLatestHeight(ctx)
-	height, err := strconv.ParseUint(strHeight, 10, 64)
+	//strHeight := am.keeper.GetLatestHeight(ctx)
+	//height, err := strconv.ParseUint(strHeight, 10, 64)
+	//
+	//if err != nil {
+	//	am.keeper.Logger(ctx).Info("Beginblocker error parse height")
+	//	am.keeper.Logger(ctx).Info(err.Error())
+	//	am.keeper.Logger(ctx).Info(strHeight)
+	//	return
+	//}
 
-	if err != nil {
-		am.keeper.Logger(ctx).Info("Beginblocker error parse height")
-		am.keeper.Logger(ctx).Info(err.Error())
-		am.keeper.Logger(ctx).Info(strHeight)
-		return
-	}
+	// Use current chain block height for test & development
+	height := uint64(ctx.BlockHeight())
 
 	arr := am.keeper.GetEncryptedTxAllFromHeight(ctx, height)
 
 	for _, eachTx := range arr.EncryptedTx {
-		// TODO: Execute Tx here, just emit event for now
 		// TODO: What to do to all the txs in previous height ?
+		var toData tx.Tx
+		err := am.cdcJson.UnmarshalJSON([]byte(eachTx.Data), &toData)
 
-		// Remove Tx from state after execution
+		// Probably emit some log in unmarshal / marshal error
+		if err != nil {
+			am.keeper.Logger(ctx).Error("UnmarshalJson Error in BeginBlock")
+			am.keeper.Logger(ctx).Error(err.Error())
+			return
+		}
+
+		txByte, err := toData.Marshal()
+		if err != nil {
+			am.keeper.Logger(ctx).Error("Marshal Tx to []byte Error")
+			am.keeper.Logger(ctx).Error(err.Error())
+			return
+		}
+
+		resp := am.deliverTx(abci.RequestDeliverTx{
+			Tx: txByte,
+		})
+		am.keeper.Logger(ctx).Info("TX Deliver Result in BeginBlock Result:")
+		am.keeper.Logger(ctx).Info(resp.GetInfo())
+		am.keeper.Logger(ctx).Info(resp.GetLog())
+		am.keeper.Logger(ctx).Info(string(resp.GetCode()))
+		am.keeper.Logger(ctx).Info(string(resp.GetGasWanted()))
+		am.keeper.Logger(ctx).Info(string(resp.GetGasUsed()))
+
 		am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
 		/// For now, after removal, the encrypted tx will become an empty array
 		/// Or Remove the entire tx array of current height
