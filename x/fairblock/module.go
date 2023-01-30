@@ -194,13 +194,25 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 	for _, eachTx := range arr.EncryptedTx {
 		// TODO: What to do to all the txs in previous height ?
+
+		am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
+
 		var toData tx.Tx
 		err := am.cdcJson.UnmarshalJSON([]byte(eachTx.Data), &toData)
 
 		// Probably emit some log in unmarshal / marshal error
 		if err != nil {
+			// Tx probably invalid format
 			am.keeper.Logger(ctx).Error("UnmarshalJson Error in BeginBlock")
 			am.keeper.Logger(ctx).Error(err.Error())
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(types.EncryptedTxRevertedEventType,
+					sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventData, eachTx.Data),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+				),
+			)
 			return
 		}
 
@@ -208,6 +220,14 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		if err != nil {
 			am.keeper.Logger(ctx).Error("Marshal Tx to []byte Error")
 			am.keeper.Logger(ctx).Error(err.Error())
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(types.EncryptedTxRevertedEventType,
+					sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventData, eachTx.Data),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+				),
+			)
 			return
 		}
 
@@ -221,7 +241,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		am.keeper.Logger(ctx).Info(string(resp.GetGasWanted()))
 		am.keeper.Logger(ctx).Info(string(resp.GetGasUsed()))
 
-		am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
 		/// For now, after removal, the encrypted tx will become an empty array
 		/// Or Remove the entire tx array of current height
 		/// instead removing it one by one ?
