@@ -235,11 +235,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			Tx: txByte,
 		})
 		am.keeper.Logger(ctx).Info("TX Deliver Result in BeginBlock Result:")
-		am.keeper.Logger(ctx).Info(resp.GetInfo())
 		am.keeper.Logger(ctx).Info(resp.GetLog())
-		am.keeper.Logger(ctx).Info(string(resp.GetCode()))
-		am.keeper.Logger(ctx).Info(string(resp.GetGasWanted()))
-		am.keeper.Logger(ctx).Info(string(resp.GetGasUsed()))
 
 		/// For now, after removal, the encrypted tx will become an empty array
 		/// Or Remove the entire tx array of current height
