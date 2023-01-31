@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "fairyring/fairblock/params.proto";
 import "fairyring/fairblock/encrypted_tx.proto";
+import "fairyring/fairblock/fairblock_nonce.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "fairyring/x/fairblock/types";
@@ -34,6 +35,16 @@ service Query {
 // Queries a list of LatestHeight items.
 	rpc LatestHeight(QueryLatestHeightRequest) returns (QueryLatestHeightResponse) {
 		option (google.api.http).get = "/fairyring/fairblock/latest_height";
+	}
+
+// Queries a FairblockNonce by index.
+	rpc FairblockNonce(QueryGetFairblockNonceRequest) returns (QueryGetFairblockNonceResponse) {
+		option (google.api.http).get = "/fairyring/fairblock/fairblock_nonce/{address}";
+	}
+
+	// Queries a list of FairblockNonce items.
+	rpc FairblockNonceAll(QueryAllFairblockNonceRequest) returns (QueryAllFairblockNonceResponse) {
+		option (google.api.http).get = "/fairyring/fairblock/fairblock_nonce";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -80,6 +91,24 @@ message QueryLatestHeightRequest {
 
 message QueryLatestHeightResponse {
   uint64 height = 1;
+}
+
+message QueryGetFairblockNonceRequest {
+	  string address = 1;
+
+}
+
+message QueryGetFairblockNonceResponse {
+	FairblockNonce fairblockNonce = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllFairblockNonceRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllFairblockNonceResponse {
+	repeated FairblockNonce fairblockNonce = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

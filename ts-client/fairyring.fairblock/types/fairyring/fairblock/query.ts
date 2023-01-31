@@ -3,6 +3,7 @@ import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
 import { EncryptedTx, EncryptedTxArray } from "./encrypted_tx";
+import { FairblockNonce } from "./fairblock_nonce";
 import { Params } from "./params";
 
 export const protobufPackage = "fairyring.fairblock";
@@ -48,6 +49,23 @@ export interface QueryLatestHeightRequest {
 
 export interface QueryLatestHeightResponse {
   height: number;
+}
+
+export interface QueryGetFairblockNonceRequest {
+  address: string;
+}
+
+export interface QueryGetFairblockNonceResponse {
+  fairblockNonce: FairblockNonce | undefined;
+}
+
+export interface QueryAllFairblockNonceRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllFairblockNonceResponse {
+  fairblockNonce: FairblockNonce[];
+  pagination: PageResponse | undefined;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -553,6 +571,230 @@ export const QueryLatestHeightResponse = {
   },
 };
 
+function createBaseQueryGetFairblockNonceRequest(): QueryGetFairblockNonceRequest {
+  return { address: "" };
+}
+
+export const QueryGetFairblockNonceRequest = {
+  encode(message: QueryGetFairblockNonceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetFairblockNonceRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetFairblockNonceRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetFairblockNonceRequest {
+    return { address: isSet(object.address) ? String(object.address) : "" };
+  },
+
+  toJSON(message: QueryGetFairblockNonceRequest): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetFairblockNonceRequest>, I>>(
+    object: I,
+  ): QueryGetFairblockNonceRequest {
+    const message = createBaseQueryGetFairblockNonceRequest();
+    message.address = object.address ?? "";
+    return message;
+  },
+};
+
+function createBaseQueryGetFairblockNonceResponse(): QueryGetFairblockNonceResponse {
+  return { fairblockNonce: undefined };
+}
+
+export const QueryGetFairblockNonceResponse = {
+  encode(message: QueryGetFairblockNonceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.fairblockNonce !== undefined) {
+      FairblockNonce.encode(message.fairblockNonce, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetFairblockNonceResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetFairblockNonceResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.fairblockNonce = FairblockNonce.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetFairblockNonceResponse {
+    return {
+      fairblockNonce: isSet(object.fairblockNonce) ? FairblockNonce.fromJSON(object.fairblockNonce) : undefined,
+    };
+  },
+
+  toJSON(message: QueryGetFairblockNonceResponse): unknown {
+    const obj: any = {};
+    message.fairblockNonce !== undefined
+      && (obj.fairblockNonce = message.fairblockNonce ? FairblockNonce.toJSON(message.fairblockNonce) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetFairblockNonceResponse>, I>>(
+    object: I,
+  ): QueryGetFairblockNonceResponse {
+    const message = createBaseQueryGetFairblockNonceResponse();
+    message.fairblockNonce = (object.fairblockNonce !== undefined && object.fairblockNonce !== null)
+      ? FairblockNonce.fromPartial(object.fairblockNonce)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllFairblockNonceRequest(): QueryAllFairblockNonceRequest {
+  return { pagination: undefined };
+}
+
+export const QueryAllFairblockNonceRequest = {
+  encode(message: QueryAllFairblockNonceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllFairblockNonceRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllFairblockNonceRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllFairblockNonceRequest {
+    return { pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined };
+  },
+
+  toJSON(message: QueryAllFairblockNonceRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllFairblockNonceRequest>, I>>(
+    object: I,
+  ): QueryAllFairblockNonceRequest {
+    const message = createBaseQueryAllFairblockNonceRequest();
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllFairblockNonceResponse(): QueryAllFairblockNonceResponse {
+  return { fairblockNonce: [], pagination: undefined };
+}
+
+export const QueryAllFairblockNonceResponse = {
+  encode(message: QueryAllFairblockNonceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.fairblockNonce) {
+      FairblockNonce.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllFairblockNonceResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllFairblockNonceResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.fairblockNonce.push(FairblockNonce.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllFairblockNonceResponse {
+    return {
+      fairblockNonce: Array.isArray(object?.fairblockNonce)
+        ? object.fairblockNonce.map((e: any) => FairblockNonce.fromJSON(e))
+        : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllFairblockNonceResponse): unknown {
+    const obj: any = {};
+    if (message.fairblockNonce) {
+      obj.fairblockNonce = message.fairblockNonce.map((e) => e ? FairblockNonce.toJSON(e) : undefined);
+    } else {
+      obj.fairblockNonce = [];
+    }
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllFairblockNonceResponse>, I>>(
+    object: I,
+  ): QueryAllFairblockNonceResponse {
+    const message = createBaseQueryAllFairblockNonceResponse();
+    message.fairblockNonce = object.fairblockNonce?.map((e) => FairblockNonce.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -567,6 +809,10 @@ export interface Query {
   ): Promise<QueryAllEncryptedTxFromHeightResponse>;
   /** Queries a list of LatestHeight items. */
   LatestHeight(request: QueryLatestHeightRequest): Promise<QueryLatestHeightResponse>;
+  /** Queries a FairblockNonce by index. */
+  FairblockNonce(request: QueryGetFairblockNonceRequest): Promise<QueryGetFairblockNonceResponse>;
+  /** Queries a list of FairblockNonce items. */
+  FairblockNonceAll(request: QueryAllFairblockNonceRequest): Promise<QueryAllFairblockNonceResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -578,6 +824,8 @@ export class QueryClientImpl implements Query {
     this.EncryptedTxAll = this.EncryptedTxAll.bind(this);
     this.EncryptedTxAllFromHeight = this.EncryptedTxAllFromHeight.bind(this);
     this.LatestHeight = this.LatestHeight.bind(this);
+    this.FairblockNonce = this.FairblockNonce.bind(this);
+    this.FairblockNonceAll = this.FairblockNonceAll.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -609,6 +857,18 @@ export class QueryClientImpl implements Query {
     const data = QueryLatestHeightRequest.encode(request).finish();
     const promise = this.rpc.request("fairyring.fairblock.Query", "LatestHeight", data);
     return promise.then((data) => QueryLatestHeightResponse.decode(new _m0.Reader(data)));
+  }
+
+  FairblockNonce(request: QueryGetFairblockNonceRequest): Promise<QueryGetFairblockNonceResponse> {
+    const data = QueryGetFairblockNonceRequest.encode(request).finish();
+    const promise = this.rpc.request("fairyring.fairblock.Query", "FairblockNonce", data);
+    return promise.then((data) => QueryGetFairblockNonceResponse.decode(new _m0.Reader(data)));
+  }
+
+  FairblockNonceAll(request: QueryAllFairblockNonceRequest): Promise<QueryAllFairblockNonceResponse> {
+    const data = QueryAllFairblockNonceRequest.encode(request).finish();
+    const promise = this.rpc.request("fairyring.fairblock.Query", "FairblockNonceAll", data);
+    return promise.then((data) => QueryAllFairblockNonceResponse.decode(new _m0.Reader(data)));
   }
 }
 

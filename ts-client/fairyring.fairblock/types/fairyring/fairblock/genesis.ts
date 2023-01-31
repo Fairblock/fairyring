@@ -1,6 +1,7 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
 import { EncryptedTxArray } from "./encrypted_tx";
+import { FairblockNonce } from "./fairblock_nonce";
 import { Params } from "./params";
 
 export const protobufPackage = "fairyring.fairblock";
@@ -9,12 +10,13 @@ export const protobufPackage = "fairyring.fairblock";
 export interface GenesisState {
   params: Params | undefined;
   portId: string;
-  /** this line is used by starport scaffolding # genesis/proto/state */
   encryptedTxArray: EncryptedTxArray[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  fairblockNonceList: FairblockNonce[];
 }
 
 function createBaseGenesisState(): GenesisState {
-  return { params: undefined, portId: "", encryptedTxArray: [] };
+  return { params: undefined, portId: "", encryptedTxArray: [], fairblockNonceList: [] };
 }
 
 export const GenesisState = {
@@ -27,6 +29,9 @@ export const GenesisState = {
     }
     for (const v of message.encryptedTxArray) {
       EncryptedTxArray.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.fairblockNonceList) {
+      FairblockNonce.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -47,6 +52,9 @@ export const GenesisState = {
         case 3:
           message.encryptedTxArray.push(EncryptedTxArray.decode(reader, reader.uint32()));
           break;
+        case 4:
+          message.fairblockNonceList.push(FairblockNonce.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -62,6 +70,9 @@ export const GenesisState = {
       encryptedTxArray: Array.isArray(object?.encryptedTxArray)
         ? object.encryptedTxArray.map((e: any) => EncryptedTxArray.fromJSON(e))
         : [],
+      fairblockNonceList: Array.isArray(object?.fairblockNonceList)
+        ? object.fairblockNonceList.map((e: any) => FairblockNonce.fromJSON(e))
+        : [],
     };
   },
 
@@ -74,6 +85,11 @@ export const GenesisState = {
     } else {
       obj.encryptedTxArray = [];
     }
+    if (message.fairblockNonceList) {
+      obj.fairblockNonceList = message.fairblockNonceList.map((e) => e ? FairblockNonce.toJSON(e) : undefined);
+    } else {
+      obj.fairblockNonceList = [];
+    }
     return obj;
   },
 
@@ -84,6 +100,7 @@ export const GenesisState = {
       : undefined;
     message.portId = object.portId ?? "";
     message.encryptedTxArray = object.encryptedTxArray?.map((e) => EncryptedTxArray.fromPartial(e)) || [];
+    message.fairblockNonceList = object.fairblockNonceList?.map((e) => FairblockNonce.fromPartial(e)) || [];
     return message;
   },
 };

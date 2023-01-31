@@ -15,6 +15,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		}
 		k.SetEncryptedTx(ctx, elem.EncryptedTx[0].TargetHeight, elem)
 	}
+	// Set all the fairblockNonce
+	for _, elem := range genState.FairblockNonceList {
+		k.SetFairblockNonce(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetPort(ctx, genState.PortId)
 	// Only try to bind to port if it is not already bound, since we may already own
@@ -37,6 +41,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.PortId = k.GetPort(ctx)
 	genesis.EncryptedTxArray = k.GetAllEncryptedArray(ctx)
+	genesis.FairblockNonceList = k.GetAllFairblockNonce(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

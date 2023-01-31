@@ -40,6 +40,14 @@ func TestGenesis(t *testing.T) {
 				},
 			},
 		},
+		FairblockNonceList: []types.FairblockNonce{
+			{
+				Address: "0",
+			},
+			{
+				Address: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -54,5 +62,6 @@ func TestGenesis(t *testing.T) {
 	require.Equal(t, genesisState.PortId, got.PortId)
 
 	require.ElementsMatch(t, genesisState.EncryptedTxArray, got.EncryptedTxArray)
+	require.ElementsMatch(t, genesisState.FairblockNonceList, got.FairblockNonceList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }
