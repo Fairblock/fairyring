@@ -4,6 +4,7 @@ import { EncryptedTx } from "fairyring-client-ts/fairyring.fairblock/types"
 import { EncryptedTxArray } from "fairyring-client-ts/fairyring.fairblock/types"
 import { FairblockExecutedNonce } from "fairyring-client-ts/fairyring.fairblock/types"
 import { FairblockNonce } from "fairyring-client-ts/fairyring.fairblock/types"
+import { FairblockTx } from "fairyring-client-ts/fairyring.fairblock/types"
 import { FairblockPacketData } from "fairyring-client-ts/fairyring.fairblock/types"
 import { NoData } from "fairyring-client-ts/fairyring.fairblock/types"
 import { CurrentHeightPacketData } from "fairyring-client-ts/fairyring.fairblock/types"
@@ -11,7 +12,7 @@ import { CurrentHeightPacketAck } from "fairyring-client-ts/fairyring.fairblock/
 import { Params } from "fairyring-client-ts/fairyring.fairblock/types"
 
 
-export { EncryptedTx, EncryptedTxArray, FairblockExecutedNonce, FairblockNonce, FairblockPacketData, NoData, CurrentHeightPacketData, CurrentHeightPacketAck, Params };
+export { EncryptedTx, EncryptedTxArray, FairblockExecutedNonce, FairblockNonce, FairblockTx, FairblockPacketData, NoData, CurrentHeightPacketData, CurrentHeightPacketAck, Params };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -57,6 +58,7 @@ const getDefaultState = () => {
 						EncryptedTxArray: getStructure(EncryptedTxArray.fromPartial({})),
 						FairblockExecutedNonce: getStructure(FairblockExecutedNonce.fromPartial({})),
 						FairblockNonce: getStructure(FairblockNonce.fromPartial({})),
+						FairblockTx: getStructure(FairblockTx.fromPartial({})),
 						FairblockPacketData: getStructure(FairblockPacketData.fromPartial({})),
 						NoData: getStructure(NoData.fromPartial({})),
 						CurrentHeightPacketData: getStructure(CurrentHeightPacketData.fromPartial({})),
