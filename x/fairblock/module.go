@@ -195,6 +195,8 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	for _, eachTx := range arr.EncryptedTx {
 		// TODO: What to do to all the txs in previous height ?
 
+		am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
+		
 		am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
 
 		var toData tx.Tx
