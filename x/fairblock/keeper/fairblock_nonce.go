@@ -34,13 +34,14 @@ func (k Keeper) IncreaseFairblockNonce(
 			Address: address,
 			Nonce:   2,
 		}
-		k.SetFairblockNonce(ctx, nonce)
 		newNonce = 2
 	} else {
 		k.cdc.MustUnmarshal(b, &nonce)
 		nonce.Nonce = nonce.Nonce + 1
 		newNonce = nonce.Nonce
 	}
+	
+	k.SetFairblockNonce(ctx, nonce)
 
 	return newNonce
 }
