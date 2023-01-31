@@ -15,6 +15,36 @@ func (k Keeper) SetFairblockNonce(ctx sdk.Context, fairblockNonce types.Fairbloc
 	), b)
 }
 
+// IncreaseFairblockNonce increase specific fairblockNonce by 1 and returns the new nonce
+func (k Keeper) IncreaseFairblockNonce(
+	ctx sdk.Context,
+	address string,
+) uint64 {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.FairblockNonceKeyPrefix))
+
+	b := store.Get(types.FairblockNonceKey(
+		address,
+	))
+
+	var nonce types.FairblockNonce
+	var newNonce uint64
+	if b == nil {
+		// New address ?
+		nonce = types.FairblockNonce{
+			Address: address,
+			Nonce:   2,
+		}
+		k.SetFairblockNonce(ctx, nonce)
+		newNonce = 2
+	} else {
+		k.cdc.MustUnmarshal(b, &nonce)
+		nonce.Nonce = nonce.Nonce + 1
+		newNonce = nonce.Nonce
+	}
+
+	return newNonce
+}
+
 // GetFairblockNonce returns a fairblockNonce from its index
 func (k Keeper) GetFairblockNonce(
 	ctx sdk.Context,
