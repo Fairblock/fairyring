@@ -12,7 +12,6 @@ func (k Keeper) AppendEncryptedTx(
 	encryptedTx types.EncryptedTx,
 ) uint64 {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyPrefix))
-
 	var allTxsFromHeight types.EncryptedTxArray
 	b := store.Get(types.EncryptedTxAllFromHeightKey(
 		encryptedTx.TargetHeight,
@@ -25,6 +24,8 @@ func (k Keeper) AppendEncryptedTx(
 	allTxsFromHeight.EncryptedTx = append(allTxsFromHeight.EncryptedTx, encryptedTx)
 
 	parsedEncryptedTxArr := k.cdc.MustMarshal(&allTxsFromHeight)
+
+	k.IncreaseFairblockNonce(ctx, encryptedTx.Creator)
 
 	store.Set(types.EncryptedTxAllFromHeightKey(
 		encryptedTx.TargetHeight,
