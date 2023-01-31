@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "fairyring/fairblock/params.proto";
 import "fairyring/fairblock/encrypted_tx.proto";
 import "fairyring/fairblock/fairblock_nonce.proto";
+import "fairyring/fairblock/fairblock_executed_nonce.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "fairyring/x/fairblock/types";
@@ -15,5 +16,6 @@ message GenesisState {
   string port_id = 2;
   repeated EncryptedTxArray encryptedTxArray = 3 [(gogoproto.nullable) = false];
   repeated FairblockNonce fairblockNonceList = 4 [(gogoproto.nullable) = false];
+  repeated FairblockExecutedNonce fairblockExecutedNonceList = 5 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

@@ -2,6 +2,7 @@ import { Client, registry, MissingWalletError } from 'fairyring-client-ts'
 
 import { EncryptedTx } from "fairyring-client-ts/fairyring.fairblock/types"
 import { EncryptedTxArray } from "fairyring-client-ts/fairyring.fairblock/types"
+import { FairblockExecutedNonce } from "fairyring-client-ts/fairyring.fairblock/types"
 import { FairblockNonce } from "fairyring-client-ts/fairyring.fairblock/types"
 import { FairblockPacketData } from "fairyring-client-ts/fairyring.fairblock/types"
 import { NoData } from "fairyring-client-ts/fairyring.fairblock/types"
@@ -10,7 +11,7 @@ import { CurrentHeightPacketAck } from "fairyring-client-ts/fairyring.fairblock/
 import { Params } from "fairyring-client-ts/fairyring.fairblock/types"
 
 
-export { EncryptedTx, EncryptedTxArray, FairblockNonce, FairblockPacketData, NoData, CurrentHeightPacketData, CurrentHeightPacketAck, Params };
+export { EncryptedTx, EncryptedTxArray, FairblockExecutedNonce, FairblockNonce, FairblockPacketData, NoData, CurrentHeightPacketData, CurrentHeightPacketAck, Params };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -48,10 +49,13 @@ const getDefaultState = () => {
 				LatestHeight: {},
 				FairblockNonce: {},
 				FairblockNonceAll: {},
+				FairblockExecutedNonce: {},
+				FairblockExecutedNonceAll: {},
 				
 				_Structure: {
 						EncryptedTx: getStructure(EncryptedTx.fromPartial({})),
 						EncryptedTxArray: getStructure(EncryptedTxArray.fromPartial({})),
+						FairblockExecutedNonce: getStructure(FairblockExecutedNonce.fromPartial({})),
 						FairblockNonce: getStructure(FairblockNonce.fromPartial({})),
 						FairblockPacketData: getStructure(FairblockPacketData.fromPartial({})),
 						NoData: getStructure(NoData.fromPartial({})),
@@ -127,6 +131,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.FairblockNonceAll[JSON.stringify(params)] ?? {}
+		},
+				getFairblockExecutedNonce: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.FairblockExecutedNonce[JSON.stringify(params)] ?? {}
+		},
+				getFairblockExecutedNonceAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.FairblockExecutedNonceAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -319,6 +335,54 @@ export default {
 				return getters['getFairblockNonceAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryFairblockNonceAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryFairblockExecutedNonce({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.FairyringFairblock.query.queryFairblockExecutedNonce( key.address)).data
+				
+					
+				commit('QUERY', { query: 'FairblockExecutedNonce', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryFairblockExecutedNonce', payload: { options: { all }, params: {...key},query }})
+				return getters['getFairblockExecutedNonce']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryFairblockExecutedNonce API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryFairblockExecutedNonceAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.FairyringFairblock.query.queryFairblockExecutedNonceAll(query ?? undefined)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await client.FairyringFairblock.query.queryFairblockExecutedNonceAll({...query ?? {}, 'pagination.key':(<any> value).pagination.next_key} as any)).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'FairblockExecutedNonceAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryFairblockExecutedNonceAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getFairblockExecutedNonceAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryFairblockExecutedNonceAll API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

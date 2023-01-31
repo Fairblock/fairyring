@@ -7,6 +7,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "fairyring/fairblock/params.proto";
 import "fairyring/fairblock/encrypted_tx.proto";
 import "fairyring/fairblock/fairblock_nonce.proto";
+import "fairyring/fairblock/fairblock_executed_nonce.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "fairyring/x/fairblock/types";
@@ -45,6 +46,16 @@ service Query {
 	// Queries a list of FairblockNonce items.
 	rpc FairblockNonceAll(QueryAllFairblockNonceRequest) returns (QueryAllFairblockNonceResponse) {
 		option (google.api.http).get = "/fairyring/fairblock/fairblock_nonce";
+	}
+
+// Queries a FairblockExecutedNonce by index.
+	rpc FairblockExecutedNonce(QueryGetFairblockExecutedNonceRequest) returns (QueryGetFairblockExecutedNonceResponse) {
+		option (google.api.http).get = "/fairyring/fairblock/fairblock_executed_nonce/{address}";
+	}
+
+	// Queries a list of FairblockExecutedNonce items.
+	rpc FairblockExecutedNonceAll(QueryAllFairblockExecutedNonceRequest) returns (QueryAllFairblockExecutedNonceResponse) {
+		option (google.api.http).get = "/fairyring/fairblock/fairblock_executed_nonce";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -108,6 +119,24 @@ message QueryAllFairblockNonceRequest {
 
 message QueryAllFairblockNonceResponse {
 	repeated FairblockNonce fairblockNonce = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetFairblockExecutedNonceRequest {
+	  string address = 1;
+
+}
+
+message QueryGetFairblockExecutedNonceResponse {
+	FairblockExecutedNonce fairblockExecutedNonce = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllFairblockExecutedNonceRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllFairblockExecutedNonceResponse {
+	repeated FairblockExecutedNonce fairblockExecutedNonce = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

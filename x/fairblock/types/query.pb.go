@@ -657,6 +657,194 @@ func (m *QueryAllFairblockNonceResponse) GetPagination() *query.PageResponse {
 	return nil
 }
 
+type QueryGetFairblockExecutedNonceRequest struct {
+	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+}
+
+func (m *QueryGetFairblockExecutedNonceRequest) Reset()         { *m = QueryGetFairblockExecutedNonceRequest{} }
+func (m *QueryGetFairblockExecutedNonceRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetFairblockExecutedNonceRequest) ProtoMessage()    {}
+func (*QueryGetFairblockExecutedNonceRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_af70b057edf32872, []int{14}
+}
+func (m *QueryGetFairblockExecutedNonceRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetFairblockExecutedNonceRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetFairblockExecutedNonceRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetFairblockExecutedNonceRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetFairblockExecutedNonceRequest.Merge(m, src)
+}
+func (m *QueryGetFairblockExecutedNonceRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetFairblockExecutedNonceRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetFairblockExecutedNonceRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetFairblockExecutedNonceRequest proto.InternalMessageInfo
+
+func (m *QueryGetFairblockExecutedNonceRequest) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+type QueryGetFairblockExecutedNonceResponse struct {
+	FairblockExecutedNonce FairblockExecutedNonce `protobuf:"bytes,1,opt,name=fairblockExecutedNonce,proto3" json:"fairblockExecutedNonce"`
+}
+
+func (m *QueryGetFairblockExecutedNonceResponse) Reset() {
+	*m = QueryGetFairblockExecutedNonceResponse{}
+}
+func (m *QueryGetFairblockExecutedNonceResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetFairblockExecutedNonceResponse) ProtoMessage()    {}
+func (*QueryGetFairblockExecutedNonceResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_af70b057edf32872, []int{15}
+}
+func (m *QueryGetFairblockExecutedNonceResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetFairblockExecutedNonceResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetFairblockExecutedNonceResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetFairblockExecutedNonceResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetFairblockExecutedNonceResponse.Merge(m, src)
+}
+func (m *QueryGetFairblockExecutedNonceResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetFairblockExecutedNonceResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetFairblockExecutedNonceResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetFairblockExecutedNonceResponse proto.InternalMessageInfo
+
+func (m *QueryGetFairblockExecutedNonceResponse) GetFairblockExecutedNonce() FairblockExecutedNonce {
+	if m != nil {
+		return m.FairblockExecutedNonce
+	}
+	return FairblockExecutedNonce{}
+}
+
+type QueryAllFairblockExecutedNonceRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllFairblockExecutedNonceRequest) Reset()         { *m = QueryAllFairblockExecutedNonceRequest{} }
+func (m *QueryAllFairblockExecutedNonceRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllFairblockExecutedNonceRequest) ProtoMessage()    {}
+func (*QueryAllFairblockExecutedNonceRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_af70b057edf32872, []int{16}
+}
+func (m *QueryAllFairblockExecutedNonceRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllFairblockExecutedNonceRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllFairblockExecutedNonceRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllFairblockExecutedNonceRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllFairblockExecutedNonceRequest.Merge(m, src)
+}
+func (m *QueryAllFairblockExecutedNonceRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllFairblockExecutedNonceRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllFairblockExecutedNonceRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllFairblockExecutedNonceRequest proto.InternalMessageInfo
+
+func (m *QueryAllFairblockExecutedNonceRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllFairblockExecutedNonceResponse struct {
+	FairblockExecutedNonce []FairblockExecutedNonce `protobuf:"bytes,1,rep,name=fairblockExecutedNonce,proto3" json:"fairblockExecutedNonce"`
+	Pagination             *query.PageResponse      `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllFairblockExecutedNonceResponse) Reset() {
+	*m = QueryAllFairblockExecutedNonceResponse{}
+}
+func (m *QueryAllFairblockExecutedNonceResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllFairblockExecutedNonceResponse) ProtoMessage()    {}
+func (*QueryAllFairblockExecutedNonceResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_af70b057edf32872, []int{17}
+}
+func (m *QueryAllFairblockExecutedNonceResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllFairblockExecutedNonceResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllFairblockExecutedNonceResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllFairblockExecutedNonceResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllFairblockExecutedNonceResponse.Merge(m, src)
+}
+func (m *QueryAllFairblockExecutedNonceResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllFairblockExecutedNonceResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllFairblockExecutedNonceResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllFairblockExecutedNonceResponse proto.InternalMessageInfo
+
+func (m *QueryAllFairblockExecutedNonceResponse) GetFairblockExecutedNonce() []FairblockExecutedNonce {
+	if m != nil {
+		return m.FairblockExecutedNonce
+	}
+	return nil
+}
+
+func (m *QueryAllFairblockExecutedNonceResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "fairyring.fairblock.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "fairyring.fairblock.QueryParamsResponse")
@@ -672,63 +860,76 @@ func init() {
 	proto.RegisterType((*QueryGetFairblockNonceResponse)(nil), "fairyring.fairblock.QueryGetFairblockNonceResponse")
 	proto.RegisterType((*QueryAllFairblockNonceRequest)(nil), "fairyring.fairblock.QueryAllFairblockNonceRequest")
 	proto.RegisterType((*QueryAllFairblockNonceResponse)(nil), "fairyring.fairblock.QueryAllFairblockNonceResponse")
+	proto.RegisterType((*QueryGetFairblockExecutedNonceRequest)(nil), "fairyring.fairblock.QueryGetFairblockExecutedNonceRequest")
+	proto.RegisterType((*QueryGetFairblockExecutedNonceResponse)(nil), "fairyring.fairblock.QueryGetFairblockExecutedNonceResponse")
+	proto.RegisterType((*QueryAllFairblockExecutedNonceRequest)(nil), "fairyring.fairblock.QueryAllFairblockExecutedNonceRequest")
+	proto.RegisterType((*QueryAllFairblockExecutedNonceResponse)(nil), "fairyring.fairblock.QueryAllFairblockExecutedNonceResponse")
 }
 
 func init() { proto.RegisterFile("fairyring/fairblock/query.proto", fileDescriptor_af70b057edf32872) }
 
 var fileDescriptor_af70b057edf32872 = []byte{
-	// 809 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x96, 0x4d, 0x4f, 0x13, 0x4f,
-	0x1c, 0xc7, 0x3b, 0x3c, 0xf4, 0x1f, 0x7e, 0x25, 0xe4, 0xef, 0x40, 0x4c, 0xdd, 0x4a, 0xa9, 0xc3,
-	0x33, 0xd1, 0x1d, 0x28, 0xd1, 0x00, 0x27, 0x21, 0x11, 0x88, 0x31, 0x06, 0x1a, 0xa3, 0x89, 0x17,
-	0xb2, 0x6d, 0x87, 0xa5, 0x71, 0xd9, 0x5d, 0x76, 0x17, 0xd3, 0x86, 0x90, 0x10, 0x5f, 0x81, 0x89,
-	0x27, 0x2f, 0xbe, 0x00, 0x3d, 0xe9, 0xd9, 0xc4, 0x2b, 0x89, 0x17, 0x12, 0x2f, 0x9e, 0x8c, 0x01,
-	0x5f, 0x88, 0xe9, 0xcc, 0x94, 0xee, 0xc2, 0xf4, 0x49, 0xb8, 0xed, 0xee, 0xfc, 0x1e, 0x3e, 0xdf,
-	0xdf, 0xcc, 0x7c, 0x5b, 0x18, 0xd9, 0x36, 0x4a, 0x5e, 0xc5, 0x2b, 0xd9, 0x26, 0xad, 0x3e, 0xe5,
-	0x2d, 0xa7, 0xf0, 0x8a, 0xee, 0xed, 0x33, 0xaf, 0xa2, 0xbb, 0x9e, 0x13, 0x38, 0x78, 0xf0, 0x3c,
-	0x40, 0x3f, 0x0f, 0xd0, 0x86, 0x4c, 0xc7, 0x74, 0xf8, 0x3a, 0xad, 0x3e, 0x89, 0x50, 0xed, 0xb6,
-	0xe9, 0x38, 0xa6, 0xc5, 0xa8, 0xe1, 0x96, 0xa8, 0x61, 0xdb, 0x4e, 0x60, 0x04, 0x25, 0xc7, 0xf6,
-	0xe5, 0xea, 0x4c, 0xc1, 0xf1, 0x77, 0x1d, 0x9f, 0xe6, 0x0d, 0x9f, 0x89, 0x0e, 0xf4, 0xf5, 0x5c,
-	0x9e, 0x05, 0xc6, 0x1c, 0x75, 0x0d, 0xb3, 0x64, 0xf3, 0x60, 0x19, 0x9b, 0x51, 0x51, 0xb9, 0x86,
-	0x67, 0xec, 0xd6, 0xaa, 0x4d, 0xa8, 0x22, 0x98, 0x5d, 0xf0, 0x2a, 0x6e, 0xc0, 0x8a, 0x5b, 0x41,
-	0x59, 0xc6, 0x4d, 0xab, 0xe2, 0xce, 0x9f, 0xb6, 0x6c, 0xc7, 0x2e, 0x30, 0x11, 0x4a, 0x86, 0x00,
-	0x6f, 0x56, 0xb1, 0x36, 0x78, 0x9f, 0x1c, 0xdb, 0xdb, 0x67, 0x7e, 0x40, 0x36, 0x60, 0x30, 0xf2,
-	0xd5, 0x77, 0x1d, 0xdb, 0x67, 0x78, 0x11, 0xe2, 0x82, 0x27, 0x89, 0x32, 0x68, 0x2a, 0x91, 0x4d,
-	0xe9, 0x8a, 0x39, 0xe9, 0x22, 0x69, 0xa5, 0xe7, 0xf8, 0xd7, 0x48, 0x2c, 0x27, 0x13, 0xc8, 0x73,
-	0xd0, 0x78, 0xc5, 0x35, 0x16, 0x3c, 0xaa, 0x01, 0x3f, 0x2b, 0xcb, 0x7e, 0x98, 0x40, 0x7f, 0x60,
-	0x78, 0x26, 0x0b, 0xd6, 0x59, 0xc9, 0xdc, 0x09, 0x78, 0xf9, 0x9e, 0x5c, 0xe4, 0x1b, 0x1e, 0x82,
-	0xde, 0x92, 0x5d, 0x64, 0xe5, 0x64, 0x17, 0x5f, 0x14, 0x2f, 0xc4, 0x84, 0x94, 0xb2, 0xae, 0x24,
-	0x5e, 0x87, 0x04, 0xab, 0x7f, 0x96, 0xd8, 0x19, 0x25, 0x76, 0x28, 0x5d, 0xb2, 0x87, 0x53, 0x49,
-	0x51, 0x0a, 0x58, 0xb6, 0x2c, 0x85, 0x80, 0x55, 0x80, 0xfa, 0x7e, 0xca, 0x36, 0x13, 0xba, 0xd8,
-	0x7c, 0xbd, 0xba, 0xf9, 0xba, 0x38, 0x5e, 0x72, 0xf3, 0xf5, 0x0d, 0xc3, 0x64, 0x32, 0x37, 0x17,
-	0xca, 0x24, 0xdf, 0x90, 0xd4, 0x73, 0xb1, 0x8d, 0xd4, 0xf3, 0x02, 0xfe, 0x0f, 0x41, 0x2d, 0x7b,
-	0x9e, 0x51, 0x49, 0xa2, 0x4c, 0xf7, 0x54, 0x22, 0x3b, 0xde, 0x4a, 0x14, 0x0f, 0x96, 0xca, 0x2e,
-	0x15, 0xc1, 0x6b, 0x11, 0x01, 0x5d, 0x5c, 0xc0, 0x64, 0x4b, 0x01, 0x82, 0x2a, 0xa2, 0xe0, 0x31,
-	0x8c, 0x29, 0x04, 0xac, 0x7a, 0xce, 0xae, 0xd8, 0xc7, 0x0e, 0xb6, 0x9c, 0x1c, 0x21, 0x18, 0x6f,
-	0x51, 0xac, 0xe9, 0x5c, 0xd0, 0x95, 0xe7, 0x42, 0x34, 0x48, 0x72, 0x82, 0x27, 0x46, 0xc0, 0xfc,
-	0x20, 0x22, 0x81, 0xcc, 0xc3, 0x2d, 0xc5, 0x9a, 0x24, 0xba, 0x09, 0xf1, 0x9d, 0xb0, 0x32, 0xf9,
-	0x46, 0x16, 0x61, 0xb8, 0x76, 0x60, 0x57, 0x6b, 0x38, 0x4f, 0xab, 0x17, 0xb2, 0x36, 0x98, 0x24,
-	0xfc, 0x67, 0x14, 0x8b, 0x1e, 0xf3, 0xc5, 0x2d, 0xeb, 0xcb, 0xd5, 0x5e, 0x89, 0x0f, 0xe9, 0x46,
-	0xa9, 0xb2, 0xe9, 0x26, 0x0c, 0x6c, 0x47, 0x56, 0xe4, 0x10, 0x46, 0x95, 0x43, 0x88, 0x16, 0x91,
-	0x23, 0xb8, 0x50, 0x80, 0x98, 0x92, 0x77, 0xd9, 0xb2, 0xd4, 0xbc, 0xd7, 0x75, 0xf4, 0xbf, 0x22,
-	0x29, 0x4f, 0xd1, 0xa9, 0x89, 0xbc, 0xee, 0x2b, 0xc9, 0xbb, 0xb6, 0x73, 0x9f, 0xfd, 0xd4, 0x07,
-	0xbd, 0x1c, 0x1f, 0x1f, 0x21, 0x88, 0x0b, 0x0f, 0xc4, 0x93, 0x4a, 0xb0, 0xcb, 0x86, 0xab, 0x4d,
-	0xb5, 0x0e, 0x14, 0x3d, 0xc9, 0xe8, 0x9b, 0x1f, 0x7f, 0xde, 0x75, 0x0d, 0xe3, 0x14, 0x6d, 0xfc,
-	0x73, 0x81, 0xbf, 0x20, 0x48, 0x84, 0x8e, 0x38, 0xa6, 0x8d, 0xcb, 0x2b, 0x0d, 0x59, 0x9b, 0x6d,
-	0x3f, 0x41, 0x72, 0x3d, 0xe4, 0x5c, 0x4b, 0x78, 0x81, 0xb6, 0xfa, 0x91, 0xa2, 0x07, 0xe1, 0x4b,
-	0x7e, 0x48, 0x0f, 0xb8, 0x93, 0x1f, 0xe2, 0x0f, 0x08, 0x06, 0xc2, 0xf7, 0xd2, 0xb2, 0x9a, 0x71,
-	0x2b, 0x7d, 0xb8, 0x19, 0xb7, 0xda, 0x51, 0xc9, 0x34, 0xe7, 0x1e, 0xc5, 0x77, 0x5a, 0x72, 0xe3,
-	0xef, 0x08, 0x92, 0x51, 0xc0, 0xba, 0x13, 0xe1, 0xc5, 0x76, 0x3b, 0x5f, 0xb2, 0x42, 0x6d, 0xe9,
-	0x5f, 0x52, 0x25, 0xfe, 0x02, 0xc7, 0xcf, 0xe2, 0xd9, 0x4e, 0xc7, 0x8e, 0xdf, 0x23, 0xe8, 0x0f,
-	0x3b, 0x17, 0xbe, 0xd7, 0x18, 0x43, 0xe1, 0x7e, 0x9a, 0xde, 0x6e, 0xb8, 0x24, 0x9d, 0xe1, 0xa4,
-	0x63, 0x98, 0x28, 0x49, 0x2d, 0x9e, 0xb2, 0x25, 0x4c, 0x12, 0x7f, 0x46, 0x30, 0x10, 0xbd, 0xbe,
-	0x38, 0xdb, 0xf4, 0x44, 0x2a, 0xad, 0x49, 0x9b, 0xef, 0x28, 0x47, 0x72, 0x3e, 0xe0, 0x9c, 0xb3,
-	0x58, 0xa7, 0x6d, 0xfc, 0x8b, 0xa2, 0x07, 0xd2, 0x9c, 0x0f, 0xf1, 0x47, 0x04, 0x37, 0xa2, 0x25,
-	0xab, 0x27, 0x38, 0xdb, 0x74, 0x6f, 0x3b, 0xc6, 0x6e, 0xe8, 0x8d, 0xe4, 0x2e, 0xc7, 0x9e, 0xc0,
-	0x63, 0xed, 0x60, 0xaf, 0xdc, 0x3f, 0x3e, 0x4d, 0xa3, 0x93, 0xd3, 0x34, 0xfa, 0x7d, 0x9a, 0x46,
-	0x6f, 0xcf, 0xd2, 0xb1, 0x93, 0xb3, 0x74, 0xec, 0xe7, 0x59, 0x3a, 0xf6, 0x32, 0x55, 0x4f, 0x2f,
-	0x87, 0x0a, 0x04, 0x15, 0x97, 0xf9, 0xf9, 0x38, 0xff, 0xd3, 0x38, 0xff, 0x37, 0x00, 0x00, 0xff,
-	0xff, 0x46, 0x15, 0xe0, 0xdc, 0x41, 0x0b, 0x00, 0x00,
+	// 947 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x97, 0xdf, 0x6f, 0xdb, 0x54,
+	0x14, 0xc7, 0x73, 0xdb, 0x2d, 0x88, 0x93, 0xaa, 0x82, 0xbb, 0xaa, 0xca, 0x1c, 0x96, 0x85, 0xdb,
+	0x2e, 0xeb, 0x06, 0xf3, 0xed, 0x52, 0x0d, 0x96, 0xf0, 0x00, 0x99, 0xb4, 0x6e, 0x42, 0x08, 0x75,
+	0x11, 0x02, 0x89, 0x97, 0xca, 0x49, 0x6e, 0x3d, 0x0b, 0xd7, 0xce, 0x6c, 0x17, 0x25, 0xaa, 0x2a,
+	0x4d, 0xfc, 0x05, 0x48, 0x7b, 0xe2, 0x85, 0x3f, 0x80, 0x37, 0x78, 0x46, 0xe2, 0x75, 0xd2, 0x24,
+	0x34, 0xc1, 0x0b, 0x0f, 0x08, 0xa1, 0x96, 0x3f, 0x04, 0xf9, 0xfa, 0xa4, 0xb1, 0xd7, 0x1b, 0xdb,
+	0x59, 0xf3, 0x66, 0xfb, 0x9e, 0x1f, 0x9f, 0xef, 0xb9, 0xc7, 0xf7, 0xd8, 0x70, 0x75, 0xcf, 0xb0,
+	0xbc, 0x91, 0x67, 0x39, 0x26, 0x0f, 0xaf, 0xba, 0xb6, 0xdb, 0xfb, 0x86, 0x3f, 0x39, 0x10, 0xde,
+	0x48, 0x1f, 0x78, 0x6e, 0xe0, 0xd2, 0x4b, 0xa7, 0x06, 0xfa, 0xa9, 0x81, 0xb6, 0x62, 0xba, 0xa6,
+	0x2b, 0xd7, 0x79, 0x78, 0x15, 0x99, 0x6a, 0xef, 0x98, 0xae, 0x6b, 0xda, 0x82, 0x1b, 0x03, 0x8b,
+	0x1b, 0x8e, 0xe3, 0x06, 0x46, 0x60, 0xb9, 0x8e, 0x8f, 0xab, 0x37, 0x7b, 0xae, 0xbf, 0xef, 0xfa,
+	0xbc, 0x6b, 0xf8, 0x22, 0xca, 0xc0, 0xbf, 0xbd, 0xdd, 0x15, 0x81, 0x71, 0x9b, 0x0f, 0x0c, 0xd3,
+	0x72, 0xa4, 0x31, 0xda, 0xd6, 0x54, 0x54, 0x03, 0xc3, 0x33, 0xf6, 0xc7, 0xd1, 0xea, 0x2a, 0x0b,
+	0xe1, 0xf4, 0xbc, 0xd1, 0x20, 0x10, 0xfd, 0xdd, 0x60, 0x88, 0x76, 0x37, 0x54, 0x76, 0xa7, 0x57,
+	0xbb, 0x8e, 0xeb, 0xf4, 0x04, 0x9a, 0x36, 0xd2, 0x4d, 0xc5, 0x50, 0xf4, 0x0e, 0xc2, 0xd8, 0x31,
+	0x1f, 0xb6, 0x02, 0xf4, 0x51, 0x28, 0x65, 0x47, 0xb2, 0x75, 0xc4, 0x93, 0x03, 0xe1, 0x07, 0x6c,
+	0x07, 0x2e, 0x25, 0x9e, 0xfa, 0x03, 0xd7, 0xf1, 0x05, 0x6d, 0x42, 0x31, 0xd2, 0x50, 0x26, 0x35,
+	0xb2, 0x51, 0x6a, 0x54, 0x74, 0x45, 0x6d, 0xf5, 0xc8, 0xe9, 0xde, 0x85, 0xe7, 0xff, 0x5c, 0x2d,
+	0x74, 0xd0, 0x81, 0x7d, 0x09, 0x9a, 0x8c, 0xf8, 0x40, 0x04, 0xf7, 0xc7, 0x22, 0xbf, 0x18, 0x62,
+	0x3e, 0xca, 0x60, 0x29, 0x30, 0x3c, 0x53, 0x04, 0x0f, 0x85, 0x65, 0x3e, 0x0e, 0x64, 0xf8, 0x0b,
+	0x9d, 0xc4, 0x33, 0xba, 0x02, 0x17, 0x2d, 0xa7, 0x2f, 0x86, 0xe5, 0x05, 0xb9, 0x18, 0xdd, 0x30,
+	0x13, 0x2a, 0xca, 0xb8, 0x48, 0xfc, 0x10, 0x4a, 0x62, 0xf2, 0x18, 0xb1, 0x6b, 0x4a, 0xec, 0x98,
+	0x3b, 0xb2, 0xc7, 0x5d, 0x59, 0x1f, 0x05, 0xb4, 0x6d, 0x5b, 0x21, 0x60, 0x1b, 0x60, 0xd2, 0x03,
+	0x98, 0xa6, 0xae, 0x47, 0x0d, 0xa3, 0x87, 0x0d, 0xa3, 0x47, 0x2d, 0x89, 0x0d, 0xa3, 0xef, 0x18,
+	0xa6, 0x40, 0xdf, 0x4e, 0xcc, 0x93, 0xfd, 0x46, 0x50, 0xcf, 0xab, 0x69, 0x50, 0xcf, 0x57, 0xf0,
+	0x56, 0x0c, 0xaa, 0xed, 0x79, 0xc6, 0xa8, 0x4c, 0x6a, 0x8b, 0x1b, 0xa5, 0xc6, 0xb5, 0x2c, 0x51,
+	0xd2, 0x18, 0x95, 0x9d, 0x09, 0x42, 0x1f, 0x24, 0x04, 0x2c, 0x48, 0x01, 0xd7, 0x33, 0x05, 0x44,
+	0x54, 0x09, 0x05, 0x9f, 0xc2, 0xba, 0x42, 0xc0, 0xb6, 0xe7, 0xee, 0x47, 0xfb, 0x38, 0xc3, 0x96,
+	0xb3, 0xa7, 0x04, 0xae, 0x65, 0x04, 0x4b, 0xad, 0x0b, 0x39, 0x77, 0x5d, 0x98, 0x06, 0x65, 0x49,
+	0xf0, 0x99, 0x11, 0x08, 0x3f, 0x48, 0x48, 0x60, 0x5b, 0x70, 0x59, 0xb1, 0x86, 0x44, 0xab, 0x50,
+	0x7c, 0x1c, 0x57, 0x86, 0x77, 0xac, 0x09, 0x57, 0xc6, 0x0d, 0xbb, 0x3d, 0xc6, 0xf9, 0x3c, 0x7c,
+	0x21, 0xc7, 0x85, 0x29, 0xc3, 0x1b, 0x46, 0xbf, 0xef, 0x09, 0x3f, 0x7a, 0xcb, 0xde, 0xec, 0x8c,
+	0x6f, 0x99, 0x0f, 0xd5, 0x69, 0xae, 0x98, 0xf4, 0x11, 0x2c, 0xef, 0x25, 0x56, 0xb0, 0x08, 0x6b,
+	0xca, 0x22, 0x24, 0x83, 0x60, 0x09, 0x5e, 0x09, 0xc0, 0x4c, 0xe4, 0x6d, 0xdb, 0xb6, 0x9a, 0x77,
+	0x5e, 0xad, 0xff, 0x2b, 0x41, 0x79, 0x8a, 0x4c, 0x29, 0xf2, 0x16, 0xcf, 0x25, 0x6f, 0x7e, 0x7d,
+	0xdf, 0xc6, 0x56, 0x8d, 0x6f, 0xce, 0x7d, 0x3c, 0x71, 0x73, 0xee, 0xef, 0x33, 0x02, 0xf5, 0xac,
+	0x18, 0x58, 0x09, 0x0b, 0x56, 0xf7, 0x94, 0x16, 0xb8, 0x01, 0xef, 0xa5, 0x57, 0x24, 0xe1, 0x82,
+	0x95, 0x99, 0x12, 0x90, 0xb9, 0x93, 0x77, 0x30, 0x5d, 0xd8, 0xbc, 0x1a, 0xe1, 0xef, 0x71, 0x19,
+	0x52, 0x32, 0xe6, 0x28, 0xc3, 0xe2, 0x5c, 0xcb, 0x30, 0xb7, 0x46, 0x69, 0xfc, 0xbe, 0x04, 0x17,
+	0xa5, 0x3c, 0xfa, 0x94, 0x40, 0x31, 0x1a, 0x96, 0xf4, 0xba, 0x12, 0xf4, 0xec, 0x64, 0xd6, 0x36,
+	0xb2, 0x0d, 0xa3, 0x9c, 0x6c, 0xed, 0xbb, 0x3f, 0xff, 0x7b, 0xb6, 0x70, 0x85, 0x56, 0xf8, 0xf4,
+	0x6f, 0x11, 0xfa, 0x0b, 0x81, 0x52, 0xec, 0x2c, 0xa4, 0x7c, 0x7a, 0x78, 0xe5, 0xe4, 0xd6, 0x36,
+	0xf3, 0x3b, 0x20, 0xd7, 0x27, 0x92, 0xab, 0x45, 0xef, 0xf2, 0xac, 0x2f, 0x20, 0x7e, 0x18, 0x9f,
+	0x06, 0x47, 0xfc, 0x50, 0x8e, 0xfc, 0x23, 0xfa, 0x23, 0x81, 0xe5, 0xf8, 0x01, 0x6e, 0xdb, 0x69,
+	0xdc, 0xca, 0x81, 0x9d, 0xc6, 0xad, 0x1e, 0xbd, 0xec, 0x86, 0xe4, 0x5e, 0xa3, 0xef, 0x66, 0x72,
+	0xd3, 0x17, 0x04, 0xca, 0x49, 0xc0, 0xc9, 0xc8, 0xa2, 0xcd, 0xbc, 0x99, 0xcf, 0xcc, 0x4c, 0xad,
+	0xf5, 0x3a, 0xae, 0x88, 0x7f, 0x57, 0xe2, 0x37, 0xe8, 0xe6, 0xac, 0x65, 0xa7, 0x3f, 0x10, 0x58,
+	0x8a, 0x8f, 0x38, 0x7a, 0x6b, 0x3a, 0x86, 0x62, 0x4c, 0x6a, 0x7a, 0x5e, 0x73, 0x24, 0xbd, 0x29,
+	0x49, 0xd7, 0x29, 0x53, 0x92, 0xda, 0xd2, 0x65, 0x37, 0x9a, 0xa6, 0xf4, 0x67, 0x02, 0xcb, 0xc9,
+	0x73, 0x9e, 0x36, 0x52, 0x3b, 0x52, 0x39, 0xc3, 0xb4, 0xad, 0x99, 0x7c, 0x90, 0xf3, 0x03, 0xc9,
+	0xb9, 0x49, 0x75, 0x9e, 0xe3, 0x13, 0x9d, 0x1f, 0xe2, 0x29, 0x7f, 0x44, 0x7f, 0x22, 0xf0, 0x76,
+	0x32, 0x64, 0xd8, 0xc1, 0x8d, 0xd4, 0xbd, 0x9d, 0x19, 0x7b, 0xea, 0x10, 0x65, 0xef, 0x4b, 0xec,
+	0x3a, 0x5d, 0xcf, 0x83, 0x4d, 0xff, 0x20, 0xb0, 0xaa, 0x3e, 0x2f, 0x69, 0x2b, 0x5f, 0xd1, 0x54,
+	0xb3, 0x42, 0xfb, 0xe8, 0xb5, 0x7c, 0x51, 0xc1, 0xc7, 0x52, 0x41, 0x93, 0x7e, 0xc8, 0x67, 0xf9,
+	0xe1, 0x89, 0xed, 0xc0, 0x0b, 0x02, 0x97, 0xd5, 0x39, 0xc2, 0x9d, 0x68, 0xe5, 0xab, 0xea, 0xac,
+	0xba, 0x32, 0xa7, 0x19, 0xbb, 0x23, 0x75, 0x71, 0x7a, 0x6b, 0x26, 0x5d, 0xf7, 0xee, 0x3c, 0x3f,
+	0xae, 0x92, 0x97, 0xc7, 0x55, 0xf2, 0xef, 0x71, 0x95, 0x7c, 0x7f, 0x52, 0x2d, 0xbc, 0x3c, 0xa9,
+	0x16, 0xfe, 0x3a, 0xa9, 0x16, 0xbe, 0xae, 0x4c, 0xe2, 0x0c, 0x63, 0x91, 0x82, 0xd1, 0x40, 0xf8,
+	0xdd, 0xa2, 0xfc, 0x01, 0xdc, 0xfa, 0x3f, 0x00, 0x00, 0xff, 0xff, 0x43, 0xa8, 0x1d, 0x4f, 0x41,
+	0x0f, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -757,6 +958,10 @@ type QueryClient interface {
 	FairblockNonce(ctx context.Context, in *QueryGetFairblockNonceRequest, opts ...grpc.CallOption) (*QueryGetFairblockNonceResponse, error)
 	// Queries a list of FairblockNonce items.
 	FairblockNonceAll(ctx context.Context, in *QueryAllFairblockNonceRequest, opts ...grpc.CallOption) (*QueryAllFairblockNonceResponse, error)
+	// Queries a FairblockExecutedNonce by index.
+	FairblockExecutedNonce(ctx context.Context, in *QueryGetFairblockExecutedNonceRequest, opts ...grpc.CallOption) (*QueryGetFairblockExecutedNonceResponse, error)
+	// Queries a list of FairblockExecutedNonce items.
+	FairblockExecutedNonceAll(ctx context.Context, in *QueryAllFairblockExecutedNonceRequest, opts ...grpc.CallOption) (*QueryAllFairblockExecutedNonceResponse, error)
 }
 
 type queryClient struct {
@@ -830,6 +1035,24 @@ func (c *queryClient) FairblockNonceAll(ctx context.Context, in *QueryAllFairblo
 	return out, nil
 }
 
+func (c *queryClient) FairblockExecutedNonce(ctx context.Context, in *QueryGetFairblockExecutedNonceRequest, opts ...grpc.CallOption) (*QueryGetFairblockExecutedNonceResponse, error) {
+	out := new(QueryGetFairblockExecutedNonceResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.fairblock.Query/FairblockExecutedNonce", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) FairblockExecutedNonceAll(ctx context.Context, in *QueryAllFairblockExecutedNonceRequest, opts ...grpc.CallOption) (*QueryAllFairblockExecutedNonceResponse, error) {
+	out := new(QueryAllFairblockExecutedNonceResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.fairblock.Query/FairblockExecutedNonceAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
@@ -846,6 +1069,10 @@ type QueryServer interface {
 	FairblockNonce(context.Context, *QueryGetFairblockNonceRequest) (*QueryGetFairblockNonceResponse, error)
 	// Queries a list of FairblockNonce items.
 	FairblockNonceAll(context.Context, *QueryAllFairblockNonceRequest) (*QueryAllFairblockNonceResponse, error)
+	// Queries a FairblockExecutedNonce by index.
+	FairblockExecutedNonce(context.Context, *QueryGetFairblockExecutedNonceRequest) (*QueryGetFairblockExecutedNonceResponse, error)
+	// Queries a list of FairblockExecutedNonce items.
+	FairblockExecutedNonceAll(context.Context, *QueryAllFairblockExecutedNonceRequest) (*QueryAllFairblockExecutedNonceResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -872,6 +1099,12 @@ func (*UnimplementedQueryServer) FairblockNonce(ctx context.Context, req *QueryG
 }
 func (*UnimplementedQueryServer) FairblockNonceAll(ctx context.Context, req *QueryAllFairblockNonceRequest) (*QueryAllFairblockNonceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FairblockNonceAll not implemented")
+}
+func (*UnimplementedQueryServer) FairblockExecutedNonce(ctx context.Context, req *QueryGetFairblockExecutedNonceRequest) (*QueryGetFairblockExecutedNonceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FairblockExecutedNonce not implemented")
+}
+func (*UnimplementedQueryServer) FairblockExecutedNonceAll(ctx context.Context, req *QueryAllFairblockExecutedNonceRequest) (*QueryAllFairblockExecutedNonceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FairblockExecutedNonceAll not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -1004,6 +1237,42 @@ func _Query_FairblockNonceAll_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_FairblockExecutedNonce_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetFairblockExecutedNonceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).FairblockExecutedNonce(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.fairblock.Query/FairblockExecutedNonce",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).FairblockExecutedNonce(ctx, req.(*QueryGetFairblockExecutedNonceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_FairblockExecutedNonceAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllFairblockExecutedNonceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).FairblockExecutedNonceAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.fairblock.Query/FairblockExecutedNonceAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).FairblockExecutedNonceAll(ctx, req.(*QueryAllFairblockExecutedNonceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "fairyring.fairblock.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -1035,6 +1304,14 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FairblockNonceAll",
 			Handler:    _Query_FairblockNonceAll_Handler,
+		},
+		{
+			MethodName: "FairblockExecutedNonce",
+			Handler:    _Query_FairblockExecutedNonce_Handler,
+		},
+		{
+			MethodName: "FairblockExecutedNonceAll",
+			Handler:    _Query_FairblockExecutedNonceAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1506,6 +1783,153 @@ func (m *QueryAllFairblockNonceResponse) MarshalToSizedBuffer(dAtA []byte) (int,
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetFairblockExecutedNonceRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetFairblockExecutedNonceRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetFairblockExecutedNonceRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetFairblockExecutedNonceResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetFairblockExecutedNonceResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetFairblockExecutedNonceResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.FairblockExecutedNonce.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllFairblockExecutedNonceRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllFairblockExecutedNonceRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllFairblockExecutedNonceRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllFairblockExecutedNonceResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllFairblockExecutedNonceResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllFairblockExecutedNonceResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.FairblockExecutedNonce) > 0 {
+		for iNdEx := len(m.FairblockExecutedNonce) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.FairblockExecutedNonce[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -1684,6 +2108,62 @@ func (m *QueryAllFairblockNonceResponse) Size() (n int) {
 	_ = l
 	if len(m.FairblockNonce) > 0 {
 		for _, e := range m.FairblockNonce {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetFairblockExecutedNonceRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Address)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetFairblockExecutedNonceResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.FairblockExecutedNonce.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllFairblockExecutedNonceRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllFairblockExecutedNonceResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.FairblockExecutedNonce) > 0 {
+		for _, e := range m.FairblockExecutedNonce {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -2793,6 +3273,377 @@ func (m *QueryAllFairblockNonceResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.FairblockNonce = append(m.FairblockNonce, FairblockNonce{})
 			if err := m.FairblockNonce[len(m.FairblockNonce)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetFairblockExecutedNonceRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetFairblockExecutedNonceRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetFairblockExecutedNonceRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetFairblockExecutedNonceResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetFairblockExecutedNonceResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetFairblockExecutedNonceResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FairblockExecutedNonce", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.FairblockExecutedNonce.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllFairblockExecutedNonceRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllFairblockExecutedNonceRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllFairblockExecutedNonceRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllFairblockExecutedNonceResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllFairblockExecutedNonceResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllFairblockExecutedNonceResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FairblockExecutedNonce", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.FairblockExecutedNonce = append(m.FairblockExecutedNonce, FairblockExecutedNonce{})
+			if err := m.FairblockExecutedNonce[len(m.FairblockExecutedNonce)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

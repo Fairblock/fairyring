@@ -23,6 +23,13 @@ export interface FairblockEncryptedTxArray {
   encryptedTx?: FairblockEncryptedTx[];
 }
 
+export interface FairblockFairblockExecutedNonce {
+  address?: string;
+
+  /** @format uint64 */
+  nonce?: string;
+}
+
 export interface FairblockFairblockNonce {
   address?: string;
 
@@ -58,6 +65,21 @@ export interface FairblockQueryAllEncryptedTxResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface FairblockQueryAllFairblockExecutedNonceResponse {
+  fairblockExecutedNonce?: FairblockFairblockExecutedNonce[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface FairblockQueryAllFairblockNonceResponse {
   fairblockNonce?: FairblockFairblockNonce[];
 
@@ -75,6 +97,10 @@ export interface FairblockQueryAllFairblockNonceResponse {
 
 export interface FairblockQueryGetEncryptedTxResponse {
   encryptedTx?: FairblockEncryptedTx;
+}
+
+export interface FairblockQueryGetFairblockExecutedNonceResponse {
+  fairblockExecutedNonce?: FairblockFairblockExecutedNonce;
 }
 
 export interface FairblockQueryGetFairblockNonceResponse {
@@ -355,6 +381,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryEncryptedTx = (targetHeight: string, index: string, params: RequestParams = {}) =>
     this.request<FairblockQueryGetEncryptedTxResponse, RpcStatus>({
       path: `/fairyring/fairblock/encrypted_tx/${targetHeight}/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryFairblockExecutedNonceAll
+   * @summary Queries a list of FairblockExecutedNonce items.
+   * @request GET:/fairyring/fairblock/fairblock_executed_nonce
+   */
+  queryFairblockExecutedNonceAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FairblockQueryAllFairblockExecutedNonceResponse, RpcStatus>({
+      path: `/fairyring/fairblock/fairblock_executed_nonce`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryFairblockExecutedNonce
+   * @summary Queries a FairblockExecutedNonce by index.
+   * @request GET:/fairyring/fairblock/fairblock_executed_nonce/{address}
+   */
+  queryFairblockExecutedNonce = (address: string, params: RequestParams = {}) =>
+    this.request<FairblockQueryGetFairblockExecutedNonceResponse, RpcStatus>({
+      path: `/fairyring/fairblock/fairblock_executed_nonce/${address}`,
       method: "GET",
       format: "json",
       ...params,
