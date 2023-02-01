@@ -195,12 +195,53 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	for _, eachTx := range arr.EncryptedTx {
 		// TODO: What to do to all the txs in previous height ?
 
-		am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
-		
+		// It returns a updated executedNonce, which can be used for verification later
+		newExecutedNonce := am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
+
 		am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
 
+		// 1. Assume eachTx.Data already Decrypted with decryption key from fairyring
+		// 2. Assume eachTx.Data already decrypted with creator's public key.
+		// TODO: Decrypted the data with creator's public key
+
+		// Parse the decrypted raw json string to FairblockTx type first
+		var toFairblockTx types.FairblockTx
+		err := am.cdcJson.UnmarshalJSON([]byte(eachTx.Data), &toFairblockTx)
+
+		if err != nil {
+			am.keeper.Logger(ctx).Error("UnmarshalJson to FairblockTx Error in BeginBlock")
+			am.keeper.Logger(ctx).Error(err.Error())
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(types.EncryptedTxRevertedEventType,
+					sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventData, eachTx.Data),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+				),
+			)
+			return
+		}
+
+		// Validate the nonce, -1 because
+		// the nonce is increased at the beginning of this block
+		if toFairblockTx.Nonce != newExecutedNonce-1 {
+			am.keeper.Logger(ctx).Error("Invalid Nonce Tx in BeginBlock")
+			am.keeper.Logger(ctx).Error(err.Error())
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(types.EncryptedTxRevertedEventType,
+					sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+					// TODO: Maybe update the event data to a message instead Tx data ?
+					sdk.NewAttribute(types.EncryptedTxExecutedEventData, "Invalid nonce"),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+				),
+			)
+			return
+		}
+
+		// Then parse the raw json unsigned tx to cosmos Tx type
 		var toData tx.Tx
-		err := am.cdcJson.UnmarshalJSON([]byte(eachTx.Data), &toData)
+		err = am.cdcJson.UnmarshalJSON([]byte(toFairblockTx.Data), &toData)
 
 		// Probably emit some log in unmarshal / marshal error
 		if err != nil {
@@ -217,6 +258,9 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			)
 			return
 		}
+
+		// After parsing the data to a Tx type, try to find the keeper function of the data
+		// TODO: Finds the keeper function from unsigned Tx data
 
 		txByte, err := toData.Marshal()
 		if err != nil {
