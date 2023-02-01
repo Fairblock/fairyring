@@ -6,6 +6,6 @@ option go_package = "fairyring/x/fairblock/types";
 message FairblockTx {
   string data = 1;
   uint64 nonce = 2;
-  string chain_id = 3;
+  string signed = 3;
 }
 

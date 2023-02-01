@@ -201,12 +201,28 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
 
 		// 1. Assume eachTx.Data already Decrypted with decryption key from fairyring
-		// 2. Assume eachTx.Data already decrypted with creator's public key.
-		// TODO: Decrypted the data with creator's public key
+
+		creatorAddr, err := sdk.AccAddressFromBech32(eachTx.Creator)
+		if err != nil {
+			am.keeper.Logger(ctx).Error("Parse creator address error in BeginBlock")
+			am.keeper.Logger(ctx).Error(err.Error())
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(types.EncryptedTxRevertedEventType,
+					sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventData, err.Error()),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+				),
+			)
+			return
+		}
+
+		am.keeper.Logger(ctx).Info("Got Creator Address: ")
+		am.keeper.Logger(ctx).Info(creatorAddr.String())
 
 		// Parse the decrypted raw json string to FairblockTx type first
 		var toFairblockTx types.FairblockTx
-		err := am.cdcJson.UnmarshalJSON([]byte(eachTx.Data), &toFairblockTx)
+		err = am.cdcJson.UnmarshalJSON([]byte(eachTx.Data), &toFairblockTx)
 
 		if err != nil {
 			am.keeper.Logger(ctx).Error("UnmarshalJson to FairblockTx Error in BeginBlock")
@@ -233,6 +249,33 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 					sdk.NewAttribute(types.EncryptedTxExecutedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
 					// TODO: Maybe update the event data to a message instead Tx data ?
 					sdk.NewAttribute(types.EncryptedTxExecutedEventData, "Invalid nonce"),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+				),
+			)
+			return
+		}
+
+		// Actual signature validating
+		createAccount := am.accountKeeper.GetAccount(ctx, creatorAddr)
+		//TODO: Update chain-id to get the actual chain id
+		unsignedMsg := fmt.Sprintf(`{"sequence": %d, "chain-id": "%s", "data": "%s"}`, toFairblockTx.Nonce, "destination", toFairblockTx.Data)
+		
+		am.keeper.Logger(ctx).Info("Unsigned: ")
+		am.keeper.Logger(ctx).Info(unsignedMsg)
+
+		sigValid := createAccount.GetPubKey().VerifySignature(
+			[]byte(unsignedMsg),
+			[]byte(toFairblockTx.GetSigned()),
+		)
+
+		if !sigValid {
+			am.keeper.Logger(ctx).Error("Invalid Signature in BeginBlock")
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(types.EncryptedTxRevertedEventType,
+					sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+					// TODO: Maybe update the event data to a message instead Tx data ?
+					sdk.NewAttribute(types.EncryptedTxExecutedEventData, "Invalid signature"),
 					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 				),
 			)

@@ -7,11 +7,11 @@ export const protobufPackage = "fairyring.fairblock";
 export interface FairblockTx {
   data: string;
   nonce: number;
-  chainId: string;
+  signed: string;
 }
 
 function createBaseFairblockTx(): FairblockTx {
-  return { data: "", nonce: 0, chainId: "" };
+  return { data: "", nonce: 0, signed: "" };
 }
 
 export const FairblockTx = {
@@ -22,8 +22,8 @@ export const FairblockTx = {
     if (message.nonce !== 0) {
       writer.uint32(16).uint64(message.nonce);
     }
-    if (message.chainId !== "") {
-      writer.uint32(26).string(message.chainId);
+    if (message.signed !== "") {
+      writer.uint32(26).string(message.signed);
     }
     return writer;
   },
@@ -42,7 +42,7 @@ export const FairblockTx = {
           message.nonce = longToNumber(reader.uint64() as Long);
           break;
         case 3:
-          message.chainId = reader.string();
+          message.signed = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -56,7 +56,7 @@ export const FairblockTx = {
     return {
       data: isSet(object.data) ? String(object.data) : "",
       nonce: isSet(object.nonce) ? Number(object.nonce) : 0,
-      chainId: isSet(object.chainId) ? String(object.chainId) : "",
+      signed: isSet(object.signed) ? String(object.signed) : "",
     };
   },
 
@@ -64,7 +64,7 @@ export const FairblockTx = {
     const obj: any = {};
     message.data !== undefined && (obj.data = message.data);
     message.nonce !== undefined && (obj.nonce = Math.round(message.nonce));
-    message.chainId !== undefined && (obj.chainId = message.chainId);
+    message.signed !== undefined && (obj.signed = message.signed);
     return obj;
   },
 
@@ -72,7 +72,7 @@ export const FairblockTx = {
     const message = createBaseFairblockTx();
     message.data = object.data ?? "";
     message.nonce = object.nonce ?? 0;
-    message.chainId = object.chainId ?? "";
+    message.signed = object.signed ?? "";
     return message;
   },
 };
