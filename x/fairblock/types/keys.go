@@ -48,7 +48,7 @@ const (
 	EncryptedTxRevertedEventCreator = "reverted-encrypted-tx-creator"
 	EncryptedTxRevertedEventHeight  = "reverted-encrypted-tx-target-height"
 	EncryptedTxRevertedEventIndex   = "reverted-encrypted-tx-index"
-	EncryptedTxRevertedEventData    = "reverted-encrypted-tx-data"
+	EncryptedTxRevertedEventReason  = "reverted-encrypted-tx-reason"
 )
 
 func KeyPrefix(p string) []byte {

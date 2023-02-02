@@ -208,10 +208,10 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			am.keeper.Logger(ctx).Error(err.Error())
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxRevertedEventType,
-					sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventData, err.Error()),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 				),
 			)
 			return
@@ -229,10 +229,10 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			am.keeper.Logger(ctx).Error(err.Error())
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxRevertedEventType,
-					sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventData, eachTx.Data),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to unmarshal data to FairblockTx"),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 				),
 			)
 			return
@@ -245,11 +245,10 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			am.keeper.Logger(ctx).Error(err.Error())
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxRevertedEventType,
-					sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-					// TODO: Maybe update the event data to a message instead Tx data ?
-					sdk.NewAttribute(types.EncryptedTxExecutedEventData, "Invalid nonce"),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Invalid nonce"),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 				),
 			)
 			return
@@ -259,7 +258,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		createAccount := am.accountKeeper.GetAccount(ctx, creatorAddr)
 		//TODO: Update chain-id to get the actual chain id
 		unsignedMsg := fmt.Sprintf(`{"sequence": %d, "chain-id": "%s", "data": "%s"}`, toFairblockTx.Nonce, "destination", toFairblockTx.Data)
-		
+
 		am.keeper.Logger(ctx).Info("Unsigned: ")
 		am.keeper.Logger(ctx).Info(unsignedMsg)
 
@@ -272,11 +271,10 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			am.keeper.Logger(ctx).Error("Invalid Signature in BeginBlock")
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxRevertedEventType,
-					sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-					// TODO: Maybe update the event data to a message instead Tx data ?
-					sdk.NewAttribute(types.EncryptedTxExecutedEventData, "Invalid signature"),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Invalid signature"),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 				),
 			)
 			return
@@ -293,10 +291,10 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			am.keeper.Logger(ctx).Error(err.Error())
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxRevertedEventType,
-					sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventData, eachTx.Data),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Invalid Tx format"),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 				),
 			)
 			return
@@ -311,10 +309,10 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			am.keeper.Logger(ctx).Error(err.Error())
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxRevertedEventType,
-					sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventData, eachTx.Data),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to marshal tx"),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 				),
 			)
 			return
