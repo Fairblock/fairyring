@@ -16,7 +16,7 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 			sdk.NewEvent(types.EncryptedTxRevertedEventType,
 				sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, msg.Creator),
 				sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(msg.TargetBlockHeight, 10)),
-				sdk.NewAttribute(types.EncryptedTxRevertedEventData, msg.Data),
+				sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Incorrect block height"),
 				sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, "0"),
 			),
 		)
