@@ -536,6 +536,7 @@ func New(
 		app.BankKeeper,
 		app.BaseApp.DeliverTx,
 		app.BaseApp.CheckTx,
+		encodingConfig.TxConfig,
 	)
 
 	fairblockIBCModule := fairblockmodule.NewIBCModule(app.FairblockKeeper)

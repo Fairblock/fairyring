@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/types/tx"
+	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	"strconv"
 
 	// this line is used by starport scaffolding # 1
@@ -106,6 +107,7 @@ type AppModule struct {
 
 	deliverTx deliverTxFn
 	checkTx   checkTxFn
+	txConfig  client.TxConfig
 }
 
 func NewAppModule(
@@ -115,6 +117,7 @@ func NewAppModule(
 	bankKeeper types.BankKeeper,
 	deliverTx deliverTxFn,
 	checkTx checkTxFn,
+	txConfig client.TxConfig,
 ) AppModule {
 	return AppModule{
 		AppModuleBasic: AppModuleBasic{cdc: cdc, cdcJson: cdc},
@@ -123,6 +126,7 @@ func NewAppModule(
 		bankKeeper:     bankKeeper,
 		deliverTx:      deliverTx,
 		checkTx:        checkTx,
+		txConfig:       txConfig,
 	}
 }
 
@@ -194,7 +198,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 	for _, eachTx := range arr.EncryptedTx {
 		// TODO: What to do to all the txs in previous height ?
-
 		// It returns a updated executedNonce, which can be used for verification later
 		newExecutedNonce := am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 
@@ -217,15 +220,17 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			return
 		}
 
-		am.keeper.Logger(ctx).Info("Got Creator Address: ")
-		am.keeper.Logger(ctx).Info(creatorAddr.String())
+		creatorAccount := am.accountKeeper.GetAccount(ctx, creatorAddr)
 
-		// Parse the decrypted raw json string to FairblockTx type first
-		var toFairblockTx types.FairblockTx
-		err = am.cdcJson.UnmarshalJSON([]byte(eachTx.Data), &toFairblockTx)
+		/*
+			TX Decryption goes here
+		*/
+
+		var signed tx.Tx
+		err = am.cdcJson.UnmarshalJSON([]byte(eachTx.Data), &signed)
 
 		if err != nil {
-			am.keeper.Logger(ctx).Error("UnmarshalJson to FairblockTx Error in BeginBlock")
+			am.keeper.Logger(ctx).Error("UnmarshalJson to Tx Error in BeginBlock")
 			am.keeper.Logger(ctx).Error(err.Error())
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxRevertedEventType,
@@ -238,36 +243,70 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			return
 		}
 
-		// Validate the nonce, -1 because
-		// the nonce is increased at the beginning of this block
-		if toFairblockTx.Nonce != newExecutedNonce-1 {
-			am.keeper.Logger(ctx).Error("Invalid Nonce Tx in BeginBlock")
+		decodedTxJson, err := am.txConfig.TxJSONDecoder()([]byte(eachTx.Data))
+		if err != nil {
+			am.keeper.Logger(ctx).Error("TXJson Decoding error in Beginblock")
 			am.keeper.Logger(ctx).Error(err.Error())
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxRevertedEventType,
 					sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
 					sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-					sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Invalid nonce"),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to decode tx data to Cosmos Tx"),
 					sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 				),
 			)
 			return
 		}
 
-		// Actual signature validating
-		createAccount := am.accountKeeper.GetAccount(ctx, creatorAddr)
-		//TODO: Update chain-id to get the actual chain id
-		unsignedMsg := fmt.Sprintf(`{"sequence": %d, "chain-id": "%s", "data": "%s"}`, toFairblockTx.Nonce, "destination", toFairblockTx.Data)
+		wrappedTx, err := am.txConfig.WrapTxBuilder(decodedTxJson)
+		if err != nil {
+			am.keeper.Logger(ctx).Error("Error in wrapping tx to TxBuilder")
+			am.keeper.Logger(ctx).Error(err.Error())
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(types.EncryptedTxRevertedEventType,
+					sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to wrap tx to TxBuilder"),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+				),
+			)
+			return
+		}
 
-		am.keeper.Logger(ctx).Info("Unsigned: ")
-		am.keeper.Logger(ctx).Info(unsignedMsg)
+		sigs, err := wrappedTx.GetTx().GetSignaturesV2()
+		if err != nil {
+			am.keeper.Logger(ctx).Error("Error in getting tx signature")
+			am.keeper.Logger(ctx).Error(err.Error())
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(types.EncryptedTxRevertedEventType,
+					sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to get tx signature"),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+				),
+			)
+			return
+		}
 
-		sigValid := createAccount.GetPubKey().VerifySignature(
-			[]byte(unsignedMsg),
-			[]byte(toFairblockTx.GetSigned()),
+		verifiableTx := wrappedTx.GetTx().(authsigning.SigVerifiableTx)
+
+		signingData := authsigning.SignerData{
+			Address:       creatorAddr.String(),
+			ChainID:       ctx.ChainID(),
+			AccountNumber: creatorAccount.GetAccountNumber(),
+			Sequence:      newExecutedNonce - 1,
+			PubKey:        creatorAccount.GetPubKey(),
+		}
+
+		err = authsigning.VerifySignature(
+			creatorAccount.GetPubKey(),
+			signingData,
+			sigs[0].Data,
+			am.txConfig.SignModeHandler(),
+			verifiableTx,
 		)
 
-		if !sigValid {
+		if err != nil {
 			am.keeper.Logger(ctx).Error("Invalid Signature in BeginBlock")
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxRevertedEventType,
@@ -278,51 +317,33 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				),
 			)
 			return
-		}
-
-		// Then parse the raw json unsigned tx to cosmos Tx type
-		var toData tx.Tx
-		err = am.cdcJson.UnmarshalJSON([]byte(toFairblockTx.Data), &toData)
-
-		// Probably emit some log in unmarshal / marshal error
-		if err != nil {
-			// Tx probably invalid format
-			am.keeper.Logger(ctx).Error("UnmarshalJson Error in BeginBlock")
-			am.keeper.Logger(ctx).Error(err.Error())
-			ctx.EventManager().EmitEvent(
-				sdk.NewEvent(types.EncryptedTxRevertedEventType,
-					sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-					sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-					sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Invalid Tx format"),
-					sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-				),
-			)
-			return
+		} else {
+			am.keeper.Logger(ctx).Info("Valid Signature in BeginBlock")
 		}
 
 		// After parsing the data to a Tx type, try to find the keeper function of the data
 		// TODO: Finds the keeper function from unsigned Tx data
 
-		txByte, err := toData.Marshal()
-		if err != nil {
-			am.keeper.Logger(ctx).Error("Marshal Tx to []byte Error")
-			am.keeper.Logger(ctx).Error(err.Error())
-			ctx.EventManager().EmitEvent(
-				sdk.NewEvent(types.EncryptedTxRevertedEventType,
-					sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-					sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-					sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to marshal tx"),
-					sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-				),
-			)
-			return
-		}
-
-		resp := am.deliverTx(abci.RequestDeliverTx{
-			Tx: txByte,
-		})
-		am.keeper.Logger(ctx).Info("TX Deliver Result in BeginBlock Result:")
-		am.keeper.Logger(ctx).Info(resp.GetLog())
+		//txByte, err := toData.Marshal()
+		//if err != nil {
+		//	am.keeper.Logger(ctx).Error("Marshal Tx to []byte Error")
+		//	am.keeper.Logger(ctx).Error(err.Error())
+		//	ctx.EventManager().EmitEvent(
+		//		sdk.NewEvent(types.EncryptedTxRevertedEventType,
+		//			sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+		//			sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+		//			sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to marshal tx"),
+		//			sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+		//		),
+		//	)
+		//	return
+		//}
+		//
+		//resp := am.deliverTx(abci.RequestDeliverTx{
+		//	Tx: txByte,
+		//})
+		//am.keeper.Logger(ctx).Info("TX Deliver Result in BeginBlock Result:")
+		//am.keeper.Logger(ctx).Info(resp.GetLog())
 
 		/// For now, after removal, the encrypted tx will become an empty array
 		/// Or Remove the entire tx array of current height
