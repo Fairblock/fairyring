@@ -41,5 +41,9 @@ SIGNED_DATA=`fairyringd tx sign $UNSIGNED_TX_FILE_NAME --from $ACCOUNT_NAME --of
 fairyringd tx fairblock submit-encrypted-tx $SIGNED_DATA $2 --from $ACCOUNT_NAME --yes
 
 # List all the encrypted txs
-printf "\n\nList encrypted Txs:\n"
+printf "\n\nList encrypted Txs:\n\n"
 fairyringd query fairblock list-encrypted-tx
+
+# Remove the unsigned tx file
+rm $UNSIGNED_TX_FILE_NAME
+printf "\nUnsigned TX JSON File Removed\n"
