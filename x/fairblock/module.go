@@ -284,9 +284,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			return
 		}
 
-		am.keeper.Logger(ctx).Info("Fee info:")
-		am.keeper.Logger(ctx).Info(wrappedTx.GetTx().GetFee().String())
-		am.keeper.Logger(ctx).Info(wrappedTx.GetTx().FeePayer().String())
+		// wrappedTx.GetTx().FeePayer().String()
 
 		for _, eachSig := range sigs {
 			newExecutedNonce := am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
