@@ -534,8 +534,7 @@ func New(
 		app.FairblockKeeper,
 		app.AccountKeeper,
 		app.BankKeeper,
-		app.BaseApp.DeliverTx,
-		app.BaseApp.CheckTx,
+		app.MsgServiceRouter(),
 		encodingConfig.TxConfig,
 	)
 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/types/tx"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	"strconv"
@@ -94,8 +95,8 @@ func (AppModuleBasic) GetQueryCmd() *cobra.Command {
 // AppModule
 // ----------------------------------------------------------------------------
 
-type deliverTxFn func(abci.RequestDeliverTx) abci.ResponseDeliverTx
-type checkTxFn func(abci.RequestCheckTx) abci.ResponseCheckTx
+//type deliverTxFn func(abci.RequestDeliverTx) abci.ResponseDeliverTx
+//type checkTxFn func(abci.RequestCheckTx) abci.ResponseCheckTx
 
 // AppModule implements the AppModule interface that defines the inter-dependent methods that modules need to implement
 type AppModule struct {
@@ -105,9 +106,8 @@ type AppModule struct {
 	accountKeeper types.AccountKeeper
 	bankKeeper    types.BankKeeper
 
-	deliverTx deliverTxFn
-	checkTx   checkTxFn
-	txConfig  client.TxConfig
+	msgServiceRouter *baseapp.MsgServiceRouter
+	txConfig         client.TxConfig
 }
 
 func NewAppModule(
@@ -115,18 +115,16 @@ func NewAppModule(
 	keeper keeper.Keeper,
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
-	deliverTx deliverTxFn,
-	checkTx checkTxFn,
+	msgServiceRouter *baseapp.MsgServiceRouter,
 	txConfig client.TxConfig,
 ) AppModule {
 	return AppModule{
-		AppModuleBasic: AppModuleBasic{cdc: cdc, cdcJson: cdc},
-		keeper:         keeper,
-		accountKeeper:  accountKeeper,
-		bankKeeper:     bankKeeper,
-		deliverTx:      deliverTx,
-		checkTx:        checkTx,
-		txConfig:       txConfig,
+		AppModuleBasic:   AppModuleBasic{cdc: cdc, cdcJson: cdc},
+		keeper:           keeper,
+		accountKeeper:    accountKeeper,
+		bankKeeper:       bankKeeper,
+		msgServiceRouter: msgServiceRouter,
+		txConfig:         txConfig,
 	}
 }
 
@@ -198,8 +196,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 	for _, eachTx := range arr.EncryptedTx {
 		// TODO: What to do to all the txs in previous height ?
-		// It returns a updated executedNonce, which can be used for verification later
-		newExecutedNonce := am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 
 		am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
 
@@ -288,62 +284,90 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			return
 		}
 
-		verifiableTx := wrappedTx.GetTx().(authsigning.SigVerifiableTx)
+		am.keeper.Logger(ctx).Info("Fee info:")
+		am.keeper.Logger(ctx).Info(wrappedTx.GetTx().GetFee().String())
+		am.keeper.Logger(ctx).Info(wrappedTx.GetTx().FeePayer().String())
 
-		signingData := authsigning.SignerData{
-			Address:       creatorAddr.String(),
-			ChainID:       ctx.ChainID(),
-			AccountNumber: creatorAccount.GetAccountNumber(),
-			Sequence:      newExecutedNonce - 1,
-			PubKey:        creatorAccount.GetPubKey(),
-		}
+		for _, eachSig := range sigs {
+			newExecutedNonce := am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
+			// For now only support User submitting their own signed tx
+			if !eachSig.PubKey.Equals(creatorAccount.GetPubKey()) {
+				am.keeper.Logger(ctx).Error("Signer is not sender")
+				am.keeper.Logger(ctx).Error(err.Error())
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "signer public key does not match sender public key"),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
 
-		err = authsigning.VerifySignature(
-			creatorAccount.GetPubKey(),
-			signingData,
-			sigs[0].Data,
-			am.txConfig.SignModeHandler(),
-			verifiableTx,
-		)
+			if eachSig.Sequence != newExecutedNonce-1 {
+				am.keeper.Logger(ctx).Error("Incorrect Nonce sequence")
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Incorrect nonce sequence"),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
 
-		if err != nil {
-			am.keeper.Logger(ctx).Error("Invalid Signature in BeginBlock")
-			ctx.EventManager().EmitEvent(
-				sdk.NewEvent(types.EncryptedTxRevertedEventType,
-					sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-					sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-					sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Invalid signature"),
-					sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-				),
+			verifiableTx := wrappedTx.GetTx().(authsigning.SigVerifiableTx)
+
+			signingData := authsigning.SignerData{
+				Address:       creatorAddr.String(),
+				ChainID:       ctx.ChainID(),
+				AccountNumber: creatorAccount.GetAccountNumber(),
+				Sequence:      sigs[0].Sequence,
+				PubKey:        creatorAccount.GetPubKey(),
+			}
+
+			err = authsigning.VerifySignature(
+				creatorAccount.GetPubKey(),
+				signingData,
+				sigs[0].Data,
+				am.txConfig.SignModeHandler(),
+				verifiableTx,
 			)
-			return
-		} else {
-			am.keeper.Logger(ctx).Info("Valid Signature in BeginBlock")
+
+			if err != nil {
+				am.keeper.Logger(ctx).Error("Invalid Signature in BeginBlock")
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Invalid signature"),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				continue
+			}
+
 		}
 
-		// After parsing the data to a Tx type, try to find the keeper function of the data
-		// TODO: Finds the keeper function from unsigned Tx data
-
-		//txByte, err := toData.Marshal()
-		//if err != nil {
-		//	am.keeper.Logger(ctx).Error("Marshal Tx to []byte Error")
-		//	am.keeper.Logger(ctx).Error(err.Error())
-		//	ctx.EventManager().EmitEvent(
-		//		sdk.NewEvent(types.EncryptedTxRevertedEventType,
-		//			sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-		//			sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-		//			sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to marshal tx"),
-		//			sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-		//		),
-		//	)
-		//	return
-		//}
-		//
-		//resp := am.deliverTx(abci.RequestDeliverTx{
-		//	Tx: txByte,
-		//})
-		//am.keeper.Logger(ctx).Info("TX Deliver Result in BeginBlock Result:")
-		//am.keeper.Logger(ctx).Info(resp.GetLog())
+		for _, eachMsg := range wrappedTx.GetTx().GetMsgs() {
+			handler := am.msgServiceRouter.Handler(eachMsg)
+			_, err := handler(ctx, eachMsg)
+			if err != nil {
+				am.keeper.Logger(ctx).Error("!!!Handle Tx Msg Error")
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				continue
+			}
+			am.keeper.Logger(ctx).Info("!Executed successfully!")
+		}
 
 		/// For now, after removal, the encrypted tx will become an empty array
 		/// Or Remove the entire tx array of current height
