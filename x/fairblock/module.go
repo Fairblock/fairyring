@@ -171,26 +171,26 @@ func (AppModule) ConsensusVersion() uint64 { return 1 }
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
-	//err := am.keeper.QueryFairyringCurrentHeight(ctx)
-	//if err != nil {
-	//	am.keeper.Logger(ctx).Info("Beginblocker get height err", err)
-	//	am.keeper.Logger(ctx).Info(err.Error())
-	//	return
-	//}
+	err := am.keeper.QueryFairyringCurrentHeight(ctx)
+	if err != nil {
+		am.keeper.Logger(ctx).Error("Beginblocker get height err", err)
+		am.keeper.Logger(ctx).Error(err.Error())
+		return
+	}
 
 	// height := am.keeper.GetLatestHeight(ctx)
-	//strHeight := am.keeper.GetLatestHeight(ctx)
-	//height, err := strconv.ParseUint(strHeight, 10, 64)
-	//
-	//if err != nil {
-	//	am.keeper.Logger(ctx).Info("Beginblocker error parse height")
-	//	am.keeper.Logger(ctx).Info(err.Error())
-	//	am.keeper.Logger(ctx).Info(strHeight)
-	//	return
-	//}
+	strHeight := am.keeper.GetLatestHeight(ctx)
+	height, err := strconv.ParseUint(strHeight, 10, 64)
+
+	if err != nil {
+		am.keeper.Logger(ctx).Error("Beginblocker error parse height")
+		am.keeper.Logger(ctx).Error(err.Error())
+		am.keeper.Logger(ctx).Error(strHeight)
+		return
+	}
 
 	// Use current chain block height for test & development
-	height := uint64(ctx.BlockHeight())
+	// height := uint64(ctx.BlockHeight())
 
 	arr := am.keeper.GetEncryptedTxAllFromHeight(ctx, height)
 
