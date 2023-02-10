@@ -23,16 +23,18 @@ message MsgRegisterValidatorResponse {
 message MsgSendKeyshare {
   string creator = 1;
   string message = 2;
-  uint64 keyShareIndex = 3;
-  uint64 blockHeight = 4;
+  string commitment = 3;
+  uint64 keyShareIndex = 4;
+  uint64 blockHeight = 5;
 }
 
 message MsgSendKeyshareResponse {
   string creator = 1;
   string keyshare = 2;
-  string keyshareIndex = 3;
-  uint64 blockHeight = 4;
-  uint64 receivedBlockHeight = 5;
+  string commitment = 3;
+  uint64 keyshareIndex = 4;
+  uint64 blockHeight = 5;
+  uint64 receivedBlockHeight = 6;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

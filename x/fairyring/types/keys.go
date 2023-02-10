@@ -15,6 +15,10 @@ const (
 )
 
 const (
+	IBEId = "Random_IBE_ID"
+)
+
+const (
 	RegisteredValidatorEventType    = "new validator-registered"
 	RegisteredValidatorEventCreator = "creator"
 )
@@ -25,6 +29,7 @@ const (
 	SendKeyshareEventKeyshareBlockHeight = "keyshare-block-height"
 	SendKeyshareEventReceivedBlockHeight = "received-block-height"
 	SendKeyshareEventMessage             = "keyshare-message"
+	SendKeyshareEventCommitment          = "keyshare-commitment"
 	SendKeyshareEventIndex               = "keyshare-index"
 )
 
