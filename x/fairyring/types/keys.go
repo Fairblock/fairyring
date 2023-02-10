@@ -25,6 +25,7 @@ const (
 	SendKeyshareEventKeyshareBlockHeight = "keyshare-block-height"
 	SendKeyshareEventReceivedBlockHeight = "received-block-height"
 	SendKeyshareEventMessage             = "keyshare-message"
+	SendKeyshareEventIndex               = "keyshare-index"
 )
 
 func KeyPrefix(p string) []byte {

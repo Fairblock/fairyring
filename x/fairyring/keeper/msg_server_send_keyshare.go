@@ -26,6 +26,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		Validator:           msg.Creator,
 		BlockHeight:         msg.BlockHeight,
 		KeyShare:            msg.Message,
+		KeyShareIndex:       msg.KeyShareIndex,
 		ReceivedTimestamp:   uint64(ctx.BlockTime().Unix()),
 		ReceivedBlockHeight: uint64(ctx.BlockHeight()),
 	}
@@ -38,6 +39,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			sdk.NewAttribute(types.SendKeyshareEventKeyshareBlockHeight, strconv.FormatUint(msg.BlockHeight, 10)),
 			sdk.NewAttribute(types.SendKeyshareEventReceivedBlockHeight, strconv.FormatInt(ctx.BlockHeight(), 10)),
 			sdk.NewAttribute(types.SendKeyshareEventMessage, msg.Message),
+			sdk.NewAttribute(types.SendKeyshareEventIndex, strconv.FormatUint(msg.KeyShareIndex, 10)),
 		))
 
 	return &types.MsgSendKeyshareResponse{
