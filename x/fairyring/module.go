@@ -1,7 +1,9 @@
 package fairyring
 
 import (
+	distIBE "DistributedIBE"
 	"context"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	// this line is used by starport scaffolding # 1
@@ -19,6 +21,8 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+
+	bls "github.com/drand/kyber-bls12381"
 )
 
 var (
@@ -151,7 +155,75 @@ func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.Raw
 func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
-func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
+func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
+	validatorList := am.keeper.GetAllValidatorSet(ctx)
+
+	suite := bls.NewBLS12381Suite()
+
+	var listOfShares []distIBE.ExtractedKey
+	var listOfCommitment []distIBE.Commitment
+
+	for _, eachValidator := range validatorList {
+		eachKeyShare, found := am.keeper.GetKeyShare(ctx, eachValidator.Validator, uint64(ctx.BlockHeight()))
+		if !found {
+			am.keeper.Logger(ctx).Info(
+				fmt.Sprintf(
+					"Can not find key share from validator: %s for height: %d",
+					eachValidator.Validator,
+					ctx.BlockHeight(),
+				),
+			)
+			continue
+		}
+
+		byteKey, err := hex.DecodeString(eachKeyShare.KeyShare)
+		if err != nil {
+			am.keeper.Logger(ctx).Error(fmt.Sprintf("Error in decoding hex key: %s", err.Error()))
+			continue
+		}
+
+		kp := suite.G2().Point()
+		err = kp.UnmarshalBinary(byteKey)
+		if err != nil {
+			am.keeper.Logger(ctx).Error(fmt.Sprintf("Error in unmarshal point: %s", err.Error()))
+			continue
+		}
+
+		am.keeper.Logger(ctx).Info(eachKeyShare.Commitment)
+		byteCommitment, err := hex.DecodeString(eachKeyShare.Commitment)
+		if err != nil {
+			am.keeper.Logger(ctx).Error(fmt.Sprintf("Error in decoding hex commitment: %s", err.Error()))
+			continue
+		}
+
+		commitmentKp := suite.G1().Point()
+		err = commitmentKp.UnmarshalBinary(byteCommitment)
+		if err != nil {
+			am.keeper.Logger(ctx).Error(fmt.Sprintf("Error in unmarshal commitment point: %s", err.Error()))
+			continue
+		}
+
+		listOfShares = append(
+			listOfShares,
+			distIBE.ExtractedKey{
+				Sk:    kp,
+				Index: uint32(eachKeyShare.KeyShareIndex),
+			},
+		)
+		listOfCommitment = append(
+			listOfCommitment,
+			distIBE.Commitment{
+				Sp:    commitmentKp,
+				Index: uint32(eachKeyShare.KeyShareIndex),
+			},
+		)
+	}
+
+	if len(listOfCommitment) > 0 && len(listOfShares) > 0 {
+		SK, _ := distIBE.AggregateSK(suite, listOfShares, listOfCommitment, []byte(types.IBEId))
+		am.keeper.Logger(ctx).Info(fmt.Sprintf("Aggregated Decryption Key: %s", SK.String()))
+	}
+}
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
