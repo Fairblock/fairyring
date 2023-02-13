@@ -6,6 +6,7 @@ require (
 	DistributedIBE v0.0.0
 	github.com/cosmos/cosmos-sdk v0.46.3
 	github.com/cosmos/ibc-go/v5 v5.0.0
+	github.com/drand/kyber v1.1.17
 	github.com/drand/kyber-bls12381 v0.2.5
 	github.com/gogo/protobuf v1.3.3
 	github.com/golang/protobuf v1.5.2
@@ -78,7 +79,6 @@ require (
 	github.com/dgryski/go-farm v0.0.0-20200201041132-a6ae2369ad13 // indirect
 	github.com/docker/docker v20.10.17+incompatible // indirect
 	github.com/docker/go-units v0.4.0 // indirect
-	github.com/drand/kyber v1.1.17 // indirect
 	github.com/dustin/go-humanize v1.0.1-0.20200219035652-afde56e7acac // indirect
 	github.com/dvsekhvalnov/jose2go v1.5.0 // indirect
 	github.com/emicklei/proto v1.11.0 // indirect
