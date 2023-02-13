@@ -28,6 +28,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgSubmitEncryptedTx int = 100
 
+	opWeightMsgRegisterHeight = "op_weight_msg_register_height"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRegisterHeight int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -72,6 +76,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgSubmitEncryptedTx,
 		fairblocksimulation.SimulateMsgSubmitEncryptedTx(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRegisterHeight int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRegisterHeight, &weightMsgRegisterHeight, nil,
+		func(_ *rand.Rand) {
+			weightMsgRegisterHeight = defaultWeightMsgRegisterHeight
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRegisterHeight,
+		fairblocksimulation.SimulateMsgRegisterHeight(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

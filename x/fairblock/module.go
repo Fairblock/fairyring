@@ -296,7 +296,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				)
 				return
 			}
-			
+
 			for _, eachSig := range sigs {
 				newExecutedNonce := am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				// For now only support User submitting their own signed tx

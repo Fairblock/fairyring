@@ -390,10 +390,25 @@ export default {
 		},
 		
 		
-		async sendMsgSubmitEncryptedTx({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgRegisterHeight({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.FairyringFairblock.tx.sendMsgSubmitEncryptedTx({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringFairblock.tx.sendMsgRegisterHeight({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRegisterHeight:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgRegisterHeight:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgSubmitEncryptedTx({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringFairblock.tx.sendMsgSubmitEncryptedTx({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
@@ -403,10 +418,11 @@ export default {
 				}
 			}
 		},
-		async sendMsgSendCurrentHeight({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgSendCurrentHeight({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
-				const result = await client.FairyringFairblock.tx.sendMsgSendCurrentHeight({ value, fee: {amount: fee, gas: "200000"}, memo })
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringFairblock.tx.sendMsgSendCurrentHeight({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
@@ -417,6 +433,19 @@ export default {
 			}
 		},
 		
+		async MsgRegisterHeight({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringFairblock.tx.msgRegisterHeight({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRegisterHeight:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgRegisterHeight:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		async MsgSubmitEncryptedTx({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)

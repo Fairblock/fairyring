@@ -37,6 +37,8 @@ export interface FairblockFairblockNonce {
   nonce?: string;
 }
 
+export type FairblockMsgRegisterHeightResponse = object;
+
 export type FairblockMsgSendCurrentHeightResponse = object;
 
 export type FairblockMsgSubmitEncryptedTxResponse = object;

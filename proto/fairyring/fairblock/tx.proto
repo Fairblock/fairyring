@@ -1,4 +1,5 @@
 syntax = "proto3";
+
 package fairyring.fairblock;
 
 // this line is used by starport scaffolding # proto/tx/import
@@ -7,27 +8,35 @@ option go_package = "fairyring/x/fairblock/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc SubmitEncryptedTx(MsgSubmitEncryptedTx) returns (MsgSubmitEncryptedTxResponse);
-  rpc SendCurrentHeight(MsgSendCurrentHeight) returns (MsgSendCurrentHeightResponse);
-// this line is used by starport scaffolding # proto/tx/rpc
+  rpc SubmitEncryptedTx (MsgSubmitEncryptedTx) returns (MsgSubmitEncryptedTxResponse);
+  rpc SendCurrentHeight (MsgSendCurrentHeight) returns (MsgSendCurrentHeightResponse);
+  
+  // this line is used by starport scaffolding # proto/tx/rpc
+  rpc RegisterHeight (MsgRegisterHeight) returns (MsgRegisterHeightResponse);
 }
-
 message MsgSubmitEncryptedTx {
-  string creator = 1;
-  string data = 2;
+  string creator           = 1;
+  string data              = 2;
   uint64 targetBlockHeight = 3;
 }
 
-message MsgSubmitEncryptedTxResponse {
-}
+message MsgSubmitEncryptedTxResponse {}
 
 message MsgSendCurrentHeight {
-  string creator = 1;
-  string port = 2;
-  string channelID = 3;
+  string creator          = 1;
+  string port             = 2;
+  string channelID        = 3;
   uint64 timeoutTimestamp = 4;
 }
 
-message MsgSendCurrentHeightResponse {
-}
+message MsgSendCurrentHeightResponse {}
+
+
 // this line is used by starport scaffolding # proto/tx/message
+message MsgRegisterHeight {
+  string creator = 1;
+  string height  = 2;
+}
+
+message MsgRegisterHeightResponse {}
+

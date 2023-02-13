@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fairyring/x/fairblock/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -40,7 +41,7 @@ func (k Keeper) IncreaseFairblockNonce(
 		nonce.Nonce = nonce.Nonce + 1
 		newNonce = nonce.Nonce
 	}
-	
+
 	k.SetFairblockNonce(ctx, nonce)
 
 	return newNonce

@@ -11,8 +11,9 @@ accounts:
       - 1000token
       - 100000000stake
   - name: bob
+    mnemonic: cruise scene law sea push expose scorpion wire trick repair wave quote task dose inner denial alpha favorite certain blouse motion flash split lunch
     coins:
-      - 500token
+      - 5000token
       - 100000000stake
 faucet:
   name: bob
@@ -24,5 +25,5 @@ genesis:
   chain_id: fairyring
 validators:
   - name: alice
-    bonded: 100000000stake
+    bonded: 10000000stake
     home: $HOME/.fairyring

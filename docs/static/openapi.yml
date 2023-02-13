@@ -70260,6 +70260,8 @@ definitions:
       nonce:
         type: string
         format: uint64
+  fairyring.fairblock.MsgRegisterHeightResponse:
+    type: object
   fairyring.fairblock.MsgSendCurrentHeightResponse:
     type: object
   fairyring.fairblock.MsgSubmitEncryptedTxResponse:

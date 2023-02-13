@@ -11,9 +11,10 @@ accounts:
       - 1000token
       - 1000000000stake
   - name: bob
+    mnemonic: cruise scene law sea push expose scorpion wire trick repair wave quote task dose inner denial alpha favorite certain blouse motion flash split lunch
     coins:
-      - 500token
-      - 100000000stake
+      - 5000token
+      - 1000000000stake
 faucet:
   name: bob
   coins:

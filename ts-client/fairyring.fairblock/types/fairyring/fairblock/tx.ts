@@ -23,6 +23,15 @@ export interface MsgSendCurrentHeight {
 export interface MsgSendCurrentHeightResponse {
 }
 
+/** this line is used by starport scaffolding # proto/tx/message */
+export interface MsgRegisterHeight {
+  creator: string;
+  height: string;
+}
+
+export interface MsgRegisterHeightResponse {
+}
+
 function createBaseMsgSubmitEncryptedTx(): MsgSubmitEncryptedTx {
   return { creator: "", data: "", targetBlockHeight: 0 };
 }
@@ -244,11 +253,109 @@ export const MsgSendCurrentHeightResponse = {
   },
 };
 
+function createBaseMsgRegisterHeight(): MsgRegisterHeight {
+  return { creator: "", height: "" };
+}
+
+export const MsgRegisterHeight = {
+  encode(message: MsgRegisterHeight, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.height !== "") {
+      writer.uint32(18).string(message.height);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterHeight {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRegisterHeight();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.height = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRegisterHeight {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      height: isSet(object.height) ? String(object.height) : "",
+    };
+  },
+
+  toJSON(message: MsgRegisterHeight): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.height !== undefined && (obj.height = message.height);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgRegisterHeight>, I>>(object: I): MsgRegisterHeight {
+    const message = createBaseMsgRegisterHeight();
+    message.creator = object.creator ?? "";
+    message.height = object.height ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgRegisterHeightResponse(): MsgRegisterHeightResponse {
+  return {};
+}
+
+export const MsgRegisterHeightResponse = {
+  encode(_: MsgRegisterHeightResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterHeightResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRegisterHeightResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgRegisterHeightResponse {
+    return {};
+  },
+
+  toJSON(_: MsgRegisterHeightResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgRegisterHeightResponse>, I>>(_: I): MsgRegisterHeightResponse {
+    const message = createBaseMsgRegisterHeightResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   SubmitEncryptedTx(request: MsgSubmitEncryptedTx): Promise<MsgSubmitEncryptedTxResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   SendCurrentHeight(request: MsgSendCurrentHeight): Promise<MsgSendCurrentHeightResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  RegisterHeight(request: MsgRegisterHeight): Promise<MsgRegisterHeightResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -257,6 +364,7 @@ export class MsgClientImpl implements Msg {
     this.rpc = rpc;
     this.SubmitEncryptedTx = this.SubmitEncryptedTx.bind(this);
     this.SendCurrentHeight = this.SendCurrentHeight.bind(this);
+    this.RegisterHeight = this.RegisterHeight.bind(this);
   }
   SubmitEncryptedTx(request: MsgSubmitEncryptedTx): Promise<MsgSubmitEncryptedTxResponse> {
     const data = MsgSubmitEncryptedTx.encode(request).finish();
@@ -268,6 +376,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgSendCurrentHeight.encode(request).finish();
     const promise = this.rpc.request("fairyring.fairblock.Msg", "SendCurrentHeight", data);
     return promise.then((data) => MsgSendCurrentHeightResponse.decode(new _m0.Reader(data)));
+  }
+
+  RegisterHeight(request: MsgRegisterHeight): Promise<MsgRegisterHeightResponse> {
+    const data = MsgRegisterHeight.encode(request).finish();
+    const promise = this.rpc.request("fairyring.fairblock.Msg", "RegisterHeight", data);
+    return promise.then((data) => MsgRegisterHeightResponse.decode(new _m0.Reader(data)));
   }
 }
 
