@@ -39,4 +39,6 @@ validators:
       rpc:
         laddr: :26659
         pprof_laddr: :6061
+      consensus:
+        timeout_commit: '2s'
     home: $HOME/.destination

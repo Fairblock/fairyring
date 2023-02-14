@@ -26,4 +26,7 @@ genesis:
 validators:
   - name: alice
     bonded: 10000000stake
+    config:
+      consensus:
+        timeout_commit: '5s'
     home: $HOME/.fairyring
