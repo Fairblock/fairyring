@@ -9,12 +9,22 @@
  * ---------------------------------------------------------------
  */
 
+export interface FairyringAggregatedKeyShare {
+  /** @format uint64 */
+  height?: string;
+  data?: string;
+}
+
 export interface FairyringKeyShare {
   validator?: string;
 
   /** @format uint64 */
   blockHeight?: string;
+  commitment?: string;
   keyShare?: string;
+
+  /** @format uint64 */
+  keyShareIndex?: string;
 
   /** @format uint64 */
   receivedTimestamp?: string;
@@ -30,6 +40,10 @@ export interface FairyringMsgRegisterValidatorResponse {
 export interface FairyringMsgSendKeyshareResponse {
   creator?: string;
   keyshare?: string;
+  commitment?: string;
+
+  /** @format uint64 */
+  keyshareIndex?: string;
 
   /** @format uint64 */
   blockHeight?: string;
@@ -42,6 +56,21 @@ export interface FairyringMsgSendKeyshareResponse {
  * Params defines the parameters for the module.
  */
 export type FairyringParams = object;
+
+export interface FairyringQueryAllAggregatedKeyShareResponse {
+  aggregatedKeyShare?: FairyringAggregatedKeyShare[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 export interface FairyringQueryAllKeyShareResponse {
   keyShare?: FairyringKeyShare[];
@@ -71,6 +100,10 @@ export interface FairyringQueryAllValidatorSetResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface FairyringQueryGetAggregatedKeyShareResponse {
+  aggregatedKeyShare?: FairyringAggregatedKeyShare;
 }
 
 export interface FairyringQueryGetKeyShareResponse {
@@ -299,10 +332,51 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title fairyring/fairyring/genesis.proto
+ * @title fairyring/fairyring/aggregated_key_share.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAggregatedKeyShareAll
+   * @request GET:/fairyring/fairyring/aggregated_key_share
+   */
+  queryAggregatedKeyShareAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FairyringQueryAllAggregatedKeyShareResponse, RpcStatus>({
+      path: `/fairyring/fairyring/aggregated_key_share`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAggregatedKeyShare
+   * @summary Queries a list of AggregatedKeyShare items.
+   * @request GET:/fairyring/fairyring/aggregated_key_share/{height}
+   */
+  queryAggregatedKeyShare = (height: string, params: RequestParams = {}) =>
+    this.request<FairyringQueryGetAggregatedKeyShareResponse, RpcStatus>({
+      path: `/fairyring/fairyring/aggregated_key_share/${height}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *

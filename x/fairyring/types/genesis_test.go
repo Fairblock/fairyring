@@ -40,6 +40,14 @@ func TestGenesisState_Validate(t *testing.T) {
 						BlockHeight: 1,
 					},
 				},
+				AggregatedKeyShareList: []types.AggregatedKeyShare{
+					{
+						Height: 0,
+					},
+					{
+						Height: 1,
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -69,6 +77,20 @@ func TestGenesisState_Validate(t *testing.T) {
 					{
 						Validator:   "0",
 						BlockHeight: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated aggregatedKeyShare",
+			genState: &types.GenesisState{
+				AggregatedKeyShareList: []types.AggregatedKeyShare{
+					{
+						Height: 0,
+					},
+					{
+						Height: 0,
 					},
 				},
 			},

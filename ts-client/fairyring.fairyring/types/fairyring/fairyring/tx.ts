@@ -15,12 +15,16 @@ export interface MsgRegisterValidatorResponse {
 export interface MsgSendKeyshare {
   creator: string;
   message: string;
+  commitment: string;
+  keyShareIndex: number;
   blockHeight: number;
 }
 
 export interface MsgSendKeyshareResponse {
   creator: string;
   keyshare: string;
+  commitment: string;
+  keyshareIndex: number;
   blockHeight: number;
   receivedBlockHeight: number;
 }
@@ -120,7 +124,7 @@ export const MsgRegisterValidatorResponse = {
 };
 
 function createBaseMsgSendKeyshare(): MsgSendKeyshare {
-  return { creator: "", message: "", blockHeight: 0 };
+  return { creator: "", message: "", commitment: "", keyShareIndex: 0, blockHeight: 0 };
 }
 
 export const MsgSendKeyshare = {
@@ -131,8 +135,14 @@ export const MsgSendKeyshare = {
     if (message.message !== "") {
       writer.uint32(18).string(message.message);
     }
+    if (message.commitment !== "") {
+      writer.uint32(26).string(message.commitment);
+    }
+    if (message.keyShareIndex !== 0) {
+      writer.uint32(32).uint64(message.keyShareIndex);
+    }
     if (message.blockHeight !== 0) {
-      writer.uint32(24).uint64(message.blockHeight);
+      writer.uint32(40).uint64(message.blockHeight);
     }
     return writer;
   },
@@ -151,6 +161,12 @@ export const MsgSendKeyshare = {
           message.message = reader.string();
           break;
         case 3:
+          message.commitment = reader.string();
+          break;
+        case 4:
+          message.keyShareIndex = longToNumber(reader.uint64() as Long);
+          break;
+        case 5:
           message.blockHeight = longToNumber(reader.uint64() as Long);
           break;
         default:
@@ -165,6 +181,8 @@ export const MsgSendKeyshare = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       message: isSet(object.message) ? String(object.message) : "",
+      commitment: isSet(object.commitment) ? String(object.commitment) : "",
+      keyShareIndex: isSet(object.keyShareIndex) ? Number(object.keyShareIndex) : 0,
       blockHeight: isSet(object.blockHeight) ? Number(object.blockHeight) : 0,
     };
   },
@@ -173,6 +191,8 @@ export const MsgSendKeyshare = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.message !== undefined && (obj.message = message.message);
+    message.commitment !== undefined && (obj.commitment = message.commitment);
+    message.keyShareIndex !== undefined && (obj.keyShareIndex = Math.round(message.keyShareIndex));
     message.blockHeight !== undefined && (obj.blockHeight = Math.round(message.blockHeight));
     return obj;
   },
@@ -181,13 +201,15 @@ export const MsgSendKeyshare = {
     const message = createBaseMsgSendKeyshare();
     message.creator = object.creator ?? "";
     message.message = object.message ?? "";
+    message.commitment = object.commitment ?? "";
+    message.keyShareIndex = object.keyShareIndex ?? 0;
     message.blockHeight = object.blockHeight ?? 0;
     return message;
   },
 };
 
 function createBaseMsgSendKeyshareResponse(): MsgSendKeyshareResponse {
-  return { creator: "", keyshare: "", blockHeight: 0, receivedBlockHeight: 0 };
+  return { creator: "", keyshare: "", commitment: "", keyshareIndex: 0, blockHeight: 0, receivedBlockHeight: 0 };
 }
 
 export const MsgSendKeyshareResponse = {
@@ -198,11 +220,17 @@ export const MsgSendKeyshareResponse = {
     if (message.keyshare !== "") {
       writer.uint32(18).string(message.keyshare);
     }
+    if (message.commitment !== "") {
+      writer.uint32(26).string(message.commitment);
+    }
+    if (message.keyshareIndex !== 0) {
+      writer.uint32(32).uint64(message.keyshareIndex);
+    }
     if (message.blockHeight !== 0) {
-      writer.uint32(24).uint64(message.blockHeight);
+      writer.uint32(40).uint64(message.blockHeight);
     }
     if (message.receivedBlockHeight !== 0) {
-      writer.uint32(32).uint64(message.receivedBlockHeight);
+      writer.uint32(48).uint64(message.receivedBlockHeight);
     }
     return writer;
   },
@@ -221,9 +249,15 @@ export const MsgSendKeyshareResponse = {
           message.keyshare = reader.string();
           break;
         case 3:
-          message.blockHeight = longToNumber(reader.uint64() as Long);
+          message.commitment = reader.string();
           break;
         case 4:
+          message.keyshareIndex = longToNumber(reader.uint64() as Long);
+          break;
+        case 5:
+          message.blockHeight = longToNumber(reader.uint64() as Long);
+          break;
+        case 6:
           message.receivedBlockHeight = longToNumber(reader.uint64() as Long);
           break;
         default:
@@ -238,6 +272,8 @@ export const MsgSendKeyshareResponse = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       keyshare: isSet(object.keyshare) ? String(object.keyshare) : "",
+      commitment: isSet(object.commitment) ? String(object.commitment) : "",
+      keyshareIndex: isSet(object.keyshareIndex) ? Number(object.keyshareIndex) : 0,
       blockHeight: isSet(object.blockHeight) ? Number(object.blockHeight) : 0,
       receivedBlockHeight: isSet(object.receivedBlockHeight) ? Number(object.receivedBlockHeight) : 0,
     };
@@ -247,6 +283,8 @@ export const MsgSendKeyshareResponse = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.keyshare !== undefined && (obj.keyshare = message.keyshare);
+    message.commitment !== undefined && (obj.commitment = message.commitment);
+    message.keyshareIndex !== undefined && (obj.keyshareIndex = Math.round(message.keyshareIndex));
     message.blockHeight !== undefined && (obj.blockHeight = Math.round(message.blockHeight));
     message.receivedBlockHeight !== undefined && (obj.receivedBlockHeight = Math.round(message.receivedBlockHeight));
     return obj;
@@ -256,6 +294,8 @@ export const MsgSendKeyshareResponse = {
     const message = createBaseMsgSendKeyshareResponse();
     message.creator = object.creator ?? "";
     message.keyshare = object.keyshare ?? "";
+    message.commitment = object.commitment ?? "";
+    message.keyshareIndex = object.keyshareIndex ?? 0;
     message.blockHeight = object.blockHeight ?? 0;
     message.receivedBlockHeight = object.receivedBlockHeight ?? 0;
     return message;

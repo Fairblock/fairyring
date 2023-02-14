@@ -1,5 +1,6 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
+import { AggregatedKeyShare } from "./aggregated_key_share";
 import { KeyShare } from "./key_share";
 import { Params } from "./params";
 import { ValidatorSet } from "./validator_set";
@@ -10,12 +11,13 @@ export const protobufPackage = "fairyring.fairyring";
 export interface GenesisState {
   params: Params | undefined;
   validatorSetList: ValidatorSet[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   keyShareList: KeyShare[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  aggregatedKeyShareList: AggregatedKeyShare[];
 }
 
 function createBaseGenesisState(): GenesisState {
-  return { params: undefined, validatorSetList: [], keyShareList: [] };
+  return { params: undefined, validatorSetList: [], keyShareList: [], aggregatedKeyShareList: [] };
 }
 
 export const GenesisState = {
@@ -28,6 +30,9 @@ export const GenesisState = {
     }
     for (const v of message.keyShareList) {
       KeyShare.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.aggregatedKeyShareList) {
+      AggregatedKeyShare.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -48,6 +53,9 @@ export const GenesisState = {
         case 3:
           message.keyShareList.push(KeyShare.decode(reader, reader.uint32()));
           break;
+        case 4:
+          message.aggregatedKeyShareList.push(AggregatedKeyShare.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -65,6 +73,9 @@ export const GenesisState = {
       keyShareList: Array.isArray(object?.keyShareList)
         ? object.keyShareList.map((e: any) => KeyShare.fromJSON(e))
         : [],
+      aggregatedKeyShareList: Array.isArray(object?.aggregatedKeyShareList)
+        ? object.aggregatedKeyShareList.map((e: any) => AggregatedKeyShare.fromJSON(e))
+        : [],
     };
   },
 
@@ -81,6 +92,13 @@ export const GenesisState = {
     } else {
       obj.keyShareList = [];
     }
+    if (message.aggregatedKeyShareList) {
+      obj.aggregatedKeyShareList = message.aggregatedKeyShareList.map((e) =>
+        e ? AggregatedKeyShare.toJSON(e) : undefined
+      );
+    } else {
+      obj.aggregatedKeyShareList = [];
+    }
     return obj;
   },
 
@@ -91,6 +109,7 @@ export const GenesisState = {
       : undefined;
     message.validatorSetList = object.validatorSetList?.map((e) => ValidatorSet.fromPartial(e)) || [];
     message.keyShareList = object.keyShareList?.map((e) => KeyShare.fromPartial(e)) || [];
+    message.aggregatedKeyShareList = object.aggregatedKeyShareList?.map((e) => AggregatedKeyShare.fromPartial(e)) || [];
     return message;
   },
 };
