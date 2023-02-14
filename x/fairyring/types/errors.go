@@ -16,4 +16,6 @@ var (
 	ErrUnmarshallingKeyShare      = sdkerrors.Register(ModuleName, 1105, "error unmarshalling keyshare")
 	ErrDecodingCommitment         = sdkerrors.Register(ModuleName, 1106, "error decoding commitment")
 	ErrUnmarshallingCommitment    = sdkerrors.Register(ModuleName, 1107, "error unmarhsalling commitment")
+	ErrUnableToVerifyShare        = sdkerrors.Register(ModuleName, 1108, "unable to verify share")
+	ErrInvalidShare               = sdkerrors.Register(ModuleName, 1109, "invalid share / commitment")
 )

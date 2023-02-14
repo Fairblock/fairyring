@@ -14,7 +14,12 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func parseKeyShareCommitment(suite pairing.Suite, keyShareHex string, commitmentHex string) (kyber.Point, kyber.Point, error) {
+func parseKeyShareCommitment(
+	suite pairing.Suite,
+	keyShareHex string,
+	commitmentHex string,
+	index uint32,
+) (*distIBE.ExtractedKey, *distIBE.Commitment, error) {
 	newByteKey, err := hex.DecodeString(keyShareHex)
 	if err != nil {
 		return nil, nil, types.ErrDecodingKeyShare.Wrap(err.Error())
@@ -37,7 +42,28 @@ func parseKeyShareCommitment(suite pairing.Suite, keyShareHex string, commitment
 		return nil, nil, types.ErrUnmarshallingCommitment.Wrap(err.Error())
 	}
 
-	return newSharePoint, newCommitmentPoint, nil
+	newExtractedKey := distIBE.ExtractedKey{
+		Sk:    newSharePoint,
+		Index: index,
+	}
+
+	newCommitment := distIBE.Commitment{
+		Sp:    newCommitmentPoint,
+		Index: index,
+	}
+
+	hG2, ok := suite.G2().Point().(kyber.HashablePoint)
+	if !ok {
+		return nil, nil, types.ErrUnableToVerifyShare
+	}
+
+	Qid := hG2.Hash([]byte(types.IBEId))
+
+	if !distIBE.VerifyShare(suite, newCommitment, newExtractedKey, Qid) {
+		return nil, nil, types.ErrInvalidShare
+	}
+
+	return &newExtractedKey, &newCommitment, nil
 }
 
 func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshare) (*types.MsgSendKeyshareResponse, error) {
@@ -56,7 +82,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 
 	suite := bls.NewBLS12381Suite()
 
-	newPoint, newCommitmentPoint, err := parseKeyShareCommitment(suite, msg.Message, msg.Commitment)
+	extractedKey, commitment, err := parseKeyShareCommitment(suite, msg.Message, msg.Commitment, uint32(msg.KeyShareIndex))
 	if err != nil {
 		return nil, err
 	}
@@ -64,16 +90,10 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	validatorList := k.GetAllValidatorSet(ctx)
 
 	listOfShares := []distIBE.ExtractedKey{
-		{
-			Sk:    newPoint,
-			Index: uint32(msg.KeyShareIndex),
-		},
+		*extractedKey,
 	}
 	listOfCommitment := []distIBE.Commitment{
-		{
-			Sp:    newCommitmentPoint,
-			Index: uint32(msg.KeyShareIndex),
-		},
+		*commitment,
 	}
 
 	for _, eachValidator := range validatorList {
@@ -82,7 +102,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			continue
 		}
 
-		kp, commitmentKp, err := parseKeyShareCommitment(suite, eachKeyShare.KeyShare, eachKeyShare.Commitment)
+		keyShare, commitment, err := parseKeyShareCommitment(suite, eachKeyShare.KeyShare, eachKeyShare.Commitment, uint32(eachKeyShare.KeyShareIndex))
 		if err != nil {
 			k.Logger(ctx).Error(err.Error())
 			continue
@@ -90,17 +110,11 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 
 		listOfShares = append(
 			listOfShares,
-			distIBE.ExtractedKey{
-				Sk:    kp,
-				Index: uint32(eachKeyShare.KeyShareIndex),
-			},
+			*keyShare,
 		)
 		listOfCommitment = append(
 			listOfCommitment,
-			distIBE.Commitment{
-				Sp:    commitmentKp,
-				Index: uint32(eachKeyShare.KeyShareIndex),
-			},
+			*commitment,
 		)
 	}
 
