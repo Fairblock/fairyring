@@ -6,7 +6,8 @@ var _ binary.ByteOrder
 
 const (
 	// AggregatedKeyShareKeyPrefix is the prefix to retrieve all AggregatedKeyShare
-	AggregatedKeyShareKeyPrefix = "AggregatedKeyShare/value/"
+	AggregatedKeyShareKeyPrefix    = "AggregatedKeyShare/value/"
+	AggregatedKeyShareLengthPrefix = "AggregatedKeyShare/length/"
 )
 
 // AggregatedKeyShareKey returns the store key to retrieve a AggregatedKeyShare from the index fields

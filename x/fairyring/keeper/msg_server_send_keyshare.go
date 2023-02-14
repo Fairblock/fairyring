@@ -137,10 +137,18 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			return nil, err
 		}
 		skHex := hex.EncodeToString(skByte)
+
+		_, found := k.GetAggregatedKeyShare(ctx, msg.BlockHeight)
+
 		k.SetAggregatedKeyShare(ctx, types.AggregatedKeyShare{
 			Height: msg.BlockHeight,
 			Data:   skHex,
 		})
+
+		if !found {
+			k.SetAggregatedKeyShareLength(ctx, k.GetAggregatedKeyShareLength(ctx)+1)
+		}
+		
 		k.Logger(ctx).Info(fmt.Sprintf("Aggregated Decryption Key for Block %d: %s", msg.BlockHeight, skHex))
 	}
 

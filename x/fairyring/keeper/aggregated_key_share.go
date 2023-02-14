@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"encoding/binary"
 	"fairyring/x/fairyring/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -60,4 +61,24 @@ func (k Keeper) GetAllAggregatedKeyShare(ctx sdk.Context) (list []types.Aggregat
 	}
 
 	return
+}
+
+// SetAggregatedKeyShareLength set a specific length to aggregatedKeyShareLength
+func (k Keeper) SetAggregatedKeyShareLength(ctx sdk.Context, length uint64) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedKeyShareLengthPrefix))
+	lengthBytes := make([]byte, 8)
+	binary.BigEndian.PutUint64(lengthBytes, length)
+	store.Set([]byte(types.AggregatedKeyShareLengthPrefix), lengthBytes)
+}
+
+// GetAggregatedKeyShareLength returns the length of aggregatedKeyShare
+func (k Keeper) GetAggregatedKeyShareLength(
+	ctx sdk.Context,
+) uint64 {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedKeyShareLengthPrefix))
+	b := store.Get([]byte(types.AggregatedKeyShareLengthPrefix))
+	if len(b) == 0 {
+		return 0
+	}
+	return binary.BigEndian.Uint64(b)
 }
