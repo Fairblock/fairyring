@@ -130,9 +130,18 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 
 	k.SetKeyShare(ctx, keyShare)
 
-	if len(listOfCommitment) > 0 && len(listOfShares) > 0 {
+	if len(listOfCommitment) >= types.KEY_AGGREGATION_THRESHOLD && len(listOfShares) >= types.KEY_AGGREGATION_THRESHOLD {
 		SK, _ := distIBE.AggregateSK(suite, listOfShares, listOfCommitment, []byte(types.IBEId))
-		k.Logger(ctx).Info(fmt.Sprintf("Aggregated Decryption Key: %s", SK.String()))
+		skByte, err := SK.MarshalBinary()
+		if err != nil {
+			return nil, err
+		}
+		skHex := hex.EncodeToString(skByte)
+		k.SetAggregatedKeyShare(ctx, types.AggregatedKeyShare{
+			Height: msg.BlockHeight,
+			Data:   skHex,
+		})
+		k.Logger(ctx).Info(fmt.Sprintf("Aggregated Decryption Key for Block %d: %s", msg.BlockHeight, skHex))
 	}
 
 	ctx.EventManager().EmitEvent(

@@ -15,7 +15,8 @@ const (
 )
 
 const (
-	IBEId = "Random_IBE_ID"
+	IBEId                     = "Random_IBE_ID"
+	KEY_AGGREGATION_THRESHOLD = 1
 )
 
 const (
