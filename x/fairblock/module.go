@@ -317,8 +317,24 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 			am.keeper.Logger(ctx).Info("Unmarshal public key successfully")
 
+			txBytes, err := hex.DecodeString(eachTx.Data)
+			if err != nil {
+				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
+				am.keeper.Logger(ctx).Error("Error decoding tx data to bytes")
+				am.keeper.Logger(ctx).Error(err.Error())
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
+
 			var decryptedTx bytes.Buffer
-			txBuffer := bytes.NewBuffer([]byte(eachTx.Data))
+			txBuffer := bytes.NewBuffer(txBytes)
 
 			err = enc.Decrypt(publicKeyPoint, skPoint, &decryptedTx, txBuffer)
 			if err != nil {
