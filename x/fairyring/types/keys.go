@@ -34,6 +34,12 @@ const (
 	SendKeyshareEventIndex               = "keyshare-index"
 )
 
+const (
+	KeyShareAggregatedEventType        = "keyshare-aggregated"
+	KeyShareAggregatedEventBlockHeight = "keyshare-aggregated-block-height"
+	KeyShareAggregatedEventData        = "keyshare-aggregated-data"
+)
+
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }

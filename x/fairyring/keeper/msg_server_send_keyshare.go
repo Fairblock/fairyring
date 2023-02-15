@@ -80,28 +80,68 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	//	return nil, types.ErrInvalidBlockHeight
 	//}
 
+	// Setup
 	suite := bls.NewBLS12381Suite()
 
-	extractedKey, commitment, err := parseKeyShareCommitment(suite, msg.Message, msg.Commitment, uint32(msg.KeyShareIndex))
+	// Parse the keyshare & commitment then verify it
+	_, _, err := parseKeyShareCommitment(suite, msg.Message, msg.Commitment, uint32(msg.KeyShareIndex))
 	if err != nil {
 		return nil, err
 	}
 
+	keyShare := types.KeyShare{
+		Validator:           msg.Creator,
+		BlockHeight:         msg.BlockHeight,
+		KeyShare:            msg.Message,
+		Commitment:          msg.Commitment,
+		KeyShareIndex:       msg.KeyShareIndex,
+		ReceivedTimestamp:   uint64(ctx.BlockTime().Unix()),
+		ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+	}
+
+	// Save the new keyshare to state
+	k.SetKeyShare(ctx, keyShare)
+
 	validatorList := k.GetAllValidatorSet(ctx)
 
-	listOfShares := []distIBE.ExtractedKey{
-		*extractedKey,
-	}
-	listOfCommitment := []distIBE.Commitment{
-		*commitment,
-	}
+	// Get all the keyshares for the provided block height in state
+	var stateKeyShares []types.KeyShare
 
 	for _, eachValidator := range validatorList {
 		eachKeyShare, found := k.GetKeyShare(ctx, eachValidator.Validator, msg.BlockHeight)
 		if !found {
 			continue
 		}
+		stateKeyShares = append(stateKeyShares, eachKeyShare)
+	}
 
+	// See if there is enough keyshares to aggregate
+	if len(stateKeyShares) < types.KEY_AGGREGATION_THRESHOLD {
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(types.SendKeyshareEventType,
+				sdk.NewAttribute(types.SendKeyshareEventValidator, msg.Creator),
+				sdk.NewAttribute(types.SendKeyshareEventKeyshareBlockHeight, strconv.FormatUint(msg.BlockHeight, 10)),
+				sdk.NewAttribute(types.SendKeyshareEventReceivedBlockHeight, strconv.FormatInt(ctx.BlockHeight(), 10)),
+				sdk.NewAttribute(types.SendKeyshareEventMessage, msg.Message),
+				sdk.NewAttribute(types.SendKeyshareEventCommitment, msg.Commitment),
+				sdk.NewAttribute(types.SendKeyshareEventIndex, strconv.FormatUint(msg.KeyShareIndex, 10)),
+			))
+
+		return &types.MsgSendKeyshareResponse{
+			Creator:             msg.Creator,
+			Keyshare:            msg.Message,
+			Commitment:          msg.Commitment,
+			KeyshareIndex:       msg.KeyShareIndex,
+			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+			BlockHeight:         msg.BlockHeight,
+		}, nil
+	}
+
+	// Parse & append all the keyshare for aggregation
+	var listOfShares []distIBE.ExtractedKey
+	var listOfCommitment []distIBE.Commitment
+
+	for _, eachKeyShare := range stateKeyShares {
 		keyShare, commitment, err := parseKeyShareCommitment(suite, eachKeyShare.KeyShare, eachKeyShare.Commitment, uint32(eachKeyShare.KeyShareIndex))
 		if err != nil {
 			k.Logger(ctx).Error(err.Error())
@@ -118,39 +158,33 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		)
 	}
 
-	keyShare := types.KeyShare{
-		Validator:           msg.Creator,
-		BlockHeight:         msg.BlockHeight,
-		KeyShare:            msg.Message,
-		Commitment:          msg.Commitment,
-		KeyShareIndex:       msg.KeyShareIndex,
-		ReceivedTimestamp:   uint64(ctx.BlockTime().Unix()),
-		ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+	// Aggregate key
+	SK, _ := distIBE.AggregateSK(suite, listOfShares, listOfCommitment, []byte(types.IBEId))
+	skByte, err := SK.MarshalBinary()
+	if err != nil {
+		return nil, err
+	}
+	skHex := hex.EncodeToString(skByte)
+
+	_, found = k.GetAggregatedKeyShare(ctx, msg.BlockHeight)
+
+	k.SetAggregatedKeyShare(ctx, types.AggregatedKeyShare{
+		Height: msg.BlockHeight,
+		Data:   skHex,
+	})
+
+	if !found {
+		k.SetAggregatedKeyShareLength(ctx, k.GetAggregatedKeyShareLength(ctx)+1)
 	}
 
-	k.SetKeyShare(ctx, keyShare)
+	k.Logger(ctx).Info(fmt.Sprintf("Aggregated Decryption Key for Block %d: %s", msg.BlockHeight, skHex))
 
-	if len(listOfCommitment) >= types.KEY_AGGREGATION_THRESHOLD && len(listOfShares) >= types.KEY_AGGREGATION_THRESHOLD {
-		SK, _ := distIBE.AggregateSK(suite, listOfShares, listOfCommitment, []byte(types.IBEId))
-		skByte, err := SK.MarshalBinary()
-		if err != nil {
-			return nil, err
-		}
-		skHex := hex.EncodeToString(skByte)
-
-		_, found := k.GetAggregatedKeyShare(ctx, msg.BlockHeight)
-
-		k.SetAggregatedKeyShare(ctx, types.AggregatedKeyShare{
-			Height: msg.BlockHeight,
-			Data:   skHex,
-		})
-
-		if !found {
-			k.SetAggregatedKeyShareLength(ctx, k.GetAggregatedKeyShareLength(ctx)+1)
-		}
-		
-		k.Logger(ctx).Info(fmt.Sprintf("Aggregated Decryption Key for Block %d: %s", msg.BlockHeight, skHex))
-	}
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(types.KeyShareAggregatedEventType,
+			sdk.NewAttribute(types.KeyShareAggregatedEventBlockHeight, strconv.FormatUint(msg.BlockHeight, 10)),
+			sdk.NewAttribute(types.KeyShareAggregatedEventData, skHex),
+		),
+	)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.SendKeyshareEventType,
@@ -160,7 +194,8 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			sdk.NewAttribute(types.SendKeyshareEventMessage, msg.Message),
 			sdk.NewAttribute(types.SendKeyshareEventCommitment, msg.Commitment),
 			sdk.NewAttribute(types.SendKeyshareEventIndex, strconv.FormatUint(msg.KeyShareIndex, 10)),
-		))
+		),
+	)
 
 	return &types.MsgSendKeyshareResponse{
 		Creator:             msg.Creator,
