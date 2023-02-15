@@ -389,7 +389,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				return
 			}
 
-			decodedTxJson, err := am.txConfig.TxJSONDecoder()([]byte(eachTx.Data))
+			decodedTxJson, err := am.txConfig.TxJSONDecoder()(decryptedTx.Bytes())
 			if err != nil {
 				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error("TXJson Decoding error in Beginblock")
