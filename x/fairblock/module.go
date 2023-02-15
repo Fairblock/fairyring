@@ -1,12 +1,16 @@
 package fairblock
 
 import (
+	enc "DistributedIBE/encryption"
+	"bytes"
 	"context"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/types/tx"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
+	bls "github.com/drand/kyber-bls12381"
 	"strconv"
 
 	// this line is used by starport scaffolding # 1
@@ -227,12 +231,115 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 			creatorAccount := am.accountKeeper.GetAccount(ctx, creatorAddr)
 
-			/*
-				TX Decryption goes here
-			*/
+			key, found := am.keeper.GetAggregatedKeyShare(ctx, h)
+			if !found {
+				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
+				am.keeper.Logger(ctx).Error(fmt.Sprintf("Decryption key not found for block height: %d", h))
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Decryption key not found"),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
+
+			keyByte, err := hex.DecodeString(key.Data)
+			if err != nil {
+				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
+				am.keeper.Logger(ctx).Error("Error decoding aggregated key")
+				am.keeper.Logger(ctx).Error(err.Error())
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
+
+			suite := bls.NewBLS12381Suite()
+			skPoint := suite.G2().Point()
+			err = skPoint.UnmarshalBinary(keyByte)
+			if err != nil {
+				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
+				am.keeper.Logger(ctx).Error("Error unmarshalling aggregated key")
+				am.keeper.Logger(ctx).Error(err.Error())
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
+
+			am.keeper.Logger(ctx).Info("Unmarshal decryption key successfully")
+
+			publicKeyByte, err := hex.DecodeString(types.PUBLIC_KEY)
+			if err != nil {
+				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
+				am.keeper.Logger(ctx).Error("Error decoding public key")
+				am.keeper.Logger(ctx).Error(err.Error())
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
+
+			publicKeyPoint := suite.G1().Point()
+			err = publicKeyPoint.UnmarshalBinary(publicKeyByte)
+			if err != nil {
+				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
+				am.keeper.Logger(ctx).Error("Error unmarshalling public key")
+				am.keeper.Logger(ctx).Error(err.Error())
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
+
+			am.keeper.Logger(ctx).Info("Unmarshal public key successfully")
+
+			var decryptedTx bytes.Buffer
+			txBuffer := bytes.NewBuffer([]byte(eachTx.Data))
+
+			err = enc.Decrypt(publicKeyPoint, skPoint, &decryptedTx, txBuffer)
+			if err != nil {
+				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
+				am.keeper.Logger(ctx).Error("Error decrypting tx data")
+				am.keeper.Logger(ctx).Error(err.Error())
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
+
+			am.keeper.Logger(ctx).Info(fmt.Sprintf("Decrypt TX Successfully: %s", decryptedTx.String()))
 
 			var signed tx.Tx
-			err = am.cdcJson.UnmarshalJSON([]byte(eachTx.Data), &signed)
+			err = am.cdcJson.UnmarshalJSON(decryptedTx.Bytes(), &signed)
 
 			if err != nil {
 				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
