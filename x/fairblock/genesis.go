@@ -23,6 +23,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.FairblockExecutedNonceList {
 		k.SetFairblockExecutedNonce(ctx, elem)
 	}
+	// Set all the aggregatedKeyShare
+	for _, elem := range genState.AggregatedKeyShareList {
+		k.SetAggregatedKeyShare(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetPort(ctx, genState.PortId)
 	// Only try to bind to port if it is not already bound, since we may already own
@@ -47,6 +51,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.EncryptedTxArray = k.GetAllEncryptedArray(ctx)
 	genesis.FairblockNonceList = k.GetAllFairblockNonce(ctx)
 	genesis.FairblockExecutedNonceList = k.GetAllFairblockExecutedNonce(ctx)
+	genesis.AggregatedKeyShareList = k.GetAllAggregatedKeyShare(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

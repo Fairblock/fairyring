@@ -1,5 +1,6 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
+import { AggregatedKeyShare } from "./aggregated_key_share";
 import { EncryptedTxArray } from "./encrypted_tx";
 import { FairblockExecutedNonce } from "./fairblock_executed_nonce";
 import { FairblockNonce } from "./fairblock_nonce";
@@ -13,8 +14,9 @@ export interface GenesisState {
   portId: string;
   encryptedTxArray: EncryptedTxArray[];
   fairblockNonceList: FairblockNonce[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   fairblockExecutedNonceList: FairblockExecutedNonce[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  aggregatedKeyShareList: AggregatedKeyShare[];
 }
 
 function createBaseGenesisState(): GenesisState {
@@ -24,6 +26,7 @@ function createBaseGenesisState(): GenesisState {
     encryptedTxArray: [],
     fairblockNonceList: [],
     fairblockExecutedNonceList: [],
+    aggregatedKeyShareList: [],
   };
 }
 
@@ -43,6 +46,9 @@ export const GenesisState = {
     }
     for (const v of message.fairblockExecutedNonceList) {
       FairblockExecutedNonce.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    for (const v of message.aggregatedKeyShareList) {
+      AggregatedKeyShare.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -69,6 +75,9 @@ export const GenesisState = {
         case 5:
           message.fairblockExecutedNonceList.push(FairblockExecutedNonce.decode(reader, reader.uint32()));
           break;
+        case 6:
+          message.aggregatedKeyShareList.push(AggregatedKeyShare.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -89,6 +98,9 @@ export const GenesisState = {
         : [],
       fairblockExecutedNonceList: Array.isArray(object?.fairblockExecutedNonceList)
         ? object.fairblockExecutedNonceList.map((e: any) => FairblockExecutedNonce.fromJSON(e))
+        : [],
+      aggregatedKeyShareList: Array.isArray(object?.aggregatedKeyShareList)
+        ? object.aggregatedKeyShareList.map((e: any) => AggregatedKeyShare.fromJSON(e))
         : [],
     };
   },
@@ -114,6 +126,13 @@ export const GenesisState = {
     } else {
       obj.fairblockExecutedNonceList = [];
     }
+    if (message.aggregatedKeyShareList) {
+      obj.aggregatedKeyShareList = message.aggregatedKeyShareList.map((e) =>
+        e ? AggregatedKeyShare.toJSON(e) : undefined
+      );
+    } else {
+      obj.aggregatedKeyShareList = [];
+    }
     return obj;
   },
 
@@ -127,6 +146,7 @@ export const GenesisState = {
     message.fairblockNonceList = object.fairblockNonceList?.map((e) => FairblockNonce.fromPartial(e)) || [];
     message.fairblockExecutedNonceList =
       object.fairblockExecutedNonceList?.map((e) => FairblockExecutedNonce.fromPartial(e)) || [];
+    message.aggregatedKeyShareList = object.aggregatedKeyShareList?.map((e) => AggregatedKeyShare.fromPartial(e)) || [];
     return message;
   },
 };

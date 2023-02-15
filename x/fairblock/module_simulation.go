@@ -28,6 +28,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgSubmitEncryptedTx int = 100
 
+	opWeightMsgCreateAggregatedKeyShare = "op_weight_msg_aggregated_key_share"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateAggregatedKeyShare int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -40,6 +44,16 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	fairblockGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
 		PortId: types.PortID,
+		AggregatedKeyShareList: []types.AggregatedKeyShare{
+			{
+				Creator: sample.AccAddress(),
+				Height:  0,
+			},
+			{
+				Creator: sample.AccAddress(),
+				Height:  1,
+			},
+		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&fairblockGenesis)
@@ -72,6 +86,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgSubmitEncryptedTx,
 		fairblocksimulation.SimulateMsgSubmitEncryptedTx(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateAggregatedKeyShare int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateAggregatedKeyShare, &weightMsgCreateAggregatedKeyShare, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateAggregatedKeyShare = defaultWeightMsgCreateAggregatedKeyShare
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateAggregatedKeyShare,
+		fairblocksimulation.SimulateMsgCreateAggregatedKeyShare(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

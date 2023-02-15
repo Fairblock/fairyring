@@ -14,6 +14,7 @@ func DefaultGenesis() *GenesisState {
 		PortId:                     PortID,
 		EncryptedTxArray:           []EncryptedTxArray{},
 		FairblockExecutedNonceList: []FairblockExecutedNonce{},
+		AggregatedKeyShareList:     []AggregatedKeyShare{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -53,6 +54,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for fairblockExecutedNonce")
 		}
 		fairblockExecutedNonceIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in aggregatedKeyShare
+	aggregatedKeyShareIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.AggregatedKeyShareList {
+		index := string(AggregatedKeyShareKey(elem.Height))
+		if _, ok := aggregatedKeyShareIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for aggregatedKeyShare")
+		}
+		aggregatedKeyShareIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

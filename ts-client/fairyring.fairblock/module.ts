@@ -8,13 +8,45 @@ import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
 import { MsgSubmitEncryptedTx } from "./types/fairyring/fairblock/tx";
+import { MsgCreateAggregatedKeyShare } from "./types/fairyring/fairblock/tx";
+import { MsgUpdateAggregatedKeyShare } from "./types/fairyring/fairblock/tx";
+import { MsgDeleteAggregatedKeyShare } from "./types/fairyring/fairblock/tx";
 import { MsgSendCurrentHeight } from "./types/fairyring/fairblock/tx";
 
+import { AggregatedKeyShare as typeAggregatedKeyShare} from "./types"
+import { EncryptedTx as typeEncryptedTx} from "./types"
+import { EncryptedTxArray as typeEncryptedTxArray} from "./types"
+import { FairblockExecutedNonce as typeFairblockExecutedNonce} from "./types"
+import { FairblockNonce as typeFairblockNonce} from "./types"
+import { FairblockTx as typeFairblockTx} from "./types"
+import { FairblockPacketData as typeFairblockPacketData} from "./types"
+import { NoData as typeNoData} from "./types"
+import { CurrentHeightPacketData as typeCurrentHeightPacketData} from "./types"
+import { CurrentHeightPacketAck as typeCurrentHeightPacketAck} from "./types"
+import { Params as typeParams} from "./types"
 
-export { MsgSubmitEncryptedTx, MsgSendCurrentHeight };
+export { MsgSubmitEncryptedTx, MsgCreateAggregatedKeyShare, MsgUpdateAggregatedKeyShare, MsgDeleteAggregatedKeyShare, MsgSendCurrentHeight };
 
 type sendMsgSubmitEncryptedTxParams = {
   value: MsgSubmitEncryptedTx,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgCreateAggregatedKeyShareParams = {
+  value: MsgCreateAggregatedKeyShare,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgUpdateAggregatedKeyShareParams = {
+  value: MsgUpdateAggregatedKeyShare,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgDeleteAggregatedKeyShareParams = {
+  value: MsgDeleteAggregatedKeyShare,
   fee?: StdFee,
   memo?: string
 };
@@ -30,6 +62,18 @@ type msgSubmitEncryptedTxParams = {
   value: MsgSubmitEncryptedTx,
 };
 
+type msgCreateAggregatedKeyShareParams = {
+  value: MsgCreateAggregatedKeyShare,
+};
+
+type msgUpdateAggregatedKeyShareParams = {
+  value: MsgUpdateAggregatedKeyShare,
+};
+
+type msgDeleteAggregatedKeyShareParams = {
+  value: MsgDeleteAggregatedKeyShare,
+};
+
 type msgSendCurrentHeightParams = {
   value: MsgSendCurrentHeight,
 };
@@ -37,6 +81,18 @@ type msgSendCurrentHeightParams = {
 
 export const registry = new Registry(msgTypes);
 
+type Field = {
+	name: string;
+	type: unknown;
+}
+function getStructure(template) {
+	const structure: {fields: Field[]} = { fields: [] }
+	for (let [key, value] of Object.entries(template)) {
+		let field = { name: key, type: typeof value }
+		structure.fields.push(field)
+	}
+	return structure
+}
 const defaultFee = {
   amount: [],
   gas: "200000",
@@ -66,6 +122,48 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendMsgCreateAggregatedKeyShare({ value, fee, memo }: sendMsgCreateAggregatedKeyShareParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCreateAggregatedKeyShare: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgCreateAggregatedKeyShare({ value: MsgCreateAggregatedKeyShare.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCreateAggregatedKeyShare: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgUpdateAggregatedKeyShare({ value, fee, memo }: sendMsgUpdateAggregatedKeyShareParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUpdateAggregatedKeyShare: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgUpdateAggregatedKeyShare({ value: MsgUpdateAggregatedKeyShare.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgUpdateAggregatedKeyShare: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgDeleteAggregatedKeyShare({ value, fee, memo }: sendMsgDeleteAggregatedKeyShareParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgDeleteAggregatedKeyShare: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgDeleteAggregatedKeyShare({ value: MsgDeleteAggregatedKeyShare.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgDeleteAggregatedKeyShare: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		async sendMsgSendCurrentHeight({ value, fee, memo }: sendMsgSendCurrentHeightParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgSendCurrentHeight: Unable to sign Tx. Signer is not present.')
@@ -86,6 +184,30 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/fairyring.fairblock.MsgSubmitEncryptedTx", value: MsgSubmitEncryptedTx.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgSubmitEncryptedTx: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgCreateAggregatedKeyShare({ value }: msgCreateAggregatedKeyShareParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.fairblock.MsgCreateAggregatedKeyShare", value: MsgCreateAggregatedKeyShare.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCreateAggregatedKeyShare: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUpdateAggregatedKeyShare({ value }: msgUpdateAggregatedKeyShareParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.fairblock.MsgUpdateAggregatedKeyShare", value: MsgUpdateAggregatedKeyShare.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUpdateAggregatedKeyShare: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgDeleteAggregatedKeyShare({ value }: msgDeleteAggregatedKeyShareParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.fairblock.MsgDeleteAggregatedKeyShare", value: MsgDeleteAggregatedKeyShare.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgDeleteAggregatedKeyShare: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -111,13 +233,27 @@ export const queryClient = ({ addr: addr }: QueryClientOptions = { addr: "http:/
 class SDKModule {
 	public query: ReturnType<typeof queryClient>;
 	public tx: ReturnType<typeof txClient>;
-	
+	public structure: Record<string,unknown>;
 	public registry: Array<[string, GeneratedType]> = [];
 
 	constructor(client: IgniteClient) {		
 	
 		this.query = queryClient({ addr: client.env.apiURL });		
 		this.updateTX(client);
+		this.structure =  {
+						AggregatedKeyShare: getStructure(typeAggregatedKeyShare.fromPartial({})),
+						EncryptedTx: getStructure(typeEncryptedTx.fromPartial({})),
+						EncryptedTxArray: getStructure(typeEncryptedTxArray.fromPartial({})),
+						FairblockExecutedNonce: getStructure(typeFairblockExecutedNonce.fromPartial({})),
+						FairblockNonce: getStructure(typeFairblockNonce.fromPartial({})),
+						FairblockTx: getStructure(typeFairblockTx.fromPartial({})),
+						FairblockPacketData: getStructure(typeFairblockPacketData.fromPartial({})),
+						NoData: getStructure(typeNoData.fromPartial({})),
+						CurrentHeightPacketData: getStructure(typeCurrentHeightPacketData.fromPartial({})),
+						CurrentHeightPacketAck: getStructure(typeCurrentHeightPacketAck.fromPartial({})),
+						Params: getStructure(typeParams.fromPartial({})),
+						
+		};
 		client.on('signer-changed',(signer) => {			
 		 this.updateTX(client);
 		})
