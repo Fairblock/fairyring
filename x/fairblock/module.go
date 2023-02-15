@@ -281,6 +281,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			}
 
 			am.keeper.Logger(ctx).Info("Unmarshal decryption key successfully")
+			am.keeper.Logger(ctx).Info(skPoint.String())
 
 			publicKeyByte, err := hex.DecodeString(types.PUBLIC_KEY)
 			if err != nil {
@@ -316,6 +317,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			}
 
 			am.keeper.Logger(ctx).Info("Unmarshal public key successfully")
+			am.keeper.Logger(ctx).Info(publicKeyPoint.String())
 
 			txBytes, err := hex.DecodeString(eachTx.Data)
 			if err != nil {
@@ -334,9 +336,24 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			}
 
 			var decryptedTx bytes.Buffer
-			txBuffer := bytes.NewBuffer(txBytes)
+			var txBuffer bytes.Buffer
+			_, err = txBuffer.Write(txBytes)
+			if err != nil {
+				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
+				am.keeper.Logger(ctx).Error("Error write byte to tx buffer")
+				am.keeper.Logger(ctx).Error(err.Error())
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
 
-			err = enc.Decrypt(publicKeyPoint, skPoint, &decryptedTx, txBuffer)
+			err = enc.Decrypt(publicKeyPoint, skPoint, &decryptedTx, &txBuffer)
 			if err != nil {
 				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error("Error decrypting tx data")
