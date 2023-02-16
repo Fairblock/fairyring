@@ -15,8 +15,8 @@ const (
 )
 
 const (
-	IBEId                     = "Random_IBE_ID"
-	KEY_AGGREGATION_THRESHOLD = 1
+	IBEId                   = "Random_IBE_ID"
+	KeyAggregationThreshold = 1
 )
 
 const (
@@ -38,6 +38,7 @@ const (
 	KeyShareAggregatedEventType        = "keyshare-aggregated"
 	KeyShareAggregatedEventBlockHeight = "keyshare-aggregated-block-height"
 	KeyShareAggregatedEventData        = "keyshare-aggregated-data"
+	KeyShareAggregatedEventPubKey      = "keyshare-aggregated-pubkey"
 )
 
 func KeyPrefix(p string) []byte {
