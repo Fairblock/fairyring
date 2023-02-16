@@ -6,10 +6,11 @@ import (
 	"encoding/hex"
 	"fairyring/x/fairyring/types"
 	"fmt"
+	"strconv"
+
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"
 	"github.com/drand/kyber/pairing"
-	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
