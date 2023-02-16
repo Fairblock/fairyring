@@ -21,9 +21,10 @@ func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.Ms
 	}
 
 	var aggregatedKeyShare = types.AggregatedKeyShare{
-		Creator: msg.Creator,
-		Height:  msg.Height,
-		Data:    msg.Data,
+		Creator:   msg.Creator,
+		Height:    msg.Height,
+		Data:      msg.Data,
+		PublicKey: msg.PublicKey,
 	}
 
 	k.SetAggregatedKeyShare(
