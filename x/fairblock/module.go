@@ -283,7 +283,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			am.keeper.Logger(ctx).Info("Unmarshal decryption key successfully")
 			am.keeper.Logger(ctx).Info(skPoint.String())
 
-			publicKeyByte, err := hex.DecodeString(types.PUBLIC_KEY)
+			publicKeyByte, err := hex.DecodeString(key.PublicKey)
 			if err != nil {
 				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error("Error decoding public key")

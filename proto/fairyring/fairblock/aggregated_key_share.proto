@@ -5,7 +5,8 @@ option go_package = "fairyring/x/fairblock/types";
 
 message AggregatedKeyShare {
   uint64 height = 1; 
-  string data = 2; 
-  string creator = 3;
+  string data = 2;
+  string publicKey = 3;
+  string creator = 4;
 }
 

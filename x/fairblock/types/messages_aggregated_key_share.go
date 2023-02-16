@@ -15,12 +15,13 @@ func NewMsgCreateAggregatedKeyShare(
 	creator string,
 	height uint64,
 	data string,
-
+	publicKey string,
 ) *MsgCreateAggregatedKeyShare {
 	return &MsgCreateAggregatedKeyShare{
-		Creator: creator,
-		Height:  height,
-		Data:    data,
+		Creator:   creator,
+		Height:    height,
+		Data:      data,
+		PublicKey: publicKey,
 	}
 }
 

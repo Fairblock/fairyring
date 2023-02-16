@@ -38,6 +38,7 @@ message MsgCreateAggregatedKeyShare {
   string creator = 1;
   uint64 height  = 2;
   string data    = 3;
+  string publicKey = 4;
 }
 
 message MsgCreateAggregatedKeyShareResponse {}
