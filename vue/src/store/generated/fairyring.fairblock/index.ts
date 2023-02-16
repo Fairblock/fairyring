@@ -53,8 +53,6 @@ const getDefaultState = () => {
 				FairblockNonceAll: {},
 				FairblockExecutedNonce: {},
 				FairblockExecutedNonceAll: {},
-				AggregatedKeyShare: {},
-				AggregatedKeyShareAll: {},
 				
 				_Structure: {
 						AggregatedKeyShare: getStructure(AggregatedKeyShare.fromPartial({})),
@@ -149,18 +147,6 @@ export default {
 						(<any> params).query=null
 					}
 			return state.FairblockExecutedNonceAll[JSON.stringify(params)] ?? {}
-		},
-				getAggregatedKeyShare: (state) => (params = { params: {}}) => {
-					if (!(<any> params).query) {
-						(<any> params).query=null
-					}
-			return state.AggregatedKeyShare[JSON.stringify(params)] ?? {}
-		},
-				getAggregatedKeyShareAll: (state) => (params = { params: {}}) => {
-					if (!(<any> params).query) {
-						(<any> params).query=null
-					}
-			return state.AggregatedKeyShareAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -406,54 +392,20 @@ export default {
 		},
 		
 		
-		
-		
-		 		
-		
-		
-		async QueryAggregatedKeyShare({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+		async sendMsgSendCurrentHeight({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
-				const key = params ?? {};
-				const client = initClient(rootGetters);
-				let value= (await client.FairyringFairblock.query.queryAggregatedKeyShare( key.height)).data
-				
-					
-				commit('QUERY', { query: 'AggregatedKeyShare', key: { params: {...key}, query}, value })
-				if (subscribe) commit('SUBSCRIBE', { action: 'QueryAggregatedKeyShare', payload: { options: { all }, params: {...key},query }})
-				return getters['getAggregatedKeyShare']( { params: {...key}, query}) ?? {}
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringFairblock.tx.sendMsgSendCurrentHeight({ value, fee: fullFee, memo })
+				return result
 			} catch (e) {
-				throw new Error('QueryClient:QueryAggregatedKeyShare API Node Unavailable. Could not perform query: ' + e.message)
-				
-			}
-		},
-		
-		
-		
-		
-		 		
-		
-		
-		async QueryAggregatedKeyShareAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
-			try {
-				const key = params ?? {};
-				const client = initClient(rootGetters);
-				let value= (await client.FairyringFairblock.query.queryAggregatedKeyShareAll(query ?? undefined)).data
-				
-					
-				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
-					let next_values=(await client.FairyringFairblock.query.queryAggregatedKeyShareAll({...query ?? {}, 'pagination.key':(<any> value).pagination.next_key} as any)).data
-					value = mergeResults(value, next_values);
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSendCurrentHeight:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgSendCurrentHeight:Send Could not broadcast Tx: '+ e.message)
 				}
-				commit('QUERY', { query: 'AggregatedKeyShareAll', key: { params: {...key}, query}, value })
-				if (subscribe) commit('SUBSCRIBE', { action: 'QueryAggregatedKeyShareAll', payload: { options: { all }, params: {...key},query }})
-				return getters['getAggregatedKeyShareAll']( { params: {...key}, query}) ?? {}
-			} catch (e) {
-				throw new Error('QueryClient:QueryAggregatedKeyShareAll API Node Unavailable. Could not perform query: ' + e.message)
-				
 			}
 		},
-		
-		
 		async sendMsgSubmitEncryptedTx({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -482,49 +434,20 @@ export default {
 				}
 			}
 		},
-		async sendMsgUpdateAggregatedKeyShare({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		
+		async MsgSendCurrentHeight({ rootGetters }, { value }) {
 			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringFairblock.tx.sendMsgUpdateAggregatedKeyShare({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateAggregatedKeyShare:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgUpdateAggregatedKeyShare:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgDeleteAggregatedKeyShare({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringFairblock.tx.sendMsgDeleteAggregatedKeyShare({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgDeleteAggregatedKeyShare:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgDeleteAggregatedKeyShare:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgSendCurrentHeight({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringFairblock.tx.sendMsgSendCurrentHeight({ value, fee: fullFee, memo })
-				return result
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringFairblock.tx.msgSendCurrentHeight({value})
+				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgSendCurrentHeight:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgSendCurrentHeight:Send Could not broadcast Tx: '+ e.message)
+				} else{
+					throw new Error('TxClient:MsgSendCurrentHeight:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		
 		async MsgSubmitEncryptedTx({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -548,45 +471,6 @@ export default {
 					throw new Error('TxClient:MsgCreateAggregatedKeyShare:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgCreateAggregatedKeyShare:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgUpdateAggregatedKeyShare({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringFairblock.tx.msgUpdateAggregatedKeyShare({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateAggregatedKeyShare:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgUpdateAggregatedKeyShare:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgDeleteAggregatedKeyShare({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringFairblock.tx.msgDeleteAggregatedKeyShare({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgDeleteAggregatedKeyShare:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgDeleteAggregatedKeyShare:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgSendCurrentHeight({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringFairblock.tx.msgSendCurrentHeight({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSendCurrentHeight:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgSendCurrentHeight:Create Could not create message: ' + e.message)
 				}
 			}
 		},

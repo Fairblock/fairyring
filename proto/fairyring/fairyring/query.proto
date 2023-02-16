@@ -9,6 +9,7 @@ import "fairyring/fairyring/params.proto";
 import "fairyring/fairyring/validator_set.proto";
 import "fairyring/fairyring/key_share.proto";
 import "fairyring/fairyring/aggregated_key_share.proto";
+import "fairyring/fairyring/pub_key_id.proto";
 
 // this line is used by starport scaffolding # 1
 
@@ -58,6 +59,16 @@ service Query {
     option (google.api.http).get = "/fairyring/fairyring/aggregated_key_share";
   
   }
+  
+  // Queries a list of PubKeyID items.
+  rpc PubKeyID    (QueryGetPubKeyIDRequest) returns (QueryGetPubKeyIDResponse) {
+    option (google.api.http).get = "/fairyring/fairyring/pub_key_id/{height}";
+  
+  }
+  rpc PubKeyIDAll (QueryAllPubKeyIDRequest) returns (QueryAllPubKeyIDResponse) {
+    option (google.api.http).get = "/fairyring/fairyring/pub_key_id";
+  
+  }
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
@@ -104,7 +115,6 @@ message QueryAllKeyShareResponse {
            cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-
 // this line is used by starport scaffolding # 3
 message QueryGetAggregatedKeyShareRequest {
   uint64 height = 1;
@@ -121,5 +131,22 @@ message QueryAllAggregatedKeyShareRequest {
 message QueryAllAggregatedKeyShareResponse {
   repeated AggregatedKeyShare                     aggregatedKeyShare = 1 [(gogoproto.nullable) = false];
            cosmos.base.query.v1beta1.PageResponse pagination         = 2;
+}
+
+message QueryGetPubKeyIDRequest {
+  uint64 height = 1;
+}
+
+message QueryGetPubKeyIDResponse {
+  PubKeyID pubKeyID = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllPubKeyIDRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllPubKeyIDResponse {
+  repeated PubKeyID                               pubKeyID   = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

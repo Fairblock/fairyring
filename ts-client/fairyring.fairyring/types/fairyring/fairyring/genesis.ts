@@ -3,6 +3,7 @@ import _m0 from "protobufjs/minimal";
 import { AggregatedKeyShare } from "./aggregated_key_share";
 import { KeyShare } from "./key_share";
 import { Params } from "./params";
+import { PubKeyID } from "./pub_key_id";
 import { ValidatorSet } from "./validator_set";
 
 export const protobufPackage = "fairyring.fairyring";
@@ -14,10 +15,11 @@ export interface GenesisState {
   keyShareList: KeyShare[];
   /** this line is used by starport scaffolding # genesis/proto/state */
   aggregatedKeyShareList: AggregatedKeyShare[];
+  pubKeyIDList: PubKeyID[];
 }
 
 function createBaseGenesisState(): GenesisState {
-  return { params: undefined, validatorSetList: [], keyShareList: [], aggregatedKeyShareList: [] };
+  return { params: undefined, validatorSetList: [], keyShareList: [], aggregatedKeyShareList: [], pubKeyIDList: [] };
 }
 
 export const GenesisState = {
@@ -33,6 +35,9 @@ export const GenesisState = {
     }
     for (const v of message.aggregatedKeyShareList) {
       AggregatedKeyShare.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    for (const v of message.pubKeyIDList) {
+      PubKeyID.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -56,6 +61,9 @@ export const GenesisState = {
         case 4:
           message.aggregatedKeyShareList.push(AggregatedKeyShare.decode(reader, reader.uint32()));
           break;
+        case 5:
+          message.pubKeyIDList.push(PubKeyID.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -75,6 +83,9 @@ export const GenesisState = {
         : [],
       aggregatedKeyShareList: Array.isArray(object?.aggregatedKeyShareList)
         ? object.aggregatedKeyShareList.map((e: any) => AggregatedKeyShare.fromJSON(e))
+        : [],
+      pubKeyIDList: Array.isArray(object?.pubKeyIDList)
+        ? object.pubKeyIDList.map((e: any) => PubKeyID.fromJSON(e))
         : [],
     };
   },
@@ -99,6 +110,11 @@ export const GenesisState = {
     } else {
       obj.aggregatedKeyShareList = [];
     }
+    if (message.pubKeyIDList) {
+      obj.pubKeyIDList = message.pubKeyIDList.map((e) => e ? PubKeyID.toJSON(e) : undefined);
+    } else {
+      obj.pubKeyIDList = [];
+    }
     return obj;
   },
 
@@ -110,6 +126,7 @@ export const GenesisState = {
     message.validatorSetList = object.validatorSetList?.map((e) => ValidatorSet.fromPartial(e)) || [];
     message.keyShareList = object.keyShareList?.map((e) => KeyShare.fromPartial(e)) || [];
     message.aggregatedKeyShareList = object.aggregatedKeyShareList?.map((e) => AggregatedKeyShare.fromPartial(e)) || [];
+    message.pubKeyIDList = object.pubKeyIDList?.map((e) => PubKeyID.fromPartial(e)) || [];
     return message;
   },
 };

@@ -33,6 +33,10 @@ export interface FairyringKeyShare {
   receivedBlockHeight?: string;
 }
 
+export type FairyringMsgCreatePubKeyIDResponse = object;
+
+export type FairyringMsgDeletePubKeyIDResponse = object;
+
 export interface FairyringMsgRegisterValidatorResponse {
   creator?: string;
 }
@@ -52,10 +56,20 @@ export interface FairyringMsgSendKeyshareResponse {
   receivedBlockHeight?: string;
 }
 
+export type FairyringMsgUpdatePubKeyIDResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */
 export type FairyringParams = object;
+
+export interface FairyringPubKeyID {
+  /** @format uint64 */
+  height?: string;
+  publicKey?: string;
+  ibeID?: string;
+  creator?: string;
+}
 
 export interface FairyringQueryAllAggregatedKeyShareResponse {
   aggregatedKeyShare?: FairyringAggregatedKeyShare[];
@@ -74,6 +88,21 @@ export interface FairyringQueryAllAggregatedKeyShareResponse {
 
 export interface FairyringQueryAllKeyShareResponse {
   keyShare?: FairyringKeyShare[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface FairyringQueryAllPubKeyIDResponse {
+  pubKeyID?: FairyringPubKeyID[];
 
   /**
    * PageResponse is to be embedded in gRPC response messages where the
@@ -108,6 +137,10 @@ export interface FairyringQueryGetAggregatedKeyShareResponse {
 
 export interface FairyringQueryGetKeyShareResponse {
   keyShare?: FairyringKeyShare;
+}
+
+export interface FairyringQueryGetPubKeyIDResponse {
+  pubKeyID?: FairyringPubKeyID;
 }
 
 export interface FairyringQueryGetValidatorSetResponse {
@@ -430,6 +463,47 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<FairyringQueryParamsResponse, RpcStatus>({
       path: `/fairyring/fairyring/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryPubKeyIdAll
+   * @request GET:/fairyring/fairyring/pub_key_id
+   */
+  queryPubKeyIDAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FairyringQueryAllPubKeyIDResponse, RpcStatus>({
+      path: `/fairyring/fairyring/pub_key_id`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryPubKeyId
+   * @summary Queries a list of PubKeyID items.
+   * @request GET:/fairyring/fairyring/pub_key_id/{height}
+   */
+  queryPubKeyID = (height: string, params: RequestParams = {}) =>
+    this.request<FairyringQueryGetPubKeyIDResponse, RpcStatus>({
+      path: `/fairyring/fairyring/pub_key_id/${height}`,
       method: "GET",
       format: "json",
       ...params,

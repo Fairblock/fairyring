@@ -28,26 +28,10 @@ export interface MsgCreateAggregatedKeyShare {
   creator: string;
   height: number;
   data: string;
+  publicKey: string;
 }
 
 export interface MsgCreateAggregatedKeyShareResponse {
-}
-
-export interface MsgUpdateAggregatedKeyShare {
-  creator: string;
-  height: number;
-  data: string;
-}
-
-export interface MsgUpdateAggregatedKeyShareResponse {
-}
-
-export interface MsgDeleteAggregatedKeyShare {
-  creator: string;
-  height: number;
-}
-
-export interface MsgDeleteAggregatedKeyShareResponse {
 }
 
 function createBaseMsgSubmitEncryptedTx(): MsgSubmitEncryptedTx {
@@ -272,7 +256,7 @@ export const MsgSendCurrentHeightResponse = {
 };
 
 function createBaseMsgCreateAggregatedKeyShare(): MsgCreateAggregatedKeyShare {
-  return { creator: "", height: 0, data: "" };
+  return { creator: "", height: 0, data: "", publicKey: "" };
 }
 
 export const MsgCreateAggregatedKeyShare = {
@@ -285,6 +269,9 @@ export const MsgCreateAggregatedKeyShare = {
     }
     if (message.data !== "") {
       writer.uint32(26).string(message.data);
+    }
+    if (message.publicKey !== "") {
+      writer.uint32(34).string(message.publicKey);
     }
     return writer;
   },
@@ -305,6 +292,9 @@ export const MsgCreateAggregatedKeyShare = {
         case 3:
           message.data = reader.string();
           break;
+        case 4:
+          message.publicKey = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -318,6 +308,7 @@ export const MsgCreateAggregatedKeyShare = {
       creator: isSet(object.creator) ? String(object.creator) : "",
       height: isSet(object.height) ? Number(object.height) : 0,
       data: isSet(object.data) ? String(object.data) : "",
+      publicKey: isSet(object.publicKey) ? String(object.publicKey) : "",
     };
   },
 
@@ -326,6 +317,7 @@ export const MsgCreateAggregatedKeyShare = {
     message.creator !== undefined && (obj.creator = message.creator);
     message.height !== undefined && (obj.height = Math.round(message.height));
     message.data !== undefined && (obj.data = message.data);
+    message.publicKey !== undefined && (obj.publicKey = message.publicKey);
     return obj;
   },
 
@@ -334,6 +326,7 @@ export const MsgCreateAggregatedKeyShare = {
     message.creator = object.creator ?? "";
     message.height = object.height ?? 0;
     message.data = object.data ?? "";
+    message.publicKey = object.publicKey ?? "";
     return message;
   },
 };
@@ -379,221 +372,12 @@ export const MsgCreateAggregatedKeyShareResponse = {
   },
 };
 
-function createBaseMsgUpdateAggregatedKeyShare(): MsgUpdateAggregatedKeyShare {
-  return { creator: "", height: 0, data: "" };
-}
-
-export const MsgUpdateAggregatedKeyShare = {
-  encode(message: MsgUpdateAggregatedKeyShare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.creator !== "") {
-      writer.uint32(10).string(message.creator);
-    }
-    if (message.height !== 0) {
-      writer.uint32(16).uint64(message.height);
-    }
-    if (message.data !== "") {
-      writer.uint32(26).string(message.data);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateAggregatedKeyShare {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgUpdateAggregatedKeyShare();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.creator = reader.string();
-          break;
-        case 2:
-          message.height = longToNumber(reader.uint64() as Long);
-          break;
-        case 3:
-          message.data = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): MsgUpdateAggregatedKeyShare {
-    return {
-      creator: isSet(object.creator) ? String(object.creator) : "",
-      height: isSet(object.height) ? Number(object.height) : 0,
-      data: isSet(object.data) ? String(object.data) : "",
-    };
-  },
-
-  toJSON(message: MsgUpdateAggregatedKeyShare): unknown {
-    const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.height !== undefined && (obj.height = Math.round(message.height));
-    message.data !== undefined && (obj.data = message.data);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<MsgUpdateAggregatedKeyShare>, I>>(object: I): MsgUpdateAggregatedKeyShare {
-    const message = createBaseMsgUpdateAggregatedKeyShare();
-    message.creator = object.creator ?? "";
-    message.height = object.height ?? 0;
-    message.data = object.data ?? "";
-    return message;
-  },
-};
-
-function createBaseMsgUpdateAggregatedKeyShareResponse(): MsgUpdateAggregatedKeyShareResponse {
-  return {};
-}
-
-export const MsgUpdateAggregatedKeyShareResponse = {
-  encode(_: MsgUpdateAggregatedKeyShareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateAggregatedKeyShareResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgUpdateAggregatedKeyShareResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(_: any): MsgUpdateAggregatedKeyShareResponse {
-    return {};
-  },
-
-  toJSON(_: MsgUpdateAggregatedKeyShareResponse): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<MsgUpdateAggregatedKeyShareResponse>, I>>(
-    _: I,
-  ): MsgUpdateAggregatedKeyShareResponse {
-    const message = createBaseMsgUpdateAggregatedKeyShareResponse();
-    return message;
-  },
-};
-
-function createBaseMsgDeleteAggregatedKeyShare(): MsgDeleteAggregatedKeyShare {
-  return { creator: "", height: 0 };
-}
-
-export const MsgDeleteAggregatedKeyShare = {
-  encode(message: MsgDeleteAggregatedKeyShare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.creator !== "") {
-      writer.uint32(10).string(message.creator);
-    }
-    if (message.height !== 0) {
-      writer.uint32(16).uint64(message.height);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteAggregatedKeyShare {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgDeleteAggregatedKeyShare();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.creator = reader.string();
-          break;
-        case 2:
-          message.height = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): MsgDeleteAggregatedKeyShare {
-    return {
-      creator: isSet(object.creator) ? String(object.creator) : "",
-      height: isSet(object.height) ? Number(object.height) : 0,
-    };
-  },
-
-  toJSON(message: MsgDeleteAggregatedKeyShare): unknown {
-    const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.height !== undefined && (obj.height = Math.round(message.height));
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<MsgDeleteAggregatedKeyShare>, I>>(object: I): MsgDeleteAggregatedKeyShare {
-    const message = createBaseMsgDeleteAggregatedKeyShare();
-    message.creator = object.creator ?? "";
-    message.height = object.height ?? 0;
-    return message;
-  },
-};
-
-function createBaseMsgDeleteAggregatedKeyShareResponse(): MsgDeleteAggregatedKeyShareResponse {
-  return {};
-}
-
-export const MsgDeleteAggregatedKeyShareResponse = {
-  encode(_: MsgDeleteAggregatedKeyShareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteAggregatedKeyShareResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgDeleteAggregatedKeyShareResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(_: any): MsgDeleteAggregatedKeyShareResponse {
-    return {};
-  },
-
-  toJSON(_: MsgDeleteAggregatedKeyShareResponse): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<MsgDeleteAggregatedKeyShareResponse>, I>>(
-    _: I,
-  ): MsgDeleteAggregatedKeyShareResponse {
-    const message = createBaseMsgDeleteAggregatedKeyShareResponse();
-    return message;
-  },
-};
-
 /** Msg defines the Msg service. */
 export interface Msg {
   SubmitEncryptedTx(request: MsgSubmitEncryptedTx): Promise<MsgSubmitEncryptedTxResponse>;
   SendCurrentHeight(request: MsgSendCurrentHeight): Promise<MsgSendCurrentHeightResponse>;
   /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateAggregatedKeyShare(request: MsgCreateAggregatedKeyShare): Promise<MsgCreateAggregatedKeyShareResponse>;
-  UpdateAggregatedKeyShare(request: MsgUpdateAggregatedKeyShare): Promise<MsgUpdateAggregatedKeyShareResponse>;
-  DeleteAggregatedKeyShare(request: MsgDeleteAggregatedKeyShare): Promise<MsgDeleteAggregatedKeyShareResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -603,8 +387,6 @@ export class MsgClientImpl implements Msg {
     this.SubmitEncryptedTx = this.SubmitEncryptedTx.bind(this);
     this.SendCurrentHeight = this.SendCurrentHeight.bind(this);
     this.CreateAggregatedKeyShare = this.CreateAggregatedKeyShare.bind(this);
-    this.UpdateAggregatedKeyShare = this.UpdateAggregatedKeyShare.bind(this);
-    this.DeleteAggregatedKeyShare = this.DeleteAggregatedKeyShare.bind(this);
   }
   SubmitEncryptedTx(request: MsgSubmitEncryptedTx): Promise<MsgSubmitEncryptedTxResponse> {
     const data = MsgSubmitEncryptedTx.encode(request).finish();
@@ -622,18 +404,6 @@ export class MsgClientImpl implements Msg {
     const data = MsgCreateAggregatedKeyShare.encode(request).finish();
     const promise = this.rpc.request("fairyring.fairblock.Msg", "CreateAggregatedKeyShare", data);
     return promise.then((data) => MsgCreateAggregatedKeyShareResponse.decode(new _m0.Reader(data)));
-  }
-
-  UpdateAggregatedKeyShare(request: MsgUpdateAggregatedKeyShare): Promise<MsgUpdateAggregatedKeyShareResponse> {
-    const data = MsgUpdateAggregatedKeyShare.encode(request).finish();
-    const promise = this.rpc.request("fairyring.fairblock.Msg", "UpdateAggregatedKeyShare", data);
-    return promise.then((data) => MsgUpdateAggregatedKeyShareResponse.decode(new _m0.Reader(data)));
-  }
-
-  DeleteAggregatedKeyShare(request: MsgDeleteAggregatedKeyShare): Promise<MsgDeleteAggregatedKeyShareResponse> {
-    const data = MsgDeleteAggregatedKeyShare.encode(request).finish();
-    const promise = this.rpc.request("fairyring.fairblock.Msg", "DeleteAggregatedKeyShare", data);
-    return promise.then((data) => MsgDeleteAggregatedKeyShareResponse.decode(new _m0.Reader(data)));
   }
 }
 

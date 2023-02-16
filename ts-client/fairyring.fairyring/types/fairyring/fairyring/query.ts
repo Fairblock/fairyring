@@ -5,6 +5,7 @@ import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagin
 import { AggregatedKeyShare } from "./aggregated_key_share";
 import { KeyShare } from "./key_share";
 import { Params } from "./params";
+import { PubKeyID } from "./pub_key_id";
 import { ValidatorSet } from "./validator_set";
 
 export const protobufPackage = "fairyring.fairyring";
@@ -69,6 +70,23 @@ export interface QueryAllAggregatedKeyShareRequest {
 
 export interface QueryAllAggregatedKeyShareResponse {
   aggregatedKeyShare: AggregatedKeyShare[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetPubKeyIDRequest {
+  height: number;
+}
+
+export interface QueryGetPubKeyIDResponse {
+  pubKeyID: PubKeyID | undefined;
+}
+
+export interface QueryAllPubKeyIDRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllPubKeyIDResponse {
+  pubKeyID: PubKeyID[];
   pagination: PageResponse | undefined;
 }
 
@@ -823,6 +841,217 @@ export const QueryAllAggregatedKeyShareResponse = {
   },
 };
 
+function createBaseQueryGetPubKeyIDRequest(): QueryGetPubKeyIDRequest {
+  return { height: 0 };
+}
+
+export const QueryGetPubKeyIDRequest = {
+  encode(message: QueryGetPubKeyIDRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.height !== 0) {
+      writer.uint32(8).uint64(message.height);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPubKeyIDRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetPubKeyIDRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.height = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetPubKeyIDRequest {
+    return { height: isSet(object.height) ? Number(object.height) : 0 };
+  },
+
+  toJSON(message: QueryGetPubKeyIDRequest): unknown {
+    const obj: any = {};
+    message.height !== undefined && (obj.height = Math.round(message.height));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetPubKeyIDRequest>, I>>(object: I): QueryGetPubKeyIDRequest {
+    const message = createBaseQueryGetPubKeyIDRequest();
+    message.height = object.height ?? 0;
+    return message;
+  },
+};
+
+function createBaseQueryGetPubKeyIDResponse(): QueryGetPubKeyIDResponse {
+  return { pubKeyID: undefined };
+}
+
+export const QueryGetPubKeyIDResponse = {
+  encode(message: QueryGetPubKeyIDResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pubKeyID !== undefined) {
+      PubKeyID.encode(message.pubKeyID, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPubKeyIDResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetPubKeyIDResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pubKeyID = PubKeyID.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetPubKeyIDResponse {
+    return { pubKeyID: isSet(object.pubKeyID) ? PubKeyID.fromJSON(object.pubKeyID) : undefined };
+  },
+
+  toJSON(message: QueryGetPubKeyIDResponse): unknown {
+    const obj: any = {};
+    message.pubKeyID !== undefined && (obj.pubKeyID = message.pubKeyID ? PubKeyID.toJSON(message.pubKeyID) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetPubKeyIDResponse>, I>>(object: I): QueryGetPubKeyIDResponse {
+    const message = createBaseQueryGetPubKeyIDResponse();
+    message.pubKeyID = (object.pubKeyID !== undefined && object.pubKeyID !== null)
+      ? PubKeyID.fromPartial(object.pubKeyID)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllPubKeyIDRequest(): QueryAllPubKeyIDRequest {
+  return { pagination: undefined };
+}
+
+export const QueryAllPubKeyIDRequest = {
+  encode(message: QueryAllPubKeyIDRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllPubKeyIDRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllPubKeyIDRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllPubKeyIDRequest {
+    return { pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined };
+  },
+
+  toJSON(message: QueryAllPubKeyIDRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllPubKeyIDRequest>, I>>(object: I): QueryAllPubKeyIDRequest {
+    const message = createBaseQueryAllPubKeyIDRequest();
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllPubKeyIDResponse(): QueryAllPubKeyIDResponse {
+  return { pubKeyID: [], pagination: undefined };
+}
+
+export const QueryAllPubKeyIDResponse = {
+  encode(message: QueryAllPubKeyIDResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.pubKeyID) {
+      PubKeyID.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllPubKeyIDResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllPubKeyIDResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pubKeyID.push(PubKeyID.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllPubKeyIDResponse {
+    return {
+      pubKeyID: Array.isArray(object?.pubKeyID) ? object.pubKeyID.map((e: any) => PubKeyID.fromJSON(e)) : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllPubKeyIDResponse): unknown {
+    const obj: any = {};
+    if (message.pubKeyID) {
+      obj.pubKeyID = message.pubKeyID.map((e) => e ? PubKeyID.toJSON(e) : undefined);
+    } else {
+      obj.pubKeyID = [];
+    }
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllPubKeyIDResponse>, I>>(object: I): QueryAllPubKeyIDResponse {
+    const message = createBaseQueryAllPubKeyIDResponse();
+    message.pubKeyID = object.pubKeyID?.map((e) => PubKeyID.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -838,6 +1067,9 @@ export interface Query {
   /** Queries a list of AggregatedKeyShare items. */
   AggregatedKeyShare(request: QueryGetAggregatedKeyShareRequest): Promise<QueryGetAggregatedKeyShareResponse>;
   AggregatedKeyShareAll(request: QueryAllAggregatedKeyShareRequest): Promise<QueryAllAggregatedKeyShareResponse>;
+  /** Queries a list of PubKeyID items. */
+  PubKeyID(request: QueryGetPubKeyIDRequest): Promise<QueryGetPubKeyIDResponse>;
+  PubKeyIDAll(request: QueryAllPubKeyIDRequest): Promise<QueryAllPubKeyIDResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -851,6 +1083,8 @@ export class QueryClientImpl implements Query {
     this.KeyShareAll = this.KeyShareAll.bind(this);
     this.AggregatedKeyShare = this.AggregatedKeyShare.bind(this);
     this.AggregatedKeyShareAll = this.AggregatedKeyShareAll.bind(this);
+    this.PubKeyID = this.PubKeyID.bind(this);
+    this.PubKeyIDAll = this.PubKeyIDAll.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -892,6 +1126,18 @@ export class QueryClientImpl implements Query {
     const data = QueryAllAggregatedKeyShareRequest.encode(request).finish();
     const promise = this.rpc.request("fairyring.fairyring.Query", "AggregatedKeyShareAll", data);
     return promise.then((data) => QueryAllAggregatedKeyShareResponse.decode(new _m0.Reader(data)));
+  }
+
+  PubKeyID(request: QueryGetPubKeyIDRequest): Promise<QueryGetPubKeyIDResponse> {
+    const data = QueryGetPubKeyIDRequest.encode(request).finish();
+    const promise = this.rpc.request("fairyring.fairyring.Query", "PubKeyID", data);
+    return promise.then((data) => QueryGetPubKeyIDResponse.decode(new _m0.Reader(data)));
+  }
+
+  PubKeyIDAll(request: QueryAllPubKeyIDRequest): Promise<QueryAllPubKeyIDResponse> {
+    const data = QueryAllPubKeyIDRequest.encode(request).finish();
+    const promise = this.rpc.request("fairyring.fairyring.Query", "PubKeyIDAll", data);
+    return promise.then((data) => QueryAllPubKeyIDResponse.decode(new _m0.Reader(data)));
   }
 }
 

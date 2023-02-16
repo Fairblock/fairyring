@@ -2,29 +2,29 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 
-export const protobufPackage = "fairyring.fairblock";
+export const protobufPackage = "fairyring.fairyring";
 
-export interface AggregatedKeyShare {
+export interface PubKeyID {
   height: number;
-  data: string;
   publicKey: string;
+  ibeID: string;
   creator: string;
 }
 
-function createBaseAggregatedKeyShare(): AggregatedKeyShare {
-  return { height: 0, data: "", publicKey: "", creator: "" };
+function createBasePubKeyID(): PubKeyID {
+  return { height: 0, publicKey: "", ibeID: "", creator: "" };
 }
 
-export const AggregatedKeyShare = {
-  encode(message: AggregatedKeyShare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const PubKeyID = {
+  encode(message: PubKeyID, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.height !== 0) {
       writer.uint32(8).uint64(message.height);
     }
-    if (message.data !== "") {
-      writer.uint32(18).string(message.data);
-    }
     if (message.publicKey !== "") {
-      writer.uint32(26).string(message.publicKey);
+      writer.uint32(18).string(message.publicKey);
+    }
+    if (message.ibeID !== "") {
+      writer.uint32(26).string(message.ibeID);
     }
     if (message.creator !== "") {
       writer.uint32(34).string(message.creator);
@@ -32,10 +32,10 @@ export const AggregatedKeyShare = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): AggregatedKeyShare {
+  decode(input: _m0.Reader | Uint8Array, length?: number): PubKeyID {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAggregatedKeyShare();
+    const message = createBasePubKeyID();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -43,10 +43,10 @@ export const AggregatedKeyShare = {
           message.height = longToNumber(reader.uint64() as Long);
           break;
         case 2:
-          message.data = reader.string();
+          message.publicKey = reader.string();
           break;
         case 3:
-          message.publicKey = reader.string();
+          message.ibeID = reader.string();
           break;
         case 4:
           message.creator = reader.string();
@@ -59,29 +59,29 @@ export const AggregatedKeyShare = {
     return message;
   },
 
-  fromJSON(object: any): AggregatedKeyShare {
+  fromJSON(object: any): PubKeyID {
     return {
       height: isSet(object.height) ? Number(object.height) : 0,
-      data: isSet(object.data) ? String(object.data) : "",
       publicKey: isSet(object.publicKey) ? String(object.publicKey) : "",
+      ibeID: isSet(object.ibeID) ? String(object.ibeID) : "",
       creator: isSet(object.creator) ? String(object.creator) : "",
     };
   },
 
-  toJSON(message: AggregatedKeyShare): unknown {
+  toJSON(message: PubKeyID): unknown {
     const obj: any = {};
     message.height !== undefined && (obj.height = Math.round(message.height));
-    message.data !== undefined && (obj.data = message.data);
     message.publicKey !== undefined && (obj.publicKey = message.publicKey);
+    message.ibeID !== undefined && (obj.ibeID = message.ibeID);
     message.creator !== undefined && (obj.creator = message.creator);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<AggregatedKeyShare>, I>>(object: I): AggregatedKeyShare {
-    const message = createBaseAggregatedKeyShare();
+  fromPartial<I extends Exact<DeepPartial<PubKeyID>, I>>(object: I): PubKeyID {
+    const message = createBasePubKeyID();
     message.height = object.height ?? 0;
-    message.data = object.data ?? "";
     message.publicKey = object.publicKey ?? "";
+    message.ibeID = object.ibeID ?? "";
     message.creator = object.creator ?? "";
     return message;
   },

@@ -9,13 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-export interface FairblockAggregatedKeyShare {
-  /** @format uint64 */
-  height?: string;
-  data?: string;
-  creator?: string;
-}
-
 export interface FairblockEncryptedTx {
   /** @format uint64 */
   targetHeight?: string;
@@ -46,33 +39,14 @@ export interface FairblockFairblockNonce {
 
 export type FairblockMsgCreateAggregatedKeyShareResponse = object;
 
-export type FairblockMsgDeleteAggregatedKeyShareResponse = object;
-
 export type FairblockMsgSendCurrentHeightResponse = object;
 
 export type FairblockMsgSubmitEncryptedTxResponse = object;
-
-export type FairblockMsgUpdateAggregatedKeyShareResponse = object;
 
 /**
  * Params defines the parameters for the module.
  */
 export type FairblockParams = object;
-
-export interface FairblockQueryAllAggregatedKeyShareResponse {
-  aggregatedKeyShare?: FairblockAggregatedKeyShare[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
-}
 
 export interface FairblockQueryAllEncryptedTxFromHeightResponse {
   encryptedTxArray?: FairblockEncryptedTxArray;
@@ -121,10 +95,6 @@ export interface FairblockQueryAllFairblockNonceResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
-}
-
-export interface FairblockQueryGetAggregatedKeyShareResponse {
-  aggregatedKeyShare?: FairblockAggregatedKeyShare;
 }
 
 export interface FairblockQueryGetEncryptedTxResponse {
@@ -360,47 +330,6 @@ export class HttpClient<SecurityDataType = unknown> {
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryAggregatedKeyShareAll
-   * @request GET:/fairyring/fairblock/aggregated_key_share
-   */
-  queryAggregatedKeyShareAll = (
-    query?: {
-      "pagination.key"?: string;
-      "pagination.offset"?: string;
-      "pagination.limit"?: string;
-      "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<FairblockQueryAllAggregatedKeyShareResponse, RpcStatus>({
-      path: `/fairyring/fairblock/aggregated_key_share`,
-      method: "GET",
-      query: query,
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryAggregatedKeyShare
-   * @summary Queries a list of AggregatedKeyShare items.
-   * @request GET:/fairyring/fairblock/aggregated_key_share/{height}
-   */
-  queryAggregatedKeyShare = (height: string, params: RequestParams = {}) =>
-    this.request<FairblockQueryGetAggregatedKeyShareResponse, RpcStatus>({
-      path: `/fairyring/fairblock/aggregated_key_share/${height}`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
   /**
    * No description
    *
