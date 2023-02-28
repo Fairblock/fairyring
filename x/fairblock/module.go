@@ -215,10 +215,10 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 		for _, eachTx := range arr.EncryptedTx {
 			am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
+			newExecutedNonce := am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 
 			creatorAddr, err := sdk.AccAddressFromBech32(eachTx.Creator)
 			if err != nil {
-				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error("Parse creator address error in BeginBlock")
 				am.keeper.Logger(ctx).Error(err.Error())
 				ctx.EventManager().EmitEvent(
@@ -236,7 +236,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 			key, found := am.keeper.GetAggregatedKeyShare(ctx, h)
 			if !found {
-				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error(fmt.Sprintf("Decryption key not found for block height: %d", h))
 				ctx.EventManager().EmitEvent(
 					sdk.NewEvent(types.EncryptedTxRevertedEventType,
@@ -251,7 +250,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 			keyByte, err := hex.DecodeString(key.Data)
 			if err != nil {
-				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error("Error decoding aggregated key")
 				am.keeper.Logger(ctx).Error(err.Error())
 				ctx.EventManager().EmitEvent(
@@ -269,7 +267,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			skPoint := suite.G2().Point()
 			err = skPoint.UnmarshalBinary(keyByte)
 			if err != nil {
-				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error("Error unmarshalling aggregated key")
 				am.keeper.Logger(ctx).Error(err.Error())
 				ctx.EventManager().EmitEvent(
@@ -288,7 +285,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 			publicKeyByte, err := hex.DecodeString(key.PublicKey)
 			if err != nil {
-				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error("Error decoding public key")
 				am.keeper.Logger(ctx).Error(err.Error())
 				ctx.EventManager().EmitEvent(
@@ -305,7 +301,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			publicKeyPoint := suite.G1().Point()
 			err = publicKeyPoint.UnmarshalBinary(publicKeyByte)
 			if err != nil {
-				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error("Error unmarshalling public key")
 				am.keeper.Logger(ctx).Error(err.Error())
 				ctx.EventManager().EmitEvent(
@@ -324,7 +319,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 			txBytes, err := hex.DecodeString(eachTx.Data)
 			if err != nil {
-				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error("Error decoding tx data to bytes")
 				am.keeper.Logger(ctx).Error(err.Error())
 				ctx.EventManager().EmitEvent(
@@ -342,7 +336,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			var txBuffer bytes.Buffer
 			_, err = txBuffer.Write(txBytes)
 			if err != nil {
-				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error("Error write byte to tx buffer")
 				am.keeper.Logger(ctx).Error(err.Error())
 				ctx.EventManager().EmitEvent(
@@ -358,7 +351,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 			err = enc.Decrypt(publicKeyPoint, skPoint, &decryptedTx, &txBuffer)
 			if err != nil {
-				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error("Error decrypting tx data")
 				am.keeper.Logger(ctx).Error(err.Error())
 				ctx.EventManager().EmitEvent(
@@ -378,7 +370,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			err = am.cdcJson.UnmarshalJSON(decryptedTx.Bytes(), &signed)
 
 			if err != nil {
-				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error("UnmarshalJson to Tx Error in BeginBlock")
 				am.keeper.Logger(ctx).Error(err.Error())
 				ctx.EventManager().EmitEvent(
@@ -394,7 +385,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 			decodedTxJson, err := am.txConfig.TxJSONDecoder()(decryptedTx.Bytes())
 			if err != nil {
-				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error("TXJson Decoding error in Beginblock")
 				am.keeper.Logger(ctx).Error(err.Error())
 				ctx.EventManager().EmitEvent(
@@ -410,7 +400,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 			wrappedTx, err := am.txConfig.WrapTxBuilder(decodedTxJson)
 			if err != nil {
-				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error("Error in wrapping tx to TxBuilder")
 				am.keeper.Logger(ctx).Error(err.Error())
 				ctx.EventManager().EmitEvent(
@@ -426,7 +415,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 			sigs, err := wrappedTx.GetTx().GetSignaturesV2()
 			if err != nil {
-				am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 				am.keeper.Logger(ctx).Error("Error in getting tx signature")
 				am.keeper.Logger(ctx).Error(err.Error())
 				ctx.EventManager().EmitEvent(
@@ -440,8 +428,11 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				return
 			}
 
-			for _, eachSig := range sigs {
-				newExecutedNonce := am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
+			for index, eachSig := range sigs {
+				if index > 0 {
+					newExecutedNonce = am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
+				}
+
 				// For now only support User submitting their own signed tx
 				if !eachSig.PubKey.Equals(creatorAccount.GetPubKey()) {
 					am.keeper.Logger(ctx).Error("Signer is not sender")
