@@ -30,14 +30,12 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	porttypes "github.com/cosmos/ibc-go/v5/modules/core/05-port/types"
 	tmcore "github.com/tendermint/tendermint/rpc/core"
 )
 
 var (
 	_ module.AppModule      = AppModule{}
 	_ module.AppModuleBasic = AppModuleBasic{}
-	_ porttypes.IBCModule   = IBCModule{}
 )
 
 // ----------------------------------------------------------------------------
@@ -220,8 +218,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 		for _, eachTx := range arr.EncryptedTx {
 			am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
-
-			// 1. Assume eachTx.Data already Decrypted with decryption key from fairyring
 
 			creatorAddr, err := sdk.AccAddressFromBech32(eachTx.Creator)
 			if err != nil {

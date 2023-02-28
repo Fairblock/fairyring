@@ -31,7 +31,6 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdSubmitEncryptedTx())
-	cmd.AddCommand(CmdSendCurrentHeight())
 	cmd.AddCommand(CmdCreateAggregatedKeyShare())
 	// this line is used by starport scaffolding # 1
 

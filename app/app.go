@@ -538,7 +538,6 @@ func New(
 		encodingConfig.TxConfig,
 	)
 
-	fairblockIBCModule := fairblockmodule.NewIBCModule(app.FairblockKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Sealing prevents other modules from creating scoped sub-keepers
@@ -548,7 +547,7 @@ func New(
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
-	ibcRouter.AddRoute(fairblockmoduletypes.ModuleName, fairblockIBCModule)
+	
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 
