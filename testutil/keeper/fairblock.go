@@ -11,7 +11,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/store"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
@@ -59,7 +58,6 @@ func FairblockKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 
 	registry := codectypes.NewInterfaceRegistry()
 	appCodec := codec.NewProtoCodec(registry)
-	capabilityKeeper := capabilitykeeper.NewKeeper(appCodec, storeKey, memStoreKey)
 
 	paramsSubspace := typesparams.NewSubspace(appCodec,
 		types.Amino,
@@ -72,9 +70,6 @@ func FairblockKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
-		fairblockChannelKeeper{},
-		fairblockPortKeeper{},
-		capabilityKeeper.ScopeToModule("FairblockScopedKeeper"),
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, logger)
