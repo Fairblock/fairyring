@@ -43,7 +43,6 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	fairblockGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
-		PortId: types.PortID,
 		AggregatedKeyShareList: []types.AggregatedKeyShare{
 			{
 				Creator: sample.AccAddress(),

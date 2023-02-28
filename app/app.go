@@ -524,9 +524,6 @@ func New(
 		keys[fairblockmoduletypes.StoreKey],
 		keys[fairblockmoduletypes.MemStoreKey],
 		app.GetSubspace(fairblockmoduletypes.ModuleName),
-		app.IBCKeeper.ChannelKeeper,
-		&app.IBCKeeper.PortKeeper,
-		scopedFairblockKeeper,
 	)
 	fairblockModule := fairblockmodule.NewAppModule(
 		appCodec,
@@ -547,7 +544,7 @@ func New(
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
-	
+
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 
