@@ -7,11 +7,12 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"strconv"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/types/tx"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	bls "github.com/drand/kyber-bls12381"
-	"strconv"
 
 	// this line is used by starport scaffolding # 1
 
@@ -23,12 +24,14 @@ import (
 	"fairyring/x/fairblock/client/cli"
 	"fairyring/x/fairblock/keeper"
 	"fairyring/x/fairblock/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	porttypes "github.com/cosmos/ibc-go/v5/modules/core/05-port/types"
+	tmcore "github.com/tendermint/tendermint/rpc/core"
 )
 
 var (
@@ -184,12 +187,19 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		am.keeper.Logger(ctx).Error(strLastExecutedHeight)
 	}
 
-	err = am.keeper.QueryFairyringCurrentHeight(ctx)
-	if err != nil {
-		am.keeper.Logger(ctx).Error("Beginblocker get height err", err)
-		am.keeper.Logger(ctx).Error(err.Error())
-		return
-	}
+	//========================================//
+	// Replaced with reading Txs from MemPool //
+	//========================================//
+
+	// err = am.keeper.QueryFairyringCurrentHeight(ctx)
+	// if err != nil {
+	// 	am.keeper.Logger(ctx).Error("Beginblocker get height err", err)
+	// 	am.keeper.Logger(ctx).Error(err.Error())
+	// 	return
+	// }
+
+	utxs, _ := tmcore.UnconfirmedTxs(nil, nil)
+	am.keeper.ProcessUnconfirmedTxs(ctx, utxs)
 
 	strHeight := am.keeper.GetLatestHeight(ctx)
 	height, err := strconv.ParseUint(strHeight, 10, 64)
