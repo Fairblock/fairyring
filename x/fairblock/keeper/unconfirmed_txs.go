@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fairyring/x/fairblock/types"
+	"fmt"
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -14,7 +15,7 @@ func (k Keeper) ProcessUnconfirmedTxs(ctx sdk.Context, utxs *coretypes.ResultUnc
 		var decodedTx cosmostxTypes.Tx
 		err := decodedTx.Unmarshal(utx)
 		if err != nil {
-			k.Logger(ctx).Error("Error Parsing Unconfirmed Tx")
+			k.Logger(ctx).Error("[ProcessUnconfirmedTxs] Error Parsing Unconfirmed Tx")
 			k.Logger(ctx).Error(err.Error())
 			continue
 		}
@@ -24,7 +25,7 @@ func (k Keeper) ProcessUnconfirmedTxs(ctx sdk.Context, utxs *coretypes.ResultUnc
 				var msg types.MsgCreateAggregatedKeyShare
 				err := msg.Unmarshal(message.Value)
 				if err != nil {
-					k.Logger(ctx).Error("Error Parsing Message")
+					k.Logger(ctx).Error("[ProcessUnconfirmedTxs] Error Parsing Message")
 					k.Logger(ctx).Error(err.Error())
 					continue
 				}
@@ -45,13 +46,13 @@ func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKey
 	})
 
 	latestHeight, err := strconv.ParseUint(k.GetLatestHeight(ctx), 10, 64)
-	if err != nil {
-		k.Logger(ctx).Error("Error parse height")
-		k.Logger(ctx).Error(err.Error())
-		return
+	if err != nil { // latest height is empty, set it to 0
+		latestHeight = 0
 	}
 
 	if latestHeight < msg.Height {
 		k.SetLatestHeight(ctx, strconv.FormatUint(msg.Height, 10))
 	}
+
+	k.Logger(ctx).Info(fmt.Sprintf("[ProcessUnconfirmedTxs] Aggregated Key Added, height: %d", msg.Height))
 }

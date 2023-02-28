@@ -180,9 +180,8 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	lastExecutedHeight, err := strconv.ParseUint(strLastExecutedHeight, 10, 64)
 
 	if err != nil {
-		am.keeper.Logger(ctx).Error("Beginblocker error parse before Height")
-		am.keeper.Logger(ctx).Error(err.Error())
-		am.keeper.Logger(ctx).Error(strLastExecutedHeight)
+		am.keeper.Logger(ctx).Error("Last executed height not exists")
+		lastExecutedHeight = 0
 	}
 
 	//========================================//
@@ -203,9 +202,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	height, err := strconv.ParseUint(strHeight, 10, 64)
 
 	if err != nil {
-		am.keeper.Logger(ctx).Error("Beginblocker error parse height")
-		am.keeper.Logger(ctx).Error(err.Error())
-		am.keeper.Logger(ctx).Error(strHeight)
+		am.keeper.Logger(ctx).Error("Latest height does not exists")
 		return
 	}
 
