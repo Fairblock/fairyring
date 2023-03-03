@@ -70616,8 +70616,6 @@ definitions:
         format: uint64
   fairyring.fairblock.MsgCreateAggregatedKeyShareResponse:
     type: object
-  fairyring.fairblock.MsgSendCurrentHeightResponse:
-    type: object
   fairyring.fairblock.MsgSubmitEncryptedTxResponse:
     type: object
   fairyring.fairblock.Params:
@@ -70853,8 +70851,6 @@ definitions:
         format: uint64
   fairyring.fairyring.MsgCreatePubKeyIDResponse:
     type: object
-  fairyring.fairyring.MsgDeletePubKeyIDResponse:
-    type: object
   fairyring.fairyring.MsgRegisterValidatorResponse:
     type: object
     properties:
@@ -70878,8 +70874,6 @@ definitions:
       receivedBlockHeight:
         type: string
         format: uint64
-  fairyring.fairyring.MsgUpdatePubKeyIDResponse:
-    type: object
   fairyring.fairyring.Params:
     type: object
     description: Params defines the parameters for the module.

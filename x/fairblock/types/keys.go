@@ -43,6 +43,13 @@ const (
 	EncryptedTxRevertedEventReason  = "reverted-encrypted-tx-reason"
 )
 
+const (
+	KeyShareVerificationType    = "keyshare-verification"
+	KeyShareVerificationCreator = "keyshare-verification-creator"
+	KeyShareVerificationHeight  = "keyshare-verification-height"
+	KeyShareVerificationReason  = "keyshare-verification-reason"
+)
+
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
