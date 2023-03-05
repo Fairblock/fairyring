@@ -39,12 +39,13 @@ joinedPeerList=$(IFS=','; echo "${PEER_LIST[*]}")
 # Copy all gathered gentx file to the master validator container
 sudo docker cp ./gentx/. fairyringdnode$MASTER_VALIDATOR_INDEX:'/root/.fairyring/config/gentx/'
 
-# Collect all the gentx.json & create new genesis.json
-genesisData=$(sudo docker start fairyringdnode$MASTER_VALIDATOR_INDEX >/dev/null 2>&1 && sudo docker exec -i fairyringdnode$MASTER_VALIDATOR_INDEX fairyringd collect-gentxs)
+# Collect all the gentx.json
+sudo docker start fairyringdnode$MASTER_VALIDATOR_INDEX && sudo docker exec -i fairyringdnode$MASTER_VALIDATOR_INDEX fairyringd collect-gentxs
 
-# Save the genesis.json
-echo "$genesisData" > ./gentx/genesis.json
-echo 'Created new master genesis.json'
+# Copy the new master genesis.json to host
+sudo docker start fairyringdnode$MASTER_VALIDATOR_INDEX && sudo docker cp fairyringdnode$MASTER_VALIDATOR_INDEX:'/root/.fairyring/config/genesis.json' ./gentx/genesis.json
+
+echo 'Got the new master genesis.json'
 
 # Copy the new genesis.json to all the container
 validatorIndex=0
