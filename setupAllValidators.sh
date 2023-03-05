@@ -40,10 +40,10 @@ joinedPeerList=$(IFS=','; echo "${PEER_LIST[*]}")
 sudo docker cp ./gentx/. fairyringdnode$MASTER_VALIDATOR_INDEX:'/root/.fairyring/config/gentx/'
 
 # Collect all the gentx.json
-sudo docker start fairyringdnode$MASTER_VALIDATOR_INDEX && sudo docker exec -i fairyringdnode$MASTER_VALIDATOR_INDEX fairyringd collect-gentxs
+sudo docker start fairyringdnode$MASTER_VALIDATOR_INDEX >/dev/null 2>&1 && sudo docker exec -i fairyringdnode$MASTER_VALIDATOR_INDEX fairyringd collect-gentxs
 
 # Copy the new master genesis.json to host
-sudo docker start fairyringdnode$MASTER_VALIDATOR_INDEX && sudo docker cp fairyringdnode$MASTER_VALIDATOR_INDEX:'/root/.fairyring/config/genesis.json' ./gentx/genesis.json
+sudo docker start fairyringdnode$MASTER_VALIDATOR_INDEX >/dev/null 2>&1 && sudo docker cp fairyringdnode$MASTER_VALIDATOR_INDEX:'/root/.fairyring/config/genesis.json' ./gentx/genesis.json
 
 echo 'Got the new master genesis.json'
 
