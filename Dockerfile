@@ -31,9 +31,6 @@ WORKDIR /root
 COPY setup.sh /usr/bin/setup.sh
 RUN ["chmod", "+x", "/usr/bin/setup.sh"]
 
-COPY setupAllValidators.sh /usr/bin/master-setup.sh
-RUN ["chmod", "+x", "/usr/bin/master-setup.sh"]
-
 # Copy over binaries from the build-env
 COPY --from=build-env /src/app/fairyring/build/fairyringd /usr/bin/fairyringd
 
