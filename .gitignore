@@ -4,4 +4,7 @@ release/
 .idea/
 .vscode/
 .DS_Store
+build/
+gentx/
+DistributedIBE/
 *.json
