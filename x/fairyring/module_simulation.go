@@ -32,6 +32,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgSendKeyshare int = 100
 
+	opWeightMsgCreatePubKeyID = "op_weight_msg_pub_key_id"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreatePubKeyID int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -43,6 +47,16 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	fairyringGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
+		PubKeyIDList: []types.PubKeyID{
+			{
+				Creator: sample.AccAddress(),
+				Height:  0,
+			},
+			{
+				Creator: sample.AccAddress(),
+				Height:  1,
+			},
+		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&fairyringGenesis)
@@ -86,6 +100,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgSendKeyshare,
 		fairyringsimulation.SimulateMsgSendKeyshare(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreatePubKeyID int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreatePubKeyID, &weightMsgCreatePubKeyID, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreatePubKeyID = defaultWeightMsgCreatePubKeyID
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreatePubKeyID,
+		fairyringsimulation.SimulateMsgCreatePubKeyID(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

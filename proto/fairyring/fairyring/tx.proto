@@ -1,5 +1,8 @@
 syntax = "proto3";
+
 package fairyring.fairyring;
+
+import "fairyring/fairyring/pub_key_id.proto";
 
 // this line is used by starport scaffolding # proto/tx/import
 
@@ -7,11 +10,12 @@ option go_package = "fairyring/x/fairyring/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc RegisterValidator(MsgRegisterValidator) returns (MsgRegisterValidatorResponse);
-  rpc SendKeyshare(MsgSendKeyshare) returns (MsgSendKeyshareResponse);
-// this line is used by starport scaffolding # proto/tx/rpc
-}
+  rpc RegisterValidator (MsgRegisterValidator) returns (MsgRegisterValidatorResponse);
+  rpc SendKeyshare      (MsgSendKeyshare     ) returns (MsgSendKeyshareResponse     );
 
+  // this line is used by starport scaffolding # proto/tx/rpc
+  rpc CreatePubKeyID (MsgCreatePubKeyID) returns (MsgCreatePubKeyIDResponse);
+}
 message MsgRegisterValidator {
   string creator = 1;
 }
@@ -21,16 +25,29 @@ message MsgRegisterValidatorResponse {
 }
 
 message MsgSendKeyshare {
-  string creator = 1;
-  string message = 2;
-  uint64 blockHeight = 3;
+  string creator       = 1;
+  string message       = 2;
+  string commitment    = 3;
+  uint64 keyShareIndex = 4;
+  uint64 blockHeight   = 5;
 }
 
 message MsgSendKeyshareResponse {
-  string creator = 1;
-  string keyshare = 2;
-  uint64 blockHeight = 3;
-  uint64 receivedBlockHeight = 4;
+  string creator             = 1;
+  string keyshare            = 2;
+  string commitment          = 3;
+  uint64 keyshareIndex       = 4;
+  uint64 blockHeight         = 5;
+  uint64 receivedBlockHeight = 6;
 }
 
+
 // this line is used by starport scaffolding # proto/tx/message
+message MsgCreatePubKeyID {
+  string creator   = 1;
+  uint64 height    = 2;
+  string publicKey = 3;
+  string ibeID     = 4;
+}
+
+message MsgCreatePubKeyIDResponse {}

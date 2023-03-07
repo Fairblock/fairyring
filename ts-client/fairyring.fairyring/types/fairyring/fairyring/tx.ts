@@ -15,14 +15,47 @@ export interface MsgRegisterValidatorResponse {
 export interface MsgSendKeyshare {
   creator: string;
   message: string;
+  commitment: string;
+  keyShareIndex: number;
   blockHeight: number;
 }
 
 export interface MsgSendKeyshareResponse {
   creator: string;
   keyshare: string;
+  commitment: string;
+  keyshareIndex: number;
   blockHeight: number;
   receivedBlockHeight: number;
+}
+
+/** this line is used by starport scaffolding # proto/tx/message */
+export interface MsgCreatePubKeyID {
+  creator: string;
+  height: number;
+  publicKey: string;
+  ibeID: string;
+}
+
+export interface MsgCreatePubKeyIDResponse {
+}
+
+export interface MsgUpdatePubKeyID {
+  creator: string;
+  height: number;
+  publicKey: string;
+  ibeID: string;
+}
+
+export interface MsgUpdatePubKeyIDResponse {
+}
+
+export interface MsgDeletePubKeyID {
+  creator: string;
+  height: number;
+}
+
+export interface MsgDeletePubKeyIDResponse {
 }
 
 function createBaseMsgRegisterValidator(): MsgRegisterValidator {
@@ -120,7 +153,7 @@ export const MsgRegisterValidatorResponse = {
 };
 
 function createBaseMsgSendKeyshare(): MsgSendKeyshare {
-  return { creator: "", message: "", blockHeight: 0 };
+  return { creator: "", message: "", commitment: "", keyShareIndex: 0, blockHeight: 0 };
 }
 
 export const MsgSendKeyshare = {
@@ -131,8 +164,14 @@ export const MsgSendKeyshare = {
     if (message.message !== "") {
       writer.uint32(18).string(message.message);
     }
+    if (message.commitment !== "") {
+      writer.uint32(26).string(message.commitment);
+    }
+    if (message.keyShareIndex !== 0) {
+      writer.uint32(32).uint64(message.keyShareIndex);
+    }
     if (message.blockHeight !== 0) {
-      writer.uint32(24).uint64(message.blockHeight);
+      writer.uint32(40).uint64(message.blockHeight);
     }
     return writer;
   },
@@ -151,6 +190,12 @@ export const MsgSendKeyshare = {
           message.message = reader.string();
           break;
         case 3:
+          message.commitment = reader.string();
+          break;
+        case 4:
+          message.keyShareIndex = longToNumber(reader.uint64() as Long);
+          break;
+        case 5:
           message.blockHeight = longToNumber(reader.uint64() as Long);
           break;
         default:
@@ -165,6 +210,8 @@ export const MsgSendKeyshare = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       message: isSet(object.message) ? String(object.message) : "",
+      commitment: isSet(object.commitment) ? String(object.commitment) : "",
+      keyShareIndex: isSet(object.keyShareIndex) ? Number(object.keyShareIndex) : 0,
       blockHeight: isSet(object.blockHeight) ? Number(object.blockHeight) : 0,
     };
   },
@@ -173,6 +220,8 @@ export const MsgSendKeyshare = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.message !== undefined && (obj.message = message.message);
+    message.commitment !== undefined && (obj.commitment = message.commitment);
+    message.keyShareIndex !== undefined && (obj.keyShareIndex = Math.round(message.keyShareIndex));
     message.blockHeight !== undefined && (obj.blockHeight = Math.round(message.blockHeight));
     return obj;
   },
@@ -181,13 +230,15 @@ export const MsgSendKeyshare = {
     const message = createBaseMsgSendKeyshare();
     message.creator = object.creator ?? "";
     message.message = object.message ?? "";
+    message.commitment = object.commitment ?? "";
+    message.keyShareIndex = object.keyShareIndex ?? 0;
     message.blockHeight = object.blockHeight ?? 0;
     return message;
   },
 };
 
 function createBaseMsgSendKeyshareResponse(): MsgSendKeyshareResponse {
-  return { creator: "", keyshare: "", blockHeight: 0, receivedBlockHeight: 0 };
+  return { creator: "", keyshare: "", commitment: "", keyshareIndex: 0, blockHeight: 0, receivedBlockHeight: 0 };
 }
 
 export const MsgSendKeyshareResponse = {
@@ -198,11 +249,17 @@ export const MsgSendKeyshareResponse = {
     if (message.keyshare !== "") {
       writer.uint32(18).string(message.keyshare);
     }
+    if (message.commitment !== "") {
+      writer.uint32(26).string(message.commitment);
+    }
+    if (message.keyshareIndex !== 0) {
+      writer.uint32(32).uint64(message.keyshareIndex);
+    }
     if (message.blockHeight !== 0) {
-      writer.uint32(24).uint64(message.blockHeight);
+      writer.uint32(40).uint64(message.blockHeight);
     }
     if (message.receivedBlockHeight !== 0) {
-      writer.uint32(32).uint64(message.receivedBlockHeight);
+      writer.uint32(48).uint64(message.receivedBlockHeight);
     }
     return writer;
   },
@@ -221,9 +278,15 @@ export const MsgSendKeyshareResponse = {
           message.keyshare = reader.string();
           break;
         case 3:
-          message.blockHeight = longToNumber(reader.uint64() as Long);
+          message.commitment = reader.string();
           break;
         case 4:
+          message.keyshareIndex = longToNumber(reader.uint64() as Long);
+          break;
+        case 5:
+          message.blockHeight = longToNumber(reader.uint64() as Long);
+          break;
+        case 6:
           message.receivedBlockHeight = longToNumber(reader.uint64() as Long);
           break;
         default:
@@ -238,6 +301,8 @@ export const MsgSendKeyshareResponse = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       keyshare: isSet(object.keyshare) ? String(object.keyshare) : "",
+      commitment: isSet(object.commitment) ? String(object.commitment) : "",
+      keyshareIndex: isSet(object.keyshareIndex) ? Number(object.keyshareIndex) : 0,
       blockHeight: isSet(object.blockHeight) ? Number(object.blockHeight) : 0,
       receivedBlockHeight: isSet(object.receivedBlockHeight) ? Number(object.receivedBlockHeight) : 0,
     };
@@ -247,6 +312,8 @@ export const MsgSendKeyshareResponse = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.keyshare !== undefined && (obj.keyshare = message.keyshare);
+    message.commitment !== undefined && (obj.commitment = message.commitment);
+    message.keyshareIndex !== undefined && (obj.keyshareIndex = Math.round(message.keyshareIndex));
     message.blockHeight !== undefined && (obj.blockHeight = Math.round(message.blockHeight));
     message.receivedBlockHeight !== undefined && (obj.receivedBlockHeight = Math.round(message.receivedBlockHeight));
     return obj;
@@ -256,8 +323,337 @@ export const MsgSendKeyshareResponse = {
     const message = createBaseMsgSendKeyshareResponse();
     message.creator = object.creator ?? "";
     message.keyshare = object.keyshare ?? "";
+    message.commitment = object.commitment ?? "";
+    message.keyshareIndex = object.keyshareIndex ?? 0;
     message.blockHeight = object.blockHeight ?? 0;
     message.receivedBlockHeight = object.receivedBlockHeight ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgCreatePubKeyID(): MsgCreatePubKeyID {
+  return { creator: "", height: 0, publicKey: "", ibeID: "" };
+}
+
+export const MsgCreatePubKeyID = {
+  encode(message: MsgCreatePubKeyID, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.height !== 0) {
+      writer.uint32(16).uint64(message.height);
+    }
+    if (message.publicKey !== "") {
+      writer.uint32(26).string(message.publicKey);
+    }
+    if (message.ibeID !== "") {
+      writer.uint32(34).string(message.ibeID);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreatePubKeyID {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCreatePubKeyID();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.height = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.publicKey = reader.string();
+          break;
+        case 4:
+          message.ibeID = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreatePubKeyID {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      height: isSet(object.height) ? Number(object.height) : 0,
+      publicKey: isSet(object.publicKey) ? String(object.publicKey) : "",
+      ibeID: isSet(object.ibeID) ? String(object.ibeID) : "",
+    };
+  },
+
+  toJSON(message: MsgCreatePubKeyID): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.height !== undefined && (obj.height = Math.round(message.height));
+    message.publicKey !== undefined && (obj.publicKey = message.publicKey);
+    message.ibeID !== undefined && (obj.ibeID = message.ibeID);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgCreatePubKeyID>, I>>(object: I): MsgCreatePubKeyID {
+    const message = createBaseMsgCreatePubKeyID();
+    message.creator = object.creator ?? "";
+    message.height = object.height ?? 0;
+    message.publicKey = object.publicKey ?? "";
+    message.ibeID = object.ibeID ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgCreatePubKeyIDResponse(): MsgCreatePubKeyIDResponse {
+  return {};
+}
+
+export const MsgCreatePubKeyIDResponse = {
+  encode(_: MsgCreatePubKeyIDResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreatePubKeyIDResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCreatePubKeyIDResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCreatePubKeyIDResponse {
+    return {};
+  },
+
+  toJSON(_: MsgCreatePubKeyIDResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgCreatePubKeyIDResponse>, I>>(_: I): MsgCreatePubKeyIDResponse {
+    const message = createBaseMsgCreatePubKeyIDResponse();
+    return message;
+  },
+};
+
+function createBaseMsgUpdatePubKeyID(): MsgUpdatePubKeyID {
+  return { creator: "", height: 0, publicKey: "", ibeID: "" };
+}
+
+export const MsgUpdatePubKeyID = {
+  encode(message: MsgUpdatePubKeyID, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.height !== 0) {
+      writer.uint32(16).uint64(message.height);
+    }
+    if (message.publicKey !== "") {
+      writer.uint32(26).string(message.publicKey);
+    }
+    if (message.ibeID !== "") {
+      writer.uint32(34).string(message.ibeID);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdatePubKeyID {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdatePubKeyID();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.height = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.publicKey = reader.string();
+          break;
+        case 4:
+          message.ibeID = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdatePubKeyID {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      height: isSet(object.height) ? Number(object.height) : 0,
+      publicKey: isSet(object.publicKey) ? String(object.publicKey) : "",
+      ibeID: isSet(object.ibeID) ? String(object.ibeID) : "",
+    };
+  },
+
+  toJSON(message: MsgUpdatePubKeyID): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.height !== undefined && (obj.height = Math.round(message.height));
+    message.publicKey !== undefined && (obj.publicKey = message.publicKey);
+    message.ibeID !== undefined && (obj.ibeID = message.ibeID);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdatePubKeyID>, I>>(object: I): MsgUpdatePubKeyID {
+    const message = createBaseMsgUpdatePubKeyID();
+    message.creator = object.creator ?? "";
+    message.height = object.height ?? 0;
+    message.publicKey = object.publicKey ?? "";
+    message.ibeID = object.ibeID ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgUpdatePubKeyIDResponse(): MsgUpdatePubKeyIDResponse {
+  return {};
+}
+
+export const MsgUpdatePubKeyIDResponse = {
+  encode(_: MsgUpdatePubKeyIDResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdatePubKeyIDResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdatePubKeyIDResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdatePubKeyIDResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdatePubKeyIDResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdatePubKeyIDResponse>, I>>(_: I): MsgUpdatePubKeyIDResponse {
+    const message = createBaseMsgUpdatePubKeyIDResponse();
+    return message;
+  },
+};
+
+function createBaseMsgDeletePubKeyID(): MsgDeletePubKeyID {
+  return { creator: "", height: 0 };
+}
+
+export const MsgDeletePubKeyID = {
+  encode(message: MsgDeletePubKeyID, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.height !== 0) {
+      writer.uint32(16).uint64(message.height);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeletePubKeyID {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDeletePubKeyID();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.height = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgDeletePubKeyID {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      height: isSet(object.height) ? Number(object.height) : 0,
+    };
+  },
+
+  toJSON(message: MsgDeletePubKeyID): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.height !== undefined && (obj.height = Math.round(message.height));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgDeletePubKeyID>, I>>(object: I): MsgDeletePubKeyID {
+    const message = createBaseMsgDeletePubKeyID();
+    message.creator = object.creator ?? "";
+    message.height = object.height ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgDeletePubKeyIDResponse(): MsgDeletePubKeyIDResponse {
+  return {};
+}
+
+export const MsgDeletePubKeyIDResponse = {
+  encode(_: MsgDeletePubKeyIDResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeletePubKeyIDResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDeletePubKeyIDResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgDeletePubKeyIDResponse {
+    return {};
+  },
+
+  toJSON(_: MsgDeletePubKeyIDResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgDeletePubKeyIDResponse>, I>>(_: I): MsgDeletePubKeyIDResponse {
+    const message = createBaseMsgDeletePubKeyIDResponse();
     return message;
   },
 };
@@ -265,8 +661,11 @@ export const MsgSendKeyshareResponse = {
 /** Msg defines the Msg service. */
 export interface Msg {
   RegisterValidator(request: MsgRegisterValidator): Promise<MsgRegisterValidatorResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   SendKeyshare(request: MsgSendKeyshare): Promise<MsgSendKeyshareResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  CreatePubKeyID(request: MsgCreatePubKeyID): Promise<MsgCreatePubKeyIDResponse>;
+  UpdatePubKeyID(request: MsgUpdatePubKeyID): Promise<MsgUpdatePubKeyIDResponse>;
+  DeletePubKeyID(request: MsgDeletePubKeyID): Promise<MsgDeletePubKeyIDResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -275,6 +674,9 @@ export class MsgClientImpl implements Msg {
     this.rpc = rpc;
     this.RegisterValidator = this.RegisterValidator.bind(this);
     this.SendKeyshare = this.SendKeyshare.bind(this);
+    this.CreatePubKeyID = this.CreatePubKeyID.bind(this);
+    this.UpdatePubKeyID = this.UpdatePubKeyID.bind(this);
+    this.DeletePubKeyID = this.DeletePubKeyID.bind(this);
   }
   RegisterValidator(request: MsgRegisterValidator): Promise<MsgRegisterValidatorResponse> {
     const data = MsgRegisterValidator.encode(request).finish();
@@ -286,6 +688,24 @@ export class MsgClientImpl implements Msg {
     const data = MsgSendKeyshare.encode(request).finish();
     const promise = this.rpc.request("fairyring.fairyring.Msg", "SendKeyshare", data);
     return promise.then((data) => MsgSendKeyshareResponse.decode(new _m0.Reader(data)));
+  }
+
+  CreatePubKeyID(request: MsgCreatePubKeyID): Promise<MsgCreatePubKeyIDResponse> {
+    const data = MsgCreatePubKeyID.encode(request).finish();
+    const promise = this.rpc.request("fairyring.fairyring.Msg", "CreatePubKeyID", data);
+    return promise.then((data) => MsgCreatePubKeyIDResponse.decode(new _m0.Reader(data)));
+  }
+
+  UpdatePubKeyID(request: MsgUpdatePubKeyID): Promise<MsgUpdatePubKeyIDResponse> {
+    const data = MsgUpdatePubKeyID.encode(request).finish();
+    const promise = this.rpc.request("fairyring.fairyring.Msg", "UpdatePubKeyID", data);
+    return promise.then((data) => MsgUpdatePubKeyIDResponse.decode(new _m0.Reader(data)));
+  }
+
+  DeletePubKeyID(request: MsgDeletePubKeyID): Promise<MsgDeletePubKeyIDResponse> {
+    const data = MsgDeletePubKeyID.encode(request).finish();
+    const promise = this.rpc.request("fairyring.fairyring.Msg", "DeletePubKeyID", data);
+    return promise.then((data) => MsgDeletePubKeyIDResponse.decode(new _m0.Reader(data)));
   }
 }
 

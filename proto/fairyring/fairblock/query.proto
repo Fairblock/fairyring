@@ -1,0 +1,153 @@
+syntax = "proto3";
+
+package fairyring.fairblock;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "fairyring/fairblock/params.proto";
+import "fairyring/fairblock/encrypted_tx.proto";
+import "fairyring/fairblock/fairblock_nonce.proto";
+import "fairyring/fairblock/fairblock_executed_nonce.proto";
+import "fairyring/fairblock/aggregated_key_share.proto";
+
+// this line is used by starport scaffolding # 1
+
+option go_package = "fairyring/x/fairblock/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/fairyring/fairblock/params";
+  
+  }
+  
+  // Queries a EncryptedTx by index.
+  rpc EncryptedTx (QueryGetEncryptedTxRequest) returns (QueryGetEncryptedTxResponse) {
+    option (google.api.http).get = "/fairyring/fairblock/encrypted_tx/{targetHeight}/{index}";
+  
+  }
+  
+  // Queries a list of EncryptedTx items.
+  rpc EncryptedTxAll (QueryAllEncryptedTxRequest) returns (QueryAllEncryptedTxResponse) {
+    option (google.api.http).get = "/fairyring/fairblock/encrypted_tx";
+  
+  }
+  
+  // Queries a list of EncryptedTx items.
+  rpc EncryptedTxAllFromHeight (QueryAllEncryptedTxFromHeightRequest) returns (QueryAllEncryptedTxFromHeightResponse) {
+    option (google.api.http).get = "/fairyring/fairblock/encrypted_tx/{targetHeight}";
+  
+  }
+  
+  // Queries a list of LatestHeight items.
+  rpc LatestHeight (QueryLatestHeightRequest) returns (QueryLatestHeightResponse) {
+    option (google.api.http).get = "/fairyring/fairblock/latest_height";
+  
+  }
+  
+  // Queries a FairblockNonce by index.
+  rpc FairblockNonce (QueryGetFairblockNonceRequest) returns (QueryGetFairblockNonceResponse) {
+    option (google.api.http).get = "/fairyring/fairblock/fairblock_nonce/{address}";
+  
+  }
+  
+  // Queries a list of FairblockNonce items.
+  rpc FairblockNonceAll (QueryAllFairblockNonceRequest) returns (QueryAllFairblockNonceResponse) {
+    option (google.api.http).get = "/fairyring/fairblock/fairblock_nonce";
+  
+  }
+  
+  // Queries a FairblockExecutedNonce by index.
+  rpc FairblockExecutedNonce (QueryGetFairblockExecutedNonceRequest) returns (QueryGetFairblockExecutedNonceResponse) {
+    option (google.api.http).get = "/fairyring/fairblock/fairblock_executed_nonce/{address}";
+  
+  }
+  
+  // Queries a list of FairblockExecutedNonce items.
+  rpc FairblockExecutedNonceAll (QueryAllFairblockExecutedNonceRequest) returns (QueryAllFairblockExecutedNonceResponse) {
+    option (google.api.http).get = "/fairyring/fairblock/fairblock_executed_nonce";
+  
+  }
+
+  // this line is used by starport scaffolding # 2
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetEncryptedTxRequest {
+  uint64 targetHeight = 1;
+  uint64 index        = 2;
+}
+
+message QueryGetEncryptedTxResponse {
+  EncryptedTx encryptedTx = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllEncryptedTxRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllEncryptedTxResponse {
+  repeated EncryptedTxArray                       encryptedTxArray = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination       = 2;
+}
+
+message QueryAllEncryptedTxFromHeightRequest {
+  uint64 targetHeight = 1;
+}
+
+message QueryAllEncryptedTxFromHeightResponse {
+  EncryptedTxArray encryptedTxArray = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryLatestHeightRequest {}
+
+message QueryLatestHeightResponse {
+  uint64 height = 1;
+}
+
+message QueryGetFairblockNonceRequest {
+  string address = 1;
+}
+
+message QueryGetFairblockNonceResponse {
+  FairblockNonce fairblockNonce = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllFairblockNonceRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllFairblockNonceResponse {
+  repeated FairblockNonce                         fairblockNonce = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination     = 2;
+}
+
+message QueryGetFairblockExecutedNonceRequest {
+  string address = 1;
+}
+
+message QueryGetFairblockExecutedNonceResponse {
+  FairblockExecutedNonce fairblockExecutedNonce = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllFairblockExecutedNonceRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllFairblockExecutedNonceResponse {
+  repeated FairblockExecutedNonce                 fairblockExecutedNonce = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination             = 2;
+}
+
+// this line is used by starport scaffolding # 3

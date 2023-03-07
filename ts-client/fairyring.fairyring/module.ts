@@ -9,9 +9,17 @@ import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
 import { MsgSendKeyshare } from "./types/fairyring/fairyring/tx";
 import { MsgRegisterValidator } from "./types/fairyring/fairyring/tx";
+import { MsgDeletePubKeyID } from "./types/fairyring/fairyring/tx";
+import { MsgUpdatePubKeyID } from "./types/fairyring/fairyring/tx";
+import { MsgCreatePubKeyID } from "./types/fairyring/fairyring/tx";
 
+import { AggregatedKeyShare as typeAggregatedKeyShare} from "./types"
+import { KeyShare as typeKeyShare} from "./types"
+import { Params as typeParams} from "./types"
+import { PubKeyID as typePubKeyID} from "./types"
+import { ValidatorSet as typeValidatorSet} from "./types"
 
-export { MsgSendKeyshare, MsgRegisterValidator };
+export { MsgSendKeyshare, MsgRegisterValidator, MsgDeletePubKeyID, MsgUpdatePubKeyID, MsgCreatePubKeyID };
 
 type sendMsgSendKeyshareParams = {
   value: MsgSendKeyshare,
@@ -25,6 +33,24 @@ type sendMsgRegisterValidatorParams = {
   memo?: string
 };
 
+type sendMsgDeletePubKeyIDParams = {
+  value: MsgDeletePubKeyID,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgUpdatePubKeyIDParams = {
+  value: MsgUpdatePubKeyID,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgCreatePubKeyIDParams = {
+  value: MsgCreatePubKeyID,
+  fee?: StdFee,
+  memo?: string
+};
+
 
 type msgSendKeyshareParams = {
   value: MsgSendKeyshare,
@@ -34,9 +60,33 @@ type msgRegisterValidatorParams = {
   value: MsgRegisterValidator,
 };
 
+type msgDeletePubKeyIDParams = {
+  value: MsgDeletePubKeyID,
+};
+
+type msgUpdatePubKeyIDParams = {
+  value: MsgUpdatePubKeyID,
+};
+
+type msgCreatePubKeyIDParams = {
+  value: MsgCreatePubKeyID,
+};
+
 
 export const registry = new Registry(msgTypes);
 
+type Field = {
+	name: string;
+	type: unknown;
+}
+function getStructure(template) {
+	const structure: {fields: Field[]} = { fields: [] }
+	for (let [key, value] of Object.entries(template)) {
+		let field = { name: key, type: typeof value }
+		structure.fields.push(field)
+	}
+	return structure
+}
 const defaultFee = {
   amount: [],
   gas: "200000",
@@ -80,6 +130,48 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendMsgDeletePubKeyID({ value, fee, memo }: sendMsgDeletePubKeyIDParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgDeletePubKeyID: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgDeletePubKeyID({ value: MsgDeletePubKeyID.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgDeletePubKeyID: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgUpdatePubKeyID({ value, fee, memo }: sendMsgUpdatePubKeyIDParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUpdatePubKeyID: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgUpdatePubKeyID({ value: MsgUpdatePubKeyID.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgUpdatePubKeyID: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgCreatePubKeyID({ value, fee, memo }: sendMsgCreatePubKeyIDParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCreatePubKeyID: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgCreatePubKeyID({ value: MsgCreatePubKeyID.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCreatePubKeyID: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		
 		msgSendKeyshare({ value }: msgSendKeyshareParams): EncodeObject {
 			try {
@@ -97,6 +189,30 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		msgDeletePubKeyID({ value }: msgDeletePubKeyIDParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.fairyring.MsgDeletePubKeyID", value: MsgDeletePubKeyID.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgDeletePubKeyID: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUpdatePubKeyID({ value }: msgUpdatePubKeyIDParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.fairyring.MsgUpdatePubKeyID", value: MsgUpdatePubKeyID.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUpdatePubKeyID: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgCreatePubKeyID({ value }: msgCreatePubKeyIDParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.fairyring.MsgCreatePubKeyID", value: MsgCreatePubKeyID.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCreatePubKeyID: Could not create message: ' + e.message)
+			}
+		},
+		
 	}
 };
 
@@ -111,13 +227,21 @@ export const queryClient = ({ addr: addr }: QueryClientOptions = { addr: "http:/
 class SDKModule {
 	public query: ReturnType<typeof queryClient>;
 	public tx: ReturnType<typeof txClient>;
-	
+	public structure: Record<string,unknown>;
 	public registry: Array<[string, GeneratedType]> = [];
 
 	constructor(client: IgniteClient) {		
 	
 		this.query = queryClient({ addr: client.env.apiURL });		
 		this.updateTX(client);
+		this.structure =  {
+						AggregatedKeyShare: getStructure(typeAggregatedKeyShare.fromPartial({})),
+						KeyShare: getStructure(typeKeyShare.fromPartial({})),
+						Params: getStructure(typeParams.fromPartial({})),
+						PubKeyID: getStructure(typePubKeyID.fromPartial({})),
+						ValidatorSet: getStructure(typeValidatorSet.fromPartial({})),
+						
+		};
 		client.on('signer-changed',(signer) => {			
 		 this.updateTX(client);
 		})

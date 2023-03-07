@@ -7,3 +7,4 @@ release/
 build/
 gentx/
 DistributedIBE/
+*.json
