@@ -37,6 +37,85 @@ Submit an encrypted tx message
 fairyringd tx fairblock submit-encrypted-tx <TxData> <TargetBlockHeight> --from $alice --gas auto
 ```
 
+### Running a validator locally
+
+1. Copy DistributedIBE inside fairyring directory
+
+```
+cp -r ../DistributedIBE ./
+```
+
+2. Build docker image
+
+```
+docker build -t fairyring .
+```
+
+3. Setup validator
+
+```
+docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring setup.sh <moniker>
+```
+
+4. Add the account created in previous step to genesis
+
+```
+docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd add-genesis-account <address> <coin>
+```
+
+5. Create new genesis.json
+   
+```
+docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd collect-gentxs
+```
+
+6. Start the validator
+
+```
+docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd start
+```
+
+#### Running multiple validator 
+
+1. Repeat step 1 - 3 on all the machines,
+
+2. Run the `add-genesis-account` for all the address created in other machine in the master validator,
+
+3. Continue to step 4 - 5, replace the old `genesis.json` with the new one created in master validator in step 5
+
+4. Update the config.toml for all the other machine to include all the validator peers:
+
+```
+presistent_peers = "node_id@ip:port,node_id2@ip:port"
+```
+
+6. Start the validator on all the machines
+
+### Become a validator
+
+1. Follow step 1 - 3 on [Run validator locally](#Running-a-validator-locally)
+
+2. Make sure you have enough coins in your account
+
+3. Replace the `genesis.json` and `config.toml`
+
+4. Send the `fairyringd tx staking create-validator` command with the address created to become validator, for example:
+
+```
+fairyringd tx staking create-validator \
+  --amount=100000000stake \
+  --pubkey=$(fairyringd tendermint show-validator) \
+  --moniker="choose a moniker" \
+  --chain-id="fairyring" \
+  --commission-rate="0.10" \
+  --commission-max-rate="0.20" \
+  --commission-max-change-rate="0.01" \
+  --min-self-delegation="1000000" \
+  --from validator_account
+```
+
+5. Start the validator
+
 ### Queries
 
 Get all validators
