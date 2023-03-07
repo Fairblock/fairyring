@@ -1,0 +1,12 @@
+syntax = "proto3";
+package fairyring.fairyring;
+
+option go_package = "fairyring/x/fairyring/types";
+
+message PubKeyID {
+  uint64 height = 1; 
+  string publicKey = 2; 
+  string ibeID = 3; 
+  string creator = 4;
+}
+

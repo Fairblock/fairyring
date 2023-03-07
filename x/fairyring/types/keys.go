@@ -15,6 +15,11 @@ const (
 )
 
 const (
+	IBEId                   = "Random_IBE_ID"
+	KeyAggregationThreshold = 1
+)
+
+const (
 	RegisteredValidatorEventType    = "new validator-registered"
 	RegisteredValidatorEventCreator = "creator"
 )
@@ -25,6 +30,15 @@ const (
 	SendKeyshareEventKeyshareBlockHeight = "keyshare-block-height"
 	SendKeyshareEventReceivedBlockHeight = "received-block-height"
 	SendKeyshareEventMessage             = "keyshare-message"
+	SendKeyshareEventCommitment          = "keyshare-commitment"
+	SendKeyshareEventIndex               = "keyshare-index"
+)
+
+const (
+	KeyShareAggregatedEventType        = "keyshare-aggregated"
+	KeyShareAggregatedEventBlockHeight = "keyshare-aggregated-block-height"
+	KeyShareAggregatedEventData        = "keyshare-aggregated-data"
+	KeyShareAggregatedEventPubKey      = "keyshare-aggregated-pubkey"
 )
 
 func KeyPrefix(p string) []byte {

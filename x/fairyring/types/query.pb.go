@@ -489,6 +489,375 @@ func (m *QueryAllKeyShareResponse) GetPagination() *query.PageResponse {
 	return nil
 }
 
+// this line is used by starport scaffolding # 3
+type QueryGetAggregatedKeyShareRequest struct {
+	Height uint64 `protobuf:"varint,1,opt,name=height,proto3" json:"height,omitempty"`
+}
+
+func (m *QueryGetAggregatedKeyShareRequest) Reset()         { *m = QueryGetAggregatedKeyShareRequest{} }
+func (m *QueryGetAggregatedKeyShareRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetAggregatedKeyShareRequest) ProtoMessage()    {}
+func (*QueryGetAggregatedKeyShareRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e91b6f1584d7e828, []int{10}
+}
+func (m *QueryGetAggregatedKeyShareRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetAggregatedKeyShareRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetAggregatedKeyShareRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetAggregatedKeyShareRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetAggregatedKeyShareRequest.Merge(m, src)
+}
+func (m *QueryGetAggregatedKeyShareRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetAggregatedKeyShareRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetAggregatedKeyShareRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetAggregatedKeyShareRequest proto.InternalMessageInfo
+
+func (m *QueryGetAggregatedKeyShareRequest) GetHeight() uint64 {
+	if m != nil {
+		return m.Height
+	}
+	return 0
+}
+
+type QueryGetAggregatedKeyShareResponse struct {
+	AggregatedKeyShare AggregatedKeyShare `protobuf:"bytes,1,opt,name=aggregatedKeyShare,proto3" json:"aggregatedKeyShare"`
+}
+
+func (m *QueryGetAggregatedKeyShareResponse) Reset()         { *m = QueryGetAggregatedKeyShareResponse{} }
+func (m *QueryGetAggregatedKeyShareResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetAggregatedKeyShareResponse) ProtoMessage()    {}
+func (*QueryGetAggregatedKeyShareResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e91b6f1584d7e828, []int{11}
+}
+func (m *QueryGetAggregatedKeyShareResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetAggregatedKeyShareResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetAggregatedKeyShareResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetAggregatedKeyShareResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetAggregatedKeyShareResponse.Merge(m, src)
+}
+func (m *QueryGetAggregatedKeyShareResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetAggregatedKeyShareResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetAggregatedKeyShareResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetAggregatedKeyShareResponse proto.InternalMessageInfo
+
+func (m *QueryGetAggregatedKeyShareResponse) GetAggregatedKeyShare() AggregatedKeyShare {
+	if m != nil {
+		return m.AggregatedKeyShare
+	}
+	return AggregatedKeyShare{}
+}
+
+type QueryAllAggregatedKeyShareRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllAggregatedKeyShareRequest) Reset()         { *m = QueryAllAggregatedKeyShareRequest{} }
+func (m *QueryAllAggregatedKeyShareRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllAggregatedKeyShareRequest) ProtoMessage()    {}
+func (*QueryAllAggregatedKeyShareRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e91b6f1584d7e828, []int{12}
+}
+func (m *QueryAllAggregatedKeyShareRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllAggregatedKeyShareRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllAggregatedKeyShareRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllAggregatedKeyShareRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllAggregatedKeyShareRequest.Merge(m, src)
+}
+func (m *QueryAllAggregatedKeyShareRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllAggregatedKeyShareRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllAggregatedKeyShareRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllAggregatedKeyShareRequest proto.InternalMessageInfo
+
+func (m *QueryAllAggregatedKeyShareRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllAggregatedKeyShareResponse struct {
+	AggregatedKeyShare []AggregatedKeyShare `protobuf:"bytes,1,rep,name=aggregatedKeyShare,proto3" json:"aggregatedKeyShare"`
+	Pagination         *query.PageResponse  `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllAggregatedKeyShareResponse) Reset()         { *m = QueryAllAggregatedKeyShareResponse{} }
+func (m *QueryAllAggregatedKeyShareResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllAggregatedKeyShareResponse) ProtoMessage()    {}
+func (*QueryAllAggregatedKeyShareResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e91b6f1584d7e828, []int{13}
+}
+func (m *QueryAllAggregatedKeyShareResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllAggregatedKeyShareResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllAggregatedKeyShareResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllAggregatedKeyShareResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllAggregatedKeyShareResponse.Merge(m, src)
+}
+func (m *QueryAllAggregatedKeyShareResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllAggregatedKeyShareResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllAggregatedKeyShareResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllAggregatedKeyShareResponse proto.InternalMessageInfo
+
+func (m *QueryAllAggregatedKeyShareResponse) GetAggregatedKeyShare() []AggregatedKeyShare {
+	if m != nil {
+		return m.AggregatedKeyShare
+	}
+	return nil
+}
+
+func (m *QueryAllAggregatedKeyShareResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryGetPubKeyIDRequest struct {
+	Height uint64 `protobuf:"varint,1,opt,name=height,proto3" json:"height,omitempty"`
+}
+
+func (m *QueryGetPubKeyIDRequest) Reset()         { *m = QueryGetPubKeyIDRequest{} }
+func (m *QueryGetPubKeyIDRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetPubKeyIDRequest) ProtoMessage()    {}
+func (*QueryGetPubKeyIDRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e91b6f1584d7e828, []int{14}
+}
+func (m *QueryGetPubKeyIDRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetPubKeyIDRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetPubKeyIDRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetPubKeyIDRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetPubKeyIDRequest.Merge(m, src)
+}
+func (m *QueryGetPubKeyIDRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetPubKeyIDRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetPubKeyIDRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetPubKeyIDRequest proto.InternalMessageInfo
+
+func (m *QueryGetPubKeyIDRequest) GetHeight() uint64 {
+	if m != nil {
+		return m.Height
+	}
+	return 0
+}
+
+type QueryGetPubKeyIDResponse struct {
+	PubKeyID PubKeyID `protobuf:"bytes,1,opt,name=pubKeyID,proto3" json:"pubKeyID"`
+}
+
+func (m *QueryGetPubKeyIDResponse) Reset()         { *m = QueryGetPubKeyIDResponse{} }
+func (m *QueryGetPubKeyIDResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetPubKeyIDResponse) ProtoMessage()    {}
+func (*QueryGetPubKeyIDResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e91b6f1584d7e828, []int{15}
+}
+func (m *QueryGetPubKeyIDResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetPubKeyIDResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetPubKeyIDResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetPubKeyIDResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetPubKeyIDResponse.Merge(m, src)
+}
+func (m *QueryGetPubKeyIDResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetPubKeyIDResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetPubKeyIDResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetPubKeyIDResponse proto.InternalMessageInfo
+
+func (m *QueryGetPubKeyIDResponse) GetPubKeyID() PubKeyID {
+	if m != nil {
+		return m.PubKeyID
+	}
+	return PubKeyID{}
+}
+
+type QueryAllPubKeyIDRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllPubKeyIDRequest) Reset()         { *m = QueryAllPubKeyIDRequest{} }
+func (m *QueryAllPubKeyIDRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllPubKeyIDRequest) ProtoMessage()    {}
+func (*QueryAllPubKeyIDRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e91b6f1584d7e828, []int{16}
+}
+func (m *QueryAllPubKeyIDRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllPubKeyIDRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllPubKeyIDRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllPubKeyIDRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllPubKeyIDRequest.Merge(m, src)
+}
+func (m *QueryAllPubKeyIDRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllPubKeyIDRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllPubKeyIDRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllPubKeyIDRequest proto.InternalMessageInfo
+
+func (m *QueryAllPubKeyIDRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllPubKeyIDResponse struct {
+	PubKeyID   []PubKeyID          `protobuf:"bytes,1,rep,name=pubKeyID,proto3" json:"pubKeyID"`
+	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllPubKeyIDResponse) Reset()         { *m = QueryAllPubKeyIDResponse{} }
+func (m *QueryAllPubKeyIDResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllPubKeyIDResponse) ProtoMessage()    {}
+func (*QueryAllPubKeyIDResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e91b6f1584d7e828, []int{17}
+}
+func (m *QueryAllPubKeyIDResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllPubKeyIDResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllPubKeyIDResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllPubKeyIDResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllPubKeyIDResponse.Merge(m, src)
+}
+func (m *QueryAllPubKeyIDResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllPubKeyIDResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllPubKeyIDResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllPubKeyIDResponse proto.InternalMessageInfo
+
+func (m *QueryAllPubKeyIDResponse) GetPubKeyID() []PubKeyID {
+	if m != nil {
+		return m.PubKeyID
+	}
+	return nil
+}
+
+func (m *QueryAllPubKeyIDResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "fairyring.fairyring.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "fairyring.fairyring.QueryParamsResponse")
@@ -500,54 +869,78 @@ func init() {
 	proto.RegisterType((*QueryGetKeyShareResponse)(nil), "fairyring.fairyring.QueryGetKeyShareResponse")
 	proto.RegisterType((*QueryAllKeyShareRequest)(nil), "fairyring.fairyring.QueryAllKeyShareRequest")
 	proto.RegisterType((*QueryAllKeyShareResponse)(nil), "fairyring.fairyring.QueryAllKeyShareResponse")
+	proto.RegisterType((*QueryGetAggregatedKeyShareRequest)(nil), "fairyring.fairyring.QueryGetAggregatedKeyShareRequest")
+	proto.RegisterType((*QueryGetAggregatedKeyShareResponse)(nil), "fairyring.fairyring.QueryGetAggregatedKeyShareResponse")
+	proto.RegisterType((*QueryAllAggregatedKeyShareRequest)(nil), "fairyring.fairyring.QueryAllAggregatedKeyShareRequest")
+	proto.RegisterType((*QueryAllAggregatedKeyShareResponse)(nil), "fairyring.fairyring.QueryAllAggregatedKeyShareResponse")
+	proto.RegisterType((*QueryGetPubKeyIDRequest)(nil), "fairyring.fairyring.QueryGetPubKeyIDRequest")
+	proto.RegisterType((*QueryGetPubKeyIDResponse)(nil), "fairyring.fairyring.QueryGetPubKeyIDResponse")
+	proto.RegisterType((*QueryAllPubKeyIDRequest)(nil), "fairyring.fairyring.QueryAllPubKeyIDRequest")
+	proto.RegisterType((*QueryAllPubKeyIDResponse)(nil), "fairyring.fairyring.QueryAllPubKeyIDResponse")
 }
 
 func init() { proto.RegisterFile("fairyring/fairyring/query.proto", fileDescriptor_e91b6f1584d7e828) }
 
 var fileDescriptor_e91b6f1584d7e828 = []byte{
-	// 665 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x95, 0x4f, 0x6b, 0x13, 0x4f,
-	0x18, 0xc7, 0x33, 0xfd, 0x13, 0xda, 0x69, 0xe1, 0x07, 0xd3, 0xc2, 0xaf, 0x24, 0xe9, 0x36, 0x4e,
-	0xa5, 0x29, 0x21, 0xee, 0x98, 0x14, 0x41, 0xbd, 0x68, 0x7a, 0xb0, 0x42, 0x2f, 0x31, 0x05, 0x41,
-	0x3d, 0x94, 0x49, 0x3b, 0x6e, 0x97, 0x6c, 0x77, 0xb6, 0xbb, 0xdb, 0xd0, 0x10, 0x02, 0xe2, 0x2b,
-	0x10, 0xbd, 0x79, 0x14, 0x41, 0xbc, 0xfb, 0x22, 0x7a, 0x2c, 0x78, 0xf1, 0x24, 0x92, 0xf8, 0x42,
-	0x24, 0xb3, 0xb3, 0xc9, 0xa6, 0x99, 0x6c, 0x8c, 0xf4, 0x36, 0x79, 0xf2, 0x7c, 0x9f, 0xe7, 0xf3,
-	0x3c, 0xcf, 0xcc, 0xb3, 0x70, 0xe3, 0x35, 0x35, 0xdd, 0xa6, 0x6b, 0xda, 0x06, 0x19, 0x9c, 0xce,
-	0xce, 0x99, 0xdb, 0xd4, 0x1d, 0x97, 0xfb, 0x1c, 0xad, 0xf4, 0xcd, 0x7a, 0xff, 0x94, 0x5a, 0x35,
-	0xb8, 0xc1, 0xc5, 0xff, 0xa4, 0x77, 0x0a, 0x5c, 0x53, 0x19, 0x83, 0x73, 0xc3, 0x62, 0x84, 0x3a,
-	0x26, 0xa1, 0xb6, 0xcd, 0x7d, 0xea, 0x9b, 0xdc, 0xf6, 0xe4, 0xbf, 0xf9, 0x23, 0xee, 0x9d, 0x72,
-	0x8f, 0xd4, 0xa8, 0xc7, 0x82, 0x0c, 0xa4, 0x51, 0xac, 0x31, 0x9f, 0x16, 0x89, 0x43, 0x0d, 0xd3,
-	0x16, 0xce, 0xd2, 0x37, 0xab, 0xa2, 0x72, 0xa8, 0x4b, 0x4f, 0xc3, 0x68, 0x39, 0x95, 0x47, 0x83,
-	0x5a, 0xe6, 0x31, 0xf5, 0xb9, 0x7b, 0xe8, 0x31, 0x5f, 0x3a, 0x6e, 0xaa, 0x1c, 0xeb, 0xac, 0x79,
-	0xe8, 0x9d, 0x50, 0x97, 0x05, 0x4e, 0x78, 0x15, 0xa2, 0x67, 0x3d, 0xa2, 0x8a, 0x48, 0x51, 0x65,
-	0x67, 0xe7, 0xcc, 0xf3, 0x71, 0x05, 0xae, 0x0c, 0x59, 0x3d, 0x87, 0xdb, 0x1e, 0x43, 0x0f, 0x60,
-	0x32, 0x40, 0x59, 0x03, 0x59, 0xb0, 0xbd, 0x54, 0x4a, 0xeb, 0x8a, 0x16, 0xe9, 0x81, 0x68, 0x77,
-	0xee, 0xf2, 0xe7, 0x46, 0xa2, 0x2a, 0x05, 0x78, 0x07, 0xa6, 0x45, 0xc4, 0x3d, 0xe6, 0x3f, 0x0f,
-	0x59, 0x0f, 0x98, 0x2f, 0x13, 0xa2, 0x55, 0x38, 0x6f, 0xda, 0xc7, 0xec, 0x42, 0x04, 0x5e, 0xac,
-	0x06, 0x3f, 0x70, 0x1d, 0x66, 0xd4, 0x22, 0xc9, 0xb3, 0x0f, 0x97, 0x1b, 0x11, 0xbb, 0xa4, 0xba,
-	0xa5, 0xa4, 0x8a, 0x06, 0x90, 0x6c, 0x43, 0x62, 0xcc, 0x24, 0x61, 0xd9, 0xb2, 0x54, 0x84, 0x4f,
-	0x20, 0x1c, 0x0c, 0x4b, 0x66, 0xda, 0xd2, 0x83, 0xc9, 0xea, 0xbd, 0xc9, 0xea, 0xc1, 0xdd, 0x91,
-	0x93, 0xd5, 0x2b, 0xd4, 0x60, 0x52, 0x5b, 0x8d, 0x28, 0xf1, 0x37, 0x20, 0x8b, 0x1a, 0xc9, 0x33,
-	0xb6, 0xa8, 0xd9, 0x7f, 0x2e, 0x0a, 0xed, 0x0d, 0x51, 0xcf, 0x08, 0xea, 0xdc, 0x44, 0xea, 0x80,
-	0x64, 0x08, 0xfb, 0x05, 0xfc, 0x3f, 0x1c, 0xc5, 0x3e, 0x6b, 0x1e, 0xf4, 0x6e, 0x50, 0xd8, 0x99,
-	0x0c, 0x5c, 0xec, 0xe7, 0x94, 0xf3, 0x1b, 0x18, 0x50, 0x16, 0x2e, 0xd5, 0x2c, 0x7e, 0x54, 0x7f,
-	0xca, 0x4c, 0xe3, 0xc4, 0x17, 0x08, 0x73, 0xd5, 0xa8, 0x09, 0xbf, 0x82, 0x6b, 0xa3, 0xa1, 0x65,
-	0x33, 0x1e, 0xc1, 0x85, 0xba, 0xb4, 0xc9, 0x9e, 0xaf, 0x2b, 0x1b, 0x11, 0x0a, 0x65, 0x13, 0xfa,
-	0x22, 0x4c, 0x25, 0x77, 0xd9, 0xb2, 0xae, 0x73, 0xdf, 0xd4, 0x44, 0x3f, 0x03, 0x59, 0xc0, 0x50,
-	0x0e, 0x65, 0x01, 0xb3, 0x53, 0x17, 0x70, 0x63, 0x13, 0x2c, 0x7d, 0x4c, 0xc2, 0x79, 0x81, 0x89,
-	0xde, 0x00, 0x98, 0x0c, 0x1e, 0x29, 0xca, 0x29, 0x61, 0x46, 0x37, 0x42, 0x6a, 0x7b, 0xb2, 0x63,
-	0x90, 0x13, 0x6f, 0xbe, 0xfd, 0xfe, 0xfb, 0xc3, 0xcc, 0x3a, 0x4a, 0x93, 0xf1, 0xab, 0x0c, 0x7d,
-	0x01, 0x70, 0x39, 0x7a, 0x79, 0xd1, 0xdd, 0xf1, 0xf1, 0xd5, 0x2b, 0x23, 0x55, 0x9c, 0x42, 0x21,
-	0xd1, 0x4a, 0x02, 0xad, 0x80, 0xf2, 0x64, 0xe2, 0x0e, 0x25, 0x2d, 0xb1, 0x82, 0xda, 0xe8, 0x13,
-	0x80, 0xff, 0x45, 0x83, 0x95, 0x2d, 0x2b, 0x0e, 0x56, 0xbd, 0x3d, 0xe2, 0x60, 0xc7, 0xec, 0x01,
-	0x9c, 0x17, 0xb0, 0xb7, 0x11, 0x9e, 0x0c, 0x8b, 0xbe, 0x02, 0xb8, 0x10, 0xde, 0x20, 0x54, 0x88,
-	0x6d, 0xcc, 0xb5, 0x57, 0x90, 0xba, 0xf3, 0x97, 0xde, 0x92, 0xea, 0xb1, 0xa0, 0x7a, 0x88, 0xee,
-	0x93, 0xd8, 0xaf, 0x0b, 0x69, 0xf5, 0x01, 0xdb, 0xa4, 0x15, 0x79, 0xed, 0x6d, 0xf4, 0x1e, 0xc0,
-	0xa5, 0x30, 0x6c, 0xaf, 0x99, 0x85, 0xd8, 0xd6, 0x4c, 0x81, 0xab, 0x78, 0x7e, 0x78, 0x4b, 0xe0,
-	0x66, 0x91, 0x16, 0x8f, 0xbb, 0x7b, 0xef, 0xb2, 0xa3, 0x81, 0xab, 0x8e, 0x06, 0x7e, 0x75, 0x34,
-	0xf0, 0xae, 0xab, 0x25, 0xae, 0xba, 0x5a, 0xe2, 0x47, 0x57, 0x4b, 0xbc, 0x4c, 0x0f, 0xdc, 0x2f,
-	0x22, 0x52, 0xbf, 0xe9, 0x30, 0xaf, 0x96, 0x14, 0x1f, 0xd1, 0x9d, 0x3f, 0x01, 0x00, 0x00, 0xff,
-	0xff, 0xb0, 0x29, 0xcb, 0x60, 0x4c, 0x08, 0x00, 0x00,
+	// 926 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x97, 0x41, 0x4f, 0xe3, 0x46,
+	0x14, 0xc7, 0x33, 0x04, 0x22, 0x98, 0x20, 0x55, 0x1a, 0x68, 0x8b, 0x12, 0x08, 0x61, 0x40, 0x84,
+	0xa6, 0xd4, 0x43, 0x42, 0x4b, 0x5b, 0x7a, 0x68, 0x83, 0xaa, 0xd2, 0x8a, 0x4b, 0x1a, 0xa4, 0x4a,
+	0x6d, 0x55, 0xa1, 0x09, 0x99, 0x3a, 0x56, 0x4c, 0x1c, 0x6c, 0x07, 0x11, 0x45, 0x48, 0x55, 0xfb,
+	0x05, 0xaa, 0x72, 0xea, 0x75, 0xb5, 0xd2, 0x6a, 0xef, 0x7b, 0xdb, 0xd3, 0xde, 0x38, 0xac, 0x56,
+	0x48, 0x7b, 0xd9, 0xd3, 0x6a, 0x05, 0xfb, 0x41, 0x56, 0x19, 0x8f, 0x63, 0x27, 0x99, 0xd8, 0x04,
+	0x65, 0x6f, 0xce, 0xf8, 0xbd, 0x37, 0xbf, 0xff, 0x7b, 0x6f, 0xe6, 0x39, 0x70, 0xf9, 0x4f, 0xaa,
+	0x99, 0x2d, 0x53, 0xab, 0xab, 0xc4, 0x7b, 0x3a, 0x6d, 0x32, 0xb3, 0xa5, 0x34, 0x4c, 0xc3, 0x36,
+	0xd0, 0x5c, 0x77, 0x59, 0xe9, 0x3e, 0x25, 0xe6, 0x55, 0x43, 0x35, 0xf8, 0x7b, 0xd2, 0x79, 0x72,
+	0x4c, 0x13, 0x8b, 0xaa, 0x61, 0xa8, 0x3a, 0x23, 0xb4, 0xa1, 0x11, 0x5a, 0xaf, 0x1b, 0x36, 0xb5,
+	0x35, 0xa3, 0x6e, 0x89, 0xb7, 0xd9, 0x63, 0xc3, 0x3a, 0x31, 0x2c, 0x52, 0xa6, 0x16, 0x73, 0x76,
+	0x20, 0x67, 0xb9, 0x32, 0xb3, 0x69, 0x8e, 0x34, 0xa8, 0xaa, 0xd5, 0xb9, 0xb1, 0xb0, 0x4d, 0xcb,
+	0xa8, 0x1a, 0xd4, 0xa4, 0x27, 0x6e, 0xb4, 0x8c, 0xcc, 0xe2, 0x8c, 0xea, 0x5a, 0x85, 0xda, 0x86,
+	0x79, 0x64, 0x31, 0x5b, 0x18, 0xae, 0xca, 0x0c, 0x6b, 0xac, 0x75, 0x64, 0x55, 0xa9, 0xc9, 0x84,
+	0x91, 0x22, 0x33, 0xa2, 0xaa, 0x6a, 0x32, 0x95, 0xda, 0xac, 0x72, 0xd4, 0x6f, 0xbf, 0x26, 0xe5,
+	0x6b, 0x96, 0xb9, 0xa1, 0x56, 0x71, 0xac, 0xf0, 0x3c, 0x44, 0x3f, 0x77, 0x74, 0x16, 0x39, 0x78,
+	0x89, 0x9d, 0x36, 0x99, 0x65, 0xe3, 0x22, 0x9c, 0xeb, 0x59, 0xb5, 0x1a, 0x46, 0xdd, 0x62, 0xe8,
+	0x6b, 0x18, 0x73, 0x04, 0x2e, 0x80, 0x34, 0xd8, 0x88, 0xe7, 0x93, 0x8a, 0x24, 0xf1, 0x8a, 0xe3,
+	0xb4, 0x37, 0x79, 0xf5, 0x7a, 0x39, 0x52, 0x12, 0x0e, 0x78, 0x1b, 0x26, 0x79, 0xc4, 0x7d, 0x66,
+	0xff, 0xe2, 0x66, 0xe0, 0x90, 0xd9, 0x62, 0x43, 0x34, 0x0f, 0xa7, 0xb4, 0x7a, 0x85, 0x9d, 0xf3,
+	0xc0, 0x33, 0x25, 0xe7, 0x07, 0xae, 0xc1, 0x45, 0xb9, 0x93, 0xe0, 0x39, 0x80, 0xb3, 0x67, 0xbe,
+	0x75, 0x41, 0xb5, 0x22, 0xa5, 0xf2, 0x07, 0x10, 0x6c, 0x3d, 0xce, 0x98, 0x09, 0xc2, 0x82, 0xae,
+	0xcb, 0x08, 0x7f, 0x80, 0xd0, 0x6b, 0x01, 0xb1, 0xd3, 0xba, 0xe2, 0xf4, 0x8b, 0xd2, 0xe9, 0x17,
+	0xc5, 0xe9, 0x48, 0xd1, 0x2f, 0x4a, 0x91, 0xaa, 0x4c, 0xf8, 0x96, 0x7c, 0x9e, 0xf8, 0x09, 0x10,
+	0xa2, 0x06, 0xf6, 0x19, 0x2a, 0x2a, 0x7a, 0x6f, 0x51, 0x68, 0xbf, 0x87, 0x7a, 0x82, 0x53, 0x67,
+	0x42, 0xa9, 0x1d, 0x92, 0x1e, 0xec, 0x5f, 0xe1, 0xc7, 0x6e, 0x29, 0x0e, 0x58, 0xeb, 0xb0, 0xd3,
+	0x67, 0x6e, 0x66, 0x16, 0xe1, 0x4c, 0x77, 0x4f, 0x51, 0x3f, 0x6f, 0x01, 0xa5, 0x61, 0xbc, 0xac,
+	0x1b, 0xc7, 0xb5, 0x1f, 0x99, 0xa6, 0x56, 0x6d, 0x8e, 0x30, 0x59, 0xf2, 0x2f, 0xe1, 0xdf, 0xe1,
+	0xc2, 0x60, 0x68, 0x91, 0x8c, 0x6f, 0xe1, 0x74, 0x4d, 0xac, 0x89, 0x9c, 0x2f, 0x49, 0x13, 0xe1,
+	0x3a, 0x8a, 0x24, 0x74, 0x9d, 0x30, 0x15, 0xdc, 0x05, 0x5d, 0xef, 0xe7, 0x1e, 0x57, 0x45, 0x1f,
+	0x02, 0x21, 0xa0, 0x67, 0x0f, 0xa9, 0x80, 0xe8, 0xc8, 0x02, 0xc6, 0x57, 0xc1, 0x6f, 0xe0, 0x8a,
+	0x9b, 0xe6, 0x42, 0xf7, 0xd6, 0xe8, 0xcf, 0xc9, 0x47, 0x30, 0x56, 0x75, 0x0a, 0x05, 0x78, 0xa1,
+	0xc4, 0x2f, 0xfc, 0x0f, 0x80, 0x38, 0xc8, 0x5b, 0xa8, 0xfd, 0x03, 0x22, 0x3a, 0xf0, 0x56, 0xa4,
+	0x36, 0x23, 0xd5, 0x3d, 0x18, 0x4c, 0x64, 0x40, 0x12, 0x08, 0xd7, 0x84, 0x84, 0x82, 0xae, 0x0f,
+	0x97, 0x30, 0xae, 0xb2, 0x3e, 0x77, 0x25, 0x0f, 0xd9, 0x2d, 0x44, 0x72, 0x74, 0x2c, 0x92, 0xc7,
+	0x57, 0xfe, 0x9c, 0x77, 0x80, 0x8b, 0xcd, 0xf2, 0x01, 0x6b, 0xfd, 0xf4, 0x7d, 0x58, 0xd1, 0x7d,
+	0x07, 0xd3, 0x73, 0xf1, 0xfa, 0xba, 0x21, 0xd6, 0x02, 0x0f, 0xa6, 0xeb, 0xe8, 0xf6, 0xb5, 0xeb,
+	0xe4, 0x3f, 0x98, 0xfd, 0x3c, 0xef, 0xe3, 0x60, 0x86, 0x08, 0x88, 0x8e, 0x2c, 0x60, 0x6c, 0x95,
+	0xc9, 0xbf, 0x88, 0xc3, 0x29, 0x8e, 0x89, 0xfe, 0x02, 0x30, 0xe6, 0x4c, 0x4f, 0x24, 0x6f, 0x9d,
+	0xc1, 0x51, 0x9d, 0xd8, 0x08, 0x37, 0x74, 0xf6, 0xc4, 0xab, 0x7f, 0xbf, 0x7c, 0x7b, 0x39, 0xb1,
+	0x84, 0x92, 0x64, 0xf8, 0x97, 0x0b, 0x7a, 0x04, 0xe0, 0xac, 0x7f, 0xaa, 0xa0, 0xad, 0xe1, 0xf1,
+	0xe5, 0xb3, 0x3c, 0x91, 0x1b, 0xc1, 0x43, 0xa0, 0xe5, 0x39, 0xda, 0x26, 0xca, 0x92, 0xd0, 0x4f,
+	0x26, 0xd2, 0xe6, 0xdf, 0x06, 0x17, 0xe8, 0x01, 0x80, 0x1f, 0xf8, 0x83, 0x15, 0x74, 0x3d, 0x08,
+	0x56, 0x3e, 0xd6, 0x83, 0x60, 0x87, 0x0c, 0x68, 0x9c, 0xe5, 0xb0, 0x6b, 0x08, 0x87, 0xc3, 0xa2,
+	0xc7, 0x00, 0x4e, 0x77, 0xcf, 0xf2, 0x66, 0x60, 0x62, 0xfa, 0xee, 0xb1, 0xc4, 0x67, 0x77, 0xb4,
+	0x16, 0x54, 0xdf, 0x71, 0xaa, 0x5d, 0xf4, 0x15, 0x09, 0xfc, 0x98, 0x24, 0xed, 0x2e, 0xe0, 0x05,
+	0x69, 0xfb, 0xc6, 0xf0, 0x05, 0xfa, 0x0f, 0xc0, 0xb8, 0x1b, 0xb6, 0x93, 0xcc, 0xcd, 0xc0, 0xd4,
+	0x8c, 0x80, 0x2b, 0x99, 0x8b, 0x78, 0x9d, 0xe3, 0xa6, 0x51, 0x2a, 0x18, 0x17, 0x3d, 0x03, 0x10,
+	0x0d, 0x5e, 0x98, 0x68, 0x27, 0x30, 0x39, 0x43, 0x87, 0x43, 0xe2, 0xcb, 0x91, 0xfd, 0x04, 0xef,
+	0x2e, 0xe7, 0xfd, 0x1c, 0xe5, 0xc9, 0x5d, 0x3f, 0xc3, 0x49, 0xbb, 0x2a, 0x12, 0xfb, 0x14, 0xc0,
+	0x0f, 0x07, 0x43, 0x77, 0x52, 0xbc, 0x13, 0x98, 0xb4, 0x7b, 0xc9, 0x08, 0x9c, 0x56, 0x38, 0xc7,
+	0x65, 0x7c, 0x8a, 0x3e, 0xb9, 0xb3, 0x0c, 0xf4, 0x3f, 0x80, 0xd3, 0xee, 0x25, 0x18, 0xd2, 0xc2,
+	0x7d, 0x17, 0x79, 0x48, 0x0b, 0xf7, 0x5f, 0xc9, 0x78, 0x8b, 0xc3, 0x65, 0xd1, 0x06, 0x09, 0xfe,
+	0xeb, 0xe2, 0x65, 0xf6, 0x12, 0xc0, 0xb8, 0x1b, 0x26, 0xbc, 0x65, 0x47, 0xc0, 0x93, 0x4c, 0x0c,
+	0x9c, 0xe1, 0x78, 0x2b, 0x68, 0x39, 0x04, 0x6f, 0xef, 0x8b, 0xab, 0x9b, 0x14, 0xb8, 0xbe, 0x49,
+	0x81, 0x37, 0x37, 0x29, 0xf0, 0xef, 0x6d, 0x2a, 0x72, 0x7d, 0x9b, 0x8a, 0xbc, 0xba, 0x4d, 0x45,
+	0x7e, 0x4b, 0x7a, 0xf6, 0xe7, 0x3e, 0x5f, 0xbb, 0xd5, 0x60, 0x56, 0x39, 0xc6, 0xff, 0x91, 0x6d,
+	0xbf, 0x0b, 0x00, 0x00, 0xff, 0xff, 0x56, 0x2b, 0x01, 0x53, 0xef, 0x0e, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -572,6 +965,12 @@ type QueryClient interface {
 	KeyShare(ctx context.Context, in *QueryGetKeyShareRequest, opts ...grpc.CallOption) (*QueryGetKeyShareResponse, error)
 	// Queries a list of KeyShare items.
 	KeyShareAll(ctx context.Context, in *QueryAllKeyShareRequest, opts ...grpc.CallOption) (*QueryAllKeyShareResponse, error)
+	// Queries a list of AggregatedKeyShare items.
+	AggregatedKeyShare(ctx context.Context, in *QueryGetAggregatedKeyShareRequest, opts ...grpc.CallOption) (*QueryGetAggregatedKeyShareResponse, error)
+	AggregatedKeyShareAll(ctx context.Context, in *QueryAllAggregatedKeyShareRequest, opts ...grpc.CallOption) (*QueryAllAggregatedKeyShareResponse, error)
+	// Queries a list of PubKeyID items.
+	PubKeyID(ctx context.Context, in *QueryGetPubKeyIDRequest, opts ...grpc.CallOption) (*QueryGetPubKeyIDResponse, error)
+	PubKeyIDAll(ctx context.Context, in *QueryAllPubKeyIDRequest, opts ...grpc.CallOption) (*QueryAllPubKeyIDResponse, error)
 }
 
 type queryClient struct {
@@ -627,6 +1026,42 @@ func (c *queryClient) KeyShareAll(ctx context.Context, in *QueryAllKeyShareReque
 	return out, nil
 }
 
+func (c *queryClient) AggregatedKeyShare(ctx context.Context, in *QueryGetAggregatedKeyShareRequest, opts ...grpc.CallOption) (*QueryGetAggregatedKeyShareResponse, error) {
+	out := new(QueryGetAggregatedKeyShareResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.fairyring.Query/AggregatedKeyShare", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) AggregatedKeyShareAll(ctx context.Context, in *QueryAllAggregatedKeyShareRequest, opts ...grpc.CallOption) (*QueryAllAggregatedKeyShareResponse, error) {
+	out := new(QueryAllAggregatedKeyShareResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.fairyring.Query/AggregatedKeyShareAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) PubKeyID(ctx context.Context, in *QueryGetPubKeyIDRequest, opts ...grpc.CallOption) (*QueryGetPubKeyIDResponse, error) {
+	out := new(QueryGetPubKeyIDResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.fairyring.Query/PubKeyID", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) PubKeyIDAll(ctx context.Context, in *QueryAllPubKeyIDRequest, opts ...grpc.CallOption) (*QueryAllPubKeyIDResponse, error) {
+	out := new(QueryAllPubKeyIDResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.fairyring.Query/PubKeyIDAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
@@ -639,6 +1074,12 @@ type QueryServer interface {
 	KeyShare(context.Context, *QueryGetKeyShareRequest) (*QueryGetKeyShareResponse, error)
 	// Queries a list of KeyShare items.
 	KeyShareAll(context.Context, *QueryAllKeyShareRequest) (*QueryAllKeyShareResponse, error)
+	// Queries a list of AggregatedKeyShare items.
+	AggregatedKeyShare(context.Context, *QueryGetAggregatedKeyShareRequest) (*QueryGetAggregatedKeyShareResponse, error)
+	AggregatedKeyShareAll(context.Context, *QueryAllAggregatedKeyShareRequest) (*QueryAllAggregatedKeyShareResponse, error)
+	// Queries a list of PubKeyID items.
+	PubKeyID(context.Context, *QueryGetPubKeyIDRequest) (*QueryGetPubKeyIDResponse, error)
+	PubKeyIDAll(context.Context, *QueryAllPubKeyIDRequest) (*QueryAllPubKeyIDResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -659,6 +1100,18 @@ func (*UnimplementedQueryServer) KeyShare(ctx context.Context, req *QueryGetKeyS
 }
 func (*UnimplementedQueryServer) KeyShareAll(ctx context.Context, req *QueryAllKeyShareRequest) (*QueryAllKeyShareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KeyShareAll not implemented")
+}
+func (*UnimplementedQueryServer) AggregatedKeyShare(ctx context.Context, req *QueryGetAggregatedKeyShareRequest) (*QueryGetAggregatedKeyShareResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AggregatedKeyShare not implemented")
+}
+func (*UnimplementedQueryServer) AggregatedKeyShareAll(ctx context.Context, req *QueryAllAggregatedKeyShareRequest) (*QueryAllAggregatedKeyShareResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AggregatedKeyShareAll not implemented")
+}
+func (*UnimplementedQueryServer) PubKeyID(ctx context.Context, req *QueryGetPubKeyIDRequest) (*QueryGetPubKeyIDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PubKeyID not implemented")
+}
+func (*UnimplementedQueryServer) PubKeyIDAll(ctx context.Context, req *QueryAllPubKeyIDRequest) (*QueryAllPubKeyIDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PubKeyIDAll not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -755,6 +1208,78 @@ func _Query_KeyShareAll_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_AggregatedKeyShare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetAggregatedKeyShareRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).AggregatedKeyShare(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.fairyring.Query/AggregatedKeyShare",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).AggregatedKeyShare(ctx, req.(*QueryGetAggregatedKeyShareRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_AggregatedKeyShareAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllAggregatedKeyShareRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).AggregatedKeyShareAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.fairyring.Query/AggregatedKeyShareAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).AggregatedKeyShareAll(ctx, req.(*QueryAllAggregatedKeyShareRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_PubKeyID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetPubKeyIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).PubKeyID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.fairyring.Query/PubKeyID",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).PubKeyID(ctx, req.(*QueryGetPubKeyIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_PubKeyIDAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllPubKeyIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).PubKeyIDAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.fairyring.Query/PubKeyIDAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).PubKeyIDAll(ctx, req.(*QueryAllPubKeyIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "fairyring.fairyring.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -778,6 +1303,22 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "KeyShareAll",
 			Handler:    _Query_KeyShareAll_Handler,
+		},
+		{
+			MethodName: "AggregatedKeyShare",
+			Handler:    _Query_AggregatedKeyShare_Handler,
+		},
+		{
+			MethodName: "AggregatedKeyShareAll",
+			Handler:    _Query_AggregatedKeyShareAll_Handler,
+		},
+		{
+			MethodName: "PubKeyID",
+			Handler:    _Query_PubKeyID_Handler,
+		},
+		{
+			MethodName: "PubKeyIDAll",
+			Handler:    _Query_PubKeyIDAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1139,6 +1680,296 @@ func (m *QueryAllKeyShareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetAggregatedKeyShareRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetAggregatedKeyShareRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetAggregatedKeyShareRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Height != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.Height))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetAggregatedKeyShareResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetAggregatedKeyShareResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetAggregatedKeyShareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.AggregatedKeyShare.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllAggregatedKeyShareRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllAggregatedKeyShareRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllAggregatedKeyShareRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllAggregatedKeyShareResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllAggregatedKeyShareResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllAggregatedKeyShareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.AggregatedKeyShare) > 0 {
+		for iNdEx := len(m.AggregatedKeyShare) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.AggregatedKeyShare[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetPubKeyIDRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetPubKeyIDRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetPubKeyIDRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Height != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.Height))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetPubKeyIDResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetPubKeyIDResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetPubKeyIDResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.PubKeyID.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllPubKeyIDRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllPubKeyIDRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllPubKeyIDRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllPubKeyIDResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllPubKeyIDResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllPubKeyIDResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.PubKeyID) > 0 {
+		for iNdEx := len(m.PubKeyID) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.PubKeyID[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -1274,6 +2105,116 @@ func (m *QueryAllKeyShareResponse) Size() (n int) {
 	_ = l
 	if len(m.KeyShare) > 0 {
 		for _, e := range m.KeyShare {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetAggregatedKeyShareRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Height != 0 {
+		n += 1 + sovQuery(uint64(m.Height))
+	}
+	return n
+}
+
+func (m *QueryGetAggregatedKeyShareResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.AggregatedKeyShare.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllAggregatedKeyShareRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllAggregatedKeyShareResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.AggregatedKeyShare) > 0 {
+		for _, e := range m.AggregatedKeyShare {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetPubKeyIDRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Height != 0 {
+		n += 1 + sovQuery(uint64(m.Height))
+	}
+	return n
+}
+
+func (m *QueryGetPubKeyIDResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.PubKeyID.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllPubKeyIDRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllPubKeyIDResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.PubKeyID) > 0 {
+		for _, e := range m.PubKeyID {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -2125,6 +3066,722 @@ func (m *QueryAllKeyShareResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.KeyShare = append(m.KeyShare, KeyShare{})
 			if err := m.KeyShare[len(m.KeyShare)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetAggregatedKeyShareRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetAggregatedKeyShareRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetAggregatedKeyShareRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Height", wireType)
+			}
+			m.Height = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Height |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetAggregatedKeyShareResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetAggregatedKeyShareResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetAggregatedKeyShareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AggregatedKeyShare", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.AggregatedKeyShare.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllAggregatedKeyShareRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllAggregatedKeyShareRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllAggregatedKeyShareRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllAggregatedKeyShareResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllAggregatedKeyShareResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllAggregatedKeyShareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AggregatedKeyShare", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.AggregatedKeyShare = append(m.AggregatedKeyShare, AggregatedKeyShare{})
+			if err := m.AggregatedKeyShare[len(m.AggregatedKeyShare)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetPubKeyIDRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetPubKeyIDRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetPubKeyIDRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Height", wireType)
+			}
+			m.Height = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Height |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetPubKeyIDResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetPubKeyIDResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetPubKeyIDResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PubKeyID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.PubKeyID.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllPubKeyIDRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllPubKeyIDRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllPubKeyIDRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllPubKeyIDResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllPubKeyIDResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllPubKeyIDResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PubKeyID", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PubKeyID = append(m.PubKeyID, PubKeyID{})
+			if err := m.PubKeyID[len(m.PubKeyID)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

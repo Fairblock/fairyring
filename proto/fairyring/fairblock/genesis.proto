@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package fairyring.fairblock;
+
+import "gogoproto/gogo.proto";
+import "fairyring/fairblock/params.proto";
+import "fairyring/fairblock/encrypted_tx.proto";
+import "fairyring/fairblock/fairblock_nonce.proto";
+import "fairyring/fairblock/fairblock_executed_nonce.proto";
+import "fairyring/fairblock/aggregated_key_share.proto";
+
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "fairyring/x/fairblock/types";
+
+// GenesisState defines the fairblock module's genesis state.
+message GenesisState {
+           Params                 params                     = 1 [(gogoproto.nullable) = false];
+           string                 port_id                    = 2;
+  repeated EncryptedTxArray       encryptedTxArray           = 3 [(gogoproto.nullable) = false];
+  repeated FairblockNonce         fairblockNonceList         = 4 [(gogoproto.nullable) = false];
+  repeated FairblockExecutedNonce fairblockExecutedNonceList = 5 [(gogoproto.nullable) = false];
+
+  // this line is used by starport scaffolding # genesis/proto/state
+  repeated AggregatedKeyShare aggregatedKeyShareList = 6 [(gogoproto.nullable) = false];
+}
+

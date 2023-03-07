@@ -104,6 +104,9 @@ import (
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
 
+	fairblockmodule "fairyring/x/fairblock"
+	fairblockmodulekeeper "fairyring/x/fairblock/keeper"
+	fairblockmoduletypes "fairyring/x/fairblock/types"
 	fairyringmodule "fairyring/x/fairyring"
 	fairyringmodulekeeper "fairyring/x/fairyring/keeper"
 	fairyringmoduletypes "fairyring/x/fairyring/types"
@@ -166,6 +169,7 @@ var (
 		ica.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		fairyringmodule.AppModuleBasic{},
+		fairblockmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -239,7 +243,9 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
-	FairyringKeeper fairyringmodulekeeper.Keeper
+	FairyringKeeper       fairyringmodulekeeper.Keeper
+	ScopedFairblockKeeper capabilitykeeper.ScopedKeeper
+	FairblockKeeper       fairblockmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -285,6 +291,7 @@ func New(
 		ibctransfertypes.StoreKey, icahosttypes.StoreKey, capabilitytypes.StoreKey, group.StoreKey,
 		icacontrollertypes.StoreKey,
 		fairyringmoduletypes.StoreKey,
+		fairblockmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -510,6 +517,24 @@ func New(
 	)
 	fairyringModule := fairyringmodule.NewAppModule(appCodec, app.FairyringKeeper, app.AccountKeeper, app.BankKeeper)
 
+	scopedFairblockKeeper := app.CapabilityKeeper.ScopeToModule(fairblockmoduletypes.ModuleName)
+	app.ScopedFairblockKeeper = scopedFairblockKeeper
+	app.FairblockKeeper = *fairblockmodulekeeper.NewKeeper(
+		appCodec,
+		keys[fairblockmoduletypes.StoreKey],
+		keys[fairblockmoduletypes.MemStoreKey],
+		app.GetSubspace(fairblockmoduletypes.ModuleName),
+	)
+	fairblockModule := fairblockmodule.NewAppModule(
+		appCodec,
+
+		app.FairblockKeeper,
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.MsgServiceRouter(),
+		encodingConfig.TxConfig,
+	)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Sealing prevents other modules from creating scoped sub-keepers
@@ -519,6 +544,7 @@ func New(
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
+
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 
@@ -556,6 +582,7 @@ func New(
 		transferModule,
 		icaModule,
 		fairyringModule,
+		fairblockModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -586,6 +613,7 @@ func New(
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
 		fairyringmoduletypes.ModuleName,
+		fairblockmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -611,6 +639,7 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		fairyringmoduletypes.ModuleName,
+		fairblockmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -641,6 +670,7 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		fairyringmoduletypes.ModuleName,
+		fairblockmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -671,6 +701,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		fairyringModule,
+		fairblockModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -870,6 +901,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
 	paramsKeeper.Subspace(fairyringmoduletypes.ModuleName)
+	paramsKeeper.Subspace(fairblockmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

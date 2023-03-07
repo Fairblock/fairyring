@@ -1,5 +1,5 @@
 {
-  "author": "Tendermint, Inc \u003chello@tendermint.com\u003e",
+  "author": "Tendermint, Inc <hello@tendermint.com>",
   "dependencies": {
     "@cosmjs/launchpad": "0.27.0",
     "@cosmjs/proto-signing": "0.27.0",

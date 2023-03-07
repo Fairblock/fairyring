@@ -15,12 +15,19 @@ var _ = strconv.Itoa(0)
 
 func CmdSendKeyshare() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "send-keyshare [message] [block-height]",
+		Use:   "send-keyshare [message] [commitment] [keyshare-index] [block-height]",
 		Short: "Broadcast message sendKeyshare",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argMessage := args[0]
-			argBlockHeight, err := cast.ToUint64E(args[1])
+			argCommitment := args[1]
+
+			keyshareIndex, err := cast.ToUint64E(args[2])
+			if err != nil {
+				return err
+			}
+
+			argBlockHeight, err := cast.ToUint64E(args[3])
 			if err != nil {
 				return err
 			}
@@ -33,6 +40,8 @@ func CmdSendKeyshare() *cobra.Command {
 			msg := types.NewMsgSendKeyshare(
 				clientCtx.GetFromAddress().String(),
 				argMessage,
+				argCommitment,
+				keyshareIndex,
 				argBlockHeight,
 			)
 			if err := msg.ValidateBasic(); err != nil {

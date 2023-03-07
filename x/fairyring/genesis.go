@@ -16,6 +16,14 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.KeyShareList {
 		k.SetKeyShare(ctx, elem)
 	}
+	// Set all the aggregatedKeyShare
+	for _, elem := range genState.AggregatedKeyShareList {
+		k.SetAggregatedKeyShare(ctx, elem)
+	}
+	// Set all the pubKeyID
+	for _, elem := range genState.PubKeyIDList {
+		k.SetPubKeyID(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -27,6 +35,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.ValidatorSetList = k.GetAllValidatorSet(ctx)
 	genesis.KeyShareList = k.GetAllKeyShare(ctx)
+	genesis.AggregatedKeyShareList = k.GetAllAggregatedKeyShare(ctx)
+	genesis.PubKeyIDList = k.GetAllPubKeyID(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

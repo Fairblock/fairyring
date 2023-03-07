@@ -31,6 +31,12 @@ Send a keyshare message from validator
 fairyringd tx fairyring send-keyshare <Message> <BlockHeight> --from $alice --gas auto
 ```
 
+Submit an encrypted tx message
+
+```
+fairyringd tx fairblock submit-encrypted-tx <TxData> <TargetBlockHeight> --from $alice --gas auto
+```
+
 ### Queries
 
 Get all validators
@@ -55,6 +61,24 @@ Get specific keyshare
 
 ```
 fairyringd query fairyring show-key-share <Validator> <BlockHeight>
+```
+
+Get all encrypted tx in state
+
+```
+fairyringd query fairblock list-encrypted-tx
+```
+
+Get all encrypted tx in state from a specific block height
+
+```
+fairyringd query fairblock list-encrypted-tx-from-block <blockHeight>
+```
+
+Get a single encrypted tx in state with a specific block height & tx index
+
+```
+fairyringd query fairblock show-encrypted-tx <blockHeight> <index>
 ```
 
 ### Sending keyshares every block
