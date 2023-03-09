@@ -79,9 +79,9 @@ docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fa
 docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd add-genesis-account <address> 100000000stake
 ```
 
-3. Run the command on step 4, then add all the gentx.json at `~/.fairyring/config/gentx/gentx-{node_id}.json` from all the machines to master validator
+3. Add all the gentx.json at `~/.fairyring/config/gentx/gentx-{node_id}.json` from all the machines to master validator, then run the command on step 4
 
-4. Run the command on step 5, replace the old `genesis.json` with the new one created in master validator
+4. replace the old `genesis.json` with the new one created in master validator
 
 5. Open config.toml at `~/.fairyring/config/config.toml` on master validator and replace the IP Address & Port of the peers
 
