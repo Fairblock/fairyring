@@ -10,7 +10,7 @@ require (
 	github.com/drand/kyber v1.1.17
 	github.com/drand/kyber-bls12381 v0.2.5
 	github.com/gogo/protobuf v1.3.3
-	github.com/golang/protobuf v1.5.2
+	github.com/golang/protobuf v1.5.3
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/ignite/cli v0.25.1
 	github.com/spf13/cast v1.5.0

@@ -15,14 +15,12 @@ func NewMsgCreatePubKeyID(
 	creator string,
 	height uint64,
 	publicKey string,
-	ibeID string,
 
 ) *MsgCreatePubKeyID {
 	return &MsgCreatePubKeyID{
 		Creator:   creator,
 		Height:    height,
 		PublicKey: publicKey,
-		IbeID:     ibeID,
 	}
 }
 

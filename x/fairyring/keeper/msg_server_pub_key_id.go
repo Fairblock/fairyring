@@ -31,7 +31,6 @@ func (k msgServer) CreatePubKeyID(goCtx context.Context, msg *types.MsgCreatePub
 		Creator:   msg.Creator,
 		Height:    msg.Height,
 		PublicKey: msg.PublicKey,
-		IbeID:     msg.IbeID,
 	}
 
 	k.SetPubKeyID(

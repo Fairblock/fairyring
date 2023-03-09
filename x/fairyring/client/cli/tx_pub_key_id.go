@@ -11,7 +11,7 @@ import (
 
 func CmdCreatePubKeyID() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-pub-key-id [height] [public-key] [ibe-id]",
+		Use:   "create-pub-key-id [height] [public-key]",
 		Short: "Create a new PubKeyID",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -23,7 +23,6 @@ func CmdCreatePubKeyID() *cobra.Command {
 
 			// Get value arguments
 			argPublicKey := args[1]
-			argIbeID := args[2]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -34,7 +33,6 @@ func CmdCreatePubKeyID() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				indexHeight,
 				argPublicKey,
-				argIbeID,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

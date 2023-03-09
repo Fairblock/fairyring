@@ -47,7 +47,6 @@ message MsgCreatePubKeyID {
   string creator   = 1;
   uint64 height    = 2;
   string publicKey = 3;
-  string ibeID     = 4;
 }
 
 message MsgCreatePubKeyIDResponse {}
