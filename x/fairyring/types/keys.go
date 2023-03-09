@@ -15,8 +15,7 @@ const (
 )
 
 const (
-	IBEId                   = "Random_IBE_ID"
-	KeyAggregationThreshold = 1
+	KeyAggregationThresholdPercentage = 2.0 / 3.0
 )
 
 const (
