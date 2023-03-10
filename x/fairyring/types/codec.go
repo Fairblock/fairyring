@@ -10,7 +10,7 @@ import (
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgRegisterValidator{}, "fairyring/RegisterValidator", nil)
 	cdc.RegisterConcrete(&MsgSendKeyshare{}, "fairyring/SendKeyshare", nil)
-	cdc.RegisterConcrete(&MsgCreatePubKeyID{}, "fairyring/CreatePubKeyID", nil)
+	cdc.RegisterConcrete(&MsgCreateLatestPubKey{}, "fairyring/CreateLatestPubKey", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -22,7 +22,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgSendKeyshare{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreatePubKeyID{},
+		&MsgCreateLatestPubKey{},
 	)
 	// this line is used by starport scaffolding # 3
 

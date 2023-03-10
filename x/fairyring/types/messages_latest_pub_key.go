@@ -6,35 +6,30 @@ import (
 )
 
 const (
-	TypeMsgCreatePubKeyID = "create_pub_key_id"
+	TypeMsgCreateLatestPubKeyID = "create_latest_pub_key"
 )
 
-var _ sdk.Msg = &MsgCreatePubKeyID{}
+var _ sdk.Msg = &MsgCreateLatestPubKey{}
 
-func NewMsgCreatePubKeyID(
+func NewMsgCreateLatestPubKey(
 	creator string,
-	height uint64,
 	publicKey string,
-	ibeID string,
-
-) *MsgCreatePubKeyID {
-	return &MsgCreatePubKeyID{
+) *MsgCreateLatestPubKey {
+	return &MsgCreateLatestPubKey{
 		Creator:   creator,
-		Height:    height,
 		PublicKey: publicKey,
-		IbeID:     ibeID,
 	}
 }
 
-func (msg *MsgCreatePubKeyID) Route() string {
+func (msg *MsgCreateLatestPubKey) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgCreatePubKeyID) Type() string {
-	return TypeMsgCreatePubKeyID
+func (msg *MsgCreateLatestPubKey) Type() string {
+	return TypeMsgCreateLatestPubKeyID
 }
 
-func (msg *MsgCreatePubKeyID) GetSigners() []sdk.AccAddress {
+func (msg *MsgCreateLatestPubKey) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -42,12 +37,12 @@ func (msg *MsgCreatePubKeyID) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgCreatePubKeyID) GetSignBytes() []byte {
+func (msg *MsgCreateLatestPubKey) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgCreatePubKeyID) ValidateBasic() error {
+func (msg *MsgCreateLatestPubKey) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

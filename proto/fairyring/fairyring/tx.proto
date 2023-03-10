@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package fairyring.fairyring;
 
-import "fairyring/fairyring/pub_key_id.proto";
+import "fairyring/fairyring/latest_pub_key.proto";
 
 // this line is used by starport scaffolding # proto/tx/import
 
@@ -14,7 +14,7 @@ service Msg {
   rpc SendKeyshare      (MsgSendKeyshare     ) returns (MsgSendKeyshareResponse     );
 
   // this line is used by starport scaffolding # proto/tx/rpc
-  rpc CreatePubKeyID (MsgCreatePubKeyID) returns (MsgCreatePubKeyIDResponse);
+  rpc CreateLatestPubKey (MsgCreateLatestPubKey) returns (MsgCreateLatestPubKeyResponse);
 }
 message MsgRegisterValidator {
   string creator = 1;
@@ -43,11 +43,9 @@ message MsgSendKeyshareResponse {
 
 
 // this line is used by starport scaffolding # proto/tx/message
-message MsgCreatePubKeyID {
+message MsgCreateLatestPubKey {
   string creator   = 1;
-  uint64 height    = 2;
-  string publicKey = 3;
-  string ibeID     = 4;
+  string publicKey = 2;
 }
 
-message MsgCreatePubKeyIDResponse {}
+message MsgCreateLatestPubKeyResponse {}

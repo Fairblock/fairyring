@@ -57,39 +57,47 @@ docker build -t fairyring .
 docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring setup.sh <moniker>
 ```
 
-4. Add the account created in previous step to genesis
+4. Create new genesis.json
 
-```
-docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd add-genesis-account <address> <coin>
-```
-
-5. Create new genesis.json
-   
 ```
 docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd collect-gentxs
 ```
 
-6. Start the validator
+5. Start the validator
 
 ```
 docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd start
 ```
 
-#### Running multiple validator 
+#### Running multiple validator
 
 1. Repeat step 1 - 3 on all the machines,
 
-2. Run the `add-genesis-account` for all the address created in other machine in the master validator,
+2. Run the following command for all the address created in other machine in the master validator:
 
-3. Continue to step 4 - 5, replace the old `genesis.json` with the new one created in master validator in step 5
+```
+docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd add-genesis-account <address> 100000000stake
+```
 
-4. Update the config.toml for all the other machine to include all the validator peers:
+3. Add all the gentx.json at `~/.fairyring/config/gentx/gentx-{node_id}.json` from all the machines to master validator, then run the command on step 4
+
+4. replace the old `genesis.json` with the new one created in master validator
+
+5. Open config.toml at `~/.fairyring/config/config.toml` on master validator and replace the IP Address & Port of the peers
+
+6. Update the config.toml for all the other machine to include all the validator peers:
 
 ```
 presistent_peers = "node_id@ip:port,node_id2@ip:port"
 ```
 
-6. Start the validator on all the machines
+You can get the node id by the following command:
+
+```
+docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd tendermint show-node-id
+```
+
+7. Start the validator on all the machines
 
 ### Become a validator
 

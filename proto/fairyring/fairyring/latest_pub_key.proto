@@ -1,0 +1,10 @@
+syntax = "proto3";
+package fairyring.fairyring;
+
+option go_package = "fairyring/x/fairyring/types";
+
+message LatestPubKey {
+  string publicKey = 1;
+  string creator = 2;
+}
+

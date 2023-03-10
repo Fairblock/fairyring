@@ -16,24 +16,18 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func SimulateMsgCreatePubKeyID(
+func SimulateMsgCreateLatestPubKey(
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
-	k keeper.Keeper,
+	_ keeper.Keeper,
 ) simtypes.Operation {
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
 
-		i := r.Int()
-		msg := &types.MsgCreatePubKeyID{
-			Creator: simAccount.Address.String(),
-			Height:  uint64(i),
-		}
-
-		_, found := k.GetPubKeyID(ctx, msg.Height)
-		if found {
-			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "PubKeyID already exist"), nil, nil
+		msg := &types.MsgCreateLatestPubKey{
+			Creator:   simAccount.Address.String(),
+			PublicKey: strconv.FormatUint(r.Uint64(), 10),
 		}
 
 		txCtx := simulation.OperationInput{

@@ -5,10 +5,9 @@ import (
 
 	"fairyring/x/fairyring/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k msgServer) CreatePubKeyID(goCtx context.Context, msg *types.MsgCreatePubKeyID) (*types.MsgCreatePubKeyIDResponse, error) {
+func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreateLatestPubKey) (*types.MsgCreateLatestPubKeyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// check if validator is registered
@@ -18,25 +17,14 @@ func (k msgServer) CreatePubKeyID(goCtx context.Context, msg *types.MsgCreatePub
 		return nil, types.ErrValidatorNotRegistered.Wrap(msg.Creator)
 	}
 
-	// Check if the value already exists
-	_, isFound := k.GetPubKeyID(
-		ctx,
-		msg.Height,
-	)
-	if isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
-	}
-
-	var pubKeyID = types.PubKeyID{
+	var latestPubKey = types.LatestPubKey{
 		Creator:   msg.Creator,
-		Height:    msg.Height,
 		PublicKey: msg.PublicKey,
-		IbeID:     msg.IbeID,
 	}
 
-	k.SetPubKeyID(
+	k.SetLatestPubKey(
 		ctx,
-		pubKeyID,
+		latestPubKey,
 	)
-	return &types.MsgCreatePubKeyIDResponse{}, nil
+	return &types.MsgCreateLatestPubKeyResponse{}, nil
 }
