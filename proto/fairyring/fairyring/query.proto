@@ -9,7 +9,7 @@ import "fairyring/fairyring/params.proto";
 import "fairyring/fairyring/validator_set.proto";
 import "fairyring/fairyring/key_share.proto";
 import "fairyring/fairyring/aggregated_key_share.proto";
-import "fairyring/fairyring/pub_key_id.proto";
+import "fairyring/fairyring/latest_pub_key.proto";
 
 // this line is used by starport scaffolding # 1
 
@@ -60,13 +60,9 @@ service Query {
   
   }
   
-  // Queries a list of PubKeyID items.
-  rpc PubKeyID    (QueryGetPubKeyIDRequest) returns (QueryGetPubKeyIDResponse) {
-    option (google.api.http).get = "/fairyring/fairyring/pub_key_id/{height}";
-  
-  }
-  rpc PubKeyIDAll (QueryAllPubKeyIDRequest) returns (QueryAllPubKeyIDResponse) {
-    option (google.api.http).get = "/fairyring/fairyring/pub_key_id";
+  // Queries the latest public key.
+  rpc LatestPubKey    (QueryLatestPubKeyRequest) returns (QueryLatestPubKeyResponse) {
+    option (google.api.http).get = "/fairyring/fairyring/latest_pub_key";
   
   }
 }
@@ -133,20 +129,9 @@ message QueryAllAggregatedKeyShareResponse {
            cosmos.base.query.v1beta1.PageResponse pagination         = 2;
 }
 
-message QueryGetPubKeyIDRequest {
-  uint64 height = 1;
-}
+message QueryLatestPubKeyRequest {}
 
-message QueryGetPubKeyIDResponse {
-  PubKeyID pubKeyID = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryAllPubKeyIDRequest {
-  cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryAllPubKeyIDResponse {
-  repeated PubKeyID                               pubKeyID   = 1 [(gogoproto.nullable) = false];
-           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+message QueryLatestPubKeyResponse {
+  LatestPubKey                               latestPubKey   = 1 [(gogoproto.nullable) = false];
 }
 

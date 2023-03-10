@@ -40,13 +40,9 @@ func TestGenesis(t *testing.T) {
 				Height: 1,
 			},
 		},
-		PubKeyIDList: []types.PubKeyID{
-			{
-				Height: 0,
-			},
-			{
-				Height: 1,
-			},
+		LatestPubKey: types.LatestPubKey{
+			"height",
+			"creator",
 		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
@@ -62,6 +58,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.ValidatorSetList, got.ValidatorSetList)
 	require.ElementsMatch(t, genesisState.KeyShareList, got.KeyShareList)
 	require.ElementsMatch(t, genesisState.AggregatedKeyShareList, got.AggregatedKeyShareList)
-	require.ElementsMatch(t, genesisState.PubKeyIDList, got.PubKeyIDList)
+	require.ElementsMatch(t, genesisState.LatestPubKey, got.LatestPubKey)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

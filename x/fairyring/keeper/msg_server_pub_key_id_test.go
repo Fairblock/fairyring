@@ -15,20 +15,18 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func TestPubKeyIDMsgServerCreate(t *testing.T) {
+func TestLatestPubKeyMsgServerCreate(t *testing.T) {
 	k, ctx := keepertest.FairyringKeeper(t)
 	srv := keeper.NewMsgServerImpl(*k)
 	wctx := sdk.WrapSDKContext(ctx)
 	creator := "A"
 	for i := 0; i < 5; i++ {
-		expected := &types.MsgCreatePubKeyID{Creator: creator,
-			Height: uint64(i),
+		expected := &types.MsgCreateLatestPubKey{Creator: creator,
+			PublicKey: strconv.Itoa(i),
 		}
-		_, err := srv.CreatePubKeyID(wctx, expected)
+		_, err := srv.CreateLatestPubKey(wctx, expected)
 		require.NoError(t, err)
-		rst, found := k.GetPubKeyID(ctx,
-			expected.Height,
-		)
+		rst, found := k.GetLatestPubKey(ctx)
 		require.True(t, found)
 		require.Equal(t, expected.Creator, rst.Creator)
 	}

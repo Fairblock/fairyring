@@ -5,33 +5,26 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 )
 
-func CmdCreatePubKeyID() *cobra.Command {
+func CmdCreateLatestPubKey() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-pub-key-id [height] [public-key]",
-		Short: "Create a new PubKeyID",
-		Args:  cobra.ExactArgs(3),
+		Use:   "create-latest-pub-key [public-key]",
+		Short: "Create a latest public key",
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			// Get indexes
-			indexHeight, err := cast.ToUint64E(args[0])
-			if err != nil {
-				return err
-			}
 
 			// Get value arguments
-			argPublicKey := args[1]
+			argPublicKey := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgCreatePubKeyID(
+			msg := types.NewMsgCreateLatestPubKey(
 				clientCtx.GetFromAddress().String(),
-				indexHeight,
 				argPublicKey,
 			)
 			if err := msg.ValidateBasic(); err != nil {

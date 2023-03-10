@@ -7,7 +7,7 @@ import "fairyring/fairyring/params.proto";
 import "fairyring/fairyring/validator_set.proto";
 import "fairyring/fairyring/key_share.proto";
 import "fairyring/fairyring/aggregated_key_share.proto";
-import "fairyring/fairyring/pub_key_id.proto";
+import "fairyring/fairyring/latest_pub_key.proto";
 
 // this line is used by starport scaffolding # genesis/proto/import
 
@@ -21,6 +21,6 @@ message GenesisState {
   
   // this line is used by starport scaffolding # genesis/proto/state
   repeated AggregatedKeyShare aggregatedKeyShareList = 4 [(gogoproto.nullable) = false];
-  repeated PubKeyID           pubKeyIDList           = 5 [(gogoproto.nullable) = false];
+  LatestPubKey           LatestPubKey           = 5 [(gogoproto.nullable) = false];
 }
 

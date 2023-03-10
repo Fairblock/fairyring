@@ -18,5 +18,5 @@ var (
 	ErrUnmarshallingCommitment    = sdkerrors.Register(ModuleName, 1107, "error unmarhsalling commitment")
 	ErrUnableToVerifyShare        = sdkerrors.Register(ModuleName, 1108, "unable to verify share")
 	ErrInvalidShare               = sdkerrors.Register(ModuleName, 1109, "invalid share / commitment")
-	ErrPubKeyIDNotFound           = sdkerrors.Register(ModuleName, 1110, "pubKey & id not found for the current height")
+	ErrPubKeyNotFound             = sdkerrors.Register(ModuleName, 1110, "Public key does not exists now")
 )

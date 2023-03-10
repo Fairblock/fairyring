@@ -8,21 +8,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgCreatePubKeyID_ValidateBasic(t *testing.T) {
+func TestMsgCreateLatestPubKey_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgCreatePubKeyID
+		msg  MsgCreateLatestPubKey
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgCreatePubKeyID{
+			msg: MsgCreateLatestPubKey{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgCreatePubKeyID{
+			msg: MsgCreateLatestPubKey{
 				Creator: sample.AccAddress(),
 			},
 		},

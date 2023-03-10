@@ -48,13 +48,9 @@ func TestGenesisState_Validate(t *testing.T) {
 						Height: 1,
 					},
 				},
-				PubKeyIDList: []types.PubKeyID{
-					{
-						Height: 0,
-					},
-					{
-						Height: 1,
-					},
+				LatestPubKey: types.LatestPubKey{
+					"public_key",
+					"creator",
 				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
@@ -94,20 +90,6 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated aggregatedKeyShare",
 			genState: &types.GenesisState{
 				AggregatedKeyShareList: []types.AggregatedKeyShare{
-					{
-						Height: 0,
-					},
-					{
-						Height: 0,
-					},
-				},
-			},
-			valid: false,
-		},
-		{
-			desc: "duplicated pubKeyID",
-			genState: &types.GenesisState{
-				PubKeyIDList: []types.PubKeyID{
 					{
 						Height: 0,
 					},

@@ -18,7 +18,7 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func TestCreatePubKeyID(t *testing.T) {
+func TestCreateLatestPubKey(t *testing.T) {
 	net := network.New(t)
 	val := net.Validators[0]
 	ctx := val.ClientCtx
@@ -50,7 +50,7 @@ func TestCreatePubKeyID(t *testing.T) {
 			}
 			args = append(args, fields...)
 			args = append(args, tc.args...)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdCreatePubKeyID(), args)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdCreateLatestPubKey(), args)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {

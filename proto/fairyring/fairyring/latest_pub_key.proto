@@ -3,9 +3,8 @@ package fairyring.fairyring;
 
 option go_package = "fairyring/x/fairyring/types";
 
-message PubKeyID {
-  uint64 height = 1; 
-  string publicKey = 2;
-  string creator = 3;
+message LatestPubKey {
+  string publicKey = 1;
+  string creator = 2;
 }
 

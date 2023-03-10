@@ -276,24 +276,23 @@ func (m *MsgSendKeyshareResponse) GetReceivedBlockHeight() uint64 {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
-type MsgCreatePubKeyID struct {
+type MsgCreateLatestPubKey struct {
 	Creator   string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Height    uint64 `protobuf:"varint,2,opt,name=height,proto3" json:"height,omitempty"`
-	PublicKey string `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	PublicKey string `protobuf:"bytes,2,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
 }
 
-func (m *MsgCreatePubKeyID) Reset()         { *m = MsgCreatePubKeyID{} }
-func (m *MsgCreatePubKeyID) String() string { return proto.CompactTextString(m) }
-func (*MsgCreatePubKeyID) ProtoMessage()    {}
-func (*MsgCreatePubKeyID) Descriptor() ([]byte, []int) {
+func (m *MsgCreateLatestPubKey) Reset()         { *m = MsgCreateLatestPubKey{} }
+func (m *MsgCreateLatestPubKey) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateLatestPubKey) ProtoMessage()    {}
+func (*MsgCreateLatestPubKey) Descriptor() ([]byte, []int) {
 	return fileDescriptor_81bbbe0b7e04e8d2, []int{4}
 }
-func (m *MsgCreatePubKeyID) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateLatestPubKey) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreatePubKeyID) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateLatestPubKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreatePubKeyID.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateLatestPubKey.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -303,54 +302,47 @@ func (m *MsgCreatePubKeyID) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *MsgCreatePubKeyID) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreatePubKeyID.Merge(m, src)
+func (m *MsgCreateLatestPubKey) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateLatestPubKey.Merge(m, src)
 }
-func (m *MsgCreatePubKeyID) XXX_Size() int {
+func (m *MsgCreateLatestPubKey) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreatePubKeyID) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreatePubKeyID.DiscardUnknown(m)
+func (m *MsgCreateLatestPubKey) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateLatestPubKey.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreatePubKeyID proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateLatestPubKey proto.InternalMessageInfo
 
-func (m *MsgCreatePubKeyID) GetCreator() string {
+func (m *MsgCreateLatestPubKey) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgCreatePubKeyID) GetHeight() uint64 {
-	if m != nil {
-		return m.Height
-	}
-	return 0
-}
-
-func (m *MsgCreatePubKeyID) GetPublicKey() string {
+func (m *MsgCreateLatestPubKey) GetPublicKey() string {
 	if m != nil {
 		return m.PublicKey
 	}
 	return ""
 }
 
-type MsgCreatePubKeyIDResponse struct {
+type MsgCreateLatestPubKeyResponse struct {
 }
 
-func (m *MsgCreatePubKeyIDResponse) Reset()         { *m = MsgCreatePubKeyIDResponse{} }
-func (m *MsgCreatePubKeyIDResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgCreatePubKeyIDResponse) ProtoMessage()    {}
-func (*MsgCreatePubKeyIDResponse) Descriptor() ([]byte, []int) {
+func (m *MsgCreateLatestPubKeyResponse) Reset()         { *m = MsgCreateLatestPubKeyResponse{} }
+func (m *MsgCreateLatestPubKeyResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateLatestPubKeyResponse) ProtoMessage()    {}
+func (*MsgCreateLatestPubKeyResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_81bbbe0b7e04e8d2, []int{5}
 }
-func (m *MsgCreatePubKeyIDResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgCreateLatestPubKeyResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreatePubKeyIDResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgCreateLatestPubKeyResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreatePubKeyIDResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgCreateLatestPubKeyResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -360,59 +352,59 @@ func (m *MsgCreatePubKeyIDResponse) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *MsgCreatePubKeyIDResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreatePubKeyIDResponse.Merge(m, src)
+func (m *MsgCreateLatestPubKeyResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateLatestPubKeyResponse.Merge(m, src)
 }
-func (m *MsgCreatePubKeyIDResponse) XXX_Size() int {
+func (m *MsgCreateLatestPubKeyResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreatePubKeyIDResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreatePubKeyIDResponse.DiscardUnknown(m)
+func (m *MsgCreateLatestPubKeyResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateLatestPubKeyResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreatePubKeyIDResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgCreateLatestPubKeyResponse proto.InternalMessageInfo
 
 func init() {
 	proto.RegisterType((*MsgRegisterValidator)(nil), "fairyring.fairyring.MsgRegisterValidator")
 	proto.RegisterType((*MsgRegisterValidatorResponse)(nil), "fairyring.fairyring.MsgRegisterValidatorResponse")
 	proto.RegisterType((*MsgSendKeyshare)(nil), "fairyring.fairyring.MsgSendKeyshare")
 	proto.RegisterType((*MsgSendKeyshareResponse)(nil), "fairyring.fairyring.MsgSendKeyshareResponse")
-	proto.RegisterType((*MsgCreatePubKeyID)(nil), "fairyring.fairyring.MsgCreatePubKeyID")
-	proto.RegisterType((*MsgCreatePubKeyIDResponse)(nil), "fairyring.fairyring.MsgCreatePubKeyIDResponse")
+	proto.RegisterType((*MsgCreateLatestPubKey)(nil), "fairyring.fairyring.MsgCreateLatestPubKey")
+	proto.RegisterType((*MsgCreateLatestPubKeyResponse)(nil), "fairyring.fairyring.MsgCreateLatestPubKeyResponse")
 }
 
 func init() { proto.RegisterFile("fairyring/fairyring/tx.proto", fileDescriptor_81bbbe0b7e04e8d2) }
 
 var fileDescriptor_81bbbe0b7e04e8d2 = []byte{
-	// 440 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x94, 0x4b, 0x8b, 0xd3, 0x50,
-	0x14, 0x80, 0x7b, 0x3b, 0x63, 0x75, 0x8e, 0x2f, 0xe6, 0x8e, 0x68, 0xcc, 0x94, 0x50, 0x42, 0x91,
-	0x11, 0x24, 0x8e, 0x8a, 0xe0, 0x7a, 0x74, 0xe1, 0x50, 0x02, 0x92, 0x01, 0x17, 0x6e, 0x86, 0x3c,
-	0x8e, 0x37, 0x97, 0x34, 0x0f, 0xef, 0x4d, 0xa5, 0xf9, 0x17, 0xfe, 0x11, 0xff, 0x86, 0xb8, 0x9c,
-	0xa5, 0x4b, 0x69, 0x57, 0xfe, 0x0b, 0x49, 0x9a, 0xa6, 0xe9, 0x34, 0xad, 0x71, 0x77, 0x1e, 0xdf,
-	0x79, 0xdd, 0x7b, 0x38, 0xd0, 0xff, 0x6c, 0x73, 0x91, 0x09, 0x1e, 0xb1, 0xe7, 0x2b, 0x29, 0x9d,
-	0x1a, 0x89, 0x88, 0xd3, 0x98, 0x1e, 0x55, 0x36, 0xa3, 0x92, 0xd4, 0x61, 0x53, 0x48, 0x32, 0x71,
-	0x2e, 0x03, 0xcc, 0x2e, 0xb9, 0xb7, 0x08, 0xd5, 0x4f, 0xe1, 0x81, 0x29, 0x99, 0x85, 0x8c, 0xcb,
-	0x14, 0xc5, 0x47, 0x7b, 0xcc, 0x3d, 0x3b, 0x8d, 0x05, 0x55, 0xe0, 0xa6, 0x2b, 0x30, 0x17, 0x15,
-	0x32, 0x20, 0x27, 0x07, 0xd6, 0x52, 0xd5, 0xdf, 0x40, 0xbf, 0x29, 0xc2, 0x42, 0x99, 0xc4, 0x91,
-	0xc4, 0x1d, 0x91, 0xdf, 0x09, 0xdc, 0x37, 0x25, 0xbb, 0xc0, 0xc8, 0x1b, 0x61, 0x26, 0x7d, 0x5b,
-	0xec, 0xa0, 0x73, 0x4f, 0x88, 0x52, 0xda, 0x0c, 0x95, 0xee, 0xc2, 0x53, 0xaa, 0x54, 0x03, 0x70,
-	0xe3, 0x30, 0xe4, 0x69, 0x88, 0x51, 0xaa, 0xec, 0x15, 0xce, 0x9a, 0x85, 0x0e, 0xe1, 0x6e, 0x80,
-	0xd9, 0x45, 0x9e, 0xff, 0x3c, 0xf2, 0x70, 0xaa, 0xec, 0x0f, 0xc8, 0xc9, 0xbe, 0xb5, 0x6e, 0xa4,
-	0x03, 0xb8, 0xed, 0x8c, 0x63, 0x37, 0x78, 0x8f, 0x9c, 0xf9, 0xa9, 0x72, 0xa3, 0x60, 0xea, 0x26,
-	0xfd, 0x0f, 0x81, 0x47, 0xd7, 0xfa, 0xfd, 0xf7, 0x94, 0x54, 0x85, 0x5b, 0x41, 0x49, 0x97, 0x8d,
-	0x57, 0x7a, 0xcb, 0xce, 0x65, 0x53, 0xe7, 0xf2, 0x3f, 0x3a, 0xa7, 0xa7, 0x70, 0x24, 0xd0, 0x45,
-	0xfe, 0x15, 0xbd, 0xb3, 0x1a, 0xd9, 0x2b, 0xc8, 0x26, 0x97, 0xee, 0xc2, 0xa1, 0x29, 0xd9, 0xdb,
-	0x7c, 0x06, 0xfc, 0x30, 0x71, 0x46, 0x98, 0x9d, 0xbf, 0xdb, 0x31, 0xe4, 0x43, 0xe8, 0xf9, 0x8b,
-	0x9c, 0xdd, 0x22, 0x67, 0xa9, 0xd1, 0x3e, 0x1c, 0x24, 0x13, 0x67, 0xcc, 0xdd, 0x11, 0x66, 0xe5,
-	0x7c, 0x2b, 0x83, 0x7e, 0x0c, 0x8f, 0x37, 0x8a, 0x2c, 0x5f, 0xf4, 0xe5, 0x8f, 0x2e, 0xec, 0x99,
-	0x92, 0xd1, 0x2f, 0x70, 0xb8, 0xb9, 0x8e, 0x4f, 0x8d, 0x86, 0x15, 0x37, 0x9a, 0xf6, 0x50, 0x7d,
-	0xd1, 0x1a, 0xad, 0x3e, 0xd3, 0x81, 0x3b, 0x6b, 0x4b, 0x39, 0xdc, 0x96, 0xa2, 0x4e, 0xa9, 0xcf,
-	0xda, 0x50, 0x55, 0x0d, 0x1f, 0xee, 0x5d, 0x7b, 0xdd, 0x27, 0xdb, 0xe2, 0xd7, 0x39, 0xd5, 0x68,
-	0xc7, 0x2d, 0x2b, 0x9d, 0xbd, 0xfe, 0x39, 0xd3, 0xc8, 0xd5, 0x4c, 0x23, 0xbf, 0x67, 0x1a, 0xf9,
-	0x36, 0xd7, 0x3a, 0x57, 0x73, 0xad, 0xf3, 0x6b, 0xae, 0x75, 0x3e, 0x1d, 0xaf, 0x0e, 0xc1, 0xb4,
-	0x7e, 0x47, 0xb2, 0x04, 0xa5, 0xd3, 0x2b, 0x0e, 0xc2, 0xab, 0xbf, 0x01, 0x00, 0x00, 0xff, 0xff,
-	0xc0, 0x75, 0x6e, 0x6b, 0x6b, 0x04, 0x00, 0x00,
+	// 434 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x94, 0xcd, 0x6e, 0xd3, 0x40,
+	0x10, 0xc7, 0xb3, 0x6d, 0x29, 0x74, 0x00, 0x21, 0xb6, 0x20, 0x2c, 0x13, 0x4c, 0x64, 0xf5, 0x10,
+	0x10, 0x32, 0xa5, 0x08, 0x89, 0x73, 0xb9, 0x80, 0x82, 0x05, 0x72, 0x25, 0x0e, 0x5c, 0x2a, 0x7f,
+	0x0c, 0xdb, 0x95, 0x3f, 0xd9, 0xdd, 0xa0, 0xf8, 0x2d, 0x78, 0x11, 0xde, 0x83, 0x63, 0xc5, 0x89,
+	0x23, 0x4a, 0x4e, 0xbc, 0x05, 0xb2, 0xeb, 0x38, 0x2e, 0xdd, 0x06, 0x73, 0x9b, 0x8f, 0xdf, 0x8c,
+	0x67, 0xd6, 0x7f, 0x0d, 0x0c, 0x3f, 0xf9, 0x5c, 0x94, 0x82, 0x67, 0xec, 0xe9, 0xca, 0x52, 0x33,
+	0xa7, 0x10, 0xb9, 0xca, 0xe9, 0x6e, 0x1b, 0x73, 0x5a, 0xcb, 0x1c, 0xeb, 0x4a, 0x12, 0x5f, 0xa1,
+	0x54, 0xc7, 0xc5, 0x34, 0x38, 0x8e, 0xb1, 0x3c, 0x2b, 0xb7, 0xf7, 0xe1, 0x8e, 0x2b, 0x99, 0x87,
+	0x8c, 0x4b, 0x85, 0xe2, 0x83, 0x9f, 0xf0, 0xc8, 0x57, 0xb9, 0xa0, 0x06, 0x5c, 0x0d, 0x05, 0x56,
+	0xa6, 0x41, 0x46, 0x64, 0xbc, 0xe3, 0x2d, 0x5d, 0xfb, 0x25, 0x0c, 0x75, 0x15, 0x1e, 0xca, 0x22,
+	0xcf, 0x24, 0xae, 0xa9, 0xfc, 0x46, 0xe0, 0x96, 0x2b, 0xd9, 0x11, 0x66, 0xd1, 0x04, 0x4b, 0x79,
+	0xe2, 0x8b, 0x35, 0x74, 0x95, 0x49, 0x51, 0x4a, 0x9f, 0xa1, 0xb1, 0x71, 0x96, 0x69, 0x5c, 0x6a,
+	0x01, 0x84, 0x79, 0x9a, 0x72, 0x95, 0x62, 0xa6, 0x8c, 0xcd, 0x3a, 0xd9, 0x89, 0xd0, 0x3d, 0xb8,
+	0x19, 0x63, 0x79, 0x54, 0xf5, 0x7f, 0x93, 0x45, 0x38, 0x33, 0xb6, 0x46, 0x64, 0xbc, 0xe5, 0x9d,
+	0x0f, 0xd2, 0x11, 0x5c, 0x0f, 0x92, 0x3c, 0x8c, 0x5f, 0x23, 0x67, 0x27, 0xca, 0xb8, 0x52, 0x33,
+	0xdd, 0x90, 0xfd, 0x9b, 0xc0, 0xbd, 0xbf, 0xe6, 0xfd, 0xf7, 0x96, 0xd4, 0x84, 0x6b, 0x71, 0x43,
+	0x37, 0x83, 0xb7, 0x7e, 0xcf, 0xc9, 0xa5, 0x6e, 0x72, 0xf9, 0x1f, 0x93, 0xd3, 0x7d, 0xd8, 0x15,
+	0x18, 0x22, 0xff, 0x82, 0xd1, 0x61, 0x87, 0xdc, 0xae, 0x49, 0x5d, 0xca, 0x7e, 0x07, 0x77, 0x5d,
+	0xc9, 0x5e, 0x55, 0x3b, 0xe0, 0xdb, 0x5a, 0x28, 0xef, 0xa7, 0xc1, 0x04, 0xcb, 0x35, 0x8b, 0x0e,
+	0x61, 0xa7, 0x98, 0x06, 0x09, 0x0f, 0x27, 0x58, 0x36, 0x9b, 0xae, 0x02, 0xf6, 0x43, 0x78, 0xa0,
+	0x6d, 0xb8, 0x7c, 0xc1, 0x83, 0x1f, 0x1b, 0xb0, 0xe9, 0x4a, 0x46, 0x3f, 0xc3, 0xed, 0x8b, 0xf2,
+	0x7b, 0xe4, 0x68, 0x64, 0xed, 0xe8, 0x74, 0x67, 0x3e, 0xeb, 0x8d, 0xb6, 0x3f, 0x2f, 0x80, 0x1b,
+	0xe7, 0x44, 0xb8, 0x77, 0x59, 0x8b, 0x2e, 0x65, 0x3e, 0xe9, 0x43, 0xb5, 0xdf, 0x50, 0x40, 0x35,
+	0xaf, 0xf9, 0xf8, 0xb2, 0x1e, 0x17, 0x59, 0xf3, 0xa0, 0x3f, 0xbb, 0xfc, 0xea, 0xe1, 0x8b, 0xef,
+	0x73, 0x8b, 0x9c, 0xce, 0x2d, 0xf2, 0x6b, 0x6e, 0x91, 0xaf, 0x0b, 0x6b, 0x70, 0xba, 0xb0, 0x06,
+	0x3f, 0x17, 0xd6, 0xe0, 0xe3, 0xfd, 0xd5, 0x21, 0x98, 0x75, 0xef, 0x48, 0x59, 0xa0, 0x0c, 0xb6,
+	0xeb, 0x63, 0xf0, 0xfc, 0x4f, 0x00, 0x00, 0x00, 0xff, 0xff, 0xdc, 0x34, 0x6f, 0x46, 0x6b, 0x04,
+	0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -430,7 +422,7 @@ type MsgClient interface {
 	RegisterValidator(ctx context.Context, in *MsgRegisterValidator, opts ...grpc.CallOption) (*MsgRegisterValidatorResponse, error)
 	SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts ...grpc.CallOption) (*MsgSendKeyshareResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
-	CreatePubKeyID(ctx context.Context, in *MsgCreatePubKeyID, opts ...grpc.CallOption) (*MsgCreatePubKeyIDResponse, error)
+	CreateLatestPubKey(ctx context.Context, in *MsgCreateLatestPubKey, opts ...grpc.CallOption) (*MsgCreateLatestPubKeyResponse, error)
 }
 
 type msgClient struct {
@@ -459,9 +451,9 @@ func (c *msgClient) SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts 
 	return out, nil
 }
 
-func (c *msgClient) CreatePubKeyID(ctx context.Context, in *MsgCreatePubKeyID, opts ...grpc.CallOption) (*MsgCreatePubKeyIDResponse, error) {
-	out := new(MsgCreatePubKeyIDResponse)
-	err := c.cc.Invoke(ctx, "/fairyring.fairyring.Msg/CreatePubKeyID", in, out, opts...)
+func (c *msgClient) CreateLatestPubKey(ctx context.Context, in *MsgCreateLatestPubKey, opts ...grpc.CallOption) (*MsgCreateLatestPubKeyResponse, error) {
+	out := new(MsgCreateLatestPubKeyResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.fairyring.Msg/CreateLatestPubKey", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -473,7 +465,7 @@ type MsgServer interface {
 	RegisterValidator(context.Context, *MsgRegisterValidator) (*MsgRegisterValidatorResponse, error)
 	SendKeyshare(context.Context, *MsgSendKeyshare) (*MsgSendKeyshareResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
-	CreatePubKeyID(context.Context, *MsgCreatePubKeyID) (*MsgCreatePubKeyIDResponse, error)
+	CreateLatestPubKey(context.Context, *MsgCreateLatestPubKey) (*MsgCreateLatestPubKeyResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -486,8 +478,8 @@ func (*UnimplementedMsgServer) RegisterValidator(ctx context.Context, req *MsgRe
 func (*UnimplementedMsgServer) SendKeyshare(ctx context.Context, req *MsgSendKeyshare) (*MsgSendKeyshareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendKeyshare not implemented")
 }
-func (*UnimplementedMsgServer) CreatePubKeyID(ctx context.Context, req *MsgCreatePubKeyID) (*MsgCreatePubKeyIDResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreatePubKeyID not implemented")
+func (*UnimplementedMsgServer) CreateLatestPubKey(ctx context.Context, req *MsgCreateLatestPubKey) (*MsgCreateLatestPubKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateLatestPubKey not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -530,20 +522,20 @@ func _Msg_SendKeyshare_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_CreatePubKeyID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreatePubKeyID)
+func _Msg_CreateLatestPubKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateLatestPubKey)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).CreatePubKeyID(ctx, in)
+		return srv.(MsgServer).CreateLatestPubKey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fairyring.fairyring.Msg/CreatePubKeyID",
+		FullMethod: "/fairyring.fairyring.Msg/CreateLatestPubKey",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreatePubKeyID(ctx, req.(*MsgCreatePubKeyID))
+		return srv.(MsgServer).CreateLatestPubKey(ctx, req.(*MsgCreateLatestPubKey))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -561,8 +553,8 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_SendKeyshare_Handler,
 		},
 		{
-			MethodName: "CreatePubKeyID",
-			Handler:    _Msg_CreatePubKeyID_Handler,
+			MethodName: "CreateLatestPubKey",
+			Handler:    _Msg_CreateLatestPubKey_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -742,7 +734,7 @@ func (m *MsgSendKeyshareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreatePubKeyID) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateLatestPubKey) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -752,12 +744,12 @@ func (m *MsgCreatePubKeyID) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreatePubKeyID) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateLatestPubKey) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreatePubKeyID) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateLatestPubKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -767,12 +759,7 @@ func (m *MsgCreatePubKeyID) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.PublicKey)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.PublicKey)))
 		i--
-		dAtA[i] = 0x1a
-	}
-	if m.Height != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.Height))
-		i--
-		dAtA[i] = 0x10
+		dAtA[i] = 0x12
 	}
 	if len(m.Creator) > 0 {
 		i -= len(m.Creator)
@@ -784,7 +771,7 @@ func (m *MsgCreatePubKeyID) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreatePubKeyIDResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgCreateLatestPubKeyResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -794,12 +781,12 @@ func (m *MsgCreatePubKeyIDResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreatePubKeyIDResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgCreateLatestPubKeyResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreatePubKeyIDResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgCreateLatestPubKeyResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -901,7 +888,7 @@ func (m *MsgSendKeyshareResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreatePubKeyID) Size() (n int) {
+func (m *MsgCreateLatestPubKey) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -911,9 +898,6 @@ func (m *MsgCreatePubKeyID) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	if m.Height != 0 {
-		n += 1 + sovTx(uint64(m.Height))
-	}
 	l = len(m.PublicKey)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
@@ -921,7 +905,7 @@ func (m *MsgCreatePubKeyID) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreatePubKeyIDResponse) Size() (n int) {
+func (m *MsgCreateLatestPubKeyResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1487,7 +1471,7 @@ func (m *MsgSendKeyshareResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreatePubKeyID) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateLatestPubKey) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1510,10 +1494,10 @@ func (m *MsgCreatePubKeyID) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreatePubKeyID: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateLatestPubKey: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreatePubKeyID: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateLatestPubKey: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1549,25 +1533,6 @@ func (m *MsgCreatePubKeyID) Unmarshal(dAtA []byte) error {
 			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Height", wireType)
-			}
-			m.Height = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Height |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field PublicKey", wireType)
 			}
@@ -1620,7 +1585,7 @@ func (m *MsgCreatePubKeyID) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreatePubKeyIDResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgCreateLatestPubKeyResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1643,10 +1608,10 @@ func (m *MsgCreatePubKeyIDResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreatePubKeyIDResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgCreateLatestPubKeyResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreatePubKeyIDResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgCreateLatestPubKeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
