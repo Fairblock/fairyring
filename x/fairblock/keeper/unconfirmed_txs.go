@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"bytes"
-	"encoding/binary"
 	"encoding/hex"
 	"fairyring/x/fairblock/types"
 	"fmt"
@@ -44,14 +43,6 @@ func (k Keeper) ProcessUnconfirmedTxs(ctx sdk.Context, utxs *coretypes.ResultUnc
 }
 
 func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKeyShare) {
-	dummyTX := types.EncryptedTx{
-		TargetHeight: msg.Height,
-		Data:         msg.Data,
-		Creator:      msg.Creator,
-	}
-
-	fmt.Println(dummyTX)
-
 	var dummData = "test data"
 	var encryptedDataBytes bytes.Buffer
 	var dummyDataBuffer bytes.Buffer
@@ -64,12 +55,12 @@ func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKey
 	suite := bls.NewBLS12381Suite()
 	publicKeyPoint := suite.G1().Point()
 	publicKeyPoint.UnmarshalBinary(publicKeyByte)
+
 	skPoint := suite.G2().Point()
 	skPoint.UnmarshalBinary(keyByte)
 
-	id := make([]byte, 8)
-	binary.LittleEndian.PutUint64(id, msg.Height)
-	enc.Encrypt(publicKeyPoint, id, &encryptedDataBytes, &dummyDataBuffer)
+	processHeightStr := strconv.FormatUint(msg.Height, 10)
+	enc.Encrypt(publicKeyPoint, []byte(processHeightStr), &encryptedDataBytes, &dummyDataBuffer)
 
 	err := enc.Decrypt(publicKeyPoint, skPoint, &decryptedDataBytes, &encryptedDataBytes)
 	if err != nil {
