@@ -54,19 +54,19 @@ docker build -t fairyring .
 3. Setup validator
 
 ```
-docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring setup.sh <moniker>
+docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring setup.sh <moniker>
 ```
 
 4. Create new genesis.json
 
 ```
-docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd collect-gentxs
+docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd collect-gentxs
 ```
 
 5. Start the validator
 
 ```
-docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd start
+docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd start
 ```
 
 #### Running multiple validator
@@ -76,7 +76,7 @@ docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fa
 2. Run the following command for all the address created in other machine in the master validator:
 
 ```
-docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd add-genesis-account <address> 100000000stake
+docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd add-genesis-account <address> 100000000stake
 ```
 
 3. Add all the gentx.json at `~/.fairyring/config/gentx/gentx-{node_id}.json` from all the machines to master validator, then run the command on step 4
@@ -94,7 +94,7 @@ presistent_peers = "node_id@ip:port,node_id2@ip:port"
 You can get the node id by the following command:
 
 ```
-docker run -it -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd tendermint show-node-id
+docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd tendermint show-node-id
 ```
 
 7. Start the validator on all the machines
