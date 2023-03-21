@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ACCOUNTNAME=validator_account
-INIT_TOKEN_AMT=100000000stake
+INIT_TOKEN_AMT=100000000stake,100000000000frt
 
 if [ -f "/root/DONE" ]
 then
