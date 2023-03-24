@@ -121,18 +121,24 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 
 	expectedThreshold := int(math.Ceil(float64(len(validatorList)) * types.KeyAggregationThresholdPercentage))
 
-	// See if there is enough keyshares to aggregate
-	if len(stateKeyShares) < expectedThreshold {
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(types.SendKeyshareEventType,
-				sdk.NewAttribute(types.SendKeyshareEventValidator, msg.Creator),
-				sdk.NewAttribute(types.SendKeyshareEventKeyshareBlockHeight, strconv.FormatUint(msg.BlockHeight, 10)),
-				sdk.NewAttribute(types.SendKeyshareEventReceivedBlockHeight, strconv.FormatInt(ctx.BlockHeight(), 10)),
-				sdk.NewAttribute(types.SendKeyshareEventMessage, msg.Message),
-				sdk.NewAttribute(types.SendKeyshareEventCommitment, msg.Commitment),
-				sdk.NewAttribute(types.SendKeyshareEventIndex, strconv.FormatUint(msg.KeyShareIndex, 10)),
-			))
+	// Emit KeyShare Submitted Event
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(types.SendKeyshareEventType,
+			sdk.NewAttribute(types.SendKeyshareEventValidator, msg.Creator),
+			sdk.NewAttribute(types.SendKeyshareEventKeyshareBlockHeight, strconv.FormatUint(msg.BlockHeight, 10)),
+			sdk.NewAttribute(types.SendKeyshareEventReceivedBlockHeight, strconv.FormatInt(ctx.BlockHeight(), 10)),
+			sdk.NewAttribute(types.SendKeyshareEventMessage, msg.Message),
+			sdk.NewAttribute(types.SendKeyshareEventCommitment, msg.Commitment),
+			sdk.NewAttribute(types.SendKeyshareEventIndex, strconv.FormatUint(msg.KeyShareIndex, 10)),
+		),
+	)
 
+	// Check if there is an aggregated key exists
+	_, found = k.GetAggregatedKeyShare(ctx, msg.BlockHeight)
+
+	// If there is not enough keyshares to aggregate OR there is already an aggregated key
+	// Only continue the code if there is enough keyshare to aggregate & no aggregated key for current height
+	if len(stateKeyShares) < expectedThreshold || found {
 		return &types.MsgSendKeyshareResponse{
 			Creator:             msg.Creator,
 			Keyshare:            msg.Message,
@@ -143,6 +149,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		}, nil
 	}
 
+	// Get the latest public key for aggregating
 	latestPubKey, found := k.GetLatestPubKey(ctx)
 	if !found {
 		return nil, types.ErrPubKeyNotFound
@@ -177,16 +184,12 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	}
 	skHex := hex.EncodeToString(skByte)
 
-	_, found = k.GetAggregatedKeyShare(ctx, msg.BlockHeight)
-
 	k.SetAggregatedKeyShare(ctx, types.AggregatedKeyShare{
 		Height: msg.BlockHeight,
 		Data:   skHex,
 	})
 
-	if !found {
-		k.SetAggregatedKeyShareLength(ctx, k.GetAggregatedKeyShareLength(ctx)+1)
-	}
+	k.SetAggregatedKeyShareLength(ctx, k.GetAggregatedKeyShareLength(ctx)+1)
 
 	k.Logger(ctx).Info(fmt.Sprintf("Aggregated Decryption Key for Block %d: %s", msg.BlockHeight, skHex))
 
@@ -195,17 +198,6 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			sdk.NewAttribute(types.KeyShareAggregatedEventBlockHeight, strconv.FormatUint(msg.BlockHeight, 10)),
 			sdk.NewAttribute(types.KeyShareAggregatedEventData, skHex),
 			sdk.NewAttribute(types.KeyShareAggregatedEventPubKey, latestPubKey.PublicKey),
-		),
-	)
-
-	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(types.SendKeyshareEventType,
-			sdk.NewAttribute(types.SendKeyshareEventValidator, msg.Creator),
-			sdk.NewAttribute(types.SendKeyshareEventKeyshareBlockHeight, strconv.FormatUint(msg.BlockHeight, 10)),
-			sdk.NewAttribute(types.SendKeyshareEventReceivedBlockHeight, strconv.FormatInt(ctx.BlockHeight(), 10)),
-			sdk.NewAttribute(types.SendKeyshareEventMessage, msg.Message),
-			sdk.NewAttribute(types.SendKeyshareEventCommitment, msg.Commitment),
-			sdk.NewAttribute(types.SendKeyshareEventIndex, strconv.FormatUint(msg.KeyShareIndex, 10)),
 		),
 	)
 

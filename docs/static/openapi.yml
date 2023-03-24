@@ -34582,6 +34582,43 @@ paths:
           format: uint64
       tags:
         - Query
+  /fairyring/fairyring/latest_pub_key:
+    get:
+      summary: Queries the latest public key.
+      operationId: FairyringFairyringLatestPubKey
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              latestPubKey:
+                type: object
+                properties:
+                  publicKey:
+                    type: string
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /fairyring/fairyring/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -34616,182 +34653,6 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
-      tags:
-        - Query
-  /fairyring/fairyring/pub_key_id:
-    get:
-      operationId: FairyringFairyringPubKeyIDAll
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              pubKeyID:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    height:
-                      type: string
-                      format: uint64
-                    publicKey:
-                      type: string
-                    ibeID:
-                      type: string
-                    creator:
-                      type: string
-              pagination:
-                type: object
-                properties:
-                  next_key:
-                    type: string
-                    format: byte
-                    description: |-
-                      next_key is the key to be passed to PageRequest.key to
-                      query the next page most efficiently. It will be empty if
-                      there are no more results.
-                  total:
-                    type: string
-                    format: uint64
-                    title: >-
-                      total is total number of results available if
-                      PageRequest.count_total
-
-                      was set, its value is undefined otherwise
-                description: >-
-                  PageResponse is to be embedded in gRPC response messages where
-                  the
-
-                  corresponding request message has used PageRequest.
-
-                   message SomeResponse {
-                           repeated Bar results = 1;
-                           PageResponse page = 2;
-                   }
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: pagination.key
-          description: |-
-            key is a value returned in PageResponse.next_key to begin
-            querying the next page most efficiently. Only one of offset or key
-            should be set.
-          in: query
-          required: false
-          type: string
-          format: byte
-        - name: pagination.offset
-          description: >-
-            offset is a numeric offset that can be used when key is unavailable.
-
-            It is less efficient than using key. Only one of offset or key
-            should
-
-            be set.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.limit
-          description: >-
-            limit is the total number of results to be returned in the result
-            page.
-
-            If left empty it will default to a value to be set by each app.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.count_total
-          description: >-
-            count_total is set to true  to indicate that the result set should
-            include
-
-            a count of the total number of items available for pagination in
-            UIs.
-
-            count_total is only respected when offset is used. It is ignored
-            when key
-
-            is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
-      tags:
-        - Query
-  /fairyring/fairyring/pub_key_id/{height}:
-    get:
-      summary: Queries a list of PubKeyID items.
-      operationId: FairyringFairyringPubKeyID
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              pubKeyID:
-                type: object
-                properties:
-                  height:
-                    type: string
-                    format: uint64
-                  publicKey:
-                    type: string
-                  ibeID:
-                    type: string
-                  creator:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: height
-          in: path
-          required: true
-          type: string
-          format: uint64
       tags:
         - Query
   /fairyring/fairyring/validator_set:
@@ -70849,7 +70710,14 @@ definitions:
       receivedBlockHeight:
         type: string
         format: uint64
-  fairyring.fairyring.MsgCreatePubKeyIDResponse:
+  fairyring.fairyring.LatestPubKey:
+    type: object
+    properties:
+      publicKey:
+        type: string
+      creator:
+        type: string
+  fairyring.fairyring.MsgCreateLatestPubKeyResponse:
     type: object
   fairyring.fairyring.MsgRegisterValidatorResponse:
     type: object
@@ -70877,18 +70745,6 @@ definitions:
   fairyring.fairyring.Params:
     type: object
     description: Params defines the parameters for the module.
-  fairyring.fairyring.PubKeyID:
-    type: object
-    properties:
-      height:
-        type: string
-        format: uint64
-      publicKey:
-        type: string
-      ibeID:
-        type: string
-      creator:
-        type: string
   fairyring.fairyring.QueryAllAggregatedKeyShareResponse:
     type: object
     properties:
@@ -70954,49 +70810,6 @@ definitions:
             receivedBlockHeight:
               type: string
               format: uint64
-      pagination:
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            description: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently. It will be empty if
-              there are no more results.
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-        description: |-
-          PageResponse is to be embedded in gRPC response messages where the
-          corresponding request message has used PageRequest.
-
-           message SomeResponse {
-                   repeated Bar results = 1;
-                   PageResponse page = 2;
-           }
-  fairyring.fairyring.QueryAllPubKeyIDResponse:
-    type: object
-    properties:
-      pubKeyID:
-        type: array
-        items:
-          type: object
-          properties:
-            height:
-              type: string
-              format: uint64
-            publicKey:
-              type: string
-            ibeID:
-              type: string
-            creator:
-              type: string
       pagination:
         type: object
         properties:
@@ -71098,21 +70911,6 @@ definitions:
           receivedBlockHeight:
             type: string
             format: uint64
-  fairyring.fairyring.QueryGetPubKeyIDResponse:
-    type: object
-    properties:
-      pubKeyID:
-        type: object
-        properties:
-          height:
-            type: string
-            format: uint64
-          publicKey:
-            type: string
-          ibeID:
-            type: string
-          creator:
-            type: string
   fairyring.fairyring.QueryGetValidatorSetResponse:
     type: object
     properties:
@@ -71125,6 +70923,16 @@ definitions:
             type: string
           isActive:
             type: boolean
+  fairyring.fairyring.QueryLatestPubKeyResponse:
+    type: object
+    properties:
+      latestPubKey:
+        type: object
+        properties:
+          publicKey:
+            type: string
+          creator:
+            type: string
   fairyring.fairyring.QueryParamsResponse:
     type: object
     properties:
