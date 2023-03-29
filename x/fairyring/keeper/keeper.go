@@ -35,13 +35,16 @@ func NewKeeper(
 	}
 
 	return &Keeper{
-
 		cdc:           cdc,
 		storeKey:      storeKey,
 		memKey:        memKey,
 		paramstore:    ps,
 		stakingKeeper: stakingKeeper,
 	}
+}
+
+func (k Keeper) StakingKeeper() stakingkeeper.Keeper {
+	return k.stakingKeeper
 }
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {

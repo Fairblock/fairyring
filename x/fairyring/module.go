@@ -151,7 +151,22 @@ func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.Raw
 func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
-func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {
+func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
+	validators := am.keeper.StakingKeeper().GetAllValidators(ctx)
+	for _, eachValidator := range validators {
+		// if the validator is not bonded
+		// ? add check bonded amount ?
+		if !eachValidator.IsBonded() {
+			pub, _ := eachValidator.ConsPubKey()
+			addr := sdk.AccAddress(pub.Address())
+			// Remove it from validator set to prevent it submitting keyshares
+			am.keeper.RemoveValidatorSet(ctx, addr.String())
+
+			consAddr, _ := eachValidator.GetConsAddr()
+			// Slash the validator
+			am.keeper.StakingKeeper().Slash(ctx, consAddr, 1, 1, sdk.NewDec(1))
+		}
+	}
 	//validatorList := am.keeper.GetAllValidatorSet(ctx)
 	//
 	//suite := bls.NewBLS12381Suite()
