@@ -73,7 +73,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// check if validator is registered
-	_, found := k.GetValidatorSet(ctx, msg.Creator)
+	validatorInfo, found := k.GetValidatorSet(ctx, msg.Creator)
 
 	if !found {
 		return nil, types.ErrValidatorNotRegistered.Wrap(msg.Creator)
@@ -90,6 +90,20 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	// Parse the keyshare & commitment then verify it
 	_, _, err := parseKeyShareCommitment(suite, msg.Message, msg.Commitment, uint32(msg.KeyShareIndex), ibeID)
 	if err != nil {
+		// Invalid Share, slash validator
+		var consAddr sdk.ConsAddress
+
+		savedConsAddrByte, err := hex.DecodeString(validatorInfo.ConsAddr)
+		if err != nil {
+			return nil, err
+		}
+
+		err = consAddr.Unmarshal(savedConsAddrByte)
+		if err != nil {
+			return nil, err
+		}
+
+		k.stakingKeeper.Slash(ctx, consAddr, 1, 1, sdk.NewDec(1))
 		return nil, err
 	}
 
