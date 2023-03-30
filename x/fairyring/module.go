@@ -164,7 +164,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 			consAddr, _ := eachValidator.GetConsAddr()
 			// Slash the validator
-			am.keeper.StakingKeeper().Slash(ctx, consAddr, ctx.BlockHeight()+1, 10, sdk.NewDec(10))
+			am.keeper.StakingKeeper().Slash(ctx, consAddr, ctx.BlockHeight(), 10, sdk.NewDec(10))
 		}
 	}
 	//validatorList := am.keeper.GetAllValidatorSet(ctx)
