@@ -157,10 +157,10 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		// if the validator is not bonded
 		// ? add check bonded amount ?
 		if !eachValidator.IsBonded() {
-			pub, _ := eachValidator.ConsPubKey()
-			addr := sdk.AccAddress(pub.Address())
+			valAddr, _ := sdk.ValAddressFromBech32(eachValidator.OperatorAddress)
+			valAccAddr := sdk.AccAddress(valAddr)
 			// Remove it from validator set to prevent it submitting keyshares
-			am.keeper.RemoveValidatorSet(ctx, addr.String())
+			am.keeper.RemoveValidatorSet(ctx, valAccAddr.String())
 
 			consAddr, _ := eachValidator.GetConsAddr()
 			// Slash the validator

@@ -24,13 +24,13 @@ func (k msgServer) RegisterValidator(goCtx context.Context, msg *types.MsgRegist
 	var senderConsAddr string
 	allStakingValidators := k.stakingKeeper.GetAllValidators(ctx)
 	for _, eachV := range allStakingValidators {
-		pub, _ := eachV.ConsPubKey()
+		valAddr, _ := sdk.ValAddressFromBech32(eachV.OperatorAddress)
+		valAccAddr := sdk.AccAddress(valAddr)
 		consAddr, _ := eachV.GetConsAddr()
-		addr := sdk.AccAddress(pub.Address())
 
-		k.Logger(ctx).Info(fmt.Sprintf("!! Each Valid Info : %s %s %s", addr.String(), consAddr, eachV.OperatorAddress))
+		k.Logger(ctx).Info(fmt.Sprintf("!! Each Valid Info : Cons Addr: %s Val Addr: %s Acc Addr: %s", consAddr, valAddr, valAccAddr))
 
-		if addr.String() == msg.Creator {
+		if valAccAddr.String() == msg.Creator {
 			isStaking = true
 			consByte := consAddr.Bytes()
 			consHex := hex.EncodeToString(consByte)
