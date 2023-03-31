@@ -90,6 +90,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	// Parse the keyshare & commitment then verify it
 	_, _, err := parseKeyShareCommitment(suite, msg.Message, msg.Commitment, uint32(msg.KeyShareIndex), ibeID)
 	if err != nil {
+		k.Logger(ctx).Error(fmt.Sprintf("Error in parsing & verifying keyshare & commitment: %s", err.Error()))
 		// Invalid Share, slash validator
 		var consAddr sdk.ConsAddress
 
@@ -105,7 +106,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 
 		k.slashingKeeper.Slash(ctx, consAddr, sdk.NewDecWithPrec(5, 1), 100, ctx.BlockHeight()-1)
 		// k.stakingKeeper.Slash(ctx, consAddr, ctx.BlockHeight(), 100, sdk.NewDecWithPrec(5, 1))
-		return nil, err
+		return nil, types.ErrInvalidShare
 	}
 
 	keyShare := types.KeyShare{
