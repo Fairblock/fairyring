@@ -515,6 +515,7 @@ func New(
 		keys[fairyringmoduletypes.MemStoreKey],
 		app.GetSubspace(fairyringmoduletypes.ModuleName),
 		app.StakingKeeper,
+		app.SlashingKeeper,
 	)
 	fairyringModule := fairyringmodule.NewAppModule(
 		appCodec,
