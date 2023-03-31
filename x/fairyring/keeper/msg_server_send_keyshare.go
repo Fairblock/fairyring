@@ -103,7 +103,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			return nil, err
 		}
 
-		k.slashingKeeper.Slash(ctx, consAddr, sdk.NewDecWithPrec(5, 1), 100, ctx.BlockHeight())
+		k.slashingKeeper.Slash(ctx, consAddr, sdk.NewDecWithPrec(5, 1), 100, ctx.BlockHeight()-1)
 		// k.stakingKeeper.Slash(ctx, consAddr, ctx.BlockHeight(), 100, sdk.NewDecWithPrec(5, 1))
 		return nil, err
 	}
