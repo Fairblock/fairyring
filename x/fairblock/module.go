@@ -457,14 +457,14 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 					Address:       creatorAddr.String(),
 					ChainID:       ctx.ChainID(),
 					AccountNumber: creatorAccount.GetAccountNumber(),
-					Sequence:      sigs[0].Sequence,
+					Sequence:      sigs[index].Sequence,
 					PubKey:        creatorAccount.GetPubKey(),
 				}
 
 				err = authsigning.VerifySignature(
 					creatorAccount.GetPubKey(),
 					signingData,
-					sigs[0].Data,
+					sigs[index].Data,
 					am.txConfig.SignModeHandler(),
 					verifiableTx,
 				)
