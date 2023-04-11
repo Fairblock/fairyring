@@ -6,7 +6,6 @@ import (
 	"encoding/hex"
 	"fairyring/x/fairyring/types"
 	"fmt"
-	"math"
 	"strconv"
 
 	"github.com/drand/kyber"
@@ -16,59 +15,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func parseKeyShareCommitment(
-	suite pairing.Suite,
-	keyShareHex string,
-	commitmentHex string,
-	index uint32,
-	id string,
-) (*distIBE.ExtractedKey, *distIBE.Commitment, error) {
-	newByteKey, err := hex.DecodeString(keyShareHex)
-	if err != nil {
-		return nil, nil, types.ErrDecodingKeyShare.Wrap(err.Error())
-	}
-
-	newSharePoint := suite.G2().Point()
-	err = newSharePoint.UnmarshalBinary(newByteKey)
-	if err != nil {
-		return nil, nil, types.ErrUnmarshallingKeyShare.Wrap(err.Error())
-	}
-
-	newByteCommitment, err := hex.DecodeString(commitmentHex)
-	if err != nil {
-		return nil, nil, types.ErrDecodingCommitment.Wrap(err.Error())
-	}
-
-	newCommitmentPoint := suite.G1().Point()
-	err = newCommitmentPoint.UnmarshalBinary(newByteCommitment)
-	if err != nil {
-		return nil, nil, types.ErrUnmarshallingCommitment.Wrap(err.Error())
-	}
-
-	newExtractedKey := distIBE.ExtractedKey{
-		Sk:    newSharePoint,
-		Index: index,
-	}
-
-	newCommitment := distIBE.Commitment{
-		Sp:    newCommitmentPoint,
-		Index: index,
-	}
-
-	hG2, ok := suite.G2().Point().(kyber.HashablePoint)
-	if !ok {
-		return nil, nil, types.ErrUnableToVerifyShare
-	}
-
-	Qid := hG2.Hash([]byte(id))
-
-	if !distIBE.VerifyShare(suite, newCommitment, newExtractedKey, Qid) {
-		return nil, nil, types.ErrInvalidShare
-	}
-
-	return &newExtractedKey, &newCommitment, nil
-}
-
+// SendKeyshare registers a new keyshare submited by a validator for a particular height
 func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshare) (*types.MsgSendKeyshareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -119,7 +66,10 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		stateKeyShares = append(stateKeyShares, eachKeyShare)
 	}
 
-	expectedThreshold := int(math.Ceil(float64(len(validatorList)) * types.KeyAggregationThresholdPercentage))
+	expectedThreshold := sdk.NewDecFromInt(
+		sdk.NewInt(types.KeyAggregationThresholdNumerator)).Quo(
+		sdk.NewDecFromInt(sdk.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
+		int64(len(validatorList))).Ceil().TruncateInt64()
 
 	// Emit KeyShare Submitted Event
 	ctx.EventManager().EmitEvent(
@@ -138,7 +88,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 
 	// If there is not enough keyshares to aggregate OR there is already an aggregated key
 	// Only continue the code if there is enough keyshare to aggregate & no aggregated key for current height
-	if len(stateKeyShares) < expectedThreshold || found {
+	if int64(len(stateKeyShares)) < expectedThreshold || found {
 		return &types.MsgSendKeyshareResponse{
 			Creator:             msg.Creator,
 			Keyshare:            msg.Message,
@@ -209,4 +159,58 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		ReceivedBlockHeight: uint64(ctx.BlockHeight()),
 		BlockHeight:         msg.BlockHeight,
 	}, nil
+}
+
+// parseKeyShareCommitment parses a keyshare and extracts the keys and commitment
+func parseKeyShareCommitment(
+	suite pairing.Suite,
+	keyShareHex string,
+	commitmentHex string,
+	index uint32,
+	id string,
+) (*distIBE.ExtractedKey, *distIBE.Commitment, error) {
+	newByteKey, err := hex.DecodeString(keyShareHex)
+	if err != nil {
+		return nil, nil, types.ErrDecodingKeyShare.Wrap(err.Error())
+	}
+
+	newSharePoint := suite.G2().Point()
+	err = newSharePoint.UnmarshalBinary(newByteKey)
+	if err != nil {
+		return nil, nil, types.ErrUnmarshallingKeyShare.Wrap(err.Error())
+	}
+
+	newByteCommitment, err := hex.DecodeString(commitmentHex)
+	if err != nil {
+		return nil, nil, types.ErrDecodingCommitment.Wrap(err.Error())
+	}
+
+	newCommitmentPoint := suite.G1().Point()
+	err = newCommitmentPoint.UnmarshalBinary(newByteCommitment)
+	if err != nil {
+		return nil, nil, types.ErrUnmarshallingCommitment.Wrap(err.Error())
+	}
+
+	newExtractedKey := distIBE.ExtractedKey{
+		Sk:    newSharePoint,
+		Index: index,
+	}
+
+	newCommitment := distIBE.Commitment{
+		Sp:    newCommitmentPoint,
+		Index: index,
+	}
+
+	hG2, ok := suite.G2().Point().(kyber.HashablePoint)
+	if !ok {
+		return nil, nil, types.ErrUnableToVerifyShare
+	}
+
+	Qid := hG2.Hash([]byte(id))
+
+	if !distIBE.VerifyShare(suite, newCommitment, newExtractedKey, Qid) {
+		return nil, nil, types.ErrInvalidShare
+	}
+
+	return &newExtractedKey, &newCommitment, nil
 }

@@ -184,17 +184,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		lastExecutedHeight = 0
 	}
 
-	//========================================//
-	// Replaced with reading Txs from MemPool //
-	//========================================//
-
-	// err = am.keeper.QueryFairyringCurrentHeight(ctx)
-	// if err != nil {
-	// 	am.keeper.Logger(ctx).Error("Beginblocker get height err", err)
-	// 	am.keeper.Logger(ctx).Error(err.Error())
-	// 	return
-	// }
-
 	utxs, _ := tmcore.UnconfirmedTxs(nil, nil)
 	am.keeper.ProcessUnconfirmedTxs(ctx, utxs)
 
@@ -209,6 +198,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	am.keeper.Logger(ctx).Info(fmt.Sprintf("Last executed Height: %d", lastExecutedHeight))
 	am.keeper.Logger(ctx).Info(fmt.Sprintf("Latest height from fairyring: %s", strHeight))
 
+	// loop over all encrypted Txs from the last executed height to the current height
 	for h := lastExecutedHeight + 1; h <= height; h++ {
 		arr := am.keeper.GetEncryptedTxAllFromHeight(ctx, h)
 		am.keeper.SetLastExecutedHeight(ctx, strconv.FormatUint(h, 10))

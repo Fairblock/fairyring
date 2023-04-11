@@ -15,6 +15,8 @@ import (
 	coretypes "github.com/tendermint/tendermint/rpc/core/types"
 )
 
+// ProcessUnconfirmedTxs attempts to decode TXs in the mempool and
+// execute the MsgCreateAggregatedKeyShare messages directly from the mempool.
 func (k Keeper) ProcessUnconfirmedTxs(ctx sdk.Context, utxs *coretypes.ResultUnconfirmedTxs) error {
 	for _, utx := range utxs.Txs {
 		var decodedTx cosmostxTypes.Tx
@@ -42,6 +44,8 @@ func (k Keeper) ProcessUnconfirmedTxs(ctx sdk.Context, utxs *coretypes.ResultUnc
 	return nil
 }
 
+// processMessage executes a MsgCreateAggregatedKeyShare message. It decrypts the message,
+// checks for its authenticity and updates the last registered height of FairyRing
 func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKeyShare) {
 	var dummData = "test data"
 	var encryptedDataBytes bytes.Buffer

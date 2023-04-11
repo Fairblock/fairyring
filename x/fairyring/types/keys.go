@@ -15,7 +15,9 @@ const (
 )
 
 const (
-	KeyAggregationThresholdPercentage = 2.0 / 3.0
+	KeyAggregationThresholdPercentage  = 2.0 / 3.0
+	KeyAggregationThresholdNumerator   = 2
+	KeyAggregationThresholdDenominator = 3
 )
 
 const (

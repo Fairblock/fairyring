@@ -7,10 +7,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+// RegisterValidator adds a new validator to the validator set
 func (k msgServer) RegisterValidator(goCtx context.Context, msg *types.MsgRegisterValidator) (*types.MsgRegisterValidatorResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	// TODO: Handling the message
 
 	_, found := k.GetValidatorSet(ctx, msg.Creator)
 

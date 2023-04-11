@@ -3,11 +3,13 @@ package keeper
 import (
 	"context"
 	"fairyring/x/fairyring/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
+// LatestPubKey returns the lates public key
 func (k Keeper) LatestPubKey(goCtx context.Context, req *types.QueryLatestPubKeyRequest) (*types.QueryLatestPubKeyResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")

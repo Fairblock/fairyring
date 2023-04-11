@@ -24,7 +24,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-replace DistributedIBE => ./DistributedIBE/
+replace DistributedIBE => ../DistributedIBE/
 
 require (
 	cloud.google.com/go v0.107.0 // indirect

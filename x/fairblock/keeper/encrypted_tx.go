@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fairyring/x/fairblock/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -93,6 +94,7 @@ func (k Keeper) GetEncryptedTxAllFromHeight(
 	return arr
 }
 
+// GetAllEncryptedArray returns the list of all encrypted txs
 func (k Keeper) GetAllEncryptedArray(ctx sdk.Context) (arr []types.EncryptedTxArray) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
@@ -127,7 +129,7 @@ func (k Keeper) RemoveEncryptedTx(
 	k.SetEncryptedTx(ctx, targetHeight, arr)
 }
 
-// RemoveAllEncryptedTxFromHeight removes a encryptedTx from the store
+// RemoveAllEncryptedTxFromHeight removes all encryptedTx from the store for a particular height
 func (k Keeper) RemoveAllEncryptedTxFromHeight(
 	ctx sdk.Context,
 	targetHeight uint64,

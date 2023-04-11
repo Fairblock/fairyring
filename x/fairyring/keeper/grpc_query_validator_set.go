@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"fairyring/x/fairyring/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -11,6 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// ValidatorSetAll returns the complete list of registered validators
 func (k Keeper) ValidatorSetAll(c context.Context, req *types.QueryAllValidatorSetRequest) (*types.QueryAllValidatorSetResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")

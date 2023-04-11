@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fairyring/x/fairblock/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -10,6 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// EncryptedTxAll returns the paginated list of all encrypted Txs
 func (k Keeper) EncryptedTxAll(c context.Context, req *types.QueryAllEncryptedTxRequest) (*types.QueryAllEncryptedTxResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -38,6 +40,7 @@ func (k Keeper) EncryptedTxAll(c context.Context, req *types.QueryAllEncryptedTx
 	return &types.QueryAllEncryptedTxResponse{EncryptedTxArray: encryptedTxs, Pagination: pageRes}, nil
 }
 
+// EncryptedTxAllFromHeight returns all the encrypted TXs for a particular height
 func (k Keeper) EncryptedTxAllFromHeight(c context.Context, req *types.QueryAllEncryptedTxFromHeightRequest) (*types.QueryAllEncryptedTxFromHeightResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -49,6 +52,7 @@ func (k Keeper) EncryptedTxAllFromHeight(c context.Context, req *types.QueryAllE
 	return &types.QueryAllEncryptedTxFromHeightResponse{EncryptedTxArray: val}, nil
 }
 
+// EncryptedTx returns a singe encrypted Tx by index
 func (k Keeper) EncryptedTx(c context.Context, req *types.QueryGetEncryptedTxRequest) (*types.QueryGetEncryptedTxResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")

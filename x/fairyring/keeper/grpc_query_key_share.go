@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"fairyring/x/fairyring/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -11,6 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// KeyShareAll returns the list of all keyshares submitted
 func (k Keeper) KeyShareAll(c context.Context, req *types.QueryAllKeyShareRequest) (*types.QueryAllKeyShareResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -39,6 +41,7 @@ func (k Keeper) KeyShareAll(c context.Context, req *types.QueryAllKeyShareReques
 	return &types.QueryAllKeyShareResponse{KeyShare: keyShares, Pagination: pageRes}, nil
 }
 
+// KeyShare returns a single keyshare submitted by a particular validator for a particular block height
 func (k Keeper) KeyShare(c context.Context, req *types.QueryGetKeyShareRequest) (*types.QueryGetKeyShareResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")

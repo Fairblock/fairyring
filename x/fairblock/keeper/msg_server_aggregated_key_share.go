@@ -4,6 +4,8 @@ import (
 	"context"
 
 	"fairyring/x/fairblock/types"
+
+	err "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -17,7 +19,7 @@ func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.Ms
 		msg.Height,
 	)
 	if isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
+		return nil, err.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
 	var aggregatedKeyShare = types.AggregatedKeyShare{

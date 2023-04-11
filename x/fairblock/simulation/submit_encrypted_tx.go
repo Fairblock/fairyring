@@ -5,6 +5,7 @@ import (
 
 	"fairyring/x/fairblock/keeper"
 	"fairyring/x/fairblock/types"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
@@ -21,8 +22,6 @@ func SimulateMsgSubmitEncryptedTx(
 		msg := &types.MsgSubmitEncryptedTx{
 			Creator: simAccount.Address.String(),
 		}
-
-		// TODO: Handling the SubmitEncryptedTx simulation
 
 		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "SubmitEncryptedTx simulation not implemented"), nil, nil
 	}

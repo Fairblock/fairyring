@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"fairyring/x/fairyring/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -11,6 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// AggregatedKeyShareAll returns the paginated list of all aggregated keyshares
 func (k Keeper) AggregatedKeyShareAll(goCtx context.Context, req *types.QueryAllAggregatedKeyShareRequest) (*types.QueryAllAggregatedKeyShareResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -39,6 +41,7 @@ func (k Keeper) AggregatedKeyShareAll(goCtx context.Context, req *types.QueryAll
 	return &types.QueryAllAggregatedKeyShareResponse{AggregatedKeyShare: aggregatedKeyShares, Pagination: pageRes}, nil
 }
 
+// AggregatedKeyShare returns the aggregated key share for a particular height
 func (k Keeper) AggregatedKeyShare(goCtx context.Context, req *types.QueryGetAggregatedKeyShareRequest) (*types.QueryGetAggregatedKeyShareResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")

@@ -2,9 +2,11 @@ package keeper
 
 import (
 	"fairyring/x/fairblock/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+// GetLatestHeight gets the last registered fairyring Height
 func (k Keeper) GetLatestHeight(
 	ctx sdk.Context,
 ) string {
@@ -12,6 +14,7 @@ func (k Keeper) GetLatestHeight(
 	return string(store.Get(types.LatestHeightKey))
 }
 
+// SetLatestHeight sets the last registered fairyring Height
 func (k Keeper) SetLatestHeight(
 	ctx sdk.Context,
 	height string,
@@ -21,6 +24,7 @@ func (k Keeper) SetLatestHeight(
 	store.Set(types.LatestHeightKey, []byte(height))
 }
 
+// GetLastExecutedHeight gets the last execution height
 func (k Keeper) GetLastExecutedHeight(
 	ctx sdk.Context,
 ) string {
@@ -28,6 +32,7 @@ func (k Keeper) GetLastExecutedHeight(
 	return string(store.Get(types.LastExecutedHeightKey))
 }
 
+// SetLastExecutedHeight sets the last execution height
 func (k Keeper) SetLastExecutedHeight(
 	ctx sdk.Context,
 	height string,

@@ -4,9 +4,11 @@ import (
 	"context"
 
 	"fairyring/x/fairyring/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+// CreateLatestPubKey updates the public key
 func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreateLatestPubKey) (*types.MsgCreateLatestPubKeyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"fairyring/x/fairblock/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -11,6 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// FairblockExecutedNonceAll returns the list of all executed Nonce
 func (k Keeper) FairblockExecutedNonceAll(c context.Context, req *types.QueryAllFairblockExecutedNonceRequest) (*types.QueryAllFairblockExecutedNonceResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -39,6 +41,7 @@ func (k Keeper) FairblockExecutedNonceAll(c context.Context, req *types.QueryAll
 	return &types.QueryAllFairblockExecutedNonceResponse{FairblockExecutedNonce: fairblockExecutedNonces, Pagination: pageRes}, nil
 }
 
+// FairblockExecutedNonce returns a single executed nonce by address
 func (k Keeper) FairblockExecutedNonce(c context.Context, req *types.QueryGetFairblockExecutedNonceRequest) (*types.QueryGetFairblockExecutedNonceResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")

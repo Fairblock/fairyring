@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"fairyring/x/fairblock/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
