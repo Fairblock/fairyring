@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"fmt"
-	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 
 	"fairyring/x/fairyring/types"
@@ -15,12 +14,11 @@ import (
 
 type (
 	Keeper struct {
-		cdc            codec.BinaryCodec
-		storeKey       storetypes.StoreKey
-		memKey         storetypes.StoreKey
-		paramstore     paramtypes.Subspace
-		stakingKeeper  stakingkeeper.Keeper
-		slashingKeeper slashingkeeper.Keeper
+		cdc           codec.BinaryCodec
+		storeKey      storetypes.StoreKey
+		memKey        storetypes.StoreKey
+		paramstore    paramtypes.Subspace
+		stakingKeeper stakingkeeper.Keeper
 	}
 )
 
@@ -30,7 +28,6 @@ func NewKeeper(
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
 	stakingKeeper stakingkeeper.Keeper,
-	slashingKeeper slashingkeeper.Keeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -38,17 +35,12 @@ func NewKeeper(
 	}
 
 	return &Keeper{
-		cdc:            cdc,
-		storeKey:       storeKey,
-		memKey:         memKey,
-		paramstore:     ps,
-		stakingKeeper:  stakingKeeper,
-		slashingKeeper: slashingKeeper,
+		cdc:           cdc,
+		storeKey:      storeKey,
+		memKey:        memKey,
+		paramstore:    ps,
+		stakingKeeper: stakingKeeper,
 	}
-}
-
-func (k Keeper) SlashingKeeper() slashingkeeper.Keeper {
-	return k.slashingKeeper
 }
 
 func (k Keeper) StakingKeeper() stakingkeeper.Keeper {

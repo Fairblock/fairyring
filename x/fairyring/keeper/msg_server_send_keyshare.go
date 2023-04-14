@@ -79,10 +79,6 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		return nil, types.ErrValidatorNotRegistered.Wrap(msg.Creator)
 	}
 
-	//if msg.BlockHeight < uint64(ctx.BlockHeight()) {
-	//	return nil, types.ErrInvalidBlockHeight
-	//}
-
 	// Setup
 	suite := bls.NewBLS12381Suite()
 	ibeID := strconv.FormatUint(msg.BlockHeight, 10)
@@ -104,8 +100,8 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			return nil, err
 		}
 
-		k.slashingKeeper.Slash(ctx, consAddr, sdk.NewDecWithPrec(5, 1), 100, ctx.BlockHeight()-1)
-		// k.stakingKeeper.Slash(ctx, consAddr, ctx.BlockHeight(), 100, sdk.NewDecWithPrec(5, 1))
+		k.stakingKeeper.Slash(ctx, consAddr, ctx.BlockHeight()-1, 100, sdk.NewDecWithPrec(5, 1))
+
 		return &types.MsgSendKeyshareResponse{
 			Creator:             msg.Creator,
 			Keyshare:            msg.Message,
@@ -114,7 +110,6 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
 			BlockHeight:         msg.BlockHeight,
 		}, nil
-		// return nil, types.ErrInvalidShare
 	}
 
 	keyShare := types.KeyShare{
