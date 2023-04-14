@@ -4,15 +4,11 @@ import (
 	"context"
 	"encoding/hex"
 	"fairyring/x/fairyring/types"
-	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (k msgServer) RegisterValidator(goCtx context.Context, msg *types.MsgRegisterValidator) (*types.MsgRegisterValidatorResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	// TODO: Handling the message
 
 	_, found := k.GetValidatorSet(ctx, msg.Creator)
 
@@ -22,13 +18,12 @@ func (k msgServer) RegisterValidator(goCtx context.Context, msg *types.MsgRegist
 
 	isStaking := false
 	var senderConsAddr string
+	
 	allStakingValidators := k.stakingKeeper.GetAllValidators(ctx)
 	for _, eachV := range allStakingValidators {
 		valAddr, _ := sdk.ValAddressFromBech32(eachV.OperatorAddress)
 		valAccAddr := sdk.AccAddress(valAddr)
 		consAddr, _ := eachV.GetConsAddr()
-
-		k.Logger(ctx).Info(fmt.Sprintf("!! Each Valid Info : Cons Addr: %s Val Addr: %s Acc Addr: %s", consAddr, valAddr, valAccAddr))
 
 		if valAccAddr.String() == msg.Creator {
 			isStaking = true
