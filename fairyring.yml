@@ -8,16 +8,16 @@ build:
 accounts:
   - name: alice
     coins:
-      - 1000token
+      - 100000000frt
       - 100000000stake
   - name: bob
     coins:
-      - 500token
+      - 100000000frt
       - 100000000stake
 faucet:
   name: bob
   coins:
-    - 5token
+    - 100000frt
     - 100000stake
   host: 0.0.0.0:4500
 genesis:
