@@ -5,7 +5,7 @@ die () {
     exit 1
 }
 
-[ "$#" -eq 1 ] || die "1 argument required, $# provided, Usage: ./test_tx_execution {tx_target_height}"
+[ "$#" -eq 3 ] || die "2 argument required, $# provided, Usage: ./test_tx_execution {tx_target_height} {to_address} {amount}"
 
 echo $1 | grep -E -q '^[0-9]+$' || die "Numeric argument required, $1 provided"
 
@@ -33,7 +33,7 @@ printf "Got $ACCOUNT_NAME's FairblockNonce: $FairblockNonce Account Balance:\n\n
 fairyringd query bank balances $ADDRESS
 
 # Create the unsigned tx data
-fairyringd tx fairyring register-validator --from $ACCOUNT_NAME --generate-only --yes > $UNSIGNED_TX_FILE_NAME
+fairyringd tx bank send $ADDRESS $2 $3 --from $ACCOUNT_NAME --generate-only --yes > $UNSIGNED_TX_FILE_NAME
 
 # Sign the unsigned tx that just created
 SIGNED_DATA=`fairyringd tx sign $UNSIGNED_TX_FILE_NAME --from $ACCOUNT_NAME --offline --account-number $ACCOUNT_NUMBER --sequence $FairblockNonce --chain-id $CHAIN_ID --yes`
@@ -52,7 +52,7 @@ printf "\nUnsigned TX JSON File Removed\n"
 printf "\nAccount Balance after submitting Encrypted Tx"
 fairyringd query bank balances $ADDRESS
 
-printf "\nValidator Set After submitting Encrypted Tx:"
-fairyringd query fairyring list-validator-set
+printf "\nTarget To Account Balance after submitting Encrypted Tx"
+fairyringd query bank balances $2
 
-printf "\nRun 'fairyringd query fairyring list-validator-set' to check validator set later\n"
+printf "\nRun 'fairyringd query bank balances $2' to check target account balance later\n"
