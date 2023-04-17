@@ -477,7 +477,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 							sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 						),
 					)
-					continue
+					return
 				}
 
 			}
@@ -486,7 +486,8 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				handler := am.msgServiceRouter.Handler(eachMsg)
 				_, err := handler(ctx, eachMsg)
 				if err != nil {
-					am.keeper.Logger(ctx).Error("!!!Handle Tx Msg Error")
+					am.keeper.Logger(ctx).Error("!!! Handle Tx Msg Error")
+					am.keeper.Logger(ctx).Error(err.Error())
 					ctx.EventManager().EmitEvent(
 						sdk.NewEvent(types.EncryptedTxRevertedEventType,
 							sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
@@ -500,11 +501,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				am.keeper.Logger(ctx).Info("!Executed successfully!")
 			}
 
-			/// For now, after removal, the encrypted tx will become an empty array
-			/// Or Remove the entire tx array of current height
-			/// instead removing it one by one ?
-
-			// Emit event for tx execution
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxExecutedEventType,
 					sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
