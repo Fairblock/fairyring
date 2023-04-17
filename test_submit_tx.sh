@@ -38,8 +38,12 @@ fairyringd tx bank send $ADDRESS $2 $3 --from $ACCOUNT_NAME --generate-only --ye
 # Sign the unsigned tx that just created
 SIGNED_DATA=`fairyringd tx sign $UNSIGNED_TX_FILE_NAME --from $ACCOUNT_NAME --offline --account-number $ACCOUNT_NUMBER --sequence $FairblockNonce --chain-id $CHAIN_ID --yes`
 
+PUB_KEY=`fairyringd q fairyring show-latest-pub-key | grep "publicKey: " | sed 's/^.*: //'`
+
+CIPHER=`./encrypter $1 $PUB_KEY $SIGNED_DATA`
+
 # Submit encrypted tx with the signed data
-fairyringd tx fairblock submit-encrypted-tx $SIGNED_DATA $1 --from $ACCOUNT_NAME --yes
+fairyringd tx fairblock submit-encrypted-tx $CIPHER $1 --from $ACCOUNT_NAME --yes
 
 # List all the encrypted txs
 printf "\n\nList encrypted Txs:\n\n"
