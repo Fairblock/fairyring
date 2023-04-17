@@ -184,17 +184,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		lastExecutedHeight = 0
 	}
 
-	//========================================//
-	// Replaced with reading Txs from MemPool //
-	//========================================//
-
-	// err = am.keeper.QueryFairyringCurrentHeight(ctx)
-	// if err != nil {
-	// 	am.keeper.Logger(ctx).Error("Beginblocker get height err", err)
-	// 	am.keeper.Logger(ctx).Error(err.Error())
-	// 	return
-	// }
-
 	utxs, _ := tmcore.UnconfirmedTxs(nil, nil)
 	am.keeper.ProcessUnconfirmedTxs(ctx, utxs)
 
@@ -283,7 +272,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			am.keeper.Logger(ctx).Info("Unmarshal decryption key successfully")
 			am.keeper.Logger(ctx).Info(skPoint.String())
 
-			publicKeyByte, err := hex.DecodeString(key.PublicKey)
+			publicKeyByte, err := hex.DecodeString(key.GetPublicKey())
 			if err != nil {
 				am.keeper.Logger(ctx).Error("Error decoding public key")
 				am.keeper.Logger(ctx).Error(err.Error())
