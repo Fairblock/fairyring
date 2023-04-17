@@ -425,7 +425,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				// For now only support User submitting their own signed tx
 				if !eachSig.PubKey.Equals(creatorAccount.GetPubKey()) {
 					am.keeper.Logger(ctx).Error("Signer is not sender")
-					am.keeper.Logger(ctx).Error(err.Error())
 					ctx.EventManager().EmitEvent(
 						sdk.NewEvent(types.EncryptedTxRevertedEventType,
 							sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
