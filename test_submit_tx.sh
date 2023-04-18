@@ -5,7 +5,7 @@ die () {
     exit 1
 }
 
-[ "$#" -eq 3 ] || die "2 argument required, $# provided, Usage: ./test_tx_execution {tx_target_height} {to_address} {amount}"
+[ "$#" -eq 3 ] || die "3 argument required, $# provided, Usage: ./test_tx_execution {tx_target_height} {to_address} {amount}"
 
 echo $1 | grep -E -q '^[0-9]+$' || die "Numeric argument required, $1 provided"
 
