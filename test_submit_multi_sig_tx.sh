@@ -5,9 +5,9 @@ die () {
     exit 1
 }
 
-[ "$#" -eq 5 ] || die "5 argument required, $# provided, Usage: ./test_submit_multi_sig_tx {acc1,acc2...} {multi sig account} {tx_target_height} {to_address} {amount}"
+[ "$#" -eq 6 ] || die "5 argument required, $# provided, Usage: ./test_submit_multi_sig_tx {acc1,acc2...} {multi sig account} {sender account} {tx_target_height} {to_address} {amount}"
 
-echo $3 | grep -E -q '^[0-9]+$' || die "Numeric argument required, $3 provided"
+echo $4 | grep -E -q '^[0-9]+$' || die "Numeric argument required, $4 provided"
 
 ACCOUNT_NAME=$2
 ACCOUNT_NUMBER=0
@@ -18,10 +18,8 @@ SIGNED_TX_FILE_NAME="script_multi_sig_signed.json"
 # Get the address of target account name
 MULTI_SIG_ADDRESS=`fairyringd keys show $ACCOUNT_NAME | grep "address:" | sed 's/^.*: //'`
 
-echo "Multi sig address: $MULTI_SIG_ADDRESS $1 $2 $3 $4 $5"
-
 # Create the unsigned tx data
-fairyringd tx bank send $MULTI_SIG_ADDRESS $4 $5 --from $ACCOUNT_NAME --generate-only --yes > $UNSIGNED_TX_FILE_NAME
+fairyringd tx bank send $MULTI_SIG_ADDRESS $5 $6 --from $ACCOUNT_NAME --generate-only --yes > $UNSIGNED_TX_FILE_NAME
 
 SIGNED_TX_FILE_LIST=""
 
@@ -54,10 +52,10 @@ FINAL_SIGNED_DATA=`fairyringd tx multisign $UNSIGNED_TX_FILE_NAME $ACCOUNT_NAME 
 
 PUB_KEY=`fairyringd q fairyring show-latest-pub-key | grep "publicKey: " | sed 's/^.*: //'`
 
-CIPHER=`./encrypter $3 $PUB_KEY $FINAL_SIGNED_DATA`
+CIPHER=`./encrypter $4 $PUB_KEY $FINAL_SIGNED_DATA`
 
 # Submit encrypted tx with the signed data
-fairyringd tx fairblock submit-encrypted-tx $CIPHER $3 --from $ACCOUNT_NAME --yes
+fairyringd tx fairblock submit-encrypted-tx $CIPHER $4 --from $3 --yes
 
 rm $SIGNED_TX_FILE_LIST $UNSIGNED_TX_FILE_NAME
 
