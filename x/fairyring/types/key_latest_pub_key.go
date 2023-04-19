@@ -1,6 +1,8 @@
 package types
 
 const (
-	// LatestPubKeyPrefix is the prefix to retrieve the latest Public Key
-	LatestPubKeyPrefix = "LatestPubKey/value/"
+	// ActivePubKeyPrefix is the prefix to retrieve the active Public Key
+	ActivePubKeyPrefix = "ActivePubKey/value/"
+
+	QueuedPubKeyPrefix = "QueuedPubKey/value/"
 )

@@ -2,23 +2,47 @@ package keeper
 
 import (
 	"fairyring/x/fairyring/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// SetLatestPubKey set a specific public key in the store
-func (k Keeper) SetLatestPubKey(ctx sdk.Context, latestPubKey types.LatestPubKey) {
+// SetActivePubKey set a specific public key to active in the store
+func (k Keeper) SetActivePubKey(ctx sdk.Context, activePubKey types.ActivePubKey) {
 	store := ctx.KVStore(k.storeKey)
-	b := k.cdc.MustMarshal(&latestPubKey)
-	store.Set(types.KeyPrefix(types.LatestPubKeyPrefix), b)
+	b := k.cdc.MustMarshal(&activePubKey)
+	store.Set(types.KeyPrefix(types.ActivePubKeyPrefix), b)
 }
 
-// GetLatestPubKey returns the latest public key
-func (k Keeper) GetLatestPubKey(
+// SetQueuedPubKey set a specific public key in the store
+func (k Keeper) SetQueuedPubKey(ctx sdk.Context, queuedPubKey types.QueuedPubKey) {
+	store := ctx.KVStore(k.storeKey)
+	b := k.cdc.MustMarshal(&queuedPubKey)
+	store.Set(types.KeyPrefix(types.QueuedPubKeyPrefix), b)
+}
+
+// GetActivePubKey returns the Active public key
+func (k Keeper) GetActivePubKey(
 	ctx sdk.Context,
-) (val types.LatestPubKey, found bool) {
+) (val types.ActivePubKey, found bool) {
 	store := ctx.KVStore(k.storeKey)
 
-	b := store.Get(types.KeyPrefix(types.LatestPubKeyPrefix))
+	b := store.Get(types.KeyPrefix(types.ActivePubKeyPrefix))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+
+	return val, true
+}
+
+// GetQueuedPubKey returns the Queued public key
+func (k Keeper) GetQueuedPubKey(
+	ctx sdk.Context,
+) (val types.QueuedPubKey, found bool) {
+	store := ctx.KVStore(k.storeKey)
+
+	b := store.Get(types.KeyPrefix(types.QueuedPubKeyPrefix))
 	if b == nil {
 		return val, false
 	}

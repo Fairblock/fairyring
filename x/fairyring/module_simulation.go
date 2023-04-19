@@ -1,11 +1,13 @@
 package fairyring
 
 import (
+	"math"
 	"math/rand"
 
 	"fairyring/testutil/sample"
 	fairyringsimulation "fairyring/x/fairyring/simulation"
 	"fairyring/x/fairyring/types"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -47,7 +49,12 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	fairyringGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
-		LatestPubKey: types.LatestPubKey{
+		ActivePubKey: types.ActivePubKey{
+			"public_key",
+			sample.AccAddress(),
+			math.MaxUint64,
+		},
+		QueuedPubKey: types.QueuedPubKey{
 			"public_key",
 			sample.AccAddress(),
 		},

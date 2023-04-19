@@ -99,8 +99,8 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		}, nil
 	}
 
-	// Get the latest public key for aggregating
-	latestPubKey, found := k.GetLatestPubKey(ctx)
+	// Get the active public key for aggregating
+	activePubKey, found := k.GetActivePubKey(ctx)
 	if !found {
 		return nil, types.ErrPubKeyNotFound
 	}
@@ -147,7 +147,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		sdk.NewEvent(types.KeyShareAggregatedEventType,
 			sdk.NewAttribute(types.KeyShareAggregatedEventBlockHeight, strconv.FormatUint(msg.BlockHeight, 10)),
 			sdk.NewAttribute(types.KeyShareAggregatedEventData, skHex),
-			sdk.NewAttribute(types.KeyShareAggregatedEventPubKey, latestPubKey.PublicKey),
+			sdk.NewAttribute(types.KeyShareAggregatedEventPubKey, activePubKey.PublicKey),
 		),
 	)
 

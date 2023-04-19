@@ -19,4 +19,5 @@ var (
 	ErrUnableToVerifyShare        = sdkerrors.Register(ModuleName, 1108, "unable to verify share")
 	ErrInvalidShare               = sdkerrors.Register(ModuleName, 1109, "invalid share / commitment")
 	ErrPubKeyNotFound             = sdkerrors.Register(ModuleName, 1110, "Public key does not exists now")
+	ErrQueuedKeyAlreadyExists     = sdkerrors.Register(ModuleName, 1111, "a queued key already exists")
 )

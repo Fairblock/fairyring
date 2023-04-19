@@ -34582,23 +34582,22 @@ paths:
           format: uint64
       tags:
         - Query
-  /fairyring/fairyring/latest_pub_key:
+  /fairyring/fairyring/params:
     get:
-      summary: Queries the latest public key.
-      operationId: FairyringFairyringLatestPubKey
+      summary: Parameters queries the parameters of the module.
+      operationId: FairyringFairyringParams
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              latestPubKey:
+              params:
+                description: params holds all the parameters of this module.
                 type: object
-                properties:
-                  publicKey:
-                    type: string
-                  creator:
-                    type: string
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
         default:
           description: An unexpected error response.
           schema:
@@ -34619,22 +34618,33 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /fairyring/fairyring/params:
+  /fairyring/fairyring/pub_key:
     get:
-      summary: Parameters queries the parameters of the module.
-      operationId: FairyringFairyringParams
+      summary: Queries the public keys
+      operationId: FairyringFairyringPubKey
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              params:
-                description: params holds all the parameters of this module.
+              activePubKey:
                 type: object
-            description: >-
-              QueryParamsResponse is response type for the Query/Params RPC
-              method.
+                properties:
+                  publicKey:
+                    type: string
+                  creator:
+                    type: string
+                  expiry:
+                    type: string
+                    format: uint64
+              queuedPubKey:
+                type: object
+                properties:
+                  publicKey:
+                    type: string
+                  creator:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -70681,6 +70691,16 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  fairyring.fairyring.ActivePubKey:
+    type: object
+    properties:
+      publicKey:
+        type: string
+      creator:
+        type: string
+      expiry:
+        type: string
+        format: uint64
   fairyring.fairyring.AggregatedKeyShare:
     type: object
     properties:
@@ -70710,13 +70730,6 @@ definitions:
       receivedBlockHeight:
         type: string
         format: uint64
-  fairyring.fairyring.LatestPubKey:
-    type: object
-    properties:
-      publicKey:
-        type: string
-      creator:
-        type: string
   fairyring.fairyring.MsgCreateLatestPubKeyResponse:
     type: object
   fairyring.fairyring.MsgRegisterValidatorResponse:
@@ -70923,16 +70936,6 @@ definitions:
             type: string
           isActive:
             type: boolean
-  fairyring.fairyring.QueryLatestPubKeyResponse:
-    type: object
-    properties:
-      latestPubKey:
-        type: object
-        properties:
-          publicKey:
-            type: string
-          creator:
-            type: string
   fairyring.fairyring.QueryParamsResponse:
     type: object
     properties:
@@ -70940,6 +70943,33 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  fairyring.fairyring.QueryPubKeyResponse:
+    type: object
+    properties:
+      activePubKey:
+        type: object
+        properties:
+          publicKey:
+            type: string
+          creator:
+            type: string
+          expiry:
+            type: string
+            format: uint64
+      queuedPubKey:
+        type: object
+        properties:
+          publicKey:
+            type: string
+          creator:
+            type: string
+  fairyring.fairyring.QueuedPubKey:
+    type: object
+    properties:
+      publicKey:
+        type: string
+      creator:
+        type: string
   fairyring.fairyring.ValidatorSet:
     type: object
     properties:

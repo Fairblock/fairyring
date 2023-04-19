@@ -22,23 +22,24 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type LatestPubKey struct {
+type ActivePubKey struct {
 	PublicKey string `protobuf:"bytes,1,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
 	Creator   string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
+	Expiry    uint64 `protobuf:"varint,3,opt,name=expiry,proto3" json:"expiry,omitempty"`
 }
 
-func (m *LatestPubKey) Reset()         { *m = LatestPubKey{} }
-func (m *LatestPubKey) String() string { return proto.CompactTextString(m) }
-func (*LatestPubKey) ProtoMessage()    {}
-func (*LatestPubKey) Descriptor() ([]byte, []int) {
+func (m *ActivePubKey) Reset()         { *m = ActivePubKey{} }
+func (m *ActivePubKey) String() string { return proto.CompactTextString(m) }
+func (*ActivePubKey) ProtoMessage()    {}
+func (*ActivePubKey) Descriptor() ([]byte, []int) {
 	return fileDescriptor_169926c41d168612, []int{0}
 }
-func (m *LatestPubKey) XXX_Unmarshal(b []byte) error {
+func (m *ActivePubKey) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *LatestPubKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ActivePubKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_LatestPubKey.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ActivePubKey.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -48,26 +49,85 @@ func (m *LatestPubKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return b[:n], nil
 	}
 }
-func (m *LatestPubKey) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LatestPubKey.Merge(m, src)
+func (m *ActivePubKey) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ActivePubKey.Merge(m, src)
 }
-func (m *LatestPubKey) XXX_Size() int {
+func (m *ActivePubKey) XXX_Size() int {
 	return m.Size()
 }
-func (m *LatestPubKey) XXX_DiscardUnknown() {
-	xxx_messageInfo_LatestPubKey.DiscardUnknown(m)
+func (m *ActivePubKey) XXX_DiscardUnknown() {
+	xxx_messageInfo_ActivePubKey.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_LatestPubKey proto.InternalMessageInfo
+var xxx_messageInfo_ActivePubKey proto.InternalMessageInfo
 
-func (m *LatestPubKey) GetPublicKey() string {
+func (m *ActivePubKey) GetPublicKey() string {
 	if m != nil {
 		return m.PublicKey
 	}
 	return ""
 }
 
-func (m *LatestPubKey) GetCreator() string {
+func (m *ActivePubKey) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *ActivePubKey) GetExpiry() uint64 {
+	if m != nil {
+		return m.Expiry
+	}
+	return 0
+}
+
+type QueuedPubKey struct {
+	PublicKey string `protobuf:"bytes,1,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	Creator   string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
+}
+
+func (m *QueuedPubKey) Reset()         { *m = QueuedPubKey{} }
+func (m *QueuedPubKey) String() string { return proto.CompactTextString(m) }
+func (*QueuedPubKey) ProtoMessage()    {}
+func (*QueuedPubKey) Descriptor() ([]byte, []int) {
+	return fileDescriptor_169926c41d168612, []int{1}
+}
+func (m *QueuedPubKey) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueuedPubKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueuedPubKey.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueuedPubKey) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueuedPubKey.Merge(m, src)
+}
+func (m *QueuedPubKey) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueuedPubKey) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueuedPubKey.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueuedPubKey proto.InternalMessageInfo
+
+func (m *QueuedPubKey) GetPublicKey() string {
+	if m != nil {
+		return m.PublicKey
+	}
+	return ""
+}
+
+func (m *QueuedPubKey) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
@@ -75,7 +135,8 @@ func (m *LatestPubKey) GetCreator() string {
 }
 
 func init() {
-	proto.RegisterType((*LatestPubKey)(nil), "fairyring.fairyring.LatestPubKey")
+	proto.RegisterType((*ActivePubKey)(nil), "fairyring.fairyring.ActivePubKey")
+	proto.RegisterType((*QueuedPubKey)(nil), "fairyring.fairyring.QueuedPubKey")
 }
 
 func init() {
@@ -83,21 +144,23 @@ func init() {
 }
 
 var fileDescriptor_169926c41d168612 = []byte{
-	// 161 bytes of a gzipped FileDescriptorProto
+	// 196 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xd2, 0x48, 0x4b, 0xcc, 0x2c,
 	0xaa, 0x2c, 0xca, 0xcc, 0x4b, 0xd7, 0x47, 0xb0, 0x72, 0x12, 0x4b, 0x52, 0x8b, 0x4b, 0xe2, 0x0b,
 	0x4a, 0x93, 0xe2, 0xb3, 0x53, 0x2b, 0xf5, 0x0a, 0x8a, 0xf2, 0x4b, 0xf2, 0x85, 0x84, 0xe1, 0xf2,
-	0x7a, 0x70, 0x96, 0x92, 0x1b, 0x17, 0x8f, 0x0f, 0x58, 0x71, 0x40, 0x69, 0x92, 0x77, 0x6a, 0xa5,
-	0x90, 0x0c, 0x17, 0x67, 0x41, 0x69, 0x52, 0x4e, 0x66, 0xb2, 0x77, 0x6a, 0xa5, 0x04, 0xa3, 0x02,
-	0xa3, 0x06, 0x67, 0x10, 0x42, 0x40, 0x48, 0x82, 0x8b, 0x3d, 0xb9, 0x28, 0x35, 0xb1, 0x24, 0xbf,
-	0x48, 0x82, 0x09, 0x2c, 0x07, 0xe3, 0x3a, 0x99, 0x9e, 0x78, 0x24, 0xc7, 0x78, 0xe1, 0x91, 0x1c,
-	0xe3, 0x83, 0x47, 0x72, 0x8c, 0x13, 0x1e, 0xcb, 0x31, 0x5c, 0x78, 0x2c, 0xc7, 0x70, 0xe3, 0xb1,
-	0x1c, 0x43, 0x94, 0x34, 0xc2, 0x59, 0x15, 0x48, 0x4e, 0x2c, 0xa9, 0x2c, 0x48, 0x2d, 0x4e, 0x62,
-	0x03, 0x3b, 0xcd, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0xd0, 0xa2, 0xc0, 0x69, 0xc6, 0x00, 0x00,
-	0x00,
+	0x7a, 0x70, 0x96, 0x52, 0x1c, 0x17, 0x8f, 0x63, 0x72, 0x49, 0x66, 0x59, 0x6a, 0x40, 0x69, 0x92,
+	0x77, 0x6a, 0xa5, 0x90, 0x0c, 0x17, 0x67, 0x41, 0x69, 0x52, 0x4e, 0x66, 0xb2, 0x77, 0x6a, 0xa5,
+	0x04, 0xa3, 0x02, 0xa3, 0x06, 0x67, 0x10, 0x42, 0x40, 0x48, 0x82, 0x8b, 0x3d, 0xb9, 0x28, 0x35,
+	0xb1, 0x24, 0xbf, 0x48, 0x82, 0x09, 0x2c, 0x07, 0xe3, 0x0a, 0x89, 0x71, 0xb1, 0xa5, 0x56, 0x14,
+	0x64, 0x16, 0x55, 0x4a, 0x30, 0x2b, 0x30, 0x6a, 0xb0, 0x04, 0x41, 0x79, 0x4a, 0x6e, 0x5c, 0x3c,
+	0x81, 0xa5, 0xa9, 0xa5, 0xa9, 0x29, 0x94, 0x99, 0xef, 0x64, 0x7a, 0xe2, 0x91, 0x1c, 0xe3, 0x85,
+	0x47, 0x72, 0x8c, 0x0f, 0x1e, 0xc9, 0x31, 0x4e, 0x78, 0x2c, 0xc7, 0x70, 0xe1, 0xb1, 0x1c, 0xc3,
+	0x8d, 0xc7, 0x72, 0x0c, 0x51, 0xd2, 0x08, 0x6f, 0x57, 0x20, 0x05, 0x41, 0x49, 0x65, 0x41, 0x6a,
+	0x71, 0x12, 0x1b, 0xd8, 0xeb, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0x68, 0x91, 0x06, 0x00,
+	0x26, 0x01, 0x00, 0x00,
 }
 
-func (m *LatestPubKey) Marshal() (dAtA []byte, err error) {
+func (m *ActivePubKey) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -107,12 +170,54 @@ func (m *LatestPubKey) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *LatestPubKey) MarshalTo(dAtA []byte) (int, error) {
+func (m *ActivePubKey) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *LatestPubKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ActivePubKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Expiry != 0 {
+		i = encodeVarintLatestPubKey(dAtA, i, uint64(m.Expiry))
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintLatestPubKey(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.PublicKey) > 0 {
+		i -= len(m.PublicKey)
+		copy(dAtA[i:], m.PublicKey)
+		i = encodeVarintLatestPubKey(dAtA, i, uint64(len(m.PublicKey)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueuedPubKey) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueuedPubKey) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueuedPubKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -145,7 +250,27 @@ func encodeVarintLatestPubKey(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *LatestPubKey) Size() (n int) {
+func (m *ActivePubKey) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.PublicKey)
+	if l > 0 {
+		n += 1 + l + sovLatestPubKey(uint64(l))
+	}
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovLatestPubKey(uint64(l))
+	}
+	if m.Expiry != 0 {
+		n += 1 + sovLatestPubKey(uint64(m.Expiry))
+	}
+	return n
+}
+
+func (m *QueuedPubKey) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -168,7 +293,7 @@ func sovLatestPubKey(x uint64) (n int) {
 func sozLatestPubKey(x uint64) (n int) {
 	return sovLatestPubKey(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *LatestPubKey) Unmarshal(dAtA []byte) error {
+func (m *ActivePubKey) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -191,10 +316,143 @@ func (m *LatestPubKey) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: LatestPubKey: wiretype end group for non-group")
+			return fmt.Errorf("proto: ActivePubKey: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: LatestPubKey: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ActivePubKey: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PublicKey", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLatestPubKey
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthLatestPubKey
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthLatestPubKey
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PublicKey = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLatestPubKey
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthLatestPubKey
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthLatestPubKey
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Expiry", wireType)
+			}
+			m.Expiry = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLatestPubKey
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Expiry |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipLatestPubKey(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthLatestPubKey
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueuedPubKey) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowLatestPubKey
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueuedPubKey: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueuedPubKey: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

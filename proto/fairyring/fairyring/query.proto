@@ -60,9 +60,9 @@ service Query {
   
   }
   
-  // Queries the latest public key.
-  rpc LatestPubKey    (QueryLatestPubKeyRequest) returns (QueryLatestPubKeyResponse) {
-    option (google.api.http).get = "/fairyring/fairyring/latest_pub_key";
+  // Queries the public keys
+  rpc PubKey    (QueryPubKeyRequest) returns (QueryPubKeyResponse) {
+    option (google.api.http).get = "/fairyring/fairyring/pub_key";
   
   }
 }
@@ -129,9 +129,10 @@ message QueryAllAggregatedKeyShareResponse {
            cosmos.base.query.v1beta1.PageResponse pagination         = 2;
 }
 
-message QueryLatestPubKeyRequest {}
+message QueryPubKeyRequest {}
 
-message QueryLatestPubKeyResponse {
-  LatestPubKey                               latestPubKey   = 1 [(gogoproto.nullable) = false];
+message QueryPubKeyResponse {
+  ActivePubKey                               activePubKey   = 1 [(gogoproto.nullable) = false];
+  QueuedPubKey queuedPubKey = 2 [(gogoproto.nullable) = false];
 }
 

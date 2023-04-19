@@ -4,23 +4,24 @@ import (
 	"context"
 
 	"fairyring/x/fairyring/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
 )
 
-func CmdShowLatestPubKey() *cobra.Command {
+func CmdShowPubKey() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-latest-pub-key",
-		Short: "Show the latest public key",
+		Use:   "show-active-pub-key",
+		Short: "Show the active public key",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryLatestPubKeyRequest{}
+			params := &types.QueryPubKeyRequest{}
 
-			res, err := queryClient.LatestPubKey(context.Background(), params)
+			res, err := queryClient.PubKey(context.Background(), params)
 			if err != nil {
 				return err
 			}

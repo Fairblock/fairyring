@@ -3,8 +3,13 @@ package fairyring.fairyring;
 
 option go_package = "fairyring/x/fairyring/types";
 
-message LatestPubKey {
+message ActivePubKey {
+  string publicKey = 1;
+  string creator = 2;
+  uint64 expiry = 3;
+}
+
+message QueuedPubKey {
   string publicKey = 1;
   string creator = 2;
 }
-

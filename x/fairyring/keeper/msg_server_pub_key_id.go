@@ -19,14 +19,19 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 		return nil, types.ErrValidatorNotRegistered.Wrap(msg.Creator)
 	}
 
-	var latestPubKey = types.LatestPubKey{
+	_, found = k.GetQueuedPubKey(ctx)
+	if found {
+		return nil, types.ErrQueuedKeyAlreadyExists.Wrap(msg.Creator)
+	}
+
+	var queuedPubKey = types.QueuedPubKey{
 		Creator:   msg.Creator,
 		PublicKey: msg.PublicKey,
 	}
 
-	k.SetLatestPubKey(
+	k.SetQueuedPubKey(
 		ctx,
-		latestPubKey,
+		queuedPubKey,
 	)
 	return &types.MsgCreateLatestPubKeyResponse{}, nil
 }

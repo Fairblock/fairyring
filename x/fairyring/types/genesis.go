@@ -13,7 +13,8 @@ func DefaultGenesis() *GenesisState {
 		ValidatorSetList:       []ValidatorSet{},
 		KeyShareList:           []KeyShare{},
 		AggregatedKeyShareList: []AggregatedKeyShare{},
-		LatestPubKey:           LatestPubKey{},
+		ActivePubKey:           ActivePubKey{},
+		QueuedPubKey:           QueuedPubKey{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
