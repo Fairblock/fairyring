@@ -11,6 +11,7 @@ import (
 // CreateLatestPubKey updates the public key
 func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreateLatestPubKey) (*types.MsgCreateLatestPubKeyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	params := k.GetParams(ctx)
 
 	// check if validator is registered
 	_, found := k.GetValidatorSet(ctx, msg.Creator)
@@ -24,9 +25,15 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 		return nil, types.ErrQueuedKeyAlreadyExists.Wrap(msg.Creator)
 	}
 
+	expHeight := params.KeyExpiry + uint64(ctx.BlockHeight())
+	ak, found := k.GetActivePubKey(ctx)
+	if found {
+		expHeight = ak.Expiry + params.KeyExpiry
+	}
 	var queuedPubKey = types.QueuedPubKey{
 		Creator:   msg.Creator,
 		PublicKey: msg.PublicKey,
+		Expiry:    expHeight,
 	}
 
 	k.SetQueuedPubKey(

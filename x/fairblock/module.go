@@ -25,6 +25,8 @@ import (
 	"fairyring/x/fairblock/keeper"
 	"fairyring/x/fairblock/types"
 
+	fbtypes "fairyring/x/fairyring/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -521,6 +523,32 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 }
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
-func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+	strHeight := am.keeper.GetLatestHeight(ctx)
+	height, _ := strconv.ParseUint(strHeight, 10, 64)
+
+	ak, found := am.keeper.GetActivePubKey(ctx)
+	if found {
+		if ak.Expiry <= height {
+			am.keeper.DeleteActivePubKey(ctx)
+		} else {
+			return []abci.ValidatorUpdate{}
+		}
+	}
+
+	qk, found := am.keeper.GetQueuedPubKey(ctx)
+	if found {
+		if qk.Expiry > height {
+			newActiveKey := fbtypes.ActivePubKey{
+				PublicKey: qk.PublicKey,
+				Creator:   qk.Creator,
+				Expiry:    qk.Expiry,
+			}
+
+			am.keeper.SetActivePubKey(ctx, newActiveKey)
+		}
+		am.keeper.DeleteQueuedPubKey(ctx)
+	}
+
 	return []abci.ValidatorUpdate{}
 }

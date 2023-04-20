@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+
 	// this line is used by starport scaffolding # 1
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
@@ -14,6 +15,7 @@ import (
 	"fairyring/x/fairyring/client/cli"
 	"fairyring/x/fairyring/keeper"
 	"fairyring/x/fairyring/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -154,6 +156,27 @@ func (AppModule) ConsensusVersion() uint64 { return 1 }
 func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
-func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+	ak, found := am.keeper.GetActivePubKey(ctx)
+	if found {
+		if ak.Expiry <= uint64(ctx.BlockHeight()) {
+			am.keeper.DeleteActivePubKey(ctx)
+		} else {
+			return []abci.ValidatorUpdate{}
+		}
+	}
+
+	qk, found := am.keeper.GetQueuedPubKey(ctx)
+	if found {
+		newActiveKey := types.ActivePubKey{
+			PublicKey: qk.PublicKey,
+			Creator:   qk.Creator,
+			Expiry:    qk.Expiry,
+		}
+
+		am.keeper.SetActivePubKey(ctx, newActiveKey)
+		am.keeper.DeleteQueuedPubKey(ctx)
+	}
+
 	return []abci.ValidatorUpdate{}
 }

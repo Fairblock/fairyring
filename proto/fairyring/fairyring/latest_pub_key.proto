@@ -12,4 +12,5 @@ message ActivePubKey {
 message QueuedPubKey {
   string publicKey = 1;
   string creator = 2;
+  uint64 expiry = 3;
 }

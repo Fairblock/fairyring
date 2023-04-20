@@ -34595,6 +34595,10 @@ paths:
               params:
                 description: params holds all the parameters of this module.
                 type: object
+                properties:
+                  keyExpiry:
+                    type: string
+                    format: uint64
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -34645,6 +34649,9 @@ paths:
                     type: string
                   creator:
                     type: string
+                  expiry:
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -70757,6 +70764,10 @@ definitions:
         format: uint64
   fairyring.fairyring.Params:
     type: object
+    properties:
+      keyExpiry:
+        type: string
+        format: uint64
     description: Params defines the parameters for the module.
   fairyring.fairyring.QueryAllAggregatedKeyShareResponse:
     type: object
@@ -70942,6 +70953,10 @@ definitions:
       params:
         description: params holds all the parameters of this module.
         type: object
+        properties:
+          keyExpiry:
+            type: string
+            format: uint64
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   fairyring.fairyring.QueryPubKeyResponse:
     type: object
@@ -70963,6 +70978,9 @@ definitions:
             type: string
           creator:
             type: string
+          expiry:
+            type: string
+            format: uint64
   fairyring.fairyring.QueuedPubKey:
     type: object
     properties:
@@ -70970,6 +70988,9 @@ definitions:
         type: string
       creator:
         type: string
+      expiry:
+        type: string
+        format: uint64
   fairyring.fairyring.ValidatorSet:
     type: object
     properties:

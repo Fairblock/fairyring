@@ -57,6 +57,7 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 		QueuedPubKey: types.QueuedPubKey{
 			"public_key",
 			sample.AccAddress(),
+			math.MaxUint64,
 		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
