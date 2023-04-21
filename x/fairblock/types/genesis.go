@@ -10,9 +10,8 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		EncryptedTxArray:           []EncryptedTxArray{},
-		FairblockExecutedNonceList: []FairblockExecutedNonce{},
-		AggregatedKeyShareList:     []AggregatedKeyShare{},
+		EncryptedTxArray:       []EncryptedTxArray{},
+		AggregatedKeyShareList: []AggregatedKeyShare{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -39,16 +38,6 @@ func (gs GenesisState) Validate() error {
 		encryptedTxArrIndexMap[index] = struct{}{}
 	}
 
-	// Check for duplicated index in fairblockExecutedNonce
-	fairblockExecutedNonceIndexMap := make(map[string]struct{})
-
-	for _, elem := range gs.FairblockExecutedNonceList {
-		index := string(FairblockExecutedNonceKey(elem.Address))
-		if _, ok := fairblockExecutedNonceIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for fairblockExecutedNonce")
-		}
-		fairblockExecutedNonceIndexMap[index] = struct{}{}
-	}
 	// Check for duplicated index in aggregatedKeyShare
 	aggregatedKeyShareIndexMap := make(map[string]struct{})
 

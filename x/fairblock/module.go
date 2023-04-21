@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"math"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -204,9 +205,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 		for _, eachTx := range arr.EncryptedTx {
 			am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
-			newExecutedNonce := am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
 
-			creatorAddr, err := sdk.AccAddressFromBech32(eachTx.Creator)
 			if err != nil {
 				am.keeper.Logger(ctx).Error("Parse creator address error in BeginBlock")
 				am.keeper.Logger(ctx).Error(err.Error())
@@ -220,8 +219,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				)
 				return
 			}
-
-			creatorAccount := am.accountKeeper.GetAccount(ctx, creatorAddr)
 
 			key, found := am.keeper.GetAggregatedKeyShare(ctx, h)
 			if !found {
@@ -416,59 +413,75 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				)
 				return
 			}
-
+			am.keeper.Logger(ctx).Info(fmt.Sprintf("SIG: %v", sigs))
 			for index, eachSig := range sigs {
-				if index > 0 {
-					newExecutedNonce = am.keeper.IncreaseFairblockExecutedNonce(ctx, eachTx.Creator)
+				sigCreatorPubKey := eachSig.PubKey.Address()
+				sigCreatorAcc := sdk.AccAddress(sigCreatorPubKey)
+				sigCreatorAddr := sigCreatorAcc.String()
+				sigCreatorAccount := am.accountKeeper.GetAccount(ctx, sigCreatorAcc)
+
+				var nonce uint64
+
+				if n, found := am.keeper.GetFairblockNonce(ctx, sigCreatorAddr); !found {
+					nonce = 1
+				} else {
+					nonce = n.Nonce
 				}
 
-				// For now only support User submitting their own signed tx
-				if !eachSig.PubKey.Equals(creatorAccount.GetPubKey()) {
-					am.keeper.Logger(ctx).Error("Signer is not sender")
+				if nonce == math.MaxUint64 {
+					am.keeper.Logger(ctx).Error("Invalid Nonce, nonce reaches max uint64")
 					ctx.EventManager().EmitEvent(
 						sdk.NewEvent(types.EncryptedTxRevertedEventType,
 							sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
 							sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "signer public key does not match sender public key"),
+							sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Invalid Nonce, nonce reaches max uint64"),
 							sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 						),
 					)
 					return
 				}
 
-				if eachSig.Sequence != newExecutedNonce-1 {
-					am.keeper.Logger(ctx).Error("Incorrect Nonce sequence")
+				if eachSig.Sequence < nonce {
+					am.keeper.Logger(ctx).Error(fmt.Sprintf("[%d] Incorrect Nonce sequence, Provided: %d, Expecting: %d", index, eachSig.Sequence, nonce))
 					ctx.EventManager().EmitEvent(
 						sdk.NewEvent(types.EncryptedTxRevertedEventType,
 							sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
 							sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Incorrect nonce sequence"),
+							sdk.NewAttribute(types.EncryptedTxRevertedEventReason, fmt.Sprintf("Incorrect nonce sequence, provided: %d, expecting: %d", eachSig.Sequence, nonce)),
 							sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 						),
 					)
 					return
 				}
+
+				nonce = eachSig.Sequence + 1
+
+				am.keeper.SetFairblockNonce(ctx, types.FairblockNonce{
+					Address: sigCreatorAddr,
+					Nonce:   nonce,
+				})
 
 				verifiableTx := wrappedTx.GetTx().(authsigning.SigVerifiableTx)
 
 				signingData := authsigning.SignerData{
-					Address:       creatorAddr.String(),
+					Address:       sigCreatorAccount.GetAddress().String(),
 					ChainID:       ctx.ChainID(),
-					AccountNumber: creatorAccount.GetAccountNumber(),
-					Sequence:      sigs[0].Sequence,
-					PubKey:        creatorAccount.GetPubKey(),
+					AccountNumber: sigCreatorAccount.GetAccountNumber(),
+					Sequence:      sigs[index].Sequence,
+					PubKey:        sigCreatorAccount.GetPubKey(),
 				}
 
 				err = authsigning.VerifySignature(
-					creatorAccount.GetPubKey(),
+					sigCreatorAccount.GetPubKey(),
 					signingData,
-					sigs[0].Data,
+					sigs[index].Data,
 					am.txConfig.SignModeHandler(),
 					verifiableTx,
 				)
 
 				if err != nil {
 					am.keeper.Logger(ctx).Error("Invalid Signature in BeginBlock")
+					am.keeper.Logger(ctx).Error(err.Error())
 					ctx.EventManager().EmitEvent(
 						sdk.NewEvent(types.EncryptedTxRevertedEventType,
 							sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
