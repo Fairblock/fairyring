@@ -524,6 +524,12 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+	err := am.keeper.QueryFairyringCurrentKeys(ctx)
+	if err != nil {
+		am.keeper.Logger(ctx).Error("Beginblocker get keys err", err)
+		am.keeper.Logger(ctx).Error(err.Error())
+	}
+
 	strHeight := am.keeper.GetLatestHeight(ctx)
 	height, _ := strconv.ParseUint(strHeight, 10, 64)
 

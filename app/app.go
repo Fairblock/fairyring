@@ -110,6 +110,7 @@ import (
 	fairyringmodule "fairyring/x/fairyring"
 	fairyringmodulekeeper "fairyring/x/fairyring/keeper"
 	fairyringmoduletypes "fairyring/x/fairyring/types"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "fairyring/app/params"
@@ -524,6 +525,9 @@ func New(
 		keys[fairblockmoduletypes.StoreKey],
 		keys[fairblockmoduletypes.MemStoreKey],
 		app.GetSubspace(fairblockmoduletypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedFairblockKeeper,
 	)
 	fairblockModule := fairblockmodule.NewAppModule(
 		appCodec,
@@ -535,6 +539,8 @@ func New(
 		encodingConfig.TxConfig,
 	)
 
+	fairblockIBCModule := fairblockmodule.NewIBCModule(app.FairblockKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Sealing prevents other modules from creating scoped sub-keepers
@@ -543,7 +549,8 @@ func New(
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
-		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
+		AddRoute(ibctransfertypes.ModuleName, transferIBCModule).
+		AddRoute(fairblockmoduletypes.ModuleName, fairblockIBCModule)
 
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)

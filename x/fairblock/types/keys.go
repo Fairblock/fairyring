@@ -12,9 +12,18 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_fairblock"
+
+	// Version defines the current version the IBC module supports
+	Version = "fairblock-1"
+
+	// PortID is the default port id that module binds to
+	PortID = "fairblock"
 )
 
 var (
+	// PortKey defines the key to store the port ID in store
+	PortKey               = KeyPrefix("fairblock-port-")
+	ChannelKey            = KeyPrefix("fairblock-channel-")
 	LatestHeightKey       = KeyPrefix("fairblock-latest-height-")
 	LastExecutedHeightKey = KeyPrefix("fairblock-last-executed-height-")
 )

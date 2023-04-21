@@ -1,0 +1,26 @@
+syntax = "proto3";
+package fairyring.fairblock;
+
+import "fairyring/fairyring/latest_pub_key.proto";
+
+option go_package = "fairyring/x/fairblock/types";
+
+message FairblockPacketData {
+    oneof packet {
+        NoData noData = 1;
+		CurrentKeysPacketData currentKeysPacket = 2;
+    }
+}
+
+message NoData {
+}
+
+// CurrentKeysPacketData defines a struct for the packet payload
+message CurrentKeysPacketData {
+}
+
+// CurrentKeysPacketAck defines a struct for the packet acknowledgment
+message CurrentKeysPacketAck {
+    .fairyring.fairyring.ActivePubKey activeKey = 2;
+    .fairyring.fairyring.QueuedPubKey queuedKey = 3;
+}
