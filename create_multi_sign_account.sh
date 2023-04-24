@@ -22,7 +22,7 @@ do
   fairyringd tx bank send $ALICE_ADDRESS $EACH_ADDRESS 100frt --from alice --yes
 done
 
-fairyringd keys add $2 --multisig-threshold=$3 --multisig $1
+fairyringd keys add $2 --multisig $1 --multisig-threshold $3
 
 MULTI_SIGN_ADDRESS=`fairyringd keys show $2 | grep "address:" | sed 's/^.*: //'`
 

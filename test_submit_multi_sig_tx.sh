@@ -10,45 +10,43 @@ die () {
 echo $4 | grep -E -q '^[0-9]+$' || die "Numeric argument required, $4 provided"
 
 ACCOUNT_NAME=$2
-ACCOUNT_NUMBER=0
 CHAIN_ID="fairyring"
 UNSIGNED_TX_FILE_NAME="script_multi_sig_unsigned.json"
 SIGNED_TX_FILE_NAME="script_multi_sig_signed.json"
 
 # Get the address of target account name
-MULTI_SIG_ADDRESS=`fairyringd keys show $ACCOUNT_NAME | grep "address:" | sed 's/^.*: //'`
+MULTI_SIG_ADDRESS=`fairyringd keys show $ACCOUNT_NAME -a`
 
 # Create the unsigned tx data
-fairyringd tx bank send $MULTI_SIG_ADDRESS $5 $6 --from $ACCOUNT_NAME --generate-only --yes > $UNSIGNED_TX_FILE_NAME
+fairyringd tx bank send $MULTI_SIG_ADDRESS $5 $6 --chain-id $CHAIN_ID --generate-only --yes > $UNSIGNED_TX_FILE_NAME
 
 SIGNED_TX_FILE_LIST=""
 
 IFS=',' read -ra ACCOUNTS_ARR <<< "$1"
 
+MULTI_SIG_ACCOUNT_NUMBER=`fairyringd q account $MULTI_SIG_ADDRESS  | grep "account_number: " | sed 's/^.*: //'`
+MULTI_SIG_ACCOUNT_NUMBER=`sed -e 's/^"//' -e 's/"$//' <<< "$MULTI_SIG_ACCOUNT_NUMBER"`
+
+ACCOUNT_FAIRBLOCK_NONCE=`fairyringd query fairblock show-fairblock-nonce $MULTI_SIG_ADDRESS | grep "nonce:" | sed 's/^.*: //'`
+
+# Check if get nonce is success, if not assign 1 to the nonce
+if [ -z "${ACCOUNT_FAIRBLOCK_NONCE}" ]; then
+  echo "$ACCOUNT_NAME nonce not found, init nonce as 1"
+  ACCOUNT_FAIRBLOCK_NONCE=1
+else # else, remove the string quote from the result
+  ACCOUNT_FAIRBLOCK_NONCE=`sed -e 's/^"//' -e 's/"$//' <<< "$ACCOUNT_FAIRBLOCK_NONCE"`
+fi
+
 for EACH_ACCOUNT in "${ACCOUNTS_ARR[@]}"
 do
-  EACH_ADDRESS=`fairyringd keys show $EACH_ACCOUNT | grep "address:" | sed 's/^.*: //'`
-  EACH_FAIRBLOCK_NONCE=`fairyringd query fairblock show-fairblock-nonce $EACH_ADDRESS | grep "nonce:" | sed 's/^.*: //'`
+  EACH_ADDRESS=`fairyringd keys show $EACH_ACCOUNT -a`
 
-  # Check if get nonce is success, if not assign 1 to the nonce
-  if [ -z "${EACH_FAIRBLOCK_NONCE}" ]; then
-    echo "$EACH_ACCOUNT nonce not found, init nonce as 1"
-    EACH_FAIRBLOCK_NONCE=1
-  else # else, remove the string quote from the result
-    EACH_FAIRBLOCK_NONCE=`sed -e 's/^"//' -e 's/"$//' <<< "$EACH_FAIRBLOCK_NONCE"`
-  fi
-
-  printf "Got $EACH_ACCOUNT's FairblockNonce: $EACH_FAIRBLOCK_NONCE Account Balance:\n\n"
-
-  fairyringd query bank balances $EACH_ADDRESS
-
-  # Sign the unsigned tx that just created
-  EACH_SIGNED_DATA=`fairyringd tx sign $UNSIGNED_TX_FILE_NAME --multisig $MULTI_SIG_ADDRESS --from $EACH_ACCOUNT --sequence $EACH_FAIRBLOCK_NONCE --chain-id $CHAIN_ID --yes --output-document $EACH_ACCOUNT$SIGNED_TX_FILE_NAME`
+  EACH_SIGNED_DATA=`fairyringd tx sign $UNSIGNED_TX_FILE_NAME --multisig $ACCOUNT_NAME --from $EACH_ACCOUNT --offline --account-number $MULTI_SIG_ACCOUNT_NUMBER --sequence $ACCOUNT_FAIRBLOCK_NONCE --chain-id $CHAIN_ID --yes --output-document $EACH_ACCOUNT$SIGNED_TX_FILE_NAME`
 
   SIGNED_TX_FILE_LIST="$SIGNED_TX_FILE_LIST $EACH_ACCOUNT$SIGNED_TX_FILE_NAME"
 done
 
-FINAL_SIGNED_DATA=`fairyringd tx multisign $UNSIGNED_TX_FILE_NAME $ACCOUNT_NAME $SIGNED_TX_FILE_LIST`
+FINAL_SIGNED_DATA=`fairyringd tx multisign $UNSIGNED_TX_FILE_NAME $ACCOUNT_NAME $SIGNED_TX_FILE_LIST --offline --account-number $MULTI_SIG_ACCOUNT_NUMBER --sequence $ACCOUNT_FAIRBLOCK_NONCE --chain-id $CHAIN_ID --yes`
 
 PUB_KEY=`fairyringd q fairyring show-latest-pub-key | grep "publicKey: " | sed 's/^.*: //'`
 
@@ -59,3 +57,4 @@ fairyringd tx fairblock submit-encrypted-tx $CIPHER $4 --from $3 --yes
 
 rm $SIGNED_TX_FILE_LIST $UNSIGNED_TX_FILE_NAME
 
+printf "\nRun 'fairyringd query bank balances $5' to check target account balance later\n"
