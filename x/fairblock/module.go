@@ -206,27 +206,8 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		key, found := am.keeper.GetAggregatedKeyShare(ctx, h)
 		if !found {
 			am.keeper.Logger(ctx).Error(fmt.Sprintf("Decryption key not found for block height: %d", h))
-			return
+			continue
 		}
-
-		keyByte, err := hex.DecodeString(key.Data)
-		if err != nil {
-			am.keeper.Logger(ctx).Error("Error decoding aggregated key")
-			am.keeper.Logger(ctx).Error(err.Error())
-			return
-		}
-
-		suite := bls.NewBLS12381Suite()
-		skPoint := suite.G2().Point()
-		err = skPoint.UnmarshalBinary(keyByte)
-		if err != nil {
-			am.keeper.Logger(ctx).Error("Error unmarshalling aggregated key")
-			am.keeper.Logger(ctx).Error(err.Error())
-			return
-		}
-
-		am.keeper.Logger(ctx).Info("Unmarshal decryption key successfully")
-		am.keeper.Logger(ctx).Info(skPoint.String())
 
 		publicKeyByte, err := hex.DecodeString(key.GetPublicKey())
 		if err != nil {
@@ -234,6 +215,8 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			am.keeper.Logger(ctx).Error(err.Error())
 			return
 		}
+
+		suite := bls.NewBLS12381Suite()
 
 		publicKeyPoint := suite.G1().Point()
 		err = publicKeyPoint.UnmarshalBinary(publicKeyByte)
@@ -245,6 +228,24 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 		am.keeper.Logger(ctx).Info("Unmarshal public key successfully")
 		am.keeper.Logger(ctx).Info(publicKeyPoint.String())
+
+		keyByte, err := hex.DecodeString(key.Data)
+		if err != nil {
+			am.keeper.Logger(ctx).Error("Error decoding aggregated key")
+			am.keeper.Logger(ctx).Error(err.Error())
+			continue
+		}
+
+		skPoint := suite.G2().Point()
+		err = skPoint.UnmarshalBinary(keyByte)
+		if err != nil {
+			am.keeper.Logger(ctx).Error("Error unmarshalling aggregated key")
+			am.keeper.Logger(ctx).Error(err.Error())
+			continue
+		}
+
+		am.keeper.Logger(ctx).Info("Unmarshal decryption key successfully")
+		am.keeper.Logger(ctx).Info(skPoint.String())
 
 		for _, eachTx := range arr.EncryptedTx {
 			am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
