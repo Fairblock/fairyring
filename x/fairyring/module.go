@@ -157,12 +157,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		if !eachValidator.IsBonded() {
 			valAddr, _ := sdk.ValAddressFromBech32(eachValidator.OperatorAddress)
 			valAccAddr := sdk.AccAddress(valAddr)
-			// Remove it from validator set to prevent it submitting keyshares
 			am.keeper.RemoveValidatorSet(ctx, valAccAddr.String())
-
-			consAddr, _ := eachValidator.GetConsAddr()
-			// Slash the validator
-			am.keeper.StakingKeeper().Slash(ctx, consAddr, ctx.BlockHeight()-1, 100, sdk.NewDecWithPrec(5, 1))
 		}
 	}
 }
