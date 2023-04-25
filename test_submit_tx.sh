@@ -20,10 +20,10 @@ ADDRESS=`fairyringd keys show $ACCOUNT_NAME | grep "address:" | sed 's/^.*: //'`
 # Get the fairblock nonce of target account address
 FairblockNonce=`fairyringd query fairblock show-fairblock-nonce $ADDRESS | grep "nonce:" | sed 's/^.*: //'`
 
-# Check if get nonce is success, if not assign 1 to the nonce
+# Check if get nonce is success, if not assign 0 to the nonce
 if [ -z "${FairblockNonce}" ]; then
-  echo "$ACCOUNT_NAME nonce not found, init nonce as 1"
-  FairblockNonce=1
+  echo "$ACCOUNT_NAME nonce not found, init nonce as 0"
+  FairblockNonce=0
 else # else, remove the string quote from the result
   FairblockNonce=`sed -e 's/^"//' -e 's/"$//' <<< "$FairblockNonce"`
 fi
@@ -37,6 +37,7 @@ fairyringd tx bank send $ADDRESS $2 $3 --from $ACCOUNT_NAME --generate-only --ye
 
 # Sign the unsigned tx that just created
 SIGNED_DATA=`fairyringd tx sign $UNSIGNED_TX_FILE_NAME --from $ACCOUNT_NAME --offline --account-number $ACCOUNT_NUMBER --sequence $FairblockNonce --chain-id $CHAIN_ID --yes`
+# SIGNED_DATA=`fairyringd tx sign $UNSIGNED_TX_FILE_NAME --from $ACCOUNT_NAME --chain-id $CHAIN_ID --yes`
 
 PUB_KEY=`fairyringd q fairyring show-latest-pub-key | grep "publicKey: " | sed 's/^.*: //'`
 

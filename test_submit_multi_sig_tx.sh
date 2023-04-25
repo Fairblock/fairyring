@@ -29,10 +29,10 @@ MULTI_SIG_ACCOUNT_NUMBER=`sed -e 's/^"//' -e 's/"$//' <<< "$MULTI_SIG_ACCOUNT_NU
 
 ACCOUNT_FAIRBLOCK_NONCE=`fairyringd query fairblock show-fairblock-nonce $MULTI_SIG_ADDRESS | grep "nonce:" | sed 's/^.*: //'`
 
-# Check if get nonce is success, if not assign 1 to the nonce
+# Check if get nonce is success, if not assign 0 to the nonce
 if [ -z "${ACCOUNT_FAIRBLOCK_NONCE}" ]; then
-  echo "$ACCOUNT_NAME nonce not found, init nonce as 1"
-  ACCOUNT_FAIRBLOCK_NONCE=1
+  echo "$ACCOUNT_NAME nonce not found, init nonce as 0"
+  ACCOUNT_FAIRBLOCK_NONCE=0
 else # else, remove the string quote from the result
   ACCOUNT_FAIRBLOCK_NONCE=`sed -e 's/^"//' -e 's/"$//' <<< "$ACCOUNT_FAIRBLOCK_NONCE"`
 fi
@@ -41,13 +41,15 @@ for EACH_ACCOUNT in "${ACCOUNTS_ARR[@]}"
 do
   EACH_ADDRESS=`fairyringd keys show $EACH_ACCOUNT -a`
 
-  EACH_SIGNED_DATA=`fairyringd tx sign $UNSIGNED_TX_FILE_NAME --multisig $ACCOUNT_NAME --from $EACH_ACCOUNT --offline --account-number $MULTI_SIG_ACCOUNT_NUMBER --sequence $ACCOUNT_FAIRBLOCK_NONCE --chain-id $CHAIN_ID --yes --output-document $EACH_ACCOUNT$SIGNED_TX_FILE_NAME`
+  #EACH_SIGNED_DATA=`fairyringd tx sign $UNSIGNED_TX_FILE_NAME --multisig $ACCOUNT_NAME --from $EACH_ACCOUNT --offline --account-number $MULTI_SIG_ACCOUNT_NUMBER --sequence $ACCOUNT_FAIRBLOCK_NONCE --chain-id $CHAIN_ID --yes --output-document $EACH_ACCOUNT$SIGNED_TX_FILE_NAME`
+  EACH_SIGNED_DATA=`fairyringd tx sign $UNSIGNED_TX_FILE_NAME --multisig $ACCOUNT_NAME --from $EACH_ACCOUNT --chain-id $CHAIN_ID --yes --output-document $EACH_ACCOUNT$SIGNED_TX_FILE_NAME`
 
   SIGNED_TX_FILE_LIST="$SIGNED_TX_FILE_LIST $EACH_ACCOUNT$SIGNED_TX_FILE_NAME"
 done
 
-FINAL_SIGNED_DATA=`fairyringd tx multisign $UNSIGNED_TX_FILE_NAME $ACCOUNT_NAME $SIGNED_TX_FILE_LIST --offline --account-number $MULTI_SIG_ACCOUNT_NUMBER --sequence $ACCOUNT_FAIRBLOCK_NONCE --chain-id $CHAIN_ID --yes`
-
+#FINAL_SIGNED_DATA=`fairyringd tx multisign $UNSIGNED_TX_FILE_NAME $ACCOUNT_NAME $SIGNED_TX_FILE_LIST --offline --account-number $MULTI_SIG_ACCOUNT_NUMBER --sequence $ACCOUNT_FAIRBLOCK_NONCE --chain-id $CHAIN_ID --yes`
+FINAL_SIGNED_DATA=`fairyringd tx multisign $UNSIGNED_TX_FILE_NAME $ACCOUNT_NAME $SIGNED_TX_FILE_LIST --chain-id $CHAIN_ID --yes`
+echo $FINAL_SIGNED_DATA
 PUB_KEY=`fairyringd q fairyring show-latest-pub-key | grep "publicKey: " | sed 's/^.*: //'`
 
 CIPHER=`./encrypter $4 $PUB_KEY $FINAL_SIGNED_DATA`
