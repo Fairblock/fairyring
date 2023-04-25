@@ -206,8 +206,40 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		for _, eachTx := range arr.EncryptedTx {
 			am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
 
+			if currentNonce, found := am.keeper.GetFairblockNonce(ctx, eachTx.Creator); found && currentNonce.Nonce >= math.MaxUint64 {
+				am.keeper.Logger(ctx).Error("Invalid Fairblock Nonce")
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Invalid fairblock nonce"),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
+
+			newExecutedNonce := am.keeper.IncreaseFairblockNonce(ctx, eachTx.Creator)
+
+			creatorAddr, err := sdk.AccAddressFromBech32(eachTx.Creator)
 			if err != nil {
 				am.keeper.Logger(ctx).Error("Parse creator address error in BeginBlock")
+				am.keeper.Logger(ctx).Error(err.Error())
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
+
+			creatorAccount := am.accountKeeper.GetAccount(ctx, creatorAddr)
+			err = creatorAccount.SetSequence(creatorAccount.GetSequence() + 1)
+			if err != nil {
+				am.keeper.Logger(ctx).Error("Error increasing sender's cosmos nonce")
 				am.keeper.Logger(ctx).Error(err.Error())
 				ctx.EventManager().EmitEvent(
 					sdk.NewEvent(types.EncryptedTxRevertedEventType,
@@ -413,106 +445,119 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				)
 				return
 			}
-			am.keeper.Logger(ctx).Info(fmt.Sprintf("SIG: %v", sigs))
-			for index, eachSig := range sigs {
-				sigCreatorPubKey := eachSig.PubKey.Address()
-				sigCreatorAcc := sdk.AccAddress(sigCreatorPubKey)
-				sigCreatorAddr := sigCreatorAcc.String()
-				sigCreatorAccount := am.accountKeeper.GetAccount(ctx, sigCreatorAcc)
 
-				var nonce uint64
-
-				if n, found := am.keeper.GetFairblockNonce(ctx, sigCreatorAddr); !found {
-					nonce = 1
-				} else {
-					nonce = n.Nonce
-				}
-
-				if nonce == math.MaxUint64 {
-					am.keeper.Logger(ctx).Error("Invalid Nonce, nonce reaches max uint64")
-					ctx.EventManager().EmitEvent(
-						sdk.NewEvent(types.EncryptedTxRevertedEventType,
-							sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Invalid Nonce, nonce reaches max uint64"),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-						),
-					)
-					return
-				}
-
-				if eachSig.Sequence < nonce {
-					am.keeper.Logger(ctx).Error(fmt.Sprintf("[%d] Incorrect Nonce sequence, Provided: %d, Expecting: %d", index, eachSig.Sequence, nonce))
-					ctx.EventManager().EmitEvent(
-						sdk.NewEvent(types.EncryptedTxRevertedEventType,
-							sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventReason, fmt.Sprintf("Incorrect nonce sequence, provided: %d, expecting: %d", eachSig.Sequence, nonce)),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-						),
-					)
-					return
-				}
-
-				nonce = eachSig.Sequence + 1
-
-				am.keeper.SetFairblockNonce(ctx, types.FairblockNonce{
-					Address: sigCreatorAddr,
-					Nonce:   nonce,
-				})
-
-				verifiableTx := wrappedTx.GetTx().(authsigning.SigVerifiableTx)
-
-				signingData := authsigning.SignerData{
-					Address:       sigCreatorAccount.GetAddress().String(),
-					ChainID:       ctx.ChainID(),
-					AccountNumber: sigCreatorAccount.GetAccountNumber(),
-					Sequence:      sigs[index].Sequence,
-					PubKey:        sigCreatorAccount.GetPubKey(),
-				}
-
-				err = authsigning.VerifySignature(
-					sigCreatorAccount.GetPubKey(),
-					signingData,
-					sigs[index].Data,
-					am.txConfig.SignModeHandler(),
-					verifiableTx,
+			if len(sigs) != 1 {
+				am.keeper.Logger(ctx).Error("Number of signatures provided is more than 1")
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Number of signatures provided is more than 1"),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
 				)
-
-				if err != nil {
-					am.keeper.Logger(ctx).Error("Invalid Signature in BeginBlock")
-					am.keeper.Logger(ctx).Error(err.Error())
-					ctx.EventManager().EmitEvent(
-						sdk.NewEvent(types.EncryptedTxRevertedEventType,
-							sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Invalid signature"),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-						),
-					)
-					return
-				}
-
+				return
 			}
 
-			for _, eachMsg := range wrappedTx.GetTx().GetMsgs() {
-				handler := am.msgServiceRouter.Handler(eachMsg)
-				_, err := handler(ctx, eachMsg)
-				if err != nil {
-					am.keeper.Logger(ctx).Error("!!! Handle Tx Msg Error")
-					am.keeper.Logger(ctx).Error(err.Error())
-					ctx.EventManager().EmitEvent(
-						sdk.NewEvent(types.EncryptedTxRevertedEventType,
-							sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-						),
-					)
-					continue
-				}
-				am.keeper.Logger(ctx).Info("!Executed successfully!")
+			txMsgs := wrappedTx.GetTx().GetMsgs()
+
+			if len(sigs) != len(txMsgs) {
+				am.keeper.Logger(ctx).Error("Number of signature is not equals to number of messages")
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Number of signature is not equals to number of messages"),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
 			}
+
+			if !sigs[0].PubKey.Equals(creatorAccount.GetPubKey()) {
+				am.keeper.Logger(ctx).Error("Signer is not sender")
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "signer public key does not match sender public key"),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
+
+			expectingNonce := newExecutedNonce - 1
+
+			if sigs[0].Sequence < expectingNonce {
+				am.keeper.Logger(ctx).Error(fmt.Sprintf("Incorrect Nonce sequence, Provided: %d, Expecting: %d", sigs[0].Sequence, expectingNonce))
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, fmt.Sprintf("Incorrect nonce sequence, provided: %d, expecting: %d", sigs[0].Sequence, expectingNonce)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
+
+			if sigs[0].Sequence > expectingNonce {
+				am.keeper.SetFairblockNonce(ctx, types.FairblockNonce{
+					Address: eachTx.Creator,
+					Nonce:   sigs[0].Sequence,
+				})
+			}
+
+			verifiableTx := wrappedTx.GetTx().(authsigning.SigVerifiableTx)
+
+			signingData := authsigning.SignerData{
+				Address:       creatorAddr.String(),
+				ChainID:       ctx.ChainID(),
+				AccountNumber: creatorAccount.GetAccountNumber(),
+				Sequence:      sigs[0].Sequence,
+				PubKey:        creatorAccount.GetPubKey(),
+			}
+
+			err = authsigning.VerifySignature(
+				creatorAccount.GetPubKey(),
+				signingData,
+				sigs[0].Data,
+				am.txConfig.SignModeHandler(),
+				verifiableTx,
+			)
+
+			if err != nil {
+				am.keeper.Logger(ctx).Error("Invalid Signature in BeginBlock")
+				am.keeper.Logger(ctx).Error(err.Error())
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Invalid signature"),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
+
+			handler := am.msgServiceRouter.Handler(txMsgs[0])
+			_, err = handler(ctx, txMsgs[0])
+			if err != nil {
+				am.keeper.Logger(ctx).Error("Handle Tx Msg Error")
+				am.keeper.Logger(ctx).Error(err.Error())
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				return
+			}
+
+			am.keeper.Logger(ctx).Info("!Executed successfully!")
 
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxExecutedEventType,
