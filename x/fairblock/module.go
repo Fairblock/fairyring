@@ -203,6 +203,49 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		arr := am.keeper.GetEncryptedTxAllFromHeight(ctx, h)
 		am.keeper.SetLastExecutedHeight(ctx, strconv.FormatUint(h, 10))
 
+		key, found := am.keeper.GetAggregatedKeyShare(ctx, h)
+		if !found {
+			am.keeper.Logger(ctx).Error(fmt.Sprintf("Decryption key not found for block height: %d", h))
+			return
+		}
+
+		keyByte, err := hex.DecodeString(key.Data)
+		if err != nil {
+			am.keeper.Logger(ctx).Error("Error decoding aggregated key")
+			am.keeper.Logger(ctx).Error(err.Error())
+			return
+		}
+
+		suite := bls.NewBLS12381Suite()
+		skPoint := suite.G2().Point()
+		err = skPoint.UnmarshalBinary(keyByte)
+		if err != nil {
+			am.keeper.Logger(ctx).Error("Error unmarshalling aggregated key")
+			am.keeper.Logger(ctx).Error(err.Error())
+			return
+		}
+
+		am.keeper.Logger(ctx).Info("Unmarshal decryption key successfully")
+		am.keeper.Logger(ctx).Info(skPoint.String())
+
+		publicKeyByte, err := hex.DecodeString(key.GetPublicKey())
+		if err != nil {
+			am.keeper.Logger(ctx).Error("Error decoding public key")
+			am.keeper.Logger(ctx).Error(err.Error())
+			return
+		}
+
+		publicKeyPoint := suite.G1().Point()
+		err = publicKeyPoint.UnmarshalBinary(publicKeyByte)
+		if err != nil {
+			am.keeper.Logger(ctx).Error("Error unmarshalling public key")
+			am.keeper.Logger(ctx).Error(err.Error())
+			return
+		}
+
+		am.keeper.Logger(ctx).Info("Unmarshal public key successfully")
+		am.keeper.Logger(ctx).Info(publicKeyPoint.String())
+
 		for _, eachTx := range arr.EncryptedTx {
 			am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
 
@@ -216,7 +259,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
 
 			newExecutedNonce := am.keeper.IncreaseFairblockNonce(ctx, eachTx.Creator)
@@ -233,7 +276,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
 
 			creatorAccount := am.accountKeeper.GetAccount(ctx, creatorAddr)
@@ -249,91 +292,8 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
-
-			key, found := am.keeper.GetAggregatedKeyShare(ctx, h)
-			if !found {
-				am.keeper.Logger(ctx).Error(fmt.Sprintf("Decryption key not found for block height: %d", h))
-				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.EncryptedTxRevertedEventType,
-						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Decryption key not found"),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-					),
-				)
-				return
-			}
-
-			keyByte, err := hex.DecodeString(key.Data)
-			if err != nil {
-				am.keeper.Logger(ctx).Error("Error decoding aggregated key")
-				am.keeper.Logger(ctx).Error(err.Error())
-				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.EncryptedTxRevertedEventType,
-						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-					),
-				)
-				return
-			}
-
-			suite := bls.NewBLS12381Suite()
-			skPoint := suite.G2().Point()
-			err = skPoint.UnmarshalBinary(keyByte)
-			if err != nil {
-				am.keeper.Logger(ctx).Error("Error unmarshalling aggregated key")
-				am.keeper.Logger(ctx).Error(err.Error())
-				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.EncryptedTxRevertedEventType,
-						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-					),
-				)
-				return
-			}
-
-			am.keeper.Logger(ctx).Info("Unmarshal decryption key successfully")
-			am.keeper.Logger(ctx).Info(skPoint.String())
-
-			publicKeyByte, err := hex.DecodeString(key.GetPublicKey())
-			if err != nil {
-				am.keeper.Logger(ctx).Error("Error decoding public key")
-				am.keeper.Logger(ctx).Error(err.Error())
-				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.EncryptedTxRevertedEventType,
-						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-					),
-				)
-				return
-			}
-
-			publicKeyPoint := suite.G1().Point()
-			err = publicKeyPoint.UnmarshalBinary(publicKeyByte)
-			if err != nil {
-				am.keeper.Logger(ctx).Error("Error unmarshalling public key")
-				am.keeper.Logger(ctx).Error(err.Error())
-				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.EncryptedTxRevertedEventType,
-						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-					),
-				)
-				return
-			}
-
-			am.keeper.Logger(ctx).Info("Unmarshal public key successfully")
-			am.keeper.Logger(ctx).Info(publicKeyPoint.String())
 
 			txBytes, err := hex.DecodeString(eachTx.Data)
 			if err != nil {
@@ -347,7 +307,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
 
 			var decryptedTx bytes.Buffer
@@ -364,7 +324,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
 
 			err = enc.Decrypt(publicKeyPoint, skPoint, &decryptedTx, &txBuffer)
@@ -379,7 +339,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
 
 			am.keeper.Logger(ctx).Info(fmt.Sprintf("Decrypt TX Successfully: %s", decryptedTx.String()))
@@ -398,7 +358,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
 
 			decodedTxJson, err := am.txConfig.TxJSONDecoder()(decryptedTx.Bytes())
@@ -413,7 +373,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
 
 			wrappedTx, err := am.txConfig.WrapTxBuilder(decodedTxJson)
@@ -428,7 +388,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
 
 			sigs, err := wrappedTx.GetTx().GetSignaturesV2()
@@ -443,7 +403,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
 
 			if len(sigs) != 1 {
@@ -456,7 +416,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
 
 			txMsgs := wrappedTx.GetTx().GetMsgs()
@@ -471,7 +431,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
 
 			if !sigs[0].PubKey.Equals(creatorAccount.GetPubKey()) {
@@ -484,7 +444,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
 
 			expectingNonce := newExecutedNonce - 1
@@ -499,7 +459,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
 
 			if sigs[0].Sequence > expectingNonce {
@@ -538,7 +498,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
 
 			handler := am.msgServiceRouter.Handler(txMsgs[0])
@@ -554,7 +514,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
-				return
+				continue
 			}
 
 			am.keeper.Logger(ctx).Info("!Executed successfully!")
