@@ -29,10 +29,8 @@ MULTI_SIG_ACCOUNT_NUMBER=`sed -e 's/^"//' -e 's/"$//' <<< "$MULTI_SIG_ACCOUNT_NU
 
 ACCOUNT_FAIRBLOCK_NONCE=`fairyringd query fairblock show-fairblock-nonce $MULTI_SIG_ADDRESS | grep "nonce:" | sed 's/^.*: //'`
 
-# Check if get nonce is success, if not assign 0 to the nonce
 if [ -z "${ACCOUNT_FAIRBLOCK_NONCE}" ]; then
-  echo "$ACCOUNT_NAME nonce not found, init nonce as 0"
-  ACCOUNT_FAIRBLOCK_NONCE=0
+  die "Fairblock Nonce not found"
 else # else, remove the string quote from the result
   ACCOUNT_FAIRBLOCK_NONCE=`sed -e 's/^"//' -e 's/"$//' <<< "$ACCOUNT_FAIRBLOCK_NONCE"`
 fi

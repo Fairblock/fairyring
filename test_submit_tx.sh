@@ -22,8 +22,7 @@ FairblockNonce=`fairyringd query fairblock show-fairblock-nonce $ADDRESS | grep 
 
 # Check if get nonce is success, if not assign 0 to the nonce
 if [ -z "${FairblockNonce}" ]; then
-  echo "$ACCOUNT_NAME nonce not found, init nonce as 0"
-  FairblockNonce=0
+  die "Fairblock Nonce not found"
 else # else, remove the string quote from the result
   FairblockNonce=`sed -e 's/^"//' -e 's/"$//' <<< "$FairblockNonce"`
 fi
