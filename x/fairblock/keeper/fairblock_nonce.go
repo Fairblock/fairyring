@@ -27,14 +27,13 @@ func (k Keeper) IncreaseFairblockNonce(
 	))
 
 	var nonce types.FairblockNonce
-	var newNonce uint64
+	var newNonce uint64 = 1
 	if b == nil {
 		// New address ?
 		nonce = types.FairblockNonce{
 			Address: address,
-			Nonce:   2,
+			Nonce:   1,
 		}
-		newNonce = 2
 	} else {
 		k.cdc.MustUnmarshal(b, &nonce)
 		nonce.Nonce = nonce.Nonce + 1
@@ -58,7 +57,12 @@ func (k Keeper) GetFairblockNonce(
 		address,
 	))
 	if b == nil {
-		return val, false
+		initNonce := types.FairblockNonce{
+			Address: address,
+			Nonce:   0,
+		}
+		k.SetFairblockNonce(ctx, initNonce)
+		return initNonce, true
 	}
 
 	k.cdc.MustUnmarshal(b, &val)
