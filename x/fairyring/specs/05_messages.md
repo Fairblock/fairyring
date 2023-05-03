@@ -1,4 +1,4 @@
-# PEP Messages
+# KeyShare Messages
 
 ## RegisterValidator
 

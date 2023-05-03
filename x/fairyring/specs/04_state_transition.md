@@ -1,4 +1,4 @@
-# PEP State Transitions
+# KeyShare State Transitions
 
 ## AggregatedKeyShare
 
@@ -23,7 +23,7 @@ TODO: @martin
 
 ## ActivePubKey
 
-The active public key is only modified from the end block of the PEP module.
+The active public key is only modified from the end block of the KeyShare module.
 
 It is modified in the following 2 scenarios:
 
@@ -40,7 +40,7 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 
 ## QueuedPubKey
 
-The queued public key is modified by a successful execution of the `MsgCreateLatestPubKey` message. It can also be modified in the end block of the PEP module.
+The queued public key is modified by a successful execution of the `MsgCreateLatestPubKey` message. It can also be modified in the end block of the KeyShare module.
 
 - `MsgCreateLatestPubKey` message: If there does not exist a queued pubkey, a new one can be added via this message
 - End Block: If the active public key is not found or expires, the queued pubkey replaces it and is deleted.

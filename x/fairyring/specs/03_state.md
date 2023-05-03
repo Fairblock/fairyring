@@ -1,8 +1,8 @@
-# PEP States
+# KeyShare States
 
 ## KVStore
 
-State in PEP module is defined by its KVStore. This KVStore has five prefixes:
+State in KeyShare module is defined by its KVStore. This KVStore has five prefixes:
 
 - AggregatedKeyShareKeyPrefix
 - AggregatedKeyShareLengthPrefix
