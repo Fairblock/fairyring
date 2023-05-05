@@ -94,13 +94,14 @@ func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKey
 	}
 
 	k.SetAggregatedKeyShare(ctx, types.AggregatedKeyShare{
-		Height:  msg.Height,
-		Data:    msg.Data,
-		Creator: msg.Creator,
+		Height:    msg.Height,
+		Data:      msg.Data,
+		Creator:   msg.Creator,
+		PublicKey: msg.PublicKey,
 	})
 
 	latestHeight, err := strconv.ParseUint(k.GetLatestHeight(ctx), 10, 64)
-	if err != nil { // latest height is empty, set it to 0
+	if err != nil {
 		latestHeight = 0
 	}
 

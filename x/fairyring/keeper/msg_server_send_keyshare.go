@@ -16,19 +16,16 @@ import (
 )
 
 // SendKeyshare registers a new keyshare submited by a validator for a particular height
+
 func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshare) (*types.MsgSendKeyshareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// check if validator is registered
-	_, found := k.GetValidatorSet(ctx, msg.Creator)
+	validatorInfo, found := k.GetValidatorSet(ctx, msg.Creator)
 
 	if !found {
 		return nil, types.ErrValidatorNotRegistered.Wrap(msg.Creator)
 	}
-
-	//if msg.BlockHeight < uint64(ctx.BlockHeight()) {
-	//	return nil, types.ErrInvalidBlockHeight
-	//}
 
 	// Setup
 	suite := bls.NewBLS12381Suite()
@@ -37,7 +34,30 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	// Parse the keyshare & commitment then verify it
 	_, _, err := parseKeyShareCommitment(suite, msg.Message, msg.Commitment, uint32(msg.KeyShareIndex), ibeID)
 	if err != nil {
-		return nil, err
+		k.Logger(ctx).Error(fmt.Sprintf("Error in parsing & verifying keyshare & commitment: %s", err.Error()))
+		// Invalid Share, slash validator
+		var consAddr sdk.ConsAddress
+
+		savedConsAddrByte, err := hex.DecodeString(validatorInfo.ConsAddr)
+		if err != nil {
+			return nil, err
+		}
+
+		err = consAddr.Unmarshal(savedConsAddrByte)
+		if err != nil {
+			return nil, err
+		}
+
+		k.stakingKeeper.Slash(ctx, consAddr, ctx.BlockHeight()-1, 100, sdk.NewDecWithPrec(5, 1))
+
+		return &types.MsgSendKeyshareResponse{
+			Creator:             msg.Creator,
+			Keyshare:            msg.Message,
+			Commitment:          msg.Commitment,
+			KeyshareIndex:       msg.KeyShareIndex,
+			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+			BlockHeight:         msg.BlockHeight,
+		}, nil
 	}
 
 	keyShare := types.KeyShare{
@@ -99,7 +119,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		}, nil
 	}
 
-	// Get the active public key for aggregating
+	// Get the latest public key for aggregating
 	activePubKey, found := k.GetActivePubKey(ctx)
 	if !found {
 		return nil, types.ErrPubKeyNotFound

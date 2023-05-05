@@ -153,7 +153,16 @@ func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.Raw
 func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
-func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
+func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
+	validators := am.keeper.StakingKeeper().GetAllValidators(ctx)
+	for _, eachValidator := range validators {
+		if !eachValidator.IsBonded() {
+			valAddr, _ := sdk.ValAddressFromBech32(eachValidator.OperatorAddress)
+			valAccAddr := sdk.AccAddress(valAddr)
+			am.keeper.RemoveValidatorSet(ctx, valAccAddr.String())
+		}
+	}
+}
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {

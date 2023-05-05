@@ -515,8 +515,14 @@ func New(
 		keys[fairyringmoduletypes.StoreKey],
 		keys[fairyringmoduletypes.MemStoreKey],
 		app.GetSubspace(fairyringmoduletypes.ModuleName),
+		app.StakingKeeper,
 	)
-	fairyringModule := fairyringmodule.NewAppModule(appCodec, app.FairyringKeeper, app.AccountKeeper, app.BankKeeper)
+	fairyringModule := fairyringmodule.NewAppModule(
+		appCodec,
+		app.FairyringKeeper,
+		app.AccountKeeper,
+		app.BankKeeper,
+	)
 
 	scopedFairblockKeeper := app.CapabilityKeeper.ScopeToModule(fairblockmoduletypes.ModuleName)
 	app.ScopedFairblockKeeper = scopedFairblockKeeper
