@@ -26,8 +26,6 @@ func (k Keeper) AppendEncryptedTx(
 
 	parsedEncryptedTxArr := k.cdc.MustMarshal(&allTxsFromHeight)
 
-	k.IncreaseFairblockNonce(ctx, encryptedTx.Creator)
-
 	store.Set(types.EncryptedTxAllFromHeightKey(
 		encryptedTx.TargetHeight,
 	), parsedEncryptedTxArr)

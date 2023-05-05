@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"strconv"
 
 	peptypes "fairyring/x/fairblock/types"
 	"fairyring/x/fairyring/types"
@@ -41,5 +42,15 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 		ctx,
 		queuedPubKey,
 	)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(types.QueuedPubKeyCreatedEventType,
+			sdk.NewAttribute(types.QueuedPubKeyCreatedEventActivePubkeyExpiryHeight, strconv.FormatUint(ak.Expiry, 10)),
+			sdk.NewAttribute(types.QueuedPubKeyCreatedEventExpiryHeight, strconv.FormatUint(expHeight, 10)),
+			sdk.NewAttribute(types.QueuedPubKeyCreatedEventCreator, msg.Creator),
+			sdk.NewAttribute(types.QueuedPubKeyCreatedEventPubkey, msg.PublicKey),
+		),
+	)
+
 	return &types.MsgCreateLatestPubKeyResponse{}, nil
 }

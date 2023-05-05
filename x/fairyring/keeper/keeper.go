@@ -3,6 +3,8 @@ package keeper
 import (
 	"fmt"
 
+	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
+
 	pepKeeper "fairyring/x/fairblock/keeper"
 	"fairyring/x/fairyring/types"
 
@@ -15,11 +17,12 @@ import (
 
 type (
 	Keeper struct {
-		cdc        codec.BinaryCodec
-		storeKey   storetypes.StoreKey
-		memKey     storetypes.StoreKey
-		paramstore paramtypes.Subspace
-		pepKeeper  pepKeeper.Keeper
+		cdc           codec.BinaryCodec
+		storeKey      storetypes.StoreKey
+		memKey        storetypes.StoreKey
+		paramstore    paramtypes.Subspace
+		stakingKeeper stakingkeeper.Keeper
+		pepKeeper     pepKeeper.Keeper
 	}
 )
 
@@ -29,7 +32,7 @@ func NewKeeper(
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
 	pk pepKeeper.Keeper,
-
+	stakingKeeper stakingkeeper.Keeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -37,13 +40,17 @@ func NewKeeper(
 	}
 
 	return &Keeper{
-
-		cdc:        cdc,
-		storeKey:   storeKey,
-		memKey:     memKey,
-		paramstore: ps,
-		pepKeeper:  pk,
+		cdc:           cdc,
+		storeKey:      storeKey,
+		memKey:        memKey,
+		paramstore:    ps,
+		pepKeeper:     pk,
+		stakingKeeper: stakingKeeper,
 	}
+}
+
+func (k Keeper) StakingKeeper() stakingkeeper.Keeper {
+	return k.stakingKeeper
 }
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {

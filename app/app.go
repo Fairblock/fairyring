@@ -539,6 +539,7 @@ func New(
 		keys[fairyringmoduletypes.MemStoreKey],
 		app.GetSubspace(fairyringmoduletypes.ModuleName),
 		app.FairblockKeeper,
+		stakingKeeper,
 	)
 	fairyringModule := fairyringmodule.NewAppModule(appCodec, app.FairyringKeeper, app.AccountKeeper, app.BankKeeper, app.FairblockKeeper)
 

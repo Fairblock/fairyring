@@ -8,3 +8,4 @@ build/
 gentx/
 DistributedIBE/
 *.json
+encrypter

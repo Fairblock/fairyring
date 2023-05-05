@@ -55,14 +55,6 @@ func TestGenesisState_Validate(t *testing.T) {
 						Address: "1",
 					},
 				},
-				FairblockExecutedNonceList: []types.FairblockExecutedNonce{
-					{
-						Address: "0",
-					},
-					{
-						Address: "1",
-					},
-				},
 				AggregatedKeyShareList: []types.AggregatedKeyShare{
 					{
 						Height: 0,
@@ -111,20 +103,6 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated fairblockNonce",
 			genState: &types.GenesisState{
 				FairblockNonceList: []types.FairblockNonce{
-					{
-						Address: "0",
-					},
-					{
-						Address: "0",
-					},
-				},
-			},
-			valid: false,
-		},
-		{
-			desc: "duplicated fairblockExecutedNonce",
-			genState: &types.GenesisState{
-				FairblockExecutedNonceList: []types.FairblockExecutedNonce{
 					{
 						Address: "0",
 					},
