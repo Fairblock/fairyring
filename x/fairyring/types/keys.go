@@ -42,6 +42,13 @@ const (
 	KeyShareAggregatedEventPubKey      = "keyshare-aggregated-pubkey"
 )
 
+const (
+	QueuedPubKeyCreatedEventType         = "queued-pubkey-created"
+	QueuedPubKeyCreatedEventExpiryHeight = "queued-pubkey-created-expiry-height"
+	QueuedPubKeyCreatedEventCreator      = "queued-pubkey-created-creator"
+	QueuedPubKeyCreatedEventPubkey       = "queued-pubkey-created-pubkey"
+)
+
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
