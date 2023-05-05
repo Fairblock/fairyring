@@ -43,10 +43,11 @@ const (
 )
 
 const (
-	QueuedPubKeyCreatedEventType         = "queued-pubkey-created"
-	QueuedPubKeyCreatedEventExpiryHeight = "queued-pubkey-created-expiry-height"
-	QueuedPubKeyCreatedEventCreator      = "queued-pubkey-created-creator"
-	QueuedPubKeyCreatedEventPubkey       = "queued-pubkey-created-pubkey"
+	QueuedPubKeyCreatedEventType                     = "queued-pubkey-created"
+	QueuedPubKeyCreatedEventActivePubkeyExpiryHeight = "queued-pubkey-created-active-pubkey-expiry-height"
+	QueuedPubKeyCreatedEventExpiryHeight             = "queued-pubkey-created-expiry-height"
+	QueuedPubKeyCreatedEventCreator                  = "queued-pubkey-created-creator"
+	QueuedPubKeyCreatedEventPubkey                   = "queued-pubkey-created-pubkey"
 )
 
 func KeyPrefix(p string) []byte {

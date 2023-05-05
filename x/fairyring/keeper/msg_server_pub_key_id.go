@@ -44,6 +44,7 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.QueuedPubKeyCreatedEventType,
+			sdk.NewAttribute(types.QueuedPubKeyCreatedEventActivePubkeyExpiryHeight, strconv.FormatUint(ak.Expiry, 10)),
 			sdk.NewAttribute(types.QueuedPubKeyCreatedEventExpiryHeight, strconv.FormatUint(expHeight, 10)),
 			sdk.NewAttribute(types.QueuedPubKeyCreatedEventCreator, msg.Creator),
 			sdk.NewAttribute(types.QueuedPubKeyCreatedEventPubkey, msg.PublicKey),
