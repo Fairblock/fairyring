@@ -96,6 +96,7 @@ type AppModule struct {
 	keeper        keeper.Keeper
 	accountKeeper types.AccountKeeper
 	bankKeeper    types.BankKeeper
+	pepKeeper     types.PepKeeper
 }
 
 func NewAppModule(
@@ -103,12 +104,14 @@ func NewAppModule(
 	keeper keeper.Keeper,
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
+	pk types.PepKeeper,
 ) AppModule {
 	return AppModule{
 		AppModuleBasic: NewAppModuleBasic(cdc),
 		keeper:         keeper,
 		accountKeeper:  accountKeeper,
 		bankKeeper:     bankKeeper,
+		pepKeeper:      pk,
 	}
 }
 
@@ -157,26 +160,5 @@ func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
-	ak, found := am.keeper.GetActivePubKey(ctx)
-	if found {
-		if ak.Expiry <= uint64(ctx.BlockHeight()) {
-			am.keeper.DeleteActivePubKey(ctx)
-		} else {
-			return []abci.ValidatorUpdate{}
-		}
-	}
-
-	qk, found := am.keeper.GetQueuedPubKey(ctx)
-	if found {
-		newActiveKey := types.ActivePubKey{
-			PublicKey: qk.PublicKey,
-			Creator:   qk.Creator,
-			Expiry:    qk.Expiry,
-		}
-
-		am.keeper.SetActivePubKey(ctx, newActiveKey)
-		am.keeper.DeleteQueuedPubKey(ctx)
-	}
-
 	return []abci.ValidatorUpdate{}
 }

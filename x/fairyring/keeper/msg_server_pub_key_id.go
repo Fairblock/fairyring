@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 
+	peptypes "fairyring/x/fairblock/types"
 	"fairyring/x/fairyring/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -20,23 +21,23 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 		return nil, types.ErrValidatorNotRegistered.Wrap(msg.Creator)
 	}
 
-	_, found = k.GetQueuedPubKey(ctx)
+	_, found = k.pepKeeper.GetQueuedPubKey(ctx)
 	if found {
 		return nil, types.ErrQueuedKeyAlreadyExists.Wrap(msg.Creator)
 	}
 
 	expHeight := params.KeyExpiry + uint64(ctx.BlockHeight())
-	ak, found := k.GetActivePubKey(ctx)
+	ak, found := k.pepKeeper.GetActivePubKey(ctx)
 	if found {
 		expHeight = ak.Expiry + params.KeyExpiry
 	}
-	var queuedPubKey = types.QueuedPubKey{
+	var queuedPubKey = peptypes.QueuedPubKey{
 		Creator:   msg.Creator,
 		PublicKey: msg.PublicKey,
 		Expiry:    expHeight,
 	}
 
-	k.SetQueuedPubKey(
+	k.pepKeeper.SetQueuedPubKey(
 		ctx,
 		queuedPubKey,
 	)

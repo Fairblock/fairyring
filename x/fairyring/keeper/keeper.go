@@ -3,7 +3,9 @@ package keeper
 import (
 	"fmt"
 
+	pepKeeper "fairyring/x/fairblock/keeper"
 	"fairyring/x/fairyring/types"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -17,6 +19,7 @@ type (
 		storeKey   storetypes.StoreKey
 		memKey     storetypes.StoreKey
 		paramstore paramtypes.Subspace
+		pepKeeper  pepKeeper.Keeper
 	}
 )
 
@@ -25,6 +28,7 @@ func NewKeeper(
 	storeKey,
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
+	pk pepKeeper.Keeper,
 
 ) *Keeper {
 	// set KeyTable if it has not already been set
@@ -38,6 +42,7 @@ func NewKeeper(
 		storeKey:   storeKey,
 		memKey:     memKey,
 		paramstore: ps,
+		pepKeeper:  pk,
 	}
 }
 

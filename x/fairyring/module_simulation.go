@@ -1,7 +1,6 @@
 package fairyring
 
 import (
-	"math"
 	"math/rand"
 
 	"fairyring/testutil/sample"
@@ -49,16 +48,6 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	fairyringGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
-		ActivePubKey: types.ActivePubKey{
-			"public_key",
-			sample.AccAddress(),
-			math.MaxUint64,
-		},
-		QueuedPubKey: types.QueuedPubKey{
-			"public_key",
-			sample.AccAddress(),
-			math.MaxUint64,
-		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&fairyringGenesis)

@@ -510,14 +510,6 @@ func New(
 		govConfig,
 	)
 
-	app.FairyringKeeper = *fairyringmodulekeeper.NewKeeper(
-		appCodec,
-		keys[fairyringmoduletypes.StoreKey],
-		keys[fairyringmoduletypes.MemStoreKey],
-		app.GetSubspace(fairyringmoduletypes.ModuleName),
-	)
-	fairyringModule := fairyringmodule.NewAppModule(appCodec, app.FairyringKeeper, app.AccountKeeper, app.BankKeeper)
-
 	scopedFairblockKeeper := app.CapabilityKeeper.ScopeToModule(fairblockmoduletypes.ModuleName)
 	app.ScopedFairblockKeeper = scopedFairblockKeeper
 	app.FairblockKeeper = *fairblockmodulekeeper.NewKeeper(
@@ -540,6 +532,15 @@ func New(
 	)
 
 	fairblockIBCModule := fairblockmodule.NewIBCModule(app.FairblockKeeper)
+
+	app.FairyringKeeper = *fairyringmodulekeeper.NewKeeper(
+		appCodec,
+		keys[fairyringmoduletypes.StoreKey],
+		keys[fairyringmoduletypes.MemStoreKey],
+		app.GetSubspace(fairyringmoduletypes.ModuleName),
+		app.FairblockKeeper,
+	)
+	fairyringModule := fairyringmodule.NewAppModule(appCodec, app.FairyringKeeper, app.AccountKeeper, app.BankKeeper, app.FairblockKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 

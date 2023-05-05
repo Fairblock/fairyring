@@ -25,8 +25,6 @@ import (
 	"fairyring/x/fairblock/keeper"
 	"fairyring/x/fairblock/types"
 
-	fbtypes "fairyring/x/fairyring/types"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -545,7 +543,7 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 	qk, found := am.keeper.GetQueuedPubKey(ctx)
 	if found {
 		if qk.Expiry > height {
-			newActiveKey := fbtypes.ActivePubKey{
+			newActiveKey := types.ActivePubKey{
 				PublicKey: qk.PublicKey,
 				Creator:   qk.Creator,
 				Expiry:    qk.Expiry,

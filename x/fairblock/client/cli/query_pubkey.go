@@ -3,7 +3,7 @@ package cli
 import (
 	"context"
 
-	"fairyring/x/fairyring/types"
+	"fairyring/x/fairblock/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"

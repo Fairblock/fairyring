@@ -10,6 +10,7 @@ import "fairyring/fairblock/encrypted_tx.proto";
 import "fairyring/fairblock/fairblock_nonce.proto";
 import "fairyring/fairblock/fairblock_executed_nonce.proto";
 import "fairyring/fairblock/aggregated_key_share.proto";
+import "fairyring/fairblock/latest_pub_key.proto";
 
 // this line is used by starport scaffolding # 1
 
@@ -69,6 +70,12 @@ service Query {
   // Queries a list of FairblockExecutedNonce items.
   rpc FairblockExecutedNonceAll (QueryAllFairblockExecutedNonceRequest) returns (QueryAllFairblockExecutedNonceResponse) {
     option (google.api.http).get = "/fairyring/fairblock/fairblock_executed_nonce";
+  
+  }
+
+  // Queries the public keys
+  rpc PubKey    (QueryPubKeyRequest) returns (QueryPubKeyResponse) {
+    option (google.api.http).get = "/fairyring/fairblock/pub_key";
   
   }
 
@@ -148,6 +155,13 @@ message QueryAllFairblockExecutedNonceRequest {
 message QueryAllFairblockExecutedNonceResponse {
   repeated FairblockExecutedNonce                 fairblockExecutedNonce = 1 [(gogoproto.nullable) = false];
            cosmos.base.query.v1beta1.PageResponse pagination             = 2;
+}
+
+message QueryPubKeyRequest {}
+
+message QueryPubKeyResponse {
+  ActivePubKey activePubKey   = 1 [(gogoproto.nullable) = false];
+  QueuedPubKey queuedPubKey = 2 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

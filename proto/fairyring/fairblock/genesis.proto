@@ -8,6 +8,7 @@ import "fairyring/fairblock/encrypted_tx.proto";
 import "fairyring/fairblock/fairblock_nonce.proto";
 import "fairyring/fairblock/fairblock_executed_nonce.proto";
 import "fairyring/fairblock/aggregated_key_share.proto";
+import "fairyring/fairblock/latest_pub_key.proto";
 
 // this line is used by starport scaffolding # genesis/proto/import
 
@@ -22,6 +23,8 @@ message GenesisState {
   repeated FairblockExecutedNonce fairblockExecutedNonceList = 5 [(gogoproto.nullable) = false];
 
   // this line is used by starport scaffolding # genesis/proto/state
-  repeated AggregatedKeyShare aggregatedKeyShareList = 6 [(gogoproto.nullable) = false];
+  repeated AggregatedKeyShare     aggregatedKeyShareList     = 6 [(gogoproto.nullable) = false];
+  ActivePubKey                    activePubKey               = 7 [(gogoproto.nullable) = false];
+  QueuedPubKey                    queuedPubKey               = 8 [(gogoproto.nullable) = false];
 }
 

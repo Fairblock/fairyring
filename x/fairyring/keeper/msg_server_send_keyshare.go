@@ -100,7 +100,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	}
 
 	// Get the active public key for aggregating
-	activePubKey, found := k.GetActivePubKey(ctx)
+	activePubKey, found := k.pepKeeper.GetActivePubKey(ctx)
 	if !found {
 		return nil, types.ErrPubKeyNotFound
 	}

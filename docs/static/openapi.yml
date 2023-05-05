@@ -34215,6 +34215,56 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /fairyring/fairblock/pub_key:
+    get:
+      summary: Queries the public keys
+      operationId: FairyringFairblockPubKey
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              activePubKey:
+                type: object
+                properties:
+                  publicKey:
+                    type: string
+                  creator:
+                    type: string
+                  expiry:
+                    type: string
+                    format: uint64
+              queuedPubKey:
+                type: object
+                properties:
+                  publicKey:
+                    type: string
+                  creator:
+                    type: string
+                  expiry:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /fairyring/fairyring/aggregated_key_share:
     get:
       operationId: FairyringFairyringAggregatedKeyShareAll
@@ -34602,56 +34652,6 @@ paths:
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
-  /fairyring/fairyring/pub_key:
-    get:
-      summary: Queries the public keys
-      operationId: FairyringFairyringPubKey
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              activePubKey:
-                type: object
-                properties:
-                  publicKey:
-                    type: string
-                  creator:
-                    type: string
-                  expiry:
-                    type: string
-                    format: uint64
-              queuedPubKey:
-                type: object
-                properties:
-                  publicKey:
-                    type: string
-                  creator:
-                    type: string
-                  expiry:
-                    type: string
-                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -70445,6 +70445,16 @@ definitions:
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
     description: Period defines a length of time and amount of coins that will vest.
+  fairyring.fairblock.ActivePubKey:
+    type: object
+    properties:
+      publicKey:
+        type: string
+      creator:
+        type: string
+      expiry:
+        type: string
+        format: uint64
   fairyring.fairblock.EncryptedTx:
     type: object
     properties:
@@ -70698,7 +70708,30 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
-  fairyring.fairyring.ActivePubKey:
+  fairyring.fairblock.QueryPubKeyResponse:
+    type: object
+    properties:
+      activePubKey:
+        type: object
+        properties:
+          publicKey:
+            type: string
+          creator:
+            type: string
+          expiry:
+            type: string
+            format: uint64
+      queuedPubKey:
+        type: object
+        properties:
+          publicKey:
+            type: string
+          creator:
+            type: string
+          expiry:
+            type: string
+            format: uint64
+  fairyring.fairblock.QueuedPubKey:
     type: object
     properties:
       publicKey:
@@ -70958,39 +70991,6 @@ definitions:
             type: string
             format: uint64
     description: QueryParamsResponse is response type for the Query/Params RPC method.
-  fairyring.fairyring.QueryPubKeyResponse:
-    type: object
-    properties:
-      activePubKey:
-        type: object
-        properties:
-          publicKey:
-            type: string
-          creator:
-            type: string
-          expiry:
-            type: string
-            format: uint64
-      queuedPubKey:
-        type: object
-        properties:
-          publicKey:
-            type: string
-          creator:
-            type: string
-          expiry:
-            type: string
-            format: uint64
-  fairyring.fairyring.QueuedPubKey:
-    type: object
-    properties:
-      publicKey:
-        type: string
-      creator:
-        type: string
-      expiry:
-        type: string
-        format: uint64
   fairyring.fairyring.ValidatorSet:
     type: object
     properties:
