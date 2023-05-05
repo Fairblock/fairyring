@@ -19,9 +19,9 @@ That is, validator `i` will own a specifc keyshare `sk_i`.
 In each block, each validator will use `sk_i` to generate a block key share `bk_i`. 
 
 ```
-bk_i^h = Exract(h, sk_i)
+bk_{h,i} = Exract(h, sk_i)
 
-bk^h = Aggregate(bk^h_1, ..., bk^h_t)
+bk_h = Aggregate(bk_{h,1}, ..., bk_{h,t})
 ```
 
 Once a threshold of keys are collected, the block key `bk` can be computed.
@@ -36,7 +36,7 @@ EncTx = Encrypt(tx, h, pk, public_params)
 Decryption of an encrypted transaction utilizes the block key `bk`.
 
 ```
-Tx = Decrypt(bk^h, EncTx)
+Tx = Decrypt(bk_h, EncTx)
 ```
 
 ## KeyShare generation
