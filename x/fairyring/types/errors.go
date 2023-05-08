@@ -20,5 +20,5 @@ var (
 	ErrInvalidShare               = sdkerrors.Register(ModuleName, 1109, "invalid share / commitment")
 	ErrPubKeyNotFound             = sdkerrors.Register(ModuleName, 1110, "Public key does not exists now")
 	ErrQueuedKeyAlreadyExists     = sdkerrors.Register(ModuleName, 1111, "a queued key already exists")
-	ErrAccountNotStaking          = sdkerrors.Register(ModuleName, 1111, "account is not staking")
+	ErrAccountNotStaking          = sdkerrors.Register(ModuleName, 1112, "account is not staking")
 )
