@@ -107,9 +107,9 @@ import (
 	fairblockmodule "fairyring/x/fairblock"
 	fairblockmodulekeeper "fairyring/x/fairblock/keeper"
 	fairblockmoduletypes "fairyring/x/fairblock/types"
-	fairyringmodule "fairyring/x/fairyring"
-	fairyringmodulekeeper "fairyring/x/fairyring/keeper"
-	fairyringmoduletypes "fairyring/x/fairyring/types"
+	keysharemodule "fairyring/x/keyshare"
+	keysharemodulekeeper "fairyring/x/keyshare/keeper"
+	keysharemoduletypes "fairyring/x/keyshare/types"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
@@ -169,7 +169,7 @@ var (
 		transfer.AppModuleBasic{},
 		ica.AppModuleBasic{},
 		vesting.AppModuleBasic{},
-		fairyringmodule.AppModuleBasic{},
+		keysharemodule.AppModuleBasic{},
 		fairblockmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
@@ -244,7 +244,7 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
-	FairyringKeeper       fairyringmodulekeeper.Keeper
+	KeyshareKeeper        keysharemodulekeeper.Keeper
 	ScopedFairblockKeeper capabilitykeeper.ScopedKeeper
 	FairblockKeeper       fairblockmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
@@ -291,7 +291,7 @@ func New(
 		paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey, evidencetypes.StoreKey,
 		ibctransfertypes.StoreKey, icahosttypes.StoreKey, capabilitytypes.StoreKey, group.StoreKey,
 		icacontrollertypes.StoreKey,
-		fairyringmoduletypes.StoreKey,
+		keysharemoduletypes.StoreKey,
 		fairblockmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
@@ -533,15 +533,15 @@ func New(
 
 	fairblockIBCModule := fairblockmodule.NewIBCModule(app.FairblockKeeper)
 
-	app.FairyringKeeper = *fairyringmodulekeeper.NewKeeper(
+	app.KeyshareKeeper = *keysharemodulekeeper.NewKeeper(
 		appCodec,
-		keys[fairyringmoduletypes.StoreKey],
-		keys[fairyringmoduletypes.MemStoreKey],
-		app.GetSubspace(fairyringmoduletypes.ModuleName),
+		keys[keysharemoduletypes.StoreKey],
+		keys[keysharemoduletypes.MemStoreKey],
+		app.GetSubspace(keysharemoduletypes.ModuleName),
 		app.FairblockKeeper,
 		stakingKeeper,
 	)
-	fairyringModule := fairyringmodule.NewAppModule(appCodec, app.FairyringKeeper, app.AccountKeeper, app.BankKeeper, app.FairblockKeeper)
+	keyshareModule := keysharemodule.NewAppModule(appCodec, app.KeyshareKeeper, app.AccountKeeper, app.BankKeeper, app.FairblockKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -590,7 +590,7 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		icaModule,
-		fairyringModule,
+		keyshareModule,
 		fairblockModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
@@ -621,7 +621,7 @@ func New(
 		group.ModuleName,
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
-		fairyringmoduletypes.ModuleName,
+		keysharemoduletypes.ModuleName,
 		fairblockmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
@@ -647,7 +647,7 @@ func New(
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
-		fairyringmoduletypes.ModuleName,
+		keysharemoduletypes.ModuleName,
 		fairblockmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
@@ -678,7 +678,7 @@ func New(
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
-		fairyringmoduletypes.ModuleName,
+		keysharemoduletypes.ModuleName,
 		fairblockmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
@@ -709,7 +709,7 @@ func New(
 		evidence.NewAppModule(app.EvidenceKeeper),
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
-		fairyringModule,
+		keyshareModule,
 		fairblockModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
@@ -909,7 +909,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
-	paramsKeeper.Subspace(fairyringmoduletypes.ModuleName)
+	paramsKeeper.Subspace(keysharemoduletypes.ModuleName)
 	paramsKeeper.Subspace(fairblockmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 

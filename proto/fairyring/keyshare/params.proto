@@ -1,0 +1,12 @@
+syntax = "proto3";
+package fairyring.keyshare;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "fairyring/x/keyshare/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+  uint64 keyExpiry = 1;
+}

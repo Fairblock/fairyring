@@ -1,0 +1,12 @@
+syntax = "proto3";
+package fairyring.keyshare;
+
+option go_package = "fairyring/x/keyshare/types";
+
+message ValidatorSet {
+  string index = 1; 
+  string validator = 2;
+  string consAddr = 3;
+  bool isActive = 4;
+}
+

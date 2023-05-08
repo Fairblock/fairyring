@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package fairyring.keyshare;
+
+import "gogoproto/gogo.proto";
+import "fairyring/keyshare/params.proto";
+import "fairyring/keyshare/validator_set.proto";
+import "fairyring/keyshare/key_share.proto";
+import "fairyring/keyshare/aggregated_key_share.proto";
+
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "fairyring/x/keyshare/types";
+
+// GenesisState defines the keyshare module's genesis state.
+message GenesisState {
+           Params       params           = 1 [(gogoproto.nullable) = false];
+  repeated ValidatorSet validatorSetList = 2 [(gogoproto.nullable) = false];
+  repeated KeyShare     keyShareList     = 3 [(gogoproto.nullable) = false];
+  
+  // this line is used by starport scaffolding # genesis/proto/state
+  repeated AggregatedKeyShare aggregatedKeyShareList = 4 [(gogoproto.nullable) = false];
+}
+

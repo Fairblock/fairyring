@@ -34097,9 +34097,9 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /fairyring/fairyring/aggregated_key_share:
+  /fairyring/keyshare/aggregated_key_share:
     get:
-      operationId: FairyringFairyringAggregatedKeyShareAll
+      operationId: FairyringKeyshareAggregatedKeyShareAll
       responses:
         '200':
           description: A successful response.
@@ -34221,10 +34221,10 @@ paths:
           type: boolean
       tags:
         - Query
-  /fairyring/fairyring/aggregated_key_share/{height}:
+  /fairyring/keyshare/aggregated_key_share/{height}:
     get:
       summary: Queries a list of AggregatedKeyShare items.
-      operationId: FairyringFairyringAggregatedKeyShare
+      operationId: FairyringKeyshareAggregatedKeyShare
       responses:
         '200':
           description: A successful response.
@@ -34265,10 +34265,10 @@ paths:
           format: uint64
       tags:
         - Query
-  /fairyring/fairyring/key_share:
+  /fairyring/keyshare/key_share:
     get:
       summary: Queries a list of KeyShare items.
-      operationId: FairyringFairyringKeyShareAll
+      operationId: FairyringKeyshareKeyShareAll
       responses:
         '200':
           description: A successful response.
@@ -34403,10 +34403,10 @@ paths:
           type: boolean
       tags:
         - Query
-  /fairyring/fairyring/key_share/{validator}/{blockHeight}:
+  /fairyring/keyshare/key_share/{validator}/{blockHeight}:
     get:
       summary: Queries a KeyShare by index.
-      operationId: FairyringFairyringKeyShare
+      operationId: FairyringKeyshareKeyShare
       responses:
         '200':
           description: A successful response.
@@ -34464,10 +34464,10 @@ paths:
           format: uint64
       tags:
         - Query
-  /fairyring/fairyring/params:
+  /fairyring/keyshare/params:
     get:
       summary: Parameters queries the parameters of the module.
-      operationId: FairyringFairyringParams
+      operationId: FairyringKeyshareParams
       responses:
         '200':
           description: A successful response.
@@ -34504,10 +34504,10 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /fairyring/fairyring/validator_set:
+  /fairyring/keyshare/validator_set:
     get:
       summary: Queries a list of ValidatorSet items.
-      operationId: FairyringFairyringValidatorSetAll
+      operationId: FairyringKeyshareValidatorSetAll
       responses:
         '200':
           description: A successful response.
@@ -34632,10 +34632,10 @@ paths:
           type: boolean
       tags:
         - Query
-  /fairyring/fairyring/validator_set/{index}:
+  /fairyring/keyshare/validator_set/{index}:
     get:
       summary: Queries a ValidatorSet by index.
-      operationId: FairyringFairyringValidatorSet
+      operationId: FairyringKeyshareValidatorSet
       responses:
         '200':
           description: A successful response.
@@ -70519,7 +70519,7 @@ definitions:
       expiry:
         type: string
         format: uint64
-  fairyring.fairyring.AggregatedKeyShare:
+  fairyring.keyshare.AggregatedKeyShare:
     type: object
     properties:
       height:
@@ -70527,7 +70527,7 @@ definitions:
         format: uint64
       data:
         type: string
-  fairyring.fairyring.KeyShare:
+  fairyring.keyshare.KeyShare:
     type: object
     properties:
       validator:
@@ -70548,14 +70548,14 @@ definitions:
       receivedBlockHeight:
         type: string
         format: uint64
-  fairyring.fairyring.MsgCreateLatestPubKeyResponse:
+  fairyring.keyshare.MsgCreateLatestPubKeyResponse:
     type: object
-  fairyring.fairyring.MsgRegisterValidatorResponse:
+  fairyring.keyshare.MsgRegisterValidatorResponse:
     type: object
     properties:
       creator:
         type: string
-  fairyring.fairyring.MsgSendKeyshareResponse:
+  fairyring.keyshare.MsgSendKeyshareResponse:
     type: object
     properties:
       creator:
@@ -70573,14 +70573,14 @@ definitions:
       receivedBlockHeight:
         type: string
         format: uint64
-  fairyring.fairyring.Params:
+  fairyring.keyshare.Params:
     type: object
     properties:
       keyExpiry:
         type: string
         format: uint64
     description: Params defines the parameters for the module.
-  fairyring.fairyring.QueryAllAggregatedKeyShareResponse:
+  fairyring.keyshare.QueryAllAggregatedKeyShareResponse:
     type: object
     properties:
       aggregatedKeyShare:
@@ -70619,7 +70619,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  fairyring.fairyring.QueryAllKeyShareResponse:
+  fairyring.keyshare.QueryAllKeyShareResponse:
     type: object
     properties:
       keyShare:
@@ -70671,7 +70671,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  fairyring.fairyring.QueryAllValidatorSetResponse:
+  fairyring.keyshare.QueryAllValidatorSetResponse:
     type: object
     properties:
       validatorSet:
@@ -70713,7 +70713,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  fairyring.fairyring.QueryGetAggregatedKeyShareResponse:
+  fairyring.keyshare.QueryGetAggregatedKeyShareResponse:
     type: object
     properties:
       aggregatedKeyShare:
@@ -70724,7 +70724,7 @@ definitions:
             format: uint64
           data:
             type: string
-  fairyring.fairyring.QueryGetKeyShareResponse:
+  fairyring.keyshare.QueryGetKeyShareResponse:
     type: object
     properties:
       keyShare:
@@ -70748,7 +70748,7 @@ definitions:
           receivedBlockHeight:
             type: string
             format: uint64
-  fairyring.fairyring.QueryGetValidatorSetResponse:
+  fairyring.keyshare.QueryGetValidatorSetResponse:
     type: object
     properties:
       validatorSet:
@@ -70762,7 +70762,7 @@ definitions:
             type: string
           isActive:
             type: boolean
-  fairyring.fairyring.QueryParamsResponse:
+  fairyring.keyshare.QueryParamsResponse:
     type: object
     properties:
       params:
@@ -70773,7 +70773,7 @@ definitions:
             type: string
             format: uint64
     description: QueryParamsResponse is response type for the Query/Params RPC method.
-  fairyring.fairyring.ValidatorSet:
+  fairyring.keyshare.ValidatorSet:
     type: object
     properties:
       index:
