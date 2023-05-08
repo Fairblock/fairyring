@@ -21,9 +21,9 @@ This event is emitted when a validator successfully submits a keyshare for a blo
 - SendKeyshareEventValidator : Validator address
 - SendKeyshareEventKeyshareBlockHeight : Keyshare Block Height
 - SendKeyshareEventReceivedBlockHeight : Block height when keyshare is received
-- SendKeyshareEventMessage : 
-- SendKeyshareEventCommitment : @martin kindly fill in these 3
-- SendKeyshareEventIndex: 
+- SendKeyshareEventMessage : The submitted keyshare encoded in hex
+- SendKeyshareEventCommitment : The submitted commitment encoded in hex
+- SendKeyshareEventIndex: The index of the submitted keyshare 
 
 ---
 

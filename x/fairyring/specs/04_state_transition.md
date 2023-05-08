@@ -17,7 +17,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 
 ## AggregatedKeyShareLength
 
-TODO: @martin
+This state will be increased when there is a new Aggregated KeyShare stored in fairyring.
 
 ---
 

@@ -27,7 +27,7 @@ type AggregatedKeyShare struct {
 
 ### AggregatedKeyShareLength
 
-TODO: @Martin (not sure what this state does)
+This state maintains the number of aggregated key shares stored in fairyring.
 
 ---
 
