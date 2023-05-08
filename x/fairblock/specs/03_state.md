@@ -28,22 +28,9 @@ type EncryptedTx struct {
 
 ---
 
-### FairblockExecutedNonce
-
-TODO: @Martin
-
-```go
-type FairblockExecutedNonce struct {
-    Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
-    Nonce   uint64 `protobuf:"varint,2,opt,name=nonce,proto3" json:"nonce,omitempty"`
-}
-```
-
----
-
 ### FairblockNonce
 
-TODO: @Martin
+This state stores all user's fairblock nonce which is for users signing the underlying encrypted transaction
 
 ```go
 type FairblockNonce struct {
