@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package fairyring.pep;
+
+import "gogoproto/gogo.proto";
+import "fairyring/pep/params.proto";
+import "fairyring/pep/encrypted_tx.proto";
+import "fairyring/pep/pep_nonce.proto";
+import "fairyring/pep/aggregated_key_share.proto";
+import "fairyring/pep/latest_pub_key.proto";
+
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "fairyring/x/pep/types";
+
+// GenesisState defines the pep module's genesis state.
+message GenesisState {
+           Params                 params                     = 1 [(gogoproto.nullable) = false];
+           string                 port_id                    = 2;
+  repeated EncryptedTxArray       encryptedTxArray           = 3 [(gogoproto.nullable) = false];
+  repeated PepNonce               pepNonceList         = 4 [(gogoproto.nullable) = false];
+
+  // this line is used by starport scaffolding # genesis/proto/state
+  repeated AggregatedKeyShare     aggregatedKeyShareList     = 6 [(gogoproto.nullable) = false];
+  ActivePubKey                    activePubKey               = 7 [(gogoproto.nullable) = false];
+  QueuedPubKey                    queuedPubKey               = 8 [(gogoproto.nullable) = false];
+}
+

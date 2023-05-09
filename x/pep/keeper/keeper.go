@@ -3,26 +3,23 @@ package keeper
 import (
 	"fmt"
 
-	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
-
-	"fairyring/x/keyshare/types"
-	pepKeeper "fairyring/x/pep/keeper"
+	"fairyring/x/pep/types"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
+	"github.com/ignite/cli/ignite/pkg/cosmosibckeeper"
 	"github.com/tendermint/tendermint/libs/log"
 )
 
 type (
 	Keeper struct {
-		cdc           codec.BinaryCodec
-		storeKey      storetypes.StoreKey
-		memKey        storetypes.StoreKey
-		paramstore    paramtypes.Subspace
-		stakingKeeper stakingkeeper.Keeper
-		pepKeeper     pepKeeper.Keeper
+		*cosmosibckeeper.Keeper
+		cdc        codec.BinaryCodec
+		storeKey   storetypes.StoreKey
+		memKey     storetypes.StoreKey
+		paramstore paramtypes.Subspace
 	}
 )
 
@@ -31,8 +28,9 @@ func NewKeeper(
 	storeKey,
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
-	pk pepKeeper.Keeper,
-	stakingKeeper stakingkeeper.Keeper,
+	channelKeeper cosmosibckeeper.ChannelKeeper,
+	portKeeper cosmosibckeeper.PortKeeper,
+	scopedKeeper cosmosibckeeper.ScopedKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -40,17 +38,18 @@ func NewKeeper(
 	}
 
 	return &Keeper{
-		cdc:           cdc,
-		storeKey:      storeKey,
-		memKey:        memKey,
-		paramstore:    ps,
-		pepKeeper:     pk,
-		stakingKeeper: stakingKeeper,
+		Keeper: cosmosibckeeper.NewKeeper(
+			types.PortKey,
+			storeKey,
+			channelKeeper,
+			portKeeper,
+			scopedKeeper,
+		),
+		cdc:        cdc,
+		storeKey:   storeKey,
+		memKey:     memKey,
+		paramstore: ps,
 	}
-}
-
-func (k Keeper) StakingKeeper() stakingkeeper.Keeper {
-	return k.stakingKeeper
 }
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {

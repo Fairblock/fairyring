@@ -104,12 +104,12 @@ import (
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
 
-	fairblockmodule "fairyring/x/fairblock"
-	fairblockmodulekeeper "fairyring/x/fairblock/keeper"
-	fairblockmoduletypes "fairyring/x/fairblock/types"
 	keysharemodule "fairyring/x/keyshare"
 	keysharemodulekeeper "fairyring/x/keyshare/keeper"
 	keysharemoduletypes "fairyring/x/keyshare/types"
+	pepmodule "fairyring/x/pep"
+	pepmodulekeeper "fairyring/x/pep/keeper"
+	pepmoduletypes "fairyring/x/pep/types"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
@@ -170,7 +170,7 @@ var (
 		ica.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		keysharemodule.AppModuleBasic{},
-		fairblockmodule.AppModuleBasic{},
+		pepmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -244,9 +244,9 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
-	KeyshareKeeper        keysharemodulekeeper.Keeper
-	ScopedFairblockKeeper capabilitykeeper.ScopedKeeper
-	FairblockKeeper       fairblockmodulekeeper.Keeper
+	KeyshareKeeper  keysharemodulekeeper.Keeper
+	ScopedPepKeeper capabilitykeeper.ScopedKeeper
+	PepKeeper       pepmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -292,7 +292,7 @@ func New(
 		ibctransfertypes.StoreKey, icahosttypes.StoreKey, capabilitytypes.StoreKey, group.StoreKey,
 		icacontrollertypes.StoreKey,
 		keysharemoduletypes.StoreKey,
-		fairblockmoduletypes.StoreKey,
+		pepmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -510,38 +510,38 @@ func New(
 		govConfig,
 	)
 
-	scopedFairblockKeeper := app.CapabilityKeeper.ScopeToModule(fairblockmoduletypes.ModuleName)
-	app.ScopedFairblockKeeper = scopedFairblockKeeper
-	app.FairblockKeeper = *fairblockmodulekeeper.NewKeeper(
+	scopedPepKeeper := app.CapabilityKeeper.ScopeToModule(pepmoduletypes.ModuleName)
+	app.ScopedPepKeeper = scopedPepKeeper
+	app.PepKeeper = *pepmodulekeeper.NewKeeper(
 		appCodec,
-		keys[fairblockmoduletypes.StoreKey],
-		keys[fairblockmoduletypes.MemStoreKey],
-		app.GetSubspace(fairblockmoduletypes.ModuleName),
+		keys[pepmoduletypes.StoreKey],
+		keys[pepmoduletypes.MemStoreKey],
+		app.GetSubspace(pepmoduletypes.ModuleName),
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
-		scopedFairblockKeeper,
+		scopedPepKeeper,
 	)
-	fairblockModule := fairblockmodule.NewAppModule(
+	pepModule := pepmodule.NewAppModule(
 		appCodec,
 
-		app.FairblockKeeper,
+		app.PepKeeper,
 		app.AccountKeeper,
 		app.BankKeeper,
 		app.MsgServiceRouter(),
 		encodingConfig.TxConfig,
 	)
 
-	fairblockIBCModule := fairblockmodule.NewIBCModule(app.FairblockKeeper)
+	pepIBCModule := pepmodule.NewIBCModule(app.PepKeeper)
 
 	app.KeyshareKeeper = *keysharemodulekeeper.NewKeeper(
 		appCodec,
 		keys[keysharemoduletypes.StoreKey],
 		keys[keysharemoduletypes.MemStoreKey],
 		app.GetSubspace(keysharemoduletypes.ModuleName),
-		app.FairblockKeeper,
+		app.PepKeeper,
 		stakingKeeper,
 	)
-	keyshareModule := keysharemodule.NewAppModule(appCodec, app.KeyshareKeeper, app.AccountKeeper, app.BankKeeper, app.FairblockKeeper)
+	keyshareModule := keysharemodule.NewAppModule(appCodec, app.KeyshareKeeper, app.AccountKeeper, app.BankKeeper, app.PepKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -552,7 +552,7 @@ func New(
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(ibctransfertypes.ModuleName, transferIBCModule).
-		AddRoute(fairblockmoduletypes.ModuleName, fairblockIBCModule)
+		AddRoute(pepmoduletypes.ModuleName, pepIBCModule)
 
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
@@ -591,7 +591,7 @@ func New(
 		transferModule,
 		icaModule,
 		keyshareModule,
-		fairblockModule,
+		pepModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -622,7 +622,7 @@ func New(
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
 		keysharemoduletypes.ModuleName,
-		fairblockmoduletypes.ModuleName,
+		pepmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -648,7 +648,7 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		keysharemoduletypes.ModuleName,
-		fairblockmoduletypes.ModuleName,
+		pepmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -679,7 +679,7 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		keysharemoduletypes.ModuleName,
-		fairblockmoduletypes.ModuleName,
+		pepmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -710,7 +710,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		keyshareModule,
-		fairblockModule,
+		pepModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -910,7 +910,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
 	paramsKeeper.Subspace(keysharemoduletypes.ModuleName)
-	paramsKeeper.Subspace(fairblockmoduletypes.ModuleName)
+	paramsKeeper.Subspace(pepmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

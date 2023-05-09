@@ -3,8 +3,8 @@ package keeper
 import (
 	"testing"
 
-	"fairyring/x/fairblock/keeper"
-	"fairyring/x/fairblock/types"
+	"fairyring/x/pep/keeper"
+	"fairyring/x/pep/types"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -21,30 +21,30 @@ import (
 	tmdb "github.com/tendermint/tm-db"
 )
 
-// fairblockChannelKeeper is a stub of cosmosibckeeper.ChannelKeeper.
-type fairblockChannelKeeper struct{}
+// pepChannelKeeper is a stub of cosmosibckeeper.ChannelKeeper.
+type pepChannelKeeper struct{}
 
-func (fairblockChannelKeeper) GetChannel(ctx sdk.Context, srcPort, srcChan string) (channel channeltypes.Channel, found bool) {
+func (pepChannelKeeper) GetChannel(ctx sdk.Context, srcPort, srcChan string) (channel channeltypes.Channel, found bool) {
 	return channeltypes.Channel{}, false
 }
-func (fairblockChannelKeeper) GetNextSequenceSend(ctx sdk.Context, portID, channelID string) (uint64, bool) {
+func (pepChannelKeeper) GetNextSequenceSend(ctx sdk.Context, portID, channelID string) (uint64, bool) {
 	return 0, false
 }
-func (fairblockChannelKeeper) SendPacket(ctx sdk.Context, channelCap *capabilitytypes.Capability, packet ibcexported.PacketI) error {
+func (pepChannelKeeper) SendPacket(ctx sdk.Context, channelCap *capabilitytypes.Capability, packet ibcexported.PacketI) error {
 	return nil
 }
-func (fairblockChannelKeeper) ChanCloseInit(ctx sdk.Context, portID, channelID string, chanCap *capabilitytypes.Capability) error {
+func (pepChannelKeeper) ChanCloseInit(ctx sdk.Context, portID, channelID string, chanCap *capabilitytypes.Capability) error {
 	return nil
 }
 
-// fairblockportKeeper is a stub of cosmosibckeeper.PortKeeper
-type fairblockPortKeeper struct{}
+// pepportKeeper is a stub of cosmosibckeeper.PortKeeper
+type pepPortKeeper struct{}
 
-func (fairblockPortKeeper) BindPort(ctx sdk.Context, portID string) *capabilitytypes.Capability {
+func (pepPortKeeper) BindPort(ctx sdk.Context, portID string) *capabilitytypes.Capability {
 	return &capabilitytypes.Capability{}
 }
 
-func FairblockKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
+func PepKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	logger := log.NewNopLogger()
 
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
@@ -63,7 +63,7 @@ func FairblockKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		types.Amino,
 		storeKey,
 		memStoreKey,
-		"FairblockParams",
+		"PepParams",
 	)
 	k := keeper.NewKeeper(
 		appCodec,

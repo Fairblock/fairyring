@@ -1,0 +1,17 @@
+syntax = "proto3";
+package fairyring.pep;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "fairyring/x/pep/types";
+
+message EncryptedTx {
+  uint64 targetHeight = 1; 
+  uint64 index = 2; 
+  string data = 3; 
+  string creator = 4;
+}
+
+message EncryptedTxArray {
+  repeated EncryptedTx encryptedTx = 1 [(gogoproto.nullable) = false];
+}

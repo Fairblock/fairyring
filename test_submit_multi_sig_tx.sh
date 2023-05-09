@@ -27,10 +27,10 @@ IFS=',' read -ra ACCOUNTS_ARR <<< "$1"
 MULTI_SIG_ACCOUNT_NUMBER=`fairyringd q account $MULTI_SIG_ADDRESS  | grep "account_number: " | sed 's/^.*: //'`
 MULTI_SIG_ACCOUNT_NUMBER=`sed -e 's/^"//' -e 's/"$//' <<< "$MULTI_SIG_ACCOUNT_NUMBER"`
 
-ACCOUNT_FAIRBLOCK_NONCE=`fairyringd query fairblock show-fairblock-nonce $MULTI_SIG_ADDRESS | grep "nonce:" | sed 's/^.*: //'`
+ACCOUNT_FAIRBLOCK_NONCE=`fairyringd query pep show-fairblock-nonce $MULTI_SIG_ADDRESS | grep "nonce:" | sed 's/^.*: //'`
 
 if [ -z "${ACCOUNT_FAIRBLOCK_NONCE}" ]; then
-  die "Fairblock Nonce not found"
+  die "pep Nonce not found"
 else # else, remove the string quote from the result
   ACCOUNT_FAIRBLOCK_NONCE=`sed -e 's/^"//' -e 's/"$//' <<< "$ACCOUNT_FAIRBLOCK_NONCE"`
 fi
@@ -53,7 +53,7 @@ PUB_KEY=`fairyringd q fairyring show-latest-pub-key | grep "publicKey: " | sed '
 CIPHER=`./encrypter $4 $PUB_KEY $FINAL_SIGNED_DATA`
 
 # Submit encrypted tx with the signed data
-fairyringd tx fairblock submit-encrypted-tx $CIPHER $4 --from $3 --yes
+fairyringd tx pep submit-encrypted-tx $CIPHER $4 --from $3 --yes
 
 rm $SIGNED_TX_FILE_LIST $UNSIGNED_TX_FILE_NAME
 

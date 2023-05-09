@@ -17,8 +17,8 @@ UNSIGNED_TX_FILE_NAME="script_unsigned.json"
 # Get the address of target account name
 ADDRESS=`fairyringd keys show $ACCOUNT_NAME | grep "address:" | sed 's/^.*: //'`
 
-# Get the fairblock nonce of target account address
-FairblockNonce=`fairyringd query fairblock show-fairblock-nonce $ADDRESS | grep "nonce:" | sed 's/^.*: //'`
+# Get the pep nonce of target account address
+FairblockNonce=`fairyringd query pep show-pep-nonce $ADDRESS | grep "nonce:" | sed 's/^.*: //'`
 
 # Check if get nonce is success, if not assign 0 to the nonce
 if [ -z "${FairblockNonce}" ]; then
@@ -43,11 +43,11 @@ PUB_KEY=`fairyringd q fairyring show-latest-pub-key | grep "publicKey: " | sed '
 CIPHER=`./encrypter $1 $PUB_KEY $SIGNED_DATA`
 
 # Submit encrypted tx with the signed data
-fairyringd tx fairblock submit-encrypted-tx $CIPHER $1 --from $ACCOUNT_NAME --yes
+fairyringd tx pep submit-encrypted-tx $CIPHER $1 --from $ACCOUNT_NAME --yes
 
 # List all the encrypted txs
 printf "\n\nList encrypted Txs:\n\n"
-fairyringd query fairblock list-encrypted-tx
+fairyringd query pep list-encrypted-tx
 
 # Remove the unsigned tx file
 rm $UNSIGNED_TX_FILE_NAME

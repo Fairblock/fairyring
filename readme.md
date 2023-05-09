@@ -34,7 +34,7 @@ fairyringd tx fairyring send-keyshare <Message> <BlockHeight> --from $alice --ga
 Submit an encrypted tx message
 
 ```
-fairyringd tx fairblock submit-encrypted-tx <TxData> <TargetBlockHeight> --from $alice --gas auto
+fairyringd tx pep submit-encrypted-tx <TxData> <TargetBlockHeight> --from $alice --gas auto
 ```
 
 ### Running a validator locally
@@ -153,19 +153,19 @@ fairyringd query fairyring show-key-share <Validator> <BlockHeight>
 Get all encrypted tx in state
 
 ```
-fairyringd query fairblock list-encrypted-tx
+fairyringd query pep list-encrypted-tx
 ```
 
 Get all encrypted tx in state from a specific block height
 
 ```
-fairyringd query fairblock list-encrypted-tx-from-block <blockHeight>
+fairyringd query pep list-encrypted-tx-from-block <blockHeight>
 ```
 
 Get a single encrypted tx in state with a specific block height & tx index
 
 ```
-fairyringd query fairblock show-encrypted-tx <blockHeight> <index>
+fairyringd query pep show-encrypted-tx <blockHeight> <index>
 ```
 
 ### Sending keyshares every block

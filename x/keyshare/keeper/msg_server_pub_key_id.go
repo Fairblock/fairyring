@@ -4,8 +4,8 @@ import (
 	"context"
 	"strconv"
 
-	peptypes "fairyring/x/fairblock/types"
 	"fairyring/x/keyshare/types"
+	peptypes "fairyring/x/pep/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

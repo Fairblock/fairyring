@@ -9,7 +9,7 @@ import "fairyring/keyshare/params.proto";
 import "fairyring/keyshare/validator_set.proto";
 import "fairyring/keyshare/key_share.proto";
 import "fairyring/keyshare/aggregated_key_share.proto";
-import "fairyring/fairblock/latest_pub_key.proto";
+import "fairyring/pep/latest_pub_key.proto";
 
 // this line is used by starport scaffolding # 1
 
