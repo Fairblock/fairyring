@@ -111,7 +111,6 @@ func (im IBCModule) OnChanOpenConfirm(
 	portID,
 	channelID string,
 ) error {
-	im.keeper.SetPort(ctx, portID)
 	im.keeper.SetChannel(ctx, channelID)
 	return nil
 }
