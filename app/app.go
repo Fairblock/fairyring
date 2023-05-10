@@ -243,10 +243,10 @@ type App struct {
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
+	ScopedPepKeeper      capabilitykeeper.ScopedKeeper
 
-	KeyshareKeeper  keysharemodulekeeper.Keeper
-	ScopedPepKeeper capabilitykeeper.ScopedKeeper
-	PepKeeper       pepmodulekeeper.Keeper
+	KeyshareKeeper keysharemodulekeeper.Keeper
+	PepKeeper      pepmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -331,6 +331,8 @@ func New(
 	scopedICAControllerKeeper := app.CapabilityKeeper.ScopeToModule(icacontrollertypes.SubModuleName)
 	scopedTransferKeeper := app.CapabilityKeeper.ScopeToModule(ibctransfertypes.ModuleName)
 	scopedICAHostKeeper := app.CapabilityKeeper.ScopeToModule(icahosttypes.SubModuleName)
+	scopedPepKeeper := app.CapabilityKeeper.ScopeToModule(pepmoduletypes.ModuleName)
+
 	// this line is used by starport scaffolding # stargate/app/scopedKeeper
 
 	// add keepers
@@ -510,8 +512,6 @@ func New(
 		govConfig,
 	)
 
-	scopedPepKeeper := app.CapabilityKeeper.ScopeToModule(pepmoduletypes.ModuleName)
-	app.ScopedPepKeeper = scopedPepKeeper
 	app.PepKeeper = *pepmodulekeeper.NewKeeper(
 		appCodec,
 		keys[pepmoduletypes.StoreKey],
@@ -551,8 +551,8 @@ func New(
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
-		AddRoute(ibctransfertypes.ModuleName, transferIBCModule).
-		AddRoute(pepmoduletypes.ModuleName, pepIBCModule)
+		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
+	ibcRouter.AddRoute(pepmoduletypes.ModuleName, pepIBCModule)
 
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
@@ -750,6 +750,7 @@ func New(
 
 	app.ScopedIBCKeeper = scopedIBCKeeper
 	app.ScopedTransferKeeper = scopedTransferKeeper
+	app.ScopedPepKeeper = scopedPepKeeper
 	// this line is used by starport scaffolding # stargate/app/beforeInitReturn
 
 	return app
