@@ -8,23 +8,25 @@ build:
 accounts:
   - name: alice
     coins:
-      - 1000token
-      - 2000000000stake
-    mnemonic: "thought awake grace need recipe erode bullet dust salt breeze rural desk camp deal devote wisdom rotate pledge repair garbage aspect find lens afraid"
+      - 100000000frt
+      - 100000000stake
   - name: bob
     coins:
-      - 500token
-      - 200000000stake
-    mnemonic: "south arm eager adjust dish aware rocket logic winter enlist idle reflect slogan urge clump angle input mechanic setup blue distance setup retreat rain"
+      - 100000000frt
+      - 100000000stake
 faucet:
   name: bob
   coins:
-    - 5token
+    - 100000frt
     - 100000stake
-  host: :4500
+  host: 0.0.0.0:4500
 genesis:
   chain_id: fairyring
 validators:
   - name: alice
     bonded: 100000000stake
     home: $HOME/.fairyring
+    config:
+      consensus:
+        timeout_commit: "10s"
+        timeout_propose: "10s"
