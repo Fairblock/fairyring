@@ -15,14 +15,12 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	params := k.GetParams(ctx)
 
-	// check if validator is registered
-	_, found := k.GetValidatorSet(ctx, msg.Creator)
-
-	if !found {
-		return nil, types.ErrValidatorNotRegistered.Wrap(msg.Creator)
+	trustedAddresses := params.TrustedAddresses
+	if !contains(trustedAddresses, msg.Creator) {
+		return nil, types.ErrAddressNotTrusted.Wrap(msg.Creator)
 	}
 
-	_, found = k.pepKeeper.GetQueuedPubKey(ctx)
+	_, found := k.pepKeeper.GetQueuedPubKey(ctx)
 	if found {
 		return nil, types.ErrQueuedKeyAlreadyExists.Wrap(msg.Creator)
 	}
@@ -53,4 +51,13 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 	)
 
 	return &types.MsgCreateLatestPubKeyResponse{}, nil
+}
+
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }

@@ -9,4 +9,5 @@ option go_package = "fairyring/x/keyshare/types";
 message Params {
   option (gogoproto.goproto_stringer) = false;
   uint64 keyExpiry = 1;
+  repeated string trusted_addresses = 2;
 }

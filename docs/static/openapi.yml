@@ -32556,6 +32556,10 @@ paths:
                   keyExpiry:
                     type: string
                     format: uint64
+                  trusted_addresses:
+                    type: array
+                    items:
+                      type: string
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -66833,6 +66837,10 @@ definitions:
       keyExpiry:
         type: string
         format: uint64
+      trusted_addresses:
+        type: array
+        items:
+          type: string
     description: Params defines the parameters for the module.
   fairyring.keyshare.QueryAllAggregatedKeyShareResponse:
     type: object
@@ -67026,6 +67034,10 @@ definitions:
           keyExpiry:
             type: string
             format: uint64
+          trusted_addresses:
+            type: array
+            items:
+              type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   fairyring.keyshare.ValidatorSet:
     type: object
