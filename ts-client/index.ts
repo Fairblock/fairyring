@@ -21,8 +21,8 @@ import { Module as CosmosStakingV1Beta1, msgTypes as CosmosStakingV1Beta1MsgType
 import { Module as CosmosTxV1Beta1, msgTypes as CosmosTxV1Beta1MsgTypes } from './cosmos.tx.v1beta1'
 import { Module as CosmosUpgradeV1Beta1, msgTypes as CosmosUpgradeV1Beta1MsgTypes } from './cosmos.upgrade.v1beta1'
 import { Module as CosmosVestingV1Beta1, msgTypes as CosmosVestingV1Beta1MsgTypes } from './cosmos.vesting.v1beta1'
-import { Module as FairyringFairblock, msgTypes as FairyringFairblockMsgTypes } from './fairyring.fairblock'
-import { Module as FairyringFairyring, msgTypes as FairyringFairyringMsgTypes } from './fairyring.fairyring'
+import { Module as FairyringKeyshare, msgTypes as FairyringKeyshareMsgTypes } from './fairyring.keyshare'
+import { Module as FairyringPep, msgTypes as FairyringPepMsgTypes } from './fairyring.pep'
 import { Module as IbcApplicationsInterchainAccountsControllerV1, msgTypes as IbcApplicationsInterchainAccountsControllerV1MsgTypes } from './ibc.applications.interchain_accounts.controller.v1'
 import { Module as IbcApplicationsInterchainAccountsHostV1, msgTypes as IbcApplicationsInterchainAccountsHostV1MsgTypes } from './ibc.applications.interchain_accounts.host.v1'
 import { Module as IbcApplicationsTransferV1, msgTypes as IbcApplicationsTransferV1MsgTypes } from './ibc.applications.transfer.v1'
@@ -32,7 +32,7 @@ import { Module as IbcCoreConnectionV1, msgTypes as IbcCoreConnectionV1MsgTypes 
 
 
 const Client = IgniteClient.plugin([
-    CosmosAuthV1Beta1, CosmosAuthzV1Beta1, CosmosBankV1Beta1, CosmosBaseTendermintV1Beta1, CosmosCrisisV1Beta1, CosmosDistributionV1Beta1, CosmosEvidenceV1Beta1, CosmosFeegrantV1Beta1, CosmosGovV1, CosmosGovV1Beta1, CosmosGroupV1, CosmosMintV1Beta1, CosmosNftV1Beta1, CosmosParamsV1Beta1, CosmosSlashingV1Beta1, CosmosStakingV1Beta1, CosmosTxV1Beta1, CosmosUpgradeV1Beta1, CosmosVestingV1Beta1, FairyringFairblock, FairyringFairyring, IbcApplicationsInterchainAccountsControllerV1, IbcApplicationsInterchainAccountsHostV1, IbcApplicationsTransferV1, IbcCoreChannelV1, IbcCoreClientV1, IbcCoreConnectionV1
+    CosmosAuthV1Beta1, CosmosAuthzV1Beta1, CosmosBankV1Beta1, CosmosBaseTendermintV1Beta1, CosmosCrisisV1Beta1, CosmosDistributionV1Beta1, CosmosEvidenceV1Beta1, CosmosFeegrantV1Beta1, CosmosGovV1, CosmosGovV1Beta1, CosmosGroupV1, CosmosMintV1Beta1, CosmosNftV1Beta1, CosmosParamsV1Beta1, CosmosSlashingV1Beta1, CosmosStakingV1Beta1, CosmosTxV1Beta1, CosmosUpgradeV1Beta1, CosmosVestingV1Beta1, FairyringKeyshare, FairyringPep, IbcApplicationsInterchainAccountsControllerV1, IbcApplicationsInterchainAccountsHostV1, IbcApplicationsTransferV1, IbcCoreChannelV1, IbcCoreClientV1, IbcCoreConnectionV1
 ]);
 
 const registry = new Registry([
@@ -55,8 +55,8 @@ const registry = new Registry([
   ...CosmosTxV1Beta1MsgTypes,
   ...CosmosUpgradeV1Beta1MsgTypes,
   ...CosmosVestingV1Beta1MsgTypes,
-  ...FairyringFairblockMsgTypes,
-  ...FairyringFairyringMsgTypes,
+  ...FairyringKeyshareMsgTypes,
+  ...FairyringPepMsgTypes,
   ...IbcApplicationsInterchainAccountsControllerV1MsgTypes,
   ...IbcApplicationsInterchainAccountsHostV1MsgTypes,
   ...IbcApplicationsTransferV1MsgTypes,
