@@ -16,6 +16,8 @@ import (
 	"fairyring/x/keyshare/keeper"
 	"fairyring/x/keyshare/types"
 
+	peptypes "fairyring/x/pep/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -164,6 +166,40 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			valAccAddr := sdk.AccAddress(valAddr)
 			am.keeper.RemoveValidatorSet(ctx, valAccAddr.String())
 		}
+	}
+
+	height := uint64(ctx.BlockHeight())
+
+	ak, foundAk := am.keeper.GetActivePubKey(ctx)
+	qk, foundQk := am.keeper.GetQueuedPubKey(ctx)
+
+	if foundAk {
+		am.pepKeeper.SetActivePubKey(ctx, ak)
+
+		if ak.Expiry <= height {
+			am.keeper.DeleteActivePubKey(ctx)
+			am.pepKeeper.DeleteActivePubKey(ctx)
+		} else {
+			if foundQk {
+				am.pepKeeper.SetQueuedPubKey(ctx, qk)
+			}
+			return
+		}
+	}
+
+	if foundQk {
+		if qk.Expiry > height {
+			newActiveKey := peptypes.ActivePubKey{
+				PublicKey: qk.PublicKey,
+				Creator:   qk.Creator,
+				Expiry:    qk.Expiry,
+			}
+
+			am.keeper.SetActivePubKey(ctx, newActiveKey)
+			am.pepKeeper.SetActivePubKey(ctx, newActiveKey)
+		}
+		am.keeper.DeleteQueuedPubKey(ctx)
+		am.pepKeeper.DeleteQueuedPubKey(ctx)
 	}
 }
 

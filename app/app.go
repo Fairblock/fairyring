@@ -621,7 +621,7 @@ func New(
 		group.ModuleName,
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
-		keysharemoduletypes.ModuleName,
+		keysharemoduletypes.ModuleName, // Necessary to run before begin blocker of pep module
 		pepmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)

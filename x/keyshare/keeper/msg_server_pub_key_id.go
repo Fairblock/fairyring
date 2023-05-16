@@ -20,13 +20,13 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 		return nil, types.ErrAddressNotTrusted.Wrap(msg.Creator)
 	}
 
-	_, found := k.pepKeeper.GetQueuedPubKey(ctx)
+	_, found := k.GetQueuedPubKey(ctx)
 	if found {
 		return nil, types.ErrQueuedKeyAlreadyExists.Wrap(msg.Creator)
 	}
 
 	expHeight := params.KeyExpiry + uint64(ctx.BlockHeight())
-	ak, found := k.pepKeeper.GetActivePubKey(ctx)
+	ak, found := k.GetActivePubKey(ctx)
 	if found {
 		expHeight = ak.Expiry + params.KeyExpiry
 	}
@@ -35,6 +35,11 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 		PublicKey: msg.PublicKey,
 		Expiry:    expHeight,
 	}
+
+	k.SetQueuedPubKey(
+		ctx,
+		queuedPubKey,
+	)
 
 	k.pepKeeper.SetQueuedPubKey(
 		ctx,
