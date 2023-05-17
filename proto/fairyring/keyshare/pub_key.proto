@@ -1,0 +1,16 @@
+syntax = "proto3";
+package fairyring.keyshare;
+
+option go_package = "fairyring/x/keyshare/types";
+
+message ActivePubKey {
+  string publicKey = 1;
+  string creator = 2;
+  uint64 expiry = 3;
+}
+
+message QueuedPubKey {
+  string publicKey = 1;
+  string creator = 2;
+  uint64 expiry = 3;
+}
