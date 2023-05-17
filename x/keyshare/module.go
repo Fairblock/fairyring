@@ -200,16 +200,8 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 	if foundQk {
 		if qk.Expiry > height {
-			am.keeper.SetActivePubKey(ctx, keysharetypes.ActivePubKey{
-				PublicKey: qk.PublicKey,
-				Creator:   qk.Creator,
-				Expiry:    qk.Expiry,
-			})
-			am.pepKeeper.SetActivePubKey(ctx, peptypes.ActivePubKey{
-				PublicKey: qk.PublicKey,
-				Creator:   qk.Creator,
-				Expiry:    qk.Expiry,
-			})
+			am.keeper.SetActivePubKey(ctx, keysharetypes.ActivePubKey(qk))
+			am.pepKeeper.SetActivePubKey(ctx, peptypes.ActivePubKey(qk))
 		}
 		am.keeper.DeleteQueuedPubKey(ctx)
 		am.pepKeeper.DeleteQueuedPubKey(ctx)
