@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	"testing"
 
 	"fairyring/x/pep/keeper"
@@ -58,6 +59,7 @@ func PepKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 
 	registry := codectypes.NewInterfaceRegistry()
 	appCodec := codec.NewProtoCodec(registry)
+	capabilityKeeper := capabilitykeeper.NewKeeper(appCodec, storeKey, memStoreKey)
 
 	paramsSubspace := typesparams.NewSubspace(appCodec,
 		types.Amino,
@@ -70,6 +72,9 @@ func PepKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
+		pepChannelKeeper{},
+		pepPortKeeper{},
+		capabilityKeeper.ScopeToModule("pepScopedKeeper"),
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, logger)
