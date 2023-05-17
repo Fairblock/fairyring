@@ -185,8 +185,14 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		lastExecutedHeight = 0
 	}
 
-	utxs, _ := tmcore.UnconfirmedTxs(nil, nil)
-	am.keeper.ProcessUnconfirmedTxs(ctx, utxs)
+	utxs, err := tmcore.UnconfirmedTxs(nil, nil)
+	if err != nil {
+		am.keeper.Logger(ctx).Error("Error on getting unconfirmed txs")
+		am.keeper.Logger(ctx).Error(err.Error())
+	}
+	if utxs != nil {
+		am.keeper.ProcessUnconfirmedTxs(ctx, utxs)
+	}
 
 	strHeight := am.keeper.GetLatestHeight(ctx)
 	height, err := strconv.ParseUint(strHeight, 10, 64)
