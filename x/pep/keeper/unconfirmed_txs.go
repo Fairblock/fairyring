@@ -68,7 +68,7 @@ func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKey
 
 	err := enc.Decrypt(publicKeyPoint, skPoint, &decryptedDataBytes, &encryptedDataBytes)
 	if err != nil {
-		k.Logger(ctx).Error("Error verifying aggregated keyshare")
+		k.Logger(ctx).Error("Decryption error when verifying aggregated keyshare")
 		k.Logger(ctx).Error(err.Error())
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(types.KeyShareVerificationType,
@@ -81,13 +81,13 @@ func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKey
 	}
 
 	if decryptedDataBytes.String() != dummData {
-		k.Logger(ctx).Error("Error verifying aggregated keyshare")
+		k.Logger(ctx).Error("Decrypted data does not match original data")
 		k.Logger(ctx).Error(err.Error())
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(types.KeyShareVerificationType,
 				sdk.NewAttribute(types.KeyShareVerificationCreator, msg.Creator),
 				sdk.NewAttribute(types.KeyShareVerificationHeight, strconv.FormatUint(msg.Height, 10)),
-				sdk.NewAttribute(types.KeyShareVerificationReason, "decrypted data does not match encrypted data"),
+				sdk.NewAttribute(types.KeyShareVerificationReason, "decrypted data does not match original data"),
 			),
 		)
 		return
