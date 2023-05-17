@@ -26,7 +26,7 @@ func TestLatestPubKeyMsgServerCreate(t *testing.T) {
 		}
 		_, err := srv.CreateLatestPubKey(wctx, expected)
 		require.NoError(t, err)
-		rst, found := k.GetLatestPubKey(ctx)
+		rst, found := k.GetActivePubKey(ctx)
 		require.True(t, found)
 		require.Equal(t, expected.Creator, rst.Creator)
 	}
