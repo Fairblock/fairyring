@@ -6,7 +6,7 @@ import (
 
 	keepertest "fairyring/testutil/keeper"
 	"fairyring/testutil/nullify"
-	"fairyring/x/fairbpeplock/keeper"
+	"fairyring/x/pep/keeper"
 	"fairyring/x/pep/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
