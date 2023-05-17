@@ -2,10 +2,11 @@ package keeper
 
 import (
 	"context"
+	peptypes "fairyring/x/pep/types"
 	"strconv"
 
 	"fairyring/x/keyshare/types"
-	peptypes "fairyring/x/pep/types"
+	keysharetypes "fairyring/x/keyshare/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -30,7 +31,7 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 	if found {
 		expHeight = ak.Expiry + params.KeyExpiry
 	}
-	var queuedPubKey = peptypes.QueuedPubKey{
+	var queuedPubKey = keysharetypes.QueuedPubKey{
 		Creator:   msg.Creator,
 		PublicKey: msg.PublicKey,
 		Expiry:    expHeight,
@@ -43,7 +44,11 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 
 	k.pepKeeper.SetQueuedPubKey(
 		ctx,
-		queuedPubKey,
+		peptypes.QueuedPubKey{
+			Creator:   msg.Creator,
+			PublicKey: msg.PublicKey,
+			Expiry:    expHeight,
+		},
 	)
 
 	ctx.EventManager().EmitEvent(
