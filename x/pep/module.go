@@ -191,7 +191,10 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		am.keeper.Logger(ctx).Error(err.Error())
 	}
 	if utxs != nil {
-		am.keeper.ProcessUnconfirmedTxs(ctx, utxs)
+		if err := am.keeper.ProcessUnconfirmedTxs(ctx, utxs); err != nil {
+			am.keeper.Logger(ctx).Error("Process unconfirmed txs error")
+			am.keeper.Logger(ctx).Error(err.Error())
+		}
 	}
 
 	strHeight := am.keeper.GetLatestHeight(ctx)

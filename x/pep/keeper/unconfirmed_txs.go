@@ -37,7 +37,10 @@ func (k Keeper) ProcessUnconfirmedTxs(ctx sdk.Context, utxs *coretypes.ResultUnc
 					continue
 				}
 
-				k.processMessage(ctx, msg)
+				if err := k.processMessage(ctx, msg); err != nil {
+					k.Logger(ctx).Error("[ProcessUnconfirmedTxs] Error processing message")
+					k.Logger(ctx).Error(err.Error())
+				}
 			}
 		}
 	}
@@ -46,7 +49,7 @@ func (k Keeper) ProcessUnconfirmedTxs(ctx sdk.Context, utxs *coretypes.ResultUnc
 
 // processMessage executes a MsgCreateAggregatedKeyShare message. It decrypts the message,
 // checks for its authenticity and updates the last registered height of FairyRing
-func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKeyShare) {
+func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKeyShare) error {
 	var dummData = "test data"
 	var encryptedDataBytes bytes.Buffer
 	var dummyDataBuffer bytes.Buffer
@@ -58,13 +61,19 @@ func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKey
 
 	suite := bls.NewBLS12381Suite()
 	publicKeyPoint := suite.G1().Point()
-	publicKeyPoint.UnmarshalBinary(publicKeyByte)
+	if err := publicKeyPoint.UnmarshalBinary(publicKeyByte); err != nil {
+		return err
+	}
 
 	skPoint := suite.G2().Point()
-	skPoint.UnmarshalBinary(keyByte)
+	if err := skPoint.UnmarshalBinary(keyByte); err != nil {
+		return err
+	}
 
 	processHeightStr := strconv.FormatUint(msg.Height, 10)
-	enc.Encrypt(publicKeyPoint, []byte(processHeightStr), &encryptedDataBytes, &dummyDataBuffer)
+	if err := enc.Encrypt(publicKeyPoint, []byte(processHeightStr), &encryptedDataBytes, &dummyDataBuffer); err != nil {
+		return err
+	}
 
 	err := enc.Decrypt(publicKeyPoint, skPoint, &decryptedDataBytes, &encryptedDataBytes)
 	if err != nil {
@@ -77,7 +86,7 @@ func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKey
 				sdk.NewAttribute(types.KeyShareVerificationReason, err.Error()),
 			),
 		)
-		return
+		return err
 	}
 
 	if decryptedDataBytes.String() != dummData {
@@ -90,7 +99,7 @@ func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKey
 				sdk.NewAttribute(types.KeyShareVerificationReason, "decrypted data does not match original data"),
 			),
 		)
-		return
+		return err
 	}
 
 	k.SetAggregatedKeyShare(ctx, types.AggregatedKeyShare{
@@ -110,4 +119,6 @@ func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKey
 	}
 
 	k.Logger(ctx).Info(fmt.Sprintf("[ProcessUnconfirmedTxs] Aggregated Key Added, height: %d", msg.Height))
+
+	return nil
 }
