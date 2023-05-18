@@ -3,7 +3,7 @@ package types
 // DONTCOVER
 
 import (
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	sdkerrors "cosmossdk.io/errors"
 )
 
 // x/keyshare module sentinel errors
@@ -21,5 +21,5 @@ var (
 	ErrPubKeyNotFound             = sdkerrors.Register(ModuleName, 1110, "Public key does not exists now")
 	ErrQueuedKeyAlreadyExists     = sdkerrors.Register(ModuleName, 1111, "a queued key already exists")
 	ErrAccountNotStaking          = sdkerrors.Register(ModuleName, 1112, "account is not staking")
-	ErrAddressNotTrusted          = sdkerrors.Register(ModuleName, 1102, "address is not trusted")
+	ErrAddressNotTrusted          = sdkerrors.Register(ModuleName, 1113, "address is not trusted")
 )

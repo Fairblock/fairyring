@@ -3,6 +3,7 @@ package keyshare
 import (
 	"context"
 	"encoding/json"
+	peptypes "fairyring/x/pep/types"
 	"fmt"
 
 	// this line is used by starport scaffolding # 1
@@ -16,7 +17,7 @@ import (
 	"fairyring/x/keyshare/keeper"
 	"fairyring/x/keyshare/types"
 
-	peptypes "fairyring/x/pep/types"
+	keysharetypes "fairyring/x/keyshare/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -74,7 +75,7 @@ func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncod
 
 // RegisterGRPCGatewayRoutes registers the gRPC Gateway routes for the module
 func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *runtime.ServeMux) {
-	types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientCtx))
+	_ = types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientCtx))
 }
 
 // GetTxCmd returns the root Tx command for the module. The subcommands of this root command are used by end-users to generate new transactions containing messages defined in the module
@@ -174,14 +175,24 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	qk, foundQk := am.keeper.GetQueuedPubKey(ctx)
 
 	if foundAk {
-		am.pepKeeper.SetActivePubKey(ctx, ak)
+		am.keeper.SetActivePubKey(ctx, ak)
+		am.pepKeeper.SetActivePubKey(ctx, peptypes.ActivePubKey{
+			PublicKey: ak.PublicKey,
+			Creator:   ak.Creator,
+			Expiry:    ak.Expiry,
+		})
 
 		if ak.Expiry <= height {
 			am.keeper.DeleteActivePubKey(ctx)
 			am.pepKeeper.DeleteActivePubKey(ctx)
 		} else {
 			if foundQk {
-				am.pepKeeper.SetQueuedPubKey(ctx, qk)
+				am.keeper.SetQueuedPubKey(ctx, qk)
+				am.pepKeeper.SetQueuedPubKey(ctx, peptypes.QueuedPubKey{
+					PublicKey: qk.PublicKey,
+					Creator:   qk.Creator,
+					Expiry:    qk.Expiry,
+				})
 			}
 			return
 		}
@@ -189,14 +200,8 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 	if foundQk {
 		if qk.Expiry > height {
-			newActiveKey := peptypes.ActivePubKey{
-				PublicKey: qk.PublicKey,
-				Creator:   qk.Creator,
-				Expiry:    qk.Expiry,
-			}
-
-			am.keeper.SetActivePubKey(ctx, newActiveKey)
-			am.pepKeeper.SetActivePubKey(ctx, newActiveKey)
+			am.keeper.SetActivePubKey(ctx, keysharetypes.ActivePubKey(qk))
+			am.pepKeeper.SetActivePubKey(ctx, peptypes.ActivePubKey(qk))
 		}
 		am.keeper.DeleteQueuedPubKey(ctx)
 		am.pepKeeper.DeleteQueuedPubKey(ctx)

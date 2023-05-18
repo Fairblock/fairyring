@@ -84,7 +84,7 @@ func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncod
 
 // RegisterGRPCGatewayRoutes registers the gRPC Gateway routes for the module
 func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *runtime.ServeMux) {
-	types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientCtx))
+	_ = types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientCtx))
 }
 
 // GetTxCmd returns the root Tx command for the module. The subcommands of this root command are used by end-users to generate new transactions containing messages defined in the module
@@ -185,8 +185,17 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		lastExecutedHeight = 0
 	}
 
-	utxs, _ := tmcore.UnconfirmedTxs(nil, nil)
-	am.keeper.ProcessUnconfirmedTxs(ctx, utxs)
+	utxs, err := tmcore.UnconfirmedTxs(nil, nil)
+	if err != nil {
+		am.keeper.Logger(ctx).Error("Error on getting unconfirmed txs")
+		am.keeper.Logger(ctx).Error(err.Error())
+	}
+	if utxs != nil {
+		if err := am.keeper.ProcessUnconfirmedTxs(ctx, utxs); err != nil {
+			am.keeper.Logger(ctx).Error("Process unconfirmed txs error")
+			am.keeper.Logger(ctx).Error(err.Error())
+		}
+	}
 
 	strHeight := am.keeper.GetLatestHeight(ctx)
 	height, err := strconv.ParseUint(strHeight, 10, 64)
@@ -251,7 +260,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		for _, eachTx := range arr.EncryptedTx {
 			am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
 
-			if currentNonce, found := am.keeper.GetPepNonce(ctx, eachTx.Creator); found && currentNonce.Nonce >= math.MaxUint64 {
+			if currentNonce, found := am.keeper.GetPepNonce(ctx, eachTx.Creator); found && currentNonce.Nonce == math.MaxUint64 {
 				am.keeper.Logger(ctx).Error("Invalid PEP Nonce")
 				ctx.EventManager().EmitEvent(
 					sdk.NewEvent(types.EncryptedTxRevertedEventType,
@@ -543,11 +552,7 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 	qk, found := am.keeper.GetQueuedPubKey(ctx)
 	if found {
 		if qk.Expiry > height {
-			newActiveKey := types.ActivePubKey{
-				PublicKey: qk.PublicKey,
-				Creator:   qk.Creator,
-				Expiry:    qk.Expiry,
-			}
+			newActiveKey := types.ActivePubKey(qk)
 
 			am.keeper.SetActivePubKey(ctx, newActiveKey)
 		}

@@ -28,5 +28,5 @@ validators:
     home: $HOME/.fairyring
     config:
       consensus:
-        timeout_commit: "10s"
-        timeout_propose: "10s"
+        timeout_commit: "3s"
+        timeout_propose: "3s"

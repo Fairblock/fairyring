@@ -9,7 +9,7 @@ import "fairyring/pep/params.proto";
 import "fairyring/pep/encrypted_tx.proto";
 import "fairyring/pep/pep_nonce.proto";
 import "fairyring/pep/aggregated_key_share.proto";
-import "fairyring/pep/latest_pub_key.proto";
+import "fairyring/pep/pub_key.proto";
 
 // this line is used by starport scaffolding # 1
 
