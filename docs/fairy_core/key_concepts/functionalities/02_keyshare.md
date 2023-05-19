@@ -9,12 +9,13 @@ TODO:
 
 ## Generating Keyshares
 
+Currently we have an API for validator to get their part of share. In order to be able to get the share from API, validator are required to generate a RSA public key & private key and send us their public key. Once we added the public key to the API, validator will be able to send a request and the data encrypted by their private key to the API for getting their share. The responses from the API are encrypted using the senders public key and it can only be decrypted with the corresponding private key.
+After getting the share, every validator would need to derive the keyshare for N + 1 block using their share.
 TODO:
-@Martin kindly add the procedure for generating keyshares by validators (in Detail)
 @Bowen add any cryptographic info if required
 
 ---
 
 ## Submitting Keyshares
 
-After generating KeyShares for a particular block, validators can submit them to the FairyRing Chain via the `SendKeyshare` Tx in the Keyshare module. Currently there is no penalty for failing to submit keyshares. However, we plan on implementing a slashing mechanism to penalize validators for missing KeyShare submissions and/or reward validators for submitting them timely.
+After generating KeyShares for a particular block, validators can submit them to the FairyRing Chain via the `SendKeyshare` Tx in the Keyshare module. Currently, validator submitting a invalid KeyShare will be slashed, but there is no penalty for failing to submit keyshares. However, we plan on implementing a slashing mechanism to penalize validators for missing KeyShare submissions and/or reward validators for submitting them timely.
