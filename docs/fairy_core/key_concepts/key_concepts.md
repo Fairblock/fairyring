@@ -15,7 +15,7 @@ The users need to encrypt their transaction using a public key and the private k
 Key shares are submitted by validators against the active pubkey to generate decryption keys per block.
 
 TODO:
-@Martin kindly add some more details regarding keyshares here.
+Every validator need their own client to submit their keys share. The client gets their part of key share from API, derive the actual key share by the target block height and finally submit to the fairyring. A validator submitting an invalid key share will be slashed.
 @Peyman @Bowen add some cryptographic details as well if you think necessary.
 
 We have a full section on Key shares later. Just a brief overview works here
