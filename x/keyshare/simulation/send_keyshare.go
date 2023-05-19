@@ -1,6 +1,8 @@
 package simulation
 
 import (
+	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
+	"github.com/cosmos/cosmos-sdk/x/simulation"
 	"math/rand"
 
 	"fairyring/x/keyshare/keeper"
@@ -14,7 +16,7 @@ import (
 func SimulateMsgSendKeyshare(
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
-	k keeper.Keeper,
+	_ keeper.Keeper,
 ) simtypes.Operation {
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
@@ -23,8 +25,21 @@ func SimulateMsgSendKeyshare(
 			Creator: simAccount.Address.String(),
 		}
 
-		// TODO: Handling the SendKeyshare simulation
+		txCtx := simulation.OperationInput{
+			R:               r,
+			App:             app,
+			TxGen:           simappparams.MakeTestEncodingConfig().TxConfig,
+			Cdc:             nil,
+			Msg:             msg,
+			MsgType:         msg.Type(),
+			Context:         ctx,
+			SimAccount:      simAccount,
+			ModuleName:      types.ModuleName,
+			CoinsSpentInMsg: sdk.NewCoins(),
+			AccountKeeper:   ak,
+			Bankkeeper:      bk,
+		}
 
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "SendKeyshare simulation not implemented"), nil, nil
+		return simulation.GenAndDeliverTxWithRandFees(txCtx)
 	}
 }

@@ -25,12 +25,10 @@ var (
 )
 
 const (
-	opWeightMsgSubmitEncryptedTx = "op_weight_msg_submit_encrypted_tx"
-	// TODO: Determine the simulation weight value
+	opWeightMsgSubmitEncryptedTx          = "op_weight_msg_submit_encrypted_tx"
 	defaultWeightMsgSubmitEncryptedTx int = 100
 
-	opWeightMsgCreateAggregatedKeyShare = "op_weight_msg_aggregated_key_share"
-	// TODO: Determine the simulation weight value
+	opWeightMsgCreateAggregatedKeyShare          = "op_weight_msg_aggregated_key_share"
 	defaultWeightMsgCreateAggregatedKeyShare int = 100
 
 	// this line is used by starport scaffolding # simapp/module/const

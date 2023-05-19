@@ -118,11 +118,9 @@ func (k Keeper) OnRecvCurrentHeightPacket(ctx sdk.Context, packet channeltypes.P
 func (k Keeper) OnAcknowledgementCurrentHeightPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CurrentKeysPacketData, ack channeltypes.Acknowledgement) error {
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
-
-		// TODO: failed acknowledgement logic
-		_ = dispatchedAck.Error
-
-		return nil
+		k.Logger(ctx).Error("Ack Error")
+		k.Logger(ctx).Error(dispatchedAck.Error)
+		return errors.New(dispatchedAck.Error)
 	case *channeltypes.Acknowledgement_Result:
 		// Decode the packet acknowledgment
 		var packetAck types.CurrentKeysPacketAck
@@ -164,8 +162,6 @@ func (k Keeper) OnAcknowledgementCurrentHeightPacket(ctx sdk.Context, packet cha
 
 // OnTimeoutCurrentHeightPacket responds to the case where a packet has not been transmitted because of a timeout
 func (k Keeper) OnTimeoutCurrentHeightPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CurrentKeysPacketData) error {
-
-	// TODO: packet timeout logic
 	k.Logger(ctx).Info("Packet timeout")
 	k.Logger(ctx).Info(data.String())
 	return nil

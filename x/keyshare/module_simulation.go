@@ -25,16 +25,13 @@ var (
 )
 
 const (
-	opWeightMsgRegisterValidator = "op_weight_msg_register_validator"
-	// TODO: Determine the simulation weight value
+	opWeightMsgRegisterValidator          = "op_weight_msg_register_validator"
 	defaultWeightMsgRegisterValidator int = 100
 
-	opWeightMsgSendKeyshare = "op_weight_msg_send_keyshare"
-	// TODO: Determine the simulation weight value
+	opWeightMsgSendKeyshare          = "op_weight_msg_send_keyshare"
 	defaultWeightMsgSendKeyshare int = 100
 
-	opWeightMsgCreateLatestPubKey = "op_weight_msg_latest_pub_key"
-	// TODO: Determine the simulation weight value
+	opWeightMsgCreateLatestPubKey          = "op_weight_msg_latest_pub_key"
 	defaultWeightMsgCreateLatestPubKey int = 100
 
 	// this line is used by starport scaffolding # simapp/module/const
