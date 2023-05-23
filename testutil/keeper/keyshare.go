@@ -1,6 +1,10 @@
 package keeper
 
 import (
+	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
+	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	"testing"
 
 	"fairyring/x/keyshare/keeper"
@@ -18,7 +22,7 @@ import (
 	tmdb "github.com/tendermint/tm-db"
 )
 
-func FairyringKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
+func KeyshareKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 
@@ -37,11 +41,56 @@ func FairyringKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		memStoreKey,
 		"FairyringParams",
 	)
+
+	accountKeeper := authkeeper.NewAccountKeeper(
+		cdc,
+		sdk.NewKVStoreKey("acc"),
+		typesparams.NewSubspace(cdc,
+			types.Amino,
+			storeKey,
+			memStoreKey,
+			"acc",
+		),
+		authtypes.ProtoBaseAccount,
+		map[string][]string{},
+		sdk.Bech32PrefixAccAddr,
+	)
+
+	bankKeeper := bankkeeper.NewBaseKeeper(
+		cdc,
+		sdk.NewKVStoreKey("bank"),
+		accountKeeper,
+		typesparams.NewSubspace(cdc,
+			types.Amino,
+			storeKey,
+			memStoreKey,
+			"bank",
+		),
+		map[string]bool{},
+	)
+
+	stakingKeeper := stakingkeeper.NewKeeper(
+		cdc,
+		sdk.NewKVStoreKey("staking"),
+		accountKeeper,
+		bankKeeper,
+		typesparams.NewSubspace(cdc,
+			types.Amino,
+			storeKey,
+			memStoreKey,
+			"staking",
+		),
+	)
+
+	pepKeeper, _ := PepKeeper(t)
+
 	k := keeper.NewKeeper(
 		cdc,
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
+		*pepKeeper,
+		stakingKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
