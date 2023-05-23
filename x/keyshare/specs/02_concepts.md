@@ -47,7 +47,3 @@ Validators can request a keyshare from our server as well as verify that there i
 However, this solution is far from ideal. 
 We are implementing a Distributed Key Generation (DKG) scheme based on the [ETHDKG paper](https://eprint.iacr.org/2019/985) which utilizes non-interactive ZK proofs and is secure against the adaptive adversary model.
 This would allow the share generation to be fully on-chain and permissionless.
-
-
-
-TODO: @peyman @bowen [add info on the cryptography portion]

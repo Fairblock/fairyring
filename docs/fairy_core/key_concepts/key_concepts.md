@@ -15,8 +15,10 @@ The users need to encrypt their transaction using a public key and the private k
 Key shares are submitted by validators against the active pubkey to generate decryption keys per block.
 
 TODO:
-Every validator need their own client to submit their keys share. The client gets their part of key share from API, derive the actual key share by the target block height and finally submit to the fairyring. A validator submitting an invalid key share will be slashed.
-@Peyman @Bowen add some cryptographic details as well if you think necessary.
+Every validator need their own client to submit their keys share. The client gets their part of key share from API, derive the actual key share by the target block height and finally submit to the fairyring. A malicious validators will be slashed.
+
+Our initial release will be similar to the Proof of Authority (PoA) approach used by [Noble](https://github.com/strangelove-ventures/noble). 
+We have some basic slashing logic implemented for now, but this may change. 
 
 We have a full section on Key shares later. Just a brief overview works here
 
