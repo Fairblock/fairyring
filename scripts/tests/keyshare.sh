@@ -73,3 +73,12 @@ if [[ "$ERROR_MSG" != *"address is not trusted"* ]]; then
   echo "$RESULT"
   exit 1
 fi
+
+echo ""
+echo "######################################################"
+echo "#                SUCCESSFULLY TESTED                 #"
+echo "# Submit Valid & Invalid KeyShare to KeyShare Module #"
+echo "#     Register as a validator in KeyShare Module     #"
+echo "#        Submit Public Key to KeyShare Module        #"
+echo "######################################################"
+echo ""
