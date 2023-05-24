@@ -32553,7 +32553,7 @@ paths:
                 description: params holds all the parameters of this module.
                 type: object
                 properties:
-                  keyExpiry:
+                  key_expiry:
                     type: string
                     format: uint64
                   trusted_addresses:
@@ -32563,6 +32563,56 @@ paths:
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /fairyring/keyshare/pub_key:
+    get:
+      summary: Queries the public keys
+      operationId: FairyringKeysharePubKey
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              activePubKey:
+                type: object
+                properties:
+                  publicKey:
+                    type: string
+                  creator:
+                    type: string
+                  expiry:
+                    type: string
+                    format: uint64
+              queuedPubKey:
+                type: object
+                properties:
+                  publicKey:
+                    type: string
+                  creator:
+                    type: string
+                  expiry:
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -66777,6 +66827,16 @@ definitions:
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
     description: Period defines a length of time and amount of coins that will vest.
+  fairyring.keyshare.ActivePubKey:
+    type: object
+    properties:
+      publicKey:
+        type: string
+      creator:
+        type: string
+      expiry:
+        type: string
+        format: uint64
   fairyring.keyshare.AggregatedKeyShare:
     type: object
     properties:
@@ -66834,7 +66894,7 @@ definitions:
   fairyring.keyshare.Params:
     type: object
     properties:
-      keyExpiry:
+      key_expiry:
         type: string
         format: uint64
       trusted_addresses:
@@ -67031,7 +67091,7 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
         properties:
-          keyExpiry:
+          key_expiry:
             type: string
             format: uint64
           trusted_addresses:
@@ -67039,6 +67099,39 @@ definitions:
             items:
               type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  fairyring.keyshare.QueryPubKeyResponse:
+    type: object
+    properties:
+      activePubKey:
+        type: object
+        properties:
+          publicKey:
+            type: string
+          creator:
+            type: string
+          expiry:
+            type: string
+            format: uint64
+      queuedPubKey:
+        type: object
+        properties:
+          publicKey:
+            type: string
+          creator:
+            type: string
+          expiry:
+            type: string
+            format: uint64
+  fairyring.keyshare.QueuedPubKey:
+    type: object
+    properties:
+      publicKey:
+        type: string
+      creator:
+        type: string
+      expiry:
+        type: string
+        format: uint64
   fairyring.keyshare.ValidatorSet:
     type: object
     properties:

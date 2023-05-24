@@ -55,7 +55,7 @@ service Query {
 
   // Queries the public keys
   rpc PubKey    (QueryPubKeyRequest) returns (QueryPubKeyResponse) {
-    option (google.api.http).get = "/fairyring/pep/pub_key";
+    option (google.api.http).get = "/fairyring/keyshare/pub_key";
   }
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.

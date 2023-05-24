@@ -770,7 +770,7 @@ var (
 
 	pattern_Query_AggregatedKeyShareAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "aggregated_key_share"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_PubKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "pub_key"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_PubKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "pub_key"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

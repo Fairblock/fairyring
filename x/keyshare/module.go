@@ -17,8 +17,6 @@ import (
 	"fairyring/x/keyshare/keeper"
 	"fairyring/x/keyshare/types"
 
-	keysharetypes "fairyring/x/keyshare/types"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -200,7 +198,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 	if foundQk {
 		if qk.Expiry > height {
-			am.keeper.SetActivePubKey(ctx, keysharetypes.ActivePubKey(qk))
+			am.keeper.SetActivePubKey(ctx, types.ActivePubKey(qk))
 			am.pepKeeper.SetActivePubKey(ctx, peptypes.ActivePubKey(qk))
 		}
 		am.keeper.DeleteQueuedPubKey(ctx)
