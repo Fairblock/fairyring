@@ -213,12 +213,12 @@ func parseKeyShareCommitment(
 	}
 
 	newExtractedKey := distIBE.ExtractedKey{
-		Sk:    newSharePoint,
+		SK:    newSharePoint,
 		Index: index,
 	}
 
 	newCommitment := distIBE.Commitment{
-		Sp:    newCommitmentPoint,
+		SP:    newCommitmentPoint,
 		Index: index,
 	}
 
