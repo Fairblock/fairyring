@@ -30,8 +30,12 @@ This folder contains the test scripts for keyshare & pep modules
 
 1. Run `./start.sh` script to have local testnet running in background for testing
 
+
 2. Run `./keyshare.sh` script to test the key share module
 
+
 3. Run `./pep.sh` script to test the pep module
+
+<small>*Is recommended to run key share module test before pep module test.</small>
 
 4. Run `./stop.sh` to stop the local testnet
