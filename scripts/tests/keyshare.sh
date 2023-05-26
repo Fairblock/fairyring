@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 echo ""
 echo "######################################################"
 echo "# Submit Valid & Invalid KeyShare to KeyShare Module #"
@@ -8,14 +9,17 @@ echo "#        Submit Public Key to KeyShare Module        #"
 echo "######################################################"
 echo ""
 
+
 GENERATOR=ShareGenerator
 BINARY=fairyringd
 CHAIN_DIR=$(pwd)/data
 CHAINID_1=fairyring_test_1
 CHAINID_2=fairyring_test_2
 
+
 WALLET_1=$($BINARY keys show wallet1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
 VALIDATOR_1=$($BINARY keys show val1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
+
 
 echo "Staked account registering as a validator on chain fairyring_test_1"
 RESULT=$($BINARY tx keyshare register-validator --from $VALIDATOR_1 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode block --keyring-backend test -o json -y)
@@ -57,9 +61,11 @@ if [[ "$ERROR_MSG" != *"validator not registered"* ]]; then
   exit 1
 fi
 
+
 GENERATED_RESULT=$($GENERATOR generate 1 1)
 GENERATED_SHARE=$(echo "$GENERATED_RESULT" | jq -r '.Shares[0].Value')
 PUB_KEY=$(echo "$GENERATED_RESULT" | jq -r '.MasterPublicKey')
+
 
 echo "Trusted address submit pub key on chain fairyring_test_1"
 RESULT=$($BINARY tx keyshare create-latest-pub-key $PUB_KEY --from $VALIDATOR_1 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode block --keyring-backend test -o json -y)
