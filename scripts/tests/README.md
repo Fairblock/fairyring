@@ -26,6 +26,14 @@ This folder contains the test scripts for keyshare & pep modules
 
 ---
 
+## Requirement
+
+1. Make sure you have the executable of [ShareGenerator](https://github.com/FairBlock/ShareGenerator) and [Encrypter](https://github.com/FairBlock/encrypter) ready in the `tests/` directory.
+
+2. Rename them to `ShareGenerator` and `encrypter` or you can update the name in scripts.
+
+3. Make sure you have `fairyringd` executable in your PATH, type `where fairyringd` in terminal to check
+
 ## Start testing
 
 1. Run `./start.sh` script to have local testnet running in background for testing
