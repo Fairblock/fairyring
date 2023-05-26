@@ -168,8 +168,8 @@ fairyringd start
 
 ### Step 2: Create a validator
 
-- Acquire stake tokens from the [faucet]()
-- Wait for your full node to catch up to the latest block (compare to the [explorer]())
+- Acquire stake tokens from the (coming soon)
+- Wait for your full node to catch up to the latest block (compare to the (coming soon))
 - Run `fairyringd tendermint show-validator` and copy your consensus public key
 - Send a create-validator transaction
 

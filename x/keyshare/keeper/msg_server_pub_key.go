@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	"fairyring/x/keyshare/types"
-	keysharetypes "fairyring/x/keyshare/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -31,7 +30,7 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 	if found {
 		expHeight = ak.Expiry + params.KeyExpiry
 	}
-	var queuedPubKey = keysharetypes.QueuedPubKey{
+	var queuedPubKey = types.QueuedPubKey{
 		Creator:   msg.Creator,
 		PublicKey: msg.PublicKey,
 		Expiry:    expHeight,
