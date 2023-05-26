@@ -9,3 +9,4 @@ gentx/
 DistributedIBE/
 *.json
 encrypter
+ShareGenerator
