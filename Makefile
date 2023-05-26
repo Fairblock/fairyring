@@ -166,7 +166,33 @@ sync-docs:
 	aws cloudfront create-invalidation --distribution-id ${CF_DISTRIBUTION_ID} --profile terraform --path "/*" ;
 .PHONY: sync-docs
 
+###############################################################################
+###                        Integration Tests                                ###
+###############################################################################
 
+integration-test-all: init-test-framework \
+	test-keyshare-module \
+	test-pep-module
+	-@rm -rf ./data
+	-@killall fairyringd 2>/dev/null
+
+test-keyshare-module:
+	@echo "Testing KeyShare module..."
+	./scripts/tests/keyshare.sh
+
+test-pep-module:
+	@echo "Testing Pep module..."
+	./scripts/tests/pep.sh
+
+init-test-framework: clean-testing-data install
+	@echo "Initializing fairyring..."
+	./scripts/tests/start.sh
+	@sleep 3
+
+clean-testing-data:
+	@echo "Killing fairyringd and removing previous data"
+	-@rm -rf ./data
+	-@killall fairyringd 2>/dev/null
 ###############################################################################
 ###                           Tests & Simulation                            ###
 ###############################################################################

@@ -10,3 +10,4 @@ DistributedIBE/
 *.json
 encrypter
 ShareGenerator
+data/

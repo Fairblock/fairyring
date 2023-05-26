@@ -8,11 +8,11 @@ This folder contains the test scripts for keyshare & pep modules
 
 ### Key Share Module
 
-1. Submitting valid & invalid key share from a registered validator account & a non registered address
+1. Submitting valid & invalid key share from a registered validator account & a non-registered address
 
 2. Registering as a validator with a staking & non staking account
 
-3. Submitting public key from a trusted & non trusted account
+3. Submitting public key from a trusted & non-trusted account
 
 ### Pep Module
 
@@ -28,7 +28,7 @@ This folder contains the test scripts for keyshare & pep modules
 
 ## Requirement
 
-1. Make sure you have the executable of [ShareGenerator](https://github.com/FairBlock/ShareGenerator) and [Encrypter](https://github.com/FairBlock/encrypter) ready in the `tests/` directory.
+1. Make sure you have the executable of [ShareGenerator](https://github.com/FairBlock/ShareGenerator) and [Encrypter](https://github.com/FairBlock/encrypter) ready in the `fairyring` directory. (Same directory as where the `Makefile` is located at)
 
 2. Rename them to `ShareGenerator` and `encrypter` or you can update the name in scripts.
 
@@ -36,14 +36,6 @@ This folder contains the test scripts for keyshare & pep modules
 
 ## Start testing
 
-1. Run `./start.sh` script to have local testnet running in background for testing
-
-
-2. Run `./keyshare.sh` script to test the key share module
-
-
-3. Run `./pep.sh` script to test the pep module
-
-<small>*Is recommended to run key share module test before pep module test.</small>
-
-4. Run `./stop.sh` to stop the local testnet
+```
+make integration-test-all
+```
