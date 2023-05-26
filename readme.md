@@ -1,6 +1,7 @@
-# fairyring
+# Overview 
 
-**fairyring** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
+**fairyring** is a Cosmos SDK blockchain that leverages identity-based encryption (IBE) to enable pre-execution privacy on Cosmos SDK app-chains.
+`fairyring` consists of two main components, a blockchain purpose-built for management of decryption keys in a decentralized manner, as well as a Cosmos SDK module that other app-chains can use to integrate with fairyring. 
 
 ## Get started
 
