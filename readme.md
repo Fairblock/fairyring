@@ -4,7 +4,27 @@
 
 ## Get started
 
-### Running the chain
+### Compiling & Installing FairyRing chain executable
+
+1. Building fairyring
+
+```bash
+make build
+```
+
+2. Installing the fairyringd
+
+```bash
+make install
+```
+
+3. Running fairyringd
+
+```bash
+fairyringd
+```
+
+### Running the chain with Ignite
 
 ```
 ignite chain serve
@@ -14,30 +34,7 @@ Optionally add `rv` tag to reset and have verbose output.
 
 `serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
 
-```
-export alice=$(fairyringd keys show alice -a)
-export bob=$(fairyringd keys show bob -a)
-```
-
-Register the account as a validator
-
-```
-fairyringd tx fairyring register-validator --from $alice --gas auto
-```
-
-Send a keyshare message from validator
-
-```
-fairyringd tx fairyring send-keyshare <Message> <BlockHeight> --from $alice --gas auto
-```
-
-Submit an encrypted tx message
-
-```
-fairyringd tx pep submit-encrypted-tx <TxData> <TargetBlockHeight> --from $alice --gas auto
-```
-
-### Running a validator locally
+### Running a validator locally with Docker
 
 1. Copy DistributedIBE inside fairyring directory
 
@@ -99,9 +96,9 @@ docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fai
 
 7. Start the validator on all the machines
 
-### Become a validator
+### Becoming a validator
 
-1. Follow step 1 - 3 on [Run validator locally](#Running-a-validator-locally)
+1. Follow step 1 - 3 on [Run validator locally](#Running-a-validator-locally-with-Docker)
 
 2. Make sure you have enough coins in your account
 
@@ -110,7 +107,7 @@ docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fai
 4. Send the `fairyringd tx staking create-validator` command with the address created to become validator, for example:
 
 ```
-fairyringd tx staking create-validator \
+docker exec -it $(docker ps --latest --format '{{.ID}}') fairyringd tx staking create-validator \
   --amount=100000000stake \
   --pubkey=$(fairyringd tendermint show-validator) \
   --moniker="choose a moniker" \
@@ -124,31 +121,71 @@ fairyringd tx staking create-validator \
 
 5. Start the validator
 
+### Transactions command
+
+#### KeyShare module
+
+Create pub key
+
+```
+fairyringd tx keyshare create-latest-pub-key <pub-key-in-hex>
+```
+
+Register as a validator
+
+```
+fairyringd tx keyshare register-validator
+```
+
+Submit a KeyShare
+
+```
+fairyringd tx send-key-share <keyshare-in-hex> <commitment-in-hex> <keyshare-index> <keyshare-block-height>
+```
+
+#### Pep module
+
+Submit aggregated key share
+
+```
+fairyringd tx pep create-aggregated-key-share <aggregated-key-share-height> <aggregated-key-share-in-hex> <public-key-in-hex>
+```
+
+Submit encrypted transaction
+
+```
+fairyringd tx pep submit-encrypted-tx <encrypted-tx-cipher-in-hex> <target-block-height>
+```
+
 ### Queries
+
+#### KeyShare module
 
 Get all validators
 
 ```
-fairyringd query fairyring list-validator-set
+fairyringd query keyshare list-validator-set
 ```
 
 Get all broadcasted keyshares
 
 ```
-fairyringd query fairyring list-key-share
+fairyringd query keyshare list-key-share
 ```
 
 Get specific validator
 
 ```
-fairyringd query fairyring show-validator-set <Index>
+fairyringd query keyshare show-validator-set <Index>
 ```
 
 Get specific keyshare
 
 ```
-fairyringd query fairyring show-key-share <Validator> <BlockHeight>
+fairyringd query keyshare show-key-share <Validator> <BlockHeight>
 ```
+
+#### Pep module
 
 Get all encrypted tx in state
 
@@ -174,7 +211,7 @@ It is recommended to run [`fairyringclient`](https://github.com/FairBlock/fairyr
 
 ### Aggregating key shares
 
-It is recommended to run [`fairyringrelay`](https://github.com/FairBlock/fairyringrelay) to listen to broadcast keyshare events and aggregate the keys in each block.
+It is recommended to run [`fairyport`](https://github.com/FairBlock/fairyport) to listen to broadcast keyshare events and aggregate the keys in each block.
 
 ### Configure
 
@@ -192,37 +229,26 @@ npm run serve
 
 The frontend app is built using the `@starport/vue` and `@starport/vuex` packages. For details, see the [monorepo for Ignite front-end development](https://github.com/ignite/web).
 
-## Running the tests
 
+## Setup a testing environment
+
+1. Building the `fairyringd` executable
+
+```bash
+make build
 ```
+
+2. Installing the executable for calling it from terminal
+
+```bash
+make install
+```
+
+3. Building the executable of [ShareGenerator](https://github.com/FairBlock/ShareGenerator) and [Encrypter](https://github.com/FairBlock/encrypter) and put them in this directory
+
+
+4. Running the tests
+
+```bash
 make integration-test-all
 ```
-
-## Release
-
-To release a new version of your blockchain, create and push a new tag with `v` prefix. A new draft release with the configured targets will be created.
-
-```
-git tag v0.1
-git push origin v0.1
-```
-
-After a draft release is created, make your final changes from the release page and publish it.
-
-### Install
-
-To install the latest version of your blockchain node's binary, execute the following command on your machine:
-
-```
-curl https://get.ignite.com/username/fairyring@latest! | sudo bash
-```
-
-`username/fairyring` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
-
-## Learn more
-
-- [Ignite CLI](https://ignite.com/cli)
-- [Tutorials](https://docs.ignite.com/guide)
-- [Ignite CLI docs](https://docs.ignite.com)
-- [Cosmos SDK docs](https://docs.cosmos.network)
-- [Developer Chat](https://discord.gg/ignite)
