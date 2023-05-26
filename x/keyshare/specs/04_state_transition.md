@@ -3,7 +3,7 @@
 ## AggregatedKeyShare
 
 This state is modified when the required number of keyshares have been submitted by validators to form the decryption key.
-Currently, at least 2/3rd of the registered validators must submit their keyshares.
+Currently, at least 2/3 + 1 of the registered validators must submit their keyshares.
 
 The aggregated keyShares are stored by height and once set, they can never be modified.
 

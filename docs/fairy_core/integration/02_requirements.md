@@ -4,7 +4,7 @@ To integrate with the FairyRing chain, destination chains must meet the requirem
 
 ## Fetching Aggregated Keyshares
 
-It is very important to note that the aggregated keyshares generated on FairyRing MUST be fecthed with one-block time of the destination chain. This is necessary to prevent any kind of front-running opportunity of encrypted transactions. For fetching interchain data, the IBC protocol seems to be the best way. However, the ICS standards specify that during IBC, light clients must verify the the proof of the data in the form of vector commitments. From our observations, we have found that a typical IBC call takes anywhere between 3 to 5 blocks to fetch the result. This clearly does not meet our requirement of fetching the aggregated keyshare in one-block time.
+It is very important to note that the aggregated keyshares generated on FairyRing MUST be fetched with one-block time of the destination chain. This is necessary to prevent any kind of front-running opportunity of encrypted transactions. For fetching interchain data, the IBC protocol seems to be the best way. However, the ICS standards specify that during IBC, light clients must verify the the proof of the data in the form of vector commitments. From our observations, we have found that a typical IBC call takes anywhere between 3 to 5 blocks to fetch the result. This clearly does not meet our requirement of fetching the aggregated keyshare in one-block time.
 
 ## Queuing and Executing Encrypted Transactions
 

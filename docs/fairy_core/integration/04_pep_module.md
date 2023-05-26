@@ -1,6 +1,6 @@
 # Integrating the PEP module
 
-To address the requirement of a module capable of receiving encrypted transactions submitted by users, indexing them in the store by their target height, receiving aggregated keyshares (either via FairyPort or other off-chain services), and finally decrypting and executing the said encrypted transactions at their target height automatically, the PEP module is introduced.
+To address the requirement of a module capable of receiving encrypted transactions submitted by users, indexing them in the store by their target height, receiving aggregated keyshares (either via FairyPort or other off-chain services), and decrypting and executing the said encrypted transactions at their target height automatically, the PEP module is introduced.
 
 The PEP module stands for Pre-Execution Privacy. It has the following capabilities:
 

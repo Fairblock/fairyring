@@ -1,8 +1,8 @@
 # Public Keys
 
-As Mentioned previously, public keys are used by users of both FairyRing chain as well as all other destination chains to encrypt transactions that will be decrypted and executed at a particular target height.
+As mentioned previously, public keys are used by users of both FairyRing chain as well as all other destination chains to encrypt transactions that will be decrypted and executed at a particular target height.
 
-There are two main reasons for having not only an active PubKey, but a queued Pubkey as well:
+There are two main reasons for having both an active PubKey and a queued Pubkey:
 
 1. Having a queued key ensures that when a pubkey expires, there will not be a situation where the chain lacks any pubkeys, and hence keyshares cannot be submitted by validators.
 2. Destination chains relying on FairyRing chain to receive aggregated keyshares for decrypting their corresponding transactions have to fetch the pubkeys from FairyRing chain using IBC. However, IBC can be pretty slow, often taking up 3-7 blocks to get the response back. This may lead to a situation where the active key expires and although a new active key has been registered on the FairyRing Chain, the same has not yet reflected on the destination chain. This opens up avenues for frontrunning in the destination chain. Having a queued key automatically take its place as the active key prevents such a scenario.
@@ -40,7 +40,7 @@ The FairyRing chain currently gets its PubKeys via transactions from trusted add
 
 In the FairyRing chain, PubKeys are redundantly stored in the state of both the KeySahre and the PEP module. This is done to prevent malicious or accidental overwrite of keys in the FairyRing chain itself.
 
-Both the FairyRing chainand the destination chains must include the Pep Module. The Pep module has the aability to fetch pubkeys from the FairyRing chain via IBC. However, this may cause corruption of PubKeys in the FairyRing chain itself since someone may setup a relayer where the FairyRing chain becomes the destination chain and a malicious source chain. This can change the Pubkeys of the PEP module of the FairyRing chain.
+Both the FairyRing chain and the destination chains must include the Pep Module. The Pep module has the aability to fetch pubkeys from the FairyRing chain via IBC. However, this may cause corruption of PubKeys in the FairyRing chain itself since someone may setup a relayer where the FairyRing chain becomes the destination chain and a malicious source chain. This can change the Pubkeys of the PEP module of the FairyRing chain.
 
 To prevent this, the KeyShare module forcibly overwrites the keys in the state of the PEP module at the beginning of every block. We make sure that the begin block of the KeyShare Module executes before the begin block of the PEP module to ensure that the correct keys are in use.
 

@@ -1,10 +1,10 @@
 # Integrating FairyPort
 
-To resolve the issue of fetching aggregated keyshares from FairyRing to the Destination chain, we introduce an ad-hoc relayer like solution woith FairyPort
+To resolve the issue of fetching aggregated keyshares from FairyRing to the Destination chain, we introduce an ad-hoc relayer like solution with FairyPort
 
 ## Working Principle
 
-The FairyPort is a simple service that can be set up to listen for Aggregated Keyshare Generation Events on the FairyRing via Websocket. As soon as such an event occurs, it immediately makes a `CreateAggregatedKeyShare` Tx to the destination chain with the Aggregated KeyShare data.
+The FairyPort is a simple service that is set up to listen for Aggregated Keyshare Generation Events on the FairyRing via Websocket. As soon as such an event occurs, it immediately makes a `CreateAggregatedKeyShare` Tx to the destination chain with the Aggregated KeyShare data.
 
 ## Why it Works
 
@@ -14,4 +14,4 @@ The Aggregated Keyshare value can be easily checked on-chain in the destination 
 
 However, for this to work, the Destination chain must have a copy of the pubkey against which the aggregated keyshare was generated. But, since PubKeys will last for a long duration (about a 100 blocks, but subject to change via governance on the FairyRing chain), it can be easily fetched via normal IBC (following the ICS standards), i.e., we do not have the one-block time limitation on this. Moreover, to make sure that the destination chains do not fall behind when the pubkey expires on the FairyRing chain, the source has a pair of pubkeys, an `Active Key` and a `Queued Key`.
 
->NOTE: The destination chains do not have to mandatorily run the FairyPort service. They can use their own ad-hoc service for this. The important thing is to be able to fetch the aggregated keyshares from FairyRing in a one-block time.
+>NOTE: The destination chains do not have to run the FairyPort service. They can use their own ad-hoc service for this. The important thing is to be able to fetch the aggregated keyshares from FairyRing in a one-block time.
