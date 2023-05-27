@@ -17,3 +17,5 @@ We are working on decentralizing this process by moving the key generation proce
 ## Submitting Keyshares
 
 After generating KeyShares for a particular block, validators can submit them to the FairyRing Chain via the `SendKeyshare` Tx in the Keyshare module. Currently, validators submitting an invalid KeyShare will be slashed, but there is no penalty for failing to submit keyshares. However, we plan on implementing a slashing mechanism to penalize validators for missing KeyShare submissions and/or reward validators for submitting them in a timely manner.
+
+![ ](docs/images/KeyShare_Gen_and_Submit.png?raw=true)

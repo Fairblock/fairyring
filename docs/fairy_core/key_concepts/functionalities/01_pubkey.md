@@ -53,4 +53,6 @@ However, the logic for adding new keys is similar to that of the PEP module:
 
 To register a new Queued key on the FairyRing chain, a `CreateLatestPubKey` tx has to be made from a verified address to the `KeyShare Module`.
 
-![ ](https://github.com/FairBlock/fairyring/blob/audit/docs/images/PubKey_Update_Fairy.png?raw=true)
+![ ](docs/images/PubKey_Update_Fairy.png?raw=true)
+
+![ ](docs/images/PubKey_Update_Destination.png?raw=true)

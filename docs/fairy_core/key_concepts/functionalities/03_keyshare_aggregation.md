@@ -13,3 +13,7 @@ The main reason of IBC being slow is vector commitments. Essentially, by the ICS
 We have leveraged this property by simple setting up an off-chain relayer-like process, called FairyPort. This service simply makes a transaction to the destination chain with the newly generated aggregated keyshare, as soon as it is available. The FairyPort does this by making a `CreateAggregatedKeyShare` transaction to the PEP module of the destination chain.
 
 It is, however, not enough. Since there is no ordering for execution of transactions from the mempool, malicious validators can still forcefully execute frontrunning transactions before executing the `CreateAggregatedKeyShare` transaction. To get over this problem, we directly look for any `CreateAggregatedKeyShare` Tx in the mempool during the execution of the begin block of the Pep module. If such a tx is found, we manually execute it directly in the begin block, leaving no opportunity for front-running.
+
+![ ](docs/images/Aggr_KS_Gen_Success.png)
+
+![ ](docs/images/Aggr_KS_Gen_Fail.png)

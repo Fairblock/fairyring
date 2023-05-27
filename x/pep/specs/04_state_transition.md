@@ -56,7 +56,7 @@ The queued public key is modified by receiving an acknowledgement IBC packet. It
 Ref:
 
 ```go
-func (k Keeper) OnAcknowledgementCurrentHeightPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CurrentKeysPacketData, ack channeltypes.Acknowledgement)
+func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CurrentKeysPacketData, ack channeltypes.Acknowledgement)
 
 func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate
 ```

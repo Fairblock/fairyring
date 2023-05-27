@@ -6,7 +6,7 @@ The PEP module emits the following events:
 
 This event is emitted on successful addition of an encrypted Tx to the store.
 
-### Attributes
+### Submitted Encrypted Tx Attributes
 
 - SubmittedEncryptedTxEventCreator : Creator Address
 - SubmittedEncryptedTxEventTargetHeight : Target height for execution of the Tx
@@ -19,7 +19,7 @@ This event is emitted on successful addition of an encrypted Tx to the store.
 
 This event is executed when a stored encrypted Tx is executed successfully at the target height.
 
-### Attributes
+### Encrypted Tx Executed Attributes
 
 - EncryptedTxExecutedEventCreator : Creator Address
 - EncryptedTxExecutedEventHeight : Execution height of Tx
@@ -32,7 +32,7 @@ This event is executed when a stored encrypted Tx is executed successfully at th
 
 This event is emitted when an aggregated keyshare verification fails.
 
-### Attributes
+### KeyShare Verification Attributes
 
 - KeyShareVerificationCreator : Creator address
 - KeyShareVerificationHeight : Height for which aggregated Keyshare was submitted

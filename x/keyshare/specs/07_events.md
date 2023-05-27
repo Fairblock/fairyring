@@ -6,7 +6,7 @@ The KeyShare module emits the following events:
 
 This event is emitted when a new validator is registered and becomes eligible to submit keyshares.
 
-### Attributes
+### Registered Validator Attributes
 
 - RegisteredValidatorEventCreator : The address of the sender of the Register Validator message.
 
@@ -16,14 +16,14 @@ This event is emitted when a new validator is registered and becomes eligible to
 
 This event is emitted when a validator successfully submits a keyshare for a block.
 
-### Attributes
+### Send Keyshare Attributes
 
 - SendKeyshareEventValidator : Validator address
 - SendKeyshareEventKeyshareBlockHeight : Keyshare Block Height
 - SendKeyshareEventReceivedBlockHeight : Block height when keyshare is received
 - SendKeyshareEventMessage : The submitted keyshare encoded in hex
 - SendKeyshareEventCommitment : The submitted commitment encoded in hex
-- SendKeyshareEventIndex: The index of the submitted keyshare 
+- SendKeyshareEventIndex: The index of the submitted keyshare
 
 ---
 
@@ -31,7 +31,7 @@ This event is emitted when a validator successfully submits a keyshare for a blo
 
 This even is emitted when the aggregation of keyshares is complete
 
-### Attributes
+### KeyShare Aggregated Attributes
 
 - KeyShareAggregatedEventBlockHeight : Block height for the aggregated keyshare
 - KeyShareAggregatedEventData : The value of the aggregated keyshare

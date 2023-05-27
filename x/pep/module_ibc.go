@@ -151,7 +151,7 @@ func (im IBCModule) OnRecvPacket(
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 	case *types.PepPacketData_CurrentKeysPacket:
-		packetAck, err := im.keeper.OnRecvCurrentHeightPacket(ctx, modulePacket, *packet.CurrentKeysPacket)
+		packetAck, err := im.keeper.OnRecvCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket)
 		if err != nil {
 			ack = channeltypes.NewErrorAcknowledgement(err)
 		} else {
@@ -203,7 +203,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 	case *types.PepPacketData_CurrentKeysPacket:
-		err := im.keeper.OnAcknowledgementCurrentHeightPacket(ctx, modulePacket, *packet.CurrentKeysPacket, ack)
+		err := im.keeper.OnAcknowledgementCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket, ack)
 		if err != nil {
 			return err
 		}
@@ -256,7 +256,7 @@ func (im IBCModule) OnTimeoutPacket(
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 	case *types.PepPacketData_CurrentKeysPacket:
-		err := im.keeper.OnTimeoutCurrentHeightPacket(ctx, modulePacket, *packet.CurrentKeysPacket)
+		err := im.keeper.OnTimeoutCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket)
 		if err != nil {
 			return err
 		}

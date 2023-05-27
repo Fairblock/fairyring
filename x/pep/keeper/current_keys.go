@@ -87,8 +87,8 @@ func (k Keeper) TransmitCurrentKeysPacket(
 	return nil
 }
 
-// OnRecvCurrentHeightPacket processes packet reception
-func (k Keeper) OnRecvCurrentHeightPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CurrentKeysPacketData) (packetAck types.CurrentKeysPacketAck, err error) {
+// OnRecvCurrentKeysPacket processes packet reception
+func (k Keeper) OnRecvCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CurrentKeysPacketData) (packetAck types.CurrentKeysPacketAck, err error) {
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
@@ -113,9 +113,9 @@ func (k Keeper) OnRecvCurrentHeightPacket(ctx sdk.Context, packet channeltypes.P
 	return packetAck, nil
 }
 
-// OnAcknowledgementCurrentHeightPacket responds to the success or failure of a packet
+// OnAcknowledgementCurrentKeysPacket responds to the success or failure of a packet
 // acknowledgement written on the receiving chain.
-func (k Keeper) OnAcknowledgementCurrentHeightPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CurrentKeysPacketData, ack channeltypes.Acknowledgement) error {
+func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CurrentKeysPacketData, ack channeltypes.Acknowledgement) error {
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
 		k.Logger(ctx).Error("Ack Error")
@@ -160,8 +160,8 @@ func (k Keeper) OnAcknowledgementCurrentHeightPacket(ctx sdk.Context, packet cha
 	}
 }
 
-// OnTimeoutCurrentHeightPacket responds to the case where a packet has not been transmitted because of a timeout
-func (k Keeper) OnTimeoutCurrentHeightPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CurrentKeysPacketData) error {
+// OnTimeoutCurrentKeysPacket responds to the case where a packet has not been transmitted because of a timeout
+func (k Keeper) OnTimeoutCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CurrentKeysPacketData) error {
 	k.Logger(ctx).Info("Packet timeout")
 	k.Logger(ctx).Info(data.String())
 	return nil

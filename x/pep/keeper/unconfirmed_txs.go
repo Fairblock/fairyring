@@ -3,6 +3,7 @@ package keeper
 import (
 	"bytes"
 	"encoding/hex"
+	"errors"
 	"fairyring/x/pep/types"
 	"fmt"
 	"strconv"
@@ -50,14 +51,20 @@ func (k Keeper) ProcessUnconfirmedTxs(ctx sdk.Context, utxs *coretypes.ResultUnc
 // processMessage executes a MsgCreateAggregatedKeyShare message. It decrypts the message,
 // checks for its authenticity and updates the last registered height of FairyRing
 func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKeyShare) error {
-	var dummData = "test data"
+	var dummyData = "test data"
 	var encryptedDataBytes bytes.Buffer
 	var dummyDataBuffer bytes.Buffer
-	dummyDataBuffer.Write([]byte(dummData))
+	dummyDataBuffer.Write([]byte(dummyData))
 	var decryptedDataBytes bytes.Buffer
 
+	ak, found := k.GetActivePubKey(ctx)
+	if !found {
+		k.Logger(ctx).Error("Active key not found")
+		return errors.New("active key not found")
+	}
+
 	keyByte, _ := hex.DecodeString(msg.Data)
-	publicKeyByte, _ := hex.DecodeString(msg.PublicKey)
+	publicKeyByte, _ := hex.DecodeString(ak.PublicKey)
 
 	suite := bls.NewBLS12381Suite()
 	publicKeyPoint := suite.G1().Point()
@@ -89,7 +96,7 @@ func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKey
 		return err
 	}
 
-	if decryptedDataBytes.String() != dummData {
+	if decryptedDataBytes.String() != dummyData {
 		k.Logger(ctx).Error("Decrypted data does not match original data")
 		k.Logger(ctx).Error(err.Error())
 		ctx.EventManager().EmitEvent(
@@ -106,7 +113,7 @@ func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKey
 		Height:    msg.Height,
 		Data:      msg.Data,
 		Creator:   msg.Creator,
-		PublicKey: msg.PublicKey,
+		PublicKey: ak.PublicKey,
 	})
 
 	latestHeight, err := strconv.ParseUint(k.GetLatestHeight(ctx), 10, 64)

@@ -7,3 +7,5 @@ At the target height, all encrypted transactions are fetched from the state of t
 ## Pep Nonce
 
 When an encrypted tx is being processed, the sender's Pep Nonce will be increased by 1. After decrypted the transaction, the PEP module will verify the signature with Pep Nonce instead of the original cosomos account nonce, to see if the tx is signing with the correct Pep nonce. The Pep nonce used for signing the tx has to be greater or equal to the correct nonce, if a larger Pep nonce is being used, user's pep nonce will be updated to the nonce used + 1.
+
+![ ](docs/images/Encrypted_tx_execution.png)
