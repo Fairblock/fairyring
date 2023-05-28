@@ -1,11 +1,11 @@
 package keeper
 
 import (
-	distIBE "DistributedIBE"
 	"context"
 	"encoding/hex"
 	"fairyring/x/keyshare/types"
 	"fmt"
+	distIBE "github.com/FairBlock/DistributedIBE"
 	"strconv"
 
 	"github.com/drand/kyber"

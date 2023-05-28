@@ -3,9 +3,9 @@ module fairyring
 go 1.18
 
 require (
-	DistributedIBE v0.0.0-00010101000000-000000000000
 	cosmossdk.io/errors v1.0.0-beta.7
 	cosmossdk.io/math v1.0.0
+	github.com/FairBlock/DistributedIBE v0.0.0-20230528025616-f58fb2b93eaf
 	github.com/cosmos/cosmos-sdk v0.46.3
 	github.com/cosmos/ibc-go/v5 v5.0.0
 	github.com/drand/kyber v1.2.0
@@ -24,8 +24,6 @@ require (
 	google.golang.org/grpc v1.53.0
 	gopkg.in/yaml.v2 v2.4.0
 )
-
-replace DistributedIBE => github.com/FairBlock/DistributedIBE v0.0.0-20230525150152-83dcdd7d5ab3
 
 require (
 	cloud.google.com/go v0.107.0 // indirect

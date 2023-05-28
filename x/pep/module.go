@@ -1,12 +1,12 @@
 package pep
 
 import (
-	enc "DistributedIBE/encryption"
 	"bytes"
 	"context"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	enc "github.com/FairBlock/DistributedIBE/encryption"
 	"math"
 	"strconv"
 

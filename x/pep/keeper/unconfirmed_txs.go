@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"strconv"
 
-	enc "DistributedIBE/encryption"
+	enc "github.com/FairBlock/DistributedIBE/encryption"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	cosmostxTypes "github.com/cosmos/cosmos-sdk/types/tx"
