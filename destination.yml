@@ -9,11 +9,13 @@ accounts:
   - name: alice
     coins:
       - 1000token
-      - 1000000000stake
+      - 2000000000stake
+    mnemonic: "thought awake grace need recipe erode bullet dust salt breeze rural desk camp deal devote wisdom rotate pledge repair garbage aspect find lens afraid"
   - name: bob
     coins:
       - 500token
-      - 100000000stake
+      - 200000000stake
+    mnemonic: "south arm eager adjust dish aware rocket logic winter enlist idle reflect slogan urge clump angle input mechanic setup blue distance setup retreat rain"
 faucet:
   name: bob
   coins:

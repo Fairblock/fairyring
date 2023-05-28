@@ -1,10 +1,5 @@
 FROM --platform=$BUILDPLATFORM golang:1.20-bullseye AS build-env
 
-WORKDIR /src/app/fairyring/DistributedIBE
-COPY DistributedIBE/go.mod DistributedIBE/go.sum ./
-RUN go mod download
-COPY . .
-
 WORKDIR /src/app/fairyring
 COPY go.mod go.sum ./
 RUN go mod download

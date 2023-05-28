@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package fairyring.pep;
+
+import "fairyring/pep/aggregated_key_share.proto";
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "fairyring/x/pep/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc SubmitEncryptedTx (MsgSubmitEncryptedTx) returns (MsgSubmitEncryptedTxResponse);
+
+  // this line is used by starport scaffolding # proto/tx/rpc
+  rpc CreateAggregatedKeyShare (MsgCreateAggregatedKeyShare) returns (MsgCreateAggregatedKeyShareResponse);
+}
+message MsgSubmitEncryptedTx {
+  string creator           = 1;
+  string data              = 2;
+  uint64 targetBlockHeight = 3;
+}
+
+message MsgSubmitEncryptedTxResponse {}
+
+// this line is used by starport scaffolding # proto/tx/message
+message MsgCreateAggregatedKeyShare {
+  string creator = 1;
+  uint64 height  = 2;
+  string data    = 3;
+  string publicKey = 4;
+}
+
+message MsgCreateAggregatedKeyShareResponse {}

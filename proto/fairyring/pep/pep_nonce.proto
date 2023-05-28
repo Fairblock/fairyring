@@ -1,0 +1,11 @@
+syntax = "proto3";
+package fairyring.pep;
+
+option go_package = "fairyring/x/pep/types";
+
+message PepNonce {
+  string address = 1; 
+  uint64 nonce = 2; 
+  
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+package fairyring.keyshare;
+
+option go_package = "fairyring/x/keyshare/types";
+
+message AggregatedKeyShare {
+  uint64 height = 1; 
+  string data = 2; 
+  
+}
+

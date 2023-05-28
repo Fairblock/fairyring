@@ -17,3 +17,9 @@ client:
 faucet:
   name: bob
   coins: ["5token", "100000stake"]
+genesis:
+  app_state:
+    keyshare:
+      params:
+        trusted_addresses: ["cosmos18hl5c9xn5dze2g50uaw0l2mr02ew57zk2fgr8q"]
+        key_expiry: 200

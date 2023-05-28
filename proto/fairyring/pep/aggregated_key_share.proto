@@ -1,0 +1,12 @@
+syntax = "proto3";
+package fairyring.pep;
+
+option go_package = "fairyring/x/pep/types";
+
+message AggregatedKeyShare {
+  uint64 height = 1; 
+  string data = 2;
+  string publicKey = 3;
+  string creator = 4;
+}
+
