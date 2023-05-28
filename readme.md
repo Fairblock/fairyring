@@ -37,31 +37,25 @@ Optionally add `rv` tag to reset and have verbose output.
 
 ### Running a validator locally with Docker
 
-1. Copy DistributedIBE inside fairyring directory
-
-```
-cp -r ../DistributedIBE ./
-```
-
-2. Build docker image
+1. Build docker image
 
 ```
 docker build -t fairyring .
 ```
 
-3. Setup validator
+2. Setup validator
 
 ```
 docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring setup.sh <moniker>
 ```
 
-4. Create new genesis.json
+3. Create new genesis.json
 
 ```
 docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd collect-gentxs
 ```
 
-5. Start the validator
+4. Start the validator
 
 ```
 docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd start
@@ -69,7 +63,7 @@ docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fai
 
 #### Running multiple validator
 
-1. Repeat step 1 - 3 on all the machines,
+1. Repeat step 1 - 2 on all the machines,
 
 2. Run the following command for all the address created in other machine in the master validator:
 
@@ -99,7 +93,7 @@ docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fai
 
 ### Becoming a validator
 
-1. Follow step 1 - 3 on [Run validator locally](#Running-a-validator-locally-with-Docker)
+1. Follow step 1 - 2 on [Run validator locally](#Running-a-validator-locally-with-Docker)
 
 2. Make sure you have enough coins in your account
 
