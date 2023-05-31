@@ -12,7 +12,7 @@ import (
 
 func CmdCreateAggregatedKeyShare() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-aggregated-key-share [height] [data] [publicKey]",
+		Use:   "create-aggregated-key-share [height] [data]",
 		Short: "Create a new AggregatedKeyShare",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -34,7 +34,6 @@ func CmdCreateAggregatedKeyShare() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				indexHeight,
 				argData,
-				args[2],
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
