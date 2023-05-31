@@ -549,7 +549,11 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 	}
 
 	strHeight := am.keeper.GetLatestHeight(ctx)
-	height, _ := strconv.ParseUint(strHeight, 10, 64)
+	height, err := strconv.ParseUint(strHeight, 10, 64)
+	if err != nil {
+		am.keeper.Logger(ctx).Error("Latest height does not exists in EndBlock")
+		return []abci.ValidatorUpdate{}
+	}
 
 	ak, found := am.keeper.GetActivePubKey(ctx)
 	if found {

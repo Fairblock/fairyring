@@ -132,8 +132,8 @@ func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet chann
 
 		k.Logger(ctx).Info("Got ack result")
 		k.Logger(ctx).Info(packetAck.String())
-		k.Logger(ctx).Info(string(packetAck.ActiveKey.PublicKey))
-		k.Logger(ctx).Info(string(packetAck.QueuedKey.PublicKey))
+		k.Logger(ctx).Info(packetAck.ActiveKey.PublicKey)
+		k.Logger(ctx).Info(packetAck.QueuedKey.PublicKey)
 
 		ak, found := k.GetActivePubKey(ctx)
 		if !found {

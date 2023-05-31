@@ -28,10 +28,10 @@ host = '127.0.0.1'
 port = 3001
 
 [[chains]]
-id = 'auction'
+id = 'fairyring_test_1'
 type = 'CosmosSdk'
-rpc_addr = 'http://0.0.0.0:26657'
-websocket_addr = 'ws://0.0.0.0:26657/websocket'
+rpc_addr = 'http://0.0.0.0:16657'
+websocket_addr = 'ws://0.0.0.0:16657/websocket'
 grpc_addr = 'http://0.0.0.0:9090'
 rpc_timeout = '10s'
 account_prefix = 'cosmos'
@@ -53,17 +53,17 @@ denominator = '3'
 
 [chains.gas_price]
 price = 0.1
-denom = 'stake'
+denom = 'frt'
 
 [chains.address_type]
 derivation = 'cosmos'
 
 
 [[chains]]
-id = 'destination'
+id = 'fairyring_test_2'
 type = 'CosmosSdk'
-rpc_addr = 'http://0.0.0.0:26659'
-websocket_addr = 'ws://0.0.0.0:26659/websocket'
+rpc_addr = 'http://0.0.0.0:26657'
+websocket_addr = 'ws://0.0.0.0:26657/websocket'
 grpc_addr = 'http://0.0.0.0:9092'
 rpc_timeout = '10s'
 account_prefix = 'cosmos'
@@ -85,7 +85,7 @@ denominator = '3'
 
 [chains.gas_price]
 price = 0.1
-denom = 'stake'
+denom = 'frt'
 
 [chains.address_type]
 derivation = 'cosmos'
