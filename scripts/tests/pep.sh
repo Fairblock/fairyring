@@ -91,7 +91,7 @@ SIGNED_DATA=$($BINARY tx sign unsigned.json --from $VALIDATOR_2 --offline --acco
 
 
 echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
-CIPHER=$(./$ENCRYPTER $AGG_KEY_HEIGHT $PUB_KEY $SIGNED_DATA)
+CIPHER=$($ENCRYPTER $AGG_KEY_HEIGHT $PUB_KEY $SIGNED_DATA)
 
 
 rm -r unsigned.json &> /dev/null
