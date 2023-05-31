@@ -98,16 +98,20 @@ func (k Keeper) OnRecvCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Pac
 
 	ak, found := k.GetActivePubKey(ctx)
 	if found {
-		packetAck.ActiveKey.Creator = ak.Creator
-		packetAck.ActiveKey.Expiry = ak.Expiry
-		packetAck.ActiveKey.PublicKey = ak.PublicKey
+		packetAck.ActiveKey = &types.ActivePubKey{
+			PublicKey: ak.PublicKey,
+			Creator:   ak.Creator,
+			Expiry:    ak.Expiry,
+		}
 	}
 
 	qk, found := k.GetQueuedPubKey(ctx)
 	if found {
-		packetAck.QueuedKey.Creator = qk.Creator
-		packetAck.QueuedKey.Expiry = qk.Expiry
-		packetAck.QueuedKey.PublicKey = qk.PublicKey
+		packetAck.QueuedKey = &types.QueuedPubKey{
+			PublicKey: qk.PublicKey,
+			Creator:   qk.Creator,
+			Expiry:    qk.Expiry,
+		}
 	}
 
 	return packetAck, nil
@@ -132,8 +136,11 @@ func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet chann
 
 		k.Logger(ctx).Info("Got ack result")
 		k.Logger(ctx).Info(packetAck.String())
-		k.Logger(ctx).Info(packetAck.ActiveKey.PublicKey)
-		k.Logger(ctx).Info(packetAck.QueuedKey.PublicKey)
+
+		if packetAck.ActiveKey == nil {
+			k.Logger(ctx).Info("active key is nil in packet ack")
+			return nil
+		}
 
 		ak, found := k.GetActivePubKey(ctx)
 		if !found {
@@ -142,6 +149,11 @@ func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet chann
 			if ak.Expiry <= packetAck.ActiveKey.Expiry {
 				k.SetActivePubKey(ctx, *packetAck.ActiveKey)
 			}
+		}
+
+		if packetAck.QueuedKey == nil {
+			k.Logger(ctx).Info("queued key is nil in packet ack")
+			return nil
 		}
 
 		qk, found := k.GetQueuedPubKey(ctx)
