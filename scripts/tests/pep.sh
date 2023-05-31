@@ -149,13 +149,29 @@ if [ "$VALIDATOR_PEP_NONCE" != "1" ]; then
   exit 1
 fi
 
-
 echo "Query target account token balance after encrypted tx being executed from pep module on chain fairyring_test_2"
 RESULT=$($BINARY query bank balances $WALLET_2 --node $CHAIN2_NODE -o json)
 TARGET_BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
 TARGET_BAL_AFTER=$(echo "$RESULT" | jq -r '.balances[0].amount')
 echo "Target account has: $TARGET_BAL_AFTER $TARGET_BAL_DENOM after encrypted bank send tx being executed, balance increased $(($TARGET_BAL_AFTER - $TARGET_BAL)) $TARGET_BAL_DENOM"
 
+echo "Submit invalid aggregated key to pep module on chain fairyring_test_2"
+RESULT=$($BINARY tx pep create-aggregated-key-share $((AGG_KEY_HEIGHT+1)) 123123123 --from $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode block --keyring-backend test -o json -y)
+ACTION=$(echo "$RESULT" | jq -r '.logs[0].events[0].attributes[0].value')
+if [ "$ACTION" != "/fairyring.pep.MsgCreateAggregatedKeyShare" ]; then
+  echo "ERROR: Pep module submit aggregated key error. Expected tx action to be MsgCreateAggregatedKeyShare,  got '$ACTION'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  exit 1
+fi
+
+sleep 2 
+
+echo "Query latest height from pep module on chain fairyring_test_2"
+RESULT=$($BINARY q pep latest-height --node $CHAIN2_NODE -o json | jq -r '.height')
+if [ "$RESULT" != "$AGG_KEY_HEIGHT" ]; then
+  echo "ERROR: Pep module query latest height error, Expected latest height to be same as aggregated key share height: '$AGG_KEY_HEIGHT', got '$RESULT'"
+  exit 1
+fi
 
 echo ""
 echo "###########################################################"
