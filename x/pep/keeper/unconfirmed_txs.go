@@ -110,10 +110,9 @@ func (k Keeper) processMessage(ctx sdk.Context, msg types.MsgCreateAggregatedKey
 	}
 
 	k.SetAggregatedKeyShare(ctx, types.AggregatedKeyShare{
-		Height:    msg.Height,
-		Data:      msg.Data,
-		Creator:   msg.Creator,
-		PublicKey: ak.PublicKey,
+		Height:  msg.Height,
+		Data:    msg.Data,
+		Creator: msg.Creator,
 	})
 
 	latestHeight, err := strconv.ParseUint(k.GetLatestHeight(ctx), 10, 64)

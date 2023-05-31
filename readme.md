@@ -242,7 +242,10 @@ make install
 3. Building the executable of [ShareGenerator](https://github.com/FairBlock/ShareGenerator) and [Encrypter](https://github.com/FairBlock/encrypter) and put them in this directory
 
 
-4. Running the tests
+4. Install [Hermes Relayer](https://hermes.informal.systems/) by following this [guide](https://hermes.informal.systems/quick-start/installation.html)
+
+
+5. Running the tests 
 
 ```bash
 make integration-test-all

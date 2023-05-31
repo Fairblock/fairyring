@@ -208,6 +208,17 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	am.keeper.Logger(ctx).Info(fmt.Sprintf("Last executed Height: %d", lastExecutedHeight))
 	am.keeper.Logger(ctx).Info(fmt.Sprintf("Latest height from fairyring: %s", strHeight))
 
+	activePubkey, found := am.keeper.GetActivePubKey(ctx)
+	if !found {
+		am.keeper.Logger(ctx).Error("Active public key does not exists")
+		return
+	}
+
+	if len(activePubkey.Creator) == 0 && len(activePubkey.PublicKey) == 0 {
+		am.keeper.Logger(ctx).Error("Active public key does not exists")
+		return
+	}
+
 	// loop over all encrypted Txs from the last executed height to the current height
 	for h := lastExecutedHeight + 1; h <= height; h++ {
 		arr := am.keeper.GetEncryptedTxAllFromHeight(ctx, h)
@@ -219,9 +230,9 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			continue
 		}
 
-		publicKeyByte, err := hex.DecodeString(key.GetPublicKey())
+		publicKeyByte, err := hex.DecodeString(activePubkey.PublicKey)
 		if err != nil {
-			am.keeper.Logger(ctx).Error("Error decoding public key")
+			am.keeper.Logger(ctx).Error("Error decoding active public key")
 			am.keeper.Logger(ctx).Error(err.Error())
 			return
 		}
@@ -538,7 +549,11 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 	}
 
 	strHeight := am.keeper.GetLatestHeight(ctx)
-	height, _ := strconv.ParseUint(strHeight, 10, 64)
+	height, err := strconv.ParseUint(strHeight, 10, 64)
+	if err != nil {
+		am.keeper.Logger(ctx).Error("Latest height does not exists in EndBlock")
+		return []abci.ValidatorUpdate{}
+	}
 
 	ak, found := am.keeper.GetActivePubKey(ctx)
 	if found {

@@ -171,6 +171,7 @@ sync-docs:
 ###############################################################################
 
 integration-test-all: init-test-framework \
+	init-relayer \
 	test-keyshare-module \
 	test-pep-module
 	-@rm -rf ./data
@@ -183,6 +184,11 @@ test-keyshare-module:
 test-pep-module:
 	@echo "Testing Pep module..."
 	./scripts/tests/pep.sh
+
+init-relayer:
+	@echo "Initializing hermes relayer..."
+	./scripts/tests/relayer.sh
+	@sleep 2
 
 init-test-framework: clean-testing-data install
 	@echo "Initializing fairyring..."

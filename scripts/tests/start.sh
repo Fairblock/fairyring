@@ -35,6 +35,11 @@ if pgrep -x "$BINARY" >/dev/null; then
     killall $BINARY
 fi
 
+if pgrep -x "hermes" >/dev/null; then
+    echo "Terminating Hermes Relayer..."
+    killall hermes
+fi
+
 echo "Removing previous data..."
 rm -rf $CHAIN_DIR/$CHAINID_1 &> /dev/null
 rm -rf $CHAIN_DIR/$CHAINID_2 &> /dev/null
@@ -61,8 +66,10 @@ echo $WALLET_MNEMONIC_1 | $BINARY keys add wallet1 --home $CHAIN_DIR/$CHAINID_1 
 echo $WALLET_MNEMONIC_2 | $BINARY keys add wallet2 --home $CHAIN_DIR/$CHAINID_2 --recover --keyring-backend=test
 echo $WALLET_MNEMONIC_3 | $BINARY keys add wallet3 --home $CHAIN_DIR/$CHAINID_1 --recover --keyring-backend=test
 echo $WALLET_MNEMONIC_4 | $BINARY keys add wallet4 --home $CHAIN_DIR/$CHAINID_2 --recover --keyring-backend=test
-echo $RLY_MNEMONIC_1 | $BINARY keys add rly1 --home $CHAIN_DIR/$CHAINID_1 --recover --keyring-backend=test
-echo $RLY_MNEMONIC_2 | $BINARY keys add rly2 --home $CHAIN_DIR/$CHAINID_2 --recover --keyring-backend=test
+RLY1_JSON=$(echo $RLY_MNEMONIC_1 | $BINARY keys add rly1 --home $CHAIN_DIR/$CHAINID_1 --recover --keyring-backend=test --output json)
+echo $RLY1_JSON | jq --arg mnemonic "$RLY_MNEMONIC_1" '. += $ARGS.named'> rly1.json
+RLY2_JSON=$(echo $RLY_MNEMONIC_2 | $BINARY keys add rly2 --home $CHAIN_DIR/$CHAINID_2 --recover --keyring-backend=test --output json)
+echo $RLY2_JSON | jq --arg mnemonic "$RLY_MNEMONIC_2" '. += $ARGS.named'> rly2.json
 
 VAL1_ADDR=$($BINARY keys show val1 --home $CHAIN_DIR/$CHAINID_1 --keyring-backend test -a)
 VAL2_ADDR=$($BINARY keys show val2 --home $CHAIN_DIR/$CHAINID_2 --keyring-backend test -a)
@@ -105,6 +112,7 @@ sed -i -e 's/timeout_commit = "5s"/timeout_commit = "1s"/g' $CHAIN_DIR/$CHAINID_
 sed -i -e 's/timeout_propose = "3s"/timeout_propose = "1s"/g' $CHAIN_DIR/$CHAINID_2/config/config.toml
 sed -i -e 's/index_all_keys = false/index_all_keys = true/g' $CHAIN_DIR/$CHAINID_2/config/config.toml
 sed -i -e 's/enable = false/enable = true/g' $CHAIN_DIR/$CHAINID_2/config/app.toml
+sed -i -e 's/0.0.0.0:9090/0.0.0.0:'"$GRPCPORT_2"'/g' $CHAIN_DIR/$CHAINID_2/config/app.toml
 sed -i -e 's/swagger = false/swagger = true/g' $CHAIN_DIR/$CHAINID_2/config/app.toml
 sed -i -e 's#"tcp://0.0.0.0:1317"#"tcp://0.0.0.0:'"$RESTPORT_2"'"#g' $CHAIN_DIR/$CHAINID_2/config/app.toml
 sed -i -e 's#":8080"#":'"$ROSETTA_2"'"#g' $CHAIN_DIR/$CHAINID_2/config/app.toml
@@ -124,3 +132,28 @@ $BINARY start --log_level trace --log_format json --home $CHAIN_DIR/$CHAINID_1 -
 echo "Starting $CHAINID_2 in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID_2.log"
 $BINARY start --log_level trace --log_format json --home $CHAIN_DIR/$CHAINID_2 --pruning=nothing --grpc.address="0.0.0.0:$GRPCPORT_2" --grpc-web.address="0.0.0.0:$GRPCWEB_2" > $CHAIN_DIR/$CHAINID_2.log 2>&1 &
+
+echo "Checking if there is an existing keys for Hermes Relayer..."
+HKEY_1=$(hermes --config hermes_config.toml keys list --chain fairyring_test_1 | sed -n '/SUCCESS/d; s/.*(\([^)]*\)).*/\1/p')
+if [ "$HKEY_1" == "" ]; then
+  echo "Key not found for chain id: fairyring_test_1 in Hermes Relayer Keys..."
+  echo "Creating key..."
+  hermes --config hermes_config.toml keys add --chain fairyring_test_1 --key-file rly1.json
+fi
+
+HKEY_2=$(hermes --config hermes_config.toml keys list --chain fairyring_test_2 | sed -n '/SUCCESS/d; s/.*(\([^)]*\)).*/\1/p')
+if [ "$HKEY_2" == "" ]; then
+  echo "Key not found for chain id: fairyring_test_1 in Hermes Relayer Keys..."
+  echo "Creating key..."
+  hermes --config hermes_config.toml keys add --chain fairyring_test_2 --key-file rly2.json
+fi
+
+rm rly1.json &> /dev/null
+rm rly2.json &> /dev/null
+
+echo "Waiting both chain to run..."
+sleep 5
+
+echo "Starting Hermes Relayer..."
+echo "Creating log file at $CHAIN_DIR/relayer.log"
+hermes --config hermes_config.toml start > $CHAIN_DIR/relayer.log 2>&1 &
