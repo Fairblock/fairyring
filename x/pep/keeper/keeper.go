@@ -3,7 +3,7 @@ package keeper
 import (
 	"fmt"
 
-	"fairyring/x/pep/types"
+	"github.com/FairBlock/fairyring/x/pep/types"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"

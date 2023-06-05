@@ -6,9 +6,10 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	enc "github.com/FairBlock/DistributedIBE/encryption"
 	"math"
 	"strconv"
+
+	enc "github.com/FairBlock/DistributedIBE/encryption"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/types/tx"
@@ -22,9 +23,9 @@ import (
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"fairyring/x/pep/client/cli"
-	"fairyring/x/pep/keeper"
-	"fairyring/x/pep/types"
+	"github.com/FairBlock/fairyring/x/pep/client/cli"
+	"github.com/FairBlock/fairyring/x/pep/keeper"
+	"github.com/FairBlock/fairyring/x/pep/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"

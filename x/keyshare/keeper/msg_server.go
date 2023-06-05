@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"fairyring/x/keyshare/types"
+	"github.com/FairBlock/fairyring/x/keyshare/types"
 )
 
 type msgServer struct {

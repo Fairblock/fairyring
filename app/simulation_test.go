@@ -1,13 +1,14 @@
 package app_test
 
 import (
-	"fairyring/app"
+	"os"
+	"testing"
+
+	"github.com/FairBlock/fairyring/app"
 	"github.com/cosmos/cosmos-sdk/simapp"
 	simulationtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 	"github.com/stretchr/testify/require"
-	"os"
-	"testing"
 )
 
 func init() {

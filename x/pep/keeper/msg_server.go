@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"fairyring/x/pep/types"
+	"github.com/FairBlock/fairyring/x/pep/types"
 )
 
 type msgServer struct {

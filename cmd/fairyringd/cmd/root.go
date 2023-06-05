@@ -34,10 +34,11 @@ import (
 	tmcli "github.com/tendermint/tendermint/libs/cli"
 	"github.com/tendermint/tendermint/libs/log"
 	dbm "github.com/tendermint/tm-db"
+
 	// this line is used by starport scaffolding # root/moduleImport
 
-	"fairyring/app"
-	appparams "fairyring/app/params"
+	"github.com/FairBlock/fairyring/app"
+	appparams "github.com/FairBlock/fairyring/app/params"
 )
 
 // NewRootCmd creates a new root command for a Cosmos SDK application

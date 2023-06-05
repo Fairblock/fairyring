@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 
-	"fairyring/x/keyshare/types"
+	"github.com/FairBlock/fairyring/x/keyshare/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"

@@ -3,8 +3,8 @@ package pep
 import (
 	"fmt"
 
-	"fairyring/x/pep/keeper"
-	"fairyring/x/pep/types"
+	"github.com/FairBlock/fairyring/x/pep/keeper"
+	"github.com/FairBlock/fairyring/x/pep/types"
 
 	sdkerrors "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"

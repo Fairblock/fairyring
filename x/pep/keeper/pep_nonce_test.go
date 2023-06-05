@@ -4,10 +4,10 @@ import (
 	"strconv"
 	"testing"
 
-	keepertest "fairyring/testutil/keeper"
-	"fairyring/testutil/nullify"
-	"fairyring/x/pep/keeper"
-	"fairyring/x/pep/types"
+	keepertest "github.com/FairBlock/fairyring/testutil/keeper"
+	"github.com/FairBlock/fairyring/testutil/nullify"
+	"github.com/FairBlock/fairyring/x/pep/keeper"
+	"github.com/FairBlock/fairyring/x/pep/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"

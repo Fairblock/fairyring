@@ -11,7 +11,7 @@ import "fairyring/pep/pub_key.proto";
 
 // this line is used by starport scaffolding # genesis/proto/import
 
-option go_package = "fairyring/x/pep/types";
+option go_package = "github.com/FairBlock/fairyring/x/pep/types";
 
 // GenesisState defines the pep module's genesis state.
 message GenesisState {

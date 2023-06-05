@@ -3,8 +3,8 @@ package keeper_test
 import (
 	"testing"
 
-	testkeeper "fairyring/testutil/keeper"
-	"fairyring/x/keyshare/types"
+	testkeeper "github.com/FairBlock/fairyring/testutil/keeper"
+	"github.com/FairBlock/fairyring/x/keyshare/types"
 
 	"github.com/stretchr/testify/require"
 )

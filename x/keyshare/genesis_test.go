@@ -3,10 +3,10 @@ package keyshare_test
 import (
 	"testing"
 
-	keepertest "fairyring/testutil/keeper"
-	"fairyring/testutil/nullify"
-	"fairyring/x/keyshare"
-	"fairyring/x/keyshare/types"
+	keepertest "github.com/FairBlock/fairyring/testutil/keeper"
+	"github.com/FairBlock/fairyring/testutil/nullify"
+	"github.com/FairBlock/fairyring/x/keyshare"
+	"github.com/FairBlock/fairyring/x/keyshare/types"
 
 	"github.com/stretchr/testify/require"
 )

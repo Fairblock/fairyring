@@ -3,7 +3,7 @@ package fairyring.pep;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "fairyring/x/pep/types";
+option go_package = "github.com/FairBlock/fairyring/x/pep/types";
 
 message EncryptedTx {
   uint64 targetHeight = 1; 

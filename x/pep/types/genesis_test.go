@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"fairyring/x/pep/types"
+	"github.com/FairBlock/fairyring/x/pep/types"
 
 	"github.com/stretchr/testify/require"
 )

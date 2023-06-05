@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"fairyring/x/keyshare/types"
+	"github.com/FairBlock/fairyring/x/keyshare/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"

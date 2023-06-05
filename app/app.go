@@ -104,17 +104,17 @@ import (
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
 
-	keysharemodule "fairyring/x/keyshare"
-	keysharemodulekeeper "fairyring/x/keyshare/keeper"
-	keysharemoduletypes "fairyring/x/keyshare/types"
-	pepmodule "fairyring/x/pep"
-	pepmodulekeeper "fairyring/x/pep/keeper"
-	pepmoduletypes "fairyring/x/pep/types"
+	keysharemodule "github.com/FairBlock/fairyring/x/keyshare"
+	keysharemodulekeeper "github.com/FairBlock/fairyring/x/keyshare/keeper"
+	keysharemoduletypes "github.com/FairBlock/fairyring/x/keyshare/types"
+	pepmodule "github.com/FairBlock/fairyring/x/pep"
+	pepmodulekeeper "github.com/FairBlock/fairyring/x/pep/keeper"
+	pepmoduletypes "github.com/FairBlock/fairyring/x/pep/types"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
-	appparams "fairyring/app/params"
-	"fairyring/docs"
+	appparams "github.com/FairBlock/fairyring/app/params"
+	"github.com/FairBlock/fairyring/docs"
 )
 
 const (

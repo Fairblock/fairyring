@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"encoding/hex"
 	"errors"
-	"fairyring/x/pep/types"
 	"fmt"
 	"strconv"
+
+	"github.com/FairBlock/fairyring/x/pep/types"
 
 	enc "github.com/FairBlock/DistributedIBE/encryption"
 

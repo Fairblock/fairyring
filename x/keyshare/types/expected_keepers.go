@@ -1,7 +1,7 @@
 package types
 
 import (
-	peptypes "fairyring/x/pep/types"
+	peptypes "github.com/FairBlock/fairyring/x/pep/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"

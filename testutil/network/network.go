@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"fairyring/app"
+	"github.com/FairBlock/fairyring/app"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"

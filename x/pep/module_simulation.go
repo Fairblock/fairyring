@@ -3,9 +3,9 @@ package pep
 import (
 	"math/rand"
 
-	"fairyring/testutil/sample"
-	pepsimulation "fairyring/x/pep/simulation"
-	"fairyring/x/pep/types"
+	"github.com/FairBlock/fairyring/testutil/sample"
+	pepsimulation "github.com/FairBlock/fairyring/x/pep/simulation"
+	"github.com/FairBlock/fairyring/x/pep/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"

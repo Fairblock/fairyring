@@ -10,7 +10,7 @@ import (
 	// "github.com/cosmos/cosmos-sdk/client/flags"
 	// sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"fairyring/x/pep/types"
+	"github.com/FairBlock/fairyring/x/pep/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module

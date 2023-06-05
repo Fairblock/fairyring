@@ -4,8 +4,8 @@ import (
 	"math/rand"
 	"strconv"
 
-	"fairyring/x/keyshare/keeper"
-	"fairyring/x/keyshare/types"
+	"github.com/FairBlock/fairyring/x/keyshare/keeper"
+	"github.com/FairBlock/fairyring/x/keyshare/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"

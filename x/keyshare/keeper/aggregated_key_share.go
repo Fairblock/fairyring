@@ -2,7 +2,8 @@ package keeper
 
 import (
 	"encoding/binary"
-	"fairyring/x/keyshare/types"
+
+	"github.com/FairBlock/fairyring/x/keyshare/types"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"

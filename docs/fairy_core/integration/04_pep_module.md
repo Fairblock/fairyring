@@ -20,9 +20,9 @@ To integrate the PEP module to any destination chain, the following steps are ne
 
 ```go
 import (
-    pepmodule "fairyring/x/pep"
-    pepmodulekeeper "fairyring/x/pep/keeper"
-    pepmoduletypes "fairyring/x/pep/types"
+    pepmodule "github.com/FairBlock/fairyring/x/pep"
+    pepmodulekeeper "github.com/FairBlock/fairyring/x/pep/keeper"
+    pepmoduletypes "github.com/FairBlock/fairyring/x/pep/types"
 )
 ```
 

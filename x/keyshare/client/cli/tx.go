@@ -8,7 +8,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	// "github.com/cosmos/cosmos-sdk/client/flags"
-	"fairyring/x/keyshare/types"
+	"github.com/FairBlock/fairyring/x/keyshare/types"
 )
 
 var (

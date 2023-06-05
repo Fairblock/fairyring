@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"fairyring/x/pep/types"
+	"github.com/FairBlock/fairyring/x/pep/types"
 
 	sdkerrors "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"

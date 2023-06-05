@@ -5,8 +5,8 @@ import (
 
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 
-	"fairyring/x/keyshare/types"
-	pepKeeper "fairyring/x/pep/keeper"
+	"github.com/FairBlock/fairyring/x/keyshare/types"
+	pepKeeper "github.com/FairBlock/fairyring/x/pep/keeper"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"

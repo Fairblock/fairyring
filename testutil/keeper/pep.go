@@ -1,11 +1,12 @@
 package keeper
 
 import (
-	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	"testing"
 
-	"fairyring/x/pep/keeper"
-	"fairyring/x/pep/types"
+	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
+
+	"github.com/FairBlock/fairyring/x/pep/keeper"
+	"github.com/FairBlock/fairyring/x/pep/types"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"

@@ -1,12 +1,13 @@
 package simulation
 
 import (
-	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
-	"github.com/cosmos/cosmos-sdk/x/simulation"
 	"math/rand"
 
-	"fairyring/x/keyshare/keeper"
-	"fairyring/x/keyshare/types"
+	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
+	"github.com/cosmos/cosmos-sdk/x/simulation"
+
+	"github.com/FairBlock/fairyring/x/keyshare/keeper"
+	"github.com/FairBlock/fairyring/x/keyshare/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"

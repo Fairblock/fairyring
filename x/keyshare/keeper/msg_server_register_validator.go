@@ -3,7 +3,8 @@ package keeper
 import (
 	"context"
 	"encoding/hex"
-	"fairyring/x/keyshare/types"
+
+	"github.com/FairBlock/fairyring/x/keyshare/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

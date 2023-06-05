@@ -7,9 +7,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 
-	keepertest "fairyring/testutil/keeper"
-	"fairyring/x/keyshare/keeper"
-	"fairyring/x/keyshare/types"
+	keepertest "github.com/FairBlock/fairyring/testutil/keeper"
+	"github.com/FairBlock/fairyring/x/keyshare/keeper"
+	"github.com/FairBlock/fairyring/x/keyshare/types"
 )
 
 // Prevent strconv unused error

@@ -3,8 +3,9 @@ package keyshare
 import (
 	"context"
 	"encoding/json"
-	peptypes "fairyring/x/pep/types"
 	"fmt"
+
+	peptypes "github.com/FairBlock/fairyring/x/pep/types"
 
 	// this line is used by starport scaffolding # 1
 
@@ -13,9 +14,9 @@ import (
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"fairyring/x/keyshare/client/cli"
-	"fairyring/x/keyshare/keeper"
-	"fairyring/x/keyshare/types"
+	"github.com/FairBlock/fairyring/x/keyshare/client/cli"
+	"github.com/FairBlock/fairyring/x/keyshare/keeper"
+	"github.com/FairBlock/fairyring/x/keyshare/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
