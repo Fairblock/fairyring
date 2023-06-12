@@ -115,7 +115,7 @@ or
 ### Prior to genesis creation and network launch
 
 - [Install](#installation-steps) FairyRing application
-- Remove any data from previous run of `faryringd`
+- Remove any data from previous run of `fairyringd`
 
 ```shell
 rm -rf ~/.fairyring
