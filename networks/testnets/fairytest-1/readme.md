@@ -81,7 +81,7 @@ ulimit -Sn
 - Clone git repository
 
 ```shell
-git clone https://github.com/FairBlock/fairyring
+git clone git@github.com:FairBlock/fairyring.git
 ```
 
 - Checkout release tag
@@ -169,6 +169,7 @@ fairyringd gentx \
   > **NOTE:** the Pull Request will be merged by the maintainers to confirm the inclusion of the validator at the genesis. The final genesis file will be published under the file `networks/testnets/fairytest-1/genesis.json`.
 - Once the submission process has closed and the genesis file has been created, replace the contents of your `${HOME}/.fairyring/config/genesis.json` with that of `networks/testnets/fairytest-1/genesis.json`
 - Add the required `persistent_peers` or `seeds` in `${HOME}/.fairyring/config/config.toml` from `networks/testnets/fairytest-1/peers-nodes.txt`
+- Update the `~/.fairyring/config/config.toml` file and make sure that the peer-port (26656) is publicly reachable. If you are running sentry nodes, make sure that the peer-port of your sentry is publicly reachable
 - Start node
 
 ```shell
