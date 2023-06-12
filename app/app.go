@@ -118,7 +118,7 @@ import (
 )
 
 const (
-	AccountAddressPrefix = "cosmos"
+	AccountAddressPrefix = "fairy"
 	Name                 = "fairyring"
 )
 

@@ -5,9 +5,7 @@ release/
 .vscode/
 .DS_Store
 build/
-gentx/
 DistributedIBE/
-*.json
 encrypter
 ShareGenerator
 data/
