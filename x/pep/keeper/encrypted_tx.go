@@ -114,13 +114,11 @@ func (k Keeper) RemoveEncryptedTx(
 	targetHeight uint64,
 	index uint64,
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyPrefix))
-	b := store.Get(types.EncryptedTxAllFromHeightKey(
-		targetHeight,
-	))
+	arr := k.GetEncryptedTxAllFromHeight(ctx, targetHeight)
 
-	var arr types.EncryptedTxArray
-	k.cdc.MustUnmarshal(b, &arr)
+	if index >= uint64(len(arr.EncryptedTx)) {
+		return
+	}
 
 	arr.EncryptedTx = append(arr.EncryptedTx[:index], arr.EncryptedTx[index+1:]...)
 
