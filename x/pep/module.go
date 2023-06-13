@@ -347,12 +347,20 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			}
 
 			am.keeper.Logger(ctx).Info(fmt.Sprintf("Decrypt TX Successfully: %s", decryptedTx.String()))
-			
+
 			txDecoderTx, err := am.txConfig.TxDecoder()(decryptedTx.Bytes())
 
 			if err != nil {
 				am.keeper.Logger(ctx).Error("Decoding Tx error in Beginblock")
 				am.keeper.Logger(ctx).Error(err.Error())
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to decode tx data to Cosmos Tx"),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
 				continue
 			}
 
