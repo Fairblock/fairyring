@@ -11,7 +11,6 @@ import (
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
-	"github.com/cosmos/cosmos-sdk/types/tx"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	bls "github.com/drand/kyber-bls12381"
 
@@ -100,9 +99,6 @@ func (AppModuleBasic) GetQueryCmd() *cobra.Command {
 // ----------------------------------------------------------------------------
 // AppModule
 // ----------------------------------------------------------------------------
-
-//type deliverTxFn func(abci.RequestDeliverTx) abci.ResponseDeliverTx
-//type checkTxFn func(abci.RequestCheckTx) abci.ResponseCheckTx
 
 // AppModule implements the AppModule interface that defines the inter-dependent methods that modules need to implement
 type AppModule struct {
@@ -351,40 +347,16 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			}
 
 			am.keeper.Logger(ctx).Info(fmt.Sprintf("Decrypt TX Successfully: %s", decryptedTx.String()))
-
-			var signed tx.Tx
-			err = am.cdcJson.UnmarshalJSON(decryptedTx.Bytes(), &signed)
+			
+			txDecoderTx, err := am.txConfig.TxDecoder()(decryptedTx.Bytes())
 
 			if err != nil {
-				am.keeper.Logger(ctx).Error("UnmarshalJson to Tx Error in BeginBlock")
+				am.keeper.Logger(ctx).Error("Decoding Tx error in Beginblock")
 				am.keeper.Logger(ctx).Error(err.Error())
-				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.EncryptedTxRevertedEventType,
-						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to unmarshal data to PepTx"),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-					),
-				)
 				continue
 			}
 
-			decodedTxJson, err := am.txConfig.TxJSONDecoder()(decryptedTx.Bytes())
-			if err != nil {
-				am.keeper.Logger(ctx).Error("TXJson Decoding error in Beginblock")
-				am.keeper.Logger(ctx).Error(err.Error())
-				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.EncryptedTxRevertedEventType,
-						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to decode tx data to Cosmos Tx"),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-					),
-				)
-				continue
-			}
-
-			wrappedTx, err := am.txConfig.WrapTxBuilder(decodedTxJson)
+			wrappedTx, err := am.txConfig.WrapTxBuilder(txDecoderTx)
 			if err != nil {
 				am.keeper.Logger(ctx).Error("Error in wrapping tx to TxBuilder")
 				am.keeper.Logger(ctx).Error(err.Error())
