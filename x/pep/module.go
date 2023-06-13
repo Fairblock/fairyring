@@ -265,7 +265,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		am.keeper.Logger(ctx).Info(skPoint.String())
 
 		for _, eachTx := range arr.EncryptedTx {
-			am.keeper.RemoveEncryptedTx(ctx, eachTx.TargetHeight, eachTx.Index)
 
 			if currentNonce, found := am.keeper.GetPepNonce(ctx, eachTx.Creator); found && currentNonce.Nonce == math.MaxUint64 {
 				am.keeper.Logger(ctx).Error("Invalid PEP Nonce")
@@ -516,6 +515,8 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				),
 			)
 		}
+
+		am.keeper.RemoveAllEncryptedTxFromHeight(ctx, h)
 	}
 
 }
