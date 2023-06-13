@@ -89,7 +89,7 @@ git clone git@github.com:FairBlock/fairyring.git
 ```shell
 cd fairyring
 git fetch --tags
-git checkout v0.1.0
+git checkout v0.1.1
 ```
 
 - Install
@@ -244,12 +244,12 @@ The `persistent_peers` needs a comma-separated list of trusted peers on the netw
 
 ## Version
 
-This chain is currently running on fairyring [v0.1.0](https://github.com/FairBlock/fairyring/releases/tag/v0.1.0)
-Commit Hash: [63dd8e8081e572f60fc02e0359657e41624e47c6](https://github.com/FairBlock/fairyring/commit/63dd8e8081e572f60fc02e0359657e41624e47c6)
+This chain is currently running on fairyring [v0.1.1](https://github.com/FairBlock/fairyring/releases/tag/v0.1.1)
+Commit Hash: [4062213809e5694b45279dd9370f52673fbd6538](https://github.com/FairBlock/fairyring/commit/4062213809e5694b45279dd9370f52673fbd6538)
 
 ## Binary
 
-The binary can be downloaded from [here](https://github.com/FairBlock/fairyring/releases/tag/v0.1.0)
+The binary can be downloaded from [here](https://github.com/FairBlock/fairyring/releases/tag/v0.1.1)
 
 ## Explorer
 
