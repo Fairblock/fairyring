@@ -19,7 +19,6 @@ var _ = strconv.IntSize
 
 func SimulateMsgCreateAggregatedKeyShare(
 	ak types.AccountKeeper,
-	bk types.BankKeeper,
 	k keeper.Keeper,
 ) simtypes.Operation {
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
@@ -49,7 +48,6 @@ func SimulateMsgCreateAggregatedKeyShare(
 			ModuleName:      types.ModuleName,
 			CoinsSpentInMsg: sdk.NewCoins(),
 			AccountKeeper:   ak,
-			Bankkeeper:      bk,
 		}
 		return simulation.GenAndDeliverTxWithRandFees(txCtx)
 	}

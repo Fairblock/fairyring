@@ -48,10 +48,6 @@ type AppModuleBasic struct {
 	cdcJson codec.JSONCodec
 }
 
-//func NewAppModuleBasic(cdc codec.BinaryCodec) AppModuleBasic {
-//	return AppModuleBasic{cdc: cdc}
-//}
-
 // Name returns the name of the module as a string
 func (AppModuleBasic) Name() string {
 	return types.ModuleName

@@ -76,7 +76,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgRegisterValidator,
-		keysharesimulation.SimulateMsgRegisterValidator(am.accountKeeper, am.bankKeeper, am.keeper),
+		keysharesimulation.SimulateMsgRegisterValidator(am.keeper),
 	))
 
 	var weightMsgSendKeyshare int
@@ -87,7 +87,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgSendKeyshare,
-		keysharesimulation.SimulateMsgSendKeyshare(am.accountKeeper, am.bankKeeper, am.keeper),
+		keysharesimulation.SimulateMsgSendKeyshare(am.keeper),
 	))
 
 	var weightMsgCreateLatestPubKey int
@@ -98,7 +98,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCreateLatestPubKey,
-		keysharesimulation.SimulateMsgCreateLatestPubKey(am.accountKeeper, am.bankKeeper, am.keeper),
+		keysharesimulation.SimulateMsgCreateLatestPubKey(am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

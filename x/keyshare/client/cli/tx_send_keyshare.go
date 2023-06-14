@@ -1,18 +1,13 @@
 package cli
 
 import (
-	"strconv"
-
 	"fairyring/x/keyshare/types"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 )
-
-var _ = strconv.Itoa(0)
 
 func CmdSendKeyshare() *cobra.Command {
 	cmd := &cobra.Command{

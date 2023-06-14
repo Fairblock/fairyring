@@ -18,8 +18,6 @@ import (
 var _ = strconv.IntSize
 
 func SimulateMsgCreateLatestPubKey(
-	ak types.AccountKeeper,
-	bk types.BankKeeper,
 	_ keeper.Keeper,
 ) simtypes.Operation {
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
@@ -42,8 +40,6 @@ func SimulateMsgCreateLatestPubKey(
 			SimAccount:      simAccount,
 			ModuleName:      types.ModuleName,
 			CoinsSpentInMsg: sdk.NewCoins(),
-			AccountKeeper:   ak,
-			Bankkeeper:      bk,
 		}
 		return simulation.GenAndDeliverTxWithRandFees(txCtx)
 	}

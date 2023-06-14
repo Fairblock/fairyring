@@ -1,14 +1,11 @@
 package cli
 
 import (
-	"fmt"
-	"time"
-
-	"github.com/spf13/cobra"
-
-	"github.com/cosmos/cosmos-sdk/client"
-	// "github.com/cosmos/cosmos-sdk/client/flags"
 	"fairyring/x/keyshare/types"
+	"fmt"
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/spf13/cobra"
+	"time"
 )
 
 var (
