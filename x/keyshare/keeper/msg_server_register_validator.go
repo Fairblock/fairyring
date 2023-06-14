@@ -21,7 +21,7 @@ func (k msgServer) RegisterValidator(goCtx context.Context, msg *types.MsgRegist
 	isStaking := false
 	var senderConsAddr string
 
-	allStakingValidators := k.stakingKeeper.GetAllValidators(ctx)
+	allStakingValidators := k.stakingKeeper.GetLastValidators(ctx)
 	for _, eachV := range allStakingValidators {
 		valAddr, _ := sdk.ValAddressFromBech32(eachV.OperatorAddress)
 		valAccAddr := sdk.AccAddress(valAddr)
