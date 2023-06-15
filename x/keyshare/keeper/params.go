@@ -11,6 +11,7 @@ func (k Keeper) GetParams(ctx sdk.Context) types.Params {
 	return types.NewParams(
 		k.KeyExpiry(ctx),
 		k.TrustedAddresses(ctx),
+		k.MinimumBonded(ctx),
 	)
 }
 
@@ -28,5 +29,11 @@ func (k Keeper) KeyExpiry(ctx sdk.Context) (res uint64) {
 // TrustedAddresses returns the TrustedAddresses param
 func (k Keeper) TrustedAddresses(ctx sdk.Context) (res []string) {
 	k.paramstore.Get(ctx, types.KeyTrustedAddresses, &res)
+	return
+}
+
+// MinimumBonded returns the MinimumBonded param
+func (k Keeper) MinimumBonded(ctx sdk.Context) (res uint64) {
+	k.paramstore.Get(ctx, types.KeyMinimumBonded, &res)
 	return
 }

@@ -10,4 +10,5 @@ message Params {
   option (gogoproto.goproto_stringer) = false;
   uint64 key_expiry = 1;
   repeated string trusted_addresses = 2;
+  uint64 minimum_bonded = 3;
 }
