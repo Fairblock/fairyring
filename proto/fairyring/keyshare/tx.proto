@@ -37,6 +37,8 @@ message MsgSendKeyshareResponse {
   uint64 keyshareIndex       = 4;
   uint64 blockHeight         = 5;
   uint64 receivedBlockHeight = 6;
+  bool   success             = 7;
+  string errorMessage        = 8;
 }
 
 

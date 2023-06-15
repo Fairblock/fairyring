@@ -57,6 +57,8 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			KeyshareIndex:       msg.KeyShareIndex,
 			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
 			BlockHeight:         msg.BlockHeight,
+			Success:             false,
+			ErrorMessage:        "Invalid KeyShare",
 		}, nil
 	}
 
@@ -116,6 +118,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			KeyshareIndex:       msg.KeyShareIndex,
 			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
 			BlockHeight:         msg.BlockHeight,
+			Success:             true,
 		}, nil
 	}
 
@@ -179,6 +182,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		KeyshareIndex:       msg.KeyShareIndex,
 		ReceivedBlockHeight: uint64(ctx.BlockHeight()),
 		BlockHeight:         msg.BlockHeight,
+		Success:             true,
 	}, nil
 }
 
