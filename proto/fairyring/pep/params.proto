@@ -8,5 +8,5 @@ option go_package = "fairyring/x/pep/types";
 // Params defines the parameters for the module.
 message Params {
   option (gogoproto.goproto_stringer) = false;
-  
+  uint64 maximum_encrypted_tx = 1;
 }

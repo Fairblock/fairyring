@@ -32,6 +32,22 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 		return nil, types.ErrInvalidTargetBlockHeight
 	}
 
+	targetHeightEncryptedTxs := k.GetEncryptedTxAllFromHeight(ctx, msg.TargetBlockHeight)
+	currentEncryptedTxCount := uint64(len(targetHeightEncryptedTxs.EncryptedTx))
+	maximumEncryptedTx := k.MaximumEncryptedTx(ctx)
+
+	if currentEncryptedTxCount >= maximumEncryptedTx {
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(types.EncryptedTxRevertedEventType,
+				sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, msg.Creator),
+				sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(msg.TargetBlockHeight, 10)),
+				sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Exceeded maximum number of encrypted tx in target block height"),
+				sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, "0"),
+			),
+		)
+		return nil, types.ErrExceededMaximumEncryptedTx
+	}
+
 	encryptedTx := types.EncryptedTx{
 		TargetHeight: msg.TargetBlockHeight,
 		Data:         msg.Data,
