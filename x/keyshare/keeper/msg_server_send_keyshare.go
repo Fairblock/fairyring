@@ -5,8 +5,9 @@ import (
 	"encoding/hex"
 	"fairyring/x/keyshare/types"
 	"fmt"
-	distIBE "github.com/FairBlock/DistributedIBE"
 	"strconv"
+
+	distIBE "github.com/FairBlock/DistributedIBE"
 
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"
@@ -48,7 +49,12 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			return nil, err
 		}
 
-		k.stakingKeeper.Slash(ctx, consAddr, ctx.BlockHeight()-1, 100, sdk.NewDecWithPrec(5, 1))
+		k.stakingKeeper.Slash(
+			ctx, consAddr,
+			ctx.BlockHeight()-1,
+			types.SlashPower,
+			sdk.NewDecWithPrec(types.SlashFactorValue, types.SlashFactorPrecision),
+		)
 
 		return &types.MsgSendKeyshareResponse{
 			Creator:             msg.Creator,
