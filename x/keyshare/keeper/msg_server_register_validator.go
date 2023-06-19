@@ -18,27 +18,20 @@ func (k msgServer) RegisterValidator(goCtx context.Context, msg *types.MsgRegist
 		return nil, types.ErrValidatorAlreadyRegistered.Wrap(msg.Creator)
 	}
 
-	isStaking := false
-	var senderConsAddr string
-
-	allStakingValidators := k.stakingKeeper.GetAllValidators(ctx)
-	for _, eachV := range allStakingValidators {
-		valAddr, _ := sdk.ValAddressFromBech32(eachV.OperatorAddress)
-		valAccAddr := sdk.AccAddress(valAddr)
-		consAddr, _ := eachV.GetConsAddr()
-
-		if valAccAddr.String() == msg.Creator {
-			isStaking = true
-			consByte := consAddr.Bytes()
-			consHex := hex.EncodeToString(consByte)
-			senderConsAddr = consHex
-			break
-		}
+	accAddr, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, err
 	}
 
-	if !isStaking {
+	stakingValidator, found := k.stakingKeeper.GetValidator(ctx, sdk.ValAddress(accAddr))
+	if !found {
 		return nil, types.ErrAccountNotStaking.Wrap(msg.Creator)
 	}
+
+	consAddr, _ := stakingValidator.GetConsAddr()
+	consByte := consAddr.Bytes()
+	consHex := hex.EncodeToString(consByte)
+	senderConsAddr := consHex
 
 	validator := types.ValidatorSet{
 		Index:     msg.Creator,
