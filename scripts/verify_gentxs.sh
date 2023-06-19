@@ -14,7 +14,7 @@ NO_COLOR='\033[0m' # No Color
 
 # Define expected denom and amount.
 expected_denom="ufairy"
-expected_amount="50000000"
+expected_amount="100000000000"
 
 # Check if a directory was provided.
 if [ -z "$1" ]
