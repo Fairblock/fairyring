@@ -28,9 +28,6 @@ func CmdCreateLatestPubKey() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				argPublicKey,
 			)
-			if err := msg.ValidateBasic(); err != nil {
-				return err
-			}
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
