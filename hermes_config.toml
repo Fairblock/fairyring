@@ -52,7 +52,7 @@ numerator = '1'
 denominator = '3'
 
 [chains.gas_price]
-price = 0.1
+price = 1
 denom = 'frt'
 
 [chains.address_type]
@@ -84,7 +84,7 @@ numerator = '1'
 denominator = '3'
 
 [chains.gas_price]
-price = 0.1
+price = 1
 denom = 'frt'
 
 [chains.address_type]
