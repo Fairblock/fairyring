@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	enc "github.com/FairBlock/DistributedIBE/encryption"
+	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	"math"
 	"strconv"
 
@@ -350,17 +351,25 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			txDecoderTx, err := am.txConfig.TxDecoder()(decryptedTx.Bytes())
 
 			if err != nil {
-				am.keeper.Logger(ctx).Error("Decoding Tx error in Beginblock")
+				am.keeper.Logger(ctx).Error("Decoding Tx error in BeginBlock... Trying JSON Decoder")
 				am.keeper.Logger(ctx).Error(err.Error())
-				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.EncryptedTxRevertedEventType,
-						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to decode tx data to Cosmos Tx"),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-					),
-				)
-				continue
+
+				txDecoderTx, err = am.txConfig.TxJSONDecoder()(decryptedTx.Bytes())
+				if err != nil {
+					am.keeper.Logger(ctx).Error("JSON Decoding Tx error in BeginBlock")
+					am.keeper.Logger(ctx).Error(err.Error())
+					ctx.EventManager().EmitEvent(
+						sdk.NewEvent(types.EncryptedTxRevertedEventType,
+							sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+							sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+							sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to decode tx data to Cosmos Tx"),
+							sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+						),
+					)
+					continue
+				} else {
+					am.keeper.Logger(ctx).Error("TX Successfully Decode with JSON Decoder")
+				}
 			}
 
 			wrappedTx, err := am.txConfig.WrapTxBuilder(txDecoderTx)
@@ -486,6 +495,30 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 					),
 				)
 				continue
+			}
+
+			txFee := wrappedTx.GetTx().GetFee()
+
+			if txFee.Empty() {
+				am.keeper.Logger(ctx).Error("Underlying Tx Fee not found")
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxRevertedEventType,
+						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Gas fee not found in encrypted tx"),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					),
+				)
+				continue
+			}
+
+			deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, txFee)
+			if deductFeeErr != nil {
+				am.keeper.Logger(ctx).Error("Deduct fee Err")
+				am.keeper.Logger(ctx).Error(deductFeeErr.Error())
+				continue
+			} else {
+				am.keeper.Logger(ctx).Info("Fee deducted without error")
 			}
 
 			handler := am.msgServiceRouter.Handler(txMsgs[0])
