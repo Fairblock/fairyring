@@ -2,6 +2,8 @@ package types
 
 import (
 	"fmt"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // DefaultIndex is the default global index
@@ -49,6 +51,14 @@ func (gs GenesisState) Validate() error {
 		aggregatedKeyShareIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
+
+	// Check for valid addresses in NONCE
+	for _, elem := range gs.PepNonceList {
+		_, err := sdk.AccAddressFromBech32(elem.Address)
+		if err != nil {
+			return err
+		}
+	}
 
 	return gs.Params.Validate()
 }
