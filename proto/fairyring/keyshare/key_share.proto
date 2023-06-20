@@ -6,11 +6,9 @@ option go_package = "fairyring/x/keyshare/types";
 message KeyShare {
   string validator = 1; 
   uint64 blockHeight = 2;
-  string commitment = 3;
-  string keyShare = 4;
-  uint64 keyShareIndex = 5;
-  uint64 receivedTimestamp = 6;
-  uint64 receivedBlockHeight = 7;
-  
+  string keyShare = 3;
+  uint64 keyShareIndex = 4;
+  uint64 receivedTimestamp = 5;
+  uint64 receivedBlockHeight = 6;
 }
 
