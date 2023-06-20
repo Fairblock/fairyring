@@ -3,6 +3,7 @@ package types
 import (
 	fmt "fmt"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"gopkg.in/yaml.v2"
 )
@@ -82,9 +83,18 @@ func validateKeyExpiry(v interface{}) error {
 
 // validate validates the TrustedAddresses param
 func validateTrustedAddresses(v interface{}) error {
-	_, ok := v.([]string)
+	trustedList, ok := v.([]string)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+
+	// Validate each address in the slice
+	for i, element := range trustedList {
+		// Perform validation logic on each element
+		_, err := sdk.AccAddressFromBech32(element)
+		if err != nil {
+			return fmt.Errorf("address at index %d is invalid", i)
+		}
 	}
 
 	return nil
