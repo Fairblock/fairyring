@@ -22,4 +22,7 @@ var (
 	ErrQueuedKeyAlreadyExists     = sdkerrors.Register(ModuleName, 1111, "a queued key already exists")
 	ErrAccountNotStaking          = sdkerrors.Register(ModuleName, 1112, "account is not staking")
 	ErrAddressNotTrusted          = sdkerrors.Register(ModuleName, 1113, "address is not trusted")
+	ErrEmptyCommitments           = sdkerrors.Register(ModuleName, 1114, "provided commitments are empty")
+	ErrCommitmentsNotFound        = sdkerrors.Register(ModuleName, 1115, "commitments not found")
+	ErrInvalidKeyShareIndex       = sdkerrors.Register(ModuleName, 1116, "invalid KeyShare index")
 )

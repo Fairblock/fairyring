@@ -10,11 +10,10 @@ const TypeMsgSendKeyshare = "send_keyshare"
 
 var _ sdk.Msg = &MsgSendKeyshare{}
 
-func NewMsgSendKeyshare(creator string, message string, commitment string, keyShareIndex uint64, blockHeight uint64) *MsgSendKeyshare {
+func NewMsgSendKeyshare(creator string, message string, keyShareIndex uint64, blockHeight uint64) *MsgSendKeyshare {
 	return &MsgSendKeyshare{
 		Creator:       creator,
 		Message:       message,
-		Commitment:    commitment,
 		KeyShareIndex: keyShareIndex,
 		BlockHeight:   blockHeight,
 	}

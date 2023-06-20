@@ -15,10 +15,12 @@ var _ sdk.Msg = &MsgCreateLatestPubKey{}
 func NewMsgCreateLatestPubKey(
 	creator string,
 	publicKey string,
+	commitments []string,
 ) *MsgCreateLatestPubKey {
 	return &MsgCreateLatestPubKey{
-		Creator:   creator,
-		PublicKey: publicKey,
+		Creator:     creator,
+		PublicKey:   publicKey,
+		Commitments: commitments,
 	}
 }
 
