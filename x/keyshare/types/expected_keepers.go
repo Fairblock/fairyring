@@ -3,8 +3,10 @@ package types
 import (
 	peptypes "fairyring/x/pep/types"
 
+	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)
@@ -27,4 +29,11 @@ type PepKeeper interface {
 	GetQueuedPubKey(ctx sdk.Context) (val peptypes.QueuedPubKey, found bool)
 	DeleteActivePubKey(ctx sdk.Context)
 	DeleteQueuedPubKey(ctx sdk.Context)
+}
+
+// StakingKeeper defines the expected interface needed to retrieve the list of validators.
+type StakingKeeper interface {
+	GetAllValidators(ctx sdk.Context) []stakingtypes.Validator
+	GetValidator(ctx sdk.Context, addr sdk.ValAddress) (stakingtypes.Validator, bool)
+	Slash(sdk.Context, sdk.ConsAddress, int64, int64, sdk.Dec) math.Int
 }
