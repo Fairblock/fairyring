@@ -3,22 +3,11 @@ package keeper
 import (
 	"context"
 	"fairyring/x/pep/types"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.MsgCreateAggregatedKeyShare) (*types.MsgCreateAggregatedKeyShareResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
+	// No execution of this message is done here.
+	// Validation and actual execution happens in the beginblock directly from the mempool
 
-	var aggregatedKeyShare = types.AggregatedKeyShare{
-		Creator: msg.Creator,
-		Height:  msg.Height,
-		Data:    msg.Data,
-	}
-
-	k.SetAggregatedKeyShare(
-		ctx,
-		aggregatedKeyShare,
-	)
 	return &types.MsgCreateAggregatedKeyShareResponse{}, nil
 }
