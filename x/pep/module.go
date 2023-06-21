@@ -3,17 +3,18 @@ package pep
 import (
 	"bytes"
 	"context"
+	cosmosmath "cosmossdk.io/math"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	enc "github.com/FairBlock/DistributedIBE/encryption"
-	"github.com/cosmos/cosmos-sdk/x/auth/ante"
-	"math"
-	"strconv"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
+	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	bls "github.com/drand/kyber-bls12381"
+	"math"
+	"strconv"
+	"strings"
 
 	// this line is used by starport scaffolding # 1
 
@@ -111,6 +112,7 @@ type AppModule struct {
 
 	msgServiceRouter *baseapp.MsgServiceRouter
 	txConfig         client.TxConfig
+	simCheck         func(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error)
 }
 
 func NewAppModule(
@@ -120,6 +122,7 @@ func NewAppModule(
 	bankKeeper types.BankKeeper,
 	msgServiceRouter *baseapp.MsgServiceRouter,
 	txConfig client.TxConfig,
+	simCheck func(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error),
 ) AppModule {
 	return AppModule{
 		AppModuleBasic:   AppModuleBasic{cdc: cdc, cdcJson: cdc},
@@ -128,6 +131,7 @@ func NewAppModule(
 		bankKeeper:       bankKeeper,
 		msgServiceRouter: msgServiceRouter,
 		txConfig:         txConfig,
+		simCheck:         simCheck,
 	}
 }
 
@@ -497,28 +501,51 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				continue
 			}
 
-			txFee := wrappedTx.GetTx().GetFee()
-
-			if txFee.Empty() {
-				am.keeper.Logger(ctx).Error("Underlying Tx Fee not found")
+			simCheckGas, _, err := am.simCheck(am.txConfig.TxEncoder(), txDecoderTx)
+			// We are using SimCheck() to only estimate gas for the underlying transaction
+			// Since user is supposed to sign the underlying transaction with Pep Nonce,
+			// is expected that we gets 'account sequence mismatch' error
+			// however, the underlying tx is not expected to get other errors
+			// such as insufficient fee, out of gas etc...
+			if err != nil && !strings.Contains(err.Error(), "account sequence mismatch") {
+				am.keeper.Logger(ctx).Error("Check Tx Fails")
+				am.keeper.Logger(ctx).Error(err.Error())
 				ctx.EventManager().EmitEvent(
 					sdk.NewEvent(types.EncryptedTxRevertedEventType,
 						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
 						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Gas fee not found in encrypted tx"),
+						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, err.Error()),
 						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 					),
 				)
 				continue
 			}
 
-			deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, txFee)
-			if deductFeeErr != nil {
-				am.keeper.Logger(ctx).Error("Deduct fee Err")
-				am.keeper.Logger(ctx).Error(deductFeeErr.Error())
-				continue
-			} else {
-				am.keeper.Logger(ctx).Info("Fee deducted without error")
+			txFee := wrappedTx.GetTx().GetFee()
+
+			// If it passes the CheckTx but Tx Fee is empty,
+			// that means the minimum-gas-prices for the validator is 0
+			// therefore, we are not charging for the tx execution
+			if !txFee.Empty() {
+				gasUsedInBig := cosmosmath.NewIntFromUint64(simCheckGas.GasUsed)
+				newCoins := make([]sdk.Coin, len(txFee))
+				for _, eachTxFee := range txFee {
+					newCoins = append(newCoins, sdk.NewCoin(
+						eachTxFee.Denom,
+						eachTxFee.Amount.Mul(gasUsedInBig),
+					))
+				}
+
+				am.keeper.Logger(ctx).Info(fmt.Sprintf("New Tx Fee: %v", newCoins))
+
+				deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, newCoins)
+				if deductFeeErr != nil {
+					am.keeper.Logger(ctx).Error("Deduct fee Err")
+					am.keeper.Logger(ctx).Error(deductFeeErr.Error())
+					continue
+				} else {
+					am.keeper.Logger(ctx).Info("Fee deducted without error")
+				}
 			}
 
 			handler := am.msgServiceRouter.Handler(txMsgs[0])

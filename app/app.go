@@ -529,6 +529,7 @@ func New(
 		app.BankKeeper,
 		app.MsgServiceRouter(),
 		encodingConfig.TxConfig,
+		app.SimCheck,
 	)
 
 	pepIBCModule := pepmodule.NewIBCModule(app.PepKeeper)
