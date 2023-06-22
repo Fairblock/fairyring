@@ -198,15 +198,19 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		}
 	}
 
-	if foundQk && foundQc {
+	if foundQk {
 		if qk.Expiry > height {
-			am.keeper.SetActiveCommitments(ctx, qc)
 			am.keeper.SetActivePubKey(ctx, types.ActivePubKey(qk))
 			am.pepKeeper.SetActivePubKey(ctx, peptypes.ActivePubKey(qk))
+			if foundQc {
+				am.keeper.SetActiveCommitments(ctx, qc)
+			}
 		}
 		am.keeper.DeleteQueuedPubKey(ctx)
 		am.pepKeeper.DeleteQueuedPubKey(ctx)
-		am.keeper.DeleteQueuedCommitments(ctx)
+		if foundQc {
+			am.keeper.DeleteQueuedCommitments(ctx)
+		}
 	}
 }
 
