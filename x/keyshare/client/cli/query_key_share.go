@@ -14,7 +14,7 @@ import (
 func CmdListKeyShare() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list-key-share",
-		Short: "list all keyShare",
+		Short: "List all keyshares of all validators",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
@@ -50,7 +50,7 @@ func CmdListKeyShare() *cobra.Command {
 func CmdShowKeyShare() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-key-share [validator] [block-height]",
-		Short: "shows a keyShare",
+		Short: "shows the keyshare of a particular validator for a particular block",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientQueryContext(cmd)

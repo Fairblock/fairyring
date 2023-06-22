@@ -13,7 +13,7 @@ import (
 func CmdCreateAggregatedKeyShare() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create-aggregated-key-share [height] [data]",
-		Short: "Create a new AggregatedKeyShare",
+		Short: "Submit a new aggregated keyshare into a destination chain",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes

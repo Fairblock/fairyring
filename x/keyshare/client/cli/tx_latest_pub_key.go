@@ -12,7 +12,7 @@ import (
 func CmdCreateLatestPubKey() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create-latest-pub-key [public-key]",
-		Short: "Create a latest public key",
+		Short: "Register a new pubkey to the chain",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 

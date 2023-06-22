@@ -13,7 +13,7 @@ import (
 func CmdListPepNonce() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list-pep-nonce",
-		Short: "list all PepNonce",
+		Short: "list all PepNonce of all addresses",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
@@ -49,7 +49,7 @@ func CmdListPepNonce() *cobra.Command {
 func CmdShowPepNonce() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-pep-nonce [address]",
-		Short: "shows a PepNonce",
+		Short: "shows a PepNonce for a particular address",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientQueryContext(cmd)

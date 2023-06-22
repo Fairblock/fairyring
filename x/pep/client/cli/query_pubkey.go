@@ -13,7 +13,7 @@ import (
 func CmdShowPubKey() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-active-pub-key",
-		Short: "Show the active public key",
+		Short: "Show the active and queued public key",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {

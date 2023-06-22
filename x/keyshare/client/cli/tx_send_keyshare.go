@@ -17,7 +17,7 @@ var _ = strconv.Itoa(0)
 func CmdSendKeyshare() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "send-keyshare [message] [commitment] [keyshare-index] [block-height]",
-		Short: "Broadcast message sendKeyshare",
+		Short: "Submit keyshare for a particular block",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argMessage := args[0]

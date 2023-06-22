@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 func CmdLatestHeight() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "latest-height",
-		Short: "Query latestHeight",
+		Short: "Query the latest recorded height of the Fairyring chain on the destination chain",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
