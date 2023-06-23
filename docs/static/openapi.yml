@@ -33096,6 +33096,20 @@ paths:
               params:
                 description: params holds all the parameters of this module.
                 type: object
+                properties:
+                  trusted_counter_parties:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        client_id:
+                          type: string
+                        connection_id:
+                          type: string
+                        channel_id:
+                          type: string
+                  channel_id:
+                    type: string
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -67190,6 +67204,20 @@ definitions:
     type: object
   fairyring.pep.Params:
     type: object
+    properties:
+      trusted_counter_parties:
+        type: array
+        items:
+          type: object
+          properties:
+            client_id:
+              type: string
+            connection_id:
+              type: string
+            channel_id:
+              type: string
+      channel_id:
+        type: string
     description: Params defines the parameters for the module.
   fairyring.pep.PepNonce:
     type: object
@@ -67347,6 +67375,20 @@ definitions:
       params:
         description: params holds all the parameters of this module.
         type: object
+        properties:
+          trusted_counter_parties:
+            type: array
+            items:
+              type: object
+              properties:
+                client_id:
+                  type: string
+                connection_id:
+                  type: string
+                channel_id:
+                  type: string
+          channel_id:
+            type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   fairyring.pep.QueryPubKeyResponse:
     type: object
@@ -67381,6 +67423,15 @@ definitions:
       expiry:
         type: string
         format: uint64
+  fairyring.pep.TrustedCounterParty:
+    type: object
+    properties:
+      client_id:
+        type: string
+      connection_id:
+        type: string
+      channel_id:
+        type: string
   ibc.applications.interchain_accounts.controller.v1.Params:
     type: object
     properties:

@@ -8,5 +8,12 @@ option go_package = "fairyring/x/pep/types";
 // Params defines the parameters for the module.
 message Params {
   option (gogoproto.goproto_stringer) = false;
-  
+  repeated TrustedCounterParty trusted_counter_parties = 1;
+  string channel_id = 2;
+}
+
+message TrustedCounterParty {
+  string client_id = 1;
+  string connection_id = 2;
+  string channel_id = 3;
 }

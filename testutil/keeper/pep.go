@@ -1,8 +1,9 @@
 package keeper
 
 import (
-	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	"testing"
+
+	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 
 	"fairyring/x/pep/keeper"
 	"fairyring/x/pep/types"
@@ -14,6 +15,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
+	connTypes "github.com/cosmos/ibc-go/v5/modules/core/03-connection/types"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	ibcexported "github.com/cosmos/ibc-go/v5/modules/core/exported"
 	"github.com/stretchr/testify/require"
@@ -43,6 +45,12 @@ type pepPortKeeper struct{}
 
 func (pepPortKeeper) BindPort(ctx sdk.Context, portID string) *capabilitytypes.Capability {
 	return &capabilitytypes.Capability{}
+}
+
+type pepconnectionKeeper struct{}
+
+func (pepconnectionKeeper) GetConnection(ctx sdk.Context, connectionID string) (connTypes.ConnectionEnd, bool) {
+	return connTypes.ConnectionEnd{}, true
 }
 
 func PepKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
@@ -75,6 +83,7 @@ func PepKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		pepChannelKeeper{},
 		pepPortKeeper{},
 		capabilityKeeper.ScopeToModule("pepScopedKeeper"),
+		pepconnectionKeeper{},
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, logger)

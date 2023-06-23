@@ -16,7 +16,8 @@ import (
 
 func (k Keeper) QueryFairyringCurrentKeys(ctx sdk.Context) error {
 	srcPort := k.GetPort(ctx)
-	srcChannel := k.GetChannel(ctx)
+	params := k.GetParams(ctx)
+	srcChannel := params.ChannelId
 
 	timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 	var packet types.CurrentKeysPacketData
@@ -126,6 +127,29 @@ func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet chann
 		k.Logger(ctx).Error(dispatchedAck.Error)
 		return errors.New(dispatchedAck.Error)
 	case *channeltypes.Acknowledgement_Result:
+		channel, found := k.ChannelKeeper.GetChannel(ctx, packet.SourcePort, packet.SourceChannel)
+		if !found {
+			return errors.New("channel info not found")
+		}
+
+		// Retrieve the connection associated with the channel
+		connection, found := k.connectionKeeper.GetConnection(ctx, channel.ConnectionHops[0])
+		if !found {
+			return errors.New("connection info not found")
+		}
+
+		parmas := k.GetParams(ctx)
+		trusted := verifyCounterparty(
+			connection.Counterparty.ClientId,
+			connection.Counterparty.ConnectionId,
+			channel.Counterparty.GetChannelID(),
+			parmas.TrustedCounterParties,
+		)
+
+		if !trusted {
+			return errors.New("counterparty is not trusted")
+		}
+
 		// Decode the packet acknowledgment
 		var packetAck types.CurrentKeysPacketAck
 
@@ -177,4 +201,18 @@ func (k Keeper) OnTimeoutCurrentKeysPacket(ctx sdk.Context, packet channeltypes.
 	k.Logger(ctx).Info("Packet timeout")
 	k.Logger(ctx).Info(data.String())
 	return nil
+}
+
+func verifyCounterparty(clientID string, connectionID string, channelId string, trustedChannels []*types.TrustedCounterParty) bool {
+	for _, channelInfo := range trustedChannels {
+		if channelInfo.ChannelId == clientID {
+			if channelInfo.ConnectionId == connectionID {
+				if channelInfo.ChannelId == channelId {
+					return true
+				}
+			}
+		}
+	}
+
+	return false
 }

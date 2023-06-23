@@ -520,6 +520,7 @@ func New(
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
 		scopedPepKeeper,
+		app.IBCKeeper.ConnectionKeeper,
 	)
 	pepModule := pepmodule.NewAppModule(
 		appCodec,

@@ -5,7 +5,7 @@ ignite relayer configure -a \
   --source-faucet "http://0.0.0.0:4500" \
   --source-port "pep" \
   --source-version "pep-1" \
-  --source-gasprice "0.0000025frt" \
+  --source-gasprice "0.0000025ufairy" \
   --source-prefix "cosmos" \
   --source-gaslimit 300000 \
   --target-rpc "http://0.0.0.0:26659" \
