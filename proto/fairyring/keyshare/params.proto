@@ -10,4 +10,8 @@ message Params {
   option (gogoproto.goproto_stringer) = false;
   uint64 key_expiry = 1;
   repeated string trusted_addresses = 2;
+  bytes slash_fraction_no_keyshare = 3
+    [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
+  bytes slash_fraction_wrong_keyshare = 4
+    [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
 }

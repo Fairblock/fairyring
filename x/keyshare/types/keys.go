@@ -21,9 +21,7 @@ const (
 )
 
 const (
-	SlashPower           int64 = 100
-	SlashFactorValue     int64 = 5
-	SlashFactorPrecision int64 = 10
+	SlashPower int64 = 100
 )
 
 const (
