@@ -7,6 +7,7 @@ echo "# Test Encrypted Tx Verification & Decryption & Execution #"
 echo "#   Submit Valid & Invalid Aggregated Key to Pep Module   #"
 echo "#    Submit Valid & Invalid Encrypted Tx to Pep Module    #"
 echo "#        Test Pep Nonce Increment on Encrypted Tx         #"
+echo "#        Gas Deduction for encrypted tx execution         #"
 echo "###########################################################"
 echo ""
 
@@ -97,7 +98,6 @@ $BINARY tx bank send $VALIDATOR_2 $WALLET_2 1$TARGET_BAL_DENOM --from $VALIDATOR
 SIGNED_DATA_2=$($BINARY tx sign unsigned2.json --from $VALIDATOR_2 --offline --account-number 0 --sequence $PEP_NONCE_2ND --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE  --keyring-backend test -y)
 
 
-
 echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
 CIPHER=$($ENCRYPTER $AGG_KEY_HEIGHT $PUB_KEY $SIGNED_DATA)
 
@@ -107,6 +107,12 @@ CIPHER_2=$($ENCRYPTER $AGG_KEY_HEIGHT $PUB_KEY $SIGNED_DATA_2)
 
 rm -r unsigned.json &> /dev/null
 rm -r unsigned2.json &> /dev/null
+
+
+RESULT=$($BINARY query bank balances $VALIDATOR_2 --node $CHAIN2_NODE -o json)
+BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
+BAL_AMT=$(echo "$RESULT" | jq -r '.balances[0].amount')
+echo "Balance before submitting encrypted tx: $BAL_AMT$BAL_DENOM"
 
 
 echo "Submit encrypted tx to pep module on chain fairyring_test_2"
@@ -120,6 +126,13 @@ if [ "$EVENT_TYPE" != "new-encrypted-tx-submitted" ] && [ "$TARGET_HEIGHT" != "$
   exit 1
 fi
 
+
+RESULT=$($BINARY query bank balances $VALIDATOR_2 --node $CHAIN2_NODE -o json)
+BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
+BAL_AMT=$(echo "$RESULT" | jq -r '.balances[0].amount')
+echo "Balance after submitting first encrypted tx: $BAL_AMT$BAL_DENOM"
+
+
 echo "Submit 2nd encrypted tx (without gas fee) to pep module on chain fairyring_test_2"
 RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER_2 $AGG_KEY_HEIGHT --from $VALIDATOR_2 --gas-prices 1frt --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode block --keyring-backend test -o json -y)
 EVENT_TYPE=$(echo "$RESULT" | jq -r '.logs[0].events[1].type')
@@ -130,6 +143,12 @@ if [ "$EVENT_TYPE" != "new-encrypted-tx-submitted" ] && [ "$TARGET_HEIGHT" != "$
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq '.')"
   exit 1
 fi
+
+
+RESULT=$($BINARY query bank balances $VALIDATOR_2 --node $CHAIN2_NODE -o json)
+BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
+BAL_AMT=$(echo "$RESULT" | jq -r '.balances[0].amount')
+echo "Balance after submitting second encrypted tx: $BAL_AMT$BAL_DENOM"
 
 
 echo "Query account pep nonce after submitting encrypted tx from pep module on chain fairyring_test_2"
@@ -152,7 +171,7 @@ if [ "$ACTION" != "/fairyring.pep.MsgCreateAggregatedKeyShare" ]; then
 fi
 
 
-sleep 2
+sleep 4
 
 
 echo "Query latest height from pep module on chain fairyring_test_2"
@@ -183,6 +202,11 @@ if [ "$TARGET_BAL_AFTER" == "$TARGET_BAL" ]; then
   exit 1
 fi
 
+RESULT=$($BINARY query bank balances $VALIDATOR_2 --node $CHAIN2_NODE -o json)
+BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
+BAL_AMT=$(echo "$RESULT" | jq -r '.balances[0].amount')
+echo "Balance after encrypted tx execution: $BAL_AMT$BAL_DENOM"
+
 echo "Submit invalid aggregated key to pep module on chain fairyring_test_2"
 RESULT=$($BINARY tx pep create-aggregated-key-share $((AGG_KEY_HEIGHT+1)) 123123123 --from $VALIDATOR_2 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode block --keyring-backend test -o json -y)
 ACTION=$(echo "$RESULT" | jq -r '.logs[0].events[0].attributes[0].value')
@@ -208,5 +232,6 @@ echo "# Test Encrypted Tx Verification & Decryption & Execution #"
 echo "#   Submit Valid & Invalid Aggregated Key to Pep Module   #"
 echo "#    Submit Valid & Invalid Encrypted Tx to Pep Module    #"
 echo "#        Test Pep Nonce Increment on Encrypted Tx         #"
+echo "#        Gas Deduction for encrypted tx execution         #"
 echo "###########################################################"
 echo ""

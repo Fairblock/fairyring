@@ -527,16 +527,17 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			// that means the minimum-gas-prices for the validator is 0
 			// therefore, we are not charging for the tx execution
 			if !txFee.Empty() {
+				gasProvided := cosmosmath.NewIntFromUint64(wrappedTx.GetTx().GetGas())
 				gasUsedInBig := cosmosmath.NewIntFromUint64(simCheckGas.GasUsed)
 				newCoins := make([]sdk.Coin, len(txFee))
-				for _, eachTxFee := range txFee {
-					newCoins = append(newCoins, sdk.NewCoin(
+				for i, eachTxFee := range txFee {
+					newCoins[i] = sdk.NewCoin(
 						eachTxFee.Denom,
-						eachTxFee.Amount.Mul(gasUsedInBig),
-					))
+						// Tx Fee Amount Divide Provide Gas => provided gas price
+						// Provided Gas Price * Gas Used => Amount to deduct as gas fee
+						eachTxFee.Amount.Quo(gasProvided).Mul(gasUsedInBig),
+					)
 				}
-
-				am.keeper.Logger(ctx).Info(fmt.Sprintf("New Tx Fee: %v", newCoins))
 
 				deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, newCoins)
 				if deductFeeErr != nil {
