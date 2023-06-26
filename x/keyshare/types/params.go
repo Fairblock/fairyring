@@ -19,6 +19,15 @@ var (
 	KeyTrustedAddresses     = []byte("TrustedAddresses")
 	DefaultTrustedAddresses []string
 )
+var (
+	KeySlashFractionNoKeyShare     = []byte("KeyNoShareSlashFraction")
+	DefaultSlashFractionNoKeyShare = sdk.NewDecWithPrec(5, 1) // 0.5
+)
+
+var (
+	KeySlashFractionWrongKeyShare     = []byte("KeyWrongShareSlashFraction")
+	DefaultSlashFractionWrongKeyShare = sdk.NewDecWithPrec(5, 1) // 0.5
+)
 
 // ParamKeyTable the param key table for launch module
 func ParamKeyTable() paramtypes.KeyTable {
@@ -29,10 +38,14 @@ func ParamKeyTable() paramtypes.KeyTable {
 func NewParams(
 	keyExp uint64,
 	trAddrs []string,
+	noKeyShareFraction sdk.Dec,
+	wrongKeyShareFraction sdk.Dec,
 ) Params {
 	return Params{
-		KeyExpiry:        keyExp,
-		TrustedAddresses: trAddrs,
+		KeyExpiry:                  keyExp,
+		TrustedAddresses:           trAddrs,
+		SlashFractionNoKeyshare:    noKeyShareFraction,
+		SlashFractionWrongKeyshare: wrongKeyShareFraction,
 	}
 }
 
@@ -41,6 +54,8 @@ func DefaultParams() Params {
 	return NewParams(
 		DefaultKeyExpiry,
 		DefaultTrustedAddresses,
+		DefaultSlashFractionNoKeyShare,
+		DefaultSlashFractionWrongKeyShare,
 	)
 }
 
@@ -49,6 +64,8 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
 		paramtypes.NewParamSetPair(KeyKeyExpiry, &p.KeyExpiry, validateKeyExpiry),
 		paramtypes.NewParamSetPair(KeyTrustedAddresses, &p.TrustedAddresses, validateTrustedAddresses),
+		paramtypes.NewParamSetPair(KeySlashFractionNoKeyShare, &p.SlashFractionNoKeyshare, validateSlashFractionNoKeyshare),
+		paramtypes.NewParamSetPair(KeySlashFractionWrongKeyShare, &p.SlashFractionWrongKeyshare, validateSlashFractionWrongKeyshare),
 	}
 }
 
@@ -71,7 +88,7 @@ func (p Params) String() string {
 	return string(out)
 }
 
-// validate validates the KeyExpiry param
+// validateKeyExpiry validates the KeyExpiry param
 func validateKeyExpiry(v interface{}) error {
 	_, ok := v.(uint64)
 	if !ok {
@@ -81,7 +98,7 @@ func validateKeyExpiry(v interface{}) error {
 	return nil
 }
 
-// validate validates the TrustedAddresses param
+// validateTrustedAddresses validates the TrustedAddresses param
 func validateTrustedAddresses(v interface{}) error {
 	trustedList, ok := v.([]string)
 	if !ok {
@@ -97,5 +114,29 @@ func validateTrustedAddresses(v interface{}) error {
 		}
 	}
 
+	return nil
+}
+
+// validateSlashFractionNoKeyshare validates the SlashFractionNoKeyshare param
+func validateSlashFractionNoKeyshare(v interface{}) error {
+	val, ok := v.(sdk.Dec)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+	if val.IsNegative() {
+		return fmt.Errorf("invalid parameter value, expected non-negative number, got: %v", val)
+	}
+	return nil
+}
+
+// validateSlashFractionWrongKeyshare validates the SlashFractionWrongKeyshare param
+func validateSlashFractionWrongKeyshare(v interface{}) error {
+	val, ok := v.(sdk.Dec)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+	if val.IsNegative() {
+		return fmt.Errorf("invalid parameter value, expected non-negative number, got: %v", val)
+	}
 	return nil
 }

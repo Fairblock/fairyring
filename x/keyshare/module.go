@@ -2,6 +2,7 @@ package keyshare
 
 import (
 	"context"
+	"encoding/hex"
 	"encoding/json"
 	peptypes "fairyring/x/pep/types"
 	"fmt"
@@ -208,5 +209,35 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+	am.keeper.Logger(ctx).Info(fmt.Sprintf("End Blocker of Height: %d", ctx.BlockHeight()))
+	validators := am.keeper.GetAllValidatorSet(ctx)
+	params := am.keeper.GetParams(ctx)
+	am.keeper.Logger(ctx).Info(fmt.Sprintf("%v | %v | %v | %v | %v", params.SlashFractionWrongKeyshare, params.SlashFractionNoKeyshare, params.TrustedAddresses, params.KeyExpiry, sdk.NewDecWithPrec(5, 1)))
+	for _, eachValidator := range validators {
+		if _, found := am.keeper.GetKeyShare(ctx, eachValidator.Validator, uint64(ctx.BlockHeight())); found {
+			continue
+		}
+
+		savedConsAddrByte, err := hex.DecodeString(eachValidator.ConsAddr)
+		if err != nil {
+			am.keeper.Logger(ctx).Error(fmt.Sprintf("Error while decoding validator %s cons addr: %s", eachValidator.Validator, err.Error()))
+			continue
+		}
+
+		var consAddr sdk.ConsAddress
+		err = consAddr.Unmarshal(savedConsAddrByte)
+		if err != nil {
+			am.keeper.Logger(ctx).Error(fmt.Sprintf("Error while unmarshaling validator %s cons addr: %s", eachValidator.Validator, err.Error()))
+			continue
+		}
+
+		am.keeper.StakingKeeper().Slash(
+			ctx,
+			consAddr,
+			ctx.BlockHeight()-1,
+			types.SlashPower,
+			params.SlashFractionNoKeyshare,
+		)
+	}
 	return []abci.ValidatorUpdate{}
 }
