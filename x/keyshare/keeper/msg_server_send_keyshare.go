@@ -80,6 +80,8 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	// Save the new keyshare to state
 	k.SetKeyShare(ctx, keyShare)
 
+	k.SetLastSubmittedHeight(ctx, msg.Creator, strconv.FormatUint(msg.BlockHeight, 10))
+
 	validatorList := k.GetAllValidatorSet(ctx)
 
 	// Get all the keyshares for the provided block height in state

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	peptypes "fairyring/x/pep/types"
 	"fmt"
+	"strconv"
 
 	// this line is used by starport scaffolding # 1
 
@@ -212,9 +213,14 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 	am.keeper.Logger(ctx).Info(fmt.Sprintf("End Blocker of Height: %d", ctx.BlockHeight()))
 	validators := am.keeper.GetAllValidatorSet(ctx)
 	params := am.keeper.GetParams(ctx)
-	am.keeper.Logger(ctx).Info(fmt.Sprintf("%v | %v | %v | %v | %v", params.SlashFractionWrongKeyshare, params.SlashFractionNoKeyshare, params.TrustedAddresses, params.KeyExpiry, sdk.NewDecWithPrec(5, 1)))
+
 	for _, eachValidator := range validators {
-		if _, found := am.keeper.GetKeyShare(ctx, eachValidator.Validator, uint64(ctx.BlockHeight())); found {
+		lastSubmittedHeight := am.keeper.GetLastSubmittedHeight(ctx, eachValidator.Validator)
+		am.keeper.Logger(ctx).Info(fmt.Sprintf("Last submitted: %s: %d", eachValidator.Validator, lastSubmittedHeight))
+		// Validator will be slashed if their last submitted height is N block ago
+		// Lets say N is 10, and last submitted height is 0, current height is 10
+		// then he/she will be slashed
+		if lastSubmittedHeight+params.GetMaxIdledBlock() > uint64(ctx.BlockHeight()) {
 			continue
 		}
 
@@ -238,6 +244,10 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 			types.SlashPower,
 			params.SlashFractionNoKeyshare,
 		)
+
+		// After being slashed, his/her last submitted height will be set to the current block
+		// So he/she won't be slashed in the next block instead he/she will be slashed if he didn't submit for N block again.
+		am.keeper.SetLastSubmittedHeight(ctx, eachValidator.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
 	}
 	return []abci.ValidatorUpdate{}
 }

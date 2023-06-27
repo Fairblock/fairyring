@@ -29,6 +29,11 @@ var (
 	DefaultSlashFractionWrongKeyShare = sdk.NewDecWithPrec(5, 1) // 0.5
 )
 
+var (
+	KeyMaxIdledBlock            = []byte("KeyMaxIdledBlock")
+	DefaultMaxIdledBlock uint64 = 10
+)
+
 // ParamKeyTable the param key table for launch module
 func ParamKeyTable() paramtypes.KeyTable {
 	return paramtypes.NewKeyTable().RegisterParamSet(&Params{})
@@ -40,12 +45,14 @@ func NewParams(
 	trAddrs []string,
 	noKeyShareFraction sdk.Dec,
 	wrongKeyShareFraction sdk.Dec,
+	maxIdledBlock uint64,
 ) Params {
 	return Params{
 		KeyExpiry:                  keyExp,
 		TrustedAddresses:           trAddrs,
 		SlashFractionNoKeyshare:    noKeyShareFraction,
 		SlashFractionWrongKeyshare: wrongKeyShareFraction,
+		MaxIdledBlock:              maxIdledBlock,
 	}
 }
 
@@ -56,6 +63,7 @@ func DefaultParams() Params {
 		DefaultTrustedAddresses,
 		DefaultSlashFractionNoKeyShare,
 		DefaultSlashFractionWrongKeyShare,
+		DefaultMaxIdledBlock,
 	)
 }
 
@@ -66,6 +74,7 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(KeyTrustedAddresses, &p.TrustedAddresses, validateTrustedAddresses),
 		paramtypes.NewParamSetPair(KeySlashFractionNoKeyShare, &p.SlashFractionNoKeyshare, validateSlashFractionNoKeyshare),
 		paramtypes.NewParamSetPair(KeySlashFractionWrongKeyShare, &p.SlashFractionWrongKeyshare, validateSlashFractionWrongKeyshare),
+		paramtypes.NewParamSetPair(KeyMaxIdledBlock, &p.MaxIdledBlock, validateMaxIdledBlock),
 	}
 }
 
@@ -138,5 +147,15 @@ func validateSlashFractionWrongKeyshare(v interface{}) error {
 	if val.IsNegative() {
 		return fmt.Errorf("invalid parameter value, expected non-negative number, got: %v", val)
 	}
+	return nil
+}
+
+// validateMaxIdledBlock validates the MaxIdledBlock param
+func validateMaxIdledBlock(v interface{}) error {
+	_, ok := v.(uint64)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+
 	return nil
 }
