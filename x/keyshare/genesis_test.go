@@ -41,6 +41,14 @@ func TestGenesis(t *testing.T) {
 				Height: 1,
 			},
 		},
+		AuthorizedAddressList: []types.AuthorizedAddress{
+			{
+				Target: "0",
+			},
+			{
+				Target: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -55,5 +63,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.ValidatorSetList, got.ValidatorSetList)
 	require.ElementsMatch(t, genesisState.KeyShareList, got.KeyShareList)
 	require.ElementsMatch(t, genesisState.AggregatedKeyShareList, got.AggregatedKeyShareList)
+	require.ElementsMatch(t, genesisState.AuthorizedAddressList, got.AuthorizedAddressList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

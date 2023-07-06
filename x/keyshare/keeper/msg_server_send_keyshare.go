@@ -24,7 +24,16 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	validatorInfo, found := k.GetValidatorSet(ctx, msg.Creator)
 
 	if !found {
-		return nil, types.ErrValidatorNotRegistered.Wrap(msg.Creator)
+		authorizedAddrInfo, found := k.GetAuthorizedAddress(ctx, msg.Creator)
+		if !found || !authorizedAddrInfo.IsAuthorized {
+			return nil, types.ErrAddrIsNotValidatorOrAuthorized.Wrap(msg.Creator)
+		}
+
+		authorizedByValInfo, found := k.GetValidatorSet(ctx, authorizedAddrInfo.AuthorizedBy)
+		if !found {
+			return nil, types.ErrAuthorizerIsNotValidator.Wrap(authorizedAddrInfo.AuthorizedBy)
+		}
+		validatorInfo = authorizedByValInfo
 	}
 
 	// Setup

@@ -13,6 +13,7 @@ func DefaultGenesis() *GenesisState {
 		ValidatorSetList:       []ValidatorSet{},
 		KeyShareList:           []KeyShare{},
 		AggregatedKeyShareList: []AggregatedKeyShare{},
+		AuthorizedAddressList:  []AuthorizedAddress{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -50,6 +51,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for aggregatedKeyShare")
 		}
 		aggregatedKeyShareIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in authorizedAddress
+	authorizedAddressIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.AuthorizedAddressList {
+		index := string(AuthorizedAddressKey(elem.Target))
+		if _, ok := authorizedAddressIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for authorizedAddress")
+		}
+		authorizedAddressIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

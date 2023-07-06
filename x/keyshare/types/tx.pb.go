@@ -364,6 +364,278 @@ func (m *MsgCreateLatestPubKeyResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCreateLatestPubKeyResponse proto.InternalMessageInfo
 
+type MsgCreateAuthorizedAddress struct {
+	Target  string `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
+	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
+}
+
+func (m *MsgCreateAuthorizedAddress) Reset()         { *m = MsgCreateAuthorizedAddress{} }
+func (m *MsgCreateAuthorizedAddress) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateAuthorizedAddress) ProtoMessage()    {}
+func (*MsgCreateAuthorizedAddress) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{6}
+}
+func (m *MsgCreateAuthorizedAddress) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateAuthorizedAddress) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateAuthorizedAddress.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateAuthorizedAddress) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateAuthorizedAddress.Merge(m, src)
+}
+func (m *MsgCreateAuthorizedAddress) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateAuthorizedAddress) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateAuthorizedAddress.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateAuthorizedAddress proto.InternalMessageInfo
+
+func (m *MsgCreateAuthorizedAddress) GetTarget() string {
+	if m != nil {
+		return m.Target
+	}
+	return ""
+}
+
+func (m *MsgCreateAuthorizedAddress) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+type MsgCreateAuthorizedAddressResponse struct {
+}
+
+func (m *MsgCreateAuthorizedAddressResponse) Reset()         { *m = MsgCreateAuthorizedAddressResponse{} }
+func (m *MsgCreateAuthorizedAddressResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateAuthorizedAddressResponse) ProtoMessage()    {}
+func (*MsgCreateAuthorizedAddressResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{7}
+}
+func (m *MsgCreateAuthorizedAddressResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateAuthorizedAddressResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateAuthorizedAddressResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateAuthorizedAddressResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateAuthorizedAddressResponse.Merge(m, src)
+}
+func (m *MsgCreateAuthorizedAddressResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateAuthorizedAddressResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateAuthorizedAddressResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateAuthorizedAddressResponse proto.InternalMessageInfo
+
+type MsgUpdateAuthorizedAddress struct {
+	Target       string `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
+	IsAuthorized bool   `protobuf:"varint,2,opt,name=isAuthorized,proto3" json:"isAuthorized,omitempty"`
+	Creator      string `protobuf:"bytes,3,opt,name=creator,proto3" json:"creator,omitempty"`
+}
+
+func (m *MsgUpdateAuthorizedAddress) Reset()         { *m = MsgUpdateAuthorizedAddress{} }
+func (m *MsgUpdateAuthorizedAddress) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateAuthorizedAddress) ProtoMessage()    {}
+func (*MsgUpdateAuthorizedAddress) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{8}
+}
+func (m *MsgUpdateAuthorizedAddress) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateAuthorizedAddress) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateAuthorizedAddress.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateAuthorizedAddress) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateAuthorizedAddress.Merge(m, src)
+}
+func (m *MsgUpdateAuthorizedAddress) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateAuthorizedAddress) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateAuthorizedAddress.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateAuthorizedAddress proto.InternalMessageInfo
+
+func (m *MsgUpdateAuthorizedAddress) GetTarget() string {
+	if m != nil {
+		return m.Target
+	}
+	return ""
+}
+
+func (m *MsgUpdateAuthorizedAddress) GetIsAuthorized() bool {
+	if m != nil {
+		return m.IsAuthorized
+	}
+	return false
+}
+
+func (m *MsgUpdateAuthorizedAddress) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+type MsgUpdateAuthorizedAddressResponse struct {
+}
+
+func (m *MsgUpdateAuthorizedAddressResponse) Reset()         { *m = MsgUpdateAuthorizedAddressResponse{} }
+func (m *MsgUpdateAuthorizedAddressResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateAuthorizedAddressResponse) ProtoMessage()    {}
+func (*MsgUpdateAuthorizedAddressResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{9}
+}
+func (m *MsgUpdateAuthorizedAddressResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateAuthorizedAddressResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateAuthorizedAddressResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateAuthorizedAddressResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateAuthorizedAddressResponse.Merge(m, src)
+}
+func (m *MsgUpdateAuthorizedAddressResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateAuthorizedAddressResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateAuthorizedAddressResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateAuthorizedAddressResponse proto.InternalMessageInfo
+
+type MsgDeleteAuthorizedAddress struct {
+	Target  string `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
+	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
+}
+
+func (m *MsgDeleteAuthorizedAddress) Reset()         { *m = MsgDeleteAuthorizedAddress{} }
+func (m *MsgDeleteAuthorizedAddress) String() string { return proto.CompactTextString(m) }
+func (*MsgDeleteAuthorizedAddress) ProtoMessage()    {}
+func (*MsgDeleteAuthorizedAddress) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{10}
+}
+func (m *MsgDeleteAuthorizedAddress) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgDeleteAuthorizedAddress) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgDeleteAuthorizedAddress.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgDeleteAuthorizedAddress) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeleteAuthorizedAddress.Merge(m, src)
+}
+func (m *MsgDeleteAuthorizedAddress) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgDeleteAuthorizedAddress) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeleteAuthorizedAddress.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgDeleteAuthorizedAddress proto.InternalMessageInfo
+
+func (m *MsgDeleteAuthorizedAddress) GetTarget() string {
+	if m != nil {
+		return m.Target
+	}
+	return ""
+}
+
+func (m *MsgDeleteAuthorizedAddress) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+type MsgDeleteAuthorizedAddressResponse struct {
+}
+
+func (m *MsgDeleteAuthorizedAddressResponse) Reset()         { *m = MsgDeleteAuthorizedAddressResponse{} }
+func (m *MsgDeleteAuthorizedAddressResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgDeleteAuthorizedAddressResponse) ProtoMessage()    {}
+func (*MsgDeleteAuthorizedAddressResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{11}
+}
+func (m *MsgDeleteAuthorizedAddressResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgDeleteAuthorizedAddressResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgDeleteAuthorizedAddressResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgDeleteAuthorizedAddressResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeleteAuthorizedAddressResponse.Merge(m, src)
+}
+func (m *MsgDeleteAuthorizedAddressResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgDeleteAuthorizedAddressResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeleteAuthorizedAddressResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgDeleteAuthorizedAddressResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgRegisterValidator)(nil), "fairyring.keyshare.MsgRegisterValidator")
 	proto.RegisterType((*MsgRegisterValidatorResponse)(nil), "fairyring.keyshare.MsgRegisterValidatorResponse")
@@ -371,39 +643,52 @@ func init() {
 	proto.RegisterType((*MsgSendKeyshareResponse)(nil), "fairyring.keyshare.MsgSendKeyshareResponse")
 	proto.RegisterType((*MsgCreateLatestPubKey)(nil), "fairyring.keyshare.MsgCreateLatestPubKey")
 	proto.RegisterType((*MsgCreateLatestPubKeyResponse)(nil), "fairyring.keyshare.MsgCreateLatestPubKeyResponse")
+	proto.RegisterType((*MsgCreateAuthorizedAddress)(nil), "fairyring.keyshare.MsgCreateAuthorizedAddress")
+	proto.RegisterType((*MsgCreateAuthorizedAddressResponse)(nil), "fairyring.keyshare.MsgCreateAuthorizedAddressResponse")
+	proto.RegisterType((*MsgUpdateAuthorizedAddress)(nil), "fairyring.keyshare.MsgUpdateAuthorizedAddress")
+	proto.RegisterType((*MsgUpdateAuthorizedAddressResponse)(nil), "fairyring.keyshare.MsgUpdateAuthorizedAddressResponse")
+	proto.RegisterType((*MsgDeleteAuthorizedAddress)(nil), "fairyring.keyshare.MsgDeleteAuthorizedAddress")
+	proto.RegisterType((*MsgDeleteAuthorizedAddressResponse)(nil), "fairyring.keyshare.MsgDeleteAuthorizedAddressResponse")
 }
 
 func init() { proto.RegisterFile("fairyring/keyshare/tx.proto", fileDescriptor_1f96ac6a55f1845c) }
 
 var fileDescriptor_1f96ac6a55f1845c = []byte{
-	// 419 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x94, 0xbd, 0x8e, 0xd3, 0x40,
-	0x10, 0xc7, 0xb3, 0x77, 0xc7, 0xc1, 0x0d, 0x20, 0xc4, 0x02, 0xc2, 0x32, 0x87, 0x89, 0x0c, 0x45,
-	0x10, 0x92, 0x13, 0x3e, 0x0a, 0xea, 0xd0, 0x80, 0x82, 0x05, 0x72, 0x24, 0x0a, 0x2a, 0xfc, 0x31,
-	0x6c, 0x56, 0x89, 0x3f, 0xb4, 0xbb, 0x41, 0xf1, 0x5b, 0xf0, 0x22, 0xbc, 0x07, 0x05, 0x45, 0x4a,
-	0x4a, 0x94, 0x54, 0xbc, 0x05, 0xb2, 0xb1, 0x1d, 0x87, 0x38, 0xc1, 0xd7, 0x79, 0xe6, 0xff, 0xdb,
-	0xf9, 0xf2, 0x68, 0xe0, 0xde, 0x67, 0x97, 0x8b, 0x54, 0xf0, 0x88, 0xf5, 0xa7, 0x98, 0xca, 0x89,
-	0x2b, 0xb0, 0xaf, 0x16, 0x56, 0x22, 0x62, 0x15, 0x53, 0x5a, 0x89, 0x56, 0x29, 0x9a, 0x03, 0xb8,
-	0x6d, 0x4b, 0xe6, 0x20, 0xe3, 0x52, 0xa1, 0xf8, 0xe0, 0xce, 0x78, 0xe0, 0xaa, 0x58, 0x50, 0x0d,
-	0x2e, 0xfb, 0x02, 0xb3, 0x4f, 0x8d, 0x74, 0x49, 0xef, 0xcc, 0x29, 0x4d, 0xf3, 0x25, 0x9c, 0x37,
-	0xbd, 0x70, 0x50, 0x26, 0x71, 0x24, 0xf1, 0xc0, 0xcb, 0x6f, 0x04, 0x6e, 0xd8, 0x92, 0x8d, 0x31,
-	0x0a, 0x46, 0x45, 0xfe, 0xfd, 0x74, 0xa6, 0x84, 0x28, 0xa5, 0xcb, 0x50, 0x3b, 0xfa, 0xab, 0x14,
-	0x26, 0x35, 0x00, 0xfc, 0x38, 0x0c, 0xb9, 0x0a, 0x31, 0x52, 0xda, 0x71, 0x2e, 0xd6, 0x3c, 0xf4,
-	0x11, 0x5c, 0x9f, 0x62, 0x3a, 0xce, 0xe2, 0xbf, 0x89, 0x02, 0x5c, 0x68, 0x27, 0x5d, 0xd2, 0x3b,
-	0x71, 0xb6, 0x9d, 0xb4, 0x0b, 0x57, 0xbd, 0x59, 0xec, 0x4f, 0x5f, 0x23, 0x67, 0x13, 0xa5, 0x5d,
-	0xca, 0x99, 0xba, 0xcb, 0xfc, 0x4d, 0xe0, 0xee, 0x3f, 0xf5, 0xfe, 0xbf, 0x4b, 0xaa, 0xc3, 0x95,
-	0x72, 0xba, 0x45, 0xe1, 0x95, 0xdd, 0xb2, 0x72, 0xd9, 0x54, 0xb9, 0xbc, 0x40, 0xe5, 0x74, 0x00,
-	0xb7, 0x04, 0xfa, 0xc8, 0xbf, 0x60, 0x30, 0xac, 0x91, 0xa7, 0x39, 0xd9, 0x24, 0x99, 0xef, 0xe0,
-	0x8e, 0x2d, 0xd9, 0xab, 0xac, 0x07, 0x7c, 0xeb, 0x2a, 0x94, 0xea, 0xfd, 0xdc, 0x1b, 0x61, 0x7a,
-	0xa0, 0xd1, 0x73, 0x38, 0x4b, 0xe6, 0xde, 0x8c, 0xfb, 0x23, 0x4c, 0x8b, 0x4e, 0x37, 0x0e, 0xf3,
-	0x01, 0xdc, 0x6f, 0x0c, 0x58, 0x4e, 0xf0, 0xd9, 0x8f, 0x23, 0x38, 0xb6, 0x25, 0xa3, 0x31, 0xdc,
-	0xdc, 0x5d, 0xbf, 0x9e, 0xb5, 0xbb, 0xab, 0x56, 0xd3, 0xda, 0xe9, 0x83, 0xb6, 0x64, 0xf5, 0xeb,
-	0x3e, 0xc1, 0xb5, 0xad, 0x15, 0x7c, 0xb8, 0x27, 0x42, 0x1d, 0xd2, 0x9f, 0xb4, 0x80, 0xaa, 0x0c,
-	0x02, 0x68, 0xc3, 0x24, 0x1f, 0xef, 0x09, 0xb1, 0x8b, 0xea, 0x4f, 0x5b, 0xa3, 0x65, 0xce, 0xe1,
-	0x8b, 0xef, 0x2b, 0x83, 0x2c, 0x57, 0x06, 0xf9, 0xb5, 0x32, 0xc8, 0xd7, 0xb5, 0xd1, 0x59, 0xae,
-	0x8d, 0xce, 0xcf, 0xb5, 0xd1, 0xf9, 0xa8, 0x6f, 0x6e, 0xc2, 0xa2, 0x76, 0x15, 0xd2, 0x04, 0xa5,
-	0x77, 0x9a, 0x5f, 0x86, 0xe7, 0x7f, 0x02, 0x00, 0x00, 0xff, 0xff, 0x78, 0x77, 0x38, 0x51, 0x38,
-	0x04, 0x00, 0x00,
+	// 544 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x95, 0xcd, 0x6e, 0xd3, 0x40,
+	0x10, 0xc7, 0xe3, 0xa6, 0x0d, 0xed, 0x50, 0x84, 0x58, 0x3e, 0x6a, 0x99, 0x62, 0x22, 0xd3, 0x43,
+	0x10, 0x92, 0x1b, 0x3e, 0x84, 0xb8, 0xb6, 0x70, 0x00, 0x85, 0x00, 0x72, 0x05, 0x07, 0x4e, 0x38,
+	0xf6, 0xe0, 0xac, 0x92, 0xd8, 0xd6, 0xee, 0x06, 0xc5, 0xdc, 0x78, 0x03, 0x5e, 0x84, 0xf7, 0xe0,
+	0xd8, 0x63, 0x8f, 0x28, 0x39, 0xf1, 0x16, 0x28, 0xc6, 0x76, 0xec, 0xc4, 0x9b, 0x0f, 0xa9, 0x37,
+	0xef, 0xcc, 0xcf, 0xf3, 0xff, 0xef, 0x68, 0x76, 0x17, 0xee, 0x7e, 0xb5, 0x29, 0x8b, 0x18, 0xf5,
+	0xbd, 0xe3, 0x1e, 0x46, 0xbc, 0x6b, 0x33, 0x3c, 0x16, 0x23, 0x33, 0x64, 0x81, 0x08, 0x08, 0xc9,
+	0x92, 0x66, 0x9a, 0x34, 0x9a, 0x70, 0xab, 0xcd, 0x3d, 0x0b, 0x3d, 0xca, 0x05, 0xb2, 0x4f, 0x76,
+	0x9f, 0xba, 0xb6, 0x08, 0x18, 0x51, 0xe1, 0x8a, 0xc3, 0x70, 0xfa, 0xa9, 0x2a, 0x75, 0xa5, 0xb1,
+	0x67, 0xa5, 0x4b, 0xe3, 0x05, 0x1c, 0x96, 0xfd, 0x61, 0x21, 0x0f, 0x03, 0x9f, 0xe3, 0x92, 0x3f,
+	0x7f, 0x29, 0x70, 0xbd, 0xcd, 0xbd, 0x33, 0xf4, 0xdd, 0x56, 0xa2, 0x2f, 0xa7, 0xa7, 0x99, 0x01,
+	0x72, 0x6e, 0x7b, 0xa8, 0x6e, 0xfd, 0xcf, 0x24, 0x4b, 0xa2, 0x03, 0x38, 0xc1, 0x60, 0x40, 0xc5,
+	0x00, 0x7d, 0xa1, 0x56, 0xe3, 0x64, 0x2e, 0x42, 0x8e, 0xe0, 0x5a, 0x0f, 0xa3, 0xb3, 0x69, 0xfd,
+	0x37, 0xbe, 0x8b, 0x23, 0x75, 0xbb, 0xae, 0x34, 0xb6, 0xad, 0x62, 0x90, 0xd4, 0xe1, 0x6a, 0xa7,
+	0x1f, 0x38, 0xbd, 0xd7, 0x48, 0xbd, 0xae, 0x50, 0x77, 0x62, 0x26, 0x1f, 0x32, 0xfe, 0x2a, 0x70,
+	0x30, 0xe7, 0x77, 0xf5, 0x2e, 0x89, 0x06, 0xbb, 0x69, 0x77, 0x13, 0xe3, 0xd9, 0x7a, 0x4d, 0xe7,
+	0xbc, 0xcc, 0x39, 0xdf, 0xc0, 0x39, 0x69, 0xc2, 0x4d, 0x86, 0x0e, 0xd2, 0x6f, 0xe8, 0x9e, 0xe6,
+	0xc8, 0x5a, 0x4c, 0x96, 0xa5, 0x8c, 0xf7, 0x70, 0xbb, 0xcd, 0xbd, 0x97, 0xd3, 0x3d, 0xe0, 0x5b,
+	0x5b, 0x20, 0x17, 0x1f, 0x86, 0x9d, 0x16, 0x46, 0x4b, 0x36, 0x7a, 0x08, 0x7b, 0xe1, 0xb0, 0xd3,
+	0xa7, 0x4e, 0x0b, 0xa3, 0x64, 0xa7, 0xb3, 0x80, 0x71, 0x1f, 0xee, 0x95, 0x16, 0x4c, 0x3b, 0x68,
+	0xbc, 0x03, 0x2d, 0x03, 0x4e, 0x86, 0xa2, 0x1b, 0x30, 0xfa, 0x1d, 0xdd, 0x13, 0xd7, 0x65, 0xc8,
+	0x39, 0xb9, 0x03, 0x35, 0x61, 0x33, 0x0f, 0x45, 0xa2, 0x9a, 0xac, 0xf2, 0x76, 0xb6, 0x8a, 0xd3,
+	0x75, 0x04, 0x86, 0xbc, 0x5e, 0xa6, 0xca, 0x62, 0xd5, 0x8f, 0xa1, 0xbb, 0x91, 0xaa, 0x01, 0xfb,
+	0x94, 0xcf, 0xf0, 0x58, 0x7a, 0xd7, 0x2a, 0xc4, 0xf2, 0xce, 0xaa, 0x65, 0xce, 0x24, 0x9a, 0x73,
+	0xfd, 0x78, 0x85, 0x7d, 0xbc, 0xcc, 0x7e, 0x48, 0xea, 0xa5, 0xaa, 0x4f, 0x2e, 0x76, 0xa0, 0xda,
+	0xe6, 0x1e, 0x09, 0xe0, 0xc6, 0xe2, 0x25, 0xd0, 0x30, 0x17, 0x6f, 0x0c, 0xb3, 0xec, 0xf0, 0x6b,
+	0xcd, 0x75, 0xc9, 0xec, 0x00, 0x7d, 0x81, 0xfd, 0xc2, 0x45, 0xf0, 0x40, 0x52, 0x21, 0x0f, 0x69,
+	0x8f, 0xd6, 0x80, 0x32, 0x05, 0x06, 0xa4, 0x64, 0x9e, 0x1f, 0x4a, 0x4a, 0x2c, 0xa2, 0xda, 0xe3,
+	0xb5, 0xd1, 0x4c, 0xf3, 0x87, 0x02, 0x07, 0xb2, 0x91, 0x36, 0x97, 0x96, 0x5b, 0xe0, 0xb5, 0xe7,
+	0x9b, 0xf1, 0x05, 0x0f, 0xb2, 0x01, 0x97, 0x79, 0x90, 0xf0, 0x52, 0x0f, 0x2b, 0x86, 0x39, 0xf6,
+	0x20, 0x1b, 0x65, 0x99, 0x07, 0x09, 0x2f, 0xf5, 0xb0, 0x62, 0xb4, 0x4f, 0x9f, 0xfd, 0x1e, 0xeb,
+	0xca, 0xf9, 0x58, 0x57, 0xfe, 0x8c, 0x75, 0xe5, 0xe7, 0x44, 0xaf, 0x9c, 0x4f, 0xf4, 0xca, 0xc5,
+	0x44, 0xaf, 0x7c, 0xd6, 0x66, 0xaf, 0xe4, 0x28, 0xf7, 0x4e, 0x46, 0x21, 0xf2, 0x4e, 0x2d, 0x7e,
+	0x2b, 0x9f, 0xfe, 0x0b, 0x00, 0x00, 0xff, 0xff, 0xbc, 0x66, 0x91, 0x75, 0x4a, 0x07, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -422,6 +707,9 @@ type MsgClient interface {
 	SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts ...grpc.CallOption) (*MsgSendKeyshareResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
 	CreateLatestPubKey(ctx context.Context, in *MsgCreateLatestPubKey, opts ...grpc.CallOption) (*MsgCreateLatestPubKeyResponse, error)
+	CreateAuthorizedAddress(ctx context.Context, in *MsgCreateAuthorizedAddress, opts ...grpc.CallOption) (*MsgCreateAuthorizedAddressResponse, error)
+	UpdateAuthorizedAddress(ctx context.Context, in *MsgUpdateAuthorizedAddress, opts ...grpc.CallOption) (*MsgUpdateAuthorizedAddressResponse, error)
+	DeleteAuthorizedAddress(ctx context.Context, in *MsgDeleteAuthorizedAddress, opts ...grpc.CallOption) (*MsgDeleteAuthorizedAddressResponse, error)
 }
 
 type msgClient struct {
@@ -459,12 +747,42 @@ func (c *msgClient) CreateLatestPubKey(ctx context.Context, in *MsgCreateLatestP
 	return out, nil
 }
 
+func (c *msgClient) CreateAuthorizedAddress(ctx context.Context, in *MsgCreateAuthorizedAddress, opts ...grpc.CallOption) (*MsgCreateAuthorizedAddressResponse, error) {
+	out := new(MsgCreateAuthorizedAddressResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/CreateAuthorizedAddress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) UpdateAuthorizedAddress(ctx context.Context, in *MsgUpdateAuthorizedAddress, opts ...grpc.CallOption) (*MsgUpdateAuthorizedAddressResponse, error) {
+	out := new(MsgUpdateAuthorizedAddressResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/UpdateAuthorizedAddress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) DeleteAuthorizedAddress(ctx context.Context, in *MsgDeleteAuthorizedAddress, opts ...grpc.CallOption) (*MsgDeleteAuthorizedAddressResponse, error) {
+	out := new(MsgDeleteAuthorizedAddressResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/DeleteAuthorizedAddress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	RegisterValidator(context.Context, *MsgRegisterValidator) (*MsgRegisterValidatorResponse, error)
 	SendKeyshare(context.Context, *MsgSendKeyshare) (*MsgSendKeyshareResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
 	CreateLatestPubKey(context.Context, *MsgCreateLatestPubKey) (*MsgCreateLatestPubKeyResponse, error)
+	CreateAuthorizedAddress(context.Context, *MsgCreateAuthorizedAddress) (*MsgCreateAuthorizedAddressResponse, error)
+	UpdateAuthorizedAddress(context.Context, *MsgUpdateAuthorizedAddress) (*MsgUpdateAuthorizedAddressResponse, error)
+	DeleteAuthorizedAddress(context.Context, *MsgDeleteAuthorizedAddress) (*MsgDeleteAuthorizedAddressResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -479,6 +797,15 @@ func (*UnimplementedMsgServer) SendKeyshare(ctx context.Context, req *MsgSendKey
 }
 func (*UnimplementedMsgServer) CreateLatestPubKey(ctx context.Context, req *MsgCreateLatestPubKey) (*MsgCreateLatestPubKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateLatestPubKey not implemented")
+}
+func (*UnimplementedMsgServer) CreateAuthorizedAddress(ctx context.Context, req *MsgCreateAuthorizedAddress) (*MsgCreateAuthorizedAddressResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAuthorizedAddress not implemented")
+}
+func (*UnimplementedMsgServer) UpdateAuthorizedAddress(ctx context.Context, req *MsgUpdateAuthorizedAddress) (*MsgUpdateAuthorizedAddressResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAuthorizedAddress not implemented")
+}
+func (*UnimplementedMsgServer) DeleteAuthorizedAddress(ctx context.Context, req *MsgDeleteAuthorizedAddress) (*MsgDeleteAuthorizedAddressResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteAuthorizedAddress not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -539,6 +866,60 @@ func _Msg_CreateLatestPubKey_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_CreateAuthorizedAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateAuthorizedAddress)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).CreateAuthorizedAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.keyshare.Msg/CreateAuthorizedAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).CreateAuthorizedAddress(ctx, req.(*MsgCreateAuthorizedAddress))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_UpdateAuthorizedAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateAuthorizedAddress)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateAuthorizedAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.keyshare.Msg/UpdateAuthorizedAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateAuthorizedAddress(ctx, req.(*MsgUpdateAuthorizedAddress))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_DeleteAuthorizedAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDeleteAuthorizedAddress)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).DeleteAuthorizedAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.keyshare.Msg/DeleteAuthorizedAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).DeleteAuthorizedAddress(ctx, req.(*MsgDeleteAuthorizedAddress))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "fairyring.keyshare.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -554,6 +935,18 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateLatestPubKey",
 			Handler:    _Msg_CreateLatestPubKey_Handler,
+		},
+		{
+			MethodName: "CreateAuthorizedAddress",
+			Handler:    _Msg_CreateAuthorizedAddress_Handler,
+		},
+		{
+			MethodName: "UpdateAuthorizedAddress",
+			Handler:    _Msg_UpdateAuthorizedAddress_Handler,
+		},
+		{
+			MethodName: "DeleteAuthorizedAddress",
+			Handler:    _Msg_DeleteAuthorizedAddress_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -793,6 +1186,196 @@ func (m *MsgCreateLatestPubKeyResponse) MarshalToSizedBuffer(dAtA []byte) (int, 
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgCreateAuthorizedAddress) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateAuthorizedAddress) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateAuthorizedAddress) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Target) > 0 {
+		i -= len(m.Target)
+		copy(dAtA[i:], m.Target)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Target)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgCreateAuthorizedAddressResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateAuthorizedAddressResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateAuthorizedAddressResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgUpdateAuthorizedAddress) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateAuthorizedAddress) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateAuthorizedAddress) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.IsAuthorized {
+		i--
+		if m.IsAuthorized {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Target) > 0 {
+		i -= len(m.Target)
+		copy(dAtA[i:], m.Target)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Target)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgUpdateAuthorizedAddressResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateAuthorizedAddressResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateAuthorizedAddressResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgDeleteAuthorizedAddress) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgDeleteAuthorizedAddress) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgDeleteAuthorizedAddress) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Target) > 0 {
+		i -= len(m.Target)
+		copy(dAtA[i:], m.Target)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Target)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgDeleteAuthorizedAddressResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgDeleteAuthorizedAddressResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgDeleteAuthorizedAddressResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -905,6 +1488,87 @@ func (m *MsgCreateLatestPubKey) Size() (n int) {
 }
 
 func (m *MsgCreateLatestPubKeyResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgCreateAuthorizedAddress) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Target)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgCreateAuthorizedAddressResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgUpdateAuthorizedAddress) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Target)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.IsAuthorized {
+		n += 2
+	}
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgUpdateAuthorizedAddressResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgDeleteAuthorizedAddress) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Target)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgDeleteAuthorizedAddressResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1611,6 +2275,518 @@ func (m *MsgCreateLatestPubKeyResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgCreateLatestPubKeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCreateAuthorizedAddress) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateAuthorizedAddress: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateAuthorizedAddress: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Target", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Target = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCreateAuthorizedAddressResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateAuthorizedAddressResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateAuthorizedAddressResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateAuthorizedAddress) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateAuthorizedAddress: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateAuthorizedAddress: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Target", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Target = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsAuthorized", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsAuthorized = bool(v != 0)
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateAuthorizedAddressResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateAuthorizedAddressResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateAuthorizedAddressResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgDeleteAuthorizedAddress) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgDeleteAuthorizedAddress: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgDeleteAuthorizedAddress: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Target", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Target = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgDeleteAuthorizedAddressResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgDeleteAuthorizedAddressResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgDeleteAuthorizedAddressResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

@@ -34,6 +34,18 @@ const (
 	opWeightMsgCreateLatestPubKey          = "op_weight_msg_latest_pub_key"
 	defaultWeightMsgCreateLatestPubKey int = 100
 
+	opWeightMsgCreateAuthorizedAddress = "op_weight_msg_authorized_address"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateAuthorizedAddress int = 100
+
+	opWeightMsgUpdateAuthorizedAddress = "op_weight_msg_authorized_address"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateAuthorizedAddress int = 100
+
+	opWeightMsgDeleteAuthorizedAddress = "op_weight_msg_authorized_address"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeleteAuthorizedAddress int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -45,6 +57,16 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	keyshareGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
+		AuthorizedAddressList: []types.AuthorizedAddress{
+			{
+				AuthorizedBy: sample.AccAddress(),
+				Target:       "0",
+			},
+			{
+				AuthorizedBy: sample.AccAddress(),
+				Target:       "1",
+			},
+		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&keyshareGenesis)
@@ -99,6 +121,39 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCreateLatestPubKey,
 		keysharesimulation.SimulateMsgCreateLatestPubKey(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateAuthorizedAddress int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateAuthorizedAddress, &weightMsgCreateAuthorizedAddress, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateAuthorizedAddress = defaultWeightMsgCreateAuthorizedAddress
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateAuthorizedAddress,
+		keysharesimulation.SimulateMsgCreateAuthorizedAddress(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateAuthorizedAddress int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateAuthorizedAddress, &weightMsgUpdateAuthorizedAddress, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateAuthorizedAddress = defaultWeightMsgUpdateAuthorizedAddress
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateAuthorizedAddress,
+		keysharesimulation.SimulateMsgUpdateAuthorizedAddress(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeleteAuthorizedAddress int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteAuthorizedAddress, &weightMsgDeleteAuthorizedAddress, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteAuthorizedAddress = defaultWeightMsgDeleteAuthorizedAddress
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteAuthorizedAddress,
+		keysharesimulation.SimulateMsgDeleteAuthorizedAddress(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
