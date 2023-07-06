@@ -1,9 +1,9 @@
 package simulation
 
 import (
-	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
-	"github.com/cosmos/cosmos-sdk/x/simulation"
 	"math/rand"
+
+	"github.com/cosmos/cosmos-sdk/x/simulation"
 
 	"fairyring/x/keyshare/keeper"
 	"fairyring/x/keyshare/types"

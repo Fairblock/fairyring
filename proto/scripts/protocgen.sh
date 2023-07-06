@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eo pipefail
+set -e pipefail
 
 protoc_gen_gocosmos() {
   if ! grep "github.com/gogo/protobuf => github.com/regen-network/protobuf" go.mod &>/dev/null ; then
@@ -28,3 +28,4 @@ done
 # move proto files to the right places
 cp -r github.com/Fairblock/fairyring/x/* x/
 rm -rf github.com
+
