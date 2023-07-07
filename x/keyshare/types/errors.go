@@ -31,4 +31,5 @@ var (
 	ErrOnlyValidatorCanAuthorizeAddr  = sdkerrors.Register(ModuleName, 1906, "only validator can authorize address to submit key share")
 	ErrExceedMaxAuthAddr              = sdkerrors.Register(ModuleName, 1907, "each validator can only authorize max 1 address to submit key share")
 	ErrAuthorizeSelfAddress           = sdkerrors.Register(ModuleName, 1908, "unable to authorize sender own address")
+	ErrAuthorizedAnotherAddress       = sdkerrors.Register(ModuleName, 1909, "validator authorized another address to submit key share is not allow to submit key share")
 )

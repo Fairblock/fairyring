@@ -34,6 +34,10 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			return nil, types.ErrAuthorizerIsNotValidator.Wrap(authorizedAddrInfo.AuthorizedBy)
 		}
 		validatorInfo = authorizedByValInfo
+
+		// If the sender is in the validator set & authorized another address to submit key share
+	} else if count := k.GetAuthorizedCount(ctx, msg.Creator); count != 0 {
+		return nil, types.ErrAuthorizedAnotherAddress
 	}
 
 	// Setup
