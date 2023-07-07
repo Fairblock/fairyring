@@ -135,7 +135,10 @@ func validateSlashFractionNoKeyshare(v interface{}) error {
 	if val.IsNegative() {
 		return fmt.Errorf("invalid parameter value, expected non-negative number, got: %v", val)
 	}
-	return nil
+	if val.GT(sdk.NewDec(0)) && val.LTE(sdk.NewDec(1)) {
+		return nil
+	}
+	return fmt.Errorf("invalid parameter value, expected value between 0 and 1, not including 0, got %v", val)
 }
 
 // validateSlashFractionWrongKeyshare validates the SlashFractionWrongKeyshare param
@@ -147,7 +150,10 @@ func validateSlashFractionWrongKeyshare(v interface{}) error {
 	if val.IsNegative() {
 		return fmt.Errorf("invalid parameter value, expected non-negative number, got: %v", val)
 	}
-	return nil
+	if val.GT(sdk.NewDec(0)) && val.LTE(sdk.NewDec(1)) {
+		return nil
+	}
+	return fmt.Errorf("invalid parameter value, expected value between 0 and 1, not including 0, got %v", val)
 }
 
 // validateMaxIdledBlock validates the MaxIdledBlock param
