@@ -158,12 +158,26 @@ func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
-	validators := am.keeper.StakingKeeper().GetAllValidators(ctx)
-	for _, eachValidator := range validators {
-		if !eachValidator.IsBonded() {
-			valAddr, _ := sdk.ValAddressFromBech32(eachValidator.OperatorAddress)
-			valAccAddr := sdk.AccAddress(valAddr)
-			am.keeper.RemoveValidatorSet(ctx, valAccAddr.String())
+	validatorSet := am.keeper.GetAllValidatorSet(ctx)
+	for _, eachValidator := range validatorSet {
+		accAddr, err := sdk.AccAddressFromBech32(eachValidator.Validator)
+		if err != nil {
+			ctx.Logger().Error(
+				fmt.Sprintf(
+					"Error on converting validator addr: %s to AccAddr: %s",
+					eachValidator.Validator,
+					err.Error(),
+				),
+			)
+			continue
+		}
+		bondedVal, found := am.keeper.StakingKeeper().GetValidator(ctx, sdk.ValAddress(accAddr))
+		if !found {
+			am.keeper.RemoveValidatorSet(ctx, eachValidator.Validator)
+			continue
+		}
+		if !bondedVal.IsBonded() {
+			am.keeper.RemoveValidatorSet(ctx, eachValidator.Validator)
 		}
 	}
 
