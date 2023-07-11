@@ -22,4 +22,5 @@ var (
 	ErrQueuedKeyAlreadyExists     = sdkerrors.Register(ModuleName, 1111, "a queued key already exists")
 	ErrAccountNotStaking          = sdkerrors.Register(ModuleName, 1112, "account is not staking")
 	ErrAddressNotTrusted          = sdkerrors.Register(ModuleName, 1113, "address is not trusted")
+	ErrInsufficientBondedAmount   = sdkerrors.Register(ModuleName, 1114, "insufficient bonded amount to be a validator")
 )

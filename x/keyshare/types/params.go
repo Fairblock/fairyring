@@ -11,6 +11,11 @@ import (
 var _ paramtypes.ParamSet = (*Params)(nil)
 
 var (
+	KeyMinimumBonded            = []byte("MinimumBonded")
+	DefaultMinimumBonded uint64 = 100000000000
+)
+
+var (
 	KeyKeyExpiry            = []byte("KeyExpiry")
 	DefaultKeyExpiry uint64 = 100
 )
@@ -29,10 +34,12 @@ func ParamKeyTable() paramtypes.KeyTable {
 func NewParams(
 	keyExp uint64,
 	trAddrs []string,
+	minimumBonded uint64,
 ) Params {
 	return Params{
 		KeyExpiry:        keyExp,
 		TrustedAddresses: trAddrs,
+		MinimumBonded:    minimumBonded,
 	}
 }
 
@@ -41,6 +48,7 @@ func DefaultParams() Params {
 	return NewParams(
 		DefaultKeyExpiry,
 		DefaultTrustedAddresses,
+		DefaultMinimumBonded,
 	)
 }
 
@@ -49,6 +57,7 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
 		paramtypes.NewParamSetPair(KeyKeyExpiry, &p.KeyExpiry, validateKeyExpiry),
 		paramtypes.NewParamSetPair(KeyTrustedAddresses, &p.TrustedAddresses, validateTrustedAddresses),
+		paramtypes.NewParamSetPair(KeyMinimumBonded, &p.MinimumBonded, validateMinimumBonded),
 	}
 }
 
@@ -62,6 +71,9 @@ func (p Params) Validate() error {
 		return err
 	}
 
+	if err := validateMinimumBonded(p.MinimumBonded); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -95,6 +107,16 @@ func validateTrustedAddresses(v interface{}) error {
 		if err != nil {
 			return fmt.Errorf("address at index %d is invalid", i)
 		}
+	}
+
+	return nil
+}
+
+// validates the MinimumBonded param
+func validateMinimumBonded(v interface{}) error {
+	_, ok := v.(uint64)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", v)
 	}
 
 	return nil

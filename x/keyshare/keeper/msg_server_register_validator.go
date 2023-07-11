@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/hex"
 	"fairyring/x/keyshare/types"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -28,15 +29,22 @@ func (k msgServer) RegisterValidator(goCtx context.Context, msg *types.MsgRegist
 		return nil, types.ErrAccountNotStaking.Wrap(msg.Creator)
 	}
 
+	bonded := stakingValidator.GetBondedTokens().Uint64()
+	minBonded := k.MinimumBonded(ctx)
+	if bonded < minBonded {
+		return nil, types.ErrInsufficientBondedAmount.Wrap(
+			fmt.Sprintf("Expected minimum bonded: %d, Got: %d", minBonded, bonded),
+		)
+	}
+
 	consAddr, _ := stakingValidator.GetConsAddr()
 	consByte := consAddr.Bytes()
 	consHex := hex.EncodeToString(consByte)
-	senderConsAddr := consHex
 
 	validator := types.ValidatorSet{
 		Index:     msg.Creator,
 		Validator: msg.Creator,
-		ConsAddr:  senderConsAddr,
+		ConsAddr:  consHex,
 		IsActive:  true,
 	}
 
