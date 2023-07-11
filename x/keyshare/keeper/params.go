@@ -12,6 +12,9 @@ func (k Keeper) GetParams(ctx sdk.Context) types.Params {
 		k.KeyExpiry(ctx),
 		k.TrustedAddresses(ctx),
 		k.MinimumBonded(ctx),
+		k.SlashFractionNoKeyshare(ctx),
+		k.SlashFractionWrongKeyshare(ctx),
+		k.MaxIdledBlock(ctx),
 	)
 }
 
@@ -35,5 +38,23 @@ func (k Keeper) TrustedAddresses(ctx sdk.Context) (res []string) {
 // MinimumBonded returns the MinimumBonded param
 func (k Keeper) MinimumBonded(ctx sdk.Context) (res uint64) {
 	k.paramstore.Get(ctx, types.KeyMinimumBonded, &res)
+	return
+}
+
+// SlashFractionNoKeyshare returns the SlashFractionNoKeyshare param
+func (k Keeper) SlashFractionNoKeyshare(ctx sdk.Context) (res sdk.Dec) {
+	k.paramstore.Get(ctx, types.KeySlashFractionNoKeyShare, &res)
+	return
+}
+
+// SlashFractionWrongKeyshare returns the SlashFractionWrongKeyshare param
+func (k Keeper) SlashFractionWrongKeyshare(ctx sdk.Context) (res sdk.Dec) {
+	k.paramstore.Get(ctx, types.KeySlashFractionWrongKeyShare, &res)
+	return
+}
+
+// MaxIdledBlock returns the MaxIdledBlock param
+func (k Keeper) MaxIdledBlock(ctx sdk.Context) (res uint64) {
+	k.paramstore.Get(ctx, types.KeyMaxIdledBlock, &res)
 	return
 }

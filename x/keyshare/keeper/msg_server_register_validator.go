@@ -5,8 +5,8 @@ import (
 	"encoding/hex"
 	"fairyring/x/keyshare/types"
 	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"strconv"
 )
 
 // RegisterValidator adds a new validator to the validator set
@@ -49,6 +49,9 @@ func (k msgServer) RegisterValidator(goCtx context.Context, msg *types.MsgRegist
 	}
 
 	k.SetValidatorSet(ctx, validator)
+
+	// This is to prevent the validator be slashed immediately after registering
+	k.SetLastSubmittedHeight(ctx, msg.Creator, strconv.FormatInt(ctx.BlockHeight(), 10))
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.RegisteredValidatorEventType,

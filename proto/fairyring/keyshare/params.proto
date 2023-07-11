@@ -15,4 +15,5 @@ message Params {
   bytes slash_fraction_wrong_keyshare = 4
     [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
   uint64 minimum_bonded = 5;
+  uint64 max_idled_block = 6;
 }

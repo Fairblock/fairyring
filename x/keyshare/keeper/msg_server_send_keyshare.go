@@ -28,6 +28,10 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		return nil, types.ErrValidatorNotRegistered.Wrap(msg.Creator)
 	}
 
+	if uint64(ctx.BlockHeight()) > msg.BlockHeight {
+		return nil, types.ErrInvalidBlockHeight.Wrapf("Expected height: %d, got: %d", ctx.BlockHeight(), msg.BlockHeight)
+	}
+
 	// Setup
 	suite := bls.NewBLS12381Suite()
 	ibeID := strconv.FormatUint(msg.BlockHeight, 10)
@@ -79,6 +83,8 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 
 	// Save the new keyshare to state
 	k.SetKeyShare(ctx, keyShare)
+
+	k.SetLastSubmittedHeight(ctx, msg.Creator, strconv.FormatUint(msg.BlockHeight, 10))
 
 	validatorList := k.GetAllValidatorSet(ctx)
 
