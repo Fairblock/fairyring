@@ -5,6 +5,8 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
+
+	authzcodec "github.com/cosmos/cosmos-sdk/x/authz/codec"
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
@@ -33,3 +35,9 @@ var (
 	Amino     = codec.NewLegacyAmino()
 	ModuleCdc = codec.NewProtoCodec(cdctypes.NewInterfaceRegistry())
 )
+
+func init() {
+	RegisterCodec(Amino)
+	sdk.RegisterLegacyAminoCodec(Amino)
+	RegisterCodec(authzcodec.Amino)
+}
