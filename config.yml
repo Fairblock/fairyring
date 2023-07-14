@@ -1,12 +1,16 @@
 version: 1
 accounts:
-  - name: alice
-    coins: ["20000token", "200000000stake"]
-  - name: bob
-    coins: ["10000token", "100000000stake"]
+- name: alice
+  coins:
+  - 20000token
+  - 200000000stake
+- name: bob
+  coins:
+  - 10000token
+  - 100000000stake
 validators:
-  - name: alice
-    bonded: "100000000stake"
+- name: alice
+  bonded: 100000000stake
 client:
   openapi:
     path: "docs/static/openapi.yml"
@@ -16,10 +20,12 @@ client:
     path: "vue/src/store"
 faucet:
   name: bob
-  coins: ["5token", "100000stake"]
+  coins:
+  - 5token
+  - 100000stake
 genesis:
   app_state:
     keyshare:
       params:
-        trusted_addresses: ["cosmos18hl5c9xn5dze2g50uaw0l2mr02ew57zk2fgr8q"]
+        trusted_addresses: ["fairy1yudcuejnt2knsxu0kqc8jzt9nc6t9rs7ujcsg8"]
         key_expiry: 200

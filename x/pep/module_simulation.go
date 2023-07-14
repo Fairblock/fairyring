@@ -18,7 +18,6 @@ import (
 var (
 	_ = sample.AccAddress
 	_ = pepsimulation.FindAccount
-	_ = simappparams.StakePerAccount
 	_ = simulation.MsgEntryKind
 	_ = baseapp.Paramspace
 )

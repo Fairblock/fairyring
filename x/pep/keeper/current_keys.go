@@ -43,16 +43,13 @@ func (k Keeper) TransmitCurrentKeysPacket(
 	timeoutTimestamp uint64,
 ) error {
 
-	sourceChannelEnd, found := k.ChannelKeeper.GetChannel(ctx, sourcePort, sourceChannel)
+	_, found := k.ChannelKeeper.GetChannel(ctx, sourcePort, sourceChannel)
 	if !found {
 		return sdkerrors.Wrapf(channeltypes.ErrChannelNotFound, "port ID (%s) channel ID (%s)", sourcePort, sourceChannel)
 	}
 
-	destinationPort := sourceChannelEnd.GetCounterparty().GetPortID()
-	destinationChannel := sourceChannelEnd.GetCounterparty().GetChannelID()
-
 	// get the next sequence
-	sequence, found := k.ChannelKeeper.GetNextSequenceSend(ctx, sourcePort, sourceChannel)
+	_, found = k.ChannelKeeper.GetNextSequenceSend(ctx, sourcePort, sourceChannel)
 	if !found {
 		return sdkerrors.Wrapf(
 			channeltypes.ErrSequenceSendNotFound,
@@ -70,18 +67,7 @@ func (k Keeper) TransmitCurrentKeysPacket(
 		return sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, "cannot marshal the packet: "+err.Error())
 	}
 
-	packet := channeltypes.NewPacket(
-		packetBytes,
-		sequence,
-		sourcePort,
-		sourceChannel,
-		destinationPort,
-		destinationChannel,
-		timeoutHeight,
-		timeoutTimestamp,
-	)
-
-	if err := k.ChannelKeeper.SendPacket(ctx, channelCap, packet); err != nil {
+	if _, err := k.ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes); err != nil {
 		return err
 	}
 

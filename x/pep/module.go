@@ -6,9 +6,10 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	enc "github.com/FairBlock/DistributedIBE/encryption"
 	"math"
 	"strconv"
+
+	enc "github.com/FairBlock/DistributedIBE/encryption"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
@@ -19,18 +20,18 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
 
-	abci "github.com/tendermint/tendermint/abci/types"
+	abci "github.com/cometbft/cometbft/abci/types"
 
 	"fairyring/x/pep/client/cli"
 	"fairyring/x/pep/keeper"
 	"fairyring/x/pep/types"
 
+	tmcore "github.com/cometbft/cometbft/rpc/core"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	tmcore "github.com/tendermint/tendermint/rpc/core"
 )
 
 var (

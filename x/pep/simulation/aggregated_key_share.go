@@ -8,9 +8,10 @@ import (
 	"fairyring/x/pep/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
-	"github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/module/testutil"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+	"github.com/cosmos/cosmos-sdk/x/simulation"
 )
 
 // Prevent strconv unused error
@@ -39,7 +40,7 @@ func SimulateMsgCreateAggregatedKeyShare(
 		txCtx := simulation.OperationInput{
 			R:               r,
 			App:             app,
-			TxGen:           simappparams.MakeTestEncodingConfig().TxConfig,
+			TxGen:           testutil.MakeTestTxConfig(),
 			Cdc:             nil,
 			Msg:             msg,
 			MsgType:         msg.Type(),

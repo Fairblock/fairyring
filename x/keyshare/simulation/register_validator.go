@@ -10,6 +10,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/module/testutil"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 )
 
@@ -28,7 +29,7 @@ func SimulateMsgRegisterValidator(
 		txCtx := simulation.OperationInput{
 			R:               r,
 			App:             app,
-			TxGen:           simappparams.MakeTestEncodingConfig().TxConfig,
+			TxGen:           testutil.MakeTestTxConfig(),
 			Cdc:             nil,
 			Msg:             msg,
 			MsgType:         msg.Type(),

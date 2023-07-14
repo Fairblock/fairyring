@@ -10,10 +10,10 @@ import (
 
 	enc "github.com/FairBlock/DistributedIBE/encryption"
 
+	coretypes "github.com/cometbft/cometbft/rpc/core/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	cosmostxTypes "github.com/cosmos/cosmos-sdk/types/tx"
 	bls "github.com/drand/kyber-bls12381"
-	coretypes "github.com/tendermint/tendermint/rpc/core/types"
 )
 
 // ProcessUnconfirmedTxs attempts to decode TXs in the mempool and
