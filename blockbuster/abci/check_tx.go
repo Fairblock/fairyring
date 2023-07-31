@@ -17,21 +17,21 @@ type (
 	// CheckTxHandler is a wrapper around baseapp's CheckTx method that allows us to
 	// verify aggregated keyshare transactions against the latest committed state. All other transactions
 	// are executed normally using base app's CheckTx. This defines all of the
-	// dependencies that are required to verify a bid transaction.
+	// dependencies that are required to verify a keyshare transaction.
 	CheckTxHandler struct {
 		// baseApp is utilized to retrieve the latest committed state and to call
 		// baseapp's CheckTx method.
 		baseApp BaseApp
 
 		// txDecoder is utilized to decode transactions to determine if they are
-		// bid transactions.
+		// keyshare transactions.
 		txDecoder sdk.TxDecoder
 
 		// KeyShareLane is utilized to retrieve the keyshare info of a transaction and to
 		// insert a Keyshare transaction into the application-side mempool.
 		keyShareLane KeyShareLane
 
-		// anteHandler is utilized to verify the bid transaction against the latest
+		// anteHandler is utilized to verify the keyshare transaction against the latest
 		// committed state.
 		anteHandler sdk.AnteHandler
 
@@ -95,10 +95,8 @@ func NewCheckTxHandler(
 }
 
 // CheckTxHandler is a wrapper around baseapp's CheckTx method that allows us to
-// verify bid transactions against the latest committed state. All other transactions
-// are executed normally. We must verify each bid tx and all of its bundled transactions
-// before we can insert it into the mempool against the latest commit state because
-// otherwise the auction can be griefed. No state changes are applied to the state
+// verify keyshare transactions against the latest committed state. All other transactions
+// are executed normally. No state changes are applied to the state
 // during this process.
 func (handler *CheckTxHandler) CheckTx() CheckTx {
 	return func(req cometabci.RequestCheckTx) (resp cometabci.ResponseCheckTx) {
@@ -113,31 +111,31 @@ func (handler *CheckTxHandler) CheckTx() CheckTx {
 			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("failed to decode tx: %w", err), 0, 0, nil, false)
 		}
 
-		// Attempt to get the bid info of the transaction.
-		bidInfo, err := handler.tobLane.GetAuctionBidInfo(tx)
+		// Attempt to get the keyshare info of the transaction.
+		ksInfo, err := handler.keyShareLane.GetKeyShareInfo(tx)
 		if err != nil {
-			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("failed to get auction bid info: %w", err), 0, 0, nil, false)
+			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("failed to get keyshare info: %w", err), 0, 0, nil, false)
 		}
 
-		// If this is not a bid transaction, we just execute it normally.
-		if bidInfo == nil {
+		// If this is not a keyshare transaction, we just execute it normally.
+		if ksInfo == nil {
 			return handler.baseApp.CheckTx(req)
 		}
 
 		// We attempt to get the latest committed state in order to verify transactions
 		// as if they were to be executed at the top of the block. After verification, this
 		// context will be discarded and will not apply any state changes.
-		ctx := handler.GetContextForBidTx(req)
+		ctx := handler.GetContextForKeyshareTx(req)
 
-		// Verify the bid transaction.
-		gasInfo, err := handler.ValidateBidTx(ctx, tx, bidInfo)
+		// Verify the keyshare transaction.
+		gasInfo, err := handler.ValidateKeyshareTx(ctx, tx, ksInfo)
 		if err != nil {
-			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("invalid bid tx: %w", err), gasInfo.GasWanted, gasInfo.GasUsed, nil, false)
+			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("invalid keyshare tx: %w", err), gasInfo.GasWanted, gasInfo.GasUsed, nil, false)
 		}
 
-		// If the bid transaction is valid, we know we can insert it into the mempool for consideration in the next block.
-		if err := handler.tobLane.Insert(ctx, tx); err != nil {
-			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("invalid bid tx; failed to insert bid transaction into mempool: %w", err), gasInfo.GasWanted, gasInfo.GasUsed, nil, false)
+		// If the keyshare transaction is valid, we know we can insert it into the mempool for consideration in the next block.
+		if err := handler.keyShareLane.Insert(ctx, tx); err != nil {
+			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("invalid keyshare tx; failed to insert keyshare transaction into mempool: %w", err), gasInfo.GasWanted, gasInfo.GasUsed, nil, false)
 		}
 
 		return cometabci.ResponseCheckTx{
@@ -148,44 +146,30 @@ func (handler *CheckTxHandler) CheckTx() CheckTx {
 	}
 }
 
-// ValidateBidTx is utilized to verify the bid transaction against the latest committed state.
-func (handler *CheckTxHandler) ValidateBidTx(ctx sdk.Context, bidTx sdk.Tx, bidInfo *types.BidInfo) (sdk.GasInfo, error) {
-	// Verify the bid transaction.
-	ctx, err := handler.anteHandler(ctx, bidTx, false)
+// ValidateKeyshareTx is utilized to verify the keyshare transaction against the latest committed state.
+func (handler *CheckTxHandler) ValidateKeyshareTx(ctx sdk.Context, ksTx sdk.Tx, ksInfo *types.AggregatedKeyShare) (sdk.GasInfo, error) {
+	// Verify the keyshare transaction.
+	ctx, err := handler.anteHandler(ctx, ksTx, false)
 	if err != nil {
-		return sdk.GasInfo{}, fmt.Errorf("invalid bid tx; failed to execute ante handler: %w", err)
+		return sdk.GasInfo{}, fmt.Errorf("invalid keyshare tx; failed to execute ante handler: %w", err)
 	}
 
-	// Store the gas info and priority of the bid transaction before applying changes with other transactions.
+	// Store the gas info and priority of the keyshare transaction before applying changes with other transactions.
 	gasInfo := sdk.GasInfo{
 		GasWanted: ctx.GasMeter().Limit(),
 		GasUsed:   ctx.GasMeter().GasConsumed(),
 	}
 
-	// Verify all of the bundled transactions.
-	for _, tx := range bidInfo.Transactions {
-		bundledTx, err := handler.tobLane.WrapBundleTransaction(tx)
-		if err != nil {
-			return gasInfo, fmt.Errorf("invalid bid tx; failed to decode bundled tx: %w", err)
-		}
-
-		// bid txs cannot be included in bundled txs
-		bidInfo, _ := handler.tobLane.GetAuctionBidInfo(bundledTx)
-		if bidInfo != nil {
-			return gasInfo, fmt.Errorf("invalid bid tx; bundled tx cannot be a bid tx")
-		}
-
-		if ctx, err = handler.anteHandler(ctx, bundledTx, false); err != nil {
-			return gasInfo, fmt.Errorf("invalid bid tx; failed to execute bundled transaction: %w", err)
-		}
+	if _, err = handler.anteHandler(ctx, ksTx, false); err != nil {
+		return gasInfo, fmt.Errorf("invalid keyshare tx; failed to execute transaction: %w", err)
 	}
 
 	return gasInfo, nil
 }
 
-// GetContextForBidTx is returns the latest committed state and sets the context given
+// GetContextForTx is returns the latest committed state and sets the context given
 // the checkTx request.
-func (handler *CheckTxHandler) GetContextForBidTx(req cometabci.RequestCheckTx) sdk.Context {
+func (handler *CheckTxHandler) GetContextForKeyshareTx(req cometabci.RequestCheckTx) sdk.Context {
 	// Retrieve the commit multi-store which is used to retrieve the latest committed state.
 	ms := handler.baseApp.CommitMultiStore().CacheMultiStore()
 

@@ -7,6 +7,7 @@ import (
 
 	"fairyring/blockbuster"
 	"fairyring/blockbuster/utils"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkmempool "github.com/cosmos/cosmos-sdk/types/mempool"
 )
@@ -25,7 +26,7 @@ type (
 	// DefaultMempool defines the most basic mempool. It can be seen as an extension of
 	// an SDK PriorityNonceMempool, i.e. a mempool that supports <sender, nonce>
 	// two-dimensional priority ordering, with the additional support of prioritizing
-	// and indexing auction bids.
+	// and indexing transactions.
 	DefaultMempool struct {
 		// index defines an index transactions.
 		index sdkmempool.Mempool

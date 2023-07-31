@@ -19,8 +19,9 @@ type (
 		GetKeyShareInfo(tx sdk.Tx) (*types.AggregatedKeyShare, error)
 	}
 
-	// DefaultAuctionFactory defines a default implmentation for the auction factory interface for processing auction transactions.
-	DefaultAuctionFactory struct {
+	// DefaultKeyshareFactory defines a default implmentation for the keyshare factory interface
+	// for processing aggregate keyshare transactions.
+	DefaultKeyshareFactory struct {
 		txDecoder sdk.TxDecoder
 	}
 
@@ -33,16 +34,16 @@ type (
 	}
 )
 
-var _ Factory = (*DefaultAuctionFactory)(nil)
+var _ Factory = (*DefaultKeyshareFactory)(nil)
 
-// NewDefaultAuctionFactory returns a default auction factory interface implementation.
-func NewDefaultAuctionFactory(txDecoder sdk.TxDecoder) Factory {
-	return &DefaultAuctionFactory{
+// NewDefaultKeyshareFactory returns a default keyshare factory interface implementation.
+func NewDefaultKeyshareFactory(txDecoder sdk.TxDecoder) Factory {
+	return &DefaultKeyshareFactory{
 		txDecoder: txDecoder,
 	}
 }
 
-func (config *DefaultAuctionFactory) IsKeyshareTx(tx sdk.Tx) bool {
+func (config *DefaultKeyshareFactory) IsKeyshareTx(tx sdk.Tx) bool {
 	msgs := tx.GetMsgs()
 	if len(msgs) != 1 {
 		return false
@@ -56,7 +57,7 @@ func (config *DefaultAuctionFactory) IsKeyshareTx(tx sdk.Tx) bool {
 	return false
 }
 
-func (config *DefaultAuctionFactory) GetKeyShareInfo(tx sdk.Tx) (*types.AggregatedKeyShare, error) {
+func (config *DefaultKeyshareFactory) GetKeyShareInfo(tx sdk.Tx) (*types.AggregatedKeyShare, error) {
 	msg, err := GetAggregateKeyshareMsgFromTx(tx)
 	if err != nil {
 		return nil, err

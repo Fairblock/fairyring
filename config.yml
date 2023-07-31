@@ -24,6 +24,7 @@ faucet:
   - 5token
   - 100000stake
 genesis:
+  chain_id: "fairytest-1"
   app_state:
     keyshare:
       params:

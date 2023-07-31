@@ -16,7 +16,7 @@ import (
 var _ Mempool = (*KeyShareMempool)(nil)
 
 type (
-	// Mempool defines the interface of the auction mempool.
+	// Mempool defines the interface of the keyshare mempool.
 	Mempool interface {
 		sdkmempool.Mempool
 

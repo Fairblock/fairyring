@@ -51,8 +51,7 @@ func NewKeyShareLane(
 // Match returns true if the transaction is a aated keyshareggreg transaction.
 // This is determined by the KeyShareFactory.
 func (l *KeyShareLane) Match(tx sdk.Tx) bool {
-	ksInfo, err := l.GetKeyShareInfo(tx)
-	return ksInfo != nil && err == nil
+	return l.IsKeyshareTx(tx)
 }
 
 // Name returns the name of the lane.

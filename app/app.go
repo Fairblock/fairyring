@@ -2,15 +2,21 @@ package app
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 
+	"fairyring/blockbuster/abci"
+	"fairyring/blockbuster/lanes/base"
+
+	blockbuster "fairyring/blockbuster"
+
+	keyshare "fairyring/blockbuster/lanes/keyshare"
+
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	reflectionv1 "cosmossdk.io/api/cosmos/reflection/v1"
 	dbm "github.com/cometbft/cometbft-db"
-	abci "github.com/cometbft/cometbft/abci/types"
+	cometabci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cometbft/cometbft/libs/log"
 	tmos "github.com/cometbft/cometbft/libs/os"
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -124,6 +130,7 @@ import (
 const (
 	AccountAddressPrefix = "fairy"
 	Name                 = "fairyring"
+	ChainID              = "fairytest-1"
 )
 
 // this line is used by starport scaffolding # stargate/wasm/app/enabledProposals
@@ -215,6 +222,7 @@ type App struct {
 	cdc               *codec.LegacyAmino
 	appCodec          codec.Codec
 	interfaceRegistry types.InterfaceRegistry
+	txConfig          client.TxConfig
 
 	invCheckPeriod uint
 
@@ -260,6 +268,9 @@ type App struct {
 	// sm is the simulation manager
 	sm           *module.SimulationManager
 	configurator module.Configurator
+
+	// Custom checkTx handler
+	checkTxHandler abci.CheckTx
 }
 
 // New returns a reference to an initialized blockchain app
@@ -308,6 +319,7 @@ func New(
 		cdc:               cdc,
 		appCodec:          appCodec,
 		interfaceRegistry: interfaceRegistry,
+		txConfig:          encodingConfig.TxConfig,
 		invCheckPeriod:    invCheckPeriod,
 		keys:              keys,
 		tkeys:             tkeys,
@@ -368,6 +380,98 @@ func New(
 		app.BlockedModuleAccountAddrs(),
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
+
+	// ---------------------------------------------------------------------------- //
+	// ------------------------- Begin Custom Code -------------------------------- //
+	// ---------------------------------------------------------------------------- //
+
+	// Set fairyring's mempool into the app.
+	config := blockbuster.BaseLaneConfig{
+		Logger:        app.Logger(),
+		TxEncoder:     app.txConfig.TxEncoder(),
+		TxDecoder:     app.txConfig.TxDecoder(),
+		MaxBlockSpace: sdk.ZeroDec(),
+	}
+
+	// Create the lanes.
+	//
+	// NOTE: The lanes are ordered by priority. The first lane is the highest priority
+	// lane and the last lane is the lowest priority lane.
+
+	// Keyshare lane allows for CreateAggrgatedKeyShare transactions to be processed before others.
+	keyshareLane := keyshare.NewKeyShareLane(
+		config,
+		0,
+		keyshare.NewDefaultKeyshareFactory(app.txConfig.TxDecoder()),
+	)
+
+	// Default lane accepts all other transactions.
+	defaultConfig := blockbuster.BaseLaneConfig{
+		Logger:        app.Logger(),
+		TxEncoder:     app.txConfig.TxEncoder(),
+		TxDecoder:     app.txConfig.TxDecoder(),
+		MaxBlockSpace: sdk.ZeroDec(),
+		IgnoreList: []blockbuster.Lane{
+			keyshareLane,
+		},
+	}
+	defaultLane := base.NewDefaultLane(defaultConfig)
+
+	lanes := []blockbuster.Lane{
+		keyshareLane,
+		defaultLane,
+	}
+
+	mempool := blockbuster.NewMempool(lanes...)
+	app.BaseApp.SetMempool(mempool)
+
+	// Create a global ante handler that will be called on each transaction when
+	// proposals are being built and verified.
+	handlerOptions := ante.HandlerOptions{
+		AccountKeeper:   app.AccountKeeper,
+		BankKeeper:      app.BankKeeper,
+		FeegrantKeeper:  app.FeeGrantKeeper,
+		SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
+		SignModeHandler: app.txConfig.SignModeHandler(),
+	}
+	options := FairyringHandlerOptions{
+		BaseOptions:  handlerOptions,
+		PepKeeper:    app.PepKeeper,
+		TxDecoder:    app.txConfig.TxDecoder(),
+		TxEncoder:    app.txConfig.TxEncoder(),
+		KeyShareLane: keyshareLane,
+		Mempool:      mempool,
+	}
+	anteHandler := NewFairyringAnteHandler(options)
+
+	// Set the lane config on the lanes.
+	for _, lane := range lanes {
+		lane.SetAnteHandler(anteHandler)
+	}
+
+	// Set the proposal handlers on the BaseApp along with the custom antehandler.
+	proposalHandlers := abci.NewProposalHandler(
+		app.Logger(),
+		app.txConfig.TxDecoder(),
+		mempool,
+	)
+	app.BaseApp.SetPrepareProposal(proposalHandlers.PrepareProposalHandler())
+	app.BaseApp.SetProcessProposal(proposalHandlers.ProcessProposalHandler())
+	app.BaseApp.SetAnteHandler(anteHandler)
+
+	// Set the custom CheckTx handler on BaseApp.
+	checkTxHandler := abci.NewCheckTxHandler(
+		app.BaseApp,
+		app.txConfig.TxDecoder(),
+		keyshareLane,
+		anteHandler,
+		ChainID,
+	)
+	app.SetCheckTx(checkTxHandler.CheckTx())
+
+	// ---------------------------------------------------------------------------- //
+	// ------------------------- End Custom Code ---------------------------------- //
+	// ---------------------------------------------------------------------------- //
 
 	app.StakingKeeper = stakingkeeper.NewKeeper(
 		appCodec,
@@ -740,21 +844,6 @@ func New(
 	app.MountTransientStores(tkeys)
 	app.MountMemoryStores(memKeys)
 
-	// initialize BaseApp
-	anteHandler, err := ante.NewAnteHandler(
-		ante.HandlerOptions{
-			AccountKeeper:   app.AccountKeeper,
-			BankKeeper:      app.BankKeeper,
-			SignModeHandler: encodingConfig.TxConfig.SignModeHandler(),
-			FeegrantKeeper:  app.FeeGrantKeeper,
-			SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
-		},
-	)
-	if err != nil {
-		panic(fmt.Errorf("failed to create AnteHandler: %w", err))
-	}
-
-	app.SetAnteHandler(anteHandler)
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetEndBlocker(app.EndBlocker)
@@ -777,17 +866,17 @@ func New(
 func (app *App) Name() string { return app.BaseApp.Name() }
 
 // BeginBlocker application updates every begin block
-func (app *App) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
+func (app *App) BeginBlocker(ctx sdk.Context, req cometabci.RequestBeginBlock) cometabci.ResponseBeginBlock {
 	return app.mm.BeginBlock(ctx, req)
 }
 
 // EndBlocker application updates every end block
-func (app *App) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
+func (app *App) EndBlocker(ctx sdk.Context, req cometabci.RequestEndBlock) cometabci.ResponseEndBlock {
 	return app.mm.EndBlock(ctx, req)
 }
 
 // InitChainer application update at chain initialization
-func (app *App) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
+func (app *App) InitChainer(ctx sdk.Context, req cometabci.RequestInitChain) cometabci.ResponseInitChain {
 	var genesisState GenesisState
 	if err := json.Unmarshal(req.AppStateBytes, &genesisState); err != nil {
 		panic(err)
@@ -953,4 +1042,9 @@ func (app *App) SimulationManager() *module.SimulationManager {
 // ModuleManager returns the app ModuleManager
 func (app *App) ModuleManager() *module.Manager {
 	return app.mm
+}
+
+// SetCheckTx sets the checkTxHandler for the app.
+func (app *App) SetCheckTx(handler abci.CheckTx) {
+	app.checkTxHandler = handler
 }
