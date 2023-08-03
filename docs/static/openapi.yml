@@ -35865,6 +35865,10 @@ paths:
                           type: string
                         channel_id:
                           type: string
+                  trusted_addresses:
+                    type: array
+                    items:
+                      type: string
                   channel_id:
                     type: string
             description: >-
@@ -72103,6 +72107,10 @@ definitions:
               type: string
             channel_id:
               type: string
+      trusted_addresses:
+        type: array
+        items:
+          type: string
       channel_id:
         type: string
     description: Params defines the parameters for the module.
@@ -72274,6 +72282,10 @@ definitions:
                   type: string
                 channel_id:
                   type: string
+          trusted_addresses:
+            type: array
+            items:
+              type: string
           channel_id:
             type: string
     description: QueryParamsResponse is response type for the Query/Params RPC method.

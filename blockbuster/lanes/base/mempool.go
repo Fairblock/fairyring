@@ -53,10 +53,10 @@ func NewDefaultMempool(txEncoder sdk.TxEncoder) *DefaultMempool {
 	}
 }
 
-// Insert inserts a transaction into the mempool based on the transaction type (normal or auction).
+// Insert inserts a transaction into the mempool based on the transaction type (normal or keyshare).
 func (am *DefaultMempool) Insert(ctx context.Context, tx sdk.Tx) error {
 	if err := am.index.Insert(ctx, tx); err != nil {
-		return fmt.Errorf("failed to insert tx into auction index: %w", err)
+		return fmt.Errorf("failed to insert tx into keyshare index: %w", err)
 	}
 
 	_, txHashStr, err := utils.GetTxHashStr(am.txEncoder, tx)
@@ -69,7 +69,7 @@ func (am *DefaultMempool) Insert(ctx context.Context, tx sdk.Tx) error {
 	return nil
 }
 
-// Remove removes a transaction from the mempool based on the transaction type (normal or auction).
+// Remove removes a transaction from the mempool based on the transaction type (normal or keyshare).
 func (am *DefaultMempool) Remove(tx sdk.Tx) error {
 	am.removeTx(am.index, tx)
 	return nil

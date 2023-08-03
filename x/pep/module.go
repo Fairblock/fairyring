@@ -26,7 +26,6 @@ import (
 	"fairyring/x/pep/keeper"
 	"fairyring/x/pep/types"
 
-	tmcore "github.com/cometbft/cometbft/rpc/core"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -171,17 +170,17 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		lastExecutedHeight = 0
 	}
 
-	utxs, err := tmcore.UnconfirmedTxs(nil, nil)
-	if err != nil {
-		am.keeper.Logger(ctx).Error("Error on getting unconfirmed txs")
-		am.keeper.Logger(ctx).Error(err.Error())
-	}
-	if utxs != nil {
-		if err := am.keeper.ProcessUnconfirmedTxs(ctx, utxs); err != nil {
-			am.keeper.Logger(ctx).Error("Process unconfirmed txs error")
-			am.keeper.Logger(ctx).Error(err.Error())
-		}
-	}
+	// utxs, err := tmcore.UnconfirmedTxs(nil, nil)
+	// if err != nil {
+	// 	am.keeper.Logger(ctx).Error("Error on getting unconfirmed txs")
+	// 	am.keeper.Logger(ctx).Error(err.Error())
+	// }
+	// if utxs != nil {
+	// 	if err := am.keeper.ProcessUnconfirmedTxs(ctx, utxs); err != nil {
+	// 		am.keeper.Logger(ctx).Error("Process unconfirmed txs error")
+	// 		am.keeper.Logger(ctx).Error(err.Error())
+	// 	}
+	// }
 
 	strHeight := am.keeper.GetLatestHeight(ctx)
 	height, err := strconv.ParseUint(strHeight, 10, 64)
@@ -515,7 +514,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
 	err := am.keeper.QueryFairyringCurrentKeys(ctx)
 	if err != nil {
-		am.keeper.Logger(ctx).Error("Beginblocker get keys err", err)
+		am.keeper.Logger(ctx).Error("Endblocker get keys err", err)
 		am.keeper.Logger(ctx).Error(err.Error())
 	}
 
