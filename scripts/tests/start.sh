@@ -29,6 +29,8 @@ GRPCPORT_2=9092
 GRPCWEB_1=9091
 GRPCWEB_2=9093
 
+BLOCK_TIME=5
+
 # Stop if it is already running
 if pgrep -x "$BINARY" >/dev/null; then
     echo "Terminating $BINARY..."
@@ -98,8 +100,8 @@ $BINARY collect-gentxs --home $CHAIN_DIR/$CHAINID_2 &> /dev/null
 echo "Changing defaults and ports in app.toml and config.toml files..."
 sed -i -e 's#"tcp://0.0.0.0:26656"#"tcp://0.0.0.0:'"$P2PPORT_1"'"#g' $CHAIN_DIR/$CHAINID_1/config/config.toml
 sed -i -e 's#"tcp://127.0.0.1:26657"#"tcp://0.0.0.0:'"$RPCPORT_1"'"#g' $CHAIN_DIR/$CHAINID_1/config/config.toml
-sed -i -e 's/timeout_commit = "5s"/timeout_commit = "1s"/g' $CHAIN_DIR/$CHAINID_1/config/config.toml
-sed -i -e 's/timeout_propose = "3s"/timeout_propose = "1s"/g' $CHAIN_DIR/$CHAINID_1/config/config.toml
+sed -i -e 's/timeout_commit = "5s"/timeout_commit = "5s"/g' $CHAIN_DIR/$CHAINID_1/config/config.toml
+sed -i -e 's/timeout_propose = "3s"/timeout_propose = "5s"/g' $CHAIN_DIR/$CHAINID_1/config/config.toml
 sed -i -e 's/index_all_keys = false/index_all_keys = true/g' $CHAIN_DIR/$CHAINID_1/config/config.toml
 sed -i -e 's/enable = false/enable = true/g' $CHAIN_DIR/$CHAINID_1/config/app.toml
 sed -i -e 's/swagger = false/swagger = true/g' $CHAIN_DIR/$CHAINID_1/config/app.toml
@@ -152,7 +154,7 @@ rm rly1.json &> /dev/null
 rm rly2.json &> /dev/null
 
 echo "Waiting both chain to run..."
-sleep 5
+sleep $BLOCK_TIME
 
 echo "Starting Hermes Relayer..."
 echo "Creating log file at $CHAIN_DIR/relayer.log"

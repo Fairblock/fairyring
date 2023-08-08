@@ -170,12 +170,21 @@ sync-docs:
 ###                        Integration Tests                                ###
 ###############################################################################
 
+test-block-tx-limit: init-test-framework \
+	test-tx-limit
+	-@rm -rf ./data
+	-@killall fairyringd 2>/dev/null
+
 integration-test-all: init-test-framework \
 	init-relayer \
 	test-keyshare-module \
 	test-pep-module
 	-@rm -rf ./data
 	-@killall fairyringd 2>/dev/null
+
+test-tx-limit:
+	@echo "Testing Block tx limit..."
+	./scripts/tests/blockTxLimit.sh
 
 test-keyshare-module:
 	@echo "Testing KeyShare module..."
