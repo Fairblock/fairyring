@@ -100,8 +100,8 @@ $BINARY collect-gentxs --home $CHAIN_DIR/$CHAINID_2 &> /dev/null
 echo "Changing defaults and ports in app.toml and config.toml files..."
 sed -i -e 's#"tcp://0.0.0.0:26656"#"tcp://0.0.0.0:'"$P2PPORT_1"'"#g' $CHAIN_DIR/$CHAINID_1/config/config.toml
 sed -i -e 's#"tcp://127.0.0.1:26657"#"tcp://0.0.0.0:'"$RPCPORT_1"'"#g' $CHAIN_DIR/$CHAINID_1/config/config.toml
-sed -i -e 's/timeout_commit = "5s"/timeout_commit = "5s"/g' $CHAIN_DIR/$CHAINID_1/config/config.toml
-sed -i -e 's/timeout_propose = "3s"/timeout_propose = "5s"/g' $CHAIN_DIR/$CHAINID_1/config/config.toml
+sed -i -e 's/timeout_commit = "5s"/timeout_commit = "1s"/g' $CHAIN_DIR/$CHAINID_1/config/config.toml
+sed -i -e 's/timeout_propose = "3s"/timeout_propose = "1s"/g' $CHAIN_DIR/$CHAINID_1/config/config.toml
 sed -i -e 's/index_all_keys = false/index_all_keys = true/g' $CHAIN_DIR/$CHAINID_1/config/config.toml
 sed -i -e 's/enable = false/enable = true/g' $CHAIN_DIR/$CHAINID_1/config/app.toml
 sed -i -e 's/swagger = false/swagger = true/g' $CHAIN_DIR/$CHAINID_1/config/app.toml
@@ -125,7 +125,7 @@ sed -i -e 's/"voting_period": "172800s"/"voting_period": "10s"/g' $CHAIN_DIR/$CH
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
 sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
-sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
+sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL2_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
 
 echo "Starting $CHAINID_1 in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID_1.log"

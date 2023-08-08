@@ -6,7 +6,7 @@ CHAIN_DIR=$(pwd)/data
 CHAINID_1=fairyring_test_1
 CHAINID_2=fairyring_test_2
 CHAIN1_NODE=tcp://localhost:16657
-BLOCK_TIME=5
+BLOCK_TIME=2
 
 WALLET_1=$($BINARY keys show wallet1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
 VALIDATOR_1=$($BINARY keys show val1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
