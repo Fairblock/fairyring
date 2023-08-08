@@ -26,6 +26,14 @@ VALIDATOR_1=$($BINARY keys show val1 -a --keyring-backend test --home $CHAIN_DIR
 WALLET_2=$($BINARY keys show wallet2 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_2)
 VALIDATOR_2=$($BINARY keys show val2 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_2)
 
+check_tx_code () {
+  local TX_CODE=$(echo "$1" | jq -r '.code')
+  if [ "$TX_CODE" != "0" ]; then
+    echo "ERROR: Tx failed with code: $TX_CODE"
+    exit 1
+  fi
+}
+
 wait_for_tx () {
   sleep $BLOCK_TIME
   local TXHASH=$(echo "$1" | jq -r '.txhash')
@@ -65,6 +73,7 @@ fi
 echo "Submit encrypted tx with invalid block height to pep module on chain fairyring_test_2"
 CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
 RESULT=$($BINARY tx pep submit-encrypted-tx 0000 $((CURRENT_BLOCK - 1)) --from $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
 if [[ "$ERROR_MSG" != *"Invalid target block height"* ]]; then
@@ -106,6 +115,7 @@ rm -r unsigned.json &> /dev/null
 
 echo "Submit encrypted tx to pep module on chain fairyring_test_2"
 RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER $AGG_KEY_HEIGHT --from $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 EVENT_TYPE=$(echo "$RESULT" | jq -r '.logs[0].events[1].type')
 TARGET_HEIGHT=$(echo "$RESULT" | jq -r '.logs[0].events[1].attributes[1].value')
@@ -129,6 +139,7 @@ fi
 
 echo "Submit valid aggregated key to pep module on chain fairyring_test_2"
 RESULT=$($BINARY tx pep create-aggregated-key-share $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 ACTION=$(echo "$RESULT" | jq -r '.logs[0].events[0].attributes[0].value')
 if [ "$ACTION" != "/fairyring.pep.MsgCreateAggregatedKeyShare" ]; then
@@ -166,6 +177,7 @@ echo "Target account has: $TARGET_BAL_AFTER $TARGET_BAL_DENOM after encrypted ba
 
 echo "Submit invalid aggregated key to pep module on chain fairyring_test_2"
 RESULT=$($BINARY tx pep create-aggregated-key-share $((AGG_KEY_HEIGHT+1)) 123123123 --from $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 ACTION=$(echo "$RESULT" | jq -r '.logs[0].events[0].attributes[0].value')
 if [ "$ACTION" != "/fairyring.pep.MsgCreateAggregatedKeyShare" ]; then
