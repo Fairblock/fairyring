@@ -112,6 +112,7 @@ import (
 	ibcporttypes "github.com/cosmos/ibc-go/v7/modules/core/05-port/types"
 	ibcexported "github.com/cosmos/ibc-go/v7/modules/core/exported"
 	ibckeeper "github.com/cosmos/ibc-go/v7/modules/core/keeper"
+  ibctm "github.com/cosmos/ibc-go/v7/modules/light-clients/07-tendermint"
 	"github.com/spf13/cast"
 
 	keysharemodule "fairyring/x/keyshare"
@@ -174,6 +175,7 @@ var (
 		feegrantmodule.AppModuleBasic{},
 		groupmodule.AppModuleBasic{},
 		ibc.AppModuleBasic{},
+    ibctm.AppModuleBasic{},
 		upgrade.AppModuleBasic{},
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
