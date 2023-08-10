@@ -35317,6 +35317,12 @@ paths:
                   slash_fraction_wrong_keyshare:
                     type: string
                     format: byte
+                  minimum_bonded:
+                    type: string
+                    format: uint64
+                  max_idled_block:
+                    type: string
+                    format: uint64
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -71800,6 +71806,12 @@ definitions:
       slash_fraction_wrong_keyshare:
         type: string
         format: byte
+      minimum_bonded:
+        type: string
+        format: uint64
+      max_idled_block:
+        type: string
+        format: uint64
     description: Params defines the parameters for the module.
   fairyring.keyshare.QueryAllAggregatedKeyShareResponse:
     type: object
@@ -72003,6 +72015,12 @@ definitions:
           slash_fraction_wrong_keyshare:
             type: string
             format: byte
+          minimum_bonded:
+            type: string
+            format: uint64
+          max_idled_block:
+            type: string
+            format: uint64
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   fairyring.keyshare.QueryPubKeyResponse:
     type: object
