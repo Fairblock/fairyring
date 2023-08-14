@@ -137,6 +137,8 @@ if [ "$VALIDATOR_PEP_NONCE" != "0" ]; then
 fi
 
 
+CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE | jq -r '.block.header.height')
+echo "Chain 2 Current Block: $CURRENT_BLOCK"
 echo "Submit valid aggregated key to pep module on chain fairyring_test_2"
 RESULT=$($BINARY tx pep create-aggregated-key-share $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT

@@ -170,7 +170,12 @@ sync-docs:
 ###                        Integration Tests                                ###
 ###############################################################################
 
-test-block-tx-limit: init-test-framework \
+clear-pipes:
+	@echo "Clearing named pipes..."; \
+	rm /tmp/testfairyringsubmit_tx*; \
+ 	rm /tmp/testfairyringnormaltx*;
+
+test-block-tx-limit: init-test-block-limit-framework \
 	test-tx-limit
 	-@rm -rf ./data
 	-@killall fairyringd 2>/dev/null
@@ -198,6 +203,11 @@ init-relayer:
 	@echo "Initializing hermes relayer..."
 	./scripts/tests/relayer.sh
 	@sleep 2
+
+init-test-block-limit-framework: clean-testing-data install
+	@echo "Initializing fairyring..."
+	./scripts/tests/start_test_block_tx_limit.sh
+	@sleep 3
 
 init-test-framework: clean-testing-data install
 	@echo "Initializing fairyring..."
