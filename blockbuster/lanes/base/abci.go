@@ -5,6 +5,7 @@ import (
 
 	"fairyring/blockbuster"
 	"fairyring/blockbuster/utils"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -15,12 +16,13 @@ func (l *DefaultLane) PrepareLane(
 	ctx sdk.Context,
 	proposal blockbuster.BlockProposal,
 	maxTxBytes int64,
+	txs [][]byte,
 	next blockbuster.PrepareLanesHandler,
 ) (blockbuster.BlockProposal, error) {
 	// Define all of the info we need to select transactions for the partial proposal.
 	var (
 		totalSize   int64
-		txs         [][]byte
+		txsToAdd    [][]byte
 		txsToRemove = make(map[sdk.Tx]struct{}, 0)
 	)
 
@@ -58,7 +60,7 @@ func (l *DefaultLane) PrepareLane(
 		}
 
 		totalSize += txSize
-		txs = append(txs, txBytes)
+		txsToAdd = append(txsToAdd, txBytes)
 	}
 
 	// Remove all transactions that were invalid during the creation of the partial proposal.
@@ -69,11 +71,11 @@ func (l *DefaultLane) PrepareLane(
 	// Update the partial proposal with the selected transactions. If the proposal is unable to
 	// be updated, we return an error. The proposal will only be modified if it passes all
 	// of the invarient checks.
-	if err := proposal.UpdateProposal(l, txs); err != nil {
+	if err := proposal.UpdateProposal(l, txsToAdd); err != nil {
 		return proposal, err
 	}
 
-	return next(ctx, proposal)
+	return next(ctx, txs, proposal)
 }
 
 // ProcessLane verifies the default lane's portion of a block proposal. Since the default lane's

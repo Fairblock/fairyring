@@ -4,6 +4,7 @@ import (
 	"fairyring/blockbuster"
 	"fairyring/blockbuster/lanes/terminator"
 	"fairyring/blockbuster/utils"
+	"fmt"
 
 	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cometbft/cometbft/libs/log"
@@ -38,6 +39,8 @@ func NewProposalHandler(logger log.Logger, txDecoder sdk.TxDecoder, mempool bloc
 // will include all valid transactions in the proposal (up to MaxTxBytes).
 func (h *ProposalHandler) PrepareProposalHandler() sdk.PrepareProposalHandler {
 	return func(ctx sdk.Context, req abci.RequestPrepareProposal) (resp abci.ResponsePrepareProposal) {
+		fmt.Println(req.Txs)
+
 		// In the case where there is a panic, we recover here and return an empty proposal.
 		defer func() {
 			if err := recover(); err != nil {
@@ -46,7 +49,7 @@ func (h *ProposalHandler) PrepareProposalHandler() sdk.PrepareProposalHandler {
 			}
 		}()
 
-		proposal, err := h.prepareLanesHandler(ctx, blockbuster.NewProposal(req.MaxTxBytes))
+		proposal, err := h.prepareLanesHandler(ctx, req.Txs, blockbuster.NewProposal(req.MaxTxBytes))
 		if err != nil {
 			h.logger.Error("failed to prepare proposal", "err", err)
 			return abci.ResponsePrepareProposal{Txs: make([][]byte, 0)}
@@ -119,7 +122,7 @@ func ChainPrepareLanes(chain ...blockbuster.Lane) blockbuster.PrepareLanesHandle
 		chain = append(chain, terminator.Terminator{})
 	}
 
-	return func(ctx sdk.Context, partialProposal blockbuster.BlockProposal) (finalProposal blockbuster.BlockProposal, err error) {
+	return func(ctx sdk.Context, txs [][]byte, partialProposal blockbuster.BlockProposal) (finalProposal blockbuster.BlockProposal, err error) {
 		lane := chain[0]
 		lane.Logger().Info("preparing lane", "lane", lane.Name())
 
@@ -152,6 +155,7 @@ func ChainPrepareLanes(chain ...blockbuster.Lane) blockbuster.PrepareLanesHandle
 						ctx,
 						partialProposal,
 						maxTxBytesForLane,
+						txs,
 						ChainPrepareLanes(chain[2:]...),
 					)
 				}
@@ -173,6 +177,7 @@ func ChainPrepareLanes(chain ...blockbuster.Lane) blockbuster.PrepareLanesHandle
 			cacheCtx,
 			partialProposal,
 			maxTxBytesForLane,
+			txs,
 			ChainPrepareLanes(chain[1:]...),
 		)
 	}

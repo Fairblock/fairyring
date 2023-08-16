@@ -16,20 +16,23 @@ func (l *KeyShareLane) PrepareLane(
 	ctx sdk.Context,
 	proposal blockbuster.BlockProposal,
 	maxTxBytes int64,
+	txs [][]byte,
 	next blockbuster.PrepareLanesHandler,
 ) (blockbuster.BlockProposal, error) {
 	// Define all of the info we need to select transactions for the partial proposal.
 	var (
-		txs         [][]byte
+		keyshareTxs [][]byte
 		txsToRemove = make(map[sdk.Tx]struct{}, 0)
 	)
 
 	fmt.Println("ekhane  1")
 	fmt.Println(l.Mempool.CountTx())
+	fmt.Println(proposal.GetNumTxs())
+	fmt.Println(txs)
 
 	// Attempt to select the valid keyshare txs
-	keyshareTxIterator := l.Select(ctx, nil)
-	// fmt.Println(keyshareTxIterator.Tx())
+	keyshareTxIterator := l.Mempool.Select(ctx, txs)
+	fmt.Println(keyshareTxIterator.Tx())
 selectKeyshareTxLoop:
 	for ; keyshareTxIterator != nil; keyshareTxIterator = keyshareTxIterator.Next() {
 		cacheCtx, write := ctx.CacheContext()
@@ -73,7 +76,7 @@ selectKeyshareTxLoop:
 			// At this point, and all the keyshare transactions are valid.
 			// So we select them bid and also mark these transactions as seen and
 			// update the total size selected thus far.
-			txs = append(txs, keyshareTxBz)
+			keyshareTxs = append(keyshareTxs, keyshareTxBz)
 
 			// Write the cache context to the original context when we know we have a
 			// valid top of block bundle.
@@ -101,13 +104,13 @@ selectKeyshareTxLoop:
 	// Update the proposal with the selected transactions. This will only return an error
 	// if the invarient checks are not passed. In the case when this errors, the original proposal
 	// will be returned (without the selected transactions from this lane).
-	if err := proposal.UpdateProposal(l, txs); err != nil {
+	if err := proposal.UpdateProposal(l, keyshareTxs); err != nil {
 		fmt.Println("ekhane  1.8")
 
 		return proposal, err
 	}
 
-	return next(ctx, proposal)
+	return next(ctx, txs, proposal)
 }
 
 // ProcessLane will ensure that block proposals that include transactions from
