@@ -170,17 +170,9 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		lastExecutedHeight = 0
 	}
 
-	// utxs, err := tmcore.UnconfirmedTxs(nil, nil)
-	// if err != nil {
-	// 	am.keeper.Logger(ctx).Error("Error on getting unconfirmed txs")
-	// 	am.keeper.Logger(ctx).Error(err.Error())
-	// }
-	// if utxs != nil {
-	// 	if err := am.keeper.ProcessUnconfirmedTxs(ctx, utxs); err != nil {
-	// 		am.keeper.Logger(ctx).Error("Process unconfirmed txs error")
-	// 		am.keeper.Logger(ctx).Error(err.Error())
-	// 	}
-	// }
+	allAggKey := am.keeper.GetAllAggregatedKeyShare(ctx)
+
+	am.keeper.Logger(ctx).Info(fmt.Sprintf("[PEP][AGGKEY] %v", allAggKey))
 
 	strHeight := am.keeper.GetLatestHeight(ctx)
 	height, err := strconv.ParseUint(strHeight, 10, 64)
@@ -339,17 +331,25 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			txDecoderTx, err := am.txConfig.TxDecoder()(decryptedTx.Bytes())
 
 			if err != nil {
-				am.keeper.Logger(ctx).Error("Decoding Tx error in Beginblock")
+				am.keeper.Logger(ctx).Error("Decoding Tx error in BeginBlock... Trying JSON Decoder")
 				am.keeper.Logger(ctx).Error(err.Error())
-				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.EncryptedTxRevertedEventType,
-						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to decode tx data to Cosmos Tx"),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-					),
-				)
-				continue
+
+				txDecoderTx, err = am.txConfig.TxJSONDecoder()(decryptedTx.Bytes())
+				if err != nil {
+					am.keeper.Logger(ctx).Error("JSON Decoding Tx error in BeginBlock")
+					am.keeper.Logger(ctx).Error(err.Error())
+					ctx.EventManager().EmitEvent(
+						sdk.NewEvent(types.EncryptedTxRevertedEventType,
+							sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+							sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+							sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to decode tx data to Cosmos Tx"),
+							sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+						),
+					)
+					continue
+				} else {
+					am.keeper.Logger(ctx).Error("TX Successfully Decode with JSON Decoder")
+				}
 			}
 
 			wrappedTx, err := am.txConfig.WrapTxBuilder(txDecoderTx)
