@@ -18,7 +18,7 @@ func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.Ms
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	params := k.GetParams(ctx)
-	var trusted bool = false
+	var trusted = false
 
 	for _, trustedAddr := range params.TrustedAddresses {
 		if trustedAddr == msg.Creator {
