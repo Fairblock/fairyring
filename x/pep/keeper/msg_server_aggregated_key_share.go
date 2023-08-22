@@ -17,7 +17,6 @@ import (
 func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.MsgCreateAggregatedKeyShare) (*types.MsgCreateAggregatedKeyShareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	fmt.Println("\n\n\n\n HEPP \n\n\n\n")
 	params := k.GetParams(ctx)
 	var trusted bool = false
 

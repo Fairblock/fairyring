@@ -10,7 +10,22 @@ accounts:
       - 500000000token
       - 200000000stake
     mnemonic: "south arm eager adjust dish aware rocket logic winter enlist idle reflect slogan urge clump angle input mechanic setup blue distance setup retreat rain"
-
+  - name: chris
+    coins:
+      - 500000000token
+      - 200000000stake
+  - name: donald
+    coins:
+      - 500000000token
+      - 200000000stake
+  - name: eli
+    coins:
+      - 500000000token
+      - 200000000stake
+  - name: fred
+    coins:
+      - 500000000token
+      - 200000000stake
 validators:
 - name: alice
   bonded: 100000000stake

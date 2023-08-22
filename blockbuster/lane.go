@@ -12,7 +12,7 @@ type (
 	// PrepareLanesHandler wraps all of the lanes Prepare function into a single chained
 	// function. You can think of it like an AnteHandler, but for preparing proposals in the
 	// context of lanes instead of modules.
-	PrepareLanesHandler func(ctx sdk.Context, txs [][]byte, proposal BlockProposal) (BlockProposal, error)
+	PrepareLanesHandler func(ctx sdk.Context, proposal BlockProposal) (BlockProposal, error)
 
 	// ProcessLanesHandler wraps all of the lanes Process functions into a single chained
 	// function. You can think of it like an AnteHandler, but for processing proposals in the
@@ -61,7 +61,7 @@ type (
 		// included in the proposal for the given lane, the partial proposal, and a function
 		// to call the next lane in the chain. The next lane in the chain will be called with
 		// the updated proposal and context.
-		PrepareLane(ctx sdk.Context, proposal BlockProposal, maxTxBytes int64, txs [][]byte, next PrepareLanesHandler) (BlockProposal, error)
+		PrepareLane(ctx sdk.Context, proposal BlockProposal, maxTxBytes int64, next PrepareLanesHandler) (BlockProposal, error)
 
 		// ProcessLaneBasic validates that transactions belonging to this lane are not misplaced
 		// in the block proposal.

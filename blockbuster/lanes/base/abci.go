@@ -16,7 +16,6 @@ func (l *DefaultLane) PrepareLane(
 	ctx sdk.Context,
 	proposal blockbuster.BlockProposal,
 	maxTxBytes int64,
-	txs [][]byte,
 	next blockbuster.PrepareLanesHandler,
 ) (blockbuster.BlockProposal, error) {
 	// Define all of the info we need to select transactions for the partial proposal.
@@ -75,7 +74,7 @@ func (l *DefaultLane) PrepareLane(
 		return proposal, err
 	}
 
-	return next(ctx, txs, proposal)
+	return next(ctx, proposal)
 }
 
 // ProcessLane verifies the default lane's portion of a block proposal. Since the default lane's

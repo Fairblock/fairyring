@@ -16,7 +16,6 @@ func (l *KeyShareLane) PrepareLane(
 	ctx sdk.Context,
 	proposal blockbuster.BlockProposal,
 	maxTxBytes int64,
-	txs [][]byte,
 	next blockbuster.PrepareLanesHandler,
 ) (blockbuster.BlockProposal, error) {
 	// Define all of the info we need to select transactions for the partial proposal.
@@ -25,14 +24,8 @@ func (l *KeyShareLane) PrepareLane(
 		txsToRemove = make(map[sdk.Tx]struct{}, 0)
 	)
 
-	fmt.Println("ekhane  1")
-	fmt.Println(l.Mempool.CountTx())
-	fmt.Println(proposal.GetNumTxs())
-	fmt.Println(txs)
-
 	// Attempt to select the valid keyshare txs
-	keyshareTxIterator := l.Mempool.Select(ctx, txs)
-	fmt.Println(keyshareTxIterator.Tx())
+	keyshareTxIterator := l.Mempool.Select(ctx, nil)
 selectKeyshareTxLoop:
 	for ; keyshareTxIterator != nil; keyshareTxIterator = keyshareTxIterator.Next() {
 		cacheCtx, write := ctx.CacheContext()
@@ -41,13 +34,11 @@ selectKeyshareTxLoop:
 		keyshareTxBz, hash, err := utils.GetTxHashStr(l.Cfg.TxEncoder, tmpKeyshareTx)
 		if err != nil {
 			txsToRemove[tmpKeyshareTx] = struct{}{}
-			fmt.Println("ekhane  1.1")
 			continue selectKeyshareTxLoop
 		}
 
 		// if the transaction is already in the (partial) block proposal, we skip it.
 		if proposal.Contains(keyshareTxBz) {
-			fmt.Println("ekhane  1.2")
 			continue selectKeyshareTxLoop
 		}
 
@@ -55,7 +46,6 @@ selectKeyshareTxLoop:
 		if keyshareTxSize <= maxTxBytes {
 			// Verify the keyshare transaction
 			if err := l.VerifyTx(cacheCtx, tmpKeyshareTx); err != nil {
-				fmt.Println("ekhane  1.3")
 				l.Logger().Info(
 					"failed to verify aggregate keyshare tx",
 					"tx_hash", hash,
@@ -68,7 +58,6 @@ selectKeyshareTxLoop:
 			// Build the partial proposal by selecting the keyshare transaction
 			keyshareInfo, err := l.GetKeyShareInfo(tmpKeyshareTx)
 			if keyshareInfo == nil || err != nil {
-				fmt.Println("ekhane  1.4")
 				txsToRemove[tmpKeyshareTx] = struct{}{}
 				continue selectKeyshareTxLoop
 			}
@@ -81,23 +70,18 @@ selectKeyshareTxLoop:
 			// Write the cache context to the original context when we know we have a
 			// valid top of block bundle.
 			write()
-			fmt.Println("ekhane  1.5")
 
+		} else {
+			l.Cfg.Logger.Info(
+				"failed to select keyshare tx for lane; tx size is too large",
+				"tx_size", keyshareTxSize,
+				"max_size", maxTxBytes,
+			)
 		}
-
-		fmt.Println("ekhane  1.6")
-
-		l.Cfg.Logger.Info(
-			"failed to select keyshare tx for lane; tx size is too large",
-			"tx_size", keyshareTxSize,
-			"max_size", maxTxBytes,
-		)
 	}
 
 	// Remove all transactions that were invalid during the creation of the partial proposal.
 	if err := utils.RemoveTxsFromLane(txsToRemove, l.Mempool); err != nil {
-		fmt.Println("ekhane  1.7")
-
 		return proposal, err
 	}
 
@@ -105,23 +89,19 @@ selectKeyshareTxLoop:
 	// if the invarient checks are not passed. In the case when this errors, the original proposal
 	// will be returned (without the selected transactions from this lane).
 	if err := proposal.UpdateProposal(l, keyshareTxs); err != nil {
-		fmt.Println("ekhane  1.8")
-
 		return proposal, err
 	}
-
-	return next(ctx, txs, proposal)
+	return next(ctx, proposal)
 }
 
 // ProcessLane will ensure that block proposals that include transactions from
 // the keyshare lane are valid.
 func (l *KeyShareLane) ProcessLane(ctx sdk.Context, txs []sdk.Tx, next blockbuster.ProcessLanesHandler) (sdk.Context, error) {
 	var countKeyshareTxs = 0
-	fmt.Println("\n\n\n\nekhane  2\n\n\n\n")
 
 	for _, keyshareTx := range txs {
 		if !l.Match(keyshareTx) {
-			return next(ctx, txs)
+			return next(ctx, txs[countKeyshareTxs:])
 		}
 
 		_, err := l.GetKeyShareInfo(keyshareTx)
@@ -141,10 +121,9 @@ func (l *KeyShareLane) ProcessLane(ctx sdk.Context, txs []sdk.Tx, next blockbust
 
 // ProcessLaneBasic ensures that if keyshare transactions are present in a proposal,
 //   - they are the first transaction in the partial proposal
-//   - there are no other bid transactions in the proposal
+//   - there are no other aggregate keyshare transactions in the proposal
 func (l *KeyShareLane) ProcessLaneBasic(txs []sdk.Tx) error {
 	// If there are keyshare transaction, they must be the first transactions in the block proposal.
-	fmt.Println("\n\n\n\nekhane  3\n\n\n\n")
 
 	for index, keyshareTx := range txs {
 		if !l.Match(keyshareTx) {
@@ -161,8 +140,6 @@ func (l *KeyShareLane) ProcessLaneBasic(txs []sdk.Tx) error {
 // VerifyTx will verify that the keyshare transaction is valid.
 // It will return an error if the transaction is invalid.
 func (l *KeyShareLane) VerifyTx(ctx sdk.Context, keyshareTx sdk.Tx) error {
-	fmt.Println("\n\n\n\nekhane  4\n\n\n\n")
-
 	_, err := l.GetKeyShareInfo(keyshareTx)
 	if err != nil {
 		return fmt.Errorf("failed to get keyshare info: %w", err)

@@ -133,7 +133,6 @@ func (am *KeyShareMempool) Remove(tx sdk.Tx) error {
 }
 
 func (am *KeyShareMempool) Select(ctx context.Context, txs [][]byte) sdkmempool.Iterator {
-	fmt.Println("Keyshare Select func")
 	return am.index.Select(ctx, txs)
 }
 

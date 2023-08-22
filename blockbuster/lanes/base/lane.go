@@ -2,6 +2,7 @@ package base
 
 import (
 	"fairyring/blockbuster"
+
 	"github.com/cometbft/cometbft/libs/log"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
