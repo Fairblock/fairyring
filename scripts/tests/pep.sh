@@ -19,7 +19,7 @@ CHAINID_1=fairyring_test_1
 CHAIN1_NODE=tcp://localhost:16657
 CHAINID_2=fairyring_test_2
 CHAIN2_NODE=tcp://localhost:26657
-BLOCK_TIME=2
+BLOCK_TIME=6
 
 WALLET_1=$($BINARY keys show wallet1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
 VALIDATOR_1=$($BINARY keys show val1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
@@ -139,7 +139,7 @@ fi
 
 CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE | jq -r '.block.header.height')
 echo "Chain 2 Current Block: $CURRENT_BLOCK"
-echo "Submit valid aggregated key to pep module on chain fairyring_test_2"
+echo "Submit valid aggregated key to pep module on chain fairyring_test_2 from address: $VALIDATOR_2"
 RESULT=$($BINARY tx pep create-aggregated-key-share $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
