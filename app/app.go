@@ -9,9 +9,8 @@ import (
 	"fairyring/blockbuster/abci"
 	"fairyring/blockbuster/lanes/base"
 
-	blockbuster "fairyring/blockbuster"
-
-	keyshare "fairyring/blockbuster/lanes/keyshare"
+	"fairyring/blockbuster"
+	"fairyring/blockbuster/lanes/keyshare"
 
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	reflectionv1 "cosmossdk.io/api/cosmos/reflection/v1"
@@ -112,7 +111,7 @@ import (
 	ibcporttypes "github.com/cosmos/ibc-go/v7/modules/core/05-port/types"
 	ibcexported "github.com/cosmos/ibc-go/v7/modules/core/exported"
 	ibckeeper "github.com/cosmos/ibc-go/v7/modules/core/keeper"
-  ibctm "github.com/cosmos/ibc-go/v7/modules/light-clients/07-tendermint"
+	ibctm "github.com/cosmos/ibc-go/v7/modules/light-clients/07-tendermint"
 	"github.com/spf13/cast"
 
 	keysharemodule "fairyring/x/keyshare"
@@ -175,7 +174,7 @@ var (
 		feegrantmodule.AppModuleBasic{},
 		groupmodule.AppModuleBasic{},
 		ibc.AppModuleBasic{},
-    ibctm.AppModuleBasic{},
+		ibctm.AppModuleBasic{},
 		upgrade.AppModuleBasic{},
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
