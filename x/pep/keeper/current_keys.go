@@ -124,12 +124,13 @@ func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet chann
 			return errors.New("connection info not found")
 		}
 
-		parmas := k.GetParams(ctx)
+		params := k.GetParams(ctx)
+
 		trusted := verifyCounterparty(
 			connection.Counterparty.ClientId,
 			connection.Counterparty.ConnectionId,
 			channel.Counterparty.GetChannelID(),
-			parmas.TrustedCounterParties,
+			params.TrustedCounterParties,
 		)
 
 		if !trusted {
@@ -191,12 +192,8 @@ func (k Keeper) OnTimeoutCurrentKeysPacket(ctx sdk.Context, packet channeltypes.
 
 func verifyCounterparty(clientID string, connectionID string, channelId string, trustedChannels []*types.TrustedCounterParty) bool {
 	for _, channelInfo := range trustedChannels {
-		if channelInfo.ChannelId == clientID {
-			if channelInfo.ConnectionId == connectionID {
-				if channelInfo.ChannelId == channelId {
-					return true
-				}
-			}
+		if channelInfo.ClientId == clientID && channelInfo.ConnectionId == connectionID && channelInfo.ChannelId == channelId {
+			return true
 		}
 	}
 
