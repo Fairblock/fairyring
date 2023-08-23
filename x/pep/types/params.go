@@ -19,22 +19,32 @@ var (
 	DefaultTrustedCounterParties []*TrustedCounterParty
 )
 
+var (
+	KeyChannelID     = []byte("ChannelID")
+	DefaultChannelID = ChannelID
+)
+
 // ParamKeyTable the param key table for launch module
 func ParamKeyTable() paramtypes.KeyTable {
 	return paramtypes.NewKeyTable().RegisterParamSet(&Params{})
 }
 
 // NewParams creates a new Params instance
-func NewParams(trAddrs []string, trustedParties []*TrustedCounterParty) Params {
+func NewParams(
+	trAddrs []string,
+	trustedParties []*TrustedCounterParty,
+	channelID string,
+) Params {
 	return Params{
 		TrustedAddresses:      trAddrs,
 		TrustedCounterParties: trustedParties,
+		ChannelId:             channelID,
 	}
 }
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams(DefaultTrustedAddresses, DefaultTrustedCounterParties)
+	return NewParams(DefaultTrustedAddresses, DefaultTrustedCounterParties, DefaultChannelID)
 }
 
 // ParamSetPairs get the params.ParamSet
@@ -42,6 +52,7 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
 		paramtypes.NewParamSetPair(KeyTrustedAddresses, &p.TrustedAddresses, validateTrustedAddresses),
 		paramtypes.NewParamSetPair(KeyTrustedCounterParties, &p.TrustedCounterParties, validateTrustedCounterParties),
+		paramtypes.NewParamSetPair(KeyChannelID, &p.ChannelId, validateChannelID),
 	}
 }
 
@@ -54,6 +65,10 @@ func (p Params) Validate() error {
 	if err := validateTrustedCounterParties(p.TrustedCounterParties); err != nil {
 		return err
 	}
+
+	if err := validateChannelID(p.ChannelId); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -61,6 +76,20 @@ func (p Params) Validate() error {
 func (p Params) String() string {
 	out, _ := yaml.Marshal(p)
 	return string(out)
+}
+
+// validateChannelID validates the channelID param
+func validateChannelID(v interface{}) error {
+	channelID, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+
+	if len(channelID) < 1 {
+		return fmt.Errorf("invalid Channel ID")
+	}
+
+	return nil
 }
 
 // validateTrustedAddresses validates the TrustedAddresses param

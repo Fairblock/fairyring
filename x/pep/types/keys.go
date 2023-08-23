@@ -20,7 +20,7 @@ const (
 	PortID = "pep"
 
 	// ChannelID is the default channel id that module will use to transmit IBC packets.
-	ChannelID = "channel-01"
+	ChannelID = "channel-0"
 )
 
 var (

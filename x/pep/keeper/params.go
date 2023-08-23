@@ -11,6 +11,7 @@ func (k Keeper) GetParams(ctx sdk.Context) types.Params {
 	return types.NewParams(
 		k.TrustedAddresses(ctx),
 		k.TrustedCounterParties(ctx),
+		k.ChannelID(ctx),
 	)
 }
 
@@ -28,5 +29,11 @@ func (k Keeper) TrustedAddresses(ctx sdk.Context) (res []string) {
 // TrustedCounterParties returns the TrustedCounterParties param
 func (k Keeper) TrustedCounterParties(ctx sdk.Context) (res []*types.TrustedCounterParty) {
 	k.paramstore.Get(ctx, types.KeyTrustedCounterParties, &res)
+	return
+}
+
+// ChannelID returns the ChannelID param
+func (k Keeper) ChannelID(ctx sdk.Context) (res string) {
+	k.paramstore.Get(ctx, types.KeyChannelID, &res)
 	return
 }
