@@ -151,7 +151,7 @@ if [ "$ACTION" != "/fairyring.pep.MsgCreateAggregatedKeyShare" ]; then
 fi
 
 
-sleep 2
+sleep $BLOCK_TIME
 
 
 echo "Query latest height from pep module on chain fairyring_test_2"
@@ -181,14 +181,13 @@ echo "Submit invalid aggregated key to pep module on chain fairyring_test_2"
 RESULT=$($BINARY tx pep create-aggregated-key-share $((AGG_KEY_HEIGHT+1)) 123123123 --from $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
-ACTION=$(echo "$RESULT" | jq -r '.logs[0].events[0].attributes[0].value')
-if [ "$ACTION" != "/fairyring.pep.MsgCreateAggregatedKeyShare" ]; then
+if [[ "$RESULT" != *"input string length must be equal to 96 bytes"* ]]; then
   echo "ERROR: Pep module submit aggregated key error. Expected tx action to be MsgCreateAggregatedKeyShare,  got '$ACTION'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   exit 1
 fi
 
-sleep 2 
+sleep $BLOCK_TIME
 
 echo "Query latest height from pep module on chain fairyring_test_2"
 RESULT=$($BINARY q pep latest-height --node $CHAIN2_NODE -o json | jq -r '.height')
