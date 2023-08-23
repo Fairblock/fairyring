@@ -20,13 +20,13 @@ const (
 	PortID = "pep"
 
 	// ChannelID is the default channel id that module will use to transmit IBC packets.
-	ChannelID = "channel-01"
+	ChannelID = "channel-0"
 )
 
 var (
 	// PortKey defines the key to store the port ID in store
-	PortKey = KeyPrefix("pep-port-")
-	// ChannelKey            = KeyPrefix("pep-channel-")
+	PortKey               = KeyPrefix("pep-port-")
+	ChannelKey            = KeyPrefix("pep-channel-")
 	LatestHeightKey       = KeyPrefix("pep-latest-height-")
 	LastExecutedHeightKey = KeyPrefix("pep-last-executed-height-")
 )

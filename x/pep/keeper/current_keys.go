@@ -9,9 +9,9 @@ import (
 	sdkerrors "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	cosmoserror "github.com/cosmos/cosmos-sdk/types/errors"
-	clienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
-	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
-	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
+	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
+	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
+	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
 )
 
 func (k Keeper) QueryFairyringCurrentKeys(ctx sdk.Context) error {
@@ -43,16 +43,13 @@ func (k Keeper) TransmitCurrentKeysPacket(
 	timeoutTimestamp uint64,
 ) error {
 
-	sourceChannelEnd, found := k.ChannelKeeper.GetChannel(ctx, sourcePort, sourceChannel)
+	_, found := k.ChannelKeeper.GetChannel(ctx, sourcePort, sourceChannel)
 	if !found {
 		return sdkerrors.Wrapf(channeltypes.ErrChannelNotFound, "port ID (%s) channel ID (%s)", sourcePort, sourceChannel)
 	}
 
-	destinationPort := sourceChannelEnd.GetCounterparty().GetPortID()
-	destinationChannel := sourceChannelEnd.GetCounterparty().GetChannelID()
-
 	// get the next sequence
-	sequence, found := k.ChannelKeeper.GetNextSequenceSend(ctx, sourcePort, sourceChannel)
+	_, found = k.ChannelKeeper.GetNextSequenceSend(ctx, sourcePort, sourceChannel)
 	if !found {
 		return sdkerrors.Wrapf(
 			channeltypes.ErrSequenceSendNotFound,
@@ -70,18 +67,7 @@ func (k Keeper) TransmitCurrentKeysPacket(
 		return sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, "cannot marshal the packet: "+err.Error())
 	}
 
-	packet := channeltypes.NewPacket(
-		packetBytes,
-		sequence,
-		sourcePort,
-		sourceChannel,
-		destinationPort,
-		destinationChannel,
-		timeoutHeight,
-		timeoutTimestamp,
-	)
-
-	if err := k.ChannelKeeper.SendPacket(ctx, channelCap, packet); err != nil {
+	if _, err := k.ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes); err != nil {
 		return err
 	}
 
@@ -138,12 +124,13 @@ func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet chann
 			return errors.New("connection info not found")
 		}
 
-		parmas := k.GetParams(ctx)
+		params := k.GetParams(ctx)
+
 		trusted := verifyCounterparty(
 			connection.Counterparty.ClientId,
 			connection.Counterparty.ConnectionId,
 			channel.Counterparty.GetChannelID(),
-			parmas.TrustedCounterParties,
+			params.TrustedCounterParties,
 		)
 
 		if !trusted {
@@ -205,12 +192,8 @@ func (k Keeper) OnTimeoutCurrentKeysPacket(ctx sdk.Context, packet channeltypes.
 
 func verifyCounterparty(clientID string, connectionID string, channelId string, trustedChannels []*types.TrustedCounterParty) bool {
 	for _, channelInfo := range trustedChannels {
-		if channelInfo.ChannelId == clientID {
-			if channelInfo.ConnectionId == connectionID {
-				if channelInfo.ChannelId == channelId {
-					return true
-				}
-			}
+		if channelInfo.ClientId == clientID && channelInfo.ConnectionId == connectionID && channelInfo.ChannelId == channelId {
+			return true
 		}
 	}
 

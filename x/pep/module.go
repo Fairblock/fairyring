@@ -6,9 +6,10 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	enc "github.com/FairBlock/DistributedIBE/encryption"
 	"math"
 	"strconv"
+
+	enc "github.com/FairBlock/DistributedIBE/encryption"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
@@ -19,7 +20,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
 
-	abci "github.com/tendermint/tendermint/abci/types"
+	abci "github.com/cometbft/cometbft/abci/types"
 
 	"fairyring/x/pep/client/cli"
 	"fairyring/x/pep/keeper"
@@ -30,7 +31,6 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	tmcore "github.com/tendermint/tendermint/rpc/core"
 )
 
 var (
@@ -130,17 +130,6 @@ func NewAppModule(
 	}
 }
 
-// Deprecated: use RegisterServices
-func (am AppModule) Route() sdk.Route { return sdk.Route{} }
-
-// Deprecated: use RegisterServices
-func (AppModule) QuerierRoute() string { return types.RouterKey }
-
-// Deprecated: use RegisterServices
-func (am AppModule) LegacyQuerierHandler(_ *codec.LegacyAmino) sdk.Querier {
-	return nil
-}
-
 // RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries
 func (am AppModule) RegisterServices(cfg module.Configurator) {
 	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
@@ -181,17 +170,9 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		lastExecutedHeight = 0
 	}
 
-	utxs, err := tmcore.UnconfirmedTxs(nil, nil)
-	if err != nil {
-		am.keeper.Logger(ctx).Error("Error on getting unconfirmed txs")
-		am.keeper.Logger(ctx).Error(err.Error())
-	}
-	if utxs != nil {
-		if err := am.keeper.ProcessUnconfirmedTxs(ctx, utxs); err != nil {
-			am.keeper.Logger(ctx).Error("Process unconfirmed txs error")
-			am.keeper.Logger(ctx).Error(err.Error())
-		}
-	}
+	allAggKey := am.keeper.GetAllAggregatedKeyShare(ctx)
+
+	am.keeper.Logger(ctx).Info(fmt.Sprintf("[PEP][AGGKEY] %v", allAggKey))
 
 	strHeight := am.keeper.GetLatestHeight(ctx)
 	height, err := strconv.ParseUint(strHeight, 10, 64)
@@ -350,17 +331,25 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			txDecoderTx, err := am.txConfig.TxDecoder()(decryptedTx.Bytes())
 
 			if err != nil {
-				am.keeper.Logger(ctx).Error("Decoding Tx error in Beginblock")
+				am.keeper.Logger(ctx).Error("Decoding Tx error in BeginBlock... Trying JSON Decoder")
 				am.keeper.Logger(ctx).Error(err.Error())
-				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.EncryptedTxRevertedEventType,
-						sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to decode tx data to Cosmos Tx"),
-						sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-					),
-				)
-				continue
+
+				txDecoderTx, err = am.txConfig.TxJSONDecoder()(decryptedTx.Bytes())
+				if err != nil {
+					am.keeper.Logger(ctx).Error("JSON Decoding Tx error in BeginBlock")
+					am.keeper.Logger(ctx).Error(err.Error())
+					ctx.EventManager().EmitEvent(
+						sdk.NewEvent(types.EncryptedTxRevertedEventType,
+							sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+							sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
+							sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to decode tx data to Cosmos Tx"),
+							sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+						),
+					)
+					continue
+				} else {
+					am.keeper.Logger(ctx).Error("TX Successfully Decode with JSON Decoder")
+				}
 			}
 
 			wrappedTx, err := am.txConfig.WrapTxBuilder(txDecoderTx)
@@ -525,7 +514,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
 	err := am.keeper.QueryFairyringCurrentKeys(ctx)
 	if err != nil {
-		am.keeper.Logger(ctx).Error("Beginblocker get keys err", err)
+		am.keeper.Logger(ctx).Error("Endblocker get keys err", err)
 		am.keeper.Logger(ctx).Error(err.Error())
 	}
 

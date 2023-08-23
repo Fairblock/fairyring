@@ -7,7 +7,7 @@ The Pep module maintains a copy of the active and queued public keys for the pur
 ```go
 err := am.keeper.QueryFairyringCurrentKeys(ctx)
 if err != nil {
-    am.keeper.Logger(ctx).Error("Beginblocker get keys err", err)
+    am.keeper.Logger(ctx).Error("Endblocker get keys err", err)
     am.keeper.Logger(ctx).Error(err.Error())
 }
 ```

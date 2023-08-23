@@ -15,7 +15,7 @@ endif
 PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
 LEDGER_ENABLED ?= true
 SDK_PACK := $(shell go list -m github.com/cosmos/cosmos-sdk | sed  's/ /\@/g')
-TM_VERSION := $(shell go list -m github.com/tendermint/tendermint | sed 's:.* ::') # grab everything after the space in "github.com/tendermint/tendermint v0.34.7"
+TM_VERSION := $(shell go list -m github.com/cometbft/cometbft | sed 's:.* ::') # grab everything after the space in "github.com/cometbft/cometbft v0.37.2"
 DOCKER := $(shell which docker)
 BUILDDIR ?= $(CURDIR)/build
 
@@ -68,7 +68,7 @@ ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=fairyring \
 		  -X github.com/cosmos/cosmos-sdk/version.Version=$(VERSION) \
 		  -X github.com/cosmos/cosmos-sdk/version.Commit=$(COMMIT) \
 		  -X "github.com/cosmos/cosmos-sdk/version.BuildTags=$(build_tags_comma_sep)" \
-			-X github.com/tendermint/tendermint/version.TMCoreSemVer=$(TM_VERSION)
+			-X github.com/cometbft/cometbft/version.TMCoreSemVer=$(TM_VERSION)
 
 ifeq (cleveldb,$(findstring cleveldb,$(FR_BUILD_OPTIONS)))
   ldflags += -X github.com/cosmos/cosmos-sdk/types.DBBackend=cleveldb
@@ -170,12 +170,26 @@ sync-docs:
 ###                        Integration Tests                                ###
 ###############################################################################
 
+clear-pipes:
+	@echo "Clearing named pipes..."; \
+	rm /tmp/testfairyringsubmit_tx*; \
+ 	rm /tmp/testfairyringnormaltx*;
+
+test-block-tx-limit: init-test-block-limit-framework \
+	test-tx-limit
+	-@rm -rf ./data
+	-@killall fairyringd 2>/dev/null
+
 integration-test-all: init-test-framework \
 	init-relayer \
 	test-keyshare-module \
 	test-pep-module
 	-@rm -rf ./data
 	-@killall fairyringd 2>/dev/null
+
+test-tx-limit:
+	@echo "Testing Block tx limit..."
+	./scripts/tests/blockTxLimit.sh
 
 test-keyshare-module:
 	@echo "Testing KeyShare module..."
@@ -189,6 +203,11 @@ init-relayer:
 	@echo "Initializing hermes relayer..."
 	./scripts/tests/relayer.sh
 	@sleep 2
+
+init-test-block-limit-framework: clean-testing-data install
+	@echo "Initializing fairyring..."
+	./scripts/tests/start_test_block_tx_limit.sh
+	@sleep 3
 
 init-test-framework: clean-testing-data install
 	@echo "Initializing fairyring..."
