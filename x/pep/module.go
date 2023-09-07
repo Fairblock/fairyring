@@ -530,22 +530,55 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				gasProvided := cosmosmath.NewIntFromUint64(wrappedTx.GetTx().GetGas())
 				gasUsedInBig := cosmosmath.NewIntFromUint64(simCheckGas.GasUsed)
 				newCoins := make([]sdk.Coin, len(txFee))
+				refundDenom := txFee[0].Denom
+				refundAmount := cosmosmath.NewIntFromUint64(0)
 				for i, eachTxFee := range txFee {
-					newCoins[i] = sdk.NewCoin(
+					usedGasFee := sdk.NewCoin(
 						eachTxFee.Denom,
 						// Tx Fee Amount Divide Provide Gas => provided gas price
 						// Provided Gas Price * Gas Used => Amount to deduct as gas fee
 						eachTxFee.Amount.Quo(gasProvided).Mul(gasUsedInBig),
 					)
-				}
 
-				deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, newCoins)
-				if deductFeeErr != nil {
-					am.keeper.Logger(ctx).Error("Deduct fee Err")
-					am.keeper.Logger(ctx).Error(deductFeeErr.Error())
-					continue
+					if usedGasFee.Denom != eachTx.ChargedGas.Denom {
+						newCoins[i] = usedGasFee
+						continue
+					}
+
+					refundDenom = eachTxFee.Denom
+
+					if usedGasFee.Amount.GT(eachTx.ChargedGas.Amount) {
+						usedGasFee.Amount = usedGasFee.Amount.Sub(eachTx.ChargedGas.Amount)
+					} else { // less than or equals to
+						refundAmount = eachTx.ChargedGas.Amount.Sub(usedGasFee.Amount)
+						usedGasFee.Amount = cosmosmath.NewIntFromUint64(0)
+					}
+
+					newCoins[i] = usedGasFee
+				}
+				am.keeper.Logger(ctx).Info(fmt.Sprintf("Deduct fee amount: %v | Refund amount: %v", newCoins, refundAmount))
+
+				if refundAmount.IsZero() {
+					deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, newCoins)
+					if deductFeeErr != nil {
+						am.keeper.Logger(ctx).Error("Deduct fee Err")
+						am.keeper.Logger(ctx).Error(deductFeeErr.Error())
+					} else {
+						am.keeper.Logger(ctx).Info("Fee deducted without error")
+					}
 				} else {
-					am.keeper.Logger(ctx).Info("Fee deducted without error")
+					refundFeeErr := am.bankKeeper.SendCoinsFromModuleToAccount(
+						ctx,
+						types.ModuleName,
+						creatorAddr,
+						sdk.NewCoins(sdk.NewCoin(refundDenom, refundAmount)),
+					)
+					if refundFeeErr != nil {
+						am.keeper.Logger(ctx).Error("Refund fee Err")
+						am.keeper.Logger(ctx).Error(refundFeeErr.Error())
+					} else {
+						am.keeper.Logger(ctx).Info("Fee refunded without error")
+					}
 				}
 			}
 

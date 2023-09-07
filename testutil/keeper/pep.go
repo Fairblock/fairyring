@@ -1,6 +1,9 @@
 package keeper
 
 import (
+	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	"testing"
 
@@ -67,6 +70,34 @@ func PepKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		memStoreKey,
 		"PepParams",
 	)
+
+	accountKeeper := authkeeper.NewAccountKeeper(
+		appCodec,
+		sdk.NewKVStoreKey("acc"),
+		typesparams.NewSubspace(appCodec,
+			types.Amino,
+			storeKey,
+			memStoreKey,
+			"acc",
+		),
+		authtypes.ProtoBaseAccount,
+		map[string][]string{},
+		sdk.Bech32PrefixAccAddr,
+	)
+
+	bankKeeper := bankkeeper.NewBaseKeeper(
+		appCodec,
+		sdk.NewKVStoreKey("bank"),
+		accountKeeper,
+		typesparams.NewSubspace(appCodec,
+			types.Amino,
+			storeKey,
+			memStoreKey,
+			"bank",
+		),
+		map[string]bool{},
+	)
+
 	k := keeper.NewKeeper(
 		appCodec,
 		storeKey,
@@ -75,6 +106,7 @@ func PepKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		pepChannelKeeper{},
 		pepPortKeeper{},
 		capabilityKeeper.ScopeToModule("pepScopedKeeper"),
+		bankKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, logger)
