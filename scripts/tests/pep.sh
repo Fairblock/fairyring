@@ -117,8 +117,8 @@ echo "Balance before submitting encrypted tx: $BAL_AMT$BAL_DENOM"
 
 echo "Submit encrypted tx to pep module on chain fairyring_test_2"
 RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER $AGG_KEY_HEIGHT --from $VALIDATOR_2 --gas-prices 1frt --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode block --keyring-backend test -o json -y)
-EVENT_TYPE=$(echo "$RESULT" | jq -r '.logs[0].events[1].type')
-TARGET_HEIGHT=$(echo "$RESULT" | jq -r '.logs[0].events[1].attributes[1].value')
+EVENT_TYPE=$(echo "$RESULT" | jq -r '.logs[0].events[3].type')
+TARGET_HEIGHT=$(echo "$RESULT" | jq -r '.logs[0].events[3].attributes[1].value')
 if [ "$EVENT_TYPE" != "new-encrypted-tx-submitted" ] && [ "$TARGET_HEIGHT" != "$AGG_KEY_HEIGHT" ]; then
   echo "ERROR: Pep module submit encrypted tx error. Expected tx to submitted without error with target height '$AGG_KEY_HEIGHT', got '$TARGET_HEIGHT' and '$EVENT_TYPE' | '$CURRENT_BLOCK'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
@@ -135,8 +135,8 @@ echo "Balance after submitting first encrypted tx: $BAL_AMT$BAL_DENOM"
 
 echo "Submit 2nd encrypted tx (without gas fee) to pep module on chain fairyring_test_2"
 RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER_2 $AGG_KEY_HEIGHT --from $VALIDATOR_2 --gas-prices 1frt --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode block --keyring-backend test -o json -y)
-EVENT_TYPE=$(echo "$RESULT" | jq -r '.logs[0].events[1].type')
-TARGET_HEIGHT=$(echo "$RESULT" | jq -r '.logs[0].events[1].attributes[1].value')
+EVENT_TYPE=$(echo "$RESULT" | jq -r '.logs[0].events[3].type')
+TARGET_HEIGHT=$(echo "$RESULT" | jq -r '.logs[0].events[3].attributes[1].value')
 if [ "$EVENT_TYPE" != "new-encrypted-tx-submitted" ] && [ "$TARGET_HEIGHT" != "$AGG_KEY_HEIGHT" ]; then
   echo "ERROR: Pep module submit 2nd encrypted tx error. Expected tx to submitted without error with target height '$AGG_KEY_HEIGHT', got '$TARGET_HEIGHT' and '$EVENT_TYPE' | '$CURRENT_BLOCK'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
@@ -171,7 +171,7 @@ if [ "$ACTION" != "/fairyring.pep.MsgCreateAggregatedKeyShare" ]; then
 fi
 
 
-sleep 4
+sleep 5
 
 
 echo "Query latest height from pep module on chain fairyring_test_2"
@@ -216,7 +216,7 @@ if [ "$ACTION" != "/fairyring.pep.MsgCreateAggregatedKeyShare" ]; then
   exit 1
 fi
 
-sleep 2 
+sleep 2
 
 echo "Query latest height from pep module on chain fairyring_test_2"
 RESULT=$($BINARY q pep latest-height --node $CHAIN2_NODE -o json | jq -r '.height')
