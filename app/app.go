@@ -2,18 +2,17 @@ package app
 
 import (
 	"encoding/json"
+	"fairyring/blockbuster"
+	"fairyring/blockbuster/lanes/base"
+	"fairyring/blockbuster/lanes/keyshare"
+	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	"io"
 	"os"
 	"path/filepath"
 
-	"fairyring/blockbuster/abci"
-	"fairyring/blockbuster/lanes/base"
-
-	"fairyring/blockbuster"
-	"fairyring/blockbuster/lanes/keyshare"
-
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	reflectionv1 "cosmossdk.io/api/cosmos/reflection/v1"
+	"fairyring/blockbuster/abci"
 	dbm "github.com/cometbft/cometbft-db"
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cometbft/cometbft/libs/log"
@@ -34,7 +33,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/cosmos/cosmos-sdk/x/auth"
-	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authsims "github.com/cosmos/cosmos-sdk/x/auth/simulation"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
@@ -382,98 +380,6 @@ func New(
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
 
-	// ---------------------------------------------------------------------------- //
-	// ------------------------- Begin Custom Code -------------------------------- //
-	// ---------------------------------------------------------------------------- //
-
-	// Set fairyring's mempool into the app.
-	config := blockbuster.BaseLaneConfig{
-		Logger:        app.Logger(),
-		TxEncoder:     app.txConfig.TxEncoder(),
-		TxDecoder:     app.txConfig.TxDecoder(),
-		MaxBlockSpace: sdk.ZeroDec(),
-	}
-
-	// Create the lanes.
-	//
-	// NOTE: The lanes are ordered by priority. The first lane is the highest priority
-	// lane and the last lane is the lowest priority lane.
-
-	// Keyshare lane allows for CreateAggrgatedKeyShare transactions to be processed before others.
-	keyshareLane := keyshare.NewKeyShareLane(
-		config,
-		0,
-		keyshare.NewDefaultKeyshareFactory(app.txConfig.TxDecoder()),
-	)
-
-	// Default lane accepts all other transactions.
-	defaultConfig := blockbuster.BaseLaneConfig{
-		Logger:        app.Logger(),
-		TxEncoder:     app.txConfig.TxEncoder(),
-		TxDecoder:     app.txConfig.TxDecoder(),
-		MaxBlockSpace: sdk.ZeroDec(),
-		IgnoreList: []blockbuster.Lane{
-			keyshareLane,
-		},
-	}
-	defaultLane := base.NewDefaultLane(defaultConfig)
-
-	lanes := []blockbuster.Lane{
-		keyshareLane,
-		defaultLane,
-	}
-
-	mempool := blockbuster.NewMempool(lanes...)
-	app.BaseApp.SetMempool(mempool)
-
-	// Create a global ante handler that will be called on each transaction when
-	// proposals are being built and verified.
-	handlerOptions := ante.HandlerOptions{
-		AccountKeeper:   app.AccountKeeper,
-		BankKeeper:      app.BankKeeper,
-		FeegrantKeeper:  app.FeeGrantKeeper,
-		SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
-		SignModeHandler: app.txConfig.SignModeHandler(),
-	}
-	options := FairyringHandlerOptions{
-		BaseOptions:  handlerOptions,
-		PepKeeper:    app.PepKeeper,
-		TxDecoder:    app.txConfig.TxDecoder(),
-		TxEncoder:    app.txConfig.TxEncoder(),
-		KeyShareLane: keyshareLane,
-		Mempool:      mempool,
-	}
-	anteHandler := NewFairyringAnteHandler(options)
-
-	// Set the lane config on the lanes.
-	for _, lane := range lanes {
-		lane.SetAnteHandler(anteHandler)
-	}
-
-	// Set the proposal handlers on the BaseApp along with the custom antehandler.
-	proposalHandlers := abci.NewProposalHandler(
-		app.Logger(),
-		app.txConfig.TxDecoder(),
-		mempool,
-	)
-	app.BaseApp.SetPrepareProposal(proposalHandlers.PrepareProposalHandler())
-	app.BaseApp.SetProcessProposal(proposalHandlers.ProcessProposalHandler())
-	app.BaseApp.SetAnteHandler(anteHandler)
-
-	// Set the custom CheckTx handler on BaseApp.
-	checkTxHandler := abci.NewCheckTxHandler(
-		app.BaseApp,
-		app.txConfig.TxDecoder(),
-		keyshareLane,
-		anteHandler,
-		ChainID,
-	)
-	app.SetCheckTx(checkTxHandler.CheckTx())
-
-	// ---------------------------------------------------------------------------- //
-	// ------------------------- End Custom Code ---------------------------------- //
-	// ---------------------------------------------------------------------------- //
-
 	app.StakingKeeper = stakingkeeper.NewKeeper(
 		appCodec,
 		keys[stakingtypes.StoreKey],
@@ -660,6 +566,98 @@ func New(
 		app.StakingKeeper,
 	)
 	keyshareModule := keysharemodule.NewAppModule(appCodec, app.KeyshareKeeper, app.AccountKeeper, app.BankKeeper, app.PepKeeper)
+
+	// ---------------------------------------------------------------------------- //
+	// ------------------------- Begin Custom Code -------------------------------- //
+	// ---------------------------------------------------------------------------- //
+
+	// Set fairyring's mempool into the app.
+	config := blockbuster.BaseLaneConfig{
+		Logger:        app.Logger(),
+		TxEncoder:     app.txConfig.TxEncoder(),
+		TxDecoder:     app.txConfig.TxDecoder(),
+		MaxBlockSpace: sdk.ZeroDec(),
+	}
+
+	// Create the lanes.
+	//
+	// NOTE: The lanes are ordered by priority. The first lane is the highest priority
+	// lane and the last lane is the lowest priority lane.
+
+	// Keyshare lane allows for CreateAggrgatedKeyShare transactions to be processed before others.
+	keyshareLane := keyshare.NewKeyShareLane(
+		config,
+		0,
+		keyshare.NewDefaultKeyshareFactory(app.txConfig.TxDecoder()),
+	)
+
+	// Default lane accepts all other transactions.
+	defaultConfig := blockbuster.BaseLaneConfig{
+		Logger:        app.Logger(),
+		TxEncoder:     app.txConfig.TxEncoder(),
+		TxDecoder:     app.txConfig.TxDecoder(),
+		MaxBlockSpace: sdk.ZeroDec(),
+		IgnoreList: []blockbuster.Lane{
+			keyshareLane,
+		},
+	}
+	defaultLane := base.NewDefaultLane(defaultConfig)
+
+	lanes := []blockbuster.Lane{
+		keyshareLane,
+		defaultLane,
+	}
+
+	mempool := blockbuster.NewMempool(lanes...)
+	app.BaseApp.SetMempool(mempool)
+
+	// Create a global ante handler that will be called on each transaction when
+	// proposals are being built and verified.
+	handlerOptions := ante.HandlerOptions{
+		AccountKeeper:   app.AccountKeeper,
+		BankKeeper:      app.BankKeeper,
+		FeegrantKeeper:  app.FeeGrantKeeper,
+		SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
+		SignModeHandler: app.txConfig.SignModeHandler(),
+	}
+	options := FairyringHandlerOptions{
+		BaseOptions:  handlerOptions,
+		PepKeeper:    app.PepKeeper,
+		TxDecoder:    app.txConfig.TxDecoder(),
+		TxEncoder:    app.txConfig.TxEncoder(),
+		KeyShareLane: keyshareLane,
+		Mempool:      mempool,
+	}
+	anteHandler := NewFairyringAnteHandler(options)
+
+	// Set the lane config on the lanes.
+	for _, lane := range lanes {
+		lane.SetAnteHandler(anteHandler)
+	}
+
+	// Set the proposal handlers on the BaseApp along with the custom antehandler.
+	proposalHandlers := abci.NewProposalHandler(
+		app.Logger(),
+		app.txConfig.TxDecoder(),
+		mempool,
+	)
+	app.BaseApp.SetPrepareProposal(proposalHandlers.PrepareProposalHandler())
+	app.BaseApp.SetProcessProposal(proposalHandlers.ProcessProposalHandler())
+	app.BaseApp.SetAnteHandler(anteHandler)
+
+	// Set the custom CheckTx handler on BaseApp.
+	checkTxHandler := abci.NewCheckTxHandler(
+		app.BaseApp,
+		app.txConfig.TxDecoder(),
+		keyshareLane,
+		anteHandler,
+		ChainID,
+	)
+	app.SetCheckTx(checkTxHandler.CheckTx())
+
+	// ---------------------------------------------------------------------------- //
+	// ------------------------- End Custom Code ---------------------------------- //
+	// ---------------------------------------------------------------------------- //
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
