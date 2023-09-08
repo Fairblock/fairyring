@@ -12,7 +12,6 @@ import (
 
 func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmitEncryptedTx) (*types.MsgSubmitEncryptedTxResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	params := k.GetParams(ctx)
 
 	strHeight := k.GetLatestHeight(ctx)
 	height, err := strconv.ParseUint(strHeight, 10, 64)
@@ -39,7 +38,7 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 		return nil, types.ErrInvalidMsgCreator
 	}
 
-	minGas := params.GetMinGasPrice()
+	minGas := k.MinGasPrice(ctx)
 
 	deductedCoin := sdk.NewCoin(minGas.Denom, cosmosmath.NewIntFromUint64(ctx.GasMeter().Limit()).Mul(minGas.Amount))
 
