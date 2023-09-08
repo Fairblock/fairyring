@@ -49,12 +49,11 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			return nil, err
 		}
 
-		params := k.GetParams(ctx)
 		k.stakingKeeper.Slash(
 			ctx, consAddr,
 			ctx.BlockHeight()-1,
 			types.SlashPower,
-			params.SlashFractionWrongKeyshare,
+			k.SlashFractionWrongKeyshare(ctx),
 		)
 
 		return &types.MsgSendKeyshareResponse{
