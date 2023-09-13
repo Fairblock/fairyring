@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	cosmosmath "cosmossdk.io/math"
 	"fairyring/x/pep/types"
 	"fmt"
 	"strconv"
@@ -40,13 +39,11 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 
 	minGas := k.MinGasPrice(ctx)
 
-	deductedCoin := sdk.NewCoin(minGas.Denom, cosmosmath.NewIntFromUint64(ctx.GasMeter().Limit()).Mul(minGas.Amount))
-
 	err = k.bankKeeper.SendCoinsFromAccountToModule(
 		ctx,
 		senderAddr,
 		types.ModuleName,
-		sdk.NewCoins(deductedCoin),
+		sdk.NewCoins(minGas),
 	)
 
 	if err != nil {
@@ -58,7 +55,7 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 		TargetHeight: msg.TargetBlockHeight,
 		Data:         msg.Data,
 		Creator:      msg.Creator,
-		ChargedGas:   &deductedCoin,
+		ChargedGas:   &minGas,
 	}
 
 	txIndex := k.AppendEncryptedTx(ctx, encryptedTx)

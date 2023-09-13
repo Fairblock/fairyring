@@ -12,7 +12,7 @@ var _ paramtypes.ParamSet = (*Params)(nil)
 
 var (
 	KeyMinGasPrice     = []byte("MinGasPrice")
-	DefaultMinGasPrice = sdk.NewCoin("frt", cosmosmath.NewInt(1))
+	DefaultMinGasPrice = sdk.NewCoin("frt", cosmosmath.NewInt(300000))
 )
 
 // ParamKeyTable the param key table for launch module
