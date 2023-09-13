@@ -480,34 +480,30 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				newCoins := make([]sdk.Coin, len(txFee))
 				refundDenom := txFee[0].Denom
 				refundAmount := cosmosmath.NewIntFromUint64(0)
-				for i, eachTxFee := range txFee {
-					usedGasFee := sdk.NewCoin(
-						eachTxFee.Denom,
-						// Tx Fee Amount Divide Provide Gas => provided gas price
-						// Provided Gas Price * Gas Used => Amount to deduct as gas fee
-						eachTxFee.Amount.Quo(gasProvided).Mul(gasUsedInBig),
-					)
 
-					if usedGasFee.Denom != eachTx.ChargedGas.Denom {
-						newCoins[i] = usedGasFee
-						continue
-					}
+				usedGasFee := sdk.NewCoin(
+					txFee[0].Denom,
+					// Tx Fee Amount Divide Provide Gas => provided gas price
+					// Provided Gas Price * Gas Used => Amount to deduct as gas fee
+					txFee[0].Amount.Quo(gasProvided).Mul(gasUsedInBig),
+				)
 
-					refundDenom = eachTxFee.Denom
-
-					if usedGasFee.Amount.GT(eachTx.ChargedGas.Amount) {
-						usedGasFee.Amount = usedGasFee.Amount.Sub(eachTx.ChargedGas.Amount)
-					} else { // less than or equals to
-						refundAmount = eachTx.ChargedGas.Amount.Sub(usedGasFee.Amount)
-						usedGasFee.Amount = cosmosmath.NewIntFromUint64(0)
-					}
-
-					newCoins[i] = usedGasFee
+				if usedGasFee.Denom != eachTx.ChargedGas.Denom {
+					am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("underlying tx gas denom does not match charged gas denom, got: %s, expect: %s", usedGasFee.Denom, eachTx.ChargedGas.Denom), startConsumedGas)
+					continue
 				}
+
+				if usedGasFee.Amount.GT(eachTx.ChargedGas.Amount) {
+					usedGasFee.Amount = usedGasFee.Amount.Sub(eachTx.ChargedGas.Amount)
+				} else { // less than or equals to
+					refundAmount = eachTx.ChargedGas.Amount.Sub(usedGasFee.Amount)
+					usedGasFee.Amount = cosmosmath.NewIntFromUint64(0)
+				}
+
 				am.keeper.Logger(ctx).Info(fmt.Sprintf("Deduct fee amount: %v | Refund amount: %v", newCoins, refundAmount))
 
 				if refundAmount.IsZero() {
-					deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, newCoins)
+					deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, sdk.NewCoins(usedGasFee))
 					if deductFeeErr != nil {
 						am.keeper.Logger(ctx).Error("Deduct fee Err")
 						am.keeper.Logger(ctx).Error(deductFeeErr.Error())
