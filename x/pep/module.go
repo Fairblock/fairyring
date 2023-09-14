@@ -235,8 +235,8 @@ func (am AppModule) processFailedEncryptedTx(ctx sdk.Context, tx types.Encrypted
 	}
 
 	var actualGasConsumed uint64 = 0
-	if ctx.BlockGasMeter().GasConsumed() > startConsumedGas {
-		actualGasConsumed = ctx.BlockGasMeter().GasConsumed() - startConsumedGas
+	if ctx.GasMeter().GasConsumed() > startConsumedGas {
+		actualGasConsumed = ctx.GasMeter().GasConsumed() - startConsumedGas
 	}
 
 	am.handleGasConsumption(ctx, creatorAddr, cosmosmath.NewIntFromUint64(actualGasConsumed), tx.ChargedGas)
