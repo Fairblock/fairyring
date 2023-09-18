@@ -32,6 +32,10 @@ func NewFairyringAnteHandler(options FairyringHandlerOptions) sdk.AnteHandler {
 		panic("sign mode handler is required for ante builder")
 	}
 
+	if options.BaseOptions.FeegrantKeeper == nil {
+		panic("fee grant keeper is required for ante builder")
+	}
+
 	anteDecorators := []sdk.AnteDecorator{
 		ante.NewSetUpContextDecorator(), // outermost AnteDecorator. SetUpContext must be called first
 		ante.NewExtensionOptionsDecorator(options.BaseOptions.ExtensionOptionChecker),

@@ -8,10 +8,12 @@ import (
 
 // GetParams get all parameters as types.Params
 func (k Keeper) GetParams(ctx sdk.Context) types.Params {
+	coin := k.MinGasPrice(ctx)
 	return types.NewParams(
 		k.TrustedAddresses(ctx),
 		k.TrustedCounterParties(ctx),
 		k.ChannelID(ctx),
+		&coin,
 	)
 }
 
@@ -35,5 +37,10 @@ func (k Keeper) TrustedCounterParties(ctx sdk.Context) (res []*types.TrustedCoun
 // ChannelID returns the ChannelID param
 func (k Keeper) ChannelID(ctx sdk.Context) (res string) {
 	k.paramstore.Get(ctx, types.KeyChannelID, &res)
+	return
+}
+
+func (k Keeper) MinGasPrice(ctx sdk.Context) (res sdk.Coin) {
+	k.paramstore.Get(ctx, types.KeyMinGasPrice, &res)
 	return
 }

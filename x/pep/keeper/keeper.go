@@ -20,6 +20,7 @@ type (
 		memKey           storetypes.StoreKey
 		paramstore       paramtypes.Subspace
 		connectionKeeper types.ConnectionKeeper
+		bankKeeper       types.BankKeeper
 	}
 )
 
@@ -32,6 +33,7 @@ func NewKeeper(
 	portKeeper types.PortKeeper,
 	scopedKeeper types.ScopedKeeper,
 	connectionKeeper types.ConnectionKeeper,
+	bankKeeper types.BankKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -51,6 +53,7 @@ func NewKeeper(
 		memKey:           memKey,
 		paramstore:       ps,
 		connectionKeeper: connectionKeeper,
+		bankKeeper:       bankKeeper,
 	}
 }
 
