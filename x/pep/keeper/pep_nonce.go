@@ -28,12 +28,12 @@ func (k Keeper) IncreasePepNonce(
 	))
 
 	var nonce types.PepNonce
-	var newNonce uint64 = 1
+	var newNonce uint64 = 2
 	if b == nil {
 		// New address ?
 		nonce = types.PepNonce{
 			Address: address,
-			Nonce:   1,
+			Nonce:   newNonce,
 		}
 	} else {
 		k.cdc.MustUnmarshal(b, &nonce)
@@ -60,7 +60,7 @@ func (k Keeper) GetPepNonce(
 	if b == nil {
 		initNonce := types.PepNonce{
 			Address: address,
-			Nonce:   0,
+			Nonce:   1,
 		}
 		k.SetPepNonce(ctx, initNonce)
 		return initNonce, true
