@@ -25,20 +25,18 @@ message MsgRegisterValidatorResponse {
 message MsgSendKeyshare {
   string creator       = 1;
   string message       = 2;
-  string commitment    = 3;
-  uint64 keyShareIndex = 4;
-  uint64 blockHeight   = 5;
+  uint64 keyShareIndex = 3;
+  uint64 blockHeight   = 4;
 }
 
 message MsgSendKeyshareResponse {
   string creator             = 1;
   string keyshare            = 2;
-  string commitment          = 3;
-  uint64 keyshareIndex       = 4;
-  uint64 blockHeight         = 5;
-  uint64 receivedBlockHeight = 6;
-  bool   success             = 7;
-  string errorMessage        = 8;
+  uint64 keyshareIndex       = 3;
+  uint64 blockHeight         = 4;
+  uint64 receivedBlockHeight = 5;
+  bool   success             = 6;
+  string errorMessage        = 7;
 }
 
 
@@ -46,6 +44,7 @@ message MsgSendKeyshareResponse {
 message MsgCreateLatestPubKey {
   string creator   = 1;
   string publicKey = 2;
+  repeated string commitments = 3;
 }
 
 message MsgCreateLatestPubKeyResponse {}

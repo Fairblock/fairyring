@@ -25,16 +25,30 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 		return nil, types.ErrQueuedKeyAlreadyExists.Wrap(msg.Creator)
 	}
 
+	if len(msg.Commitments) == 0 {
+		return nil, types.ErrEmptyCommitments
+	}
+
+	commitments := types.Commitments{
+		Commitments: msg.Commitments,
+	}
+
 	expHeight := params.KeyExpiry + uint64(ctx.BlockHeight())
 	ak, found := k.GetActivePubKey(ctx)
 	if found {
 		expHeight = ak.Expiry + params.KeyExpiry
 	}
+	
 	var queuedPubKey = types.QueuedPubKey{
 		Creator:   msg.Creator,
 		PublicKey: msg.PublicKey,
 		Expiry:    expHeight,
 	}
+
+	k.SetQueuedCommitments(
+		ctx,
+		commitments,
+	)
 
 	k.SetQueuedPubKey(
 		ctx,
