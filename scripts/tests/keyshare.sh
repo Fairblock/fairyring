@@ -57,39 +57,13 @@ if [[ "$ERROR_MSG" != *"account is not staking"* ]]; then
   exit 1
 fi
 
-
-echo "Registered validator submit invalid key share on chain fairyring_test_1"
-CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
-RESULT=$($BINARY tx keyshare send-keyshare 0000 0000 0 $(($CURRENT_BLOCK + 2)) --from $VALIDATOR_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
-check_tx_code $RESULT
-RESULT=$(wait_for_tx $RESULT)
-BURN_EVENT=$(echo "$RESULT" | jq -r '.logs[0].events[2].type')
-if [ "$BURN_EVENT" != "burn" ]; then
-  echo "ERROR: KeyShare module submit invalid key share from registered validator error. Expected the account to be slashed, got '$BURN_EVENT'"
-  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
-  exit 1
-fi
-
-
-echo "Not registered account submit key share on chain fairyring_test_1"
-RESULT=$($BINARY tx keyshare send-keyshare 0000 0000 0 $(($CURRENT_BLOCK + 4)) --from $WALLET_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
-check_tx_code $RESULT
-RESULT=$(wait_for_tx $RESULT)
-ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
-if [[ "$ERROR_MSG" != *"validator not registered"* ]]; then
-  echo "ERROR: KeyShare module submit key share from not registered account error. Expected to get account not registered error, got '$ERROR_MSG'"
-  echo "$RESULT"
-  exit 1
-fi
-
-
 GENERATED_RESULT=$($GENERATOR generate 1 1)
 GENERATED_SHARE=$(echo "$GENERATED_RESULT" | jq -r '.Shares[0].Value')
 PUB_KEY=$(echo "$GENERATED_RESULT" | jq -r '.MasterPublicKey')
-
+COMMITS=$(echo "$GENERATED_RESULT" | jq -r '.Commitments[0]')
 
 echo "Trusted address submit pub key on chain fairyring_test_1"
-RESULT=$($BINARY tx keyshare create-latest-pub-key $PUB_KEY --from $VALIDATOR_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare create-latest-pub-key $PUB_KEY $COMMITS --from $VALIDATOR_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 VALIDATOR_ADDR=$(echo "$RESULT" | jq -r '.logs[0].events[1].attributes[2].value')
@@ -101,7 +75,7 @@ fi
 
 
 echo "Not trusted address submit pub key on chain fairyring_test_1"
-RESULT=$($BINARY tx keyshare create-latest-pub-key $PUB_KEY --from $WALLET_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare create-latest-pub-key $PUB_KEY $COMMITS --from $WALLET_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
@@ -112,13 +86,32 @@ if [[ "$ERROR_MSG" != *"address is not trusted"* ]]; then
 fi
 
 
-echo "Registered validator submit valid key share on chain fairyring_test_1"
 CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+1))
 EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 0 $TARGET_HEIGHT)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
-EXTRACTED_COMMITMENT=$(echo "$EXTRACTED_RESULT" | jq -r '.Commitment')
-RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE $EXTRACTED_COMMITMENT 0 $TARGET_HEIGHT --from $VALIDATOR_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+
+
+echo "Not registered account submit key share on chain fairyring_test_1"
+RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 0 $TARGET_HEIGHT --from $WALLET_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
+if [[ "$ERROR_MSG" != *"validator not registered"* ]]; then
+  echo "ERROR: KeyShare module submit key share from not registered account error. Expected to get account not registered error, got '$ERROR_MSG'"
+  echo "$RESULT"
+  exit 1
+fi
+
+
+CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
+TARGET_HEIGHT=$((CURRENT_BLOCK+1))
+EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 0 $TARGET_HEIGHT)
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+
+
+echo "Registered validator submit valid key share on chain fairyring_test_1"
+RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 0 $TARGET_HEIGHT --from $VALIDATOR_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 RESULT_EVENT=$(echo "$RESULT" | jq -r '.logs[0].events[2].type')

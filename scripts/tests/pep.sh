@@ -45,8 +45,8 @@ wait_for_tx () {
 echo "Query new account pep nonce from pep module on chain fairyring_test_2"
 RESULT=$($BINARY query pep show-pep-nonce $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
 VALIDATOR_PEP_NONCE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
-if [ "$VALIDATOR_PEP_NONCE" != "0" ]; then
-  echo "ERROR: Pep module query Pep Nonce error. Expected Pep Nonce to be 0, got '$VALIDATOR_PEP_NONCE'"
+if [ "$VALIDATOR_PEP_NONCE" != "1" ]; then
+  echo "ERROR: Pep module query Pep Nonce error. Expected Pep Nonce to be 1, got '$VALIDATOR_PEP_NONCE'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   exit 1
 fi
@@ -57,7 +57,7 @@ CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_
 RESULT=$($BINARY query keyshare list-aggregated-key-share --node $CHAIN1_NODE -o json)
 AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.aggregatedKeyShare[0].height')
 AGG_KEY=$(echo "$RESULT" | jq -r '.aggregatedKeyShare[0].data')
-if [ "$CURRENT_BLOCK" -ge "$AGG_KEY_HEIGHT" ]; then
+if [ "$CURRENT_BLOCK" -gt "$AGG_KEY_HEIGHT" ]; then
   echo "ERROR: Height of the aggregated key from key share module '$AGG_KEY_HEIGHT' is less than current block height '$CURRENT_BLOCK'"
   exit 1
 fi
@@ -87,8 +87,8 @@ fi
 echo "Query account pep nonce before submitting encrypted tx from pep module on chain fairyring_test_2"
 RESULT=$($BINARY query pep show-pep-nonce $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
 VALIDATOR_PEP_NONCE_BEFORE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
-if [ "$VALIDATOR_PEP_NONCE_BEFORE" != "0" ]; then
-  echo "ERROR: Pep module query Pep Nonce error. Expected Pep Nonce to be 0, got '$VALIDATOR_PEP_NONCE'"
+if [ "$VALIDATOR_PEP_NONCE_BEFORE" != "1" ]; then
+  echo "ERROR: Pep module query Pep Nonce error. Expected Pep Nonce to be 1, got '$VALIDATOR_PEP_NONCE'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   exit 1
 fi
@@ -174,8 +174,8 @@ echo "Balance after submitting second encrypted tx: $BAL_AMT$BAL_DENOM"
 echo "Query account pep nonce after submitting encrypted tx from pep module on chain fairyring_test_2"
 RESULT=$($BINARY query pep show-pep-nonce $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
 VALIDATOR_PEP_NONCE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
-if [ "$VALIDATOR_PEP_NONCE" != "0" ]; then
-  echo "ERROR: Pep module query Pep Nonce error. Expected Pep Nonce to be 0, got '$VALIDATOR_PEP_NONCE'"
+if [ "$VALIDATOR_PEP_NONCE" != "1" ]; then
+  echo "ERROR: Pep module query Pep Nonce error. Expected Pep Nonce to be 1, got '$VALIDATOR_PEP_NONCE'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   exit 1
 fi

@@ -22,12 +22,12 @@ func CmdSendKeyshare() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argMessage := args[0]
 
-			keyshareIndex, err := cast.ToUint64E(args[2])
+			keyshareIndex, err := cast.ToUint64E(args[1])
 			if err != nil {
 				return err
 			}
 
-			argBlockHeight, err := cast.ToUint64E(args[3])
+			argBlockHeight, err := cast.ToUint64E(args[2])
 			if err != nil {
 				return err
 			}
