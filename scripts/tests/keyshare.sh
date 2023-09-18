@@ -114,7 +114,7 @@ fi
 
 echo "Registered validator submit valid key share on chain fairyring_test_1"
 CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
-TARGET_HEIGHT=$(($CURRENT_BLOCK + 60))
+TARGET_HEIGHT=$((CURRENT_BLOCK+1))
 EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 0 $TARGET_HEIGHT)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 EXTRACTED_COMMITMENT=$(echo "$EXTRACTED_RESULT" | jq -r '.Commitment')
@@ -128,6 +128,7 @@ if [ "$RESULT_EVENT" != "keyshare-aggregated" ]; then
   exit 1
 fi
 
+#./scripts/tests/keyshareSender.sh $BINARY $CHAIN_DIR/$CHAINID_1 tcp://localhost:16657 $VALIDATOR_1 $CHAINID_1 $GENERATOR $GENERATED_SHARE > $CHAIN_DIR/keyshareSender.log 2>&1 &
 
 echo "Query submitted key share on chain fairyring_test_1"
 RESULT=$($BINARY query keyshare list-key-share --node tcp://localhost:16657 -o json)

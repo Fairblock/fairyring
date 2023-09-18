@@ -29,7 +29,11 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	}
 
 	if uint64(ctx.BlockHeight()) > msg.BlockHeight {
-		return nil, types.ErrInvalidBlockHeight.Wrapf("Expected height: %d, got: %d", ctx.BlockHeight(), msg.BlockHeight)
+		return nil, types.ErrInvalidBlockHeight.Wrapf("key share height is lower than the current block height, expected height: %d, got: %d", ctx.BlockHeight(), msg.BlockHeight)
+	}
+
+	if msg.BlockHeight > uint64(ctx.BlockHeight())+1 {
+		return nil, types.ErrInvalidBlockHeight.Wrapf("key share height is higher than the current block height + 1, expected max height to be: %d, got: %d", ctx.BlockHeight()+1, msg.BlockHeight)
 	}
 
 	// Setup
