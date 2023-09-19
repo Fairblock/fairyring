@@ -15,7 +15,7 @@ BINARY=fairyringd
 CHAIN_DIR=$(pwd)/data
 CHAINID_1=fairyring_test_1
 CHAINID_2=fairyring_test_2
-BLOCK_TIME=6
+BLOCK_TIME=5
 
 WALLET_1=$($BINARY keys show wallet1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
 VALIDATOR_1=$($BINARY keys show val1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
@@ -121,7 +121,7 @@ if [ "$RESULT_EVENT" != "keyshare-aggregated" ]; then
   exit 1
 fi
 
-#./scripts/tests/keyshareSender.sh $BINARY $CHAIN_DIR/$CHAINID_1 tcp://localhost:16657 $VALIDATOR_1 $CHAINID_1 $GENERATOR $GENERATED_SHARE > $CHAIN_DIR/keyshareSender.log 2>&1 &
+./scripts/tests/keyshareSender.sh $BINARY $CHAIN_DIR/$CHAINID_1 tcp://localhost:16657 $VALIDATOR_1 $CHAINID_1 $GENERATOR $GENERATED_SHARE > $CHAIN_DIR/keyshareSender.log 2>&1 &
 
 echo "Query submitted key share on chain fairyring_test_1"
 RESULT=$($BINARY query keyshare list-key-share --node tcp://localhost:16657 -o json)

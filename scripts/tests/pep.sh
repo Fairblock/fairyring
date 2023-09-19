@@ -20,7 +20,7 @@ CHAINID_1=fairyring_test_1
 CHAIN1_NODE=tcp://localhost:16657
 CHAINID_2=fairyring_test_2
 CHAIN2_NODE=tcp://localhost:26657
-BLOCK_TIME=6
+BLOCK_TIME=5
 
 WALLET_1=$($BINARY keys show wallet1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
 VALIDATOR_1=$($BINARY keys show val1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
@@ -48,17 +48,6 @@ VALIDATOR_PEP_NONCE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
 if [ "$VALIDATOR_PEP_NONCE" != "1" ]; then
   echo "ERROR: Pep module query Pep Nonce error. Expected Pep Nonce to be 1, got '$VALIDATOR_PEP_NONCE'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
-  exit 1
-fi
-
-
-echo "Query aggregated key share from key share module for submitting to pep module on chain fairyring_test_1"
-CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE | jq -r '.block.header.height')
-RESULT=$($BINARY query keyshare list-aggregated-key-share --node $CHAIN1_NODE -o json)
-AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.aggregatedKeyShare[0].height')
-AGG_KEY=$(echo "$RESULT" | jq -r '.aggregatedKeyShare[0].data')
-if [ "$CURRENT_BLOCK" -gt "$AGG_KEY_HEIGHT" ]; then
-  echo "ERROR: Height of the aggregated key from key share module '$AGG_KEY_HEIGHT' is less than current block height '$CURRENT_BLOCK'"
   exit 1
 fi
 
@@ -112,6 +101,41 @@ echo "Signing second bank send tx with pep nonce: '$PEP_NONCE_2ND' without gas f
 echo "Sending 1 $TARGET_BAL_DENOM to target address"
 $BINARY tx bank send $VALIDATOR_2 $WALLET_2 1$TARGET_BAL_DENOM --from $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --keyring-backend test --generate-only -o json -y > unsigned2.json
 SIGNED_DATA_2=$($BINARY tx sign unsigned2.json --from $VALIDATOR_2 --offline --account-number 0 --sequence $PEP_NONCE_2ND --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE  --keyring-backend test -y)
+
+
+echo "Query aggregated key share from key share module for submitting to pep module on chain fairyring_test_1"
+CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE | jq -r '.block.header.height')
+RESULT=$($BINARY query keyshare list-aggregated-key-share --node $CHAIN1_NODE -o json)
+AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .height')
+AGG_KEY=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .data')
+if [ "$CURRENT_BLOCK" -gt "$AGG_KEY_HEIGHT" ]; then
+  echo "ERROR: Height of the aggregated key from key share module '$AGG_KEY_HEIGHT' is less than current block height '$CURRENT_BLOCK'"
+  exit 1
+fi
+
+CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE | jq -r '.block.header.height')
+echo "Chain 2 Current Block: $CURRENT_BLOCK"
+echo "Submit valid aggregated key to pep module on chain fairyring_test_2 from address: $VALIDATOR_2"
+RESULT=$($BINARY tx pep create-aggregated-key-share $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+ACTION=$(echo "$RESULT" | jq -r '.logs[0].events[0].attributes[0].value')
+if [ "$ACTION" != "/fairyring.pep.MsgCreateAggregatedKeyShare" ]; then
+  echo "ERROR: Pep module submit aggregated key error. Expected tx action to be MsgCreateAggregatedKeyShare,  got '$ACTION'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  exit 1
+fi
+
+
+echo "Query aggregated key share from key share module for submitting to pep module on chain fairyring_test_1"
+CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE | jq -r '.block.header.height')
+RESULT=$($BINARY query keyshare list-aggregated-key-share --node $CHAIN1_NODE -o json)
+AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .height')
+AGG_KEY=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .data')
+if [ "$CURRENT_BLOCK" -gt "$AGG_KEY_HEIGHT" ]; then
+  echo "ERROR: Height of the aggregated key from key share module '$AGG_KEY_HEIGHT' is less than current block height '$CURRENT_BLOCK'"
+  exit 1
+fi
 
 
 echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
@@ -209,8 +233,8 @@ fi
 echo "Query account pep nonce after encrypted tx being processed from pep module on chain fairyring_test_2"
 RESULT=$($BINARY query pep show-pep-nonce $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
 VALIDATOR_PEP_NONCE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
-if [ "$VALIDATOR_PEP_NONCE" != "2" ]; then
-  echo "ERROR: Pep module query Pep Nonce error. Expected Pep Nonce to be 2, got '$VALIDATOR_PEP_NONCE'"
+if [ "$VALIDATOR_PEP_NONCE" != "3" ]; then
+  echo "ERROR: Pep module query Pep Nonce error. Expected Pep Nonce to be 3, got '$VALIDATOR_PEP_NONCE'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   exit 1
 fi
