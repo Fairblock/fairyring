@@ -5,7 +5,9 @@ echo ""
 echo "######################################################"
 echo "# Submit Valid & Invalid KeyShare to KeyShare Module #"
 echo "#     Register as a validator in KeyShare Module     #"
+echo "#       Submit KeyShare from Authorized address      #"
 echo "#        Submit Public Key to KeyShare Module        #"
+echo "#                 Authorize address                  #"
 echo "######################################################"
 echo ""
 
@@ -57,6 +59,18 @@ if [[ "$ERROR_MSG" != *"account is not staking"* ]]; then
   exit 1
 fi
 
+echo "Non validator account authorizing another address to submit key share on chain fairyring_test_1"
+RESULT=$($BINARY tx keyshare create-authorized-address $VALIDATOR_1 --from $WALLET_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
+if [[ "$ERROR_MSG" != *"only validator can authorize address to submit key share"* ]]; then
+  echo "ERROR: KeyShare module authorize address error. Expected to get account is not validator error, got '$ERROR_MSG'"
+  echo "$RESULT"
+  exit 1
+fi
+
+
 GENERATED_RESULT=$($GENERATOR generate 1 1)
 GENERATED_SHARE=$(echo "$GENERATED_RESULT" | jq -r '.Shares[0].Value')
 PUB_KEY=$(echo "$GENERATED_RESULT" | jq -r '.MasterPublicKey')
@@ -93,13 +107,74 @@ EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
 
 echo "Not registered account submit key share on chain fairyring_test_1"
+CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
 RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 0 $TARGET_HEIGHT --from $WALLET_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
-if [[ "$ERROR_MSG" != *"validator not registered"* ]]; then
-  echo "ERROR: KeyShare module submit key share from not registered account error. Expected to get account not registered error, got '$ERROR_MSG'"
+if [[ "$ERROR_MSG" != *"sender is not validator / authorized address to submit key share"* ]]; then
+  echo "ERROR: KeyShare module submit key share from not registered account error. Expected to get account not validator / authorized address error, got '$ERROR_MSG'"
   echo "$RESULT"
+  exit 1
+fi
+
+
+echo "Registered validator authorize another address to submit key share on chain fairyring_test_1"
+RESULT=$($BINARY tx keyshare create-authorized-address $WALLET_1 --from $VALIDATOR_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+EVENT_ATR=$(echo "$RESULT" | jq -r '.logs[0].events[0].attributes[0].value')
+if [ "$EVENT_ATR" != "/fairyring.keyshare.MsgCreateAuthorizedAddress" ]; then
+  echo "ERROR: KeyShare module registered validator authorize address error. Expected the account to be authorized successfully, got '$EVENT_ATR'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  exit 1
+fi
+
+
+CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
+TARGET_HEIGHT=$((CURRENT_BLOCK+1))
+EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 0 $TARGET_HEIGHT)
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+
+
+echo "Authorized account submit key share on chain fairyring_test_1"
+RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 0 $TARGET_HEIGHT --from $WALLET_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+KEYSHARE_HEIGHT=$(echo "$RESULT" | jq -r '.logs[0].events[1].attributes[1].value')
+if [ "$KEYSHARE_HEIGHT" != "$TARGET_HEIGHT" ]; then
+  echo "ERROR: KeyShare module submit valid key share from registered validator error. Expected the key received at height $TARGET_HEIGHT, got '$RESULT_EVENT'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  exit 1
+fi
+
+
+echo "Registered validator remove authorized address to submit key share on chain fairyring_test_1"
+RESULT=$($BINARY tx keyshare delete-authorized-address $WALLET_1 --from $VALIDATOR_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+EVENT_ATR=$(echo "$RESULT" | jq -r '.logs[0].events[0].attributes[0].value')
+if [ "$EVENT_ATR" != "/fairyring.keyshare.MsgDeleteAuthorizedAddress" ]; then
+  echo "ERROR: KeyShare module registered validator remove authorized address error. Expected the account to be removed successfully, got '$EVENT_ATR'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  exit 1
+fi
+
+
+CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
+TARGET_HEIGHT=$((CURRENT_BLOCK+1))
+EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 0 $TARGET_HEIGHT)
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+
+
+echo "Removed Authorized account tries submit key share on chain fairyring_test_1"
+RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 0 $TARGET_HEIGHT --from $WALLET_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
+if [[ "$ERROR_MSG" != *"sender is not validator / authorized address to submit key share"* ]]; then
+  echo "ERROR: KeyShare module submit valid key share from registered validator error. Expected the key received at height $TARGET_HEIGHT, got '$RESULT_EVENT'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   exit 1
 fi
 
@@ -116,7 +191,7 @@ check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 RESULT_EVENT=$(echo "$RESULT" | jq -r '.logs[0].events[2].type')
 if [ "$RESULT_EVENT" != "keyshare-aggregated" ]; then
-  echo "ERROR: KeyShare module submit invalid key share from registered validator error. Expected the key to be aggregated, got '$RESULT_EVENT'"
+  echo "ERROR: KeyShare module submit valid key share from registered validator error. Expected the key to be aggregated, got '$RESULT_EVENT'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   exit 1
 fi

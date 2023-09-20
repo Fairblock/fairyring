@@ -26,6 +26,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	// Set queued public key
 	k.SetQueuedPubKey(ctx, genState.QueuedPubKey)
 
+	// Set all the authorizedAddress
+	for _, elem := range genState.AuthorizedAddressList {
+		k.SetAuthorizedAddress(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -48,6 +52,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 		genesis.QueuedPubKey = qkey
 	}
 
+	genesis.AuthorizedAddressList = k.GetAllAuthorizedAddress(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

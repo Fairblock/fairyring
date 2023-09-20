@@ -49,6 +49,14 @@ func TestGenesisState_Validate(t *testing.T) {
 						Height: 1,
 					},
 				},
+				AuthorizedAddressList: []types.AuthorizedAddress{
+					{
+						Target: "0",
+					},
+					{
+						Target: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -92,6 +100,20 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 					{
 						Height: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated authorizedAddress",
+			genState: &types.GenesisState{
+				AuthorizedAddressList: []types.AuthorizedAddress{
+					{
+						Target: "0",
+					},
+					{
+						Target: "0",
 					},
 				},
 			},

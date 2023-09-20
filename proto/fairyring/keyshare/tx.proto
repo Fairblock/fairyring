@@ -10,9 +10,12 @@ option go_package = "fairyring/x/keyshare/types";
 service Msg {
   rpc RegisterValidator (MsgRegisterValidator) returns (MsgRegisterValidatorResponse);
   rpc SendKeyshare      (MsgSendKeyshare     ) returns (MsgSendKeyshareResponse     );
-
+  
   // this line is used by starport scaffolding # proto/tx/rpc
-  rpc CreateLatestPubKey (MsgCreateLatestPubKey) returns (MsgCreateLatestPubKeyResponse);
+  rpc CreateLatestPubKey      (MsgCreateLatestPubKey     ) returns (MsgCreateLatestPubKeyResponse     );
+  rpc CreateAuthorizedAddress (MsgCreateAuthorizedAddress) returns (MsgCreateAuthorizedAddressResponse);
+  rpc UpdateAuthorizedAddress (MsgUpdateAuthorizedAddress) returns (MsgUpdateAuthorizedAddressResponse);
+  rpc DeleteAuthorizedAddress (MsgDeleteAuthorizedAddress) returns (MsgDeleteAuthorizedAddressResponse);
 }
 message MsgRegisterValidator {
   string creator = 1;
@@ -39,7 +42,6 @@ message MsgSendKeyshareResponse {
   string errorMessage        = 7;
 }
 
-
 // this line is used by starport scaffolding # proto/tx/message
 message MsgCreateLatestPubKey {
   string creator   = 1;
@@ -48,3 +50,26 @@ message MsgCreateLatestPubKey {
 }
 
 message MsgCreateLatestPubKeyResponse {}
+
+message MsgCreateAuthorizedAddress {
+  string target       = 1;
+  string creator      = 2;
+}
+
+message MsgCreateAuthorizedAddressResponse {}
+
+message MsgUpdateAuthorizedAddress {
+  string  target        = 1;
+  bool    isAuthorized  = 2;
+  string  creator       = 3;
+}
+
+message MsgUpdateAuthorizedAddressResponse {}
+
+message MsgDeleteAuthorizedAddress {
+  string target       = 1;
+  string creator      = 2;
+}
+
+message MsgDeleteAuthorizedAddressResponse {}
+

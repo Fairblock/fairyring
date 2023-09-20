@@ -1,0 +1,11 @@
+syntax = "proto3";
+package fairyring.keyshare;
+
+option go_package = "fairyring/x/keyshare/types";
+
+message AuthorizedAddress {
+  string  target        = 1;
+  bool    isAuthorized  = 2;
+  string  authorizedBy  = 3;
+}
+
