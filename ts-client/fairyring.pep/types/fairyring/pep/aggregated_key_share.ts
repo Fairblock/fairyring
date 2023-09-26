@@ -7,12 +7,11 @@ export const protobufPackage = "fairyring.pep";
 export interface AggregatedKeyShare {
   height: number;
   data: string;
-  publicKey: string;
   creator: string;
 }
 
 function createBaseAggregatedKeyShare(): AggregatedKeyShare {
-  return { height: 0, data: "", publicKey: "", creator: "" };
+  return { height: 0, data: "", creator: "" };
 }
 
 export const AggregatedKeyShare = {
@@ -23,11 +22,8 @@ export const AggregatedKeyShare = {
     if (message.data !== "") {
       writer.uint32(18).string(message.data);
     }
-    if (message.publicKey !== "") {
-      writer.uint32(26).string(message.publicKey);
-    }
     if (message.creator !== "") {
-      writer.uint32(34).string(message.creator);
+      writer.uint32(26).string(message.creator);
     }
     return writer;
   },
@@ -46,9 +42,6 @@ export const AggregatedKeyShare = {
           message.data = reader.string();
           break;
         case 3:
-          message.publicKey = reader.string();
-          break;
-        case 4:
           message.creator = reader.string();
           break;
         default:
@@ -63,7 +56,6 @@ export const AggregatedKeyShare = {
     return {
       height: isSet(object.height) ? Number(object.height) : 0,
       data: isSet(object.data) ? String(object.data) : "",
-      publicKey: isSet(object.publicKey) ? String(object.publicKey) : "",
       creator: isSet(object.creator) ? String(object.creator) : "",
     };
   },
@@ -72,7 +64,6 @@ export const AggregatedKeyShare = {
     const obj: any = {};
     message.height !== undefined && (obj.height = Math.round(message.height));
     message.data !== undefined && (obj.data = message.data);
-    message.publicKey !== undefined && (obj.publicKey = message.publicKey);
     message.creator !== undefined && (obj.creator = message.creator);
     return obj;
   },
@@ -81,7 +72,6 @@ export const AggregatedKeyShare = {
     const message = createBaseAggregatedKeyShare();
     message.height = object.height ?? 0;
     message.data = object.data ?? "";
-    message.publicKey = object.publicKey ?? "";
     message.creator = object.creator ?? "";
     return message;
   },

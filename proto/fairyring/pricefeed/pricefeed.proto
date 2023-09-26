@@ -1,0 +1,44 @@
+syntax = "proto3";
+package pricefeed;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "fairyring/x/pricefeed/types";
+option (gogoproto.equal_all) = true;
+
+// Price is a message that represents a price data structure.
+// It contains the symbol or name of the price being stored,
+// the most recent price of the specified symbol, and the
+// timestamp (in Unix time) when the price was last resolved.
+message Price {
+  string symbol = 1;
+  uint64 price = 2;
+  int64 resolve_time = 3;
+  
+}
+
+// SymbolRequest is a message that represents a symbol request data structure.
+// It contains the symbol or name of the requested price data, the ID of the
+// oracle script used to fetch the requested price data, and the block interval
+// at which the price data should be update every n block.
+message SymbolRequest {
+  string symbol = 1;
+  uint64 oracle_script_id = 2 [
+    (gogoproto.customname) = "OracleScriptID"
+  ];
+  uint64 block_interval = 3;
+  uint64 price_step = 4;
+}
+
+// UpdateSymbolRequestProposal is a message that represents a proposal to update
+// a symbol request. It contains a title, description, and a list of symbol
+// requests to be updated. Once approved, the data will update the SymbolRequest
+// in the state.
+message UpdateSymbolRequestProposal {
+  option (gogoproto.goproto_getters) = false;
+
+  string title = 1;
+  string description = 2;
+
+  repeated SymbolRequest symbol_requests = 3 [ (gogoproto.nullable) = false ];
+}

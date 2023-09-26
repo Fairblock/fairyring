@@ -4,9 +4,21 @@ accounts:
     coins: ["20000token", "200000000stake"]
   - name: bob
     coins: ["10000token", "100000000stake"]
+  - name: star
+    coins: ["10000token", "100000000stake"]
 validators:
   - name: alice
     bonded: "100000000stake"
+genesis:
+  chain_id: "fairyring"
+  app_state:
+    gov:
+      voting_params:
+        voting_period: "30s"
+    pricefeed:
+      params:
+        source_channel: "channel-0"
+      symbol_requests: [{"symbol": "ETH", "oracle_script_id": 396, "block_interval":  10, "price_step": 1}, {"symbol": "BTC", "oracle_script_id": 396, "block_interval":  10, "price_step": 1}]
 client:
   openapi:
     path: "docs/static/openapi.yml"
@@ -17,9 +29,3 @@ client:
 faucet:
   name: bob
   coins: ["5token", "100000stake"]
-genesis:
-  app_state:
-    keyshare:
-      params:
-        trusted_addresses: ["cosmos18hl5c9xn5dze2g50uaw0l2mr02ew57zk2fgr8q"]
-        key_expiry: 200

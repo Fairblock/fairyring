@@ -1,7 +1,9 @@
 // THIS FILE IS GENERATED AUTOMATICALLY. DO NOT MODIFY.
 
-import FairyringFairblock from './fairyring.fairblock'
-import FairyringFairyring from './fairyring.fairyring'
+import FairyringConsumer from './fairyring.consumer'
+import FairyringKeyshare from './fairyring.keyshare'
+import FairyringPep from './fairyring.pep'
+import FairyringPricefeed from './fairyring.pricefeed'
 import CosmosAuthV1Beta1 from './cosmos.auth.v1beta1'
 import CosmosAuthzV1Beta1 from './cosmos.authz.v1beta1'
 import CosmosBankV1Beta1 from './cosmos.bank.v1beta1'
@@ -30,8 +32,10 @@ import IbcCoreConnectionV1 from './ibc.core.connection.v1'
 
 
 export default { 
-  FairyringFairblock: load(FairyringFairblock, 'fairyring.fairblock'),
-  FairyringFairyring: load(FairyringFairyring, 'fairyring.fairyring'),
+  FairyringConsumer: load(FairyringConsumer, 'fairyring.consumer'),
+  FairyringKeyshare: load(FairyringKeyshare, 'fairyring.keyshare'),
+  FairyringPep: load(FairyringPep, 'fairyring.pep'),
+  FairyringPricefeed: load(FairyringPricefeed, 'fairyring.pricefeed'),
   CosmosAuthV1Beta1: load(CosmosAuthV1Beta1, 'cosmos.auth.v1beta1'),
   CosmosAuthzV1Beta1: load(CosmosAuthzV1Beta1, 'cosmos.authz.v1beta1'),
   CosmosBankV1Beta1: load(CosmosBankV1Beta1, 'cosmos.bank.v1beta1'),

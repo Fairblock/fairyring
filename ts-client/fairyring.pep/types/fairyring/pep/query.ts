@@ -3,9 +3,9 @@ import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
 import { EncryptedTx, EncryptedTxArray } from "./encrypted_tx";
-import { ActivePubKey, QueuedPubKey } from "./latest_pub_key";
 import { Params } from "./params";
 import { PepNonce } from "./pep_nonce";
+import { ActivePubKey, QueuedPubKey } from "./pub_key";
 
 export const protobufPackage = "fairyring.pep";
 

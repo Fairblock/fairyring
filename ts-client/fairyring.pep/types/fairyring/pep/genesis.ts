@@ -2,9 +2,9 @@
 import _m0 from "protobufjs/minimal";
 import { AggregatedKeyShare } from "./aggregated_key_share";
 import { EncryptedTxArray } from "./encrypted_tx";
-import { ActivePubKey, QueuedPubKey } from "./latest_pub_key";
 import { Params } from "./params";
 import { PepNonce } from "./pep_nonce";
+import { ActivePubKey, QueuedPubKey } from "./pub_key";
 
 export const protobufPackage = "fairyring.pep";
 

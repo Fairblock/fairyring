@@ -1,0 +1,44 @@
+syntax = "proto3";
+package pricefeed;
+
+import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
+
+option go_package = "fairyring/x/pricefeed/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+
+  // AskCount is the number of validators that are requested to respond to this
+  // oracle request. Higher value means more security, at a higher gas cost.
+  uint64 ask_count = 1;
+  // MinCount is the minimum number of validators necessary for the request to
+  // proceed to the execution phase. Higher value means more security, at the
+  // cost of liveness.
+  uint64 min_count = 2;
+  // MinDsCount is the minimum number of responses required from data sources
+  // (oracles) to consider the request as successful.
+  uint64 min_ds_count = 3;
+  // PrepareGasBase is the amount of base gas needed to prepare an oracle
+  // request.
+  uint64 prepare_gas_base = 4;
+  // PrepareGasEach is the amount of additional gas needed per symbol in an
+  // oracle request.
+  uint64 prepare_gas_each = 5;
+  // ExecuteGasBase is the amount of base gas needed to execute an oracle
+  // request.
+  uint64 execute_gas_base = 6;
+  // ExecuteGasEach is the amount of additional gas needed per symbol in
+  // executing an oracle request.
+  uint64 execute_gas_each = 7;
+  // SourceChannel is the source channel to use when sending the oracle request
+  // to BandChain via IBC
+  string source_channel = 8;
+  // FeeLimit is the maximum tokens that will be paid to all data source
+  // providers.
+  repeated cosmos.base.v1beta1.Coin fee_limit = 9 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+  ];
+}

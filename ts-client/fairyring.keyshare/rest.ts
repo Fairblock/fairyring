@@ -9,6 +9,14 @@
  * ---------------------------------------------------------------
  */
 
+export interface KeyshareActivePubKey {
+  publicKey?: string;
+  creator?: string;
+
+  /** @format uint64 */
+  expiry?: string;
+}
+
 export interface KeyshareAggregatedKeyShare {
   /** @format uint64 */
   height?: string;
@@ -59,7 +67,7 @@ export interface KeyshareMsgSendKeyshareResponse {
  */
 export interface KeyshareParams {
   /** @format uint64 */
-  keyExpiry?: string;
+  key_expiry?: string;
   trusted_addresses?: string[];
 }
 
@@ -126,6 +134,19 @@ export interface KeyshareQueryGetValidatorSetResponse {
 export interface KeyshareQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: KeyshareParams;
+}
+
+export interface KeyshareQueryPubKeyResponse {
+  activePubKey?: KeyshareActivePubKey;
+  queuedPubKey?: KeyshareQueuedPubKey;
+}
+
+export interface KeyshareQueuedPubKey {
+  publicKey?: string;
+  creator?: string;
+
+  /** @format uint64 */
+  expiry?: string;
 }
 
 export interface KeyshareValidatorSet {
@@ -437,6 +458,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<KeyshareQueryParamsResponse, RpcStatus>({
       path: `/fairyring/keyshare/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryPubKey
+   * @summary Queries the public keys
+   * @request GET:/fairyring/keyshare/pub_key
+   */
+  queryPubKey = (params: RequestParams = {}) =>
+    this.request<KeyshareQueryPubKeyResponse, RpcStatus>({
+      path: `/fairyring/keyshare/pub_key`,
       method: "GET",
       format: "json",
       ...params,

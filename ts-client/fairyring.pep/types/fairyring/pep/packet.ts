@@ -1,6 +1,6 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
-import { ActivePubKey, QueuedPubKey } from "./latest_pub_key";
+import { ActivePubKey, QueuedPubKey } from "./pub_key";
 
 export const protobufPackage = "fairyring.pep";
 

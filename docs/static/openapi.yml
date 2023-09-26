@@ -4,6 +4,52 @@ info:
   name: ''
   description: ''
 paths:
+  /consumer/prices/{symbol}:
+    get:
+      summary: Price queries a latest price of symbol.
+      operationId: ConsumerPrice
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              symbol:
+                type: string
+              price:
+                type: string
+                format: uint64
+              resolve_time:
+                type: string
+                format: int64
+            description: >-
+              QueryPriceResponse is response type for the Query/Price RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /cosmos/auth/v1beta1/accounts:
     get:
       summary: Accounts returns all the existing accounts
@@ -44070,7 +44116,647 @@ paths:
           format: uint64
       tags:
         - Query
+  /pricefeed/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: PricefeedParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+                properties:
+                  ask_count:
+                    type: string
+                    format: uint64
+                    description: >-
+                      AskCount is the number of validators that are requested to
+                      respond to this
+
+                      oracle request. Higher value means more security, at a
+                      higher gas cost.
+                  min_count:
+                    type: string
+                    format: uint64
+                    description: >-
+                      MinCount is the minimum number of validators necessary for
+                      the request to
+
+                      proceed to the execution phase. Higher value means more
+                      security, at the
+
+                      cost of liveness.
+                  min_ds_count:
+                    type: string
+                    format: uint64
+                    description: >-
+                      MinDsCount is the minimum number of responses required
+                      from data sources
+
+                      (oracles) to consider the request as successful.
+                  prepare_gas_base:
+                    type: string
+                    format: uint64
+                    description: >-
+                      PrepareGasBase is the amount of base gas needed to prepare
+                      an oracle
+
+                      request.
+                  prepare_gas_each:
+                    type: string
+                    format: uint64
+                    description: >-
+                      PrepareGasEach is the amount of additional gas needed per
+                      symbol in an
+
+                      oracle request.
+                  execute_gas_base:
+                    type: string
+                    format: uint64
+                    description: >-
+                      ExecuteGasBase is the amount of base gas needed to execute
+                      an oracle
+
+                      request.
+                  execute_gas_each:
+                    type: string
+                    format: uint64
+                    description: >-
+                      ExecuteGasEach is the amount of additional gas needed per
+                      symbol in
+
+                      executing an oracle request.
+                  source_channel:
+                    type: string
+                    title: >-
+                      SourceChannel is the source channel to use when sending
+                      the oracle request
+
+                      to BandChain via IBC
+                  fee_limit:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        amount:
+                          type: string
+                      description: >-
+                        Coin defines a token with a denomination and an amount.
+
+
+                        NOTE: The amount field is an Int which implements the
+                        custom method
+
+                        signatures required by gogoproto.
+                    description: >-
+                      FeeLimit is the maximum tokens that will be paid to all
+                      data source
+
+                      providers.
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /pricefeed/prices/{symbol}:
+    get:
+      summary: |-
+        Price queries the current price data for a specific symbol.
+        Returns the current price for the given symbol.
+      operationId: PricefeedPrice
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              price:
+                description: |-
+                  price holds the current price for the given symbol.
+                  The current price data for the given symbol.
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                  price:
+                    type: string
+                    format: uint64
+                  resolve_time:
+                    type: string
+                    format: int64
+            description: >-
+              QueryPriceResponse is response type for the Query/Price RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /pricefeed/symbol_requests:
+    get:
+      summary: SymbolRequests queries all symbol requests.
+      operationId: PricefeedSymbolRequests
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              symbol_requests:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    symbol:
+                      type: string
+                    oracle_script_id:
+                      type: string
+                      format: uint64
+                    block_interval:
+                      type: string
+                      format: uint64
+                    price_step:
+                      type: string
+                      format: uint64
+                  description: >-
+                    SymbolRequest is a message that represents a symbol request
+                    data structure.
+
+                    It contains the symbol or name of the requested price data,
+                    the ID of the
+
+                    oracle script used to fetch the requested price data, and
+                    the block interval
+
+                    at which the price data should be update every n block.
+                description: |-
+                  symbol_requests holds a list of all symbol requests.
+                  A list of all symbol requests in the state.
+            title: >-
+              QuerySymbolRequestsResponse is response type for the
+              Query/SymbolRequests
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /pricefeed/symbol_requests/{symbol}:
+    get:
+      summary: |-
+        SymbolRequest queries a specific symbol request by symbol name.
+        Returns the symbol request data for the given symbol.
+        This method is used to query the status of a specific symbol request.
+      operationId: PricefeedSymbolRequest
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              symbol_request:
+                description: >-
+                  symbol_request holds the symbol request data for the given
+                  symbol.
+
+                  The symbol request data for the given symbol name.
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                  oracle_script_id:
+                    type: string
+                    format: uint64
+                  block_interval:
+                    type: string
+                    format: uint64
+                  price_step:
+                    type: string
+                    format: uint64
+            description: >-
+              QuerySymbolRequestResponse is response type for the
+              Query/SymbolRequest RPC
+
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
 definitions:
+  consumer.QueryPriceResponse:
+    type: object
+    properties:
+      symbol:
+        type: string
+      price:
+        type: string
+        format: uint64
+      resolve_time:
+        type: string
+        format: int64
+    description: QueryPriceResponse is response type for the Query/Price RPC method.
+  google.protobuf.Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+        description: >-
+          A URL/resource name that uniquely identifies the type of the
+          serialized
+
+          protocol buffer message. This string must contain at least
+
+          one "/" character. The last segment of the URL's path must represent
+
+          the fully qualified name of the type (as in
+
+          `path/google.protobuf.Duration`). The name should be in a canonical
+          form
+
+          (e.g., leading "." is not accepted).
+
+
+          In practice, teams usually precompile into the binary all types that
+          they
+
+          expect it to use in the context of Any. However, for URLs which use
+          the
+
+          scheme `http`, `https`, or no scheme, one can optionally set up a type
+
+          server that maps type URLs to message definitions as follows:
+
+
+          * If no scheme is provided, `https` is assumed.
+
+          * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+            value in binary format, or produce an error.
+          * Applications are allowed to cache lookup results based on the
+            URL, or have them precompiled into a binary to avoid any
+            lookup. Therefore, binary compatibility needs to be preserved
+            on changes to types. (Use versioned type names to manage
+            breaking changes.)
+
+          Note: this functionality is not currently available in the official
+
+          protobuf release, and it is not used for type URLs beginning with
+
+          type.googleapis.com.
+
+
+          Schemes other than `http`, `https` (or the empty scheme) might be
+
+          used with implementation specific semantics.
+    additionalProperties: {}
+    description: >-
+      `Any` contains an arbitrary serialized protocol buffer message along with
+      a
+
+      URL that describes the type of the serialized message.
+
+
+      Protobuf library provides support to pack/unpack Any values in the form
+
+      of utility functions or additional generated methods of the Any type.
+
+
+      Example 1: Pack and unpack a message in C++.
+
+          Foo foo = ...;
+          Any any;
+          any.PackFrom(foo);
+          ...
+          if (any.UnpackTo(&foo)) {
+            ...
+          }
+
+      Example 2: Pack and unpack a message in Java.
+
+          Foo foo = ...;
+          Any any = Any.pack(foo);
+          ...
+          if (any.is(Foo.class)) {
+            foo = any.unpack(Foo.class);
+          }
+
+       Example 3: Pack and unpack a message in Python.
+
+          foo = Foo(...)
+          any = Any()
+          any.Pack(foo)
+          ...
+          if any.Is(Foo.DESCRIPTOR):
+            any.Unpack(foo)
+            ...
+
+       Example 4: Pack and unpack a message in Go
+
+           foo := &pb.Foo{...}
+           any, err := anypb.New(foo)
+           if err != nil {
+             ...
+           }
+           ...
+           foo := &pb.Foo{}
+           if err := any.UnmarshalTo(foo); err != nil {
+             ...
+           }
+
+      The pack methods provided by protobuf library will by default use
+
+      'type.googleapis.com/full.type.name' as the type URL and the unpack
+
+      methods only use the fully qualified type name after the last '/'
+
+      in the type URL, for example "foo.bar.com/x/y.z" will yield type
+
+      name "y.z".
+
+
+
+      JSON
+
+      ====
+
+      The JSON representation of an `Any` value uses the regular
+
+      representation of the deserialized, embedded message, with an
+
+      additional field `@type` which contains the type URL. Example:
+
+          package google.profile;
+          message Person {
+            string first_name = 1;
+            string last_name = 2;
+          }
+
+          {
+            "@type": "type.googleapis.com/google.profile.Person",
+            "firstName": <string>,
+            "lastName": <string>
+          }
+
+      If the embedded message type is well-known and has a custom JSON
+
+      representation, that representation will be embedded adding a field
+
+      `value` which holds the custom JSON in addition to the `@type`
+
+      field. Example (for message [google.protobuf.Duration][]):
+
+          {
+            "@type": "type.googleapis.com/google.protobuf.Duration",
+            "value": "1.212s"
+          }
+  google.rpc.Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+              description: >-
+                A URL/resource name that uniquely identifies the type of the
+                serialized
+
+                protocol buffer message. This string must contain at least
+
+                one "/" character. The last segment of the URL's path must
+                represent
+
+                the fully qualified name of the type (as in
+
+                `path/google.protobuf.Duration`). The name should be in a
+                canonical form
+
+                (e.g., leading "." is not accepted).
+
+
+                In practice, teams usually precompile into the binary all types
+                that they
+
+                expect it to use in the context of Any. However, for URLs which
+                use the
+
+                scheme `http`, `https`, or no scheme, one can optionally set up
+                a type
+
+                server that maps type URLs to message definitions as follows:
+
+
+                * If no scheme is provided, `https` is assumed.
+
+                * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+                  value in binary format, or produce an error.
+                * Applications are allowed to cache lookup results based on the
+                  URL, or have them precompiled into a binary to avoid any
+                  lookup. Therefore, binary compatibility needs to be preserved
+                  on changes to types. (Use versioned type names to manage
+                  breaking changes.)
+
+                Note: this functionality is not currently available in the
+                official
+
+                protobuf release, and it is not used for type URLs beginning
+                with
+
+                type.googleapis.com.
+
+
+                Schemes other than `http`, `https` (or the empty scheme) might
+                be
+
+                used with implementation specific semantics.
+          additionalProperties: {}
+          description: >-
+            `Any` contains an arbitrary serialized protocol buffer message along
+            with a
+
+            URL that describes the type of the serialized message.
+
+
+            Protobuf library provides support to pack/unpack Any values in the
+            form
+
+            of utility functions or additional generated methods of the Any
+            type.
+
+
+            Example 1: Pack and unpack a message in C++.
+
+                Foo foo = ...;
+                Any any;
+                any.PackFrom(foo);
+                ...
+                if (any.UnpackTo(&foo)) {
+                  ...
+                }
+
+            Example 2: Pack and unpack a message in Java.
+
+                Foo foo = ...;
+                Any any = Any.pack(foo);
+                ...
+                if (any.is(Foo.class)) {
+                  foo = any.unpack(Foo.class);
+                }
+
+             Example 3: Pack and unpack a message in Python.
+
+                foo = Foo(...)
+                any = Any()
+                any.Pack(foo)
+                ...
+                if any.Is(Foo.DESCRIPTOR):
+                  any.Unpack(foo)
+                  ...
+
+             Example 4: Pack and unpack a message in Go
+
+                 foo := &pb.Foo{...}
+                 any, err := anypb.New(foo)
+                 if err != nil {
+                   ...
+                 }
+                 ...
+                 foo := &pb.Foo{}
+                 if err := any.UnmarshalTo(foo); err != nil {
+                   ...
+                 }
+
+            The pack methods provided by protobuf library will by default use
+
+            'type.googleapis.com/full.type.name' as the type URL and the unpack
+
+            methods only use the fully qualified type name after the last '/'
+
+            in the type URL, for example "foo.bar.com/x/y.z" will yield type
+
+            name "y.z".
+
+
+
+            JSON
+
+            ====
+
+            The JSON representation of an `Any` value uses the regular
+
+            representation of the deserialized, embedded message, with an
+
+            additional field `@type` which contains the type URL. Example:
+
+                package google.profile;
+                message Person {
+                  string first_name = 1;
+                  string last_name = 2;
+                }
+
+                {
+                  "@type": "type.googleapis.com/google.profile.Person",
+                  "firstName": <string>,
+                  "lastName": <string>
+                }
+
+            If the embedded message type is well-known and has a custom JSON
+
+            representation, that representation will be embedded adding a field
+
+            `value` which holds the custom JSON in addition to the `@type`
+
+            field. Example (for message [google.protobuf.Duration][]):
+
+                {
+                  "@type": "type.googleapis.com/google.protobuf.Duration",
+                  "value": "1.212s"
+                }
   cosmos.auth.v1beta1.AddressBytesToStringResponse:
     type: object
     properties:
@@ -44656,329 +45342,6 @@ definitions:
                repeated Bar results = 1;
                PageResponse page = 2;
        }
-  google.protobuf.Any:
-    type: object
-    properties:
-      '@type':
-        type: string
-        description: >-
-          A URL/resource name that uniquely identifies the type of the
-          serialized
-
-          protocol buffer message. This string must contain at least
-
-          one "/" character. The last segment of the URL's path must represent
-
-          the fully qualified name of the type (as in
-
-          `path/google.protobuf.Duration`). The name should be in a canonical
-          form
-
-          (e.g., leading "." is not accepted).
-
-
-          In practice, teams usually precompile into the binary all types that
-          they
-
-          expect it to use in the context of Any. However, for URLs which use
-          the
-
-          scheme `http`, `https`, or no scheme, one can optionally set up a type
-
-          server that maps type URLs to message definitions as follows:
-
-
-          * If no scheme is provided, `https` is assumed.
-
-          * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-            value in binary format, or produce an error.
-          * Applications are allowed to cache lookup results based on the
-            URL, or have them precompiled into a binary to avoid any
-            lookup. Therefore, binary compatibility needs to be preserved
-            on changes to types. (Use versioned type names to manage
-            breaking changes.)
-
-          Note: this functionality is not currently available in the official
-
-          protobuf release, and it is not used for type URLs beginning with
-
-          type.googleapis.com.
-
-
-          Schemes other than `http`, `https` (or the empty scheme) might be
-
-          used with implementation specific semantics.
-    additionalProperties: {}
-    description: >-
-      `Any` contains an arbitrary serialized protocol buffer message along with
-      a
-
-      URL that describes the type of the serialized message.
-
-
-      Protobuf library provides support to pack/unpack Any values in the form
-
-      of utility functions or additional generated methods of the Any type.
-
-
-      Example 1: Pack and unpack a message in C++.
-
-          Foo foo = ...;
-          Any any;
-          any.PackFrom(foo);
-          ...
-          if (any.UnpackTo(&foo)) {
-            ...
-          }
-
-      Example 2: Pack and unpack a message in Java.
-
-          Foo foo = ...;
-          Any any = Any.pack(foo);
-          ...
-          if (any.is(Foo.class)) {
-            foo = any.unpack(Foo.class);
-          }
-
-       Example 3: Pack and unpack a message in Python.
-
-          foo = Foo(...)
-          any = Any()
-          any.Pack(foo)
-          ...
-          if any.Is(Foo.DESCRIPTOR):
-            any.Unpack(foo)
-            ...
-
-       Example 4: Pack and unpack a message in Go
-
-           foo := &pb.Foo{...}
-           any, err := anypb.New(foo)
-           if err != nil {
-             ...
-           }
-           ...
-           foo := &pb.Foo{}
-           if err := any.UnmarshalTo(foo); err != nil {
-             ...
-           }
-
-      The pack methods provided by protobuf library will by default use
-
-      'type.googleapis.com/full.type.name' as the type URL and the unpack
-
-      methods only use the fully qualified type name after the last '/'
-
-      in the type URL, for example "foo.bar.com/x/y.z" will yield type
-
-      name "y.z".
-
-
-
-      JSON
-
-      ====
-
-      The JSON representation of an `Any` value uses the regular
-
-      representation of the deserialized, embedded message, with an
-
-      additional field `@type` which contains the type URL. Example:
-
-          package google.profile;
-          message Person {
-            string first_name = 1;
-            string last_name = 2;
-          }
-
-          {
-            "@type": "type.googleapis.com/google.profile.Person",
-            "firstName": <string>,
-            "lastName": <string>
-          }
-
-      If the embedded message type is well-known and has a custom JSON
-
-      representation, that representation will be embedded adding a field
-
-      `value` which holds the custom JSON in addition to the `@type`
-
-      field. Example (for message [google.protobuf.Duration][]):
-
-          {
-            "@type": "type.googleapis.com/google.protobuf.Duration",
-            "value": "1.212s"
-          }
-  google.rpc.Status:
-    type: object
-    properties:
-      code:
-        type: integer
-        format: int32
-      message:
-        type: string
-      details:
-        type: array
-        items:
-          type: object
-          properties:
-            '@type':
-              type: string
-              description: >-
-                A URL/resource name that uniquely identifies the type of the
-                serialized
-
-                protocol buffer message. This string must contain at least
-
-                one "/" character. The last segment of the URL's path must
-                represent
-
-                the fully qualified name of the type (as in
-
-                `path/google.protobuf.Duration`). The name should be in a
-                canonical form
-
-                (e.g., leading "." is not accepted).
-
-
-                In practice, teams usually precompile into the binary all types
-                that they
-
-                expect it to use in the context of Any. However, for URLs which
-                use the
-
-                scheme `http`, `https`, or no scheme, one can optionally set up
-                a type
-
-                server that maps type URLs to message definitions as follows:
-
-
-                * If no scheme is provided, `https` is assumed.
-
-                * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-                  value in binary format, or produce an error.
-                * Applications are allowed to cache lookup results based on the
-                  URL, or have them precompiled into a binary to avoid any
-                  lookup. Therefore, binary compatibility needs to be preserved
-                  on changes to types. (Use versioned type names to manage
-                  breaking changes.)
-
-                Note: this functionality is not currently available in the
-                official
-
-                protobuf release, and it is not used for type URLs beginning
-                with
-
-                type.googleapis.com.
-
-
-                Schemes other than `http`, `https` (or the empty scheme) might
-                be
-
-                used with implementation specific semantics.
-          additionalProperties: {}
-          description: >-
-            `Any` contains an arbitrary serialized protocol buffer message along
-            with a
-
-            URL that describes the type of the serialized message.
-
-
-            Protobuf library provides support to pack/unpack Any values in the
-            form
-
-            of utility functions or additional generated methods of the Any
-            type.
-
-
-            Example 1: Pack and unpack a message in C++.
-
-                Foo foo = ...;
-                Any any;
-                any.PackFrom(foo);
-                ...
-                if (any.UnpackTo(&foo)) {
-                  ...
-                }
-
-            Example 2: Pack and unpack a message in Java.
-
-                Foo foo = ...;
-                Any any = Any.pack(foo);
-                ...
-                if (any.is(Foo.class)) {
-                  foo = any.unpack(Foo.class);
-                }
-
-             Example 3: Pack and unpack a message in Python.
-
-                foo = Foo(...)
-                any = Any()
-                any.Pack(foo)
-                ...
-                if any.Is(Foo.DESCRIPTOR):
-                  any.Unpack(foo)
-                  ...
-
-             Example 4: Pack and unpack a message in Go
-
-                 foo := &pb.Foo{...}
-                 any, err := anypb.New(foo)
-                 if err != nil {
-                   ...
-                 }
-                 ...
-                 foo := &pb.Foo{}
-                 if err := any.UnmarshalTo(foo); err != nil {
-                   ...
-                 }
-
-            The pack methods provided by protobuf library will by default use
-
-            'type.googleapis.com/full.type.name' as the type URL and the unpack
-
-            methods only use the fully qualified type name after the last '/'
-
-            in the type URL, for example "foo.bar.com/x/y.z" will yield type
-
-            name "y.z".
-
-
-
-            JSON
-
-            ====
-
-            The JSON representation of an `Any` value uses the regular
-
-            representation of the deserialized, embedded message, with an
-
-            additional field `@type` which contains the type URL. Example:
-
-                package google.profile;
-                message Person {
-                  string first_name = 1;
-                  string last_name = 2;
-                }
-
-                {
-                  "@type": "type.googleapis.com/google.profile.Person",
-                  "firstName": <string>,
-                  "lastName": <string>
-                }
-
-            If the embedded message type is well-known and has a custom JSON
-
-            representation, that representation will be embedded adding a field
-
-            `value` which holds the custom JSON in addition to the `@type`
-
-            field. Example (for message [google.protobuf.Duration][]):
-
-                {
-                  "@type": "type.googleapis.com/google.protobuf.Duration",
-                  "value": "1.212s"
-                }
   cosmos.authz.v1beta1.Grant:
     type: object
     properties:
@@ -71894,3 +72257,297 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
+  pricefeed.Params:
+    type: object
+    properties:
+      ask_count:
+        type: string
+        format: uint64
+        description: >-
+          AskCount is the number of validators that are requested to respond to
+          this
+
+          oracle request. Higher value means more security, at a higher gas
+          cost.
+      min_count:
+        type: string
+        format: uint64
+        description: >-
+          MinCount is the minimum number of validators necessary for the request
+          to
+
+          proceed to the execution phase. Higher value means more security, at
+          the
+
+          cost of liveness.
+      min_ds_count:
+        type: string
+        format: uint64
+        description: >-
+          MinDsCount is the minimum number of responses required from data
+          sources
+
+          (oracles) to consider the request as successful.
+      prepare_gas_base:
+        type: string
+        format: uint64
+        description: |-
+          PrepareGasBase is the amount of base gas needed to prepare an oracle
+          request.
+      prepare_gas_each:
+        type: string
+        format: uint64
+        description: |-
+          PrepareGasEach is the amount of additional gas needed per symbol in an
+          oracle request.
+      execute_gas_base:
+        type: string
+        format: uint64
+        description: |-
+          ExecuteGasBase is the amount of base gas needed to execute an oracle
+          request.
+      execute_gas_each:
+        type: string
+        format: uint64
+        description: |-
+          ExecuteGasEach is the amount of additional gas needed per symbol in
+          executing an oracle request.
+      source_channel:
+        type: string
+        title: >-
+          SourceChannel is the source channel to use when sending the oracle
+          request
+
+          to BandChain via IBC
+      fee_limit:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+          description: |-
+            Coin defines a token with a denomination and an amount.
+
+            NOTE: The amount field is an Int which implements the custom method
+            signatures required by gogoproto.
+        description: |-
+          FeeLimit is the maximum tokens that will be paid to all data source
+          providers.
+    description: Params defines the parameters for the module.
+  pricefeed.Price:
+    type: object
+    properties:
+      symbol:
+        type: string
+      price:
+        type: string
+        format: uint64
+      resolve_time:
+        type: string
+        format: int64
+    description: |-
+      Price is a message that represents a price data structure.
+      It contains the symbol or name of the price being stored,
+      the most recent price of the specified symbol, and the
+      timestamp (in Unix time) when the price was last resolved.
+  pricefeed.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+        properties:
+          ask_count:
+            type: string
+            format: uint64
+            description: >-
+              AskCount is the number of validators that are requested to respond
+              to this
+
+              oracle request. Higher value means more security, at a higher gas
+              cost.
+          min_count:
+            type: string
+            format: uint64
+            description: >-
+              MinCount is the minimum number of validators necessary for the
+              request to
+
+              proceed to the execution phase. Higher value means more security,
+              at the
+
+              cost of liveness.
+          min_ds_count:
+            type: string
+            format: uint64
+            description: >-
+              MinDsCount is the minimum number of responses required from data
+              sources
+
+              (oracles) to consider the request as successful.
+          prepare_gas_base:
+            type: string
+            format: uint64
+            description: >-
+              PrepareGasBase is the amount of base gas needed to prepare an
+              oracle
+
+              request.
+          prepare_gas_each:
+            type: string
+            format: uint64
+            description: >-
+              PrepareGasEach is the amount of additional gas needed per symbol
+              in an
+
+              oracle request.
+          execute_gas_base:
+            type: string
+            format: uint64
+            description: >-
+              ExecuteGasBase is the amount of base gas needed to execute an
+              oracle
+
+              request.
+          execute_gas_each:
+            type: string
+            format: uint64
+            description: >-
+              ExecuteGasEach is the amount of additional gas needed per symbol
+              in
+
+              executing an oracle request.
+          source_channel:
+            type: string
+            title: >-
+              SourceChannel is the source channel to use when sending the oracle
+              request
+
+              to BandChain via IBC
+          fee_limit:
+            type: array
+            items:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+              description: >-
+                Coin defines a token with a denomination and an amount.
+
+
+                NOTE: The amount field is an Int which implements the custom
+                method
+
+                signatures required by gogoproto.
+            description: >-
+              FeeLimit is the maximum tokens that will be paid to all data
+              source
+
+              providers.
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  pricefeed.QueryPriceResponse:
+    type: object
+    properties:
+      price:
+        description: |-
+          price holds the current price for the given symbol.
+          The current price data for the given symbol.
+        type: object
+        properties:
+          symbol:
+            type: string
+          price:
+            type: string
+            format: uint64
+          resolve_time:
+            type: string
+            format: int64
+    description: QueryPriceResponse is response type for the Query/Price RPC method.
+  pricefeed.QuerySymbolRequestResponse:
+    type: object
+    properties:
+      symbol_request:
+        description: |-
+          symbol_request holds the symbol request data for the given symbol.
+          The symbol request data for the given symbol name.
+        type: object
+        properties:
+          symbol:
+            type: string
+          oracle_script_id:
+            type: string
+            format: uint64
+          block_interval:
+            type: string
+            format: uint64
+          price_step:
+            type: string
+            format: uint64
+    description: >-
+      QuerySymbolRequestResponse is response type for the Query/SymbolRequest
+      RPC
+
+      method.
+  pricefeed.QuerySymbolRequestsResponse:
+    type: object
+    properties:
+      symbol_requests:
+        type: array
+        items:
+          type: object
+          properties:
+            symbol:
+              type: string
+            oracle_script_id:
+              type: string
+              format: uint64
+            block_interval:
+              type: string
+              format: uint64
+            price_step:
+              type: string
+              format: uint64
+          description: >-
+            SymbolRequest is a message that represents a symbol request data
+            structure.
+
+            It contains the symbol or name of the requested price data, the ID
+            of the
+
+            oracle script used to fetch the requested price data, and the block
+            interval
+
+            at which the price data should be update every n block.
+        description: |-
+          symbol_requests holds a list of all symbol requests.
+          A list of all symbol requests in the state.
+    title: QuerySymbolRequestsResponse is response type for the Query/SymbolRequests
+  pricefeed.SymbolRequest:
+    type: object
+    properties:
+      symbol:
+        type: string
+      oracle_script_id:
+        type: string
+        format: uint64
+      block_interval:
+        type: string
+        format: uint64
+      price_step:
+        type: string
+        format: uint64
+    description: >-
+      SymbolRequest is a message that represents a symbol request data
+      structure.
+
+      It contains the symbol or name of the requested price data, the ID of the
+
+      oracle script used to fetch the requested price data, and the block
+      interval
+
+      at which the price data should be update every n block.

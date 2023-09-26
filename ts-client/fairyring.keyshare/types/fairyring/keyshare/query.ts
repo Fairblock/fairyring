@@ -5,6 +5,7 @@ import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagin
 import { AggregatedKeyShare } from "./aggregated_key_share";
 import { KeyShare } from "./key_share";
 import { Params } from "./params";
+import { ActivePubKey, QueuedPubKey } from "./pub_key";
 import { ValidatorSet } from "./validator_set";
 
 export const protobufPackage = "fairyring.keyshare";
@@ -70,6 +71,14 @@ export interface QueryAllAggregatedKeyShareRequest {
 export interface QueryAllAggregatedKeyShareResponse {
   aggregatedKeyShare: AggregatedKeyShare[];
   pagination: PageResponse | undefined;
+}
+
+export interface QueryPubKeyRequest {
+}
+
+export interface QueryPubKeyResponse {
+  activePubKey: ActivePubKey | undefined;
+  queuedPubKey: QueuedPubKey | undefined;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -823,6 +832,109 @@ export const QueryAllAggregatedKeyShareResponse = {
   },
 };
 
+function createBaseQueryPubKeyRequest(): QueryPubKeyRequest {
+  return {};
+}
+
+export const QueryPubKeyRequest = {
+  encode(_: QueryPubKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPubKeyRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryPubKeyRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryPubKeyRequest {
+    return {};
+  },
+
+  toJSON(_: QueryPubKeyRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryPubKeyRequest>, I>>(_: I): QueryPubKeyRequest {
+    const message = createBaseQueryPubKeyRequest();
+    return message;
+  },
+};
+
+function createBaseQueryPubKeyResponse(): QueryPubKeyResponse {
+  return { activePubKey: undefined, queuedPubKey: undefined };
+}
+
+export const QueryPubKeyResponse = {
+  encode(message: QueryPubKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.activePubKey !== undefined) {
+      ActivePubKey.encode(message.activePubKey, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.queuedPubKey !== undefined) {
+      QueuedPubKey.encode(message.queuedPubKey, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPubKeyResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryPubKeyResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.activePubKey = ActivePubKey.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.queuedPubKey = QueuedPubKey.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryPubKeyResponse {
+    return {
+      activePubKey: isSet(object.activePubKey) ? ActivePubKey.fromJSON(object.activePubKey) : undefined,
+      queuedPubKey: isSet(object.queuedPubKey) ? QueuedPubKey.fromJSON(object.queuedPubKey) : undefined,
+    };
+  },
+
+  toJSON(message: QueryPubKeyResponse): unknown {
+    const obj: any = {};
+    message.activePubKey !== undefined
+      && (obj.activePubKey = message.activePubKey ? ActivePubKey.toJSON(message.activePubKey) : undefined);
+    message.queuedPubKey !== undefined
+      && (obj.queuedPubKey = message.queuedPubKey ? QueuedPubKey.toJSON(message.queuedPubKey) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryPubKeyResponse>, I>>(object: I): QueryPubKeyResponse {
+    const message = createBaseQueryPubKeyResponse();
+    message.activePubKey = (object.activePubKey !== undefined && object.activePubKey !== null)
+      ? ActivePubKey.fromPartial(object.activePubKey)
+      : undefined;
+    message.queuedPubKey = (object.queuedPubKey !== undefined && object.queuedPubKey !== null)
+      ? QueuedPubKey.fromPartial(object.queuedPubKey)
+      : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -838,6 +950,8 @@ export interface Query {
   /** Queries a list of AggregatedKeyShare items. */
   AggregatedKeyShare(request: QueryGetAggregatedKeyShareRequest): Promise<QueryGetAggregatedKeyShareResponse>;
   AggregatedKeyShareAll(request: QueryAllAggregatedKeyShareRequest): Promise<QueryAllAggregatedKeyShareResponse>;
+  /** Queries the public keys */
+  PubKey(request: QueryPubKeyRequest): Promise<QueryPubKeyResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -851,6 +965,7 @@ export class QueryClientImpl implements Query {
     this.KeyShareAll = this.KeyShareAll.bind(this);
     this.AggregatedKeyShare = this.AggregatedKeyShare.bind(this);
     this.AggregatedKeyShareAll = this.AggregatedKeyShareAll.bind(this);
+    this.PubKey = this.PubKey.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -892,6 +1007,12 @@ export class QueryClientImpl implements Query {
     const data = QueryAllAggregatedKeyShareRequest.encode(request).finish();
     const promise = this.rpc.request("fairyring.keyshare.Query", "AggregatedKeyShareAll", data);
     return promise.then((data) => QueryAllAggregatedKeyShareResponse.decode(new _m0.Reader(data)));
+  }
+
+  PubKey(request: QueryPubKeyRequest): Promise<QueryPubKeyResponse> {
+    const data = QueryPubKeyRequest.encode(request).finish();
+    const promise = this.rpc.request("fairyring.keyshare.Query", "PubKey", data);
+    return promise.then((data) => QueryPubKeyResponse.decode(new _m0.Reader(data)));
   }
 }
 
