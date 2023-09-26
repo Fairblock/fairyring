@@ -59,14 +59,15 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	}
 
 	commitmentsLen := uint64(len(commitments.Commitments))
-	if msg.KeyShareIndex >= commitmentsLen {
+	if msg.KeyShareIndex > commitmentsLen {
 		return nil, types.ErrInvalidKeyShareIndex.Wrap(fmt.Sprintf("Expect Index within: %d, got: %d", commitmentsLen, msg.KeyShareIndex))
 	}
 
 	// Parse the keyshare & commitment then verify it
-	_, _, err := parseKeyShareCommitment(suite, msg.Message, commitments.Commitments[msg.KeyShareIndex], uint32(msg.KeyShareIndex), ibeID)
+	_, _, err := parseKeyShareCommitment(suite, msg.Message, commitments.Commitments[msg.KeyShareIndex-1], uint32(msg.KeyShareIndex), ibeID)
 	if err != nil {
 		k.Logger(ctx).Error(fmt.Sprintf("Error in parsing & verifying keyshare & commitment: %s", err.Error()))
+		k.Logger(ctx).Error(fmt.Sprintf("KeyShare is: %v | Commitment is: %v | Index: %d", msg.Message, commitments.Commitments, msg.KeyShareIndex))
 		// Invalid Share, slash validator
 		var consAddr sdk.ConsAddress
 
@@ -169,11 +170,11 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	var listOfCommitment []distIBE.Commitment
 
 	for _, eachKeyShare := range stateKeyShares {
-		if eachKeyShare.KeyShareIndex >= commitmentsLen {
+		if eachKeyShare.KeyShareIndex > commitmentsLen {
 			k.Logger(ctx).Error(fmt.Sprintf("KeyShareIndex: %d should not higher or equals to commitments length: %d", eachKeyShare.KeyShareIndex, commitmentsLen))
 			continue
 		}
-		keyShare, commitment, err := parseKeyShareCommitment(suite, eachKeyShare.KeyShare, commitments.Commitments[eachKeyShare.KeyShareIndex], uint32(eachKeyShare.KeyShareIndex), ibeID)
+		keyShare, commitment, err := parseKeyShareCommitment(suite, eachKeyShare.KeyShare, commitments.Commitments[eachKeyShare.KeyShareIndex-1], uint32(eachKeyShare.KeyShareIndex), ibeID)
 		if err != nil {
 			k.Logger(ctx).Error(err.Error())
 			continue
