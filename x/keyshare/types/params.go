@@ -12,7 +12,7 @@ var _ paramtypes.ParamSet = (*Params)(nil)
 
 var (
 	KeyMinimumBonded            = []byte("MinimumBonded")
-	DefaultMinimumBonded uint64 = 100000000000
+	DefaultMinimumBonded uint64 = 10000000000
 )
 
 var (
