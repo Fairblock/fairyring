@@ -3,6 +3,7 @@ package keyshare
 import (
 	"fairyring/x/keyshare/keeper"
 	"fairyring/x/keyshare/types"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -37,8 +38,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		portID = types.PortID
 	}
 
-	// if genState.RequestCount
-	// k.SetRequestCount(ctx)
+	k.SetRequestCount(ctx, genState.RequestCount)
 
 	k.SetPort(ctx, portID)
 	// Only try to bind to port if it is not already bound, since we may already own
@@ -77,6 +77,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	// this line is used by starport scaffolding # genesis/module/export
 
 	genesis.PortId = k.GetPort(ctx)
+
+	genesis.RequestCount, _ = strconv.ParseUint(k.GetRequestCount(ctx), 10, 64)
 
 	return genesis
 }
