@@ -65,8 +65,9 @@ const (
 
 var (
 	// PortKey defines the key to store the port ID in store
-	PortKey    = KeyPrefix("pep-port-")
-	ChannelKey = KeyPrefix("pep-channel-")
+	PortKey          = KeyPrefix("keyshare-port-")
+	ChannelKey       = KeyPrefix("keyshare-channel-")
+	RequestsCountKey = KeyPrefix("keyshare-request-count-")
 )
 
 func KeyPrefix(p string) []byte {

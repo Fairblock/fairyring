@@ -31,6 +31,8 @@ var (
 	ErrInvalidCommitment              = sdkerrors.Register(ModuleName, 1121, "invalid commitment")
 	ErrInvalidCommitmentLength        = sdkerrors.Register(ModuleName, 1122, "invalid commitment length")
 	ErrInvalidVersion                 = sdkerrors.Register(ModuleName, 1123, "invalid version")
+	ErrRequestNotFound                = sdkerrors.Register(ModuleName, 1124, "no request found with this identity")
+	ErrNoAggregatedKeyshare           = sdkerrors.Register(ModuleName, 1124, "aggregated keyshare has not been generated")
 	ErrAddressAlreadyAuthorized       = sdkerrors.Register(ModuleName, 1900, "address is already authorized")
 	ErrAuthorizedAddrNotFound         = sdkerrors.Register(ModuleName, 1901, "target authorized address not found")
 	ErrNotAuthorizedAddrCreator       = sdkerrors.Register(ModuleName, 1902, "sender is not the creator of target authorized address")

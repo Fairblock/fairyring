@@ -11,4 +11,7 @@ const (
 	AttributeKeyAckSuccess = "success"
 	AttributeKeyAck        = "acknowledgement"
 	AttributeKeyAckError   = "error"
+
+	AttributeKeyAckIdentity = "identity"
+	AttributeKeyAckPubkey   = "pubkey"
 )

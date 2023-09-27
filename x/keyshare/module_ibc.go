@@ -167,6 +167,8 @@ func (im IBCModule) OnRecvPacket(
 				types.EventTypeRequestAggrKeysharePacket,
 				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
 				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+				sdk.NewAttribute(types.AttributeKeyAckIdentity, packetAck.Identity),
+				sdk.NewAttribute(types.AttributeKeyAckPubkey, packetAck.Pubkey),
 			),
 		)
 
@@ -190,26 +192,26 @@ func (im IBCModule) OnRecvPacket(
 			),
 		)
 
-	case *types.KeysharePacketData_AggrKeyshareDataPacket:
-		packetAck, err := im.keeper.OnRecvAggrKeyshareDataPacket(ctx, modulePacket, *packet.AggrKeyshareDataPacket)
-		if err != nil {
-			ack = channeltypes.NewErrorAcknowledgement(err)
-		} else {
-			// Encode packet acknowledgment
-			packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
-			if err != nil {
-				return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, err.Error()))
-			}
-			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
-		}
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(
-				types.EventTypeAggrKeyshareDataPacket,
-				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
-			),
-		)
-		// this line is used by starport scaffolding # ibc/packet/module/recv
+	// case *types.KeysharePacketData_AggrKeyshareDataPacket:
+	// 	packetAck, err := im.keeper.OnRecvAggrKeyshareDataPacket(ctx, modulePacket, *packet.AggrKeyshareDataPacket)
+	// 	if err != nil {
+	// 		ack = channeltypes.NewErrorAcknowledgement(err)
+	// 	} else {
+	// 		// Encode packet acknowledgment
+	// 		packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
+	// 		if err != nil {
+	// 			return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, err.Error()))
+	// 		}
+	// 		ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+	// 	}
+	// 	ctx.EventManager().EmitEvent(
+	// 		sdk.NewEvent(
+	// 			types.EventTypeAggrKeyshareDataPacket,
+	// 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+	// 			sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+	// 		),
+	// 	)
+	// this line is used by starport scaffolding # ibc/packet/module/recv
 	default:
 		err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return channeltypes.NewErrorAcknowledgement(err)

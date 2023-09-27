@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+	"strconv"
 
 	"fairyring/x/keyshare/types"
 
@@ -50,12 +51,13 @@ func NewKeeper(
 			portKeeper,
 			scopedKeeper,
 		),
-		cdc:           cdc,
-		storeKey:      storeKey,
-		memKey:        memKey,
-		paramstore:    ps,
-		pepKeeper:     pk,
-		stakingKeeper: stakingKeeper,
+		cdc:              cdc,
+		storeKey:         storeKey,
+		memKey:           memKey,
+		paramstore:       ps,
+		pepKeeper:        pk,
+		stakingKeeper:    stakingKeeper,
+		connectionKeeper: connectionKeeper,
 	}
 }
 
@@ -65,4 +67,16 @@ func (k Keeper) StakingKeeper() types.StakingKeeper {
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
+}
+
+// GetRequestCount returns the request count
+func (k Keeper) GetRequestCount(ctx sdk.Context) string {
+	store := ctx.KVStore(k.storeKey)
+	return string(store.Get(types.RequestsCountKey))
+}
+
+// SetRequestCount sets RequestCount
+func (k Keeper) SetRequestCount(ctx sdk.Context, requestNumber uint64) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.RequestsCountKey, []byte(strconv.FormatUint(requestNumber, 10)))
 }

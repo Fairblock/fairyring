@@ -41,7 +41,14 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 		return packetAck, err
 	}
 
-	// TODO: packet reception logic
+	keyshareReq, found := k.GetKeyShareRequest(ctx, data.Identity)
+	if !found {
+		return packetAck, types.ErrRequestNotFound
+	}
+
+	if keyshareReq.AggrKeyshare == "" {
+		// TODO: start receiving and aggregating keyshares
+	}
 
 	return packetAck, nil
 }

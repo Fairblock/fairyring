@@ -37,6 +37,9 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		portID = types.PortID
 	}
 
+	// if genState.RequestCount
+	// k.SetRequestCount(ctx)
+
 	k.SetPort(ctx, portID)
 	// Only try to bind to port if it is not already bound, since we may already own
 	// port capability from capability InitGenesis

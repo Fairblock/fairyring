@@ -26,5 +26,6 @@ message GenesisState {
            ActivePubKey       activePubKey           = 6 [(gogoproto.nullable) = false];
            QueuedPubKey       queuedPubKey           = 7 [(gogoproto.nullable) = false];
   repeated AuthorizedAddress  authorizedAddressList  = 8 [(gogoproto.nullable) = false];
+  uint64 request_count = 9;
 }
 

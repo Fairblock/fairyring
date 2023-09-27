@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"errors"
+	"strconv"
 
 	"fairyring/x/keyshare/types"
 
@@ -35,13 +36,47 @@ func (k Keeper) TransmitRequestAggrKeysharePacket(
 }
 
 // OnRecvRequestAggrKeysharePacket processes packet reception
-func (k Keeper) OnRecvRequestAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestAggrKeysharePacketData) (packetAck types.RequestAggrKeysharePacketAck, err error) {
+func (k Keeper) OnRecvRequestAggrKeysharePacket(
+	ctx sdk.Context,
+	packet channeltypes.Packet,
+	data types.RequestAggrKeysharePacketData,
+) (packetAck types.RequestAggrKeysharePacketAck, err error) {
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
 	}
 
-	// TODO: packet reception logic
+	reqCountString := k.GetRequestCount(ctx)
+	reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
+	reqCount = reqCount + 1
+
+	id := types.IdentityFromRequestCount(reqCount)
+	activePubKey, found := k.GetActivePubKey(ctx)
+	if !found {
+		return packetAck, err
+	}
+
+	var keyshareRequest = types.KeyShareRequest{
+		Identity: id,
+		Pubkey:   activePubKey.PublicKey,
+		IbcInfo: &types.IBCInfo{
+			ChannelID: packet.DestinationChannel,
+			PortID:    packet.DestinationPort,
+		},
+		Counterparty: &types.CounterPartyIBCInfo{
+			ChannelID: packet.SourceChannel,
+			PortID:    packet.SourcePort,
+		},
+		AggrKeyshare: "",
+		Sent:         false,
+	}
+
+	k.SetKeyShareRequest(ctx, keyshareRequest)
+
+	k.SetRequestCount(ctx, reqCount)
+
+	packetAck.Identity = id
+	packetAck.Pubkey = activePubKey.PublicKey
 
 	return packetAck, nil
 }

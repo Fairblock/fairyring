@@ -1,0 +1,27 @@
+syntax = "proto3";
+package fairyring.keyshare;
+
+option go_package = "fairyring/x/keyshare/types";
+
+message KeyShareRequest {
+    string identity = 1;
+    string pubkey = 2;
+    IBCInfo ibc_info = 3;
+    CounterPartyIBCInfo counterparty = 4;
+    string aggr_keyshare = 5;
+    bool sent = 6;
+}
+
+message IBCInfo {
+    string ClientID = 1;
+    string ConnectionID = 2;
+    string ChannelID = 3;
+    string PortID = 4;
+}
+
+message CounterPartyIBCInfo {
+    string ClientID = 1;
+    string ConnectionID = 2;
+    string ChannelID = 3;
+    string PortID = 4;
+}

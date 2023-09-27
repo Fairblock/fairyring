@@ -21,7 +21,10 @@ message RequestAggrKeysharePacketData {
 }
 
 // RequestAggrKeysharePacketAck defines a struct for the packet acknowledgment
-message RequestAggrKeysharePacketAck {}
+message RequestAggrKeysharePacketAck {
+  string identity = 1;
+  string pubkey   = 2;
+}
 
 // GetAggrKeysharePacketData defines a struct for the packet payload
 message GetAggrKeysharePacketData {
