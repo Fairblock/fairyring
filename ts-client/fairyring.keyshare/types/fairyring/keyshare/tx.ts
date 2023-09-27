@@ -15,7 +15,6 @@ export interface MsgRegisterValidatorResponse {
 export interface MsgSendKeyshare {
   creator: string;
   message: string;
-  commitment: string;
   keyShareIndex: number;
   blockHeight: number;
 }
@@ -23,19 +22,60 @@ export interface MsgSendKeyshare {
 export interface MsgSendKeyshareResponse {
   creator: string;
   keyshare: string;
-  commitment: string;
   keyshareIndex: number;
   blockHeight: number;
   receivedBlockHeight: number;
+  success: boolean;
+  errorMessage: string;
 }
 
 /** this line is used by starport scaffolding # proto/tx/message */
 export interface MsgCreateLatestPubKey {
   creator: string;
   publicKey: string;
+  commitments: string[];
 }
 
 export interface MsgCreateLatestPubKeyResponse {
+}
+
+export interface MsgCreateAuthorizedAddress {
+  target: string;
+  creator: string;
+}
+
+export interface MsgCreateAuthorizedAddressResponse {
+}
+
+export interface MsgUpdateAuthorizedAddress {
+  target: string;
+  isAuthorized: boolean;
+  creator: string;
+}
+
+export interface MsgUpdateAuthorizedAddressResponse {
+}
+
+export interface MsgDeleteAuthorizedAddress {
+  target: string;
+  creator: string;
+}
+
+export interface MsgDeleteAuthorizedAddressResponse {
+}
+
+export interface MsgSendAggrKeyshareData {
+  identity: string;
+  pubkey: string;
+  aggrKeyshare: string;
+  aggrHeight: string;
+  creator: string;
+  port: string;
+  channelID: string;
+  timeoutTimestamp: number;
+}
+
+export interface MsgSendAggrKeyshareDataResponse {
 }
 
 function createBaseMsgRegisterValidator(): MsgRegisterValidator {
@@ -133,7 +173,7 @@ export const MsgRegisterValidatorResponse = {
 };
 
 function createBaseMsgSendKeyshare(): MsgSendKeyshare {
-  return { creator: "", message: "", commitment: "", keyShareIndex: 0, blockHeight: 0 };
+  return { creator: "", message: "", keyShareIndex: 0, blockHeight: 0 };
 }
 
 export const MsgSendKeyshare = {
@@ -144,14 +184,11 @@ export const MsgSendKeyshare = {
     if (message.message !== "") {
       writer.uint32(18).string(message.message);
     }
-    if (message.commitment !== "") {
-      writer.uint32(26).string(message.commitment);
-    }
     if (message.keyShareIndex !== 0) {
-      writer.uint32(32).uint64(message.keyShareIndex);
+      writer.uint32(24).uint64(message.keyShareIndex);
     }
     if (message.blockHeight !== 0) {
-      writer.uint32(40).uint64(message.blockHeight);
+      writer.uint32(32).uint64(message.blockHeight);
     }
     return writer;
   },
@@ -170,12 +207,9 @@ export const MsgSendKeyshare = {
           message.message = reader.string();
           break;
         case 3:
-          message.commitment = reader.string();
-          break;
-        case 4:
           message.keyShareIndex = longToNumber(reader.uint64() as Long);
           break;
-        case 5:
+        case 4:
           message.blockHeight = longToNumber(reader.uint64() as Long);
           break;
         default:
@@ -190,7 +224,6 @@ export const MsgSendKeyshare = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       message: isSet(object.message) ? String(object.message) : "",
-      commitment: isSet(object.commitment) ? String(object.commitment) : "",
       keyShareIndex: isSet(object.keyShareIndex) ? Number(object.keyShareIndex) : 0,
       blockHeight: isSet(object.blockHeight) ? Number(object.blockHeight) : 0,
     };
@@ -200,7 +233,6 @@ export const MsgSendKeyshare = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.message !== undefined && (obj.message = message.message);
-    message.commitment !== undefined && (obj.commitment = message.commitment);
     message.keyShareIndex !== undefined && (obj.keyShareIndex = Math.round(message.keyShareIndex));
     message.blockHeight !== undefined && (obj.blockHeight = Math.round(message.blockHeight));
     return obj;
@@ -210,7 +242,6 @@ export const MsgSendKeyshare = {
     const message = createBaseMsgSendKeyshare();
     message.creator = object.creator ?? "";
     message.message = object.message ?? "";
-    message.commitment = object.commitment ?? "";
     message.keyShareIndex = object.keyShareIndex ?? 0;
     message.blockHeight = object.blockHeight ?? 0;
     return message;
@@ -218,7 +249,15 @@ export const MsgSendKeyshare = {
 };
 
 function createBaseMsgSendKeyshareResponse(): MsgSendKeyshareResponse {
-  return { creator: "", keyshare: "", commitment: "", keyshareIndex: 0, blockHeight: 0, receivedBlockHeight: 0 };
+  return {
+    creator: "",
+    keyshare: "",
+    keyshareIndex: 0,
+    blockHeight: 0,
+    receivedBlockHeight: 0,
+    success: false,
+    errorMessage: "",
+  };
 }
 
 export const MsgSendKeyshareResponse = {
@@ -229,17 +268,20 @@ export const MsgSendKeyshareResponse = {
     if (message.keyshare !== "") {
       writer.uint32(18).string(message.keyshare);
     }
-    if (message.commitment !== "") {
-      writer.uint32(26).string(message.commitment);
-    }
     if (message.keyshareIndex !== 0) {
-      writer.uint32(32).uint64(message.keyshareIndex);
+      writer.uint32(24).uint64(message.keyshareIndex);
     }
     if (message.blockHeight !== 0) {
-      writer.uint32(40).uint64(message.blockHeight);
+      writer.uint32(32).uint64(message.blockHeight);
     }
     if (message.receivedBlockHeight !== 0) {
-      writer.uint32(48).uint64(message.receivedBlockHeight);
+      writer.uint32(40).uint64(message.receivedBlockHeight);
+    }
+    if (message.success === true) {
+      writer.uint32(48).bool(message.success);
+    }
+    if (message.errorMessage !== "") {
+      writer.uint32(58).string(message.errorMessage);
     }
     return writer;
   },
@@ -258,16 +300,19 @@ export const MsgSendKeyshareResponse = {
           message.keyshare = reader.string();
           break;
         case 3:
-          message.commitment = reader.string();
-          break;
-        case 4:
           message.keyshareIndex = longToNumber(reader.uint64() as Long);
           break;
-        case 5:
+        case 4:
           message.blockHeight = longToNumber(reader.uint64() as Long);
           break;
-        case 6:
+        case 5:
           message.receivedBlockHeight = longToNumber(reader.uint64() as Long);
+          break;
+        case 6:
+          message.success = reader.bool();
+          break;
+        case 7:
+          message.errorMessage = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -281,10 +326,11 @@ export const MsgSendKeyshareResponse = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       keyshare: isSet(object.keyshare) ? String(object.keyshare) : "",
-      commitment: isSet(object.commitment) ? String(object.commitment) : "",
       keyshareIndex: isSet(object.keyshareIndex) ? Number(object.keyshareIndex) : 0,
       blockHeight: isSet(object.blockHeight) ? Number(object.blockHeight) : 0,
       receivedBlockHeight: isSet(object.receivedBlockHeight) ? Number(object.receivedBlockHeight) : 0,
+      success: isSet(object.success) ? Boolean(object.success) : false,
+      errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
     };
   },
 
@@ -292,10 +338,11 @@ export const MsgSendKeyshareResponse = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.keyshare !== undefined && (obj.keyshare = message.keyshare);
-    message.commitment !== undefined && (obj.commitment = message.commitment);
     message.keyshareIndex !== undefined && (obj.keyshareIndex = Math.round(message.keyshareIndex));
     message.blockHeight !== undefined && (obj.blockHeight = Math.round(message.blockHeight));
     message.receivedBlockHeight !== undefined && (obj.receivedBlockHeight = Math.round(message.receivedBlockHeight));
+    message.success !== undefined && (obj.success = message.success);
+    message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
     return obj;
   },
 
@@ -303,16 +350,17 @@ export const MsgSendKeyshareResponse = {
     const message = createBaseMsgSendKeyshareResponse();
     message.creator = object.creator ?? "";
     message.keyshare = object.keyshare ?? "";
-    message.commitment = object.commitment ?? "";
     message.keyshareIndex = object.keyshareIndex ?? 0;
     message.blockHeight = object.blockHeight ?? 0;
     message.receivedBlockHeight = object.receivedBlockHeight ?? 0;
+    message.success = object.success ?? false;
+    message.errorMessage = object.errorMessage ?? "";
     return message;
   },
 };
 
 function createBaseMsgCreateLatestPubKey(): MsgCreateLatestPubKey {
-  return { creator: "", publicKey: "" };
+  return { creator: "", publicKey: "", commitments: [] };
 }
 
 export const MsgCreateLatestPubKey = {
@@ -322,6 +370,9 @@ export const MsgCreateLatestPubKey = {
     }
     if (message.publicKey !== "") {
       writer.uint32(18).string(message.publicKey);
+    }
+    for (const v of message.commitments) {
+      writer.uint32(26).string(v!);
     }
     return writer;
   },
@@ -339,6 +390,9 @@ export const MsgCreateLatestPubKey = {
         case 2:
           message.publicKey = reader.string();
           break;
+        case 3:
+          message.commitments.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -351,6 +405,7 @@ export const MsgCreateLatestPubKey = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       publicKey: isSet(object.publicKey) ? String(object.publicKey) : "",
+      commitments: Array.isArray(object?.commitments) ? object.commitments.map((e: any) => String(e)) : [],
     };
   },
 
@@ -358,6 +413,11 @@ export const MsgCreateLatestPubKey = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.publicKey !== undefined && (obj.publicKey = message.publicKey);
+    if (message.commitments) {
+      obj.commitments = message.commitments.map((e) => e);
+    } else {
+      obj.commitments = [];
+    }
     return obj;
   },
 
@@ -365,6 +425,7 @@ export const MsgCreateLatestPubKey = {
     const message = createBaseMsgCreateLatestPubKey();
     message.creator = object.creator ?? "";
     message.publicKey = object.publicKey ?? "";
+    message.commitments = object.commitments?.map((e) => e) || [];
     return message;
   },
 };
@@ -408,12 +469,482 @@ export const MsgCreateLatestPubKeyResponse = {
   },
 };
 
+function createBaseMsgCreateAuthorizedAddress(): MsgCreateAuthorizedAddress {
+  return { target: "", creator: "" };
+}
+
+export const MsgCreateAuthorizedAddress = {
+  encode(message: MsgCreateAuthorizedAddress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.target !== "") {
+      writer.uint32(10).string(message.target);
+    }
+    if (message.creator !== "") {
+      writer.uint32(18).string(message.creator);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateAuthorizedAddress {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCreateAuthorizedAddress();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.target = reader.string();
+          break;
+        case 2:
+          message.creator = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateAuthorizedAddress {
+    return {
+      target: isSet(object.target) ? String(object.target) : "",
+      creator: isSet(object.creator) ? String(object.creator) : "",
+    };
+  },
+
+  toJSON(message: MsgCreateAuthorizedAddress): unknown {
+    const obj: any = {};
+    message.target !== undefined && (obj.target = message.target);
+    message.creator !== undefined && (obj.creator = message.creator);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgCreateAuthorizedAddress>, I>>(object: I): MsgCreateAuthorizedAddress {
+    const message = createBaseMsgCreateAuthorizedAddress();
+    message.target = object.target ?? "";
+    message.creator = object.creator ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgCreateAuthorizedAddressResponse(): MsgCreateAuthorizedAddressResponse {
+  return {};
+}
+
+export const MsgCreateAuthorizedAddressResponse = {
+  encode(_: MsgCreateAuthorizedAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateAuthorizedAddressResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCreateAuthorizedAddressResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCreateAuthorizedAddressResponse {
+    return {};
+  },
+
+  toJSON(_: MsgCreateAuthorizedAddressResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgCreateAuthorizedAddressResponse>, I>>(
+    _: I,
+  ): MsgCreateAuthorizedAddressResponse {
+    const message = createBaseMsgCreateAuthorizedAddressResponse();
+    return message;
+  },
+};
+
+function createBaseMsgUpdateAuthorizedAddress(): MsgUpdateAuthorizedAddress {
+  return { target: "", isAuthorized: false, creator: "" };
+}
+
+export const MsgUpdateAuthorizedAddress = {
+  encode(message: MsgUpdateAuthorizedAddress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.target !== "") {
+      writer.uint32(10).string(message.target);
+    }
+    if (message.isAuthorized === true) {
+      writer.uint32(16).bool(message.isAuthorized);
+    }
+    if (message.creator !== "") {
+      writer.uint32(26).string(message.creator);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateAuthorizedAddress {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateAuthorizedAddress();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.target = reader.string();
+          break;
+        case 2:
+          message.isAuthorized = reader.bool();
+          break;
+        case 3:
+          message.creator = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateAuthorizedAddress {
+    return {
+      target: isSet(object.target) ? String(object.target) : "",
+      isAuthorized: isSet(object.isAuthorized) ? Boolean(object.isAuthorized) : false,
+      creator: isSet(object.creator) ? String(object.creator) : "",
+    };
+  },
+
+  toJSON(message: MsgUpdateAuthorizedAddress): unknown {
+    const obj: any = {};
+    message.target !== undefined && (obj.target = message.target);
+    message.isAuthorized !== undefined && (obj.isAuthorized = message.isAuthorized);
+    message.creator !== undefined && (obj.creator = message.creator);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateAuthorizedAddress>, I>>(object: I): MsgUpdateAuthorizedAddress {
+    const message = createBaseMsgUpdateAuthorizedAddress();
+    message.target = object.target ?? "";
+    message.isAuthorized = object.isAuthorized ?? false;
+    message.creator = object.creator ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgUpdateAuthorizedAddressResponse(): MsgUpdateAuthorizedAddressResponse {
+  return {};
+}
+
+export const MsgUpdateAuthorizedAddressResponse = {
+  encode(_: MsgUpdateAuthorizedAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateAuthorizedAddressResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateAuthorizedAddressResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateAuthorizedAddressResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdateAuthorizedAddressResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateAuthorizedAddressResponse>, I>>(
+    _: I,
+  ): MsgUpdateAuthorizedAddressResponse {
+    const message = createBaseMsgUpdateAuthorizedAddressResponse();
+    return message;
+  },
+};
+
+function createBaseMsgDeleteAuthorizedAddress(): MsgDeleteAuthorizedAddress {
+  return { target: "", creator: "" };
+}
+
+export const MsgDeleteAuthorizedAddress = {
+  encode(message: MsgDeleteAuthorizedAddress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.target !== "") {
+      writer.uint32(10).string(message.target);
+    }
+    if (message.creator !== "") {
+      writer.uint32(18).string(message.creator);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteAuthorizedAddress {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDeleteAuthorizedAddress();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.target = reader.string();
+          break;
+        case 2:
+          message.creator = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgDeleteAuthorizedAddress {
+    return {
+      target: isSet(object.target) ? String(object.target) : "",
+      creator: isSet(object.creator) ? String(object.creator) : "",
+    };
+  },
+
+  toJSON(message: MsgDeleteAuthorizedAddress): unknown {
+    const obj: any = {};
+    message.target !== undefined && (obj.target = message.target);
+    message.creator !== undefined && (obj.creator = message.creator);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgDeleteAuthorizedAddress>, I>>(object: I): MsgDeleteAuthorizedAddress {
+    const message = createBaseMsgDeleteAuthorizedAddress();
+    message.target = object.target ?? "";
+    message.creator = object.creator ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgDeleteAuthorizedAddressResponse(): MsgDeleteAuthorizedAddressResponse {
+  return {};
+}
+
+export const MsgDeleteAuthorizedAddressResponse = {
+  encode(_: MsgDeleteAuthorizedAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteAuthorizedAddressResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDeleteAuthorizedAddressResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgDeleteAuthorizedAddressResponse {
+    return {};
+  },
+
+  toJSON(_: MsgDeleteAuthorizedAddressResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgDeleteAuthorizedAddressResponse>, I>>(
+    _: I,
+  ): MsgDeleteAuthorizedAddressResponse {
+    const message = createBaseMsgDeleteAuthorizedAddressResponse();
+    return message;
+  },
+};
+
+function createBaseMsgSendAggrKeyshareData(): MsgSendAggrKeyshareData {
+  return {
+    identity: "",
+    pubkey: "",
+    aggrKeyshare: "",
+    aggrHeight: "",
+    creator: "",
+    port: "",
+    channelID: "",
+    timeoutTimestamp: 0,
+  };
+}
+
+export const MsgSendAggrKeyshareData = {
+  encode(message: MsgSendAggrKeyshareData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.identity !== "") {
+      writer.uint32(42).string(message.identity);
+    }
+    if (message.pubkey !== "") {
+      writer.uint32(50).string(message.pubkey);
+    }
+    if (message.aggrKeyshare !== "") {
+      writer.uint32(58).string(message.aggrKeyshare);
+    }
+    if (message.aggrHeight !== "") {
+      writer.uint32(66).string(message.aggrHeight);
+    }
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.port !== "") {
+      writer.uint32(18).string(message.port);
+    }
+    if (message.channelID !== "") {
+      writer.uint32(26).string(message.channelID);
+    }
+    if (message.timeoutTimestamp !== 0) {
+      writer.uint32(32).uint64(message.timeoutTimestamp);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSendAggrKeyshareData {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSendAggrKeyshareData();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 5:
+          message.identity = reader.string();
+          break;
+        case 6:
+          message.pubkey = reader.string();
+          break;
+        case 7:
+          message.aggrKeyshare = reader.string();
+          break;
+        case 8:
+          message.aggrHeight = reader.string();
+          break;
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.port = reader.string();
+          break;
+        case 3:
+          message.channelID = reader.string();
+          break;
+        case 4:
+          message.timeoutTimestamp = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSendAggrKeyshareData {
+    return {
+      identity: isSet(object.identity) ? String(object.identity) : "",
+      pubkey: isSet(object.pubkey) ? String(object.pubkey) : "",
+      aggrKeyshare: isSet(object.aggrKeyshare) ? String(object.aggrKeyshare) : "",
+      aggrHeight: isSet(object.aggrHeight) ? String(object.aggrHeight) : "",
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      port: isSet(object.port) ? String(object.port) : "",
+      channelID: isSet(object.channelID) ? String(object.channelID) : "",
+      timeoutTimestamp: isSet(object.timeoutTimestamp) ? Number(object.timeoutTimestamp) : 0,
+    };
+  },
+
+  toJSON(message: MsgSendAggrKeyshareData): unknown {
+    const obj: any = {};
+    message.identity !== undefined && (obj.identity = message.identity);
+    message.pubkey !== undefined && (obj.pubkey = message.pubkey);
+    message.aggrKeyshare !== undefined && (obj.aggrKeyshare = message.aggrKeyshare);
+    message.aggrHeight !== undefined && (obj.aggrHeight = message.aggrHeight);
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.port !== undefined && (obj.port = message.port);
+    message.channelID !== undefined && (obj.channelID = message.channelID);
+    message.timeoutTimestamp !== undefined && (obj.timeoutTimestamp = Math.round(message.timeoutTimestamp));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgSendAggrKeyshareData>, I>>(object: I): MsgSendAggrKeyshareData {
+    const message = createBaseMsgSendAggrKeyshareData();
+    message.identity = object.identity ?? "";
+    message.pubkey = object.pubkey ?? "";
+    message.aggrKeyshare = object.aggrKeyshare ?? "";
+    message.aggrHeight = object.aggrHeight ?? "";
+    message.creator = object.creator ?? "";
+    message.port = object.port ?? "";
+    message.channelID = object.channelID ?? "";
+    message.timeoutTimestamp = object.timeoutTimestamp ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgSendAggrKeyshareDataResponse(): MsgSendAggrKeyshareDataResponse {
+  return {};
+}
+
+export const MsgSendAggrKeyshareDataResponse = {
+  encode(_: MsgSendAggrKeyshareDataResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSendAggrKeyshareDataResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSendAggrKeyshareDataResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgSendAggrKeyshareDataResponse {
+    return {};
+  },
+
+  toJSON(_: MsgSendAggrKeyshareDataResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgSendAggrKeyshareDataResponse>, I>>(_: I): MsgSendAggrKeyshareDataResponse {
+    const message = createBaseMsgSendAggrKeyshareDataResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   RegisterValidator(request: MsgRegisterValidator): Promise<MsgRegisterValidatorResponse>;
   SendKeyshare(request: MsgSendKeyshare): Promise<MsgSendKeyshareResponse>;
   /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateLatestPubKey(request: MsgCreateLatestPubKey): Promise<MsgCreateLatestPubKeyResponse>;
+  CreateAuthorizedAddress(request: MsgCreateAuthorizedAddress): Promise<MsgCreateAuthorizedAddressResponse>;
+  UpdateAuthorizedAddress(request: MsgUpdateAuthorizedAddress): Promise<MsgUpdateAuthorizedAddressResponse>;
+  DeleteAuthorizedAddress(request: MsgDeleteAuthorizedAddress): Promise<MsgDeleteAuthorizedAddressResponse>;
+  SendAggrKeyshareData(request: MsgSendAggrKeyshareData): Promise<MsgSendAggrKeyshareDataResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -423,6 +954,10 @@ export class MsgClientImpl implements Msg {
     this.RegisterValidator = this.RegisterValidator.bind(this);
     this.SendKeyshare = this.SendKeyshare.bind(this);
     this.CreateLatestPubKey = this.CreateLatestPubKey.bind(this);
+    this.CreateAuthorizedAddress = this.CreateAuthorizedAddress.bind(this);
+    this.UpdateAuthorizedAddress = this.UpdateAuthorizedAddress.bind(this);
+    this.DeleteAuthorizedAddress = this.DeleteAuthorizedAddress.bind(this);
+    this.SendAggrKeyshareData = this.SendAggrKeyshareData.bind(this);
   }
   RegisterValidator(request: MsgRegisterValidator): Promise<MsgRegisterValidatorResponse> {
     const data = MsgRegisterValidator.encode(request).finish();
@@ -440,6 +975,30 @@ export class MsgClientImpl implements Msg {
     const data = MsgCreateLatestPubKey.encode(request).finish();
     const promise = this.rpc.request("fairyring.keyshare.Msg", "CreateLatestPubKey", data);
     return promise.then((data) => MsgCreateLatestPubKeyResponse.decode(new _m0.Reader(data)));
+  }
+
+  CreateAuthorizedAddress(request: MsgCreateAuthorizedAddress): Promise<MsgCreateAuthorizedAddressResponse> {
+    const data = MsgCreateAuthorizedAddress.encode(request).finish();
+    const promise = this.rpc.request("fairyring.keyshare.Msg", "CreateAuthorizedAddress", data);
+    return promise.then((data) => MsgCreateAuthorizedAddressResponse.decode(new _m0.Reader(data)));
+  }
+
+  UpdateAuthorizedAddress(request: MsgUpdateAuthorizedAddress): Promise<MsgUpdateAuthorizedAddressResponse> {
+    const data = MsgUpdateAuthorizedAddress.encode(request).finish();
+    const promise = this.rpc.request("fairyring.keyshare.Msg", "UpdateAuthorizedAddress", data);
+    return promise.then((data) => MsgUpdateAuthorizedAddressResponse.decode(new _m0.Reader(data)));
+  }
+
+  DeleteAuthorizedAddress(request: MsgDeleteAuthorizedAddress): Promise<MsgDeleteAuthorizedAddressResponse> {
+    const data = MsgDeleteAuthorizedAddress.encode(request).finish();
+    const promise = this.rpc.request("fairyring.keyshare.Msg", "DeleteAuthorizedAddress", data);
+    return promise.then((data) => MsgDeleteAuthorizedAddressResponse.decode(new _m0.Reader(data)));
+  }
+
+  SendAggrKeyshareData(request: MsgSendAggrKeyshareData): Promise<MsgSendAggrKeyshareDataResponse> {
+    const data = MsgSendAggrKeyshareData.encode(request).finish();
+    const promise = this.rpc.request("fairyring.keyshare.Msg", "SendAggrKeyshareData", data);
+    return promise.then((data) => MsgSendAggrKeyshareDataResponse.decode(new _m0.Reader(data)));
   }
 }
 

@@ -30,6 +30,7 @@ var (
 	ErrInvalidPubKey                  = sdkerrors.Register(ModuleName, 1120, "invalid PubKey")
 	ErrInvalidCommitment              = sdkerrors.Register(ModuleName, 1121, "invalid commitment")
 	ErrInvalidCommitmentLength        = sdkerrors.Register(ModuleName, 1122, "invalid commitment length")
+	ErrInvalidVersion                 = sdkerrors.Register(ModuleName, 1123, "invalid version")
 	ErrAddressAlreadyAuthorized       = sdkerrors.Register(ModuleName, 1900, "address is already authorized")
 	ErrAuthorizedAddrNotFound         = sdkerrors.Register(ModuleName, 1901, "target authorized address not found")
 	ErrNotAuthorizedAddrCreator       = sdkerrors.Register(ModuleName, 1902, "sender is not the creator of target authorized address")

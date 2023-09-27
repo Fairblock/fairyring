@@ -35091,6 +35091,175 @@ paths:
           format: uint64
       tags:
         - Query
+  /fairyring/keyshare/authorized_address:
+    get:
+      operationId: FairyringKeyshareAuthorizedAddressAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              authorizedAddress:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    target:
+                      type: string
+                    isAuthorized:
+                      type: boolean
+                    authorizedBy:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    description: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently. It will be empty if
+                      there are no more results.
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /fairyring/keyshare/authorized_address/{target}:
+    get:
+      summary: Queries a list of AuthorizedAddress items.
+      operationId: FairyringKeyshareAuthorizedAddress
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              authorizedAddress:
+                type: object
+                properties:
+                  target:
+                    type: string
+                  isAuthorized:
+                    type: boolean
+                  authorizedBy:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: target
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /fairyring/keyshare/key_share:
     get:
       summary: Queries a list of KeyShare items.
@@ -35111,8 +35280,6 @@ paths:
                     blockHeight:
                       type: string
                       format: uint64
-                    commitment:
-                      type: string
                     keyShare:
                       type: string
                     keyShareIndex:
@@ -35247,8 +35414,6 @@ paths:
                   blockHeight:
                     type: string
                     format: uint64
-                  commitment:
-                    type: string
                   keyShare:
                     type: string
                   keyShareIndex:
@@ -35600,6 +35765,22 @@ paths:
                             type: string
                           creator:
                             type: string
+                          chargedGas:
+                            type: object
+                            properties:
+                              denom:
+                                type: string
+                              amount:
+                                type: string
+                            description: >-
+                              Coin defines a token with a denomination and an
+                              amount.
+
+
+                              NOTE: The amount field is an Int which implements
+                              the custom method
+
+                              signatures required by gogoproto.
               pagination:
                 type: object
                 properties:
@@ -35733,6 +35914,22 @@ paths:
                           type: string
                         creator:
                           type: string
+                        chargedGas:
+                          type: object
+                          properties:
+                            denom:
+                              type: string
+                            amount:
+                              type: string
+                          description: >-
+                            Coin defines a token with a denomination and an
+                            amount.
+
+
+                            NOTE: The amount field is an Int which implements
+                            the custom method
+
+                            signatures required by gogoproto.
         default:
           description: An unexpected error response.
           schema:
@@ -35782,6 +35979,21 @@ paths:
                     type: string
                   creator:
                     type: string
+                  chargedGas:
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+                    description: >-
+                      Coin defines a token with a denomination and an amount.
+
+
+                      NOTE: The amount field is an Int which implements the
+                      custom method
+
+                      signatures required by gogoproto.
         default:
           description: An unexpected error response.
           schema:
@@ -35877,6 +36089,21 @@ paths:
                       type: string
                   channel_id:
                     type: string
+                  minGasPrice:
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+                    description: >-
+                      Coin defines a token with a denomination and an amount.
+
+
+                      NOTE: The amount field is an Int which implements the
+                      custom method
+
+                      signatures required by gogoproto.
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -71744,6 +71971,15 @@ definitions:
         format: uint64
       data:
         type: string
+  fairyring.keyshare.AuthorizedAddress:
+    type: object
+    properties:
+      target:
+        type: string
+      isAuthorized:
+        type: boolean
+      authorizedBy:
+        type: string
   fairyring.keyshare.KeyShare:
     type: object
     properties:
@@ -71752,8 +71988,6 @@ definitions:
       blockHeight:
         type: string
         format: uint64
-      commitment:
-        type: string
       keyShare:
         type: string
       keyShareIndex:
@@ -71765,7 +71999,11 @@ definitions:
       receivedBlockHeight:
         type: string
         format: uint64
+  fairyring.keyshare.MsgCreateAuthorizedAddressResponse:
+    type: object
   fairyring.keyshare.MsgCreateLatestPubKeyResponse:
+    type: object
+  fairyring.keyshare.MsgDeleteAuthorizedAddressResponse:
     type: object
   fairyring.keyshare.MsgRegisterValidatorResponse:
     type: object
@@ -71779,8 +72017,6 @@ definitions:
         type: string
       keyshare:
         type: string
-      commitment:
-        type: string
       keyshareIndex:
         type: string
         format: uint64
@@ -71790,6 +72026,12 @@ definitions:
       receivedBlockHeight:
         type: string
         format: uint64
+      success:
+        type: boolean
+      errorMessage:
+        type: string
+  fairyring.keyshare.MsgUpdateAuthorizedAddressResponse:
+    type: object
   fairyring.keyshare.Params:
     type: object
     properties:
@@ -71852,6 +72094,46 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  fairyring.keyshare.QueryAllAuthorizedAddressResponse:
+    type: object
+    properties:
+      authorizedAddress:
+        type: array
+        items:
+          type: object
+          properties:
+            target:
+              type: string
+            isAuthorized:
+              type: boolean
+            authorizedBy:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            description: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently. It will be empty if
+              there are no more results.
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   fairyring.keyshare.QueryAllKeyShareResponse:
     type: object
     properties:
@@ -71865,8 +72147,6 @@ definitions:
             blockHeight:
               type: string
               format: uint64
-            commitment:
-              type: string
             keyShare:
               type: string
             keyShareIndex:
@@ -71957,6 +72237,18 @@ definitions:
             format: uint64
           data:
             type: string
+  fairyring.keyshare.QueryGetAuthorizedAddressResponse:
+    type: object
+    properties:
+      authorizedAddress:
+        type: object
+        properties:
+          target:
+            type: string
+          isAuthorized:
+            type: boolean
+          authorizedBy:
+            type: string
   fairyring.keyshare.QueryGetKeyShareResponse:
     type: object
     properties:
@@ -71968,8 +72260,6 @@ definitions:
           blockHeight:
             type: string
             format: uint64
-          commitment:
-            type: string
           keyShare:
             type: string
           keyShareIndex:
@@ -72089,6 +72379,18 @@ definitions:
         type: string
       creator:
         type: string
+      chargedGas:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          Coin defines a token with a denomination and an amount.
+
+          NOTE: The amount field is an Int which implements the custom method
+          signatures required by gogoproto.
   fairyring.pep.EncryptedTxArray:
     type: object
     properties:
@@ -72107,6 +72409,21 @@ definitions:
               type: string
             creator:
               type: string
+            chargedGas:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+              description: >-
+                Coin defines a token with a denomination and an amount.
+
+
+                NOTE: The amount field is an Int which implements the custom
+                method
+
+                signatures required by gogoproto.
   fairyring.pep.MsgCreateAggregatedKeyShareResponse:
     type: object
   fairyring.pep.MsgSubmitEncryptedTxResponse:
@@ -72131,6 +72448,18 @@ definitions:
           type: string
       channel_id:
         type: string
+      minGasPrice:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          Coin defines a token with a denomination and an amount.
+
+          NOTE: The amount field is an Int which implements the custom method
+          signatures required by gogoproto.
     description: Params defines the parameters for the module.
   fairyring.pep.PepNonce:
     type: object
@@ -72161,6 +72490,21 @@ definitions:
                   type: string
                 creator:
                   type: string
+                chargedGas:
+                  type: object
+                  properties:
+                    denom:
+                      type: string
+                    amount:
+                      type: string
+                  description: >-
+                    Coin defines a token with a denomination and an amount.
+
+
+                    NOTE: The amount field is an Int which implements the custom
+                    method
+
+                    signatures required by gogoproto.
   fairyring.pep.QueryAllEncryptedTxResponse:
     type: object
     properties:
@@ -72184,6 +72528,21 @@ definitions:
                     type: string
                   creator:
                     type: string
+                  chargedGas:
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+                    description: >-
+                      Coin defines a token with a denomination and an amount.
+
+
+                      NOTE: The amount field is an Int which implements the
+                      custom method
+
+                      signatures required by gogoproto.
       pagination:
         type: object
         properties:
@@ -72265,6 +72624,21 @@ definitions:
             type: string
           creator:
             type: string
+          chargedGas:
+            type: object
+            properties:
+              denom:
+                type: string
+              amount:
+                type: string
+            description: >-
+              Coin defines a token with a denomination and an amount.
+
+
+              NOTE: The amount field is an Int which implements the custom
+              method
+
+              signatures required by gogoproto.
   fairyring.pep.QueryGetPepNonceResponse:
     type: object
     properties:
@@ -72306,6 +72680,21 @@ definitions:
               type: string
           channel_id:
             type: string
+          minGasPrice:
+            type: object
+            properties:
+              denom:
+                type: string
+              amount:
+                type: string
+            description: >-
+              Coin defines a token with a denomination and an amount.
+
+
+              NOTE: The amount field is an Int which implements the custom
+              method
+
+              signatures required by gogoproto.
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   fairyring.pep.QueryPubKeyResponse:
     type: object

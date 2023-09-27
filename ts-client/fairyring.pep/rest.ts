@@ -25,6 +25,14 @@ export interface PepEncryptedTx {
   index?: string;
   data?: string;
   creator?: string;
+
+  /**
+   * Coin defines a token with a denomination and an amount.
+   *
+   * NOTE: The amount field is an Int which implements the custom method
+   * signatures required by gogoproto.
+   */
+  chargedGas?: V1Beta1Coin;
 }
 
 export interface PepEncryptedTxArray {
@@ -38,7 +46,19 @@ export type PepMsgSubmitEncryptedTxResponse = object;
 /**
  * Params defines the parameters for the module.
  */
-export type PepParams = object;
+export interface PepParams {
+  trusted_counter_parties?: PepTrustedCounterParty[];
+  trusted_addresses?: string[];
+  channel_id?: string;
+
+  /**
+   * Coin defines a token with a denomination and an amount.
+   *
+   * NOTE: The amount field is an Int which implements the custom method
+   * signatures required by gogoproto.
+   */
+  minGasPrice?: V1Beta1Coin;
+}
 
 export interface PepPepNonce {
   address?: string;
@@ -115,6 +135,12 @@ export interface PepQueuedPubKey {
   expiry?: string;
 }
 
+export interface PepTrustedCounterParty {
+  client_id?: string;
+  connection_id?: string;
+  channel_id?: string;
+}
+
 export interface ProtobufAny {
   "@type"?: string;
 }
@@ -124,6 +150,17 @@ export interface RpcStatus {
   code?: number;
   message?: string;
   details?: ProtobufAny[];
+}
+
+/**
+* Coin defines a token with a denomination and an amount.
+
+NOTE: The amount field is an Int which implements the custom method
+signatures required by gogoproto.
+*/
+export interface V1Beta1Coin {
+  denom?: string;
+  amount?: string;
 }
 
 /**

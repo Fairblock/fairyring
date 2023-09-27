@@ -1,6 +1,7 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { Coin } from "../../cosmos/base/v1beta1/coin";
 
 export const protobufPackage = "fairyring.pep";
 
@@ -9,6 +10,7 @@ export interface EncryptedTx {
   index: number;
   data: string;
   creator: string;
+  chargedGas: Coin | undefined;
 }
 
 export interface EncryptedTxArray {
@@ -16,7 +18,7 @@ export interface EncryptedTxArray {
 }
 
 function createBaseEncryptedTx(): EncryptedTx {
-  return { targetHeight: 0, index: 0, data: "", creator: "" };
+  return { targetHeight: 0, index: 0, data: "", creator: "", chargedGas: undefined };
 }
 
 export const EncryptedTx = {
@@ -32,6 +34,9 @@ export const EncryptedTx = {
     }
     if (message.creator !== "") {
       writer.uint32(34).string(message.creator);
+    }
+    if (message.chargedGas !== undefined) {
+      Coin.encode(message.chargedGas, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -55,6 +60,9 @@ export const EncryptedTx = {
         case 4:
           message.creator = reader.string();
           break;
+        case 5:
+          message.chargedGas = Coin.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -69,6 +77,7 @@ export const EncryptedTx = {
       index: isSet(object.index) ? Number(object.index) : 0,
       data: isSet(object.data) ? String(object.data) : "",
       creator: isSet(object.creator) ? String(object.creator) : "",
+      chargedGas: isSet(object.chargedGas) ? Coin.fromJSON(object.chargedGas) : undefined,
     };
   },
 
@@ -78,6 +87,8 @@ export const EncryptedTx = {
     message.index !== undefined && (obj.index = Math.round(message.index));
     message.data !== undefined && (obj.data = message.data);
     message.creator !== undefined && (obj.creator = message.creator);
+    message.chargedGas !== undefined
+      && (obj.chargedGas = message.chargedGas ? Coin.toJSON(message.chargedGas) : undefined);
     return obj;
   },
 
@@ -87,6 +98,9 @@ export const EncryptedTx = {
     message.index = object.index ?? 0;
     message.data = object.data ?? "";
     message.creator = object.creator ?? "";
+    message.chargedGas = (object.chargedGas !== undefined && object.chargedGas !== null)
+      ? Coin.fromPartial(object.chargedGas)
+      : undefined;
     return message;
   },
 };

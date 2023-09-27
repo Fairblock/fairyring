@@ -45,6 +45,7 @@ const getDefaultState = () => {
 				ClientConnections: {},
 				ConnectionClientState: {},
 				ConnectionConsensusState: {},
+				ConnectionParams: {},
 				
 				_Structure: {
 						ConnectionEnd: getStructure(ConnectionEnd.fromPartial({})),
@@ -111,6 +112,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.ConnectionConsensusState[JSON.stringify(params)] ?? {}
+		},
+				getConnectionParams: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.ConnectionParams[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -255,6 +262,28 @@ export default {
 				return getters['getConnectionConsensusState']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryConnectionConsensusState API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryConnectionParams({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.IbcCoreConnectionV1.query.queryConnectionParams()).data
+				
+					
+				commit('QUERY', { query: 'ConnectionParams', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryConnectionParams', payload: { options: { all }, params: {...key},query }})
+				return getters['getConnectionParams']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryConnectionParams API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

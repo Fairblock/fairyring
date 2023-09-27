@@ -9,10 +9,24 @@
  * ---------------------------------------------------------------
  */
 
+export interface KeyshareActivePubKey {
+  publicKey?: string;
+  creator?: string;
+
+  /** @format uint64 */
+  expiry?: string;
+}
+
 export interface KeyshareAggregatedKeyShare {
   /** @format uint64 */
   height?: string;
   data?: string;
+}
+
+export interface KeyshareAuthorizedAddress {
+  target?: string;
+  isAuthorized?: boolean;
+  authorizedBy?: string;
 }
 
 export interface KeyshareKeyShare {
@@ -20,7 +34,6 @@ export interface KeyshareKeyShare {
 
   /** @format uint64 */
   blockHeight?: string;
-  commitment?: string;
   keyShare?: string;
 
   /** @format uint64 */
@@ -33,16 +46,21 @@ export interface KeyshareKeyShare {
   receivedBlockHeight?: string;
 }
 
+export type KeyshareMsgCreateAuthorizedAddressResponse = object;
+
 export type KeyshareMsgCreateLatestPubKeyResponse = object;
+
+export type KeyshareMsgDeleteAuthorizedAddressResponse = object;
 
 export interface KeyshareMsgRegisterValidatorResponse {
   creator?: string;
 }
 
+export type KeyshareMsgSendAggrKeyshareDataResponse = object;
+
 export interface KeyshareMsgSendKeyshareResponse {
   creator?: string;
   keyshare?: string;
-  commitment?: string;
 
   /** @format uint64 */
   keyshareIndex?: string;
@@ -52,19 +70,50 @@ export interface KeyshareMsgSendKeyshareResponse {
 
   /** @format uint64 */
   receivedBlockHeight?: string;
+  success?: boolean;
+  errorMessage?: string;
 }
+
+export type KeyshareMsgUpdateAuthorizedAddressResponse = object;
 
 /**
  * Params defines the parameters for the module.
  */
 export interface KeyshareParams {
   /** @format uint64 */
-  keyExpiry?: string;
+  key_expiry?: string;
   trusted_addresses?: string[];
+
+  /** @format byte */
+  slash_fraction_no_keyshare?: string;
+
+  /** @format byte */
+  slash_fraction_wrong_keyshare?: string;
+
+  /** @format uint64 */
+  minimum_bonded?: string;
+
+  /** @format uint64 */
+  max_idled_block?: string;
 }
 
 export interface KeyshareQueryAllAggregatedKeyShareResponse {
   aggregatedKeyShare?: KeyshareAggregatedKeyShare[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface KeyshareQueryAllAuthorizedAddressResponse {
+  authorizedAddress?: KeyshareAuthorizedAddress[];
 
   /**
    * PageResponse is to be embedded in gRPC response messages where the
@@ -112,6 +161,10 @@ export interface KeyshareQueryGetAggregatedKeyShareResponse {
   aggregatedKeyShare?: KeyshareAggregatedKeyShare;
 }
 
+export interface KeyshareQueryGetAuthorizedAddressResponse {
+  authorizedAddress?: KeyshareAuthorizedAddress;
+}
+
 export interface KeyshareQueryGetKeyShareResponse {
   keyShare?: KeyshareKeyShare;
 }
@@ -126,6 +179,19 @@ export interface KeyshareQueryGetValidatorSetResponse {
 export interface KeyshareQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: KeyshareParams;
+}
+
+export interface KeyshareQueryPubKeyResponse {
+  activePubKey?: KeyshareActivePubKey;
+  queuedPubKey?: KeyshareQueuedPubKey;
+}
+
+export interface KeyshareQueuedPubKey {
+  publicKey?: string;
+  creator?: string;
+
+  /** @format uint64 */
+  expiry?: string;
 }
 
 export interface KeyshareValidatorSet {
@@ -388,6 +454,47 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryAuthorizedAddressAll
+   * @request GET:/fairyring/keyshare/authorized_address
+   */
+  queryAuthorizedAddressAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<KeyshareQueryAllAuthorizedAddressResponse, RpcStatus>({
+      path: `/fairyring/keyshare/authorized_address`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAuthorizedAddress
+   * @summary Queries a list of AuthorizedAddress items.
+   * @request GET:/fairyring/keyshare/authorized_address/{target}
+   */
+  queryAuthorizedAddress = (target: string, params: RequestParams = {}) =>
+    this.request<KeyshareQueryGetAuthorizedAddressResponse, RpcStatus>({
+      path: `/fairyring/keyshare/authorized_address/${target}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryKeyShareAll
    * @summary Queries a list of KeyShare items.
    * @request GET:/fairyring/keyshare/key_share
@@ -437,6 +544,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<KeyshareQueryParamsResponse, RpcStatus>({
       path: `/fairyring/keyshare/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryPubKey
+   * @summary Queries the public keys
+   * @request GET:/fairyring/keyshare/pub_key
+   */
+  queryPubKey = (params: RequestParams = {}) =>
+    this.request<KeyshareQueryPubKeyResponse, RpcStatus>({
+      path: `/fairyring/keyshare/pub_key`,
       method: "GET",
       format: "json",
       ...params,

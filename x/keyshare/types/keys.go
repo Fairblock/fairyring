@@ -12,6 +12,15 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_keyshare"
+
+	// Version defines the current version the IBC module supports
+	Version = "keyshare-1"
+
+	// PortID is the default port id that module binds to
+	PortID = "keyshare"
+
+	// ChannelID is the default channel id that module will use to transmit IBC packets.
+	ChannelID = "channel-0"
 )
 
 const (
@@ -52,6 +61,12 @@ const (
 	QueuedPubKeyCreatedEventExpiryHeight             = "queued-pubkey-created-expiry-height"
 	QueuedPubKeyCreatedEventCreator                  = "queued-pubkey-created-creator"
 	QueuedPubKeyCreatedEventPubkey                   = "queued-pubkey-created-pubkey"
+)
+
+var (
+	// PortKey defines the key to store the port ID in store
+	PortKey    = KeyPrefix("pep-port-")
+	ChannelKey = KeyPrefix("pep-channel-")
 )
 
 func KeyPrefix(p string) []byte {

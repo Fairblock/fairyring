@@ -534,7 +534,7 @@ func New(
 
 	app.GovKeeper = *govKeeper.SetHooks(
 		govtypes.NewMultiGovHooks(
-			// register the governance hooks
+		// register the governance hooks
 		),
 	)
 
@@ -562,15 +562,29 @@ func New(
 
 	pepIBCModule := pepmodule.NewIBCModule(app.PepKeeper)
 
+	scopedKeyshareKeeper := app.CapabilityKeeper.ScopeToModule(keysharemoduletypes.ModuleName)
 	app.KeyshareKeeper = *keysharemodulekeeper.NewKeeper(
 		appCodec,
 		keys[keysharemoduletypes.StoreKey],
 		keys[keysharemoduletypes.MemStoreKey],
 		app.GetSubspace(keysharemoduletypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedKeyshareKeeper,
+		app.IBCKeeper.ConnectionKeeper,
 		app.PepKeeper,
 		app.StakingKeeper,
 	)
-	keyshareModule := keysharemodule.NewAppModule(appCodec, app.KeyshareKeeper, app.AccountKeeper, app.BankKeeper, app.PepKeeper)
+
+	keyshareModule := keysharemodule.NewAppModule(
+		appCodec,
+		app.KeyshareKeeper,
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.PepKeeper,
+	)
+
+	keyshareIBCModule := keysharemodule.NewIBCModule(app.KeyshareKeeper)
 
 	// ---------------------------------------------------------------------------- //
 	// ------------------------- Begin Custom Code -------------------------------- //
@@ -674,6 +688,7 @@ func New(
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
 	ibcRouter.AddRoute(pepmoduletypes.ModuleName, pepIBCModule)
+	ibcRouter.AddRoute(keysharemoduletypes.ModuleName, keyshareIBCModule)
 
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)

@@ -13,14 +13,15 @@ import { MsgCreateAggregatedKeyShare } from "./types/fairyring/pep/tx";
 import { AggregatedKeyShare as typeAggregatedKeyShare} from "./types"
 import { EncryptedTx as typeEncryptedTx} from "./types"
 import { EncryptedTxArray as typeEncryptedTxArray} from "./types"
-import { ActivePubKey as typeActivePubKey} from "./types"
-import { QueuedPubKey as typeQueuedPubKey} from "./types"
 import { PepPacketData as typePepPacketData} from "./types"
 import { NoData as typeNoData} from "./types"
 import { CurrentKeysPacketData as typeCurrentKeysPacketData} from "./types"
 import { CurrentKeysPacketAck as typeCurrentKeysPacketAck} from "./types"
 import { Params as typeParams} from "./types"
+import { TrustedCounterParty as typeTrustedCounterParty} from "./types"
 import { PepNonce as typePepNonce} from "./types"
+import { ActivePubKey as typeActivePubKey} from "./types"
+import { QueuedPubKey as typeQueuedPubKey} from "./types"
 
 export { MsgSubmitEncryptedTx, MsgCreateAggregatedKeyShare };
 
@@ -145,14 +146,15 @@ class SDKModule {
 						AggregatedKeyShare: getStructure(typeAggregatedKeyShare.fromPartial({})),
 						EncryptedTx: getStructure(typeEncryptedTx.fromPartial({})),
 						EncryptedTxArray: getStructure(typeEncryptedTxArray.fromPartial({})),
-						ActivePubKey: getStructure(typeActivePubKey.fromPartial({})),
-						QueuedPubKey: getStructure(typeQueuedPubKey.fromPartial({})),
 						PepPacketData: getStructure(typePepPacketData.fromPartial({})),
 						NoData: getStructure(typeNoData.fromPartial({})),
 						CurrentKeysPacketData: getStructure(typeCurrentKeysPacketData.fromPartial({})),
 						CurrentKeysPacketAck: getStructure(typeCurrentKeysPacketAck.fromPartial({})),
 						Params: getStructure(typeParams.fromPartial({})),
+						TrustedCounterParty: getStructure(typeTrustedCounterParty.fromPartial({})),
 						PepNonce: getStructure(typePepNonce.fromPartial({})),
+						ActivePubKey: getStructure(typeActivePubKey.fromPartial({})),
+						QueuedPubKey: getStructure(typeQueuedPubKey.fromPartial({})),
 						
 		};
 		client.on('signer-changed',(signer) => {			
