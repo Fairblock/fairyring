@@ -55,5 +55,8 @@ func (msg *MsgSendKeyshare) ValidateBasic() error {
 	if _, err = hex.DecodeString(msg.Message); err != nil {
 		return ErrInvalidShare.Wrapf("expected hex encoded key share, got: %s", msg.Message)
 	}
+	if msg.KeyShareIndex < 1 {
+		return ErrInvalidShare.Wrapf("expected key share index to be at least 1, got: %d", msg.KeyShareIndex)
+	}
 	return nil
 }
