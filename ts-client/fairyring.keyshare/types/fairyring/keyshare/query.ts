@@ -3,8 +3,10 @@ import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
 import { AggregatedKeyShare } from "./aggregated_key_share";
+import { AuthorizedAddress } from "./authorized_address";
 import { KeyShare } from "./key_share";
 import { Params } from "./params";
+import { ActivePubKey, QueuedPubKey } from "./pub_key";
 import { ValidatorSet } from "./validator_set";
 
 export const protobufPackage = "fairyring.keyshare";
@@ -69,6 +71,31 @@ export interface QueryAllAggregatedKeyShareRequest {
 
 export interface QueryAllAggregatedKeyShareResponse {
   aggregatedKeyShare: AggregatedKeyShare[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryPubKeyRequest {
+}
+
+export interface QueryPubKeyResponse {
+  activePubKey: ActivePubKey | undefined;
+  queuedPubKey: QueuedPubKey | undefined;
+}
+
+export interface QueryGetAuthorizedAddressRequest {
+  target: string;
+}
+
+export interface QueryGetAuthorizedAddressResponse {
+  authorizedAddress: AuthorizedAddress | undefined;
+}
+
+export interface QueryAllAuthorizedAddressRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllAuthorizedAddressResponse {
+  authorizedAddress: AuthorizedAddress[];
   pagination: PageResponse | undefined;
 }
 
@@ -823,6 +850,336 @@ export const QueryAllAggregatedKeyShareResponse = {
   },
 };
 
+function createBaseQueryPubKeyRequest(): QueryPubKeyRequest {
+  return {};
+}
+
+export const QueryPubKeyRequest = {
+  encode(_: QueryPubKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPubKeyRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryPubKeyRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryPubKeyRequest {
+    return {};
+  },
+
+  toJSON(_: QueryPubKeyRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryPubKeyRequest>, I>>(_: I): QueryPubKeyRequest {
+    const message = createBaseQueryPubKeyRequest();
+    return message;
+  },
+};
+
+function createBaseQueryPubKeyResponse(): QueryPubKeyResponse {
+  return { activePubKey: undefined, queuedPubKey: undefined };
+}
+
+export const QueryPubKeyResponse = {
+  encode(message: QueryPubKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.activePubKey !== undefined) {
+      ActivePubKey.encode(message.activePubKey, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.queuedPubKey !== undefined) {
+      QueuedPubKey.encode(message.queuedPubKey, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPubKeyResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryPubKeyResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.activePubKey = ActivePubKey.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.queuedPubKey = QueuedPubKey.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryPubKeyResponse {
+    return {
+      activePubKey: isSet(object.activePubKey) ? ActivePubKey.fromJSON(object.activePubKey) : undefined,
+      queuedPubKey: isSet(object.queuedPubKey) ? QueuedPubKey.fromJSON(object.queuedPubKey) : undefined,
+    };
+  },
+
+  toJSON(message: QueryPubKeyResponse): unknown {
+    const obj: any = {};
+    message.activePubKey !== undefined
+      && (obj.activePubKey = message.activePubKey ? ActivePubKey.toJSON(message.activePubKey) : undefined);
+    message.queuedPubKey !== undefined
+      && (obj.queuedPubKey = message.queuedPubKey ? QueuedPubKey.toJSON(message.queuedPubKey) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryPubKeyResponse>, I>>(object: I): QueryPubKeyResponse {
+    const message = createBaseQueryPubKeyResponse();
+    message.activePubKey = (object.activePubKey !== undefined && object.activePubKey !== null)
+      ? ActivePubKey.fromPartial(object.activePubKey)
+      : undefined;
+    message.queuedPubKey = (object.queuedPubKey !== undefined && object.queuedPubKey !== null)
+      ? QueuedPubKey.fromPartial(object.queuedPubKey)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryGetAuthorizedAddressRequest(): QueryGetAuthorizedAddressRequest {
+  return { target: "" };
+}
+
+export const QueryGetAuthorizedAddressRequest = {
+  encode(message: QueryGetAuthorizedAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.target !== "") {
+      writer.uint32(10).string(message.target);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetAuthorizedAddressRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetAuthorizedAddressRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.target = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetAuthorizedAddressRequest {
+    return { target: isSet(object.target) ? String(object.target) : "" };
+  },
+
+  toJSON(message: QueryGetAuthorizedAddressRequest): unknown {
+    const obj: any = {};
+    message.target !== undefined && (obj.target = message.target);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetAuthorizedAddressRequest>, I>>(
+    object: I,
+  ): QueryGetAuthorizedAddressRequest {
+    const message = createBaseQueryGetAuthorizedAddressRequest();
+    message.target = object.target ?? "";
+    return message;
+  },
+};
+
+function createBaseQueryGetAuthorizedAddressResponse(): QueryGetAuthorizedAddressResponse {
+  return { authorizedAddress: undefined };
+}
+
+export const QueryGetAuthorizedAddressResponse = {
+  encode(message: QueryGetAuthorizedAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authorizedAddress !== undefined) {
+      AuthorizedAddress.encode(message.authorizedAddress, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetAuthorizedAddressResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetAuthorizedAddressResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.authorizedAddress = AuthorizedAddress.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetAuthorizedAddressResponse {
+    return {
+      authorizedAddress: isSet(object.authorizedAddress)
+        ? AuthorizedAddress.fromJSON(object.authorizedAddress)
+        : undefined,
+    };
+  },
+
+  toJSON(message: QueryGetAuthorizedAddressResponse): unknown {
+    const obj: any = {};
+    message.authorizedAddress !== undefined && (obj.authorizedAddress = message.authorizedAddress
+      ? AuthorizedAddress.toJSON(message.authorizedAddress)
+      : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetAuthorizedAddressResponse>, I>>(
+    object: I,
+  ): QueryGetAuthorizedAddressResponse {
+    const message = createBaseQueryGetAuthorizedAddressResponse();
+    message.authorizedAddress = (object.authorizedAddress !== undefined && object.authorizedAddress !== null)
+      ? AuthorizedAddress.fromPartial(object.authorizedAddress)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllAuthorizedAddressRequest(): QueryAllAuthorizedAddressRequest {
+  return { pagination: undefined };
+}
+
+export const QueryAllAuthorizedAddressRequest = {
+  encode(message: QueryAllAuthorizedAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllAuthorizedAddressRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllAuthorizedAddressRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllAuthorizedAddressRequest {
+    return { pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined };
+  },
+
+  toJSON(message: QueryAllAuthorizedAddressRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllAuthorizedAddressRequest>, I>>(
+    object: I,
+  ): QueryAllAuthorizedAddressRequest {
+    const message = createBaseQueryAllAuthorizedAddressRequest();
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllAuthorizedAddressResponse(): QueryAllAuthorizedAddressResponse {
+  return { authorizedAddress: [], pagination: undefined };
+}
+
+export const QueryAllAuthorizedAddressResponse = {
+  encode(message: QueryAllAuthorizedAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.authorizedAddress) {
+      AuthorizedAddress.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllAuthorizedAddressResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllAuthorizedAddressResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.authorizedAddress.push(AuthorizedAddress.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllAuthorizedAddressResponse {
+    return {
+      authorizedAddress: Array.isArray(object?.authorizedAddress)
+        ? object.authorizedAddress.map((e: any) => AuthorizedAddress.fromJSON(e))
+        : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllAuthorizedAddressResponse): unknown {
+    const obj: any = {};
+    if (message.authorizedAddress) {
+      obj.authorizedAddress = message.authorizedAddress.map((e) => e ? AuthorizedAddress.toJSON(e) : undefined);
+    } else {
+      obj.authorizedAddress = [];
+    }
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllAuthorizedAddressResponse>, I>>(
+    object: I,
+  ): QueryAllAuthorizedAddressResponse {
+    const message = createBaseQueryAllAuthorizedAddressResponse();
+    message.authorizedAddress = object.authorizedAddress?.map((e) => AuthorizedAddress.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -838,6 +1195,11 @@ export interface Query {
   /** Queries a list of AggregatedKeyShare items. */
   AggregatedKeyShare(request: QueryGetAggregatedKeyShareRequest): Promise<QueryGetAggregatedKeyShareResponse>;
   AggregatedKeyShareAll(request: QueryAllAggregatedKeyShareRequest): Promise<QueryAllAggregatedKeyShareResponse>;
+  /** Queries the public keys */
+  PubKey(request: QueryPubKeyRequest): Promise<QueryPubKeyResponse>;
+  /** Queries a list of AuthorizedAddress items. */
+  AuthorizedAddress(request: QueryGetAuthorizedAddressRequest): Promise<QueryGetAuthorizedAddressResponse>;
+  AuthorizedAddressAll(request: QueryAllAuthorizedAddressRequest): Promise<QueryAllAuthorizedAddressResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -851,6 +1213,9 @@ export class QueryClientImpl implements Query {
     this.KeyShareAll = this.KeyShareAll.bind(this);
     this.AggregatedKeyShare = this.AggregatedKeyShare.bind(this);
     this.AggregatedKeyShareAll = this.AggregatedKeyShareAll.bind(this);
+    this.PubKey = this.PubKey.bind(this);
+    this.AuthorizedAddress = this.AuthorizedAddress.bind(this);
+    this.AuthorizedAddressAll = this.AuthorizedAddressAll.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -892,6 +1257,24 @@ export class QueryClientImpl implements Query {
     const data = QueryAllAggregatedKeyShareRequest.encode(request).finish();
     const promise = this.rpc.request("fairyring.keyshare.Query", "AggregatedKeyShareAll", data);
     return promise.then((data) => QueryAllAggregatedKeyShareResponse.decode(new _m0.Reader(data)));
+  }
+
+  PubKey(request: QueryPubKeyRequest): Promise<QueryPubKeyResponse> {
+    const data = QueryPubKeyRequest.encode(request).finish();
+    const promise = this.rpc.request("fairyring.keyshare.Query", "PubKey", data);
+    return promise.then((data) => QueryPubKeyResponse.decode(new _m0.Reader(data)));
+  }
+
+  AuthorizedAddress(request: QueryGetAuthorizedAddressRequest): Promise<QueryGetAuthorizedAddressResponse> {
+    const data = QueryGetAuthorizedAddressRequest.encode(request).finish();
+    const promise = this.rpc.request("fairyring.keyshare.Query", "AuthorizedAddress", data);
+    return promise.then((data) => QueryGetAuthorizedAddressResponse.decode(new _m0.Reader(data)));
+  }
+
+  AuthorizedAddressAll(request: QueryAllAuthorizedAddressRequest): Promise<QueryAllAuthorizedAddressResponse> {
+    const data = QueryAllAuthorizedAddressRequest.encode(request).finish();
+    const promise = this.rpc.request("fairyring.keyshare.Query", "AuthorizedAddressAll", data);
+    return promise.then((data) => QueryAllAuthorizedAddressResponse.decode(new _m0.Reader(data)));
   }
 }
 

@@ -18,7 +18,6 @@ export interface MsgCreateAggregatedKeyShare {
   creator: string;
   height: number;
   data: string;
-  publicKey: string;
 }
 
 export interface MsgCreateAggregatedKeyShareResponse {
@@ -131,7 +130,7 @@ export const MsgSubmitEncryptedTxResponse = {
 };
 
 function createBaseMsgCreateAggregatedKeyShare(): MsgCreateAggregatedKeyShare {
-  return { creator: "", height: 0, data: "", publicKey: "" };
+  return { creator: "", height: 0, data: "" };
 }
 
 export const MsgCreateAggregatedKeyShare = {
@@ -144,9 +143,6 @@ export const MsgCreateAggregatedKeyShare = {
     }
     if (message.data !== "") {
       writer.uint32(26).string(message.data);
-    }
-    if (message.publicKey !== "") {
-      writer.uint32(34).string(message.publicKey);
     }
     return writer;
   },
@@ -167,9 +163,6 @@ export const MsgCreateAggregatedKeyShare = {
         case 3:
           message.data = reader.string();
           break;
-        case 4:
-          message.publicKey = reader.string();
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -183,7 +176,6 @@ export const MsgCreateAggregatedKeyShare = {
       creator: isSet(object.creator) ? String(object.creator) : "",
       height: isSet(object.height) ? Number(object.height) : 0,
       data: isSet(object.data) ? String(object.data) : "",
-      publicKey: isSet(object.publicKey) ? String(object.publicKey) : "",
     };
   },
 
@@ -192,7 +184,6 @@ export const MsgCreateAggregatedKeyShare = {
     message.creator !== undefined && (obj.creator = message.creator);
     message.height !== undefined && (obj.height = Math.round(message.height));
     message.data !== undefined && (obj.data = message.data);
-    message.publicKey !== undefined && (obj.publicKey = message.publicKey);
     return obj;
   },
 
@@ -201,7 +192,6 @@ export const MsgCreateAggregatedKeyShare = {
     message.creator = object.creator ?? "";
     message.height = object.height ?? 0;
     message.data = object.data ?? "";
-    message.publicKey = object.publicKey ?? "";
     return message;
   },
 };
