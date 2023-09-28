@@ -13,6 +13,7 @@ func DefaultGenesis() *GenesisState {
 		ValidatorSetList:       []ValidatorSet{},
 		KeyShareList:           []KeyShare{},
 		AggregatedKeyShareList: []AggregatedKeyShare{},
+		AuthorizedAddressList:  []AuthorizedAddress{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -23,6 +24,8 @@ func DefaultGenesis() *GenesisState {
 func (gs GenesisState) Validate() error {
 	// Check for duplicated index in validatorSet
 	validatorSetIndexMap := make(map[string]struct{})
+	validatorMap := make(map[string]string)
+	consMap := make(map[string]string)
 
 	for _, elem := range gs.ValidatorSetList {
 		index := string(ValidatorSetKey(elem.Index))
@@ -30,6 +33,18 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for validatorSet")
 		}
 		validatorSetIndexMap[index] = struct{}{}
+
+		if _, found := validatorMap[elem.Validator]; found {
+			return fmt.Errorf("duplicated validator in validatorSet")
+		} else {
+			validatorMap[elem.Validator] = elem.Validator
+		}
+
+		if _, found := consMap[elem.ConsAddr]; found {
+			return fmt.Errorf("duplicated consensus address in validatorSet")
+		} else {
+			validatorMap[elem.ConsAddr] = elem.ConsAddr
+		}
 	}
 	// Check for duplicated index in keyShare
 	keyShareIndexMap := make(map[string]struct{})
@@ -50,6 +65,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for aggregatedKeyShare")
 		}
 		aggregatedKeyShareIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in authorizedAddress
+	authorizedAddressIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.AuthorizedAddressList {
+		index := string(AuthorizedAddressKey(elem.Target))
+		if _, ok := authorizedAddressIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for authorizedAddress")
+		}
+		authorizedAddressIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

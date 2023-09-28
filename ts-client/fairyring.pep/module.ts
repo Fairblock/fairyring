@@ -7,28 +7,23 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgSubmitEncryptedTx } from "./types/fairyring/pep/tx";
 import { MsgCreateAggregatedKeyShare } from "./types/fairyring/pep/tx";
+import { MsgSubmitEncryptedTx } from "./types/fairyring/pep/tx";
 
 import { AggregatedKeyShare as typeAggregatedKeyShare} from "./types"
 import { EncryptedTx as typeEncryptedTx} from "./types"
 import { EncryptedTxArray as typeEncryptedTxArray} from "./types"
-import { ActivePubKey as typeActivePubKey} from "./types"
-import { QueuedPubKey as typeQueuedPubKey} from "./types"
 import { PepPacketData as typePepPacketData} from "./types"
 import { NoData as typeNoData} from "./types"
 import { CurrentKeysPacketData as typeCurrentKeysPacketData} from "./types"
 import { CurrentKeysPacketAck as typeCurrentKeysPacketAck} from "./types"
 import { Params as typeParams} from "./types"
+import { TrustedCounterParty as typeTrustedCounterParty} from "./types"
 import { PepNonce as typePepNonce} from "./types"
+import { ActivePubKey as typeActivePubKey} from "./types"
+import { QueuedPubKey as typeQueuedPubKey} from "./types"
 
-export { MsgSubmitEncryptedTx, MsgCreateAggregatedKeyShare };
-
-type sendMsgSubmitEncryptedTxParams = {
-  value: MsgSubmitEncryptedTx,
-  fee?: StdFee,
-  memo?: string
-};
+export { MsgCreateAggregatedKeyShare, MsgSubmitEncryptedTx };
 
 type sendMsgCreateAggregatedKeyShareParams = {
   value: MsgCreateAggregatedKeyShare,
@@ -36,13 +31,19 @@ type sendMsgCreateAggregatedKeyShareParams = {
   memo?: string
 };
 
-
-type msgSubmitEncryptedTxParams = {
+type sendMsgSubmitEncryptedTxParams = {
   value: MsgSubmitEncryptedTx,
+  fee?: StdFee,
+  memo?: string
 };
+
 
 type msgCreateAggregatedKeyShareParams = {
   value: MsgCreateAggregatedKeyShare,
+};
+
+type msgSubmitEncryptedTxParams = {
+  value: MsgSubmitEncryptedTx,
 };
 
 
@@ -75,20 +76,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendMsgSubmitEncryptedTx({ value, fee, memo }: sendMsgSubmitEncryptedTxParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgSubmitEncryptedTx: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgSubmitEncryptedTx({ value: MsgSubmitEncryptedTx.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgSubmitEncryptedTx: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendMsgCreateAggregatedKeyShare({ value, fee, memo }: sendMsgCreateAggregatedKeyShareParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgCreateAggregatedKeyShare: Unable to sign Tx. Signer is not present.')
@@ -103,20 +90,34 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		
-		msgSubmitEncryptedTx({ value }: msgSubmitEncryptedTxParams): EncodeObject {
-			try {
-				return { typeUrl: "/fairyring.pep.MsgSubmitEncryptedTx", value: MsgSubmitEncryptedTx.fromPartial( value ) }  
+		async sendMsgSubmitEncryptedTx({ value, fee, memo }: sendMsgSubmitEncryptedTxParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgSubmitEncryptedTx: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgSubmitEncryptedTx({ value: MsgSubmitEncryptedTx.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgSubmitEncryptedTx: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgSubmitEncryptedTx: Could not broadcast Tx: '+ e.message)
 			}
 		},
+		
 		
 		msgCreateAggregatedKeyShare({ value }: msgCreateAggregatedKeyShareParams): EncodeObject {
 			try {
 				return { typeUrl: "/fairyring.pep.MsgCreateAggregatedKeyShare", value: MsgCreateAggregatedKeyShare.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgCreateAggregatedKeyShare: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgSubmitEncryptedTx({ value }: msgSubmitEncryptedTxParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.pep.MsgSubmitEncryptedTx", value: MsgSubmitEncryptedTx.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgSubmitEncryptedTx: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -145,14 +146,15 @@ class SDKModule {
 						AggregatedKeyShare: getStructure(typeAggregatedKeyShare.fromPartial({})),
 						EncryptedTx: getStructure(typeEncryptedTx.fromPartial({})),
 						EncryptedTxArray: getStructure(typeEncryptedTxArray.fromPartial({})),
-						ActivePubKey: getStructure(typeActivePubKey.fromPartial({})),
-						QueuedPubKey: getStructure(typeQueuedPubKey.fromPartial({})),
 						PepPacketData: getStructure(typePepPacketData.fromPartial({})),
 						NoData: getStructure(typeNoData.fromPartial({})),
 						CurrentKeysPacketData: getStructure(typeCurrentKeysPacketData.fromPartial({})),
 						CurrentKeysPacketAck: getStructure(typeCurrentKeysPacketAck.fromPartial({})),
 						Params: getStructure(typeParams.fromPartial({})),
+						TrustedCounterParty: getStructure(typeTrustedCounterParty.fromPartial({})),
 						PepNonce: getStructure(typePepNonce.fromPartial({})),
+						ActivePubKey: getStructure(typeActivePubKey.fromPartial({})),
+						QueuedPubKey: getStructure(typeQueuedPubKey.fromPartial({})),
 						
 		};
 		client.on('signer-changed',(signer) => {			

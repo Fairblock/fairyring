@@ -7,7 +7,6 @@ export const protobufPackage = "fairyring.keyshare";
 export interface KeyShare {
   validator: string;
   blockHeight: number;
-  commitment: string;
   keyShare: string;
   keyShareIndex: number;
   receivedTimestamp: number;
@@ -18,7 +17,6 @@ function createBaseKeyShare(): KeyShare {
   return {
     validator: "",
     blockHeight: 0,
-    commitment: "",
     keyShare: "",
     keyShareIndex: 0,
     receivedTimestamp: 0,
@@ -34,20 +32,17 @@ export const KeyShare = {
     if (message.blockHeight !== 0) {
       writer.uint32(16).uint64(message.blockHeight);
     }
-    if (message.commitment !== "") {
-      writer.uint32(26).string(message.commitment);
-    }
     if (message.keyShare !== "") {
-      writer.uint32(34).string(message.keyShare);
+      writer.uint32(26).string(message.keyShare);
     }
     if (message.keyShareIndex !== 0) {
-      writer.uint32(40).uint64(message.keyShareIndex);
+      writer.uint32(32).uint64(message.keyShareIndex);
     }
     if (message.receivedTimestamp !== 0) {
-      writer.uint32(48).uint64(message.receivedTimestamp);
+      writer.uint32(40).uint64(message.receivedTimestamp);
     }
     if (message.receivedBlockHeight !== 0) {
-      writer.uint32(56).uint64(message.receivedBlockHeight);
+      writer.uint32(48).uint64(message.receivedBlockHeight);
     }
     return writer;
   },
@@ -66,18 +61,15 @@ export const KeyShare = {
           message.blockHeight = longToNumber(reader.uint64() as Long);
           break;
         case 3:
-          message.commitment = reader.string();
-          break;
-        case 4:
           message.keyShare = reader.string();
           break;
-        case 5:
+        case 4:
           message.keyShareIndex = longToNumber(reader.uint64() as Long);
           break;
-        case 6:
+        case 5:
           message.receivedTimestamp = longToNumber(reader.uint64() as Long);
           break;
-        case 7:
+        case 6:
           message.receivedBlockHeight = longToNumber(reader.uint64() as Long);
           break;
         default:
@@ -92,7 +84,6 @@ export const KeyShare = {
     return {
       validator: isSet(object.validator) ? String(object.validator) : "",
       blockHeight: isSet(object.blockHeight) ? Number(object.blockHeight) : 0,
-      commitment: isSet(object.commitment) ? String(object.commitment) : "",
       keyShare: isSet(object.keyShare) ? String(object.keyShare) : "",
       keyShareIndex: isSet(object.keyShareIndex) ? Number(object.keyShareIndex) : 0,
       receivedTimestamp: isSet(object.receivedTimestamp) ? Number(object.receivedTimestamp) : 0,
@@ -104,7 +95,6 @@ export const KeyShare = {
     const obj: any = {};
     message.validator !== undefined && (obj.validator = message.validator);
     message.blockHeight !== undefined && (obj.blockHeight = Math.round(message.blockHeight));
-    message.commitment !== undefined && (obj.commitment = message.commitment);
     message.keyShare !== undefined && (obj.keyShare = message.keyShare);
     message.keyShareIndex !== undefined && (obj.keyShareIndex = Math.round(message.keyShareIndex));
     message.receivedTimestamp !== undefined && (obj.receivedTimestamp = Math.round(message.receivedTimestamp));
@@ -116,7 +106,6 @@ export const KeyShare = {
     const message = createBaseKeyShare();
     message.validator = object.validator ?? "";
     message.blockHeight = object.blockHeight ?? 0;
-    message.commitment = object.commitment ?? "";
     message.keyShare = object.keyShare ?? "";
     message.keyShareIndex = object.keyShareIndex ?? 0;
     message.receivedTimestamp = object.receivedTimestamp ?? 0;

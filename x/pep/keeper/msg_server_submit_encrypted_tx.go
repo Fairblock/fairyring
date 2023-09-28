@@ -2,9 +2,9 @@ package keeper
 
 import (
 	"context"
-	"strconv"
-
 	"fairyring/x/pep/types"
+	"fmt"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -32,10 +32,30 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 		return nil, types.ErrInvalidTargetBlockHeight
 	}
 
+	senderAddr, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, types.ErrInvalidMsgCreator
+	}
+
+	minGas := k.MinGasPrice(ctx)
+
+	err = k.bankKeeper.SendCoinsFromAccountToModule(
+		ctx,
+		senderAddr,
+		types.ModuleName,
+		sdk.NewCoins(minGas),
+	)
+
+	if err != nil {
+		k.Logger(ctx).Info(fmt.Sprintf("Error on sending coins: %v", err.Error()))
+		return nil, err
+	}
+
 	encryptedTx := types.EncryptedTx{
 		TargetHeight: msg.TargetBlockHeight,
 		Data:         msg.Data,
 		Creator:      msg.Creator,
+		ChargedGas:   &minGas,
 	}
 
 	txIndex := k.AppendEncryptedTx(ctx, encryptedTx)

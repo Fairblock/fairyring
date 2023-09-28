@@ -4,8 +4,9 @@ import (
 	"context"
 	"encoding/hex"
 	"fairyring/x/keyshare/types"
-
+	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"strconv"
 )
 
 // RegisterValidator adds a new validator to the validator set
@@ -18,36 +19,39 @@ func (k msgServer) RegisterValidator(goCtx context.Context, msg *types.MsgRegist
 		return nil, types.ErrValidatorAlreadyRegistered.Wrap(msg.Creator)
 	}
 
-	isStaking := false
-	var senderConsAddr string
-
-	allStakingValidators := k.stakingKeeper.GetAllValidators(ctx)
-	for _, eachV := range allStakingValidators {
-		valAddr, _ := sdk.ValAddressFromBech32(eachV.OperatorAddress)
-		valAccAddr := sdk.AccAddress(valAddr)
-		consAddr, _ := eachV.GetConsAddr()
-
-		if valAccAddr.String() == msg.Creator {
-			isStaking = true
-			consByte := consAddr.Bytes()
-			consHex := hex.EncodeToString(consByte)
-			senderConsAddr = consHex
-			break
-		}
+	accAddr, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, err
 	}
 
-	if !isStaking {
+	stakingValidator, found := k.stakingKeeper.GetValidator(ctx, sdk.ValAddress(accAddr))
+	if !found {
 		return nil, types.ErrAccountNotStaking.Wrap(msg.Creator)
 	}
+
+	bonded := stakingValidator.GetBondedTokens().Uint64()
+	minBonded := k.MinimumBonded(ctx)
+	if bonded < minBonded {
+		return nil, types.ErrInsufficientBondedAmount.Wrap(
+			fmt.Sprintf("Expected minimum bonded: %d, Got: %d", minBonded, bonded),
+		)
+	}
+
+	consAddr, _ := stakingValidator.GetConsAddr()
+	consByte := consAddr.Bytes()
+	consHex := hex.EncodeToString(consByte)
 
 	validator := types.ValidatorSet{
 		Index:     msg.Creator,
 		Validator: msg.Creator,
-		ConsAddr:  senderConsAddr,
+		ConsAddr:  consHex,
 		IsActive:  true,
 	}
 
 	k.SetValidatorSet(ctx, validator)
+
+	// This is to prevent the validator be slashed immediately after registering
+	k.SetLastSubmittedHeight(ctx, msg.Creator, strconv.FormatInt(ctx.BlockHeight(), 10))
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.RegisteredValidatorEventType,

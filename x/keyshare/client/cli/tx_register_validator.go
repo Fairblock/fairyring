@@ -16,7 +16,7 @@ var _ = strconv.Itoa(0)
 func CmdRegisterValidator() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "register-validator",
-		Short: "Broadcast message registerValidator",
+		Short: "Register a validator for being eligible to send keyshares",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -28,9 +28,6 @@ func CmdRegisterValidator() *cobra.Command {
 			msg := types.NewMsgRegisterValidator(
 				clientCtx.GetFromAddress().String(),
 			)
-			if err := msg.ValidateBasic(); err != nil {
-				return err
-			}
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}

@@ -14,9 +14,12 @@ import (
 func CmdListEncryptedTx() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list-encrypted-tx",
-		Short: "list all EncryptedTx",
+		Short: "list all pending encrypted transactions from all future blocks",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			clientCtx := client.GetClientContextFromCmd(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
 
 			pageReq, err := client.ReadPageRequest(cmd.Flags())
 			if err != nil {
@@ -47,10 +50,13 @@ func CmdListEncryptedTx() *cobra.Command {
 func CmdListEncryptedTxFromBlock() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list-encrypted-tx-from-block",
-		Short: "list all EncryptedTx from block",
+		Short: "list all encrypted transactions for a particular target height",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			clientCtx := client.GetClientContextFromCmd(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
 
 			queryClient := types.NewQueryClient(clientCtx)
 
@@ -81,10 +87,13 @@ func CmdListEncryptedTxFromBlock() *cobra.Command {
 func CmdShowEncryptedTx() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-encrypted-tx [target-height] [index]",
-		Short: "shows a EncryptedTx",
+		Short: "shows a particular encrypted transaction at a given target height and index",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			clientCtx := client.GetClientContextFromCmd(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
 
 			queryClient := types.NewQueryClient(clientCtx)
 

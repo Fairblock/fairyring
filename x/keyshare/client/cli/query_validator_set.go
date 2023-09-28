@@ -13,9 +13,12 @@ import (
 func CmdListValidatorSet() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list-validator-set",
-		Short: "list all validatorSet",
+		Short: "Show the list of all registered validators for all blocks",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			clientCtx := client.GetClientContextFromCmd(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
 
 			pageReq, err := client.ReadPageRequest(cmd.Flags())
 			if err != nil {
@@ -46,10 +49,13 @@ func CmdListValidatorSet() *cobra.Command {
 func CmdShowValidatorSet() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-validator-set [index]",
-		Short: "shows a validatorSet",
+		Short: "shows a validatorSet for a particular block",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			clientCtx := client.GetClientContextFromCmd(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
 
 			queryClient := types.NewQueryClient(clientCtx)
 

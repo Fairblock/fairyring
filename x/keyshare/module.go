@@ -2,20 +2,22 @@ package keyshare
 
 import (
 	"context"
+	"encoding/hex"
 	"encoding/json"
 	peptypes "fairyring/x/pep/types"
 	"fmt"
+	"strconv"
 
 	// this line is used by starport scaffolding # 1
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
 
-	abci "github.com/tendermint/tendermint/abci/types"
-
 	"fairyring/x/keyshare/client/cli"
 	"fairyring/x/keyshare/keeper"
 	"fairyring/x/keyshare/types"
+
+	abci "github.com/cometbft/cometbft/abci/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -116,17 +118,6 @@ func NewAppModule(
 	}
 }
 
-// Deprecated: use RegisterServices
-func (am AppModule) Route() sdk.Route { return sdk.Route{} }
-
-// Deprecated: use RegisterServices
-func (AppModule) QuerierRoute() string { return types.RouterKey }
-
-// Deprecated: use RegisterServices
-func (am AppModule) LegacyQuerierHandler(_ *codec.LegacyAmino) sdk.Querier {
-	return nil
-}
-
 // RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries
 func (am AppModule) RegisterServices(cfg module.Configurator) {
 	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
@@ -158,12 +149,26 @@ func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
-	validators := am.keeper.StakingKeeper().GetAllValidators(ctx)
-	for _, eachValidator := range validators {
-		if !eachValidator.IsBonded() {
-			valAddr, _ := sdk.ValAddressFromBech32(eachValidator.OperatorAddress)
-			valAccAddr := sdk.AccAddress(valAddr)
-			am.keeper.RemoveValidatorSet(ctx, valAccAddr.String())
+	validatorSet := am.keeper.GetAllValidatorSet(ctx)
+	for _, eachValidator := range validatorSet {
+		accAddr, err := sdk.AccAddressFromBech32(eachValidator.Validator)
+		if err != nil {
+			ctx.Logger().Error(
+				fmt.Sprintf(
+					"Error on converting validator addr: %s to AccAddr: %s",
+					eachValidator.Validator,
+					err.Error(),
+				),
+			)
+			continue
+		}
+		bondedVal, found := am.keeper.StakingKeeper().GetValidator(ctx, sdk.ValAddress(accAddr))
+		if !found {
+			am.keeper.RemoveValidatorSet(ctx, eachValidator.Validator)
+			continue
+		}
+		if !bondedVal.IsBonded() {
+			am.keeper.RemoveValidatorSet(ctx, eachValidator.Validator)
 		}
 	}
 
@@ -171,6 +176,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 	ak, foundAk := am.keeper.GetActivePubKey(ctx)
 	qk, foundQk := am.keeper.GetQueuedPubKey(ctx)
+	qc, foundQc := am.keeper.GetQueuedCommitments(ctx)
 
 	if foundAk {
 		am.keeper.SetActivePubKey(ctx, ak)
@@ -183,6 +189,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		if ak.Expiry <= height {
 			am.keeper.DeleteActivePubKey(ctx)
 			am.pepKeeper.DeleteActivePubKey(ctx)
+			am.keeper.DeleteActiveCommitments(ctx)
 		} else {
 			if foundQk {
 				am.keeper.SetQueuedPubKey(ctx, qk)
@@ -200,13 +207,58 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		if qk.Expiry > height {
 			am.keeper.SetActivePubKey(ctx, types.ActivePubKey(qk))
 			am.pepKeeper.SetActivePubKey(ctx, peptypes.ActivePubKey(qk))
+			if foundQc {
+				am.keeper.SetActiveCommitments(ctx, qc)
+			}
 		}
 		am.keeper.DeleteQueuedPubKey(ctx)
 		am.pepKeeper.DeleteQueuedPubKey(ctx)
+		if foundQc {
+			am.keeper.DeleteQueuedCommitments(ctx)
+		}
 	}
 }
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+	am.keeper.Logger(ctx).Info(fmt.Sprintf("End Blocker of Height: %d", ctx.BlockHeight()))
+	validators := am.keeper.GetAllValidatorSet(ctx)
+	params := am.keeper.GetParams(ctx)
+
+	for _, eachValidator := range validators {
+		lastSubmittedHeight := am.keeper.GetLastSubmittedHeight(ctx, eachValidator.Validator)
+		am.keeper.Logger(ctx).Info(fmt.Sprintf("Last submitted: %s: %d", eachValidator.Validator, lastSubmittedHeight))
+		// Validator will be slashed if their last submitted height is N block ago
+		// Lets say N is 10, and last submitted height is 0, current height is 10
+		// then he/she will be slashed
+		if lastSubmittedHeight+params.GetMaxIdledBlock() > uint64(ctx.BlockHeight()) {
+			continue
+		}
+
+		savedConsAddrByte, err := hex.DecodeString(eachValidator.ConsAddr)
+		if err != nil {
+			am.keeper.Logger(ctx).Error(fmt.Sprintf("Error while decoding validator %s cons addr: %s", eachValidator.Validator, err.Error()))
+			continue
+		}
+
+		var consAddr sdk.ConsAddress
+		err = consAddr.Unmarshal(savedConsAddrByte)
+		if err != nil {
+			am.keeper.Logger(ctx).Error(fmt.Sprintf("Error while unmarshaling validator %s cons addr: %s", eachValidator.Validator, err.Error()))
+			continue
+		}
+
+		am.keeper.StakingKeeper().Slash(
+			ctx,
+			consAddr,
+			ctx.BlockHeight()-1,
+			types.SlashPower,
+			params.SlashFractionNoKeyshare,
+		)
+
+		// After being slashed, his/her last submitted height will be set to the current block
+		// So he/she won't be slashed in the next block instead he/she will be slashed if he didn't submit for N block again.
+		am.keeper.SetLastSubmittedHeight(ctx, eachValidator.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
+	}
 	return []abci.ValidatorUpdate{}
 }

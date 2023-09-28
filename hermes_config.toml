@@ -31,7 +31,7 @@ port = 3001
 id = 'fairyring_test_1'
 type = 'CosmosSdk'
 rpc_addr = 'http://0.0.0.0:16657'
-websocket_addr = 'ws://0.0.0.0:16657/websocket'
+event_source = { mode = "push", url = "ws://0.0.0.0:16657/websocket", batch_delay = "500ms" }
 grpc_addr = 'http://0.0.0.0:9090'
 rpc_timeout = '10s'
 account_prefix = 'fairy'
@@ -52,7 +52,7 @@ numerator = '1'
 denominator = '3'
 
 [chains.gas_price]
-price = 0.1
+price = 1
 denom = 'frt'
 
 [chains.address_type]
@@ -63,7 +63,7 @@ derivation = 'cosmos'
 id = 'fairyring_test_2'
 type = 'CosmosSdk'
 rpc_addr = 'http://0.0.0.0:26657'
-websocket_addr = 'ws://0.0.0.0:26657/websocket'
+event_source = { mode = "push", url = "ws://0.0.0.0:26657/websocket", batch_delay = "500ms" }
 grpc_addr = 'http://0.0.0.0:9092'
 rpc_timeout = '10s'
 account_prefix = 'fairy'
@@ -84,7 +84,7 @@ numerator = '1'
 denominator = '3'
 
 [chains.gas_price]
-price = 0.1
+price = 1
 denom = 'frt'
 
 [chains.address_type]

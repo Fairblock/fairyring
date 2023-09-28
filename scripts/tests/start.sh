@@ -12,6 +12,7 @@ WALLET_MNEMONIC_1="banner spread envelope side kite person disagree path silver 
 WALLET_MNEMONIC_2="veteran try aware erosion drink dance decade comic dawn museum release episode original list ability owner size tuition surface ceiling depth seminar capable only"
 WALLET_MNEMONIC_3="vacuum burst ordinary enact leaf rabbit gather lend left chase park action dish danger green jeans lucky dish mesh language collect acquire waste load"
 WALLET_MNEMONIC_4="open attitude harsh casino rent attitude midnight debris describe spare cancel crisp olive ride elite gallery leaf buffalo sheriff filter rotate path begin soldier"
+WALLET_MNEMONIC_5="sleep garage unaware monster slide cruel barely blade sudden basic review mimic screen box human wing ritual use smooth ripple tuna ostrich pony eye"
 
 RLY_MNEMONIC_1="alley afraid soup fall idea toss can goose become valve initial strong forward bright dish figure check leopard decide warfare hub unusual join cart"
 RLY_MNEMONIC_2="record gift you once hip style during joke field prize dust unique length more pencil transfer quit train device arrive energy sort steak upset"
@@ -28,6 +29,8 @@ GRPCPORT_1=9090
 GRPCPORT_2=9092
 GRPCWEB_1=9091
 GRPCWEB_2=9093
+
+BLOCK_TIME=5
 
 # Stop if it is already running
 if pgrep -x "$BINARY" >/dev/null; then
@@ -84,46 +87,57 @@ $BINARY add-genesis-account $VAL1_ADDR 1000000000000frt,1000000000000stake --hom
 $BINARY add-genesis-account $VAL2_ADDR 1000000000000frt,1000000000000stake --home $CHAIN_DIR/$CHAINID_2
 $BINARY add-genesis-account $WALLET1_ADDR 1000000000000frt --home $CHAIN_DIR/$CHAINID_1
 $BINARY add-genesis-account $WALLET2_ADDR 1000000000000frt --home $CHAIN_DIR/$CHAINID_2
-$BINARY add-genesis-account $WALLET3_ADDR 1000000000000frt --vesting-amount 10000000000stake --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID_1
-$BINARY add-genesis-account $WALLET4_ADDR 1000000000000frt --vesting-amount 10000000000stake --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID_2
+$BINARY add-genesis-account $WALLET3_ADDR 1000000000000frt --vesting-amount 100000000000stake --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID_1
+$BINARY add-genesis-account $WALLET4_ADDR 1000000000000frt --vesting-amount 100000000000stake --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID_2
 $BINARY add-genesis-account $RLY1_ADDR 1000000000000frt --home $CHAIN_DIR/$CHAINID_1
 $BINARY add-genesis-account $RLY2_ADDR 1000000000000frt --home $CHAIN_DIR/$CHAINID_2
 
 echo "Creating and collecting gentx..."
-$BINARY gentx val1 10000000000stake --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --keyring-backend test
-$BINARY gentx val2 10000000000stake --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --keyring-backend test
+$BINARY gentx val1 100000000000stake --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --keyring-backend test
+$BINARY gentx val2 100000000000stake --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --keyring-backend test
 $BINARY collect-gentxs --home $CHAIN_DIR/$CHAINID_1 &> /dev/null
 $BINARY collect-gentxs --home $CHAIN_DIR/$CHAINID_2 &> /dev/null
 
 echo "Changing defaults and ports in app.toml and config.toml files..."
 sed -i -e 's#"tcp://0.0.0.0:26656"#"tcp://0.0.0.0:'"$P2PPORT_1"'"#g' $CHAIN_DIR/$CHAINID_1/config/config.toml
 sed -i -e 's#"tcp://127.0.0.1:26657"#"tcp://0.0.0.0:'"$RPCPORT_1"'"#g' $CHAIN_DIR/$CHAINID_1/config/config.toml
-sed -i -e 's/timeout_commit = "5s"/timeout_commit = "1s"/g' $CHAIN_DIR/$CHAINID_1/config/config.toml
-sed -i -e 's/timeout_propose = "3s"/timeout_propose = "1s"/g' $CHAIN_DIR/$CHAINID_1/config/config.toml
+sed -i -e 's/timeout_commit = "5s"/timeout_commit = "5s"/g' $CHAIN_DIR/$CHAINID_1/config/config.toml
+sed -i -e 's/timeout_propose = "3s"/timeout_propose = "5s"/g' $CHAIN_DIR/$CHAINID_1/config/config.toml
 sed -i -e 's/index_all_keys = false/index_all_keys = true/g' $CHAIN_DIR/$CHAINID_1/config/config.toml
 sed -i -e 's/enable = false/enable = true/g' $CHAIN_DIR/$CHAINID_1/config/app.toml
 sed -i -e 's/swagger = false/swagger = true/g' $CHAIN_DIR/$CHAINID_1/config/app.toml
-sed -i -e 's#"tcp://0.0.0.0:1317"#"tcp://0.0.0.0:'"$RESTPORT_1"'"#g' $CHAIN_DIR/$CHAINID_1/config/app.toml
+sed -i -e 's#"tcp://localhost:1317"#"tcp://localhost:'"$RESTPORT_1"'"#g' $CHAIN_DIR/$CHAINID_1/config/app.toml
 sed -i -e 's#":8080"#":'"$ROSETTA_1"'"#g' $CHAIN_DIR/$CHAINID_1/config/app.toml
+sed -i -e 's/minimum-gas-prices = "0stake"/minimum-gas-prices = "1frt"/g' $CHAIN_DIR/$CHAINID_1/config/app.toml
 
 sed -i -e 's#"tcp://0.0.0.0:26656"#"tcp://0.0.0.0:'"$P2PPORT_2"'"#g' $CHAIN_DIR/$CHAINID_2/config/config.toml
 sed -i -e 's#"tcp://127.0.0.1:26657"#"tcp://0.0.0.0:'"$RPCPORT_2"'"#g' $CHAIN_DIR/$CHAINID_2/config/config.toml
-sed -i -e 's/timeout_commit = "5s"/timeout_commit = "1s"/g' $CHAIN_DIR/$CHAINID_2/config/config.toml
-sed -i -e 's/timeout_propose = "3s"/timeout_propose = "1s"/g' $CHAIN_DIR/$CHAINID_2/config/config.toml
+sed -i -e 's/timeout_commit = "5s"/timeout_commit = "5s"/g' $CHAIN_DIR/$CHAINID_2/config/config.toml
+sed -i -e 's/timeout_propose = "3s"/timeout_propose = "5s"/g' $CHAIN_DIR/$CHAINID_2/config/config.toml
 sed -i -e 's/index_all_keys = false/index_all_keys = true/g' $CHAIN_DIR/$CHAINID_2/config/config.toml
 sed -i -e 's/enable = false/enable = true/g' $CHAIN_DIR/$CHAINID_2/config/app.toml
 sed -i -e 's/0.0.0.0:9090/0.0.0.0:'"$GRPCPORT_2"'/g' $CHAIN_DIR/$CHAINID_2/config/app.toml
 sed -i -e 's/swagger = false/swagger = true/g' $CHAIN_DIR/$CHAINID_2/config/app.toml
-sed -i -e 's#"tcp://0.0.0.0:1317"#"tcp://0.0.0.0:'"$RESTPORT_2"'"#g' $CHAIN_DIR/$CHAINID_2/config/app.toml
+sed -i -e 's#"tcp://localhost:1317"#"tcp://localhost:'"$RESTPORT_2"'"#g' $CHAIN_DIR/$CHAINID_2/config/app.toml
 sed -i -e 's#":8080"#":'"$ROSETTA_2"'"#g' $CHAIN_DIR/$CHAINID_2/config/app.toml
+sed -i -e 's/minimum-gas-prices = "0stake"/minimum-gas-prices = "1frt"/g' $CHAIN_DIR/$CHAINID_2/config/app.toml
 
 echo "Changing genesis.json..."
 sed -i -e 's/"voting_period": "172800s"/"voting_period": "10s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 sed -i -e 's/"voting_period": "172800s"/"voting_period": "10s"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
-sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
-sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
+
+sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'","'"$VAL2_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
+sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'","'"$VAL2_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
+
+TRUSTED_PARTIES='{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-0"}'
+
+sed -i -e 's/"trusted_counter_parties": \[\]/"trusted_counter_parties": \['"$TRUSTED_PARTIES"'\]/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
+sed -i -e 's/"trusted_counter_parties": \[\]/"trusted_counter_parties": \['"$TRUSTED_PARTIES"'\]/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
+
+sed -i -e 's/"key_expiry": "100"/"key_expiry": "10000"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
+sed -i -e 's/"key_expiry": "100"/"key_expiry": "10000"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
 
 echo "Starting $CHAINID_1 in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID_1.log"
@@ -152,7 +166,7 @@ rm rly1.json &> /dev/null
 rm rly2.json &> /dev/null
 
 echo "Waiting both chain to run..."
-sleep 5
+sleep $((BLOCK_TIME*2))
 
 echo "Starting Hermes Relayer..."
 echo "Creating log file at $CHAIN_DIR/relayer.log"

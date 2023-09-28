@@ -8,7 +8,6 @@ import (
 	"fairyring/x/keyshare/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
-	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
@@ -19,7 +18,6 @@ import (
 var (
 	_ = sample.AccAddress
 	_ = keysharesimulation.FindAccount
-	_ = simappparams.StakePerAccount
 	_ = simulation.MsgEntryKind
 	_ = baseapp.Paramspace
 )
@@ -34,6 +32,18 @@ const (
 	opWeightMsgCreateLatestPubKey          = "op_weight_msg_latest_pub_key"
 	defaultWeightMsgCreateLatestPubKey int = 100
 
+	opWeightMsgCreateAuthorizedAddress = "op_weight_msg_authorized_address"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateAuthorizedAddress int = 100
+
+	opWeightMsgUpdateAuthorizedAddress = "op_weight_msg_authorized_address"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateAuthorizedAddress int = 100
+
+	opWeightMsgDeleteAuthorizedAddress = "op_weight_msg_authorized_address"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeleteAuthorizedAddress int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -45,6 +55,16 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	keyshareGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
+		AuthorizedAddressList: []types.AuthorizedAddress{
+			{
+				AuthorizedBy: sample.AccAddress(),
+				Target:       "0",
+			},
+			{
+				AuthorizedBy: sample.AccAddress(),
+				Target:       "1",
+			},
+		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&keyshareGenesis)
@@ -53,12 +73,6 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 // ProposalContents doesn't return any content functions for governance proposals
 func (AppModule) ProposalContents(_ module.SimulationState) []simtypes.WeightedProposalContent {
 	return nil
-}
-
-// RandomizedParams creates randomized  param changes for the simulator
-func (am AppModule) RandomizedParams(_ *rand.Rand) []simtypes.ParamChange {
-
-	return []simtypes.ParamChange{}
 }
 
 // RegisterStoreDecoder registers a decoder
@@ -99,6 +113,39 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCreateLatestPubKey,
 		keysharesimulation.SimulateMsgCreateLatestPubKey(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateAuthorizedAddress int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateAuthorizedAddress, &weightMsgCreateAuthorizedAddress, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateAuthorizedAddress = defaultWeightMsgCreateAuthorizedAddress
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateAuthorizedAddress,
+		keysharesimulation.SimulateMsgCreateAuthorizedAddress(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateAuthorizedAddress int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateAuthorizedAddress, &weightMsgUpdateAuthorizedAddress, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateAuthorizedAddress = defaultWeightMsgUpdateAuthorizedAddress
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateAuthorizedAddress,
+		keysharesimulation.SimulateMsgUpdateAuthorizedAddress(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeleteAuthorizedAddress int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteAuthorizedAddress, &weightMsgDeleteAuthorizedAddress, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteAuthorizedAddress = defaultWeightMsgDeleteAuthorizedAddress
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteAuthorizedAddress,
+		keysharesimulation.SimulateMsgDeleteAuthorizedAddress(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

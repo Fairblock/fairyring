@@ -3,11 +3,17 @@ package types
 import (
 	fmt "fmt"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"gopkg.in/yaml.v2"
 )
 
 var _ paramtypes.ParamSet = (*Params)(nil)
+
+var (
+	KeyMinimumBonded            = []byte("MinimumBonded")
+	DefaultMinimumBonded uint64 = 10000000000
+)
 
 var (
 	KeyKeyExpiry            = []byte("KeyExpiry")
@@ -17,6 +23,20 @@ var (
 var (
 	KeyTrustedAddresses     = []byte("TrustedAddresses")
 	DefaultTrustedAddresses []string
+)
+var (
+	KeySlashFractionNoKeyShare     = []byte("KeyNoShareSlashFraction")
+	DefaultSlashFractionNoKeyShare = sdk.NewDecWithPrec(5, 1) // 0.5
+)
+
+var (
+	KeySlashFractionWrongKeyShare     = []byte("KeyWrongShareSlashFraction")
+	DefaultSlashFractionWrongKeyShare = sdk.NewDecWithPrec(5, 1) // 0.5
+)
+
+var (
+	KeyMaxIdledBlock            = []byte("KeyMaxIdledBlock")
+	DefaultMaxIdledBlock uint64 = 10
 )
 
 // ParamKeyTable the param key table for launch module
@@ -28,10 +48,18 @@ func ParamKeyTable() paramtypes.KeyTable {
 func NewParams(
 	keyExp uint64,
 	trAddrs []string,
+	minimumBonded uint64,
+	noKeyShareFraction sdk.Dec,
+	wrongKeyShareFraction sdk.Dec,
+	maxIdledBlock uint64,
 ) Params {
 	return Params{
-		KeyExpiry:        keyExp,
-		TrustedAddresses: trAddrs,
+		KeyExpiry:                  keyExp,
+		TrustedAddresses:           trAddrs,
+		SlashFractionNoKeyshare:    noKeyShareFraction,
+		SlashFractionWrongKeyshare: wrongKeyShareFraction,
+		MaxIdledBlock:              maxIdledBlock,
+		MinimumBonded:              minimumBonded,
 	}
 }
 
@@ -40,6 +68,10 @@ func DefaultParams() Params {
 	return NewParams(
 		DefaultKeyExpiry,
 		DefaultTrustedAddresses,
+		DefaultMinimumBonded,
+		DefaultSlashFractionNoKeyShare,
+		DefaultSlashFractionWrongKeyShare,
+		DefaultMaxIdledBlock,
 	)
 }
 
@@ -48,6 +80,10 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
 		paramtypes.NewParamSetPair(KeyKeyExpiry, &p.KeyExpiry, validateKeyExpiry),
 		paramtypes.NewParamSetPair(KeyTrustedAddresses, &p.TrustedAddresses, validateTrustedAddresses),
+		paramtypes.NewParamSetPair(KeyMinimumBonded, &p.MinimumBonded, validateMinimumBonded),
+		paramtypes.NewParamSetPair(KeySlashFractionNoKeyShare, &p.SlashFractionNoKeyshare, validateSlashFractionNoKeyshare),
+		paramtypes.NewParamSetPair(KeySlashFractionWrongKeyShare, &p.SlashFractionWrongKeyshare, validateSlashFractionWrongKeyshare),
+		paramtypes.NewParamSetPair(KeyMaxIdledBlock, &p.MaxIdledBlock, validateMaxIdledBlock),
 	}
 }
 
@@ -61,6 +97,9 @@ func (p Params) Validate() error {
 		return err
 	}
 
+	if err := validateMinimumBonded(p.MinimumBonded); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -70,7 +109,7 @@ func (p Params) String() string {
 	return string(out)
 }
 
-// validate validates the KeyExpiry param
+// validateKeyExpiry validates the KeyExpiry param
 func validateKeyExpiry(v interface{}) error {
 	_, ok := v.(uint64)
 	if !ok {
@@ -80,9 +119,62 @@ func validateKeyExpiry(v interface{}) error {
 	return nil
 }
 
-// validate validates the TrustedAddresses param
+// validateTrustedAddresses validates the TrustedAddresses param
 func validateTrustedAddresses(v interface{}) error {
-	_, ok := v.([]string)
+	trustedList, ok := v.([]string)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+
+	// Validate each address in the slice
+	for i, element := range trustedList {
+		// Perform validation logic on each element
+		_, err := sdk.AccAddressFromBech32(element)
+		if err != nil {
+			return fmt.Errorf("address at index %d is invalid", i)
+		}
+	}
+
+	return nil
+}
+
+// validates the MinimumBonded param
+func validateMinimumBonded(v interface{}) error {
+	_, ok := v.(uint64)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+
+	return nil
+}
+
+// validateSlashFractionNoKeyshare validates the SlashFractionNoKeyshare param
+func validateSlashFractionNoKeyshare(v interface{}) error {
+	val, ok := v.(sdk.Dec)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+	if val.LTE(sdk.NewDec(0)) || val.GT(sdk.NewDec(1)) {
+		return fmt.Errorf("invalid parameter value, expected value between 0 and 1, not including 0, got %v", val)
+	}
+	return nil
+}
+
+// validateSlashFractionWrongKeyshare validates the SlashFractionWrongKeyshare param
+func validateSlashFractionWrongKeyshare(v interface{}) error {
+	val, ok := v.(sdk.Dec)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+	if val.LTE(sdk.NewDec(0)) || val.GT(sdk.NewDec(1)) {
+		return fmt.Errorf("invalid parameter value, expected value between 0 and 1, not including 0, got %v", val)
+	}
+	return nil
+}
+
+// validateMaxIdledBlock validates the MaxIdledBlock param
+func validateMaxIdledBlock(v interface{}) error {
+	_, ok := v.(uint64)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", v)
 	}

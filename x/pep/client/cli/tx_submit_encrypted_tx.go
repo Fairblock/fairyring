@@ -17,7 +17,7 @@ var _ = strconv.Itoa(0)
 func CmdSubmitEncryptedTx() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "submit-encrypted-tx [data] [target-block-height]",
-		Short: "Broadcast message submitEncryptedTx",
+		Short: "Submit an encrypted transaction along with its execution height (execution height refers to the height in the FairyRing chain)",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argData := args[0]
@@ -36,9 +36,6 @@ func CmdSubmitEncryptedTx() *cobra.Command {
 				argData,
 				argTargetBlockHeight,
 			)
-			if err := msg.ValidateBasic(); err != nil {
-				return err
-			}
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}

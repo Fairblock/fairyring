@@ -3,16 +3,13 @@ package keeper
 import (
 	"fmt"
 
-	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
-
 	"fairyring/x/keyshare/types"
-	pepKeeper "fairyring/x/pep/keeper"
 
+	"github.com/cometbft/cometbft/libs/log"
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"github.com/tendermint/tendermint/libs/log"
 )
 
 type (
@@ -21,8 +18,8 @@ type (
 		storeKey      storetypes.StoreKey
 		memKey        storetypes.StoreKey
 		paramstore    paramtypes.Subspace
-		stakingKeeper stakingkeeper.Keeper
-		pepKeeper     pepKeeper.Keeper
+		stakingKeeper types.StakingKeeper
+		pepKeeper     types.PepKeeper
 	}
 )
 
@@ -31,8 +28,8 @@ func NewKeeper(
 	storeKey,
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
-	pk pepKeeper.Keeper,
-	stakingKeeper stakingkeeper.Keeper,
+	pk types.PepKeeper,
+	stakingKeeper types.StakingKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -49,7 +46,7 @@ func NewKeeper(
 	}
 }
 
-func (k Keeper) StakingKeeper() stakingkeeper.Keeper {
+func (k Keeper) StakingKeeper() types.StakingKeeper {
 	return k.stakingKeeper
 }
 

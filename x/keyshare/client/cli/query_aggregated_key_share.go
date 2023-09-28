@@ -14,9 +14,12 @@ import (
 func CmdListAggregatedKeyShare() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list-aggregated-key-share",
-		Short: "list all AggregatedKeyShare",
+		Short: "list all aggregated keyshares for all blocks",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			clientCtx := client.GetClientContextFromCmd(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
 
 			pageReq, err := client.ReadPageRequest(cmd.Flags())
 			if err != nil {
@@ -47,10 +50,13 @@ func CmdListAggregatedKeyShare() *cobra.Command {
 func CmdShowAggregatedKeyShare() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-aggregated-key-share [height]",
-		Short: "shows a AggregatedKeyShare",
+		Short: "shows a aggregated keyshare for a particular block",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			clientCtx := client.GetClientContextFromCmd(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
 
 			queryClient := types.NewQueryClient(clientCtx)
 

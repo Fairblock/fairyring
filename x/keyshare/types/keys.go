@@ -21,6 +21,10 @@ const (
 )
 
 const (
+	SlashPower int64 = 100
+)
+
+const (
 	RegisteredValidatorEventType    = "new validator-registered"
 	RegisteredValidatorEventCreator = "creator"
 )

@@ -15,8 +15,8 @@ option go_package = "fairyring/x/pep/types";
 
 // GenesisState defines the pep module's genesis state.
 message GenesisState {
-           Params                 params                     = 1 [(gogoproto.nullable) = false];
-           string                 port_id                    = 2;
+  Params                 params                     = 1 [(gogoproto.nullable) = false];
+  string                 port_id                    = 2;
   repeated EncryptedTxArray       encryptedTxArray           = 3 [(gogoproto.nullable) = false];
   repeated PepNonce               pepNonceList         = 4 [(gogoproto.nullable) = false];
 
@@ -25,4 +25,3 @@ message GenesisState {
   ActivePubKey                    activePubKey               = 7 [(gogoproto.nullable) = false];
   QueuedPubKey                    queuedPubKey               = 8 [(gogoproto.nullable) = false];
 }
-

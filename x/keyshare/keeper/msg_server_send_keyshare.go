@@ -5,8 +5,9 @@ import (
 	"encoding/hex"
 	"fairyring/x/keyshare/types"
 	"fmt"
-	distIBE "github.com/FairBlock/DistributedIBE"
 	"strconv"
+
+	distIBE "github.com/FairBlock/DistributedIBE"
 
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"
@@ -24,17 +25,49 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	validatorInfo, found := k.GetValidatorSet(ctx, msg.Creator)
 
 	if !found {
-		return nil, types.ErrValidatorNotRegistered.Wrap(msg.Creator)
+		authorizedAddrInfo, found := k.GetAuthorizedAddress(ctx, msg.Creator)
+		if !found || !authorizedAddrInfo.IsAuthorized {
+			return nil, types.ErrAddrIsNotValidatorOrAuthorized.Wrap(msg.Creator)
+		}
+
+		authorizedByValInfo, found := k.GetValidatorSet(ctx, authorizedAddrInfo.AuthorizedBy)
+		if !found {
+			return nil, types.ErrAuthorizerIsNotValidator.Wrap(authorizedAddrInfo.AuthorizedBy)
+		}
+		validatorInfo = authorizedByValInfo
+
+		// If the sender is in the validator set & authorized another address to submit key share
+	} else if count := k.GetAuthorizedCount(ctx, msg.Creator); count != 0 {
+		return nil, types.ErrAuthorizedAnotherAddress
+	}
+
+	if uint64(ctx.BlockHeight()) > msg.BlockHeight {
+		return nil, types.ErrInvalidBlockHeight.Wrapf("key share height is lower than the current block height, expected height: %d, got: %d", ctx.BlockHeight(), msg.BlockHeight)
+	}
+
+	if msg.BlockHeight > uint64(ctx.BlockHeight())+1 {
+		return nil, types.ErrInvalidBlockHeight.Wrapf("key share height is higher than the current block height + 1, expected max height to be: %d, got: %d", ctx.BlockHeight()+1, msg.BlockHeight)
 	}
 
 	// Setup
 	suite := bls.NewBLS12381Suite()
 	ibeID := strconv.FormatUint(msg.BlockHeight, 10)
 
+	commitments, found := k.GetActiveCommitments(ctx)
+	if !found {
+		return nil, types.ErrCommitmentsNotFound
+	}
+
+	commitmentsLen := uint64(len(commitments.Commitments))
+	if msg.KeyShareIndex > commitmentsLen {
+		return nil, types.ErrInvalidKeyShareIndex.Wrap(fmt.Sprintf("Expect Index within: %d, got: %d", commitmentsLen, msg.KeyShareIndex))
+	}
+
 	// Parse the keyshare & commitment then verify it
-	_, _, err := parseKeyShareCommitment(suite, msg.Message, msg.Commitment, uint32(msg.KeyShareIndex), ibeID)
+	_, _, err := parseKeyShareCommitment(suite, msg.Message, commitments.Commitments[msg.KeyShareIndex-1], uint32(msg.KeyShareIndex), ibeID)
 	if err != nil {
 		k.Logger(ctx).Error(fmt.Sprintf("Error in parsing & verifying keyshare & commitment: %s", err.Error()))
+		k.Logger(ctx).Error(fmt.Sprintf("KeyShare is: %v | Commitment is: %v | Index: %d", msg.Message, commitments.Commitments, msg.KeyShareIndex))
 		// Invalid Share, slash validator
 		var consAddr sdk.ConsAddress
 
@@ -48,15 +81,21 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			return nil, err
 		}
 
-		k.stakingKeeper.Slash(ctx, consAddr, ctx.BlockHeight()-1, 100, sdk.NewDecWithPrec(5, 1))
+		k.stakingKeeper.Slash(
+			ctx, consAddr,
+			ctx.BlockHeight()-1,
+			types.SlashPower,
+			k.SlashFractionWrongKeyshare(ctx),
+		)
 
 		return &types.MsgSendKeyshareResponse{
 			Creator:             msg.Creator,
 			Keyshare:            msg.Message,
-			Commitment:          msg.Commitment,
 			KeyshareIndex:       msg.KeyShareIndex,
 			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
 			BlockHeight:         msg.BlockHeight,
+			Success:             false,
+			ErrorMessage:        "Invalid KeyShare",
 		}, nil
 	}
 
@@ -64,7 +103,6 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		Validator:           msg.Creator,
 		BlockHeight:         msg.BlockHeight,
 		KeyShare:            msg.Message,
-		Commitment:          msg.Commitment,
 		KeyShareIndex:       msg.KeyShareIndex,
 		ReceivedTimestamp:   uint64(ctx.BlockTime().Unix()),
 		ReceivedBlockHeight: uint64(ctx.BlockHeight()),
@@ -72,6 +110,8 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 
 	// Save the new keyshare to state
 	k.SetKeyShare(ctx, keyShare)
+
+	k.SetLastSubmittedHeight(ctx, msg.Creator, strconv.FormatUint(msg.BlockHeight, 10))
 
 	validatorList := k.GetAllValidatorSet(ctx)
 
@@ -98,7 +138,6 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			sdk.NewAttribute(types.SendKeyshareEventKeyshareBlockHeight, strconv.FormatUint(msg.BlockHeight, 10)),
 			sdk.NewAttribute(types.SendKeyshareEventReceivedBlockHeight, strconv.FormatInt(ctx.BlockHeight(), 10)),
 			sdk.NewAttribute(types.SendKeyshareEventMessage, msg.Message),
-			sdk.NewAttribute(types.SendKeyshareEventCommitment, msg.Commitment),
 			sdk.NewAttribute(types.SendKeyshareEventIndex, strconv.FormatUint(msg.KeyShareIndex, 10)),
 		),
 	)
@@ -112,10 +151,10 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		return &types.MsgSendKeyshareResponse{
 			Creator:             msg.Creator,
 			Keyshare:            msg.Message,
-			Commitment:          msg.Commitment,
 			KeyshareIndex:       msg.KeyShareIndex,
 			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
 			BlockHeight:         msg.BlockHeight,
+			Success:             true,
 		}, nil
 	}
 
@@ -131,7 +170,11 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	var listOfCommitment []distIBE.Commitment
 
 	for _, eachKeyShare := range stateKeyShares {
-		keyShare, commitment, err := parseKeyShareCommitment(suite, eachKeyShare.KeyShare, eachKeyShare.Commitment, uint32(eachKeyShare.KeyShareIndex), ibeID)
+		if eachKeyShare.KeyShareIndex > commitmentsLen {
+			k.Logger(ctx).Error(fmt.Sprintf("KeyShareIndex: %d should not higher or equals to commitments length: %d", eachKeyShare.KeyShareIndex, commitmentsLen))
+			continue
+		}
+		keyShare, commitment, err := parseKeyShareCommitment(suite, eachKeyShare.KeyShare, commitments.Commitments[eachKeyShare.KeyShareIndex-1], uint32(eachKeyShare.KeyShareIndex), ibeID)
 		if err != nil {
 			k.Logger(ctx).Error(err.Error())
 			continue
@@ -175,10 +218,10 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	return &types.MsgSendKeyshareResponse{
 		Creator:             msg.Creator,
 		Keyshare:            msg.Message,
-		Commitment:          msg.Commitment,
 		KeyshareIndex:       msg.KeyShareIndex,
 		ReceivedBlockHeight: uint64(ctx.BlockHeight()),
 		BlockHeight:         msg.BlockHeight,
+		Success:             true,
 	}, nil
 }
 

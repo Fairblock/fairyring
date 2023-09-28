@@ -1,15 +1,16 @@
 package simulation
 
 import (
-	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
-	"github.com/cosmos/cosmos-sdk/x/simulation"
 	"math/rand"
+
+	"github.com/cosmos/cosmos-sdk/x/simulation"
 
 	"fairyring/x/keyshare/keeper"
 	"fairyring/x/keyshare/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/module/testutil"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 )
 
@@ -28,7 +29,7 @@ func SimulateMsgSendKeyshare(
 		txCtx := simulation.OperationInput{
 			R:               r,
 			App:             app,
-			TxGen:           simappparams.MakeTestEncodingConfig().TxConfig,
+			TxGen:           testutil.MakeTestTxConfig(),
 			Cdc:             nil,
 			Msg:             msg,
 			MsgType:         msg.Type(),

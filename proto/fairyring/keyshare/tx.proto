@@ -10,9 +10,12 @@ option go_package = "fairyring/x/keyshare/types";
 service Msg {
   rpc RegisterValidator (MsgRegisterValidator) returns (MsgRegisterValidatorResponse);
   rpc SendKeyshare      (MsgSendKeyshare     ) returns (MsgSendKeyshareResponse     );
-
+  
   // this line is used by starport scaffolding # proto/tx/rpc
-  rpc CreateLatestPubKey (MsgCreateLatestPubKey) returns (MsgCreateLatestPubKeyResponse);
+  rpc CreateLatestPubKey      (MsgCreateLatestPubKey     ) returns (MsgCreateLatestPubKeyResponse     );
+  rpc CreateAuthorizedAddress (MsgCreateAuthorizedAddress) returns (MsgCreateAuthorizedAddressResponse);
+  rpc UpdateAuthorizedAddress (MsgUpdateAuthorizedAddress) returns (MsgUpdateAuthorizedAddressResponse);
+  rpc DeleteAuthorizedAddress (MsgDeleteAuthorizedAddress) returns (MsgDeleteAuthorizedAddressResponse);
 }
 message MsgRegisterValidator {
   string creator = 1;
@@ -25,25 +28,48 @@ message MsgRegisterValidatorResponse {
 message MsgSendKeyshare {
   string creator       = 1;
   string message       = 2;
-  string commitment    = 3;
-  uint64 keyShareIndex = 4;
-  uint64 blockHeight   = 5;
+  uint64 keyShareIndex = 3;
+  uint64 blockHeight   = 4;
 }
 
 message MsgSendKeyshareResponse {
   string creator             = 1;
   string keyshare            = 2;
-  string commitment          = 3;
-  uint64 keyshareIndex       = 4;
-  uint64 blockHeight         = 5;
-  uint64 receivedBlockHeight = 6;
+  uint64 keyshareIndex       = 3;
+  uint64 blockHeight         = 4;
+  uint64 receivedBlockHeight = 5;
+  bool   success             = 6;
+  string errorMessage        = 7;
 }
-
 
 // this line is used by starport scaffolding # proto/tx/message
 message MsgCreateLatestPubKey {
   string creator   = 1;
   string publicKey = 2;
+  repeated string commitments = 3;
 }
 
 message MsgCreateLatestPubKeyResponse {}
+
+message MsgCreateAuthorizedAddress {
+  string target       = 1;
+  string creator      = 2;
+}
+
+message MsgCreateAuthorizedAddressResponse {}
+
+message MsgUpdateAuthorizedAddress {
+  string  target        = 1;
+  bool    isAuthorized  = 2;
+  string  creator       = 3;
+}
+
+message MsgUpdateAuthorizedAddressResponse {}
+
+message MsgDeleteAuthorizedAddress {
+  string target       = 1;
+  string creator      = 2;
+}
+
+message MsgDeleteAuthorizedAddressResponse {}
+
