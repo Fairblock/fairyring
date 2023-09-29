@@ -245,7 +245,7 @@ The `persistent_peers` needs a comma-separated list of trusted peers on the netw
 ## Version
 
 This chain is currently running on fairyring [v0.2.1](https://github.com/FairBlock/fairyring/releases/tag/v0.2.1)
-Commit Hash: [c3daf935d3214ba48e5dc044789b653679eca558](https://github.com/FairBlock/fairyring/commit/c3daf935d3214ba48e5dc044789b653679eca558)
+Commit Hash: [8e6f6deea6a04b260d190fcd5787bcc4ff85f149](https://github.com/FairBlock/fairyring/commit/8e6f6deea6a04b260d190fcd5787bcc4ff85f149)
 
 ## Binary
 
