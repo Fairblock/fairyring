@@ -1,0 +1,11 @@
+syntax = "proto3";
+package fairyring.Conditionalenc;
+
+option go_package = "fairyring/x/conditionalenc/types";
+
+message AggregatedKeyShare {
+  uint64 condition = 1; 
+  string data = 2;
+  string creator = 3;
+}
+

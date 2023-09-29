@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pricefeed;
+
+option go_package = "fairyring/x/pricefeed/types";
+
+import "gogoproto/gogo.proto";
+import "fairyring/pricefeed/params.proto";
+import "fairyring/pricefeed/pricefeed.proto";
+
+// GenesisState defines the pricefeed module's genesis state.
+message GenesisState {
+  Params params = 1 [ (gogoproto.nullable) = false ];
+  string port_id = 2;
+  repeated SymbolRequest symbol_requests = 3 [ (gogoproto.nullable) = false ];
+}

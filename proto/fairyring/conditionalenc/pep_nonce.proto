@@ -1,0 +1,11 @@
+syntax = "proto3";
+package fairyring.Conditionalenc;
+
+option go_package = "fairyring/x/conditionalenc/types";
+
+message ConditionalencNonce {
+  string address = 1; 
+  uint64 nonce = 2; 
+  
+}
+

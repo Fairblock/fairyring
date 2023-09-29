@@ -1,0 +1,19 @@
+syntax = "proto3";
+package fairyring.Conditionalenc;
+
+import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
+
+option go_package = "fairyring/x/conditionalenc/types";
+
+message EncryptedTx {
+  string targetCondition = 1; 
+  uint64 index = 2; 
+  string data = 3; 
+  string creator = 4;
+  cosmos.base.v1beta1.Coin chargedGas = 5;
+}
+
+message EncryptedTxArray {
+  repeated EncryptedTx encryptedTx = 1 [(gogoproto.nullable) = false];
+}

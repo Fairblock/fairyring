@@ -120,7 +120,24 @@ import (
 	pepmodule "fairyring/x/pep"
 	pepmodulekeeper "fairyring/x/pep/keeper"
 	pepmoduletypes "fairyring/x/pep/types"
+	conditionalencmodule "fairyring/x/conditionalenc"
+	conditionalencmodulekeeper "fairyring/x/conditionalenc/keeper"
+	conditionalencmoduletypes "fairyring/x/conditionalenc/types"
+	// consumermodule "fairyring/x/consumer"
+	// consumermodulekeeper "fairyring/x/consumer/keeper"
+	// consumermoduletypes "fairyring/x/consumer/types"
+	pricefeedmodule "fairyring/x/pricefeed"
+	pricefeedmodulekeeper "fairyring/x/pricefeed/keeper"
+	pricefeedmoduletypes "fairyring/x/pricefeed/types"
 
+	//consumermodule "fairyring/x/consumer"
+	// consumerkeeper "fairyring/x/consumer/keeper"
+	// consumertypes "fairyring/x/consumer/types"
+
+	//pricefeedmodule "fairyring/x/pricefeed"
+	pricefeedclient "fairyring/x/pricefeed/client"
+	pricefeedkeeper "fairyring/x/pricefeed/keeper"
+	pricefeedtypes "fairyring/x/pricefeed/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "fairyring/app/params"
@@ -144,6 +161,7 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 		upgradeclient.LegacyProposalHandler,
 		upgradeclient.LegacyCancelProposalHandler,
 		ibcclientclient.UpdateClientProposalHandler,
+		pricefeedclient.ProposalHandler,
 		ibcclientclient.UpgradeProposalHandler,
 		// this line is used by starport scaffolding # stargate/app/govProposalHandler
 	)
@@ -183,6 +201,8 @@ var (
 		consensus.AppModuleBasic{},
 		keysharemodule.AppModuleBasic{},
 		pepmodule.AppModuleBasic{},
+		conditionalencmodule.AppModuleBasic{},
+		pricefeedmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -197,6 +217,7 @@ var (
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		pepmoduletypes.ModuleName:      {authtypes.Minter, authtypes.Burner, authtypes.Staking},
+		conditionalencmoduletypes.ModuleName:      {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -259,9 +280,12 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 	ScopedPepKeeper      capabilitykeeper.ScopedKeeper
-
+	ScopedConditionalencKeeper      capabilitykeeper.ScopedKeeper
+	ScopedPricefeedKeeper capabilitykeeper.ScopedKeeper
+	PricefeedKeeper       pricefeedmodulekeeper.Keeper
 	KeyshareKeeper keysharemodulekeeper.Keeper
 	PepKeeper      pepmodulekeeper.Keeper
+	ConditionalEncKeeper      conditionalencmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -311,6 +335,8 @@ func New(
 		capabilitytypes.StoreKey, group.StoreKey, icacontrollertypes.StoreKey, consensusparamtypes.StoreKey,
 		keysharemoduletypes.StoreKey,
 		pepmoduletypes.StoreKey,
+		conditionalencmoduletypes.StoreKey,
+		pricefeedmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -561,7 +587,30 @@ func New(
 	)
 
 	pepIBCModule := pepmodule.NewIBCModule(app.PepKeeper)
+	scopedConditionalencKeeper := app.CapabilityKeeper.ScopeToModule(conditionalencmoduletypes.ModuleName)
+	app.ConditionalEncKeeper = *conditionalencmodulekeeper.NewKeeper(
+		appCodec,
+		keys[conditionalencmoduletypes.StoreKey],
+		keys[conditionalencmoduletypes.MemStoreKey],
+		app.GetSubspace(conditionalencmoduletypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedConditionalencKeeper,
+		app.IBCKeeper.ConnectionKeeper,
+		app.BankKeeper,
+	)
+	conditionalencModule := conditionalencmodule.NewAppModule(
+		appCodec,
+		app.ConditionalEncKeeper,
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.MsgServiceRouter(),
+		encodingConfig.TxConfig,
+		app.SimCheck,
+	)
 
+	conditionalencIBCModule := conditionalencmodule.NewIBCModule(app.ConditionalEncKeeper)
+// add conditionalenc
 	app.KeyshareKeeper = *keysharemodulekeeper.NewKeeper(
 		appCodec,
 		keys[keysharemoduletypes.StoreKey],
@@ -570,7 +619,22 @@ func New(
 		app.PepKeeper,
 		app.StakingKeeper,
 	)
+	
 	keyshareModule := keysharemodule.NewAppModule(appCodec, app.KeyshareKeeper, app.AccountKeeper, app.BankKeeper, app.PepKeeper)
+	scopedPricefeedKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedtypes.ModuleName)
+	app.ScopedPricefeedKeeper = scopedPricefeedKeeper
+	app.PricefeedKeeper = pricefeedkeeper.NewKeeper(
+		appCodec,
+		keys[pricefeedtypes.StoreKey],
+		app.GetSubspace(pricefeedtypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedPricefeedKeeper,
+	)
+	pricefeedModule := pricefeedmodule.NewAppModule(appCodec, app.PricefeedKeeper)
+
+	pricefeedIBCModule := pricefeedmodule.NewIBCModule(app.PricefeedKeeper)
 
 	// ---------------------------------------------------------------------------- //
 	// ------------------------- Begin Custom Code -------------------------------- //
@@ -628,6 +692,7 @@ func New(
 	options := FairyringHandlerOptions{
 		BaseOptions:  handlerOptions,
 		PepKeeper:    app.PepKeeper,
+		ConditionalEncKeeper:    app.ConditionalEncKeeper,
 		TxDecoder:    app.txConfig.TxDecoder(),
 		TxEncoder:    app.txConfig.TxEncoder(),
 		KeyShareLane: keyshareLane,
@@ -672,9 +737,10 @@ func New(
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
-		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
+		AddRoute(ibctransfertypes.ModuleName, transferIBCModule).
+		AddRoute(pricefeedtypes.ModuleName, pricefeedIBCModule)
 	ibcRouter.AddRoute(pepmoduletypes.ModuleName, pepIBCModule)
-
+	ibcRouter.AddRoute(conditionalencmoduletypes.ModuleName, conditionalencIBCModule)
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 
@@ -723,6 +789,8 @@ func New(
 		icaModule,
 		keyshareModule,
 		pepModule,
+		conditionalencModule,
+		pricefeedModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 
 		crisis.NewAppModule(app.CrisisKeeper, skipGenesisInvariants, app.GetSubspace(crisistypes.ModuleName)), // always be last to make sure that it checks for all invariants and not only part of them
@@ -757,6 +825,8 @@ func New(
 		consensusparamtypes.ModuleName,
 		keysharemoduletypes.ModuleName, // Necessary to run before begin blocker of pep module
 		pepmoduletypes.ModuleName,
+		conditionalencmoduletypes.ModuleName,
+		pricefeedmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -784,6 +854,8 @@ func New(
 		consensusparamtypes.ModuleName,
 		keysharemoduletypes.ModuleName,
 		pepmoduletypes.ModuleName,
+		conditionalencmoduletypes.ModuleName,
+		pricefeedmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -816,6 +888,8 @@ func New(
 		consensusparamtypes.ModuleName,
 		keysharemoduletypes.ModuleName,
 		pepmoduletypes.ModuleName,
+		conditionalencmoduletypes.ModuleName,
+		pricefeedmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 	app.mm.SetOrderInitGenesis(genesisModuleOrder...)
@@ -861,6 +935,7 @@ func New(
 	app.ScopedIBCKeeper = scopedIBCKeeper
 	app.ScopedTransferKeeper = scopedTransferKeeper
 	app.ScopedPepKeeper = scopedPepKeeper
+	app.ScopedConditionalencKeeper = scopedConditionalencKeeper
 	// this line is used by starport scaffolding # stargate/app/beforeInitReturn
 
 	return app
@@ -1024,6 +1099,8 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
 	paramsKeeper.Subspace(keysharemoduletypes.ModuleName)
 	paramsKeeper.Subspace(pepmoduletypes.ModuleName)
+	paramsKeeper.Subspace(conditionalencmoduletypes.ModuleName)
+	paramsKeeper.Subspace(pricefeedmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

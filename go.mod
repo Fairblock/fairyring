@@ -4,14 +4,12 @@ go 1.19
 
 require (
 	cosmossdk.io/api v0.3.1
-	cosmossdk.io/errors v1.0.0-beta.7
+	cosmossdk.io/errors v1.0.0
 	cosmossdk.io/math v1.0.1
 	github.com/FairBlock/DistributedIBE v0.0.0-20230528025616-f58fb2b93eaf
 	github.com/cometbft/cometbft v0.37.2
 	github.com/cometbft/cometbft-db v0.8.0
-	github.com/cosmos/cosmos-sdk v0.47.3
-	github.com/cosmos/gogoproto v1.4.10
-	github.com/cosmos/ibc-go/v7 v7.2.0
+	github.com/cosmos/cosmos-sdk v0.47.4
 	github.com/drand/kyber v1.2.0
 	github.com/drand/kyber-bls12381 v0.2.5
 	github.com/gogo/protobuf v1.3.3
@@ -25,9 +23,15 @@ require (
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.8.4
+	github.com/tendermint/tendermint v0.34.27
 	google.golang.org/genproto/googleapis/api v0.0.0-20230822172742-b8732ec3820d
 	google.golang.org/grpc v1.58.0
 	gopkg.in/yaml.v2 v2.4.0
+)
+
+require (
+	github.com/cosmos/gogoproto v1.4.10
+	github.com/cosmos/ibc-go/v7 v7.3.0
 )
 
 require (
@@ -38,7 +42,7 @@ require (
 	cloud.google.com/go/storage v1.30.1 // indirect
 	cosmossdk.io/core v0.5.1 // indirect
 	cosmossdk.io/depinject v1.0.0-alpha.3 // indirect
-	cosmossdk.io/log v1.1.0 // indirect
+	cosmossdk.io/log v1.1.1-0.20230704160919-88f2c830b0ca // indirect
 	cosmossdk.io/tools/rosetta v0.2.1 // indirect
 	filippo.io/age v1.1.1 // indirect
 	filippo.io/edwards25519 v1.0.0 // indirect
@@ -68,7 +72,7 @@ require (
 	github.com/cosmos/gogogateway v1.2.0 // indirect
 	github.com/cosmos/iavl v0.20.0 // indirect
 	github.com/cosmos/ics23/go v0.10.0 // indirect
-	github.com/cosmos/ledger-cosmos-go v0.12.1 // indirect
+	github.com/cosmos/ledger-cosmos-go v0.12.2 // indirect
 	github.com/cosmos/rosetta-sdk-go v0.10.0 // indirect
 	github.com/creachadair/taskgroup v0.4.2 // indirect
 	github.com/danieljoos/wincred v1.1.2 // indirect
@@ -190,4 +194,5 @@ replace (
 	github.com/confio/ics23/go => github.com/cosmos/cosmos-sdk/ics23/go v0.8.0
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
+	github.com/tendermint/tendermint => ../tendermint-v0.34.27-terra.rc.1
 )
