@@ -7,12 +7,12 @@
 ## Hardware Requirements
 
 - **Minimal**
-  - 1 GB RAM
-  - 25 GB HDD
+  - 4 GB RAM
+  - 500 GB HDD
   - 1.4 GHz CPU
 - **Recommended**
-  - 2 GB RAM
-  - 100 GB HDD
+  - 8 GB RAM
+  - 2 TB HDD
   - 2.0 GHz x2 CPU
 
 ---
@@ -38,7 +38,7 @@
 
 ## Installation Steps
 
-> Prerequisite: go1.18+ required [ref](https://golang.org/doc/install)
+> Prerequisite: go1.20 required [ref](https://golang.org/doc/install)
 
 ```shell
 sudo snap install --classic go
@@ -89,7 +89,7 @@ git clone git@github.com:FairBlock/fairyring.git
 ```shell
 cd fairyring
 git fetch --tags
-git checkout v0.1.1
+git checkout v0.2.0
 ```
 
 - Install
@@ -219,7 +219,7 @@ fairyringd start
 
 ```shell
 fairyringd tx staking create-validator \
-  --amount 50000000ufairy \
+  --amount 100000000000ufairy \
   --commission-max-change-rate 0.01 \
   --commission-max-rate 0.2 \
   --commission-rate 0.1 \
@@ -244,12 +244,12 @@ The `persistent_peers` needs a comma-separated list of trusted peers on the netw
 
 ## Version
 
-This chain is currently running on fairyring [v0.1.1](https://github.com/FairBlock/fairyring/releases/tag/v0.1.1)
-Commit Hash: [4062213809e5694b45279dd9370f52673fbd6538](https://github.com/FairBlock/fairyring/commit/4062213809e5694b45279dd9370f52673fbd6538)
+This chain is currently running on fairyring [v0.2.0](https://github.com/FairBlock/fairyring/releases/tag/v0.2.0)
+Commit Hash: [c3daf935d3214ba48e5dc044789b653679eca558](https://github.com/FairBlock/fairyring/commit/c3daf935d3214ba48e5dc044789b653679eca558)
 
 ## Binary
 
-The binary can be downloaded from [here](https://github.com/FairBlock/fairyring/releases/tag/v0.1.1)
+The binary can be downloaded from [here](https://github.com/FairBlock/fairyring/releases/tag/v0.2.0)
 
 ## Explorer
 
