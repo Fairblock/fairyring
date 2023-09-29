@@ -38,7 +38,7 @@
 
 ## Installation Steps
 
-> Prerequisite: go1.20 required [ref](https://golang.org/doc/install)
+> Prerequisite: go1.21 required [ref](https://golang.org/doc/install)
 
 ```shell
 sudo snap install --classic go
@@ -89,7 +89,7 @@ git clone git@github.com:FairBlock/fairyring.git
 ```shell
 cd fairyring
 git fetch --tags
-git checkout v0.2.0
+git checkout v0.2.1
 ```
 
 - Install
@@ -244,12 +244,12 @@ The `persistent_peers` needs a comma-separated list of trusted peers on the netw
 
 ## Version
 
-This chain is currently running on fairyring [v0.2.0](https://github.com/FairBlock/fairyring/releases/tag/v0.2.0)
+This chain is currently running on fairyring [v0.2.1](https://github.com/FairBlock/fairyring/releases/tag/v0.2.1)
 Commit Hash: [c3daf935d3214ba48e5dc044789b653679eca558](https://github.com/FairBlock/fairyring/commit/c3daf935d3214ba48e5dc044789b653679eca558)
 
 ## Binary
 
-The binary can be downloaded from [here](https://github.com/FairBlock/fairyring/releases/tag/v0.2.0)
+The binary can be downloaded from [here](https://github.com/FairBlock/fairyring/releases/tag/v0.2.1)
 
 ## Explorer
 

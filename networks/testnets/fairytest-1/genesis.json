@@ -1,12 +1,11 @@
 {
-  "genesis_time": "2023-06-16T16:28:18.431145244Z",
+  "genesis_time": "2023-09-29T15:21:45.668086Z",
   "chain_id": "fairytest-1",
   "initial_height": "1",
   "consensus_params": {
     "block": {
       "max_bytes": "22020096",
-      "max_gas": "-1",
-      "time_iota_ms": "1000"
+      "max_gas": "-1"
     },
     "evidence": {
       "max_age_num_blocks": "100000",
@@ -18,10 +17,13 @@
         "ed25519"
       ]
     },
-    "version": {}
+    "version": {
+      "app": "0"
+    }
   },
   "app_hash": "",
   "app_state": {
+    "07-tendermint": null,
     "auth": {
       "params": {
         "max_memo_characters": "256",
@@ -236,12 +238,14 @@
         }
       ],
       "supply": [],
-      "denom_metadata": []
+      "denom_metadata": [],
+      "send_enabled": []
     },
     "capability": {
       "index": "1",
       "owners": []
     },
+    "consensus": null,
     "crisis": {
       "constant_fee": {
         "denom": "ufairy",
@@ -716,22 +720,25 @@
       "deposits": [],
       "votes": [],
       "proposals": [],
-      "deposit_params": {
+      "deposit_params": null,
+      "voting_params": null,
+      "tally_params": null,
+      "params": {
         "min_deposit": [
           {
             "denom": "ufairy",
             "amount": "10000000"
           }
         ],
-        "max_deposit_period": "172800s"
-      },
-      "voting_params": {
-        "voting_period": "172800s"
-      },
-      "tally_params": {
+        "max_deposit_period": "172800s",
+        "voting_period": "172800s",
         "quorum": "0.334000000000000000",
         "threshold": "0.500000000000000000",
-        "veto_threshold": "0.334000000000000000"
+        "veto_threshold": "0.334000000000000000",
+        "min_initial_deposit_ratio": "0.000000000000000000",
+        "burn_vote_quorum": false,
+        "burn_proposal_deposit_prevote": false,
+        "burn_vote_veto": true
       }
     },
     "group": {
@@ -752,7 +759,8 @@
         "params": {
           "allowed_clients": [
             "06-solomachine",
-            "07-tendermint"
+            "07-tendermint",
+            "09-localhost"
           ]
         },
         "create_localhost": false,
@@ -792,18 +800,24 @@
         "port": "icahost",
         "params": {
           "host_enabled": true,
-          "allow_messages": []
+          "allow_messages": [
+            "*"
+          ]
         }
       }
     },
     "keyshare": {
       "params": {
-        "key_expiry": "100",
+        "key_expiry": "10000",
         "trusted_addresses": [
           "fairy1cmly8rn75tp4pmdwjae39t8h7ttmd6ld85je6f",
           "fairy1t5rvpy4aefapvsws2zhzgsfgl8d9actpmarwh7",
           "fairy1lw4mm6yzry2xg3tj7swp80cw4s6w6vzvxfqml5"
-        ]
+        ],
+        "slash_fraction_no_keyshare": "0.500000000000000000",
+        "slash_fraction_wrong_keyshare": "0.500000000000000000",
+        "minimum_bonded": "100000000000",
+        "max_idled_block": "10000"
       },
       "validatorSetList": [],
       "keyShareList": [],
@@ -817,7 +831,8 @@
         "publicKey": "",
         "creator": "",
         "expiry": "0"
-      }
+      },
+      "authorizedAddressList": []
     },
     "mint": {
       "minter": {
@@ -835,7 +850,15 @@
     },
     "params": null,
     "pep": {
-      "params": {},
+      "params": {
+        "trusted_counter_parties": [{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-0"}],
+        "trusted_addresses": ["fairy1cmly8rn75tp4pmdwjae39t8h7ttmd6ld85je6f"],
+        "channel_id": "channel-0",
+        "minGasPrice": {
+          "denom": "ufairy",
+          "amount": "300000"
+        }
+      },
       "port_id": "",
       "encryptedTxArray": [],
       "pepNonceList": [],
@@ -885,7 +908,8 @@
       "params": {
         "send_enabled": true,
         "receive_enabled": true
-      }
+      },
+      "total_escrowed": []
     },
     "upgrade": {},
     "vesting": {}
