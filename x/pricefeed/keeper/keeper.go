@@ -3,9 +3,10 @@ package keeper
 import (
 	"encoding/json"
 	"fmt"
-	
+
 	"strconv"
 	"time"
+
 	log "github.com/cometbft/cometbft/libs/log"
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
@@ -17,6 +18,7 @@ import (
 	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
+	"github.com/sirupsen/logrus"
 
 	//"github.com/sirupsen/logrus"
 	//"github.com/tendermint/tendermint/libs/log"
@@ -187,14 +189,14 @@ func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
 	blockHeight := ctx.BlockHeight()
 
 	params := k.GetParams(ctx)
-
+	
 	// Verify that SourceChannel params is set by open params proposal already
 	if params.SourceChannel == types.NotSet {
 		return
 	}
 
 	symbols := k.GetAllSymbolRequests(ctx)
-
+	logrus.Info("-----------------------------> ",symbols)
 	// Map symbols that need to request on this block by oracle script ID and symbol block interval
 	tasks := types.ComputeOracleTasks(symbols, blockHeight)
 
@@ -341,12 +343,14 @@ func (k Keeper) AppendListToList(ctx sdk.Context, items []string) {
 	store.Set([]byte("waitingList"), MustMarshalJSON(waitingList))
 }
 func (k Keeper) GetList(ctx sdk.Context) WaitingList {
+	logrus.Info("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee1")
 	store := ctx.KVStore(k.storeKey)
 	var waitingList WaitingList
 	bz := store.Get([]byte("waitingList"))
 	if bz != nil {
 		MustUnmarshalJSON(bz, &waitingList)
 	}
+	logrus.Info("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee2")
 	return waitingList
 }
 // RemoveFromList removes an item from the waiting list

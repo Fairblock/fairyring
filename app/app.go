@@ -218,6 +218,7 @@ var (
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		pepmoduletypes.ModuleName:      {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		conditionalencmoduletypes.ModuleName:      {authtypes.Minter, authtypes.Burner, authtypes.Staking},
+		pricefeedmoduletypes.ModuleName:      {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -587,6 +588,21 @@ func New(
 	)
 
 	pepIBCModule := pepmodule.NewIBCModule(app.PepKeeper)
+	scopedPricefeedKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedtypes.ModuleName)
+	app.ScopedPricefeedKeeper = scopedPricefeedKeeper
+	app.PricefeedKeeper = pricefeedkeeper.NewKeeper(
+		appCodec,
+		keys[pricefeedtypes.StoreKey],
+		app.GetSubspace(pricefeedtypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedPricefeedKeeper,
+	)
+	pricefeedModule := pricefeedmodule.NewAppModule(appCodec, app.PricefeedKeeper)
+
+	pricefeedIBCModule := pricefeedmodule.NewIBCModule(app.PricefeedKeeper)
+
 	scopedConditionalencKeeper := app.CapabilityKeeper.ScopeToModule(conditionalencmoduletypes.ModuleName)
 	app.ConditionalEncKeeper = *conditionalencmodulekeeper.NewKeeper(
 		appCodec,
@@ -606,6 +622,7 @@ func New(
 		app.BankKeeper,
 		app.MsgServiceRouter(),
 		encodingConfig.TxConfig,
+		app.PricefeedKeeper,
 		app.SimCheck,
 	)
 
@@ -617,24 +634,11 @@ func New(
 		keys[keysharemoduletypes.MemStoreKey],
 		app.GetSubspace(keysharemoduletypes.ModuleName),
 		app.PepKeeper,
+		app.ConditionalEncKeeper,
 		app.StakingKeeper,
 	)
 	
-	keyshareModule := keysharemodule.NewAppModule(appCodec, app.KeyshareKeeper, app.AccountKeeper, app.BankKeeper, app.PepKeeper)
-	scopedPricefeedKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedtypes.ModuleName)
-	app.ScopedPricefeedKeeper = scopedPricefeedKeeper
-	app.PricefeedKeeper = pricefeedkeeper.NewKeeper(
-		appCodec,
-		keys[pricefeedtypes.StoreKey],
-		app.GetSubspace(pricefeedtypes.ModuleName),
-		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.ChannelKeeper,
-		&app.IBCKeeper.PortKeeper,
-		scopedPricefeedKeeper,
-	)
-	pricefeedModule := pricefeedmodule.NewAppModule(appCodec, app.PricefeedKeeper)
-
-	pricefeedIBCModule := pricefeedmodule.NewIBCModule(app.PricefeedKeeper)
+	keyshareModule := keysharemodule.NewAppModule(appCodec, app.KeyshareKeeper, app.AccountKeeper, app.BankKeeper, app.PepKeeper, app.ConditionalEncKeeper)
 
 	// ---------------------------------------------------------------------------- //
 	// ------------------------- Begin Custom Code -------------------------------- //
@@ -693,6 +697,7 @@ func New(
 		BaseOptions:  handlerOptions,
 		PepKeeper:    app.PepKeeper,
 		ConditionalEncKeeper:    app.ConditionalEncKeeper,
+		PricefeedKeeper:    app.PricefeedKeeper,
 		TxDecoder:    app.txConfig.TxDecoder(),
 		TxEncoder:    app.txConfig.TxEncoder(),
 		KeyShareLane: keyshareLane,
@@ -825,8 +830,9 @@ func New(
 		consensusparamtypes.ModuleName,
 		keysharemoduletypes.ModuleName, // Necessary to run before begin blocker of pep module
 		pepmoduletypes.ModuleName,
-		conditionalencmoduletypes.ModuleName,
 		pricefeedmoduletypes.ModuleName,
+		conditionalencmoduletypes.ModuleName,
+		
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -854,8 +860,9 @@ func New(
 		consensusparamtypes.ModuleName,
 		keysharemoduletypes.ModuleName,
 		pepmoduletypes.ModuleName,
-		conditionalencmoduletypes.ModuleName,
 		pricefeedmoduletypes.ModuleName,
+		conditionalencmoduletypes.ModuleName,
+		
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -936,6 +943,7 @@ func New(
 	app.ScopedTransferKeeper = scopedTransferKeeper
 	app.ScopedPepKeeper = scopedPepKeeper
 	app.ScopedConditionalencKeeper = scopedConditionalencKeeper
+	app.ScopedPricefeedKeeper = scopedPricefeedKeeper
 	// this line is used by starport scaffolding # stargate/app/beforeInitReturn
 
 	return app

@@ -1,0 +1,17 @@
+{
+    "title": "Update Symbol requests",
+    "description": "Update symbol that request price from BandChain",
+    "symbol_requests": [
+        {
+            "symbol": "BTC",
+            "oracle_script_id": "396",
+            "block_interval": "40"
+        },
+        {
+            "symbol": "ETH",
+            "oracle_script_id": "396",
+            "block_interval": "40"
+        }
+    ],
+    "deposit": "10000000stake"
+}

@@ -6,7 +6,7 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	//ibcexported "github.com/cosmos/ibc-go/v7/modules/core/exported"
 	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
-	conditionalenctypes "fairyring/x/conditionalenc/types"
+	//conditionalenctypes "fairyring/x/conditionalenc/types"
 )
 
 // ICS4Wrapper defines the expected ICS4Wrapper for middleware
@@ -44,11 +44,11 @@ type PortKeeper interface {
 	BindPort(ctx sdk.Context, portID string) *capabilitytypes.Capability
 }
 
-type ConditionalEncKeeper interface {
-	SetActivePubKey(ctx sdk.Context, activePubKey conditionalenctypes.ActivePubKey)
-	SetQueuedPubKey(ctx sdk.Context, queuedPubKey conditionalenctypes.QueuedPubKey)
-	GetActivePubKey(ctx sdk.Context) (val conditionalenctypes.ActivePubKey, found bool)
-	GetQueuedPubKey(ctx sdk.Context) (val conditionalenctypes.QueuedPubKey, found bool)
-	DeleteActivePubKey(ctx sdk.Context)
-	DeleteQueuedPubKey(ctx sdk.Context)
-}
+// type ConditionalEncKeeper interface {
+// 	SetActivePubKey(ctx sdk.Context, activePubKey conditionalenctypes.ActivePubKey)
+// 	SetQueuedPubKey(ctx sdk.Context, queuedPubKey conditionalenctypes.QueuedPubKey)
+// 	GetActivePubKey(ctx sdk.Context) (val conditionalenctypes.ActivePubKey, found bool)
+// 	GetQueuedPubKey(ctx sdk.Context) (val conditionalenctypes.QueuedPubKey, found bool)
+// 	DeleteActivePubKey(ctx sdk.Context)
+// 	DeleteQueuedPubKey(ctx sdk.Context)
+// }

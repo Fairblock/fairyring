@@ -3,20 +3,23 @@ package pep
 import (
 	"bytes"
 	"context"
-	cosmosmath "cosmossdk.io/math"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
 
+	cosmosmath "cosmossdk.io/math"
+
 	enc "github.com/FairBlock/DistributedIBE/encryption"
+	"github.com/sirupsen/logrus"
+
+	"math"
+	"strconv"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	bls "github.com/drand/kyber-bls12381"
-	"math"
-	"strconv"
-	"strings"
 
 	// this line is used by starport scaffolding # 1
 
@@ -234,6 +237,7 @@ func (am AppModule) processFailedEncryptedTx(ctx sdk.Context, tx types.Encrypted
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
+	logrus.Info("-----------------------------> pep")
 	strLastExecutedHeight := am.keeper.GetLastExecutedHeight(ctx)
 	lastExecutedHeight, err := strconv.ParseUint(strLastExecutedHeight, 10, 64)
 

@@ -1,23 +1,25 @@
 package pricefeed
 
 import (
-//	"bytes"
+	//	"bytes"
 	"context"
 	//"encoding/hex"
 	"encoding/json"
 	"fmt"
+
 	//"math"
 
 	//"strconv"
 
 	//bls "github.com/drand/kyber-bls12381"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
 	"fairyring/x/pricefeed/client/cli"
 	"fairyring/x/pricefeed/keeper"
 	"fairyring/x/pricefeed/types"
-	
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -154,6 +156,7 @@ func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
+	logrus.Info("-----------------------------> pricefeed")
 	HandleBeginBlock(ctx, am.keeper)
 
 	
@@ -162,5 +165,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+	
 	return []abci.ValidatorUpdate{}
 }

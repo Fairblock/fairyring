@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/hex"
 	"encoding/json"
+	conditionalenctypes "fairyring/x/conditionalenc/types"
 	peptypes "fairyring/x/pep/types"
 	"fmt"
 	"strconv"
@@ -11,6 +12,7 @@ import (
 	// this line is used by starport scaffolding # 1
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
 	"fairyring/x/keyshare/client/cli"
@@ -100,6 +102,7 @@ type AppModule struct {
 	accountKeeper types.AccountKeeper
 	bankKeeper    types.BankKeeper
 	pepKeeper     types.PepKeeper
+	conditionalEncKeeper types.ConditionalEncKeeper
 }
 
 func NewAppModule(
@@ -108,6 +111,7 @@ func NewAppModule(
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
 	pk types.PepKeeper,
+	ck types.ConditionalEncKeeper,
 ) AppModule {
 	return AppModule{
 		AppModuleBasic: NewAppModuleBasic(cdc),
@@ -115,6 +119,7 @@ func NewAppModule(
 		accountKeeper:  accountKeeper,
 		bankKeeper:     bankKeeper,
 		pepKeeper:      pk,
+		conditionalEncKeeper: ck,
 	}
 }
 
@@ -149,6 +154,7 @@ func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
+	logrus.Info("-----------------------------> keyshare")
 	validatorSet := am.keeper.GetAllValidatorSet(ctx)
 	for _, eachValidator := range validatorSet {
 		accAddr, err := sdk.AccAddressFromBech32(eachValidator.Validator)
@@ -185,15 +191,25 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			Creator:   ak.Creator,
 			Expiry:    ak.Expiry,
 		})
-
+		am.conditionalEncKeeper.SetActivePubKey(ctx, conditionalenctypes.ActivePubKey{
+			PublicKey: ak.PublicKey,
+			Creator:   ak.Creator,
+			Expiry:    ak.Expiry,
+		})
 		if ak.Expiry <= height {
 			am.keeper.DeleteActivePubKey(ctx)
 			am.pepKeeper.DeleteActivePubKey(ctx)
+			am.conditionalEncKeeper.DeleteActivePubKey(ctx)
 			am.keeper.DeleteActiveCommitments(ctx)
 		} else {
 			if foundQk {
 				am.keeper.SetQueuedPubKey(ctx, qk)
 				am.pepKeeper.SetQueuedPubKey(ctx, peptypes.QueuedPubKey{
+					PublicKey: qk.PublicKey,
+					Creator:   qk.Creator,
+					Expiry:    qk.Expiry,
+				})
+				am.conditionalEncKeeper.SetQueuedPubKey(ctx, conditionalenctypes.QueuedPubKey{
 					PublicKey: qk.PublicKey,
 					Creator:   qk.Creator,
 					Expiry:    qk.Expiry,
@@ -207,12 +223,14 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		if qk.Expiry > height {
 			am.keeper.SetActivePubKey(ctx, types.ActivePubKey(qk))
 			am.pepKeeper.SetActivePubKey(ctx, peptypes.ActivePubKey(qk))
+			am.conditionalEncKeeper.SetActivePubKey(ctx, conditionalenctypes.ActivePubKey(qk))
 			if foundQc {
 				am.keeper.SetActiveCommitments(ctx, qc)
 			}
 		}
 		am.keeper.DeleteQueuedPubKey(ctx)
 		am.pepKeeper.DeleteQueuedPubKey(ctx)
+		am.conditionalEncKeeper.DeleteQueuedPubKey(ctx)
 		if foundQc {
 			am.keeper.DeleteQueuedCommitments(ctx)
 		}

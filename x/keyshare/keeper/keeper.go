@@ -20,6 +20,7 @@ type (
 		paramstore    paramtypes.Subspace
 		stakingKeeper types.StakingKeeper
 		pepKeeper     types.PepKeeper
+		conditionalEncKeeper     types.ConditionalEncKeeper
 	}
 )
 
@@ -29,6 +30,7 @@ func NewKeeper(
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
 	pk types.PepKeeper,
+	ck types.ConditionalEncKeeper,
 	stakingKeeper types.StakingKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
@@ -42,6 +44,7 @@ func NewKeeper(
 		memKey:        memKey,
 		paramstore:    ps,
 		pepKeeper:     pk,
+		conditionalEncKeeper: ck,
 		stakingKeeper: stakingKeeper,
 	}
 }

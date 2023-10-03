@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	peptypes "fairyring/x/pep/types"
+	conditionalenctypes "fairyring/x/conditionalenc/types"
 	"strconv"
 
 	"fairyring/x/keyshare/types"
@@ -63,7 +64,14 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 			Expiry:    expHeight,
 		},
 	)
-
+	k.conditionalEncKeeper.SetQueuedPubKey(
+		ctx,
+		conditionalenctypes.QueuedPubKey{
+			Creator:   msg.Creator,
+			PublicKey: msg.PublicKey,
+			Expiry:    expHeight,
+		},
+	)
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.QueuedPubKeyCreatedEventType,
 			sdk.NewAttribute(types.QueuedPubKeyCreatedEventActivePubkeyExpiryHeight, strconv.FormatUint(ak.Expiry, 10)),

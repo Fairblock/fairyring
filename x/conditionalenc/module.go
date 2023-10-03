@@ -10,6 +10,7 @@ import (
 	cosmosmath "cosmossdk.io/math"
 
 	enc "github.com/FairBlock/DistributedIBE/encryption"
+	"github.com/sirupsen/logrus"
 
 	"math"
 	"strconv"
@@ -30,7 +31,7 @@ import (
 	"fairyring/x/conditionalenc/client/cli"
 	"fairyring/x/conditionalenc/keeper"
 	"fairyring/x/conditionalenc/types"
-//	"fairyring/x/pricefeed"
+	pricefeedtypes "fairyring/x/pricefeed/keeper"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -126,6 +127,7 @@ func NewAppModule(
 	bankKeeper types.BankKeeper,
 	msgServiceRouter *baseapp.MsgServiceRouter,
 	txConfig client.TxConfig,
+	pk pricefeedtypes.Keeper,
 	simCheck func(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error),
 ) AppModule {
 	return AppModule{
@@ -136,6 +138,7 @@ func NewAppModule(
 		msgServiceRouter: msgServiceRouter,
 		txConfig:         txConfig,
 		simCheck:         simCheck,
+		pricefeedKeeper: pk,
 	}
 }
 
@@ -239,7 +242,7 @@ func (am AppModule) processFailedEncryptedTx(ctx sdk.Context, tx types.Encrypted
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 	waitingList := am.pricefeedKeeper.GetList(ctx)
-
+logrus.Info("=======================> ",waitingList)
 	allAggKey := am.keeper.GetAllAggregatedKeyShare(ctx)
 
 	am.keeper.Logger(ctx).Info(fmt.Sprintf("[PEP][AGGKEY] %v", allAggKey))
@@ -531,11 +534,11 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(ctx sdk.Context, endBlock abci.RequestEndBlock) []abci.ValidatorUpdate {
-	err := am.keeper.QueryFairyringCurrentKeys(ctx)
-	if err != nil {
-		am.keeper.Logger(ctx).Error("Endblocker get keys err", err)
-		am.keeper.Logger(ctx).Error(err.Error())
-	}
+	// err := am.keeper.QueryFairyringCurrentKeys(ctx)
+	// if err != nil {
+	// 	am.keeper.Logger(ctx).Error("Endblocker get keys err", err)
+	// 	am.keeper.Logger(ctx).Error(err.Error())
+	// }
 
 	// strHeight := am.keeper.GetLatestHeight(ctx)
 	// height, err := strconv.ParseUint(strHeight, 10, 64)

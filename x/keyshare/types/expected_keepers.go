@@ -2,7 +2,7 @@ package types
 
 import (
 	peptypes "fairyring/x/pep/types"
-
+	conditionalenctypes "fairyring/x/conditionalenc/types"
 	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -31,6 +31,14 @@ type PepKeeper interface {
 	DeleteQueuedPubKey(ctx sdk.Context)
 }
 
+type ConditionalEncKeeper interface {
+	SetActivePubKey(ctx sdk.Context, activePubKey conditionalenctypes.ActivePubKey)
+	SetQueuedPubKey(ctx sdk.Context, queuedPubKey conditionalenctypes.QueuedPubKey)
+	GetActivePubKey(ctx sdk.Context) (val conditionalenctypes.ActivePubKey, found bool)
+	GetQueuedPubKey(ctx sdk.Context) (val conditionalenctypes.QueuedPubKey, found bool)
+	DeleteActivePubKey(ctx sdk.Context)
+	DeleteQueuedPubKey(ctx sdk.Context)
+}
 // StakingKeeper defines the expected interface needed to retrieve the list of validators.
 type StakingKeeper interface {
 	GetAllValidators(ctx sdk.Context) []stakingtypes.Validator

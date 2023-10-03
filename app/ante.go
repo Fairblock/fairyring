@@ -6,6 +6,7 @@ import (
 	pepkeeper "fairyring/x/pep/keeper"
 	//conditionalencante "fairyring/x/conditionalenc/ante"
 	conditionalenckeeper "fairyring/x/conditionalenc/keeper"
+	pricefeedkeeper "fairyring/x/pricefeed/keeper"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 )
@@ -18,6 +19,7 @@ type FairyringHandlerOptions struct {
 	TxEncoder    sdk.TxEncoder
 	PepKeeper    pepkeeper.Keeper
 	ConditionalEncKeeper    conditionalenckeeper.Keeper
+	PricefeedKeeper    pricefeedkeeper.Keeper
 }
 
 // NewFairyringAnteHandler wraps all of the default Cosmos SDK AnteDecorators with the Fairyring AnteHandler.

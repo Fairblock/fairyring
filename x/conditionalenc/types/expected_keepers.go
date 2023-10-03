@@ -1,7 +1,7 @@
 package types
 
 import (
-	pricefeedtypes "fairyring/x/pricefeed/types"
+	pricefeedtypes "fairyring/x/pricefeed/keeper"
 	sdkerrors "cosmossdk.io/errors"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
