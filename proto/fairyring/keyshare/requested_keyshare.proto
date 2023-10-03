@@ -4,12 +4,13 @@ package fairyring.keyshare;
 option go_package = "fairyring/x/keyshare/types";
 
 message KeyShareRequest {
-    string identity = 1;
-    string pubkey = 2;
-    IBCInfo ibc_info = 3;
+    string identity                  = 1;
+    string pubkey                    = 2;
+    IBCInfo ibc_info                 = 3;
     CounterPartyIBCInfo counterparty = 4;
-    string aggr_keyshare = 5;
-    bool sent = 6;
+    string aggr_keyshare             = 5;
+    string proposal_id               = 6;
+    bool sent                        = 7;
 }
 
 message IBCInfo {

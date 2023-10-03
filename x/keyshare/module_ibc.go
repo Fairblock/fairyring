@@ -244,18 +244,18 @@ func (im IBCModule) OnAcknowledgementPacket(
 
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
-	case *types.KeysharePacketData_RequestAggrKeysharePacket:
-		err := im.keeper.OnAcknowledgementRequestAggrKeysharePacket(ctx, modulePacket, *packet.RequestAggrKeysharePacket, ack)
-		if err != nil {
-			return err
-		}
-		eventType = types.EventTypeRequestAggrKeysharePacket
-	case *types.KeysharePacketData_GetAggrKeysharePacket:
-		err := im.keeper.OnAcknowledgementGetAggrKeysharePacket(ctx, modulePacket, *packet.GetAggrKeysharePacket, ack)
-		if err != nil {
-			return err
-		}
-		eventType = types.EventTypeGetAggrKeysharePacket
+	// case *types.KeysharePacketData_RequestAggrKeysharePacket:
+	// 	err := im.keeper.OnAcknowledgementRequestAggrKeysharePacket(ctx, modulePacket, *packet.RequestAggrKeysharePacket, ack)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// 	eventType = types.EventTypeRequestAggrKeysharePacket
+	// case *types.KeysharePacketData_GetAggrKeysharePacket:
+	// 	err := im.keeper.OnAcknowledgementGetAggrKeysharePacket(ctx, modulePacket, *packet.GetAggrKeysharePacket, ack)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// 	eventType = types.EventTypeGetAggrKeysharePacket
 
 	case *types.KeysharePacketData_AggrKeyshareDataPacket:
 		err := im.keeper.OnAcknowledgementAggrKeyshareDataPacket(ctx, modulePacket, *packet.AggrKeyshareDataPacket, ack)

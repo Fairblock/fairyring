@@ -68,6 +68,7 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 			PortID:    packet.SourcePort,
 		},
 		AggrKeyshare: "",
+		ProposalId:   data.ProposalId,
 		Sent:         false,
 	}
 
