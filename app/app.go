@@ -259,6 +259,7 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 	ScopedPepKeeper      capabilitykeeper.ScopedKeeper
+	ScopedKeyshareKeeper capabilitykeeper.ScopedKeeper
 
 	KeyshareKeeper keysharemodulekeeper.Keeper
 	PepKeeper      pepmodulekeeper.Keeper
@@ -876,6 +877,7 @@ func New(
 	app.ScopedIBCKeeper = scopedIBCKeeper
 	app.ScopedTransferKeeper = scopedTransferKeeper
 	app.ScopedPepKeeper = scopedPepKeeper
+	app.ScopedKeyshareKeeper = scopedKeyshareKeeper
 	// this line is used by starport scaffolding # stargate/app/beforeInitReturn
 
 	return app
