@@ -9,6 +9,7 @@ import "fairyring/keyshare/key_share.proto";
 import "fairyring/keyshare/aggregated_key_share.proto";
 import "fairyring/keyshare/pub_key.proto";
 import "fairyring/keyshare/authorized_address.proto";
+import "fairyring/keyshare/general_key_share.proto";
 
 // this line is used by starport scaffolding # genesis/proto/import
 
@@ -22,10 +23,11 @@ message GenesisState {
   repeated KeyShare     keyShareList     = 4 [(gogoproto.nullable) = false];
   
   // this line is used by starport scaffolding # genesis/proto/state
-  repeated AggregatedKeyShare aggregatedKeyShareList = 5 [(gogoproto.nullable) = false];
-           ActivePubKey       activePubKey           = 6 [(gogoproto.nullable) = false];
-           QueuedPubKey       queuedPubKey           = 7 [(gogoproto.nullable) = false];
-  repeated AuthorizedAddress  authorizedAddressList  = 8 [(gogoproto.nullable) = false];
-  uint64 request_count = 9;
+  repeated AggregatedKeyShare aggregatedKeyShareList =  5 [(gogoproto.nullable) = false];
+           ActivePubKey       activePubKey           =  6 [(gogoproto.nullable) = false];
+           QueuedPubKey       queuedPubKey           =  7 [(gogoproto.nullable) = false];
+  repeated AuthorizedAddress  authorizedAddressList  =  8 [(gogoproto.nullable) = false];
+           uint64             request_count          =  9;
+  repeated GeneralKeyShare    generalKeyShareList    = 10 [(gogoproto.nullable) = false];
 }
 

@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"errors"
-
 	"fairyring/x/keyshare/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -47,7 +46,11 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 	}
 
 	if keyshareReq.AggrKeyshare == "" {
-		// TODO: start receiving and aggregating keyshares
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
+				sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, data.Identity),
+			),
+		)
 	}
 
 	return packetAck, nil

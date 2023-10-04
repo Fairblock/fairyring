@@ -20,6 +20,8 @@ export interface RequestAggrKeysharePacketData {
 
 /** RequestAggrKeysharePacketAck defines a struct for the packet acknowledgment */
 export interface RequestAggrKeysharePacketAck {
+  identity: string;
+  pubkey: string;
 }
 
 /** GetAggrKeysharePacketData defines a struct for the packet payload */
@@ -37,6 +39,7 @@ export interface AggrKeyshareDataPacketData {
   pubkey: string;
   aggrKeyshare: string;
   aggrHeight: string;
+  proposalId: string;
 }
 
 /** AggrKeyshareDataPacketAck defines a struct for the packet acknowledgment */
@@ -237,11 +240,17 @@ export const RequestAggrKeysharePacketData = {
 };
 
 function createBaseRequestAggrKeysharePacketAck(): RequestAggrKeysharePacketAck {
-  return {};
+  return { identity: "", pubkey: "" };
 }
 
 export const RequestAggrKeysharePacketAck = {
-  encode(_: RequestAggrKeysharePacketAck, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: RequestAggrKeysharePacketAck, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.identity !== "") {
+      writer.uint32(10).string(message.identity);
+    }
+    if (message.pubkey !== "") {
+      writer.uint32(18).string(message.pubkey);
+    }
     return writer;
   },
 
@@ -252,6 +261,12 @@ export const RequestAggrKeysharePacketAck = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.identity = reader.string();
+          break;
+        case 2:
+          message.pubkey = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -260,17 +275,24 @@ export const RequestAggrKeysharePacketAck = {
     return message;
   },
 
-  fromJSON(_: any): RequestAggrKeysharePacketAck {
-    return {};
+  fromJSON(object: any): RequestAggrKeysharePacketAck {
+    return {
+      identity: isSet(object.identity) ? String(object.identity) : "",
+      pubkey: isSet(object.pubkey) ? String(object.pubkey) : "",
+    };
   },
 
-  toJSON(_: RequestAggrKeysharePacketAck): unknown {
+  toJSON(message: RequestAggrKeysharePacketAck): unknown {
     const obj: any = {};
+    message.identity !== undefined && (obj.identity = message.identity);
+    message.pubkey !== undefined && (obj.pubkey = message.pubkey);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<RequestAggrKeysharePacketAck>, I>>(_: I): RequestAggrKeysharePacketAck {
+  fromPartial<I extends Exact<DeepPartial<RequestAggrKeysharePacketAck>, I>>(object: I): RequestAggrKeysharePacketAck {
     const message = createBaseRequestAggrKeysharePacketAck();
+    message.identity = object.identity ?? "";
+    message.pubkey = object.pubkey ?? "";
     return message;
   },
 };
@@ -362,7 +384,7 @@ export const GetAggrKeysharePacketAck = {
 };
 
 function createBaseAggrKeyshareDataPacketData(): AggrKeyshareDataPacketData {
-  return { identity: "", pubkey: "", aggrKeyshare: "", aggrHeight: "" };
+  return { identity: "", pubkey: "", aggrKeyshare: "", aggrHeight: "", proposalId: "" };
 }
 
 export const AggrKeyshareDataPacketData = {
@@ -378,6 +400,9 @@ export const AggrKeyshareDataPacketData = {
     }
     if (message.aggrHeight !== "") {
       writer.uint32(34).string(message.aggrHeight);
+    }
+    if (message.proposalId !== "") {
+      writer.uint32(42).string(message.proposalId);
     }
     return writer;
   },
@@ -401,6 +426,9 @@ export const AggrKeyshareDataPacketData = {
         case 4:
           message.aggrHeight = reader.string();
           break;
+        case 5:
+          message.proposalId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -415,6 +443,7 @@ export const AggrKeyshareDataPacketData = {
       pubkey: isSet(object.pubkey) ? String(object.pubkey) : "",
       aggrKeyshare: isSet(object.aggrKeyshare) ? String(object.aggrKeyshare) : "",
       aggrHeight: isSet(object.aggrHeight) ? String(object.aggrHeight) : "",
+      proposalId: isSet(object.proposalId) ? String(object.proposalId) : "",
     };
   },
 
@@ -424,6 +453,7 @@ export const AggrKeyshareDataPacketData = {
     message.pubkey !== undefined && (obj.pubkey = message.pubkey);
     message.aggrKeyshare !== undefined && (obj.aggrKeyshare = message.aggrKeyshare);
     message.aggrHeight !== undefined && (obj.aggrHeight = message.aggrHeight);
+    message.proposalId !== undefined && (obj.proposalId = message.proposalId);
     return obj;
   },
 
@@ -433,6 +463,7 @@ export const AggrKeyshareDataPacketData = {
     message.pubkey = object.pubkey ?? "";
     message.aggrKeyshare = object.aggrKeyshare ?? "";
     message.aggrHeight = object.aggrHeight ?? "";
+    message.proposalId = object.proposalId ?? "";
     return message;
   },
 };

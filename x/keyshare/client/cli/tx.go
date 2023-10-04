@@ -32,6 +32,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdUpdateAuthorizedAddress())
 	cmd.AddCommand(CmdDeleteAuthorizedAddress())
 
+	cmd.AddCommand(CmdCreateGeneralKeyShare())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

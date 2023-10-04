@@ -29,6 +29,23 @@ export interface KeyshareAuthorizedAddress {
   authorizedBy?: string;
 }
 
+export interface KeyshareGeneralKeyShare {
+  validator?: string;
+  idType?: string;
+  idValue?: string;
+  keyShare?: string;
+
+  /** @format uint64 */
+  keyShareIndex?: string;
+
+  /** @format uint64 */
+  receivedTimestamp?: string;
+
+  /** @format uint64 */
+  receivedBlockHeight?: string;
+  creator?: string;
+}
+
 export interface KeyshareKeyShare {
   validator?: string;
 
@@ -48,15 +65,17 @@ export interface KeyshareKeyShare {
 
 export type KeyshareMsgCreateAuthorizedAddressResponse = object;
 
+export type KeyshareMsgCreateGeneralKeyShareResponse = object;
+
 export type KeyshareMsgCreateLatestPubKeyResponse = object;
 
 export type KeyshareMsgDeleteAuthorizedAddressResponse = object;
 
+export type KeyshareMsgDeleteGeneralKeyShareResponse = object;
+
 export interface KeyshareMsgRegisterValidatorResponse {
   creator?: string;
 }
-
-export type KeyshareMsgSendAggrKeyshareDataResponse = object;
 
 export interface KeyshareMsgSendKeyshareResponse {
   creator?: string;
@@ -75,6 +94,8 @@ export interface KeyshareMsgSendKeyshareResponse {
 }
 
 export type KeyshareMsgUpdateAuthorizedAddressResponse = object;
+
+export type KeyshareMsgUpdateGeneralKeyShareResponse = object;
 
 /**
  * Params defines the parameters for the module.
@@ -127,6 +148,21 @@ export interface KeyshareQueryAllAuthorizedAddressResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface KeyshareQueryAllGeneralKeyShareResponse {
+  generalKeyShare?: KeyshareGeneralKeyShare[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface KeyshareQueryAllKeyShareResponse {
   keyShare?: KeyshareKeyShare[];
 
@@ -163,6 +199,10 @@ export interface KeyshareQueryGetAggregatedKeyShareResponse {
 
 export interface KeyshareQueryGetAuthorizedAddressResponse {
   authorizedAddress?: KeyshareAuthorizedAddress;
+}
+
+export interface KeyshareQueryGetGeneralKeyShareResponse {
+  generalKeyShare?: KeyshareGeneralKeyShare;
 }
 
 export interface KeyshareQueryGetKeyShareResponse {
@@ -486,6 +526,47 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryAuthorizedAddress = (target: string, params: RequestParams = {}) =>
     this.request<KeyshareQueryGetAuthorizedAddressResponse, RpcStatus>({
       path: `/fairyring/keyshare/authorized_address/${target}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryGeneralKeyShareAll
+   * @request GET:/fairyring/keyshare/general_key_share
+   */
+  queryGeneralKeyShareAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<KeyshareQueryAllGeneralKeyShareResponse, RpcStatus>({
+      path: `/fairyring/keyshare/general_key_share`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryGeneralKeyShare
+   * @summary Queries a list of GeneralKeyShare items.
+   * @request GET:/fairyring/keyshare/general_key_share/{validator}/{idType}/{idValue}
+   */
+  queryGeneralKeyShare = (validator: string, idType: string, idValue: string, params: RequestParams = {}) =>
+    this.request<KeyshareQueryGetGeneralKeyShareResponse, RpcStatus>({
+      path: `/fairyring/keyshare/general_key_share/${validator}/${idType}/${idValue}`,
       method: "GET",
       format: "json",
       ...params,

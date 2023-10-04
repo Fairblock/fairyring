@@ -49,6 +49,18 @@ func TestGenesis(t *testing.T) {
 				Target: "1",
 			},
 		},
+		GeneralKeyShareList: []types.GeneralKeyShare{
+			{
+				Validator: "0",
+				IdType:    "0",
+				IdValue:   "0",
+			},
+			{
+				Validator: "1",
+				IdType:    "1",
+				IdValue:   "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -64,5 +76,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.KeyShareList, got.KeyShareList)
 	require.ElementsMatch(t, genesisState.AggregatedKeyShareList, got.AggregatedKeyShareList)
 	require.ElementsMatch(t, genesisState.AuthorizedAddressList, got.AuthorizedAddressList)
+	require.ElementsMatch(t, genesisState.GeneralKeyShareList, got.GeneralKeyShareList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

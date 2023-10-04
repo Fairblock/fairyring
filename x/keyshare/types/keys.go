@@ -44,8 +44,22 @@ const (
 	SendKeyshareEventKeyshareBlockHeight = "keyshare-block-height"
 	SendKeyshareEventReceivedBlockHeight = "received-block-height"
 	SendKeyshareEventMessage             = "keyshare-message"
-	SendKeyshareEventCommitment          = "keyshare-commitment"
 	SendKeyshareEventIndex               = "keyshare-index"
+)
+
+const (
+	StartSendGeneralKeyShareEventType     = "start-send-general-keyshare"
+	StartSendGeneralKeyShareEventIdentity = "start-send-general-keyshare-identity"
+)
+
+const (
+	SendGeneralKeyshareEventType                = "keyshare-sent"
+	SendGeneralKeyshareEventValidator           = "validator"
+	SendGeneralKeyshareEventReceivedBlockHeight = "received-block-height"
+	SendGeneralKeyshareEventMessage             = "keyshare-message"
+	SendGeneralKeyshareEventIDType              = "keyshare-id-type"
+	SendGeneralKeyshareEventIdValue             = "keyshare-id-value"
+	SendGeneralKeyshareEventIndex               = "keyshare-index"
 )
 
 const (
@@ -53,6 +67,14 @@ const (
 	KeyShareAggregatedEventBlockHeight = "keyshare-aggregated-block-height"
 	KeyShareAggregatedEventData        = "keyshare-aggregated-data"
 	KeyShareAggregatedEventPubKey      = "keyshare-aggregated-pubkey"
+)
+
+const (
+	GeneralKeyShareAggregatedEventType    = "keyshare-aggregated"
+	GeneralKeyShareAggregatedEventIDValue = "keyshare-aggregated-id-value"
+	GeneralKeyShareAggregatedEventIDType  = "keyshare-aggregated-id-type"
+	GeneralKeyShareAggregatedEventData    = "keyshare-aggregated-data"
+	GeneralKeyShareAggregatedEventPubKey  = "keyshare-aggregated-pubkey"
 )
 
 const (

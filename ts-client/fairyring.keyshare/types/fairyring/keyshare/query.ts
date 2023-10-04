@@ -4,6 +4,7 @@ import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
 import { AggregatedKeyShare } from "./aggregated_key_share";
 import { AuthorizedAddress } from "./authorized_address";
+import { GeneralKeyShare } from "./general_key_share";
 import { KeyShare } from "./key_share";
 import { Params } from "./params";
 import { ActivePubKey, QueuedPubKey } from "./pub_key";
@@ -96,6 +97,25 @@ export interface QueryAllAuthorizedAddressRequest {
 
 export interface QueryAllAuthorizedAddressResponse {
   authorizedAddress: AuthorizedAddress[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetGeneralKeyShareRequest {
+  validator: string;
+  idType: string;
+  idValue: string;
+}
+
+export interface QueryGetGeneralKeyShareResponse {
+  generalKeyShare: GeneralKeyShare | undefined;
+}
+
+export interface QueryAllGeneralKeyShareRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllGeneralKeyShareResponse {
+  generalKeyShare: GeneralKeyShare[];
   pagination: PageResponse | undefined;
 }
 
@@ -1180,6 +1200,250 @@ export const QueryAllAuthorizedAddressResponse = {
   },
 };
 
+function createBaseQueryGetGeneralKeyShareRequest(): QueryGetGeneralKeyShareRequest {
+  return { validator: "", idType: "", idValue: "" };
+}
+
+export const QueryGetGeneralKeyShareRequest = {
+  encode(message: QueryGetGeneralKeyShareRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.validator !== "") {
+      writer.uint32(10).string(message.validator);
+    }
+    if (message.idType !== "") {
+      writer.uint32(18).string(message.idType);
+    }
+    if (message.idValue !== "") {
+      writer.uint32(26).string(message.idValue);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetGeneralKeyShareRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetGeneralKeyShareRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.validator = reader.string();
+          break;
+        case 2:
+          message.idType = reader.string();
+          break;
+        case 3:
+          message.idValue = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetGeneralKeyShareRequest {
+    return {
+      validator: isSet(object.validator) ? String(object.validator) : "",
+      idType: isSet(object.idType) ? String(object.idType) : "",
+      idValue: isSet(object.idValue) ? String(object.idValue) : "",
+    };
+  },
+
+  toJSON(message: QueryGetGeneralKeyShareRequest): unknown {
+    const obj: any = {};
+    message.validator !== undefined && (obj.validator = message.validator);
+    message.idType !== undefined && (obj.idType = message.idType);
+    message.idValue !== undefined && (obj.idValue = message.idValue);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetGeneralKeyShareRequest>, I>>(
+    object: I,
+  ): QueryGetGeneralKeyShareRequest {
+    const message = createBaseQueryGetGeneralKeyShareRequest();
+    message.validator = object.validator ?? "";
+    message.idType = object.idType ?? "";
+    message.idValue = object.idValue ?? "";
+    return message;
+  },
+};
+
+function createBaseQueryGetGeneralKeyShareResponse(): QueryGetGeneralKeyShareResponse {
+  return { generalKeyShare: undefined };
+}
+
+export const QueryGetGeneralKeyShareResponse = {
+  encode(message: QueryGetGeneralKeyShareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.generalKeyShare !== undefined) {
+      GeneralKeyShare.encode(message.generalKeyShare, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetGeneralKeyShareResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetGeneralKeyShareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.generalKeyShare = GeneralKeyShare.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetGeneralKeyShareResponse {
+    return {
+      generalKeyShare: isSet(object.generalKeyShare) ? GeneralKeyShare.fromJSON(object.generalKeyShare) : undefined,
+    };
+  },
+
+  toJSON(message: QueryGetGeneralKeyShareResponse): unknown {
+    const obj: any = {};
+    message.generalKeyShare !== undefined
+      && (obj.generalKeyShare = message.generalKeyShare ? GeneralKeyShare.toJSON(message.generalKeyShare) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetGeneralKeyShareResponse>, I>>(
+    object: I,
+  ): QueryGetGeneralKeyShareResponse {
+    const message = createBaseQueryGetGeneralKeyShareResponse();
+    message.generalKeyShare = (object.generalKeyShare !== undefined && object.generalKeyShare !== null)
+      ? GeneralKeyShare.fromPartial(object.generalKeyShare)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllGeneralKeyShareRequest(): QueryAllGeneralKeyShareRequest {
+  return { pagination: undefined };
+}
+
+export const QueryAllGeneralKeyShareRequest = {
+  encode(message: QueryAllGeneralKeyShareRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllGeneralKeyShareRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllGeneralKeyShareRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllGeneralKeyShareRequest {
+    return { pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined };
+  },
+
+  toJSON(message: QueryAllGeneralKeyShareRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllGeneralKeyShareRequest>, I>>(
+    object: I,
+  ): QueryAllGeneralKeyShareRequest {
+    const message = createBaseQueryAllGeneralKeyShareRequest();
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllGeneralKeyShareResponse(): QueryAllGeneralKeyShareResponse {
+  return { generalKeyShare: [], pagination: undefined };
+}
+
+export const QueryAllGeneralKeyShareResponse = {
+  encode(message: QueryAllGeneralKeyShareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.generalKeyShare) {
+      GeneralKeyShare.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllGeneralKeyShareResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllGeneralKeyShareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.generalKeyShare.push(GeneralKeyShare.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllGeneralKeyShareResponse {
+    return {
+      generalKeyShare: Array.isArray(object?.generalKeyShare)
+        ? object.generalKeyShare.map((e: any) => GeneralKeyShare.fromJSON(e))
+        : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllGeneralKeyShareResponse): unknown {
+    const obj: any = {};
+    if (message.generalKeyShare) {
+      obj.generalKeyShare = message.generalKeyShare.map((e) => e ? GeneralKeyShare.toJSON(e) : undefined);
+    } else {
+      obj.generalKeyShare = [];
+    }
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllGeneralKeyShareResponse>, I>>(
+    object: I,
+  ): QueryAllGeneralKeyShareResponse {
+    const message = createBaseQueryAllGeneralKeyShareResponse();
+    message.generalKeyShare = object.generalKeyShare?.map((e) => GeneralKeyShare.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1200,6 +1464,9 @@ export interface Query {
   /** Queries a list of AuthorizedAddress items. */
   AuthorizedAddress(request: QueryGetAuthorizedAddressRequest): Promise<QueryGetAuthorizedAddressResponse>;
   AuthorizedAddressAll(request: QueryAllAuthorizedAddressRequest): Promise<QueryAllAuthorizedAddressResponse>;
+  /** Queries a list of GeneralKeyShare items. */
+  GeneralKeyShare(request: QueryGetGeneralKeyShareRequest): Promise<QueryGetGeneralKeyShareResponse>;
+  GeneralKeyShareAll(request: QueryAllGeneralKeyShareRequest): Promise<QueryAllGeneralKeyShareResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1216,6 +1483,8 @@ export class QueryClientImpl implements Query {
     this.PubKey = this.PubKey.bind(this);
     this.AuthorizedAddress = this.AuthorizedAddress.bind(this);
     this.AuthorizedAddressAll = this.AuthorizedAddressAll.bind(this);
+    this.GeneralKeyShare = this.GeneralKeyShare.bind(this);
+    this.GeneralKeyShareAll = this.GeneralKeyShareAll.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -1275,6 +1544,18 @@ export class QueryClientImpl implements Query {
     const data = QueryAllAuthorizedAddressRequest.encode(request).finish();
     const promise = this.rpc.request("fairyring.keyshare.Query", "AuthorizedAddressAll", data);
     return promise.then((data) => QueryAllAuthorizedAddressResponse.decode(new _m0.Reader(data)));
+  }
+
+  GeneralKeyShare(request: QueryGetGeneralKeyShareRequest): Promise<QueryGetGeneralKeyShareResponse> {
+    const data = QueryGetGeneralKeyShareRequest.encode(request).finish();
+    const promise = this.rpc.request("fairyring.keyshare.Query", "GeneralKeyShare", data);
+    return promise.then((data) => QueryGetGeneralKeyShareResponse.decode(new _m0.Reader(data)));
+  }
+
+  GeneralKeyShareAll(request: QueryAllGeneralKeyShareRequest): Promise<QueryAllGeneralKeyShareResponse> {
+    const data = QueryAllGeneralKeyShareRequest.encode(request).finish();
+    const promise = this.rpc.request("fairyring.keyshare.Query", "GeneralKeyShareAll", data);
+    return promise.then((data) => QueryAllGeneralKeyShareResponse.decode(new _m0.Reader(data)));
   }
 }
 
