@@ -8,7 +8,7 @@ if [ -f "/root/DONE" ]
 then
   fairyringd start
 else
-  fairyringd init $1 --chain-id 'fairytest-1' --staking-bond-denom 'ufairy'
+  fairyringd init $1 --chain-id 'fairytest-1' --default-denom 'ufairy'
 
   fairyringd keys add $ACCOUNTNAME --keyring-backend test
   fairyringd keys add alice --keyring-backend test
