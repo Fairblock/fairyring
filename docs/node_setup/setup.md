@@ -19,7 +19,7 @@ or
 - Initialize node
 
 ```shell
-fairyringd init {{NODE_NAME}} --chain-id fairyring-1
+fairyringd init {{NODE_NAME}} --chain-id fairyring-2
 ```
 
 Select network to join
@@ -38,7 +38,7 @@ fairyringd start
 
 | Version | Mainnet | Testnet | SDK Version |
 |:-------:|:-------:|:-------:|:-----------:|
-|  v0.0.1 |    ✗    |    ✓    |   v0.46.3   |
+|  v0.0.1 |    ✗    |    ✓    |   v0.47.3   |
 
 ---
 

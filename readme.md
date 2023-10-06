@@ -25,15 +25,34 @@ make install
 fairyringd
 ```
 
-### Running the chain with Ignite
+### Running the chain locally
 
+1. After building the fairyring executable and before running the script,
+   make sure you have previous node data removed, to remove the data, run the following command
+
+```bash
+rm -rf ~/.fairyring
 ```
-ignite chain serve
+
+2. Then, run the following script to setup the node
+
+```bash
+./setup.sh <moniker>
 ```
 
-Optionally add `rv` tag to reset and have verbose output.
+- moniker can be any string you want, is the nickname of your node
 
-`serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
+3. Collect all the gentxs and create the new genesis
+
+```bash
+fairyringd collect-gentxs
+```
+
+4. Run the chain by
+
+```bash
+fairyringd start
+```
 
 ### Running a validator locally with Docker
 
@@ -68,7 +87,7 @@ docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fai
 2. Run the following command for all the address created in other machine in the master validator:
 
 ```
-docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd add-genesis-account <address> 100000000stake
+docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd add-genesis-account <address> 100000000000ufairy
 ```
 
 3. Add all the gentx.json at `~/.fairyring/config/gentx/gentx-{node_id}.json` from all the machines to master validator, then run the command on step 4
@@ -103,7 +122,7 @@ docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fai
 
 ```
 docker exec -it $(docker ps --latest --format '{{.ID}}') fairyringd tx staking create-validator \
-  --amount=100000000stake \
+  --amount=100000000000ufairy \
   --pubkey=$(fairyringd tendermint show-validator) \
   --moniker="choose a moniker" \
   --chain-id="fairyring" \
@@ -122,20 +141,38 @@ docker exec -it $(docker ps --latest --format '{{.ID}}') fairyringd tx staking c
 
 Create pub key
 
-```
+```bash
 fairyringd tx keyshare create-latest-pub-key <pub-key-in-hex>
 ```
 
 Register as a validator
 
-```
+```bash
 fairyringd tx keyshare register-validator
 ```
 
 Submit a KeyShare
 
+```bash
+fairyringd tx keyshare send-keyshare <keyshare-in-hex> <keyshare-index> <keyshare-block-height>
 ```
-fairyringd tx send-key-share <keyshare-in-hex> <commitment-in-hex> <keyshare-index> <keyshare-block-height>
+
+Delegate another address to submit key share
+
+```bash
+fairyringd tx keyshare create-authorized-address <target>
+```
+
+Delete delegated address
+
+```bash
+fairyringd tx keyshare delete-authorized-address <target>
+```
+
+Update delegated address
+
+```bash
+fairyringd tx keyshare update-authorized-address <target> <authorized? true / false>
 ```
 
 #### Pep module
@@ -143,7 +180,7 @@ fairyringd tx send-key-share <keyshare-in-hex> <commitment-in-hex> <keyshare-ind
 Submit aggregated key share
 
 ```
-fairyringd tx pep create-aggregated-key-share <aggregated-key-share-height> <aggregated-key-share-in-hex> <public-key-in-hex>
+fairyringd tx pep create-aggregated-key-share <aggregated-key-share-height> <aggregated-key-share-in-hex>
 ```
 
 Submit encrypted transaction
@@ -180,6 +217,36 @@ Get specific keyshare
 fairyringd query keyshare show-key-share <Validator> <BlockHeight>
 ```
 
+List all the aggregated key shares
+
+```bash
+fairyringd query keyshare list-aggregated-key-share
+```
+
+List all authorized addresses
+
+```bash
+fairyringd query keyshare list-authorized-address
+```
+
+Get current active & queued public key
+
+```bash
+fairyringd query keyshare show-active-pub-key
+```
+
+Get aggregated key share for the target block
+
+```bash
+fairyringd query keyshare show-aggregated-key-share <height>
+```
+
+Check if target address is authorized
+
+```bash
+fairyringd query keyshare show-authorized-address <target>
+```
+
 #### Pep module
 
 Get all encrypted tx in state
@@ -200,6 +267,30 @@ Get a single encrypted tx in state with a specific block height & tx index
 fairyringd query pep show-encrypted-tx <blockHeight> <index>
 ```
 
+Get the latest height of pep module
+
+```bash
+fairyringd query pep latest-height
+```
+
+Get all the pep nonce
+
+```bash
+fairyringd query pep list-pep-nonce
+```
+
+Get current active and queued public key
+
+```bash
+fairyringd query pep show-active-pub-key
+```
+
+Get target address pep nonce
+
+```bash
+fairyringd query pep show-pep-nonce <target>
+```
+
 ### Sending keyshares every block
 
 It is recommended to run [`fairyringclient`](https://github.com/FairBlock/fairyringclient) so that validator registration and key share submissions are automated.
@@ -208,44 +299,22 @@ It is recommended to run [`fairyringclient`](https://github.com/FairBlock/fairyr
 
 It is recommended to run [`fairyport`](https://github.com/FairBlock/fairyport) to listen to broadcast keyshare events and aggregate the keys in each block.
 
-### Configure
-
-Your blockchain in development can be configured with `config.yml`. To learn more, see the [Ignite CLI docs](https://docs.ignite.com).
-
-### Web Frontend
-
-Ignite CLI has scaffolded a Vue.js-based web app in the `vue` directory. Run the following commands to install dependencies and start the app:
-
-```
-cd vue
-npm install
-npm run serve
-```
-
-The frontend app is built using the `@starport/vue` and `@starport/vuex` packages. For details, see the [monorepo for Ignite front-end development](https://github.com/ignite/web).
-
 
 ## Setup a testing environment
 
-1. Building the `fairyringd` executable
-
-```bash
-make build
-```
-
-2. Installing the executable for calling it from terminal
+1. Build & Install the `fairyringd` executable
 
 ```bash
 make install
 ```
 
-3. Building the executable of [ShareGenerator](https://github.com/FairBlock/ShareGenerator) and [Encrypter](https://github.com/FairBlock/encrypter) and put them in this directory
+2. Building the executable of [ShareGenerator](https://github.com/FairBlock/ShareGenerator) and [Encrypter](https://github.com/FairBlock/encrypter) and put them in this directory
 
 
-4. Install [Hermes Relayer](https://hermes.informal.systems/) by following this [guide](https://hermes.informal.systems/quick-start/installation.html)
+3. Install [Hermes Relayer](https://hermes.informal.systems/) by following this [guide](https://hermes.informal.systems/quick-start/installation.html)
 
 
-5. Running the tests 
+4. Running the tests by following command
 
 ```bash
 make integration-test-all

@@ -7,13 +7,13 @@
 ## Hardware Requirements
 
 - **Minimal**
-    - 1 GB RAM
-    - 25 GB HDD
-    - 1.4 GHz CPU
+  - 4 GB RAM
+  - 500 GB HDD
+  - 1.4 GHz CPU
 - **Recommended**
-    - 2 GB RAM
-    - 100 GB HDD
-    - 2.0 GHz x2 CPU
+  - 8 GB RAM
+  - 2 TB HDD
+  - 2.0 GHz x2 CPU
 
 ---
 

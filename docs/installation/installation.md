@@ -5,12 +5,12 @@ This section notes the minimum and recommended requirements for running the Fair
 ## Hardware Requirements
 
 - **Minimal**
-  - 1 GB RAM
-  - 25 GB SSD
+  - 4 GB RAM
+  - 500 GB HDD
   - 1.4 GHz CPU
 - **Recommended**
-  - 2 GB RAM
-  - 100 GB SSD
+  - 8 GB RAM
+  - 2 TB HDD
   - 2.0 GHz x2 CPU
 
 ---
@@ -26,7 +26,7 @@ This section notes the minimum and recommended requirements for running the Fair
 ## Installation Steps
 
 >
->Prerequisite: go1.18+ required. [ref](https://golang.org/doc/install)
+>Prerequisite: go1.21+ required. [ref](https://golang.org/doc/install)
 
 FairyRing could be installed by two ways - downloading binary from releases page or build from source.
 

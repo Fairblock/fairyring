@@ -92,10 +92,10 @@ fairyringd init {{NODE_NAME}} --chain-id {{CHAIN_ID}}
 fairyringd keys add <keyName>
 ```
 
-- Add a genesis account with `10000000000stake tokens`
+- Add a genesis account with `100000000000stake tokens`
 
 ```shell
-fairyringd add-genesis-account {{KEY_NAME}} 10000000000stake
+fairyringd add-genesis-account {{KEY_NAME}} 100000000000stake
 ```
 
 - Make a genesis transaction to become a validator
@@ -103,7 +103,7 @@ fairyringd add-genesis-account {{KEY_NAME}} 10000000000stake
 ```shell
 fairyringd gentx \
   [account_key_name] \
-  5000000000stake \
+  100000000000stake \
   --commission-max-change-rate 0.01 \
   --commission-max-rate 0.2 \
   --commission-rate 0.05 \
@@ -113,19 +113,20 @@ fairyringd gentx \
   --security-contact "[optional-security@example.com]" \
   --website [optional.web.page.com] \
   --moniker [node_moniker] \
-  --chain-id [chain-id]
+  --chain-id fairytest-2
 ```
 
 - Copy the contents of `${HOME}/.fairyring/config/gentx/gentx-XXXXXXXX.json`
-- Fork the [network repository](https://github.com/FairBlock/networks)
-- Create a file `gentx-{{VALIDATOR_NAME}}.json` under the `fairyring-testnet-1/gentxs` folder in the newly created branch, paste the copied text into the file (note: find reference file `gentx-examplexxxxxxxx.json` in the same folder)
-- Run `fairyring tendermint show-node-id` and copy your nodeID
+- Clone the [fairyring repository](https://github.com/FairBlock/fairyring) and create a new branch
+- Create a file `gentx-{{VALIDATOR_NAME}}.json` under the `networks/testnets/fairytest-2/gentxs` folder in the newly created branch, paste the copied text into the file (note: find reference file `gentx-examplexxxxxxxx.json` in the same folder)
+- Run `fairyringd tendermint show-node-id` and copy your nodeID
 - Run `ifconfig` or `curl ipinfo.io/ip` and copy your publicly reachable IP address
-- Create a file `peers-{{VALIDATOR_NAME}}.json` under the `fairyring-testnet-1/peers` folder in the new branch, paste the copied text from the last two steps into the file (note: find reference file `peers-examplexxxxxxxx.json` in the same folder)
-- Create a Pull Request to the `master` branch of the [network repository](https://github.com/FairBlock/networks)
-  > **NOTE:** the Pull Request will be merged by the maintainers to confirm the inclusion of the validator at the genesis. The final genesis file will be published under the file `fairyring-testnet-1/genesis.json`.
-- Once the submission process has closed and the genesis file has been created, replace the contents of your `${HOME}/.fairyring/config/genesis.json` with that of `fairyring-testnet-1/genesis.json`
-- Add the required `persistent_peers` or `seeds` in `${HOME}/.fairyring/config/config.toml` from `fairyring-testnet-1/peers-nodes.txt`
+- Create a file `peers-{{VALIDATOR_NAME}}.json` under the `networks/testnets/fairytest-2/peers` folder in the new branch, paste the copied text from the last two steps into the file (note: find reference file `peers-examplexxxxxxxx.json` in the same folder)
+- Create a Pull Request to the `main` branch of the [fairyring repository](https://github.com/FairBlock/fairyring)
+  > **NOTE:** the Pull Request will be merged by the maintainers to confirm the inclusion of the validator at the genesis. The final genesis file will be published under the file `networks/testnets/fairytest-2/genesis.json`.
+- Once the submission process has closed and the genesis file has been created, replace the contents of your `${HOME}/.fairyring/config/genesis.json` with that of `networks/testnets/fairytest-2/genesis.json`
+- Add the required `persistent_peers` or `seeds` in `${HOME}/.fairyring/config/config.toml` from `networks/testnets/fairytest-2/peers-nodes.txt`
+- Update the `~/.fairyring/config/config.toml` file and make sure that the peer-port (26656) is publicly reachable. If you are running sentry nodes, make sure that the peer-port of your sentry is publicly reachable
 - Start node
 
 ```shell
@@ -151,13 +152,13 @@ The genesis transactions should be sent before [date and time] and the same will
 fairyringd init {{NODE_NAME}}
 ```
 
-- Replace the contents of your `${HOME}/.fairyring/config/genesis.json` with that of `fairyring-testnet-1/genesis.json` from the `master` branch of [network repository](https://github.com/FairBlock/networks)
+- Replace the contents of your `${HOME}/.fairyring/config/genesis.json` with that of `fairytest-2/genesis.json` from the `master` branch of [network repository](https://github.com/FairBlock/networks)
 
 ```shell
 curl https://github.com/FairBlock/blob/master/networks/fairyring-testnet-1/genesis.json > $HOME/.fairyring/config/genesis.json
 ```
 
-- Add `persistent_peers` or `seeds` in `${HOME}/.fairyring/config/config.toml` from `fairyring-testnet-1/peers.txt` from the `master` branch of [network repository](https://github.com/FairBlock/networks/blob/master/fairyring-testnet-1/peers.txt)
+- Add `persistent_peers` or `seeds` in `${HOME}/.fairyring/config/config.toml` from `fairytest-2/peers.txt` from the `master` branch of [network repository](https://github.com/Fairblock/fairyring/blob/main/networks/testnets/fairytest-2/peers-nodes.txt)
 - Start node
 
 ```shell
@@ -184,7 +185,7 @@ fairyringd tx staking create-validator \
   --min-self-delegation 1 \
   --moniker [validator_moniker] \
   --pubkey $(fairyringd tendermint show-validator) \
-  --chain-id fairyring-testnet-1 \
+  --chain-id fairytest-2 \
   -y
 ```
 
@@ -192,20 +193,20 @@ fairyringd tx staking create-validator \
 
 ## Persistent Peers
 
-The `persistent_peers` needs a comma-separated list of trusted peers on the network, you can acquire it from the [peers.txt](https://github.com/FairBlock/networks/blob/master/fairyring-testnet-1/peers.txt) for example:
+The `persistent_peers` needs a comma-separated list of trusted peers on the network, you can acquire it from the [peers.txt](https://github.com/Fairblock/fairyring/blob/main/networks/testnets/fairytest-2/peers-nodes.txt) for example:
 
 ```shell
-4980b478f91de9be0564a547779e5c6cb07eb995@3.239.15.80:26656,0e7042be1b77707aaf0597bb804da90d3a606c08@3.88.40.53:26656
+cafe8a3e08658fb0309c5ad7017297427ea19ebb@195.14.6.182:26656,525d605dc4cc1e92d6b1d9a6934b19066083e610@34.66.108.187:26656,cd1cbf64a3e85d511c2a40b9e3e7b2e9b40d5905@35.74.28.144:26656,24c65c37d4b4c4cd2688e28a8ea38c377dd0d7f6@65.21.163.231:26656,3cda3bebf7aaeeb0533734496158420dcd3da4ad@94.130.137.119:26666,f842253c4971e898247e054b5dd9c024503f593c@89.58.32.218:27675,6d394ad537476eea0b000e09a786a0400388fc2b@34.30.193.253:26656
 ```
 
 ## Version
 
-This chain is currently running on fairyring [v0.0.1](https://github.com/FairBlock/fairyring/releases/tag/v0.0.1)
-Commit Hash: [c2f074f15fa895b0d8e67a9d88bfd2b9d9833b2f](https://github.com/FairBlock/fairyring/commit/c2f074f15fa895b0d8e67a9d88bfd2b9d9833b2f)
+This chain is currently running on fairyring [v0.2.1](https://github.com/FairBlock/fairyring/releases/tag/v0.2.1)
+Commit Hash: [8e6f6deea6a04b260d190fcd5787bcc4ff85f149](https://github.com/FairBlock/fairyring/commit/8e6f6deea6a04b260d190fcd5787bcc4ff85f149)
 
 ## Binary
 
-The binary can be downloaded from [here](https://github.com/FairBlock/fairyring/releases/tag/v0.0.1)
+The binary can be downloaded from [here](https://github.com/FairBlock/fairyring/releases/tag/v0.2.1)
 
 ## Explorer
 
