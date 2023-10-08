@@ -1,5 +1,5 @@
 {
-  "genesis_time": "2023-10-09T00:00:00.000000000Z",
+  "genesis_time": "2023-10-11T00:00:00.000000000Z",
   "chain_id": "fairytest-2",
   "initial_height": "1",
   "consensus_params": {
