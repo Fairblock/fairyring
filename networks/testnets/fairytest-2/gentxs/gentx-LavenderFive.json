@@ -28,7 +28,7 @@
         }
       }
     ],
-    "memo": "fe0713ceb31b8a273b25bdd0fe0026778f781526@147.135.105.3:24756",
+    "memo": "fe0713ceb31b8a273b25bdd0fe0026778f781526@147.135.105.3:26656",
     "timeout_height": "0",
     "extension_options": [],
     "non_critical_extension_options": []
@@ -57,6 +57,6 @@
     "tip": null
   },
   "signatures": [
-    "3T3ARe9FF8eqfmkl8cczpsAhu0/bq5cEMEfmd5T8RnUeshZu+mIs00/fMnw/Fl3+GFEgM94qv10+MWjqmih1Kw=="
+    "rvuIOu2EptERNPvBka/g9Ur7UvIlBnEgaTUUaCB26Wg8EncVrRAFZlYt7FVUG71/+HlaORBXkbTbiuCQYABA7w=="
   ]
 }
