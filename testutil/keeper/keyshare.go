@@ -70,13 +70,14 @@ func KeyshareKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	)
 
 	pepKeeper, _ := PepKeeper(t)
-
+	conditionalencKeeper,_ :=  ConditionalEncKeeper(t)
 	k := keeper.NewKeeper(
 		cdc,
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
 		*pepKeeper,
+		conditionalencKeeper,
 		stakingKeeper,
 	)
 

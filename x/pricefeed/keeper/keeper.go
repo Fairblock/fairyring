@@ -3,6 +3,10 @@ package keeper
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
+	"unicode"
+
+	//"unicode"
 
 	"strconv"
 	"time"
@@ -42,13 +46,13 @@ func NewKeeper(
 	cdc codec.BinaryCodec, key storetypes.StoreKey, paramSpace paramtypes.Subspace,
 	ics4Wrapper types.ICS4Wrapper, channelKeeper types.ChannelKeeper, portKeeper types.PortKeeper,
 	scopedKeeper capabilitykeeper.ScopedKeeper,
-) Keeper {
+) *Keeper {
 	// set KeyTable if it has not already been set
 	if !paramSpace.HasKeyTable() {
 		paramSpace = paramSpace.WithKeyTable(types.ParamKeyTable())
 	}
 
-	return Keeper{
+	return &Keeper{
 		cdc:           cdc,
 		storeKey:      key,
 		paramSpace:    paramSpace,
@@ -133,33 +137,34 @@ func (k Keeper) GetAllSymbolRequests(ctx sdk.Context) []types.SymbolRequest {
 func (k Keeper) GetPriceStep(ctx sdk.Context, symbol string) uint64 {
 	symbolRequests := k.GetAllSymbolRequests(ctx)
 	for _, request := range symbolRequests {
-		if request.Symbol == symbol{
+		if request.Symbol == symbol {
 			return request.PriceStep
 		}
 	}
 	return 0
 }
- 
-func (k Keeper) UpdateRepeatedPrice(ctx sdk.Context, price types.Price) uint64{
-	thisPrice, f := k.GetPrice(ctx, price.Symbol + strconv.Itoa(int(price.Price)))
+
+func (k Keeper) UpdateRepeatedPrice(ctx sdk.Context, price types.Price) uint64 {
+	thisPrice, f := k.GetPrice(ctx, price.Symbol+strconv.Itoa(int(price.Price)))
 	if f {
 		price.Nonce = thisPrice.Nonce + 1
-		k.setRepeatedPrice(ctx,price)
+		k.setRepeatedPrice(ctx, price)
 		return price.Nonce
 	}
-		price.Nonce = 1
-		k.setRepeatedPrice(ctx,price)
-		return 1
-	
+	price.Nonce = 1
+	k.setRepeatedPrice(ctx, price)
+	return 1
+
 }
 func (k Keeper) UpdatePrice(ctx sdk.Context, price types.Price) (bool, int64, int64) {
 	old, found := k.GetPrice(ctx, price.Symbol)
-	
+
 	if !found || old.ResolveTime < price.ResolveTime {
-		
+
 		k.setPrice(ctx, price)
 		if found {
-		return true, old.ResolveTime , price.ResolveTime}
+			return true, old.ResolveTime, price.ResolveTime
+		}
 		return false, 0, 0
 	}
 	return false, old.ResolveTime, old.ResolveTime
@@ -189,14 +194,14 @@ func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
 	blockHeight := ctx.BlockHeight()
 
 	params := k.GetParams(ctx)
-	
+
 	// Verify that SourceChannel params is set by open params proposal already
 	if params.SourceChannel == types.NotSet {
 		return
 	}
 
 	symbols := k.GetAllSymbolRequests(ctx)
-	logrus.Info("-----------------------------> ",symbols)
+	logrus.Info("-----------------------------> ", symbols)
 	// Map symbols that need to request on this block by oracle script ID and symbol block interval
 	tasks := types.ComputeOracleTasks(symbols, blockHeight)
 
@@ -285,16 +290,19 @@ func (k Keeper) RequestBandChainData(
 	)
 	_ = packet
 	// Send the packet via the channel and capability associated with the given channel.
-	if _,err := k.channelKeeper.SendPacket(ctx, channelCap,portID,
-		sourceChannel,clienttypes.ZeroHeight(),uint64(ctx.BlockTime().UnixNano()+int64(20*time.Minute)), oracleRequestPacket.GetBytes()); err != nil {
+	if _, err := k.channelKeeper.SendPacket(ctx, channelCap, portID,
+		sourceChannel, clienttypes.ZeroHeight(), uint64(ctx.BlockTime().UnixNano()+int64(20*time.Minute)), oracleRequestPacket.GetBytes()); err != nil {
 		return err
 	}
 
 	return nil
 }
+
 type WaitingList struct {
 	List []string `json:"list"`
+	LatestMetCondition string `json:"latest_met_condition"`
 }
+
 // MustMarshalJSON is a helper for JSON marshaling that panics on an error
 func MustMarshalJSON(o interface{}) []byte {
 	bytes, err := json.Marshal(o)
@@ -310,27 +318,28 @@ func MustUnmarshalJSON(bytes []byte, o interface{}) {
 		panic(err)
 	}
 }
+
 // AppendToList appends a string to the waiting list
-func (k Keeper) AppendToList(ctx sdk.Context, item string) {
+func (k Keeper) AppendToList(ctx sdk.Context, item string, symbol string) {
 	store := ctx.KVStore(k.storeKey)
 	// Load current list
 	var waitingList WaitingList
-	bz := store.Get([]byte("waitingList"))
+	bz := store.Get([]byte(symbol+"waitingList"))
 	if bz != nil {
 		MustUnmarshalJSON(bz, &waitingList)
 	}
 	// Append
 	waitingList.List = append(waitingList.List, item)
 	// Save
-	store.Set([]byte("waitingList"), MustMarshalJSON(waitingList))
+	store.Set([]byte(symbol+"waitingList"), MustMarshalJSON(waitingList))
 }
 
 // AppendListToList appends a list of strings to the waiting list
-func (k Keeper) AppendListToList(ctx sdk.Context, items []string) {
+func (k Keeper) AppendListToList(ctx sdk.Context, items []string, symbol string) {
 	store := ctx.KVStore(k.storeKey)
 	// Load current list
 	var waitingList WaitingList
-	bz := store.Get([]byte("waitingList"))
+	bz := store.Get([]byte(symbol+"waitingList"))
 	if bz == nil {
 		waitingList = WaitingList{}
 	}
@@ -340,25 +349,61 @@ func (k Keeper) AppendListToList(ctx sdk.Context, items []string) {
 	// Append list to existing list
 	waitingList.List = append(waitingList.List, items...)
 	// Save
-	store.Set([]byte("waitingList"), MustMarshalJSON(waitingList))
+	store.Set([]byte(symbol+"waitingList"), MustMarshalJSON(waitingList))
 }
-func (k Keeper) GetList(ctx sdk.Context) WaitingList {
-	logrus.Info("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee1")
-	store := ctx.KVStore(k.storeKey)
-	var waitingList WaitingList
-	bz := store.Get([]byte("waitingList"))
-	if bz != nil {
-		MustUnmarshalJSON(bz, &waitingList)
-	}
-	logrus.Info("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee2")
-	return waitingList
-}
-// RemoveFromList removes an item from the waiting list
-func (k Keeper) RemoveFromList(ctx sdk.Context, item string) {
+
+func (k Keeper) AddLatestCondition(ctx sdk.Context, item string, symbol string) {
 	store := ctx.KVStore(k.storeKey)
 	// Load current list
 	var waitingList WaitingList
-	bz := store.Get([]byte("waitingList"))
+	bz := store.Get([]byte(symbol+"waitingList"))
+	if bz == nil {
+		waitingList = WaitingList{}
+	}
+	if bz != nil {
+		MustUnmarshalJSON(bz, &waitingList)
+	}
+	// Append list to existing list
+	waitingList.LatestMetCondition = item
+	// Save
+	store.Set([]byte(symbol+"waitingList"), MustMarshalJSON(waitingList))
+}
+
+func (k Keeper) GetList(ctx sdk.Context) WaitingList {
+	//logrus.Info("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee1")
+	all := k.GetAllSymbolRequests(ctx)
+	var waitingListAll WaitingList
+	for _,symbol := range all {
+	store := ctx.KVStore(k.storeKey)
+	var waitingList WaitingList
+	bz := store.Get([]byte(symbol.Symbol+"waitingList"))
+	if bz != nil {
+		MustUnmarshalJSON(bz, &waitingList)
+	}
+	waitingListAll.List = append(waitingListAll.List,waitingList.List...)
+}
+	//logrus.Info("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee2")
+	return waitingListAll
+}
+
+func (k Keeper) GetLatestCondition(ctx sdk.Context, symbol string) string {
+	//logrus.Info("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee1")
+	store := ctx.KVStore(k.storeKey)
+	var waitingList WaitingList
+	bz := store.Get([]byte(symbol+"waitingList"))
+	if bz != nil {
+		MustUnmarshalJSON(bz, &waitingList)
+	}
+	//logrus.Info("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee2")
+	return waitingList.LatestMetCondition
+}
+// RemoveFromList removes an item from the waiting list
+func (k Keeper) RemoveFromList(ctx sdk.Context, item string) {
+	symbol := extractPrefix(item)
+	store := ctx.KVStore(k.storeKey)
+	// Load current list
+	var waitingList WaitingList
+	bz := store.Get([]byte(symbol+"waitingList"))
 	if bz != nil {
 		MustUnmarshalJSON(bz, &waitingList)
 	}
@@ -370,7 +415,32 @@ func (k Keeper) RemoveFromList(ctx sdk.Context, item string) {
 		}
 	}
 	// Save
-	store.Set([]byte("waitingList"), MustMarshalJSON(waitingList))
+	store.Set([]byte(symbol+"waitingList"), MustMarshalJSON(waitingList))
+}
+func extractPrefix(s string) string {
+	// Get slice of runes from the string
+	runes := []rune(s)
+
+	// Iterate through runes until we hit a digit
+	for i, r := range runes {
+		if unicode.IsDigit(r) {
+			return string(runes[:i])
+		}
+	}
+
+	// If there are no digits, return the entire string
+	return s
+}
+func extractNumber(s, symbol string) (int, error) {
+	// Check if the string starts with the provided symbol
+	if !strings.HasPrefix(s, symbol) {
+		return 0, fmt.Errorf("input does not start with the given symbol")
+	}
+
+	// Strip the symbol
+	numericPart := strings.TrimPrefix(s, symbol)
+
+	return strconv.Atoi(numericPart)  // Convert the numeric string to an integer
 }
 // StoreOracleResponsePacket is a function that receives an OracleResponsePacketData from BandChain.
 func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleResponsePacketData) error {
@@ -383,18 +453,19 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 	// Loop through the result and set the price in the state for each symbol.
 	for _, r := range result {
 		if r.ResponseCode == 0 {
-			changed, old, new := k.UpdatePrice(ctx, types.Price{
+			changed, _, new := k.UpdatePrice(ctx, types.Price{
 				Symbol:      r.Symbol,
 				Price:       r.Rate,
 				ResolveTime: res.ResolveTime,
-				
 			})
 			if changed {
-				step := k.GetPriceStep(ctx,r.Symbol)
+				step := k.GetPriceStep(ctx, r.Symbol)
+				previous := k.GetLatestCondition(ctx, r.Symbol)
 				// Iterate through values with 0.05 difference
 				waitingList := []string{}
-				for i := old + int64(step); i <= new; i += int64(step) {
-					nonce := k.UpdateRepeatedPrice(ctx,types.Price{Symbol: r.Symbol,Price: uint64(i) ,ResolveTime: res.ResolveTime})
+				prev, _ := extractNumber(previous,r.Symbol)
+				for i := int64(prev) + int64(step); i <= new; i += int64(step) {
+					nonce := k.UpdateRepeatedPrice(ctx, types.Price{Symbol: r.Symbol, Price: uint64(i), ResolveTime: res.ResolveTime})
 					ctx.EventManager().EmitEvent(
 						sdk.NewEvent(
 							types.EventTypePriceUpdate,
@@ -404,10 +475,10 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 							sdk.NewAttribute(types.AttributeKeyTimestamp, res.ResolveStatus.String()),
 						),
 					)
-				waitingList = append(waitingList, r.Symbol+strconv.Itoa(int(i)))
+					waitingList = append(waitingList, r.Symbol+strconv.Itoa(int(i)))
 				}
-				k.AppendListToList(ctx,waitingList)
-				
+				k.AppendListToList(ctx, waitingList, r.Symbol)
+				k.AddLatestCondition(ctx,waitingList[len(waitingList)-1],r.Symbol)
 			}
 		}
 		// TODO: allow to write logic to handle failed symbol now just ignore and skip update

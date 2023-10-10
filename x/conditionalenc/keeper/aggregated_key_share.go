@@ -7,24 +7,24 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// SetAggregatedKeyShare set a specific aggregatedKeyShare in the store from its index
-func (k Keeper) SetAggregatedKeyShare(ctx sdk.Context, aggregatedKeyShare types.AggregatedKeyShare) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
-	b := k.cdc.MustMarshal(&aggregatedKeyShare)
-	store.Set(types.AggregatedKeyShareKey(
-		aggregatedKeyShare.Condition,
+// SetAggregatedConditionalKeyShare set a specific aggregatedConditionalKeyShare in the store from its index
+func (k Keeper) SetAggregatedConditionalKeyShare(ctx sdk.Context, aggregatedConditionalKeyShare types.AggregatedConditionalKeyShare) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedConditionalKeyShareKeyPrefix))
+	b := k.cdc.MustMarshal(&aggregatedConditionalKeyShare)
+	store.Set(types.AggregatedConditionalKeyShareKey(
+		aggregatedConditionalKeyShare.Condition,
 	), b)
 }
 
-// GetAggregatedKeyShare returns a aggregatedKeyShare from its index
-func (k Keeper) GetAggregatedKeyShare(
+// GetAggregatedConditionalKeyShare returns a aggregatedConditionalKeyShare from its index
+func (k Keeper) GetAggregatedConditionalKeyShare(
 	ctx sdk.Context,
 	condition string,
 
-) (val types.AggregatedKeyShare, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
+) (val types.AggregatedConditionalKeyShare, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedConditionalKeyShareKeyPrefix))
 
-	b := store.Get(types.AggregatedKeyShareKey(
+	b := store.Get(types.AggregatedConditionalKeyShareKey(
 		condition,
 	))
 	if b == nil {
@@ -35,27 +35,27 @@ func (k Keeper) GetAggregatedKeyShare(
 	return val, true
 }
 
-// RemoveAggregatedKeyShare removes a aggregatedKeyShare from the store
-func (k Keeper) RemoveAggregatedKeyShare(
+// RemoveAggregatedConditionalKeyShare removes a aggregatedConditionalKeyShare from the store
+func (k Keeper) RemoveAggregatedConditionalKeyShare(
 	ctx sdk.Context,
 	condition string,
 
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
-	store.Delete(types.AggregatedKeyShareKey(
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedConditionalKeyShareKeyPrefix))
+	store.Delete(types.AggregatedConditionalKeyShareKey(
 		condition,
 	))
 }
 
-// GetAllAggregatedKeyShare returns all aggregatedKeyShare
-func (k Keeper) GetAllAggregatedKeyShare(ctx sdk.Context) (list []types.AggregatedKeyShare) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
+// GetAllAggregatedConditionalKeyShare returns all aggregatedConditionalKeyShare
+func (k Keeper) GetAllAggregatedConditionalKeyShare(ctx sdk.Context) (list []types.AggregatedConditionalKeyShare) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedConditionalKeyShareKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.AggregatedKeyShare
+		var val types.AggregatedConditionalKeyShare
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}

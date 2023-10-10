@@ -4,7 +4,7 @@ import (
 	"math/rand"
 
 	"fairyring/testutil/sample"
-	pepsimulation "fairyring/x/conditionalenc/simulation"
+	conditionalencsimulation "fairyring/x/conditionalenc/simulation"
 	"fairyring/x/conditionalenc/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -17,7 +17,7 @@ import (
 // avoid unused import issue
 var (
 	_ = sample.AccAddress
-	_ = pepsimulation.FindAccount
+	_ = conditionalencsimulation.FindAccount
 	_ = simulation.MsgEntryKind
 	_ = baseapp.Paramspace
 )
@@ -26,8 +26,8 @@ const (
 	opWeightMsgSubmitEncryptedTx          = "op_weight_msg_submit_encrypted_tx"
 	defaultWeightMsgSubmitEncryptedTx int = 100
 
-	opWeightMsgCreateAggregatedKeyShare          = "op_weight_msg_aggregated_key_share"
-	defaultWeightMsgCreateAggregatedKeyShare int = 100
+	opWeightMsgCreateAggregatedConditionalKeyShare          = "op_weight_msg_aggregated_key_share"
+	defaultWeightMsgCreateAggregatedConditionalKeyShare int = 100
 
 	// this line is used by starport scaffolding # simapp/module/const
 )
@@ -38,9 +38,9 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	for i, acc := range simState.Accounts {
 		accs[i] = acc.Address.String()
 	}
-	pepGenesis := types.GenesisState{
+	conditionalencGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
-		AggregatedKeyShareList: []types.AggregatedKeyShare{
+		AggregatedConditionalKeyShareList: []types.AggregatedConditionalKeyShare{
 			{
 				Creator: sample.AccAddress(),
 				Condition:  "0",
@@ -52,7 +52,7 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
-	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&pepGenesis)
+	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&conditionalencGenesis)
 }
 
 // ProposalContents doesn't return any content functions for governance proposals
@@ -75,18 +75,18 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgSubmitEncryptedTx,
-		pepsimulation.SimulateMsgSubmitEncryptedTx(am.accountKeeper, am.bankKeeper, am.keeper),
+		conditionalencsimulation.SimulateMsgSubmitEncryptedTx(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
-	var weightMsgCreateAggregatedKeyShare int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateAggregatedKeyShare, &weightMsgCreateAggregatedKeyShare, nil,
+	var weightMsgCreateAggregatedConditionalKeyShare int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateAggregatedConditionalKeyShare, &weightMsgCreateAggregatedConditionalKeyShare, nil,
 		func(_ *rand.Rand) {
-			weightMsgCreateAggregatedKeyShare = defaultWeightMsgCreateAggregatedKeyShare
+			weightMsgCreateAggregatedConditionalKeyShare = defaultWeightMsgCreateAggregatedConditionalKeyShare
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgCreateAggregatedKeyShare,
-		pepsimulation.SimulateMsgCreateAggregatedKeyShare(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgCreateAggregatedConditionalKeyShare,
+		conditionalencsimulation.SimulateMsgCreateAggregatedConditionalKeyShare(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

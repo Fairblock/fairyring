@@ -9,3 +9,8 @@ message AggregatedKeyShare {
   
 }
 
+message AggregatedConditionalKeyShare {
+  string condition = 1; 
+  string data = 2; 
+  
+}

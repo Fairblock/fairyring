@@ -63,9 +63,9 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 
 ---
 
-## AggregatedKeyShare
+## AggregatedConditionalKeyShare
 
-This state is modified when a transaction is made (normally by the FairyPort service) to register a new aggregated keyshare generated in the FairyRing chain. Unlike other transactions, this transaction is not normally executed. Instead, at the beign block of the PEP module, transactions with message type `MsgCreateAggregatedKeyShare` are searched for in the mempool. If found, these messages are then automatically executed.
+This state is modified when a transaction is made (normally by the FairyPort service) to register a new aggregated keyshare generated in the FairyRing chain. Unlike other transactions, this transaction is not normally executed. Instead, at the beign block of the PEP module, transactions with message type `MsgCreateAggregatedConditionalKeyShare` are searched for in the mempool. If found, these messages are then automatically executed.
 
 Ref:
 

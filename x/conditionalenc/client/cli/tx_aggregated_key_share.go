@@ -6,11 +6,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	
+
 	"github.com/spf13/cobra"
 )
 
-func CmdCreateAggregatedKeyShare() *cobra.Command {
+func CmdCreateAggregatedConditionalKeyShare() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create-aggregated-key-share [condition] [data]",
 		Short: "Submit a new aggregated keyshare into a destination chain",
@@ -18,7 +18,6 @@ func CmdCreateAggregatedKeyShare() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexCondition := string(args[0])
-		
 
 			// Get value arguments
 			argData := args[1]
@@ -28,7 +27,7 @@ func CmdCreateAggregatedKeyShare() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreateAggregatedKeyShare(
+			msg := types.NewMsgCreateAggregatedConditionalKeyShare(
 				clientCtx.GetFromAddress().String(),
 				indexCondition,
 				argData,

@@ -10,7 +10,7 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSubmitEncryptedTx{}, "conditionalenc/SubmitEncryptedTx", nil)
-	cdc.RegisterConcrete(&MsgCreateAggregatedKeyShare{}, "conditionalenc/CreateAggregatedKeyShare", nil)
+	cdc.RegisterConcrete(&MsgCreateAggregatedConditionalKeyShare{}, "conditionalenc/CreateAggregatedConditionalKeyShare", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -19,7 +19,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgSubmitEncryptedTx{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateAggregatedKeyShare{},
+		&MsgCreateAggregatedConditionalKeyShare{},
 	)
 	// this line is used by starport scaffolding # 3
 

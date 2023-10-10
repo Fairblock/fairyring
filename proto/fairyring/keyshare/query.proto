@@ -60,6 +60,30 @@ service Query {
     option (google.api.http).get = "/fairyring/keyshare/aggregated_key_share";
   
   }
+
+    // Queries a KeyShare by index.
+    rpc ConditionalKeyShare (QueryGetConditionalKeyShareRequest) returns (QueryGetConditionalKeyShareResponse) {
+      option (google.api.http).get = "/fairyring/keyshare/conditional_key_share/{validator}/{condition}";
+    
+    }
+    
+    // Queries a list of KeyShare items.
+    rpc ConditionalKeyShareAll (QueryAllConditionalKeyShareRequest) returns (QueryAllConditionalKeyShareResponse) {
+      option (google.api.http).get = "/fairyring/keyshare/conditional_key_share";
+    
+    }
+  
+    // this line is used by starport scaffolding # 2
+    
+    // Queries a list of AggregatedKeyShare items.
+    rpc AggregatedConditionalKeyShare    (QueryGetAggregatedConditionalKeyShareRequest) returns (QueryGetAggregatedConditionalKeyShareResponse) {
+      option (google.api.http).get = "/fairyring/keyshare/aggregated_conditional_key_share/{condition}";
+    
+    }
+    rpc AggregatedConditionalKeyShareAll (QueryAllAggregatedConditionalKeyShareRequest) returns (QueryAllAggregatedConditionalKeyShareResponse) {
+      option (google.api.http).get = "/fairyring/keyshare/aggregated_conditional_key_share";
+    
+    }
   
   // Queries the public keys
   rpc PubKey (QueryPubKeyRequest) returns (QueryPubKeyResponse) {
@@ -121,14 +145,37 @@ message QueryAllKeyShareResponse {
   repeated KeyShare                               keyShare   = 1 [(gogoproto.nullable) = false];
            cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
+message QueryGetConditionalKeyShareRequest {
+  string validator   = 1;
+  string condition = 2;
+}
+
+message QueryGetConditionalKeyShareResponse {
+  ConditionalKeyShare keyShare = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllConditionalKeyShareRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllConditionalKeyShareResponse {
+  repeated ConditionalKeyShare                               keyShare   = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
 
 // this line is used by starport scaffolding # 3
 message QueryGetAggregatedKeyShareRequest {
   uint64 height = 1;
 }
-
+message QueryGetAggregatedConditionalKeyShareRequest {
+  string condition = 1;
+}
 message QueryGetAggregatedKeyShareResponse {
   AggregatedKeyShare aggregatedKeyShare = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetAggregatedConditionalKeyShareResponse {
+  AggregatedConditionalKeyShare aggregatedKeyShare = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryAllAggregatedKeyShareRequest {
@@ -137,6 +184,15 @@ message QueryAllAggregatedKeyShareRequest {
 
 message QueryAllAggregatedKeyShareResponse {
   repeated AggregatedKeyShare                     aggregatedKeyShare = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination         = 2;
+}
+
+message QueryAllAggregatedConditionalKeyShareRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllAggregatedConditionalKeyShareResponse {
+  repeated AggregatedConditionalKeyShare                     aggregatedKeyShare = 1 [(gogoproto.nullable) = false];
            cosmos.base.query.v1beta1.PageResponse pagination         = 2;
 }
 

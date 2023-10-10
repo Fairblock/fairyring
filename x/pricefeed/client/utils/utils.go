@@ -19,7 +19,7 @@ type (
 		Symbol         string `json:"symbol"           yaml:"symbol"`
 		OracleScriptID uint64 `json:"oracle_script_id" yaml:"oracle_script_id"`
 		BlockInterval  uint64 `json:"block_interval"   yaml:"block_interval"`
-		PriceStep uint64 `json:"price_step"   yaml:"price_step"`
+		PriceStep      uint64 `json:"price_step"   yaml:"price_step"`
 	}
 
 	// UpdateSymbolRequestProposalJSON defines a ParameterChangeProposal with a deposit used
@@ -42,7 +42,7 @@ func (srj SymbolRequestJSON) ToSymbolRequest() types.SymbolRequest {
 		Symbol:         srj.Symbol,
 		OracleScriptID: srj.OracleScriptID,
 		BlockInterval:  srj.BlockInterval,
-		PriceStep: srj.PriceStep,
+		PriceStep:      srj.PriceStep,
 	}
 }
 

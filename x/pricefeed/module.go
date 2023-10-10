@@ -20,13 +20,13 @@ import (
 	"fairyring/x/pricefeed/keeper"
 	"fairyring/x/pricefeed/types"
 
+	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	porttypes "github.com/cosmos/ibc-go/v7/modules/core/05-port/types"
-	abci "github.com/tendermint/tendermint/abci/types"
 	//tmcore "github.com/tendermint/tendermint/rpc/core"
 )
 
@@ -99,20 +99,21 @@ func (AppModuleBasic) GetQueryCmd() *cobra.Command {
 // AppModule implements the AppModule interface that defines the inter-dependent methods that modules need to implement
 type AppModule struct {
 	AppModuleBasic
-	
-	keeper               keeper.Keeper
+
+	keeper keeper.Keeper
 }
 
 func NewAppModule(
 	cdc codec.Codec,
 	keeper keeper.Keeper,
-	
+
 ) AppModule {
-	return AppModule{
-		AppModuleBasic:       NewAppModuleBasic(cdc),
-		keeper:               keeper,
-		
+	a := AppModule{
+		AppModuleBasic: NewAppModuleBasic(cdc),
+		keeper:         keeper,
 	}
+
+	return a
 }
 
 // // Deprecated: use RegisterServices
@@ -159,12 +160,10 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	logrus.Info("-----------------------------> pricefeed")
 	HandleBeginBlock(ctx, am.keeper)
 
-	
-
 }
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
-	
+
 	return []abci.ValidatorUpdate{}
 }

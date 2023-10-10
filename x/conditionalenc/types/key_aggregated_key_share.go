@@ -5,12 +5,12 @@ import "encoding/binary"
 var _ binary.ByteOrder
 
 const (
-	// AggregatedKeyShareKeyPrefix is the prefix to retrieve all AggregatedKeyShare
-	AggregatedKeyShareKeyPrefix = "AggregatedKeyShare/value/"
+	// AggregatedConditionalKeyShareKeyPrefix is the prefix to retrieve all AggregatedConditionalKeyShare
+	AggregatedConditionalKeyShareKeyPrefix = "AggregatedConditionalKeyShare/value/"
 )
 
-// AggregatedKeyShareKey returns the store key to retrieve a AggregatedKeyShare from the index fields
-func AggregatedKeyShareKey(
+// AggregatedConditionalKeyShareKey returns the store key to retrieve a AggregatedConditionalKeyShare from the index fields
+func AggregatedConditionalKeyShareKey(
 	condition string,
 ) []byte {
 	var key []byte

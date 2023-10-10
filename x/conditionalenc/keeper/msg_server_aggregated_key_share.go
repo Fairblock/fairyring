@@ -14,7 +14,7 @@ import (
 	bls "github.com/drand/kyber-bls12381"
 )
 
-func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.MsgCreateAggregatedKeyShare) (*types.MsgCreateAggregatedKeyShareResponse, error) {
+func (k msgServer) CreateAggregatedConditionalKeyShare(goCtx context.Context, msg *types.MsgCreateAggregatedConditionalKeyShare) (*types.MsgCreateAggregatedConditionalKeyShareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	var trusted = false
@@ -88,7 +88,7 @@ func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.Ms
 		return nil, err
 	}
 
-	k.SetAggregatedKeyShare(ctx, types.AggregatedKeyShare{
+	k.SetAggregatedConditionalKeyShare(ctx, types.AggregatedConditionalKeyShare{
 		Condition:  msg.Condition,
 		Data:    msg.Data,
 		Creator: msg.Creator,
@@ -98,5 +98,5 @@ func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.Ms
 
 	k.Logger(ctx).Info(fmt.Sprintf("[ProcessUnconfirmedTxs] Aggregated Key Added, height: %d", msg.Condition))
 
-	return &types.MsgCreateAggregatedKeyShareResponse{}, nil
+	return &types.MsgCreateAggregatedConditionalKeyShareResponse{}, nil
 }

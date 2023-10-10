@@ -5,7 +5,7 @@ package types
 
 import (
 	fmt "fmt"
-	proto "github.com/cosmos/gogoproto/proto"
+	proto "github.com/gogo/protobuf/proto"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -106,8 +106,93 @@ func (m *KeyShare) GetReceivedBlockHeight() uint64 {
 	return 0
 }
 
+type ConditionalKeyShare struct {
+	Validator           string `protobuf:"bytes,1,opt,name=validator,proto3" json:"validator,omitempty"`
+	Condition           string `protobuf:"bytes,2,opt,name=condition,proto3" json:"condition,omitempty"`
+	KeyShare            string `protobuf:"bytes,3,opt,name=keyShare,proto3" json:"keyShare,omitempty"`
+	KeyShareIndex       uint64 `protobuf:"varint,4,opt,name=keyShareIndex,proto3" json:"keyShareIndex,omitempty"`
+	ReceivedTimestamp   uint64 `protobuf:"varint,5,opt,name=receivedTimestamp,proto3" json:"receivedTimestamp,omitempty"`
+	ReceivedBlockHeight uint64 `protobuf:"varint,6,opt,name=receivedBlockHeight,proto3" json:"receivedBlockHeight,omitempty"`
+}
+
+func (m *ConditionalKeyShare) Reset()         { *m = ConditionalKeyShare{} }
+func (m *ConditionalKeyShare) String() string { return proto.CompactTextString(m) }
+func (*ConditionalKeyShare) ProtoMessage()    {}
+func (*ConditionalKeyShare) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cb45212b5123dd29, []int{1}
+}
+func (m *ConditionalKeyShare) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ConditionalKeyShare) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ConditionalKeyShare.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ConditionalKeyShare) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ConditionalKeyShare.Merge(m, src)
+}
+func (m *ConditionalKeyShare) XXX_Size() int {
+	return m.Size()
+}
+func (m *ConditionalKeyShare) XXX_DiscardUnknown() {
+	xxx_messageInfo_ConditionalKeyShare.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ConditionalKeyShare proto.InternalMessageInfo
+
+func (m *ConditionalKeyShare) GetValidator() string {
+	if m != nil {
+		return m.Validator
+	}
+	return ""
+}
+
+func (m *ConditionalKeyShare) GetCondition() string {
+	if m != nil {
+		return m.Condition
+	}
+	return ""
+}
+
+func (m *ConditionalKeyShare) GetKeyShare() string {
+	if m != nil {
+		return m.KeyShare
+	}
+	return ""
+}
+
+func (m *ConditionalKeyShare) GetKeyShareIndex() uint64 {
+	if m != nil {
+		return m.KeyShareIndex
+	}
+	return 0
+}
+
+func (m *ConditionalKeyShare) GetReceivedTimestamp() uint64 {
+	if m != nil {
+		return m.ReceivedTimestamp
+	}
+	return 0
+}
+
+func (m *ConditionalKeyShare) GetReceivedBlockHeight() uint64 {
+	if m != nil {
+		return m.ReceivedBlockHeight
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*KeyShare)(nil), "fairyring.keyshare.KeyShare")
+	proto.RegisterType((*ConditionalKeyShare)(nil), "fairyring.keyshare.ConditionalKeyShare")
 }
 
 func init() {
@@ -115,7 +200,7 @@ func init() {
 }
 
 var fileDescriptor_cb45212b5123dd29 = []byte{
-	// 235 bytes of a gzipped FileDescriptorProto
+	// 269 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x52, 0x4a, 0x4b, 0xcc, 0x2c,
 	0xaa, 0x2c, 0xca, 0xcc, 0x4b, 0xd7, 0xcf, 0x4e, 0xad, 0x2c, 0xce, 0x48, 0x2c, 0x4a, 0x05, 0x31,
 	0xe2, 0xc1, 0x2c, 0xbd, 0x82, 0xa2, 0xfc, 0x92, 0x7c, 0x21, 0x21, 0xb8, 0x1a, 0x3d, 0x98, 0x1a,
@@ -126,11 +211,13 @@ var fileDescriptor_cb45212b5123dd29 = []byte{
 	0x04, 0x33, 0x58, 0x3b, 0x9c, 0x2f, 0xa4, 0xc2, 0xc5, 0x0b, 0x63, 0x7b, 0xe6, 0xa5, 0xa4, 0x56,
 	0x48, 0xb0, 0x80, 0xf5, 0xa3, 0x0a, 0x0a, 0xe9, 0x70, 0x09, 0x16, 0xa5, 0x26, 0xa7, 0x66, 0x96,
 	0xa5, 0xa6, 0x84, 0x64, 0xe6, 0xa6, 0x16, 0x97, 0x24, 0xe6, 0x16, 0x48, 0xb0, 0x82, 0x55, 0x62,
-	0x4a, 0x08, 0x19, 0x70, 0x09, 0xc3, 0x04, 0x9d, 0x90, 0x5c, 0xc6, 0x06, 0x56, 0x8f, 0x4d, 0xca,
-	0xc9, 0xe4, 0xc4, 0x23, 0x39, 0xc6, 0x0b, 0x8f, 0xe4, 0x18, 0x1f, 0x3c, 0x92, 0x63, 0x9c, 0xf0,
-	0x58, 0x8e, 0xe1, 0xc2, 0x63, 0x39, 0x86, 0x1b, 0x8f, 0xe5, 0x18, 0xa2, 0xa4, 0x10, 0x01, 0x58,
-	0x81, 0x08, 0xc2, 0x92, 0xca, 0x82, 0xd4, 0xe2, 0x24, 0x36, 0x70, 0xf8, 0x19, 0x03, 0x02, 0x00,
-	0x00, 0xff, 0xff, 0x11, 0x1c, 0x0e, 0xa8, 0x65, 0x01, 0x00, 0x00,
+	0x4a, 0x08, 0x19, 0x70, 0x09, 0xc3, 0x04, 0x9d, 0x90, 0x5c, 0xc6, 0x06, 0x56, 0x8f, 0x4d, 0x4a,
+	0xe9, 0x33, 0x23, 0x97, 0xb0, 0x73, 0x7e, 0x5e, 0x4a, 0x66, 0x49, 0x66, 0x7e, 0x5e, 0x62, 0x0e,
+	0x91, 0x3e, 0x97, 0xe1, 0xe2, 0x4c, 0x86, 0x69, 0x02, 0xfb, 0x9b, 0x33, 0x08, 0x21, 0x30, 0xf8,
+	0x7d, 0xed, 0x64, 0x72, 0xe2, 0x91, 0x1c, 0xe3, 0x85, 0x47, 0x72, 0x8c, 0x0f, 0x1e, 0xc9, 0x31,
+	0x4e, 0x78, 0x2c, 0xc7, 0x70, 0xe1, 0xb1, 0x1c, 0xc3, 0x8d, 0xc7, 0x72, 0x0c, 0x51, 0x52, 0x88,
+	0x64, 0x53, 0x81, 0x48, 0x38, 0x25, 0x95, 0x05, 0xa9, 0xc5, 0x49, 0x6c, 0xe0, 0x54, 0x63, 0x0c,
+	0x08, 0x00, 0x00, 0xff, 0xff, 0x31, 0x27, 0xd2, 0xff, 0x5b, 0x02, 0x00, 0x00,
 }
 
 func (m *KeyShare) Marshal() (dAtA []byte, err error) {
@@ -190,6 +277,65 @@ func (m *KeyShare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *ConditionalKeyShare) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ConditionalKeyShare) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ConditionalKeyShare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.ReceivedBlockHeight != 0 {
+		i = encodeVarintKeyShare(dAtA, i, uint64(m.ReceivedBlockHeight))
+		i--
+		dAtA[i] = 0x30
+	}
+	if m.ReceivedTimestamp != 0 {
+		i = encodeVarintKeyShare(dAtA, i, uint64(m.ReceivedTimestamp))
+		i--
+		dAtA[i] = 0x28
+	}
+	if m.KeyShareIndex != 0 {
+		i = encodeVarintKeyShare(dAtA, i, uint64(m.KeyShareIndex))
+		i--
+		dAtA[i] = 0x20
+	}
+	if len(m.KeyShare) > 0 {
+		i -= len(m.KeyShare)
+		copy(dAtA[i:], m.KeyShare)
+		i = encodeVarintKeyShare(dAtA, i, uint64(len(m.KeyShare)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Condition) > 0 {
+		i -= len(m.Condition)
+		copy(dAtA[i:], m.Condition)
+		i = encodeVarintKeyShare(dAtA, i, uint64(len(m.Condition)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Validator) > 0 {
+		i -= len(m.Validator)
+		copy(dAtA[i:], m.Validator)
+		i = encodeVarintKeyShare(dAtA, i, uint64(len(m.Validator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintKeyShare(dAtA []byte, offset int, v uint64) int {
 	offset -= sovKeyShare(v)
 	base := offset
@@ -213,6 +359,36 @@ func (m *KeyShare) Size() (n int) {
 	}
 	if m.BlockHeight != 0 {
 		n += 1 + sovKeyShare(uint64(m.BlockHeight))
+	}
+	l = len(m.KeyShare)
+	if l > 0 {
+		n += 1 + l + sovKeyShare(uint64(l))
+	}
+	if m.KeyShareIndex != 0 {
+		n += 1 + sovKeyShare(uint64(m.KeyShareIndex))
+	}
+	if m.ReceivedTimestamp != 0 {
+		n += 1 + sovKeyShare(uint64(m.ReceivedTimestamp))
+	}
+	if m.ReceivedBlockHeight != 0 {
+		n += 1 + sovKeyShare(uint64(m.ReceivedBlockHeight))
+	}
+	return n
+}
+
+func (m *ConditionalKeyShare) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Validator)
+	if l > 0 {
+		n += 1 + l + sovKeyShare(uint64(l))
+	}
+	l = len(m.Condition)
+	if l > 0 {
+		n += 1 + l + sovKeyShare(uint64(l))
 	}
 	l = len(m.KeyShare)
 	if l > 0 {
@@ -316,6 +492,209 @@ func (m *KeyShare) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field KeyShare", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.KeyShare = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field KeyShareIndex", wireType)
+			}
+			m.KeyShareIndex = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.KeyShareIndex |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReceivedTimestamp", wireType)
+			}
+			m.ReceivedTimestamp = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ReceivedTimestamp |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReceivedBlockHeight", wireType)
+			}
+			m.ReceivedBlockHeight = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ReceivedBlockHeight |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipKeyShare(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ConditionalKeyShare) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowKeyShare
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ConditionalKeyShare: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ConditionalKeyShare: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Validator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Validator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Condition", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Condition = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field KeyShare", wireType)

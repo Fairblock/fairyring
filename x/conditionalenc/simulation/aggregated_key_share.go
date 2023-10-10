@@ -17,7 +17,7 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func SimulateMsgCreateAggregatedKeyShare(
+func SimulateMsgCreateAggregatedConditionalKeyShare(
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
@@ -27,14 +27,14 @@ func SimulateMsgCreateAggregatedKeyShare(
 		simAccount, _ := simtypes.RandomAcc(r, accs)
 
 		i := r.Int()
-		msg := &types.MsgCreateAggregatedKeyShare{
+		msg := &types.MsgCreateAggregatedConditionalKeyShare{
 			Creator: simAccount.Address.String(),
 			Condition:  string(i),
 		}
 
-		_, found := k.GetAggregatedKeyShare(ctx, msg.Condition)
+		_, found := k.GetAggregatedConditionalKeyShare(ctx, msg.Condition)
 		if found {
-			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "AggregatedKeyShare already exist"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "AggregatedConditionalKeyShare already exist"), nil, nil
 		}
 
 		txCtx := simulation.OperationInput{

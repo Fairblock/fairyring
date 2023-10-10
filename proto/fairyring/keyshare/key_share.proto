@@ -12,3 +12,12 @@ message KeyShare {
   uint64 receivedBlockHeight = 6;
 }
 
+message ConditionalKeyShare {
+  string validator = 1; 
+  string condition = 2;
+  string keyShare = 3;
+  uint64 keyShareIndex = 4;
+  uint64 receivedTimestamp = 5;
+  uint64 receivedBlockHeight = 6;
+}
+

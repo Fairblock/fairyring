@@ -14,12 +14,12 @@ type MsgSubmitEncryptedTx struct {
 
 ---
 
-## CreateAggregatedKeyShare
+## CreateAggregatedConditionalKeyShare
 
 This message is used to register an aggregated keyshare from the fairyring chain to the destination chain.
 
 ```go
-type MsgCreateAggregatedKeyShare struct {
+type MsgCreateAggregatedConditionalKeyShare struct {
     Creator   string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
     Height    uint64 `protobuf:"varint,2,opt,name=height,proto3" json:"height,omitempty"`
     Data      string `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`

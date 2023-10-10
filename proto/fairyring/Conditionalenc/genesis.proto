@@ -3,11 +3,11 @@ syntax = "proto3";
 package fairyring.Conditionalenc;
 
 import "gogoproto/gogo.proto";
-import "fairyring/conditionalenc/params.proto";
-import "fairyring/conditionalenc/encrypted_tx.proto";
-import "fairyring/conditionalenc/Conditionalenc_nonce.proto";
-import "fairyring/conditionalenc/aggregated_key_share.proto";
-import "fairyring/conditionalenc/pub_key.proto";
+import "fairyring/Conditionalenc/params.proto";
+import "fairyring/Conditionalenc/encrypted_tx.proto";
+import "fairyring/Conditionalenc/Conditionalenc_nonce.proto";
+import "fairyring/Conditionalenc/aggregated_key_share.proto";
+import "fairyring/Conditionalenc/pub_key.proto";
 
 // this line is used by starport scaffolding # genesis/proto/import
 
@@ -21,7 +21,7 @@ message GenesisState {
   repeated ConditionalencNonce               ConditionalencNonceList         = 4 [(gogoproto.nullable) = false];
 
   // this line is used by starport scaffolding # genesis/proto/state
-  repeated AggregatedKeyShare     aggregatedKeyShareList     = 6 [(gogoproto.nullable) = false];
+  repeated AggregatedConditionalKeyShare     AggregatedConditionalKeyShareList     = 6 [(gogoproto.nullable) = false];
   ActivePubKey                    activePubKey               = 7 [(gogoproto.nullable) = false];
   QueuedPubKey                    queuedPubKey               = 8 [(gogoproto.nullable) = false];
 }

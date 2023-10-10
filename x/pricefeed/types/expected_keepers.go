@@ -4,6 +4,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
+
 	//ibcexported "github.com/cosmos/ibc-go/v7/modules/core/exported"
 	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 	//conditionalenctypes "fairyring/x/conditionalenc/types"
@@ -36,7 +37,6 @@ type ChannelKeeper interface {
 		timeoutTimestamp uint64,
 		data []byte,
 	) (uint64, error)
-	
 }
 
 // PortKeeper defines the expected IBC port keeper

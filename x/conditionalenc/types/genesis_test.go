@@ -56,7 +56,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Address: "1",
 					},
 				},
-				AggregatedKeyShareList: []types.AggregatedKeyShare{
+				AggregatedConditionalKeyShareList: []types.AggregatedConditionalKeyShare{
 					{
 						Condition: "0",
 					},
@@ -115,9 +115,9 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid: false,
 		},
 		{
-			desc: "duplicated aggregatedKeyShare",
+			desc: "duplicated aggregatedConditionalKeyShare",
 			genState: &types.GenesisState{
-				AggregatedKeyShareList: []types.AggregatedKeyShare{
+				AggregatedConditionalKeyShareList: []types.AggregatedConditionalKeyShare{
 					{
 						Condition: "0",
 					},

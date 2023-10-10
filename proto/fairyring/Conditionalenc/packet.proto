@@ -1,7 +1,7 @@
 syntax = "proto3";
 package fairyring.Conditionalenc;
 
-import "fairyring/conditionalenc/pub_key.proto";
+import "fairyring/Conditionalenc/pub_key.proto";
 
 option go_package = "fairyring/x/conditionalenc/types";
 

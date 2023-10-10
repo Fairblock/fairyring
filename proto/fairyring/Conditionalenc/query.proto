@@ -5,11 +5,11 @@ package fairyring.Conditionalenc;
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
-import "fairyring/conditionalenc/params.proto";
-import "fairyring/conditionalenc/encrypted_tx.proto";
-import "fairyring/conditionalenc/Conditionalenc_nonce.proto";
-import "fairyring/conditionalenc/aggregated_key_share.proto";
-import "fairyring/conditionalenc/pub_key.proto";
+import "fairyring/Conditionalenc/params.proto";
+import "fairyring/Conditionalenc/encrypted_tx.proto";
+import "fairyring/Conditionalenc/Conditionalenc_nonce.proto";
+import "fairyring/Conditionalenc/aggregated_key_share.proto";
+import "fairyring/Conditionalenc/pub_key.proto";
 
 // this line is used by starport scaffolding # 1
 
@@ -20,49 +20,49 @@ service Query {
   
   // Parameters queries the parameters of the module.
   rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/fairyring/conditionalenc/params";
+    option (google.api.http).get = "/fairyring/Conditionalenc/params";
   
   }
   
   // Queries a EncryptedTx by index.
   rpc EncryptedTx (QueryGetEncryptedTxRequest) returns (QueryGetEncryptedTxResponse) {
-    option (google.api.http).get = "/fairyring/conditionalenc/encrypted_tx/{targetcondition}/{index}";
+    option (google.api.http).get = "/fairyring/Conditionalenc/encrypted_tx/{targetcondition}/{index}";
   
   }
   
   // Queries a list of EncryptedTx items.
   rpc EncryptedTxAll (QueryAllEncryptedTxRequest) returns (QueryAllEncryptedTxResponse) {
-    option (google.api.http).get = "/fairyring/conditionalenc/encrypted_tx";
+    option (google.api.http).get = "/fairyring/Conditionalenc/encrypted_tx";
   
   }
   
   // Queries a list of EncryptedTx items.
   rpc EncryptedTxAllFromCondition (QueryAllEncryptedTxFromconditionRequest) returns (QueryAllEncryptedTxFromconditionResponse) {
-    option (google.api.http).get = "/fairyring/conditionalenc/encrypted_tx/{targetcondition}";
+    option (google.api.http).get = "/fairyring/Conditionalenc/encrypted_tx/{targetcondition}";
   
   }
   
   // Queries a list of Latestcondition items.
   rpc LatestCondition (QueryLatestconditionRequest) returns (QueryLatestconditionResponse) {
-    option (google.api.http).get = "/fairyring/conditionalenc/latest_condition";
+    option (google.api.http).get = "/fairyring/Conditionalenc/latest_condition";
   
   }
   
   // Queries a ConditionalencNonce by index.
   rpc ConditionalencNonce (QueryGetConditionalencNonceRequest) returns (QueryGetConditionalencNonceResponse) {
-    option (google.api.http).get = "/fairyring/conditionalenc/Conditionalenc_nonce/{address}";
+    option (google.api.http).get = "/fairyring/Conditionalenc/Conditionalenc_nonce/{address}";
   
   }
   
   // Queries a list of ConditionalencNonce items.
   rpc ConditionalencNonceAll (QueryAllConditionalencNonceRequest) returns (QueryAllConditionalencNonceResponse) {
-    option (google.api.http).get = "/fairyring/conditionalenc/Conditionalenc_nonce";
+    option (google.api.http).get = "/fairyring/Conditionalenc/Conditionalenc_nonce";
   
   }
 
   // Queries the public keys
   rpc PubKey    (QueryPubKeyRequest) returns (QueryPubKeyResponse) {
-    option (google.api.http).get = "/fairyring/conditionalenc/pub_key";
+    option (google.api.http).get = "/fairyring/Conditionalenc/pub_key";
   
   }
 

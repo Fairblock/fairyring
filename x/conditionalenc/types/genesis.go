@@ -13,7 +13,7 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		EncryptedTxArray:       []EncryptedTxArray{},
-		AggregatedKeyShareList: []AggregatedKeyShare{},
+		AggregatedConditionalKeyShareList: []AggregatedConditionalKeyShare{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -40,15 +40,15 @@ func (gs GenesisState) Validate() error {
 		encryptedTxArrIndexMap[index] = struct{}{}
 	}
 
-	// Check for duplicated index in aggregatedKeyShare
-	aggregatedKeyShareIndexMap := make(map[string]struct{})
+	// Check for duplicated index in aggregatedConditionalKeyShare
+	aggregatedConditionalKeyShareIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.AggregatedKeyShareList {
-		index := string(AggregatedKeyShareKey(elem.Condition))
-		if _, ok := aggregatedKeyShareIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for aggregatedKeyShare")
+	for _, elem := range gs.AggregatedConditionalKeyShareList {
+		index := string(AggregatedConditionalKeyShareKey(elem.Condition))
+		if _, ok := aggregatedConditionalKeyShareIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for aggregatedConditionalKeyShare")
 		}
-		aggregatedKeyShareIndexMap[index] = struct{}{}
+		aggregatedConditionalKeyShareIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

@@ -243,7 +243,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 	waitingList := am.pricefeedKeeper.GetList(ctx)
 logrus.Info("=======================> ",waitingList)
-	allAggKey := am.keeper.GetAllAggregatedKeyShare(ctx)
+	allAggKey := am.keeper.GetAllAggregatedConditionalKeyShare(ctx)
 
 	am.keeper.Logger(ctx).Info(fmt.Sprintf("[PEP][AGGKEY] %v", allAggKey))
 
@@ -262,7 +262,7 @@ logrus.Info("=======================> ",waitingList)
 	for _, item := range waitingList.List {
 		arr := am.keeper.GetEncryptedTxAllFromCondition(ctx, item)
 
-		key, found := am.keeper.GetAggregatedKeyShare(ctx, item)
+		key, found := am.keeper.GetAggregatedConditionalKeyShare(ctx, item)
 		if !found {
 			am.keeper.Logger(ctx).Error(fmt.Sprintf("Decryption key not found for condition: %d", item))
 			continue

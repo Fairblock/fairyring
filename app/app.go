@@ -112,17 +112,19 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v7/modules/core/exported"
 	ibckeeper "github.com/cosmos/ibc-go/v7/modules/core/keeper"
 	ibctm "github.com/cosmos/ibc-go/v7/modules/light-clients/07-tendermint"
+	//"github.com/sirupsen/logrus"
 	"github.com/spf13/cast"
 
+	conditionalencmodule "fairyring/x/conditionalenc"
+	conditionalencmodulekeeper "fairyring/x/conditionalenc/keeper"
+	conditionalencmoduletypes "fairyring/x/conditionalenc/types"
 	keysharemodule "fairyring/x/keyshare"
 	keysharemodulekeeper "fairyring/x/keyshare/keeper"
 	keysharemoduletypes "fairyring/x/keyshare/types"
 	pepmodule "fairyring/x/pep"
 	pepmodulekeeper "fairyring/x/pep/keeper"
 	pepmoduletypes "fairyring/x/pep/types"
-	conditionalencmodule "fairyring/x/conditionalenc"
-	conditionalencmodulekeeper "fairyring/x/conditionalenc/keeper"
-	conditionalencmoduletypes "fairyring/x/conditionalenc/types"
+
 	// consumermodule "fairyring/x/consumer"
 	// consumermodulekeeper "fairyring/x/consumer/keeper"
 	// consumermoduletypes "fairyring/x/consumer/types"
@@ -138,6 +140,7 @@ import (
 	pricefeedclient "fairyring/x/pricefeed/client"
 	pricefeedkeeper "fairyring/x/pricefeed/keeper"
 	pricefeedtypes "fairyring/x/pricefeed/types"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "fairyring/app/params"
@@ -300,6 +303,11 @@ type App struct {
 	checkTxHandler abci.CheckTx
 }
 
+
+// type BeginBlockAppModule interface {
+// 	pricefeedmodule.AppModule
+// 	BeginBlock(sdk.Context, abci.RequestBeginBlock)
+// }
 // New returns a reference to an initialized blockchain app
 func New(
 	logger log.Logger,
@@ -538,7 +546,20 @@ func New(
 	)
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
-
+	scopedPricefeedKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedtypes.ModuleName)
+	app.ScopedPricefeedKeeper = scopedPricefeedKeeper
+	app.PricefeedKeeper = *pricefeedkeeper.NewKeeper(
+		appCodec,
+		keys[pricefeedtypes.StoreKey],
+		app.GetSubspace(pricefeedtypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedPricefeedKeeper,
+	)
+	pricefeedModule := pricefeedmodule.NewAppModule(appCodec, app.PricefeedKeeper)
+	
+	pricefeedIBCModule := pricefeedmodule.NewIBCModule(app.PricefeedKeeper)
 	govConfig := govtypes.DefaultConfig()
 	govKeeper := govkeeper.NewKeeper(
 		appCodec,
@@ -556,7 +577,8 @@ func New(
 		AddRoute(govtypes.RouterKey, govv1beta1.ProposalHandler).
 		AddRoute(paramproposal.RouterKey, params.NewParamChangeProposalHandler(app.ParamsKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
-		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper))
+		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
+		AddRoute(pricefeedtypes.RouterKey, pricefeedmodule.NewUpdateSymbolRequestProposalHandler(app.PricefeedKeeper))
 	govKeeper.SetLegacyRouter(govRouter)
 
 	app.GovKeeper = *govKeeper.SetHooks(
@@ -588,20 +610,7 @@ func New(
 	)
 
 	pepIBCModule := pepmodule.NewIBCModule(app.PepKeeper)
-	scopedPricefeedKeeper := app.CapabilityKeeper.ScopeToModule(pricefeedtypes.ModuleName)
-	app.ScopedPricefeedKeeper = scopedPricefeedKeeper
-	app.PricefeedKeeper = pricefeedkeeper.NewKeeper(
-		appCodec,
-		keys[pricefeedtypes.StoreKey],
-		app.GetSubspace(pricefeedtypes.ModuleName),
-		app.IBCKeeper.ChannelKeeper,
-		app.IBCKeeper.ChannelKeeper,
-		&app.IBCKeeper.PortKeeper,
-		scopedPricefeedKeeper,
-	)
-	pricefeedModule := pricefeedmodule.NewAppModule(appCodec, app.PricefeedKeeper)
 
-	pricefeedIBCModule := pricefeedmodule.NewIBCModule(app.PricefeedKeeper)
 
 	scopedConditionalencKeeper := app.CapabilityKeeper.ScopeToModule(conditionalencmoduletypes.ModuleName)
 	app.ConditionalEncKeeper = *conditionalencmodulekeeper.NewKeeper(
@@ -792,10 +801,11 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		icaModule,
+		pricefeedModule,
 		keyshareModule,
 		pepModule,
 		conditionalencModule,
-		pricefeedModule,
+		
 		// this line is used by starport scaffolding # stargate/app/appModule
 
 		crisis.NewAppModule(app.CrisisKeeper, skipGenesisInvariants, app.GetSubspace(crisistypes.ModuleName)), // always be last to make sure that it checks for all invariants and not only part of them
@@ -829,8 +839,9 @@ func New(
 		vestingtypes.ModuleName,
 		consensusparamtypes.ModuleName,
 		keysharemoduletypes.ModuleName, // Necessary to run before begin blocker of pep module
-		pepmoduletypes.ModuleName,
+		
 		pricefeedmoduletypes.ModuleName,
+		pepmoduletypes.ModuleName,
 		conditionalencmoduletypes.ModuleName,
 		
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
@@ -859,8 +870,9 @@ func New(
 		vestingtypes.ModuleName,
 		consensusparamtypes.ModuleName,
 		keysharemoduletypes.ModuleName,
-		pepmoduletypes.ModuleName,
+		
 		pricefeedmoduletypes.ModuleName,
+		pepmoduletypes.ModuleName,
 		conditionalencmoduletypes.ModuleName,
 		
 		// this line is used by starport scaffolding # stargate/app/endBlockers

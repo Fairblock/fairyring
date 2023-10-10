@@ -17,7 +17,7 @@ type (
 	// the Keyshare lane.
 	KeyShareLane interface {
 		IsKeyshareTx(tx sdk.Tx) bool
-		GetKeyShareInfo(tx sdk.Tx) (*types.AggregatedKeyShare, error)
+		GetKeyShareInfo(tx sdk.Tx) (*types.AggregatedConditionalKeyShare, error)
 	}
 
 	// Mempool is an interface that defines the methods required to interact with the application-side mempool.

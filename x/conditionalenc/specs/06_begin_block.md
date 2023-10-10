@@ -2,14 +2,14 @@
 
 The begin Block of the PEP module constitutes of multiple tasks:
 
-1. Checks for transactions in the mempool and looks for `MsgCreateAggregatedKeyShare` messages
+1. Checks for transactions in the mempool and looks for `MsgCreateAggregatedConditionalKeyShare` messages
 2. If such a message is found it adds the aggregated keyshare directly to the PEP store.
 3. Then it checks for encrypted transactions in its store, the decryption key for which are available
 4. If one or more such encrypted transactions are found, they are decrypted and executed
 
 ## Check for transactions in the MemPool
 
-It is necessary to execute any `CreateAggregatedKeyShare` Tx before executing Mempool transactions. This is because the block proposer has the right to order the Mempool transactions in any way he desires. Even if a `CreateAggregatedKeyShare` Transaction is made, the block proposer can act maliciously and include his front-running transactions before the Aggregated Keyshare is registered. To prevent this, the PEP begin block looks for any transaction in the mempool with the `MsgCreateAggregatedKeyShare` message. If found, it is directly executed in the begin block first.
+It is necessary to execute any `CreateAggregatedConditionalKeyShare` Tx before executing Mempool transactions. This is because the block proposer has the right to order the Mempool transactions in any way he desires. Even if a `CreateAggregatedConditionalKeyShare` Transaction is made, the block proposer can act maliciously and include his front-running transactions before the Aggregated Keyshare is registered. To prevent this, the PEP begin block looks for any transaction in the mempool with the `MsgCreateAggregatedConditionalKeyShare` message. If found, it is directly executed in the begin block first.
 
 ```go
 utxs, err := tmcore.UnconfirmedTxs(nil, nil)

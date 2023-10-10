@@ -20,9 +20,9 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.ConditionalencNonceList {
 		k.SetConditionalencNonce(ctx, elem)
 	}
-	// Set all the aggregatedKeyShare
-	for _, elem := range genState.AggregatedKeyShareList {
-		k.SetAggregatedKeyShare(ctx, elem)
+	// Set all the aggregatedConditionalKeyShare
+	for _, elem := range genState.AggregatedConditionalKeyShareList {
+		k.SetAggregatedConditionalKeyShare(ctx, elem)
 	}
 	// Set actuve public key
 	k.SetActivePubKey(ctx, genState.ActivePubKey)
@@ -57,7 +57,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.EncryptedTxArray = k.GetAllEncryptedArray(ctx)
 	genesis.ConditionalencNonceList = k.GetAllConditionalencNonce(ctx)
-	genesis.AggregatedKeyShareList = k.GetAllAggregatedKeyShare(ctx)
+	genesis.AggregatedConditionalKeyShareList = k.GetAllAggregatedConditionalKeyShare(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 	akey, found := k.GetActivePubKey(ctx)
 	if found {

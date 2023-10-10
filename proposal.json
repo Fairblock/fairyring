@@ -5,12 +5,14 @@
         {
             "symbol": "BTC",
             "oracle_script_id": "396",
-            "block_interval": "40"
+            "block_interval": "10",
+            "price_step" : "10"
         },
         {
             "symbol": "ETH",
             "oracle_script_id": "396",
-            "block_interval": "40"
+            "block_interval": "10",
+            "price_step" : "10"
         }
     ],
     "deposit": "10000000stake"

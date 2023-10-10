@@ -9,7 +9,7 @@ State in PEP module is defined by its KVStore. This KVStore has six prefixes:
 - ConditionalencNonceKeyPrefix
 - ActivePubKeyPrefix
 - QueuedPubKeyPrefix
-- AggregatedKeyShareKeyPrefix
+- AggregatedConditionalKeyShareKeyPrefix
 
 ---
 
@@ -69,12 +69,12 @@ type QueuedPubKey struct {
 
 ---
 
-### AggregatedKeyShare
+### AggregatedConditionalKeyShare
 
 This state contains the aggregated keyshare received from the FairyRing chain.
 
 ```go
-type AggregatedKeyShare struct {
+type AggregatedConditionalKeyShare struct {
     Height    uint64 `protobuf:"varint,1,opt,name=height,proto3" json:"height,omitempty"`
     Data      string `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
     PublicKey string `protobuf:"bytes,3,opt,name=publicKey,proto3" json:"publicKey,omitempty"`

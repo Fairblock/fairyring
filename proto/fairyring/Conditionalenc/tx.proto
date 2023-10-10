@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package fairyring.Conditionalenc;
 
-import "fairyring/conditionalenc/aggregated_key_share.proto";
+import "fairyring/Conditionalenc/aggregated_key_share.proto";
 
 // this line is used by starport scaffolding # proto/tx/import
 
@@ -13,7 +13,7 @@ service Msg {
   rpc SubmitEncryptedTx (MsgSubmitEncryptedTx) returns (MsgSubmitEncryptedTxResponse);
 
   // this line is used by starport scaffolding # proto/tx/rpc
-  rpc CreateAggregatedKeyShare (MsgCreateAggregatedKeyShare) returns (MsgCreateAggregatedKeyShareResponse);
+  rpc CreateAggregatedConditionalKeyShare (MsgCreateAggregatedConditionalKeyShare) returns (MsgCreateAggregatedConditionalKeyShareResponse);
 }
 message MsgSubmitEncryptedTx {
   string creator           = 1;
@@ -24,10 +24,10 @@ message MsgSubmitEncryptedTx {
 message MsgSubmitEncryptedTxResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message
-message MsgCreateAggregatedKeyShare {
+message MsgCreateAggregatedConditionalKeyShare {
   string creator = 1;
   uint64 condition  = 2;
   string data    = 3;
 }
 
-message MsgCreateAggregatedKeyShareResponse {}
+message MsgCreateAggregatedConditionalKeyShareResponse {}
