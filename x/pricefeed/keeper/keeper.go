@@ -449,21 +449,31 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 	if err != nil {
 		return err
 	}
-
+	logrus.Info("enemy---------------------------------------------------------------------")
 	// Loop through the result and set the price in the state for each symbol.
 	for _, r := range result {
 		if r.ResponseCode == 0 {
-			changed, _, new := k.UpdatePrice(ctx, types.Price{
+			changed, old, new := k.UpdatePrice(ctx, types.Price{
 				Symbol:      r.Symbol,
 				Price:       r.Rate,
 				ResolveTime: res.ResolveTime,
 			})
+			//logrus.Info("here---------------------------------------------------------------------")
 			if changed {
+				//logrus.Info("changed---------------------------------------------------------------------")
 				step := k.GetPriceStep(ctx, r.Symbol)
 				previous := k.GetLatestCondition(ctx, r.Symbol)
 				// Iterate through values with 0.05 difference
+				var prev int
+				
+				if previous == ""{
+					prev = int(old) 
+				}
+				if previous != ""{
+				prev, _ = extractNumber(previous,r.Symbol)}
+				//logrus.Info("ok---------------------------------------------------------------------")
 				waitingList := []string{}
-				prev, _ := extractNumber(previous,r.Symbol)
+				
 				for i := int64(prev) + int64(step); i <= new; i += int64(step) {
 					nonce := k.UpdateRepeatedPrice(ctx, types.Price{Symbol: r.Symbol, Price: uint64(i), ResolveTime: res.ResolveTime})
 					ctx.EventManager().EmitEvent(
@@ -480,6 +490,7 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 				k.AppendListToList(ctx, waitingList, r.Symbol)
 				k.AddLatestCondition(ctx,waitingList[len(waitingList)-1],r.Symbol)
 			}
+		//	logrus.Info("sure---------------------------------------------------------------------")
 		}
 		// TODO: allow to write logic to handle failed symbol now just ignore and skip update
 	}

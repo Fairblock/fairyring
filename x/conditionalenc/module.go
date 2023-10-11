@@ -245,7 +245,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 logrus.Info("=======================> ",waitingList)
 	allAggKey := am.keeper.GetAllAggregatedConditionalKeyShare(ctx)
 
-	am.keeper.Logger(ctx).Info(fmt.Sprintf("[PEP][AGGKEY] %v", allAggKey))
+	am.keeper.Logger(ctx).Info(fmt.Sprintf("[Conditionalenc][AGGKEY] %v", allAggKey))
 
 	activePubkey, found := am.keeper.GetActivePubKey(ctx)
 	if !found {
