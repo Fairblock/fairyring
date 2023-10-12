@@ -16,6 +16,8 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateAuthorizedAddress{}, "keyshare/CreateAuthorizedAddress", nil)
 	cdc.RegisterConcrete(&MsgUpdateAuthorizedAddress{}, "keyshare/UpdateAuthorizedAddress", nil)
 	cdc.RegisterConcrete(&MsgDeleteAuthorizedAddress{}, "keyshare/DeleteAuthorizedAddress", nil)
+	cdc.RegisterConcrete(&MsgCreateGeneralKeyShare{}, "keyshare/CreateGeneralKeyShare", nil)
+
 	// this line is used by starport scaffolding # 2
 }
 
@@ -33,6 +35,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgCreateAuthorizedAddress{},
 		&MsgUpdateAuthorizedAddress{},
 		&MsgDeleteAuthorizedAddress{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCreateGeneralKeyShare{},
 	)
 	// this line is used by starport scaffolding # 3
 

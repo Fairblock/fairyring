@@ -163,11 +163,11 @@ func (k Keeper) UpdatePrice(ctx sdk.Context, price types.Price) (bool, int64, in
 
 		k.setPrice(ctx, price)
 		if found {
-			return true, old.ResolveTime, price.ResolveTime
+			return true, int64(old.Price), int64(price.Price)
 		}
-		return false, 0, 0
+		return true, int64(price.Price), int64(price.Price)
 	}
-	return false, old.ResolveTime, old.ResolveTime
+	return false, int64(old.Price), int64(old.Price)
 }
 
 func (k Keeper) setPrice(ctx sdk.Context, price types.Price) {
@@ -432,15 +432,12 @@ func extractPrefix(s string) string {
 	return s
 }
 func extractNumber(s, symbol string) (int, error) {
-	// Check if the string starts with the provided symbol
-	if !strings.HasPrefix(s, symbol) {
-		return 0, fmt.Errorf("input does not start with the given symbol")
+	parts := strings.Split(s, symbol)
+	if len(parts) < 2 {
+		return 0, fmt.Errorf("invalid input string or symbol not found")
 	}
-
-	// Strip the symbol
-	numericPart := strings.TrimPrefix(s, symbol)
-
-	return strconv.Atoi(numericPart)  // Convert the numeric string to an integer
+	// Trim spaces and convert to integer
+	return strconv.Atoi(strings.TrimSpace(parts[1]))
 }
 // StoreOracleResponsePacket is a function that receives an OracleResponsePacketData from BandChain.
 func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleResponsePacketData) error {
@@ -449,7 +446,7 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 	if err != nil {
 		return err
 	}
-	logrus.Info("enemy---------------------------------------------------------------------")
+//	logrus.Info("enemy---------------------------------------------------------------------")
 	// Loop through the result and set the price in the state for each symbol.
 	for _, r := range result {
 		if r.ResponseCode == 0 {
@@ -467,7 +464,7 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 				var prev int
 				
 				if previous == ""{
-					prev = int(old) 
+					prev = int(old) - int(step)
 				}
 				if previous != ""{
 				prev, _ = extractNumber(previous,r.Symbol)}
@@ -485,7 +482,7 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 							sdk.NewAttribute(types.AttributeKeyTimestamp, res.ResolveStatus.String()),
 						),
 					)
-					waitingList = append(waitingList, r.Symbol+strconv.Itoa(int(i)))
+					waitingList = append(waitingList, strconv.FormatUint(nonce, 10)+r.Symbol+strconv.Itoa(int(i)))
 				}
 				k.AppendListToList(ctx, waitingList, r.Symbol)
 				k.AddLatestCondition(ctx,waitingList[len(waitingList)-1],r.Symbol)

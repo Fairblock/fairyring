@@ -44,6 +44,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeleteAuthorizedAddress int = 100
 
+	opWeightMsgCreateGeneralKeyShare = "op_weight_msg_general_key_share"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateGeneralKeyShare int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -63,6 +67,18 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 			{
 				AuthorizedBy: sample.AccAddress(),
 				Target:       "1",
+			},
+		},
+		GeneralKeyShareList: []types.GeneralKeyShare{
+			{
+				Validator: sample.AccAddress(),
+				IdType:    "0",
+				IdValue:   "0",
+			},
+			{
+				Validator: sample.AccAddress(),
+				IdType:    "1",
+				IdValue:   "1",
 			},
 		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
@@ -146,6 +162,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgDeleteAuthorizedAddress,
 		keysharesimulation.SimulateMsgDeleteAuthorizedAddress(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateGeneralKeyShare int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateGeneralKeyShare, &weightMsgCreateGeneralKeyShare, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateGeneralKeyShare = defaultWeightMsgCreateGeneralKeyShare
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateGeneralKeyShare,
+		keysharesimulation.SimulateMsgCreateGeneralKeyShare(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

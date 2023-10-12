@@ -38,7 +38,10 @@ type ConditionalEncKeeper interface {
 	GetQueuedPubKey(ctx sdk.Context) (val conditionalenctypes.QueuedPubKey, found bool)
 	DeleteActivePubKey(ctx sdk.Context)
 	DeleteQueuedPubKey(ctx sdk.Context)
+	SetAggregatedConditionalKeyShare(ctx sdk.Context, aggregatedConditionalKeyShare conditionalenctypes.AggregatedConditionalKeyShare)
+
 }
+
 // StakingKeeper defines the expected interface needed to retrieve the list of validators.
 type StakingKeeper interface {
 	GetAllValidators(ctx sdk.Context) []stakingtypes.Validator

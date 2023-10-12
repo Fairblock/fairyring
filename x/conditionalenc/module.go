@@ -111,10 +111,10 @@ func (AppModuleBasic) GetQueryCmd() *cobra.Command {
 type AppModule struct {
 	AppModuleBasic
 
-	keeper        keeper.Keeper
-	accountKeeper types.AccountKeeper
-	bankKeeper    types.BankKeeper
-	pricefeedKeeper   types.PricefeedKeeper
+	keeper           keeper.Keeper
+	accountKeeper    types.AccountKeeper
+	bankKeeper       types.BankKeeper
+	pricefeedKeeper  types.PricefeedKeeper
 	msgServiceRouter *baseapp.MsgServiceRouter
 	txConfig         client.TxConfig
 	simCheck         func(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error)
@@ -138,7 +138,7 @@ func NewAppModule(
 		msgServiceRouter: msgServiceRouter,
 		txConfig:         txConfig,
 		simCheck:         simCheck,
-		pricefeedKeeper: pk,
+		pricefeedKeeper:  pk,
 	}
 }
 
@@ -242,7 +242,9 @@ func (am AppModule) processFailedEncryptedTx(ctx sdk.Context, tx types.Encrypted
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 	waitingList := am.pricefeedKeeper.GetList(ctx)
-logrus.Info("=======================> ",waitingList)
+	
+	
+	logrus.Info("=======================> ", waitingList)
 	allAggKey := am.keeper.GetAllAggregatedConditionalKeyShare(ctx)
 
 	am.keeper.Logger(ctx).Info(fmt.Sprintf("[Conditionalenc][AGGKEY] %v", allAggKey))
@@ -261,13 +263,13 @@ logrus.Info("=======================> ",waitingList)
 	// loop over all encrypted Txs from the last executed height to the current height
 	for _, item := range waitingList.List {
 		arr := am.keeper.GetEncryptedTxAllFromCondition(ctx, item)
-
+		logrus.Info("enc tx : ---------------------> ", arr)
 		key, found := am.keeper.GetAggregatedConditionalKeyShare(ctx, item)
 		if !found {
 			am.keeper.Logger(ctx).Error(fmt.Sprintf("Decryption key not found for condition: %d", item))
 			continue
 		}
-
+		logrus.Info("agg key : ---------------------> ", key)
 		publicKeyByte, err := hex.DecodeString(activePubkey.PublicKey)
 		if err != nil {
 			am.keeper.Logger(ctx).Error("Error decoding active public key")
@@ -309,7 +311,7 @@ logrus.Info("=======================> ",waitingList)
 		for _, eachTx := range arr.EncryptedTx {
 			startConsumedGas := ctx.GasMeter().GasConsumed()
 			if currentNonce, found := am.keeper.GetConditionalencNonce(ctx, eachTx.Creator); found && currentNonce.Nonce == math.MaxUint64 {
-				am.processFailedEncryptedTx(ctx, eachTx, "invalid pep nonce", startConsumedGas)
+				am.processFailedEncryptedTx(ctx, eachTx, "invalid nonce", startConsumedGas)
 				continue
 			}
 
@@ -528,7 +530,7 @@ logrus.Info("=======================> ",waitingList)
 		}
 
 		am.keeper.RemoveAllEncryptedTxFromCondition(ctx, item)
-		am.pricefeedKeeper.RemoveFromList(ctx,item)
+		am.pricefeedKeeper.RemoveFromList(ctx, item)
 	}
 }
 
