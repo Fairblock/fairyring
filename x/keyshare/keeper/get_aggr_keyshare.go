@@ -82,6 +82,7 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 			uint64(timeoutTimestamp),
 		)
 		if err != nil {
+			fmt.Println("\n\n\n\nTransmission error: ", err, "\n\n\n\n")
 			return packetAck, err
 		}
 	}
