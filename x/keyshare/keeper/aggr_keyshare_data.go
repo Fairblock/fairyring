@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"errors"
+	"fmt"
 
 	"fairyring/x/keyshare/types"
 
@@ -54,6 +55,7 @@ func (k Keeper) OnAcknowledgementAggrKeyshareDataPacket(ctx sdk.Context, packet 
 
 		// TODO: failed acknowledgement logic
 		_ = dispatchedAck.Error
+		fmt.Println("\n\n\nack failure for reqID: ", data.Identity)
 
 		return nil
 	case *channeltypes.Acknowledgement_Result:
@@ -65,7 +67,14 @@ func (k Keeper) OnAcknowledgementAggrKeyshareDataPacket(ctx sdk.Context, packet 
 			return errors.New("cannot unmarshal acknowledgment")
 		}
 
-		// TODO: successful acknowledgement logic
+		keyshareReq, found := k.GetKeyShareRequest(ctx, data.Identity)
+		if !found {
+			return errors.New("cannot find keyshare request")
+		}
+
+		keyshareReq.Sent = true
+		k.SetKeyShareRequest(ctx, keyshareReq)
+		fmt.Println("\n\n\nack received for reqID: ", data.Identity)
 
 		return nil
 	default:

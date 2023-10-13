@@ -263,9 +263,13 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 		am.keeper.SetLastSubmittedHeight(ctx, eachValidator.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
 	}
 
+	//===========================================//
+	// FOR TESTING ONLY, HARDCODE AGGR. KEYSHARE //
+	//===========================================//
+
 	shareReqs := am.keeper.GetAllKeyShareRequests(ctx)
 	for _, req := range shareReqs {
-		if req.AggrKeyshare != "" && !req.Sent {
+		if req.AggrKeyshare != "" {
 			fmt.Println("\n\n\nTransmitting for : ", req.Identity, "\n\n\n")
 			timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 
@@ -285,9 +289,6 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 			)
 			if err != nil {
 				fmt.Println("\n\n\nTransmission failed for :", req.Identity, "\n\n\n")
-			} else {
-				req.Sent = true
-				am.keeper.SetKeyShareRequest(ctx, req)
 			}
 		}
 	}
