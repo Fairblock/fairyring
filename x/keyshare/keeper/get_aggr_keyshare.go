@@ -50,6 +50,8 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 		return packetAck, types.ErrRequestNotFound
 	}
 
+	fmt.Println("\n\n\n\naggr keyshare in req: ", keyshareReq.AggrKeyshare, "\n\n\n\n")
+
 	if keyshareReq.AggrKeyshare == "" {
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
