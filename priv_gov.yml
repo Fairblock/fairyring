@@ -14,6 +14,7 @@ accounts:
     coins:
       - 500000000token
       - 200000000stake
+    mnemonic: "labor rival put scheme hood south proud unfold spot today control approve degree shell quiz taxi opinion orbit swarm portion matter light uncle mammal"
   - name: donald
     coins:
       - 500000000token
@@ -65,6 +66,7 @@ genesis:
         trusted_addresses: [
           "fairy14afvm0yfs27a00hnr85064r69lpg46zjncasuv",
           "fairy12hxz66z2tu0lec9cqjf8q4732v8mepffqm4tyl",
+          "fairy1fkmzt2dps5g084us74cp5vmf9pd5c8gsd2x6uj",
           ]
         key_expiry: 20000000
 
@@ -73,4 +75,5 @@ genesis:
         trusted_addresses: [
           "fairy14afvm0yfs27a00hnr85064r69lpg46zjncasuv",
           "fairy12hxz66z2tu0lec9cqjf8q4732v8mepffqm4tyl",
+          "fairy1fkmzt2dps5g084us74cp5vmf9pd5c8gsd2x6uj",
           ]
