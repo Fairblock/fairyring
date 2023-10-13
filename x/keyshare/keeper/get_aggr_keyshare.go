@@ -69,6 +69,8 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 		keyshareReq.AggrKeyshare = "29c861be5016b20f5a4397795e3f086d818b11ad02e0dd8ee28e485988b6cb07"
 		k.SetKeyShareRequest(ctx, keyshareReq)
 
+		fmt.Println("\n\n\n\ntransmitted :", keyshareReq.AggrKeyshare, "\n\n\n\n")
+
 		timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 
 		_, err = k.TransmitAggrKeyshareDataPacket(
