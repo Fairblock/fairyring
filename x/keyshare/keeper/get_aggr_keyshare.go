@@ -4,8 +4,6 @@ import (
 	"errors"
 	"fairyring/x/keyshare/types"
 	"fmt"
-	"strconv"
-	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -71,26 +69,26 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 
 		fmt.Println("\n\n\n\ntransmitted :", keyshareReq.AggrKeyshare, "\n\n\n\n")
 
-		timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
+		// timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 
-		_, err = k.TransmitAggrKeyshareDataPacket(
-			ctx,
-			types.AggrKeyshareDataPacketData{
-				Identity:     keyshareReq.Identity,
-				Pubkey:       keyshareReq.Pubkey,
-				AggrKeyshare: keyshareReq.AggrKeyshare,
-				AggrHeight:   strconv.FormatInt(ctx.BlockHeight(), 10),
-				ProposalId:   keyshareReq.ProposalId,
-			},
-			keyshareReq.IbcInfo.PortID,
-			keyshareReq.IbcInfo.ChannelID,
-			clienttypes.ZeroHeight(),
-			uint64(timeoutTimestamp),
-		)
-		if err != nil {
-			fmt.Println("\n\n\n\nTransmission error: ", err, "\n\n\n\n")
-			return packetAck, err
-		}
+		// _, err = k.TransmitAggrKeyshareDataPacket(
+		// 	ctx,
+		// 	types.AggrKeyshareDataPacketData{
+		// 		Identity:     keyshareReq.Identity,
+		// 		Pubkey:       keyshareReq.Pubkey,
+		// 		AggrKeyshare: keyshareReq.AggrKeyshare,
+		// 		AggrHeight:   strconv.FormatInt(ctx.BlockHeight(), 10),
+		// 		ProposalId:   keyshareReq.ProposalId,
+		// 	},
+		// 	keyshareReq.IbcInfo.PortID,
+		// 	keyshareReq.IbcInfo.ChannelID,
+		// 	clienttypes.ZeroHeight(),
+		// 	uint64(timeoutTimestamp),
+		// )
+		// if err != nil {
+		// 	fmt.Println("\n\n\n\nTransmission error: ", err, "\n\n\n\n")
+		// 	return packetAck, err
+		// }
 	}
 
 	return packetAck, nil
