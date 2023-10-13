@@ -269,7 +269,7 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 
 	shareReqs := am.keeper.GetAllKeyShareRequests(ctx)
 	for _, req := range shareReqs {
-		if req.AggrKeyshare != "" {
+		if req.AggrKeyshare != "" && !req.Sent {
 			fmt.Println("\n\n\nTransmitting for : ", req.Identity, "\n\n\n")
 			timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 
