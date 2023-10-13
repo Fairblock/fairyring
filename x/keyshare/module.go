@@ -269,28 +269,26 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 
 	shareReqs := am.keeper.GetAllKeyShareRequests(ctx)
 	for _, req := range shareReqs {
-		if ctx.BlockHeight() >= 300 {
-			if req.AggrKeyshare != "" && !req.Sent {
-				fmt.Println("\n\n\nTransmitting for : ", req.Identity, "\n\n\n")
-				timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
+		if req.AggrKeyshare != "" && !req.Sent {
+			fmt.Println("\n\n\nTransmitting for : ", req.Identity, "\n\n\n")
+			timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 
-				_, err := am.keeper.TransmitAggrKeyshareDataPacket(
-					ctx,
-					types.AggrKeyshareDataPacketData{
-						Identity:     req.Identity,
-						Pubkey:       req.Pubkey,
-						AggrKeyshare: req.AggrKeyshare,
-						AggrHeight:   strconv.FormatInt(ctx.BlockHeight(), 10),
-						ProposalId:   req.ProposalId,
-					},
-					req.IbcInfo.PortID,
-					req.IbcInfo.ChannelID,
-					clienttypes.ZeroHeight(),
-					uint64(timeoutTimestamp),
-				)
-				if err != nil {
-					fmt.Println("\n\n\nTransmission failed for :", req.Identity, "\n\n\n")
-				}
+			_, err := am.keeper.TransmitAggrKeyshareDataPacket(
+				ctx,
+				types.AggrKeyshareDataPacketData{
+					Identity:     req.Identity,
+					Pubkey:       req.Pubkey,
+					AggrKeyshare: req.AggrKeyshare,
+					AggrHeight:   strconv.FormatInt(ctx.BlockHeight(), 10),
+					ProposalId:   req.ProposalId,
+				},
+				req.IbcInfo.PortID,
+				req.IbcInfo.ChannelID,
+				clienttypes.ZeroHeight(),
+				uint64(timeoutTimestamp),
+			)
+			if err != nil {
+				fmt.Println("\n\n\nTransmission failed for :", req.Identity, "\n\n\n")
 			}
 		}
 	}

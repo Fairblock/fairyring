@@ -22,6 +22,29 @@ func (k Keeper) TransmitAggrKeyshareDataPacket(
 	timeoutHeight clienttypes.Height,
 	timeoutTimestamp uint64,
 ) (uint64, error) {
+	ch, found := k.ChannelKeeper.GetChannel(ctx, sourcePort, sourceChannel)
+	if !found {
+		fmt.Println("\n\n\nChannel not found")
+		return 0, sdkerrors.Wrapf(channeltypes.ErrChannelNotFound, "port ID (%s) channel ID (%s)", sourcePort, sourceChannel)
+	}
+	fmt.Println("\n\n\n")
+	fmt.Println("conn hops: ", ch.ConnectionHops)
+	fmt.Println("counterparty channel: ", ch.Counterparty.ChannelId)
+	fmt.Println("counterparty port: ", ch.Counterparty.PortId)
+
+	// get the next sequence
+	sq, found := k.ChannelKeeper.GetNextSequenceSend(ctx, sourcePort, sourceChannel)
+	if !found {
+		fmt.Println("\n\n\nSequence not found")
+
+		return 0, sdkerrors.Wrapf(
+			channeltypes.ErrSequenceSendNotFound,
+			"source port: %s, source channel: %s", sourcePort, sourceChannel,
+		)
+	}
+
+	fmt.Println("next seq: ", sq)
+
 	channelCap, ok := k.ScopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath(sourcePort, sourceChannel))
 	if !ok {
 		return 0, sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
@@ -31,6 +54,8 @@ func (k Keeper) TransmitAggrKeyshareDataPacket(
 	if err != nil {
 		return 0, sdkerrors.Wrapf(sdkerrors.ErrJSONMarshal, "cannot marshal the packet: %w", err)
 	}
+
+	fmt.Println("Sending Packet")
 
 	return k.ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes)
 }
