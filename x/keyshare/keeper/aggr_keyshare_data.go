@@ -35,18 +35,6 @@ func (k Keeper) TransmitAggrKeyshareDataPacket(
 	return k.ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes)
 }
 
-// OnRecvAggrKeyshareDataPacket processes packet reception
-func (k Keeper) OnRecvAggrKeyshareDataPacket(ctx sdk.Context, packet channeltypes.Packet, data types.AggrKeyshareDataPacketData) (packetAck types.AggrKeyshareDataPacketAck, err error) {
-	// validate packet data upon receiving
-	if err := data.ValidateBasic(); err != nil {
-		return packetAck, err
-	}
-
-	// TODO: packet reception logic
-
-	return packetAck, nil
-}
-
 // OnAcknowledgementAggrKeyshareDataPacket responds to the the success or failure of a packet
 // acknowledgement written on the receiving chain.
 func (k Keeper) OnAcknowledgementAggrKeyshareDataPacket(ctx sdk.Context, packet channeltypes.Packet, data types.AggrKeyshareDataPacketData, ack channeltypes.Acknowledgement) error {

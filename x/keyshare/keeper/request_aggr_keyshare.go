@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"errors"
 	"strconv"
 
 	"fairyring/x/keyshare/types"
@@ -80,34 +79,6 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 	packetAck.Pubkey = activePubKey.PublicKey
 
 	return packetAck, nil
-}
-
-// OnAcknowledgementRequestAggrKeysharePacket responds to the the success or failure of a packet
-// acknowledgement written on the receiving chain.
-func (k Keeper) OnAcknowledgementRequestAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestAggrKeysharePacketData, ack channeltypes.Acknowledgement) error {
-	switch dispatchedAck := ack.Response.(type) {
-	case *channeltypes.Acknowledgement_Error:
-
-		// TODO: failed acknowledgement logic
-		_ = dispatchedAck.Error
-
-		return nil
-	case *channeltypes.Acknowledgement_Result:
-		// Decode the packet acknowledgment
-		var packetAck types.RequestAggrKeysharePacketAck
-
-		if err := types.ModuleCdc.UnmarshalJSON(dispatchedAck.Result, &packetAck); err != nil {
-			// The counter-party module doesn't implement the correct acknowledgment format
-			return errors.New("cannot unmarshal acknowledgment")
-		}
-
-		// TODO: successful acknowledgement logic
-
-		return nil
-	default:
-		// The counter-party module doesn't implement the correct acknowledgment format
-		return errors.New("invalid acknowledgment format")
-	}
 }
 
 // OnTimeoutRequestAggrKeysharePacket responds to the case where a packet has not been transmitted because of a timeout
