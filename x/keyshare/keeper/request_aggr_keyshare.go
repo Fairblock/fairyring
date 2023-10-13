@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 
 	"fairyring/x/keyshare/types"
@@ -79,8 +78,6 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 
 	packetAck.Identity = id
 	packetAck.Pubkey = activePubKey.PublicKey
-
-	fmt.Println("\n\n\n\nid and pubkey: ", id, activePubKey.PublicKey)
 
 	return packetAck, nil
 }
