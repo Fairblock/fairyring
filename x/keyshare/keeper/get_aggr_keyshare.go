@@ -3,7 +3,6 @@ package keeper
 import (
 	"errors"
 	"fairyring/x/keyshare/types"
-	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -41,16 +40,10 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 		return packetAck, err
 	}
 
-	fmt.Println("\n\n\n\nReceived Request for: ", data.Identity, "\n\n\n\n")
-
 	keyshareReq, found := k.GetKeyShareRequest(ctx, data.Identity)
 	if !found {
 		return packetAck, types.ErrRequestNotFound
 	}
-
-	fmt.Println("\n\n\n\naggr keyshare in req: ", keyshareReq.AggrKeyshare)
-	fmt.Println("identity in req: ", keyshareReq.Identity)
-	fmt.Println("proposal ID : ", keyshareReq.ProposalId, "\n\n\n\n")
 
 	if keyshareReq.AggrKeyshare == "" {
 		ctx.EventManager().EmitEvent(
@@ -58,7 +51,6 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 				sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, data.Identity),
 			),
 		)
-		fmt.Println("\n\n\n\nEmitted event\n\n\n\n")
 
 		//===========================================//
 		// FOR TESTING ONLY, HARDCODE AGGR. KEYSHARE //
@@ -66,29 +58,6 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 
 		keyshareReq.AggrKeyshare = "29c861be5016b20f5a4397795e3f086d818b11ad02e0dd8ee28e485988b6cb07"
 		k.SetKeyShareRequest(ctx, keyshareReq)
-
-		fmt.Println("\n\n\n\ntransmitted :", keyshareReq.AggrKeyshare, "\n\n\n\n")
-
-		// timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
-
-		// _, err = k.TransmitAggrKeyshareDataPacket(
-		// 	ctx,
-		// 	types.AggrKeyshareDataPacketData{
-		// 		Identity:     keyshareReq.Identity,
-		// 		Pubkey:       keyshareReq.Pubkey,
-		// 		AggrKeyshare: keyshareReq.AggrKeyshare,
-		// 		AggrHeight:   strconv.FormatInt(ctx.BlockHeight(), 10),
-		// 		ProposalId:   keyshareReq.ProposalId,
-		// 	},
-		// 	keyshareReq.IbcInfo.PortID,
-		// 	keyshareReq.IbcInfo.ChannelID,
-		// 	clienttypes.ZeroHeight(),
-		// 	uint64(timeoutTimestamp),
-		// )
-		// if err != nil {
-		// 	fmt.Println("\n\n\n\nTransmission error: ", err, "\n\n\n\n")
-		// 	return packetAck, err
-		// }
 	}
 
 	return packetAck, nil

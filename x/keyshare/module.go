@@ -7,6 +7,7 @@ import (
 	peptypes "fairyring/x/pep/types"
 	"fmt"
 	"strconv"
+	"time"
 
 	// this line is used by starport scaffolding # 1
 
@@ -24,6 +25,7 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 )
 
 var (
@@ -260,5 +262,35 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 		// So he/she won't be slashed in the next block instead he/she will be slashed if he didn't submit for N block again.
 		am.keeper.SetLastSubmittedHeight(ctx, eachValidator.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
 	}
+
+	shareReqs := am.keeper.GetAllKeyShareRequests(ctx)
+	for _, req := range shareReqs {
+		if req.AggrKeyshare != "" && !req.Sent {
+			fmt.Println("\n\n\nTransmitting for : ", req.Identity, "\n\n\n")
+			timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
+
+			_, err := am.keeper.TransmitAggrKeyshareDataPacket(
+				ctx,
+				types.AggrKeyshareDataPacketData{
+					Identity:     req.Identity,
+					Pubkey:       req.Pubkey,
+					AggrKeyshare: req.AggrKeyshare,
+					AggrHeight:   strconv.FormatInt(ctx.BlockHeight(), 10),
+					ProposalId:   req.ProposalId,
+				},
+				req.IbcInfo.PortID,
+				req.IbcInfo.ChannelID,
+				clienttypes.ZeroHeight(),
+				uint64(timeoutTimestamp),
+			)
+			if err != nil {
+				fmt.Println("\n\n\nTransmission failed for :", req.Identity, "\n\n\n")
+			} else {
+				req.Sent = true
+				am.keeper.SetKeyShareRequest(ctx, req)
+			}
+		}
+	}
+
 	return []abci.ValidatorUpdate{}
 }
