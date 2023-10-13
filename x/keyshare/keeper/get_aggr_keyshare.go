@@ -3,6 +3,7 @@ package keeper
 import (
 	"errors"
 	"fairyring/x/keyshare/types"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -40,6 +41,8 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 		return packetAck, err
 	}
 
+	fmt.Println("\n\n\n\nReceived Request for: ", data.Identity, "\n\n\n\n")
+
 	keyshareReq, found := k.GetKeyShareRequest(ctx, data.Identity)
 	if !found {
 		return packetAck, types.ErrRequestNotFound
@@ -51,6 +54,7 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 				sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, data.Identity),
 			),
 		)
+		fmt.Println("\n\n\n\nEmitted event\n\n\n\n")
 	}
 
 	return packetAck, nil

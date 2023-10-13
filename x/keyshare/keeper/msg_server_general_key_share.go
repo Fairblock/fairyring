@@ -4,13 +4,15 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
-	distIBE "github.com/FairBlock/DistributedIBE"
-	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
-	bls "github.com/drand/kyber-bls12381"
 	"strconv"
 	"time"
 
+	distIBE "github.com/FairBlock/DistributedIBE"
+	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
+	bls "github.com/drand/kyber-bls12381"
+
 	"fairyring/x/keyshare/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -228,8 +230,10 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 
 	switch msg.IdType {
 	case PrivateGovIdentity:
+		fmt.Println("\n\n\n\nReceived keyshare for private gov\n\n\n\n")
 		keyShareReq, found := k.GetKeyShareRequest(ctx, msg.IdValue)
 		if !found {
+			fmt.Println("\n\n\n\nKeyshare request not found\n\n\n\n")
 			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
 		}
 		if keyShareReq.AggrKeyshare != "" {
@@ -248,8 +252,8 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 				AggrHeight:   strconv.FormatInt(ctx.BlockHeight(), 10),
 				ProposalId:   keyShareReq.ProposalId,
 			},
-			keyShareReq.Counterparty.PortID,
-			keyShareReq.Counterparty.ChannelID,
+			keyShareReq.IbcInfo.PortID,
+			keyShareReq.IbcInfo.ChannelID,
 			clienttypes.ZeroHeight(),
 			uint64(timeoutTimestamp),
 		)
