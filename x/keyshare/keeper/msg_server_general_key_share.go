@@ -25,46 +25,6 @@ var SupportedIDTypes = []string{PrivateGovIdentity}
 func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCreateGeneralKeyShare) (*types.MsgCreateGeneralKeyShareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	//===========================================//
-	// FOR TESTING ONLY, HARDCODE AGGR. KEYSHARE //
-	//===========================================//
-
-	shareReqs := k.GetAllKeyShareRequests(ctx)
-	for _, req := range shareReqs {
-		if req.AggrKeyshare != "" && !req.Sent {
-			fmt.Println("\n\n\nTransmitting for : ", req.Identity, "\n\n\n")
-			timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
-
-			_, err := k.TransmitAggrKeyshareDataPacket(
-				ctx,
-				types.AggrKeyshareDataPacketData{
-					Identity:     req.Identity,
-					Pubkey:       req.Pubkey,
-					AggrKeyshare: req.AggrKeyshare,
-					AggrHeight:   strconv.FormatInt(ctx.BlockHeight(), 10),
-					ProposalId:   req.ProposalId,
-				},
-				req.IbcInfo.PortID,
-				req.IbcInfo.ChannelID,
-				clienttypes.ZeroHeight(),
-				uint64(timeoutTimestamp),
-			)
-			if err != nil {
-				fmt.Println("\n\n\nTransmission failed for :", req.Identity, "\n\n\n")
-			}
-		}
-	}
-
-	return &types.MsgCreateGeneralKeyShareResponse{
-		Creator:             msg.Creator,
-		IdType:              msg.IdType,
-		IdValue:             msg.IdValue,
-		KeyShare:            msg.KeyShare,
-		KeyShareIndex:       msg.KeyShareIndex,
-		ReceivedBlockHeight: uint64(ctx.BlockHeight()),
-		Success:             true,
-	}, nil
-
 	// check if validator is registered
 	validatorInfo, found := k.GetValidatorSet(ctx, msg.Creator)
 
