@@ -20,6 +20,9 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 	}
 
 	if keyshareReq.AggrKeyshare == "" {
+
+		k.Logger(ctx).Info("Got OnRecvGetAggrKeysharePacket")
+
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
 				sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, data.Identity),
@@ -30,7 +33,7 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 		// FOR TESTING ONLY, HARDCODE AGGR. KEYSHARE //
 		//===========================================//
 
-		keyshareReq.AggrKeyshare = "29c861be5016b20f5a4397795e3f086d818b11ad02e0dd8ee28e485988b6cb07"
+		// keyshareReq.AggrKeyshare = "29c861be5016b20f5a4397795e3f086d818b11ad02e0dd8ee28e485988b6cb07"
 		k.SetKeyShareRequest(ctx, keyshareReq)
 	}
 
