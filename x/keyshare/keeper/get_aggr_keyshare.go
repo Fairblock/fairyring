@@ -34,7 +34,7 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 		//===========================================//
 
 		// keyshareReq.AggrKeyshare = "29c861be5016b20f5a4397795e3f086d818b11ad02e0dd8ee28e485988b6cb07"
-		k.SetKeyShareRequest(ctx, keyshareReq)
+		// k.SetKeyShareRequest(ctx, keyshareReq)
 	}
 
 	return packetAck, nil
