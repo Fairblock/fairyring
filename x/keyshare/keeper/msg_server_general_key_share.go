@@ -165,7 +165,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 
 	// If there is not enough keyshares to aggregate OR there is already an aggregated key
 	// Only continue the code if there is enough keyshare to aggregate & no aggregated key for current height
-	if int64(len(stateGeneralKeyShares)) < expectedThreshold || found {
+	if int64(len(stateGeneralKeyShares)) < expectedThreshold {
 		return &types.MsgCreateGeneralKeyShareResponse{
 			Creator:             msg.Creator,
 			IdType:              msg.IdType,
