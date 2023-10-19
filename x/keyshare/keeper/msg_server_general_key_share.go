@@ -230,10 +230,10 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 
 	switch msg.IdType {
 	case PrivateGovIdentity:
-		fmt.Println("\n\n\n\nReceived keyshare for private gov\n\n\n\n")
+		k.Logger(ctx).Info(fmt.Sprintf("\n\n\n\nReceived keyshare for private gov\n\n\n\n"))
 		keyShareReq, found := k.GetKeyShareRequest(ctx, msg.IdValue)
 		if !found {
-			fmt.Println("\n\n\n\nKeyshare request not found\n\n\n\n")
+			k.Logger(ctx).Info(fmt.Sprintf("\n\n\n\nKeyshare request not found\n\n\n\n"))
 			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
 		}
 		if keyShareReq.AggrKeyshare != "" {
@@ -243,7 +243,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 		k.SetKeyShareRequest(ctx, keyShareReq)
 		timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 
-		fmt.Println("\n\nTransmitting AggrKeysharePacket\n\n")
+		k.Logger(ctx).Info(fmt.Sprintf("\n\nTransmitting AggrKeysharePacket\n\n"))
 		_, err = k.TransmitAggrKeyshareDataPacket(
 			ctx,
 			types.AggrKeyshareDataPacketData{
