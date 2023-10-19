@@ -243,6 +243,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 		k.SetKeyShareRequest(ctx, keyShareReq)
 		timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 
+		fmt.Println("\n\nTransmitting AggrKeysharePacket\n\n")
 		_, err = k.TransmitAggrKeyshareDataPacket(
 			ctx,
 			types.AggrKeyshareDataPacketData{
