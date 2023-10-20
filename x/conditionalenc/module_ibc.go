@@ -14,6 +14,7 @@ import (
 	porttypes "github.com/cosmos/ibc-go/v7/modules/core/05-port/types"
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
 	ibcexported "github.com/cosmos/ibc-go/v7/modules/core/exported"
+	"github.com/sirupsen/logrus"
 )
 
 type IBCModule struct {
@@ -143,37 +144,37 @@ func (im IBCModule) OnRecvPacket(
 ) ibcexported.Acknowledgement {
 	var ack channeltypes.Acknowledgement
 
-	var modulePacketData types.ConditionalencPacketData
-	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
-		return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
-	}
-
+	// var modulePacketData types.ConditionalencPacketData
+	// if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
+	// 	return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
+	// }
+logrus.Info("received this packet!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",modulePacket.GetData())
 	// Dispatch packet
-	switch packet := modulePacketData.Packet.(type) {
-	case *types.ConditionalencPacketData_CurrentKeysPacket:
-		packetAck, err := im.keeper.OnRecvCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket)
-		if err != nil {
-			ack = channeltypes.NewErrorAcknowledgement(err)
-		} else {
-			// Encode packet acknowledgment
-			packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
-			if err != nil {
-				return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, err.Error()))
-			}
-			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
-		}
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(
-				types.EventTypeCurrentKeysPacket,
-				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
-			),
-		)
+	// switch packet := modulePacketData.Packet.(type) {
+	// case *types.ConditionalencPacketData_CurrentKeysPacket:
+	// 	packetAck, err := im.keeper.OnRecvCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket)
+	// 	if err != nil {
+	// 		ack = channeltypes.NewErrorAcknowledgement(err)
+	// 	} else {
+	// 		// Encode packet acknowledgment
+	// 		packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
+	// 		if err != nil {
+	// 			return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, err.Error()))
+	// 		}
+	// 		ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+	// 	}
+	// 	ctx.EventManager().EmitEvent(
+	// 		sdk.NewEvent(
+	// 			types.EventTypeCurrentKeysPacket,
+	// 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+	// 			sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+	// 		),
+	// 	)
 		// this line is used by starport scaffolding # ibc/packet/module/recv
-	default:
-		err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
-		return channeltypes.NewErrorAcknowledgement(err)
-	}
+	// default:
+	// 	// err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
+	// 	// return channeltypes.NewErrorAcknowledgement(err)
+	// }
 
 	// NOTE: acknowledgement will be written synchronously during IBC handler execution.
 	return ack
@@ -198,48 +199,48 @@ func (im IBCModule) OnAcknowledgementPacket(
 		return sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
 
-	var eventType string
+	//var eventType string
 
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
-	case *types.ConditionalencPacketData_CurrentKeysPacket:
-		err := im.keeper.OnAcknowledgementCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket, ack)
-		if err != nil {
-			return err
-		}
-		eventType = types.EventTypeCurrentKeysPacket
+	// case *types.ConditionalencPacketData_CurrentKeysPacket:
+	// 	err := im.keeper.OnAcknowledgementCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket, ack)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// 	eventType = types.EventTypeCurrentKeysPacket
 		// this line is used by starport scaffolding # ibc/packet/module/ack
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return sdkerrors.Wrap(cosmoserror.ErrUnknownRequest, errMsg)
 	}
 
-	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(
-			eventType,
-			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-			sdk.NewAttribute(types.AttributeKeyAck, fmt.Sprintf("%v", ack)),
-		),
-	)
+	// ctx.EventManager().EmitEvent(
+	// 	sdk.NewEvent(
+	// 		eventType,
+	// 		sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+	// 		sdk.NewAttribute(types.AttributeKeyAck, fmt.Sprintf("%v", ack)),
+	// 	),
+	// )
 
-	switch resp := ack.Response.(type) {
-	case *channeltypes.Acknowledgement_Result:
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(
-				eventType,
-				sdk.NewAttribute(types.AttributeKeyAckSuccess, string(resp.Result)),
-			),
-		)
-	case *channeltypes.Acknowledgement_Error:
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(
-				eventType,
-				sdk.NewAttribute(types.AttributeKeyAckError, resp.Error),
-			),
-		)
-	}
+	// switch resp := ack.Response.(type) {
+	// case *channeltypes.Acknowledgement_Result:
+	// 	ctx.EventManager().EmitEvent(
+	// 		sdk.NewEvent(
+	// 			eventType,
+	// 			sdk.NewAttribute(types.AttributeKeyAckSuccess, string(resp.Result)),
+	// 		),
+	// 	)
+	// case *channeltypes.Acknowledgement_Error:
+	// 	ctx.EventManager().EmitEvent(
+	// 		sdk.NewEvent(
+	// 			eventType,
+	// 			sdk.NewAttribute(types.AttributeKeyAckError, resp.Error),
+	// 		),
+	// 	)
+	// }
 
-	return nil
+	//return nil
 }
 
 // OnTimeoutPacket implements the IBCModule interface
@@ -255,11 +256,11 @@ func (im IBCModule) OnTimeoutPacket(
 
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
-	case *types.ConditionalencPacketData_CurrentKeysPacket:
-		err := im.keeper.OnTimeoutCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket)
-		if err != nil {
-			return err
-		}
+	// case *types.ConditionalencPacketData_CurrentKeysPacket:
+	// 	err := im.keeper.OnTimeoutCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket)
+	// 	if err != nil {
+	// 		return err
+	// 	}
 		// this line is used by starport scaffolding # ibc/packet/module/timeout
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)

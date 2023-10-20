@@ -14,7 +14,7 @@ const (
 	MemStoreKey = "mem_conditionalenc"
 
 	// Version defines the current version the IBC module supports
-	Version = "conditionalenc-1"
+	Version = "ics20-1"
 
 	// PortID is the default port id that module binds to
 	PortID = "conditionalenc"

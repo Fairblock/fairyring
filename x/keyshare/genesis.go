@@ -3,9 +3,11 @@ package keyshare
 import (
 	"fairyring/x/keyshare/keeper"
 	"fairyring/x/keyshare/types"
-//	"strconv"
+
+	//	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	//"github.com/sirupsen/logrus"
 )
 
 // InitGenesis initializes the module's state from a provided genesis state.
@@ -55,7 +57,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	// 		panic("could not claim port capability: " + err.Error())
 	// 	}
 	// }
-
+	//logrus.Info("---------------------------------------------------------------------------------------------------------: ", genState.Params)
 	k.SetParams(ctx, genState.Params)
 }
 

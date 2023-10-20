@@ -14,11 +14,11 @@ import (
 
 	"math"
 	"strconv"
-	"strings"
+	//"strings"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
-	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
+//	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	bls "github.com/drand/kyber-bls12381"
 
 	// this line is used by starport scaffolding # 1
@@ -237,9 +237,37 @@ func (am AppModule) processFailedEncryptedTx(ctx sdk.Context, tx types.Encrypted
 
 	am.handleGasConsumption(ctx, creatorAddr, cosmosmath.NewIntFromUint64(actualGasConsumed), tx.ChargedGas)
 }
-
+type CosmWasmPacketData struct {
+	ContractAddress string           `json:"contract_address"`
+	Msg             json.RawMessage  `json:"msg"`
+}
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
-func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
+func (am AppModule) BeginBlock(ctx sdk.Context, b abci.RequestBeginBlock) {
+	
+	params := am.keeper.GetParams(ctx)
+//	logrus.Info(params)
+msgData := json.RawMessage(`{
+    "ProcessSwap": {
+		"swap_msg": {
+			"OsmosisSwapMsg": {
+				"token_out_min_amount" : "10",
+				"path": ""
+			}
+		}
+    }
+}`)
+_ = msgData
+cosmWasmPacketData := CosmWasmPacketData{
+	ContractAddress: "osmo1zl9ztmwe2wcdvv9std8xn06mdaqaqm789rutmazfh3z869zcax4sv0ctqw",
+	Msg:             msgData,
+}
+serializedCosmWasmPacketData, _ := json.Marshal(cosmWasmPacketData)
+logrus.Info("sending packet.....................................................................................................................", serializedCosmWasmPacketData)
+	err := am.keeper.SendSwapTx(ctx,params.ChannelId,serializedCosmWasmPacketData)
+	if err != nil {
+		am.keeper.Logger(ctx).Error("Relaying Swap Tx error")
+		am.keeper.Logger(ctx).Error(err.Error())
+	}
 
 	waitingList := am.pricefeedKeeper.GetList(ctx)
 	
@@ -316,7 +344,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			}
 
 			newExecutedNonce := am.keeper.IncreaseConditionalencNonce(ctx, eachTx.Creator)
-
+			_ = newExecutedNonce
 			creatorAddr, err := sdk.AccAddressFromBech32(eachTx.Creator)
 			if err != nil {
 				am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error parsing creator address: %s", err.Error()), startConsumedGas)
@@ -324,7 +352,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			}
 
 			creatorAccount := am.accountKeeper.GetAccount(ctx, creatorAddr)
-
+			_ = creatorAccount
 			txBytes, err := hex.DecodeString(eachTx.Data)
 			if err != nil {
 				am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error decoding tx data to bytes: %s", err.Error()), startConsumedGas)
@@ -346,187 +374,192 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			}
 
 			am.keeper.Logger(ctx).Info(fmt.Sprintf("Decrypt TX Successfully: %s", decryptedTx.String()))
-
-			txDecoderTx, err := am.txConfig.TxDecoder()(decryptedTx.Bytes())
-
+			params := am.keeper.GetParams(ctx)
+			err = am.keeper.SendSwapTx(ctx,params.ChannelId,decryptedTx.Bytes())
 			if err != nil {
-				am.keeper.Logger(ctx).Error("Decoding Tx error in BeginBlock... Trying JSON Decoder")
+				am.keeper.Logger(ctx).Error("Relaying Swap Tx error")
 				am.keeper.Logger(ctx).Error(err.Error())
-
-				txDecoderTx, err = am.txConfig.TxJSONDecoder()(decryptedTx.Bytes())
-				if err != nil {
-					am.keeper.Logger(ctx).Error("JSON Decoding Tx error in BeginBlock")
-					am.keeper.Logger(ctx).Error(err.Error())
-					ctx.EventManager().EmitEvent(
-						sdk.NewEvent(types.EncryptedTxRevertedEventType,
-							sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventCondition, eachTx.TargetCondition),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to decode tx data to Cosmos Tx"),
-							sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-						),
-					)
-
-					am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error trying to json decoding tx: %s", err.Error()), startConsumedGas)
-					continue
-				} else {
-					am.keeper.Logger(ctx).Error("TX Successfully Decode with JSON Decoder")
-				}
 			}
+			// txDecoderTx, err := am.txConfig.TxDecoder()(decryptedTx.Bytes())
 
-			wrappedTx, err := am.txConfig.WrapTxBuilder(txDecoderTx)
-			if err != nil {
-				am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error when trying to wrap decoded tx to tx builder: %s", err.Error()), startConsumedGas)
-				continue
-			}
+			// if err != nil {
+			// 	am.keeper.Logger(ctx).Error("Decoding Tx error in BeginBlock... Trying JSON Decoder")
+			// 	am.keeper.Logger(ctx).Error(err.Error())
 
-			sigs, err := wrappedTx.GetTx().GetSignaturesV2()
-			if err != nil {
-				am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error getting decoded tx signatures: %s", err.Error()), startConsumedGas)
-				continue
-			}
+			// 	txDecoderTx, err = am.txConfig.TxJSONDecoder()(decryptedTx.Bytes())
+			// 	if err != nil {
+			// 		am.keeper.Logger(ctx).Error("JSON Decoding Tx error in BeginBlock")
+			// 		am.keeper.Logger(ctx).Error(err.Error())
+			// 		ctx.EventManager().EmitEvent(
+			// 			sdk.NewEvent(types.EncryptedTxRevertedEventType,
+			// 				sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
+			// 				sdk.NewAttribute(types.EncryptedTxRevertedEventCondition, eachTx.TargetCondition),
+			// 				sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to decode tx data to Cosmos Tx"),
+			// 				sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+			// 			),
+			// 		)
 
-			if len(sigs) != 1 {
-				am.processFailedEncryptedTx(ctx, eachTx, "number of provided signatures is more than one", startConsumedGas)
-				continue
-			}
+			// 		am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error trying to json decoding tx: %s", err.Error()), startConsumedGas)
+			// 		continue
+			// 	} else {
+			// 		am.keeper.Logger(ctx).Error("TX Successfully Decode with JSON Decoder")
+			// 	}
+			// }
 
-			txMsgs := wrappedTx.GetTx().GetMsgs()
+			// wrappedTx, err := am.txConfig.WrapTxBuilder(txDecoderTx)
+			// if err != nil {
+			// 	am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error when trying to wrap decoded tx to tx builder: %s", err.Error()), startConsumedGas)
+			// 	continue
+			// }
 
-			if len(sigs) != len(txMsgs) {
-				am.processFailedEncryptedTx(ctx, eachTx, "number of provided signatures is not equals to number of tx messages", startConsumedGas)
-				continue
-			}
+			// sigs, err := wrappedTx.GetTx().GetSignaturesV2()
+			// if err != nil {
+			// 	am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error getting decoded tx signatures: %s", err.Error()), startConsumedGas)
+			// 	continue
+			// }
 
-			if !sigs[0].PubKey.Equals(creatorAccount.GetPubKey()) {
-				am.processFailedEncryptedTx(ctx, eachTx, "tx signer is not tx sender", startConsumedGas)
-				continue
-			}
+			// if len(sigs) != 1 {
+			// 	am.processFailedEncryptedTx(ctx, eachTx, "number of provided signatures is more than one", startConsumedGas)
+			// 	continue
+			// }
 
-			expectingNonce := newExecutedNonce - 1
+			// txMsgs := wrappedTx.GetTx().GetMsgs()
 
-			if sigs[0].Sequence < expectingNonce {
-				am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("Incorrect Nonce sequence, Provided: %d, Expecting: %d", sigs[0].Sequence, expectingNonce), startConsumedGas)
-				continue
-			}
+			// if len(sigs) != len(txMsgs) {
+			// 	am.processFailedEncryptedTx(ctx, eachTx, "number of provided signatures is not equals to number of tx messages", startConsumedGas)
+			// 	continue
+			// }
 
-			if sigs[0].Sequence > expectingNonce {
-				am.keeper.SetConditionalencNonce(ctx, types.ConditionalencNonce{
-					Address: eachTx.Creator,
-					Nonce:   sigs[0].Sequence,
-				})
-			}
+			// if !sigs[0].PubKey.Equals(creatorAccount.GetPubKey()) {
+			// 	am.processFailedEncryptedTx(ctx, eachTx, "tx signer is not tx sender", startConsumedGas)
+			// 	continue
+			// }
 
-			verifiableTx := wrappedTx.GetTx().(authsigning.SigVerifiableTx)
+			// expectingNonce := newExecutedNonce - 1
 
-			signingData := authsigning.SignerData{
-				Address:       creatorAddr.String(),
-				ChainID:       ctx.ChainID(),
-				AccountNumber: creatorAccount.GetAccountNumber(),
-				Sequence:      sigs[0].Sequence,
-				PubKey:        creatorAccount.GetPubKey(),
-			}
+			// if sigs[0].Sequence < expectingNonce {
+			// 	am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("Incorrect Nonce sequence, Provided: %d, Expecting: %d", sigs[0].Sequence, expectingNonce), startConsumedGas)
+			// 	continue
+			// }
 
-			err = authsigning.VerifySignature(
-				creatorAccount.GetPubKey(),
-				signingData,
-				sigs[0].Data,
-				am.txConfig.SignModeHandler(),
-				verifiableTx,
-			)
+			// if sigs[0].Sequence > expectingNonce {
+			// 	am.keeper.SetConditionalencNonce(ctx, types.ConditionalencNonce{
+			// 		Address: eachTx.Creator,
+			// 		Nonce:   sigs[0].Sequence,
+			// 	})
+			// }
 
-			if err != nil {
-				am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error when verifying signature: invalid signature: %s", err.Error()), startConsumedGas)
-				continue
-			}
+			// verifiableTx := wrappedTx.GetTx().(authsigning.SigVerifiableTx)
 
-			decryptionConsumed := ctx.GasMeter().GasConsumed() - startConsumedGas
-			simCheckGas, _, err := am.simCheck(am.txConfig.TxEncoder(), txDecoderTx)
-			// We are using SimCheck() to only estimate gas for the underlying transaction
-			// Since user is supposed to sign the underlying transaction with Pep Nonce,
-			// is expected that we gets 'account sequence mismatch' error
-			// however, the underlying tx is not expected to get other errors
-			// such as insufficient fee, out of gas etc...
-			if err != nil && !strings.Contains(err.Error(), "account sequence mismatch") {
-				am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error while performing check tx: %s", err.Error()), startConsumedGas)
-				continue
-			}
+			// signingData := authsigning.SignerData{
+			// 	Address:       creatorAddr.String(),
+			// 	ChainID:       ctx.ChainID(),
+			// 	AccountNumber: creatorAccount.GetAccountNumber(),
+			// 	Sequence:      sigs[0].Sequence,
+			// 	PubKey:        creatorAccount.GetPubKey(),
+			// }
 
-			txFee := wrappedTx.GetTx().GetFee()
+			// err = authsigning.VerifySignature(
+			// 	creatorAccount.GetPubKey(),
+			// 	signingData,
+			// 	sigs[0].Data,
+			// 	am.txConfig.SignModeHandler(),
+			// 	verifiableTx,
+			// )
 
-			// If it passes the CheckTx but Tx Fee is empty,
-			// that means the minimum-gas-prices for the validator is 0
-			// therefore, we are not charging for the tx execution
-			if !txFee.Empty() {
-				gasProvided := cosmosmath.NewIntFromUint64(wrappedTx.GetTx().GetGas())
-				// Underlying tx consumed gas + gas consumed on decrypting & decoding tx
-				am.keeper.Logger(ctx).Info(fmt.Sprintf("Underlying tx consumed: %d, decryption consumed: %d", simCheckGas.GasUsed, decryptionConsumed))
-				gasUsedInBig := cosmosmath.NewIntFromUint64(simCheckGas.GasUsed).Add(cosmosmath.NewIntFromUint64(decryptionConsumed))
-				newCoins := make([]sdk.Coin, len(txFee))
-				refundDenom := txFee[0].Denom
-				refundAmount := cosmosmath.NewIntFromUint64(0)
+			// if err != nil {
+			// 	am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error when verifying signature: invalid signature: %s", err.Error()), startConsumedGas)
+			// 	continue
+			// }
 
-				usedGasFee := sdk.NewCoin(
-					txFee[0].Denom,
-					// Tx Fee Amount Divide Provide Gas => provided gas price
-					// Provided Gas Price * Gas Used => Amount to deduct as gas fee
-					txFee[0].Amount.Quo(gasProvided).Mul(gasUsedInBig),
-				)
+			// decryptionConsumed := ctx.GasMeter().GasConsumed() - startConsumedGas
+			// simCheckGas, _, err := am.simCheck(am.txConfig.TxEncoder(), txDecoderTx)
+			// // We are using SimCheck() to only estimate gas for the underlying transaction
+			// // Since user is supposed to sign the underlying transaction with Pep Nonce,
+			// // is expected that we gets 'account sequence mismatch' error
+			// // however, the underlying tx is not expected to get other errors
+			// // such as insufficient fee, out of gas etc...
+			// if err != nil && !strings.Contains(err.Error(), "account sequence mismatch") {
+			// 	am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error while performing check tx: %s", err.Error()), startConsumedGas)
+			// 	continue
+			// }
 
-				if usedGasFee.Denom != eachTx.ChargedGas.Denom {
-					am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("underlying tx gas denom does not match charged gas denom, got: %s, expect: %s", usedGasFee.Denom, eachTx.ChargedGas.Denom), startConsumedGas)
-					continue
-				}
+			// txFee := wrappedTx.GetTx().GetFee()
 
-				if usedGasFee.Amount.GT(eachTx.ChargedGas.Amount) {
-					usedGasFee.Amount = usedGasFee.Amount.Sub(eachTx.ChargedGas.Amount)
-				} else { // less than or equals to
-					refundAmount = eachTx.ChargedGas.Amount.Sub(usedGasFee.Amount)
-					usedGasFee.Amount = cosmosmath.NewIntFromUint64(0)
-				}
+			// // If it passes the CheckTx but Tx Fee is empty,
+			// // that means the minimum-gas-prices for the validator is 0
+			// // therefore, we are not charging for the tx execution
+			// if !txFee.Empty() {
+			// 	gasProvided := cosmosmath.NewIntFromUint64(wrappedTx.GetTx().GetGas())
+			// 	// Underlying tx consumed gas + gas consumed on decrypting & decoding tx
+			// 	am.keeper.Logger(ctx).Info(fmt.Sprintf("Underlying tx consumed: %d, decryption consumed: %d", simCheckGas.GasUsed, decryptionConsumed))
+			// 	gasUsedInBig := cosmosmath.NewIntFromUint64(simCheckGas.GasUsed).Add(cosmosmath.NewIntFromUint64(decryptionConsumed))
+			// 	newCoins := make([]sdk.Coin, len(txFee))
+			// 	refundDenom := txFee[0].Denom
+			// 	refundAmount := cosmosmath.NewIntFromUint64(0)
 
-				am.keeper.Logger(ctx).Info(fmt.Sprintf("Deduct fee amount: %v | Refund amount: %v", newCoins, refundAmount))
+			// 	usedGasFee := sdk.NewCoin(
+			// 		txFee[0].Denom,
+			// 		// Tx Fee Amount Divide Provide Gas => provided gas price
+			// 		// Provided Gas Price * Gas Used => Amount to deduct as gas fee
+			// 		txFee[0].Amount.Quo(gasProvided).Mul(gasUsedInBig),
+			// 	)
 
-				if refundAmount.IsZero() {
-					deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, sdk.NewCoins(usedGasFee))
-					if deductFeeErr != nil {
-						am.keeper.Logger(ctx).Error("Deduct fee Err")
-						am.keeper.Logger(ctx).Error(deductFeeErr.Error())
-					} else {
-						am.keeper.Logger(ctx).Info("Fee deducted without error")
-					}
-				} else {
-					refundFeeErr := am.bankKeeper.SendCoinsFromModuleToAccount(
-						ctx,
-						types.ModuleName,
-						creatorAddr,
-						sdk.NewCoins(sdk.NewCoin(refundDenom, refundAmount)),
-					)
-					if refundFeeErr != nil {
-						am.keeper.Logger(ctx).Error("Refund fee Err")
-						am.keeper.Logger(ctx).Error(refundFeeErr.Error())
-					} else {
-						am.keeper.Logger(ctx).Info("Fee refunded without error")
-					}
-				}
-			}
+			// 	if usedGasFee.Denom != eachTx.ChargedGas.Denom {
+			// 		am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("underlying tx gas denom does not match charged gas denom, got: %s, expect: %s", usedGasFee.Denom, eachTx.ChargedGas.Denom), startConsumedGas)
+			// 		continue
+			// 	}
 
-			handler := am.msgServiceRouter.Handler(txMsgs[0])
-			_, err = handler(ctx, txMsgs[0])
-			if err != nil {
-				am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error when handling tx message: %s", err.Error()), startConsumedGas)
-				continue
-			}
+			// 	if usedGasFee.Amount.GT(eachTx.ChargedGas.Amount) {
+			// 		usedGasFee.Amount = usedGasFee.Amount.Sub(eachTx.ChargedGas.Amount)
+			// 	} else { // less than or equals to
+			// 		refundAmount = eachTx.ChargedGas.Amount.Sub(usedGasFee.Amount)
+			// 		usedGasFee.Amount = cosmosmath.NewIntFromUint64(0)
+			// 	}
 
-			am.keeper.Logger(ctx).Info("! Encrypted Tx Decrypted & Decoded & Executed successfully !")
+			// 	am.keeper.Logger(ctx).Info(fmt.Sprintf("Deduct fee amount: %v | Refund amount: %v", newCoins, refundAmount))
 
-			ctx.EventManager().EmitEvent(
-				sdk.NewEvent(types.EncryptedTxExecutedEventType,
-					sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventCondition, eachTx.TargetCondition),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventData, eachTx.Data),
-					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-				),
-			)
+			// 	if refundAmount.IsZero() {
+			// 		deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, sdk.NewCoins(usedGasFee))
+			// 		if deductFeeErr != nil {
+			// 			am.keeper.Logger(ctx).Error("Deduct fee Err")
+			// 			am.keeper.Logger(ctx).Error(deductFeeErr.Error())
+			// 		} else {
+			// 			am.keeper.Logger(ctx).Info("Fee deducted without error")
+			// 		}
+			// 	} else {
+			// 		refundFeeErr := am.bankKeeper.SendCoinsFromModuleToAccount(
+			// 			ctx,
+			// 			types.ModuleName,
+			// 			creatorAddr,
+			// 			sdk.NewCoins(sdk.NewCoin(refundDenom, refundAmount)),
+			// 		)
+			// 		if refundFeeErr != nil {
+			// 			am.keeper.Logger(ctx).Error("Refund fee Err")
+			// 			am.keeper.Logger(ctx).Error(refundFeeErr.Error())
+			// 		} else {
+			// 			am.keeper.Logger(ctx).Info("Fee refunded without error")
+			// 		}
+			// 	}
+			// }
+
+			// handler := am.msgServiceRouter.Handler(txMsgs[0])
+			// _, err = handler(ctx, txMsgs[0])
+			// if err != nil {
+			// 	am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error when handling tx message: %s", err.Error()), startConsumedGas)
+			// 	continue
+			// }
+
+			// am.keeper.Logger(ctx).Info("! Encrypted Tx Decrypted & Decoded & Executed successfully !")
+
+			// ctx.EventManager().EmitEvent(
+			// 	sdk.NewEvent(types.EncryptedTxExecutedEventType,
+			// 		sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
+			// 		sdk.NewAttribute(types.EncryptedTxExecutedEventCondition, eachTx.TargetCondition),
+			// 		sdk.NewAttribute(types.EncryptedTxExecutedEventData, eachTx.Data),
+			// 		sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+			// 	),
+			// )
 		}
 
 		am.keeper.RemoveAllEncryptedTxFromCondition(ctx, item)
