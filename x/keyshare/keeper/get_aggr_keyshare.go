@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fairyring/x/keyshare/types"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
@@ -9,6 +10,7 @@ import (
 
 // OnRecvGetAggrKeysharePacket processes packet reception
 func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data types.GetAggrKeysharePacketData) (packetAck types.GetAggrKeysharePacketAck, err error) {
+	fmt.Println("\n\n\nOnRecvGetAggrKeysharePacket\n\n\n")
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
