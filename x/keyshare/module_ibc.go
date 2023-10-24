@@ -147,6 +147,18 @@ func (im IBCModule) OnRecvPacket(
 		return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
 	}
 
+	lastProcessedSeq, found := im.keeper.GetLastSequence(ctx, modulePacket.SourceChannel, modulePacket.SourcePort)
+	if !found {
+		lastProcessedSeq.PortId = modulePacket.SourcePort
+		lastProcessedSeq.ChannelId = modulePacket.SourceChannel
+		lastProcessedSeq.SeqNo = modulePacket.Sequence
+	} else {
+		if lastProcessedSeq.SeqNo >= modulePacket.Sequence {
+			return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(cosmoserror.ErrInvalidSequence, "already processed packet with seq: %d", modulePacket.Sequence))
+		}
+	}
+	im.keeper.SetLastSequence(ctx, lastProcessedSeq)
+
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 

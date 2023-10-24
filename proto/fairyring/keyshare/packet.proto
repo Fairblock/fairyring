@@ -45,3 +45,9 @@ message AggrKeyshareDataPacketData {
 
 // AggrKeyshareDataPacketAck defines a struct for the packet acknowledgment
 message AggrKeyshareDataPacketAck {}
+
+message LastProcessedSequence {
+  string channel_id = 1;
+  string port_id = 2;
+  uint64 seq_no = 3;
+}
