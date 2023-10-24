@@ -43,6 +43,9 @@ validators:
     rpc:
       laddr: :26759
       pprof_laddr: :6061
+    consensus:
+        timeout_commit: "3s"
+        timeout_propose: "3s"
   home: $HOME/.fairyring
 
 client:
