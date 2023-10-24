@@ -164,6 +164,15 @@ func (im IBCModule) OnRecvPacket(
 	fmt.Println("\n\nSetting lastProcessedSeq: \nChannel: ", lastProcessedSeq.ChannelId, "   Port: ", lastProcessedSeq.PortId, "   SeqNo: ", lastProcessedSeq.SeqNo)
 	im.keeper.SetLastSequence(ctx, lastProcessedSeq)
 
+	// For Testing if set
+	testSeq, found := im.keeper.GetLastSequence(ctx, modulePacket.SourceChannel, modulePacket.SourcePort)
+	if !found {
+		fmt.Println("\n\n\nlastProcessedSeq not found\n\n\n")
+	} else {
+		fmt.Println("\n\n\nlastProcessedSeq found\n\n\n")
+		fmt.Println("last seq: ", testSeq.SeqNo)
+	}
+
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 
