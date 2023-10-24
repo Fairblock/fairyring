@@ -147,6 +147,7 @@ func (im IBCModule) OnRecvPacket(
 		return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
 	}
 
+	fmt.Println("\n\nCurrent Block Height: ", ctx.BlockHeight())
 	lastProcessedSeq, found := im.keeper.GetLastSequence(ctx, modulePacket.SourceChannel, modulePacket.SourcePort)
 	if !found {
 		fmt.Println("\n\n\nlastProcessedSeq not found\n\n\n")
