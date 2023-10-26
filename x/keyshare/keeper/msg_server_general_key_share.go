@@ -177,6 +177,29 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 		}, nil
 	}
 
+	// Check if target general keyshare already aggregated a key
+	switch msg.IdType {
+	case PrivateGovIdentity:
+		keyShareReq, found := k.GetKeyShareRequest(ctx, msg.IdValue)
+		if !found {
+			k.Logger(ctx).Info(fmt.Sprintf("\n\n\n\nKeyshare request not found\n\n\n\n"))
+			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
+		}
+
+		if keyShareReq.AggrKeyshare != "" {
+			k.Logger(ctx).Info(fmt.Sprintf("\n\n\n\nAGG KEY ALREADY EXISTS %s\n\n\n\n", &keyShareReq.AggrKeyshare))
+			return &types.MsgCreateGeneralKeyShareResponse{
+				Creator:             msg.Creator,
+				IdType:              msg.IdType,
+				IdValue:             msg.IdValue,
+				KeyShare:            msg.KeyShare,
+				KeyShareIndex:       msg.KeyShareIndex,
+				ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+				Success:             true,
+			}, nil
+		}
+	}
+
 	// Get the active public key for aggregating
 	activePubKey, found := k.pepKeeper.GetActivePubKey(ctx)
 
