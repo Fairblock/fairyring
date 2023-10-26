@@ -11,9 +11,9 @@ import (
 
 func CmdCreateGeneralKeyShare() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-general-key-share [id-type] [id-value] [key-share] [key-share-index] [received-timestamp] [received-block-height]",
+		Use:   "create-general-key-share [id-type] [id-value] [key-share] [key-share-index]",
 		Short: "Create a new GeneralKeyShare",
-		Args:  cobra.ExactArgs(6),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexIdType := args[0]
@@ -22,14 +22,6 @@ func CmdCreateGeneralKeyShare() *cobra.Command {
 			// Get value arguments
 			argKeyShare := args[2]
 			argKeyShareIndex, err := cast.ToUint64E(args[3])
-			if err != nil {
-				return err
-			}
-			argReceivedTimestamp, err := cast.ToUint64E(args[4])
-			if err != nil {
-				return err
-			}
-			argReceivedBlockHeight, err := cast.ToUint64E(args[5])
 			if err != nil {
 				return err
 			}
@@ -45,8 +37,6 @@ func CmdCreateGeneralKeyShare() *cobra.Command {
 				indexIdValue,
 				argKeyShare,
 				argKeyShareIndex,
-				argReceivedTimestamp,
-				argReceivedBlockHeight,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
