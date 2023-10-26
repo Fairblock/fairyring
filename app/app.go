@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"fairyring/blockbuster/abci"
+	// "fairyring/blockbuster/abci"
 
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	reflectionv1 "cosmossdk.io/api/cosmos/reflection/v1"
@@ -267,8 +267,8 @@ type App struct {
 	sm           *module.SimulationManager
 	configurator module.Configurator
 
-	// Custom checkTx handler
-	checkTxHandler abci.CheckTx
+	// // Custom checkTx handler
+	// checkTxHandler abci.CheckTx
 }
 
 // New returns a reference to an initialized blockchain app
@@ -1060,7 +1060,7 @@ func (app *App) ModuleManager() *module.Manager {
 	return app.mm
 }
 
-// SetCheckTx sets the checkTxHandler for the app.
-func (app *App) SetCheckTx(handler abci.CheckTx) {
-	app.checkTxHandler = handler
-}
+// // SetCheckTx sets the checkTxHandler for the app.
+// func (app *App) SetCheckTx(handler abci.CheckTx) {
+// 	app.checkTxHandler = handler
+// }
