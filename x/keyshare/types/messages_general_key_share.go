@@ -17,18 +17,14 @@ func NewMsgCreateGeneralKeyShare(
 	idValue string,
 	keyShare string,
 	keyShareIndex uint64,
-	receivedTimestamp uint64,
-	receivedBlockHeight uint64,
 
 ) *MsgCreateGeneralKeyShare {
 	return &MsgCreateGeneralKeyShare{
-		Creator:             creator,
-		IdType:              idType,
-		IdValue:             idValue,
-		KeyShare:            keyShare,
-		KeyShareIndex:       keyShareIndex,
-		ReceivedTimestamp:   receivedTimestamp,
-		ReceivedBlockHeight: receivedBlockHeight,
+		Creator:       creator,
+		IdType:        idType,
+		IdValue:       idValue,
+		KeyShare:      keyShare,
+		KeyShareIndex: keyShareIndex,
 	}
 }
 
