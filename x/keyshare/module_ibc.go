@@ -153,14 +153,15 @@ func (im IBCModule) OnRecvPacket(
 		fmt.Println("\n\n\nlastProcessedSeq not found\n\n\n")
 		lastProcessedSeq.PortId = modulePacket.SourcePort
 		lastProcessedSeq.ChannelId = modulePacket.SourceChannel
-		lastProcessedSeq.SeqNo = modulePacket.Sequence
 	} else {
 		fmt.Println("\n\n\nlastProcessedSeq found\n\n\n")
 		fmt.Println("last seq: ", lastProcessedSeq.SeqNo, "   current seq: ", modulePacket.Sequence)
 		if lastProcessedSeq.SeqNo >= modulePacket.Sequence {
+			fmt.Println("\n\n\nPacket already prcessed. Skipping\n\n\n")
 			return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(cosmoserror.ErrInvalidSequence, "already processed packet with seq: %d", modulePacket.Sequence))
 		}
 	}
+	lastProcessedSeq.SeqNo = modulePacket.Sequence
 	fmt.Println("\n\nSetting lastProcessedSeq: \nChannel: ", lastProcessedSeq.ChannelId, "   Port: ", lastProcessedSeq.PortId, "   SeqNo: ", lastProcessedSeq.SeqNo)
 	im.keeper.SetLastSequence(ctx, lastProcessedSeq)
 
