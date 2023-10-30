@@ -149,6 +149,7 @@ func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
+	fmt.Println("\n\nKeyshare mdoule begin block: ", ctx.BlockHeight(), "\n\n")
 	validatorSet := am.keeper.GetAllValidatorSet(ctx)
 	for _, eachValidator := range validatorSet {
 		accAddr, err := sdk.AccAddressFromBech32(eachValidator.Validator)
@@ -221,6 +222,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+	fmt.Println("\n\nKeyshare mdoule end block: ", ctx.BlockHeight(), "\n\n")
 	am.keeper.Logger(ctx).Info(fmt.Sprintf("End Blocker of Height: %d", ctx.BlockHeight()))
 	validators := am.keeper.GetAllValidatorSet(ctx)
 	params := am.keeper.GetParams(ctx)
