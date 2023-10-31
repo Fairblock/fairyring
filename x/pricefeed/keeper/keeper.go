@@ -470,7 +470,7 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 				prev, _ = extractNumber(previous,r.Symbol)}
 				//logrus.Info("ok---------------------------------------------------------------------")
 				waitingList := []string{}
-				
+				 if prev < int(new) {
 				for i := int64(prev) + int64(step); i <= new; i += int64(step) {
 					nonce := k.UpdateRepeatedPrice(ctx, types.Price{Symbol: r.Symbol, Price: uint64(i), ResolveTime: res.ResolveTime})
 					ctx.EventManager().EmitEvent(
@@ -483,6 +483,21 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 						),
 					)
 					waitingList = append(waitingList, strconv.FormatUint(nonce, 10)+r.Symbol+strconv.Itoa(int(i)))
+				}}
+				if prev > int(new) {
+					for i := int64(prev) - int64(step); i >= new; i -= int64(step) {
+						nonce := k.UpdateRepeatedPrice(ctx, types.Price{Symbol: r.Symbol, Price: uint64(i), ResolveTime: res.ResolveTime})
+						ctx.EventManager().EmitEvent(
+							sdk.NewEvent(
+								types.EventTypePriceUpdate,
+								sdk.NewAttribute(types.AttributeKeySymbol, r.Symbol),
+								sdk.NewAttribute(types.AttributeKeyPrice, fmt.Sprintf("%d", i)),
+								sdk.NewAttribute(types.AttributeKeySymbol, strconv.FormatUint(nonce, 10)),
+								sdk.NewAttribute(types.AttributeKeyTimestamp, res.ResolveStatus.String()),
+							),
+						)
+						waitingList = append(waitingList, strconv.FormatUint(nonce, 10)+r.Symbol+strconv.Itoa(int(i)))
+					}
 				}
 				k.AppendListToList(ctx, waitingList, r.Symbol)
 				k.AddLatestCondition(ctx,waitingList[len(waitingList)-1],r.Symbol)

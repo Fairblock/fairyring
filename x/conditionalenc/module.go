@@ -11,7 +11,7 @@ import (
 
 	enc "github.com/FairBlock/DistributedIBE/encryption"
 	"github.com/sirupsen/logrus"
-
+	math_bits "math/bits"
 	"math"
 	"strconv"
 	//"strings"
@@ -237,38 +237,169 @@ func (am AppModule) processFailedEncryptedTx(ctx sdk.Context, tx types.Encrypted
 
 	am.handleGasConsumption(ctx, creatorAddr, cosmosmath.NewIntFromUint64(actualGasConsumed), tx.ChargedGas)
 }
+type FungibleTokenPacketData struct {
+	// the token denomination to be transferred
+	Denom string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
+	// the token amount to be transferred
+	Amount string `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount,omitempty"`
+	// the sender address
+	Sender string `protobuf:"bytes,3,opt,name=sender,proto3" json:"sender,omitempty"`
+	// the recipient address on the destination chain
+	Receiver string `protobuf:"bytes,4,opt,name=receiver,proto3" json:"receiver,omitempty"`
+	// optional memo
+	Memo string `protobuf:"bytes,5,opt,name=memo,proto3" json:"memo,omitempty"`
+}
+func (m *FungibleTokenPacketData) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+func (m *FungibleTokenPacketData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Denom)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.Amount)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.Sender)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.Receiver)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.Memo)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	return n
+}
+
+func encodeVarintPacket(dAtA []byte, offset int, v uint64) int {
+	offset -= sovPacket(v)
+	base := offset
+	for v >= 1<<7 {
+		dAtA[offset] = uint8(v&0x7f | 0x80)
+		v >>= 7
+		offset++
+	}
+	dAtA[offset] = uint8(v)
+	return base
+}
+func sovPacket(x uint64) (n int) {
+	return (math_bits.Len64(x|1) + 6) / 7
+}
+func (m *FungibleTokenPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Memo) > 0 {
+		i -= len(m.Memo)
+		copy(dAtA[i:], m.Memo)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Memo)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.Receiver) > 0 {
+		i -= len(m.Receiver)
+		copy(dAtA[i:], m.Receiver)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Receiver)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.Sender) > 0 {
+		i -= len(m.Sender)
+		copy(dAtA[i:], m.Sender)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Sender)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Amount) > 0 {
+		i -= len(m.Amount)
+		copy(dAtA[i:], m.Amount)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Amount)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Denom) > 0 {
+		i -= len(m.Denom)
+		copy(dAtA[i:], m.Denom)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Denom)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
 type CosmWasmPacketData struct {
 	ContractAddress string           `json:"contract_address"`
 	Msg             json.RawMessage  `json:"msg"`
 }
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
 func (am AppModule) BeginBlock(ctx sdk.Context, b abci.RequestBeginBlock) {
+// 	if (b.Header.Height % 50) == 0 {
+// 	//params := am.keeper.GetParams(ctx)
+// //	logrus.Info(params)
+// msgData := `{"wasm": {"contract": "osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9", "msg": {"swap_with_action":{"swap_msg":{"token_out_min_amount":"10","path":[{"pool_id":"2","token_out_denom":"uosmo"}]},"after_swap_action":{"ibc_transfer":{"receiver":"fairy1w35qdn0j9jurd6k27v3lagk47wjpdfu6t3z9rl","channel":"channel-0"}},"local_fallback_address":"osmo12smx2wdlyttvyzvzg54y2vnqwq2qjateuf7thj"}}}}`
+// _ = msgData
+// cosmWasmPacketData := FungibleTokenPacketData{
+// 	Denom: "frt",
+// 	Amount: "130",
+// 	Sender: "fairy1w35qdn0j9jurd6k27v3lagk47wjpdfu6t3z9rl",
+// 	Receiver: "osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9",
+// 	Memo: msgData,
+// 	// Contract: "osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9",
+// 	// Msg:             msgData,
+// }
+// // test := CosmWasmPacketData{
+// // 	ContractAddress: "osmo1zl9ztmwe2wcdvv9std8xn06mdaqaqm789rutmazfh3z869zcax4sv0ctqw",
+// // 	Msg:             nil,
+// // }
+// // testMsg,_ := json.Marshal(test) 
+// serializedCosmWasmPacketData, _ := json.Marshal(cosmWasmPacketData)
+// logrus.Info("sending packet.....................................................................................................................", serializedCosmWasmPacketData)
+// 	err := am.keeper.SendSwapTx(ctx,"channel-1",serializedCosmWasmPacketData)
+// 	if err != nil {
+// 		am.keeper.Logger(ctx).Error("Relaying Swap Tx error")
+// 		am.keeper.Logger(ctx).Error(err.Error())
+// 	}}
+// 	if (b.Header.Height % 22) == 0 {
+// 		//params := am.keeper.GetParams(ctx)
+// 	//	logrus.Info(params)
 	
-	params := am.keeper.GetParams(ctx)
-//	logrus.Info(params)
-msgData := json.RawMessage(`{
-    "ProcessSwap": {
-		"swap_msg": {
-			"OsmosisSwapMsg": {
-				"token_out_min_amount" : "10",
-				"path": ""
-			}
-		}
-    }
-}`)
-_ = msgData
-cosmWasmPacketData := CosmWasmPacketData{
-	ContractAddress: "osmo1zl9ztmwe2wcdvv9std8xn06mdaqaqm789rutmazfh3z869zcax4sv0ctqw",
-	Msg:             msgData,
-}
-serializedCosmWasmPacketData, _ := json.Marshal(cosmWasmPacketData)
-logrus.Info("sending packet.....................................................................................................................", serializedCosmWasmPacketData)
-	err := am.keeper.SendSwapTx(ctx,params.ChannelId,serializedCosmWasmPacketData)
-	if err != nil {
-		am.keeper.Logger(ctx).Error("Relaying Swap Tx error")
-		am.keeper.Logger(ctx).Error(err.Error())
-	}
-
+// 	cosmWasmPacketData := FungibleTokenPacketData{
+// 		Denom: "frt",
+// 		Amount: "200",
+// 		Sender: "fairy1w35qdn0j9jurd6k27v3lagk47wjpdfu6t3z9rl",
+// 		Receiver: "osmo12smx2wdlyttvyzvzg54y2vnqwq2qjateuf7thj",
+		
+// 		// Contract: "osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9",
+// 		// Msg:             msgData,
+// 	}
+// 	// test := CosmWasmPacketData{
+// 	// 	ContractAddress: "osmo1zl9ztmwe2wcdvv9std8xn06mdaqaqm789rutmazfh3z869zcax4sv0ctqw",
+// 	// 	Msg:             nil,
+// 	// }
+// 	// testMsg,_ := json.Marshal(test) 
+// 	serializedCosmWasmPacketData, _ := json.Marshal(cosmWasmPacketData)
+// 	logrus.Info("sending packet.....................................................................................................................", serializedCosmWasmPacketData)
+// 		err := am.keeper.SendSwapTx(ctx,"channel-1",serializedCosmWasmPacketData)
+// 		if err != nil {
+// 			am.keeper.Logger(ctx).Error("Relaying Swap Tx error")
+// 			am.keeper.Logger(ctx).Error(err.Error())
+// 		}}
 	waitingList := am.pricefeedKeeper.GetList(ctx)
 	
 	

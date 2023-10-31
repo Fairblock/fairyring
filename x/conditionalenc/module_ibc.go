@@ -193,27 +193,27 @@ func (im IBCModule) OnAcknowledgementPacket(
 	}
 
 	// this line is used by starport scaffolding # oracle/packet/module/ack
+    logrus.Info("got this: ",modulePacket.GetData())
+	// var modulePacketData types.ConditionalencPacketData
+	// if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
+	// 	return sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
+	// }
+return nil
+	// //var eventType string
 
-	var modulePacketData types.ConditionalencPacketData
-	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
-		return sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
-	}
-
-	//var eventType string
-
-	// Dispatch packet
-	switch packet := modulePacketData.Packet.(type) {
-	// case *types.ConditionalencPacketData_CurrentKeysPacket:
-	// 	err := im.keeper.OnAcknowledgementCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket, ack)
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	// 	eventType = types.EventTypeCurrentKeysPacket
-		// this line is used by starport scaffolding # ibc/packet/module/ack
-	default:
-		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
-		return sdkerrors.Wrap(cosmoserror.ErrUnknownRequest, errMsg)
-	}
+	// // Dispatch packet
+	// switch packet := modulePacketData.Packet.(type) {
+	// // case *types.ConditionalencPacketData_CurrentKeysPacket:
+	// // 	err := im.keeper.OnAcknowledgementCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket, ack)
+	// // 	if err != nil {
+	// // 		return err
+	// // 	}
+	// // 	eventType = types.EventTypeCurrentKeysPacket
+	// 	// this line is used by starport scaffolding # ibc/packet/module/ack
+	// default:
+	// 	errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
+	// 	return sdkerrors.Wrap(cosmoserror.ErrUnknownRequest, errMsg)
+	// }
 
 	// ctx.EventManager().EmitEvent(
 	// 	sdk.NewEvent(
