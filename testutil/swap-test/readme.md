@@ -66,7 +66,7 @@ Another detail is on the quantity of these orders. An attacker may be able to fl
 Perhaps an expiry mechanism can be added, so that really old orders are flushed and removed from the state.
 Alternatively, some sort of collateral/fee can be used to address spam issue.
 
-### Osmosis Swap Test
+## Osmosis Swap Test
 
 In order to test the swap functionality using the squid contract on Osmosis chain, follow the below steps:
 
