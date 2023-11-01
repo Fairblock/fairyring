@@ -1,0 +1,13 @@
+{ 
+
+        "weights": "1ibc/8242CCD3487EAAE300B9B34D0F9237789060CBAD15EF6D36CFC626E732FB8FFC,1uosmo", 
+
+        "initial-deposit": "5000ibc/8242CCD3487EAAE300B9B34D0F9237789060CBAD15EF6D36CFC626E732FB8FFC,5000uosmo", 
+
+        "swap-fee": "0.01", 
+
+        "exit-fee": "0.00", 
+
+        "future-governor": "168h" 
+
+} 
