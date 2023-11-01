@@ -1,7 +1,7 @@
 import os
 import json
 
-path = "../../../.fairyring/data"
+path = os.path.expanduser("~/.fairyring/data")
 
 import shutil
 
