@@ -11,6 +11,7 @@ import "fairyring/keyshare/key_share.proto";
 import "fairyring/keyshare/aggregated_key_share.proto";
 import "fairyring/keyshare/pub_key.proto";
 import "fairyring/keyshare/authorized_address.proto";
+import "fairyring/keyshare/commitments.proto";
 
 // this line is used by starport scaffolding # 1
 
@@ -18,6 +19,10 @@ option go_package = "fairyring/x/keyshare/types";
 
 // Query defines the gRPC querier service.
 service Query {
+
+  rpc Commitments (QueryCommitmentsRequest) returns (QueryCommitmentsResponse) {
+    option (google.api.http).get = "/fairyring/keyshare/commitments";
+  }
   
   // Parameters queries the parameters of the module.
   rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
@@ -77,6 +82,14 @@ service Query {
   
   }
 }
+
+message QueryCommitmentsRequest {}
+
+message QueryCommitmentsResponse {
+    Commitments activeCommitments = 1;
+    Commitments queuedCommitments = 2;
+}
+
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 
