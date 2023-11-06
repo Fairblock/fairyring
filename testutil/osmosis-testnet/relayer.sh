@@ -80,26 +80,26 @@ buckets = 10
 # trust_threshold = { numerator = '1', denominator = '3' }
 # address_type = { derivation = 'cosmos' }
 
-[[chains]]
-id = 'fairytest-${i}'
-rpc_addr = 'http://localhost:26659'
-grpc_addr = 'http://localhost:9092'
-event_source = { url = "ws://localhost:26659/websocket",  batch_delay = '50ms' , mode = "push" }
-rpc_timeout = '50s'
-account_prefix = 'fairy'
-key_name = 'requester'
-store_prefix = 'ibc'
-default_gas = 100000000
-max_gas = 150000000
-gas_price = { price = 0, denom = 'ustake' }
-gas_multiplier = 3
-max_msg_num = 20
-max_tx_size = 209715
-clock_drift = '20s'
-max_block_time = '10s'
-trusting_period = '10days'
-trust_threshold = { numerator = '1', denominator = '3' }
-address_type = { derivation = 'cosmos' }
+# [[chains]]
+# id = 'fairytest-${i}'
+# rpc_addr = 'http://localhost:26659'
+# grpc_addr = 'http://localhost:9092'
+# event_source = { url = "ws://localhost:26659/websocket",  batch_delay = '50ms' , mode = "push" }
+# rpc_timeout = '50s'
+# account_prefix = 'fairy'
+# key_name = 'requester'
+# store_prefix = 'ibc'
+# default_gas = 100000000
+# max_gas = 150000000
+# gas_price = { price = 0, denom = 'ustake' }
+# gas_multiplier = 3
+# max_msg_num = 20
+# max_tx_size = 209715
+# clock_drift = '20s'
+# max_block_time = '10s'
+# trusting_period = '10days'
+# trust_threshold = { numerator = '1', denominator = '3' }
+# address_type = { derivation = 'cosmos' }
 
 [[chains]]
 id = 'osmo-test-5'
@@ -122,32 +122,32 @@ trusting_period = '2days'
 trust_threshold = { numerator = '1', denominator = '3' }
 address_type = { derivation = 'cosmos' }
 
-# [[chains]]
-# id = 'localosmosis'
-# rpc_addr = 'http://localhost:26657'
-# grpc_addr = 'http://localhost:9090'
-# event_source = { url = "ws://localhost:26657/websocket",  batch_delay = '50ms' , mode = "push" }
-# rpc_timeout = '50s'
-# account_prefix = 'osmo'
-# key_name = 'wallet'
-# store_prefix = 'ibc'
-# default_gas = 1000000
-# max_gas = 100000000
-# gas_price = { price = 0.0025, denom = 'uosmo' }
-# gas_multiplier = 3
-# max_msg_num = 30
-# max_tx_size = 2097152
-# clock_drift = '5s'
-# max_block_time = '10s'
-# trusting_period = '230s'
-# trust_threshold = { numerator = '1', denominator = '3' }
-# address_type = { derivation = 'cosmos' }
+[[chains]]
+id = 'localosmosis'
+rpc_addr = 'http://localhost:26657'
+grpc_addr = 'http://localhost:9090'
+event_source = { url = "ws://localhost:26657/websocket",  batch_delay = '50ms' , mode = "push" }
+rpc_timeout = '50s'
+account_prefix = 'osmo'
+key_name = 'wallet'
+store_prefix = 'ibc'
+default_gas = 1000000
+max_gas = 100000000
+gas_price = { price = 0.0025, denom = 'uosmo' }
+gas_multiplier = 3
+max_msg_num = 30
+max_tx_size = 2097152
+clock_drift = '5s'
+max_block_time = '10s'
+trusting_period = '230s'
+trust_threshold = { numerator = '1', denominator = '3' }
+address_type = { derivation = 'cosmos' }
 EOF
 
-hermes keys add --chain "fairytest-${i}" --mnemonic-file "./mnemonic-fairy.txt"
+# hermes keys add --chain "fairytest-${i}" --mnemonic-file "./mnemonic-fairy.txt"
 
 # hermes create channel --a-chain band-laozi-testnet6 --b-chain "fairytest-${i}" --a-port oracle --b-port pricefeed --order unordered --channel-version bandchain-1 --new-client-connection 
-hermes create channel --a-chain osmo-test-5 --b-chain "fairytest-${i}" --a-port transfer --b-port transfer --order unordered --new-client-connection 
+hermes create channel --a-chain osmo-test-5 --b-chain localosmosis --a-port transfer --b-port transfer --order unordered --new-client-connection 
 #hermes create channel --a-chain localosmosis --b-chain "fairytest-${i}" --a-port transfer --b-port transfer --order unordered --new-client-connection 
 
 hermes start

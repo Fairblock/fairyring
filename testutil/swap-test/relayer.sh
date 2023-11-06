@@ -2,7 +2,7 @@ read -p "Enter the value for i: " i
 
 
 
-hermes keys add --chain localosmosis --mnemonic-file "./mnemonic-osmosis.txt"
+
 # Change to ~/.hermes directory
 
 # # Rename folders starting with fairytest-* to fairytest-${i}
@@ -190,6 +190,7 @@ trust_threshold = { numerator = '1', denominator = '3' }
 address_type = { derivation = 'cosmos' }
 EOF
 
+hermes keys add --chain localosmosis --mnemonic-file "./mnemonic-osmosis.txt"
 hermes keys add --chain "fairytest-${i}" --mnemonic-file "./mnemonic-fairy.txt"
 
 hermes create channel --a-chain localosmosis --b-chain "fairytest-${i}" --a-port transfer --b-port transfer --order unordered --new-client-connection 
