@@ -103,6 +103,19 @@ Input the same value for `i` as in step 2.
 4. Perform the initial transfer, create the pool and the contract by running the script in `fairyring/testutil/conditionalenc/setup-pool.sh`.
 
 5. Send the encrypted tx and submit pk and shares using the script in `fairyring/testutil/conditionalenc/send-tx.sh`. The message for the encrypted tx is hardcoded in `fairyring/testutil/conditionalenc/encrypter/main.go`. Also, it requires the `DistributedIBE` to be present in the same directory as fairyring. When running, it asks for the id you want to use for the encryption. The chain by default only checks for the ETH prices. So you can wait for a specific price to be reached and it will be shown in the logs like this ` =======================> {[1ETH1887399056900] } `. The `1ETH1887399056900` can be used as the id for encryption.
+The hardcoded message is the following message converted to []byte:
+```
+cosmWasmPacketData := transfertypes.MsgTransfer{
+		SourcePort: "transfer",
+		SourceChannel: "channel-1",
+		Token: coin,
+		Sender: "fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c",
+		Receiver: "osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9",
+		TimeoutTimestamp: uint64(ctx.BlockTime().UnixNano()+int64(180000*time.Minute)),
+		TimeoutHeight: types1.NewHeight(10000000000,100000000000),
+		Memo: `{"wasm":{"contract":"osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9", "msg":{"swap_with_action":{"swap_msg":{"token_out_min_amount":"10","path":[{"pool_id":"1","token_out_denom":"uosmo"}]},"after_swap_action":{"ibc_transfer":{"receiver":"fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c","channel":"channel-0"}},"local_fallback_address":"osmo12smx2wdlyttvyzvzg54y2vnqwq2qjateuf7thj"}}}}`,
+	}
+```
 
 After the following steps, as it can be seen in the logs, the tx will be decrypted and sent to osmosis. The provided example performs a swap and the result tokens will be sent to fairyring. The new token can be seen throguh running:
 
