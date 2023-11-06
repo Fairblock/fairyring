@@ -102,7 +102,7 @@ Input the same value for `i` as in step 2.
 
 4. Perform the initial transfer, create the pool and the contract by running the script in `fairyring/testutil/conditionalenc/setup-pool.sh`.
 
-5. Send the encrypted tx and submit pk and shares using the script in `fairyring/testutil/conditionalenc/send-tx.sh`. The message for the encrypted tx is hardcoded in `fairyring/testutil/conditionalenc/encrypter/main.go`. Also, it requires the `DistributedIBE` to be present in the same directory as fairyring.
+5. Send the encrypted tx and submit pk and shares using the script in `fairyring/testutil/conditionalenc/send-tx.sh`. The message for the encrypted tx is hardcoded in `fairyring/testutil/conditionalenc/encrypter/main.go`. Also, it requires the `DistributedIBE` to be present in the same directory as fairyring. When running, it asks for the id you want to use for the encryption. The chain by default only checks for the ETH prices. So you can wait for a specific price to be reached and it will be shown in the logs like this ` =======================> {[1ETH1887399056900] } `. The `1ETH1887399056900` can be used as the id for encryption.
 
 After the following steps, as it can be seen in the logs, the tx will be decrypted and sent to osmosis. The provided example performs a swap and the result tokens will be sent to fairyring. The new token can be seen throguh running:
 
