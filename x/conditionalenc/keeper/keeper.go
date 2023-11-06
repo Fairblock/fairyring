@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"fairyring/x/conditionalenc/types"
-
+	ibctransferkeeper "github.com/cosmos/ibc-go/v7/modules/apps/transfer/keeper"
 	"github.com/cometbft/cometbft/libs/log"
 	"github.com/cosmos/cosmos-sdk/codec"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
@@ -15,12 +15,14 @@ import (
 type (
 	Keeper struct {
 		*types.IBCKeeper
+		
 		cdc              codec.BinaryCodec
 		storeKey         storetypes.StoreKey
 		memKey           storetypes.StoreKey
 		paramstore       paramtypes.Subspace
 		connectionKeeper types.ConnectionKeeper
 		bankKeeper       types.BankKeeper
+		TransferKeeper   ibctransferkeeper.Keeper
 	}
 )
 
@@ -34,6 +36,7 @@ func NewKeeper(
 	scopedKeeper types.ScopedKeeper,
 	connectionKeeper types.ConnectionKeeper,
 	bankKeeper types.BankKeeper,
+	transferKeeper ibctransferkeeper.Keeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -54,6 +57,7 @@ func NewKeeper(
 		paramstore:       ps,
 		connectionKeeper: connectionKeeper,
 		bankKeeper:       bankKeeper,
+		TransferKeeper: transferKeeper,
 	}
 }
 

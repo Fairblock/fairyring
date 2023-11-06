@@ -87,3 +87,25 @@ Input the same value for `i` as in step 2.
 5. Perform a swap from `frt` to `uosmo` using the provided script in `fairyring/testutil/swap-test/test-swap.sh`.
 This script will send some `frt` to the Osmosis chain to be able to create a pool. Then deploys the squid contract and creates the pool.
 Finally, it will send a swap packet to the contract and after receiving the output `uosmo` in the format of an ibc transferred token, it will query and show the balance of the user on Fairyring chain which now includes the new swapped token.
+
+## Osmosis Conditional Encryption
+
+In order to test the swap functionality through the conditional encryption using local osmosis chain, follow the below steps:
+
+1. Setup and run the Fairyring chain using the provided script in `fairyring/testutil/conditionalenc/start-fairy.sh`.
+When running this script, it asks for a number `i` to set the chain id as `fairytest-i`.
+
+2. Setup and run a local version of Osmosis chain using the provided script in `fairyring/testutil/conditionalenc/start-osmo.sh`.
+
+3. Start the IBC relayers using the provided script in `fairyring/testutil/conditionalenc/relayer.sh`.
+Input the same value for `i` as in step 2.
+
+4. Perform the initial transfer, create the pool and the contract by running the script in `fairyring/testutil/conditionalenc/setup-pool.sh`.
+
+5. Send the encrypted tx and submit pk and shares using the script in `fairyring/testutil/conditionalenc/send-tx.sh`.
+
+After the following steps, as it can be seen in the logs, the tx will be decrypted and sent to osmosis. The provided example performs a swap and the result tokens will be sent to fairyring. The new token can be seen throguh running:
+
+```bash
+../../fairyringd query bank balances fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c --node tcp://127.0.0.1:26659
+```

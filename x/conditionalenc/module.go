@@ -6,19 +6,33 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	//"time"
+
+	//"time"
+
+	//"strings"
+	_ "time"
+
+	//	"time"
+
+	//"time"
 
 	cosmosmath "cosmossdk.io/math"
 
-	enc "github.com/FairBlock/DistributedIBE/encryption"
-	"github.com/sirupsen/logrus"
-	math_bits "math/bits"
 	"math"
+	math_bits "math/bits"
 	"strconv"
+
+	enc "github.com/FairBlock/DistributedIBE/encryption"
+	//types1 "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
+	"github.com/sirupsen/logrus"
+
 	//"strings"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
-//	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
+
+	//	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	bls "github.com/drand/kyber-bls12381"
 
 	// this line is used by starport scaffolding # 1
@@ -28,6 +42,7 @@ import (
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
+	//"fairyring/testutil/nullify"
 	"fairyring/x/conditionalenc/client/cli"
 	"fairyring/x/conditionalenc/keeper"
 	"fairyring/x/conditionalenc/types"
@@ -38,6 +53,7 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	transfertypes "github.com/cosmos/ibc-go/v7/modules/apps/transfer/types"
 )
 
 var (
@@ -350,56 +366,96 @@ type CosmWasmPacketData struct {
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
 func (am AppModule) BeginBlock(ctx sdk.Context, b abci.RequestBeginBlock) {
 // 	if (b.Header.Height % 50) == 0 {
-// 	//params := am.keeper.GetParams(ctx)
+// params := am.keeper.GetParams(ctx)
 // //	logrus.Info(params)
-// msgData := `{"wasm": {"contract": "osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9", "msg": {"swap_with_action":{"swap_msg":{"token_out_min_amount":"10","path":[{"pool_id":"2","token_out_denom":"uosmo"}]},"after_swap_action":{"ibc_transfer":{"receiver":"fairy1w35qdn0j9jurd6k27v3lagk47wjpdfu6t3z9rl","channel":"channel-0"}},"local_fallback_address":"osmo12smx2wdlyttvyzvzg54y2vnqwq2qjateuf7thj"}}}}`
-// _ = msgData
+//  msgData := `{"wasm": {"contract": "osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9", "msg": {"swap_with_action":{"swap_msg":{"token_out_min_amount":"10","path":[{"pool_id":"1","token_out_denom":"uosmo"}]},"after_swap_action":{"ibc_transfer":{"receiver":"fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c","channel":"channel-0"}},"local_fallback_address":"osmo12smx2wdlyttvyzvzg54y2vnqwq2qjateuf7thj"}}}}`
+//  _ = msgData
+// // msgData := `{"wasm": {"contract": "osmo1zl9ztmwe2wcdvv9std8xn06mdaqaqm789rutmazfh3z869zcax4sv0ctqw", "msg": {"swap_with_action":{"swap_msg":{"token_out_min_amount":"10","path":[{"pool_id":"47","token_out_denom":"uosmo"}]},"after_swap_action":{"ibc_transfer":{"receiver":"fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c","channel":"channel-0"}},"local_fallback_address":"osmo1pw5aj2u5thkgumkpdms0x78y97e6ppfl6vmjpd"}}}}`
+// // params := am.keeper.GetParams(ctx)
 // cosmWasmPacketData := FungibleTokenPacketData{
 // 	Denom: "frt",
 // 	Amount: "130",
-// 	Sender: "fairy1w35qdn0j9jurd6k27v3lagk47wjpdfu6t3z9rl",
+// 	Sender: "fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c",
 // 	Receiver: "osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9",
 // 	Memo: msgData,
-// 	// Contract: "osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9",
-// 	// Msg:             msgData,
 // }
-// // test := CosmWasmPacketData{
-// // 	ContractAddress: "osmo1zl9ztmwe2wcdvv9std8xn06mdaqaqm789rutmazfh3z869zcax4sv0ctqw",
-// // 	Msg:             nil,
-// // }
-// // testMsg,_ := json.Marshal(test) 
-// serializedCosmWasmPacketData, _ := json.Marshal(cosmWasmPacketData)
-// logrus.Info("sending packet.....................................................................................................................", serializedCosmWasmPacketData)
-// 	err := am.keeper.SendSwapTx(ctx,"channel-1",serializedCosmWasmPacketData)
+// cosmWasmPacketData := FungibleTokenPacketData{
+// 	Denom: "frt",
+// 	Amount: "130",
+// 	Sender: "fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c",
+// 	Receiver: "osmo1zl9ztmwe2wcdvv9std8xn06mdaqaqm789rutmazfh3z869zcax4sv0ctqw",
+// 	Memo: msgData,
+// }
+// // // test := CosmWasmPacketData{
+// // // 	ContractAddress: "osmo1zl9ztmwe2wcdvv9std8xn06mdaqaqm789rutmazfh3z869zcax4sv0ctqw",
+// // // 	Msg:             nil,
+// // // }
+// // // testMsg,_ := json.Marshal(test) 
+//  serializedCosmWasmPacketData, _ := json.Marshal(cosmWasmPacketData)
+//   logrus.Info("sending packet1.....................................................................................................................", serializedCosmWasmPacketData)
+// 	err := am.keeper.SendSwapTx(ctx,params.ChannelId,serializedCosmWasmPacketData)
 // 	if err != nil {
 // 		am.keeper.Logger(ctx).Error("Relaying Swap Tx error")
 // 		am.keeper.Logger(ctx).Error(err.Error())
-// 	}}
-// 	if (b.Header.Height % 22) == 0 {
-// 		//params := am.keeper.GetParams(ctx)
-// 	//	logrus.Info(params)
-	
-// 	cosmWasmPacketData := FungibleTokenPacketData{
-// 		Denom: "frt",
-// 		Amount: "200",
-// 		Sender: "fairy1w35qdn0j9jurd6k27v3lagk47wjpdfu6t3z9rl",
-// 		Receiver: "osmo12smx2wdlyttvyzvzg54y2vnqwq2qjateuf7thj",
-		
-// 		// Contract: "osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9",
-// 		// Msg:             msgData,
 // 	}
-// 	// test := CosmWasmPacketData{
-// 	// 	ContractAddress: "osmo1zl9ztmwe2wcdvv9std8xn06mdaqaqm789rutmazfh3z869zcax4sv0ctqw",
-// 	// 	Msg:             nil,
-// 	// }
-// 	// testMsg,_ := json.Marshal(test) 
-// 	serializedCosmWasmPacketData, _ := json.Marshal(cosmWasmPacketData)
-// 	logrus.Info("sending packet.....................................................................................................................", serializedCosmWasmPacketData)
-// 		err := am.keeper.SendSwapTx(ctx,"channel-1",serializedCosmWasmPacketData)
-// 		if err != nil {
-// 			am.keeper.Logger(ctx).Error("Relaying Swap Tx error")
-// 			am.keeper.Logger(ctx).Error(err.Error())
-// 		}}
+	// if (b.Header.Height % 10) == 0 {
+		
+	// 	// params := am.keeper.GetParams(ctx)
+	// 	coin := am.keeper.MinGasPrice(ctx)
+	// 	coin.Amount = sdk.NewIntFromUint64(500)
+
+	// // // s := `{"source_port": "transfer","source_channel": "channel-1","token":{"denom": "frt","amount": "500"},"sender": "fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c","receiver": "osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9","timeout_height":{"revision_number": "10000000000","revision_height": "100000000000"},"timeout_timestamp": "1699052860444761679","memo": '{"wasm": {"contract": "osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9", "msg": {"swap_with_action":{"swap_msg":{"token_out_min_amount":"10","path":[{"pool_id":"1","token_out_denom":"uosmo"}]},"after_swap_action":{"ibc_transfer":{"receiver":"fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c","channel":"channel-0"}},"local_fallback_address":"osmo12smx2wdlyttvyzvzg54y2vnqwq2qjateuf7thj"}}}}'}`
+	// // // var data *transfertypes.MsgTransfer
+	// // // 		err := data.Unmarshal([]byte(s))
+	// // // 		if err != nil {
+	// // // 			am.keeper.Logger(ctx).Error(err.Error())
+	// // // 		}
+	// cosmWasmPacketData := transfertypes.MsgTransfer{
+	// 	SourcePort: "transfer",
+	// 	SourceChannel: "channel-1",
+	// 	Token: coin,
+		
+		
+	// 	Sender: "fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c",
+	// 	Receiver: "osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9",
+	// 	TimeoutTimestamp: uint64(ctx.BlockTime().UnixNano()+int64(200*time.Minute)),
+	// 	TimeoutHeight: types1.NewHeight(10000000000,100000000000),
+	// 	Memo: `{"wasm":{"contract":"osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9", "msg":{"swap_with_action":{"swap_msg":{"token_out_min_amount":"10","path":[{"pool_id":"1","token_out_denom":"uosmo"}]},"after_swap_action":{"ibc_transfer":{"receiver":"fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c","channel":"channel-0"}},"local_fallback_address":"osmo12smx2wdlyttvyzvzg54y2vnqwq2qjateuf7thj"}}}}`,
+	
+	
+	// }
+	//  ser,_ := cosmWasmPacketData.Marshal()
+
+	//  logrus.Info("------------------> new4 ", ser)
+	// numberString := `[10 8 116 114 97 110 115 102 101 114 18 9 99 104 97 110 110 101 108 45 49 26 10 10 3 102 114 116 18 3 53 48 48 34 44 102 97 105 114 121 49 112 54 99 97 53 55 99 117 53 117 56 57 113 122 102 53 56 107 114 120 103 120 97 101 122 112 52 119 109 57 118 117 55 108 117 114 51 99 42 63 111 115 109 111 49 52 104 106 50 116 97 118 113 56 102 112 101 115 100 119 120 120 99 117 52 52 114 116 121 51 104 104 57 48 118 104 117 106 114 118 99 109 115 116 108 52 122 114 51 116 120 109 102 118 119 57 115 113 50 114 57 103 57 50 13 8 128 200 175 160 37 16 128 208 219 195 244 2 56 137 208 166 179 227 140 148 202 23 66 143 3 123 34 119 97 115 109 34 58 123 34 99 111 110 116 114 97 99 116 34 58 34 111 115 109 111 49 52 104 106 50 116 97 118 113 56 102 112 101 115 100 119 120 120 99 117 52 52 114 116 121 51 104 104 57 48 118 104 117 106 114 118 99 109 115 116 108 52 122 114 51 116 120 109 102 118 119 57 115 113 50 114 57 103 57 34 44 32 34 109 115 103 34 58 123 34 115 119 97 112 95 119 105 116 104 95 97 99 116 105 111 110 34 58 123 34 115 119 97 112 95 109 115 103 34 58 123 34 116 111 107 101 110 95 111 117 116 95 109 105 110 95 97 109 111 117 110 116 34 58 34 49 48 34 44 34 112 97 116 104 34 58 91 123 34 112 111 111 108 95 105 100 34 58 34 49 34 44 34 116 111 107 101 110 95 111 117 116 95 100 101 110 111 109 34 58 34 117 111 115 109 111 34 125 93 125 44 34 97 102 116 101 114 95 115 119 97 112 95 97 99 116 105 111 110 34 58 123 34 105 98 99 95 116 114 97 110 115 102 101 114 34 58 123 34 114 101 99 101 105 118 101 114 34 58 34 102 97 105 114 121 49 112 54 99 97 53 55 99 117 53 117 56 57 113 122 102 53 56 107 114 120 103 120 97 101 122 112 52 119 109 57 118 117 55 108 117 114 51 99 34 44 34 99 104 97 110 110 101 108 34 58 34 99 104 97 110 110 101 108 45 48 34 125 125 44 34 108 111 99 97 108 95 102 97 108 108 98 97 99 107 95 97 100 100 114 101 115 115 34 58 34 111 115 109 111 49 50 115 109 120 50 119 100 108 121 116 116 118 121 122 118 122 103 53 52 121 50 118 110 113 119 113 50 113 106 97 116 101 117 102 55 116 104 106 34 125 125 125 125]`
+	// // logrus.Info("------------------> new ",ser2)
+	// numberString = strings.Trim(numberString, "[]") // Remove the square brackets
+	// numberStrings := strings.Fields(numberString)   // Split the string by space into a slice of strings
+
+	// // Convert the slice of strings to a slice of bytes
+	// byteSlice := make([]byte, len(numberStrings))
+	// for i, s := range numberStrings {
+	// 	n, err := strconv.Atoi(s)
+	// 	if err != nil {
+	// 		panic(err)
+	// 	}
+	// 	byteSlice[i] = byte(n)
+	// }
+	// _ = data.Unmarshal(byteSlice)
+	//logrus.Info("------------------> new2 ",err)
+	// test := CosmWasmPacketData{
+	// 	ContractAddress: "osmo1zl9ztmwe2wcdvv9std8xn06mdaqaqm789rutmazfh3z869zcax4sv0ctqw",
+	// 	Msg:             nil,
+	// }
+	// testMsg,_ := json.Marshal(test) 
+	// serializedCosmWasmPacketData, _ := json.Marshal(cosmWasmPacketData)
+	// logrus.Info("sending packet.....................................................................................................................", string(serializedCosmWasmPacketData))
+	// _, err := am.keeper.TransferKeeper.Transfer(ctx,&cosmWasmPacketData)
+	// // err := am.keeper.SendSwapTx(ctx,params.ChannelId,serializedCosmWasmPacketData)
+	// 	if err != nil {
+	// 		am.keeper.Logger(ctx).Error("Relaying Swap Tx error")
+	// 		am.keeper.Logger(ctx).Error(err.Error())
+	// 	}}
 	waitingList := am.pricefeedKeeper.GetList(ctx)
 	
 	
@@ -504,193 +560,20 @@ func (am AppModule) BeginBlock(ctx sdk.Context, b abci.RequestBeginBlock) {
 				continue
 			}
 
-			am.keeper.Logger(ctx).Info(fmt.Sprintf("Decrypt TX Successfully: %s", decryptedTx.String()))
-			params := am.keeper.GetParams(ctx)
-			err = am.keeper.SendSwapTx(ctx,params.ChannelId,decryptedTx.Bytes())
+			am.keeper.Logger(ctx).Info(fmt.Sprintf("Decrypt TX Successfully: %s", decryptedTx.Bytes()))
+			// params := am.keeper.GetParams(ctx)
+			var cosmWasmPacketData transfertypes.MsgTransfer
+			err = cosmWasmPacketData.Unmarshal(decryptedTx.Bytes())
+			if err != nil {
+				am.keeper.Logger(ctx).Error(err.Error())
+			}
+			_, err = am.keeper.TransferKeeper.Transfer(ctx,&cosmWasmPacketData)
+			// err = am.keeper.SendSwapTx(ctx,params.ChannelId,decryptedTx.Bytes())
 			if err != nil {
 				am.keeper.Logger(ctx).Error("Relaying Swap Tx error")
 				am.keeper.Logger(ctx).Error(err.Error())
 			}
-			// txDecoderTx, err := am.txConfig.TxDecoder()(decryptedTx.Bytes())
-
-			// if err != nil {
-			// 	am.keeper.Logger(ctx).Error("Decoding Tx error in BeginBlock... Trying JSON Decoder")
-			// 	am.keeper.Logger(ctx).Error(err.Error())
-
-			// 	txDecoderTx, err = am.txConfig.TxJSONDecoder()(decryptedTx.Bytes())
-			// 	if err != nil {
-			// 		am.keeper.Logger(ctx).Error("JSON Decoding Tx error in BeginBlock")
-			// 		am.keeper.Logger(ctx).Error(err.Error())
-			// 		ctx.EventManager().EmitEvent(
-			// 			sdk.NewEvent(types.EncryptedTxRevertedEventType,
-			// 				sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
-			// 				sdk.NewAttribute(types.EncryptedTxRevertedEventCondition, eachTx.TargetCondition),
-			// 				sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Unable to decode tx data to Cosmos Tx"),
-			// 				sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-			// 			),
-			// 		)
-
-			// 		am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error trying to json decoding tx: %s", err.Error()), startConsumedGas)
-			// 		continue
-			// 	} else {
-			// 		am.keeper.Logger(ctx).Error("TX Successfully Decode with JSON Decoder")
-			// 	}
-			// }
-
-			// wrappedTx, err := am.txConfig.WrapTxBuilder(txDecoderTx)
-			// if err != nil {
-			// 	am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error when trying to wrap decoded tx to tx builder: %s", err.Error()), startConsumedGas)
-			// 	continue
-			// }
-
-			// sigs, err := wrappedTx.GetTx().GetSignaturesV2()
-			// if err != nil {
-			// 	am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error getting decoded tx signatures: %s", err.Error()), startConsumedGas)
-			// 	continue
-			// }
-
-			// if len(sigs) != 1 {
-			// 	am.processFailedEncryptedTx(ctx, eachTx, "number of provided signatures is more than one", startConsumedGas)
-			// 	continue
-			// }
-
-			// txMsgs := wrappedTx.GetTx().GetMsgs()
-
-			// if len(sigs) != len(txMsgs) {
-			// 	am.processFailedEncryptedTx(ctx, eachTx, "number of provided signatures is not equals to number of tx messages", startConsumedGas)
-			// 	continue
-			// }
-
-			// if !sigs[0].PubKey.Equals(creatorAccount.GetPubKey()) {
-			// 	am.processFailedEncryptedTx(ctx, eachTx, "tx signer is not tx sender", startConsumedGas)
-			// 	continue
-			// }
-
-			// expectingNonce := newExecutedNonce - 1
-
-			// if sigs[0].Sequence < expectingNonce {
-			// 	am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("Incorrect Nonce sequence, Provided: %d, Expecting: %d", sigs[0].Sequence, expectingNonce), startConsumedGas)
-			// 	continue
-			// }
-
-			// if sigs[0].Sequence > expectingNonce {
-			// 	am.keeper.SetConditionalencNonce(ctx, types.ConditionalencNonce{
-			// 		Address: eachTx.Creator,
-			// 		Nonce:   sigs[0].Sequence,
-			// 	})
-			// }
-
-			// verifiableTx := wrappedTx.GetTx().(authsigning.SigVerifiableTx)
-
-			// signingData := authsigning.SignerData{
-			// 	Address:       creatorAddr.String(),
-			// 	ChainID:       ctx.ChainID(),
-			// 	AccountNumber: creatorAccount.GetAccountNumber(),
-			// 	Sequence:      sigs[0].Sequence,
-			// 	PubKey:        creatorAccount.GetPubKey(),
-			// }
-
-			// err = authsigning.VerifySignature(
-			// 	creatorAccount.GetPubKey(),
-			// 	signingData,
-			// 	sigs[0].Data,
-			// 	am.txConfig.SignModeHandler(),
-			// 	verifiableTx,
-			// )
-
-			// if err != nil {
-			// 	am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error when verifying signature: invalid signature: %s", err.Error()), startConsumedGas)
-			// 	continue
-			// }
-
-			// decryptionConsumed := ctx.GasMeter().GasConsumed() - startConsumedGas
-			// simCheckGas, _, err := am.simCheck(am.txConfig.TxEncoder(), txDecoderTx)
-			// // We are using SimCheck() to only estimate gas for the underlying transaction
-			// // Since user is supposed to sign the underlying transaction with Pep Nonce,
-			// // is expected that we gets 'account sequence mismatch' error
-			// // however, the underlying tx is not expected to get other errors
-			// // such as insufficient fee, out of gas etc...
-			// if err != nil && !strings.Contains(err.Error(), "account sequence mismatch") {
-			// 	am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error while performing check tx: %s", err.Error()), startConsumedGas)
-			// 	continue
-			// }
-
-			// txFee := wrappedTx.GetTx().GetFee()
-
-			// // If it passes the CheckTx but Tx Fee is empty,
-			// // that means the minimum-gas-prices for the validator is 0
-			// // therefore, we are not charging for the tx execution
-			// if !txFee.Empty() {
-			// 	gasProvided := cosmosmath.NewIntFromUint64(wrappedTx.GetTx().GetGas())
-			// 	// Underlying tx consumed gas + gas consumed on decrypting & decoding tx
-			// 	am.keeper.Logger(ctx).Info(fmt.Sprintf("Underlying tx consumed: %d, decryption consumed: %d", simCheckGas.GasUsed, decryptionConsumed))
-			// 	gasUsedInBig := cosmosmath.NewIntFromUint64(simCheckGas.GasUsed).Add(cosmosmath.NewIntFromUint64(decryptionConsumed))
-			// 	newCoins := make([]sdk.Coin, len(txFee))
-			// 	refundDenom := txFee[0].Denom
-			// 	refundAmount := cosmosmath.NewIntFromUint64(0)
-
-			// 	usedGasFee := sdk.NewCoin(
-			// 		txFee[0].Denom,
-			// 		// Tx Fee Amount Divide Provide Gas => provided gas price
-			// 		// Provided Gas Price * Gas Used => Amount to deduct as gas fee
-			// 		txFee[0].Amount.Quo(gasProvided).Mul(gasUsedInBig),
-			// 	)
-
-			// 	if usedGasFee.Denom != eachTx.ChargedGas.Denom {
-			// 		am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("underlying tx gas denom does not match charged gas denom, got: %s, expect: %s", usedGasFee.Denom, eachTx.ChargedGas.Denom), startConsumedGas)
-			// 		continue
-			// 	}
-
-			// 	if usedGasFee.Amount.GT(eachTx.ChargedGas.Amount) {
-			// 		usedGasFee.Amount = usedGasFee.Amount.Sub(eachTx.ChargedGas.Amount)
-			// 	} else { // less than or equals to
-			// 		refundAmount = eachTx.ChargedGas.Amount.Sub(usedGasFee.Amount)
-			// 		usedGasFee.Amount = cosmosmath.NewIntFromUint64(0)
-			// 	}
-
-			// 	am.keeper.Logger(ctx).Info(fmt.Sprintf("Deduct fee amount: %v | Refund amount: %v", newCoins, refundAmount))
-
-			// 	if refundAmount.IsZero() {
-			// 		deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, sdk.NewCoins(usedGasFee))
-			// 		if deductFeeErr != nil {
-			// 			am.keeper.Logger(ctx).Error("Deduct fee Err")
-			// 			am.keeper.Logger(ctx).Error(deductFeeErr.Error())
-			// 		} else {
-			// 			am.keeper.Logger(ctx).Info("Fee deducted without error")
-			// 		}
-			// 	} else {
-			// 		refundFeeErr := am.bankKeeper.SendCoinsFromModuleToAccount(
-			// 			ctx,
-			// 			types.ModuleName,
-			// 			creatorAddr,
-			// 			sdk.NewCoins(sdk.NewCoin(refundDenom, refundAmount)),
-			// 		)
-			// 		if refundFeeErr != nil {
-			// 			am.keeper.Logger(ctx).Error("Refund fee Err")
-			// 			am.keeper.Logger(ctx).Error(refundFeeErr.Error())
-			// 		} else {
-			// 			am.keeper.Logger(ctx).Info("Fee refunded without error")
-			// 		}
-			// 	}
-			// }
-
-			// handler := am.msgServiceRouter.Handler(txMsgs[0])
-			// _, err = handler(ctx, txMsgs[0])
-			// if err != nil {
-			// 	am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error when handling tx message: %s", err.Error()), startConsumedGas)
-			// 	continue
-			// }
-
-			// am.keeper.Logger(ctx).Info("! Encrypted Tx Decrypted & Decoded & Executed successfully !")
-
-			// ctx.EventManager().EmitEvent(
-			// 	sdk.NewEvent(types.EncryptedTxExecutedEventType,
-			// 		sdk.NewAttribute(types.EncryptedTxExecutedEventCreator, eachTx.Creator),
-			// 		sdk.NewAttribute(types.EncryptedTxExecutedEventCondition, eachTx.TargetCondition),
-			// 		sdk.NewAttribute(types.EncryptedTxExecutedEventData, eachTx.Data),
-			// 		sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
-			// 	),
-			// )
+		
 		}
 
 		am.keeper.RemoveAllEncryptedTxFromCondition(ctx, item)

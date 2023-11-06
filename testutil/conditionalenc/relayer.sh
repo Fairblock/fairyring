@@ -59,72 +59,26 @@ buckets = 10
 
 
 
-# [[chains]]
-# id = "source-chain"
-# rpc_addr = "http://localhost:26657"
-# grpc_addr = "http://localhost:9090"
-# event_source = { url = "ws://localhost:26657/websocket",  batch_delay = '500ms' , mode = "push" }
-# rpc_timeout = '10s'
-# trusted_node = false
-# account_prefix = 'wasm'
-# key_name = 'v6'
-# store_prefix = 'ibc'
-# default_gas = 1000000
-# max_gas = 4000000
-# gas_price = { price = 0.001, denom = 'stake' }
-# gas_multiplier = 1.3
-# max_msg_num = 30
-# max_tx_size = 2097152
-# clock_drift = '5s'
-# max_block_time = '30s'
-# trusting_period = '14days'
-# trust_threshold = { numerator = '2', denominator = '3' }
-# address_type = { derivation = 'cosmos' }
-
-
-# [[chains]]
-# id = "destination-chain"
-# rpc_addr = "http://localhost:26659"
-# grpc_addr = "http://localhost:9093"
-# event_source = { url = "ws://localhost:26659/websocket",  batch_delay = '500ms' , mode = "push" }
-# rpc_timeout = '10s'
-# trusted_node = false
-# account_prefix = 'wasm'
-# key_name = 'v6'
-# store_prefix = 'ibc'
-# default_gas = 1000000
-# max_gas = 4000000
-# gas_price = { price = 0.001, denom = 'stake' }
-# gas_multiplier = 1.3
-# max_msg_num = 30
-# max_tx_size = 2097152
-# clock_drift = '5s'
-# max_block_time = '30s'
-# trusting_period = '14days'
-# trust_threshold = { numerator = '2', denominator = '3' }
-# address_type = { derivation = 'cosmos' }
-
-
-# [[chains]]
-# id = 'band-laozi-testnet6'
-# rpc_addr = 'https://rpc.laozi-testnet6.bandchain.org:443'
-# grpc_addr = 'https://laozi-testnet6.bandchain.org:443'
-# event_source = { url = "wss://rpc.laozi-testnet6.bandchain.org:443/websocket",  batch_delay = '50ms' , mode = "push" }
-# rpc_timeout = '50s'
-# account_prefix = 'band'
-# key_name = 'testkey'
-# store_prefix = 'ibc'
-# default_gas = 1000000
-# max_gas = 100000000
-# gas_price = { price = 0.0025, denom = 'uband' }
-# gas_multiplier = 3
-# max_msg_num = 30
-# max_tx_size = 2097152
-# clock_drift = '5s'
-# max_block_time = '10s'
-# trusting_period = '14days'
-# trust_threshold = { numerator = '1', denominator = '3' }
-# address_type = { derivation = 'cosmos' }
+[[chains]]
+id = 'band-laozi-testnet6'
+rpc_addr = 'https://rpc.laozi-testnet6.bandchain.org:443'
+grpc_addr = 'https://laozi-testnet6.bandchain.org:443'
+event_source = { url = "wss://rpc.laozi-testnet6.bandchain.org:443/websocket",  batch_delay = '50ms' , mode = "push" }
+rpc_timeout = '50s'
+account_prefix = 'band'
+key_name = 'testkey'
+store_prefix = 'ibc'
+default_gas = 1000000
+max_gas = 100000000
+gas_price = { price = 0.0025, denom = 'uband' }
+gas_multiplier = 3
+max_msg_num = 30
+max_tx_size = 2097152
+clock_drift = '5s'
+max_block_time = '10s'
+trusting_period = '14days'
+trust_threshold = { numerator = '1', denominator = '3' }
+address_type = { derivation = 'cosmos' }
 
 [[chains]]
 id = 'fairytest-${i}'
@@ -192,6 +146,8 @@ EOF
 
 hermes keys add --chain "fairytest-${i}" --mnemonic-file "./mnemonic-fairy.txt"
 
+hermes create channel --a-chain band-laozi-testnet6 --b-chain "fairytest-${i}" --a-port oracle --b-port pricefeed --order unordered --channel-version bandchain-1 --new-client-connection 
 hermes create channel --a-chain localosmosis --b-chain "fairytest-${i}" --a-port transfer --b-port transfer --order unordered --new-client-connection 
+#hermes create channel --a-chain localosmosis --b-chain "fairytest-${i}" --a-port transfer --b-port transfer --order unordered --new-client-connection 
 
 hermes start

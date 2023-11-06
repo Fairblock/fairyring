@@ -206,7 +206,7 @@ func (k Keeper) SendSwapTx(
 	sourceChannel string,
 	swapPacket []byte,
 ) error {
-	portID := k.GetPort(ctx)
+	portID := "transfer"
 	channel, found := k.ChannelKeeper.GetChannel(ctx, portID, sourceChannel)
 	if !found {
 		return sdkerrors.Wrapf(

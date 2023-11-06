@@ -623,6 +623,7 @@ func New(
 		scopedConditionalencKeeper,
 		app.IBCKeeper.ConnectionKeeper,
 		app.BankKeeper,
+		app.TransferKeeper,
 	)
 	conditionalencModule := conditionalencmodule.NewAppModule(
 		appCodec,

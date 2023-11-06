@@ -7,6 +7,7 @@ import (
 
 	distIBE "github.com/FairBlock/DistributedIBE"
 	//"github.com/sirupsen/logrus"
+	//"github.com/sirupsen/logrus"
 
 	//clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 	"strconv"
@@ -31,7 +32,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 
 	// check if validator is registered
 	validatorInfo, found := k.GetValidatorSet(ctx, msg.Creator)
-
+//logrus.Info("****************************************************************************************************************88", found)
 	if !found {
 		authorizedAddrInfo, found := k.GetAuthorizedAddress(ctx, msg.Creator)
 		if !found || !authorizedAddrInfo.IsAuthorized {
@@ -136,7 +137,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 		sdk.NewInt(types.KeyAggregationThresholdNumerator)).Quo(
 		sdk.NewDecFromInt(sdk.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
 		int64(len(validatorList))).Ceil().TruncateInt64()
-
+		//logrus.Info("****************************************************************************************************************", expectedThreshold,len(stateGeneralKeyShares))
 	// Emit KeyShare Submitted Event
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.SendGeneralKeyshareEventType,
@@ -152,7 +153,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 	
 	// If there is not enough keyshares to aggregate OR there is already an aggregated key
 	// Only continue the code if there is enough keyshare to aggregate & no aggregated key for current height
-	if int64(len(stateGeneralKeyShares)) < expectedThreshold || found {
+	if int64(len(stateGeneralKeyShares)) < expectedThreshold {
 		return &types.MsgCreateGeneralKeyShareResponse{
 			Creator:             msg.Creator,
 			IdType:              msg.IdType,
@@ -163,7 +164,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 			Success:             true,
 		}, nil
 	}
-	
+	//logrus.Info("****************************************************************************************************************ok")
 	// Get the active public key for aggregating
 	activePubKey, found := k.pepKeeper.GetActivePubKey(ctx)
 
