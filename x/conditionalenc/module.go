@@ -370,7 +370,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, b abci.RequestBeginBlock) {
 // //	logrus.Info(params)
 //  msgData := `{"wasm": {"contract": "osmo14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sq2r9g9", "msg": {"swap_with_action":{"swap_msg":{"token_out_min_amount":"10","path":[{"pool_id":"1","token_out_denom":"uosmo"}]},"after_swap_action":{"ibc_transfer":{"receiver":"fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c","channel":"channel-0"}},"local_fallback_address":"osmo12smx2wdlyttvyzvzg54y2vnqwq2qjateuf7thj"}}}}`
 //  _ = msgData
-// // msgData := `{"wasm": {"contract": "osmo1zl9ztmwe2wcdvv9std8xn06mdaqaqm789rutmazfh3z869zcax4sv0ctqw", "msg": {"swap_with_action":{"swap_msg":{"token_out_min_amount":"10","path":[{"pool_id":"47","token_out_denom":"uosmo"}]},"after_swap_action":{"ibc_transfer":{"receiver":"fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c","channel":"channel-0"}},"local_fallback_address":"osmo1pw5aj2u5thkgumkpdms0x78y97e6ppfl6vmjpd"}}}}`
+//msgData := `{"wasm": {"contract": "osmo1zl9ztmwe2wcdvv9std8xn06mdaqaqm789rutmazfh3z869zcax4sv0ctqw", "msg": {"swap_with_action":{"swap_msg":{"token_out_min_amount":"10","path":[{"pool_id":"47","token_out_denom":"uosmo"}]},"after_swap_action":{"ibc_transfer":{"receiver":"fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c","channel":"channel-0"}},"local_fallback_address":"osmo1pw5aj2u5thkgumkpdms0x78y97e6ppfl6vmjpd"}}}}`
 // // params := am.keeper.GetParams(ctx)
 // cosmWasmPacketData := FungibleTokenPacketData{
 // 	Denom: "frt",

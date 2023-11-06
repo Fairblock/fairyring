@@ -6,7 +6,8 @@ release/
 .DS_Store
 build/
 DistributedIBE/
-encrypter
+# encrypter
 ShareGenerator
 data/
 fairyringd
+*.json

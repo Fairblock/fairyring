@@ -1,6 +1,6 @@
 read -p "Enter the value for id: " i
 
-enc=$($HOME/job/encrypter/encrypter ${i} a6798cf7364ba5e8337584394bf9c6d4970a174603aab18f06ed80ade5f65194e51522170814d2c38b68c2703bfb7ca0 "hi")
+enc=$(./encrypter/encrypter ${i} a6798cf7364ba5e8337584394bf9c6d4970a174603aab18f06ed80ade5f65194e51522170814d2c38b68c2703bfb7ca0 "hi")
 # '{
 #   "source_port": "transfer",
 #   "source_channel": "channel-1",
