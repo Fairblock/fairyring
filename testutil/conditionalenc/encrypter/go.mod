@@ -131,4 +131,4 @@ require (
 	golang.org/x/sys v0.11.0 // indirect
 )
 
-replace github.com/FairBlock/DistributedIBE => ../DistributedIBE
+replace github.com/FairBlock/DistributedIBE => ../../../../DistributedIBE
