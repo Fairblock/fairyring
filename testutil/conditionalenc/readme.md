@@ -66,7 +66,7 @@ Another detail is on the quantity of these orders. An attacker may be able to fl
 Perhaps an expiry mechanism can be added, so that really old orders are flushed and removed from the state.
 Alternatively, some sort of collateral/fee can be used to address spam issue.
 
-## Osmosis Swap Test
+## Osmosis Swap Test (Local Osmosis)
 
 In order to test the swap functionality using the squid contract on Osmosis chain, follow the below steps:
 
@@ -87,6 +87,32 @@ Input the same value for `i` as in step 2.
 5. Perform a swap from `frt` to `uosmo` using the provided script in `fairyring/testutil/swap-test/test-swap.sh`.
 This script will send some `frt` to the Osmosis chain to be able to create a pool. Then deploys the squid contract and creates the pool.
 Finally, it will send a swap packet to the contract and after receiving the output `uosmo` in the format of an ibc transferred token, it will query and show the balance of the user on Fairyring chain which now includes the new swapped token.
+
+## Osmosis Swap Test (Osmosis Testnet)
+In order to perform the swap test through the squid contract on Osmosis testnet, follow the below instructions:
+
+1. Setup and run the Fairyring chain as previously explained
+
+2. Create a client node through running the bellow command:
+```bash
+curl -sL https://get.osmosis.zone/install > i.py && python3 i.py
+```
+Next, create a new key:
+```bash
+osmosisd keys add wallet
+```
+Copy the mnemonic into the `testutil/osmosis-testnet/mnemonic-osmosis.txt`. 
+Using the osmosis official faucet, deposit osmos to the generated address.
+
+3. Start the IBC relayer using the provided script in `fairyring/testutil/osmosis-testnet/relayer.sh`.
+
+4. In order to use one of the current pools on osmosis tesnet, transfer some osmos to the fairyring:
+```bash
+osmosisd tx ibc-transfer transfer transfer ${channel-id} fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c 10000uosmo --from wallet --fees 416uosmo --gas auto --gas-adjustment 1.5 -b block
+```
+
+5. Replace the `channel` parameter in the MEMO in `testutil/osmosis-testnet/test-swap.sh` script with the current channel id on the osmosis side, and the ibc bridged token sent in the transfer command with the denom of the briged osmo on fairyring.
+Then, run the script to perform the swap. The result of the swap can be checked through noticing the new ibc bridged token on the user's balance on fairyring.
 
 ## Osmosis Conditional Encryption
 

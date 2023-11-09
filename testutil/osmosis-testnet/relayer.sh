@@ -145,7 +145,7 @@ address_type = { derivation = 'cosmos' }
 EOF
 
 hermes keys add --chain "fairytest-${i}" --mnemonic-file "./mnemonic-fairy.txt"
-# hermes keys add --chain osmo-test-5 --mnemonic-file "./mnemonic-osmosis.txt"
+hermes keys add --chain osmo-test-5 --mnemonic-file "./mnemonic-osmosis.txt"
 # hermes create channel --a-chain band-laozi-testnet6 --b-chain "fairytest-${i}" --a-port oracle --b-port pricefeed --order unordered --channel-version bandchain-1 --new-client-connection 
 hermes create channel --a-chain osmo-test-5 --b-chain "fairytest-${i}" --a-port transfer --b-port transfer --order unordered --new-client-connection 
 #hermes create channel --a-chain localosmosis --b-chain "fairytest-${i}" --a-port transfer --b-port transfer --order unordered --new-client-connection 
