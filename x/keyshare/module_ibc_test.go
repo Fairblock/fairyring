@@ -93,6 +93,13 @@ func (testSuit *KeeperTestSuite) TestOnRecvPacket() {
 
 	fmt.Println(sequence)
 
+	var recvPkt = types.KeysharePacketData_RequestAggrKeysharePacket{
+		RequestAggrKeysharePacket: &reqKeysharePacket,
+	}
+	recvPktData := make([]byte, recvPkt.Size())
+
+	recvPkt.MarshalTo(recvPktData)
+
 	// receive on endpointA
 	var packet1 = channeltypes.Packet{
 		Sequence:           sequence,
@@ -100,11 +107,10 @@ func (testSuit *KeeperTestSuite) TestOnRecvPacket() {
 		SourceChannel:      "channel-0",
 		DestinationPort:    "keyshare",
 		DestinationChannel: "channel-0",
-		Data:               packet1Data,
+		Data:               recvPktData,
 		TimeoutHeight:      timeoutHeight1,
 		TimeoutTimestamp:   uint64(timeoutTimestamp1),
 	}
-	path.EndpointA.RecvPacket(packet1)
-
-	//path.RelayPacket()
+	err = path.EndpointA.RecvPacket(packet1)
+	testSuit.Require().Equal(err, nil)
 }

@@ -37,6 +37,8 @@ func (im IBCModule) OnChanOpenInit(
 	version string,
 ) (string, error) {
 
+	fmt.Println("\n\nOnChanOpenInit\n\n")
+
 	// Require portID is the portID module is bound to
 	boundPort := im.keeper.GetPort(ctx)
 	if boundPort != portID {
@@ -66,6 +68,8 @@ func (im IBCModule) OnChanOpenTry(
 	counterparty channeltypes.Counterparty,
 	counterpartyVersion string,
 ) (string, error) {
+
+	fmt.Println("\n\nOnChanOpenTry\n\n")
 
 	// Require portID is the portID module is bound to
 	boundPort := im.keeper.GetPort(ctx)
@@ -99,6 +103,8 @@ func (im IBCModule) OnChanOpenAck(
 	_,
 	counterpartyVersion string,
 ) error {
+	fmt.Println("\n\nOnChanOpenAck\n\n")
+
 	if counterpartyVersion != types.Version {
 		return sdkerrors.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: %s, expected %s", counterpartyVersion, types.Version)
 	}
@@ -111,6 +117,8 @@ func (im IBCModule) OnChanOpenConfirm(
 	portID,
 	channelID string,
 ) error {
+	fmt.Println("\n\nOnChanOpenConfirm\n\n")
+
 	// im.keeper.SetChannel(ctx, channelID)
 	return nil
 }
@@ -140,10 +148,13 @@ func (im IBCModule) OnRecvPacket(
 	modulePacket channeltypes.Packet,
 	relayer sdk.AccAddress,
 ) ibcexported.Acknowledgement {
+	fmt.Println("\n\nOnRecvPacket\n\n")
+
 	var ack channeltypes.Acknowledgement
 
 	var modulePacketData types.KeysharePacketData
 	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
+		fmt.Println("Unmarshalling failed: ", err)
 		return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
 	}
 
