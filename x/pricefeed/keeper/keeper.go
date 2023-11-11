@@ -156,6 +156,18 @@ func (k Keeper) UpdateRepeatedPrice(ctx sdk.Context, price types.Price) uint64 {
 	return 1
 
 }
+func (k Keeper) GetRepeatedPrice(ctx sdk.Context, price types.Price) uint64 {
+	thisPrice, f := k.GetPrice(ctx, price.Symbol+strconv.Itoa(int(price.Price)))
+	if f {
+		price.Nonce = thisPrice.Nonce + 1
+		
+		return price.Nonce
+	}
+	price.Nonce = 1
+
+	return 1
+
+}
 func (k Keeper) UpdatePrice(ctx sdk.Context, price types.Price) (bool, int64, int64) {
 	old, found := k.GetPrice(ctx, price.Symbol)
 

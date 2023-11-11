@@ -12,7 +12,7 @@ import (
 
 func CmdListConditionalencNonce() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "list-pep-nonce",
+		Use:   "list-conditionalenc-nonce",
 		Short: "list all ConditionalencNonce of all addresses",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(cmd)

@@ -27,7 +27,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdQuerySymbolRequest())
 	cmd.AddCommand(CmdQuerySymbolRequests())
 	cmd.AddCommand(CmdQueryPrice())
-
+	cmd.AddCommand(CmdCurrentNonce())
 	return cmd
 }
 

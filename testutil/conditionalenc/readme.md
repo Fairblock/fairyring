@@ -78,6 +78,7 @@ git clone git@github.com:osmosis-labs/osmosis.git
 
 2. Setup and run the Fairyring chain using the provided script in `fairyring/testutil/swap-test/start-fairy.sh`.
 When running this script, it asks for a number `i` to set the chain id as `fairytest-i`.
+Note that the chain requires the `tendermint-v0.34.27-terra.rc.1` to be placed at the same location as the fairyring to be buildable.
 
 3. Setup and run a local version of Osmosis chain using the provided script in `fairyring/testutil/swap-test/start-osmo.sh`.
 
