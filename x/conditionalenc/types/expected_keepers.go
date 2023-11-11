@@ -35,6 +35,7 @@ type ConnectionKeeper interface {
 }
 
 type PricefeedKeeper interface {
+	GetRepeatedPrice(ctx sdk.Context, price pricefeedtypes.Price) uint64 
 	GetList(ctx sdk.Context) pricefeedtypes.WaitingList
 	RemoveFromList(ctx sdk.Context, item string)
 }
