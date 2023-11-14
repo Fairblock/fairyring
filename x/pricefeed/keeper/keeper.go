@@ -480,7 +480,7 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 				}
 				if previous != ""{
 				prev, _ = extractNumber(previous,r.Symbol)}
-				//logrus.Info("ok---------------------------------------------------------------------")
+				logrus.Info("ok---------------------------------------------------------------------:", prev, new)
 				waitingList := []string{}
 				 if prev < int(new) {
 				for i := int64(prev) + int64(step); i <= new; i += int64(step) {
@@ -511,8 +511,9 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 						waitingList = append(waitingList, strconv.FormatUint(nonce, 10)+r.Symbol+strconv.Itoa(int(i)))
 					}
 				}
+				if len(waitingList) > 0 {
 				k.AppendListToList(ctx, waitingList, r.Symbol)
-				k.AddLatestCondition(ctx,waitingList[len(waitingList)-1],r.Symbol)
+				k.AddLatestCondition(ctx,waitingList[len(waitingList)-1],r.Symbol)}
 			}
 		//	logrus.Info("sure---------------------------------------------------------------------")
 		}

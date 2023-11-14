@@ -2,6 +2,7 @@ package types
 
 import (
 	pricefeedtypes "fairyring/x/pricefeed/keeper"
+	pt "fairyring/x/pricefeed/types"
 	sdkerrors "cosmossdk.io/errors"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -35,7 +36,7 @@ type ConnectionKeeper interface {
 }
 
 type PricefeedKeeper interface {
-	GetRepeatedPrice(ctx sdk.Context, price pricefeedtypes.Price) uint64 
+	GetRepeatedPrice(ctx sdk.Context, price pt.Price) uint64 
 	GetList(ctx sdk.Context) pricefeedtypes.WaitingList
 	RemoveFromList(ctx sdk.Context, item string)
 }

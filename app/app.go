@@ -624,6 +624,8 @@ func New(
 		app.IBCKeeper.ConnectionKeeper,
 		app.BankKeeper,
 		app.TransferKeeper,
+		app.PricefeedKeeper,
+
 	)
 	conditionalencModule := conditionalencmodule.NewAppModule(
 		appCodec,
