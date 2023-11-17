@@ -22,6 +22,7 @@ go build ./cmd/fairyringd
 # Set the chain ID in the configuration
 ./fairyringd config chain-id "fairytest-${i}"
 
+echo shrug make inmate anchor acid clock morning stage fiction build chef copy often inherit wonder pen boss join joke flock push morning chapter fever | ./fairyringd keys add star --recover
 # Add a genesis account
 ./fairyringd add-genesis-account fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c 5000000000000frt,5000000000000stake 
 
@@ -37,7 +38,7 @@ go build ./cmd/fairyringd
 GENESIS_FILE_PATH="$HOME/.fairyring/config/genesis.json"
 
 # Use jq to update "symbol_requests" in the genesis.json file
-jq '.app_state.pricefeed.symbol_requests = [{"symbol": "ETH", "oracle_script_id": 396, "block_interval": 100, "price_step": 10000000000000}]' $GENESIS_FILE_PATH > temp.json
+jq '.app_state.pricefeed.symbol_requests = [{"symbol": "OSMO", "oracle_script_id": 396, "block_interval": 1, "price_step": 100}]' $GENESIS_FILE_PATH > temp.json
 jq '.app_state.keyshare.params.trusted_addresses = ["fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c"]' temp.json > temp2.json
 
 jq '.app_state.keyshare.validatorSetList = [{"validator":"fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c", "index": "fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c", "isActive":true}]' temp2.json > temp3.json

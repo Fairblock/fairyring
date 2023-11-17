@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"sync"
 	"unicode"
 
 	//"unicode"
@@ -40,6 +41,7 @@ type Keeper struct {
 	channelKeeper types.ChannelKeeper
 	portKeeper    types.PortKeeper
 	scopedKeeper  capabilitykeeper.ScopedKeeper
+	mu sync.Mutex
 }
 
 func NewKeeper(
@@ -454,8 +456,12 @@ func extractNumber(s, symbol string) (int, error) {
 // StoreOracleResponsePacket is a function that receives an OracleResponsePacketData from BandChain.
 func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleResponsePacketData) error {
 	// Decode the result from the response packet.
+	k.mu.Lock()
+
+
 	result, err := bandtypes.DecodeResult(res.Result)
 	if err != nil {
+		k.mu.Unlock()
 		return err
 	}
 //	logrus.Info("enemy---------------------------------------------------------------------")
@@ -519,7 +525,7 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 		}
 		// TODO: allow to write logic to handle failed symbol now just ignore and skip update
 	}
-
+	k.mu.Unlock()
 	return nil
 }
 
