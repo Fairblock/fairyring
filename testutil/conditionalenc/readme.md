@@ -152,3 +152,109 @@ After the following steps, as it can be seen in the logs, the tx will be decrypt
 ```bash
 ../../fairyringd query bank balances fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c --node tcp://127.0.0.1:26659
 ```
+
+### Message Format and Inputs 
+
+The encrypted transactions are defined as follows:
+
+```go
+type MsgSubmitEncryptedTx struct {
+	Creator   string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Data      string `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+	Condition string `protobuf:"bytes,3,opt,name=condition,proto3" json:"condition,omitempty"`
+}
+```
+The `Condition` field is a string created by the concatenation of a nonce, a token name and a price. For instance, if the user wants to submit a limit loss order which triggers when the price of `ETH` reaches `1887399056900` and the queried nonce from the chain for this specific price and token is `1`, the condition will be set to `1ETH1887399056900` and the transaction will be decrypted once the price of `ETH` reaches the mentioned amount.
+
+Next is the `Data` field which inlcudes the encrypted value of the tx. The message that is encrypted is structured as follows:
+
+```go
+type MsgTransfer struct {
+	// the port on which the packet will be sent
+	SourcePort string `protobuf:"bytes,1,opt,name=source_port,json=sourcePort,proto3" json:"source_port,omitempty" yaml:"source_port"`
+	// the channel by which the packet will be sent
+	SourceChannel string `protobuf:"bytes,2,opt,name=source_channel,json=sourceChannel,proto3" json:"source_channel,omitempty" yaml:"source_channel"`
+	// the tokens to be transferred
+	Token types.Coin `protobuf:"bytes,3,opt,name=token,proto3" json:"token"`
+	// the sender address
+	Sender string `protobuf:"bytes,4,opt,name=sender,proto3" json:"sender,omitempty"`
+	// the recipient address on the destination chain
+	Receiver string `protobuf:"bytes,5,opt,name=receiver,proto3" json:"receiver,omitempty"`
+	// Timeout height relative to the current block height.
+	// The timeout is disabled when set to 0.
+	TimeoutHeight types1.Height `protobuf:"bytes,6,opt,name=timeout_height,json=timeoutHeight,proto3" json:"timeout_height" yaml:"timeout_height"`
+	// Timeout timestamp in absolute nanoseconds since unix epoch.
+	// The timeout is disabled when set to 0.
+	TimeoutTimestamp uint64 `protobuf:"varint,7,opt,name=timeout_timestamp,json=timeoutTimestamp,proto3" json:"timeout_timestamp,omitempty" yaml:"timeout_timestamp"`
+	// optional memo
+	Memo string `protobuf:"bytes,8,opt,name=memo,proto3" json:"memo,omitempty"`
+}
+```
+For our specific use case, the `SourcePort` should always be set to `transfer` and the value for the `SourceChannel` should be set to `channel-1`.
+The Token is the token type and amount that the user chooses and is going to be transferred for the swap input. The Token can be defined like this:
+
+```go
+import sdk "github.com/cosmos/cosmos-sdk/types"
+.
+.
+.
+coin := sdk.Coin{Amount: sdk.NewIntFromUint64(500), Denom: "frt"}
+```
+The `Sender` is the user address on our chain. 
+The `Receiver` is the address of the smart contract on osmosis chain which can for the test purpose be set to `osmo1zl9ztmwe2wcdvv9std8xn06mdaqaqm789rutmazfh3z869zcax4sv0ctqw`.
+The `TimeoutHeight` can be defined as below for now: 
+```go
+import types1 "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
+.
+.
+.
+TimeoutHeight := types1.NewHeight(100000000000,1000000000000)
+```
+The `TimeoutTimestamp` can be defined as below for now: 
+```go
+import "time"
+.
+.
+.
+TimeoutTimestamp := uint64(time.Now().UnixNano()+int64(280000*time.Minute))
+```
+An important field is the `Memo` which defines the details for the swap. The `Memo` should be a json formatted string like the below example:
+
+```json
+{
+    "wasm": {
+        "contract": "osmo1zl9ztmwe2wcdvv9std8xn06mdaqaqm789rutmazfh3z869zcax4sv0ctqw",
+        "msg": {
+            "swap_with_action": {
+                "swap_msg": {
+                    "token_out_min_amount": "10",
+                    "path": [
+                        {
+                            "pool_id": "74",
+                            "token_out_denom": "uion"
+                        }
+                    ]
+                },
+                "after_swap_action": {
+                    "ibc_transfer": {
+                        "receiver": "fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c",
+                        "channel": "channel-4293"
+                    }
+                },
+                "local_fallback_address": "osmo1pw5aj2u5thkgumkpdms0x78y97e6ppfl6vmjpd"
+            }
+        }
+    }
+}
+```
+The `contract` value should be the same value as the `Receiver` filed in the `MsgTransfer`.
+The `token_out_min_amount` can be choosen by the user, but for testing, set it to `1`or `10`.
+The `pool_id` depends on the input and output tokens but for the test purpose, it can be set to any value like `47`.
+The `token_out_denom` is the swap output token defined by the user.
+The `receiver` is the address for the output token to be sent to. For instance it can be the same as the sender address in `MsgTransfer`.
+The `channel` is the channel id on the osmosis chain which is connected to fairyring. For the test, it can be set to `channel-4293`.
+The `local_fallback_address` is the address on osmosis chain which in case the ibc transfer did not work, the output tokens will be sent to. The value for the test can be set to `osmo1pw5aj2u5thkgumkpdms0x78y97e6ppfl6vmjpd` or the contract address.
+
+After setting all fields in the `MsgTransfer` it should be marshalized to `[]byte` can be encrypted. The encryption output will go in the `Data` field of the transaction.
+The remaining field of the transaction is the `Creator` which will be set as any other transaction.
+
