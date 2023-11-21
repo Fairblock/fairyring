@@ -2,9 +2,13 @@ package keeper
 
 import (
 	"context"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/sirupsen/logrus"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"fairyring/x/pricefeed/types"
 )
@@ -60,4 +64,22 @@ func (k Querier) Price(c context.Context, req *types.QueryPrice) (*types.QueryPr
 	return &types.QueryPriceResponse{
 		Price: &p,
 	}, nil
+}
+
+func (k Querier) CurrentNonce(goCtx context.Context, req *types.QueryCurrentNonceRequest) (*types.QueryCurrentNonceResponse, error) {
+	logrus.Info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// TODO: Process the query
+	_ = ctx
+	p, err := strconv.Atoi(req.Price)
+	if err != nil {
+		return &types.QueryCurrentNonceResponse{}, err
+	}
+	nonce := k.GetRepeatedPrice(ctx,types.Price{Symbol: req.Denom, Price: uint64(p)})
+	return &types.QueryCurrentNonceResponse{Nonce: strconv.Itoa(int(nonce))}, nil
 }

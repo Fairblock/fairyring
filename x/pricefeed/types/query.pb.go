@@ -740,6 +740,10 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Query_Params_Handler,
 		},
 		{
+			MethodName: "CurrentNonce",
+			Handler:    _Query_CurrentNonce_Handler,
+		},
+		{
 			MethodName: "SymbolRequest",
 			Handler:    _Query_SymbolRequest_Handler,
 		},

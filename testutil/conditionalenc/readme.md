@@ -258,3 +258,11 @@ The `local_fallback_address` is the address on osmosis chain which in case the i
 After setting all fields in the `MsgTransfer` it should be marshalized to `[]byte` can be encrypted. The encryption output will go in the `Data` field of the transaction.
 The remaining field of the transaction is the `Creator` which will be set as any other transaction.
 
+#### Nonce Query
+In order to get the nonce for a token and a specific price, you can use the following query:
+
+```bash
+fairyringd query pricefeed current-nonce {denom} {price} 
+```
+
+The nonce for a denom and a price increases each time the price reaches that price.
