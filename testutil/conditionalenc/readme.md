@@ -247,16 +247,18 @@ An important field is the `Memo` which defines the details for the swap. The `Me
     }
 }
 ```
-The `contract` value should be the same value as the `Receiver` filed in the `MsgTransfer`.
-The `token_out_min_amount` can be choosen by the user, but for testing, set it to `1`or `10`.
-The `pool_id` depends on the input and output tokens but for the test purpose, it can be set to any value like `47`.
-The `token_out_denom` is the swap output token defined by the user.
-The `receiver` is the address for the output token to be sent to. For instance it can be the same as the sender address in `MsgTransfer`.
-The `channel` is the channel id on the osmosis chain which is connected to fairyring. For the test, it can be set to `channel-4293`.
-The `local_fallback_address` is the address on osmosis chain which in case the ibc transfer did not work, the output tokens will be sent to. The value for the test can be set to `osmo1pw5aj2u5thkgumkpdms0x78y97e6ppfl6vmjpd` or the contract address.
+- The `contract` value should be the same value as the `Receiver` filed in the `MsgTransfer`.
+- The `token_out_min_amount` can be choosen by the user, but for testing, set it to `1`or `10`.
+- The `pool_id` depends on the input and output tokens but for the test purpose, it can be set to any value like `47`.
+- The `token_out_denom` is the swap output token defined by the user.
+- The `receiver` is the address for the output token to be sent to. For instance it can be the same as the sender address in `MsgTransfer`.
+- The `channel` is the channel id on the osmosis chain which is connected to fairyring. For the test, it can be set to `channel-4293`.
+- The `local_fallback_address` is the address on osmosis chain which in case the ibc transfer did not work, the output tokens will be sent to. The value for the test can be set to `osmo1pw5aj2u5thkgumkpdms0x78y97e6ppfl6vmjpd` or the contract address.
 
 Values such as `pool_id` or `channel` should be hardcoded in the frontend. For instance, the frontend needs to know which pool id to use for each set of input and output token defined by the user. Later, we might add the option so that the user can choose these values on their own.
+
 After setting all fields in the `MsgTransfer` it should be marshalized to `[]byte` can be encrypted. The encryption output will go in the `Data` field of the transaction.
+
 The remaining field of the transaction is the `Creator` which will be set as any other transaction.
 
 #### Nonce Query
