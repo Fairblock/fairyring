@@ -271,7 +271,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 			types.AggrKeyshareDataPacketData{
 				Identity:     keyShareReq.Identity,
 				Pubkey:       keyShareReq.Pubkey,
-				AggrKeyshare: "abc_test",
+				AggrKeyshare: keyShareReq.AggrKeyshare,
 				AggrHeight:   strconv.FormatInt(ctx.BlockHeight(), 10),
 				ProposalId:   keyShareReq.ProposalId,
 			},
