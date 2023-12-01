@@ -194,10 +194,11 @@ func (im IBCModule) OnRecvPacket(
 			ack = channeltypes.NewErrorAcknowledgement(err)
 		} else {
 			// Encode packet acknowledgment
-			packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
-			if err != nil {
-				return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, err.Error()))
-			}
+			packetAckBytes := types.MustProtoMarshalJSON(&packetAck)
+			// packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
+			// if err != nil {
+			// 	return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, err.Error()))
+			// }
 			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
 		}
 		ctx.EventManager().EmitEvent(
@@ -216,10 +217,11 @@ func (im IBCModule) OnRecvPacket(
 			ack = channeltypes.NewErrorAcknowledgement(err)
 		} else {
 			// Encode packet acknowledgment
-			packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
-			if err != nil {
-				return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, err.Error()))
-			}
+			packetAckBytes := types.MustProtoMarshalJSON(&packetAck)
+			// packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
+			// if err != nil {
+			// 	return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, err.Error()))
+			// }
 			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
 		}
 		ctx.EventManager().EmitEvent(
@@ -274,7 +276,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 	// this line is used by starport scaffolding # oracle/packet/module/ack
 
 	var modulePacketData types.KeysharePacketData
-	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
+	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &modulePacketData); err != nil {
 		return sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
 

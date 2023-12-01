@@ -16,5 +16,5 @@ func (p GetAggrKeysharePacketData) GetBytes() []byte {
 
 	modulePacket.Packet = &KeysharePacketData_GetAggrKeysharePacket{&p}
 
-	return sdk.MustSortJSON(mustProtoMarshalJSON(&modulePacket))
+	return sdk.MustSortJSON(MustProtoMarshalJSON(&modulePacket))
 }
