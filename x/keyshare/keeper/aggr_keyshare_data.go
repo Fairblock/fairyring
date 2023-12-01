@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"errors"
-	"fmt"
 
 	"fairyring/x/keyshare/types"
 
@@ -22,29 +21,19 @@ func (k Keeper) TransmitAggrKeyshareDataPacket(
 	timeoutHeight clienttypes.Height,
 	timeoutTimestamp uint64,
 ) (uint64, error) {
-	fmt.Println("\n\n\nTransmitAggrKeyshareDataPacket\n\n\n")
-	ch, found := k.ChannelKeeper.GetChannel(ctx, sourcePort, sourceChannel)
+	_, found := k.ChannelKeeper.GetChannel(ctx, sourcePort, sourceChannel)
 	if !found {
-		fmt.Println("\n\n\nChannel not found")
 		return 0, sdkerrors.Wrapf(channeltypes.ErrChannelNotFound, "port ID (%s) channel ID (%s)", sourcePort, sourceChannel)
 	}
 
-	fmt.Println("conn hops: ", ch.ConnectionHops)
-	fmt.Println("counterparty channel: ", ch.Counterparty.ChannelId)
-	fmt.Println("counterparty port: ", ch.Counterparty.PortId)
-
 	// get the next sequence
-	sq, found := k.ChannelKeeper.GetNextSequenceSend(ctx, sourcePort, sourceChannel)
+	_, found = k.ChannelKeeper.GetNextSequenceSend(ctx, sourcePort, sourceChannel)
 	if !found {
-		fmt.Println("\n\n\nSequence not found")
-
 		return 0, sdkerrors.Wrapf(
 			channeltypes.ErrSequenceSendNotFound,
 			"source port: %s, source channel: %s", sourcePort, sourceChannel,
 		)
 	}
-
-	fmt.Println("next seq: ", sq)
 
 	channelCap, ok := k.ScopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath(sourcePort, sourceChannel))
 	if !ok {
@@ -52,7 +41,6 @@ func (k Keeper) TransmitAggrKeyshareDataPacket(
 	}
 
 	packetBytes := packetData.GetBytes()
-	fmt.Println("Sending Packet")
 
 	return k.ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes)
 }
@@ -65,8 +53,6 @@ func (k Keeper) OnAcknowledgementAggrKeyshareDataPacket(ctx sdk.Context, packet 
 
 		// TODO: failed acknowledgement logic
 		_ = dispatchedAck.Error
-		fmt.Println("\n\n\nOnAcknowledgementAggrKeyshareDataPacket failure for reqID: ", data.Identity)
-
 		return nil
 	case *channeltypes.Acknowledgement_Result:
 		// Decode the packet acknowledgment
@@ -84,7 +70,6 @@ func (k Keeper) OnAcknowledgementAggrKeyshareDataPacket(ctx sdk.Context, packet 
 
 		keyshareReq.Sent = true
 		k.SetKeyShareRequest(ctx, keyshareReq)
-		fmt.Println("\n\n\nOnAcknowledgementAggrKeyshareDataPacket received for reqID: ", data.Identity)
 
 		return nil
 	default:

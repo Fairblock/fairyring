@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"fmt"
 	"strconv"
 
 	"fairyring/x/keyshare/types"
@@ -41,8 +40,6 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 	packet channeltypes.Packet,
 	data types.RequestAggrKeysharePacketData,
 ) (packetAck types.RequestAggrKeysharePacketAck, err error) {
-	fmt.Println("\n\n\nOnRecvRequestAggrKeysharePacket\n\n\n")
-
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err

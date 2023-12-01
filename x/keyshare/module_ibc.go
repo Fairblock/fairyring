@@ -36,9 +36,6 @@ func (im IBCModule) OnChanOpenInit(
 	counterparty channeltypes.Counterparty,
 	version string,
 ) (string, error) {
-
-	fmt.Println("\n\nOnChanOpenInit\n\n")
-
 	// Require portID is the portID module is bound to
 	boundPort := im.keeper.GetPort(ctx)
 	if boundPort != portID {
@@ -68,9 +65,6 @@ func (im IBCModule) OnChanOpenTry(
 	counterparty channeltypes.Counterparty,
 	counterpartyVersion string,
 ) (string, error) {
-
-	fmt.Println("\n\nOnChanOpenTry\n\n")
-
 	// Require portID is the portID module is bound to
 	boundPort := im.keeper.GetPort(ctx)
 	if boundPort != portID {
@@ -103,8 +97,6 @@ func (im IBCModule) OnChanOpenAck(
 	_,
 	counterpartyVersion string,
 ) error {
-	fmt.Println("\n\nOnChanOpenAck\n\n")
-
 	if counterpartyVersion != types.Version {
 		return sdkerrors.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: %s, expected %s", counterpartyVersion, types.Version)
 	}
@@ -117,8 +109,6 @@ func (im IBCModule) OnChanOpenConfirm(
 	portID,
 	channelID string,
 ) error {
-	fmt.Println("\n\nOnChanOpenConfirm\n\n")
-
 	// im.keeper.SetChannel(ctx, channelID)
 	return nil
 }
@@ -148,41 +138,11 @@ func (im IBCModule) OnRecvPacket(
 	modulePacket channeltypes.Packet,
 	relayer sdk.AccAddress,
 ) ibcexported.Acknowledgement {
-	fmt.Println("\n\nOnRecvPacket\n\n")
-
 	var ack channeltypes.Acknowledgement
 
 	var modulePacketData types.KeysharePacketData
 	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &modulePacketData); err != nil {
-		fmt.Println("Unmarshalling failed: ", err)
 		return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
-	}
-
-	fmt.Println("\n\nCurrent Block Height: ", ctx.BlockHeight())
-	lastProcessedSeq, found := im.keeper.GetLastSequence(ctx, modulePacket.SourceChannel, modulePacket.SourcePort)
-	if !found {
-		fmt.Println("\n\n\nlastProcessedSeq not found\n\n\n")
-		lastProcessedSeq.PortId = modulePacket.SourcePort
-		lastProcessedSeq.ChannelId = modulePacket.SourceChannel
-	} else {
-		fmt.Println("\n\n\nlastProcessedSeq found\n\n\n")
-		fmt.Println("last seq: ", lastProcessedSeq.SeqNo, "   current seq: ", modulePacket.Sequence)
-		if lastProcessedSeq.SeqNo >= modulePacket.Sequence {
-			fmt.Println("\n\n\nPacket already prcessed. Skipping\n\n\n")
-			return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(cosmoserror.ErrInvalidSequence, "already processed packet with seq: %d", modulePacket.Sequence))
-		}
-	}
-	lastProcessedSeq.SeqNo = modulePacket.Sequence
-	fmt.Println("\n\nSetting lastProcessedSeq: \nChannel: ", lastProcessedSeq.ChannelId, "   Port: ", lastProcessedSeq.PortId, "   SeqNo: ", lastProcessedSeq.SeqNo)
-	im.keeper.SetLastSequence(ctx, lastProcessedSeq)
-
-	// For Testing if set
-	testSeq, found := im.keeper.GetLastSequence(ctx, modulePacket.SourceChannel, modulePacket.SourcePort)
-	if !found {
-		fmt.Println("\n\n\nlastProcessedSeq not found\n\n\n")
-	} else {
-		fmt.Println("\n\n\nlastProcessedSeq found\n\n\n")
-		fmt.Println("last seq: ", testSeq.SeqNo)
 	}
 
 	// Dispatch packet
@@ -232,25 +192,6 @@ func (im IBCModule) OnRecvPacket(
 			),
 		)
 
-	// case *types.KeysharePacketData_AggrKeyshareDataPacket:
-	// 	packetAck, err := im.keeper.OnRecvAggrKeyshareDataPacket(ctx, modulePacket, *packet.AggrKeyshareDataPacket)
-	// 	if err != nil {
-	// 		ack = channeltypes.NewErrorAcknowledgement(err)
-	// 	} else {
-	// 		// Encode packet acknowledgment
-	// 		packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
-	// 		if err != nil {
-	// 			return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, err.Error()))
-	// 		}
-	// 		ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
-	// 	}
-	// 	ctx.EventManager().EmitEvent(
-	// 		sdk.NewEvent(
-	// 			types.EventTypeAggrKeyshareDataPacket,
-	// 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-	// 			sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
-	// 		),
-	// 	)
 	// this line is used by starport scaffolding # ibc/packet/module/recv
 	default:
 		err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
@@ -284,18 +225,6 @@ func (im IBCModule) OnAcknowledgementPacket(
 
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
-	// case *types.KeysharePacketData_RequestAggrKeysharePacket:
-	// 	err := im.keeper.OnAcknowledgementRequestAggrKeysharePacket(ctx, modulePacket, *packet.RequestAggrKeysharePacket, ack)
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	// 	eventType = types.EventTypeRequestAggrKeysharePacket
-	// case *types.KeysharePacketData_GetAggrKeysharePacket:
-	// 	err := im.keeper.OnAcknowledgementGetAggrKeysharePacket(ctx, modulePacket, *packet.GetAggrKeysharePacket, ack)
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	// 	eventType = types.EventTypeGetAggrKeysharePacket
 
 	case *types.KeysharePacketData_AggrKeyshareDataPacket:
 		err := im.keeper.OnAcknowledgementAggrKeyshareDataPacket(ctx, modulePacket, *packet.AggrKeyshareDataPacket, ack)

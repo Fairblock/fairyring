@@ -66,7 +66,6 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 		if keyShareReq.AggrKeyshare != "" {
 			return nil, types.ErrAggKeyAlreadyExists.Wrapf(", identity: %s, Aggregated key: %s", msg.IdValue, keyShareReq.AggrKeyshare)
 		}
-		break
 	}
 
 	// Setup
@@ -182,12 +181,10 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 	case PrivateGovIdentity:
 		keyShareReq, found := k.GetKeyShareRequest(ctx, msg.IdValue)
 		if !found {
-			k.Logger(ctx).Info(fmt.Sprintf("\n\n\n\nKeyshare request not found\n\n\n\n"))
 			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
 		}
 
 		if keyShareReq.AggrKeyshare != "" {
-			k.Logger(ctx).Info(fmt.Sprintf("\n\n\n\nAGG KEY ALREADY EXISTS %s\n\n\n\n", &keyShareReq.AggrKeyshare))
 			return &types.MsgCreateGeneralKeyShareResponse{
 				Creator:             msg.Creator,
 				IdType:              msg.IdType,
@@ -253,10 +250,8 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 
 	switch msg.IdType {
 	case PrivateGovIdentity:
-		k.Logger(ctx).Info(fmt.Sprintf("\n\n\n\nReceived keyshare for private gov\n\n\n\n"))
 		keyShareReq, found := k.GetKeyShareRequest(ctx, msg.IdValue)
 		if !found {
-			k.Logger(ctx).Info(fmt.Sprintf("\n\n\n\nKeyshare request not found\n\n\n\n"))
 			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
 		}
 		if keyShareReq.AggrKeyshare != "" {
@@ -283,7 +278,6 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 		if err != nil {
 			return nil, err
 		}
-		break
 	}
 
 	return &types.MsgCreateGeneralKeyShareResponse{

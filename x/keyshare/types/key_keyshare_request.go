@@ -11,9 +11,6 @@ var _ binary.ByteOrder
 const (
 	// KeyShareRequestKeyPrefix is the prefix to retrieve all Keyshare requests
 	KeyShareRequestKeyPrefix = "KeyshareRequest/value/"
-
-	// SequenceKeyPrefix is the prefix to retrieve all processed channel sequences
-	SequenceKeyPrefix = "Sequence/value/"
 )
 
 func IdentityFromRequestCount(

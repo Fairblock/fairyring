@@ -236,7 +236,6 @@ func (am AppModule) processFailedEncryptedTx(ctx sdk.Context, tx types.Encrypted
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
-	fmt.Println("\n\nPep mdoule begin block: ", ctx.BlockHeight(), "\n\n")
 	strLastExecutedHeight := am.keeper.GetLastExecutedHeight(ctx)
 	lastExecutedHeight, err := strconv.ParseUint(strLastExecutedHeight, 10, 64)
 
@@ -548,8 +547,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
-	fmt.Println("\n\nPep mdoule end block: ", ctx.BlockHeight(), "\n\n")
-
 	err := am.keeper.QueryFairyringCurrentKeys(ctx)
 	if err != nil {
 		am.keeper.Logger(ctx).Error("Endblocker get keys err", err)

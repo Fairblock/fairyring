@@ -149,7 +149,6 @@ func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
-	fmt.Println("\n\nKeyshare mdoule begin block: ", ctx.BlockHeight(), "\n\n")
 	validatorSet := am.keeper.GetAllValidatorSet(ctx)
 	for _, eachValidator := range validatorSet {
 		accAddr, err := sdk.AccAddressFromBech32(eachValidator.Validator)
@@ -222,7 +221,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
-	fmt.Println("\n\nKeyshare mdoule end block: ", ctx.BlockHeight(), "\n\n")
 	am.keeper.Logger(ctx).Info(fmt.Sprintf("End Blocker of Height: %d", ctx.BlockHeight()))
 	validators := am.keeper.GetAllValidatorSet(ctx)
 	params := am.keeper.GetParams(ctx)
@@ -262,36 +260,6 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 		// So he/she won't be slashed in the next block instead he/she will be slashed if he didn't submit for N block again.
 		am.keeper.SetLastSubmittedHeight(ctx, eachValidator.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
 	}
-
-	// //===========================================//
-	// // FOR TESTING ONLY, HARDCODE AGGR. KEYSHARE //
-	// //===========================================//
-
-	// shareReqs := am.keeper.GetAllKeyShareRequests(ctx)
-	// for _, req := range shareReqs {
-	// 	if req.AggrKeyshare != "" && !req.Sent {
-	// 		fmt.Println("\n\n\nTransmitting for : ", req.Identity, "\n\n\n")
-	// 		timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
-
-	// 		_, err := am.keeper.TransmitAggrKeyshareDataPacket(
-	// 			ctx,
-	// 			types.AggrKeyshareDataPacketData{
-	// 				Identity:     req.Identity,
-	// 				Pubkey:       req.Pubkey,
-	// 				AggrKeyshare: req.AggrKeyshare,
-	// 				AggrHeight:   strconv.FormatInt(ctx.BlockHeight(), 10),
-	// 				ProposalId:   req.ProposalId,
-	// 			},
-	// 			req.IbcInfo.PortID,
-	// 			req.IbcInfo.ChannelID,
-	// 			clienttypes.ZeroHeight(),
-	// 			uint64(timeoutTimestamp),
-	// 		)
-	// 		if err != nil {
-	// 			fmt.Println("\n\n\nTransmission failed for :", req.Identity, "\n\n\n")
-	// 		}
-	// 	}
-	// }
 
 	return []abci.ValidatorUpdate{}
 }

@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"fairyring/x/keyshare/types"
-	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
@@ -10,7 +9,6 @@ import (
 
 // OnRecvGetAggrKeysharePacket processes packet reception
 func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data types.GetAggrKeysharePacketData) (packetAck types.GetAggrKeysharePacketAck, err error) {
-	fmt.Println("\n\n\nOnRecvGetAggrKeysharePacket\n\n\n")
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
@@ -30,13 +28,6 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 				sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, data.Identity),
 			),
 		)
-
-		//===========================================//
-		// FOR TESTING ONLY, HARDCODE AGGR. KEYSHARE //
-		//===========================================//
-
-		// keyshareReq.AggrKeyshare = "29c861be5016b20f5a4397795e3f086d818b11ad02e0dd8ee28e485988b6cb07"
-		// k.SetKeyShareRequest(ctx, keyshareReq)
 	}
 
 	return packetAck, nil
