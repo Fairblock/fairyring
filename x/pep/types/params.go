@@ -1,8 +1,9 @@
 package types
 
 import (
-	cosmosmath "cosmossdk.io/math"
 	"fmt"
+
+	cosmosmath "cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"gopkg.in/yaml.v2"
@@ -111,7 +112,7 @@ func validateMinGasPrice(v interface{}) error {
 	}
 
 	if minGasPrice.Amount.IsZero() || minGasPrice.Amount.IsNegative() {
-		return fmt.Errorf("invalid min gas price amount, expected > 0, got: %d", minGasPrice)
+		return fmt.Errorf("invalid min gas price amount, expected > 0, got: %d", minGasPrice.Amount.Int64())
 	}
 
 	return nil
