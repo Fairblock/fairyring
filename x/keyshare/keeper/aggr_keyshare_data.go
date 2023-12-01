@@ -51,11 +51,7 @@ func (k Keeper) TransmitAggrKeyshareDataPacket(
 		return 0, sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
 	}
 
-	packetBytes, err := packetData.GetBytes()
-	if err != nil {
-		return 0, sdkerrors.Wrapf(sdkerrors.ErrJSONMarshal, "cannot marshal the packet: %w", err)
-	}
-
+	packetBytes := packetData.GetBytes()
 	fmt.Println("Sending Packet")
 
 	return k.ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes)

@@ -1,5 +1,7 @@
 package types
 
+import sdk "github.com/cosmos/cosmos-sdk/types"
+
 // ValidateBasic is used for validating the packet
 func (p GetAggrKeysharePacketData) ValidateBasic() error {
 
@@ -9,10 +11,10 @@ func (p GetAggrKeysharePacketData) ValidateBasic() error {
 }
 
 // GetBytes is a helper for serialising
-func (p GetAggrKeysharePacketData) GetBytes() ([]byte, error) {
+func (p GetAggrKeysharePacketData) GetBytes() []byte {
 	var modulePacket KeysharePacketData
 
 	modulePacket.Packet = &KeysharePacketData_GetAggrKeysharePacket{&p}
 
-	return modulePacket.Marshal()
+	return sdk.MustSortJSON(mustProtoMarshalJSON(&modulePacket))
 }

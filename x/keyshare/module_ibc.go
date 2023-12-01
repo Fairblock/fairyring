@@ -153,7 +153,7 @@ func (im IBCModule) OnRecvPacket(
 	var ack channeltypes.Acknowledgement
 
 	var modulePacketData types.KeysharePacketData
-	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
+	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &modulePacketData); err != nil {
 		fmt.Println("Unmarshalling failed: ", err)
 		return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
 	}
