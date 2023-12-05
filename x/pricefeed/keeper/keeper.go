@@ -486,7 +486,7 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 				}
 				if previous != ""{
 				prev, _ = extractNumber(previous,r.Symbol)}
-				logrus.Info("ok---------------------------------------------------------------------:", prev, new)
+				//logrus.Info("ok---------------------------------------------------------------------:", prev, new)
 				waitingList := []string{}
 				 if prev < int(new) {
 				for i := int64(prev) + int64(step); i <= new; i += int64(step) {

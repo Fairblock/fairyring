@@ -18,7 +18,7 @@ service Msg {
 message MsgSubmitEncryptedTx {
   string creator           = 1;
   string data              = 2;
-  uint64 condition = 3;
+  string condition = 3;
 }
 
 message MsgSubmitEncryptedTxResponse {}
@@ -26,7 +26,7 @@ message MsgSubmitEncryptedTxResponse {}
 // this line is used by starport scaffolding # proto/tx/message
 message MsgCreateAggregatedConditionalKeyShare {
   string creator = 1;
-  uint64 condition  = 2;
+  string condition  = 2;
   string data    = 3;
 }
 

@@ -37,7 +37,7 @@ service Query {
   }
   
   // Queries a list of EncryptedTx items.
-  rpc EncryptedTxAllFromCondition (QueryAllEncryptedTxFromconditionRequest) returns (QueryAllEncryptedTxFromconditionResponse) {
+  rpc EncryptedTxAllFromCondition (QueryAllEncryptedTxFromConditionRequest) returns (QueryAllEncryptedTxFromconditionResponse) {
     option (google.api.http).get = "/fairyring/Conditionalenc/encrypted_tx/{targetcondition}";
   
   }
@@ -79,7 +79,7 @@ message QueryParamsResponse {
 }
 
 message QueryGetEncryptedTxRequest {
-  uint64 targetcondition = 1;
+  string targetcondition = 1;
   uint64 index        = 2;
 }
 
@@ -96,8 +96,8 @@ message QueryAllEncryptedTxResponse {
            cosmos.base.query.v1beta1.PageResponse pagination       = 2;
 }
 
-message QueryAllEncryptedTxFromconditionRequest {
-  uint64 targetcondition = 1;
+message QueryAllEncryptedTxFromConditionRequest {
+  string targetcondition = 1;
 }
 
 message QueryAllEncryptedTxFromconditionResponse {
@@ -107,7 +107,7 @@ message QueryAllEncryptedTxFromconditionResponse {
 message QueryLatestconditionRequest {}
 
 message QueryLatestconditionResponse {
-  uint64 condition = 1;
+  string condition = 1;
 }
 
 message QueryGetConditionalencNonceRequest {
