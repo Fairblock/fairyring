@@ -115,6 +115,33 @@ osmosisd tx ibc-transfer transfer transfer ${channel-id} fairy1p6ca57cu5u89qzf58
 5. Replace the `channel` parameter in the MEMO in `testutil/osmosis-testnet/test-swap.sh` script with the current channel id on the osmosis side, and the ibc bridged token sent in the transfer command with the denom of the briged osmo on fairyring.
 Then, run the script to perform the swap. The result of the swap can be checked through noticing the new ibc bridged token on the user's balance on fairyring.
 
+## Osmosis Swap Test (Osmosis Testnet and conditionalenc)
+In order to perform the swap test through the squid contract on Osmosis testnet, follow the below instructions:
+
+1. Setup and run the Fairyring chain as previously explained
+
+2. Create a client node through running the bellow command:
+```bash
+curl -sL https://get.osmosis.zone/install > i.py && python3 i.py
+```
+Next, create a new key:
+```bash
+osmosisd keys add wallet
+```
+Copy the mnemonic into the `testutil/conditionalenc-testnet/mnemonic-osmosis.txt`. 
+Using the osmosis official faucet, deposit osmos to the generated address.
+
+3. Start the IBC relayer using the provided script in `fairyring/testutil/conditionalenc-testnet/relayer.sh`.
+
+4. In order to use one of the current pools on osmosis tesnet, transfer some osmos to the fairyring:
+```bash
+osmosisd tx ibc-transfer transfer transfer ${channel-id} fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c 10000uosmo --from wallet --fees 416uosmo --gas auto --gas-adjustment 1.5 -b block
+```
+The `channel-id` is the id of the created channel on the osmosis side and can be determined through the relayer logs. 
+
+5. Replace the `channel` parameter in the MEMO in `testutil/conditionalenc-tesnet/encrypter/main.go` with the current channel id on the osmosis side, and the ibc bridged token sent in the transfer command with the denom of the briged osmo on fairyring. The ibc token name can be determined through running the `../../fairyringd query bank balances fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c --node tcp://127.0.0.1:26659` and finding the token starting with `ibc/`. 
+Then, run the `send-tx.sh` script to perform the swap. The result of the swap can be checked through noticing the new ibc bridged token on the user's balance on fairyring.
+
 ## Osmosis Conditional Encryption
 
 In order to test the swap functionality through the conditional encryption using local osmosis chain, follow the below steps:
