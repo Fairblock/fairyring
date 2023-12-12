@@ -36,11 +36,12 @@ message GetAggrKeysharePacketAck {}
 
 // AggrKeyshareDataPacketData defines a struct for the packet payload
 message AggrKeyshareDataPacketData {
-  string identity     = 1;
-  string pubkey       = 2;
-  string aggrKeyshare = 3;
-  string aggrHeight   = 4;
-  string proposal_id  = 5;
+  string identity      = 1;
+  string pubkey        = 2;
+  string aggr_keyshare = 3;
+  string aggr_height   = 4;
+  string proposal_id   = 5;
+  uint64 retries       = 6;
 }
 
 // AggrKeyshareDataPacketAck defines a struct for the packet acknowledgment

@@ -269,6 +269,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 				AggrKeyshare: keyShareReq.AggrKeyshare,
 				AggrHeight:   strconv.FormatInt(ctx.BlockHeight(), 10),
 				ProposalId:   keyShareReq.ProposalId,
+				Retries:      0,
 			},
 			keyShareReq.IbcInfo.PortID,
 			keyShareReq.IbcInfo.ChannelID,

@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"errors"
+	"time"
 
 	"fairyring/x/keyshare/types"
 
@@ -11,6 +12,8 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
 )
+
+const MAX_RETRIES = 5
 
 // TransmitAggrKeyshareDataPacket transmits the packet over IBC with the specified source port and source channel
 func (k Keeper) TransmitAggrKeyshareDataPacket(
@@ -81,7 +84,24 @@ func (k Keeper) OnAcknowledgementAggrKeyshareDataPacket(ctx sdk.Context, packet 
 // OnTimeoutAggrKeyshareDataPacket responds to the case where a packet has not been transmitted because of a timeout
 func (k Keeper) OnTimeoutAggrKeyshareDataPacket(ctx sdk.Context, packet channeltypes.Packet, data types.AggrKeyshareDataPacketData) error {
 
-	// TODO: packet timeout logic
+	// retry sending the packet
+	if data.Retries < MAX_RETRIES {
+		timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
+
+		data.Retries = data.Retries + 1
+
+		_, err := k.TransmitAggrKeyshareDataPacket(
+			ctx,
+			data,
+			packet.SourcePort,
+			packet.SourceChannel,
+			clienttypes.ZeroHeight(),
+			uint64(timeoutTimestamp),
+		)
+		if err != nil {
+			return err
+		}
+	}
 
 	return nil
 }
