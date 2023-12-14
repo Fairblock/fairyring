@@ -29,10 +29,10 @@ while true
 do
   CURRENT_BLOCK=$($BINARY query block --home $HOME --node $NODE | jq -r '.block.header.height')
   TARGET_HEIGHT=$((CURRENT_BLOCK+1))
-  EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 0 $TARGET_HEIGHT)
+  EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
   EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
   #EXTRACTED_COMMITMENT=$(echo "$EXTRACTED_RESULT" | jq -r '.Commitment')
-  RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 0 $TARGET_HEIGHT --from $FROM --gas-prices 1frt --home $HOME --chain-id $CHAINID --node $NODE --broadcast-mode sync --keyring-backend test -o json -y)
+  RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 1 $TARGET_HEIGHT --from $FROM --gas-prices 1frt --home $HOME --chain-id $CHAINID --node $NODE --broadcast-mode sync --keyring-backend test -o json -y)
   check_tx_code $RESULT
   RESULT=$(wait_for_tx $RESULT)
   RESULT_EVENT=$(echo "$RESULT" | jq -r '.logs[0].events[2].type')

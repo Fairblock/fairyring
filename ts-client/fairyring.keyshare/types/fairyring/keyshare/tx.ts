@@ -799,6 +799,325 @@ export const MsgDeleteAuthorizedAddressResponse = {
   },
 };
 
+/** Msg defines the Msg service. */
+export interface Msg {
+  RegisterValidator(request: MsgRegisterValidator): Promise<MsgRegisterValidatorResponse>;
+  SendKeyshare(request: MsgSendKeyshare): Promise<MsgSendKeyshareResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  CreateLatestPubKey(request: MsgCreateLatestPubKey): Promise<MsgCreateLatestPubKeyResponse>;
+  CreateAuthorizedAddress(request: MsgCreateAuthorizedAddress): Promise<MsgCreateAuthorizedAddressResponse>;
+  UpdateAuthorizedAddress(request: MsgUpdateAuthorizedAddress): Promise<MsgUpdateAuthorizedAddressResponse>;
+  DeleteAuthorizedAddress(request: MsgDeleteAuthorizedAddress): Promise<MsgDeleteAuthorizedAddressResponse>;
+}
+
+export class MsgClientImpl implements Msg {
+  private readonly rpc: Rpc;
+  constructor(rpc: Rpc) {
+    this.rpc = rpc;
+    this.RegisterValidator = this.RegisterValidator.bind(this);
+    this.SendKeyshare = this.SendKeyshare.bind(this);
+    this.CreateLatestPubKey = this.CreateLatestPubKey.bind(this);
+    this.CreateAuthorizedAddress = this.CreateAuthorizedAddress.bind(this);
+    this.UpdateAuthorizedAddress = this.UpdateAuthorizedAddress.bind(this);
+    this.DeleteAuthorizedAddress = this.DeleteAuthorizedAddress.bind(this);
+  }
+  RegisterValidator(request: MsgRegisterValidator): Promise<MsgRegisterValidatorResponse> {
+    const data = MsgRegisterValidator.encode(request).finish();
+    const promise = this.rpc.request("fairyring.keyshare.Msg", "RegisterValidator", data);
+    return promise.then((data) => MsgRegisterValidatorResponse.decode(new _m0.Reader(data)));
+  }
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateAuthorizedAddress {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCreateAuthorizedAddress();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.target = reader.string();
+          break;
+        case 2:
+          message.creator = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateAuthorizedAddress {
+    return {
+      target: isSet(object.target) ? String(object.target) : "",
+      creator: isSet(object.creator) ? String(object.creator) : "",
+    };
+  },
+
+  toJSON(message: MsgCreateAuthorizedAddress): unknown {
+    const obj: any = {};
+    message.target !== undefined && (obj.target = message.target);
+    message.creator !== undefined && (obj.creator = message.creator);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgCreateAuthorizedAddress>, I>>(object: I): MsgCreateAuthorizedAddress {
+    const message = createBaseMsgCreateAuthorizedAddress();
+    message.target = object.target ?? "";
+    message.creator = object.creator ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgCreateAuthorizedAddressResponse(): MsgCreateAuthorizedAddressResponse {
+  return {};
+}
+
+export const MsgCreateAuthorizedAddressResponse = {
+  encode(_: MsgCreateAuthorizedAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateAuthorizedAddressResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCreateAuthorizedAddressResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCreateAuthorizedAddressResponse {
+    return {};
+  },
+
+  toJSON(_: MsgCreateAuthorizedAddressResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgCreateAuthorizedAddressResponse>, I>>(
+    _: I,
+  ): MsgCreateAuthorizedAddressResponse {
+    const message = createBaseMsgCreateAuthorizedAddressResponse();
+    return message;
+  },
+};
+
+function createBaseMsgUpdateAuthorizedAddress(): MsgUpdateAuthorizedAddress {
+  return { target: "", isAuthorized: false, creator: "" };
+}
+
+export const MsgUpdateAuthorizedAddress = {
+  encode(message: MsgUpdateAuthorizedAddress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.target !== "") {
+      writer.uint32(10).string(message.target);
+    }
+    if (message.isAuthorized === true) {
+      writer.uint32(16).bool(message.isAuthorized);
+    }
+    if (message.creator !== "") {
+      writer.uint32(26).string(message.creator);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateAuthorizedAddress {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateAuthorizedAddress();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.target = reader.string();
+          break;
+        case 2:
+          message.isAuthorized = reader.bool();
+          break;
+        case 3:
+          message.creator = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateAuthorizedAddress {
+    return {
+      target: isSet(object.target) ? String(object.target) : "",
+      isAuthorized: isSet(object.isAuthorized) ? Boolean(object.isAuthorized) : false,
+      creator: isSet(object.creator) ? String(object.creator) : "",
+    };
+  },
+
+  toJSON(message: MsgUpdateAuthorizedAddress): unknown {
+    const obj: any = {};
+    message.target !== undefined && (obj.target = message.target);
+    message.isAuthorized !== undefined && (obj.isAuthorized = message.isAuthorized);
+    message.creator !== undefined && (obj.creator = message.creator);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateAuthorizedAddress>, I>>(object: I): MsgUpdateAuthorizedAddress {
+    const message = createBaseMsgUpdateAuthorizedAddress();
+    message.target = object.target ?? "";
+    message.isAuthorized = object.isAuthorized ?? false;
+    message.creator = object.creator ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgUpdateAuthorizedAddressResponse(): MsgUpdateAuthorizedAddressResponse {
+  return {};
+}
+
+export const MsgUpdateAuthorizedAddressResponse = {
+  encode(_: MsgUpdateAuthorizedAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateAuthorizedAddressResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateAuthorizedAddressResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateAuthorizedAddressResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdateAuthorizedAddressResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateAuthorizedAddressResponse>, I>>(
+    _: I,
+  ): MsgUpdateAuthorizedAddressResponse {
+    const message = createBaseMsgUpdateAuthorizedAddressResponse();
+    return message;
+  },
+};
+
+function createBaseMsgDeleteAuthorizedAddress(): MsgDeleteAuthorizedAddress {
+  return { target: "", creator: "" };
+}
+
+export const MsgDeleteAuthorizedAddress = {
+  encode(message: MsgDeleteAuthorizedAddress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.target !== "") {
+      writer.uint32(10).string(message.target);
+    }
+    if (message.creator !== "") {
+      writer.uint32(18).string(message.creator);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteAuthorizedAddress {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDeleteAuthorizedAddress();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.target = reader.string();
+          break;
+        case 2:
+          message.creator = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgDeleteAuthorizedAddress {
+    return {
+      target: isSet(object.target) ? String(object.target) : "",
+      creator: isSet(object.creator) ? String(object.creator) : "",
+    };
+  },
+
+  toJSON(message: MsgDeleteAuthorizedAddress): unknown {
+    const obj: any = {};
+    message.target !== undefined && (obj.target = message.target);
+    message.creator !== undefined && (obj.creator = message.creator);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgDeleteAuthorizedAddress>, I>>(object: I): MsgDeleteAuthorizedAddress {
+    const message = createBaseMsgDeleteAuthorizedAddress();
+    message.target = object.target ?? "";
+    message.creator = object.creator ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgDeleteAuthorizedAddressResponse(): MsgDeleteAuthorizedAddressResponse {
+  return {};
+}
+
+export const MsgDeleteAuthorizedAddressResponse = {
+  encode(_: MsgDeleteAuthorizedAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteAuthorizedAddressResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDeleteAuthorizedAddressResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgDeleteAuthorizedAddressResponse {
+    return {};
+  },
+
+  toJSON(_: MsgDeleteAuthorizedAddressResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgDeleteAuthorizedAddressResponse>, I>>(
+    _: I,
+  ): MsgDeleteAuthorizedAddressResponse {
+    const message = createBaseMsgDeleteAuthorizedAddressResponse();
+    return message;
+  },
+};
+
 function createBaseMsgCreateGeneralKeyShare(): MsgCreateGeneralKeyShare {
   return {
     creator: "",
@@ -1320,6 +1639,24 @@ export class MsgClientImpl implements Msg {
     const data = MsgDeleteGeneralKeyShare.encode(request).finish();
     const promise = this.rpc.request("fairyring.keyshare.Msg", "DeleteGeneralKeyShare", data);
     return promise.then((data) => MsgDeleteGeneralKeyShareResponse.decode(new _m0.Reader(data)));
+  }
+
+  CreateAuthorizedAddress(request: MsgCreateAuthorizedAddress): Promise<MsgCreateAuthorizedAddressResponse> {
+    const data = MsgCreateAuthorizedAddress.encode(request).finish();
+    const promise = this.rpc.request("fairyring.keyshare.Msg", "CreateAuthorizedAddress", data);
+    return promise.then((data) => MsgCreateAuthorizedAddressResponse.decode(new _m0.Reader(data)));
+  }
+
+  UpdateAuthorizedAddress(request: MsgUpdateAuthorizedAddress): Promise<MsgUpdateAuthorizedAddressResponse> {
+    const data = MsgUpdateAuthorizedAddress.encode(request).finish();
+    const promise = this.rpc.request("fairyring.keyshare.Msg", "UpdateAuthorizedAddress", data);
+    return promise.then((data) => MsgUpdateAuthorizedAddressResponse.decode(new _m0.Reader(data)));
+  }
+
+  DeleteAuthorizedAddress(request: MsgDeleteAuthorizedAddress): Promise<MsgDeleteAuthorizedAddressResponse> {
+    const data = MsgDeleteAuthorizedAddress.encode(request).finish();
+    const promise = this.rpc.request("fairyring.keyshare.Msg", "DeleteAuthorizedAddress", data);
+    return promise.then((data) => MsgDeleteAuthorizedAddressResponse.decode(new _m0.Reader(data)));
   }
 }
 

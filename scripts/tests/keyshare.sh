@@ -108,7 +108,7 @@ EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
 echo "Not registered account submit key share on chain fairyring_test_1"
 CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
-RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 0 $TARGET_HEIGHT --from $WALLET_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 1 $TARGET_HEIGHT --from $WALLET_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
@@ -133,12 +133,12 @@ fi
 
 CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+1))
-EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 0 $TARGET_HEIGHT)
+EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
 
 echo "Authorized account submit key share on chain fairyring_test_1"
-RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 0 $TARGET_HEIGHT --from $WALLET_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 1 $TARGET_HEIGHT --from $WALLET_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 KEYSHARE_HEIGHT=$(echo "$RESULT" | jq -r '.logs[0].events[1].attributes[1].value')
@@ -163,12 +163,12 @@ fi
 
 CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+1))
-EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 0 $TARGET_HEIGHT)
+EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
 
 echo "Removed Authorized account tries submit key share on chain fairyring_test_1"
-RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 0 $TARGET_HEIGHT --from $WALLET_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 1 $TARGET_HEIGHT --from $WALLET_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
@@ -181,12 +181,12 @@ fi
 
 CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+1))
-EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 0 $TARGET_HEIGHT)
+EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
 
 echo "Registered validator submit valid key share on chain fairyring_test_1"
-RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 0 $TARGET_HEIGHT --from $VALIDATOR_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 1 $TARGET_HEIGHT --from $VALIDATOR_1 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 RESULT_EVENT=$(echo "$RESULT" | jq -r '.logs[0].events[2].type')

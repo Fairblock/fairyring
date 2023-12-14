@@ -30,6 +30,94 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+type QueryCommitmentsRequest struct {
+}
+
+func (m *QueryCommitmentsRequest) Reset()         { *m = QueryCommitmentsRequest{} }
+func (m *QueryCommitmentsRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryCommitmentsRequest) ProtoMessage()    {}
+func (*QueryCommitmentsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_572603c2d521bf14, []int{0}
+}
+func (m *QueryCommitmentsRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryCommitmentsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryCommitmentsRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryCommitmentsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryCommitmentsRequest.Merge(m, src)
+}
+func (m *QueryCommitmentsRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryCommitmentsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryCommitmentsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryCommitmentsRequest proto.InternalMessageInfo
+
+type QueryCommitmentsResponse struct {
+	ActiveCommitments *Commitments `protobuf:"bytes,1,opt,name=activeCommitments,proto3" json:"activeCommitments,omitempty"`
+	QueuedCommitments *Commitments `protobuf:"bytes,2,opt,name=queuedCommitments,proto3" json:"queuedCommitments,omitempty"`
+}
+
+func (m *QueryCommitmentsResponse) Reset()         { *m = QueryCommitmentsResponse{} }
+func (m *QueryCommitmentsResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryCommitmentsResponse) ProtoMessage()    {}
+func (*QueryCommitmentsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_572603c2d521bf14, []int{1}
+}
+func (m *QueryCommitmentsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryCommitmentsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryCommitmentsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryCommitmentsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryCommitmentsResponse.Merge(m, src)
+}
+func (m *QueryCommitmentsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryCommitmentsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryCommitmentsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryCommitmentsResponse proto.InternalMessageInfo
+
+func (m *QueryCommitmentsResponse) GetActiveCommitments() *Commitments {
+	if m != nil {
+		return m.ActiveCommitments
+	}
+	return nil
+}
+
+func (m *QueryCommitmentsResponse) GetQueuedCommitments() *Commitments {
+	if m != nil {
+		return m.QueuedCommitments
+	}
+	return nil
+}
+
 // QueryParamsRequest is request type for the Query/Params RPC method.
 type QueryParamsRequest struct {
 }
@@ -38,7 +126,7 @@ func (m *QueryParamsRequest) Reset()         { *m = QueryParamsRequest{} }
 func (m *QueryParamsRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryParamsRequest) ProtoMessage()    {}
 func (*QueryParamsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{0}
+	return fileDescriptor_572603c2d521bf14, []int{2}
 }
 func (m *QueryParamsRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -77,7 +165,7 @@ func (m *QueryParamsResponse) Reset()         { *m = QueryParamsResponse{} }
 func (m *QueryParamsResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryParamsResponse) ProtoMessage()    {}
 func (*QueryParamsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{1}
+	return fileDescriptor_572603c2d521bf14, []int{3}
 }
 func (m *QueryParamsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -121,7 +209,7 @@ func (m *QueryGetValidatorSetRequest) Reset()         { *m = QueryGetValidatorSe
 func (m *QueryGetValidatorSetRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryGetValidatorSetRequest) ProtoMessage()    {}
 func (*QueryGetValidatorSetRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{2}
+	return fileDescriptor_572603c2d521bf14, []int{4}
 }
 func (m *QueryGetValidatorSetRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -165,7 +253,7 @@ func (m *QueryGetValidatorSetResponse) Reset()         { *m = QueryGetValidatorS
 func (m *QueryGetValidatorSetResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryGetValidatorSetResponse) ProtoMessage()    {}
 func (*QueryGetValidatorSetResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{3}
+	return fileDescriptor_572603c2d521bf14, []int{5}
 }
 func (m *QueryGetValidatorSetResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -209,7 +297,7 @@ func (m *QueryAllValidatorSetRequest) Reset()         { *m = QueryAllValidatorSe
 func (m *QueryAllValidatorSetRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryAllValidatorSetRequest) ProtoMessage()    {}
 func (*QueryAllValidatorSetRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{4}
+	return fileDescriptor_572603c2d521bf14, []int{6}
 }
 func (m *QueryAllValidatorSetRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -254,7 +342,7 @@ func (m *QueryAllValidatorSetResponse) Reset()         { *m = QueryAllValidatorS
 func (m *QueryAllValidatorSetResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryAllValidatorSetResponse) ProtoMessage()    {}
 func (*QueryAllValidatorSetResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{5}
+	return fileDescriptor_572603c2d521bf14, []int{7}
 }
 func (m *QueryAllValidatorSetResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -306,7 +394,7 @@ func (m *QueryGetKeyShareRequest) Reset()         { *m = QueryGetKeyShareRequest
 func (m *QueryGetKeyShareRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryGetKeyShareRequest) ProtoMessage()    {}
 func (*QueryGetKeyShareRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{6}
+	return fileDescriptor_572603c2d521bf14, []int{8}
 }
 func (m *QueryGetKeyShareRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -357,7 +445,7 @@ func (m *QueryGetKeyShareResponse) Reset()         { *m = QueryGetKeyShareRespon
 func (m *QueryGetKeyShareResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryGetKeyShareResponse) ProtoMessage()    {}
 func (*QueryGetKeyShareResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{7}
+	return fileDescriptor_572603c2d521bf14, []int{9}
 }
 func (m *QueryGetKeyShareResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -401,7 +489,7 @@ func (m *QueryAllKeyShareRequest) Reset()         { *m = QueryAllKeyShareRequest
 func (m *QueryAllKeyShareRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryAllKeyShareRequest) ProtoMessage()    {}
 func (*QueryAllKeyShareRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{8}
+	return fileDescriptor_572603c2d521bf14, []int{10}
 }
 func (m *QueryAllKeyShareRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -446,7 +534,7 @@ func (m *QueryAllKeyShareResponse) Reset()         { *m = QueryAllKeyShareRespon
 func (m *QueryAllKeyShareResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryAllKeyShareResponse) ProtoMessage()    {}
 func (*QueryAllKeyShareResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{9}
+	return fileDescriptor_572603c2d521bf14, []int{11}
 }
 func (m *QueryAllKeyShareResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -498,7 +586,7 @@ func (m *QueryGetAggregatedKeyShareRequest) Reset()         { *m = QueryGetAggre
 func (m *QueryGetAggregatedKeyShareRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryGetAggregatedKeyShareRequest) ProtoMessage()    {}
 func (*QueryGetAggregatedKeyShareRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{10}
+	return fileDescriptor_572603c2d521bf14, []int{12}
 }
 func (m *QueryGetAggregatedKeyShareRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -542,7 +630,7 @@ func (m *QueryGetAggregatedKeyShareResponse) Reset()         { *m = QueryGetAggr
 func (m *QueryGetAggregatedKeyShareResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryGetAggregatedKeyShareResponse) ProtoMessage()    {}
 func (*QueryGetAggregatedKeyShareResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{11}
+	return fileDescriptor_572603c2d521bf14, []int{13}
 }
 func (m *QueryGetAggregatedKeyShareResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -586,7 +674,7 @@ func (m *QueryAllAggregatedKeyShareRequest) Reset()         { *m = QueryAllAggre
 func (m *QueryAllAggregatedKeyShareRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryAllAggregatedKeyShareRequest) ProtoMessage()    {}
 func (*QueryAllAggregatedKeyShareRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{12}
+	return fileDescriptor_572603c2d521bf14, []int{14}
 }
 func (m *QueryAllAggregatedKeyShareRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -631,7 +719,7 @@ func (m *QueryAllAggregatedKeyShareResponse) Reset()         { *m = QueryAllAggr
 func (m *QueryAllAggregatedKeyShareResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryAllAggregatedKeyShareResponse) ProtoMessage()    {}
 func (*QueryAllAggregatedKeyShareResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{13}
+	return fileDescriptor_572603c2d521bf14, []int{15}
 }
 func (m *QueryAllAggregatedKeyShareResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -681,7 +769,7 @@ func (m *QueryPubKeyRequest) Reset()         { *m = QueryPubKeyRequest{} }
 func (m *QueryPubKeyRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryPubKeyRequest) ProtoMessage()    {}
 func (*QueryPubKeyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{14}
+	return fileDescriptor_572603c2d521bf14, []int{16}
 }
 func (m *QueryPubKeyRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -719,7 +807,7 @@ func (m *QueryPubKeyResponse) Reset()         { *m = QueryPubKeyResponse{} }
 func (m *QueryPubKeyResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryPubKeyResponse) ProtoMessage()    {}
 func (*QueryPubKeyResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{15}
+	return fileDescriptor_572603c2d521bf14, []int{17}
 }
 func (m *QueryPubKeyResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -770,7 +858,7 @@ func (m *QueryGetAuthorizedAddressRequest) Reset()         { *m = QueryGetAuthor
 func (m *QueryGetAuthorizedAddressRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryGetAuthorizedAddressRequest) ProtoMessage()    {}
 func (*QueryGetAuthorizedAddressRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{16}
+	return fileDescriptor_572603c2d521bf14, []int{18}
 }
 func (m *QueryGetAuthorizedAddressRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -814,7 +902,7 @@ func (m *QueryGetAuthorizedAddressResponse) Reset()         { *m = QueryGetAutho
 func (m *QueryGetAuthorizedAddressResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryGetAuthorizedAddressResponse) ProtoMessage()    {}
 func (*QueryGetAuthorizedAddressResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{17}
+	return fileDescriptor_572603c2d521bf14, []int{19}
 }
 func (m *QueryGetAuthorizedAddressResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -858,7 +946,7 @@ func (m *QueryAllAuthorizedAddressRequest) Reset()         { *m = QueryAllAuthor
 func (m *QueryAllAuthorizedAddressRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryAllAuthorizedAddressRequest) ProtoMessage()    {}
 func (*QueryAllAuthorizedAddressRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{18}
+	return fileDescriptor_572603c2d521bf14, []int{20}
 }
 func (m *QueryAllAuthorizedAddressRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -903,7 +991,7 @@ func (m *QueryAllAuthorizedAddressResponse) Reset()         { *m = QueryAllAutho
 func (m *QueryAllAuthorizedAddressResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryAllAuthorizedAddressResponse) ProtoMessage()    {}
 func (*QueryAllAuthorizedAddressResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_572603c2d521bf14, []int{19}
+	return fileDescriptor_572603c2d521bf14, []int{21}
 }
 func (m *QueryAllAuthorizedAddressResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1147,6 +1235,8 @@ func (m *QueryAllGeneralKeyShareResponse) GetPagination() *query.PageResponse {
 }
 
 func init() {
+	proto.RegisterType((*QueryCommitmentsRequest)(nil), "fairyring.keyshare.QueryCommitmentsRequest")
+	proto.RegisterType((*QueryCommitmentsResponse)(nil), "fairyring.keyshare.QueryCommitmentsResponse")
 	proto.RegisterType((*QueryParamsRequest)(nil), "fairyring.keyshare.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "fairyring.keyshare.QueryParamsResponse")
 	proto.RegisterType((*QueryGetValidatorSetRequest)(nil), "fairyring.keyshare.QueryGetValidatorSetRequest")
@@ -1268,6 +1358,7 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type QueryClient interface {
+	Commitments(ctx context.Context, in *QueryCommitmentsRequest, opts ...grpc.CallOption) (*QueryCommitmentsResponse, error)
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
 	// Queries a ValidatorSet by index.
@@ -1297,6 +1388,15 @@ type queryClient struct {
 
 func NewQueryClient(cc grpc1.ClientConn) QueryClient {
 	return &queryClient{cc}
+}
+
+func (c *queryClient) Commitments(ctx context.Context, in *QueryCommitmentsRequest, opts ...grpc.CallOption) (*QueryCommitmentsResponse, error) {
+	out := new(QueryCommitmentsResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Query/Commitments", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error) {
@@ -1409,6 +1509,7 @@ func (c *queryClient) GeneralKeyShareAll(ctx context.Context, in *QueryAllGenera
 
 // QueryServer is the server API for Query service.
 type QueryServer interface {
+	Commitments(context.Context, *QueryCommitmentsRequest) (*QueryCommitmentsResponse, error)
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
 	// Queries a ValidatorSet by index.
@@ -1436,6 +1537,9 @@ type QueryServer interface {
 type UnimplementedQueryServer struct {
 }
 
+func (*UnimplementedQueryServer) Commitments(ctx context.Context, req *QueryCommitmentsRequest) (*QueryCommitmentsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Commitments not implemented")
+}
 func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
 }
@@ -1475,6 +1579,24 @@ func (*UnimplementedQueryServer) GeneralKeyShareAll(ctx context.Context, req *Qu
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
 	s.RegisterService(&_Query_serviceDesc, srv)
+}
+
+func _Query_Commitments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryCommitmentsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Commitments(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.keyshare.Query/Commitments",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Commitments(ctx, req.(*QueryCommitmentsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -1698,6 +1820,10 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "Commitments",
+			Handler:    _Query_Commitments_Handler,
+		},
+		{
 			MethodName: "Params",
 			Handler:    _Query_Params_Handler,
 		},
@@ -1748,6 +1874,76 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "fairyring/keyshare/query.proto",
+}
+
+func (m *QueryCommitmentsRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryCommitmentsRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryCommitmentsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryCommitmentsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryCommitmentsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryCommitmentsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.QueuedCommitments != nil {
+		{
+			size, err := m.QueuedCommitments.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.ActiveCommitments != nil {
+		{
+			size, err := m.ActiveCommitments.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *QueryParamsRequest) Marshal() (dAtA []byte, err error) {
@@ -2469,6 +2665,46 @@ func (m *QueryGetGeneralKeyShareRequest) Marshal() (dAtA []byte, err error) {
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
+func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
+	offset -= sovQuery(v)
+	base := offset
+	for v >= 1<<7 {
+		dAtA[offset] = uint8(v&0x7f | 0x80)
+		v >>= 7
+		offset++
+	}
+	dAtA[offset] = uint8(v)
+	return base
+}
+func (m *QueryCommitmentsRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *QueryCommitmentsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ActiveCommitments != nil {
+		l = m.ActiveCommitments.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	if m.QueuedCommitments != nil {
+		l = m.QueuedCommitments.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryParamsRequest) Size() (n int) {
+	if m == nil {
+		return 0
 	}
 	return dAtA[:n], nil
 }
@@ -2972,6 +3208,178 @@ func sovQuery(x uint64) (n int) {
 }
 func sozQuery(x uint64) (n int) {
 	return sovQuery(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *QueryCommitmentsRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryCommitmentsRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryCommitmentsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryCommitmentsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryCommitmentsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryCommitmentsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ActiveCommitments", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.ActiveCommitments == nil {
+				m.ActiveCommitments = &Commitments{}
+			}
+			if err := m.ActiveCommitments.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field QueuedCommitments", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.QueuedCommitments == nil {
+				m.QueuedCommitments = &Commitments{}
+			}
+			if err := m.QueuedCommitments.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
 }
 func (m *QueryParamsRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)

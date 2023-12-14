@@ -73,6 +73,15 @@ export const GenesisState = {
     for (const v of message.generalKeyShareList) {
       GeneralKeyShare.encode(v!, writer.uint32(82).fork()).ldelim();
     }
+    if (message.activePubKey !== undefined) {
+      ActivePubKey.encode(message.activePubKey, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.queuedPubKey !== undefined) {
+      QueuedPubKey.encode(message.queuedPubKey, writer.uint32(50).fork()).ldelim();
+    }
+    for (const v of message.authorizedAddressList) {
+      AuthorizedAddress.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
     return writer;
   },
 

@@ -1,6 +1,6 @@
 {
-  "genesis_time": "2023-09-29T15:21:45.668086Z",
-  "chain_id": "fairytest-1",
+  "genesis_time": "2023-10-11T00:00:00Z",
+  "chain_id": "fairytest-2",
   "initial_height": "1",
   "consensus_params": {
     "block": {
@@ -44,77 +44,84 @@
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "fairy15davlswu3dfud5zushgp0yam70p5cnu6w5vcfd",
           "pub_key": null,
-          "account_number": "0",
+          "account_number": "1",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "fairy1tqqpdxhvfftnpvj8w2zwumk69t0km7ca92m8zt",
           "pub_key": null,
-          "account_number": "0",
+          "account_number": "2",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "fairy13sv36pmhz0ckvzwtvwgk4ecu6chuf6nmdssjvm",
           "pub_key": null,
-          "account_number": "0",
+          "account_number": "3",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "fairy1ffm2sadwyurzkgtfhm3ctttc5qxjsgayex8prk",
           "pub_key": null,
-          "account_number": "0",
+          "account_number": "4",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "fairy13sjf5svx0xvrtwq8g4l86qmpv0qs05zvrgq72v",
           "pub_key": null,
-          "account_number": "0",
+          "account_number": "5",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "fairy1nwdhwx0nn7e8ltfwtlgn43gu59swd056qs7pj5",
           "pub_key": null,
-          "account_number": "0",
+          "account_number": "6",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "fairy146p637nkum6sfjj0x9etzpa40qrfdv3c5ccnmz",
           "pub_key": null,
-          "account_number": "0",
+          "account_number": "7",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "fairy1f6mx8wgea8xdxeswwavh9008uv6d7yga3qqtyv",
           "pub_key": null,
-          "account_number": "0",
+          "account_number": "8",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "fairy1lw4mm6yzry2xg3tj7swp80cw4s6w6vzvxfqml5",
           "pub_key": null,
-          "account_number": "0",
+          "account_number": "9",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "fairy1t5rvpy4aefapvsws2zhzgsfgl8d9actpmarwh7",
           "pub_key": null,
-          "account_number": "0",
+          "account_number": "10",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "address": "fairy1cmly8rn75tp4pmdwjae39t8h7ttmd6ld85je6f",
           "pub_key": null,
-          "account_number": "0",
+          "account_number": "11",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "fairy14qekdkj2nmmwea4ufg9n002a3pud23y8tcf8aa",
+          "pub_key": null,
+          "account_number": "12",
           "sequence": "0"
         }
       ]
@@ -202,6 +209,15 @@
         },
         {
           "address": "fairy15davlswu3dfud5zushgp0yam70p5cnu6w5vcfd",
+          "coins": [
+            {
+              "denom": "ufairy",
+              "amount": "500000000000"
+            }
+          ]
+        },
+        {
+          "address": "fairy14qekdkj2nmmwea4ufg9n002a3pud23y8tcf8aa",
           "coins": [
             {
               "denom": "ufairy",
@@ -301,7 +317,7 @@
                 "validator_address": "fairyvaloper15davlswu3dfud5zushgp0yam70p5cnu6402ddf",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
-                  "key": "xVUuOR0Qbj+Wyynvw5HPizaTCh8LxDFfFVMR5vAtGXI="
+                  "key": "Fv9vyf1tHk0EktjVqNC/c/PT62L6ANOP4J6vOMwaHBk="
                 },
                 "value": {
                   "denom": "ufairy",
@@ -309,7 +325,7 @@
                 }
               }
             ],
-            "memo": "cafe8a3e08658fb0309c5ad7017297427ea19ebb@10.238.200.147:26656",
+            "memo": "dbe29963ccda90bb812a14359bbd2a4f3deba169@10.238.200.147:26656",
             "timeout_height": "0",
             "extension_options": [],
             "non_critical_extension_options": []
@@ -338,7 +354,7 @@
             "tip": null
           },
           "signatures": [
-            "04Mej/UF/GzbC/UHuVxqk1AjUFO4kpj64mzc+013ZEJ4VNMTcvfA4V2fw+f5ejzaeE7KCicK0eBcwsMW1Mc+1A=="
+            "itciG6CjdFU7nTo2tuIMBrzrETb8GiVu3dIE1iNRd6dVEi0abHMWztMMHnN7yf5ngIoVZ6q/Xk5c+520/GvR9A=="
           ]
         },
         {
@@ -350,7 +366,7 @@
                   "moniker": "Dora Factory PGS",
                   "identity": "1BEC0B582AEDB0EC",
                   "website": "https://dorafactory.org/",
-                  "security_contact": "node-operation@dorahacks.com",
+                  "security_contact": "node-operation@mail.dorafactory.org",
                   "details": "Public Good Staking"
                 },
                 "commission": {
@@ -400,7 +416,69 @@
             "tip": null
           },
           "signatures": [
-            "MeQqMz4LXTKc5Z2yGls/si9QJ06J4sJizi1DhR0GFEQ3d9U2ML53BMPf0RinuLGCy9HgE04wgzt6MxwGIBbvYA=="
+            "U3lBhCzuZfJVFYl+EyLsxIbrkUEPmlNdORu4bBF9FpF+vgkwK9QYy2Ah89uDXOAsWCwjmmvXn1MaVig+BhwFWA=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": " Lavender.Five Nodes 🐝",
+                  "identity": "F87ADDB700C0CC94",
+                  "website": "https://www.lavenderfive.com/",
+                  "security_contact": "hello@lavenderfive.com",
+                  "details": "Fortifying crypto networks with Horcrux security, slash insurance, and open source contributions. Connect with us at https://linktr.ee/lavenderfive."
+                },
+                "commission": {
+                  "rate": "0.050000000000000000",
+                  "max_rate": "0.100000000000000000",
+                  "max_change_rate": "0.050000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "fairy14qekdkj2nmmwea4ufg9n002a3pud23y8tcf8aa",
+                "validator_address": "fairyvaloper14qekdkj2nmmwea4ufg9n002a3pud23y8sr0jee",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "t/XiBkAo+ypJA9OzSWjRf6mTh9KM4p9SqYCiI2NVraA="
+                },
+                "value": {
+                  "denom": "ufairy",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "fe0713ceb31b8a273b25bdd0fe0026778f781526@147.135.105.3:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "AgDrjXJ1+/lwJdf+fekEXKwLpA30N7F/Z3ESi/Sn7Rw4"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "rvuIOu2EptERNPvBka/g9Ur7UvIlBnEgaTUUaCB26Wg8EncVrRAFZlYt7FVUG71/+HlaORBXkbTbiuCQYABA7w=="
           ]
         },
         {
@@ -433,7 +511,7 @@
                 }
               }
             ],
-            "memo": "3cda3bebf7aaeeb0533734496158420dcd3da4ad@31.187.74.250:26656",
+            "memo": "3cda3bebf7aaeeb0533734496158420dcd3da4ad@94.130.137.119:26656",
             "timeout_height": "0",
             "extension_options": [],
             "non_critical_extension_options": []
@@ -462,7 +540,7 @@
             "tip": null
           },
           "signatures": [
-            "diByOHASDxMTdQs6brFySfyPApGSNj1KEWsLvrbTr3AppJOZWpZNi4ofy046NIDNB/zLq2N0YpMwbiDuHFMfBA=="
+            "2NpLP6sVCdzl13P+NLAx/dEaj0ddIcjUbhhxOOozxNgS71uB/Tsbr8CApRwHBaXQQlaZ9SYw7Oj9Y4bR4xOqWw=="
           ]
         },
         {
@@ -471,71 +549,9 @@
               {
                 "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
                 "description": {
-                  "moniker": "Stakecito",
-                  "identity": "D16E26E5C8154E17",
-                  "website": "https://stakecito.com",
-                  "security_contact": "security@stakecito.de",
-                  "details": "Securing \u0026 Decentralizing PoS Networks."
-                },
-                "commission": {
-                  "rate": "0.050000000000000000",
-                  "max_rate": "0.200000000000000000",
-                  "max_change_rate": "0.010000000000000000"
-                },
-                "min_self_delegation": "1",
-                "delegator_address": "fairy13sjf5svx0xvrtwq8g4l86qmpv0qs05zvrgq72v",
-                "validator_address": "fairyvaloper13sjf5svx0xvrtwq8g4l86qmpv0qs05zvcnxtwg",
-                "pubkey": {
-                  "@type": "/cosmos.crypto.ed25519.PubKey",
-                  "key": "jnIAYnrPi2W7jNMLX+SVqODs6LQn/OnqNEITD8aBmB8="
-                },
-                "value": {
-                  "denom": "ufairy",
-                  "amount": "100000000000"
-                }
-              }
-            ],
-            "memo": "f842253c4971e898247e054b5dd9c024503f593c@192.168.43.244:26656",
-            "timeout_height": "0",
-            "extension_options": [],
-            "non_critical_extension_options": []
-          },
-          "auth_info": {
-            "signer_infos": [
-              {
-                "public_key": {
-                  "@type": "/cosmos.crypto.secp256k1.PubKey",
-                  "key": "AyuXfdmbqcM51790JzBjINMzkCR/Y6BVMDIpwtr14r+h"
-                },
-                "mode_info": {
-                  "single": {
-                    "mode": "SIGN_MODE_DIRECT"
-                  }
-                },
-                "sequence": "0"
-              }
-            ],
-            "fee": {
-              "amount": [],
-              "gas_limit": "200000",
-              "payer": "",
-              "granter": ""
-            },
-            "tip": null
-          },
-          "signatures": [
-            "LrzJ7RVCYlKuV3qSPUvRIl4SkC72zy0/2i9ydLDw4mBaGxqSqm0r5vvqFNvPjdgIalKYxdI9wHLCE+7tBpGkvA=="
-          ]
-        },
-        {
-          "body": {
-            "messages": [
-              {
-                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
-                "description": {
-                  "moniker": "validictator",
+                  "moniker": "fairblock",
                   "identity": "",
-                  "website": "",
+                  "website": "https://fairblock.network/",
                   "security_contact": "",
                   "details": ""
                 },
@@ -586,7 +602,7 @@
             "tip": null
           },
           "signatures": [
-            "Nn4xQ1SugSxYSoTt1XeMZTwaWyv6n8ZP3iCbJS0GP7Acr58hHtI9EL6bSHfSL9zc59omvdFSfU57jC374rIAsQ=="
+            "je2ghkVADt+R/ZBEWCpV2AfmzWypfC+jVj6938O1sM4LC3ndM5bYHw/sAGKEMRFjrsuHknesC7T3Gr9SgAGZgw=="
           ]
         },
         {
@@ -597,8 +613,8 @@
                 "description": {
                   "moniker": "Lemniscap",
                   "identity": "1FDB0F8D14C89421",
-                  "website": "https://lemnscap.com",
-                  "security_contact": "sjors@lemniscap.vc",
+                  "website": "https://lemniscap.com",
+                  "security_contact": "",
                   "details": "Lemniscap is an investment firm specialising in investments in emerging cryptoassets and blockchain startups."
                 },
                 "commission": {
@@ -648,69 +664,7 @@
             "tip": null
           },
           "signatures": [
-            "C6Tv7mxPKg2Sawv2mFhcKmzDpBlFRHhuZTcSxSq2L/kcf63VHVqVg0Rte8eMLRuBDYWN8XFNzm7G5yURPt2XGA=="
-          ]
-        },
-        {
-          "body": {
-            "messages": [
-              {
-                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
-                "description": {
-                  "moniker": "strangelove",
-                  "identity": "",
-                  "website": "https://strange.love",
-                  "security_contact": "infra@strange.love",
-                  "details": ""
-                },
-                "commission": {
-                  "rate": "0.050000000000000000",
-                  "max_rate": "0.200000000000000000",
-                  "max_change_rate": "0.010000000000000000"
-                },
-                "min_self_delegation": "1",
-                "delegator_address": "fairy1nwdhwx0nn7e8ltfwtlgn43gu59swd056qs7pj5",
-                "validator_address": "fairyvaloper1nwdhwx0nn7e8ltfwtlgn43gu59swd056mtc5ks",
-                "pubkey": {
-                  "@type": "/cosmos.crypto.ed25519.PubKey",
-                  "key": "zGSk3AVJxL/fRv5hpXuWe+bmLm+pv1yvCslJxY1NaJ0="
-                },
-                "value": {
-                  "denom": "ufairy",
-                  "amount": "100000000000"
-                }
-              }
-            ],
-            "memo": "6d394ad537476eea0b000e09a786a0400388fc2b@10.10.11.2:26656",
-            "timeout_height": "0",
-            "extension_options": [],
-            "non_critical_extension_options": []
-          },
-          "auth_info": {
-            "signer_infos": [
-              {
-                "public_key": {
-                  "@type": "/cosmos.crypto.secp256k1.PubKey",
-                  "key": "Ak+R2IIXRBmLS+8gCEvpiOhwrX2OcLzNo5lo6lQi8FIp"
-                },
-                "mode_info": {
-                  "single": {
-                    "mode": "SIGN_MODE_DIRECT"
-                  }
-                },
-                "sequence": "0"
-              }
-            ],
-            "fee": {
-              "amount": [],
-              "gas_limit": "200000",
-              "payer": "",
-              "granter": ""
-            },
-            "tip": null
-          },
-          "signatures": [
-            "/Y7nSibyIEl6mVw1w5RB8faz5wHecVjLhs6pWvoJs6JQEMDq0Zn9cJlymiV2MmBiJa/zXGETGm32iTl2uw2JWw=="
+            "WOEnc3cnK0A0Lz1Kqr7QW5G2mBLizzZ+26nwSRjOsW5zb7i9OCN3dKm/2RWe+3XpUO1VOpaV1QVdDPwF52f9jg=="
           ]
         }
       ]
@@ -851,8 +805,16 @@
     "params": null,
     "pep": {
       "params": {
-        "trusted_counter_parties": [{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-0"}],
-        "trusted_addresses": ["fairy1cmly8rn75tp4pmdwjae39t8h7ttmd6ld85je6f"],
+        "trusted_counter_parties": [
+          {
+            "client_id": "07-tendermint-0",
+            "connection_id": "connection-0",
+            "channel_id": "channel-0"
+          }
+        ],
+        "trusted_addresses": [
+          "fairy1cmly8rn75tp4pmdwjae39t8h7ttmd6ld85je6f"
+        ],
         "channel_id": "channel-0",
         "minGasPrice": {
           "denom": "ufairy",
