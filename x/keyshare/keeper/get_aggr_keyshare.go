@@ -36,7 +36,8 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 // OnTimeoutGetAggrKeysharePacket responds to the case where a packet has not been transmitted because of a timeout
 func (k Keeper) OnTimeoutGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data types.GetAggrKeysharePacketData) error {
 
-	// TODO: packet timeout logic
+	// Implement custom packet timeout logic
+	// (Not required for fairyring since this packet is never sent from fairyring)
 
 	return nil
 }

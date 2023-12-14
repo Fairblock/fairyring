@@ -27,9 +27,6 @@ func (k Keeper) TransmitRequestAggrKeysharePacket(
 	}
 
 	packetBytes := packetData.GetBytes()
-	// if err != nil {
-	// 	return 0, sdkerrors.Wrapf(sdkerrors.ErrJSONMarshal, "cannot marshal the packet: %w", err)
-	// }
 
 	return k.ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes)
 }
@@ -84,7 +81,8 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 // OnTimeoutRequestAggrKeysharePacket responds to the case where a packet has not been transmitted because of a timeout
 func (k Keeper) OnTimeoutRequestAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestAggrKeysharePacketData) error {
 
-	// TODO: packet timeout logic
+	// Implement custom packet timeout logic
+	// (Not required for fairyring since this packet is never sent from fairyring)
 
 	return nil
 }

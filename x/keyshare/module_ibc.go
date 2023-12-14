@@ -155,10 +155,6 @@ func (im IBCModule) OnRecvPacket(
 		} else {
 			// Encode packet acknowledgment
 			packetAckBytes := types.MustProtoMarshalJSON(&packetAck)
-			// packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
-			// if err != nil {
-			// 	return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, err.Error()))
-			// }
 			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
 		}
 		ctx.EventManager().EmitEvent(

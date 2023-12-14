@@ -1,12 +1,17 @@
 package types
 
-import sdk "github.com/cosmos/cosmos-sdk/types"
+import (
+	"errors"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
 
 // ValidateBasic is used for validating the packet
 func (p GetAggrKeysharePacketData) ValidateBasic() error {
 
-	// TODO: Validate the packet data
-
+	if p.Identity == "" {
+		return errors.New("identity is blank")
+	}
 	return nil
 }
 

@@ -54,8 +54,24 @@ func (k Keeper) OnAcknowledgementAggrKeyshareDataPacket(ctx sdk.Context, packet 
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
 
-		// TODO: failed acknowledgement logic
-		_ = dispatchedAck.Error
+		// retry sending the packet
+		if data.Retries < MAX_RETRIES {
+			timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
+
+			data.Retries = data.Retries + 1
+
+			_, err := k.TransmitAggrKeyshareDataPacket(
+				ctx,
+				data,
+				packet.SourcePort,
+				packet.SourceChannel,
+				clienttypes.ZeroHeight(),
+				uint64(timeoutTimestamp),
+			)
+			if err != nil {
+				return err
+			}
+		}
 		return nil
 	case *channeltypes.Acknowledgement_Result:
 		// Decode the packet acknowledgment
