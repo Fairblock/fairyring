@@ -46,12 +46,14 @@ const getDefaultState = () => {
 				Balance: {},
 				AllBalances: {},
 				SpendableBalances: {},
+				SpendableBalanceByDenom: {},
 				TotalSupply: {},
 				SupplyOf: {},
 				Params: {},
 				DenomMetadata: {},
 				DenomsMetadata: {},
 				DenomOwners: {},
+				SendEnabled: {},
 				
 				_Structure: {
 						SendAuthorization: getStructure(SendAuthorization.fromPartial({})),
@@ -110,6 +112,12 @@ export default {
 					}
 			return state.SpendableBalances[JSON.stringify(params)] ?? {}
 		},
+				getSpendableBalanceByDenom: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.SpendableBalanceByDenom[JSON.stringify(params)] ?? {}
+		},
 				getTotalSupply: (state) => (params = { params: {}}) => {
 					if (!(<any> params).query) {
 						(<any> params).query=null
@@ -145,6 +153,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.DenomOwners[JSON.stringify(params)] ?? {}
+		},
+				getSendEnabled: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.SendEnabled[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -253,6 +267,32 @@ export default {
 				return getters['getSpendableBalances']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QuerySpendableBalances API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QuerySpendableBalanceByDenom({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.CosmosBankV1Beta1.query.querySpendableBalanceByDenom( key.address, query ?? undefined)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await client.CosmosBankV1Beta1.query.querySpendableBalanceByDenom( key.address, {...query ?? {}, 'pagination.key':(<any> value).pagination.next_key} as any)).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'SpendableBalanceByDenom', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QuerySpendableBalanceByDenom', payload: { options: { all }, params: {...key},query }})
+				return getters['getSpendableBalanceByDenom']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QuerySpendableBalanceByDenom API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},
@@ -401,6 +441,32 @@ export default {
 				return getters['getDenomOwners']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryDenomOwners API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QuerySendEnabled({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.CosmosBankV1Beta1.query.querySendEnabled(query ?? undefined)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await client.CosmosBankV1Beta1.query.querySendEnabled({...query ?? {}, 'pagination.key':(<any> value).pagination.next_key} as any)).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'SendEnabled', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QuerySendEnabled', payload: { options: { all }, params: {...key},query }})
+				return getters['getSendEnabled']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QuerySendEnabled API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

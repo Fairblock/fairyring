@@ -8,9 +8,10 @@ import { Vote } from "fairyring-client-ts/cosmos.gov.v1/types"
 import { DepositParams } from "fairyring-client-ts/cosmos.gov.v1/types"
 import { VotingParams } from "fairyring-client-ts/cosmos.gov.v1/types"
 import { TallyParams } from "fairyring-client-ts/cosmos.gov.v1/types"
+import { Params } from "fairyring-client-ts/cosmos.gov.v1/types"
 
 
-export { WeightedVoteOption, Deposit, Proposal, TallyResult, Vote, DepositParams, VotingParams, TallyParams };
+export { WeightedVoteOption, Deposit, Proposal, TallyResult, Vote, DepositParams, VotingParams, TallyParams, Params };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -59,6 +60,7 @@ const getDefaultState = () => {
 						DepositParams: getStructure(DepositParams.fromPartial({})),
 						VotingParams: getStructure(VotingParams.fromPartial({})),
 						TallyParams: getStructure(TallyParams.fromPartial({})),
+						Params: getStructure(Params.fromPartial({})),
 						
 		},
 		_Registry: registry,
@@ -357,20 +359,6 @@ export default {
 		},
 		
 		
-		async sendMsgVote({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosGovV1.tx.sendMsgVote({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgVote:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgVote:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendMsgSubmitProposal({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -385,6 +373,20 @@ export default {
 				}
 			}
 		},
+		async sendMsgVote({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosGovV1.tx.sendMsgVote({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgVote:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgVote:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendMsgVoteWeighted({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -396,6 +398,20 @@ export default {
 					throw new Error('TxClient:MsgVoteWeighted:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:MsgVoteWeighted:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgUpdateParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosGovV1.tx.sendMsgUpdateParams({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgUpdateParams:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -414,19 +430,6 @@ export default {
 			}
 		},
 		
-		async MsgVote({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosGovV1.tx.msgVote({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgVote:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgVote:Create Could not create message: ' + e.message)
-				}
-			}
-		},
 		async MsgSubmitProposal({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -440,6 +443,19 @@ export default {
 				}
 			}
 		},
+		async MsgVote({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosGovV1.tx.msgVote({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgVote:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgVote:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		async MsgVoteWeighted({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -450,6 +466,19 @@ export default {
 					throw new Error('TxClient:MsgVoteWeighted:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgVoteWeighted:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgUpdateParams({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosGovV1.tx.msgUpdateParams({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgUpdateParams:Create Could not create message: ' + e.message)
 				}
 			}
 		},

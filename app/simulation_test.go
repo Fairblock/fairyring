@@ -34,6 +34,7 @@ import (
 	simcli "github.com/cosmos/cosmos-sdk/x/simulation/client/cli"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	ibctesting "github.com/cosmos/ibc-go/v7/testing"
 	"github.com/stretchr/testify/require"
 
 	"fairyring/app"
@@ -48,6 +49,7 @@ type storeKeysPrefixes struct {
 // Get flags every time the simulator is run
 func init() {
 	simcli.GetSimulatorFlags()
+	ibctesting.DefaultTestingAppInit = SetupTestingApp
 }
 
 // fauxMerkleModeOpt returns a BaseApp option to use a dbStoreAdapter instead of
@@ -498,4 +500,21 @@ func TestAppSimulationAfterImport(t *testing.T) {
 		bApp.AppCodec(),
 	)
 	require.NoError(t, err)
+}
+
+func SetupTestingApp() (ibctesting.TestingApp, map[string]json.RawMessage) {
+	db := dbm.NewMemDB()
+	encCdc := app.MakeEncodingConfig()
+	fapp := app.New(
+		log.NewNopLogger(),
+		db,
+		nil,
+		true,
+		map[int64]bool{},
+		app.DefaultNodeHome,
+		5,
+		encCdc,
+		simtestutil.EmptyAppOptions{},
+	)
+	return fapp, app.NewDefaultGenesisState(encCdc.Marshaler)
 }

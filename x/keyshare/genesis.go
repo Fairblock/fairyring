@@ -3,6 +3,7 @@ package keyshare
 import (
 	"fairyring/x/keyshare/keeper"
 	"fairyring/x/keyshare/types"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -30,7 +31,31 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.AuthorizedAddressList {
 		k.SetAuthorizedAddress(ctx, elem)
 	}
+	// Set all the generalKeyShare
+	for _, elem := range genState.GeneralKeyShareList {
+		k.SetGeneralKeyShare(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
+
+	var portID string
+	if genState.PortId == "" {
+		portID = types.PortID
+	}
+
+	k.SetRequestCount(ctx, genState.RequestCount)
+
+	k.SetPort(ctx, portID)
+	// Only try to bind to port if it is not already bound, since we may already own
+	// port capability from capability InitGenesis
+	if !k.IsBound(ctx, portID) {
+		// module binds to the port on InitChain
+		// and claims the returned capability
+		err := k.BindPort(ctx, portID)
+		if err != nil {
+			panic("could not claim port capability: " + err.Error())
+		}
+	}
+
 	k.SetParams(ctx, genState.Params)
 }
 
@@ -53,7 +78,12 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	}
 
 	genesis.AuthorizedAddressList = k.GetAllAuthorizedAddress(ctx)
+	genesis.GeneralKeyShareList = k.GetAllGeneralKeyShare(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
+
+	genesis.PortId = k.GetPort(ctx)
+
+	genesis.RequestCount, _ = strconv.ParseUint(k.GetRequestCount(ctx), 10, 64)
 
 	return genesis
 }

@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+	"strconv"
 
 	"fairyring/x/keyshare/types"
 
@@ -14,12 +15,14 @@ import (
 
 type (
 	Keeper struct {
-		cdc           codec.BinaryCodec
-		storeKey      storetypes.StoreKey
-		memKey        storetypes.StoreKey
-		paramstore    paramtypes.Subspace
-		stakingKeeper types.StakingKeeper
-		pepKeeper     types.PepKeeper
+		*types.IBCKeeper
+		cdc              codec.BinaryCodec
+		storeKey         storetypes.StoreKey
+		memKey           storetypes.StoreKey
+		paramstore       paramtypes.Subspace
+		connectionKeeper types.ConnectionKeeper
+		stakingKeeper    types.StakingKeeper
+		pepKeeper        types.PepKeeper
 	}
 )
 
@@ -28,6 +31,10 @@ func NewKeeper(
 	storeKey,
 	memKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
+	channelKeeper types.ChannelKeeper,
+	portKeeper types.PortKeeper,
+	scopedKeeper types.ScopedKeeper,
+	connectionKeeper types.ConnectionKeeper,
 	pk types.PepKeeper,
 	stakingKeeper types.StakingKeeper,
 ) *Keeper {
@@ -37,12 +44,20 @@ func NewKeeper(
 	}
 
 	return &Keeper{
-		cdc:           cdc,
-		storeKey:      storeKey,
-		memKey:        memKey,
-		paramstore:    ps,
-		pepKeeper:     pk,
-		stakingKeeper: stakingKeeper,
+		IBCKeeper: types.NewIBCKeeper(
+			types.PortKey,
+			storeKey,
+			channelKeeper,
+			portKeeper,
+			scopedKeeper,
+		),
+		cdc:              cdc,
+		storeKey:         storeKey,
+		memKey:           memKey,
+		paramstore:       ps,
+		pepKeeper:        pk,
+		stakingKeeper:    stakingKeeper,
+		connectionKeeper: connectionKeeper,
 	}
 }
 
@@ -52,4 +67,16 @@ func (k Keeper) StakingKeeper() types.StakingKeeper {
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
+}
+
+// GetRequestCount returns the request count
+func (k Keeper) GetRequestCount(ctx sdk.Context) string {
+	store := ctx.KVStore(k.storeKey)
+	return string(store.Get(types.RequestsCountKey))
+}
+
+// SetRequestCount sets RequestCount
+func (k Keeper) SetRequestCount(ctx sdk.Context, requestNumber uint64) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.RequestsCountKey, []byte(strconv.FormatUint(requestNumber, 10)))
 }

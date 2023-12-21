@@ -57,6 +57,18 @@ func TestGenesisState_Validate(t *testing.T) {
 						Target: "1",
 					},
 				},
+				GeneralKeyShareList: []types.GeneralKeyShare{
+					{
+						Validator: "0",
+						IdType:    "0",
+						IdValue:   "0",
+					},
+					{
+						Validator: "1",
+						IdType:    "1",
+						IdValue:   "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -114,6 +126,24 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 					{
 						Target: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated generalKeyShare",
+			genState: &types.GenesisState{
+				GeneralKeyShareList: []types.GeneralKeyShare{
+					{
+						Validator: "0",
+						IdType:    "0",
+						IdValue:   "0",
+					},
+					{
+						Validator: "0",
+						IdType:    "0",
+						IdValue:   "0",
 					},
 				},
 			},

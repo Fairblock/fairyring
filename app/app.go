@@ -6,12 +6,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"fairyring/blockbuster/abci"
-	"fairyring/blockbuster/lanes/base"
-
-	"fairyring/blockbuster"
-	"fairyring/blockbuster/lanes/keyshare"
-
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	reflectionv1 "cosmossdk.io/api/cosmos/reflection/v1"
 	dbm "github.com/cometbft/cometbft-db"
@@ -112,8 +106,13 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v7/modules/core/exported"
 	ibckeeper "github.com/cosmos/ibc-go/v7/modules/core/keeper"
 	ibctm "github.com/cosmos/ibc-go/v7/modules/light-clients/07-tendermint"
+	ibctestingtypes "github.com/cosmos/ibc-go/v7/testing/types"
 	"github.com/spf13/cast"
 
+	"fairyring/blockbuster"
+	"fairyring/blockbuster/abci"
+	"fairyring/blockbuster/lanes/base"
+	"fairyring/blockbuster/lanes/keyshare"
 	keysharemodule "fairyring/x/keyshare"
 	keysharemodulekeeper "fairyring/x/keyshare/keeper"
 	keysharemoduletypes "fairyring/x/keyshare/types"
@@ -259,6 +258,7 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 	ScopedPepKeeper      capabilitykeeper.ScopedKeeper
+	ScopedKeyshareKeeper capabilitykeeper.ScopedKeeper
 
 	KeyshareKeeper keysharemodulekeeper.Keeper
 	PepKeeper      pepmodulekeeper.Keeper
@@ -534,7 +534,7 @@ func New(
 
 	app.GovKeeper = *govKeeper.SetHooks(
 		govtypes.NewMultiGovHooks(
-			// register the governance hooks
+		// register the governance hooks
 		),
 	)
 
@@ -562,15 +562,29 @@ func New(
 
 	pepIBCModule := pepmodule.NewIBCModule(app.PepKeeper)
 
+	scopedKeyshareKeeper := app.CapabilityKeeper.ScopeToModule(keysharemoduletypes.ModuleName)
 	app.KeyshareKeeper = *keysharemodulekeeper.NewKeeper(
 		appCodec,
 		keys[keysharemoduletypes.StoreKey],
 		keys[keysharemoduletypes.MemStoreKey],
 		app.GetSubspace(keysharemoduletypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedKeyshareKeeper,
+		app.IBCKeeper.ConnectionKeeper,
 		app.PepKeeper,
 		app.StakingKeeper,
 	)
-	keyshareModule := keysharemodule.NewAppModule(appCodec, app.KeyshareKeeper, app.AccountKeeper, app.BankKeeper, app.PepKeeper)
+
+	keyshareModule := keysharemodule.NewAppModule(
+		appCodec,
+		app.KeyshareKeeper,
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.PepKeeper,
+	)
+
+	keyshareIBCModule := keysharemodule.NewIBCModule(app.KeyshareKeeper)
 
 	// ---------------------------------------------------------------------------- //
 	// ------------------------- Begin Custom Code -------------------------------- //
@@ -672,8 +686,9 @@ func New(
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
-		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
-	ibcRouter.AddRoute(pepmoduletypes.ModuleName, pepIBCModule)
+		AddRoute(ibctransfertypes.ModuleName, transferIBCModule).
+		AddRoute(pepmoduletypes.ModuleName, pepIBCModule).
+		AddRoute(keysharemoduletypes.ModuleName, keyshareIBCModule)
 
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
@@ -861,6 +876,7 @@ func New(
 	app.ScopedIBCKeeper = scopedIBCKeeper
 	app.ScopedTransferKeeper = scopedTransferKeeper
 	app.ScopedPepKeeper = scopedPepKeeper
+	app.ScopedKeyshareKeeper = scopedKeyshareKeeper
 	// this line is used by starport scaffolding # stargate/app/beforeInitReturn
 
 	return app
@@ -1046,6 +1062,31 @@ func (app *App) SimulationManager() *module.SimulationManager {
 // ModuleManager returns the app ModuleManager
 func (app *App) ModuleManager() *module.Manager {
 	return app.mm
+}
+
+// GetBaseApp implements the TestingApp interface.
+func (app *App) GetBaseApp() *baseapp.BaseApp {
+	return app.BaseApp
+}
+
+// GetStakingKeeper implements the TestingApp interface.
+func (app *App) GetStakingKeeper() ibctestingtypes.StakingKeeper {
+	return app.StakingKeeper
+}
+
+// GetIBCKeeper implements the TestingApp interface.
+func (app *App) GetIBCKeeper() *ibckeeper.Keeper {
+	return app.IBCKeeper
+}
+
+// GetScopedIBCKeeper implements the TestingApp interface.
+func (app *App) GetScopedIBCKeeper() capabilitykeeper.ScopedKeeper {
+	return app.ScopedIBCKeeper
+}
+
+// GetTxConfig implements the TestingApp interface.
+func (app *App) GetTxConfig() client.TxConfig {
+	return app.txConfig
 }
 
 // SetCheckTx sets the checkTxHandler for the app.

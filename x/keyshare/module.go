@@ -260,5 +260,6 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 		// So he/she won't be slashed in the next block instead he/she will be slashed if he didn't submit for N block again.
 		am.keeper.SetLastSubmittedHeight(ctx, eachValidator.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
 	}
+
 	return []abci.ValidatorUpdate{}
 }

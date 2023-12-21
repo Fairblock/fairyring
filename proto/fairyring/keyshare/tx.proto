@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package fairyring.keyshare;
 
+import "fairyring/keyshare/general_key_share.proto";
+
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "fairyring/x/keyshare/types";
@@ -16,6 +18,7 @@ service Msg {
   rpc CreateAuthorizedAddress (MsgCreateAuthorizedAddress) returns (MsgCreateAuthorizedAddressResponse);
   rpc UpdateAuthorizedAddress (MsgUpdateAuthorizedAddress) returns (MsgUpdateAuthorizedAddressResponse);
   rpc DeleteAuthorizedAddress (MsgDeleteAuthorizedAddress) returns (MsgDeleteAuthorizedAddressResponse);
+  rpc CreateGeneralKeyShare   (MsgCreateGeneralKeyShare  ) returns (MsgCreateGeneralKeyShareResponse  );
 }
 message MsgRegisterValidator {
   string creator = 1;
@@ -44,32 +47,52 @@ message MsgSendKeyshareResponse {
 
 // this line is used by starport scaffolding # proto/tx/message
 message MsgCreateLatestPubKey {
-  string creator   = 1;
-  string publicKey = 2;
+           string creator     = 1;
+           string publicKey   = 2;
   repeated string commitments = 3;
 }
 
 message MsgCreateLatestPubKeyResponse {}
 
 message MsgCreateAuthorizedAddress {
-  string target       = 1;
-  string creator      = 2;
+  string target  = 1;
+  string creator = 2;
 }
 
 message MsgCreateAuthorizedAddressResponse {}
 
 message MsgUpdateAuthorizedAddress {
-  string  target        = 1;
-  bool    isAuthorized  = 2;
-  string  creator       = 3;
+  string target       = 1;
+  bool   isAuthorized = 2;
+  string creator      = 3;
 }
 
 message MsgUpdateAuthorizedAddressResponse {}
 
 message MsgDeleteAuthorizedAddress {
-  string target       = 1;
-  string creator      = 2;
+  string target  = 1;
+  string creator = 2;
 }
 
 message MsgDeleteAuthorizedAddressResponse {}
 
+message MsgCreateGeneralKeyShare {
+  string creator             = 1;
+  string idType              = 2;
+  string idValue             = 3;
+  string keyShare            = 4;
+  uint64 keyShareIndex       = 5;
+  uint64 receivedTimestamp   = 6;
+  uint64 receivedBlockHeight = 7;
+}
+
+message MsgCreateGeneralKeyShareResponse {
+  string creator             = 1;
+  string idType              = 2;
+  string idValue             = 3;
+  string keyShare            = 4;
+  uint64 keyShareIndex       = 5;
+  uint64 receivedBlockHeight = 6;
+  bool   success             = 7;
+  string errorMessage        = 8;
+}

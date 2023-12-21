@@ -25,15 +25,35 @@ make install
 fairyringd
 ```
 
-### Running the chain with Ignite
+### Running the chain locally
 
+1. After building the fairyring executable and before running the script,
+make sure you have previous node data removed, to remove the data, run the following command
+
+```bash
+rm -rf ~/.fairyring
 ```
-ignite chain serve
+
+2. Then, run the following script to setup the node
+
+```bash
+./setup.sh <moniker>
 ```
 
-Optionally add `rv` tag to reset and have verbose output.
+- moniker can be any string you want, is the nickname of your node
 
-`serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
+3. Collect all the gentxs and create the new genesis
+
+```bash
+fairyringd collect-gentxs
+```
+
+4. Run the chain by 
+
+```bash
+fairyringd start
+```
+
 
 ### Running a validator locally with Docker
 
