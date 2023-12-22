@@ -248,6 +248,12 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 			continue
 		}
 
+		if val, found := am.keeper.GetActivePubKey(ctx); !found || len(val.PublicKey) == 0 {
+			// Not slashing validator if there is no active public key
+			am.keeper.SetLastSubmittedHeight(ctx, eachValidator.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
+			continue
+		}
+
 		am.keeper.StakingKeeper().Slash(
 			ctx,
 			consAddr,
