@@ -53,7 +53,7 @@ denominator = '3'
 
 [chains.gas_price]
 price = 1
-denom = 'frt'
+denom = 'ufairy'
 
 [chains.address_type]
 derivation = 'cosmos'
@@ -85,7 +85,7 @@ denominator = '3'
 
 [chains.gas_price]
 price = 1
-denom = 'frt'
+denom = 'ufairy'
 
 [chains.address_type]
 derivation = 'cosmos'

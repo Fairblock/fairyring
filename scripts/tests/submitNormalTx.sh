@@ -66,7 +66,7 @@ NEXT_BLOCK_CONFIRMED=0
 
 for i in $(seq 1 $TX_AMOUNT)
 do
-  RESULT=$($BINARY tx bank send $FROM_ADDR $WALLET1_ADDR 1frt --from $FROM_ADDR --offline --account-number $ACCOUNT_NUMBER --sequence $ACCOUNT_SEQ  --gas 600000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode async --keyring-backend test -o json -y)
+  RESULT=$($BINARY tx bank send $FROM_ADDR $WALLET1_ADDR 1ufairy --from $FROM_ADDR --offline --account-number $ACCOUNT_NUMBER --sequence $ACCOUNT_SEQ  --gas 600000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode async --keyring-backend test -o json -y)
 
   TX_CODE=$(echo "$RESULT" | jq -r '.code')
   TX_HASH=$(echo "$RESULT" | jq -r '.txhash')

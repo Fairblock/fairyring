@@ -62,7 +62,7 @@ fi
 
 echo "Submit encrypted tx with invalid block height to pep module on chain fairyring_test_2"
 CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
-RESULT=$($BINARY tx pep submit-encrypted-tx 0000 $((CURRENT_BLOCK - 1)) --from $VALIDATOR_2 --gas-prices 1frt --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep submit-encrypted-tx 0000 $((CURRENT_BLOCK - 1)) --from $VALIDATOR_2 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
@@ -92,8 +92,8 @@ echo "Target account has: $TARGET_BAL $TARGET_BAL_DENOM before encrypted bank se
 
 echo "Signing bank send tx with pep nonce: '$VALIDATOR_PEP_NONCE_BEFORE'"
 echo "Sending 1 $TARGET_BAL_DENOM to target address"
-$BINARY tx bank send $VALIDATOR_2 $WALLET_2 1$TARGET_BAL_DENOM --from $VALIDATOR_2 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --keyring-backend test --generate-only -o json -y > unsigned.json
-SIGNED_DATA=$($BINARY tx sign unsigned.json --from $VALIDATOR_2 --offline --account-number 0 --sequence $VALIDATOR_PEP_NONCE_BEFORE --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE  --keyring-backend test -y)
+$BINARY tx bank send $VALIDATOR_2 $WALLET_2 1$TARGET_BAL_DENOM --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --keyring-backend test --generate-only -o json -y > unsigned.json
+SIGNED_DATA=$($BINARY tx sign unsigned.json --from $VALIDATOR_2 --offline --account-number 0 --sequence $VALIDATOR_PEP_NONCE_BEFORE --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE  --keyring-backend test -y)
 
 
 PEP_NONCE_2ND=$(($VALIDATOR_PEP_NONCE_BEFORE+1))
@@ -116,7 +116,7 @@ fi
 CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE | jq -r '.block.header.height')
 echo "Chain 2 Current Block: $CURRENT_BLOCK"
 echo "Submit valid aggregated key to pep module on chain fairyring_test_2 from address: $VALIDATOR_2"
-RESULT=$($BINARY tx pep create-aggregated-key-share $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep create-aggregated-key-share $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 ACTION=$(echo "$RESULT" | jq -r '.logs[0].events[0].attributes[0].value')
@@ -156,7 +156,7 @@ echo "Balance before submitting encrypted tx: $BAL_AMT$BAL_DENOM"
 
 
 echo "Submit encrypted tx to pep module on chain fairyring_test_2"
-RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER $AGG_KEY_HEIGHT --from $VALIDATOR_2 --gas-prices 1frt --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER $AGG_KEY_HEIGHT --from $VALIDATOR_2 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 EVENT_TYPE=$(echo "$RESULT" | jq -r '.logs[0].events[5].type')
@@ -176,7 +176,7 @@ echo "Balance after submitting first encrypted tx: $BAL_AMT$BAL_DENOM"
 
 
 echo "Submit 2nd encrypted tx (without gas fee) to pep module on chain fairyring_test_2"
-RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER_2 $AGG_KEY_HEIGHT --from $VALIDATOR_2 --gas-prices 1frt --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER_2 $AGG_KEY_HEIGHT --from $VALIDATOR_2 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 EVENT_TYPE=$(echo "$RESULT" | jq -r '.logs[0].events[5].type')
@@ -208,7 +208,7 @@ fi
 CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE | jq -r '.block.header.height')
 echo "Chain 2 Current Block: $CURRENT_BLOCK"
 echo "Submit valid aggregated key to pep module on chain fairyring_test_2 from address: $VALIDATOR_2"
-RESULT=$($BINARY tx pep create-aggregated-key-share $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep create-aggregated-key-share $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 ACTION=$(echo "$RESULT" | jq -r '.logs[0].events[0].attributes[0].value')
@@ -256,7 +256,7 @@ BAL_AMT=$(echo "$RESULT" | jq -r '.balances[0].amount')
 echo "Balance after encrypted tx execution: $BAL_AMT$BAL_DENOM"
 
 echo "Submit invalid aggregated key to pep module on chain fairyring_test_2"
-RESULT=$($BINARY tx pep create-aggregated-key-share $((AGG_KEY_HEIGHT+1)) 123123123 --from $VALIDATOR_2 --gas-prices 1frt --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep create-aggregated-key-share $((AGG_KEY_HEIGHT+1)) 123123123 --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 if [[ "$RESULT" != *"input string length must be equal to 96 bytes"* ]]; then
