@@ -139,6 +139,10 @@
           "address": "fairy1zrpp7dfav7kancgse2peh3k98u9ueajwvq4w4q",
           "coins": [
             {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
+            {
               "denom": "ufairy",
               "amount": "500000000000"
             }
@@ -147,6 +151,10 @@
         {
           "address": "fairy1ffm2sadwyurzkgtfhm3ctttc5qxjsgayex8prk",
           "coins": [
+            {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
             {
               "denom": "ufairy",
               "amount": "500000000000"
@@ -157,6 +165,10 @@
           "address": "fairy1f6mx8wgea8xdxeswwavh9008uv6d7yga3qqtyv",
           "coins": [
             {
+              "denom": "stake",
+              "amount": "50000000000000"
+            },
+            {
               "denom": "ufairy",
               "amount": "50000000000000"
             }
@@ -165,6 +177,10 @@
         {
           "address": "fairy1tqqpdxhvfftnpvj8w2zwumk69t0km7ca92m8zt",
           "coins": [
+            {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
             {
               "denom": "ufairy",
               "amount": "500000000000"
@@ -175,6 +191,10 @@
           "address": "fairy1t5rvpy4aefapvsws2zhzgsfgl8d9actpmarwh7",
           "coins": [
             {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
+            {
               "denom": "ufairy",
               "amount": "500000000000"
             }
@@ -183,6 +203,10 @@
         {
           "address": "fairy13sv36pmhz0ckvzwtvwgk4ecu6chuf6nmdssjvm",
           "coins": [
+            {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
             {
               "denom": "ufairy",
               "amount": "500000000000"
@@ -193,6 +217,10 @@
           "address": "fairy13sjf5svx0xvrtwq8g4l86qmpv0qs05zvrgq72v",
           "coins": [
             {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
+            {
               "denom": "ufairy",
               "amount": "500000000000"
             }
@@ -201,6 +229,10 @@
         {
           "address": "fairy1nwdhwx0nn7e8ltfwtlgn43gu59swd056qs7pj5",
           "coins": [
+            {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
             {
               "denom": "ufairy",
               "amount": "500000000000"
@@ -211,6 +243,10 @@
           "address": "fairy15davlswu3dfud5zushgp0yam70p5cnu6w5vcfd",
           "coins": [
             {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
+            {
               "denom": "ufairy",
               "amount": "500000000000"
             }
@@ -219,6 +255,10 @@
         {
           "address": "fairy14qekdkj2nmmwea4ufg9n002a3pud23y8tcf8aa",
           "coins": [
+            {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
             {
               "denom": "ufairy",
               "amount": "500000000000"
@@ -229,6 +269,10 @@
           "address": "fairy146p637nkum6sfjj0x9etzpa40qrfdv3c5ccnmz",
           "coins": [
             {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
+            {
               "denom": "ufairy",
               "amount": "500000000000"
             }
@@ -238,6 +282,10 @@
           "address": "fairy1cmly8rn75tp4pmdwjae39t8h7ttmd6ld85je6f",
           "coins": [
             {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
+            {
               "denom": "ufairy",
               "amount": "500000000000"
             }
@@ -246,6 +294,10 @@
         {
           "address": "fairy1lw4mm6yzry2xg3tj7swp80cw4s6w6vzvxfqml5",
           "coins": [
+            {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
             {
               "denom": "ufairy",
               "amount": "500000000000"
@@ -264,7 +316,7 @@
     "consensus": null,
     "crisis": {
       "constant_fee": {
-        "denom": "ufairy",
+        "denom": "stake",
         "amount": "1000"
       }
     },
@@ -307,7 +359,7 @@
       "params": {
         "min_deposit": [
           {
-            "denom": "ufairy",
+            "denom": "stake",
             "amount": "10000000"
           }
         ],
@@ -424,7 +476,7 @@
         "annual_provisions": "0.000000000000000000"
       },
       "params": {
-        "mint_denom": "ufairy",
+        "mint_denom": "stake",
         "inflation_rate_change": "0.130000000000000000",
         "inflation_max": "0.200000000000000000",
         "inflation_min": "0.070000000000000000",
@@ -483,7 +535,7 @@
         "max_validators": 100,
         "max_entries": 7,
         "historical_entries": 10000,
-        "bond_denom": "ufairy",
+        "bond_denom": "stake",
         "min_commission_rate": "0.000000000000000000"
       },
       "last_total_power": "0",
