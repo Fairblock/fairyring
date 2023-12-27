@@ -128,7 +128,7 @@ fairyringd tendermint unsafe-reset-all
 ```shell
 fairyringd gentx \
   [account_key_name] \
-  100000000000ufairy \
+  100000000000stake \
   --commission-max-change-rate 0.01 \
   --commission-max-rate 0.2 \
   --commission-rate 0.05 \
@@ -195,12 +195,12 @@ fairyringd start
 
 ```shell
 fairyringd tx staking create-validator \
-  --amount 100000000000ufairy \
+  --amount 100000000000stake \
   --commission-max-change-rate 0.01 \
   --commission-max-rate 0.2 \
   --commission-rate 0.1 \
   --from [account_key_name] \
-  --fees 400000ufairy \
+  --fees 400000stake \
   --min-self-delegation 1 \
   --moniker [validator_moniker] \
   --pubkey $(fairyringd tendermint show-validator) \
