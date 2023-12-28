@@ -1,5 +1,6 @@
 [global]
 log_level = 'info'
+
 [mode.clients]
 enabled = true
 refresh = true
@@ -16,6 +17,7 @@ enabled = true
 clear_interval = 100
 clear_on_start = true
 tx_confirmation = false
+auto_register_counterparty_payee = false
 
 [rest]
 enabled = false
@@ -44,6 +46,7 @@ max_msg_num = 30
 max_tx_size = 2097152
 clock_drift = '5s'
 max_block_time = '30s'
+trusting_period = '14days'
 memo_prefix = ''
 sequential_batch_tx = false
 
@@ -76,6 +79,7 @@ max_msg_num = 30
 max_tx_size = 2097152
 clock_drift = '5s'
 max_block_time = '30s'
+trusting_period = '14days'
 memo_prefix = ''
 sequential_batch_tx = false
 

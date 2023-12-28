@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"errors"
+	cosmoserror "github.com/cosmos/cosmos-sdk/types/errors"
 	"time"
 
 	"fairyring/x/pep/types"
@@ -61,7 +62,10 @@ func (k Keeper) TransmitCurrentKeysPacket(
 		return sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
 	}
 
-	packetBytes := packetData.GetBytes()
+	packetBytes, err := packetData.GetBytes()
+	if err != nil {
+		return sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, "cannot marshal the packet: "+err.Error())
+	}
 
 	if _, err := k.ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes); err != nil {
 		return err

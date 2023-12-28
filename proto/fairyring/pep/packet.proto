@@ -21,6 +21,6 @@ message CurrentKeysPacketData {
 
 // CurrentKeysPacketAck defines a struct for the packet acknowledgment
 message CurrentKeysPacketAck {
-    ActivePubKey activeKey = 2;
-    QueuedPubKey queuedKey = 3;
+    ActivePubKey activeKey = 1;
+    QueuedPubKey queuedKey = 2;
 }

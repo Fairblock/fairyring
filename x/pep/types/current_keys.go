@@ -8,10 +8,14 @@ func (p CurrentKeysPacketData) ValidateBasic() error {
 }
 
 // GetBytes is a helper for serialising
-func (p CurrentKeysPacketData) GetBytes() []byte {
+func (p CurrentKeysPacketData) GetBytes() ([]byte, error) {
 	var modulePacket PepPacketData
 
 	modulePacket.Packet = &PepPacketData_CurrentKeysPacket{&p}
 
-	return sdk.MustSortJSON(MustProtoMarshalJSON(&modulePacket))
+	b, err := MustProtoMarshalJSON(&modulePacket)
+	if err != nil {
+		return nil, err
+	}
+	return sdk.MustSortJSON(b), nil
 }
