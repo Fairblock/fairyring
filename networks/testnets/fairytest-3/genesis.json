@@ -112,7 +112,7 @@
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "fairy1cmly8rn75tp4pmdwjae39t8h7ttmd6ld85je6f",
+          "address": "fairy1r6q07ne3deq64ezcjwkedcfe6669f0ewpwnxy9",
           "pub_key": null,
           "account_number": "11",
           "sequence": "0"
@@ -122,6 +122,13 @@
           "address": "fairy14qekdkj2nmmwea4ufg9n002a3pud23y8tcf8aa",
           "pub_key": null,
           "account_number": "12",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "fairy1t8eh66t2w5k67kwurmn5gqhtq6d2ja0v8lg8pl",
+          "pub_key": null,
+          "account_number": "13",
           "sequence": "0"
         }
       ]
@@ -137,6 +144,19 @@
       "balances": [
         {
           "address": "fairy1zrpp7dfav7kancgse2peh3k98u9ueajwvq4w4q",
+          "coins": [
+            {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
+            {
+              "denom": "ufairy",
+              "amount": "500000000000"
+            }
+          ]
+        },
+        {
+          "address": "fairy1r6q07ne3deq64ezcjwkedcfe6669f0ewpwnxy9",
           "coins": [
             {
               "denom": "stake",
@@ -176,6 +196,19 @@
         },
         {
           "address": "fairy1tqqpdxhvfftnpvj8w2zwumk69t0km7ca92m8zt",
+          "coins": [
+            {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
+            {
+              "denom": "ufairy",
+              "amount": "500000000000"
+            }
+          ]
+        },
+        {
+          "address": "fairy1t8eh66t2w5k67kwurmn5gqhtq6d2ja0v8lg8pl",
           "coins": [
             {
               "denom": "stake",
@@ -267,19 +300,6 @@
         },
         {
           "address": "fairy146p637nkum6sfjj0x9etzpa40qrfdv3c5ccnmz",
-          "coins": [
-            {
-              "denom": "stake",
-              "amount": "500000000000"
-            },
-            {
-              "denom": "ufairy",
-              "amount": "500000000000"
-            }
-          ]
-        },
-        {
-          "address": "fairy1cmly8rn75tp4pmdwjae39t8h7ttmd6ld85je6f",
           "coins": [
             {
               "denom": "stake",
@@ -443,9 +463,7 @@
       "params": {
         "key_expiry": "100",
         "trusted_addresses": [
-          "fairy1cmly8rn75tp4pmdwjae39t8h7ttmd6ld85je6f",
-          "fairy1t5rvpy4aefapvsws2zhzgsfgl8d9actpmarwh7",
-          "fairy1lw4mm6yzry2xg3tj7swp80cw4s6w6vzvxfqml5"
+          "fairy1r6q07ne3deq64ezcjwkedcfe6669f0ewpwnxy9"
         ],
         "slash_fraction_no_keyshare": "0.00001000000000000",
         "slash_fraction_wrong_keyshare": "0.00001000000000000",
@@ -495,7 +513,8 @@
           }
         ],
         "trusted_addresses": [
-          "fairy1cmly8rn75tp4pmdwjae39t8h7ttmd6ld85je6f"
+          "fairy1t8eh66t2w5k67kwurmn5gqhtq6d2ja0v8lg8pl",
+          "fairy1r6q07ne3deq64ezcjwkedcfe6669f0ewpwnxy9"
         ],
         "channel_id": "channel-0",
         "minGasPrice": {
