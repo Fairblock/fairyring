@@ -25,7 +25,7 @@ var (
 	KeyChannelID       = []byte("ChannelID")
 	DefaultChannelID   = ChannelID
 	KeyMinGasPrice     = []byte("MinGasPrice")
-	DefaultMinGasPrice = sdk.NewCoin("frt", cosmosmath.NewInt(300000))
+	DefaultMinGasPrice = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
 )
 
 // ParamKeyTable the param key table for launch module

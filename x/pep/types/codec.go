@@ -46,7 +46,7 @@ func init() {
 // NOTE: Copied from https://github.com/cosmos/cosmos-sdk/blob/971c542453e0972ef1dfc5a80159ad5049c7211c/codec/json.go
 // and modified in order to allow `EmitDefaults` to be set to false for ics20 packet marshalling.
 // This allows for the introduction of the memo field to be backwards compatible.
-func MustProtoMarshalJSON(msg proto.Message) []byte {
+func MustProtoMarshalJSON(msg proto.Message) ([]byte, error) {
 	anyResolver := cdctypes.NewInterfaceRegistry()
 
 	// EmitDefaults is set to false to prevent marshalling of unpopulated fields (memo)
@@ -59,13 +59,13 @@ func MustProtoMarshalJSON(msg proto.Message) []byte {
 
 	err := cdctypes.UnpackInterfaces(msg, cdctypes.ProtoJSONPacker{JSONPBMarshaler: jm})
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	buf := new(bytes.Buffer)
 	if err := jm.Marshal(buf, msg); err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return buf.Bytes()
+	return buf.Bytes(), err
 }
