@@ -22,7 +22,7 @@ make sure you have go version 1.21 installed
 
 1. Resetting the chain
 
-`fairyringd tendermint unsafe-reset-all
+`fairyringd tendermint unsafe-reset-all`
 
 **If your .fairyring directory is not the default one, please add --home [path] flag
 
