@@ -89,7 +89,7 @@ git clone git@github.com:FairBlock/fairyring.git
 ```shell
 cd fairyring
 git fetch --tags
-git checkout v0.3.0
+git checkout v0.3.1
 ```
 
 - Install
@@ -112,7 +112,7 @@ or
 
 ## Node start and validator setup
 
-### Upgrading from v0.2.1 to v0.3.0
+### Upgrading from v0.2.1 to v0.3.1
 
 ### Prior to genesis creation and network launch
 
@@ -220,12 +220,12 @@ dbe29963ccda90bb812a14359bbd2a4f3deba169@195.14.6.182:26656,525d605dc4cc1e92d6b1
 
 ## Version
 
-This chain is currently running on fairyring [v0.3.0](https://github.com/FairBlock/fairyring/releases/tag/v0.3.0)
-Commit Hash: [8e6f6deea6a04b260d190fcd5787bcc4ff85f149](https://github.com/FairBlock/fairyring/commit/8e6f6deea6a04b260d190fcd5787bcc4ff85f149)
+This chain is currently running on fairyring [v0.3.1](https://github.com/FairBlock/fairyring/releases/tag/v0.3.1)
+Commit Hash: [cb2e08a87bf7a9d75e2764d1b157a84c8e4fb775](https://github.com/FairBlock/fairyring/commit/cb2e08a87bf7a9d75e2764d1b157a84c8e4fb775)
 
 ## Binary
 
-The binary can be downloaded from [here](https://github.com/FairBlock/fairyring/releases/tag/v0.3.0)
+The binary can be downloaded from [here](https://github.com/FairBlock/fairyring/releases/tag/v0.3.1)
 
 ## Explorer
 
