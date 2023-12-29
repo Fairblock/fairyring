@@ -221,7 +221,7 @@ dbe29963ccda90bb812a14359bbd2a4f3deba169@195.14.6.182:26656,525d605dc4cc1e92d6b1
 ## Version
 
 This chain is currently running on fairyring [v0.3.0](https://github.com/FairBlock/fairyring/releases/tag/v0.3.0)
-Commit Hash: [8e6f6deea6a04b260d190fcd5787bcc4ff85f149](https://github.com/FairBlock/fairyring/commit/8e6f6deea6a04b260d190fcd5787bcc4ff85f149)
+Commit Hash: [838bc88d6e3065d0cbb728e0b0b930bed37a69d0](https://github.com/FairBlock/fairyring/commit/838bc88d6e3065d0cbb728e0b0b930bed37a69d0)
 
 ## Binary
 
