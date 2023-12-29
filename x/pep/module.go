@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/telemetry"
 
 	cosmosmath "cosmossdk.io/math"
 
@@ -230,7 +231,7 @@ func (am AppModule) processFailedEncryptedTx(ctx sdk.Context, tx types.Encrypted
 	if ctx.GasMeter().GasConsumed() > startConsumedGas {
 		actualGasConsumed = ctx.GasMeter().GasConsumed() - startConsumedGas
 	}
-
+	defer telemetry.IncrCounter(1, types.KeyTotalFailedEncryptedTx)
 	am.handleGasConsumption(ctx, creatorAddr, cosmosmath.NewIntFromUint64(actualGasConsumed), tx.ChargedGas)
 }
 
@@ -538,6 +539,8 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
 				),
 			)
+
+			telemetry.IncrCounter(1, types.KeyTotalSuccessEncryptedTx)
 		}
 
 		am.keeper.RemoveAllEncryptedTxFromHeight(ctx, h)

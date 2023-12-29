@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	peptypes "fairyring/x/pep/types"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/telemetry"
 	"strconv"
 
 	// this line is used by starport scaffolding # 1
@@ -265,6 +266,7 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 		// After being slashed, his/her last submitted height will be set to the current block
 		// So he/she won't be slashed in the next block instead he/she will be slashed if he didn't submit for N block again.
 		am.keeper.SetLastSubmittedHeight(ctx, eachValidator.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
+		telemetry.IncrCounter(1, types.KeyTotalIdleValSlashed)
 	}
 
 	return []abci.ValidatorUpdate{}

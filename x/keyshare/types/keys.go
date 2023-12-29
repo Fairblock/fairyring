@@ -85,6 +85,12 @@ const (
 	QueuedPubKeyCreatedEventPubkey                   = "queued-pubkey-created-pubkey"
 )
 
+const (
+	KeyTotalIdleValSlashed           = "total_idle_validator_slashed"
+	KeyTotalValidKeyShareSubmitted   = "total_valid_key_share"
+	KeyTotalInvalidKeyShareSubmitted = "total_invalid_key_share"
+)
+
 var (
 	// PortKey defines the key to store the port ID in store
 	PortKey          = KeyPrefix("keyshare-port-")

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fairyring/x/pep/types"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/telemetry"
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -69,6 +70,8 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 			sdk.NewAttribute(types.SubmittedEncryptedTxEventIndex, strconv.FormatUint(txIndex, 10)),
 		),
 	)
+
+	defer telemetry.IncrCounter(1, types.KeyTotalEncryptedTxSubmitted)
 
 	return &types.MsgSubmitEncryptedTxResponse{}, nil
 }
