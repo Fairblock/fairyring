@@ -1,15 +1,15 @@
-# Chain Reset and Upgrade to fairyring v0.3.0
+# Chain Reset and Upgrade to fairyring v0.3.1
 
-This is the instruction for performing chain reset and then upgrading the chain from v0.2.1 to v0.3.0
+This is the instruction for performing chain reset and then upgrading the chain from v0.2.1 to v0.3.1
 
-## Upgrading to fairyring v0.3.0
+## Upgrading to fairyring v0.3.1
 
 1. Move to your fairyring folder, then pull the latest version
 
 ```bash
 cd fairyring
 git pull
-git checkout v0.3.0
+git checkout v0.3.1
 ```
 
 2. Install the new version
