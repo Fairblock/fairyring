@@ -62,6 +62,12 @@ const (
 	KeyShareVerificationReason  = "keyshare-verification-reason"
 )
 
+const (
+	KeyTotalEncryptedTxSubmitted = "total_encrypted_tx_submitted"
+	KeyTotalSuccessEncryptedTx   = "total_success_encrypted_tx"
+	KeyTotalFailedEncryptedTx    = "total_failed_encrypted_tx"
+)
+
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
