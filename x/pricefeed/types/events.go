@@ -10,6 +10,7 @@ const (
 	AttributeKeyAckError   = "error"
 	AttributeKeyRequestID  = "request_id"
 	AttributeKeySymbol     = "symbol"
+	AttributeKeyNonce     = "nonce"
 	AttributeKeyPrice      = "price"
 	AttributeKeyTimestamp  = "timestamp"
 )

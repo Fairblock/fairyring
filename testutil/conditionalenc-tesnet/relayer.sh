@@ -82,9 +82,9 @@ address_type = { derivation = 'cosmos' }
 
 [[chains]]
 id = 'fairytest-${i}'
-rpc_addr = 'http://localhost:26659'
-grpc_addr = 'http://localhost:9092'
-event_source = { url = "ws://localhost:26659/websocket",  batch_delay = '50ms' , mode = "push" }
+rpc_addr = 'http://0.0.0.0:26659'
+grpc_addr = 'http://0.0.0.0:9092'
+event_source = { url = "ws://0.0.0.0:26659/websocket",  batch_delay = '50ms' , mode = "push" }
 rpc_timeout = '50s'
 account_prefix = 'fairy'
 key_name = 'requester'

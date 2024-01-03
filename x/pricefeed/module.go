@@ -13,7 +13,7 @@ import (
 
 	//bls "github.com/drand/kyber-bls12381"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/sirupsen/logrus"
+	// "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
 	"fairyring/x/pricefeed/client/cli"
@@ -157,7 +157,7 @@ func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
-	logrus.Info("-----------------------------> pricefeed")
+	
 	HandleBeginBlock(ctx, am.keeper)
 
 }

@@ -23,7 +23,9 @@ import (
 	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
-	"github.com/sirupsen/logrus"
+//	"github.com/sirupsen/logrus"
+
+	//"github.com/sirupsen/logrus"
 
 	//"github.com/sirupsen/logrus"
 	//"github.com/tendermint/tendermint/libs/log"
@@ -215,7 +217,7 @@ func (k Keeper) RequestBandChainDataBySymbolRequests(ctx sdk.Context) {
 	}
 
 	symbols := k.GetAllSymbolRequests(ctx)
-	logrus.Info("-----------------------------> ", symbols)
+	
 	// Map symbols that need to request on this block by oracle script ID and symbol block interval
 	tasks := types.ComputeOracleTasks(symbols, blockHeight)
 
@@ -494,9 +496,10 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 					ctx.EventManager().EmitEvent(
 						sdk.NewEvent(
 							types.EventTypePriceUpdate,
+							sdk.NewAttribute("satisfied_condition", strconv.FormatUint(nonce, 10)+r.Symbol+strconv.Itoa(int(i))),
 							sdk.NewAttribute(types.AttributeKeySymbol, r.Symbol),
 							sdk.NewAttribute(types.AttributeKeyPrice, fmt.Sprintf("%d", i)),
-							sdk.NewAttribute(types.AttributeKeySymbol, strconv.FormatUint(nonce, 10)),
+							sdk.NewAttribute(types.AttributeKeyNonce, strconv.FormatUint(nonce, 10)),
 							sdk.NewAttribute(types.AttributeKeyTimestamp, res.ResolveStatus.String()),
 						),
 					)
@@ -508,9 +511,10 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 						ctx.EventManager().EmitEvent(
 							sdk.NewEvent(
 								types.EventTypePriceUpdate,
+								sdk.NewAttribute("satisfied_condition", strconv.FormatUint(nonce, 10)+r.Symbol+strconv.Itoa(int(i))),
 								sdk.NewAttribute(types.AttributeKeySymbol, r.Symbol),
 								sdk.NewAttribute(types.AttributeKeyPrice, fmt.Sprintf("%d", i)),
-								sdk.NewAttribute(types.AttributeKeySymbol, strconv.FormatUint(nonce, 10)),
+								sdk.NewAttribute(types.AttributeKeyNonce, strconv.FormatUint(nonce, 10)),
 								sdk.NewAttribute(types.AttributeKeyTimestamp, res.ResolveStatus.String()),
 							),
 						)
@@ -518,6 +522,7 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 					}
 				}
 				if len(waitingList) > 0 {
+				
 				k.AppendListToList(ctx, waitingList, r.Symbol)
 				k.AddLatestCondition(ctx,waitingList[len(waitingList)-1],r.Symbol)}
 			}

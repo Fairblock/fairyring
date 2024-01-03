@@ -27,7 +27,7 @@ echo "${enc}"
 sleep 5
 ../../fairyringd tx keyshare create-latest-pub-key a6798cf7364ba5e8337584394bf9c6d4970a174603aab18f06ed80ade5f65194e51522170814d2c38b68c2703bfb7ca0 a6798cf7364ba5e8337584394bf9c6d4970a174603aab18f06ed80ade5f65194e51522170814d2c38b68c2703bfb7ca0 --node tcp://127.0.0.1:26659 -b sync -y --from star
 
-output=$($HOME/job/ShareGenerator/ShareGenerator derive 2ecab484b7a96eb1a4d9113b03cf09459c79c178ce3098baa2f8eb2bdcbec920 0 ${i} | jq '.')
+output=$($HOME/ShareGenerator derive 2ecab484b7a96eb1a4d9113b03cf09459c79c178ce3098baa2f8eb2bdcbec920 0 ${i} | jq '.')
 
 # Using jq to parse the JSON and extract the value of KeyShare
 share=$(echo "$output" | jq -r '.KeyShare')

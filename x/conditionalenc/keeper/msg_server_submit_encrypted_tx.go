@@ -17,10 +17,10 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 
-    err := verifyNonce(msg.Condition, k, ctx)
-	if err != nil {
-		return nil, err
-	}
+    // err := verifyNonce(msg.Condition, k, ctx)
+	// if err != nil {
+	// 	return nil, err
+	// }
 	senderAddr, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return nil, types.ErrInvalidMsgCreator

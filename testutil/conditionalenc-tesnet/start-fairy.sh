@@ -38,7 +38,7 @@ echo shrug make inmate anchor acid clock morning stage fiction build chef copy o
 GENESIS_FILE_PATH="$HOME/.fairyring/config/genesis.json"
 
 # Use jq to update "symbol_requests" in the genesis.json file
-jq '.app_state.pricefeed.symbol_requests = [{"symbol": "OSMO", "oracle_script_id": 396, "block_interval": 1, "price_step": 100}]' $GENESIS_FILE_PATH > temp.json
+jq '.app_state.pricefeed.symbol_requests = [{"symbol": "OSMO", "oracle_script_id": 396, "block_interval": 2, "price_step": 1000000}]' $GENESIS_FILE_PATH > temp.json
 jq '.app_state.keyshare.params.trusted_addresses = ["fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c"]' temp.json > temp2.json
 
 jq '.app_state.keyshare.validatorSetList = [{"validator":"fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c", "index": "fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c", "isActive":true}]' temp2.json > temp3.json
@@ -54,6 +54,4 @@ mv updated_genesis.json $GENESIS_FILE_PATH
 rm temp.json
 
 
-./fairyringd start --rpc.laddr tcp://127.0.0.1:26659 --grpc.address localhost:9092 --grpc-web.address localhost:9093 --api.address tcp://localhost:1318
-
-
+./fairyringd start --rpc.laddr tcp://0.0.0.0:26659 --grpc.address 0.0.0.0:9092 --grpc-web.address 0.0.0.0:9093 --api.address tcp://0.0.0.0:1318

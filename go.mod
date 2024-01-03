@@ -6,7 +6,6 @@ require (
 	cosmossdk.io/api v0.3.1
 	cosmossdk.io/errors v1.0.0
 	cosmossdk.io/math v1.1.2
-	github.com/CosmWasm/wasmd v0.40.0
 	github.com/FairBlock/DistributedIBE v0.0.0-20230528025616-f58fb2b93eaf
 	github.com/cometbft/cometbft v0.37.2
 	github.com/cometbft/cometbft-db v0.8.0
@@ -34,16 +33,12 @@ require github.com/cosmos/gogoproto v1.4.10
 
 require (
 	cosmossdk.io/tools/rosetta v0.2.1 // indirect
-	github.com/CosmWasm/wasmvm v1.4.1 // indirect
 	github.com/cockroachdb/errors v1.10.0 // indirect
 	github.com/cockroachdb/logtags v0.0.0-20230118201751-21c54148d20b // indirect
 	github.com/cockroachdb/redact v1.1.5 // indirect
-	github.com/docker/distribution v2.8.2+incompatible // indirect
 	github.com/getsentry/sentry-go v0.23.0 // indirect
-	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/opencontainers/go-digest v1.0.0 // indirect
 )
 
 require (
@@ -204,5 +199,5 @@ replace (
 	github.com/confio/ics23/go => github.com/cosmos/cosmos-sdk/ics23/go v0.8.0
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
-	
+	github.com/tendermint/tendermint v0.34.27 => ../tendermint-v0.34.27-terra.rc.1
 )

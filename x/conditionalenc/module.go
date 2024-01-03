@@ -367,7 +367,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, b abci.RequestBeginBlock) {
 	waitingList := am.pricefeedKeeper.GetList(ctx)
 	
 	
-	logrus.Info("Met conditions: =======================> ", waitingList)
+	logrus.Info("Latest met condition: ---------------------> ", waitingList.LatestMetCondition)
 	allAggKey := am.keeper.GetAllAggregatedConditionalKeyShare(ctx)
 
 	am.keeper.Logger(ctx).Info(fmt.Sprintf("[Conditionalenc][AGGKEY] %v", allAggKey))
@@ -470,16 +470,18 @@ func (am AppModule) BeginBlock(ctx sdk.Context, b abci.RequestBeginBlock) {
 			}
 
 			am.keeper.Logger(ctx).Info(fmt.Sprintf("Decrypt TX Successfully: %s", decryptedTx.Bytes()))
-			// params := am.keeper.GetParams(ctx)
+			
 			var cosmWasmPacketData transfertypes.MsgTransfer
 			err = json.Unmarshal(decryptedTx.Bytes(),&cosmWasmPacketData)
-			// err = cosmWasmPacketData.Unmarshal(decryptedTx.Bytes())
+			if err != nil {
+				am.keeper.Logger(ctx).Error(err.Error())
+			}
 			cosmWasmPacketData.TimeoutHeight = types1.NewHeight(100000000000,1000000000000)
 			if err != nil {
 				am.keeper.Logger(ctx).Error(err.Error())
 			}
 			_, err = am.keeper.TransferKeeper.Transfer(ctx,&cosmWasmPacketData)
-			// err = am.keeper.SendSwapTx(ctx,params.ChannelId,decryptedTx.Bytes())
+		
 			if err != nil {
 				am.keeper.Logger(ctx).Error("Relaying Swap Tx error")
 				am.keeper.Logger(ctx).Error(err.Error())
