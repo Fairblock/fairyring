@@ -23,7 +23,7 @@
           "key": "t/XiBkAo+ypJA9OzSWjRf6mTh9KM4p9SqYCiI2NVraA="
         },
         "value": {
-          "denom": "ufairy",
+          "denom": "stake",
           "amount": "100000000000"
         }
       }
@@ -57,6 +57,6 @@
     "tip": null
   },
   "signatures": [
-    "v4FfgB8GRcn4O02ZZ9T0SZ33YSeJt9zNRiL5ZfAK/joMj9nIt8Oec6Z5SoeT7kwLU6bubxwL5EEv0BoZuNzMGw=="
+    "b/fd06fv5TTvsntR1ECSDVbHvbqaK/QxJqvF5kPronxleTiUw3Gj/vBXFN5Zq/WYiL7znGLnLcHDQTjkE/dZ5Q=="
   ]
 }
