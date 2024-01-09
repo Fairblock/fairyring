@@ -112,16 +112,48 @@ or
 
 ## Node start and validator setup
 
-### Upgrading from v0.2.1 to v0.3.1
-
 ### Prior to genesis creation and network launch
 
 - [Install](#installation-steps) FairyRing application
 - Remove data from previous run of `fairyringd`
 
+#### If you are setting up a new validator
+
+- Remove any data from previous run
+
+```shell
+rm -rf ~/.fairyring
+```
+
+- Initialize node
+
+```shell
+fairyringd init {{NODE_NAME}} --chain-id fairytest-3
+```
+
+>IMPORTANT: Make sure to use the exact chain-id `fairytest-3` to avoid making incompatible genesis transactions
+
+- Create a new key
+
+```shell
+fairyringd keys add <keyName>
+```
+
+- Add a genesis account with `100000000000 stake`
+
+```shell
+fairyringd add-genesis-account {{KEY_NAME}} 100000000000stake
+```
+
+#### If your are upgrading to a new testnet
+
+- Remove previous testnet chain data
+
 ```shell
 fairyringd tendermint unsafe-reset-all
 ```
+
+After you initialized your node for creating gentx or upgraded fairyring & removed previous testnet chain data:
 
 - Make a genesis transaction to become a validator
 
