@@ -1,5 +1,5 @@
 {
-  "genesis_time": "2024-01-05T19:00:00.0Z",
+  "genesis_time": "2024-01-10T19:00:00Z",
   "chain_id": "fairytest-3",
   "initial_height": "1",
   "consensus_params": {
@@ -126,9 +126,37 @@
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "fairy1t8eh66t2w5k67kwurmn5gqhtq6d2ja0v8lg8pl",
+          "address": "fairy1yhpqdugfmfuhlvekkurnkstf2vl82063ajmfe5",
           "pub_key": null,
           "account_number": "13",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "fairy1gvafzqsl9uhra3f4v5y9lqr9amr3vpgfq96t2z",
+          "pub_key": null,
+          "account_number": "14",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "fairy1uy2slhj2xf2sgssa5jkjf6v663e7wkkpj8glkv",
+          "pub_key": null,
+          "account_number": "15",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "fairy1a2qap4vxqa9xw0cct09je49hr0yl026hl0d0x8",
+          "pub_key": null,
+          "account_number": "16",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "fairy1gq4drs35ghee0rpqjknf8aq95vhzv339460w7y",
+          "pub_key": null,
+          "account_number": "17",
           "sequence": "0"
         }
       ]
@@ -157,6 +185,32 @@
         },
         {
           "address": "fairy1r6q07ne3deq64ezcjwkedcfe6669f0ewpwnxy9",
+          "coins": [
+            {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
+            {
+              "denom": "ufairy",
+              "amount": "500000000000"
+            }
+          ]
+        },
+        {
+          "address": "fairy1gq4drs35ghee0rpqjknf8aq95vhzv339460w7y",
+          "coins": [
+            {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
+            {
+              "denom": "ufairy",
+              "amount": "500000000000"
+            }
+          ]
+        },
+        {
+          "address": "fairy1gvafzqsl9uhra3f4v5y9lqr9amr3vpgfq96t2z",
           "coins": [
             {
               "denom": "stake",
@@ -208,7 +262,7 @@
           ]
         },
         {
-          "address": "fairy1t8eh66t2w5k67kwurmn5gqhtq6d2ja0v8lg8pl",
+          "address": "fairy1yhpqdugfmfuhlvekkurnkstf2vl82063ajmfe5",
           "coins": [
             {
               "denom": "stake",
@@ -312,6 +366,32 @@
           ]
         },
         {
+          "address": "fairy1uy2slhj2xf2sgssa5jkjf6v663e7wkkpj8glkv",
+          "coins": [
+            {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
+            {
+              "denom": "ufairy",
+              "amount": "500000000000"
+            }
+          ]
+        },
+        {
+          "address": "fairy1a2qap4vxqa9xw0cct09je49hr0yl026hl0d0x8",
+          "coins": [
+            {
+              "denom": "stake",
+              "amount": "500000000000"
+            },
+            {
+              "denom": "ufairy",
+              "amount": "500000000000"
+            }
+          ]
+        },
+        {
           "address": "fairy1lw4mm6yzry2xg3tj7swp80cw4s6w6vzvxfqml5",
           "coins": [
             {
@@ -366,7 +446,690 @@
       "allowances": []
     },
     "genutil": {
-      "gen_txs": []
+      "gen_txs": [
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "01node",
+                  "identity": "7BDD4C2E94392626",
+                  "website": "https://01node.com",
+                  "security_contact": "secops@01node.com",
+                  "details": "Securely validating one block at a time since 2019"
+                },
+                "commission": {
+                  "rate": "0.050000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.010000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "fairy15davlswu3dfud5zushgp0yam70p5cnu6w5vcfd",
+                "validator_address": "fairyvaloper15davlswu3dfud5zushgp0yam70p5cnu6402ddf",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "8TBLL6CWI3IJZSwD+a1CL3LK3sItaC/qpXBSpCJ4/4I="
+                },
+                "value": {
+                  "denom": "stake",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "dbe29963ccda90bb812a14359bbd2a4f3deba169@10.238.200.147:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "AgXJGmEWqV98UP6HelwBFM458+FqWQqASYiwHOMcME2K"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "z563u6cS9zhiDUEkQoEuuRJSuLkIjWgAitRbHYZm/XV+qMeq/n4J5wUFycoU21mJsSxovqJbwNXsT6aYRUOdCA=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "Dora Factory PGS",
+                  "identity": "1BEC0B582AEDB0EC",
+                  "website": "https://dorafactory.org/",
+                  "security_contact": "node-operation@mail.dorafactory.org",
+                  "details": "Public Good Staking"
+                },
+                "commission": {
+                  "rate": "1.000000000000000000",
+                  "max_rate": "1.000000000000000000",
+                  "max_change_rate": "1.000000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "fairy1tqqpdxhvfftnpvj8w2zwumk69t0km7ca92m8zt",
+                "validator_address": "fairyvaloper1tqqpdxhvfftnpvj8w2zwumk69t0km7ca73ajx0",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "zRsj7vLkcPKpjDdHr7bXQMvHBE2G5d8VF6e5Zf4gBdk="
+                },
+                "value": {
+                  "denom": "stake",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "525d605dc4cc1e92d6b1d9a6934b19066083e610@10.128.0.13:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "Ay97lbJ9Gi92wJozWxbYnj4CbK/ByKTxeyoLrh/77bza"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "wIklcpkHWCV5khRaR2B2OHUzqY0zYmZTWUt1MIp+5aEw62ZcYKIQWdtbNruF5ikvDF/XbkYS6/UHLkKqBx7IZw=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "fairblock",
+                  "identity": "",
+                  "website": "https://fairblock.network",
+                  "security_contact": "hello@fairblock.network",
+                  "details": "Fairblock"
+                },
+                "commission": {
+                  "rate": "0.050000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.010000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "fairy1zrpp7dfav7kancgse2peh3k98u9ueajwvq4w4q",
+                "validator_address": "fairyvaloper1zrpp7dfav7kancgse2peh3k98u9ueajwhmnm3y",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "03vG/iogYilO9qeSoVIJIZl6QC3ARWFgqSwhQ621z3g="
+                },
+                "value": {
+                  "denom": "stake",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "cd1cbf64a3e85d511c2a40b9e3e7b2e9b40d5905@172.31.18.9:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "A8S5yG2QJE4nV1vCObdnbouIkooccDzAO1GHX9fSQ1x/"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "NH+UhG6fgWMo8JJNuqN5ppHMslpKOXg7gwmrtsu1ShQ4QXygT8K2nwoAarckcnlV5yc9p8K3OYXb3MobGn9t7Q=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": " Lavender.Five Nodes 🐝",
+                  "identity": "F87ADDB700C0CC94",
+                  "website": "https://www.lavenderfive.com/",
+                  "security_contact": "hello@lavenderfive.com",
+                  "details": "Fortifying crypto networks with Horcrux security, slash insurance, and open source contributions. Connect with us at https://linktr.ee/lavenderfive."
+                },
+                "commission": {
+                  "rate": "0.050000000000000000",
+                  "max_rate": "0.100000000000000000",
+                  "max_change_rate": "0.050000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "fairy14qekdkj2nmmwea4ufg9n002a3pud23y8tcf8aa",
+                "validator_address": "fairyvaloper14qekdkj2nmmwea4ufg9n002a3pud23y8sr0jee",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "t/XiBkAo+ypJA9OzSWjRf6mTh9KM4p9SqYCiI2NVraA="
+                },
+                "value": {
+                  "denom": "stake",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "fe0713ceb31b8a273b25bdd0fe0026778f781526@147.135.105.3:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "AgDrjXJ1+/lwJdf+fekEXKwLpA30N7F/Z3ESi/Sn7Rw4"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "b/fd06fv5TTvsntR1ECSDVbHvbqaK/QxJqvF5kPronxleTiUw3Gj/vBXFN5Zq/WYiL7znGLnLcHDQTjkE/dZ5Q=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "Forest Staking",
+                  "identity": "950D3307DBA46F10",
+                  "website": "https://foreststaking.com",
+                  "security_contact": "",
+                  "details": ""
+                },
+                "commission": {
+                  "rate": "0.100000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.010000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "fairy1a2qap4vxqa9xw0cct09je49hr0yl026hl0d0x8",
+                "validator_address": "fairyvaloper1a2qap4vxqa9xw0cct09je49hr0yl026hy5t6zr",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "+qz5T943G3/UTbgxDJIC+X7ci6Vu/WCF3fgnnCQdEMw="
+                },
+                "value": {
+                  "denom": "stake",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "497f19e96a1b783336235671fbf09cce068e843e@88.218.226.24:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "Au1vu/RFqMPlcbqNCu/eDitsHfApe8yZvRHk2mFd3MMK"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "471KlhQ9D9VJUEfwUxX2MFtgiA4+Q7iJIeaMArmenp4/LswSOI7flhdrdoI//CfxicesZ0MICOesFtTo3NYcjw=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "gatewayfm",
+                  "identity": "gatewayfm",
+                  "website": "https://gateway.fm/",
+                  "security_contact": "[zhe@gateway.fm]",
+                  "details": "gatewayfm"
+                },
+                "commission": {
+                  "rate": "0.050000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.010000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "fairy1gq4drs35ghee0rpqjknf8aq95vhzv339460w7y",
+                "validator_address": "fairyvaloper1gq4drs35ghee0rpqjknf8aq95vhzv339wpfm6q",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "PkU6iz7IGwOe74Aw26ch/35CFM7luEd3ThRgTlD+LUI="
+                },
+                "value": {
+                  "denom": "stake",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "58367aafa6a5377db22cad1742cd686f8aa13284@192.168.0.12:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "A+LN0V9ItBhBFK3rGAcSHIqDRteAJQTnI+sgr7slh5NG"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "4B+gyIgfe5Ci0yrtWmABocagxt9dZHcyqS0Du9LKE0lbrq18oAntGXcH520p9y4zcyFEaRHn2RkuLkZyOkdlQA=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "Imperator.co",
+                  "identity": "0878BA6BE556C132",
+                  "website": "https://imperator.co/",
+                  "security_contact": "contact@imperator.co",
+                  "details": "100% refund on downtime slashing -- Professional Delegated Proof-of-Stake Network Validator"
+                },
+                "commission": {
+                  "rate": "0.050000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.100000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "fairy1gvafzqsl9uhra3f4v5y9lqr9amr3vpgfq96t2z",
+                "validator_address": "fairyvaloper1gvafzqsl9uhra3f4v5y9lqr9amr3vpgfm7u7wx",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "giJO0ch5woE1ITLmD3Xei4tGpzO/G++RgNVBX5/xJaE="
+                },
+                "value": {
+                  "denom": "stake",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "a8f1e49990081c3f3c28d12822ecb02fd9723779@65.109.85.226:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "AmUlLrjI951cpqmVudPu8WBM67Y/0tMnxyS2jRSMWGZH"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "9Bw4VD0PZihBiHqBnOPe4qOZ7cM/tfNr6YmGVuHkrYwkNNZpWO8oHAltvB7HmJ3ViURQx1sTFHq+WTmRVNtFXA=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "Lemniscap",
+                  "identity": "1FDB0F8D14C89421",
+                  "website": "https://lemniscap.com",
+                  "security_contact": "sjors@lemniscap.vc",
+                  "details": "Lemniscap is an investment firm specialising in investments in emerging cryptoassets and blockchain startups."
+                },
+                "commission": {
+                  "rate": "0.050000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.010000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "fairy13sv36pmhz0ckvzwtvwgk4ecu6chuf6nmdssjvm",
+                "validator_address": "fairyvaloper13sv36pmhz0ckvzwtvwgk4ecu6chuf6nmktk8gl",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "23kZcm/AZ2p4lgLVqtkY1WzMCFbjYayQKiJ2RPJna6c="
+                },
+                "value": {
+                  "denom": "stake",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "3c2db295cea0eed604ecf2e37f794737a67e742d@65.21.163.231:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "Atb4XOD6rBPgqVXJO3DpScUFFmqEVOyH2o5IUsDgBvOx"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "JcS7SrjLTGDBjC2s9qW9u3AtECc70B6sOPVbWol+FZ4tJ6G+sKKErFvuIj4fIwXWsTCCPRTyaEeGKhn5cYJZZQ=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "P-OPS Team",
+                  "identity": "A2B9CAA088770EA6",
+                  "website": "https://www.pops.one",
+                  "security_contact": "security@pops.one",
+                  "details": "P-OPS TEAM is a decentralized organization providing you with validation and staking services, blockchain consultation, growth acceleration and investment capital for innovative Web 3.0 projects."
+                },
+                "commission": {
+                  "rate": "0.050000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.010000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "fairy1ffm2sadwyurzkgtfhm3ctttc5qxjsgayex8prk",
+                "validator_address": "fairyvaloper1ffm2sadwyurzkgtfhm3ctttc5qxjsgayzap58j",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "KtGCaz1hsdM0DlMg5RcXz5On4gixlIl0ZMWxXOEZA84="
+                },
+                "value": {
+                  "denom": "stake",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "3cda3bebf7aaeeb0533734496158420dcd3da4ad@94.130.137.119:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "AgS47H/Yw8EexXiAicXnqOBDqHBvp47XtfLBRBHrceaL"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "kt+A0jqEHERA2kRmSxLzfFhGzP/iR70N5BdgV5Mbf68m63mZLPvCpgALOG8bmhTxUaRPSXAUBVwcruqHuij4Wg=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "Republic-Crypto",
+                  "identity": "88931283C8B8D7B8",
+                  "website": "https://republiccrypto.com",
+                  "security_contact": "runtime-support@republiccrypto.com",
+                  "details": "Republic Crypto | Runtime provides infrastructure for institutional staking on networks like Avalanche, Aptos, Sui and Haqq with tailored services to meet your needs."
+                },
+                "commission": {
+                  "rate": "0.050000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.010000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "fairy1uy2slhj2xf2sgssa5jkjf6v663e7wkkpj8glkv",
+                "validator_address": "fairyvaloper1uy2slhj2xf2sgssa5jkjf6v663e7wkkpfuw2jg",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "2Zg1zywS1H8njK1R2gffA9gOWt03y1uBqQWD4NrqWOQ="
+                },
+                "value": {
+                  "denom": "stake",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "12f315956f97ba54f8a6e61d85e5efd4e8fb735e@51.210.222.119:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "Agp3szpnkV97jmduBz+JyzJL0CtIzAAyDIBkWR5FEZcY"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "C2DN00r++zHI/TFusqJ/ETw7A7He14oRrIxEKopolLwvE2kGrgUI2wkMaODBslm1Y+8swBPR3+JN3+KLIiEpCQ=="
+          ]
+        },
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "Stakecito",
+                  "identity": "D16E26E5C8154E17",
+                  "website": "https://stakecito.com",
+                  "security_contact": "security@stakecito.de",
+                  "details": "Securing & Decentralizing PoS Networks."
+                },
+                "commission": {
+                  "rate": "0.050000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.020000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "fairy13sjf5svx0xvrtwq8g4l86qmpv0qs05zvrgq72v",
+                "validator_address": "fairyvaloper13sjf5svx0xvrtwq8g4l86qmpv0qs05zvcnxtwg",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "7Z5oadBg47fFxiXv94SpByCndbnV+Y36vk9JAIecnVY="
+                },
+                "value": {
+                  "denom": "stake",
+                  "amount": "100000000000"
+                }
+              }
+            ],
+            "memo": "a7129083c119e6082cf0bd75149a60e94217fb95@89.58.32.218:27675",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "AyuXfdmbqcM51790JzBjINMzkCR/Y6BVMDIpwtr14r+h"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "Kw/gC6rvUpom0x1YC4kYU2m/TPVM+He2Hoys6IRUoHEeGmqCTNjhxYu1Knd6lZvD+NMCtu7I1BOXG5nYveYG8w=="
+          ]
+        }
+      ]
     },
     "gov": {
       "starting_proposal_id": "1",
@@ -513,7 +1276,7 @@
           }
         ],
         "trusted_addresses": [
-          "fairy1t8eh66t2w5k67kwurmn5gqhtq6d2ja0v8lg8pl",
+          "fairy1yhpqdugfmfuhlvekkurnkstf2vl82063ajmfe5",
           "fairy1r6q07ne3deq64ezcjwkedcfe6669f0ewpwnxy9"
         ],
         "channel_id": "channel-0",
