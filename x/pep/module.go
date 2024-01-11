@@ -245,10 +245,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		lastExecutedHeight = 0
 	}
 
-	allAggKey := am.keeper.GetAllAggregatedKeyShare(ctx)
-
-	am.keeper.Logger(ctx).Info(fmt.Sprintf("[PEP][AGGKEY] %v", allAggKey))
-
 	strHeight := am.keeper.GetLatestHeight(ctx)
 	height, err := strconv.ParseUint(strHeight, 10, 64)
 
