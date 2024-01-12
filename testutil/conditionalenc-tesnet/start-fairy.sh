@@ -24,7 +24,7 @@ go build ./cmd/fairyringd
 
 echo shrug make inmate anchor acid clock morning stage fiction build chef copy often inherit wonder pen boss join joke flock push morning chapter fever | ./fairyringd keys add star --recover
 # Add a genesis account
-./fairyringd add-genesis-account fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c 5000000000000frt,5000000000000stake 
+./fairyringd add-genesis-account fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c 5000000000000frt,5000000000000stake,80000ibc/0471F1C4E7AFD3F07702BEF6DC365268D64570F7C1FDC98EA6098DD6DE59817B
 
 # Generate a new gentx
 ./fairyringd gentx star 1000000000stake
@@ -38,7 +38,7 @@ echo shrug make inmate anchor acid clock morning stage fiction build chef copy o
 GENESIS_FILE_PATH="$HOME/.fairyring/config/genesis.json"
 
 # Use jq to update "symbol_requests" in the genesis.json file
-jq '.app_state.pricefeed.symbol_requests = [{"symbol": "OSMO", "oracle_script_id": 396, "block_interval": 2, "price_step": 1000000}]' $GENESIS_FILE_PATH > temp.json
+jq '.app_state.pricefeed.symbol_requests = [{"symbol": "OSMO", "oracle_script_id": 396, "block_interval": 10, "price_step": 1000000}]' $GENESIS_FILE_PATH > temp.json
 jq '.app_state.keyshare.params.trusted_addresses = ["fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c"]' temp.json > temp2.json
 
 jq '.app_state.keyshare.validatorSetList = [{"validator":"fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c", "index": "fairy1p6ca57cu5u89qzf58krxgxaezp4wm9vu7lur3c", "isActive":true}]' temp2.json > temp3.json

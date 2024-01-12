@@ -6,7 +6,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/sirupsen/logrus"
+	//"github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
@@ -67,7 +67,7 @@ func (k Querier) Price(c context.Context, req *types.QueryPrice) (*types.QueryPr
 }
 
 func (k Querier) CurrentNonce(goCtx context.Context, req *types.QueryCurrentNonceRequest) (*types.QueryCurrentNonceResponse, error) {
-	logrus.Info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+	
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}

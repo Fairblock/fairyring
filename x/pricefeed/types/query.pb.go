@@ -547,6 +547,7 @@ type QueryClient interface {
 	// Price queries the current price data for a specific symbol.
 	// Returns the current price for the given symbol.
 	Price(ctx context.Context, in *QueryPrice, opts ...grpc.CallOption) (*QueryPriceResponse, error)
+	// Returns the current nonce for the given denom.
 	CurrentNonce(ctx context.Context, in *QueryCurrentNonceRequest, opts ...grpc.CallOption) (*QueryCurrentNonceResponse, error)
 }
 func (c *queryClient) CurrentNonce(ctx context.Context, in *QueryCurrentNonceRequest, opts ...grpc.CallOption) (*QueryCurrentNonceResponse, error) {
@@ -615,6 +616,7 @@ type QueryServer interface {
 	// Price queries the current price data for a specific symbol.
 	// Returns the current price for the given symbol.
 	Price(context.Context, *QueryPrice) (*QueryPriceResponse, error)
+	// Returns the current nonce for the given denom.
 	CurrentNonce(context.Context, *QueryCurrentNonceRequest) (*QueryCurrentNonceResponse, error)
 }
 
@@ -622,9 +624,7 @@ type QueryServer interface {
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
 type UnimplementedQueryServer struct {
 }
-func (*UnimplementedQueryServer) CurrentNonce(ctx context.Context, req *QueryCurrentNonceRequest) (*QueryCurrentNonceResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CurrentNonce not implemented")
-}
+
 func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
 }
@@ -637,7 +637,9 @@ func (*UnimplementedQueryServer) SymbolRequests(ctx context.Context, req *QueryS
 func (*UnimplementedQueryServer) Price(ctx context.Context, req *QueryPrice) (*QueryPriceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Price not implemented")
 }
-
+func (UnimplementedQueryServer) CurrentNonce(context.Context, *QueryCurrentNonceRequest) (*QueryCurrentNonceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CurrentNonce not implemented")
+}
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
 	s.RegisterService(&_Query_serviceDesc, srv)
 }

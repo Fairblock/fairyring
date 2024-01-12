@@ -23,7 +23,9 @@ import (
 	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
-//	"github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
+
+	//	"github.com/sirupsen/logrus"
 
 	//"github.com/sirupsen/logrus"
 
@@ -173,6 +175,10 @@ func (k Keeper) GetRepeatedPrice(ctx sdk.Context, price types.Price) uint64 {
 
 }
 func (k Keeper) UpdatePrice(ctx sdk.Context, price types.Price) (bool, int64, int64) {
+	p := price.Price
+	p = p/1000000
+	p = p*1000000
+	price.Price = p
 	old, found := k.GetPrice(ctx, price.Symbol)
 
 	if !found || old.ResolveTime < price.ResolveTime {
@@ -415,7 +421,7 @@ func (k Keeper) GetLatestCondition(ctx sdk.Context, symbol string) string {
 }
 // RemoveFromList removes an item from the waiting list
 func (k Keeper) RemoveFromList(ctx sdk.Context, item string) {
-	symbol := extractPrefix(item)
+	symbol := ExtractNonDigits(item)
 	store := ctx.KVStore(k.storeKey)
 	// Load current list
 	var waitingList WaitingList
@@ -423,9 +429,12 @@ func (k Keeper) RemoveFromList(ctx sdk.Context, item string) {
 	if bz != nil {
 		MustUnmarshalJSON(bz, &waitingList)
 	}
+	logrus.Info("-----------------------------------------: ", symbol, item, waitingList.List)
 	// Remove
 	for i, v := range waitingList.List {
+		logrus.Info("----------------------------------------- v: ", v)
 		if v == item {
+			logrus.Info("-----------------------------------------",waitingList.List[:i],waitingList.List[i+1:], item)
 			waitingList.List = append(waitingList.List[:i], waitingList.List[i+1:]...)
 			break
 		}
@@ -433,19 +442,14 @@ func (k Keeper) RemoveFromList(ctx sdk.Context, item string) {
 	// Save
 	store.Set([]byte(symbol+"waitingList"), MustMarshalJSON(waitingList))
 }
-func extractPrefix(s string) string {
-	// Get slice of runes from the string
-	runes := []rune(s)
-
-	// Iterate through runes until we hit a digit
-	for i, r := range runes {
-		if unicode.IsDigit(r) {
-			return string(runes[:i])
-		}
-	}
-
-	// If there are no digits, return the entire string
-	return s
+func ExtractNonDigits(s string) string {
+    var result strings.Builder
+    for _, char := range s {
+        if !unicode.IsDigit(char) {
+            result.WriteRune(char)
+        }
+    }
+    return result.String()
 }
 func extractNumber(s, symbol string) (int, error) {
 	parts := strings.Split(s, symbol)
@@ -457,6 +461,12 @@ func extractNumber(s, symbol string) (int, error) {
 }
 // StoreOracleResponsePacket is a function that receives an OracleResponsePacketData from BandChain.
 func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleResponsePacketData) error {
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			"price_fetched",
+		
+		),
+	)
 	// Decode the result from the response packet.
 	k.mu.Lock()
 

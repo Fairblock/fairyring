@@ -22,7 +22,7 @@ log_level = "info"
 [mode.clients]
 enabled = true
 refresh = true
-misbehaviour = true
+misbehaviour = false
 
 [mode.connections]
 enabled = false
@@ -69,7 +69,7 @@ account_prefix = 'band'
 key_name = 'testkey'
 store_prefix = 'ibc'
 default_gas = 1000000
-max_gas = 100000000
+max_gas = 50000000
 gas_price = { price = 0.0025, denom = 'uband' }
 gas_multiplier = 3
 max_msg_num = 30
@@ -82,9 +82,9 @@ address_type = { derivation = 'cosmos' }
 
 [[chains]]
 id = 'fairytest-${i}'
-rpc_addr = 'http://0.0.0.0:26659'
-grpc_addr = 'http://0.0.0.0:9092'
-event_source = { url = "ws://0.0.0.0:26659/websocket",  batch_delay = '50ms' , mode = "push" }
+rpc_addr = 'http://localhost:26659'
+grpc_addr = 'http://localhost:9092'
+event_source = { url = "ws://localhost:26659/websocket",  batch_delay = '50ms' , mode = "push" }
 rpc_timeout = '50s'
 account_prefix = 'fairy'
 key_name = 'requester'
@@ -113,7 +113,7 @@ store_prefix = 'ibc'
 default_gas = 1000000
 max_gas = 100000000
 gas_price = { price = 0.0025, denom = 'uosmo' }
-gas_multiplier = 3
+gas_multiplier = 3.2
 max_msg_num = 30
 max_tx_size = 2097152
 clock_drift = '5s'
@@ -149,6 +149,5 @@ hermes keys add --chain "fairytest-${i}" --mnemonic-file "./mnemonic-fairy.txt"
 
 hermes create channel --a-chain band-laozi-testnet6 --b-chain "fairytest-${i}" --a-port oracle --b-port pricefeed --order unordered --channel-version bandchain-1 --new-client-connection 
 hermes create channel --a-chain osmo-test-5 --b-chain "fairytest-${i}" --a-port transfer --b-port transfer --order unordered --new-client-connection 
-#hermes create channel --a-chain localosmosis --b-chain "fairytest-${i}" --a-port transfer --b-port transfer --order unordered --new-client-connection 
 
 hermes start

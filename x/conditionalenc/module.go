@@ -367,7 +367,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, b abci.RequestBeginBlock) {
 	waitingList := am.pricefeedKeeper.GetList(ctx)
 	
 	
-	logrus.Info("Latest met condition: ---------------------> ", waitingList.LatestMetCondition)
+	logrus.Info("Latest met condition: ---------------------> ", waitingList.List)
 	allAggKey := am.keeper.GetAllAggregatedConditionalKeyShare(ctx)
 
 	am.keeper.Logger(ctx).Info(fmt.Sprintf("[Conditionalenc][AGGKEY] %v", allAggKey))
@@ -488,7 +488,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, b abci.RequestBeginBlock) {
 			}
 		
 		}
-
+		
 		am.keeper.RemoveAllEncryptedTxFromCondition(ctx, item)
 		am.pricefeedKeeper.RemoveFromList(ctx, item)
 	}

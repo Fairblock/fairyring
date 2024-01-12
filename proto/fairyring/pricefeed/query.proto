@@ -3,72 +3,32 @@ package pricefeed;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "fairyring/pricefeed/params.proto";
-import "fairyring/pricefeed/pricefeed.proto";
+
+
 
 option go_package = "fairyring/x/pricefeed/types";
 
 // Query defines the gRPC querier service.
 service Query {
-  // Parameters queries the parameters of the module.
-  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/pricefeed/params";
+
+
+  rpc CurrentNonce(QueryCurrentNonceRequest) returns (QueryCurrentNonceResponse) {
+    option (google.api.http).get = "/pricefeed/current_nonce/{denom}/{price}";
   }
 
-  // SymbolRequest queries a specific symbol request by symbol name.
-  // Returns the symbol request data for the given symbol.
-  // This method is used to query the status of a specific symbol request.
-  rpc SymbolRequest(QuerySymbolRequest) returns (QuerySymbolRequestResponse) {
-    option (google.api.http).get = "/pricefeed/symbol_requests/{symbol}";
-  }
-  // SymbolRequests queries all symbol requests.
-  rpc SymbolRequests(QuerySymbolRequests)
-      returns (QuerySymbolRequestsResponse) {
-    option (google.api.http).get = "/pricefeed/symbol_requests";
-  }
-  // Price queries the current price data for a specific symbol.
-  // Returns the current price for the given symbol.
-  rpc Price(QueryPrice) returns (QueryPriceResponse) {
-    option (google.api.http).get = "/pricefeed/prices/{symbol}";
-  }
 }
 
-// QueryParamsRequest is request type for the Query/Params RPC method.
-message QueryParamsRequest {}
 
-// QueryParamsResponse is response type for the Query/Params RPC method.
-message QueryParamsResponse {
-  // params holds all the parameters of this module.
-  Params params = 1 [ (gogoproto.nullable) = false ];
-}
 
-// QuerySymbolRequest is request type for the Query/SymbolRequest RPC method.
-message QuerySymbolRequest { string symbol = 1; }
+message QueryCurrentNonceRequest { string denom = 1; 
+string price = 2;
+ }
 
-// QuerySymbolRequestResponse is response type for the Query/SymbolRequest RPC
-// method.
-message QuerySymbolRequestResponse {
-  // symbol_request holds the symbol request data for the given symbol.
-  // The symbol request data for the given symbol name.
-  SymbolRequest symbol_request = 1;
-}
 
-// QuerySymbolRequests is request type for the Query/SymbolRequests RPC method.
-message QuerySymbolRequests {}
 
-// QuerySymbolRequestsResponse is response type for the Query/SymbolRequests
-message QuerySymbolRequestsResponse {
-  // symbol_requests holds a list of all symbol requests.
-  // A list of all symbol requests in the state.
-  repeated SymbolRequest symbol_requests = 1 [ (gogoproto.nullable) = false ];
-}
-
-// QueryPrice is request type for the Query/Price RPC method.
-message QueryPrice { string symbol = 1; }
-
-// QueryPriceResponse is response type for the Query/Price RPC method.
-message QueryPriceResponse {
+message QueryCurrentNonceResponse {
   // price holds the current price for the given symbol.
   // The current price data for the given symbol.
-  Price price = 1;
+  string nonce = 1;
 }
+

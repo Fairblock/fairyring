@@ -16,7 +16,8 @@ import (
 func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmitEncryptedTx) (*types.MsgSubmitEncryptedTxResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-
+	_, new_c := modifyCondition(msg.Condition)
+	msg.Condition = new_c
     // err := verifyNonce(msg.Condition, k, ctx)
 	// if err != nil {
 	// 	return nil, err
@@ -84,4 +85,24 @@ func verifyNonce(condition string, k msgServer, ctx sdk.Context) error {
 	} else {
 		return fmt.Errorf("no match")
 	}
+}
+
+func modifyCondition(condition string) (error,string){
+	re, err := regexp.Compile(`(\d+)([a-zA-Z]+)(\d+)`)
+	if err != nil {
+		fmt.Println("Error compiling regex:", err)
+		return err,""
+	}
+	var price = 0
+	// Find matches
+	matches := re.FindStringSubmatch(condition)
+	if matches != nil && len(matches) > 3 {
+		price, err = strconv.Atoi(matches[3])
+		if err != nil {
+			return err,""
+		}
+		price = price/1000000
+		price = price * 1000000
+	}
+	return nil,matches[1]+matches[2]+fmt.Sprint(price)
 }
