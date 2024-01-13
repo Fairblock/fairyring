@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM golang:1.20-bullseye AS build-env
+FROM --platform=$BUILDPLATFORM golang:1.21-bullseye AS build-env
 
 WORKDIR /src/app/fairyring
 COPY go.mod go.sum ./
