@@ -274,7 +274,14 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 		key, found := am.keeper.GetAggregatedKeyShare(ctx, h)
 		if !found {
-			am.keeper.Logger(ctx).Error(fmt.Sprintf("Decryption key not found for block height: %d", h))
+			am.keeper.Logger(ctx).Error(fmt.Sprintf("Decryption key not found for block height: %d, Removing all the encrypted txs...", h))
+			encryptedTxs := am.keeper.GetEncryptedTxAllFromHeight(ctx, h)
+			if len(encryptedTxs.EncryptedTx) > 0 {
+				am.keeper.RemoveAllEncryptedTxFromHeight(ctx, h)
+				am.keeper.Logger(ctx).Info(fmt.Sprintf("Removed total %d encrypted txs at block %d", len(encryptedTxs.EncryptedTx), h))
+			} else {
+				am.keeper.Logger(ctx).Info(fmt.Sprintf("No encrypted tx found at block %d", h))
+			}
 			continue
 		}
 
