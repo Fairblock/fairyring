@@ -1,4 +1,5 @@
 /* eslint-disable */
+import Long from "long";
 import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "fairyring.keyshare";
@@ -40,6 +41,7 @@ export interface AggrKeyshareDataPacketData {
   aggrKeyshare: string;
   aggrHeight: string;
   proposalId: string;
+  retries: number;
 }
 
 /** AggrKeyshareDataPacketAck defines a struct for the packet acknowledgment */
@@ -384,7 +386,7 @@ export const GetAggrKeysharePacketAck = {
 };
 
 function createBaseAggrKeyshareDataPacketData(): AggrKeyshareDataPacketData {
-  return { identity: "", pubkey: "", aggrKeyshare: "", aggrHeight: "", proposalId: "" };
+  return { identity: "", pubkey: "", aggrKeyshare: "", aggrHeight: "", proposalId: "", retries: 0 };
 }
 
 export const AggrKeyshareDataPacketData = {
@@ -403,6 +405,9 @@ export const AggrKeyshareDataPacketData = {
     }
     if (message.proposalId !== "") {
       writer.uint32(42).string(message.proposalId);
+    }
+    if (message.retries !== 0) {
+      writer.uint32(48).uint64(message.retries);
     }
     return writer;
   },
@@ -429,6 +434,9 @@ export const AggrKeyshareDataPacketData = {
         case 5:
           message.proposalId = reader.string();
           break;
+        case 6:
+          message.retries = longToNumber(reader.uint64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -444,6 +452,7 @@ export const AggrKeyshareDataPacketData = {
       aggrKeyshare: isSet(object.aggrKeyshare) ? String(object.aggrKeyshare) : "",
       aggrHeight: isSet(object.aggrHeight) ? String(object.aggrHeight) : "",
       proposalId: isSet(object.proposalId) ? String(object.proposalId) : "",
+      retries: isSet(object.retries) ? Number(object.retries) : 0,
     };
   },
 
@@ -454,6 +463,7 @@ export const AggrKeyshareDataPacketData = {
     message.aggrKeyshare !== undefined && (obj.aggrKeyshare = message.aggrKeyshare);
     message.aggrHeight !== undefined && (obj.aggrHeight = message.aggrHeight);
     message.proposalId !== undefined && (obj.proposalId = message.proposalId);
+    message.retries !== undefined && (obj.retries = Math.round(message.retries));
     return obj;
   },
 
@@ -464,6 +474,7 @@ export const AggrKeyshareDataPacketData = {
     message.aggrKeyshare = object.aggrKeyshare ?? "";
     message.aggrHeight = object.aggrHeight ?? "";
     message.proposalId = object.proposalId ?? "";
+    message.retries = object.retries ?? 0;
     return message;
   },
 };
@@ -507,6 +518,25 @@ export const AggrKeyshareDataPacketAck = {
   },
 };
 
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -517,6 +547,18 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
