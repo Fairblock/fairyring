@@ -19,7 +19,10 @@ service Msg {
   rpc UpdateAuthorizedAddress (MsgUpdateAuthorizedAddress) returns (MsgUpdateAuthorizedAddressResponse);
   rpc DeleteAuthorizedAddress (MsgDeleteAuthorizedAddress) returns (MsgDeleteAuthorizedAddressResponse);
   rpc CreateGeneralKeyShare   (MsgCreateGeneralKeyShare  ) returns (MsgCreateGeneralKeyShareResponse  );
+  rpc RequestAggrKeyshare     (MsgRequestAggrKeyshare    ) returns (MsgRequestAggrKeyshareResponse    );
+  rpc GetAggrKeyshare         (MsgGetAggrKeyshare        ) returns (MsgGetAggrKeyshareResponse        );
 }
+
 message MsgRegisterValidator {
   string creator = 1;
 }
@@ -96,3 +99,18 @@ message MsgCreateGeneralKeyShareResponse {
   bool   success             = 7;
   string errorMessage        = 8;
 }
+
+message MsgRequestAggrKeyshare {
+  string reqId = 1;
+}
+
+message MsgRequestAggrKeyshareResponse {
+  string identity = 1;
+  string pubkey   = 2;
+}
+
+message MsgGetAggrKeyshare {
+  string identity = 1;
+}
+
+message MsgGetAggrKeyshareResponse {}

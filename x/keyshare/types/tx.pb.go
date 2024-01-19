@@ -836,6 +836,182 @@ func (m *MsgCreateGeneralKeyShareResponse) GetErrorMessage() string {
 	return ""
 }
 
+type MsgRequestAggrKeyshare struct {
+	ReqId string `protobuf:"bytes,1,opt,name=reqId,proto3" json:"reqId,omitempty"`
+}
+
+func (m *MsgRequestAggrKeyshare) Reset()         { *m = MsgRequestAggrKeyshare{} }
+func (m *MsgRequestAggrKeyshare) String() string { return proto.CompactTextString(m) }
+func (*MsgRequestAggrKeyshare) ProtoMessage()    {}
+func (*MsgRequestAggrKeyshare) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{14}
+}
+func (m *MsgRequestAggrKeyshare) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRequestAggrKeyshare) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRequestAggrKeyshare.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRequestAggrKeyshare) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRequestAggrKeyshare.Merge(m, src)
+}
+func (m *MsgRequestAggrKeyshare) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRequestAggrKeyshare) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRequestAggrKeyshare.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRequestAggrKeyshare proto.InternalMessageInfo
+
+func (m *MsgRequestAggrKeyshare) GetReqId() string {
+	if m != nil {
+		return m.ReqId
+	}
+	return ""
+}
+
+type MsgRequestAggrKeyshareResponse struct {
+	Identity string `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
+	Pubkey   string `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
+}
+
+func (m *MsgRequestAggrKeyshareResponse) Reset()         { *m = MsgRequestAggrKeyshareResponse{} }
+func (m *MsgRequestAggrKeyshareResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRequestAggrKeyshareResponse) ProtoMessage()    {}
+func (*MsgRequestAggrKeyshareResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{15}
+}
+func (m *MsgRequestAggrKeyshareResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRequestAggrKeyshareResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRequestAggrKeyshareResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRequestAggrKeyshareResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRequestAggrKeyshareResponse.Merge(m, src)
+}
+func (m *MsgRequestAggrKeyshareResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRequestAggrKeyshareResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRequestAggrKeyshareResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRequestAggrKeyshareResponse proto.InternalMessageInfo
+
+func (m *MsgRequestAggrKeyshareResponse) GetIdentity() string {
+	if m != nil {
+		return m.Identity
+	}
+	return ""
+}
+
+func (m *MsgRequestAggrKeyshareResponse) GetPubkey() string {
+	if m != nil {
+		return m.Pubkey
+	}
+	return ""
+}
+
+type MsgGetAggrKeyshare struct {
+	Identity string `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
+}
+
+func (m *MsgGetAggrKeyshare) Reset()         { *m = MsgGetAggrKeyshare{} }
+func (m *MsgGetAggrKeyshare) String() string { return proto.CompactTextString(m) }
+func (*MsgGetAggrKeyshare) ProtoMessage()    {}
+func (*MsgGetAggrKeyshare) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{16}
+}
+func (m *MsgGetAggrKeyshare) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgGetAggrKeyshare) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgGetAggrKeyshare.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgGetAggrKeyshare) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgGetAggrKeyshare.Merge(m, src)
+}
+func (m *MsgGetAggrKeyshare) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgGetAggrKeyshare) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgGetAggrKeyshare.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgGetAggrKeyshare proto.InternalMessageInfo
+
+func (m *MsgGetAggrKeyshare) GetIdentity() string {
+	if m != nil {
+		return m.Identity
+	}
+	return ""
+}
+
+type MsgGetAggrKeyshareResponse struct {
+}
+
+func (m *MsgGetAggrKeyshareResponse) Reset()         { *m = MsgGetAggrKeyshareResponse{} }
+func (m *MsgGetAggrKeyshareResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgGetAggrKeyshareResponse) ProtoMessage()    {}
+func (*MsgGetAggrKeyshareResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{17}
+}
+func (m *MsgGetAggrKeyshareResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgGetAggrKeyshareResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgGetAggrKeyshareResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgGetAggrKeyshareResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgGetAggrKeyshareResponse.Merge(m, src)
+}
+func (m *MsgGetAggrKeyshareResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgGetAggrKeyshareResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgGetAggrKeyshareResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgGetAggrKeyshareResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgRegisterValidator)(nil), "fairyring.keyshare.MsgRegisterValidator")
 	proto.RegisterType((*MsgRegisterValidatorResponse)(nil), "fairyring.keyshare.MsgRegisterValidatorResponse")
@@ -851,57 +1027,68 @@ func init() {
 	proto.RegisterType((*MsgDeleteAuthorizedAddressResponse)(nil), "fairyring.keyshare.MsgDeleteAuthorizedAddressResponse")
 	proto.RegisterType((*MsgCreateGeneralKeyShare)(nil), "fairyring.keyshare.MsgCreateGeneralKeyShare")
 	proto.RegisterType((*MsgCreateGeneralKeyShareResponse)(nil), "fairyring.keyshare.MsgCreateGeneralKeyShareResponse")
+	proto.RegisterType((*MsgRequestAggrKeyshare)(nil), "fairyring.keyshare.MsgRequestAggrKeyshare")
+	proto.RegisterType((*MsgRequestAggrKeyshareResponse)(nil), "fairyring.keyshare.MsgRequestAggrKeyshareResponse")
+	proto.RegisterType((*MsgGetAggrKeyshare)(nil), "fairyring.keyshare.MsgGetAggrKeyshare")
+	proto.RegisterType((*MsgGetAggrKeyshareResponse)(nil), "fairyring.keyshare.MsgGetAggrKeyshareResponse")
 }
 
 func init() { proto.RegisterFile("fairyring/keyshare/tx.proto", fileDescriptor_1f96ac6a55f1845c) }
 
 var fileDescriptor_1f96ac6a55f1845c = []byte{
-	// 718 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x56, 0x4d, 0x6f, 0xd3, 0x40,
-	0x10, 0xad, 0x93, 0x36, 0x49, 0x87, 0x22, 0x54, 0x43, 0x5b, 0xcb, 0x94, 0x10, 0x99, 0x1e, 0x02,
-	0x54, 0x69, 0x81, 0x0a, 0x71, 0x6d, 0x41, 0x02, 0x14, 0x82, 0x90, 0x5b, 0x7a, 0xe0, 0x52, 0x1c,
-	0x7b, 0x70, 0x57, 0xf9, 0xb0, 0xd9, 0xdd, 0xa0, 0x1a, 0x4e, 0x9c, 0xe0, 0x82, 0xc4, 0x4f, 0xe0,
-	0xe7, 0x70, 0xec, 0x05, 0x89, 0x23, 0x6a, 0xff, 0x08, 0xb2, 0xb3, 0x76, 0x9d, 0xc6, 0xeb, 0x26,
-	0x12, 0x12, 0xb7, 0xcc, 0xec, 0xdb, 0x99, 0xb7, 0x13, 0xbf, 0xb7, 0x0b, 0xd7, 0xdf, 0x59, 0x84,
-	0x06, 0x94, 0xf4, 0xdd, 0x8d, 0x0e, 0x06, 0xec, 0xd0, 0xa2, 0xb8, 0xc1, 0x8f, 0x1a, 0x3e, 0xf5,
-	0xb8, 0xa7, 0xaa, 0xc9, 0x62, 0x23, 0x5e, 0xd4, 0xef, 0x64, 0x6c, 0x70, 0xb1, 0x8f, 0xd4, 0xea,
-	0x1e, 0x74, 0x30, 0x38, 0x88, 0x32, 0xc3, 0xfd, 0xc6, 0x26, 0x5c, 0x6b, 0x31, 0xd7, 0x44, 0x97,
-	0x30, 0x8e, 0x74, 0xdf, 0xea, 0x12, 0xc7, 0xe2, 0x1e, 0x55, 0x35, 0x28, 0xdb, 0x14, 0xc3, 0x9f,
-	0x9a, 0x52, 0x53, 0xea, 0xf3, 0x66, 0x1c, 0x1a, 0x8f, 0x60, 0x35, 0x6b, 0x87, 0x89, 0xcc, 0xf7,
-	0xfa, 0x0c, 0x73, 0x76, 0x7e, 0x53, 0xe0, 0x4a, 0x8b, 0xb9, 0xbb, 0xd8, 0x77, 0x9a, 0x82, 0x97,
-	0x1c, 0x1d, 0xae, 0xf4, 0x90, 0x31, 0xcb, 0x45, 0xad, 0x30, 0x5c, 0x11, 0xa1, 0xba, 0x06, 0x97,
-	0x3b, 0x18, 0xec, 0x86, 0xfb, 0x9f, 0xf7, 0x1d, 0x3c, 0xd2, 0x8a, 0x35, 0xa5, 0x3e, 0x6b, 0x8e,
-	0x26, 0xd5, 0x1a, 0x5c, 0x6a, 0x77, 0x3d, 0xbb, 0xf3, 0x0c, 0x89, 0x7b, 0xc8, 0xb5, 0xd9, 0x08,
-	0x93, 0x4e, 0x19, 0x5f, 0x0a, 0xb0, 0x72, 0x8e, 0xcf, 0xc5, 0xa7, 0x50, 0x75, 0xa8, 0xc4, 0x53,
-	0x15, 0xc4, 0x92, 0x58, 0x30, 0x63, 0x59, 0xcc, 0xd8, 0x14, 0xcc, 0xd4, 0x4d, 0xb8, 0x4a, 0xd1,
-	0x46, 0xf2, 0x01, 0x9d, 0x9d, 0x14, 0x72, 0x2e, 0x42, 0x66, 0x2d, 0x85, 0x7c, 0xd9, 0xc0, 0xb6,
-	0x91, 0x31, 0xad, 0x54, 0x53, 0xea, 0x15, 0x33, 0x0e, 0x55, 0x03, 0x16, 0x90, 0x52, 0x8f, 0xb6,
-	0xc4, 0x30, 0xcb, 0x11, 0xe7, 0x91, 0x9c, 0xf1, 0x1e, 0x96, 0x5a, 0xcc, 0x7d, 0x1c, 0x9e, 0x10,
-	0x5f, 0x58, 0x1c, 0x19, 0x7f, 0x35, 0x68, 0x37, 0x31, 0xc8, 0x19, 0xc3, 0x2a, 0xcc, 0xfb, 0x83,
-	0x76, 0x97, 0xd8, 0x4d, 0x0c, 0xc4, 0x1c, 0xce, 0x12, 0xe1, 0x11, 0x6d, 0xaf, 0xd7, 0x23, 0xbc,
-	0x87, 0x7d, 0xce, 0xb4, 0x62, 0xad, 0x58, 0x9f, 0x37, 0xd3, 0x29, 0xe3, 0x26, 0xdc, 0xc8, 0x6c,
-	0x19, 0xff, 0x03, 0xc6, 0x4b, 0xd0, 0x13, 0xc0, 0xf6, 0x80, 0x1f, 0x7a, 0x94, 0x7c, 0x44, 0x67,
-	0xdb, 0x71, 0x68, 0x78, 0xaa, 0x65, 0x28, 0x71, 0x8b, 0xba, 0xc8, 0x05, 0x2f, 0x11, 0xa5, 0x09,
-	0x17, 0x46, 0xbf, 0xbe, 0x35, 0x30, 0xe4, 0xf5, 0x92, 0xae, 0x34, 0xea, 0xfa, 0xda, 0x77, 0xa6,
-	0xea, 0x6a, 0xc0, 0x02, 0x61, 0x67, 0xf0, 0xa8, 0x75, 0xc5, 0x1c, 0xc9, 0xa5, 0x99, 0x15, 0xb3,
-	0x98, 0x49, 0x7a, 0x9e, 0x9b, 0xc7, 0x13, 0xec, 0xe2, 0xbf, 0x9c, 0x87, 0xa4, 0x5e, 0xd2, 0xf5,
-	0x6b, 0x01, 0xb4, 0x64, 0x6c, 0x4f, 0x87, 0x26, 0xd2, 0x14, 0x3a, 0xcb, 0xf9, 0x3a, 0x96, 0xa1,
-	0x44, 0x9c, 0xbd, 0xc0, 0x8f, 0x25, 0x22, 0xa2, 0x70, 0x07, 0x71, 0xf6, 0xad, 0xee, 0x00, 0xe3,
-	0x21, 0x88, 0x50, 0xc8, 0x2a, 0xaa, 0x1b, 0x29, 0x62, 0x28, 0xab, 0xdd, 0x94, 0xac, 0x52, 0x82,
-	0x9f, 0xcb, 0x12, 0xfc, 0x3a, 0x2c, 0xc6, 0xca, 0xd8, 0x23, 0x3d, 0x64, 0xdc, 0xea, 0xf9, 0x91,
-	0x18, 0x66, 0xcd, 0xf1, 0x05, 0x99, 0xc4, 0xca, 0x52, 0x89, 0x19, 0x3f, 0x0a, 0x50, 0x93, 0x8d,
-	0x62, 0x02, 0xdf, 0xf8, 0x1f, 0x23, 0x91, 0x1c, 0xb2, 0x34, 0x91, 0x8f, 0x94, 0xf3, 0x7d, 0xa4,
-	0x32, 0xee, 0x23, 0xf7, 0x7f, 0x95, 0xa0, 0xd8, 0x62, 0xae, 0xea, 0xc1, 0xe2, 0xf8, 0x95, 0x52,
-	0x6f, 0x8c, 0xdf, 0x55, 0x8d, 0xac, 0xab, 0x44, 0xdf, 0x9c, 0x14, 0x99, 0x8c, 0xfd, 0x2d, 0x2c,
-	0x8c, 0x5c, 0x2b, 0xb7, 0x24, 0x15, 0xd2, 0x20, 0xfd, 0xee, 0x04, 0xa0, 0xa4, 0x03, 0x05, 0x35,
-	0xc3, 0x1f, 0x6f, 0x4b, 0x4a, 0x8c, 0x43, 0xf5, 0x7b, 0x13, 0x43, 0x93, 0x9e, 0x9f, 0x15, 0x58,
-	0x91, 0x19, 0x60, 0x23, 0xb7, 0xdc, 0x18, 0x5e, 0x7f, 0x38, 0x1d, 0x7e, 0x84, 0x83, 0xcc, 0x0e,
-	0x65, 0x1c, 0x24, 0x78, 0x29, 0x87, 0x0b, 0xac, 0x2f, 0xe2, 0x20, 0x33, 0x3e, 0x19, 0x07, 0x09,
-	0x5e, 0xca, 0xe1, 0x02, 0x23, 0x54, 0x3f, 0xc1, 0x52, 0xb6, 0x09, 0xae, 0xe7, 0x0e, 0xf6, 0x1c,
-	0x5a, 0xdf, 0x9a, 0x06, 0x1d, 0x37, 0xdf, 0xd9, 0xfa, 0x79, 0x52, 0x55, 0x8e, 0x4f, 0xaa, 0xca,
-	0x9f, 0x93, 0xaa, 0xf2, 0xfd, 0xb4, 0x3a, 0x73, 0x7c, 0x5a, 0x9d, 0xf9, 0x7d, 0x5a, 0x9d, 0x79,
-	0xa3, 0x9f, 0xbd, 0xf5, 0x8e, 0x52, 0xcf, 0xc3, 0xc0, 0x47, 0xd6, 0x2e, 0x45, 0x4f, 0xbc, 0x07,
-	0x7f, 0x03, 0x00, 0x00, 0xff, 0xff, 0x6a, 0x55, 0x7d, 0x2d, 0x41, 0x0a, 0x00, 0x00,
+	// 822 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x56, 0xcf, 0x6e, 0xd3, 0x4e,
+	0x10, 0xae, 0x93, 0x36, 0x49, 0xe7, 0xd7, 0x9f, 0xaa, 0xba, 0xff, 0x2c, 0x53, 0x42, 0x64, 0x2a,
+	0x14, 0x4a, 0x95, 0x86, 0x52, 0x21, 0xae, 0x2d, 0x48, 0xa5, 0x0a, 0x41, 0xc8, 0x2d, 0x3d, 0x70,
+	0x29, 0x4e, 0x3c, 0xb8, 0xab, 0xfc, 0xb1, 0xbb, 0xbb, 0x46, 0x35, 0x9c, 0x38, 0xc1, 0x05, 0x89,
+	0x47, 0xe0, 0x2d, 0x78, 0x05, 0x8e, 0x3d, 0x72, 0x44, 0xed, 0x8b, 0x20, 0x3b, 0xb6, 0xeb, 0x24,
+	0xde, 0x34, 0x91, 0x90, 0xb8, 0x75, 0x66, 0xbf, 0x99, 0xf9, 0x76, 0x9a, 0xef, 0x5b, 0xc3, 0xad,
+	0x77, 0x06, 0xa1, 0x1e, 0x25, 0x5d, 0x6b, 0xab, 0x85, 0x1e, 0x3b, 0x35, 0x28, 0x6e, 0xf1, 0xf3,
+	0x8a, 0x43, 0x6d, 0x6e, 0xcb, 0x72, 0x7c, 0x58, 0x89, 0x0e, 0xd5, 0x8d, 0x94, 0x02, 0x0b, 0xbb,
+	0x48, 0x8d, 0xf6, 0x49, 0x0b, 0xbd, 0x93, 0x20, 0xd3, 0xab, 0xd7, 0xaa, 0xb0, 0x54, 0x67, 0x96,
+	0x8e, 0x16, 0x61, 0x1c, 0xe9, 0xb1, 0xd1, 0x26, 0xa6, 0xc1, 0x6d, 0x2a, 0x2b, 0x90, 0x6f, 0x52,
+	0xf4, 0xff, 0x54, 0xa4, 0x92, 0x54, 0x9e, 0xd5, 0xa3, 0x50, 0x7b, 0x02, 0x6b, 0x69, 0x15, 0x3a,
+	0x32, 0xc7, 0xee, 0x32, 0x1c, 0x51, 0xf9, 0x55, 0x82, 0xf9, 0x3a, 0xb3, 0x0e, 0xb1, 0x6b, 0xd6,
+	0x42, 0x5e, 0x62, 0xb4, 0x7f, 0xd2, 0x41, 0xc6, 0x0c, 0x0b, 0x95, 0x4c, 0xef, 0x24, 0x0c, 0xe5,
+	0x75, 0xf8, 0xbf, 0x85, 0xde, 0xa1, 0x5f, 0x7f, 0xd0, 0x35, 0xf1, 0x5c, 0xc9, 0x96, 0xa4, 0xf2,
+	0xb4, 0xde, 0x9f, 0x94, 0x4b, 0xf0, 0x5f, 0xa3, 0x6d, 0x37, 0x5b, 0xcf, 0x91, 0x58, 0xa7, 0x5c,
+	0x99, 0x0e, 0x30, 0xc9, 0x94, 0xf6, 0x39, 0x03, 0xab, 0x03, 0x7c, 0x6e, 0xbe, 0x85, 0xac, 0x42,
+	0x21, 0xda, 0x6a, 0x48, 0x2c, 0x8e, 0x43, 0x66, 0x2c, 0x8d, 0x19, 0x9b, 0x80, 0x99, 0x5c, 0x85,
+	0x45, 0x8a, 0x4d, 0x24, 0xef, 0xd1, 0xdc, 0x4b, 0x20, 0x67, 0x02, 0x64, 0xda, 0x91, 0xcf, 0x97,
+	0xb9, 0xcd, 0x26, 0x32, 0xa6, 0xe4, 0x4a, 0x52, 0xb9, 0xa0, 0x47, 0xa1, 0xac, 0xc1, 0x1c, 0x52,
+	0x6a, 0xd3, 0x7a, 0xb8, 0xcc, 0x7c, 0xc0, 0xb9, 0x2f, 0xa7, 0x9d, 0xc1, 0x72, 0x9d, 0x59, 0x4f,
+	0xfd, 0x1b, 0xe2, 0x0b, 0x83, 0x23, 0xe3, 0xaf, 0xdc, 0x46, 0x0d, 0xbd, 0x11, 0x6b, 0x58, 0x83,
+	0x59, 0xc7, 0x6d, 0xb4, 0x49, 0xb3, 0x86, 0x5e, 0xb8, 0x87, 0xeb, 0x84, 0x7f, 0xc5, 0xa6, 0xdd,
+	0xe9, 0x10, 0xde, 0xc1, 0x2e, 0x67, 0x4a, 0xb6, 0x94, 0x2d, 0xcf, 0xea, 0xc9, 0x94, 0x76, 0x07,
+	0x6e, 0xa7, 0x8e, 0x8c, 0xfe, 0x03, 0xda, 0x4b, 0x50, 0x63, 0xc0, 0xae, 0xcb, 0x4f, 0x6d, 0x4a,
+	0x3e, 0xa0, 0xb9, 0x6b, 0x9a, 0xd4, 0xbf, 0xd5, 0x0a, 0xe4, 0xb8, 0x41, 0x2d, 0xe4, 0x21, 0xaf,
+	0x30, 0x4a, 0x12, 0xce, 0xf4, 0xff, 0xfa, 0xd6, 0x41, 0x13, 0xf7, 0x8b, 0xa7, 0xd2, 0x60, 0xea,
+	0x6b, 0xc7, 0x9c, 0x68, 0xaa, 0x06, 0x73, 0x84, 0x5d, 0xc3, 0x83, 0xd1, 0x05, 0xbd, 0x2f, 0x97,
+	0x64, 0x96, 0x4d, 0x63, 0x26, 0x98, 0x39, 0xb0, 0x8f, 0x67, 0xd8, 0xc6, 0xbf, 0xb9, 0x0f, 0x41,
+	0xbf, 0x78, 0xea, 0x97, 0x0c, 0x28, 0xf1, 0xda, 0xf6, 0x7b, 0x26, 0x52, 0x0b, 0x75, 0x36, 0xe2,
+	0xd7, 0xb1, 0x02, 0x39, 0x62, 0x1e, 0x79, 0x4e, 0x24, 0x91, 0x30, 0xf2, 0x2b, 0x88, 0x79, 0x6c,
+	0xb4, 0x5d, 0x8c, 0x96, 0x10, 0x86, 0xa1, 0xac, 0x82, 0xbe, 0x81, 0x22, 0x7a, 0xb2, 0x3a, 0x4c,
+	0xc8, 0x2a, 0x21, 0xf8, 0x99, 0x34, 0xc1, 0x6f, 0xc2, 0x42, 0xa4, 0x8c, 0x23, 0xd2, 0x41, 0xc6,
+	0x8d, 0x8e, 0x13, 0x88, 0x61, 0x5a, 0x1f, 0x3e, 0x10, 0x49, 0x2c, 0x2f, 0x94, 0x98, 0xf6, 0x3d,
+	0x03, 0x25, 0xd1, 0x2a, 0xc6, 0xf0, 0x8d, 0x7f, 0xb1, 0x12, 0xc1, 0x25, 0x73, 0x63, 0xf9, 0x48,
+	0x7e, 0xb4, 0x8f, 0x14, 0x52, 0x7c, 0xa4, 0x02, 0x2b, 0xc1, 0xdb, 0x70, 0xe6, 0x22, 0xe3, 0xbb,
+	0x96, 0x45, 0x63, 0x9f, 0x5f, 0x82, 0x19, 0x8a, 0x67, 0x07, 0x66, 0xb8, 0x95, 0x5e, 0xa0, 0x1d,
+	0x41, 0x31, 0x1d, 0x1f, 0xef, 0x53, 0x85, 0x02, 0x31, 0xb1, 0xcb, 0x09, 0xf7, 0xc2, 0xd2, 0x38,
+	0xf6, 0x37, 0xea, 0xb8, 0x8d, 0x56, 0xec, 0x3f, 0x61, 0xa4, 0x55, 0x41, 0xae, 0x33, 0x6b, 0x1f,
+	0xfb, 0x19, 0x8c, 0xe8, 0xa4, 0xad, 0x05, 0xda, 0x1a, 0xa8, 0x88, 0x38, 0x6c, 0xff, 0x28, 0x40,
+	0xb6, 0xce, 0x2c, 0xd9, 0x86, 0x85, 0xe1, 0x87, 0xb2, 0x5c, 0x19, 0x7e, 0x81, 0x2b, 0x69, 0x0f,
+	0xa4, 0x5a, 0x1d, 0x17, 0x19, 0x5f, 0xfe, 0x2d, 0xcc, 0xf5, 0x3d, 0x96, 0x77, 0x05, 0x1d, 0x92,
+	0x20, 0xf5, 0xc1, 0x18, 0xa0, 0x78, 0x02, 0x05, 0x39, 0xc5, 0xf5, 0xef, 0x0b, 0x5a, 0x0c, 0x43,
+	0xd5, 0x87, 0x63, 0x43, 0xe3, 0x99, 0x9f, 0x24, 0x58, 0x15, 0xd9, 0x7a, 0x65, 0x64, 0xbb, 0x21,
+	0xbc, 0xfa, 0x78, 0x32, 0x7c, 0x1f, 0x07, 0x91, 0xc9, 0x8b, 0x38, 0x08, 0xf0, 0x42, 0x0e, 0x37,
+	0x18, 0x7a, 0xc0, 0x41, 0x64, 0xe7, 0x22, 0x0e, 0x02, 0xbc, 0x90, 0xc3, 0x0d, 0xf6, 0x2e, 0x7f,
+	0x84, 0xe5, 0x74, 0x6b, 0xdf, 0x1c, 0xb9, 0xd8, 0x01, 0xb4, 0xba, 0x33, 0x09, 0x3a, 0x1e, 0xee,
+	0xc2, 0x62, 0x9a, 0x55, 0x6c, 0x08, 0x75, 0x32, 0x84, 0x55, 0xb7, 0xc7, 0xc7, 0xc6, 0x63, 0x09,
+	0xcc, 0x0f, 0x7a, 0xc3, 0x3d, 0x41, 0x9b, 0x01, 0x9c, 0x5a, 0x19, 0x0f, 0x17, 0x8d, 0xda, 0xdb,
+	0xf9, 0x79, 0x59, 0x94, 0x2e, 0x2e, 0x8b, 0xd2, 0xef, 0xcb, 0xa2, 0xf4, 0xed, 0xaa, 0x38, 0x75,
+	0x71, 0x55, 0x9c, 0xfa, 0x75, 0x55, 0x9c, 0x7a, 0xa3, 0x5e, 0x7f, 0xa3, 0x9f, 0x27, 0x3e, 0xeb,
+	0x3d, 0x07, 0x59, 0x23, 0x17, 0x7c, 0x9a, 0x3f, 0xfa, 0x13, 0x00, 0x00, 0xff, 0xff, 0x8f, 0x73,
+	0xe9, 0x1c, 0xf9, 0x0b, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -924,6 +1111,8 @@ type MsgClient interface {
 	UpdateAuthorizedAddress(ctx context.Context, in *MsgUpdateAuthorizedAddress, opts ...grpc.CallOption) (*MsgUpdateAuthorizedAddressResponse, error)
 	DeleteAuthorizedAddress(ctx context.Context, in *MsgDeleteAuthorizedAddress, opts ...grpc.CallOption) (*MsgDeleteAuthorizedAddressResponse, error)
 	CreateGeneralKeyShare(ctx context.Context, in *MsgCreateGeneralKeyShare, opts ...grpc.CallOption) (*MsgCreateGeneralKeyShareResponse, error)
+	RequestAggrKeyshare(ctx context.Context, in *MsgRequestAggrKeyshare, opts ...grpc.CallOption) (*MsgRequestAggrKeyshareResponse, error)
+	GetAggrKeyshare(ctx context.Context, in *MsgGetAggrKeyshare, opts ...grpc.CallOption) (*MsgGetAggrKeyshareResponse, error)
 }
 
 type msgClient struct {
@@ -997,6 +1186,24 @@ func (c *msgClient) CreateGeneralKeyShare(ctx context.Context, in *MsgCreateGene
 	return out, nil
 }
 
+func (c *msgClient) RequestAggrKeyshare(ctx context.Context, in *MsgRequestAggrKeyshare, opts ...grpc.CallOption) (*MsgRequestAggrKeyshareResponse, error) {
+	out := new(MsgRequestAggrKeyshareResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/RequestAggrKeyshare", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) GetAggrKeyshare(ctx context.Context, in *MsgGetAggrKeyshare, opts ...grpc.CallOption) (*MsgGetAggrKeyshareResponse, error) {
+	out := new(MsgGetAggrKeyshareResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/GetAggrKeyshare", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	RegisterValidator(context.Context, *MsgRegisterValidator) (*MsgRegisterValidatorResponse, error)
@@ -1007,6 +1214,8 @@ type MsgServer interface {
 	UpdateAuthorizedAddress(context.Context, *MsgUpdateAuthorizedAddress) (*MsgUpdateAuthorizedAddressResponse, error)
 	DeleteAuthorizedAddress(context.Context, *MsgDeleteAuthorizedAddress) (*MsgDeleteAuthorizedAddressResponse, error)
 	CreateGeneralKeyShare(context.Context, *MsgCreateGeneralKeyShare) (*MsgCreateGeneralKeyShareResponse, error)
+	RequestAggrKeyshare(context.Context, *MsgRequestAggrKeyshare) (*MsgRequestAggrKeyshareResponse, error)
+	GetAggrKeyshare(context.Context, *MsgGetAggrKeyshare) (*MsgGetAggrKeyshareResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -1033,6 +1242,12 @@ func (*UnimplementedMsgServer) DeleteAuthorizedAddress(ctx context.Context, req 
 }
 func (*UnimplementedMsgServer) CreateGeneralKeyShare(ctx context.Context, req *MsgCreateGeneralKeyShare) (*MsgCreateGeneralKeyShareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateGeneralKeyShare not implemented")
+}
+func (*UnimplementedMsgServer) RequestAggrKeyshare(ctx context.Context, req *MsgRequestAggrKeyshare) (*MsgRequestAggrKeyshareResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RequestAggrKeyshare not implemented")
+}
+func (*UnimplementedMsgServer) GetAggrKeyshare(ctx context.Context, req *MsgGetAggrKeyshare) (*MsgGetAggrKeyshareResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAggrKeyshare not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -1165,6 +1380,42 @@ func _Msg_CreateGeneralKeyShare_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_RequestAggrKeyshare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRequestAggrKeyshare)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RequestAggrKeyshare(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.keyshare.Msg/RequestAggrKeyshare",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RequestAggrKeyshare(ctx, req.(*MsgRequestAggrKeyshare))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_GetAggrKeyshare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgGetAggrKeyshare)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).GetAggrKeyshare(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.keyshare.Msg/GetAggrKeyshare",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).GetAggrKeyshare(ctx, req.(*MsgGetAggrKeyshare))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "fairyring.keyshare.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -1196,6 +1447,14 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateGeneralKeyShare",
 			Handler:    _Msg_CreateGeneralKeyShare_Handler,
+		},
+		{
+			MethodName: "RequestAggrKeyshare",
+			Handler:    _Msg_RequestAggrKeyshare_Handler,
+		},
+		{
+			MethodName: "GetAggrKeyshare",
+			Handler:    _Msg_GetAggrKeyshare_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1781,6 +2040,126 @@ func (m *MsgCreateGeneralKeyShareResponse) MarshalToSizedBuffer(dAtA []byte) (in
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgRequestAggrKeyshare) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRequestAggrKeyshare) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRequestAggrKeyshare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.ReqId) > 0 {
+		i -= len(m.ReqId)
+		copy(dAtA[i:], m.ReqId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ReqId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRequestAggrKeyshareResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRequestAggrKeyshareResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRequestAggrKeyshareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Pubkey) > 0 {
+		i -= len(m.Pubkey)
+		copy(dAtA[i:], m.Pubkey)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Pubkey)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Identity) > 0 {
+		i -= len(m.Identity)
+		copy(dAtA[i:], m.Identity)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Identity)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgGetAggrKeyshare) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgGetAggrKeyshare) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgGetAggrKeyshare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Identity) > 0 {
+		i -= len(m.Identity)
+		copy(dAtA[i:], m.Identity)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Identity)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgGetAggrKeyshareResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgGetAggrKeyshareResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgGetAggrKeyshareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -2056,6 +2435,58 @@ func (m *MsgCreateGeneralKeyShareResponse) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
+	return n
+}
+
+func (m *MsgRequestAggrKeyshare) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.ReqId)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgRequestAggrKeyshareResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Identity)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Pubkey)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgGetAggrKeyshare) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Identity)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgGetAggrKeyshareResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
 	return n
 }
 
@@ -3794,6 +4225,334 @@ func (m *MsgCreateGeneralKeyShareResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.ErrorMessage = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRequestAggrKeyshare) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRequestAggrKeyshare: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRequestAggrKeyshare: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReqId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ReqId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRequestAggrKeyshareResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRequestAggrKeyshareResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRequestAggrKeyshareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Identity", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Identity = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pubkey", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Pubkey = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgGetAggrKeyshare) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgGetAggrKeyshare: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgGetAggrKeyshare: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Identity", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Identity = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgGetAggrKeyshareResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgGetAggrKeyshareResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgGetAggrKeyshareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
