@@ -102,6 +102,7 @@ message MsgCreateGeneralKeyShareResponse {
 
 message MsgRequestAggrKeyshare {
   string reqId = 1;
+  string creator = 2;
 }
 
 message MsgRequestAggrKeyshareResponse {
@@ -111,6 +112,7 @@ message MsgRequestAggrKeyshareResponse {
 
 message MsgGetAggrKeyshare {
   string identity = 1;
+  string creator = 2;
 }
 
 message MsgGetAggrKeyshareResponse {}
