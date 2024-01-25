@@ -686,12 +686,14 @@ func New(
 		SignModeHandler: app.txConfig.SignModeHandler(),
 	}
 	options := FairyringHandlerOptions{
-		BaseOptions:  handlerOptions,
-		PepKeeper:    app.PepKeeper,
-		TxDecoder:    app.txConfig.TxDecoder(),
-		TxEncoder:    app.txConfig.TxEncoder(),
-		KeyShareLane: keyshareLane,
-		Mempool:      mempool,
+		BaseOptions:       handlerOptions,
+		wasmConfig:        wasmConfig,
+		txCounterStoreKey: app.GetKey(wasmtypes.StoreKey),
+		PepKeeper:         app.PepKeeper,
+		TxDecoder:         app.txConfig.TxDecoder(),
+		TxEncoder:         app.txConfig.TxEncoder(),
+		KeyShareLane:      keyshareLane,
+		Mempool:           mempool,
 	}
 	anteHandler := NewFairyringAnteHandler(options)
 
