@@ -27,7 +27,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 
 	// check if validator is registered
 	validatorInfo, found := k.GetValidatorSet(ctx, msg.Creator)
-
+//logrus.Info("****************************************************************************************************************88", found)
 	if !found {
 		authorizedAddrInfo, found := k.GetAuthorizedAddress(ctx, msg.Creator)
 		if !found || !authorizedAddrInfo.IsAuthorized {
@@ -45,28 +45,6 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 		return nil, types.ErrAuthorizedAnotherAddress
 	}
 
-	isSupportedIDType := false
-	for _, v := range SupportedIDTypes {
-		if v == msg.IdType {
-			isSupportedIDType = true
-			break
-		}
-	}
-
-	if !isSupportedIDType {
-		return nil, types.ErrUnsupportedIDType.Wrapf(", supported id types: %v", SupportedIDTypes)
-	}
-
-	switch msg.IdType {
-	case PrivateGovIdentity:
-		keyShareReq, found := k.GetKeyShareRequest(ctx, msg.IdValue)
-		if !found {
-			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
-		}
-		if keyShareReq.AggrKeyshare != "" {
-			return nil, types.ErrAggKeyAlreadyExists.Wrapf(", identity: %s, Aggregated key: %s", msg.IdValue, keyShareReq.AggrKeyshare)
-		}
-	}
 
 	// Setup
 	suite := bls.NewBLS12381Suite()

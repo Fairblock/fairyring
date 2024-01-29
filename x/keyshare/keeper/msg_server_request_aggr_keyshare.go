@@ -7,11 +7,12 @@ import (
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sirupsen/logrus"
 )
 
 func (k msgServer) RequestAggrKeyshare(goCtx context.Context, msg *types.MsgRequestAggrKeyshare) (*types.MsgRequestAggrKeyshareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
+	logrus.Info("------------------------------------------------------------**** ", msg.ReqId);
 	var rsp types.MsgRequestAggrKeyshareResponse
 
 	reqCountString := k.GetRequestCount(ctx)
