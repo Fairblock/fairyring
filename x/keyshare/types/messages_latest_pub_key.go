@@ -19,11 +19,13 @@ func NewMsgCreateLatestPubKey(
 	creator string,
 	publicKey string,
 	commitments []string,
+	numberOfValidators uint64,
 ) *MsgCreateLatestPubKey {
 	return &MsgCreateLatestPubKey{
-		Creator:     creator,
-		PublicKey:   publicKey,
-		Commitments: commitments,
+		Creator:            creator,
+		PublicKey:          publicKey,
+		Commitments:        commitments,
+		NumberOfValidators: numberOfValidators,
 	}
 }
 
@@ -66,6 +68,9 @@ func (msg *MsgCreateLatestPubKey) ValidateBasic() error {
 		if _, err = hex.DecodeString(c); err != nil {
 			return ErrInvalidCommitment.Wrapf("expected hex encoded commitment, got: %s", c)
 		}
+	}
+	if msg.NumberOfValidators == 0 {
+		return ErrInvalidNumberOfValidators.Wrapf("expected at least 1 validator, got: %d", msg.NumberOfValidators)
 	}
 	return nil
 }

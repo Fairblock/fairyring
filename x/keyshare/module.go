@@ -207,7 +207,11 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	if foundQk {
 		if qk.Expiry > height {
 			am.keeper.SetActivePubKey(ctx, types.ActivePubKey(qk))
-			am.pepKeeper.SetActivePubKey(ctx, peptypes.ActivePubKey(qk))
+			am.pepKeeper.SetActivePubKey(ctx, peptypes.ActivePubKey{
+				PublicKey: qk.PublicKey,
+				Creator:   qk.Creator,
+				Expiry:    qk.Expiry,
+			})
 			if foundQc {
 				am.keeper.SetActiveCommitments(ctx, qc)
 			}

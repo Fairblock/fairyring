@@ -7,10 +7,12 @@ message ActivePubKey {
   string publicKey = 1;
   string creator = 2;
   uint64 expiry = 3;
+  uint64 numberOfValidators = 4;
 }
 
 message QueuedPubKey {
   string publicKey = 1;
   string creator = 2;
   uint64 expiry = 3;
+  uint64 numberOfValidators = 4;
 }

@@ -50,6 +50,7 @@ message MsgCreateLatestPubKey {
            string creator     = 1;
            string publicKey   = 2;
   repeated string commitments = 3;
+           uint64 numberOfValidators = 4;
 }
 
 message MsgCreateLatestPubKeyResponse {}

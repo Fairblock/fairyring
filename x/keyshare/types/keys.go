@@ -83,6 +83,7 @@ const (
 	QueuedPubKeyCreatedEventExpiryHeight             = "queued-pubkey-created-expiry-height"
 	QueuedPubKeyCreatedEventCreator                  = "queued-pubkey-created-creator"
 	QueuedPubKeyCreatedEventPubkey                   = "queued-pubkey-created-pubkey"
+	QueuedPubKeyCreatedEventNumberOfValidators       = "number-of-validators"
 )
 
 const (

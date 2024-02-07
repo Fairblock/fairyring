@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fairyring/x/keyshare/types"
+	"github.com/spf13/cast"
 	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -12,9 +13,9 @@ import (
 
 func CmdCreateLatestPubKey() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-latest-pub-key [public-key] [commitments]",
+		Use:   "create-latest-pub-key [public-key] [commitments] [number-of-validators]",
 		Short: "Create a latest public key",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			// Get value arguments
@@ -22,6 +23,11 @@ func CmdCreateLatestPubKey() *cobra.Command {
 
 			commitmentStr := args[1]
 			commitments := strings.Split(commitmentStr, ",")
+
+			numberOfValidators, err := cast.ToUint64E(args[2])
+			if err != nil {
+				return err
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -32,6 +38,7 @@ func CmdCreateLatestPubKey() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				argPublicKey,
 				commitments,
+				numberOfValidators,
 			)
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
