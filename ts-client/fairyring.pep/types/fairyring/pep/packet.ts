@@ -173,10 +173,10 @@ function createBaseCurrentKeysPacketAck(): CurrentKeysPacketAck {
 export const CurrentKeysPacketAck = {
   encode(message: CurrentKeysPacketAck, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.activeKey !== undefined) {
-      ActivePubKey.encode(message.activeKey, writer.uint32(18).fork()).ldelim();
+      ActivePubKey.encode(message.activeKey, writer.uint32(10).fork()).ldelim();
     }
     if (message.queuedKey !== undefined) {
-      QueuedPubKey.encode(message.queuedKey, writer.uint32(26).fork()).ldelim();
+      QueuedPubKey.encode(message.queuedKey, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -188,10 +188,10 @@ export const CurrentKeysPacketAck = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 2:
+        case 1:
           message.activeKey = ActivePubKey.decode(reader, reader.uint32());
           break;
-        case 3:
+        case 2:
           message.queuedKey = QueuedPubKey.decode(reader, reader.uint32());
           break;
         default:

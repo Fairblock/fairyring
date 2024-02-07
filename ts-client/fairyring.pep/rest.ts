@@ -57,7 +57,8 @@ export interface PepParams {
    * NOTE: The amount field is an Int which implements the custom method
    * signatures required by gogoproto.
    */
-  minGasPrice?: V1Beta1Coin;
+  min_gas_price?: V1Beta1Coin;
+  is_source_chain?: boolean;
 }
 
 export interface PepPepNonce {

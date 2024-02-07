@@ -325,7 +325,7 @@ func New(
 		capabilitytypes.StoreKey, group.StoreKey, icacontrollertypes.StoreKey, consensusparamtypes.StoreKey,
 		keysharemoduletypes.StoreKey,
 		pepmoduletypes.StoreKey,
-		wasmtypes.StoreKey, icahosttypes.StoreKey,
+		wasmtypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)

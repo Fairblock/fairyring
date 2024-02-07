@@ -14,6 +14,7 @@ import { AggrKeyshareDataPacketAck } from "./types/fairyring/keyshare/packet"
 import { Params } from "./types/fairyring/keyshare/params"
 import { ActivePubKey } from "./types/fairyring/keyshare/pub_key"
 import { QueuedPubKey } from "./types/fairyring/keyshare/pub_key"
+import { RequestAggrKeyshareMsg } from "./types/fairyring/keyshare/request_aggr_keyshare_msg"
 import { KeyShareRequest } from "./types/fairyring/keyshare/requested_keyshare"
 import { IBCInfo } from "./types/fairyring/keyshare/requested_keyshare"
 import { CounterPartyIBCInfo } from "./types/fairyring/keyshare/requested_keyshare"
@@ -37,6 +38,7 @@ export {
     Params,
     ActivePubKey,
     QueuedPubKey,
+    RequestAggrKeyshareMsg,
     KeyShareRequest,
     IBCInfo,
     CounterPartyIBCInfo,

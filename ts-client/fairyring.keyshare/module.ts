@@ -7,15 +7,13 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgCreateAuthorizedAddress } from "./types/fairyring/keyshare/tx";
+import { MsgSendKeyshare } from "./types/fairyring/keyshare/tx";
 import { MsgRegisterValidator } from "./types/fairyring/keyshare/tx";
 import { MsgDeleteAuthorizedAddress } from "./types/fairyring/keyshare/tx";
-import { MsgCreateGeneralKeyShare } from "./types/fairyring/keyshare/tx";
-import { MsgUpdateAuthorizedAddress } from "./types/fairyring/keyshare/tx";
-import { MsgDeleteGeneralKeyShare } from "./types/fairyring/keyshare/tx";
 import { MsgCreateLatestPubKey } from "./types/fairyring/keyshare/tx";
-import { MsgUpdateGeneralKeyShare } from "./types/fairyring/keyshare/tx";
-import { MsgSendKeyshare } from "./types/fairyring/keyshare/tx";
+import { MsgCreateAuthorizedAddress } from "./types/fairyring/keyshare/tx";
+import { MsgUpdateAuthorizedAddress } from "./types/fairyring/keyshare/tx";
+import { MsgCreateGeneralKeyShare } from "./types/fairyring/keyshare/tx";
 
 import { AggregatedKeyShare as typeAggregatedKeyShare} from "./types"
 import { AuthorizedAddress as typeAuthorizedAddress} from "./types"
@@ -33,15 +31,16 @@ import { AggrKeyshareDataPacketAck as typeAggrKeyshareDataPacketAck} from "./typ
 import { Params as typeParams} from "./types"
 import { ActivePubKey as typeActivePubKey} from "./types"
 import { QueuedPubKey as typeQueuedPubKey} from "./types"
+import { RequestAggrKeyshareMsg as typeRequestAggrKeyshareMsg} from "./types"
 import { KeyShareRequest as typeKeyShareRequest} from "./types"
 import { IBCInfo as typeIBCInfo} from "./types"
 import { CounterPartyIBCInfo as typeCounterPartyIBCInfo} from "./types"
 import { ValidatorSet as typeValidatorSet} from "./types"
 
-export { MsgCreateAuthorizedAddress, MsgRegisterValidator, MsgDeleteAuthorizedAddress, MsgCreateGeneralKeyShare, MsgUpdateAuthorizedAddress, MsgDeleteGeneralKeyShare, MsgCreateLatestPubKey, MsgUpdateGeneralKeyShare, MsgSendKeyshare };
+export { MsgSendKeyshare, MsgRegisterValidator, MsgDeleteAuthorizedAddress, MsgCreateLatestPubKey, MsgCreateAuthorizedAddress, MsgUpdateAuthorizedAddress, MsgCreateGeneralKeyShare };
 
-type sendMsgCreateAuthorizedAddressParams = {
-  value: MsgCreateAuthorizedAddress,
+type sendMsgSendKeyshareParams = {
+  value: MsgSendKeyshare,
   fee?: StdFee,
   memo?: string
 };
@@ -58,8 +57,14 @@ type sendMsgDeleteAuthorizedAddressParams = {
   memo?: string
 };
 
-type sendMsgCreateGeneralKeyShareParams = {
-  value: MsgCreateGeneralKeyShare,
+type sendMsgCreateLatestPubKeyParams = {
+  value: MsgCreateLatestPubKey,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgCreateAuthorizedAddressParams = {
+  value: MsgCreateAuthorizedAddress,
   fee?: StdFee,
   memo?: string
 };
@@ -70,33 +75,15 @@ type sendMsgUpdateAuthorizedAddressParams = {
   memo?: string
 };
 
-type sendMsgDeleteGeneralKeyShareParams = {
-  value: MsgDeleteGeneralKeyShare,
+type sendMsgCreateGeneralKeyShareParams = {
+  value: MsgCreateGeneralKeyShare,
   fee?: StdFee,
   memo?: string
 };
 
-type sendMsgCreateLatestPubKeyParams = {
-  value: MsgCreateLatestPubKey,
-  fee?: StdFee,
-  memo?: string
-};
 
-type sendMsgUpdateGeneralKeyShareParams = {
-  value: MsgUpdateGeneralKeyShare,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgSendKeyshareParams = {
+type msgSendKeyshareParams = {
   value: MsgSendKeyshare,
-  fee?: StdFee,
-  memo?: string
-};
-
-
-type msgCreateAuthorizedAddressParams = {
-  value: MsgCreateAuthorizedAddress,
 };
 
 type msgRegisterValidatorParams = {
@@ -107,28 +94,20 @@ type msgDeleteAuthorizedAddressParams = {
   value: MsgDeleteAuthorizedAddress,
 };
 
-type msgCreateGeneralKeyShareParams = {
-  value: MsgCreateGeneralKeyShare,
+type msgCreateLatestPubKeyParams = {
+  value: MsgCreateLatestPubKey,
+};
+
+type msgCreateAuthorizedAddressParams = {
+  value: MsgCreateAuthorizedAddress,
 };
 
 type msgUpdateAuthorizedAddressParams = {
   value: MsgUpdateAuthorizedAddress,
 };
 
-type msgDeleteGeneralKeyShareParams = {
-  value: MsgDeleteGeneralKeyShare,
-};
-
-type msgCreateLatestPubKeyParams = {
-  value: MsgCreateLatestPubKey,
-};
-
-type msgUpdateGeneralKeyShareParams = {
-  value: MsgUpdateGeneralKeyShare,
-};
-
-type msgSendKeyshareParams = {
-  value: MsgSendKeyshare,
+type msgCreateGeneralKeyShareParams = {
+  value: MsgCreateGeneralKeyShare,
 };
 
 
@@ -161,17 +140,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendMsgCreateAuthorizedAddress({ value, fee, memo }: sendMsgCreateAuthorizedAddressParams): Promise<DeliverTxResponse> {
+		async sendMsgSendKeyshare({ value, fee, memo }: sendMsgSendKeyshareParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgCreateAuthorizedAddress: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgSendKeyshare: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgCreateAuthorizedAddress({ value: MsgCreateAuthorizedAddress.fromPartial(value) })
+				let msg = this.msgSendKeyshare({ value: MsgSendKeyshare.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreateAuthorizedAddress: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgSendKeyshare: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -203,17 +182,31 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgCreateGeneralKeyShare({ value, fee, memo }: sendMsgCreateGeneralKeyShareParams): Promise<DeliverTxResponse> {
+		async sendMsgCreateLatestPubKey({ value, fee, memo }: sendMsgCreateLatestPubKeyParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgCreateGeneralKeyShare: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgCreateLatestPubKey: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgCreateGeneralKeyShare({ value: MsgCreateGeneralKeyShare.fromPartial(value) })
+				let msg = this.msgCreateLatestPubKey({ value: MsgCreateLatestPubKey.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreateGeneralKeyShare: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgCreateLatestPubKey: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgCreateAuthorizedAddress({ value, fee, memo }: sendMsgCreateAuthorizedAddressParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCreateAuthorizedAddress: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgCreateAuthorizedAddress({ value: MsgCreateAuthorizedAddress.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCreateAuthorizedAddress: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -231,68 +224,26 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgDeleteGeneralKeyShare({ value, fee, memo }: sendMsgDeleteGeneralKeyShareParams): Promise<DeliverTxResponse> {
+		async sendMsgCreateGeneralKeyShare({ value, fee, memo }: sendMsgCreateGeneralKeyShareParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgDeleteGeneralKeyShare: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgCreateGeneralKeyShare: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgDeleteGeneralKeyShare({ value: MsgDeleteGeneralKeyShare.fromPartial(value) })
+				let msg = this.msgCreateGeneralKeyShare({ value: MsgCreateGeneralKeyShare.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgDeleteGeneralKeyShare: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgCreateLatestPubKey({ value, fee, memo }: sendMsgCreateLatestPubKeyParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCreateLatestPubKey: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgCreateLatestPubKey({ value: MsgCreateLatestPubKey.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreateLatestPubKey: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUpdateGeneralKeyShare({ value, fee, memo }: sendMsgUpdateGeneralKeyShareParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateGeneralKeyShare: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgUpdateGeneralKeyShare({ value: MsgUpdateGeneralKeyShare.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateGeneralKeyShare: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgSendKeyshare({ value, fee, memo }: sendMsgSendKeyshareParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgSendKeyshare: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgSendKeyshare({ value: MsgSendKeyshare.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgSendKeyshare: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgCreateGeneralKeyShare: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
 		
-		msgCreateAuthorizedAddress({ value }: msgCreateAuthorizedAddressParams): EncodeObject {
+		msgSendKeyshare({ value }: msgSendKeyshareParams): EncodeObject {
 			try {
-				return { typeUrl: "/fairyring.keyshare.MsgCreateAuthorizedAddress", value: MsgCreateAuthorizedAddress.fromPartial( value ) }  
+				return { typeUrl: "/fairyring.keyshare.MsgSendKeyshare", value: MsgSendKeyshare.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgCreateAuthorizedAddress: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgSendKeyshare: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -312,11 +263,19 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgCreateGeneralKeyShare({ value }: msgCreateGeneralKeyShareParams): EncodeObject {
+		msgCreateLatestPubKey({ value }: msgCreateLatestPubKeyParams): EncodeObject {
 			try {
-				return { typeUrl: "/fairyring.keyshare.MsgCreateGeneralKeyShare", value: MsgCreateGeneralKeyShare.fromPartial( value ) }  
+				return { typeUrl: "/fairyring.keyshare.MsgCreateLatestPubKey", value: MsgCreateLatestPubKey.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgCreateGeneralKeyShare: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgCreateLatestPubKey: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgCreateAuthorizedAddress({ value }: msgCreateAuthorizedAddressParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.keyshare.MsgCreateAuthorizedAddress", value: MsgCreateAuthorizedAddress.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCreateAuthorizedAddress: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -328,35 +287,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgDeleteGeneralKeyShare({ value }: msgDeleteGeneralKeyShareParams): EncodeObject {
+		msgCreateGeneralKeyShare({ value }: msgCreateGeneralKeyShareParams): EncodeObject {
 			try {
-				return { typeUrl: "/fairyring.keyshare.MsgDeleteGeneralKeyShare", value: MsgDeleteGeneralKeyShare.fromPartial( value ) }  
+				return { typeUrl: "/fairyring.keyshare.MsgCreateGeneralKeyShare", value: MsgCreateGeneralKeyShare.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgDeleteGeneralKeyShare: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgCreateLatestPubKey({ value }: msgCreateLatestPubKeyParams): EncodeObject {
-			try {
-				return { typeUrl: "/fairyring.keyshare.MsgCreateLatestPubKey", value: MsgCreateLatestPubKey.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgCreateLatestPubKey: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgUpdateGeneralKeyShare({ value }: msgUpdateGeneralKeyShareParams): EncodeObject {
-			try {
-				return { typeUrl: "/fairyring.keyshare.MsgUpdateGeneralKeyShare", value: MsgUpdateGeneralKeyShare.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateGeneralKeyShare: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgSendKeyshare({ value }: msgSendKeyshareParams): EncodeObject {
-			try {
-				return { typeUrl: "/fairyring.keyshare.MsgSendKeyshare", value: MsgSendKeyshare.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgSendKeyshare: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgCreateGeneralKeyShare: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -398,6 +333,7 @@ class SDKModule {
 						Params: getStructure(typeParams.fromPartial({})),
 						ActivePubKey: getStructure(typeActivePubKey.fromPartial({})),
 						QueuedPubKey: getStructure(typeQueuedPubKey.fromPartial({})),
+						RequestAggrKeyshareMsg: getStructure(typeRequestAggrKeyshareMsg.fromPartial({})),
 						KeyShareRequest: getStructure(typeKeyShareRequest.fromPartial({})),
 						IBCInfo: getStructure(typeIBCInfo.fromPartial({})),
 						CounterPartyIBCInfo: getStructure(typeCounterPartyIBCInfo.fromPartial({})),

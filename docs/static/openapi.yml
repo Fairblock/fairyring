@@ -39356,7 +39356,7 @@ paths:
                       type: string
                   channel_id:
                     type: string
-                  minGasPrice:
+                  min_gas_price:
                     type: object
                     properties:
                       denom:
@@ -39371,6 +39371,8 @@ paths:
                       custom method
 
                       signatures required by gogoproto.
+                  is_source_chain:
+                    type: boolean
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -76775,7 +76777,7 @@ definitions:
           type: string
       channel_id:
         type: string
-      minGasPrice:
+      min_gas_price:
         type: object
         properties:
           denom:
@@ -76787,6 +76789,8 @@ definitions:
 
           NOTE: The amount field is an Int which implements the custom method
           signatures required by gogoproto.
+      is_source_chain:
+        type: boolean
     description: Params defines the parameters for the module.
   fairyring.pep.PepNonce:
     type: object
@@ -77007,7 +77011,7 @@ definitions:
               type: string
           channel_id:
             type: string
-          minGasPrice:
+          min_gas_price:
             type: object
             properties:
               denom:
@@ -77022,6 +77026,8 @@ definitions:
               method
 
               signatures required by gogoproto.
+          is_source_chain:
+            type: boolean
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   fairyring.pep.QueryPubKeyResponse:
     type: object

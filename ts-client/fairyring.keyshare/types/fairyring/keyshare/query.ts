@@ -4,6 +4,7 @@ import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
 import { AggregatedKeyShare } from "./aggregated_key_share";
 import { AuthorizedAddress } from "./authorized_address";
+import { Commitments } from "./commitments";
 import { GeneralKeyShare } from "./general_key_share";
 import { KeyShare } from "./key_share";
 import { Params } from "./params";
@@ -11,6 +12,14 @@ import { ActivePubKey, QueuedPubKey } from "./pub_key";
 import { ValidatorSet } from "./validator_set";
 
 export const protobufPackage = "fairyring.keyshare";
+
+export interface QueryCommitmentsRequest {
+}
+
+export interface QueryCommitmentsResponse {
+  activeCommitments: Commitments | undefined;
+  queuedCommitments: Commitments | undefined;
+}
 
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {
@@ -118,6 +127,113 @@ export interface QueryAllGeneralKeyShareResponse {
   generalKeyShare: GeneralKeyShare[];
   pagination: PageResponse | undefined;
 }
+
+function createBaseQueryCommitmentsRequest(): QueryCommitmentsRequest {
+  return {};
+}
+
+export const QueryCommitmentsRequest = {
+  encode(_: QueryCommitmentsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryCommitmentsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryCommitmentsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryCommitmentsRequest {
+    return {};
+  },
+
+  toJSON(_: QueryCommitmentsRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryCommitmentsRequest>, I>>(_: I): QueryCommitmentsRequest {
+    const message = createBaseQueryCommitmentsRequest();
+    return message;
+  },
+};
+
+function createBaseQueryCommitmentsResponse(): QueryCommitmentsResponse {
+  return { activeCommitments: undefined, queuedCommitments: undefined };
+}
+
+export const QueryCommitmentsResponse = {
+  encode(message: QueryCommitmentsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.activeCommitments !== undefined) {
+      Commitments.encode(message.activeCommitments, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.queuedCommitments !== undefined) {
+      Commitments.encode(message.queuedCommitments, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryCommitmentsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryCommitmentsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.activeCommitments = Commitments.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.queuedCommitments = Commitments.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryCommitmentsResponse {
+    return {
+      activeCommitments: isSet(object.activeCommitments) ? Commitments.fromJSON(object.activeCommitments) : undefined,
+      queuedCommitments: isSet(object.queuedCommitments) ? Commitments.fromJSON(object.queuedCommitments) : undefined,
+    };
+  },
+
+  toJSON(message: QueryCommitmentsResponse): unknown {
+    const obj: any = {};
+    message.activeCommitments !== undefined
+      && (obj.activeCommitments = message.activeCommitments
+        ? Commitments.toJSON(message.activeCommitments)
+        : undefined);
+    message.queuedCommitments !== undefined
+      && (obj.queuedCommitments = message.queuedCommitments
+        ? Commitments.toJSON(message.queuedCommitments)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryCommitmentsResponse>, I>>(object: I): QueryCommitmentsResponse {
+    const message = createBaseQueryCommitmentsResponse();
+    message.activeCommitments = (object.activeCommitments !== undefined && object.activeCommitments !== null)
+      ? Commitments.fromPartial(object.activeCommitments)
+      : undefined;
+    message.queuedCommitments = (object.queuedCommitments !== undefined && object.queuedCommitments !== null)
+      ? Commitments.fromPartial(object.queuedCommitments)
+      : undefined;
+    return message;
+  },
+};
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
@@ -1446,6 +1562,7 @@ export const QueryAllGeneralKeyShareResponse = {
 
 /** Query defines the gRPC querier service. */
 export interface Query {
+  Commitments(request: QueryCommitmentsRequest): Promise<QueryCommitmentsResponse>;
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** Queries a ValidatorSet by index. */
@@ -1473,6 +1590,7 @@ export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
   constructor(rpc: Rpc) {
     this.rpc = rpc;
+    this.Commitments = this.Commitments.bind(this);
     this.Params = this.Params.bind(this);
     this.ValidatorSet = this.ValidatorSet.bind(this);
     this.ValidatorSetAll = this.ValidatorSetAll.bind(this);
@@ -1486,6 +1604,12 @@ export class QueryClientImpl implements Query {
     this.GeneralKeyShare = this.GeneralKeyShare.bind(this);
     this.GeneralKeyShareAll = this.GeneralKeyShareAll.bind(this);
   }
+  Commitments(request: QueryCommitmentsRequest): Promise<QueryCommitmentsResponse> {
+    const data = QueryCommitmentsRequest.encode(request).finish();
+    const promise = this.rpc.request("fairyring.keyshare.Query", "Commitments", data);
+    return promise.then((data) => QueryCommitmentsResponse.decode(new _m0.Reader(data)));
+  }
+
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("fairyring.keyshare.Query", "Params", data);

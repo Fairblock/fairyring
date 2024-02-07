@@ -14,9 +14,11 @@ func (p AggrKeyshareDataPacketData) ValidateBasic() error {
 		return errors.New("identity is blank")
 	}
 
-	_, err := strconv.ParseUint(p.ProposalId, 10, 64)
-	if err != nil {
-		return err
+	if p.ProposalId != "" {
+		_, err := strconv.ParseUint(p.ProposalId, 10, 64)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

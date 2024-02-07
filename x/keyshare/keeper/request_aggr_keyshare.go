@@ -42,6 +42,14 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 		return packetAck, err
 	}
 
+	var isProposalID bool
+	switch data.Id.(type) {
+	case *types.RequestAggrKeysharePacketData_ProposalId:
+		isProposalID = true
+	default:
+		isProposalID = false
+	}
+
 	reqCountString := k.GetRequestCount(ctx)
 	reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
 	reqCount = reqCount + 1
@@ -52,21 +60,28 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 		return packetAck, err
 	}
 
-	var keyshareRequest = types.KeyShareRequest{
-		Identity: id,
-		Pubkey:   activePubKey.PublicKey,
-		IbcInfo: &types.IBCInfo{
-			ChannelID: packet.DestinationChannel,
-			PortID:    packet.DestinationPort,
-		},
-		Counterparty: &types.CounterPartyIBCInfo{
-			ChannelID: packet.SourceChannel,
-			PortID:    packet.SourcePort,
-		},
-		AggrKeyshare: "",
-		ProposalId:   data.ProposalId,
-		Sent:         false,
+	var keyshareRequest types.KeyShareRequest
+
+	keyshareRequest.Identity = id
+	keyshareRequest.Pubkey = activePubKey.PublicKey
+	keyshareRequest.IbcInfo = &types.IBCInfo{
+		ChannelID: packet.DestinationChannel,
+		PortID:    packet.DestinationPort,
 	}
+
+	keyshareRequest.Counterparty = &types.CounterPartyIBCInfo{
+		ChannelID: packet.SourceChannel,
+		PortID:    packet.SourcePort,
+	}
+
+	keyshareRequest.AggrKeyshare = ""
+
+	if isProposalID {
+		keyshareRequest.ProposalId = data.GetProposalId()
+	} else {
+		keyshareRequest.RequestId = data.GetRequestId()
+	}
+	keyshareRequest.Sent = false
 
 	k.SetKeyShareRequest(ctx, keyshareRequest)
 
@@ -85,4 +100,52 @@ func (k Keeper) OnTimeoutRequestAggrKeysharePacket(ctx sdk.Context, packet chann
 	// (Not required for fairyring since this packet is never sent from fairyring)
 
 	return nil
+}
+
+func (k Keeper) ProcessKeyshareRequest(ctx sdk.Context, msg types.MsgRequestAggrKeyshare,
+) (rsp types.MsgRequestAggrKeyshareResponse, err error) {
+	var isProposalID bool
+
+	switch msg.Id.(type) {
+	case *types.MsgRequestAggrKeyshare_ProposalId:
+		isProposalID = true
+		_, err := strconv.ParseUint(msg.GetProposalId(), 10, 64)
+		if err != nil {
+			return rsp, err
+		}
+	default:
+		isProposalID = false
+	}
+
+	reqCountString := k.GetRequestCount(ctx)
+	reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
+	reqCount = reqCount + 1
+
+	id := types.IdentityFromRequestCount(reqCount)
+	activePubKey, found := k.GetActivePubKey(ctx)
+	if !found {
+		return rsp, err
+	}
+
+	var keyshareRequest types.KeyShareRequest
+
+	keyshareRequest.Identity = id
+	keyshareRequest.Pubkey = activePubKey.PublicKey
+
+	keyshareRequest.AggrKeyshare = ""
+
+	if isProposalID {
+		keyshareRequest.ProposalId = msg.GetProposalId()
+	} else {
+		keyshareRequest.RequestId = msg.GetRequestId()
+	}
+
+	k.SetKeyShareRequest(ctx, keyshareRequest)
+
+	k.SetRequestCount(ctx, reqCount)
+
+	rsp.Identity = id
+	rsp.Pubkey = activePubKey.PublicKey
+
+	return rsp, nil
 }

@@ -6,10 +6,17 @@ export const protobufPackage = "fairyring.keyshare";
 export interface KeyShareRequest {
   identity: string;
   pubkey: string;
-  ibcInfo: IBCInfo | undefined;
+  /** Used only when the request is made via IBC */
+  ibcInfo:
+    | IBCInfo
+    | undefined;
+  /** Used only when the request is made via IBC */
   counterparty: CounterPartyIBCInfo | undefined;
   aggrKeyshare: string;
+  /** This is only used when the request is for private governance */
   proposalId: string;
+  /** might be useful to destination chains to sort out the response */
+  requestId: string;
   sent: boolean;
 }
 
@@ -35,6 +42,7 @@ function createBaseKeyShareRequest(): KeyShareRequest {
     counterparty: undefined,
     aggrKeyshare: "",
     proposalId: "",
+    requestId: "",
     sent: false,
   };
 }
@@ -59,8 +67,11 @@ export const KeyShareRequest = {
     if (message.proposalId !== "") {
       writer.uint32(50).string(message.proposalId);
     }
+    if (message.requestId !== "") {
+      writer.uint32(58).string(message.requestId);
+    }
     if (message.sent === true) {
-      writer.uint32(56).bool(message.sent);
+      writer.uint32(64).bool(message.sent);
     }
     return writer;
   },
@@ -91,6 +102,9 @@ export const KeyShareRequest = {
           message.proposalId = reader.string();
           break;
         case 7:
+          message.requestId = reader.string();
+          break;
+        case 8:
           message.sent = reader.bool();
           break;
         default:
@@ -109,6 +123,7 @@ export const KeyShareRequest = {
       counterparty: isSet(object.counterparty) ? CounterPartyIBCInfo.fromJSON(object.counterparty) : undefined,
       aggrKeyshare: isSet(object.aggrKeyshare) ? String(object.aggrKeyshare) : "",
       proposalId: isSet(object.proposalId) ? String(object.proposalId) : "",
+      requestId: isSet(object.requestId) ? String(object.requestId) : "",
       sent: isSet(object.sent) ? Boolean(object.sent) : false,
     };
   },
@@ -122,6 +137,7 @@ export const KeyShareRequest = {
       && (obj.counterparty = message.counterparty ? CounterPartyIBCInfo.toJSON(message.counterparty) : undefined);
     message.aggrKeyshare !== undefined && (obj.aggrKeyshare = message.aggrKeyshare);
     message.proposalId !== undefined && (obj.proposalId = message.proposalId);
+    message.requestId !== undefined && (obj.requestId = message.requestId);
     message.sent !== undefined && (obj.sent = message.sent);
     return obj;
   },
@@ -138,6 +154,7 @@ export const KeyShareRequest = {
       : undefined;
     message.aggrKeyshare = object.aggrKeyshare ?? "";
     message.proposalId = object.proposalId ?? "";
+    message.requestId = object.requestId ?? "";
     message.sent = object.sent ?? false;
     return message;
   },

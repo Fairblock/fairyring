@@ -10,6 +10,7 @@ export interface Params {
   trustedAddresses: string[];
   channelId: string;
   minGasPrice: Coin | undefined;
+  isSourceChain: boolean;
 }
 
 export interface TrustedCounterParty {
@@ -19,7 +20,13 @@ export interface TrustedCounterParty {
 }
 
 function createBaseParams(): Params {
-  return { trustedCounterParties: [], trustedAddresses: [], channelId: "", minGasPrice: undefined };
+  return {
+    trustedCounterParties: [],
+    trustedAddresses: [],
+    channelId: "",
+    minGasPrice: undefined,
+    isSourceChain: false,
+  };
 }
 
 export const Params = {
@@ -35,6 +42,9 @@ export const Params = {
     }
     if (message.minGasPrice !== undefined) {
       Coin.encode(message.minGasPrice, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.isSourceChain === true) {
+      writer.uint32(40).bool(message.isSourceChain);
     }
     return writer;
   },
@@ -58,6 +68,9 @@ export const Params = {
         case 4:
           message.minGasPrice = Coin.decode(reader, reader.uint32());
           break;
+        case 5:
+          message.isSourceChain = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -76,6 +89,7 @@ export const Params = {
         : [],
       channelId: isSet(object.channelId) ? String(object.channelId) : "",
       minGasPrice: isSet(object.minGasPrice) ? Coin.fromJSON(object.minGasPrice) : undefined,
+      isSourceChain: isSet(object.isSourceChain) ? Boolean(object.isSourceChain) : false,
     };
   },
 
@@ -96,6 +110,7 @@ export const Params = {
     message.channelId !== undefined && (obj.channelId = message.channelId);
     message.minGasPrice !== undefined
       && (obj.minGasPrice = message.minGasPrice ? Coin.toJSON(message.minGasPrice) : undefined);
+    message.isSourceChain !== undefined && (obj.isSourceChain = message.isSourceChain);
     return obj;
   },
 
@@ -107,6 +122,7 @@ export const Params = {
     message.minGasPrice = (object.minGasPrice !== undefined && object.minGasPrice !== null)
       ? Coin.fromPartial(object.minGasPrice)
       : undefined;
+    message.isSourceChain = object.isSourceChain ?? false;
     return message;
   },
 };

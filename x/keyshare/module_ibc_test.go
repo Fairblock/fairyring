@@ -68,6 +68,7 @@ func SetupTestingApp() (ibctesting.TestingApp, map[string]json.RawMessage) {
 		5,
 		encCdc,
 		simtestutil.EmptyAppOptions{},
+		app.EmptyWasmOpts,
 	)
 	return fapp, app.NewDefaultGenesisState(encCdc.Marshaler)
 }
@@ -84,7 +85,9 @@ func (testSuit *KeeperTestSuite) TestOnRecvPacket() {
 	fmt.Println(testSuit.coordinator.CurrentTime.UTC())
 	timeoutTimestamp1 := testSuit.coordinator.CurrentTime.UTC().UnixNano() + 30000000000
 	var reqKeysharePacket types.RequestAggrKeysharePacketData
-	reqKeysharePacket.ProposalId = "1"
+	reqKeysharePacket.Id = &types.RequestAggrKeysharePacketData_ProposalId{
+		ProposalId: "1",
+	}
 	packet1Data, err := reqKeysharePacket.Marshal()
 	testSuit.Require().Equal(err, nil)
 
