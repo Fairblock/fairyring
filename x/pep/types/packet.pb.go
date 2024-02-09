@@ -240,7 +240,7 @@ func init() {
 	proto.RegisterType((*CurrentKeysPacketAck)(nil), "fairyring.pep.CurrentKeysPacketAck")
 }
 
-func init() { proto.RegisterFile("fairyring/pep/packet.proto", fileDescriptor_69dc34a7ea22bf8e) }
+func init() { proto.RegisterFile("github.com/Fairblock/fairyring/pep/packet.proto", fileDescriptor_69dc34a7ea22bf8e) }
 
 var fileDescriptor_69dc34a7ea22bf8e = []byte{
 	// 272 bytes of a gzipped FileDescriptorProto

@@ -3,8 +3,8 @@ package keeper
 import (
 	"context"
 	"encoding/hex"
-	"fairyring/x/keyshare/types"
 	"fmt"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/armon/go-metrics"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	"strconv"

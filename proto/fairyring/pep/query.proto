@@ -5,15 +5,15 @@ package fairyring.pep;
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
-import "fairyring/pep/params.proto";
-import "fairyring/pep/encrypted_tx.proto";
-import "fairyring/pep/pep_nonce.proto";
-import "fairyring/pep/aggregated_key_share.proto";
-import "fairyring/pep/pub_key.proto";
+import "github.com/Fairblock/fairyring/pep/params.proto";
+import "github.com/Fairblock/fairyring/pep/encrypted_tx.proto";
+import "github.com/Fairblock/fairyring/pep/pep_nonce.proto";
+import "github.com/Fairblock/fairyring/pep/aggregated_key_share.proto";
+import "github.com/Fairblock/fairyring/pep/pub_key.proto";
 
 // this line is used by starport scaffolding # 1
 
-option go_package = "fairyring/x/pep/types";
+option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
 // Query defines the gRPC querier service.
 service Query {

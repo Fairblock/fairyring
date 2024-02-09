@@ -3,7 +3,7 @@ package types
 import (
 	"testing"
 
-	"fairyring/testutil/sample"
+	"github.com/Fairblock/fairyring/testutil/sample"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 )

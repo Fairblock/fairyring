@@ -10,9 +10,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	keepertest "fairyring/testutil/keeper"
-	"fairyring/testutil/nullify"
-	"fairyring/x/keyshare/types"
+	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
+	"github.com/Fairblock/fairyring/testutil/nullify"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 )
 
 // Prevent strconv unused error

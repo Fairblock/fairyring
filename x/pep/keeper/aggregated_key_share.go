@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"

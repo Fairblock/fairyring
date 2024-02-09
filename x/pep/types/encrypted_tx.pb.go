@@ -149,7 +149,7 @@ func init() {
 	proto.RegisterType((*EncryptedTxArray)(nil), "fairyring.pep.EncryptedTxArray")
 }
 
-func init() { proto.RegisterFile("fairyring/pep/encrypted_tx.proto", fileDescriptor_7c124d687cde8326) }
+func init() { proto.RegisterFile("github.com/Fairblock/fairyring/pep/encrypted_tx.proto", fileDescriptor_7c124d687cde8326) }
 
 var fileDescriptor_7c124d687cde8326 = []byte{
 	// 306 bytes of a gzipped FileDescriptorProto

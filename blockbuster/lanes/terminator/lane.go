@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"fairyring/blockbuster"
+	"github.com/Fairblock/fairyring/blockbuster"
 
 	"github.com/cometbft/cometbft/libs/log"
 	sdk "github.com/cosmos/cosmos-sdk/types"

@@ -5,8 +5,8 @@ import (
 	"context"
 	"encoding/hex"
 	"errors"
-	"fairyring/x/pep/types"
 	"fmt"
+	"github.com/Fairblock/fairyring/x/pep/types"
 	"strconv"
 
 	enc "github.com/FairBlock/DistributedIBE/encryption"

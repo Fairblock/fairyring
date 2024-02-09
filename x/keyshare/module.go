@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/hex"
 	"encoding/json"
-	peptypes "fairyring/x/pep/types"
 	"fmt"
+	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	"strconv"
 
@@ -14,9 +14,9 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
 
-	"fairyring/x/keyshare/client/cli"
-	"fairyring/x/keyshare/keeper"
-	"fairyring/x/keyshare/types"
+	"github.com/Fairblock/fairyring/x/keyshare/client/cli"
+	"github.com/Fairblock/fairyring/x/keyshare/keeper"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 
 	abci "github.com/cometbft/cometbft/abci/types"
 

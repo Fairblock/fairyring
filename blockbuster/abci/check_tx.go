@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	log "github.com/cometbft/cometbft/libs/log"

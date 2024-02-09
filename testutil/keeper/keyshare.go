@@ -15,8 +15,8 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 
-	"fairyring/x/keyshare/keeper"
-	"fairyring/x/keyshare/types"
+	"github.com/Fairblock/fairyring/x/keyshare/keeper"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 
 	dbm "github.com/cometbft/cometbft-db"
 	"github.com/cometbft/cometbft/libs/log"

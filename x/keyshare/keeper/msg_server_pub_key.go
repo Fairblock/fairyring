@@ -2,10 +2,10 @@ package keeper
 
 import (
 	"context"
-	peptypes "fairyring/x/pep/types"
+	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 	"strconv"
 
-	"fairyring/x/keyshare/types"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

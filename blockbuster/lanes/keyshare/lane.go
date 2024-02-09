@@ -1,8 +1,8 @@
 package keyshare
 
 import (
-	"fairyring/blockbuster"
-	"fairyring/blockbuster/lanes/base"
+	"github.com/Fairblock/fairyring/blockbuster"
+	"github.com/Fairblock/fairyring/blockbuster/lanes/base"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

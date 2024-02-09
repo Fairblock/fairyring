@@ -11,7 +11,7 @@ import (
 	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 	bls "github.com/drand/kyber-bls12381"
 
-	"fairyring/x/keyshare/types"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

@@ -1,8 +1,8 @@
 package keyshare
 
 import (
-	"fairyring/x/keyshare/keeper"
-	"fairyring/x/keyshare/types"
+	"github.com/Fairblock/fairyring/x/keyshare/keeper"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"

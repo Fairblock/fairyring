@@ -3,8 +3,8 @@ package simulation
 import (
 	"math/rand"
 
-	"fairyring/x/pep/keeper"
-	"fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/x/pep/keeper"
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"

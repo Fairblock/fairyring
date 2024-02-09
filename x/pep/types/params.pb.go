@@ -157,7 +157,7 @@ func init() {
 	proto.RegisterType((*TrustedCounterParty)(nil), "fairyring.pep.TrustedCounterParty")
 }
 
-func init() { proto.RegisterFile("fairyring/pep/params.proto", fileDescriptor_9a32cf7d58c7a431) }
+func init() { proto.RegisterFile("github.com/Fairblock/fairyring/pep/params.proto", fileDescriptor_9a32cf7d58c7a431) }
 
 var fileDescriptor_9a32cf7d58c7a431 = []byte{
 	// 356 bytes of a gzipped FileDescriptorProto

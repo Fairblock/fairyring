@@ -1263,7 +1263,7 @@ func init() {
 	proto.RegisterType((*QueryAllGeneralKeyShareResponse)(nil), "fairyring.keyshare.QueryAllGeneralKeyShareResponse")
 }
 
-func init() { proto.RegisterFile("fairyring/keyshare/query.proto", fileDescriptor_572603c2d521bf14) }
+func init() { proto.RegisterFile("github.com/Fairblock/fairyring/keyshare/query.proto", fileDescriptor_572603c2d521bf14) }
 
 var fileDescriptor_572603c2d521bf14 = []byte{
 	// 1306 bytes of a gzipped FileDescriptorProto
@@ -1878,7 +1878,7 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "fairyring/keyshare/query.proto",
+	Metadata: "github.com/Fairblock/fairyring/keyshare/query.proto",
 }
 
 func (m *QueryCommitmentsRequest) Marshal() (dAtA []byte, err error) {

@@ -764,7 +764,7 @@ func init() {
 	proto.RegisterType((*QueryPubKeyResponse)(nil), "fairyring.pep.QueryPubKeyResponse")
 }
 
-func init() { proto.RegisterFile("fairyring/pep/query.proto", fileDescriptor_dd36cf23112e8be0) }
+func init() { proto.RegisterFile("github.com/Fairblock/fairyring/pep/query.proto", fileDescriptor_dd36cf23112e8be0) }
 
 var fileDescriptor_dd36cf23112e8be0 = []byte{
 	// 898 bytes of a gzipped FileDescriptorProto
@@ -1172,7 +1172,7 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "fairyring/pep/query.proto",
+	Metadata: "github.com/Fairblock/fairyring/pep/query.proto",
 }
 
 func (m *QueryParamsRequest) Marshal() (dAtA []byte, err error) {

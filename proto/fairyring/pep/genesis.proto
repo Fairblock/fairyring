@@ -3,15 +3,15 @@ syntax = "proto3";
 package fairyring.pep;
 
 import "gogoproto/gogo.proto";
-import "fairyring/pep/params.proto";
-import "fairyring/pep/encrypted_tx.proto";
-import "fairyring/pep/pep_nonce.proto";
-import "fairyring/pep/aggregated_key_share.proto";
-import "fairyring/pep/pub_key.proto";
+import "github.com/Fairblock/fairyring/pep/params.proto";
+import "github.com/Fairblock/fairyring/pep/encrypted_tx.proto";
+import "github.com/Fairblock/fairyring/pep/pep_nonce.proto";
+import "github.com/Fairblock/fairyring/pep/aggregated_key_share.proto";
+import "github.com/Fairblock/fairyring/pep/pub_key.proto";
 
 // this line is used by starport scaffolding # genesis/proto/import
 
-option go_package = "fairyring/x/pep/types";
+option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
 // GenesisState defines the pep module's genesis state.
 message GenesisState {

@@ -8,7 +8,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	// "github.com/cosmos/cosmos-sdk/client/flags"
-	"fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/x/pep/types"
 )
 
 var (
