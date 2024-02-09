@@ -39,8 +39,8 @@ import (
 
 	// this line is used by starport scaffolding # root/moduleImport
 
-	"fairyring/app"
-	appparams "fairyring/app/params"
+	"github.com/Fairblock/fairyring/app"
+	appparams "github.com/Fairblock/fairyring/app/params"
 )
 
 // NewRootCmd creates a new root command for a Cosmos SDK application

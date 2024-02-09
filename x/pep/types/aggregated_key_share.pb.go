@@ -87,7 +87,7 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("fairyring/pep/aggregated_key_share.proto", fileDescriptor_95dc3bd78b9184ad)
+	proto.RegisterFile("github.com/Fairblock/fairyring/pep/aggregated_key_share.proto", fileDescriptor_95dc3bd78b9184ad)
 }
 
 var fileDescriptor_95dc3bd78b9184ad = []byte{

@@ -2,7 +2,7 @@ package keyshare
 
 import (
 	"errors"
-	"fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

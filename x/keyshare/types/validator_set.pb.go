@@ -95,7 +95,7 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("fairyring/keyshare/validator_set.proto", fileDescriptor_092022802a527ced)
+	proto.RegisterFile("github.com/Fairblock/fairyring/keyshare/validator_set.proto", fileDescriptor_092022802a527ced)
 }
 
 var fileDescriptor_092022802a527ced = []byte{

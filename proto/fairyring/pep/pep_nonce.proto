@@ -1,7 +1,7 @@
 syntax = "proto3";
 package fairyring.pep;
 
-option go_package = "fairyring/x/pep/types";
+option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
 message PepNonce {
   string address = 1; 

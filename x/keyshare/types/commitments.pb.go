@@ -71,7 +71,7 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("fairyring/keyshare/commitments.proto", fileDescriptor_31bcc80e7d85b088)
+	proto.RegisterFile("github.com/Fairblock/fairyring/keyshare/commitments.proto", fileDescriptor_31bcc80e7d85b088)
 }
 
 var fileDescriptor_31bcc80e7d85b088 = []byte{

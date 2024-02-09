@@ -3,8 +3,8 @@ package ante
 import (
 	"fmt"
 
-	"fairyring/x/pep/keeper"
-	"fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/x/pep/keeper"
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
