@@ -29,11 +29,9 @@ func (k Keeper) Commitments(c context.Context, req *types.QueryCommitmentsReques
 	k.cdc.MustUnmarshal(activeCommitmentBytes, &activeCommitments)
 
 	queuedCommitmentBytes := store.Get(types.KeyPrefix(types.QueuedCommitmentsPrefix))
-	if queuedCommitmentBytes == nil {
-		return nil, status.Error(codes.Internal, "Queued Commitments does not exists")
+	if queuedCommitmentBytes != nil {
+		k.cdc.MustUnmarshal(queuedCommitmentBytes, &queuedCommitments)
 	}
-
-	k.cdc.MustUnmarshal(queuedCommitmentBytes, &queuedCommitments)
 
 	return &types.QueryCommitmentsResponse{ActiveCommitments: &activeCommitments, QueuedCommitments: &queuedCommitments}, nil
 }
