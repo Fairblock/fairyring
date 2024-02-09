@@ -12,7 +12,6 @@ export interface GeneralKeyShare {
   keyShareIndex: number;
   receivedTimestamp: number;
   receivedBlockHeight: number;
-  creator: string;
 }
 
 function createBaseGeneralKeyShare(): GeneralKeyShare {
@@ -24,7 +23,6 @@ function createBaseGeneralKeyShare(): GeneralKeyShare {
     keyShareIndex: 0,
     receivedTimestamp: 0,
     receivedBlockHeight: 0,
-    creator: "",
   };
 }
 
@@ -50,9 +48,6 @@ export const GeneralKeyShare = {
     }
     if (message.receivedBlockHeight !== 0) {
       writer.uint32(56).uint64(message.receivedBlockHeight);
-    }
-    if (message.creator !== "") {
-      writer.uint32(66).string(message.creator);
     }
     return writer;
   },
@@ -85,9 +80,6 @@ export const GeneralKeyShare = {
         case 7:
           message.receivedBlockHeight = longToNumber(reader.uint64() as Long);
           break;
-        case 8:
-          message.creator = reader.string();
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -105,7 +97,6 @@ export const GeneralKeyShare = {
       keyShareIndex: isSet(object.keyShareIndex) ? Number(object.keyShareIndex) : 0,
       receivedTimestamp: isSet(object.receivedTimestamp) ? Number(object.receivedTimestamp) : 0,
       receivedBlockHeight: isSet(object.receivedBlockHeight) ? Number(object.receivedBlockHeight) : 0,
-      creator: isSet(object.creator) ? String(object.creator) : "",
     };
   },
 
@@ -118,7 +109,6 @@ export const GeneralKeyShare = {
     message.keyShareIndex !== undefined && (obj.keyShareIndex = Math.round(message.keyShareIndex));
     message.receivedTimestamp !== undefined && (obj.receivedTimestamp = Math.round(message.receivedTimestamp));
     message.receivedBlockHeight !== undefined && (obj.receivedBlockHeight = Math.round(message.receivedBlockHeight));
-    message.creator !== undefined && (obj.creator = message.creator);
     return obj;
   },
 
@@ -131,7 +121,6 @@ export const GeneralKeyShare = {
     message.keyShareIndex = object.keyShareIndex ?? 0;
     message.receivedTimestamp = object.receivedTimestamp ?? 0;
     message.receivedBlockHeight = object.receivedBlockHeight ?? 0;
-    message.creator = object.creator ?? "";
     return message;
   },
 };
