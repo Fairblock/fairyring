@@ -39354,7 +39354,9 @@ paths:
                     type: array
                     items:
                       type: string
-                  channel_id:
+                  pep_channel_id:
+                    type: string
+                  keyshare_channel_id:
                     type: string
                   min_gas_price:
                     type: object
@@ -76755,6 +76757,15 @@ definitions:
                 signatures required by gogoproto.
   fairyring.pep.MsgCreateAggregatedKeyShareResponse:
     type: object
+  fairyring.pep.MsgGetGeneralKeyshareResponse:
+    type: object
+  fairyring.pep.MsgRequestGeneralKeyshareResponse:
+    type: object
+    properties:
+      identity:
+        type: string
+      pubkey:
+        type: string
   fairyring.pep.MsgSubmitEncryptedTxResponse:
     type: object
   fairyring.pep.Params:
@@ -76775,7 +76786,9 @@ definitions:
         type: array
         items:
           type: string
-      channel_id:
+      pep_channel_id:
+        type: string
+      keyshare_channel_id:
         type: string
       min_gas_price:
         type: object
@@ -77009,7 +77022,9 @@ definitions:
             type: array
             items:
               type: string
-          channel_id:
+          pep_channel_id:
+            type: string
+          keyshare_channel_id:
             type: string
           min_gas_price:
             type: object

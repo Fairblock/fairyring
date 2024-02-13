@@ -34,6 +34,25 @@ export interface CounterPartyIBCInfo {
   PortID: string;
 }
 
+/** MsgRequestAggrKeyshare defines a struct for the data payload */
+export interface MsgRequestAggrKeyshare {
+  proposalId: string | undefined;
+  requestId: string | undefined;
+}
+
+export interface MsgRequestAggrKeyshareResponse {
+  identity: string;
+  pubkey: string;
+}
+
+/** MsgGetAggrKeyshare defines a struct for the data payload */
+export interface MsgGetAggrKeyshare {
+  identity: string;
+}
+
+export interface MsgGetAggrKeyshareResponse {
+}
+
 function createBaseKeyShareRequest(): KeyShareRequest {
   return {
     identity: "",
@@ -308,6 +327,210 @@ export const CounterPartyIBCInfo = {
     message.ConnectionID = object.ConnectionID ?? "";
     message.ChannelID = object.ChannelID ?? "";
     message.PortID = object.PortID ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgRequestAggrKeyshare(): MsgRequestAggrKeyshare {
+  return { proposalId: undefined, requestId: undefined };
+}
+
+export const MsgRequestAggrKeyshare = {
+  encode(message: MsgRequestAggrKeyshare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.proposalId !== undefined) {
+      writer.uint32(10).string(message.proposalId);
+    }
+    if (message.requestId !== undefined) {
+      writer.uint32(18).string(message.requestId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRequestAggrKeyshare {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRequestAggrKeyshare();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.proposalId = reader.string();
+          break;
+        case 2:
+          message.requestId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRequestAggrKeyshare {
+    return {
+      proposalId: isSet(object.proposalId) ? String(object.proposalId) : undefined,
+      requestId: isSet(object.requestId) ? String(object.requestId) : undefined,
+    };
+  },
+
+  toJSON(message: MsgRequestAggrKeyshare): unknown {
+    const obj: any = {};
+    message.proposalId !== undefined && (obj.proposalId = message.proposalId);
+    message.requestId !== undefined && (obj.requestId = message.requestId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgRequestAggrKeyshare>, I>>(object: I): MsgRequestAggrKeyshare {
+    const message = createBaseMsgRequestAggrKeyshare();
+    message.proposalId = object.proposalId ?? undefined;
+    message.requestId = object.requestId ?? undefined;
+    return message;
+  },
+};
+
+function createBaseMsgRequestAggrKeyshareResponse(): MsgRequestAggrKeyshareResponse {
+  return { identity: "", pubkey: "" };
+}
+
+export const MsgRequestAggrKeyshareResponse = {
+  encode(message: MsgRequestAggrKeyshareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.identity !== "") {
+      writer.uint32(10).string(message.identity);
+    }
+    if (message.pubkey !== "") {
+      writer.uint32(18).string(message.pubkey);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRequestAggrKeyshareResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRequestAggrKeyshareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.identity = reader.string();
+          break;
+        case 2:
+          message.pubkey = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRequestAggrKeyshareResponse {
+    return {
+      identity: isSet(object.identity) ? String(object.identity) : "",
+      pubkey: isSet(object.pubkey) ? String(object.pubkey) : "",
+    };
+  },
+
+  toJSON(message: MsgRequestAggrKeyshareResponse): unknown {
+    const obj: any = {};
+    message.identity !== undefined && (obj.identity = message.identity);
+    message.pubkey !== undefined && (obj.pubkey = message.pubkey);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgRequestAggrKeyshareResponse>, I>>(
+    object: I,
+  ): MsgRequestAggrKeyshareResponse {
+    const message = createBaseMsgRequestAggrKeyshareResponse();
+    message.identity = object.identity ?? "";
+    message.pubkey = object.pubkey ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgGetAggrKeyshare(): MsgGetAggrKeyshare {
+  return { identity: "" };
+}
+
+export const MsgGetAggrKeyshare = {
+  encode(message: MsgGetAggrKeyshare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.identity !== "") {
+      writer.uint32(10).string(message.identity);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgGetAggrKeyshare {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgGetAggrKeyshare();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.identity = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgGetAggrKeyshare {
+    return { identity: isSet(object.identity) ? String(object.identity) : "" };
+  },
+
+  toJSON(message: MsgGetAggrKeyshare): unknown {
+    const obj: any = {};
+    message.identity !== undefined && (obj.identity = message.identity);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgGetAggrKeyshare>, I>>(object: I): MsgGetAggrKeyshare {
+    const message = createBaseMsgGetAggrKeyshare();
+    message.identity = object.identity ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgGetAggrKeyshareResponse(): MsgGetAggrKeyshareResponse {
+  return {};
+}
+
+export const MsgGetAggrKeyshareResponse = {
+  encode(_: MsgGetAggrKeyshareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgGetAggrKeyshareResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgGetAggrKeyshareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgGetAggrKeyshareResponse {
+    return {};
+  },
+
+  toJSON(_: MsgGetAggrKeyshareResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgGetAggrKeyshareResponse>, I>>(_: I): MsgGetAggrKeyshareResponse {
+    const message = createBaseMsgGetAggrKeyshareResponse();
     return message;
   },
 };

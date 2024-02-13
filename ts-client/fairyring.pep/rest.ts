@@ -41,6 +41,13 @@ export interface PepEncryptedTxArray {
 
 export type PepMsgCreateAggregatedKeyShareResponse = object;
 
+export type PepMsgGetGeneralKeyshareResponse = object;
+
+export interface PepMsgRequestGeneralKeyshareResponse {
+  identity?: string;
+  pubkey?: string;
+}
+
 export type PepMsgSubmitEncryptedTxResponse = object;
 
 /**

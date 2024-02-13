@@ -14,10 +14,13 @@ import { AggrKeyshareDataPacketAck } from "./types/fairyring/keyshare/packet"
 import { Params } from "./types/fairyring/keyshare/params"
 import { ActivePubKey } from "./types/fairyring/keyshare/pub_key"
 import { QueuedPubKey } from "./types/fairyring/keyshare/pub_key"
-import { RequestAggrKeyshareMsg } from "./types/fairyring/keyshare/request_aggr_keyshare_msg"
 import { KeyShareRequest } from "./types/fairyring/keyshare/requested_keyshare"
 import { IBCInfo } from "./types/fairyring/keyshare/requested_keyshare"
 import { CounterPartyIBCInfo } from "./types/fairyring/keyshare/requested_keyshare"
+import { MsgRequestAggrKeyshare } from "./types/fairyring/keyshare/requested_keyshare"
+import { MsgRequestAggrKeyshareResponse } from "./types/fairyring/keyshare/requested_keyshare"
+import { MsgGetAggrKeyshare } from "./types/fairyring/keyshare/requested_keyshare"
+import { MsgGetAggrKeyshareResponse } from "./types/fairyring/keyshare/requested_keyshare"
 import { ValidatorSet } from "./types/fairyring/keyshare/validator_set"
 
 
@@ -38,10 +41,13 @@ export {
     Params,
     ActivePubKey,
     QueuedPubKey,
-    RequestAggrKeyshareMsg,
     KeyShareRequest,
     IBCInfo,
     CounterPartyIBCInfo,
+    MsgRequestAggrKeyshare,
+    MsgRequestAggrKeyshareResponse,
+    MsgGetAggrKeyshare,
+    MsgGetAggrKeyshareResponse,
     ValidatorSet,
     
  }

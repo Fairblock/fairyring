@@ -45,6 +45,10 @@ type StakingKeeper interface {
 	Slash(sdk.Context, sdk.ConsAddress, int64, int64, sdk.Dec) math.Int
 }
 
+type GovKeeper interface {
+	ProcessAggrKeyshare(ctx sdk.Context, pID string, aggrKeyshare string) error
+}
+
 // ConnectionKeeper defines the expected interfaces needed to retrieve connection info
 type ConnectionKeeper interface {
 	GetConnection(ctx sdk.Context, connectionID string) (connTypes.ConnectionEnd, bool)

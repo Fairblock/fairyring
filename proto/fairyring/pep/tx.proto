@@ -11,9 +11,11 @@ option go_package = "fairyring/x/pep/types";
 // Msg defines the Msg service.
 service Msg {
   rpc SubmitEncryptedTx (MsgSubmitEncryptedTx) returns (MsgSubmitEncryptedTxResponse);
-
+  
   // this line is used by starport scaffolding # proto/tx/rpc
   rpc CreateAggregatedKeyShare (MsgCreateAggregatedKeyShare) returns (MsgCreateAggregatedKeyShareResponse);
+  rpc RequestGeneralKeyshare   (MsgRequestGeneralKeyshare  ) returns (MsgRequestGeneralKeyshareResponse  );
+  rpc GetGeneralKeyshare       (MsgGetGeneralKeyshare      ) returns (MsgGetGeneralKeyshareResponse      );
 }
 message MsgSubmitEncryptedTx {
   string creator           = 1;
@@ -31,3 +33,20 @@ message MsgCreateAggregatedKeyShare {
 }
 
 message MsgCreateAggregatedKeyShareResponse {}
+
+message MsgRequestGeneralKeyshare {
+  string creator   = 1;
+  string requestId = 2;
+}
+
+message MsgRequestGeneralKeyshareResponse {
+  string identity = 1;
+  string pubkey   = 2;
+}
+
+message MsgGetGeneralKeyshare {
+  string creator  = 1;
+  string identity = 2;
+}
+
+message MsgGetGeneralKeyshareResponse {}

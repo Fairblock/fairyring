@@ -559,6 +559,9 @@ func New(
 	app.EvidenceKeeper = *evidenceKeeper
 
 	govConfig := govtypes.DefaultConfig()
+	var keyshareKeeper keysharemodulekeeper.Keeper
+	scopedGovkeeper := app.CapabilityKeeper.ScopeToModule(govtypes.ModuleName)
+
 	govKeeper := govkeeper.NewKeeper(
 		appCodec,
 		keys[govtypes.StoreKey],
@@ -568,6 +571,11 @@ func New(
 		app.MsgServiceRouter(),
 		govConfig,
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedGovkeeper,
+		app.IBCKeeper.ConnectionKeeper,
+		keyshareKeeper,
 	)
 
 	govRouter := govv1beta1.NewRouter()
@@ -620,6 +628,7 @@ func New(
 		app.IBCKeeper.ConnectionKeeper,
 		app.PepKeeper,
 		app.StakingKeeper,
+		govKeeper,
 	)
 
 	keyshareModule := keysharemodule.NewAppModule(

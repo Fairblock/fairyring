@@ -7,12 +7,12 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
+import { MsgCreateAuthorizedAddress } from "./types/fairyring/keyshare/tx";
 import { MsgSendKeyshare } from "./types/fairyring/keyshare/tx";
 import { MsgRegisterValidator } from "./types/fairyring/keyshare/tx";
-import { MsgDeleteAuthorizedAddress } from "./types/fairyring/keyshare/tx";
-import { MsgCreateLatestPubKey } from "./types/fairyring/keyshare/tx";
-import { MsgCreateAuthorizedAddress } from "./types/fairyring/keyshare/tx";
 import { MsgUpdateAuthorizedAddress } from "./types/fairyring/keyshare/tx";
+import { MsgCreateLatestPubKey } from "./types/fairyring/keyshare/tx";
+import { MsgDeleteAuthorizedAddress } from "./types/fairyring/keyshare/tx";
 import { MsgCreateGeneralKeyShare } from "./types/fairyring/keyshare/tx";
 
 import { AggregatedKeyShare as typeAggregatedKeyShare} from "./types"
@@ -31,13 +31,22 @@ import { AggrKeyshareDataPacketAck as typeAggrKeyshareDataPacketAck} from "./typ
 import { Params as typeParams} from "./types"
 import { ActivePubKey as typeActivePubKey} from "./types"
 import { QueuedPubKey as typeQueuedPubKey} from "./types"
-import { RequestAggrKeyshareMsg as typeRequestAggrKeyshareMsg} from "./types"
 import { KeyShareRequest as typeKeyShareRequest} from "./types"
 import { IBCInfo as typeIBCInfo} from "./types"
 import { CounterPartyIBCInfo as typeCounterPartyIBCInfo} from "./types"
+import { MsgRequestAggrKeyshare as typeMsgRequestAggrKeyshare} from "./types"
+import { MsgRequestAggrKeyshareResponse as typeMsgRequestAggrKeyshareResponse} from "./types"
+import { MsgGetAggrKeyshare as typeMsgGetAggrKeyshare} from "./types"
+import { MsgGetAggrKeyshareResponse as typeMsgGetAggrKeyshareResponse} from "./types"
 import { ValidatorSet as typeValidatorSet} from "./types"
 
-export { MsgSendKeyshare, MsgRegisterValidator, MsgDeleteAuthorizedAddress, MsgCreateLatestPubKey, MsgCreateAuthorizedAddress, MsgUpdateAuthorizedAddress, MsgCreateGeneralKeyShare };
+export { MsgCreateAuthorizedAddress, MsgSendKeyshare, MsgRegisterValidator, MsgUpdateAuthorizedAddress, MsgCreateLatestPubKey, MsgDeleteAuthorizedAddress, MsgCreateGeneralKeyShare };
+
+type sendMsgCreateAuthorizedAddressParams = {
+  value: MsgCreateAuthorizedAddress,
+  fee?: StdFee,
+  memo?: string
+};
 
 type sendMsgSendKeyshareParams = {
   value: MsgSendKeyshare,
@@ -51,8 +60,8 @@ type sendMsgRegisterValidatorParams = {
   memo?: string
 };
 
-type sendMsgDeleteAuthorizedAddressParams = {
-  value: MsgDeleteAuthorizedAddress,
+type sendMsgUpdateAuthorizedAddressParams = {
+  value: MsgUpdateAuthorizedAddress,
   fee?: StdFee,
   memo?: string
 };
@@ -63,14 +72,8 @@ type sendMsgCreateLatestPubKeyParams = {
   memo?: string
 };
 
-type sendMsgCreateAuthorizedAddressParams = {
-  value: MsgCreateAuthorizedAddress,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUpdateAuthorizedAddressParams = {
-  value: MsgUpdateAuthorizedAddress,
+type sendMsgDeleteAuthorizedAddressParams = {
+  value: MsgDeleteAuthorizedAddress,
   fee?: StdFee,
   memo?: string
 };
@@ -82,6 +85,10 @@ type sendMsgCreateGeneralKeyShareParams = {
 };
 
 
+type msgCreateAuthorizedAddressParams = {
+  value: MsgCreateAuthorizedAddress,
+};
+
 type msgSendKeyshareParams = {
   value: MsgSendKeyshare,
 };
@@ -90,20 +97,16 @@ type msgRegisterValidatorParams = {
   value: MsgRegisterValidator,
 };
 
-type msgDeleteAuthorizedAddressParams = {
-  value: MsgDeleteAuthorizedAddress,
+type msgUpdateAuthorizedAddressParams = {
+  value: MsgUpdateAuthorizedAddress,
 };
 
 type msgCreateLatestPubKeyParams = {
   value: MsgCreateLatestPubKey,
 };
 
-type msgCreateAuthorizedAddressParams = {
-  value: MsgCreateAuthorizedAddress,
-};
-
-type msgUpdateAuthorizedAddressParams = {
-  value: MsgUpdateAuthorizedAddress,
+type msgDeleteAuthorizedAddressParams = {
+  value: MsgDeleteAuthorizedAddress,
 };
 
 type msgCreateGeneralKeyShareParams = {
@@ -140,6 +143,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
+		async sendMsgCreateAuthorizedAddress({ value, fee, memo }: sendMsgCreateAuthorizedAddressParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCreateAuthorizedAddress: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgCreateAuthorizedAddress({ value: MsgCreateAuthorizedAddress.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCreateAuthorizedAddress: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		async sendMsgSendKeyshare({ value, fee, memo }: sendMsgSendKeyshareParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgSendKeyshare: Unable to sign Tx. Signer is not present.')
@@ -168,17 +185,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgDeleteAuthorizedAddress({ value, fee, memo }: sendMsgDeleteAuthorizedAddressParams): Promise<DeliverTxResponse> {
+		async sendMsgUpdateAuthorizedAddress({ value, fee, memo }: sendMsgUpdateAuthorizedAddressParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgDeleteAuthorizedAddress: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgUpdateAuthorizedAddress: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgDeleteAuthorizedAddress({ value: MsgDeleteAuthorizedAddress.fromPartial(value) })
+				let msg = this.msgUpdateAuthorizedAddress({ value: MsgUpdateAuthorizedAddress.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgDeleteAuthorizedAddress: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgUpdateAuthorizedAddress: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -196,31 +213,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgCreateAuthorizedAddress({ value, fee, memo }: sendMsgCreateAuthorizedAddressParams): Promise<DeliverTxResponse> {
+		async sendMsgDeleteAuthorizedAddress({ value, fee, memo }: sendMsgDeleteAuthorizedAddressParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgCreateAuthorizedAddress: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgDeleteAuthorizedAddress: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgCreateAuthorizedAddress({ value: MsgCreateAuthorizedAddress.fromPartial(value) })
+				let msg = this.msgDeleteAuthorizedAddress({ value: MsgDeleteAuthorizedAddress.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreateAuthorizedAddress: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUpdateAuthorizedAddress({ value, fee, memo }: sendMsgUpdateAuthorizedAddressParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateAuthorizedAddress: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgUpdateAuthorizedAddress({ value: MsgUpdateAuthorizedAddress.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateAuthorizedAddress: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgDeleteAuthorizedAddress: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -239,6 +242,14 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 		},
 		
 		
+		msgCreateAuthorizedAddress({ value }: msgCreateAuthorizedAddressParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.keyshare.MsgCreateAuthorizedAddress", value: MsgCreateAuthorizedAddress.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCreateAuthorizedAddress: Could not create message: ' + e.message)
+			}
+		},
+		
 		msgSendKeyshare({ value }: msgSendKeyshareParams): EncodeObject {
 			try {
 				return { typeUrl: "/fairyring.keyshare.MsgSendKeyshare", value: MsgSendKeyshare.fromPartial( value ) }  
@@ -255,11 +266,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgDeleteAuthorizedAddress({ value }: msgDeleteAuthorizedAddressParams): EncodeObject {
+		msgUpdateAuthorizedAddress({ value }: msgUpdateAuthorizedAddressParams): EncodeObject {
 			try {
-				return { typeUrl: "/fairyring.keyshare.MsgDeleteAuthorizedAddress", value: MsgDeleteAuthorizedAddress.fromPartial( value ) }  
+				return { typeUrl: "/fairyring.keyshare.MsgUpdateAuthorizedAddress", value: MsgUpdateAuthorizedAddress.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgDeleteAuthorizedAddress: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgUpdateAuthorizedAddress: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -271,19 +282,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgCreateAuthorizedAddress({ value }: msgCreateAuthorizedAddressParams): EncodeObject {
+		msgDeleteAuthorizedAddress({ value }: msgDeleteAuthorizedAddressParams): EncodeObject {
 			try {
-				return { typeUrl: "/fairyring.keyshare.MsgCreateAuthorizedAddress", value: MsgCreateAuthorizedAddress.fromPartial( value ) }  
+				return { typeUrl: "/fairyring.keyshare.MsgDeleteAuthorizedAddress", value: MsgDeleteAuthorizedAddress.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgCreateAuthorizedAddress: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgUpdateAuthorizedAddress({ value }: msgUpdateAuthorizedAddressParams): EncodeObject {
-			try {
-				return { typeUrl: "/fairyring.keyshare.MsgUpdateAuthorizedAddress", value: MsgUpdateAuthorizedAddress.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateAuthorizedAddress: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgDeleteAuthorizedAddress: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -333,10 +336,13 @@ class SDKModule {
 						Params: getStructure(typeParams.fromPartial({})),
 						ActivePubKey: getStructure(typeActivePubKey.fromPartial({})),
 						QueuedPubKey: getStructure(typeQueuedPubKey.fromPartial({})),
-						RequestAggrKeyshareMsg: getStructure(typeRequestAggrKeyshareMsg.fromPartial({})),
 						KeyShareRequest: getStructure(typeKeyShareRequest.fromPartial({})),
 						IBCInfo: getStructure(typeIBCInfo.fromPartial({})),
 						CounterPartyIBCInfo: getStructure(typeCounterPartyIBCInfo.fromPartial({})),
+						MsgRequestAggrKeyshare: getStructure(typeMsgRequestAggrKeyshare.fromPartial({})),
+						MsgRequestAggrKeyshareResponse: getStructure(typeMsgRequestAggrKeyshareResponse.fromPartial({})),
+						MsgGetAggrKeyshare: getStructure(typeMsgGetAggrKeyshare.fromPartial({})),
+						MsgGetAggrKeyshareResponse: getStructure(typeMsgGetAggrKeyshareResponse.fromPartial({})),
 						ValidatorSet: getStructure(typeValidatorSet.fromPartial({})),
 						
 		};

@@ -7,8 +7,10 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgCreateAggregatedKeyShare } from "./types/fairyring/pep/tx";
 import { MsgSubmitEncryptedTx } from "./types/fairyring/pep/tx";
+import { MsgGetGeneralKeyshare } from "./types/fairyring/pep/tx";
+import { MsgRequestGeneralKeyshare } from "./types/fairyring/pep/tx";
+import { MsgCreateAggregatedKeyShare } from "./types/fairyring/pep/tx";
 
 import { AggregatedKeyShare as typeAggregatedKeyShare} from "./types"
 import { EncryptedTx as typeEncryptedTx} from "./types"
@@ -23,13 +25,7 @@ import { PepNonce as typePepNonce} from "./types"
 import { ActivePubKey as typeActivePubKey} from "./types"
 import { QueuedPubKey as typeQueuedPubKey} from "./types"
 
-export { MsgCreateAggregatedKeyShare, MsgSubmitEncryptedTx };
-
-type sendMsgCreateAggregatedKeyShareParams = {
-  value: MsgCreateAggregatedKeyShare,
-  fee?: StdFee,
-  memo?: string
-};
+export { MsgSubmitEncryptedTx, MsgGetGeneralKeyshare, MsgRequestGeneralKeyshare, MsgCreateAggregatedKeyShare };
 
 type sendMsgSubmitEncryptedTxParams = {
   value: MsgSubmitEncryptedTx,
@@ -37,13 +33,39 @@ type sendMsgSubmitEncryptedTxParams = {
   memo?: string
 };
 
-
-type msgCreateAggregatedKeyShareParams = {
-  value: MsgCreateAggregatedKeyShare,
+type sendMsgGetGeneralKeyshareParams = {
+  value: MsgGetGeneralKeyshare,
+  fee?: StdFee,
+  memo?: string
 };
+
+type sendMsgRequestGeneralKeyshareParams = {
+  value: MsgRequestGeneralKeyshare,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgCreateAggregatedKeyShareParams = {
+  value: MsgCreateAggregatedKeyShare,
+  fee?: StdFee,
+  memo?: string
+};
+
 
 type msgSubmitEncryptedTxParams = {
   value: MsgSubmitEncryptedTx,
+};
+
+type msgGetGeneralKeyshareParams = {
+  value: MsgGetGeneralKeyshare,
+};
+
+type msgRequestGeneralKeyshareParams = {
+  value: MsgRequestGeneralKeyshare,
+};
+
+type msgCreateAggregatedKeyShareParams = {
+  value: MsgCreateAggregatedKeyShare,
 };
 
 
@@ -76,20 +98,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendMsgCreateAggregatedKeyShare({ value, fee, memo }: sendMsgCreateAggregatedKeyShareParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCreateAggregatedKeyShare: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgCreateAggregatedKeyShare({ value: MsgCreateAggregatedKeyShare.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreateAggregatedKeyShare: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendMsgSubmitEncryptedTx({ value, fee, memo }: sendMsgSubmitEncryptedTxParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgSubmitEncryptedTx: Unable to sign Tx. Signer is not present.')
@@ -104,20 +112,78 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		
-		msgCreateAggregatedKeyShare({ value }: msgCreateAggregatedKeyShareParams): EncodeObject {
-			try {
-				return { typeUrl: "/fairyring.pep.MsgCreateAggregatedKeyShare", value: MsgCreateAggregatedKeyShare.fromPartial( value ) }  
+		async sendMsgGetGeneralKeyshare({ value, fee, memo }: sendMsgGetGeneralKeyshareParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgGetGeneralKeyshare: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgGetGeneralKeyshare({ value: MsgGetGeneralKeyshare.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgCreateAggregatedKeyShare: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgGetGeneralKeyshare: Could not broadcast Tx: '+ e.message)
 			}
 		},
+		
+		async sendMsgRequestGeneralKeyshare({ value, fee, memo }: sendMsgRequestGeneralKeyshareParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgRequestGeneralKeyshare: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgRequestGeneralKeyshare({ value: MsgRequestGeneralKeyshare.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgRequestGeneralKeyshare: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgCreateAggregatedKeyShare({ value, fee, memo }: sendMsgCreateAggregatedKeyShareParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCreateAggregatedKeyShare: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgCreateAggregatedKeyShare({ value: MsgCreateAggregatedKeyShare.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCreateAggregatedKeyShare: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		
 		msgSubmitEncryptedTx({ value }: msgSubmitEncryptedTxParams): EncodeObject {
 			try {
 				return { typeUrl: "/fairyring.pep.MsgSubmitEncryptedTx", value: MsgSubmitEncryptedTx.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgSubmitEncryptedTx: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgGetGeneralKeyshare({ value }: msgGetGeneralKeyshareParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.pep.MsgGetGeneralKeyshare", value: MsgGetGeneralKeyshare.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgGetGeneralKeyshare: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgRequestGeneralKeyshare({ value }: msgRequestGeneralKeyshareParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.pep.MsgRequestGeneralKeyshare", value: MsgRequestGeneralKeyshare.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgRequestGeneralKeyshare: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgCreateAggregatedKeyShare({ value }: msgCreateAggregatedKeyShareParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.pep.MsgCreateAggregatedKeyShare", value: MsgCreateAggregatedKeyShare.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCreateAggregatedKeyShare: Could not create message: ' + e.message)
 			}
 		},
 		

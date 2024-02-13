@@ -19,8 +19,11 @@ const (
 	// PortID is the default port id that module binds to
 	PortID = "pep"
 
-	// ChannelID is the default channel id that module will use to transmit IBC packets.
-	ChannelID = "channel-0"
+	// PepChannelID is the default channel id that module will use to transmit IBC packets to pep module.
+	PepChannelID = "channel-0"
+
+	// KeushareChannelID is the default channel id that module will use to transmit IBC packets to keyshare module.
+	KeyshareChannelID = "channel-1"
 )
 
 var (

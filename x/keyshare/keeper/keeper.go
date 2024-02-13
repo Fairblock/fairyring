@@ -23,6 +23,7 @@ type (
 		connectionKeeper types.ConnectionKeeper
 		stakingKeeper    types.StakingKeeper
 		pepKeeper        types.PepKeeper
+		govKeeper        types.GovKeeper
 	}
 )
 
@@ -37,6 +38,7 @@ func NewKeeper(
 	connectionKeeper types.ConnectionKeeper,
 	pk types.PepKeeper,
 	stakingKeeper types.StakingKeeper,
+	govKeeper types.GovKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -58,6 +60,7 @@ func NewKeeper(
 		pepKeeper:        pk,
 		stakingKeeper:    stakingKeeper,
 		connectionKeeper: connectionKeeper,
+		govKeeper:        govKeeper,
 	}
 }
 
