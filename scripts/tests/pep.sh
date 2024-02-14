@@ -22,8 +22,6 @@ CHAINID_2=fairyring_test_2
 CHAIN2_NODE=tcp://localhost:26657
 BLOCK_TIME=5
 
-WALLET_1=$($BINARY keys show wallet1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
-VALIDATOR_1=$($BINARY keys show val1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
 WALLET_2=$($BINARY keys show wallet2 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_2)
 VALIDATOR_2=$($BINARY keys show val2 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_2)
 
@@ -102,6 +100,11 @@ echo "Sending 1 $TARGET_BAL_DENOM to target address"
 $BINARY tx bank send $VALIDATOR_2 $WALLET_2 1$TARGET_BAL_DENOM --from $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --keyring-backend test --generate-only -o json -y > unsigned2.json
 SIGNED_DATA_2=$($BINARY tx sign unsigned2.json --from $VALIDATOR_2 --offline --account-number 0 --sequence $PEP_NONCE_2ND --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE  --keyring-backend test -y)
 
+echo "Signing third bank send tx with pep nonce: 18446744073709551615 without gas fee"
+echo "Sending 1 $TARGET_BAL_DENOM to target address"
+$BINARY tx bank send $VALIDATOR_2 $WALLET_2 1$TARGET_BAL_DENOM --from $VALIDATOR_2 --gas-prices 1ufairy  --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --keyring-backend test --generate-only -o json -y > unsigned3.json
+SIGNED_DATA_3=$($BINARY tx sign unsigned3.json --from $VALIDATOR_2 --offline --account-number 0 --sequence 18446744073709551615 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE  --keyring-backend test -y)
+
 
 echo "Query aggregated key share from key share module for submitting to pep module on chain fairyring_test_1"
 CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE | jq -r '.block.header.height')
@@ -141,12 +144,20 @@ fi
 echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
 CIPHER=$($ENCRYPTER $AGG_KEY_HEIGHT $PUB_KEY $SIGNED_DATA)
 
+ANOTHER_PUB_KEY=$($GENERATOR generate 1 1 | jq -r ".MasterPublicKey")
+
+echo "Encrypting signed tx with another Pub key: '$ANOTHER_PUB_KEY'"
+CIPHER_ANOTHER_PUB_KEY=$($ENCRYPTER $AGG_KEY_HEIGHT $ANOTHER_PUB_KEY $SIGNED_DATA_2)
+
 echo "Encrypting 2nd signed tx with Pub key: '$PUB_KEY'"
 CIPHER_2=$($ENCRYPTER $AGG_KEY_HEIGHT $PUB_KEY $SIGNED_DATA_2)
 
+echo "Encrypting 3rd signed tx with Pub key: '$PUB_KEY'"
+CIPHER_3=$($ENCRYPTER $AGG_KEY_HEIGHT $PUB_KEY $SIGNED_DATA_3)
 
 rm -r unsigned.json &> /dev/null
 rm -r unsigned2.json &> /dev/null
+rm -r unsigned3.json &> /dev/null
 
 
 RESULT=$($BINARY query bank balances $VALIDATOR_2 --node $CHAIN2_NODE -o json)
@@ -195,6 +206,46 @@ BAL_AMT=$(echo "$RESULT" | jq -r '.balances[0].amount')
 echo "Balance after submitting second encrypted tx: $BAL_AMT$BAL_DENOM"
 
 
+echo "Submit tx encrypted with another public key to pep module on chain fairyring_test_2"
+RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER_ANOTHER_PUB_KEY $AGG_KEY_HEIGHT --from $VALIDATOR_2 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+EVENT_TYPE=$(echo "$RESULT" | jq -r '.logs[0].events[5].type')
+TARGET_HEIGHT=$(echo "$RESULT" | jq -r '.logs[0].events[5].attributes[1].value')
+if [ "$EVENT_TYPE" != "new-encrypted-tx-submitted" ] && [ "$TARGET_HEIGHT" != "$AGG_KEY_HEIGHT" ]; then
+  echo "ERROR: Pep module submit encrypted tx error. Expected tx to submitted without error with target height '$AGG_KEY_HEIGHT', got '$TARGET_HEIGHT' and '$EVENT_TYPE' | '$CURRENT_BLOCK'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq '.')"
+  exit 1
+fi
+
+
+RESULT=$($BINARY query bank balances $VALIDATOR_2 --node $CHAIN2_NODE -o json)
+BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
+BAL_AMT=$(echo "$RESULT" | jq -r '.balances[0].amount')
+echo "Balance after submitting 3rd encrypted tx: $BAL_AMT$BAL_DENOM"
+
+
+echo "Submit encrypted tx signed with max uint64 pep nonce to pep module on chain fairyring_test_2"
+RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER_3 $AGG_KEY_HEIGHT --from $VALIDATOR_2 --gas-prices 1ufairy --gas 500000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+EVENT_TYPE=$(echo "$RESULT" | jq -r '.logs[0].events[5].type')
+TARGET_HEIGHT=$(echo "$RESULT" | jq -r '.logs[0].events[5].attributes[1].value')
+if [ "$EVENT_TYPE" != "new-encrypted-tx-submitted" ] && [ "$TARGET_HEIGHT" != "$AGG_KEY_HEIGHT" ]; then
+  echo "ERROR: Pep module submit encrypted tx error. Expected tx to submitted without error with target height '$AGG_KEY_HEIGHT', got '$TARGET_HEIGHT' and '$EVENT_TYPE' | '$CURRENT_BLOCK'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq '.')"
+  exit 1
+fi
+
+
+RESULT=$($BINARY query bank balances $VALIDATOR_2 --node $CHAIN2_NODE -o json)
+BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
+BAL_AMT=$(echo "$RESULT" | jq -r '.balances[0].amount')
+echo "Balance after submitting 4th encrypted tx: $BAL_AMT$BAL_DENOM"
+
+
 echo "Query account pep nonce after submitting encrypted tx from pep module on chain fairyring_test_2"
 RESULT=$($BINARY query pep show-pep-nonce $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
 VALIDATOR_PEP_NONCE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
@@ -233,8 +284,8 @@ fi
 echo "Query account pep nonce after encrypted tx being processed from pep module on chain fairyring_test_2"
 RESULT=$($BINARY query pep show-pep-nonce $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
 VALIDATOR_PEP_NONCE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
-if [ "$VALIDATOR_PEP_NONCE" != "3" ]; then
-  echo "ERROR: Pep module query Pep Nonce error. Expected Pep Nonce to be 3, got '$VALIDATOR_PEP_NONCE'"
+if [ "$VALIDATOR_PEP_NONCE" != "18446744073709551615" ]; then
+  echo "ERROR: Pep module query Pep Nonce error. Expected Pep Nonce to be 18446744073709551615, got '$VALIDATOR_PEP_NONCE'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   exit 1
 fi
