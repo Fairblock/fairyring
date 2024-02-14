@@ -3,6 +3,9 @@
 **fairyring** is a Cosmos SDK blockchain that leverages identity-based encryption (IBE) to enable pre-execution privacy on Cosmos SDK app-chains.
 `fairyring` consists of two main components, a blockchain purpose-built for management of decryption keys in a decentralized manner, as well as a Cosmos SDK module that other app-chains can use to integrate with fairyring. 
 
+## Requirement
+
+
 ## Get started
 
 ### Compiling & Installing FairyRing chain executable
@@ -57,6 +60,8 @@ fairyringd start
 
 ### Running a validator locally with Docker
 
+Make sure that you have installed Docker already 
+
 1. Build docker image
 
 ```
@@ -64,6 +69,8 @@ docker build -t fairyring .
 ```
 
 2. Setup validator
+
+Chance <moniker> with your name 
 
 ```
 docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring setup.sh <moniker>
