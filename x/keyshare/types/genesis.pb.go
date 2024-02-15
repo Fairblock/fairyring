@@ -145,7 +145,7 @@ func init() {
 	proto.RegisterType((*GenesisState)(nil), "fairyring.keyshare.GenesisState")
 }
 
-func init() { proto.RegisterFile("fairyring/keyshare/genesis.proto", fileDescriptor_6629804056e1ba8d) }
+func init() { proto.RegisterFile("github.com/Fairblock/fairyring/keyshare/genesis.proto", fileDescriptor_6629804056e1ba8d) }
 
 var fileDescriptor_6629804056e1ba8d = []byte{
 	// 477 bytes of a gzipped FileDescriptorProto

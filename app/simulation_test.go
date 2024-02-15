@@ -37,7 +37,7 @@ import (
 	ibctesting "github.com/cosmos/ibc-go/v7/testing"
 	"github.com/stretchr/testify/require"
 
-	"fairyring/app"
+	"github.com/Fairblock/fairyring/app"
 )
 
 type storeKeysPrefixes struct {

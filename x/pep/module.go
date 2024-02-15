@@ -28,9 +28,9 @@ import (
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
-	"fairyring/x/pep/client/cli"
-	"fairyring/x/pep/keeper"
-	"fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/x/pep/client/cli"
+	"github.com/Fairblock/fairyring/x/pep/keeper"
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"

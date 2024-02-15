@@ -3,10 +3,10 @@ package pep_test
 import (
 	"testing"
 
-	keepertest "fairyring/testutil/keeper"
-	"fairyring/testutil/nullify"
-	"fairyring/x/pep"
-	"fairyring/x/pep/types"
+	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
+	"github.com/Fairblock/fairyring/testutil/nullify"
+	"github.com/Fairblock/fairyring/x/pep"
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	"github.com/stretchr/testify/require"
 )

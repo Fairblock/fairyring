@@ -3,7 +3,7 @@ package utils_test
 import (
 	"testing"
 
-	"fairyring/blockbuster/utils"
+	"github.com/Fairblock/fairyring/blockbuster/utils"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

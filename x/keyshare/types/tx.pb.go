@@ -853,7 +853,7 @@ func init() {
 	proto.RegisterType((*MsgCreateGeneralKeyShareResponse)(nil), "fairyring.keyshare.MsgCreateGeneralKeyShareResponse")
 }
 
-func init() { proto.RegisterFile("fairyring/keyshare/tx.proto", fileDescriptor_1f96ac6a55f1845c) }
+func init() { proto.RegisterFile("github.com/Fairblock/fairyring/keyshare/tx.proto", fileDescriptor_1f96ac6a55f1845c) }
 
 var fileDescriptor_1f96ac6a55f1845c = []byte{
 	// 718 bytes of a gzipped FileDescriptorProto
@@ -1199,7 +1199,7 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "fairyring/keyshare/tx.proto",
+	Metadata: "github.com/Fairblock/fairyring/keyshare/tx.proto",
 }
 
 func (m *MsgRegisterValidator) Marshal() (dAtA []byte, err error) {

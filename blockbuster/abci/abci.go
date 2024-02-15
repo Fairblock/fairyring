@@ -1,9 +1,9 @@
 package abci
 
 import (
-	"fairyring/blockbuster"
-	"fairyring/blockbuster/lanes/terminator"
-	"fairyring/blockbuster/utils"
+	"github.com/Fairblock/fairyring/blockbuster"
+	"github.com/Fairblock/fairyring/blockbuster/lanes/terminator"
+	"github.com/Fairblock/fairyring/blockbuster/utils"
 
 	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cometbft/cometbft/libs/log"

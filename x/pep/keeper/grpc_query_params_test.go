@@ -3,8 +3,8 @@ package keeper_test
 import (
 	"testing"
 
-	testkeeper "fairyring/testutil/keeper"
-	"fairyring/x/pep/types"
+	testkeeper "github.com/Fairblock/fairyring/testutil/keeper"
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"

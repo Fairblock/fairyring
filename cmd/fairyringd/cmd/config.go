@@ -3,7 +3,7 @@ package cmd
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"fairyring/app"
+	"github.com/Fairblock/fairyring/app"
 )
 
 func initSDKConfig() {

@@ -6,8 +6,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/server"
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 
-	"fairyring/app"
-	"fairyring/cmd/fairyringd/cmd"
+	"github.com/Fairblock/fairyring/app"
+	"github.com/Fairblock/fairyring/cmd/fairyringd/cmd"
 )
 
 func main() {

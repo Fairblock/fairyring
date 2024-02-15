@@ -201,15 +201,15 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 		
 		async sendMsgCreateLatestPubKey({ value, fee, memo }: sendMsgCreateLatestPubKeyParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgCreateLatestPubKey: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgCreateGeneralKeyShare: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgCreateLatestPubKey({ value: MsgCreateLatestPubKey.fromPartial(value) })
+				let msg = this.msgCreateGeneralKeyShare({ value: MsgCreateGeneralKeyShare.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreateLatestPubKey: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgCreateGeneralKeyShare: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -223,7 +223,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				let msg = this.msgDeleteAuthorizedAddress({ value: MsgDeleteAuthorizedAddress.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgDeleteAuthorizedAddress: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -276,9 +275,9 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 		
 		msgCreateLatestPubKey({ value }: msgCreateLatestPubKeyParams): EncodeObject {
 			try {
-				return { typeUrl: "/fairyring.keyshare.MsgCreateLatestPubKey", value: MsgCreateLatestPubKey.fromPartial( value ) }  
+				return { typeUrl: "/fairyring.keyshare.MsgCreateGeneralKeyShare", value: MsgCreateGeneralKeyShare.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgCreateLatestPubKey: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgCreateGeneralKeyShare: Could not create message: ' + e.message)
 			}
 		},
 		

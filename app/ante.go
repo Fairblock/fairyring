@@ -1,9 +1,9 @@
 package app
 
 import (
-	"fairyring/blockbuster"
-	pepante "fairyring/x/pep/ante"
-	pepkeeper "fairyring/x/pep/keeper"
+	"github.com/Fairblock/fairyring/blockbuster"
+	pepante "github.com/Fairblock/fairyring/x/pep/ante"
+	pepkeeper "github.com/Fairblock/fairyring/x/pep/keeper"
 
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"

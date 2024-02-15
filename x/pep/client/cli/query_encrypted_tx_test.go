@@ -12,10 +12,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"fairyring/testutil/network"
-	"fairyring/testutil/nullify"
-	"fairyring/x/pep/client/cli"
-	"fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/testutil/network"
+	"github.com/Fairblock/fairyring/testutil/nullify"
+	"github.com/Fairblock/fairyring/x/pep/client/cli"
+	"github.com/Fairblock/fairyring/x/pep/types"
 )
 
 // Prevent strconv unused error

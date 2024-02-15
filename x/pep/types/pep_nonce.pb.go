@@ -78,7 +78,7 @@ func init() {
 	proto.RegisterType((*PepNonce)(nil), "fairyring.pep.PepNonce")
 }
 
-func init() { proto.RegisterFile("fairyring/pep/pep_nonce.proto", fileDescriptor_5760221b7253d15f) }
+func init() { proto.RegisterFile("github.com/Fairblock/fairyring/pep/pep_nonce.proto", fileDescriptor_5760221b7253d15f) }
 
 var fileDescriptor_5760221b7253d15f = []byte{
 	// 150 bytes of a gzipped FileDescriptorProto

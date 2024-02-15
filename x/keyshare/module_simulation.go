@@ -3,9 +3,9 @@ package keyshare
 import (
 	"math/rand"
 
-	"fairyring/testutil/sample"
-	keysharesimulation "fairyring/x/keyshare/simulation"
-	"fairyring/x/keyshare/types"
+	"github.com/Fairblock/fairyring/testutil/sample"
+	keysharesimulation "github.com/Fairblock/fairyring/x/keyshare/simulation"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"

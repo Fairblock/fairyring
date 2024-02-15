@@ -157,9 +157,9 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 		
 		msgSubmitEncryptedTx({ value }: msgSubmitEncryptedTxParams): EncodeObject {
 			try {
-				return { typeUrl: "/fairyring.pep.MsgSubmitEncryptedTx", value: MsgSubmitEncryptedTx.fromPartial( value ) }  
+				return { typeUrl: "/fairyring.pep.MsgCreateAggregatedKeyShare", value: MsgCreateAggregatedKeyShare.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgSubmitEncryptedTx: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgCreateAggregatedKeyShare: Could not create message: ' + e.message)
 			}
 		},
 		

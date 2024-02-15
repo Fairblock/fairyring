@@ -2,9 +2,9 @@ package keyshare_test
 
 import (
 	"encoding/json"
-	"fairyring/app"
-	"fairyring/x/keyshare/types"
 	"fmt"
+	"github.com/Fairblock/fairyring/app"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"testing"
 
 	dbm "github.com/cometbft/cometbft-db"

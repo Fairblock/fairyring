@@ -147,7 +147,7 @@ func init() {
 	proto.RegisterType((*QueuedPubKey)(nil), "fairyring.pep.QueuedPubKey")
 }
 
-func init() { proto.RegisterFile("fairyring/pep/pub_key.proto", fileDescriptor_759075ebcc395969) }
+func init() { proto.RegisterFile("github.com/Fairblock/fairyring/pep/pub_key.proto", fileDescriptor_759075ebcc395969) }
 
 var fileDescriptor_759075ebcc395969 = []byte{
 	// 191 bytes of a gzipped FileDescriptorProto

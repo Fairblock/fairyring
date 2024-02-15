@@ -1,4 +1,4 @@
-module fairyring
+module github.com/Fairblock/fairyring
 
 go 1.21
 

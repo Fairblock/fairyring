@@ -1,7 +1,7 @@
 package types
 
 import (
-	peptypes "fairyring/x/pep/types"
+	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 
 	sdkerrors "cosmossdk.io/errors"
 	"cosmossdk.io/math"

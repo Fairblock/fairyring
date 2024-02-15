@@ -111,16 +111,16 @@ import (
 	ibctestingtypes "github.com/cosmos/ibc-go/v7/testing/types"
 	"github.com/spf13/cast"
 
-	"fairyring/blockbuster"
-	"fairyring/blockbuster/abci"
-	"fairyring/blockbuster/lanes/base"
-	"fairyring/blockbuster/lanes/keyshare"
-	keysharemodule "fairyring/x/keyshare"
-	keysharemodulekeeper "fairyring/x/keyshare/keeper"
-	keysharemoduletypes "fairyring/x/keyshare/types"
-	pepmodule "fairyring/x/pep"
-	pepmodulekeeper "fairyring/x/pep/keeper"
-	pepmoduletypes "fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/blockbuster"
+	"github.com/Fairblock/fairyring/blockbuster/abci"
+	"github.com/Fairblock/fairyring/blockbuster/lanes/base"
+	"github.com/Fairblock/fairyring/blockbuster/lanes/keyshare"
+	keysharemodule "github.com/Fairblock/fairyring/x/keyshare"
+	keysharemodulekeeper "github.com/Fairblock/fairyring/x/keyshare/keeper"
+	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
+	pepmodule "github.com/Fairblock/fairyring/x/pep"
+	pepmodulekeeper "github.com/Fairblock/fairyring/x/pep/keeper"
+	pepmoduletypes "github.com/Fairblock/fairyring/x/pep/types"
 
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
@@ -128,8 +128,8 @@ import (
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
-	appparams "fairyring/app/params"
-	"fairyring/docs"
+	appparams "github.com/Fairblock/fairyring/app/params"
+	"github.com/Fairblock/fairyring/docs"
 )
 
 const (

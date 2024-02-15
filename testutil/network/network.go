@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"fairyring/app"
+	"github.com/Fairblock/fairyring/app"
 
 	tmdb "github.com/cometbft/cometbft-db"
 	tmrand "github.com/cometbft/cometbft/libs/rand"

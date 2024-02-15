@@ -3,7 +3,7 @@ package testutil
 // import (
 // 	"math/rand"
 
-// 	peptypes "fairyring/x/pep/types"
+// 	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 
 // 	"github.com/cosmos/cosmos-sdk/client"
 // 	"github.com/cosmos/cosmos-sdk/codec"

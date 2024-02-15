@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"fairyring/blockbuster"
-	"fairyring/blockbuster/utils"
+	"github.com/Fairblock/fairyring/blockbuster"
+	"github.com/Fairblock/fairyring/blockbuster/utils"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkmempool "github.com/cosmos/cosmos-sdk/types/mempool"
