@@ -27,23 +27,3 @@ message CounterPartyIBCInfo {
     string ChannelID = 3;
     string PortID = 4;
 }
-
-// MsgRequestAggrKeyshare defines a struct for the data payload
-message MsgRequestAggrKeyshare {
-    oneof id {
-      string proposal_id = 1;
-      string request_id = 2;
-    }
-}
-
-message MsgRequestAggrKeyshareResponse {
-    string identity = 1;
-    string pubkey   = 2;
-}
-
-// MsgGetAggrKeyshare defines a struct for the data payload
-message MsgGetAggrKeyshare {
-    string identity = 1;
-}
-
-message MsgGetAggrKeyshareResponse {}

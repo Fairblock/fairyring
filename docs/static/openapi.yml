@@ -12938,6 +12938,9 @@ paths:
                       proposal to be
 
                       vetoed. Default value: 1/3.
+                  max_tally_period:
+                    type: string
+                    description: Duration of the tally period.
               params:
                 description: |-
                   params defines all the paramaters of x/gov module.
@@ -13004,6 +13007,24 @@ paths:
                   burn_vote_veto:
                     type: boolean
                     title: burn deposits if quorum with vote type no_veto is met
+                  max_tally_period:
+                    type: string
+                    description: Duration of the voting period.
+                  trusted_counter_parties:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        client_id:
+                          type: string
+                        connection_id:
+                          type: string
+                        channel_id:
+                          type: string
+                  channel_id:
+                    type: string
+                  is_source_chain:
+                    type: boolean
             description: >-
               QueryParamsResponse is the response type for the Query/Params RPC
               method.
@@ -13410,6 +13431,7 @@ paths:
                         - PROPOSAL_STATUS_UNSPECIFIED
                         - PROPOSAL_STATUS_DEPOSIT_PERIOD
                         - PROPOSAL_STATUS_VOTING_PERIOD
+                        - PROPOSAL_STATUS_TALLY_PERIOD
                         - PROPOSAL_STATUS_PASSED
                         - PROPOSAL_STATUS_REJECTED
                         - PROPOSAL_STATUS_FAILED
@@ -13441,6 +13463,11 @@ paths:
                           description: >-
                             no_with_veto_count is the number of no with veto
                             votes on a proposal.
+                        encrypted_count:
+                          type: string
+                          description: >-
+                            encrypted_count is the number of encrypted votes on
+                            a proposal.
                     submit_time:
                       type: string
                       format: date-time
@@ -13495,6 +13522,21 @@ paths:
                       type: string
                       description: 'Since: cosmos-sdk 0.47'
                       title: Proposer is the address of the proposal sumbitter
+                    has_encrypted_votes:
+                      type: boolean
+                      title: >-
+                        flag to check if proposal has at least one encrypted
+                        vote
+                    identity:
+                      type: string
+                      title: identity and pubkey are used to submit encrypted votes
+                    pubkey:
+                      type: string
+                    aggr_keyshare:
+                      type: string
+                      title: >-
+                        aggregated keyshare is used to decrypt the encrypted
+                        votes during the tally phase
                   description: >-
                     Proposal defines the core field members of a governance
                     proposal.
@@ -13718,6 +13760,8 @@ paths:
             period.
              - PROPOSAL_STATUS_VOTING_PERIOD: PROPOSAL_STATUS_VOTING_PERIOD defines a proposal status during the voting
             period.
+             - PROPOSAL_STATUS_TALLY_PERIOD: PROPOSAL_STATUS_TALLY_PERIOD defines a proposal status during the tally
+            period.
              - PROPOSAL_STATUS_PASSED: PROPOSAL_STATUS_PASSED defines a proposal status of a proposal that has
             passed.
              - PROPOSAL_STATUS_REJECTED: PROPOSAL_STATUS_REJECTED defines a proposal status of a proposal that has
@@ -13731,6 +13775,7 @@ paths:
             - PROPOSAL_STATUS_UNSPECIFIED
             - PROPOSAL_STATUS_DEPOSIT_PERIOD
             - PROPOSAL_STATUS_VOTING_PERIOD
+            - PROPOSAL_STATUS_TALLY_PERIOD
             - PROPOSAL_STATUS_PASSED
             - PROPOSAL_STATUS_REJECTED
             - PROPOSAL_STATUS_FAILED
@@ -14008,6 +14053,7 @@ paths:
                       - PROPOSAL_STATUS_UNSPECIFIED
                       - PROPOSAL_STATUS_DEPOSIT_PERIOD
                       - PROPOSAL_STATUS_VOTING_PERIOD
+                      - PROPOSAL_STATUS_TALLY_PERIOD
                       - PROPOSAL_STATUS_PASSED
                       - PROPOSAL_STATUS_REJECTED
                       - PROPOSAL_STATUS_FAILED
@@ -14039,6 +14085,11 @@ paths:
                         description: >-
                           no_with_veto_count is the number of no with veto votes
                           on a proposal.
+                      encrypted_count:
+                        type: string
+                        description: >-
+                          encrypted_count is the number of encrypted votes on a
+                          proposal.
                   submit_time:
                     type: string
                     format: date-time
@@ -14092,6 +14143,19 @@ paths:
                     type: string
                     description: 'Since: cosmos-sdk 0.47'
                     title: Proposer is the address of the proposal sumbitter
+                  has_encrypted_votes:
+                    type: boolean
+                    title: flag to check if proposal has at least one encrypted vote
+                  identity:
+                    type: string
+                    title: identity and pubkey are used to submit encrypted votes
+                  pubkey:
+                    type: string
+                  aggr_keyshare:
+                    type: string
+                    title: >-
+                      aggregated keyshare is used to decrypt the encrypted votes
+                      during the tally phase
             description: >-
               QueryProposalResponse is the response type for the Query/Proposal
               RPC method.
@@ -14885,6 +14949,11 @@ paths:
                     description: >-
                       no_with_veto_count is the number of no with veto votes on
                       a proposal.
+                  encrypted_count:
+                    type: string
+                    description: >-
+                      encrypted_count is the number of encrypted votes on a
+                      proposal.
             description: >-
               QueryTallyResultResponse is the response type for the Query/Tally
               RPC method.
@@ -15120,6 +15189,7 @@ paths:
                               - VOTE_OPTION_ABSTAIN
                               - VOTE_OPTION_NO
                               - VOTE_OPTION_NO_WITH_VETO
+                              - VOTE_OPTION_ENCRYPTED
                             default: VOTE_OPTION_UNSPECIFIED
                           weight:
                             type: string
@@ -15135,6 +15205,8 @@ paths:
                       description: >-
                         metadata is any  arbitrary metadata to attached to the
                         vote.
+                    encrypted_vote_data:
+                      type: string
                   description: >-
                     Vote defines a vote on a governance proposal.
 
@@ -15450,6 +15522,7 @@ paths:
                             - VOTE_OPTION_ABSTAIN
                             - VOTE_OPTION_NO
                             - VOTE_OPTION_NO_WITH_VETO
+                            - VOTE_OPTION_ENCRYPTED
                           default: VOTE_OPTION_UNSPECIFIED
                         weight:
                           type: string
@@ -15465,6 +15538,8 @@ paths:
                     description: >-
                       metadata is any  arbitrary metadata to attached to the
                       vote.
+                  encrypted_vote_data:
+                    type: string
             description: >-
               QueryVoteResponse is the response type for the Query/Vote RPC
               method.
@@ -15739,6 +15814,9 @@ paths:
                       proposal to be
 
                       vetoed. Default value: 1/3.
+                  tally_period:
+                    type: string
+                    description: Duration of the tally period.
             description: >-
               QueryParamsResponse is the response type for the Query/Params RPC
               method.
@@ -16028,6 +16106,7 @@ paths:
                         - PROPOSAL_STATUS_UNSPECIFIED
                         - PROPOSAL_STATUS_DEPOSIT_PERIOD
                         - PROPOSAL_STATUS_VOTING_PERIOD
+                        - PROPOSAL_STATUS_TALLY_PERIOD
                         - PROPOSAL_STATUS_PASSED
                         - PROPOSAL_STATUS_REJECTED
                         - PROPOSAL_STATUS_FAILED
@@ -16059,6 +16138,11 @@ paths:
                           description: >-
                             no_with_veto is the number of no with veto votes on
                             a proposal.
+                        encrypted:
+                          type: string
+                          description: >-
+                            encrypted is the number of encrypted votes on a
+                            proposal.
                     submit_time:
                       type: string
                       format: date-time
@@ -16096,6 +16180,21 @@ paths:
                       type: string
                       format: date-time
                       description: voting_end_time is the end time of voting on a proposal.
+                    has_encrypted_votes:
+                      type: boolean
+                      title: >-
+                        flag to check if proposal has at least one encrypted
+                        vote
+                    identity:
+                      type: string
+                      title: identity and pubkey are used to submit encrypted votes
+                    pubkey:
+                      type: string
+                    aggr_keyshare:
+                      type: string
+                      title: >-
+                        aggregated keyshare is used to decrypt the encrypted
+                        votes during the tally phase
                   description: >-
                     Proposal defines the core field members of a governance
                     proposal.
@@ -16319,6 +16418,8 @@ paths:
             period.
              - PROPOSAL_STATUS_VOTING_PERIOD: PROPOSAL_STATUS_VOTING_PERIOD defines a proposal status during the voting
             period.
+             - PROPOSAL_STATUS_TALLY_PERIOD: PROPOSAL_STATUS_TALLY_PERIOD defines a proposal status during the tally
+            period.
              - PROPOSAL_STATUS_PASSED: PROPOSAL_STATUS_PASSED defines a proposal status of a proposal that has
             passed.
              - PROPOSAL_STATUS_REJECTED: PROPOSAL_STATUS_REJECTED defines a proposal status of a proposal that has
@@ -16332,6 +16433,7 @@ paths:
             - PROPOSAL_STATUS_UNSPECIFIED
             - PROPOSAL_STATUS_DEPOSIT_PERIOD
             - PROPOSAL_STATUS_VOTING_PERIOD
+            - PROPOSAL_STATUS_TALLY_PERIOD
             - PROPOSAL_STATUS_PASSED
             - PROPOSAL_STATUS_REJECTED
             - PROPOSAL_STATUS_FAILED
@@ -16491,6 +16593,7 @@ paths:
                       - PROPOSAL_STATUS_UNSPECIFIED
                       - PROPOSAL_STATUS_DEPOSIT_PERIOD
                       - PROPOSAL_STATUS_VOTING_PERIOD
+                      - PROPOSAL_STATUS_TALLY_PERIOD
                       - PROPOSAL_STATUS_PASSED
                       - PROPOSAL_STATUS_REJECTED
                       - PROPOSAL_STATUS_FAILED
@@ -16519,6 +16622,11 @@ paths:
                         type: string
                         description: >-
                           no_with_veto is the number of no with veto votes on a
+                          proposal.
+                      encrypted:
+                        type: string
+                        description: >-
+                          encrypted is the number of encrypted votes on a
                           proposal.
                   submit_time:
                     type: string
@@ -16556,6 +16664,19 @@ paths:
                     type: string
                     format: date-time
                     description: voting_end_time is the end time of voting on a proposal.
+                  has_encrypted_votes:
+                    type: boolean
+                    title: flag to check if proposal has at least one encrypted vote
+                  identity:
+                    type: string
+                    title: identity and pubkey are used to submit encrypted votes
+                  pubkey:
+                    type: string
+                  aggr_keyshare:
+                    type: string
+                    title: >-
+                      aggregated keyshare is used to decrypt the encrypted votes
+                      during the tally phase
                 description: >-
                   Proposal defines the core field members of a governance
                   proposal.
@@ -17350,6 +17471,9 @@ paths:
                     description: >-
                       no_with_veto is the number of no with veto votes on a
                       proposal.
+                  encrypted:
+                    type: string
+                    description: encrypted is the number of encrypted votes on a proposal.
             description: >-
               QueryTallyResultResponse is the response type for the Query/Tally
               RPC method.
@@ -17586,6 +17710,7 @@ paths:
                         - VOTE_OPTION_ABSTAIN
                         - VOTE_OPTION_NO
                         - VOTE_OPTION_NO_WITH_VETO
+                        - VOTE_OPTION_ENCRYPTED
                       default: VOTE_OPTION_UNSPECIFIED
                     options:
                       type: array
@@ -17603,6 +17728,7 @@ paths:
                               - VOTE_OPTION_ABSTAIN
                               - VOTE_OPTION_NO
                               - VOTE_OPTION_NO_WITH_VETO
+                              - VOTE_OPTION_ENCRYPTED
                             default: VOTE_OPTION_UNSPECIFIED
                           weight:
                             type: string
@@ -17619,6 +17745,8 @@ paths:
                         options is the weighted vote options.
 
                         Since: cosmos-sdk 0.43
+                    encrypted_vote_data:
+                      type: string
                   description: >-
                     Vote defines a vote on a governance proposal.
 
@@ -17935,6 +18063,7 @@ paths:
                       - VOTE_OPTION_ABSTAIN
                       - VOTE_OPTION_NO
                       - VOTE_OPTION_NO_WITH_VETO
+                      - VOTE_OPTION_ENCRYPTED
                     default: VOTE_OPTION_UNSPECIFIED
                   options:
                     type: array
@@ -17952,6 +18081,7 @@ paths:
                             - VOTE_OPTION_ABSTAIN
                             - VOTE_OPTION_NO
                             - VOTE_OPTION_NO_WITH_VETO
+                            - VOTE_OPTION_ENCRYPTED
                           default: VOTE_OPTION_UNSPECIFIED
                         weight:
                           type: string
@@ -17968,6 +18098,8 @@ paths:
                       options is the weighted vote options.
 
                       Since: cosmos-sdk 0.43
+                  encrypted_vote_data:
+                    type: string
             description: >-
               QueryVoteResponse is the response type for the Query/Vote RPC
               method.
@@ -62083,6 +62215,9 @@ definitions:
       MsgUpdateParams message.
 
       Since: cosmos-sdk 0.47
+  cosmos.gov.v1.MsgVoteEncryptedResponse:
+    type: object
+    description: MsgVoteResponse defines the Msg/Vote response type.
   cosmos.gov.v1.MsgVoteResponse:
     type: object
     description: MsgVoteResponse defines the Msg/Vote response type.
@@ -62146,6 +62281,24 @@ definitions:
       burn_vote_veto:
         type: boolean
         title: burn deposits if quorum with vote type no_veto is met
+      max_tally_period:
+        type: string
+        description: Duration of the voting period.
+      trusted_counter_parties:
+        type: array
+        items:
+          type: object
+          properties:
+            client_id:
+              type: string
+            connection_id:
+              type: string
+            channel_id:
+              type: string
+      channel_id:
+        type: string
+      is_source_chain:
+        type: boolean
     description: |-
       Params defines the parameters for the x/gov module.
 
@@ -62329,6 +62482,7 @@ definitions:
           - PROPOSAL_STATUS_UNSPECIFIED
           - PROPOSAL_STATUS_DEPOSIT_PERIOD
           - PROPOSAL_STATUS_VOTING_PERIOD
+          - PROPOSAL_STATUS_TALLY_PERIOD
           - PROPOSAL_STATUS_PASSED
           - PROPOSAL_STATUS_REJECTED
           - PROPOSAL_STATUS_FAILED
@@ -62354,6 +62508,9 @@ definitions:
             description: >-
               no_with_veto_count is the number of no with veto votes on a
               proposal.
+          encrypted_count:
+            type: string
+            description: encrypted_count is the number of encrypted votes on a proposal.
       submit_time:
         type: string
         format: date-time
@@ -62400,6 +62557,19 @@ definitions:
         type: string
         description: 'Since: cosmos-sdk 0.47'
         title: Proposer is the address of the proposal sumbitter
+      has_encrypted_votes:
+        type: boolean
+        title: flag to check if proposal has at least one encrypted vote
+      identity:
+        type: string
+        title: identity and pubkey are used to submit encrypted votes
+      pubkey:
+        type: string
+      aggr_keyshare:
+        type: string
+        title: >-
+          aggregated keyshare is used to decrypt the encrypted votes during the
+          tally phase
     description: Proposal defines the core field members of a governance proposal.
   cosmos.gov.v1.ProposalStatus:
     type: string
@@ -62407,6 +62577,7 @@ definitions:
       - PROPOSAL_STATUS_UNSPECIFIED
       - PROPOSAL_STATUS_DEPOSIT_PERIOD
       - PROPOSAL_STATUS_VOTING_PERIOD
+      - PROPOSAL_STATUS_TALLY_PERIOD
       - PROPOSAL_STATUS_PASSED
       - PROPOSAL_STATUS_REJECTED
       - PROPOSAL_STATUS_FAILED
@@ -62418,6 +62589,8 @@ definitions:
        - PROPOSAL_STATUS_DEPOSIT_PERIOD: PROPOSAL_STATUS_DEPOSIT_PERIOD defines a proposal status during the deposit
       period.
        - PROPOSAL_STATUS_VOTING_PERIOD: PROPOSAL_STATUS_VOTING_PERIOD defines a proposal status during the voting
+      period.
+       - PROPOSAL_STATUS_TALLY_PERIOD: PROPOSAL_STATUS_TALLY_PERIOD defines a proposal status during the tally
       period.
        - PROPOSAL_STATUS_PASSED: PROPOSAL_STATUS_PASSED defines a proposal status of a proposal that has
       passed.
@@ -62589,6 +62762,9 @@ definitions:
               be
 
               vetoed. Default value: 1/3.
+          max_tally_period:
+            type: string
+            description: Duration of the tally period.
       params:
         description: |-
           params defines all the paramaters of x/gov module.
@@ -62655,6 +62831,24 @@ definitions:
           burn_vote_veto:
             type: boolean
             title: burn deposits if quorum with vote type no_veto is met
+          max_tally_period:
+            type: string
+            description: Duration of the voting period.
+          trusted_counter_parties:
+            type: array
+            items:
+              type: object
+              properties:
+                client_id:
+                  type: string
+                connection_id:
+                  type: string
+                channel_id:
+                  type: string
+          channel_id:
+            type: string
+          is_source_chain:
+            type: boolean
     description: QueryParamsResponse is the response type for the Query/Params RPC method.
   cosmos.gov.v1.QueryProposalResponse:
     type: object
@@ -62846,6 +63040,7 @@ definitions:
               - PROPOSAL_STATUS_UNSPECIFIED
               - PROPOSAL_STATUS_DEPOSIT_PERIOD
               - PROPOSAL_STATUS_VOTING_PERIOD
+              - PROPOSAL_STATUS_TALLY_PERIOD
               - PROPOSAL_STATUS_PASSED
               - PROPOSAL_STATUS_REJECTED
               - PROPOSAL_STATUS_FAILED
@@ -62873,6 +63068,11 @@ definitions:
                 type: string
                 description: >-
                   no_with_veto_count is the number of no with veto votes on a
+                  proposal.
+              encrypted_count:
+                type: string
+                description: >-
+                  encrypted_count is the number of encrypted votes on a
                   proposal.
           submit_time:
             type: string
@@ -62923,6 +63123,19 @@ definitions:
             type: string
             description: 'Since: cosmos-sdk 0.47'
             title: Proposer is the address of the proposal sumbitter
+          has_encrypted_votes:
+            type: boolean
+            title: flag to check if proposal has at least one encrypted vote
+          identity:
+            type: string
+            title: identity and pubkey are used to submit encrypted votes
+          pubkey:
+            type: string
+          aggr_keyshare:
+            type: string
+            title: >-
+              aggregated keyshare is used to decrypt the encrypted votes during
+              the tally phase
     description: >-
       QueryProposalResponse is the response type for the Query/Proposal RPC
       method.
@@ -63119,6 +63332,7 @@ definitions:
                 - PROPOSAL_STATUS_UNSPECIFIED
                 - PROPOSAL_STATUS_DEPOSIT_PERIOD
                 - PROPOSAL_STATUS_VOTING_PERIOD
+                - PROPOSAL_STATUS_TALLY_PERIOD
                 - PROPOSAL_STATUS_PASSED
                 - PROPOSAL_STATUS_REJECTED
                 - PROPOSAL_STATUS_FAILED
@@ -63147,6 +63361,11 @@ definitions:
                   type: string
                   description: >-
                     no_with_veto_count is the number of no with veto votes on a
+                    proposal.
+                encrypted_count:
+                  type: string
+                  description: >-
+                    encrypted_count is the number of encrypted votes on a
                     proposal.
             submit_time:
               type: string
@@ -63197,6 +63416,19 @@ definitions:
               type: string
               description: 'Since: cosmos-sdk 0.47'
               title: Proposer is the address of the proposal sumbitter
+            has_encrypted_votes:
+              type: boolean
+              title: flag to check if proposal has at least one encrypted vote
+            identity:
+              type: string
+              title: identity and pubkey are used to submit encrypted votes
+            pubkey:
+              type: string
+            aggr_keyshare:
+              type: string
+              title: >-
+                aggregated keyshare is used to decrypt the encrypted votes
+                during the tally phase
           description: Proposal defines the core field members of a governance proposal.
         description: proposals defines all the requested governance proposals.
       pagination:
@@ -63242,6 +63474,9 @@ definitions:
             description: >-
               no_with_veto_count is the number of no with veto votes on a
               proposal.
+          encrypted_count:
+            type: string
+            description: encrypted_count is the number of encrypted votes on a proposal.
     description: >-
       QueryTallyResultResponse is the response type for the Query/Tally RPC
       method.
@@ -63275,6 +63510,7 @@ definitions:
                     - VOTE_OPTION_ABSTAIN
                     - VOTE_OPTION_NO
                     - VOTE_OPTION_NO_WITH_VETO
+                    - VOTE_OPTION_ENCRYPTED
                   default: VOTE_OPTION_UNSPECIFIED
                 weight:
                   type: string
@@ -63284,6 +63520,8 @@ definitions:
           metadata:
             type: string
             description: metadata is any  arbitrary metadata to attached to the vote.
+          encrypted_vote_data:
+            type: string
     description: QueryVoteResponse is the response type for the Query/Vote RPC method.
   cosmos.gov.v1.QueryVotesResponse:
     type: object
@@ -63316,6 +63554,7 @@ definitions:
                       - VOTE_OPTION_ABSTAIN
                       - VOTE_OPTION_NO
                       - VOTE_OPTION_NO_WITH_VETO
+                      - VOTE_OPTION_ENCRYPTED
                     default: VOTE_OPTION_UNSPECIFIED
                   weight:
                     type: string
@@ -63325,6 +63564,8 @@ definitions:
             metadata:
               type: string
               description: metadata is any  arbitrary metadata to attached to the vote.
+            encrypted_vote_data:
+              type: string
           description: |-
             Vote defines a vote on a governance proposal.
             A Vote consists of a proposal ID, the voter, and the vote option.
@@ -63367,6 +63608,9 @@ definitions:
         description: |-
           Minimum value of Veto votes to Total votes ratio for proposal to be
           vetoed. Default value: 1/3.
+      max_tally_period:
+        type: string
+        description: Duration of the tally period.
     description: TallyParams defines the params for tallying votes on governance proposals.
   cosmos.gov.v1.TallyResult:
     type: object
@@ -63383,7 +63627,19 @@ definitions:
       no_with_veto_count:
         type: string
         description: no_with_veto_count is the number of no with veto votes on a proposal.
+      encrypted_count:
+        type: string
+        description: encrypted_count is the number of encrypted votes on a proposal.
     description: TallyResult defines a standard tally for a governance proposal.
+  cosmos.gov.v1.TrustedCounterParty:
+    type: object
+    properties:
+      client_id:
+        type: string
+      connection_id:
+        type: string
+      channel_id:
+        type: string
   cosmos.gov.v1.Vote:
     type: object
     properties:
@@ -63410,6 +63666,7 @@ definitions:
                 - VOTE_OPTION_ABSTAIN
                 - VOTE_OPTION_NO
                 - VOTE_OPTION_NO_WITH_VETO
+                - VOTE_OPTION_ENCRYPTED
               default: VOTE_OPTION_UNSPECIFIED
             weight:
               type: string
@@ -63419,6 +63676,8 @@ definitions:
       metadata:
         type: string
         description: metadata is any  arbitrary metadata to attached to the vote.
+      encrypted_vote_data:
+        type: string
     description: |-
       Vote defines a vote on a governance proposal.
       A Vote consists of a proposal ID, the voter, and the vote option.
@@ -63430,6 +63689,7 @@ definitions:
       - VOTE_OPTION_ABSTAIN
       - VOTE_OPTION_NO
       - VOTE_OPTION_NO_WITH_VETO
+      - VOTE_OPTION_ENCRYPTED
     default: VOTE_OPTION_UNSPECIFIED
     description: >-
       VoteOption enumerates the valid vote options for a given governance
@@ -63440,6 +63700,7 @@ definitions:
        - VOTE_OPTION_ABSTAIN: VOTE_OPTION_ABSTAIN defines an abstain vote option.
        - VOTE_OPTION_NO: VOTE_OPTION_NO defines a no vote option.
        - VOTE_OPTION_NO_WITH_VETO: VOTE_OPTION_NO_WITH_VETO defines a no with veto vote option.
+       - VOTE_OPTION_ENCRYPTED: VOTE_OPTION_ENCRYPTED defines an encrypted bote
   cosmos.gov.v1.VotingParams:
     type: object
     properties:
@@ -63461,6 +63722,7 @@ definitions:
           - VOTE_OPTION_ABSTAIN
           - VOTE_OPTION_NO
           - VOTE_OPTION_NO_WITH_VETO
+          - VOTE_OPTION_ENCRYPTED
         default: VOTE_OPTION_UNSPECIFIED
       weight:
         type: string
@@ -63531,6 +63793,9 @@ definitions:
         format: uint64
         description: proposal_id defines the unique id of the proposal.
     description: MsgSubmitProposalResponse defines the Msg/SubmitProposal response type.
+  cosmos.gov.v1beta1.MsgVoteEncryptedResponse:
+    type: object
+    description: MsgVoteResponse defines the Msg/Vote response type.
   cosmos.gov.v1beta1.MsgVoteResponse:
     type: object
     description: MsgVoteResponse defines the Msg/Vote response type.
@@ -63611,6 +63876,7 @@ definitions:
           - PROPOSAL_STATUS_UNSPECIFIED
           - PROPOSAL_STATUS_DEPOSIT_PERIOD
           - PROPOSAL_STATUS_VOTING_PERIOD
+          - PROPOSAL_STATUS_TALLY_PERIOD
           - PROPOSAL_STATUS_PASSED
           - PROPOSAL_STATUS_REJECTED
           - PROPOSAL_STATUS_FAILED
@@ -63634,6 +63900,9 @@ definitions:
           no_with_veto:
             type: string
             description: no_with_veto is the number of no with veto votes on a proposal.
+          encrypted:
+            type: string
+            description: encrypted is the number of encrypted votes on a proposal.
       submit_time:
         type: string
         format: date-time
@@ -63665,6 +63934,19 @@ definitions:
         type: string
         format: date-time
         description: voting_end_time is the end time of voting on a proposal.
+      has_encrypted_votes:
+        type: boolean
+        title: flag to check if proposal has at least one encrypted vote
+      identity:
+        type: string
+        title: identity and pubkey are used to submit encrypted votes
+      pubkey:
+        type: string
+      aggr_keyshare:
+        type: string
+        title: >-
+          aggregated keyshare is used to decrypt the encrypted votes during the
+          tally phase
     description: Proposal defines the core field members of a governance proposal.
   cosmos.gov.v1beta1.ProposalStatus:
     type: string
@@ -63672,6 +63954,7 @@ definitions:
       - PROPOSAL_STATUS_UNSPECIFIED
       - PROPOSAL_STATUS_DEPOSIT_PERIOD
       - PROPOSAL_STATUS_VOTING_PERIOD
+      - PROPOSAL_STATUS_TALLY_PERIOD
       - PROPOSAL_STATUS_PASSED
       - PROPOSAL_STATUS_REJECTED
       - PROPOSAL_STATUS_FAILED
@@ -63683,6 +63966,8 @@ definitions:
        - PROPOSAL_STATUS_DEPOSIT_PERIOD: PROPOSAL_STATUS_DEPOSIT_PERIOD defines a proposal status during the deposit
       period.
        - PROPOSAL_STATUS_VOTING_PERIOD: PROPOSAL_STATUS_VOTING_PERIOD defines a proposal status during the voting
+      period.
+       - PROPOSAL_STATUS_TALLY_PERIOD: PROPOSAL_STATUS_TALLY_PERIOD defines a proposal status during the tally
       period.
        - PROPOSAL_STATUS_PASSED: PROPOSAL_STATUS_PASSED defines a proposal status of a proposal that has
       passed.
@@ -63851,6 +64136,9 @@ definitions:
               be
 
               vetoed. Default value: 1/3.
+          tally_period:
+            type: string
+            description: Duration of the tally period.
     description: QueryParamsResponse is the response type for the Query/Params RPC method.
   cosmos.gov.v1beta1.QueryProposalResponse:
     type: object
@@ -63929,6 +64217,7 @@ definitions:
               - PROPOSAL_STATUS_UNSPECIFIED
               - PROPOSAL_STATUS_DEPOSIT_PERIOD
               - PROPOSAL_STATUS_VOTING_PERIOD
+              - PROPOSAL_STATUS_TALLY_PERIOD
               - PROPOSAL_STATUS_PASSED
               - PROPOSAL_STATUS_REJECTED
               - PROPOSAL_STATUS_FAILED
@@ -63957,6 +64246,9 @@ definitions:
                 description: >-
                   no_with_veto is the number of no with veto votes on a
                   proposal.
+              encrypted:
+                type: string
+                description: encrypted is the number of encrypted votes on a proposal.
           submit_time:
             type: string
             format: date-time
@@ -63991,6 +64283,19 @@ definitions:
             type: string
             format: date-time
             description: voting_end_time is the end time of voting on a proposal.
+          has_encrypted_votes:
+            type: boolean
+            title: flag to check if proposal has at least one encrypted vote
+          identity:
+            type: string
+            title: identity and pubkey are used to submit encrypted votes
+          pubkey:
+            type: string
+          aggr_keyshare:
+            type: string
+            title: >-
+              aggregated keyshare is used to decrypt the encrypted votes during
+              the tally phase
         description: Proposal defines the core field members of a governance proposal.
     description: >-
       QueryProposalResponse is the response type for the Query/Proposal RPC
@@ -64076,6 +64381,7 @@ definitions:
                 - PROPOSAL_STATUS_UNSPECIFIED
                 - PROPOSAL_STATUS_DEPOSIT_PERIOD
                 - PROPOSAL_STATUS_VOTING_PERIOD
+                - PROPOSAL_STATUS_TALLY_PERIOD
                 - PROPOSAL_STATUS_PASSED
                 - PROPOSAL_STATUS_REJECTED
                 - PROPOSAL_STATUS_FAILED
@@ -64105,6 +64411,9 @@ definitions:
                   description: >-
                     no_with_veto is the number of no with veto votes on a
                     proposal.
+                encrypted:
+                  type: string
+                  description: encrypted is the number of encrypted votes on a proposal.
             submit_time:
               type: string
               format: date-time
@@ -64139,6 +64448,19 @@ definitions:
               type: string
               format: date-time
               description: voting_end_time is the end time of voting on a proposal.
+            has_encrypted_votes:
+              type: boolean
+              title: flag to check if proposal has at least one encrypted vote
+            identity:
+              type: string
+              title: identity and pubkey are used to submit encrypted votes
+            pubkey:
+              type: string
+            aggr_keyshare:
+              type: string
+              title: >-
+                aggregated keyshare is used to decrypt the encrypted votes
+                during the tally phase
           description: Proposal defines the core field members of a governance proposal.
         description: proposals defines all the requested governance proposals.
       pagination:
@@ -64182,6 +64504,9 @@ definitions:
           no_with_veto:
             type: string
             description: no_with_veto is the number of no with veto votes on a proposal.
+          encrypted:
+            type: string
+            description: encrypted is the number of encrypted votes on a proposal.
     description: >-
       QueryTallyResultResponse is the response type for the Query/Tally RPC
       method.
@@ -64215,6 +64540,7 @@ definitions:
               - VOTE_OPTION_ABSTAIN
               - VOTE_OPTION_NO
               - VOTE_OPTION_NO_WITH_VETO
+              - VOTE_OPTION_ENCRYPTED
             default: VOTE_OPTION_UNSPECIFIED
           options:
             type: array
@@ -64232,6 +64558,7 @@ definitions:
                     - VOTE_OPTION_ABSTAIN
                     - VOTE_OPTION_NO
                     - VOTE_OPTION_NO_WITH_VETO
+                    - VOTE_OPTION_ENCRYPTED
                   default: VOTE_OPTION_UNSPECIFIED
                 weight:
                   type: string
@@ -64244,6 +64571,8 @@ definitions:
               options is the weighted vote options.
 
               Since: cosmos-sdk 0.43
+          encrypted_vote_data:
+            type: string
     description: QueryVoteResponse is the response type for the Query/Vote RPC method.
   cosmos.gov.v1beta1.QueryVotesResponse:
     type: object
@@ -64276,6 +64605,7 @@ definitions:
                 - VOTE_OPTION_ABSTAIN
                 - VOTE_OPTION_NO
                 - VOTE_OPTION_NO_WITH_VETO
+                - VOTE_OPTION_ENCRYPTED
               default: VOTE_OPTION_UNSPECIFIED
             options:
               type: array
@@ -64293,6 +64623,7 @@ definitions:
                       - VOTE_OPTION_ABSTAIN
                       - VOTE_OPTION_NO
                       - VOTE_OPTION_NO_WITH_VETO
+                      - VOTE_OPTION_ENCRYPTED
                     default: VOTE_OPTION_UNSPECIFIED
                   weight:
                     type: string
@@ -64305,6 +64636,8 @@ definitions:
                 options is the weighted vote options.
 
                 Since: cosmos-sdk 0.43
+            encrypted_vote_data:
+              type: string
           description: |-
             Vote defines a vote on a governance proposal.
             A Vote consists of a proposal ID, the voter, and the vote option.
@@ -64350,6 +64683,9 @@ definitions:
         description: |-
           Minimum value of Veto votes to Total votes ratio for proposal to be
           vetoed. Default value: 1/3.
+      tally_period:
+        type: string
+        description: Duration of the tally period.
     description: TallyParams defines the params for tallying votes on governance proposals.
   cosmos.gov.v1beta1.TallyResult:
     type: object
@@ -64366,6 +64702,9 @@ definitions:
       no_with_veto:
         type: string
         description: no_with_veto is the number of no with veto votes on a proposal.
+      encrypted:
+        type: string
+        description: encrypted is the number of encrypted votes on a proposal.
     description: TallyResult defines a standard tally for a governance proposal.
   cosmos.gov.v1beta1.Vote:
     type: object
@@ -64393,6 +64732,7 @@ definitions:
           - VOTE_OPTION_ABSTAIN
           - VOTE_OPTION_NO
           - VOTE_OPTION_NO_WITH_VETO
+          - VOTE_OPTION_ENCRYPTED
         default: VOTE_OPTION_UNSPECIFIED
       options:
         type: array
@@ -64410,6 +64750,7 @@ definitions:
                 - VOTE_OPTION_ABSTAIN
                 - VOTE_OPTION_NO
                 - VOTE_OPTION_NO_WITH_VETO
+                - VOTE_OPTION_ENCRYPTED
               default: VOTE_OPTION_UNSPECIFIED
             weight:
               type: string
@@ -64422,6 +64763,8 @@ definitions:
           options is the weighted vote options.
 
           Since: cosmos-sdk 0.43
+      encrypted_vote_data:
+        type: string
     description: |-
       Vote defines a vote on a governance proposal.
       A Vote consists of a proposal ID, the voter, and the vote option.
@@ -64433,6 +64776,7 @@ definitions:
       - VOTE_OPTION_ABSTAIN
       - VOTE_OPTION_NO
       - VOTE_OPTION_NO_WITH_VETO
+      - VOTE_OPTION_ENCRYPTED
     default: VOTE_OPTION_UNSPECIFIED
     description: >-
       VoteOption enumerates the valid vote options for a given governance
@@ -64443,6 +64787,7 @@ definitions:
        - VOTE_OPTION_ABSTAIN: VOTE_OPTION_ABSTAIN defines an abstain vote option.
        - VOTE_OPTION_NO: VOTE_OPTION_NO defines a no vote option.
        - VOTE_OPTION_NO_WITH_VETO: VOTE_OPTION_NO_WITH_VETO defines a no with veto vote option.
+       - VOTE_OPTION_ENCRYPTED: VOTE_OPTION_ENCRYPTED defines a encrypted vote
   cosmos.gov.v1beta1.VotingParams:
     type: object
     properties:
@@ -64464,6 +64809,7 @@ definitions:
           - VOTE_OPTION_ABSTAIN
           - VOTE_OPTION_NO
           - VOTE_OPTION_NO_WITH_VETO
+          - VOTE_OPTION_ENCRYPTED
         default: VOTE_OPTION_UNSPECIFIED
       weight:
         type: string

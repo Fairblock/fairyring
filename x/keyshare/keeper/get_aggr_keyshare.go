@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"errors"
+	commontypes "fairyring/x/common/types"
 	"fairyring/x/keyshare/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -43,8 +44,8 @@ func (k Keeper) OnTimeoutGetAggrKeysharePacket(ctx sdk.Context, packet channelty
 	return nil
 }
 
-func (k Keeper) ProcessGetKeyshareRequest(ctx sdk.Context, msg types.MsgGetAggrKeyshare,
-) (rsp types.MsgGetAggrKeyshareResponse, err error) {
+func (k Keeper) ProcessGetKeyshareRequest(ctx sdk.Context, msg commontypes.MsgGetAggrKeyshare,
+) (rsp commontypes.MsgGetAggrKeyshareResponse, err error) {
 	if msg.Identity == "" {
 		return rsp, errors.New("identity is blank")
 	}

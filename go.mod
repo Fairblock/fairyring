@@ -197,6 +197,7 @@ require (
 )
 
 replace (
+	github.com/CosmWasm/wasmd => github.com/Fairblock/wasmd v0.45.1-0.20240214145549-25fcd10bf244
 	github.com/cosmos/cosmos-sdk => ../cosmos-sdk
 	// github.com/confio/ics23/go => github.com/cosmos/cosmos-sdk/ics23/go v0.8.0
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1

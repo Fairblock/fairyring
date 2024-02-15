@@ -559,7 +559,7 @@ func New(
 	app.EvidenceKeeper = *evidenceKeeper
 
 	govConfig := govtypes.DefaultConfig()
-	var keyshareKeeper keysharemodulekeeper.Keeper
+	var keyshareKeeper *keysharemodulekeeper.Keeper
 	scopedGovkeeper := app.CapabilityKeeper.ScopeToModule(govtypes.ModuleName)
 
 	govKeeper := govkeeper.NewKeeper(
@@ -617,7 +617,7 @@ func New(
 	pepIBCModule := pepmodule.NewIBCModule(app.PepKeeper)
 
 	scopedKeyshareKeeper := app.CapabilityKeeper.ScopeToModule(keysharemoduletypes.ModuleName)
-	app.KeyshareKeeper = *keysharemodulekeeper.NewKeeper(
+	keyshareKeeper = keysharemodulekeeper.NewKeeper(
 		appCodec,
 		keys[keysharemoduletypes.StoreKey],
 		keys[keysharemoduletypes.MemStoreKey],
@@ -630,6 +630,12 @@ func New(
 		app.StakingKeeper,
 		govKeeper,
 	)
+
+	govKeeper = govKeeper.SetKSKeeper(keyshareKeeper)
+	keyshareKeeper = keyshareKeeper.SetGovKeeper(govKeeper)
+
+	app.KeyshareKeeper = *keyshareKeeper
+	app.GovKeeper = *govKeeper
 
 	keyshareModule := keysharemodule.NewAppModule(
 		appCodec,

@@ -3,6 +3,7 @@ package keeper
 import (
 	"strconv"
 
+	commontypes "fairyring/x/common/types"
 	"fairyring/x/keyshare/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -102,12 +103,12 @@ func (k Keeper) OnTimeoutRequestAggrKeysharePacket(ctx sdk.Context, packet chann
 	return nil
 }
 
-func (k Keeper) ProcessKeyshareRequest(ctx sdk.Context, msg types.MsgRequestAggrKeyshare,
-) (rsp types.MsgRequestAggrKeyshareResponse, err error) {
+func (k Keeper) ProcessKeyshareRequest(ctx sdk.Context, msg commontypes.MsgRequestAggrKeyshare,
+) (rsp commontypes.MsgRequestAggrKeyshareResponse, err error) {
 	var isProposalID bool
 
 	switch msg.Id.(type) {
-	case *types.MsgRequestAggrKeyshare_ProposalId:
+	case *commontypes.MsgRequestAggrKeyshare_ProposalId:
 		isProposalID = true
 		_, err := strconv.ParseUint(msg.GetProposalId(), 10, 64)
 		if err != nil {
