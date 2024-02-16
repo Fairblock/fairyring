@@ -10,19 +10,25 @@
 
 ### Compiling & Installing FairyRing chain executable
 
-1. Building fairyring
+1. Clone the repo
+   
+```bash
+git clone https://github.com/Fairblock/fairyring.git && cd fairyring
+```
+
+2. Building fairyring
 
 ```bash
 make build
 ```
 
-2. Installing the fairyringd
+3. Installing the fairyringd
 
 ```bash
 make install
 ```
 
-3. Running fairyringd
+4. Running fairyringd
 
 ```bash
 fairyringd
