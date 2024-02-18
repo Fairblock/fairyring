@@ -29,7 +29,38 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 				sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, "0"),
 			),
 		)
+		return nil, types.ErrInvalidTargetBlockHeight
+	}
 
+	var maxHeight uint64
+	queuedKey, found := k.GetQueuedPubKey(ctx)
+	if !found {
+		activeKey, foundActiveKey := k.GetActivePubKey(ctx)
+		if !foundActiveKey {
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(types.EncryptedTxRevertedEventType,
+					sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, msg.Creator),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(msg.TargetBlockHeight, 10)),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Active Public key not found"),
+					sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, "0"),
+				),
+			)
+			return nil, types.ErrActivePubKeyNotFound
+		}
+		maxHeight = activeKey.Expiry
+	} else {
+		maxHeight = queuedKey.Expiry
+	}
+
+	if msg.TargetBlockHeight > maxHeight {
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(types.EncryptedTxRevertedEventType,
+				sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, msg.Creator),
+				sdk.NewAttribute(types.EncryptedTxRevertedEventHeight, strconv.FormatUint(msg.TargetBlockHeight, 10)),
+				sdk.NewAttribute(types.EncryptedTxRevertedEventReason, "Target block height is higher than queued public key expiry height"),
+				sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, "0"),
+			),
+		)
 		return nil, types.ErrInvalidTargetBlockHeight
 	}
 
