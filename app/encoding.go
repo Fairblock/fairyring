@@ -5,12 +5,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/std"
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
-
-	"github.com/Fairblock/fairyring/app/params"
 )
 
 // makeEncodingConfig creates an EncodingConfig for an amino based test configuration.
-func makeEncodingConfig() params.EncodingConfig {
+func makeEncodingConfig() (params.EncodingConfig, error) {
 	amino := codec.NewLegacyAmino()
 	interfaceRegistry := types.NewInterfaceRegistry()
 	marshaler := codec.NewProtoCodec(interfaceRegistry)
@@ -21,15 +19,20 @@ func makeEncodingConfig() params.EncodingConfig {
 		Marshaler:         marshaler,
 		TxConfig:          txCfg,
 		Amino:             amino,
-	}
+	}, nil
 }
 
 // MakeEncodingConfig creates an EncodingConfig for testing
-func MakeEncodingConfig() params.EncodingConfig {
-	encodingConfig := makeEncodingConfig()
+func MakeEncodingConfig() (params.EncodingConfig, error) {
+	encodingConfig, err := makeEncodingConfig()
+	if err != nil {
+		return params.EncodingConfig{}, err
+	}
 	std.RegisterLegacyAminoCodec(encodingConfig.Amino)
 	std.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	ModuleBasics.RegisterLegacyAminoCodec(encodingConfig.Amino)
 	ModuleBasics.RegisterInterfaces(encodingConfig.InterfaceRegistry)
-	return encodingConfig
+	return encodingConfig, nil
+}
+
 }
