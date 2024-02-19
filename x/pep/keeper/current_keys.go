@@ -6,7 +6,7 @@ import (
 
 	cosmoserror "github.com/cosmos/cosmos-sdk/types/errors"
 
-	"fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	sdkerrors "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"

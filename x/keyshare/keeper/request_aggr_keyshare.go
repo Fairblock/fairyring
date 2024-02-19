@@ -3,8 +3,8 @@ package keeper
 import (
 	"strconv"
 
-	commontypes "fairyring/x/common/types"
-	"fairyring/x/keyshare/types"
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"

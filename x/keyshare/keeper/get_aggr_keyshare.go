@@ -2,8 +2,9 @@ package keeper
 
 import (
 	"errors"
-	commontypes "fairyring/x/common/types"
-	"fairyring/x/keyshare/types"
+
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"

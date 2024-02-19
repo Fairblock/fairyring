@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	kstypes "fairyring/x/keyshare/types"
-	"fairyring/x/pep/types"
+	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	sdkerrors "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
