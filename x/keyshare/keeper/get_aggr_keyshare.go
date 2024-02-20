@@ -22,6 +22,10 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 		return packetAck, types.ErrRequestNotFound
 	}
 
+	if err := verifyIBCInfo(packet, keyshareReq); err != nil {
+		return packetAck, err
+	}
+
 	if keyshareReq.AggrKeyshare == "" {
 
 		k.Logger(ctx).Info("Got OnRecvGetAggrKeysharePacket")
@@ -65,4 +69,14 @@ func (k Keeper) ProcessGetKeyshareRequest(ctx sdk.Context, msg commontypes.MsgGe
 	}
 
 	return rsp, nil
+}
+
+func verifyIBCInfo(packet channeltypes.Packet, keyshareReq types.KeyShareRequest) error {
+	if keyshareReq.Counterparty.ChannelID != packet.SourceChannel ||
+		keyshareReq.Counterparty.PortID != packet.SourcePort ||
+		keyshareReq.IbcInfo.ChannelID != packet.DestinationChannel ||
+		keyshareReq.IbcInfo.PortID != packet.DestinationPort {
+		return errors.New("unauthorized request")
+	}
+	return nil
 }

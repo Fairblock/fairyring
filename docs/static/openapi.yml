@@ -4,6 +4,132 @@ info:
   name: ''
   description: ''
 paths:
+  /cosmos.crisis.v1beta1.Msg/UpdateParams:
+    post:
+      summary: >-
+        UpdateParams defines a governance operation for updating the x/crisis
+        module
+
+        parameters. The authority is defined in the keeper.
+      description: 'Since: cosmos-sdk 0.47'
+      operationId: CosmosCrisisV1Beta1Msg_UpdateParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            description: >-
+              MsgUpdateParamsResponse defines the response structure for
+              executing a
+
+              MsgUpdateParams message.
+
+
+              Since: cosmos-sdk 0.47
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: body
+          description: |-
+            MsgUpdateParams is the Msg/UpdateParams request type.
+
+            Since: cosmos-sdk 0.47
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              authority:
+                type: string
+                description: >-
+                  authority is the address that controls the module (defaults to
+                  x/gov unless overwritten).
+              constant_fee:
+                description: constant_fee defines the x/crisis parameter.
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+            description: |-
+              MsgUpdateParams is the Msg/UpdateParams request type.
+
+              Since: cosmos-sdk 0.47
+      tags:
+        - Msg
+  /cosmos.crisis.v1beta1.Msg/VerifyInvariant:
+    post:
+      summary: VerifyInvariant defines a method to verify a particular invariant.
+      operationId: CosmosCrisisV1Beta1Msg_VerifyInvariant
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            description: >-
+              MsgVerifyInvariantResponse defines the Msg/VerifyInvariant
+              response type.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: body
+          description: >-
+            MsgVerifyInvariant represents a message to verify a particular
+            invariance.
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              sender:
+                type: string
+                description: >-
+                  sender is the account address of private key to send coins to
+                  fee collector account.
+              invariant_module_name:
+                type: string
+                description: name of the invariant module.
+              invariant_route:
+                type: string
+                description: invariant_route is the msg's invariant route.
+            description: >-
+              MsgVerifyInvariant represents a message to verify a particular
+              invariance.
+      tags:
+        - Msg
   /fairyring.pep.Msg/CreateAggregatedKeyShare:
     post:
       summary: 'this line is used by starport scaffolding # proto/tx/rpc'
@@ -7312,6 +7438,63 @@ paths:
       tags:
         - Msg
 definitions:
+  cosmos.base.v1beta1.Coin:
+    type: object
+    properties:
+      denom:
+        type: string
+      amount:
+        type: string
+    description: |-
+      Coin defines a token with a denomination and an amount.
+
+      NOTE: The amount field is an Int which implements the custom method
+      signatures required by gogoproto.
+  cosmos.crisis.v1beta1.MsgUpdateParams:
+    type: object
+    properties:
+      authority:
+        type: string
+        description: >-
+          authority is the address that controls the module (defaults to x/gov
+          unless overwritten).
+      constant_fee:
+        description: constant_fee defines the x/crisis parameter.
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+    description: |-
+      MsgUpdateParams is the Msg/UpdateParams request type.
+
+      Since: cosmos-sdk 0.47
+  cosmos.crisis.v1beta1.MsgUpdateParamsResponse:
+    type: object
+    description: |-
+      MsgUpdateParamsResponse defines the response structure for executing a
+      MsgUpdateParams message.
+
+      Since: cosmos-sdk 0.47
+  cosmos.crisis.v1beta1.MsgVerifyInvariant:
+    type: object
+    properties:
+      sender:
+        type: string
+        description: >-
+          sender is the account address of private key to send coins to fee
+          collector account.
+      invariant_module_name:
+        type: string
+        description: name of the invariant module.
+      invariant_route:
+        type: string
+        description: invariant_route is the msg's invariant route.
+    description: MsgVerifyInvariant represents a message to verify a particular invariance.
+  cosmos.crisis.v1beta1.MsgVerifyInvariantResponse:
+    type: object
+    description: MsgVerifyInvariantResponse defines the Msg/VerifyInvariant response type.
   google.protobuf.Any:
     type: object
     properties:
@@ -7822,18 +8005,6 @@ definitions:
               allow_messages defines a list of sdk message typeURLs allowed to
               be executed on a host chain.
     description: QueryParamsResponse is the response type for the Query/Params RPC method.
-  cosmos.base.v1beta1.Coin:
-    type: object
-    properties:
-      denom:
-        type: string
-      amount:
-        type: string
-    description: |-
-      Coin defines a token with a denomination and an amount.
-
-      NOTE: The amount field is an Int which implements the custom method
-      signatures required by gogoproto.
   ibc.applications.transfer.v1.MsgTransfer:
     type: object
     properties:
