@@ -56,6 +56,12 @@ const (
 )
 
 const (
+	EncryptedTxDiscardedEventType   = "discarded-encrypted-tx"
+	EncryptedTxDiscardedEventHeight = "discarded-height"
+	EncryptedTxDiscardedEventTxIDs  = "discarded-tx-ids"
+)
+
+const (
 	KeyShareVerificationType    = "keyshare-verification"
 	KeyShareVerificationCreator = "keyshare-verification-creator"
 	KeyShareVerificationHeight  = "keyshare-verification-height"
