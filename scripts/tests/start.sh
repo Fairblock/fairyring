@@ -123,8 +123,8 @@ sed -i -e 's#":8080"#":'"$ROSETTA_2"'"#g' $CHAIN_DIR/$CHAINID_2/config/app.toml
 sed -i -e 's/minimum-gas-prices = "0stake"/minimum-gas-prices = "1ufairy"/g' $CHAIN_DIR/$CHAINID_2/config/app.toml
 
 echo "Changing genesis.json..."
-sed -i -e 's/"voting_period": "172800s"/"voting_period": "10s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
-sed -i -e 's/"voting_period": "172800s"/"voting_period": "10s"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
+sed -i -e 's/"voting_period": "172800s"/"voting_period": "100s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
+sed -i -e 's/"voting_period": "172800s"/"voting_period": "100s"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
 
@@ -138,6 +138,9 @@ sed -i -e 's/"trusted_counter_parties": \[\]/"trusted_counter_parties": \['"$TRU
 
 sed -i -e 's/"key_expiry": "100"/"key_expiry": "10000"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 sed -i -e 's/"key_expiry": "100"/"key_expiry": "10000"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
+
+sed -i -e 's/"channel_id": ""/"channel_id": "channel-0"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
+sed -i -e 's/"is_source_chain": false/"is_source_chain": true/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 
 echo "Starting $CHAINID_1 in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID_1.log"
@@ -170,4 +173,4 @@ sleep $((BLOCK_TIME*2))
 
 echo "Starting Hermes Relayer..."
 echo "Creating log file at $CHAIN_DIR/relayer.log"
-hermes --config hermes_config.toml start > $CHAIN_DIR/relayer.log 2>&1 &
+# hermes --config hermes_config.toml start > $CHAIN_DIR/relayer.log 2>&1 &

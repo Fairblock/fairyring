@@ -578,6 +578,8 @@ func New(
 		keyshareKeeper,
 	)
 
+	govIBCModule := gov.NewIBCModule(*govKeeper)
+
 	govRouter := govv1beta1.NewRouter()
 	govRouter.
 		AddRoute(govtypes.RouterKey, govv1beta1.ProposalHandler).
@@ -758,7 +760,7 @@ func New(
 		AddRoute(ibctransfertypes.ModuleName, transferIBCModule).
 		AddRoute(pepmoduletypes.ModuleName, pepIBCModule).
 		AddRoute(keysharemoduletypes.ModuleName, keyshareIBCModule).
-		AddRoute(wasmtypes.ModuleName, wasmStack)
+		AddRoute(wasmtypes.ModuleName, wasmStack).AddRoute(govtypes.ModuleName, govIBCModule)
 
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
