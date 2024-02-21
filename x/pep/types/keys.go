@@ -59,8 +59,8 @@ const (
 
 const (
 	EncryptedTxDiscardedEventType   = "discarded-encrypted-tx"
-	EncryptedTxDiscardedEventHeight = "discarded-height"
-	EncryptedTxDiscardedEventTxIDs  = "discarded-tx-ids"
+	EncryptedTxDiscardedEventHeight = "height"
+	EncryptedTxDiscardedEventTxIDs  = "tx-ids"
 )
 
 const (
