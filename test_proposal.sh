@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 fairyringd tx gov submit-proposal draft_proposal.json --from val2 -o json --home ./data/fairyring_test_2/ -y --keyring-backend test --gas-prices 1ufairy
 

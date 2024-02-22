@@ -173,4 +173,4 @@ sleep $((BLOCK_TIME*2))
 
 echo "Starting Hermes Relayer..."
 echo "Creating log file at $CHAIN_DIR/relayer.log"
-# hermes --config hermes_config.toml start > $CHAIN_DIR/relayer.log 2>&1 &
+hermes --config hermes_config.toml start > $CHAIN_DIR/relayer.log 2>&1 &

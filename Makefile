@@ -184,8 +184,8 @@ integration-test-all: init-test-framework \
 	init-relayer \
 	test-keyshare-module \
 	test-pep-module
-	-@rm -rf ./data
-	-@killall fairyringd 2>/dev/null
+#	-@rm -rf ./data
+#	-@killall fairyringd 2>/dev/null
 
 test-tx-limit:
 	@echo "Testing Block tx limit..."
