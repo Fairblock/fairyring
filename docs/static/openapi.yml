@@ -35260,6 +35260,49 @@ paths:
           type: string
       tags:
         - Query
+  /fairyring/keyshare/commitments:
+    get:
+      operationId: FairyringKeyshareCommitments
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              activeCommitments:
+                type: object
+                properties:
+                  commitments:
+                    type: array
+                    items:
+                      type: string
+              queuedCommitments:
+                type: object
+                properties:
+                  commitments:
+                    type: array
+                    items:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /fairyring/keyshare/general_key_share:
     get:
       operationId: FairyringKeyshareGeneralKeyShareAll
@@ -72179,6 +72222,13 @@ definitions:
         type: boolean
       authorizedBy:
         type: string
+  fairyring.keyshare.Commitments:
+    type: object
+    properties:
+      commitments:
+        type: array
+        items:
+          type: string
   fairyring.keyshare.GeneralKeyShare:
     type: object
     properties:
@@ -72517,6 +72567,23 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  fairyring.keyshare.QueryCommitmentsResponse:
+    type: object
+    properties:
+      activeCommitments:
+        type: object
+        properties:
+          commitments:
+            type: array
+            items:
+              type: string
+      queuedCommitments:
+        type: object
+        properties:
+          commitments:
+            type: array
+            items:
+              type: string
   fairyring.keyshare.QueryGetAggregatedKeyShareResponse:
     type: object
     properties:

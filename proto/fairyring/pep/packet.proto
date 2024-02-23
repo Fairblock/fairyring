@@ -1,7 +1,7 @@
 syntax = "proto3";
 package fairyring.pep;
 
-import "github.com/Fairblock/fairyring/pep/pub_key.proto";
+import "fairyring/pep/pub_key.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
