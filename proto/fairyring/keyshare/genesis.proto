@@ -3,13 +3,13 @@ syntax = "proto3";
 package fairyring.keyshare;
 
 import "gogoproto/gogo.proto";
-import "github.com/Fairblock/fairyring/keyshare/params.proto";
-import "github.com/Fairblock/fairyring/keyshare/validator_set.proto";
-import "github.com/Fairblock/fairyring/keyshare/key_share.proto";
-import "github.com/Fairblock/fairyring/keyshare/aggregated_key_share.proto";
-import "github.com/Fairblock/fairyring/keyshare/pub_key.proto";
-import "github.com/Fairblock/fairyring/keyshare/authorized_address.proto";
-import "github.com/Fairblock/fairyring/keyshare/general_key_share.proto";
+import "fairyring/keyshare/params.proto";
+import "fairyring/keyshare/validator_set.proto";
+import "fairyring/keyshare/key_share.proto";
+import "fairyring/keyshare/aggregated_key_share.proto";
+import "fairyring/keyshare/pub_key.proto";
+import "fairyring/keyshare/authorized_address.proto";
+import "fairyring/keyshare/general_key_share.proto";
 
 // this line is used by starport scaffolding # genesis/proto/import
 
