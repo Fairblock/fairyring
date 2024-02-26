@@ -70,7 +70,7 @@ const (
 )
 
 const (
-	GeneralKeyShareAggregatedEventType    = "keyshare-aggregated"
+	GeneralKeyShareAggregatedEventType    = "general-keyshare-aggregated"
 	GeneralKeyShareAggregatedEventIDValue = "id-value"
 	GeneralKeyShareAggregatedEventIDType  = "id-type"
 	GeneralKeyShareAggregatedEventData    = "data"
