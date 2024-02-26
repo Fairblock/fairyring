@@ -34,7 +34,7 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 
 	var maxHeight uint64
 	queuedKey, found := k.GetQueuedPubKey(ctx)
-	if !found {
+	if !found || (queuedKey.Expiry == 0 && len(queuedKey.PublicKey) == 0) {
 		activeKey, foundActiveKey := k.GetActivePubKey(ctx)
 		if !foundActiveKey {
 			ctx.EventManager().EmitEvent(
