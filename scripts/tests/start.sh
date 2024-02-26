@@ -123,8 +123,8 @@ sed -i -e 's#":8080"#":'"$ROSETTA_2"'"#g' $CHAIN_DIR/$CHAINID_2/config/app.toml
 sed -i -e 's/minimum-gas-prices = "0stake"/minimum-gas-prices = "1ufairy"/g' $CHAIN_DIR/$CHAINID_2/config/app.toml
 
 echo "Changing genesis.json..."
-sed -i -e 's/"voting_period": "172800s"/"voting_period": "100s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
-sed -i -e 's/"voting_period": "172800s"/"voting_period": "100s"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
+sed -i -e 's/"voting_period": "172800s"/"voting_period": "40s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
+sed -i -e 's/"voting_period": "172800s"/"voting_period": "40s"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
 

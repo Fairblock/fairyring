@@ -272,6 +272,7 @@ type App struct {
 	ScopedPepKeeper      capabilitykeeper.ScopedKeeper
 	ScopedKeyshareKeeper capabilitykeeper.ScopedKeeper
 	ScopedWasmKeeper     capabilitykeeper.ScopedKeeper
+	ScopedGovkeeper      capabilitykeeper.ScopedKeeper
 
 	KeyshareKeeper keysharemodulekeeper.Keeper
 	PepKeeper      pepmodulekeeper.Keeper
@@ -955,6 +956,7 @@ func New(
 	app.ScopedPepKeeper = scopedPepKeeper
 	app.ScopedKeyshareKeeper = scopedKeyshareKeeper
 	app.ScopedWasmKeeper = scopedWasmKeeper
+	app.ScopedGovkeeper = scopedGovkeeper
 
 	// TODO: Check if posthandlers are necessary for our chain
 	//app.setPostHandler()
