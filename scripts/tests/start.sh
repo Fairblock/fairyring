@@ -85,8 +85,8 @@ RLY2_ADDR=$($BINARY keys show rly2 --home $CHAIN_DIR/$CHAINID_2 --keyring-backen
 
 $BINARY add-genesis-account $VAL1_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID_1
 $BINARY add-genesis-account $VAL2_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID_2
-$BINARY add-genesis-account $WALLET1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID_1
-$BINARY add-genesis-account $WALLET2_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID_2
+$BINARY add-genesis-account $WALLET1_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID_1
+$BINARY add-genesis-account $WALLET2_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID_2
 $BINARY add-genesis-account $WALLET3_ADDR 1000000000000ufairy --vesting-amount 100000000000stake --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID_1
 $BINARY add-genesis-account $WALLET4_ADDR 1000000000000ufairy --vesting-amount 100000000000stake --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID_2
 $BINARY add-genesis-account $RLY1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID_1
