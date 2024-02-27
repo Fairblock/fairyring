@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
@@ -22,10 +21,9 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 	if params.IsSourceChain {
 		//TODO: process for fairyring
 	} else {
-		id := "dummy_id" // TODO: can have a more robust request id sysytem in later phases
 		packetData := kstypes.RequestAggrKeysharePacketData{
 			Id: &kstypes.RequestAggrKeysharePacketData_RequestId{
-				RequestId: id,
+				RequestId: msg.RequestId,
 			},
 		}
 
@@ -43,7 +41,7 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeRequestKeyshare,
-				sdk.NewAttribute(types.AttributeKeyRequestID, fmt.Sprintf("%d", id)),
+				sdk.NewAttribute(types.AttributeKeyRequestID, msg.RequestId),
 			),
 		)
 
