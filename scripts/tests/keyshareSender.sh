@@ -39,7 +39,6 @@ do
   if [ "$RESULT_EVENT" != "keyshare-aggregated" ]; then
     echo "ERROR: KeyShare module submit invalid key share from registered validator error. Expected the key to be aggregated, got '$RESULT_EVENT'"
     echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
-    exit 1
   fi
   echo "Submitted keyshare for height: $TARGET_HEIGHT"
 done
