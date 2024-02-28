@@ -218,8 +218,6 @@ func (am AppModule) processFailedEncryptedTx(ctx sdk.Context, tx types.Encrypted
 		),
 	)
 
-	am.keeper.SetEncryptedTxProcessedHeight(ctx, tx.TargetHeight, tx.Index, uint64(ctx.BlockHeight()))
-
 	creatorAddr, err := sdk.AccAddressFromBech32(tx.Creator)
 	if err != nil {
 		am.keeper.Logger(ctx).Error("error while trying to parse tx creator address when processing failed encrypted tx")
@@ -346,6 +344,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 		for _, eachTx := range arr.EncryptedTx {
 			startConsumedGas := ctx.GasMeter().GasConsumed()
+			am.keeper.SetEncryptedTxProcessedHeight(ctx, eachTx.TargetHeight, eachTx.Index, uint64(ctx.BlockHeight()))
 			if currentNonce, found := am.keeper.GetPepNonce(ctx, eachTx.Creator); found && currentNonce.Nonce == math.MaxUint64 {
 				am.processFailedEncryptedTx(ctx, eachTx, "invalid pep nonce", startConsumedGas)
 				continue
@@ -573,7 +572,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			eventStrArrJson, _ := json.Marshal(underlyingTxEvents)
 
 			am.keeper.Logger(ctx).Info("! Encrypted Tx Decrypted & Decoded & Executed successfully !")
-			am.keeper.SetEncryptedTxProcessedHeight(ctx, eachTx.TargetHeight, eachTx.Index, uint64(ctx.BlockHeight()))
 
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxExecutedEventType,
