@@ -84,10 +84,12 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 	}
 
 	encryptedTx := types.EncryptedTx{
-		TargetHeight: msg.TargetBlockHeight,
-		Data:         msg.Data,
-		Creator:      msg.Creator,
-		ChargedGas:   &minGas,
+		TargetHeight:           msg.TargetBlockHeight,
+		Data:                   msg.Data,
+		Creator:                msg.Creator,
+		ChargedGas:             &minGas,
+		ProcessedAtChainHeight: 0,
+		Expired:                false,
 	}
 
 	txIndex := k.AppendEncryptedTx(ctx, encryptedTx)

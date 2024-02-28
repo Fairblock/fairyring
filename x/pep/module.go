@@ -218,6 +218,8 @@ func (am AppModule) processFailedEncryptedTx(ctx sdk.Context, tx types.Encrypted
 		),
 	)
 
+	am.keeper.SetEncryptedTxProcessedHeight(ctx, tx.TargetHeight, tx.Index, uint64(ctx.BlockHeight()))
+
 	creatorAddr, err := sdk.AccAddressFromBech32(tx.Creator)
 	if err != nil {
 		am.keeper.Logger(ctx).Error("error while trying to parse tx creator address when processing failed encrypted tx")
@@ -286,8 +288,8 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			am.keeper.Logger(ctx).Error(fmt.Sprintf("Decryption key not found for block height: %d, Removing all the encrypted txs...", h))
 			encryptedTxs := am.keeper.GetEncryptedTxAllFromHeight(ctx, h)
 			if len(encryptedTxs.EncryptedTx) > 0 {
-				am.keeper.RemoveAllEncryptedTxFromHeight(ctx, h)
-				am.keeper.Logger(ctx).Info(fmt.Sprintf("Removed total %d encrypted txs at block %d", len(encryptedTxs.EncryptedTx), h))
+				am.keeper.SetAllEncryptedTxExpired(ctx, h)
+				am.keeper.Logger(ctx).Info(fmt.Sprintf("Updated total %d encrypted txs at block %d to expired", len(encryptedTxs.EncryptedTx), h))
 				indexes := make([]string, len(encryptedTxs.EncryptedTx))
 				for _, v := range encryptedTxs.EncryptedTx {
 					indexes = append(indexes, strconv.FormatUint(v.Index, 10))
@@ -571,6 +573,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			eventStrArrJson, _ := json.Marshal(underlyingTxEvents)
 
 			am.keeper.Logger(ctx).Info("! Encrypted Tx Decrypted & Decoded & Executed successfully !")
+			am.keeper.SetEncryptedTxProcessedHeight(ctx, eachTx.TargetHeight, eachTx.Index, uint64(ctx.BlockHeight()))
 
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxExecutedEventType,
@@ -585,8 +588,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 			telemetry.IncrCounter(1, types.KeyTotalSuccessEncryptedTx)
 		}
-
-		am.keeper.RemoveAllEncryptedTxFromHeight(ctx, h)
 	}
 
 }

@@ -48,6 +48,36 @@ func (k Keeper) SetEncryptedTx(
 	), parsedEncryptedTxArr)
 }
 
+func (k Keeper) SetEncryptedTxProcessedHeight(
+	ctx sdk.Context,
+	height uint64,
+	index uint64,
+	processedHeight uint64,
+) {
+	arr := k.GetEncryptedTxAllFromHeight(ctx, height)
+
+	if index >= uint64(len(arr.EncryptedTx)) {
+		return
+	}
+
+	arr.EncryptedTx[index].ProcessedAtChainHeight = processedHeight
+
+	k.SetEncryptedTx(ctx, height, arr)
+}
+
+func (k Keeper) SetAllEncryptedTxExpired(
+	ctx sdk.Context,
+	height uint64,
+) {
+	arr := k.GetEncryptedTxAllFromHeight(ctx, height)
+
+	for i := range arr.EncryptedTx {
+		arr.EncryptedTx[i].Expired = true
+	}
+
+	k.SetEncryptedTx(ctx, height, arr)
+}
+
 // GetEncryptedTx returns a encryptedTx from its index
 func (k Keeper) GetEncryptedTx(
 	ctx sdk.Context,

@@ -12,6 +12,8 @@ message EncryptedTx {
   string data = 3; 
   string creator = 4;
   cosmos.base.v1beta1.Coin chargedGas = 5;
+  uint64 processedAtChainHeight = 6;
+  bool   expired = 7;
 }
 
 message EncryptedTxArray {
