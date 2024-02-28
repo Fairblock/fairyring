@@ -1213,31 +1213,31 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Query_Commitments_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "commitments"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Commitments_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "commitments"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "params"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "params"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_ValidatorSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "keyshare", "validator_set", "index"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_ValidatorSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "keyshare", "validator_set", "index"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_ValidatorSetAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "validator_set"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_ValidatorSetAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "validator_set"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_KeyShare_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"fairyring", "keyshare", "key_share", "validator", "blockHeight"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_KeyShare_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"fairyring", "keyshare", "key_share", "validator", "blockHeight"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_KeyShareAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "key_share"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_KeyShareAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "key_share"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_AggregatedKeyShare_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "keyshare", "aggregated_key_share", "height"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_AggregatedKeyShare_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "keyshare", "aggregated_key_share", "height"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_AggregatedKeyShareAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "aggregated_key_share"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_AggregatedKeyShareAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "aggregated_key_share"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_PubKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "pub_key"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_PubKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "pub_key"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_AuthorizedAddress_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "keyshare", "authorized_address", "target"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_AuthorizedAddress_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "keyshare", "authorized_address", "target"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_AuthorizedAddressAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "authorized_address"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_AuthorizedAddressAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "authorized_address"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_GeneralKeyShare_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"fairyring", "keyshare", "general_key_share", "validator", "idType", "idValue"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GeneralKeyShare_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"fairyring", "keyshare", "general_key_share", "validator", "idType", "idValue"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_GeneralKeyShareAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "general_key_share"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GeneralKeyShareAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "general_key_share"}, "", runtime.AssumeColonVerbOpt(false)))
 )
 
 var (

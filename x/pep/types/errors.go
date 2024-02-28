@@ -10,5 +10,6 @@ import (
 var (
 	ErrInvalidVersion           = sdkerrors.Register(ModuleName, 1501, "invalid version")
 	ErrInvalidTargetBlockHeight = sdkerrors.Register(ModuleName, 1600, "Invalid target block height")
+	ErrInvalidIdentity          = sdkerrors.Register(ModuleName, 1601, "Invalid identity")
 	ErrInvalidMsgCreator        = sdkerrors.Register(ModuleName, 1700, "Invalid msg creator address")
 )

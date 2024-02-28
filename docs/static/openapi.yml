@@ -130,6 +130,620 @@ paths:
               invariance.
       tags:
         - Msg
+  /fairyring/pep/encrypted_tx:
+    get:
+      summary: Queries a list of EncryptedTx items.
+      operationId: FairyringPepQuery_EncryptedTxAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              encryptedTxArray:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    encryptedTx:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          targetHeight:
+                            type: string
+                            format: uint64
+                          index:
+                            type: string
+                            format: uint64
+                          data:
+                            type: string
+                          creator:
+                            type: string
+                          chargedGas:
+                            type: object
+                            properties:
+                              denom:
+                                type: string
+                              amount:
+                                type: string
+                            description: >-
+                              Coin defines a token with a denomination and an
+                              amount.
+
+
+                              NOTE: The amount field is an Int which implements
+                              the custom method
+
+                              signatures required by gogoproto.
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    description: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently. It will be empty if
+                      there are no more results.
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /fairyring/pep/encrypted_tx/{targetHeight}:
+    get:
+      summary: Queries a list of EncryptedTx items.
+      operationId: FairyringPepQuery_EncryptedTxAllFromHeight
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              encryptedTxArray:
+                type: object
+                properties:
+                  encryptedTx:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        targetHeight:
+                          type: string
+                          format: uint64
+                        index:
+                          type: string
+                          format: uint64
+                        data:
+                          type: string
+                        creator:
+                          type: string
+                        chargedGas:
+                          type: object
+                          properties:
+                            denom:
+                              type: string
+                            amount:
+                              type: string
+                          description: >-
+                            Coin defines a token with a denomination and an
+                            amount.
+
+
+                            NOTE: The amount field is an Int which implements
+                            the custom method
+
+                            signatures required by gogoproto.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: targetHeight
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /fairyring/pep/encrypted_tx/{targetHeight}/{index}:
+    get:
+      summary: Queries a EncryptedTx by index.
+      operationId: FairyringPepQuery_EncryptedTx
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              encryptedTx:
+                type: object
+                properties:
+                  targetHeight:
+                    type: string
+                    format: uint64
+                  index:
+                    type: string
+                    format: uint64
+                  data:
+                    type: string
+                  creator:
+                    type: string
+                  chargedGas:
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+                    description: >-
+                      Coin defines a token with a denomination and an amount.
+
+
+                      NOTE: The amount field is an Int which implements the
+                      custom method
+
+                      signatures required by gogoproto.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: targetHeight
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: index
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /fairyring/pep/latest_height:
+    get:
+      summary: Queries a list of LatestHeight items.
+      operationId: FairyringPepQuery_LatestHeight
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              height:
+                type: string
+                format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /fairyring/pep/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: FairyringPepQuery_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+                properties:
+                  trusted_counter_parties:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        client_id:
+                          type: string
+                        connection_id:
+                          type: string
+                        channel_id:
+                          type: string
+                  trusted_addresses:
+                    type: array
+                    items:
+                      type: string
+                  pep_channel_id:
+                    type: string
+                  keyshare_channel_id:
+                    type: string
+                  min_gas_price:
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+                    description: >-
+                      Coin defines a token with a denomination and an amount.
+
+
+                      NOTE: The amount field is an Int which implements the
+                      custom method
+
+                      signatures required by gogoproto.
+                  is_source_chain:
+                    type: boolean
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /fairyring/pep/pep_nonce:
+    get:
+      summary: Queries a list of PepNonce items.
+      operationId: FairyringPepQuery_PepNonceAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              pepNonce:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    address:
+                      type: string
+                    nonce:
+                      type: string
+                      format: uint64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    description: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently. It will be empty if
+                      there are no more results.
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /fairyring/pep/pep_nonce/{address}:
+    get:
+      summary: Queries a PepNonce by index.
+      operationId: FairyringPepQuery_PepNonce
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              pepNonce:
+                type: object
+                properties:
+                  address:
+                    type: string
+                  nonce:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /fairyring/pep/pub_key:
+    get:
+      summary: Queries the public keys
+      operationId: FairyringPepQuery_PubKey
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              activePubKey:
+                type: object
+                properties:
+                  publicKey:
+                    type: string
+                  creator:
+                    type: string
+                  expiry:
+                    type: string
+                    format: uint64
+              queuedPubKey:
+                type: object
+                properties:
+                  publicKey:
+                    type: string
+                  creator:
+                    type: string
+                  expiry:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /fairyring.pep.Msg/CreateAggregatedKeyShare:
     post:
       summary: 'this line is used by starport scaffolding # proto/tx/rpc'
@@ -253,7 +867,7 @@ paths:
             properties:
               creator:
                 type: string
-              requestId:
+              request_id:
                 type: string
       tags:
         - Msg
@@ -297,6 +911,47 @@ paths:
               targetBlockHeight:
                 type: string
                 format: uint64
+      tags:
+        - Msg
+  /fairyring.pep.Msg/SubmitGeneralEncryptedTx:
+    post:
+      operationId: FairyringPepMsg_SubmitGeneralEncryptedTx
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              creator:
+                type: string
+              data:
+                type: string
+              identity:
+                type: string
       tags:
         - Msg
   /ibc.applications.interchain_accounts.controller.v1.Msg/RegisterInterchainAccount:
@@ -7816,6 +8471,469 @@ definitions:
                   "@type": "type.googleapis.com/google.protobuf.Duration",
                   "value": "1.212s"
                 }
+  cosmos.base.query.v1beta1.PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+        description: |-
+          key is a value returned in PageResponse.next_key to begin
+          querying the next page most efficiently. Only one of offset or key
+          should be set.
+      offset:
+        type: string
+        format: uint64
+        description: |-
+          offset is a numeric offset that can be used when key is unavailable.
+          It is less efficient than using key. Only one of offset or key should
+          be set.
+      limit:
+        type: string
+        format: uint64
+        description: >-
+          limit is the total number of results to be returned in the result
+          page.
+
+          If left empty it will default to a value to be set by each app.
+      count_total:
+        type: boolean
+        description: >-
+          count_total is set to true  to indicate that the result set should
+          include
+
+          a count of the total number of items available for pagination in UIs.
+
+          count_total is only respected when offset is used. It is ignored when
+          key
+
+          is set.
+      reverse:
+        type: boolean
+        description: >-
+          reverse is set to true if results are to be returned in the descending
+          order.
+
+
+          Since: cosmos-sdk 0.43
+    description: |-
+      message SomeRequest {
+               Foo some_parameter = 1;
+               PageRequest pagination = 2;
+       }
+    title: |-
+      PageRequest is to be embedded in gRPC request messages for efficient
+      pagination. Ex:
+  cosmos.base.query.v1beta1.PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+        description: |-
+          next_key is the key to be passed to PageRequest.key to
+          query the next page most efficiently. It will be empty if
+          there are no more results.
+      total:
+        type: string
+        format: uint64
+        title: |-
+          total is total number of results available if PageRequest.count_total
+          was set, its value is undefined otherwise
+    description: |-
+      PageResponse is to be embedded in gRPC response messages where the
+      corresponding request message has used PageRequest.
+
+       message SomeResponse {
+               repeated Bar results = 1;
+               PageResponse page = 2;
+       }
+  fairyring.pep.ActivePubKey:
+    type: object
+    properties:
+      publicKey:
+        type: string
+      creator:
+        type: string
+      expiry:
+        type: string
+        format: uint64
+  fairyring.pep.EncryptedTx:
+    type: object
+    properties:
+      targetHeight:
+        type: string
+        format: uint64
+      index:
+        type: string
+        format: uint64
+      data:
+        type: string
+      creator:
+        type: string
+      chargedGas:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          Coin defines a token with a denomination and an amount.
+
+          NOTE: The amount field is an Int which implements the custom method
+          signatures required by gogoproto.
+  fairyring.pep.EncryptedTxArray:
+    type: object
+    properties:
+      encryptedTx:
+        type: array
+        items:
+          type: object
+          properties:
+            targetHeight:
+              type: string
+              format: uint64
+            index:
+              type: string
+              format: uint64
+            data:
+              type: string
+            creator:
+              type: string
+            chargedGas:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+              description: >-
+                Coin defines a token with a denomination and an amount.
+
+
+                NOTE: The amount field is an Int which implements the custom
+                method
+
+                signatures required by gogoproto.
+  fairyring.pep.Params:
+    type: object
+    properties:
+      trusted_counter_parties:
+        type: array
+        items:
+          type: object
+          properties:
+            client_id:
+              type: string
+            connection_id:
+              type: string
+            channel_id:
+              type: string
+      trusted_addresses:
+        type: array
+        items:
+          type: string
+      pep_channel_id:
+        type: string
+      keyshare_channel_id:
+        type: string
+      min_gas_price:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          Coin defines a token with a denomination and an amount.
+
+          NOTE: The amount field is an Int which implements the custom method
+          signatures required by gogoproto.
+      is_source_chain:
+        type: boolean
+    description: Params defines the parameters for the module.
+  fairyring.pep.PepNonce:
+    type: object
+    properties:
+      address:
+        type: string
+      nonce:
+        type: string
+        format: uint64
+  fairyring.pep.QueryAllEncryptedTxFromHeightResponse:
+    type: object
+    properties:
+      encryptedTxArray:
+        type: object
+        properties:
+          encryptedTx:
+            type: array
+            items:
+              type: object
+              properties:
+                targetHeight:
+                  type: string
+                  format: uint64
+                index:
+                  type: string
+                  format: uint64
+                data:
+                  type: string
+                creator:
+                  type: string
+                chargedGas:
+                  type: object
+                  properties:
+                    denom:
+                      type: string
+                    amount:
+                      type: string
+                  description: >-
+                    Coin defines a token with a denomination and an amount.
+
+
+                    NOTE: The amount field is an Int which implements the custom
+                    method
+
+                    signatures required by gogoproto.
+  fairyring.pep.QueryAllEncryptedTxResponse:
+    type: object
+    properties:
+      encryptedTxArray:
+        type: array
+        items:
+          type: object
+          properties:
+            encryptedTx:
+              type: array
+              items:
+                type: object
+                properties:
+                  targetHeight:
+                    type: string
+                    format: uint64
+                  index:
+                    type: string
+                    format: uint64
+                  data:
+                    type: string
+                  creator:
+                    type: string
+                  chargedGas:
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+                    description: >-
+                      Coin defines a token with a denomination and an amount.
+
+
+                      NOTE: The amount field is an Int which implements the
+                      custom method
+
+                      signatures required by gogoproto.
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            description: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently. It will be empty if
+              there are no more results.
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  fairyring.pep.QueryAllPepNonceResponse:
+    type: object
+    properties:
+      pepNonce:
+        type: array
+        items:
+          type: object
+          properties:
+            address:
+              type: string
+            nonce:
+              type: string
+              format: uint64
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            description: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently. It will be empty if
+              there are no more results.
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  fairyring.pep.QueryGetEncryptedTxResponse:
+    type: object
+    properties:
+      encryptedTx:
+        type: object
+        properties:
+          targetHeight:
+            type: string
+            format: uint64
+          index:
+            type: string
+            format: uint64
+          data:
+            type: string
+          creator:
+            type: string
+          chargedGas:
+            type: object
+            properties:
+              denom:
+                type: string
+              amount:
+                type: string
+            description: >-
+              Coin defines a token with a denomination and an amount.
+
+
+              NOTE: The amount field is an Int which implements the custom
+              method
+
+              signatures required by gogoproto.
+  fairyring.pep.QueryGetPepNonceResponse:
+    type: object
+    properties:
+      pepNonce:
+        type: object
+        properties:
+          address:
+            type: string
+          nonce:
+            type: string
+            format: uint64
+  fairyring.pep.QueryLatestHeightResponse:
+    type: object
+    properties:
+      height:
+        type: string
+        format: uint64
+  fairyring.pep.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+        properties:
+          trusted_counter_parties:
+            type: array
+            items:
+              type: object
+              properties:
+                client_id:
+                  type: string
+                connection_id:
+                  type: string
+                channel_id:
+                  type: string
+          trusted_addresses:
+            type: array
+            items:
+              type: string
+          pep_channel_id:
+            type: string
+          keyshare_channel_id:
+            type: string
+          min_gas_price:
+            type: object
+            properties:
+              denom:
+                type: string
+              amount:
+                type: string
+            description: >-
+              Coin defines a token with a denomination and an amount.
+
+
+              NOTE: The amount field is an Int which implements the custom
+              method
+
+              signatures required by gogoproto.
+          is_source_chain:
+            type: boolean
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  fairyring.pep.QueryPubKeyResponse:
+    type: object
+    properties:
+      activePubKey:
+        type: object
+        properties:
+          publicKey:
+            type: string
+          creator:
+            type: string
+          expiry:
+            type: string
+            format: uint64
+      queuedPubKey:
+        type: object
+        properties:
+          publicKey:
+            type: string
+          creator:
+            type: string
+          expiry:
+            type: string
+            format: uint64
+  fairyring.pep.QueuedPubKey:
+    type: object
+    properties:
+      publicKey:
+        type: string
+      creator:
+        type: string
+      expiry:
+        type: string
+        format: uint64
+  fairyring.pep.TrustedCounterParty:
+    type: object
+    properties:
+      client_id:
+        type: string
+      connection_id:
+        type: string
+      channel_id:
+        type: string
   fairyring.pep.MsgCreateAggregatedKeyShare:
     type: object
     properties:
@@ -7843,7 +8961,7 @@ definitions:
     properties:
       creator:
         type: string
-      requestId:
+      request_id:
         type: string
   fairyring.pep.MsgRequestGeneralKeyshareResponse:
     type: object
@@ -7864,6 +8982,15 @@ definitions:
         format: uint64
   fairyring.pep.MsgSubmitEncryptedTxResponse:
     type: object
+  fairyring.pep.MsgSubmitGeneralEncryptedTx:
+    type: object
+    properties:
+      creator:
+        type: string
+      data:
+        type: string
+      identity:
+        type: string
   ibc.applications.interchain_accounts.controller.v1.MsgRegisterInterchainAccount:
     type: object
     properties:

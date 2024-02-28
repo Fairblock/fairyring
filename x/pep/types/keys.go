@@ -36,8 +36,10 @@ var (
 
 const (
 	SubmittedEncryptedTxEventType         = "new-encrypted-tx-submitted"
+	SubmittedGeneralEncryptedTxEventType  = "new-general-encrypted-tx-submitted"
 	SubmittedEncryptedTxEventCreator      = "new-encrypted-tx-creator"
 	SubmittedEncryptedTxEventTargetHeight = "new-encrypted-tx-target-height"
+	SubmittedEncryptedTxEventIdentity     = "new-encrypted-tx-identity"
 	SubmittedEncryptedTxEventIndex        = "new-encrypted-tx-index"
 	SubmittedEncryptedTxEventData         = "new-encrypted-tx-data"
 )
@@ -51,11 +53,12 @@ const (
 )
 
 const (
-	EncryptedTxRevertedEventType    = "reverted-encrypted-tx"
-	EncryptedTxRevertedEventCreator = "reverted-encrypted-tx-creator"
-	EncryptedTxRevertedEventHeight  = "reverted-encrypted-tx-target-height"
-	EncryptedTxRevertedEventIndex   = "reverted-encrypted-tx-index"
-	EncryptedTxRevertedEventReason  = "reverted-encrypted-tx-reason"
+	EncryptedTxRevertedEventType     = "reverted-encrypted-tx"
+	EncryptedTxRevertedEventCreator  = "reverted-encrypted-tx-creator"
+	EncryptedTxRevertedEventHeight   = "reverted-encrypted-tx-target-height"
+	EncryptedTxRevertedEventIdentity = "reverted-encrypted-tx-identity"
+	EncryptedTxRevertedEventIndex    = "reverted-encrypted-tx-index"
+	EncryptedTxRevertedEventReason   = "reverted-encrypted-tx-reason"
 )
 
 const (

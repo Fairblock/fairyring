@@ -87,6 +87,66 @@ func (m *MsgSubmitEncryptedTx) GetTargetBlockHeight() uint64 {
 	return 0
 }
 
+type MsgSubmitGeneralEncryptedTx struct {
+	Creator  string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Data     string `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+	Identity string `protobuf:"bytes,3,opt,name=identity,proto3" json:"identity,omitempty"`
+}
+
+func (m *MsgSubmitGeneralEncryptedTx) Reset()         { *m = MsgSubmitGeneralEncryptedTx{} }
+func (m *MsgSubmitGeneralEncryptedTx) String() string { return proto.CompactTextString(m) }
+func (*MsgSubmitGeneralEncryptedTx) ProtoMessage()    {}
+func (*MsgSubmitGeneralEncryptedTx) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f6953e463911e1ec, []int{1}
+}
+func (m *MsgSubmitGeneralEncryptedTx) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgSubmitGeneralEncryptedTx) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgSubmitGeneralEncryptedTx.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgSubmitGeneralEncryptedTx) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSubmitGeneralEncryptedTx.Merge(m, src)
+}
+func (m *MsgSubmitGeneralEncryptedTx) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgSubmitGeneralEncryptedTx) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSubmitGeneralEncryptedTx.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgSubmitGeneralEncryptedTx proto.InternalMessageInfo
+
+func (m *MsgSubmitGeneralEncryptedTx) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgSubmitGeneralEncryptedTx) GetData() string {
+	if m != nil {
+		return m.Data
+	}
+	return ""
+}
+
+func (m *MsgSubmitGeneralEncryptedTx) GetIdentity() string {
+	if m != nil {
+		return m.Identity
+	}
+	return ""
+}
+
 type MsgSubmitEncryptedTxResponse struct {
 }
 
@@ -94,7 +154,7 @@ func (m *MsgSubmitEncryptedTxResponse) Reset()         { *m = MsgSubmitEncrypted
 func (m *MsgSubmitEncryptedTxResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgSubmitEncryptedTxResponse) ProtoMessage()    {}
 func (*MsgSubmitEncryptedTxResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{1}
+	return fileDescriptor_f6953e463911e1ec, []int{2}
 }
 func (m *MsgSubmitEncryptedTxResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -134,7 +194,7 @@ func (m *MsgCreateAggregatedKeyShare) Reset()         { *m = MsgCreateAggregated
 func (m *MsgCreateAggregatedKeyShare) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateAggregatedKeyShare) ProtoMessage()    {}
 func (*MsgCreateAggregatedKeyShare) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{2}
+	return fileDescriptor_f6953e463911e1ec, []int{3}
 }
 func (m *MsgCreateAggregatedKeyShare) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -191,7 +251,7 @@ func (m *MsgCreateAggregatedKeyShareResponse) Reset()         { *m = MsgCreateAg
 func (m *MsgCreateAggregatedKeyShareResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateAggregatedKeyShareResponse) ProtoMessage()    {}
 func (*MsgCreateAggregatedKeyShareResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{3}
+	return fileDescriptor_f6953e463911e1ec, []int{4}
 }
 func (m *MsgCreateAggregatedKeyShareResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -222,14 +282,14 @@ var xxx_messageInfo_MsgCreateAggregatedKeyShareResponse proto.InternalMessageInf
 
 type MsgRequestGeneralKeyshare struct {
 	Creator   string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	RequestId string `protobuf:"bytes,2,opt,name=requestId,proto3" json:"requestId,omitempty"`
+	RequestId string `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 }
 
 func (m *MsgRequestGeneralKeyshare) Reset()         { *m = MsgRequestGeneralKeyshare{} }
 func (m *MsgRequestGeneralKeyshare) String() string { return proto.CompactTextString(m) }
 func (*MsgRequestGeneralKeyshare) ProtoMessage()    {}
 func (*MsgRequestGeneralKeyshare) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{4}
+	return fileDescriptor_f6953e463911e1ec, []int{5}
 }
 func (m *MsgRequestGeneralKeyshare) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -281,7 +341,7 @@ func (m *MsgRequestGeneralKeyshareResponse) Reset()         { *m = MsgRequestGen
 func (m *MsgRequestGeneralKeyshareResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgRequestGeneralKeyshareResponse) ProtoMessage()    {}
 func (*MsgRequestGeneralKeyshareResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{5}
+	return fileDescriptor_f6953e463911e1ec, []int{6}
 }
 func (m *MsgRequestGeneralKeyshareResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -333,7 +393,7 @@ func (m *MsgGetGeneralKeyshare) Reset()         { *m = MsgGetGeneralKeyshare{} }
 func (m *MsgGetGeneralKeyshare) String() string { return proto.CompactTextString(m) }
 func (*MsgGetGeneralKeyshare) ProtoMessage()    {}
 func (*MsgGetGeneralKeyshare) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{6}
+	return fileDescriptor_f6953e463911e1ec, []int{7}
 }
 func (m *MsgGetGeneralKeyshare) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -383,7 +443,7 @@ func (m *MsgGetGeneralKeyshareResponse) Reset()         { *m = MsgGetGeneralKeys
 func (m *MsgGetGeneralKeyshareResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgGetGeneralKeyshareResponse) ProtoMessage()    {}
 func (*MsgGetGeneralKeyshareResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{7}
+	return fileDescriptor_f6953e463911e1ec, []int{8}
 }
 func (m *MsgGetGeneralKeyshareResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -414,6 +474,7 @@ var xxx_messageInfo_MsgGetGeneralKeyshareResponse proto.InternalMessageInfo
 
 func init() {
 	proto.RegisterType((*MsgSubmitEncryptedTx)(nil), "fairyring.pep.MsgSubmitEncryptedTx")
+	proto.RegisterType((*MsgSubmitGeneralEncryptedTx)(nil), "fairyring.pep.MsgSubmitGeneralEncryptedTx")
 	proto.RegisterType((*MsgSubmitEncryptedTxResponse)(nil), "fairyring.pep.MsgSubmitEncryptedTxResponse")
 	proto.RegisterType((*MsgCreateAggregatedKeyShare)(nil), "fairyring.pep.MsgCreateAggregatedKeyShare")
 	proto.RegisterType((*MsgCreateAggregatedKeyShareResponse)(nil), "fairyring.pep.MsgCreateAggregatedKeyShareResponse")
@@ -423,38 +484,41 @@ func init() {
 	proto.RegisterType((*MsgGetGeneralKeyshareResponse)(nil), "fairyring.pep.MsgGetGeneralKeyshareResponse")
 }
 
-func init() { proto.RegisterFile("github.com/Fairblock/fairyring/pep/tx.proto", fileDescriptor_f6953e463911e1ec) }
+func init() { proto.RegisterFile("fairyring/pep/tx.proto", fileDescriptor_f6953e463911e1ec) }
 
 var fileDescriptor_f6953e463911e1ec = []byte{
-	// 444 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x94, 0xcf, 0x6e, 0xd3, 0x40,
-	0x10, 0xc6, 0xe3, 0xa4, 0x2a, 0x74, 0x24, 0x0e, 0x5d, 0xd1, 0xc8, 0x98, 0x62, 0x8a, 0x0b, 0x52,
-	0x04, 0x55, 0x82, 0xca, 0x13, 0x50, 0x84, 0x0a, 0xaa, 0x7c, 0x49, 0x90, 0x90, 0xb8, 0x54, 0x1b,
-	0x7b, 0x58, 0x5b, 0x29, 0xf6, 0xb2, 0xbb, 0x91, 0xb2, 0x3c, 0x05, 0x8f, 0xd5, 0x63, 0x8f, 0x1c,
-	0x51, 0xf2, 0x22, 0x28, 0xfe, 0xb3, 0x21, 0xb2, 0x1d, 0xcc, 0x2d, 0x33, 0xf9, 0xf6, 0xfb, 0x7d,
-	0xde, 0x1d, 0x0d, 0xf4, 0xbf, 0xd2, 0x58, 0x68, 0x11, 0x27, 0x6c, 0xc4, 0x91, 0x8f, 0xd4, 0x62,
-	0xc8, 0x45, 0xaa, 0x52, 0xf2, 0xc0, 0xf4, 0x87, 0x1c, 0xb9, 0x33, 0xd8, 0x96, 0x51, 0xc6, 0x04,
-	0x32, 0xaa, 0x30, 0xbc, 0x9e, 0xa1, 0xbe, 0x96, 0x11, 0x15, 0x98, 0x1f, 0xf4, 0x04, 0x3c, 0xf4,
-	0x25, 0x9b, 0xcc, 0xa7, 0xdf, 0x62, 0xf5, 0x3e, 0x09, 0x84, 0xe6, 0x0a, 0xc3, 0x4f, 0x0b, 0x62,
-	0xc3, 0xbd, 0x40, 0x20, 0x55, 0xa9, 0xb0, 0xad, 0x13, 0x6b, 0x70, 0x30, 0x2e, 0x4b, 0x42, 0x60,
-	0x2f, 0xa4, 0x8a, 0xda, 0xdd, 0xac, 0x9d, 0xfd, 0x26, 0x67, 0x70, 0xa8, 0xa8, 0x60, 0xa8, 0x2e,
-	0x6e, 0xd2, 0x60, 0xf6, 0x01, 0x63, 0x16, 0x29, 0xbb, 0x77, 0x62, 0x0d, 0xf6, 0xc6, 0xd5, 0x3f,
-	0x3c, 0x17, 0x8e, 0xeb, 0x98, 0x63, 0x94, 0x3c, 0x4d, 0x24, 0x7a, 0x01, 0x3c, 0xf6, 0x25, 0x7b,
-	0xb7, 0xe6, 0xe1, 0x5b, 0x13, 0xfd, 0x0a, 0xf5, 0x64, 0x1d, 0x7c, 0x47, 0xb4, 0x3e, 0xec, 0x47,
-	0x39, 0xbb, 0x9b, 0xb1, 0x8b, 0xca, 0x44, 0xee, 0x6d, 0x22, 0x7b, 0x2f, 0xe0, 0x74, 0x07, 0xc4,
-	0x64, 0x99, 0xc0, 0x23, 0x5f, 0xb2, 0x31, 0x7e, 0x9f, 0xa3, 0x54, 0x97, 0x98, 0xa0, 0xa0, 0x37,
-	0x57, 0xa8, 0xe5, 0x3f, 0x92, 0x1c, 0xc3, 0x81, 0xc8, 0xcf, 0x7c, 0x0c, 0x8b, 0x9b, 0xda, 0x34,
-	0xbc, 0xcf, 0xf0, 0xac, 0xd1, 0xb4, 0x24, 0x13, 0x07, 0xee, 0xc7, 0x21, 0x26, 0x2a, 0x56, 0xba,
-	0x70, 0x37, 0xf5, 0xfa, 0x43, 0xf9, 0x7c, 0x3a, 0x43, 0x5d, 0x78, 0x17, 0x95, 0xe7, 0xc3, 0x91,
-	0x2f, 0xd9, 0x25, 0xfe, 0x47, 0xd2, 0xbf, 0x31, 0xdd, 0x6d, 0x8c, 0xf7, 0x14, 0x9e, 0xd4, 0xda,
-	0x95, 0x19, 0xcf, 0x6f, 0x7b, 0xd0, 0xf3, 0x25, 0x23, 0x08, 0x87, 0xd5, 0x11, 0x3a, 0x1d, 0x6e,
-	0x0d, 0xe5, 0xb0, 0xee, 0xcd, 0x9d, 0x57, 0x2d, 0x44, 0xe6, 0x4a, 0x7e, 0x80, 0xdd, 0x38, 0x15,
-	0x2f, 0xab, 0x46, 0x4d, 0x5a, 0xe7, 0xbc, 0xbd, 0xd6, 0xb0, 0x15, 0xf4, 0x1b, 0xa6, 0x60, 0x50,
-	0x75, 0xab, 0x57, 0x3a, 0xaf, 0xdb, 0x2a, 0x0d, 0x35, 0x02, 0x52, 0xf3, 0x9a, 0xcf, 0xab, 0x3e,
-	0x55, 0x95, 0x73, 0xd6, 0x46, 0x55, 0x92, 0x2e, 0x46, 0xb7, 0x4b, 0xd7, 0xba, 0x5b, 0xba, 0xd6,
-	0xef, 0xa5, 0x6b, 0xfd, 0x5c, 0xb9, 0x9d, 0xbb, 0x95, 0xdb, 0xf9, 0xb5, 0x72, 0x3b, 0x5f, 0x8e,
-	0x36, 0xcb, 0x64, 0x91, 0x6f, 0x1d, 0xcd, 0x51, 0x4e, 0xf7, 0xb3, 0x05, 0xf2, 0xe6, 0x4f, 0x00,
-	0x00, 0x00, 0xff, 0xff, 0xbf, 0x05, 0x0e, 0xae, 0x93, 0x04, 0x00, 0x00,
+	// 489 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0x4d, 0x6f, 0xd3, 0x40,
+	0x10, 0x8d, 0x93, 0xa8, 0x90, 0x91, 0x38, 0xd4, 0x82, 0xc8, 0x18, 0x6a, 0x8a, 0x0b, 0x52, 0x54,
+	0xaa, 0x04, 0x95, 0x5f, 0x40, 0xf9, 0x28, 0xa8, 0xf2, 0xc5, 0xad, 0x84, 0xc4, 0x25, 0x5a, 0xdb,
+	0xc3, 0x7a, 0x95, 0xd6, 0x5e, 0x76, 0x37, 0x52, 0xcc, 0xaf, 0xe0, 0x0f, 0x71, 0xe7, 0xd8, 0x23,
+	0x47, 0x94, 0xfc, 0x11, 0x14, 0xc7, 0xde, 0x12, 0x6c, 0x97, 0xb4, 0x37, 0xcf, 0xfa, 0xed, 0x7b,
+	0x6f, 0xde, 0x8e, 0x06, 0xfa, 0x5f, 0x08, 0x13, 0x99, 0x60, 0x09, 0x1d, 0x71, 0xe4, 0x23, 0x35,
+	0x1b, 0x72, 0x91, 0xaa, 0xd4, 0xbc, 0xa7, 0xcf, 0x87, 0x1c, 0xb9, 0x3d, 0x58, 0x87, 0x11, 0x4a,
+	0x05, 0x52, 0xa2, 0x30, 0x1a, 0x4f, 0x30, 0x1b, 0xcb, 0x98, 0x08, 0x5c, 0x5d, 0x74, 0x05, 0xdc,
+	0xf7, 0x24, 0x3d, 0x9d, 0x06, 0x17, 0x4c, 0xbd, 0x4b, 0x42, 0x91, 0x71, 0x85, 0xd1, 0xd9, 0xcc,
+	0xb4, 0xe0, 0x4e, 0x28, 0x90, 0xa8, 0x54, 0x58, 0xc6, 0xae, 0x31, 0xe8, 0xf9, 0x65, 0x69, 0x9a,
+	0xd0, 0x8d, 0x88, 0x22, 0x56, 0x3b, 0x3f, 0xce, 0xbf, 0xcd, 0x03, 0xd8, 0x56, 0x44, 0x50, 0x54,
+	0x47, 0xe7, 0x69, 0x38, 0xf9, 0x80, 0x8c, 0xc6, 0xca, 0xea, 0xec, 0x1a, 0x83, 0xae, 0x5f, 0xfd,
+	0xe1, 0x52, 0x78, 0xa4, 0x35, 0x8f, 0x31, 0x41, 0x41, 0xce, 0x6f, 0x2f, 0x6d, 0xc3, 0x5d, 0x16,
+	0x61, 0xa2, 0x98, 0xca, 0x72, 0xc5, 0x9e, 0xaf, 0x6b, 0xd7, 0x81, 0xc7, 0x75, 0xcd, 0xf9, 0x28,
+	0x79, 0x9a, 0x48, 0x74, 0xc3, 0xdc, 0xc8, 0x9b, 0x25, 0x3b, 0xbe, 0xd6, 0x19, 0x9d, 0x60, 0x76,
+	0xba, 0x4c, 0xe8, 0x1a, 0x23, 0x7d, 0xd8, 0x8a, 0x57, 0x4d, 0xb6, 0xf3, 0x26, 0x8b, 0x4a, 0x1b,
+	0xec, 0x5c, 0x19, 0x74, 0x9f, 0xc3, 0xde, 0x35, 0x22, 0xda, 0xcb, 0x19, 0x3c, 0xf4, 0x24, 0xf5,
+	0xf1, 0xeb, 0x14, 0x65, 0x99, 0xca, 0x09, 0x66, 0xf2, 0x3f, 0x4e, 0x76, 0x00, 0xc4, 0xea, 0xce,
+	0x98, 0x45, 0x45, 0x30, 0xbd, 0xe2, 0xe4, 0x63, 0xe4, 0x7e, 0x82, 0xa7, 0x8d, 0xac, 0xa5, 0xf4,
+	0x5a, 0x84, 0xc6, 0x7a, 0x84, 0xcb, 0x4e, 0xf9, 0x34, 0x98, 0x60, 0x56, 0x70, 0x17, 0x95, 0xeb,
+	0xc1, 0x03, 0x4f, 0xd2, 0x63, 0xbc, 0x81, 0xd5, 0xbf, 0x65, 0xda, 0xff, 0xbc, 0xd4, 0x13, 0xd8,
+	0xa9, 0xa5, 0x2b, 0x3d, 0x1e, 0xfe, 0xe8, 0x42, 0xc7, 0x93, 0xd4, 0x44, 0xd8, 0xae, 0x0e, 0xeb,
+	0xde, 0x70, 0x6d, 0xfc, 0x87, 0x75, 0x8f, 0x6e, 0xbf, 0xd8, 0x00, 0xa4, 0x23, 0x91, 0x60, 0x35,
+	0xce, 0xe7, 0x7e, 0x13, 0x51, 0x15, 0x7b, 0x33, 0xd1, 0x6f, 0x60, 0x35, 0xce, 0x62, 0x8d, 0x68,
+	0x13, 0xd6, 0x3e, 0xdc, 0x1c, 0xab, 0xb5, 0x15, 0xf4, 0x1b, 0x66, 0x6f, 0x50, 0x65, 0xab, 0x47,
+	0xda, 0x2f, 0x37, 0x45, 0x6a, 0xd5, 0x18, 0xcc, 0x9a, 0x11, 0x7a, 0x56, 0xe5, 0xa9, 0xa2, 0xec,
+	0x83, 0x4d, 0x50, 0xa5, 0xd2, 0xd1, 0xdb, 0x9f, 0x73, 0xc7, 0xb8, 0x9c, 0x3b, 0xc6, 0xef, 0xb9,
+	0x63, 0x7c, 0x5f, 0x38, 0xad, 0xcb, 0x85, 0xd3, 0xfa, 0xb5, 0x70, 0x5a, 0x9f, 0xf7, 0x29, 0x53,
+	0xf1, 0x34, 0x18, 0x86, 0xe9, 0xc5, 0xe8, 0x3d, 0x61, 0x22, 0x58, 0x6e, 0xaa, 0xd1, 0xd5, 0x02,
+	0x9d, 0xad, 0x36, 0x6d, 0xc6, 0x51, 0x06, 0x5b, 0xf9, 0xd2, 0x7c, 0xf5, 0x27, 0x00, 0x00, 0xff,
+	0xff, 0x76, 0x04, 0xd5, 0x9d, 0x87, 0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -470,6 +534,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	SubmitEncryptedTx(ctx context.Context, in *MsgSubmitEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error)
+	SubmitGeneralEncryptedTx(ctx context.Context, in *MsgSubmitGeneralEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
 	CreateAggregatedKeyShare(ctx context.Context, in *MsgCreateAggregatedKeyShare, opts ...grpc.CallOption) (*MsgCreateAggregatedKeyShareResponse, error)
 	RequestGeneralKeyshare(ctx context.Context, in *MsgRequestGeneralKeyshare, opts ...grpc.CallOption) (*MsgRequestGeneralKeyshareResponse, error)
@@ -487,6 +552,15 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 func (c *msgClient) SubmitEncryptedTx(ctx context.Context, in *MsgSubmitEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error) {
 	out := new(MsgSubmitEncryptedTxResponse)
 	err := c.cc.Invoke(ctx, "/fairyring.pep.Msg/SubmitEncryptedTx", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) SubmitGeneralEncryptedTx(ctx context.Context, in *MsgSubmitGeneralEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error) {
+	out := new(MsgSubmitEncryptedTxResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Msg/SubmitGeneralEncryptedTx", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -523,6 +597,7 @@ func (c *msgClient) GetGeneralKeyshare(ctx context.Context, in *MsgGetGeneralKey
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	SubmitEncryptedTx(context.Context, *MsgSubmitEncryptedTx) (*MsgSubmitEncryptedTxResponse, error)
+	SubmitGeneralEncryptedTx(context.Context, *MsgSubmitGeneralEncryptedTx) (*MsgSubmitEncryptedTxResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
 	CreateAggregatedKeyShare(context.Context, *MsgCreateAggregatedKeyShare) (*MsgCreateAggregatedKeyShareResponse, error)
 	RequestGeneralKeyshare(context.Context, *MsgRequestGeneralKeyshare) (*MsgRequestGeneralKeyshareResponse, error)
@@ -535,6 +610,9 @@ type UnimplementedMsgServer struct {
 
 func (*UnimplementedMsgServer) SubmitEncryptedTx(ctx context.Context, req *MsgSubmitEncryptedTx) (*MsgSubmitEncryptedTxResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitEncryptedTx not implemented")
+}
+func (*UnimplementedMsgServer) SubmitGeneralEncryptedTx(ctx context.Context, req *MsgSubmitGeneralEncryptedTx) (*MsgSubmitEncryptedTxResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitGeneralEncryptedTx not implemented")
 }
 func (*UnimplementedMsgServer) CreateAggregatedKeyShare(ctx context.Context, req *MsgCreateAggregatedKeyShare) (*MsgCreateAggregatedKeyShareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAggregatedKeyShare not implemented")
@@ -564,6 +642,24 @@ func _Msg_SubmitEncryptedTx_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).SubmitEncryptedTx(ctx, req.(*MsgSubmitEncryptedTx))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_SubmitGeneralEncryptedTx_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSubmitGeneralEncryptedTx)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).SubmitGeneralEncryptedTx(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.pep.Msg/SubmitGeneralEncryptedTx",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).SubmitGeneralEncryptedTx(ctx, req.(*MsgSubmitGeneralEncryptedTx))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -631,6 +727,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_SubmitEncryptedTx_Handler,
 		},
 		{
+			MethodName: "SubmitGeneralEncryptedTx",
+			Handler:    _Msg_SubmitGeneralEncryptedTx_Handler,
+		},
+		{
 			MethodName: "CreateAggregatedKeyShare",
 			Handler:    _Msg_CreateAggregatedKeyShare_Handler,
 		},
@@ -644,7 +744,7 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/Fairblock/fairyring/pep/tx.proto",
+	Metadata: "fairyring/pep/tx.proto",
 }
 
 func (m *MsgSubmitEncryptedTx) Marshal() (dAtA []byte, err error) {
@@ -671,6 +771,50 @@ func (m *MsgSubmitEncryptedTx) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i = encodeVarintTx(dAtA, i, uint64(m.TargetBlockHeight))
 		i--
 		dAtA[i] = 0x18
+	}
+	if len(m.Data) > 0 {
+		i -= len(m.Data)
+		copy(dAtA[i:], m.Data)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Data)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgSubmitGeneralEncryptedTx) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgSubmitGeneralEncryptedTx) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgSubmitGeneralEncryptedTx) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Identity) > 0 {
+		i -= len(m.Identity)
+		copy(dAtA[i:], m.Identity)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Identity)))
+		i--
+		dAtA[i] = 0x1a
 	}
 	if len(m.Data) > 0 {
 		i -= len(m.Data)
@@ -942,6 +1086,27 @@ func (m *MsgSubmitEncryptedTx) Size() (n int) {
 	return n
 }
 
+func (m *MsgSubmitGeneralEncryptedTx) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Data)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Identity)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
 func (m *MsgSubmitEncryptedTxResponse) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1158,6 +1323,152 @@ func (m *MsgSubmitEncryptedTx) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgSubmitGeneralEncryptedTx) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgSubmitGeneralEncryptedTx: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgSubmitGeneralEncryptedTx: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Data = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Identity", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Identity = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])

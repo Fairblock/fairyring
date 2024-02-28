@@ -33,5 +33,5 @@ message GeneralEncryptedTxArray {
 message GenEncTxExecutionQueue {
   string creator = 1;
   string identity = 2; 
-  repeated GeneralEncryptedTx tx_list = 3;
+  GeneralEncryptedTxArray tx_list = 3;
 }
