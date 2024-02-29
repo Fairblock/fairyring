@@ -12,6 +12,7 @@ echo "#################################################"
 echo ""
 
 BINARY=fairyringd
+ENCRYPTER=encrypter
 CHAIN_DIR=$(pwd)/data
 CHAINID_1=fairyring_test_1
 CHAINID_2=fairyring_test_2
@@ -48,8 +49,8 @@ RESULT=$(wait_for_tx $RESULT "destination")
 # waiting for identity to be updated
 sleep 15
 PROPOSAL=$(fairyringd q gov proposals --home ./data/fairyring_test_2/ -o json | jq '.proposals[0]')
-IDENTITY=$(echo "$PROPOSAL" | jq -r 'identity')
-PUBKEY=$(echo "$PROPOSAL" | jq -r 'pubkey')
+IDENTITY=$(echo "$PROPOSAL" | jq -r '.identity')
+PUBKEY=$(echo "$PROPOSAL" | jq -r '.pubkey')
 
 if [ -z "$IDENTITY" ]; then
   echo "ERROR: The proposal_id is blank"
@@ -65,8 +66,8 @@ fi
 
 
 echo "Submitting encrypted vote on destination chain"
-# TODO: encrypt the vote option "yes"
-# ENCVOTE=""
+echo "Encrypting vote with Pub key: '$PUB_KEY' and Identity: $IDENTITY"
+ENCVOTE=$($ENCRYPTER $IDENTITY $PUB_KEY "yes")
 
 RESULT=$(fairyringd tx gov vote-encrypted 1 $ENCVOTE --from val2 --home ./data/fairyring_test_2/ --keyring-backend test --gas-prices 1ufairy -o json -y)
 check_tx_code $RESULT
@@ -88,8 +89,8 @@ check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT "source")
 
 PROPOSAL=$(fairyringd q gov proposals --home ./data/fairyring_test_1/ --node tcp://localhost:16657 -o json | jq '.proposals[0]')
-IDENTITY=$(echo "$PROPOSAL" | jq -r 'identity')
-PUBKEY=$(echo "$PROPOSAL" | jq -r 'pubkey')
+IDENTITY=$(echo "$PROPOSAL" | jq -r '.identity')
+PUBKEY=$(echo "$PROPOSAL" | jq -r '.pubkey')
 
 if [ -z "$IDENTITY" ]; then
   echo "ERROR: The proposal_id is blank"
@@ -105,8 +106,8 @@ fi
 
 
 echo "Submitting encrypted vote on source chain"
-# TODO: encrypt the vote option "yes"
-# ENCVOTE=""
+echo "Encrypting vote with Pub key: '$PUB_KEY' and Identity: $IDENTITY"
+ENCVOTE=$($ENCRYPTER $IDENTITY $PUB_KEY "yes")
 
 RESULT=$(fairyringd tx gov vote-encrypted 1 $ENCVOTE --from val1 --home ./data/fairyring_test_1/ --node tcp://localhost:16657 --keyring-backend test --gas-prices 1ufairy -o json -y)
 check_tx_code $RESULT
