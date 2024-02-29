@@ -183,7 +183,8 @@ test-block-tx-limit: init-test-block-limit-framework \
 integration-test-all: init-test-framework \
 	init-relayer \
 	test-keyshare-module \
-	test-pep-module
+	test-pep-module \
+	test-gov-module
 #	-@rm -rf ./data
 #	-@killall fairyringd 2>/dev/null
 
@@ -198,6 +199,10 @@ test-keyshare-module:
 test-pep-module:
 	@echo "Testing Pep module..."
 	./scripts/tests/pep.sh
+
+test-gov-module:
+	@echo "Testing Gov module..."
+	./scripts/tests/priv_gov.sh
 
 init-relayer:
 	@echo "Initializing hermes relayer..."
