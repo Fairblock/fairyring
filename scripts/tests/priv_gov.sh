@@ -126,7 +126,10 @@ fi
 echo "Successfully submitted encrypted vote on source chain"
 
 echo "waiting for voting period to expire"
-sleep 70
+
+sleep 45
+# TODO: add snippet to submit keyshare
+sleep 25
 
 echo "Checking Status of proposal on Destination chain"
 PROPOSAL=$(fairyringd q gov proposals --home ./data/fairyring_test_2/ -o json | jq '.proposals[0]')
