@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	kskeeper "github.com/Fairblock/fairyring/x/keyshare/keeper"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
@@ -117,6 +118,7 @@ func PepKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		capabilityKeeper.ScopeToModule("pepScopedKeeper"),
 		pepconnectionKeeper{},
 		bankKeeper,
+		kskeeper.Keeper{},
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, logger)
