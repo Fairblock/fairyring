@@ -6,8 +6,9 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"github.com/Fairblock/fairyring/x/pep/types"
 	"strconv"
+
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	enc "github.com/FairBlock/DistributedIBE/encryption"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -77,7 +78,6 @@ func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.Ms
 
 	if decryptedDataBytes.String() != dummyData {
 		k.Logger(ctx).Error("Decrypted data does not match original data")
-		k.Logger(ctx).Error(err.Error())
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(types.KeyShareVerificationType,
 				sdk.NewAttribute(types.KeyShareVerificationCreator, msg.Creator),

@@ -17,9 +17,10 @@ message NoData {}
 
 // RequestAggrKeysharePacketData defines a struct for the packet payload
 message RequestAggrKeysharePacketData {
+  string requester = 1;
   oneof id {
-    string proposal_id = 1;
-    string request_id = 2;
+    string proposal_id = 2;
+    string request_id = 3;
   }
 }
 

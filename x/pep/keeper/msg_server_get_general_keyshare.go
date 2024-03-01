@@ -2,9 +2,11 @@ package keeper
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	sdkerrors "cosmossdk.io/errors"
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -15,12 +17,33 @@ import (
 
 func (k msgServer) GetGeneralKeyshare(goCtx context.Context, msg *types.MsgGetGeneralKeyshare) (*types.MsgGetGeneralKeyshareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	logger := k.Logger(ctx)
 
-	// TODO: check on creator
+	entry, found := k.GetQueueEntry(ctx, msg.Identity)
+	if !found {
+		return &types.MsgGetGeneralKeyshareResponse{}, errors.New("identity not found")
+	}
+
+	if entry.Creator != msg.Creator {
+		return &types.MsgGetGeneralKeyshareResponse{}, errors.New("unauthorized request. only creator can make this request")
+	}
 
 	params := k.GetParams(ctx)
 	if params.IsSourceChain {
-		//TODO: process for fairyring
+		req := commontypes.MsgGetAggrKeyshare{
+			Identity: entry.Identity,
+		}
+		err := k.GetAggrKeyshare(ctx, req)
+		if err != nil {
+			logger.Info(
+				"Request to fetch aggr. Keyshare failed",
+				"Request ID", entry.RequestId,
+				"Identity", entry.Identity,
+				"error", err,
+			)
+			return &types.MsgGetGeneralKeyshareResponse{}, err
+		}
+
 	} else {
 		packetData := kstypes.GetAggrKeysharePacketData{
 			Identity: msg.Identity,
@@ -69,4 +92,38 @@ func (k Keeper) TransmitGetAggrKeysharePacket(
 	// }
 
 	return k.ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes)
+}
+
+func (keeper Keeper) GetAggrKeyshare(ctx sdk.Context, req commontypes.MsgGetAggrKeyshare) error {
+	_, err := keeper.keyshareKeeper.ProcessGetKeyshareRequest(ctx, req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// OnAcknowledgementGetAggrKeysharePacket responds to the the success or failure of a packet
+// acknowledgement written on the receiving chain.
+func (k Keeper) OnAcknowledgementGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data kstypes.GetAggrKeysharePacketData, ack channeltypes.Acknowledgement) error {
+	switch dispatchedAck := ack.Response.(type) {
+	case *channeltypes.Acknowledgement_Error:
+
+		// TODO: failed acknowledgement logic
+		_ = dispatchedAck.Error
+		return nil
+	case *channeltypes.Acknowledgement_Result:
+		// Decode the packet acknowledgment
+		var packetAck kstypes.GetAggrKeysharePacketAck
+
+		if err := types.ModuleCdc.UnmarshalJSON(dispatchedAck.Result, &packetAck); err != nil {
+			// The counter-party module doesn't implement the correct acknowledgment format
+			return errors.New("cannot unmarshal acknowledgment")
+		}
+
+		return nil
+	default:
+		// The counter-party module doesn't implement the correct acknowledgment format
+		return errors.New("invalid acknowledgment format")
+	}
 }

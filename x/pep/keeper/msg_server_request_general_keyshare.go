@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"errors"
-	"strconv"
 	"time"
 
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
@@ -32,10 +31,11 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 		rsp, err := k.keyshareKeeper.ProcessKeyshareRequest(ctx, req)
 		if err == nil {
 			entry := types.GenEncTxExecutionQueue{
-				Creator: msg.Creator,
+				Creator:   msg.Creator,
+				RequestId: msg.RequestId,
+				Identity:  rsp.GetIdentity(),
+				Pubkey:    rsp.GetPubkey(),
 			}
-			entry.Identity = rsp.GetIdentity()
-			entry.Pubkey = rsp.GetPubkey()
 
 			k.SetQueueEntry(ctx, entry)
 
@@ -54,6 +54,7 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 		return &types.MsgRequestGeneralKeyshareResponse{}, err
 	} else {
 		packetData := kstypes.RequestAggrKeysharePacketData{
+			Requester: msg.Creator,
 			Id: &kstypes.RequestAggrKeysharePacketData_RequestId{
 				RequestId: msg.RequestId,
 			},
@@ -73,6 +74,7 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeRequestKeyshare,
+				sdk.NewAttribute(types.AttributeKeyCreator, msg.Creator),
 				sdk.NewAttribute(types.AttributeKeyRequestID, msg.RequestId),
 			),
 		)
@@ -122,16 +124,23 @@ func (k Keeper) OnAcknowledgementRequestAggrKeysharePacket(ctx sdk.Context, pack
 			return errors.New("cannot unmarshal acknowledgment")
 		}
 
-		pID, _ := strconv.ParseUint(data.GetProposalId(), 10, 64)
-		proposal, found := k.GetProposal(ctx, pID)
-		if !found {
-			return errors.New("Proposal not found")
+		entry := types.GenEncTxExecutionQueue{
+			Creator:   data.Requester,
+			RequestId: data.GetRequestId(),
+			Identity:  packetAck.GetIdentity(),
+			Pubkey:    packetAck.GetPubkey(),
 		}
 
-		proposal.Identity = packetAck.Identity
-		proposal.Pubkey = packetAck.Pubkey
+		k.SetQueueEntry(ctx, entry)
 
-		k.SetProposal(ctx, proposal)
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeRequestKeyshare,
+				sdk.NewAttribute(types.AttributeKeyCreator, entry.Creator),
+				sdk.NewAttribute(types.AttributeKeyRequestID, entry.RequestId),
+			),
+		)
+
 		return nil
 	default:
 		// The counter-party module doesn't implement the correct acknowledgment format
