@@ -32,6 +32,7 @@ message GeneralEncryptedTxArray {
 
 message GenEncTxExecutionQueue {
   string creator = 1;
-  string identity = 2; 
-  GeneralEncryptedTxArray tx_list = 3;
+  string identity = 2;
+  string pubkey = 3;
+  GeneralEncryptedTxArray tx_list = 4;
 }

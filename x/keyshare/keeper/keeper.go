@@ -88,3 +88,8 @@ func (k *Keeper) SetGovKeeper(govKeeper types.GovKeeper) *Keeper {
 	k.govKeeper = govKeeper
 	return k
 }
+
+func (k *Keeper) SetPepKeeper(pepKeeper types.PepKeeper) *Keeper {
+	k.pepKeeper = pepKeeper
+	return k
+}

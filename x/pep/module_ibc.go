@@ -3,6 +3,7 @@ package pep
 import (
 	"fmt"
 
+	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/Fairblock/fairyring/x/pep/keeper"
 	"github.com/Fairblock/fairyring/x/pep/types"
 
@@ -10,6 +11,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	cosmoserror "github.com/cosmos/cosmos-sdk/types/errors"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
+	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	porttypes "github.com/cosmos/ibc-go/v7/modules/core/05-port/types"
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
@@ -143,36 +145,62 @@ func (im IBCModule) OnRecvPacket(
 ) ibcexported.Acknowledgement {
 	var ack channeltypes.Acknowledgement
 
-	var modulePacketData types.PepPacketData
-	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &modulePacketData); err != nil {
-		return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
-	}
-
-	// Dispatch packet
-	switch packet := modulePacketData.Packet.(type) {
-	case *types.PepPacketData_CurrentKeysPacket:
-		packetAck, err := im.keeper.OnRecvCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket)
-		if err != nil {
-			ack = channeltypes.NewErrorAcknowledgement(err)
-		} else {
-			// Encode packet acknowledgment
-			packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
+	var pepModulePacketData types.PepPacketData
+	var ksModulePacketData kstypes.KeysharePacketData
+	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &pepModulePacketData); err == nil {
+		// Dispatch packet
+		switch packet := pepModulePacketData.Packet.(type) {
+		case *types.PepPacketData_CurrentKeysPacket:
+			packetAck, err := im.keeper.OnRecvCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket)
 			if err != nil {
-				return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, err.Error()))
+				ack = channeltypes.NewErrorAcknowledgement(err)
+			} else {
+				// Encode packet acknowledgment
+				packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
+				if err != nil {
+					return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, err.Error()))
+				}
+				ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
 			}
-			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(
+					types.EventTypeCurrentKeysPacket,
+					sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+					sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+				),
+			)
+			// this line is used by starport scaffolding # ibc/packet/module/recv
+		default:
+			err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
+			return channeltypes.NewErrorAcknowledgement(err)
 		}
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(
-				types.EventTypeCurrentKeysPacket,
-				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
-			),
-		)
+	} else if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &ksModulePacketData); err == nil {
+		// Dispatch packet
+		switch packet := ksModulePacketData.Packet.(type) {
+
+		case *kstypes.KeysharePacketData_AggrKeyshareDataPacket:
+			packetAck, err := im.keeper.OnRecvAggrKeyshareDataPacket(ctx, modulePacket, *packet.AggrKeyshareDataPacket)
+			if err != nil {
+				ack = channeltypes.NewErrorAcknowledgement(err)
+			} else {
+				// Encode packet acknowledgment
+				packetAckBytes := v1.MustProtoMarshalJSON(&packetAck)
+				ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+			}
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(
+					kstypes.EventTypeAggrKeyshareDataPacket,
+					sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+					sdk.NewAttribute(kstypes.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+				),
+			)
 		// this line is used by starport scaffolding # ibc/packet/module/recv
-	default:
-		err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
-		return channeltypes.NewErrorAcknowledgement(err)
+		default:
+			err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
+			return channeltypes.NewErrorAcknowledgement(err)
+		}
+	} else {
+		return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
 	}
 
 	// NOTE: acknowledgement will be written synchronously during IBC handler execution.
@@ -187,58 +215,107 @@ func (im IBCModule) OnAcknowledgementPacket(
 	relayer sdk.AccAddress,
 ) error {
 	var ack channeltypes.Acknowledgement
-	if err := types.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
+	if err := types.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err == nil {
 		return sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
 	}
 
 	// this line is used by starport scaffolding # oracle/packet/module/ack
 
-	var modulePacketData types.PepPacketData
-	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &modulePacketData); err != nil {
+	var pepModulePacketData types.PepPacketData
+	var ksModulePacketData kstypes.KeysharePacketData
+
+	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &pepModulePacketData); err == nil {
+		var eventType string
+
+		// Dispatch packet
+		switch packet := pepModulePacketData.Packet.(type) {
+		case *types.PepPacketData_CurrentKeysPacket:
+			err := im.keeper.OnAcknowledgementCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket, ack)
+			if err != nil {
+				return err
+			}
+			eventType = types.EventTypeCurrentKeysPacket
+			// this line is used by starport scaffolding # ibc/packet/module/ack
+		default:
+			errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
+			return sdkerrors.Wrap(cosmoserror.ErrUnknownRequest, errMsg)
+		}
+
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				eventType,
+				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+				sdk.NewAttribute(types.AttributeKeyAck, fmt.Sprintf("%v", ack)),
+			),
+		)
+
+		switch resp := ack.Response.(type) {
+		case *channeltypes.Acknowledgement_Result:
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(
+					eventType,
+					sdk.NewAttribute(types.AttributeKeyAckSuccess, string(resp.Result)),
+				),
+			)
+		case *channeltypes.Acknowledgement_Error:
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(
+					eventType,
+					sdk.NewAttribute(types.AttributeKeyAckError, resp.Error),
+				),
+			)
+		}
+	} else if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &ksModulePacketData); err == nil {
+		var eventType string
+
+		// Dispatch packet
+		switch packet := ksModulePacketData.Packet.(type) {
+		case *kstypes.KeysharePacketData_RequestAggrKeysharePacket:
+			err := im.keeper.OnAcknowledgementRequestAggrKeysharePacket(ctx, modulePacket, *packet.RequestAggrKeysharePacket, ack)
+			if err != nil {
+				return err
+			}
+			eventType = kstypes.EventTypeRequestAggrKeysharePacket
+		case *kstypes.KeysharePacketData_GetAggrKeysharePacket:
+			err := im.keeper.OnAcknowledgementGetAggrKeysharePacket(ctx, modulePacket, *packet.GetAggrKeysharePacket, ack)
+			if err != nil {
+				return err
+			}
+			eventType = kstypes.EventTypeGetAggrKeysharePacket
+
+		// this line is used by starport scaffolding # ibc/packet/module/ack
+		default:
+			errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
+			return sdkerrors.Wrap(cosmoserror.ErrUnknownRequest, errMsg)
+		}
+
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				eventType,
+				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+				sdk.NewAttribute(kstypes.AttributeKeyAck, fmt.Sprintf("%v", ack)),
+			),
+		)
+
+		switch resp := ack.Response.(type) {
+		case *channeltypes.Acknowledgement_Result:
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(
+					eventType,
+					sdk.NewAttribute(kstypes.AttributeKeyAckSuccess, string(resp.Result)),
+				),
+			)
+		case *channeltypes.Acknowledgement_Error:
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(
+					eventType,
+					sdk.NewAttribute(kstypes.AttributeKeyAckError, resp.Error),
+				),
+			)
+		}
+	} else {
 		return sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
-
-	var eventType string
-
-	// Dispatch packet
-	switch packet := modulePacketData.Packet.(type) {
-	case *types.PepPacketData_CurrentKeysPacket:
-		err := im.keeper.OnAcknowledgementCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket, ack)
-		if err != nil {
-			return err
-		}
-		eventType = types.EventTypeCurrentKeysPacket
-		// this line is used by starport scaffolding # ibc/packet/module/ack
-	default:
-		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
-		return sdkerrors.Wrap(cosmoserror.ErrUnknownRequest, errMsg)
-	}
-
-	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(
-			eventType,
-			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-			sdk.NewAttribute(types.AttributeKeyAck, fmt.Sprintf("%v", ack)),
-		),
-	)
-
-	switch resp := ack.Response.(type) {
-	case *channeltypes.Acknowledgement_Result:
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(
-				eventType,
-				sdk.NewAttribute(types.AttributeKeyAckSuccess, string(resp.Result)),
-			),
-		)
-	case *channeltypes.Acknowledgement_Error:
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(
-				eventType,
-				sdk.NewAttribute(types.AttributeKeyAckError, resp.Error),
-			),
-		)
-	}
-
 	return nil
 }
 

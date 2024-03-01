@@ -21,6 +21,7 @@ type (
 		paramstore       paramtypes.Subspace
 		connectionKeeper types.ConnectionKeeper
 		bankKeeper       types.BankKeeper
+		keyshareKeeper   types.KeyshareKeeper
 	}
 )
 
@@ -34,6 +35,7 @@ func NewKeeper(
 	scopedKeeper types.ScopedKeeper,
 	connectionKeeper types.ConnectionKeeper,
 	bankKeeper types.BankKeeper,
+	ksKeeper types.KeyshareKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -54,9 +56,15 @@ func NewKeeper(
 		paramstore:       ps,
 		connectionKeeper: connectionKeeper,
 		bankKeeper:       bankKeeper,
+		keyshareKeeper:   ksKeeper,
 	}
 }
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
+}
+
+func (keeper *Keeper) SetKSKeeper(ksKeeper types.KeyshareKeeper) *Keeper {
+	keeper.keyshareKeeper = ksKeeper
+	return keeper
 }

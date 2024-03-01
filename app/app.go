@@ -596,7 +596,7 @@ func New(
 	)
 
 	scopedPepKeeper := app.CapabilityKeeper.ScopeToModule(pepmoduletypes.ModuleName)
-	app.PepKeeper = *pepmodulekeeper.NewKeeper(
+	pepKeeper := pepmodulekeeper.NewKeeper(
 		appCodec,
 		keys[pepmoduletypes.StoreKey],
 		keys[pepmoduletypes.MemStoreKey],
@@ -606,15 +606,7 @@ func New(
 		scopedPepKeeper,
 		app.IBCKeeper.ConnectionKeeper,
 		app.BankKeeper,
-	)
-	pepModule := pepmodule.NewAppModule(
-		appCodec,
-		app.PepKeeper,
-		app.AccountKeeper,
-		app.BankKeeper,
-		app.MsgServiceRouter(),
-		encodingConfig.TxConfig,
-		app.SimCheck,
+		keyshareKeeper,
 	)
 
 	pepIBCModule := pepmodule.NewIBCModule(app.PepKeeper)
@@ -629,16 +621,29 @@ func New(
 		&app.IBCKeeper.PortKeeper,
 		scopedKeyshareKeeper,
 		app.IBCKeeper.ConnectionKeeper,
-		app.PepKeeper,
+		pepKeeper,
 		app.StakingKeeper,
 		govKeeper,
 	)
 
 	govKeeper = govKeeper.SetKSKeeper(keyshareKeeper)
 	keyshareKeeper = keyshareKeeper.SetGovKeeper(govKeeper)
+	pepKeeper = pepKeeper.SetKSKeeper(keyshareKeeper)
+	keyshareKeeper = keyshareKeeper.SetPepKeeper(pepKeeper)
 
 	app.KeyshareKeeper = *keyshareKeeper
 	app.GovKeeper = *govKeeper
+	app.PepKeeper = *pepKeeper
+
+	pepModule := pepmodule.NewAppModule(
+		appCodec,
+		app.PepKeeper,
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.MsgServiceRouter(),
+		encodingConfig.TxConfig,
+		app.SimCheck,
+	)
 
 	keyshareModule := keysharemodule.NewAppModule(
 		appCodec,

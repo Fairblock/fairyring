@@ -74,6 +74,12 @@ const (
 	KeyTotalFailedEncryptedTx    = "total_failed_encrypted_tx"
 )
 
+const (
+	RequestIdentityEventType     = "new-identity-requested"
+	RequestIdentityEventIdentity = "identity"
+	RequestIdentityEventPubkey   = "pubkey"
+)
+
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
