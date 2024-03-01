@@ -125,8 +125,7 @@ sed -i -e 's/minimum-gas-prices = "0stake"/minimum-gas-prices = "1ufairy"/g' $CH
 echo "Changing genesis.json..."
 sed -i -e 's/"voting_period": "172800s"/"voting_period": "60s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 sed -i -e 's/"voting_period": "172800s"/"voting_period": "60s"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
-sed -i -e 's/"max_tally_period": "120s"/"max_tally_period": "60s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
-sed -i -e 's/"max_tally_period": "120s"/"max_tally_period": "60s"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
+
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
 
