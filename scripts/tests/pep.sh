@@ -307,6 +307,25 @@ if [ "$RESULT" != "$AGG_KEY_HEIGHT" ]; then
   exit 1
 fi
 
+FIRST_ENCRYPTED_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq '.encryptedTxArray[0].encryptedTx[0].processedAtChainHeight')
+SECOND_ENCRYPTED_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq '.encryptedTxArray[0].encryptedTx[1].processedAtChainHeight')
+
+echo "First Encrypted tx processed at height: $FIRST_ENCRYPTED_TX_HEIGHT, 2nd one processed at: $SECOND_ENCRYPTED_TX_HEIGHT"
+
+FIRST_EVENT=$(curl -s http://localhost:26657/block_results?height=$FIRST_ENCRYPTED_TX_HEIGHT | jq '.result.begin_block_events[] | select(.type == "reverted-encrypted-tx") | .attributes[] | select(.key == "reason") | .value')
+if [[ "$FIRST_EVENT" != *"insufficient fees"* ]]; then
+  echo "ERROR: Pep module expected first encrypted tx failed with reason insufficient fee, got: $FIRST_EVENT instead"
+  exit 1
+fi
+echo "First Encrypted TX Failed with Reason: $FIRST_EVENT as expected."
+
+SECOND_EVENT=$(curl -s http://localhost:26657/block_results?height=$SECOND_ENCRYPTED_TX_HEIGHT | jq '.result.begin_block_events[] | select(.type == "executed-encrypted-tx") | .attributes[] | select(.key == "events") | .value')
+if [[ "$SECOND_EVENT" != *"coin_received"* ]]; then
+  echo "ERROR: Pep module expected second encrypted tx succeeded with events, got: $SECOND_EVENT instead"
+  exit 1
+fi
+echo "Second Encrypted TX succeeded with Events: $(echo $SECOND_EVENT | jq) as expected."
+
 echo ""
 echo "###########################################################"
 echo "#                   SUCCESSFULLY TESTED                   #"
