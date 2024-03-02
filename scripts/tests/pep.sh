@@ -284,3 +284,5 @@ echo "#        Test Pep Nonce Increment on Encrypted Tx         #"
 echo "#        Gas Deduction for encrypted tx execution         #"
 echo "###########################################################"
 echo ""
+
+./scripts/tests/priv_gov.sh $PUB_KEY $1

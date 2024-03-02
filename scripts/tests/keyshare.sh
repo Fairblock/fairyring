@@ -229,3 +229,5 @@ echo "#     Register as a validator in KeyShare Module     #"
 echo "#        Submit Public Key to KeyShare Module        #"
 echo "######################################################"
 echo ""
+
+./scripts/tests/pep.sh $GENERATED_SHARE

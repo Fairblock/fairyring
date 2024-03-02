@@ -182,9 +182,7 @@ test-block-tx-limit: init-test-block-limit-framework \
 
 integration-test-all: init-test-framework \
 	init-relayer \
-	test-keyshare-module \
-	test-pep-module \
-	test-gov-module
+	test-keyshare-module
 #	-@rm -rf ./data
 #	-@killall fairyringd 2>/dev/null
 
