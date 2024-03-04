@@ -30,6 +30,15 @@ check_tx_code () {
   fi
 }
 
+check_tx_err () {
+  local TX_CODE=$(echo "$1" | jq -r '.code')
+  if [ "$TX_CODE" -eq 0 ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 wait_for_tx () {
   RESULT=""  
   sleep $BLOCK_TIME
@@ -113,12 +122,21 @@ else
 fi
 
 
-echo "Submitting encrypted vote on source chain"
 echo "Encrypting vote with Pub key: '$PUBKEY' and Identity: $IDENTITY"
 ENCVOTE=$($ENCRYPTER "yes" 100 $IDENTITY $PUBKEY)
 
-RESULT=$(fairyringd tx gov vote-encrypted 1 $ENCVOTE --from $WALLET_3 --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 --keyring-backend test --gas-prices 1ufairy -o json -y)
-check_tx_code $RESULT
+
+while true; do
+  echo "Submitting encrypted vote on source chain"
+
+  RESULT=$(fairyringd tx gov vote-encrypted 1 $ENCVOTE --from $VAL1 --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 --keyring-backend test --gas-prices 1ufairy -o json -y)
+  echo "$RESULT"
+  check_tx_err $RESULT
+  if [ $? -eq 0 ]; then
+    break
+  fi
+done
+
 RESULT=$(wait_for_tx $RESULT "source")
 
 VOTE=$(fairyringd q gov votes 1 --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq '.votes[0]')
@@ -133,15 +151,22 @@ echo "Successfully submitted encrypted vote on source chain"
 
 echo "waiting for voting period to expire"
 
-sleep 45
+sleep 60
 EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 1 $IDENTITY)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
-echo "Submitting General Key Share"
-RESULT=$($BINARY tx keyshare create-general-key-share "private-gov-identity" $IDENTITY $EXTRACTED_SHARE 1 --from $VAL1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
-check_tx_code $RESULT
-RESULT=$(wait_for_tx $RESULT)
-echo $RESULT | jq
+while true; do
+  echo "Submitting General Key Share"
+  
+  RESULT=$($BINARY tx keyshare create-general-key-share "private-gov-identity" $IDENTITY $EXTRACTED_SHARE 1 --from $VAL1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+  echo "$RESULT"
+  check_tx_err $RESULT
+  if [ $? -eq 0 ]; then
+    break
+  fi
+done
+
+RESULT=$(wait_for_tx $RESULT "source")
 sleep 25
 
 #echo "Checking Status of proposal on Destination chain"
