@@ -531,7 +531,7 @@ func init() {
 	proto.RegisterType((*AggrKeyshareDataPacketAck)(nil), "fairyring.keyshare.AggrKeyshareDataPacketAck")
 }
 
-func init() { proto.RegisterFile("github.com/Fairblock/fairyring/keyshare/packet.proto", fileDescriptor_220841e1bebf3b1b) }
+func init() { proto.RegisterFile("fairyring/keyshare/packet.proto", fileDescriptor_220841e1bebf3b1b) }
 
 var fileDescriptor_220841e1bebf3b1b = []byte{
 	// 440 bytes of a gzipped FileDescriptorProto
