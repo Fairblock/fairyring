@@ -27,5 +27,6 @@ cd ..
 
 # move proto files to the right places
 cp -r github.com/Fairblock/fairyring/x/* x/
+rm -rf github.com
 rm -rf fairyring
 
