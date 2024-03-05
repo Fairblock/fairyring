@@ -9,14 +9,16 @@ import (
 	connTypes "github.com/cosmos/ibc-go/v7/modules/core/03-connection/types"
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 
+	"github.com/Fairblock/fairyring/x/keyshare/keeper"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
+
+	baseapp "github.com/cosmos/cosmos-sdk/baseapp"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
+	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
-
-	"github.com/Fairblock/fairyring/x/keyshare/keeper"
-	"github.com/Fairblock/fairyring/x/keyshare/types"
 
 	dbm "github.com/cometbft/cometbft-db"
 	"github.com/cometbft/cometbft/libs/log"
@@ -116,9 +118,31 @@ func KeyshareKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
 
+	govConfig := govtypes.DefaultConfig()
+	scopedGovkeeper := capabilityKeeper.ScopeToModule(govtypes.ModuleName)
+	msgServiceRouter := baseapp.NewMsgServiceRouter()
+
+	var keyshareKeeper *keeper.Keeper
+
+	govKeeper := govkeeper.NewKeeper(
+		cdc,
+		sdk.NewKVStoreKey("gov"),
+		accountKeeper,
+		bankKeeper,
+		stakingKeeper,
+		msgServiceRouter,
+		govConfig,
+		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		keyshareChannelKeeper{},
+		keysharePortKeeper{},
+		scopedGovkeeper,
+		keyshareconnectionKeeper{},
+		keyshareKeeper,
+	)
+
 	pepKeeper, _ := PepKeeper(t)
 
-	k := keeper.NewKeeper(
+	keyshareKeeper = keeper.NewKeeper(
 		cdc,
 		storeKey,
 		memStoreKey,
@@ -130,12 +154,13 @@ func KeyshareKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		keyshareconnectionKeeper{},
 		*pepKeeper,
 		stakingKeeper,
+		govKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
 
 	// Initialize params
-	k.SetParams(ctx, types.DefaultParams())
+	keyshareKeeper.SetParams(ctx, types.DefaultParams())
 
-	return k, ctx
+	return keyshareKeeper, ctx
 }

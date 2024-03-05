@@ -6,11 +6,12 @@ option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 message KeyShareRequest {
     string identity                  = 1;
     string pubkey                    = 2;
-    IBCInfo ibc_info                 = 3;
-    CounterPartyIBCInfo counterparty = 4;
+    IBCInfo ibc_info                 = 3; // Used only when the request is made via IBC
+    CounterPartyIBCInfo counterparty = 4; // Used only when the request is made via IBC
     string aggr_keyshare             = 5;
-    string proposal_id               = 6;
-    bool sent                        = 7;
+    string proposal_id               = 6; // This is only used when the request is for private governance
+    string request_id                = 7; // might be useful to destination chains to sort out the response
+    bool sent                        = 8;
 }
 
 message IBCInfo {

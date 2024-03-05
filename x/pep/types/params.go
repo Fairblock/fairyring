@@ -22,10 +22,12 @@ var (
 )
 
 var (
-	KeyChannelID       = []byte("ChannelID")
-	DefaultChannelID   = ChannelID
-	KeyMinGasPrice     = []byte("MinGasPrice")
-	DefaultMinGasPrice = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
+	KeyPepChannelID          = []byte("PepChannelID")
+	KeyKeyshareChannelID     = []byte("KeyshareChannelID")
+	DefaultPepChannelID      = PepChannelID
+	DefaultKeyshareChannelID = KeyshareChannelID
+	KeyMinGasPrice           = []byte("MinGasPrice")
+	DefaultMinGasPrice       = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
 )
 
 // ParamKeyTable the param key table for launch module
@@ -37,20 +39,22 @@ func ParamKeyTable() paramtypes.KeyTable {
 func NewParams(
 	trAddrs []string,
 	trustedParties []*TrustedCounterParty,
-	channelID string,
+	pepChannelID string,
+	keyshareChannelID string,
 	minGasPrice *sdk.Coin,
 ) Params {
 	return Params{
 		TrustedAddresses:      trAddrs,
 		TrustedCounterParties: trustedParties,
-		ChannelId:             channelID,
+		PepChannelId:          pepChannelID,
+		KeyshareChannelId:     keyshareChannelID,
 		MinGasPrice:           minGasPrice,
 	}
 }
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams(DefaultTrustedAddresses, DefaultTrustedCounterParties, DefaultChannelID, &DefaultMinGasPrice)
+	return NewParams(DefaultTrustedAddresses, DefaultTrustedCounterParties, DefaultPepChannelID, DefaultKeyshareChannelID, &DefaultMinGasPrice)
 }
 
 // ParamSetPairs get the params.ParamSet
@@ -58,7 +62,8 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
 		paramtypes.NewParamSetPair(KeyTrustedAddresses, &p.TrustedAddresses, validateTrustedAddresses),
 		paramtypes.NewParamSetPair(KeyTrustedCounterParties, &p.TrustedCounterParties, validateTrustedCounterParties),
-		paramtypes.NewParamSetPair(KeyChannelID, &p.ChannelId, validateChannelID),
+		paramtypes.NewParamSetPair(KeyPepChannelID, &p.PepChannelId, validateChannelID),
+		paramtypes.NewParamSetPair(KeyKeyshareChannelID, &p.KeyshareChannelId, validateChannelID),
 		paramtypes.NewParamSetPair(KeyMinGasPrice, &p.MinGasPrice, validateMinGasPrice),
 	}
 }
@@ -73,9 +78,14 @@ func (p Params) Validate() error {
 		return err
 	}
 
-	if err := validateChannelID(p.ChannelId); err != nil {
+	if err := validateChannelID(p.PepChannelId); err != nil {
 		return err
 	}
+
+	if err := validateChannelID(p.KeyshareChannelId); err != nil {
+		return err
+	}
+
 	if err := validateMinGasPrice(p.MinGasPrice); err != nil {
 		return err
 	}

@@ -99,6 +99,7 @@ func BenchmarkSimulation(b *testing.B) {
 		0,
 		app.MakeEncodingConfig(),
 		appOptions,
+		app.EmptyWasmOpts,
 		baseapp.SetChainID(config.ChainID),
 	)
 	require.Equal(b, app.Name, bApp.Name())
@@ -175,6 +176,7 @@ func TestAppStateDeterminism(t *testing.T) {
 				simcli.FlagPeriodValue,
 				app.MakeEncodingConfig(),
 				appOptions,
+				app.EmptyWasmOpts,
 				fauxMerkleModeOpt,
 				baseapp.SetChainID(chainID),
 			)
@@ -253,6 +255,7 @@ func TestAppImportExport(t *testing.T) {
 		0,
 		app.MakeEncodingConfig(),
 		appOptions,
+		app.EmptyWasmOpts,
 		baseapp.SetChainID(config.ChainID),
 	)
 	require.Equal(t, app.Name, bApp.Name())
@@ -314,6 +317,7 @@ func TestAppImportExport(t *testing.T) {
 		0,
 		app.MakeEncodingConfig(),
 		appOptions,
+		app.EmptyWasmOpts,
 		baseapp.SetChainID(config.ChainID),
 	)
 	require.Equal(t, app.Name, bApp.Name())
@@ -407,6 +411,7 @@ func TestAppSimulationAfterImport(t *testing.T) {
 		0,
 		app.MakeEncodingConfig(),
 		appOptions,
+		app.EmptyWasmOpts,
 		fauxMerkleModeOpt,
 		baseapp.SetChainID(config.ChainID),
 	)
@@ -474,6 +479,7 @@ func TestAppSimulationAfterImport(t *testing.T) {
 		0,
 		app.MakeEncodingConfig(),
 		appOptions,
+		app.EmptyWasmOpts,
 		fauxMerkleModeOpt,
 		baseapp.SetChainID(config.ChainID),
 	)
@@ -515,6 +521,7 @@ func SetupTestingApp() (ibctesting.TestingApp, map[string]json.RawMessage) {
 		5,
 		encCdc,
 		simtestutil.EmptyAppOptions{},
+		app.EmptyWasmOpts,
 	)
 	return fapp, app.NewDefaultGenesisState(encCdc.Marshaler)
 }

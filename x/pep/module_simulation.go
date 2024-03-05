@@ -29,6 +29,14 @@ const (
 	opWeightMsgCreateAggregatedKeyShare          = "op_weight_msg_aggregated_key_share"
 	defaultWeightMsgCreateAggregatedKeyShare int = 100
 
+	opWeightMsgRequestGeneralKeyshare = "op_weight_msg_request_general_keyshare"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRequestGeneralKeyshare int = 100
+
+	opWeightMsgGetGeneralKeyshare = "op_weight_msg_get_general_keyshare"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgGetGeneralKeyshare int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -87,6 +95,28 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCreateAggregatedKeyShare,
 		pepsimulation.SimulateMsgCreateAggregatedKeyShare(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRequestGeneralKeyshare int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRequestGeneralKeyshare, &weightMsgRequestGeneralKeyshare, nil,
+		func(_ *rand.Rand) {
+			weightMsgRequestGeneralKeyshare = defaultWeightMsgRequestGeneralKeyshare
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRequestGeneralKeyshare,
+		pepsimulation.SimulateMsgRequestGeneralKeyshare(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgGetGeneralKeyshare int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgGetGeneralKeyshare, &weightMsgGetGeneralKeyshare, nil,
+		func(_ *rand.Rand) {
+			weightMsgGetGeneralKeyshare = defaultWeightMsgGetGeneralKeyshare
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgGetGeneralKeyshare,
+		pepsimulation.SimulateMsgGetGeneralKeyshare(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

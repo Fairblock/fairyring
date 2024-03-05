@@ -23,6 +23,24 @@ export interface MsgCreateAggregatedKeyShare {
 export interface MsgCreateAggregatedKeyShareResponse {
 }
 
+export interface MsgRequestGeneralKeyshare {
+  creator: string;
+  requestId: string;
+}
+
+export interface MsgRequestGeneralKeyshareResponse {
+  identity: string;
+  pubkey: string;
+}
+
+export interface MsgGetGeneralKeyshare {
+  creator: string;
+  identity: string;
+}
+
+export interface MsgGetGeneralKeyshareResponse {
+}
+
 function createBaseMsgSubmitEncryptedTx(): MsgSubmitEncryptedTx {
   return { creator: "", data: "", targetBlockHeight: 0 };
 }
@@ -237,11 +255,228 @@ export const MsgCreateAggregatedKeyShareResponse = {
   },
 };
 
+function createBaseMsgRequestGeneralKeyshare(): MsgRequestGeneralKeyshare {
+  return { creator: "", requestId: "" };
+}
+
+export const MsgRequestGeneralKeyshare = {
+  encode(message: MsgRequestGeneralKeyshare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.requestId !== "") {
+      writer.uint32(18).string(message.requestId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRequestGeneralKeyshare {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRequestGeneralKeyshare();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.requestId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRequestGeneralKeyshare {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      requestId: isSet(object.requestId) ? String(object.requestId) : "",
+    };
+  },
+
+  toJSON(message: MsgRequestGeneralKeyshare): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.requestId !== undefined && (obj.requestId = message.requestId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgRequestGeneralKeyshare>, I>>(object: I): MsgRequestGeneralKeyshare {
+    const message = createBaseMsgRequestGeneralKeyshare();
+    message.creator = object.creator ?? "";
+    message.requestId = object.requestId ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgRequestGeneralKeyshareResponse(): MsgRequestGeneralKeyshareResponse {
+  return { identity: "", pubkey: "" };
+}
+
+export const MsgRequestGeneralKeyshareResponse = {
+  encode(message: MsgRequestGeneralKeyshareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.identity !== "") {
+      writer.uint32(10).string(message.identity);
+    }
+    if (message.pubkey !== "") {
+      writer.uint32(18).string(message.pubkey);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRequestGeneralKeyshareResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRequestGeneralKeyshareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.identity = reader.string();
+          break;
+        case 2:
+          message.pubkey = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRequestGeneralKeyshareResponse {
+    return {
+      identity: isSet(object.identity) ? String(object.identity) : "",
+      pubkey: isSet(object.pubkey) ? String(object.pubkey) : "",
+    };
+  },
+
+  toJSON(message: MsgRequestGeneralKeyshareResponse): unknown {
+    const obj: any = {};
+    message.identity !== undefined && (obj.identity = message.identity);
+    message.pubkey !== undefined && (obj.pubkey = message.pubkey);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgRequestGeneralKeyshareResponse>, I>>(
+    object: I,
+  ): MsgRequestGeneralKeyshareResponse {
+    const message = createBaseMsgRequestGeneralKeyshareResponse();
+    message.identity = object.identity ?? "";
+    message.pubkey = object.pubkey ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgGetGeneralKeyshare(): MsgGetGeneralKeyshare {
+  return { creator: "", identity: "" };
+}
+
+export const MsgGetGeneralKeyshare = {
+  encode(message: MsgGetGeneralKeyshare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.identity !== "") {
+      writer.uint32(18).string(message.identity);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgGetGeneralKeyshare {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgGetGeneralKeyshare();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.identity = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgGetGeneralKeyshare {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      identity: isSet(object.identity) ? String(object.identity) : "",
+    };
+  },
+
+  toJSON(message: MsgGetGeneralKeyshare): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.identity !== undefined && (obj.identity = message.identity);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgGetGeneralKeyshare>, I>>(object: I): MsgGetGeneralKeyshare {
+    const message = createBaseMsgGetGeneralKeyshare();
+    message.creator = object.creator ?? "";
+    message.identity = object.identity ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgGetGeneralKeyshareResponse(): MsgGetGeneralKeyshareResponse {
+  return {};
+}
+
+export const MsgGetGeneralKeyshareResponse = {
+  encode(_: MsgGetGeneralKeyshareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgGetGeneralKeyshareResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgGetGeneralKeyshareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgGetGeneralKeyshareResponse {
+    return {};
+  },
+
+  toJSON(_: MsgGetGeneralKeyshareResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgGetGeneralKeyshareResponse>, I>>(_: I): MsgGetGeneralKeyshareResponse {
+    const message = createBaseMsgGetGeneralKeyshareResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   SubmitEncryptedTx(request: MsgSubmitEncryptedTx): Promise<MsgSubmitEncryptedTxResponse>;
   /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateAggregatedKeyShare(request: MsgCreateAggregatedKeyShare): Promise<MsgCreateAggregatedKeyShareResponse>;
+  RequestGeneralKeyshare(request: MsgRequestGeneralKeyshare): Promise<MsgRequestGeneralKeyshareResponse>;
+  GetGeneralKeyshare(request: MsgGetGeneralKeyshare): Promise<MsgGetGeneralKeyshareResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -250,6 +485,8 @@ export class MsgClientImpl implements Msg {
     this.rpc = rpc;
     this.SubmitEncryptedTx = this.SubmitEncryptedTx.bind(this);
     this.CreateAggregatedKeyShare = this.CreateAggregatedKeyShare.bind(this);
+    this.RequestGeneralKeyshare = this.RequestGeneralKeyshare.bind(this);
+    this.GetGeneralKeyshare = this.GetGeneralKeyshare.bind(this);
   }
   SubmitEncryptedTx(request: MsgSubmitEncryptedTx): Promise<MsgSubmitEncryptedTxResponse> {
     const data = MsgSubmitEncryptedTx.encode(request).finish();
@@ -261,6 +498,18 @@ export class MsgClientImpl implements Msg {
     const data = MsgCreateAggregatedKeyShare.encode(request).finish();
     const promise = this.rpc.request("fairyring.pep.Msg", "CreateAggregatedKeyShare", data);
     return promise.then((data) => MsgCreateAggregatedKeyShareResponse.decode(new _m0.Reader(data)));
+  }
+
+  RequestGeneralKeyshare(request: MsgRequestGeneralKeyshare): Promise<MsgRequestGeneralKeyshareResponse> {
+    const data = MsgRequestGeneralKeyshare.encode(request).finish();
+    const promise = this.rpc.request("fairyring.pep.Msg", "RequestGeneralKeyshare", data);
+    return promise.then((data) => MsgRequestGeneralKeyshareResponse.decode(new _m0.Reader(data)));
+  }
+
+  GetGeneralKeyshare(request: MsgGetGeneralKeyshare): Promise<MsgGetGeneralKeyshareResponse> {
+    const data = MsgGetGeneralKeyshare.encode(request).finish();
+    const promise = this.rpc.request("fairyring.pep.Msg", "GetGeneralKeyshare", data);
+    return promise.then((data) => MsgGetGeneralKeyshareResponse.decode(new _m0.Reader(data)));
   }
 }
 

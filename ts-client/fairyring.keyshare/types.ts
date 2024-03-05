@@ -17,6 +17,10 @@ import { QueuedPubKey } from "./types/fairyring/keyshare/pub_key"
 import { KeyShareRequest } from "./types/fairyring/keyshare/requested_keyshare"
 import { IBCInfo } from "./types/fairyring/keyshare/requested_keyshare"
 import { CounterPartyIBCInfo } from "./types/fairyring/keyshare/requested_keyshare"
+import { MsgRequestAggrKeyshare } from "./types/fairyring/keyshare/requested_keyshare"
+import { MsgRequestAggrKeyshareResponse } from "./types/fairyring/keyshare/requested_keyshare"
+import { MsgGetAggrKeyshare } from "./types/fairyring/keyshare/requested_keyshare"
+import { MsgGetAggrKeyshareResponse } from "./types/fairyring/keyshare/requested_keyshare"
 import { ValidatorSet } from "./types/fairyring/keyshare/validator_set"
 
 
@@ -40,6 +44,10 @@ export {
     KeyShareRequest,
     IBCInfo,
     CounterPartyIBCInfo,
+    MsgRequestAggrKeyshare,
+    MsgRequestAggrKeyshareResponse,
+    MsgGetAggrKeyshare,
+    MsgGetAggrKeyshareResponse,
     ValidatorSet,
     
  }

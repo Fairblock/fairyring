@@ -2,8 +2,9 @@ package keeper
 
 import (
 	"errors"
-	cosmoserror "github.com/cosmos/cosmos-sdk/types/errors"
 	"time"
+
+	cosmoserror "github.com/cosmos/cosmos-sdk/types/errors"
 
 	"github.com/Fairblock/fairyring/x/pep/types"
 
@@ -17,7 +18,7 @@ import (
 func (k Keeper) QueryFairyringCurrentKeys(ctx sdk.Context) error {
 	srcPort := k.GetPort(ctx)
 	params := k.GetParams(ctx)
-	srcChannel := params.ChannelId
+	srcChannel := params.PepChannelId
 
 	timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 	var packet types.CurrentKeysPacketData

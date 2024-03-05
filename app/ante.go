@@ -5,17 +5,23 @@ import (
 	pepante "github.com/Fairblock/fairyring/x/pep/ante"
 	pepkeeper "github.com/Fairblock/fairyring/x/pep/keeper"
 
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	storetypes "github.com/cosmos/cosmos-sdk/store/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 )
 
 type FairyringHandlerOptions struct {
-	BaseOptions  ante.HandlerOptions
-	Mempool      blockbuster.Mempool
-	KeyShareLane pepante.KeyShareLane
-	TxDecoder    sdk.TxDecoder
-	TxEncoder    sdk.TxEncoder
-	PepKeeper    pepkeeper.Keeper
+	BaseOptions       ante.HandlerOptions
+	wasmConfig        wasmtypes.WasmConfig
+	txCounterStoreKey storetypes.StoreKey
+	Mempool           blockbuster.Mempool
+	KeyShareLane      pepante.KeyShareLane
+	TxDecoder         sdk.TxDecoder
+	TxEncoder         sdk.TxEncoder
+	PepKeeper         pepkeeper.Keeper
 }
 
 // NewFairyringAnteHandler wraps all of the default Cosmos SDK AnteDecorators with the Fairyring AnteHandler.
@@ -38,6 +44,8 @@ func NewFairyringAnteHandler(options FairyringHandlerOptions) sdk.AnteHandler {
 
 	anteDecorators := []sdk.AnteDecorator{
 		ante.NewSetUpContextDecorator(), // outermost AnteDecorator. SetUpContext must be called first
+		wasmkeeper.NewLimitSimulationGasDecorator(options.wasmConfig.SimulationGasLimit),
+		wasmkeeper.NewCountTXDecorator(options.txCounterStoreKey),
 		ante.NewExtensionOptionsDecorator(options.BaseOptions.ExtensionOptionChecker),
 		ante.NewValidateBasicDecorator(),
 		ante.NewTxTimeoutHeightDecorator(),
