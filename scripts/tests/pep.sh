@@ -60,9 +60,42 @@ if [ "$PUB_KEY" == "" ]; then
 fi
 
 
+echo "Query master public key expiry height from key share module for submitting to pep module on chain fairyring_test_1"
+PUB_KEY_EXPIRY=$($BINARY query keyshare show-active-pub-key --node $CHAIN1_NODE -o json | jq -r '.activePubKey.expiry')
+if [ "$PUB_KEY_EXPIRY" == "" ]; then
+  echo "ERROR: Query master public key expiry height from key share module error, expecting an active public key, got '$PUB_KEY'"
+  exit 1
+fi
+
+echo "Pub Key expires at: $PUB_KEY_EXPIRY"
+
 echo "Submit encrypted tx with invalid block height to pep module on chain fairyring_test_2"
 CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
 RESULT=$($BINARY tx pep submit-encrypted-tx 0000 $((CURRENT_BLOCK - 1)) --from $VALIDATOR_2 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
+if [[ "$ERROR_MSG" != *"Invalid target block height"* ]]; then
+  echo "ERROR: Pep module submit encrypted tx with invalid block height error. Expected tx to failed with error invalid target block height, got '$ERROR_MSG'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  exit 1
+fi
+
+
+echo "Submit encrypted tx with block height much higher than queued public key to pep module on chain fairyring_test_2"
+RESULT=$($BINARY tx pep submit-encrypted-tx 0000 500000 --from $VALIDATOR_2 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
+if [[ "$ERROR_MSG" != *"Invalid target block height"* ]]; then
+  echo "ERROR: Pep module submit encrypted tx with invalid block height error. Expected tx to failed with error invalid target block height, got '$ERROR_MSG'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  exit 1
+fi
+
+
+echo "Submit encrypted tx with block height 1 block higher than the pub key expiry height to pep module on chain fairyring_test_2"
+RESULT=$($BINARY tx pep submit-encrypted-tx 0000 $((PUB_KEY_EXPIRY + 1)) --from $VALIDATOR_2 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
@@ -274,6 +307,25 @@ if [ "$RESULT" != "$AGG_KEY_HEIGHT" ]; then
   exit 1
 fi
 
+FIRST_ENCRYPTED_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq '.encryptedTxArray[0].encryptedTx[0].processedAtChainHeight')
+SECOND_ENCRYPTED_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq '.encryptedTxArray[0].encryptedTx[1].processedAtChainHeight')
+
+echo "First Encrypted tx processed at height: $FIRST_ENCRYPTED_TX_HEIGHT, 2nd one processed at: $SECOND_ENCRYPTED_TX_HEIGHT"
+
+FIRST_EVENT=$(curl -s http://localhost:26657/block_results?height=$FIRST_ENCRYPTED_TX_HEIGHT | jq '.result.begin_block_events[] | select(.type == "reverted-encrypted-tx") | .attributes[] | select(.key == "reason") | .value')
+if [[ "$FIRST_EVENT" != *"insufficient fees"* ]]; then
+  echo "ERROR: Pep module expected first encrypted tx failed with reason insufficient fee, got: $FIRST_EVENT instead"
+  exit 1
+fi
+echo "First Encrypted TX Failed with Reason: $FIRST_EVENT as expected."
+
+SECOND_EVENT=$(curl -s http://localhost:26657/block_results?height=$SECOND_ENCRYPTED_TX_HEIGHT | jq '.result.begin_block_events[] | select(.type == "executed-encrypted-tx") | .attributes[] | select(.key == "events") | .value')
+if [[ "$SECOND_EVENT" != *"coin_received"* ]]; then
+  echo "ERROR: Pep module expected second encrypted tx succeeded with events, got: $SECOND_EVENT instead"
+  exit 1
+fi
+echo "Second Encrypted TX succeeded with Events: $(echo $SECOND_EVENT | jq) as expected."
+
 echo ""
 echo "###########################################################"
 echo "#                   SUCCESSFULLY TESTED                   #"
@@ -284,3 +336,5 @@ echo "#        Test Pep Nonce Increment on Encrypted Tx         #"
 echo "#        Gas Deduction for encrypted tx execution         #"
 echo "###########################################################"
 echo ""
+
+./scripts/tests/priv_gov.sh $PUB_KEY $1

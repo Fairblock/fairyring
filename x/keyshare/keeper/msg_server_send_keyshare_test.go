@@ -2,13 +2,13 @@ package keeper_test
 
 import (
 	"context"
-	"fairyring/x/keyshare"
-	"fairyring/x/keyshare/keeper"
-	"fairyring/x/keyshare/types"
+	"github.com/Fairblock/fairyring/x/keyshare"
+	"github.com/Fairblock/fairyring/x/keyshare/keeper"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"strconv"
 	"testing"
 
-	keepertest "fairyring/testutil/keeper"
+	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"

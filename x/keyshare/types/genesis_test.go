@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"fairyring/x/keyshare/types"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 
 	"github.com/stretchr/testify/require"
 )

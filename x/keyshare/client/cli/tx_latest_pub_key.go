@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"fairyring/x/keyshare/types"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/spf13/cast"
 	"strings"
 

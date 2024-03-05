@@ -1,4 +1,5 @@
 /* eslint-disable */
+import Long from "long";
 import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "fairyring.keyshare";
@@ -15,7 +16,8 @@ export interface NoData {
 
 /** RequestAggrKeysharePacketData defines a struct for the packet payload */
 export interface RequestAggrKeysharePacketData {
-  proposalId: string;
+  proposalId: string | undefined;
+  requestId: string | undefined;
 }
 
 /** RequestAggrKeysharePacketAck defines a struct for the packet acknowledgment */
@@ -39,7 +41,11 @@ export interface AggrKeyshareDataPacketData {
   pubkey: string;
   aggrKeyshare: string;
   aggrHeight: string;
+  /** used for private governance */
   proposalId: string;
+  /** might be useful to destination chains to sort out the response */
+  requestId: string;
+  retries: number;
 }
 
 /** AggrKeyshareDataPacketAck defines a struct for the packet acknowledgment */
@@ -191,13 +197,16 @@ export const NoData = {
 };
 
 function createBaseRequestAggrKeysharePacketData(): RequestAggrKeysharePacketData {
-  return { proposalId: "" };
+  return { proposalId: undefined, requestId: undefined };
 }
 
 export const RequestAggrKeysharePacketData = {
   encode(message: RequestAggrKeysharePacketData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.proposalId !== "") {
+    if (message.proposalId !== undefined) {
       writer.uint32(10).string(message.proposalId);
+    }
+    if (message.requestId !== undefined) {
+      writer.uint32(18).string(message.requestId);
     }
     return writer;
   },
@@ -212,6 +221,9 @@ export const RequestAggrKeysharePacketData = {
         case 1:
           message.proposalId = reader.string();
           break;
+        case 2:
+          message.requestId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -221,12 +233,16 @@ export const RequestAggrKeysharePacketData = {
   },
 
   fromJSON(object: any): RequestAggrKeysharePacketData {
-    return { proposalId: isSet(object.proposalId) ? String(object.proposalId) : "" };
+    return {
+      proposalId: isSet(object.proposalId) ? String(object.proposalId) : undefined,
+      requestId: isSet(object.requestId) ? String(object.requestId) : undefined,
+    };
   },
 
   toJSON(message: RequestAggrKeysharePacketData): unknown {
     const obj: any = {};
     message.proposalId !== undefined && (obj.proposalId = message.proposalId);
+    message.requestId !== undefined && (obj.requestId = message.requestId);
     return obj;
   },
 
@@ -234,7 +250,8 @@ export const RequestAggrKeysharePacketData = {
     object: I,
   ): RequestAggrKeysharePacketData {
     const message = createBaseRequestAggrKeysharePacketData();
-    message.proposalId = object.proposalId ?? "";
+    message.proposalId = object.proposalId ?? undefined;
+    message.requestId = object.requestId ?? undefined;
     return message;
   },
 };
@@ -384,7 +401,7 @@ export const GetAggrKeysharePacketAck = {
 };
 
 function createBaseAggrKeyshareDataPacketData(): AggrKeyshareDataPacketData {
-  return { identity: "", pubkey: "", aggrKeyshare: "", aggrHeight: "", proposalId: "" };
+  return { identity: "", pubkey: "", aggrKeyshare: "", aggrHeight: "", proposalId: "", requestId: "", retries: 0 };
 }
 
 export const AggrKeyshareDataPacketData = {
@@ -403,6 +420,12 @@ export const AggrKeyshareDataPacketData = {
     }
     if (message.proposalId !== "") {
       writer.uint32(42).string(message.proposalId);
+    }
+    if (message.requestId !== "") {
+      writer.uint32(50).string(message.requestId);
+    }
+    if (message.retries !== 0) {
+      writer.uint32(56).uint64(message.retries);
     }
     return writer;
   },
@@ -429,6 +452,12 @@ export const AggrKeyshareDataPacketData = {
         case 5:
           message.proposalId = reader.string();
           break;
+        case 6:
+          message.requestId = reader.string();
+          break;
+        case 7:
+          message.retries = longToNumber(reader.uint64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -444,6 +473,8 @@ export const AggrKeyshareDataPacketData = {
       aggrKeyshare: isSet(object.aggrKeyshare) ? String(object.aggrKeyshare) : "",
       aggrHeight: isSet(object.aggrHeight) ? String(object.aggrHeight) : "",
       proposalId: isSet(object.proposalId) ? String(object.proposalId) : "",
+      requestId: isSet(object.requestId) ? String(object.requestId) : "",
+      retries: isSet(object.retries) ? Number(object.retries) : 0,
     };
   },
 
@@ -454,6 +485,8 @@ export const AggrKeyshareDataPacketData = {
     message.aggrKeyshare !== undefined && (obj.aggrKeyshare = message.aggrKeyshare);
     message.aggrHeight !== undefined && (obj.aggrHeight = message.aggrHeight);
     message.proposalId !== undefined && (obj.proposalId = message.proposalId);
+    message.requestId !== undefined && (obj.requestId = message.requestId);
+    message.retries !== undefined && (obj.retries = Math.round(message.retries));
     return obj;
   },
 
@@ -464,6 +497,8 @@ export const AggrKeyshareDataPacketData = {
     message.aggrKeyshare = object.aggrKeyshare ?? "";
     message.aggrHeight = object.aggrHeight ?? "";
     message.proposalId = object.proposalId ?? "";
+    message.requestId = object.requestId ?? "";
+    message.retries = object.retries ?? 0;
     return message;
   },
 };
@@ -507,6 +542,25 @@ export const AggrKeyshareDataPacketAck = {
   },
 };
 
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -517,6 +571,18 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

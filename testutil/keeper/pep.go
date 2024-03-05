@@ -9,8 +9,8 @@ import (
 
 	"testing"
 
-	"fairyring/x/pep/keeper"
-	"fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/x/pep/keeper"
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	dbm "github.com/cometbft/cometbft-db"
 	"github.com/cometbft/cometbft/libs/log"

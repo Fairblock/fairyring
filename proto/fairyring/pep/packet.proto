@@ -3,7 +3,7 @@ package fairyring.pep;
 
 import "fairyring/pep/pub_key.proto";
 
-option go_package = "fairyring/x/pep/types";
+option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
 message PepPacketData {
     oneof packet {

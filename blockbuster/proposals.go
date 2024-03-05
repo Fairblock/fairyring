@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"fairyring/blockbuster/utils"
+	"github.com/Fairblock/fairyring/blockbuster/utils"
 	"github.com/cometbft/cometbft/libs/log"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

@@ -11,8 +11,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 
-	"fairyring/testutil/network"
-	"fairyring/x/pep/client/cli"
+	"github.com/Fairblock/fairyring/testutil/network"
+	"github.com/Fairblock/fairyring/x/pep/client/cli"
 )
 
 // Prevent strconv unused error

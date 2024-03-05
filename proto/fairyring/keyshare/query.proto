@@ -16,7 +16,7 @@ import "fairyring/keyshare/commitments.proto";
 
 // this line is used by starport scaffolding # 1
 
-option go_package = "fairyring/x/keyshare/types";
+option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
 // Query defines the gRPC querier service.
 service Query {

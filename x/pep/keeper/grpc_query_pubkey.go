@@ -2,7 +2,7 @@ package keeper
 
 import (
 	"context"
-	"fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"

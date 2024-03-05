@@ -4,15 +4,17 @@ package fairyring.pep;
 import "gogoproto/gogo.proto";
 import "cosmos/base/v1beta1/coin.proto";
 
-option go_package = "fairyring/x/pep/types";
+option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
 // Params defines the parameters for the module.
 message Params {
   option (gogoproto.goproto_stringer) = false;
   repeated TrustedCounterParty trusted_counter_parties = 1;
   repeated string trusted_addresses = 2;
-  string channel_id = 3;
-  cosmos.base.v1beta1.Coin minGasPrice = 4;
+  string pep_channel_id = 3;
+  string keyshare_channel_id = 4;
+  cosmos.base.v1beta1.Coin min_gas_price = 5;
+  bool is_source_chain = 6;
 }
 
 message TrustedCounterParty {

@@ -19,8 +19,11 @@ const (
 	// PortID is the default port id that module binds to
 	PortID = "pep"
 
-	// ChannelID is the default channel id that module will use to transmit IBC packets.
-	ChannelID = "channel-0"
+	// PepChannelID is the default channel id that module will use to transmit IBC packets to pep module.
+	PepChannelID = "channel-0"
+
+	// KeushareChannelID is the default channel id that module will use to transmit IBC packets to keyshare module.
+	KeyshareChannelID = "channel-1"
 )
 
 var (
@@ -33,33 +36,41 @@ var (
 
 const (
 	SubmittedEncryptedTxEventType         = "new-encrypted-tx-submitted"
-	SubmittedEncryptedTxEventCreator      = "new-encrypted-tx-creator"
-	SubmittedEncryptedTxEventTargetHeight = "new-encrypted-tx-target-height"
-	SubmittedEncryptedTxEventIndex        = "new-encrypted-tx-index"
-	SubmittedEncryptedTxEventData         = "new-encrypted-tx-data"
+	SubmittedEncryptedTxEventCreator      = "creator"
+	SubmittedEncryptedTxEventTargetHeight = "target-height"
+	SubmittedEncryptedTxEventIndex        = "index"
+	SubmittedEncryptedTxEventData         = "data"
 )
 
 const (
-	EncryptedTxExecutedEventType    = "executed-encrypted-tx"
-	EncryptedTxExecutedEventCreator = "executed-encrypted-tx-creator"
-	EncryptedTxExecutedEventHeight  = "executed-encrypted-tx-target-height"
-	EncryptedTxExecutedEventIndex   = "executed-encrypted-tx-index"
-	EncryptedTxExecutedEventData    = "executed-encrypted-tx-data"
+	EncryptedTxExecutedEventType             = "executed-encrypted-tx"
+	EncryptedTxExecutedEventCreator          = "creator"
+	EncryptedTxExecutedEventHeight           = "target-height"
+	EncryptedTxExecutedEventIndex            = "index"
+	EncryptedTxExecutedEventData             = "data"
+	EncryptedTxExecutedEventMemo             = "memo"
+	EncryptedTxExecutedEventUnderlyingEvents = "events"
 )
 
 const (
 	EncryptedTxRevertedEventType    = "reverted-encrypted-tx"
-	EncryptedTxRevertedEventCreator = "reverted-encrypted-tx-creator"
-	EncryptedTxRevertedEventHeight  = "reverted-encrypted-tx-target-height"
-	EncryptedTxRevertedEventIndex   = "reverted-encrypted-tx-index"
-	EncryptedTxRevertedEventReason  = "reverted-encrypted-tx-reason"
+	EncryptedTxRevertedEventCreator = "creator"
+	EncryptedTxRevertedEventHeight  = "height"
+	EncryptedTxRevertedEventIndex   = "index"
+	EncryptedTxRevertedEventReason  = "reason"
+)
+
+const (
+	EncryptedTxDiscardedEventType   = "discarded-encrypted-tx"
+	EncryptedTxDiscardedEventHeight = "height"
+	EncryptedTxDiscardedEventTxIDs  = "tx-ids"
 )
 
 const (
 	KeyShareVerificationType    = "keyshare-verification"
-	KeyShareVerificationCreator = "keyshare-verification-creator"
-	KeyShareVerificationHeight  = "keyshare-verification-height"
-	KeyShareVerificationReason  = "keyshare-verification-reason"
+	KeyShareVerificationCreator = "creator"
+	KeyShareVerificationHeight  = "height"
+	KeyShareVerificationReason  = "reason"
 )
 
 const (

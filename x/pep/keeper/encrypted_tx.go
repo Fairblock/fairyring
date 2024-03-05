@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -46,6 +46,36 @@ func (k Keeper) SetEncryptedTx(
 	store.Set(types.EncryptedTxAllFromHeightKey(
 		height,
 	), parsedEncryptedTxArr)
+}
+
+func (k Keeper) SetEncryptedTxProcessedHeight(
+	ctx sdk.Context,
+	height uint64,
+	index uint64,
+	processedHeight uint64,
+) {
+	arr := k.GetEncryptedTxAllFromHeight(ctx, height)
+
+	if index >= uint64(len(arr.EncryptedTx)) {
+		return
+	}
+
+	arr.EncryptedTx[index].ProcessedAtChainHeight = processedHeight
+
+	k.SetEncryptedTx(ctx, height, arr)
+}
+
+func (k Keeper) SetAllEncryptedTxExpired(
+	ctx sdk.Context,
+	height uint64,
+) {
+	arr := k.GetEncryptedTxAllFromHeight(ctx, height)
+
+	for i := range arr.EncryptedTx {
+		arr.EncryptedTx[i].Expired = true
+	}
+
+	k.SetEncryptedTx(ctx, height, arr)
 }
 
 // GetEncryptedTx returns a encryptedTx from its index

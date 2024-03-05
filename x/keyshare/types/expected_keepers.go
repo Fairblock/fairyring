@@ -1,7 +1,7 @@
 package types
 
 import (
-	peptypes "fairyring/x/pep/types"
+	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 
 	sdkerrors "cosmossdk.io/errors"
 	"cosmossdk.io/math"
@@ -43,6 +43,10 @@ type StakingKeeper interface {
 	GetAllValidators(ctx sdk.Context) []stakingtypes.Validator
 	GetValidator(ctx sdk.Context, addr sdk.ValAddress) (stakingtypes.Validator, bool)
 	Slash(sdk.Context, sdk.ConsAddress, int64, int64, sdk.Dec) math.Int
+}
+
+type GovKeeper interface {
+	ProcessAggrKeyshare(ctx sdk.Context, pID string, aggrKeyshare string) error
 }
 
 // ConnectionKeeper defines the expected interfaces needed to retrieve connection info

@@ -29,6 +29,10 @@ export interface KeyshareAuthorizedAddress {
   authorizedBy?: string;
 }
 
+export interface KeyshareCommitments {
+  commitments?: string[];
+}
+
 export interface KeyshareGeneralKeyShare {
   validator?: string;
   idType?: string;
@@ -43,7 +47,6 @@ export interface KeyshareGeneralKeyShare {
 
   /** @format uint64 */
   receivedBlockHeight?: string;
-  creator?: string;
 }
 
 export interface KeyshareKeyShare {
@@ -65,13 +68,24 @@ export interface KeyshareKeyShare {
 
 export type KeyshareMsgCreateAuthorizedAddressResponse = object;
 
-export type KeyshareMsgCreateGeneralKeyShareResponse = object;
+export interface KeyshareMsgCreateGeneralKeyShareResponse {
+  creator?: string;
+  idType?: string;
+  idValue?: string;
+  keyShare?: string;
+
+  /** @format uint64 */
+  keyShareIndex?: string;
+
+  /** @format uint64 */
+  receivedBlockHeight?: string;
+  success?: boolean;
+  errorMessage?: string;
+}
 
 export type KeyshareMsgCreateLatestPubKeyResponse = object;
 
 export type KeyshareMsgDeleteAuthorizedAddressResponse = object;
-
-export type KeyshareMsgDeleteGeneralKeyShareResponse = object;
 
 export interface KeyshareMsgRegisterValidatorResponse {
   creator?: string;
@@ -94,8 +108,6 @@ export interface KeyshareMsgSendKeyshareResponse {
 }
 
 export type KeyshareMsgUpdateAuthorizedAddressResponse = object;
-
-export type KeyshareMsgUpdateGeneralKeyShareResponse = object;
 
 /**
  * Params defines the parameters for the module.
@@ -191,6 +203,11 @@ export interface KeyshareQueryAllValidatorSetResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface KeyshareQueryCommitmentsResponse {
+  activeCommitments?: KeyshareCommitments;
+  queuedCommitments?: KeyshareCommitments;
 }
 
 export interface KeyshareQueryGetAggregatedKeyShareResponse {
@@ -526,6 +543,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryAuthorizedAddress = (target: string, params: RequestParams = {}) =>
     this.request<KeyshareQueryGetAuthorizedAddressResponse, RpcStatus>({
       path: `/fairyring/keyshare/authorized_address/${target}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryCommitments
+   * @request GET:/fairyring/keyshare/commitments
+   */
+  queryCommitments = (params: RequestParams = {}) =>
+    this.request<KeyshareQueryCommitmentsResponse, RpcStatus>({
+      path: `/fairyring/keyshare/commitments`,
       method: "GET",
       format: "json",
       ...params,

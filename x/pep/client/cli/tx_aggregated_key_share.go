@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"

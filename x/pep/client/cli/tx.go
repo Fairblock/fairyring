@@ -8,7 +8,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	// "github.com/cosmos/cosmos-sdk/client/flags"
-	"fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/x/pep/types"
 )
 
 var (
@@ -27,6 +27,8 @@ func GetTxCmd() *cobra.Command {
 
 	cmd.AddCommand(CmdSubmitEncryptedTx())
 	cmd.AddCommand(CmdCreateAggregatedKeyShare())
+	cmd.AddCommand(CmdRequestGeneralKeyshare())
+	cmd.AddCommand(CmdGetGeneralKeyshare())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

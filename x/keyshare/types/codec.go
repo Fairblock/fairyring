@@ -14,9 +14,9 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgRegisterValidator{}, "fairyring/RegisterValidator", nil)
-	cdc.RegisterConcrete(&MsgSendKeyshare{}, "fairyring/SendKeyshare", nil)
-	cdc.RegisterConcrete(&MsgCreateLatestPubKey{}, "fairyring/CreateLatestPubKey", nil)
+	cdc.RegisterConcrete(&MsgRegisterValidator{}, "github.com/Fairblock/fairyring/RegisterValidator", nil)
+	cdc.RegisterConcrete(&MsgSendKeyshare{}, "github.com/Fairblock/fairyring/SendKeyshare", nil)
+	cdc.RegisterConcrete(&MsgCreateLatestPubKey{}, "github.com/Fairblock/fairyring/CreateLatestPubKey", nil)
 	cdc.RegisterConcrete(&MsgCreateAuthorizedAddress{}, "keyshare/CreateAuthorizedAddress", nil)
 	cdc.RegisterConcrete(&MsgUpdateAuthorizedAddress{}, "keyshare/UpdateAuthorizedAddress", nil)
 	cdc.RegisterConcrete(&MsgDeleteAuthorizedAddress{}, "keyshare/DeleteAuthorizedAddress", nil)

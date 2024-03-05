@@ -182,10 +182,14 @@ test-block-tx-limit: init-test-block-limit-framework \
 
 integration-test-all: init-test-framework \
 	init-relayer \
-	test-keyshare-module \
-	test-pep-module
+	test-keyshare-module
 	-@rm -rf ./data
 	-@killall fairyringd 2>/dev/null
+
+devnet-up: init-devnet
+	@echo "Fairyring Devnet is now running in the background, run 'make devnet-down' to stop devnet."
+
+devnet-down: clean-devnet-data
 
 test-tx-limit:
 	@echo "Testing Block tx limit..."
@@ -198,6 +202,10 @@ test-keyshare-module:
 test-pep-module:
 	@echo "Testing Pep module..."
 	./scripts/tests/pep.sh
+
+test-gov-module:
+	@echo "Testing Gov module..."
+	./scripts/tests/priv_gov.sh
 
 init-relayer:
 	@echo "Initializing hermes relayer..."
@@ -213,6 +221,17 @@ init-test-framework: clean-testing-data install
 	@echo "Initializing fairyring..."
 	./scripts/tests/start.sh
 	@sleep 3
+
+init-devnet: clean-devnet-data install
+	@echo "Initializing fairyring devnet..."
+	./scripts/devnet/start.sh
+	@sleep 5
+
+clean-devnet-data:
+	@echo "Killing fairyringd, fairyport and removing previous data"
+	-@rm -rf ./devnet_data
+	-@killall fairyringd 2>/dev/null
+	-@killall fairyport 2>/dev/null
 
 clean-testing-data:
 	@echo "Killing fairyringd and removing previous data"

@@ -8,10 +8,12 @@ import (
 
 // ValidateBasic is used for validating the packet
 func (p RequestAggrKeysharePacketData) ValidateBasic() error {
-
-	_, err := strconv.ParseUint(p.ProposalId, 10, 64)
-	if err != nil {
-		return err
+	switch p.Id.(type) {
+	case *RequestAggrKeysharePacketData_ProposalId:
+		_, err := strconv.ParseUint(p.GetProposalId(), 10, 64)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

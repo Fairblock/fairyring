@@ -1,8 +1,8 @@
 package pep
 
 import (
-	"fairyring/x/pep/keeper"
-	"fairyring/x/pep/types"
+	"github.com/Fairblock/fairyring/x/pep/keeper"
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

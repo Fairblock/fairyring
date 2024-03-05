@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"fairyring/x/keyshare/types"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 
 	"github.com/cometbft/cometbft/libs/log"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -23,6 +23,7 @@ type (
 		connectionKeeper types.ConnectionKeeper
 		stakingKeeper    types.StakingKeeper
 		pepKeeper        types.PepKeeper
+		govKeeper        types.GovKeeper
 	}
 )
 
@@ -37,6 +38,7 @@ func NewKeeper(
 	connectionKeeper types.ConnectionKeeper,
 	pk types.PepKeeper,
 	stakingKeeper types.StakingKeeper,
+	govKeeper types.GovKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -58,6 +60,7 @@ func NewKeeper(
 		pepKeeper:        pk,
 		stakingKeeper:    stakingKeeper,
 		connectionKeeper: connectionKeeper,
+		govKeeper:        govKeeper,
 	}
 }
 
@@ -79,4 +82,9 @@ func (k Keeper) GetRequestCount(ctx sdk.Context) string {
 func (k Keeper) SetRequestCount(ctx sdk.Context, requestNumber uint64) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.RequestsCountKey, []byte(strconv.FormatUint(requestNumber, 10)))
+}
+
+func (k *Keeper) SetGovKeeper(govKeeper types.GovKeeper) *Keeper {
+	k.govKeeper = govKeeper
+	return k
 }

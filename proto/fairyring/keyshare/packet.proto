@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package fairyring.keyshare;
 
-option go_package = "fairyring/x/keyshare/types";
+option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
 message KeysharePacketData {
   oneof packet {
@@ -17,7 +17,10 @@ message NoData {}
 
 // RequestAggrKeysharePacketData defines a struct for the packet payload
 message RequestAggrKeysharePacketData {
-  string proposalId = 1;
+  oneof id {
+    string proposal_id = 1;
+    string request_id = 2;
+  }
 }
 
 // RequestAggrKeysharePacketAck defines a struct for the packet acknowledgment
@@ -40,8 +43,9 @@ message AggrKeyshareDataPacketData {
   string pubkey        = 2;
   string aggr_keyshare = 3;
   string aggr_height   = 4;
-  string proposal_id   = 5;
-  uint64 retries       = 6;
+  string proposal_id   = 5; // used for private governance
+  string request_id    = 6; // might be useful to destination chains to sort out the response
+  uint64 retries       = 7;
 }
 
 // AggrKeyshareDataPacketAck defines a struct for the packet acknowledgment

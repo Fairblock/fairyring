@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"fairyring/app"
+	"github.com/Fairblock/fairyring/app"
 
 	tmdb "github.com/cometbft/cometbft-db"
 	tmrand "github.com/cometbft/cometbft/libs/rand"
@@ -69,6 +69,7 @@ func DefaultConfig() network.Config {
 				0,
 				encoding,
 				simtestutil.EmptyAppOptions{},
+				app.EmptyWasmOpts,
 				baseapp.SetPruning(pruningtypes.NewPruningOptionsFromString(val.GetAppConfig().Pruning)),
 				baseapp.SetMinGasPrices(val.GetAppConfig().MinGasPrices),
 				baseapp.SetChainID(chainID),

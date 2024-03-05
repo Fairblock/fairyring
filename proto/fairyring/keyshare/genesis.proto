@@ -13,7 +13,7 @@ import "fairyring/keyshare/general_key_share.proto";
 
 // this line is used by starport scaffolding # genesis/proto/import
 
-option go_package = "fairyring/x/keyshare/types";
+option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
 // GenesisState defines the keyshare module's genesis state.
 message GenesisState {
