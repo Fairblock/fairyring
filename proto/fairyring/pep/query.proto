@@ -66,6 +66,13 @@ service Query {
   
   }
 
+  rpc KeyshareReq (QueryKeyshareRequest) returns (QueryKeyshareResponse) {
+    option (google.api.http).get = "/fairyring/pep/keyshare/{identity}";
+  }
+
+  rpc KeyshareReqAll (QueryAllKeyshareRequest) returns (QueryAllKeyshareResponse) {
+    option (google.api.http).get = "/fairyring/pep/keyshare";
+  }
   // this line is used by starport scaffolding # 2
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -76,6 +83,24 @@ message QueryParamsResponse {
   
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryKeyshareRequest {
+  string identity = 1;
+}
+
+message QueryKeyshareResponse {
+  GenEncTxExecutionQueue keyshare = 1;
+}
+
+message QueryAllKeyshareRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllKeyshareResponse {
+  repeated GenEncTxExecutionQueue keyshares = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+
 }
 
 message QueryGetEncryptedTxRequest {
