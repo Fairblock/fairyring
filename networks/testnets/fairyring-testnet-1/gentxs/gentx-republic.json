@@ -1,0 +1,50 @@
+{
+  "body": {
+    "messages": [
+      {
+        "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+        "description": {
+          "moniker": "Republic-Crypto",
+          "identity": "88931283C8B8D7B8",
+          "website": "https://republic.com",
+          "security_contact": "runtime-support@republiccrypto.com",
+          "details": "Republic Crypto | Runtime provides infrastructure for institutional staking on networks like Avalanche, Aptos, Sui and Haqq with tailored services to meet your needs."
+        },
+        "commission": {
+          "rate": "0.050000000000000000",
+          "max_rate": "0.200000000000000000",
+          "max_change_rate": "0.010000000000000000"
+        },
+        "min_self_delegation": "1",
+        "delegator_address": "fairy1uy2slhj2xf2sgssa5jkjf6v663e7wkkpj8glkv",
+        "validator_address": "fairyvaloper1uy2slhj2xf2sgssa5jkjf6v663e7wkkpfuw2jg",
+        "pubkey": {
+          "@type": "/cosmos.crypto.ed25519.PubKey",
+          "key": "2Zg1zywS1H8njK1R2gffA9gOWt03y1uBqQWD4NrqWOQ="
+        },
+        "value": { "denom": "ufairy", "amount": "10000000000" }
+      }
+    ],
+    "memo": "12f315956f97ba54f8a6e61d85e5efd4e8fb735e@51.210.222.119:26656",
+    "timeout_height": "0",
+    "extension_options": [],
+    "non_critical_extension_options": []
+  },
+  "auth_info": {
+    "signer_infos": [
+      {
+        "public_key": {
+          "@type": "/cosmos.crypto.secp256k1.PubKey",
+          "key": "Agp3szpnkV97jmduBz+JyzJL0CtIzAAyDIBkWR5FEZcY"
+        },
+        "mode_info": { "single": { "mode": "SIGN_MODE_DIRECT" } },
+        "sequence": "0"
+      }
+    ],
+    "fee": { "amount": [], "gas_limit": "200000", "payer": "", "granter": "" },
+    "tip": null
+  },
+  "signatures": [
+    "GQBnVb4dRjpQ0dFNth3Q8P6CxVC9ttLv10rSzrSMXd4hvNszE00asNzRN2AC7TBEwtbhT0T3ctXxioQFBabZXA=="
+  ]
+}
