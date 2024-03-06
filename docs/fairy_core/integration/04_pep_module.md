@@ -7,7 +7,7 @@ The PEP module stands for Pre-Execution Privacy. It has the following capabiliti
 1. Accept encrypted txs from users: `SubmitEncryptedTx`
 2. Verify and accept aggregated Keyshares from FairyPort: `CreateAggregatedKeyShare`
 3. Queue encrypted Txs in its store indexed by their target height
-4. Decrypt and Execute the encrypted Txs automatically whenever the respective aggrgated keyshare becomes available
+4. Decrypt and Execute the encrypted Txs automatically whenever the respective aggregated keyshare becomes available
 5. Keep pubkeys in its store to verify the submitted Aggregated Keyshares
 6. Automatically use the queued keys when the active key expires
 7. IBC functionality to query for pubkeys from FairyRing chain and update them (requires a relayer)

@@ -10,7 +10,7 @@ The Begin block of KeyShare module does the following three things:
 
 ## Update Registered Validator Set
 
-Validators who are not bonded (due to missing blocks, starting unbonding or being tombstoned) are not eligible for submitting keyshares to the module. The will be removed in the begining of the block and cannot submit their keyshares anymore.
+Validators who are not bonded (due to missing blocks, starting unbonding or being tombstoned) are not eligible for submitting keyshares to the module. The will be removed in the beginning of the block and cannot submit their keyshares anymore.
 
 ```go
 for _, eachValidator := range validators {
@@ -26,7 +26,7 @@ for _, eachValidator := range validators {
 
 ## Active Key Expiry
 
-The status of the Active PubKey is checked at the begining of every block. If the Key is found to be expired, it is replaced by the queued key. In case there is no queued key, the active key is simply removed. No Keyshares can be submitted till a new Active Key is assigned.
+The status of the Active PubKey is checked at the beginning of every block. If the Key is found to be expired, it is replaced by the queued key. In case there is no queued key, the active key is simply removed. No Keyshares can be submitted till a new Active Key is assigned.
 
 ```go
 ak, foundAk := am.keeper.GetActivePubKey(ctx)
