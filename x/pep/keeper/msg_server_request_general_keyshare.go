@@ -37,7 +37,7 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 				Pubkey:    rsp.GetPubkey(),
 			}
 
-			k.SetQueueEntry(ctx, entry)
+			k.SetEntry(ctx, entry)
 
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(
@@ -131,7 +131,12 @@ func (k Keeper) OnAcknowledgementRequestAggrKeysharePacket(ctx sdk.Context, pack
 			Pubkey:    packetAck.GetPubkey(),
 		}
 
-		k.SetQueueEntry(ctx, entry)
+		_, found := k.GetEntry(ctx, entry.Identity)
+		if found {
+			return errors.New("entry already exists")
+		}
+
+		k.SetEntry(ctx, entry)
 
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(

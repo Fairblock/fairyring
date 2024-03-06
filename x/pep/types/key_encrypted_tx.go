@@ -8,8 +8,9 @@ var _ binary.ByteOrder
 
 const (
 	// EncryptedTxKeyPrefix is the prefix to retrieve all EncryptedTx
-	EncryptedTxKeyPrefix = "EncryptedTx/value/"
-	GenEncTxKeyPrefix    = "GenEncTx/value/"
+	EncryptedTxKeyPrefix   = "EncryptedTx/value/"
+	GenEncTxKeyPrefix      = "GenEncTx/value/"
+	GenEncTxQueueKeyPrefix = "GenEncTxQueue/value/"
 )
 
 func EncryptedTxAllFromHeightKey(

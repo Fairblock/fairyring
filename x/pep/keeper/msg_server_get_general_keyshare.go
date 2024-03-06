@@ -19,7 +19,7 @@ func (k msgServer) GetGeneralKeyshare(goCtx context.Context, msg *types.MsgGetGe
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	logger := k.Logger(ctx)
 
-	entry, found := k.GetQueueEntry(ctx, msg.Identity)
+	entry, found := k.GetEntry(ctx, msg.Identity)
 	if !found {
 		return &types.MsgGetGeneralKeyshareResponse{}, errors.New("identity not found")
 	}

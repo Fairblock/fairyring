@@ -36,6 +36,7 @@ type PepKeeper interface {
 	GetQueuedPubKey(ctx sdk.Context) (val peptypes.QueuedPubKey, found bool)
 	DeleteActivePubKey(ctx sdk.Context)
 	DeleteQueuedPubKey(ctx sdk.Context)
+	ProcessAggrKeyshare(ctx sdk.Context, identity string, aggrKeyshare string) error
 }
 
 // StakingKeeper defines the expected interface needed to retrieve the list of validators.

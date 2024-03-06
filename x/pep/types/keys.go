@@ -45,11 +45,12 @@ const (
 )
 
 const (
-	EncryptedTxExecutedEventType    = "executed-encrypted-tx"
-	EncryptedTxExecutedEventCreator = "executed-encrypted-tx-creator"
-	EncryptedTxExecutedEventHeight  = "executed-encrypted-tx-target-height"
-	EncryptedTxExecutedEventIndex   = "executed-encrypted-tx-index"
-	EncryptedTxExecutedEventData    = "executed-encrypted-tx-data"
+	EncryptedTxExecutedEventType     = "executed-encrypted-tx"
+	EncryptedTxExecutedEventCreator  = "executed-encrypted-tx-creator"
+	EncryptedTxExecutedEventHeight   = "executed-encrypted-tx-target-height"
+	EncryptedTxExecutedEventIdentity = "executed-encrypted-tx-identity"
+	EncryptedTxExecutedEventIndex    = "executed-encrypted-tx-index"
+	EncryptedTxExecutedEventData     = "executed-encrypted-tx-data"
 )
 
 const (

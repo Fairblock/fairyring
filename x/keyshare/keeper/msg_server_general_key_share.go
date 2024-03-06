@@ -261,33 +261,41 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 		k.SetKeyShareRequest(ctx, keyShareReq)
 		timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 
-		if keyShareReq.IbcInfo.ChannelID != "" {
-			_, err = k.TransmitAggrKeyshareDataPacket(
-				ctx,
-				types.AggrKeyshareDataPacketData{
-					Identity:     keyShareReq.Identity,
-					Pubkey:       keyShareReq.Pubkey,
-					AggrKeyshare: keyShareReq.AggrKeyshare,
-					AggrHeight:   strconv.FormatInt(ctx.BlockHeight(), 10),
-					ProposalId:   keyShareReq.ProposalId,
-					RequestId:    keyShareReq.RequestId,
-					Retries:      0,
-				},
-				keyShareReq.IbcInfo.PortID,
-				keyShareReq.IbcInfo.ChannelID,
-				clienttypes.ZeroHeight(),
-				uint64(timeoutTimestamp),
-			)
-			if err != nil {
-				return nil, err
+		if keyShareReq.IbcInfo != nil {
+			if keyShareReq.IbcInfo.ChannelID != "" {
+				_, err = k.TransmitAggrKeyshareDataPacket(
+					ctx,
+					types.AggrKeyshareDataPacketData{
+						Identity:     keyShareReq.Identity,
+						Pubkey:       keyShareReq.Pubkey,
+						AggrKeyshare: keyShareReq.AggrKeyshare,
+						AggrHeight:   strconv.FormatInt(ctx.BlockHeight(), 10),
+						ProposalId:   keyShareReq.ProposalId,
+						RequestId:    keyShareReq.RequestId,
+						Retries:      0,
+					},
+					keyShareReq.IbcInfo.PortID,
+					keyShareReq.IbcInfo.ChannelID,
+					clienttypes.ZeroHeight(),
+					uint64(timeoutTimestamp),
+				)
+				if err != nil {
+					return nil, err
+				}
 			}
 		} else {
-			err = k.govKeeper.ProcessAggrKeyshare(ctx, keyShareReq.ProposalId, keyShareReq.AggrKeyshare)
-			if err != nil {
-				return nil, err
+			if keyShareReq.ProposalId != "" {
+				err = k.govKeeper.ProcessAggrKeyshare(ctx, keyShareReq.ProposalId, keyShareReq.AggrKeyshare)
+				if err != nil {
+					return nil, err
+				}
+			} else {
+				err = k.pepKeeper.ProcessAggrKeyshare(ctx, keyShareReq.ProposalId, keyShareReq.AggrKeyshare)
+				if err != nil {
+					return nil, err
+				}
 			}
 		}
-
 	}
 
 	return &types.MsgCreateGeneralKeyShareResponse{

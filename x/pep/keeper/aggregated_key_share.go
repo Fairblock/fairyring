@@ -74,17 +74,28 @@ func (k Keeper) OnRecvAggrKeyshareDataPacket(ctx sdk.Context, packet channeltype
 		return packetAck, err
 	}
 
-	reqQueueEntry, found := k.GetQueueEntry(ctx, data.Identity)
+	reqQueueEntry, found := k.GetEntry(ctx, data.Identity)
 	if !found {
 		return packetAck, errors.New("request not found for this identity")
 	}
 
-	k.ExecuteGenEncTxs(ctx, reqQueueEntry, data.AggrKeyshare, data.Pubkey)
-	k.RemoveQueueEntry(ctx, data.Identity)
+	reqQueueEntry.AggrKeyshare = data.AggrKeyshare
+
+	k.SetQueueEntry(ctx, reqQueueEntry)
+	k.RemoveEntry(ctx, data.Identity)
 
 	return packetAck, nil
 }
 
-func (keeper Keeper) ExecuteGenEncTxs(ctx sdk.Context, entry types.GenEncTxExecutionQueue, aggrKeyshare string, pubkey string) {
-	// TODO
+func (k Keeper) ProcessAggrKeyshare(ctx sdk.Context, identity string, aggrKeyshare string) error {
+	reqQueueEntry, found := k.GetEntry(ctx, identity)
+	if !found {
+		return errors.New("request not found for this identity")
+	}
+
+	reqQueueEntry.AggrKeyshare = aggrKeyshare
+
+	k.SetQueueEntry(ctx, reqQueueEntry)
+	k.RemoveEntry(ctx, identity)
+	return nil
 }

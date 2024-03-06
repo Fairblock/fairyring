@@ -14,7 +14,7 @@ import (
 func (k msgServer) SubmitGeneralEncryptedTx(goCtx context.Context, msg *types.MsgSubmitGeneralEncryptedTx) (*types.MsgSubmitEncryptedTxResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	_, found := k.GetQueueEntry(ctx, msg.Identity)
+	_, found := k.GetEntry(ctx, msg.Identity)
 	if !found {
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(types.EncryptedTxRevertedEventType,
@@ -53,7 +53,7 @@ func (k msgServer) SubmitGeneralEncryptedTx(goCtx context.Context, msg *types.Ms
 		ChargedGas: &minGas,
 	}
 
-	txIndex := k.AppendTxToQueueEntry(ctx, msg.Identity, encryptedTx)
+	txIndex := k.AppendTxToEntry(ctx, msg.Identity, encryptedTx)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.SubmittedGeneralEncryptedTxEventType,

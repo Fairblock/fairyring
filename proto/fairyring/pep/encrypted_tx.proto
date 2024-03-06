@@ -36,4 +36,5 @@ message GenEncTxExecutionQueue {
   string identity = 3;
   string pubkey = 4;
   GeneralEncryptedTxArray tx_list = 5;
+  string aggr_keyshare = 6;
 }
