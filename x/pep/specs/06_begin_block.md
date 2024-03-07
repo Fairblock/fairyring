@@ -29,7 +29,7 @@ if utxs != nil {
 
 ---
 
-## Decrypting Encryted Transactions
+## Decrypting Encrypted Transactions
 
 The Pep Begin block fetches the last target height that it executed and the latest height for which aggregated keyshares are available. It then fetches all encrypted transactions in this range, decrypt them one by one and execute them. For example, if the last executed height was 100 and the latest aggregated keyshare has a height of 105, it feches all encrypted transactions that have a target height of 100-105.
 

@@ -19,11 +19,11 @@ The default expiry duration is decided by the `KeyExpiry` param of the `KeyShare
 
 ## Adding a New PubKey
 
-The procedure for adding new Public Keys is different for the FairyRing chain and the destination chains. Whereas for the FairyRing chain, new keys are added via transations from verified addresses to the chain, the addition of pubkeys to destination chains is purely dependent on any change in pubkeys in the FairyRing chain and this information is fetched via IBC.
+The procedure for adding new Public Keys is different for the FairyRing chain and the destination chains. Whereas for the FairyRing chain, new keys are added via transactions from verified addresses to the chain, the addition of pubkeys to destination chains is purely dependent on any change in pubkeys in the FairyRing chain and this information is fetched via IBC.
 
 ### Adding Keys to Destination Chains
 
-Destination chains can only recieve pubkeys from the FairyRing chain via IBC. The PEP module, which is implemented by both FairyRing chain and destination chain, is an IBC enabled module. The Destination chain's PEP module becomes the A-end while the PEP module of the FairyRing chain becomes the B-end. At the end of every block, the PEP module of the A-end makes a call to the B-end to get the latest pubkeys.
+Destination chains can only receive pubkeys from the FairyRing chain via IBC. The PEP module, which is implemented by both FairyRing chain and destination chain, is an IBC enabled module. The Destination chain's PEP module becomes the A-end while the PEP module of the FairyRing chain becomes the B-end. At the end of every block, the PEP module of the A-end makes a call to the B-end to get the latest pubkeys.
 
 Note the following:
 

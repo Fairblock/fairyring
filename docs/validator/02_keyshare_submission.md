@@ -1,6 +1,6 @@
 # Generating and Submitting KeyShares
 
-Validitors on FairyRing have two main purposes:
+Validators on FairyRing have two main purposes:
 
 - Participate in consensus to generate blocks. This functionality is the same as with any other chain on Cosmos.
 - Submit Keyshares at every block
