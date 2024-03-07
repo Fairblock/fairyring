@@ -16,10 +16,10 @@ GENERATOR=ShareGenerator
 BINARY=fairyringd
 CHAIN_DIR=$(pwd)/data
 CHAINID_1=fairyring_test_1
-CHAINID_2=fairyring_test_2
 BLOCK_TIME=5
 
 WALLET_1=$($BINARY keys show wallet1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
+WALLET_3=$($BINARY keys show wallet3 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
 VALIDATOR_1=$($BINARY keys show val1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
 
 check_tx_code () {
@@ -148,6 +148,16 @@ if [ "$KEYSHARE_HEIGHT" != "$TARGET_HEIGHT" ]; then
   exit 1
 fi
 
+echo "Registered validator remove authorized address that does not exists on chain fairyring_test_1"
+RESULT=$($BINARY tx keyshare delete-authorized-address $WALLET_3 --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
+if [[ "$ERROR_MSG" != *"target authorized address not found"* ]]; then
+  echo "ERROR: KeyShare module registered validator remove authorized address error. Expected target authorized address not found, got '$ERROR_MSG'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  exit 1
+fi
 
 echo "Registered validator remove authorized address to submit key share on chain fairyring_test_1"
 RESULT=$($BINARY tx keyshare delete-authorized-address $WALLET_1 --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
@@ -185,7 +195,7 @@ EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
 
-echo "Registered validator submit valid key share on chain fairyring_test_1"
+echo "Registered validator submit VALID key share on chain fairyring_test_1"
 RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 1 $TARGET_HEIGHT --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
@@ -196,7 +206,34 @@ if [ "$RESULT_EVENT" != "keyshare-aggregated" ]; then
   exit 1
 fi
 
-./scripts/tests/keyshareSender.sh $BINARY $CHAIN_DIR/$CHAINID_1 tcp://localhost:16657 $VALIDATOR_1 $CHAINID_1 $GENERATOR $GENERATED_SHARE > $CHAIN_DIR/keyshareSender.log 2>&1 &
+CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
+
+echo "Registered validator submit valid key share but with current block height on chain fairyring_test_1"
+RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 1 $CURRENT_BLOCK --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
+if [[ "$ERROR_MSG" != *"key share height is lower than the current block height"* ]]; then
+  echo "ERROR: KeyShare module submit valid key share but with current block height from registered validator error. Expected to get a key share height is lower than the current block height error, got '$ERROR_MSG'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  echo "$RESULT"
+  exit 1
+fi
+
+CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
+NEW_TARGET_HEIGHT=$((CURRENT_BLOCK+3))
+
+echo "Registered validator submit valid key share with target block + 2 on chain fairyring_test_1"
+RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 1 $NEW_TARGET_HEIGHT --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
+if [[ "$ERROR_MSG" != *"key share height is higher than the current block height"* ]]; then
+  echo "ERROR: KeyShare module submit valid key share with target block height + 2 from registered validator error. Expected to get a key share height is higher than the current block height error, got '$ERROR_MSG'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  echo "$RESULT"
+  exit 1
+fi
 
 echo "Query submitted key share on chain fairyring_test_1"
 RESULT=$($BINARY query keyshare list-key-share --node tcp://localhost:16657 -o json)
@@ -220,6 +257,20 @@ if [ "$RESULT_HEIGHT" != "$TARGET_HEIGHT" ]; then
 fi
 echo "Key Share Successfully aggregated: '$RESULT_DATA'"
 
+echo "Testing idle validator slashing logic"
+STAKED=$(fairyringd q staking validators -o json --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657  | jq -r '.validators[0].tokens')
+echo "Validator staked amount before testing slash idle validator: $STAKED"
+
+sleep 60
+
+NEW_STAKED=$(fairyringd q staking validators -o json --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657  | jq -r '.validators[0].tokens')
+echo "Validator staked amount after being slashed because of idling: $NEW_STAKED"
+if [ "$NEW_STAKED" -ge "$STAKED" ]; then
+  echo "ERROR: KeyShare module didn't slash idle validator"
+  exit 1
+fi
+
+./scripts/tests/keyshareSender.sh $BINARY $CHAIN_DIR/$CHAINID_1 tcp://localhost:16657 $VALIDATOR_1 $CHAINID_1 $GENERATOR $GENERATED_SHARE > $CHAIN_DIR/keyshareSender.log 2>&1 &
 
 echo ""
 echo "######################################################"
