@@ -153,7 +153,7 @@ PUB_KEY=$(echo "$GENERATED_RESULT" | jq -r '.MasterPublicKey')
 COMMITS=$(echo "$GENERATED_RESULT" | jq -r '.Commitments[0]')
 
 echo "Submitting public key..."
-RESULT=$($BINARY tx keyshare create-latest-pub-key $PUB_KEY $COMMITS --from val1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --node tcp://localhost:$RPCPORT --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare create-latest-pub-key $PUB_KEY $COMMITS 1 --from val1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --node tcp://localhost:$RPCPORT --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 VALIDATOR_ADDR=$(echo "$RESULT" | jq -r '.logs[0].events[1].attributes[2].value')
