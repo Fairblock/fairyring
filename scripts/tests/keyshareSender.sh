@@ -6,7 +6,6 @@ NODE=$3
 FROM=$4
 CHAINID=$5
 GENERATOR=$6
-GENERATED_SHARE=$7
 
 BLOCK_TIME=5
 
@@ -25,13 +24,16 @@ wait_for_tx () {
   echo "$RESULT"
 }
 
+sleep 5
+RESULT=$(fairyringd q keyshare show-active-pub-key --node $NODE -o json | jq)
+GENERATED_SHARE=$(echo $RESULT | jq -r '.activePubKey.encryptedKeyShares[0].data')
+
 while true
 do
   CURRENT_BLOCK=$($BINARY query block --home $HOME --node $NODE | jq -r '.block.header.height')
   TARGET_HEIGHT=$((CURRENT_BLOCK+1))
   EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
   EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
-  #EXTRACTED_COMMITMENT=$(echo "$EXTRACTED_RESULT" | jq -r '.Commitment')
   RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 1 $TARGET_HEIGHT --from $FROM --gas-prices 1ufairy --home $HOME --chain-id $CHAINID --node $NODE --broadcast-mode sync --keyring-backend test -o json -y)
   check_tx_code $RESULT
   RESULT=$(wait_for_tx $RESULT)

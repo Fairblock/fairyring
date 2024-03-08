@@ -156,7 +156,6 @@ echo "Submitting public key..."
 RESULT=$($BINARY tx keyshare create-latest-pub-key $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VAL1_ADDR"'"}]' --from val1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --node tcp://localhost:$RPCPORT --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
-echo $RESULT | jq
 VALIDATOR_ADDR=$(echo "$RESULT" | jq -r '.logs[0].events[1].attributes[2].value')
 if [ "$VALIDATOR_ADDR" != "$VAL1_ADDR" ]; then
   echo "ERROR: KeyShare module submit pub key from trusted address error. Expected creator address '$VAL1_ADDR', got '$VALIDATOR_ADDR'"
@@ -165,7 +164,7 @@ if [ "$VALIDATOR_ADDR" != "$VAL1_ADDR" ]; then
 fi
 
 echo "Starting KeyShare Sender..."
-./scripts/tests/keyshareSender.sh $BINARY $CHAIN_DIR/$CHAINID tcp://localhost:$RPCPORT val1 $CHAINID $GENERATOR $GENERATED_SHARE > $CHAIN_DIR/keyshareSender.log 2>&1 &
+./scripts/tests/keyshareSender.sh $BINARY $CHAIN_DIR/$CHAINID tcp://localhost:$RPCPORT val1 $CHAINID $GENERATOR > $CHAIN_DIR/keyshareSender.log 2>&1 &
 
 echo "Starting fairyport..."
 cd "$(pwd)/scripts/devnet"
