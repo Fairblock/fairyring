@@ -1,7 +1,7 @@
-# Overview 
+# Overview
 
 **fairyring** is a Cosmos SDK blockchain that leverages identity-based encryption (IBE) to enable pre-execution privacy on Cosmos SDK app-chains.
-`fairyring` consists of two main components, a blockchain purpose-built for management of decryption keys in a decentralized manner, as well as a Cosmos SDK module that other app-chains can use to integrate with fairyring. 
+`fairyring` consists of two main components, a blockchain purpose-built for management of decryption keys in a decentralized manner, as well as a Cosmos SDK module that other app-chains can use to integrate with fairyring.
 
 ## Get started
 
@@ -19,12 +19,6 @@ make build
 make install
 ```
 
-3. Running fairyringd
-
-```bash
-fairyringd
-```
-
 ### Running the chain locally
 
 1. After building the fairyring executable and before running the script,
@@ -37,7 +31,7 @@ rm -rf ~/.fairyring
 2. Then, run the following script to setup the node
 
 ```bash
-./setup.sh <moniker>
+./scripts/docker_setup.sh <moniker>
 ```
 
 - moniker can be any string you want, is the nickname of your node
@@ -48,36 +42,35 @@ rm -rf ~/.fairyring
 fairyringd collect-gentxs
 ```
 
-4. Run the chain by 
+4. Run the chain by
 
 ```bash
 fairyringd start
 ```
 
-
 ### Running a validator locally with Docker
 
 1. Build docker image
 
-```
+```bash
 docker build -t fairyring .
 ```
 
 2. Setup validator
 
-```
-docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring setup.sh <moniker>
+```bash
+docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring scripts/docker_setup.sh <moniker>
 ```
 
 3. Create new genesis.json
 
-```
+```bash
 docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd collect-gentxs
 ```
 
 4. Start the validator
 
-```
+```bash
 docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd start
 ```
 
@@ -87,25 +80,25 @@ docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fai
 
 2. Run the following command for all the address created in other machine in the master validator:
 
-```
+```bash
 docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd add-genesis-account <address> 100000000stake
 ```
 
 3. Add all the gentx.json at `~/.fairyring/config/gentx/gentx-{node_id}.json` from all the machines to master validator, then run the command on step 4
 
-4. replace the old `genesis.json` with the new one created in master validator
+4. Replace the old `genesis.json` with the new one created in master validator
 
 5. Open config.toml at `~/.fairyring/config/config.toml` on master validator and replace the IP Address & Port of the peers
 
 6. Update the config.toml for all the other machine to include all the validator peers:
 
-```
+```bash
 presistent_peers = "node_id@ip:port,node_id2@ip:port"
 ```
 
 You can get the node id by the following command:
 
-```
+```bash
 docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fairyring:/root/.fairyring fairyring fairyringd tendermint show-node-id
 ```
 
@@ -113,7 +106,7 @@ docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fai
 
 ### Becoming a validator
 
-1. Follow step 1 - 2 on [Run validator locally](#Running-a-validator-locally-with-Docker)
+1. Follow step 1 - 2 on [Run validator locally](#running-a-validator-locally-with-docker)
 
 2. Make sure you have enough coins in your account
 
@@ -121,7 +114,7 @@ docker run -it -p 1317:1317 -p 9090:9090 -p 26657:26657 -p 26656:26656 -v ~/.fai
 
 4. Send the `fairyringd tx staking create-validator` command with the address created to become validator, for example:
 
-```
+```bash
 docker exec -it $(docker ps --latest --format '{{.ID}}') fairyringd tx staking create-validator \
   --amount=100000000stake \
   --pubkey=$(fairyringd tendermint show-validator) \
@@ -142,19 +135,19 @@ docker exec -it $(docker ps --latest --format '{{.ID}}') fairyringd tx staking c
 
 Create pub key
 
-```
+```bash
 fairyringd tx keyshare create-latest-pub-key <pub-key-in-hex>
 ```
 
 Register as a validator
 
-```
+```bash
 fairyringd tx keyshare register-validator
 ```
 
 Submit a KeyShare
 
-```
+```bash
 fairyringd tx send-key-share <keyshare-in-hex> <commitment-in-hex> <keyshare-index> <keyshare-block-height>
 ```
 
@@ -162,13 +155,13 @@ fairyringd tx send-key-share <keyshare-in-hex> <commitment-in-hex> <keyshare-ind
 
 Submit aggregated key share
 
-```
+```bash
 fairyringd tx pep create-aggregated-key-share <aggregated-key-share-height> <aggregated-key-share-in-hex> <public-key-in-hex>
 ```
 
 Submit encrypted transaction
 
-```
+```bash
 fairyringd tx pep submit-encrypted-tx <encrypted-tx-cipher-in-hex> <target-block-height>
 ```
 
@@ -178,25 +171,25 @@ fairyringd tx pep submit-encrypted-tx <encrypted-tx-cipher-in-hex> <target-block
 
 Get all validators
 
-```
+```bash
 fairyringd query keyshare list-validator-set
 ```
 
 Get all broadcasted keyshares
 
-```
+```bash
 fairyringd query keyshare list-key-share
 ```
 
 Get specific validator
 
-```
+```bash
 fairyringd query keyshare show-validator-set <Index>
 ```
 
 Get specific keyshare
 
-```
+```bash
 fairyringd query keyshare show-key-share <Validator> <BlockHeight>
 ```
 
@@ -204,19 +197,19 @@ fairyringd query keyshare show-key-share <Validator> <BlockHeight>
 
 Get all encrypted tx in state
 
-```
+```bash
 fairyringd query pep list-encrypted-tx
 ```
 
 Get all encrypted tx in state from a specific block height
 
-```
+```bash
 fairyringd query pep list-encrypted-tx-from-block <blockHeight>
 ```
 
 Get a single encrypted tx in state with a specific block height & tx index
 
-```
+```bash
 fairyringd query pep show-encrypted-tx <blockHeight> <index>
 ```
 
@@ -236,14 +229,13 @@ Your blockchain in development can be configured with `config.yml`. To learn mor
 
 Ignite CLI has scaffolded a Vue.js-based web app in the `vue` directory. Run the following commands to install dependencies and start the app:
 
-```
+```bash
 cd vue
 npm install
 npm run serve
 ```
 
 The frontend app is built using the `@starport/vue` and `@starport/vuex` packages. For details, see the [monorepo for Ignite front-end development](https://github.com/ignite/web).
-
 
 ## Setup a testing environment
 
@@ -261,11 +253,9 @@ make install
 
 3. Building the executable of [ShareGenerator](https://github.com/FairBlock/ShareGenerator) and [Encrypter](https://github.com/FairBlock/encrypter) and put them in this directory
 
-
 4. Install [Hermes Relayer](https://hermes.informal.systems/) by following this [guide](https://hermes.informal.systems/quick-start/installation.html)
 
-
-5. Running the tests 
+5. Running the tests
 
 ```bash
 make integration-test-all
