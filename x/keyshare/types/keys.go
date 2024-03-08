@@ -84,6 +84,7 @@ const (
 	QueuedPubKeyCreatedEventCreator                  = "creator"
 	QueuedPubKeyCreatedEventPubkey                   = "pubkey"
 	QueuedPubKeyCreatedEventNumberOfValidators       = "number-of-validators"
+	QueuedPubKeyCreatedEventEncryptedShares          = "encrypted-shares"
 )
 
 const (

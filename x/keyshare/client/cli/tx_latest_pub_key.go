@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"encoding/json"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/spf13/cast"
 	"strings"
@@ -13,9 +14,9 @@ import (
 
 func CmdCreateLatestPubKey() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-latest-pub-key [public-key] [commitments] [number-of-validators]",
+		Use:   "create-latest-pub-key [public-key] [commitments] [number-of-validators] [encrypted-key-shares]",
 		Short: "Create a latest public key",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			// Get value arguments
@@ -29,6 +30,12 @@ func CmdCreateLatestPubKey() *cobra.Command {
 				return err
 			}
 
+			encryptedShares := make([]*types.EncryptedKeyShare, numberOfValidators)
+
+			if err := json.Unmarshal([]byte(args[3]), &encryptedShares); err != nil {
+				return err
+			}
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -39,6 +46,7 @@ func CmdCreateLatestPubKey() *cobra.Command {
 				argPublicKey,
 				commitments,
 				numberOfValidators,
+				encryptedShares,
 			)
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},

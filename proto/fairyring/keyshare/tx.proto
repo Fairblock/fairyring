@@ -3,6 +3,7 @@ syntax = "proto3";
 package fairyring.keyshare;
 
 import "fairyring/keyshare/general_key_share.proto";
+import "fairyring/keyshare/pub_key.proto";
 
 // this line is used by starport scaffolding # proto/tx/import
 
@@ -51,6 +52,7 @@ message MsgCreateLatestPubKey {
            string publicKey   = 2;
   repeated string commitments = 3;
            uint64 numberOfValidators = 4;
+  repeated EncryptedKeyShare encryptedKeyShares = 5;
 }
 
 message MsgCreateLatestPubKeyResponse {}
