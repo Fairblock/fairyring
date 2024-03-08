@@ -36,21 +36,18 @@ fairyringd start
 
 ## Network Compatibility Matrix
 
-| Version | Mainnet | Testnet | SDK Version |
-|:-------:|:-------:|:-------:|:-----------:|
-|  v0.0.1 |    ✗    |    ✓    |   v0.46.3   |
+| Version | Mainnet | Testnet |    SDK Version   |
+|:-------:|:-------:|:-------:|:----------------:|
+|  v0.0.1 |    ✗    |    ✓    |      v0.46.3     |
+|  v0.4.0 |    ✗    |    ✓    | v0.47.5 (forked) |
 
 ---
 
 ## Active Networks
 
-### Mainnet
-
-Coming Soon!!
-
 ### Testnet
 
-Coming Soon!!
+The current public testnet of Fairyring is running version `v0.4.0`
 
 ### Initialize a new chain and start node
 

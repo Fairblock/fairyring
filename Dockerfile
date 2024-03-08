@@ -23,7 +23,7 @@ EXPOSE 26656 26657 1317 9090
 #STOPSIGNAL SIGTERM
 WORKDIR /root
 
-COPY setup.sh /usr/bin/setup.sh
+COPY setup.scripts/docker_setup.sh /usr/bin/setup.sh
 RUN ["chmod", "+x", "/usr/bin/setup.sh"]
 
 # Copy over binaries from the build-env
