@@ -29,6 +29,10 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 		return nil, types.ErrEmptyCommitments
 	}
 
+	if msg.NumberOfValidators == 0 {
+		return nil, types.ErrInvalidNumberOfValidators
+	}
+
 	commitments := types.Commitments{
 		Commitments: msg.Commitments,
 	}
@@ -40,9 +44,10 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	var queuedPubKey = types.QueuedPubKey{
-		Creator:   msg.Creator,
-		PublicKey: msg.PublicKey,
-		Expiry:    expHeight,
+		Creator:            msg.Creator,
+		PublicKey:          msg.PublicKey,
+		Expiry:             expHeight,
+		NumberOfValidators: msg.NumberOfValidators,
 	}
 
 	k.SetQueuedCommitments(
@@ -70,6 +75,7 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 			sdk.NewAttribute(types.QueuedPubKeyCreatedEventExpiryHeight, strconv.FormatUint(expHeight, 10)),
 			sdk.NewAttribute(types.QueuedPubKeyCreatedEventCreator, msg.Creator),
 			sdk.NewAttribute(types.QueuedPubKeyCreatedEventPubkey, msg.PublicKey),
+			sdk.NewAttribute(types.QueuedPubKeyCreatedEventNumberOfValidators, strconv.FormatUint(msg.NumberOfValidators, 10)),
 		),
 	)
 

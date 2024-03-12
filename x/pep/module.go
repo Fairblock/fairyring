@@ -7,9 +7,9 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/cosmos/cosmos-sdk/telemetry"
-
 	cosmosmath "cosmossdk.io/math"
+
+	"github.com/cosmos/cosmos-sdk/telemetry"
 
 	enc "github.com/FairBlock/DistributedIBE/encryption"
 
@@ -32,7 +32,6 @@ import (
 	"github.com/Fairblock/fairyring/x/pep/client/cli"
 	"github.com/Fairblock/fairyring/x/pep/keeper"
 	"github.com/Fairblock/fairyring/x/pep/types"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -210,6 +209,17 @@ func (am AppModule) handleGasConsumption(ctx sdk.Context, recipient sdk.AccAddre
 	}
 }
 
+type UnderlyingTxEvent struct {
+	Type       string           `json:"type"`
+	Attributes []EventAttribute `json:"attributes"`
+}
+
+type EventAttribute struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+	Index bool   `json:"index"`
+}
+
 func (am AppModule) processFailedEncryptedTx(ctx sdk.Context, tx types.EncryptedTx, failReason string, startConsumedGas uint64) {
 	am.keeper.Logger(ctx).Error(fmt.Sprintf("failed to process encrypted tx: %s", failReason))
 	ctx.EventManager().EmitEvent(
@@ -301,7 +311,24 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 		key, found := am.keeper.GetAggregatedKeyShare(ctx, h)
 		if !found {
-			am.keeper.Logger(ctx).Error(fmt.Sprintf("Decryption key not found for block height: %d", h))
+			am.keeper.Logger(ctx).Error(fmt.Sprintf("Decryption key not found for block height: %d, Removing all the encrypted txs...", h))
+			encryptedTxs := am.keeper.GetEncryptedTxAllFromHeight(ctx, h)
+			if len(encryptedTxs.EncryptedTx) > 0 {
+				am.keeper.SetAllEncryptedTxExpired(ctx, h)
+				am.keeper.Logger(ctx).Info(fmt.Sprintf("Updated total %d encrypted txs at block %d to expired", len(encryptedTxs.EncryptedTx), h))
+				indexes := make([]string, len(encryptedTxs.EncryptedTx))
+				for _, v := range encryptedTxs.EncryptedTx {
+					indexes = append(indexes, strconv.FormatUint(v.Index, 10))
+				}
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxDiscardedEventType,
+						sdk.NewAttribute(types.EncryptedTxDiscardedEventTxIDs, strings.Join(indexes, ",")),
+						sdk.NewAttribute(types.EncryptedTxDiscardedEventHeight, strconv.FormatUint(h, 10)),
+					),
+				)
+			} else {
+				am.keeper.Logger(ctx).Info(fmt.Sprintf("No encrypted tx found at block %d", h))
+			}
 			continue
 		}
 
@@ -345,6 +372,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 		for _, eachTx := range arr.EncryptedTx {
 			startConsumedGas := ctx.GasMeter().GasConsumed()
+			am.keeper.SetEncryptedTxProcessedHeight(ctx, eachTx.TargetHeight, eachTx.Index, uint64(ctx.BlockHeight()))
 			if currentNonce, found := am.keeper.GetPepNonce(ctx, eachTx.Creator); found && currentNonce.Nonce == math.MaxUint64 {
 				am.processFailedEncryptedTx(ctx, eachTx, "invalid pep nonce", startConsumedGas)
 				continue
@@ -546,11 +574,30 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			}
 
 			handler := am.msgServiceRouter.Handler(txMsgs[0])
-			_, err = handler(ctx, txMsgs[0])
+			handlerResult, err := handler(ctx, txMsgs[0])
 			if err != nil {
 				am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error when handling tx message: %s", err.Error()), startConsumedGas)
 				continue
 			}
+
+			underlyingTxEvents := make([]UnderlyingTxEvent, 0)
+
+			for _, e := range handlerResult.Events {
+				eventAttributes := make([]EventAttribute, 0)
+				for _, ea := range e.Attributes {
+					eventAttributes = append(eventAttributes, EventAttribute{
+						Key:   ea.Key,
+						Value: ea.Value,
+						Index: ea.Index,
+					})
+				}
+				underlyingTxEvents = append(underlyingTxEvents, UnderlyingTxEvent{
+					Type:       e.Type,
+					Attributes: eventAttributes,
+				})
+			}
+
+			eventStrArrJson, _ := json.Marshal(underlyingTxEvents)
 
 			am.keeper.Logger(ctx).Info("! Encrypted Tx Decrypted & Decoded & Executed successfully !")
 
@@ -560,13 +607,13 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 					sdk.NewAttribute(types.EncryptedTxExecutedEventHeight, strconv.FormatUint(eachTx.TargetHeight, 10)),
 					sdk.NewAttribute(types.EncryptedTxExecutedEventData, eachTx.Data),
 					sdk.NewAttribute(types.EncryptedTxExecutedEventIndex, strconv.FormatUint(eachTx.Index, 10)),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventMemo, wrappedTx.GetTx().GetMemo()),
+					sdk.NewAttribute(types.EncryptedTxExecutedEventUnderlyingEvents, string(eventStrArrJson)),
 				),
 			)
 
 			telemetry.IncrCounter(1, types.KeyTotalSuccessEncryptedTx)
 		}
-
-		am.keeper.RemoveAllEncryptedTxFromHeight(ctx, h)
 	}
 
 	// loop over all entries in the general enc tx queue

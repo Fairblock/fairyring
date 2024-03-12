@@ -34,55 +34,56 @@ const (
 )
 
 const (
-	RegisteredValidatorEventType    = "new validator-registered"
+	RegisteredValidatorEventType    = "new-validator-registered"
 	RegisteredValidatorEventCreator = "creator"
 )
 
 const (
 	SendKeyshareEventType                = "keyshare-sent"
 	SendKeyshareEventValidator           = "validator"
-	SendKeyshareEventKeyshareBlockHeight = "keyshare-block-height"
-	SendKeyshareEventReceivedBlockHeight = "received-block-height"
-	SendKeyshareEventMessage             = "keyshare-message"
-	SendKeyshareEventIndex               = "keyshare-index"
+	SendKeyshareEventKeyshareBlockHeight = "keyshare-height"
+	SendKeyshareEventReceivedBlockHeight = "received-height"
+	SendKeyshareEventMessage             = "message"
+	SendKeyshareEventIndex               = "index"
 )
 
 const (
 	StartSendGeneralKeyShareEventType     = "start-send-general-keyshare"
-	StartSendGeneralKeyShareEventIdentity = "start-send-general-keyshare-identity"
+	StartSendGeneralKeyShareEventIdentity = "identity"
 )
 
 const (
 	SendGeneralKeyshareEventType                = "keyshare-sent"
 	SendGeneralKeyshareEventValidator           = "validator"
-	SendGeneralKeyshareEventReceivedBlockHeight = "received-block-height"
-	SendGeneralKeyshareEventMessage             = "keyshare-message"
-	SendGeneralKeyshareEventIDType              = "keyshare-id-type"
-	SendGeneralKeyshareEventIdValue             = "keyshare-id-value"
-	SendGeneralKeyshareEventIndex               = "keyshare-index"
+	SendGeneralKeyshareEventReceivedBlockHeight = "received-height"
+	SendGeneralKeyshareEventMessage             = "message"
+	SendGeneralKeyshareEventIDType              = "id-type"
+	SendGeneralKeyshareEventIdValue             = "id-value"
+	SendGeneralKeyshareEventIndex               = "index"
 )
 
 const (
 	KeyShareAggregatedEventType        = "keyshare-aggregated"
-	KeyShareAggregatedEventBlockHeight = "keyshare-aggregated-block-height"
-	KeyShareAggregatedEventData        = "keyshare-aggregated-data"
-	KeyShareAggregatedEventPubKey      = "keyshare-aggregated-pubkey"
+	KeyShareAggregatedEventBlockHeight = "height"
+	KeyShareAggregatedEventData        = "data"
+	KeyShareAggregatedEventPubKey      = "pubkey"
 )
 
 const (
-	GeneralKeyShareAggregatedEventType    = "keyshare-aggregated"
-	GeneralKeyShareAggregatedEventIDValue = "keyshare-aggregated-id-value"
-	GeneralKeyShareAggregatedEventIDType  = "keyshare-aggregated-id-type"
-	GeneralKeyShareAggregatedEventData    = "keyshare-aggregated-data"
-	GeneralKeyShareAggregatedEventPubKey  = "keyshare-aggregated-pubkey"
+	GeneralKeyShareAggregatedEventType    = "general-keyshare-aggregated"
+	GeneralKeyShareAggregatedEventIDValue = "id-value"
+	GeneralKeyShareAggregatedEventIDType  = "id-type"
+	GeneralKeyShareAggregatedEventData    = "data"
+	GeneralKeyShareAggregatedEventPubKey  = "pubkey"
 )
 
 const (
 	QueuedPubKeyCreatedEventType                     = "queued-pubkey-created"
-	QueuedPubKeyCreatedEventActivePubkeyExpiryHeight = "queued-pubkey-created-active-pubkey-expiry-height"
-	QueuedPubKeyCreatedEventExpiryHeight             = "queued-pubkey-created-expiry-height"
-	QueuedPubKeyCreatedEventCreator                  = "queued-pubkey-created-creator"
-	QueuedPubKeyCreatedEventPubkey                   = "queued-pubkey-created-pubkey"
+	QueuedPubKeyCreatedEventActivePubkeyExpiryHeight = "active-pubkey-expiry-height"
+	QueuedPubKeyCreatedEventExpiryHeight             = "expiry-height"
+	QueuedPubKeyCreatedEventCreator                  = "creator"
+	QueuedPubKeyCreatedEventPubkey                   = "pubkey"
+	QueuedPubKeyCreatedEventNumberOfValidators       = "number-of-validators"
 )
 
 const (

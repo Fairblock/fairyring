@@ -37,36 +37,45 @@ var (
 const (
 	SubmittedEncryptedTxEventType         = "new-encrypted-tx-submitted"
 	SubmittedGeneralEncryptedTxEventType  = "new-general-encrypted-tx-submitted"
-	SubmittedEncryptedTxEventCreator      = "new-encrypted-tx-creator"
-	SubmittedEncryptedTxEventTargetHeight = "new-encrypted-tx-target-height"
-	SubmittedEncryptedTxEventIdentity     = "new-encrypted-tx-identity"
-	SubmittedEncryptedTxEventIndex        = "new-encrypted-tx-index"
-	SubmittedEncryptedTxEventData         = "new-encrypted-tx-data"
+	SubmittedEncryptedTxEventIdentity     = "identity"
+	SubmittedEncryptedTxEventCreator      = "creator"
+	SubmittedEncryptedTxEventTargetHeight = "target-height"
+	SubmittedEncryptedTxEventIndex        = "index"
+	SubmittedEncryptedTxEventData         = "data"
 )
 
 const (
 	EncryptedTxExecutedEventType     = "executed-encrypted-tx"
-	EncryptedTxExecutedEventCreator  = "executed-encrypted-tx-creator"
-	EncryptedTxExecutedEventHeight   = "executed-encrypted-tx-target-height"
-	EncryptedTxExecutedEventIdentity = "executed-encrypted-tx-identity"
-	EncryptedTxExecutedEventIndex    = "executed-encrypted-tx-index"
-	EncryptedTxExecutedEventData     = "executed-encrypted-tx-data"
+	EncryptedTxExecutedEventCreator  = "creator"
+	EncryptedTxExecutedEventHeight   = "target-height"
+	EncryptedTxExecutedEventIndex    = "index"
+	EncryptedTxExecutedEventIdentity = "identity"
+
+	EncryptedTxExecutedEventData             = "data"
+	EncryptedTxExecutedEventMemo             = "memo"
+	EncryptedTxExecutedEventUnderlyingEvents = "events"
 )
 
 const (
 	EncryptedTxRevertedEventType     = "reverted-encrypted-tx"
-	EncryptedTxRevertedEventCreator  = "reverted-encrypted-tx-creator"
-	EncryptedTxRevertedEventHeight   = "reverted-encrypted-tx-target-height"
-	EncryptedTxRevertedEventIdentity = "reverted-encrypted-tx-identity"
-	EncryptedTxRevertedEventIndex    = "reverted-encrypted-tx-index"
-	EncryptedTxRevertedEventReason   = "reverted-encrypted-tx-reason"
+	EncryptedTxRevertedEventCreator  = "creator"
+	EncryptedTxRevertedEventHeight   = "height"
+	EncryptedTxRevertedEventIndex    = "index"
+	EncryptedTxRevertedEventIdentity = "identity"
+	EncryptedTxRevertedEventReason   = "reason"
+)
+
+const (
+	EncryptedTxDiscardedEventType   = "discarded-encrypted-tx"
+	EncryptedTxDiscardedEventHeight = "height"
+	EncryptedTxDiscardedEventTxIDs  = "tx-ids"
 )
 
 const (
 	KeyShareVerificationType    = "keyshare-verification"
-	KeyShareVerificationCreator = "keyshare-verification-creator"
-	KeyShareVerificationHeight  = "keyshare-verification-height"
-	KeyShareVerificationReason  = "keyshare-verification-reason"
+	KeyShareVerificationCreator = "creator"
+	KeyShareVerificationHeight  = "height"
+	KeyShareVerificationReason  = "reason"
 )
 
 const (

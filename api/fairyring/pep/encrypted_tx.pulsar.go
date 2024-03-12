@@ -15,12 +15,14 @@ import (
 )
 
 var (
-	md_EncryptedTx              protoreflect.MessageDescriptor
-	fd_EncryptedTx_targetHeight protoreflect.FieldDescriptor
-	fd_EncryptedTx_index        protoreflect.FieldDescriptor
-	fd_EncryptedTx_data         protoreflect.FieldDescriptor
-	fd_EncryptedTx_creator      protoreflect.FieldDescriptor
-	fd_EncryptedTx_chargedGas   protoreflect.FieldDescriptor
+	md_EncryptedTx                        protoreflect.MessageDescriptor
+	fd_EncryptedTx_targetHeight           protoreflect.FieldDescriptor
+	fd_EncryptedTx_index                  protoreflect.FieldDescriptor
+	fd_EncryptedTx_data                   protoreflect.FieldDescriptor
+	fd_EncryptedTx_creator                protoreflect.FieldDescriptor
+	fd_EncryptedTx_chargedGas             protoreflect.FieldDescriptor
+	fd_EncryptedTx_processedAtChainHeight protoreflect.FieldDescriptor
+	fd_EncryptedTx_expired                protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -31,6 +33,8 @@ func init() {
 	fd_EncryptedTx_data = md_EncryptedTx.Fields().ByName("data")
 	fd_EncryptedTx_creator = md_EncryptedTx.Fields().ByName("creator")
 	fd_EncryptedTx_chargedGas = md_EncryptedTx.Fields().ByName("chargedGas")
+	fd_EncryptedTx_processedAtChainHeight = md_EncryptedTx.Fields().ByName("processedAtChainHeight")
+	fd_EncryptedTx_expired = md_EncryptedTx.Fields().ByName("expired")
 }
 
 var _ protoreflect.Message = (*fastReflection_EncryptedTx)(nil)
@@ -128,6 +132,18 @@ func (x *fastReflection_EncryptedTx) Range(f func(protoreflect.FieldDescriptor, 
 			return
 		}
 	}
+	if x.ProcessedAtChainHeight != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.ProcessedAtChainHeight)
+		if !f(fd_EncryptedTx_processedAtChainHeight, value) {
+			return
+		}
+	}
+	if x.Expired != false {
+		value := protoreflect.ValueOfBool(x.Expired)
+		if !f(fd_EncryptedTx_expired, value) {
+			return
+		}
+	}
 }
 
 // Has reports whether a field is populated.
@@ -153,6 +169,10 @@ func (x *fastReflection_EncryptedTx) Has(fd protoreflect.FieldDescriptor) bool {
 		return x.Creator != ""
 	case "fairyring.pep.EncryptedTx.chargedGas":
 		return x.ChargedGas != nil
+	case "fairyring.pep.EncryptedTx.processedAtChainHeight":
+		return x.ProcessedAtChainHeight != uint64(0)
+	case "fairyring.pep.EncryptedTx.expired":
+		return x.Expired != false
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.EncryptedTx"))
@@ -179,6 +199,10 @@ func (x *fastReflection_EncryptedTx) Clear(fd protoreflect.FieldDescriptor) {
 		x.Creator = ""
 	case "fairyring.pep.EncryptedTx.chargedGas":
 		x.ChargedGas = nil
+	case "fairyring.pep.EncryptedTx.processedAtChainHeight":
+		x.ProcessedAtChainHeight = uint64(0)
+	case "fairyring.pep.EncryptedTx.expired":
+		x.Expired = false
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.EncryptedTx"))
@@ -210,6 +234,12 @@ func (x *fastReflection_EncryptedTx) Get(descriptor protoreflect.FieldDescriptor
 	case "fairyring.pep.EncryptedTx.chargedGas":
 		value := x.ChargedGas
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "fairyring.pep.EncryptedTx.processedAtChainHeight":
+		value := x.ProcessedAtChainHeight
+		return protoreflect.ValueOfUint64(value)
+	case "fairyring.pep.EncryptedTx.expired":
+		value := x.Expired
+		return protoreflect.ValueOfBool(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.EncryptedTx"))
@@ -240,6 +270,10 @@ func (x *fastReflection_EncryptedTx) Set(fd protoreflect.FieldDescriptor, value 
 		x.Creator = value.Interface().(string)
 	case "fairyring.pep.EncryptedTx.chargedGas":
 		x.ChargedGas = value.Message().Interface().(*v1beta1.Coin)
+	case "fairyring.pep.EncryptedTx.processedAtChainHeight":
+		x.ProcessedAtChainHeight = value.Uint()
+	case "fairyring.pep.EncryptedTx.expired":
+		x.Expired = value.Bool()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.EncryptedTx"))
@@ -273,6 +307,10 @@ func (x *fastReflection_EncryptedTx) Mutable(fd protoreflect.FieldDescriptor) pr
 		panic(fmt.Errorf("field data of message fairyring.pep.EncryptedTx is not mutable"))
 	case "fairyring.pep.EncryptedTx.creator":
 		panic(fmt.Errorf("field creator of message fairyring.pep.EncryptedTx is not mutable"))
+	case "fairyring.pep.EncryptedTx.processedAtChainHeight":
+		panic(fmt.Errorf("field processedAtChainHeight of message fairyring.pep.EncryptedTx is not mutable"))
+	case "fairyring.pep.EncryptedTx.expired":
+		panic(fmt.Errorf("field expired of message fairyring.pep.EncryptedTx is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.EncryptedTx"))
@@ -297,6 +335,10 @@ func (x *fastReflection_EncryptedTx) NewField(fd protoreflect.FieldDescriptor) p
 	case "fairyring.pep.EncryptedTx.chargedGas":
 		m := new(v1beta1.Coin)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	case "fairyring.pep.EncryptedTx.processedAtChainHeight":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "fairyring.pep.EncryptedTx.expired":
+		return protoreflect.ValueOfBool(false)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.EncryptedTx"))
@@ -384,6 +426,12 @@ func (x *fastReflection_EncryptedTx) ProtoMethods() *protoiface.Methods {
 			l = options.Size(x.ChargedGas)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
+		if x.ProcessedAtChainHeight != 0 {
+			n += 1 + runtime.Sov(uint64(x.ProcessedAtChainHeight))
+		}
+		if x.Expired {
+			n += 2
+		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -412,6 +460,21 @@ func (x *fastReflection_EncryptedTx) ProtoMethods() *protoiface.Methods {
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.Expired {
+			i--
+			if x.Expired {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x38
+		}
+		if x.ProcessedAtChainHeight != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.ProcessedAtChainHeight))
+			i--
+			dAtA[i] = 0x30
 		}
 		if x.ChargedGas != nil {
 			encoded, err := options.Marshal(x.ChargedGas)
@@ -638,6 +701,45 @@ func (x *fastReflection_EncryptedTx) ProtoMethods() *protoiface.Methods {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
+			case 6:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ProcessedAtChainHeight", wireType)
+				}
+				x.ProcessedAtChainHeight = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.ProcessedAtChainHeight |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 7:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Expired", wireType)
+				}
+				var v int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				x.Expired = bool(v != 0)
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -2337,18 +2439,24 @@ func (x *fastReflection_GeneralEncryptedTxArray) ProtoMethods() *protoiface.Meth
 }
 
 var (
-	md_GenEncTxExecutionQueue          protoreflect.MessageDescriptor
-	fd_GenEncTxExecutionQueue_creator  protoreflect.FieldDescriptor
-	fd_GenEncTxExecutionQueue_identity protoreflect.FieldDescriptor
-	fd_GenEncTxExecutionQueue_tx_list  protoreflect.FieldDescriptor
+	md_GenEncTxExecutionQueue               protoreflect.MessageDescriptor
+	fd_GenEncTxExecutionQueue_creator       protoreflect.FieldDescriptor
+	fd_GenEncTxExecutionQueue_request_id    protoreflect.FieldDescriptor
+	fd_GenEncTxExecutionQueue_identity      protoreflect.FieldDescriptor
+	fd_GenEncTxExecutionQueue_pubkey        protoreflect.FieldDescriptor
+	fd_GenEncTxExecutionQueue_tx_list       protoreflect.FieldDescriptor
+	fd_GenEncTxExecutionQueue_aggr_keyshare protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_pep_encrypted_tx_proto_init()
 	md_GenEncTxExecutionQueue = File_fairyring_pep_encrypted_tx_proto.Messages().ByName("GenEncTxExecutionQueue")
 	fd_GenEncTxExecutionQueue_creator = md_GenEncTxExecutionQueue.Fields().ByName("creator")
+	fd_GenEncTxExecutionQueue_request_id = md_GenEncTxExecutionQueue.Fields().ByName("request_id")
 	fd_GenEncTxExecutionQueue_identity = md_GenEncTxExecutionQueue.Fields().ByName("identity")
+	fd_GenEncTxExecutionQueue_pubkey = md_GenEncTxExecutionQueue.Fields().ByName("pubkey")
 	fd_GenEncTxExecutionQueue_tx_list = md_GenEncTxExecutionQueue.Fields().ByName("tx_list")
+	fd_GenEncTxExecutionQueue_aggr_keyshare = md_GenEncTxExecutionQueue.Fields().ByName("aggr_keyshare")
 }
 
 var _ protoreflect.Message = (*fastReflection_GenEncTxExecutionQueue)(nil)
@@ -2422,15 +2530,33 @@ func (x *fastReflection_GenEncTxExecutionQueue) Range(f func(protoreflect.FieldD
 			return
 		}
 	}
+	if x.RequestId != "" {
+		value := protoreflect.ValueOfString(x.RequestId)
+		if !f(fd_GenEncTxExecutionQueue_request_id, value) {
+			return
+		}
+	}
 	if x.Identity != "" {
 		value := protoreflect.ValueOfString(x.Identity)
 		if !f(fd_GenEncTxExecutionQueue_identity, value) {
 			return
 		}
 	}
+	if x.Pubkey != "" {
+		value := protoreflect.ValueOfString(x.Pubkey)
+		if !f(fd_GenEncTxExecutionQueue_pubkey, value) {
+			return
+		}
+	}
 	if x.TxList != nil {
 		value := protoreflect.ValueOfMessage(x.TxList.ProtoReflect())
 		if !f(fd_GenEncTxExecutionQueue_tx_list, value) {
+			return
+		}
+	}
+	if x.AggrKeyshare != "" {
+		value := protoreflect.ValueOfString(x.AggrKeyshare)
+		if !f(fd_GenEncTxExecutionQueue_aggr_keyshare, value) {
 			return
 		}
 	}
@@ -2451,10 +2577,16 @@ func (x *fastReflection_GenEncTxExecutionQueue) Has(fd protoreflect.FieldDescrip
 	switch fd.FullName() {
 	case "fairyring.pep.GenEncTxExecutionQueue.creator":
 		return x.Creator != ""
+	case "fairyring.pep.GenEncTxExecutionQueue.request_id":
+		return x.RequestId != ""
 	case "fairyring.pep.GenEncTxExecutionQueue.identity":
 		return x.Identity != ""
+	case "fairyring.pep.GenEncTxExecutionQueue.pubkey":
+		return x.Pubkey != ""
 	case "fairyring.pep.GenEncTxExecutionQueue.tx_list":
 		return x.TxList != nil
+	case "fairyring.pep.GenEncTxExecutionQueue.aggr_keyshare":
+		return x.AggrKeyshare != ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.GenEncTxExecutionQueue"))
@@ -2473,10 +2605,16 @@ func (x *fastReflection_GenEncTxExecutionQueue) Clear(fd protoreflect.FieldDescr
 	switch fd.FullName() {
 	case "fairyring.pep.GenEncTxExecutionQueue.creator":
 		x.Creator = ""
+	case "fairyring.pep.GenEncTxExecutionQueue.request_id":
+		x.RequestId = ""
 	case "fairyring.pep.GenEncTxExecutionQueue.identity":
 		x.Identity = ""
+	case "fairyring.pep.GenEncTxExecutionQueue.pubkey":
+		x.Pubkey = ""
 	case "fairyring.pep.GenEncTxExecutionQueue.tx_list":
 		x.TxList = nil
+	case "fairyring.pep.GenEncTxExecutionQueue.aggr_keyshare":
+		x.AggrKeyshare = ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.GenEncTxExecutionQueue"))
@@ -2496,12 +2634,21 @@ func (x *fastReflection_GenEncTxExecutionQueue) Get(descriptor protoreflect.Fiel
 	case "fairyring.pep.GenEncTxExecutionQueue.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
+	case "fairyring.pep.GenEncTxExecutionQueue.request_id":
+		value := x.RequestId
+		return protoreflect.ValueOfString(value)
 	case "fairyring.pep.GenEncTxExecutionQueue.identity":
 		value := x.Identity
+		return protoreflect.ValueOfString(value)
+	case "fairyring.pep.GenEncTxExecutionQueue.pubkey":
+		value := x.Pubkey
 		return protoreflect.ValueOfString(value)
 	case "fairyring.pep.GenEncTxExecutionQueue.tx_list":
 		value := x.TxList
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "fairyring.pep.GenEncTxExecutionQueue.aggr_keyshare":
+		value := x.AggrKeyshare
+		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.GenEncTxExecutionQueue"))
@@ -2524,10 +2671,16 @@ func (x *fastReflection_GenEncTxExecutionQueue) Set(fd protoreflect.FieldDescrip
 	switch fd.FullName() {
 	case "fairyring.pep.GenEncTxExecutionQueue.creator":
 		x.Creator = value.Interface().(string)
+	case "fairyring.pep.GenEncTxExecutionQueue.request_id":
+		x.RequestId = value.Interface().(string)
 	case "fairyring.pep.GenEncTxExecutionQueue.identity":
 		x.Identity = value.Interface().(string)
+	case "fairyring.pep.GenEncTxExecutionQueue.pubkey":
+		x.Pubkey = value.Interface().(string)
 	case "fairyring.pep.GenEncTxExecutionQueue.tx_list":
 		x.TxList = value.Message().Interface().(*GeneralEncryptedTxArray)
+	case "fairyring.pep.GenEncTxExecutionQueue.aggr_keyshare":
+		x.AggrKeyshare = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.GenEncTxExecutionQueue"))
@@ -2555,8 +2708,14 @@ func (x *fastReflection_GenEncTxExecutionQueue) Mutable(fd protoreflect.FieldDes
 		return protoreflect.ValueOfMessage(x.TxList.ProtoReflect())
 	case "fairyring.pep.GenEncTxExecutionQueue.creator":
 		panic(fmt.Errorf("field creator of message fairyring.pep.GenEncTxExecutionQueue is not mutable"))
+	case "fairyring.pep.GenEncTxExecutionQueue.request_id":
+		panic(fmt.Errorf("field request_id of message fairyring.pep.GenEncTxExecutionQueue is not mutable"))
 	case "fairyring.pep.GenEncTxExecutionQueue.identity":
 		panic(fmt.Errorf("field identity of message fairyring.pep.GenEncTxExecutionQueue is not mutable"))
+	case "fairyring.pep.GenEncTxExecutionQueue.pubkey":
+		panic(fmt.Errorf("field pubkey of message fairyring.pep.GenEncTxExecutionQueue is not mutable"))
+	case "fairyring.pep.GenEncTxExecutionQueue.aggr_keyshare":
+		panic(fmt.Errorf("field aggr_keyshare of message fairyring.pep.GenEncTxExecutionQueue is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.GenEncTxExecutionQueue"))
@@ -2572,11 +2731,17 @@ func (x *fastReflection_GenEncTxExecutionQueue) NewField(fd protoreflect.FieldDe
 	switch fd.FullName() {
 	case "fairyring.pep.GenEncTxExecutionQueue.creator":
 		return protoreflect.ValueOfString("")
+	case "fairyring.pep.GenEncTxExecutionQueue.request_id":
+		return protoreflect.ValueOfString("")
 	case "fairyring.pep.GenEncTxExecutionQueue.identity":
+		return protoreflect.ValueOfString("")
+	case "fairyring.pep.GenEncTxExecutionQueue.pubkey":
 		return protoreflect.ValueOfString("")
 	case "fairyring.pep.GenEncTxExecutionQueue.tx_list":
 		m := new(GeneralEncryptedTxArray)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	case "fairyring.pep.GenEncTxExecutionQueue.aggr_keyshare":
+		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.GenEncTxExecutionQueue"))
@@ -2650,12 +2815,24 @@ func (x *fastReflection_GenEncTxExecutionQueue) ProtoMethods() *protoiface.Metho
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
+		l = len(x.RequestId)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
 		l = len(x.Identity)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.Pubkey)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		if x.TxList != nil {
 			l = options.Size(x.TxList)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.AggrKeyshare)
+		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		if x.unknownFields != nil {
@@ -2687,6 +2864,13 @@ func (x *fastReflection_GenEncTxExecutionQueue) ProtoMethods() *protoiface.Metho
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
+		if len(x.AggrKeyshare) > 0 {
+			i -= len(x.AggrKeyshare)
+			copy(dAtA[i:], x.AggrKeyshare)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.AggrKeyshare)))
+			i--
+			dAtA[i] = 0x32
+		}
 		if x.TxList != nil {
 			encoded, err := options.Marshal(x.TxList)
 			if err != nil {
@@ -2699,12 +2883,26 @@ func (x *fastReflection_GenEncTxExecutionQueue) ProtoMethods() *protoiface.Metho
 			copy(dAtA[i:], encoded)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			i--
-			dAtA[i] = 0x1a
+			dAtA[i] = 0x2a
+		}
+		if len(x.Pubkey) > 0 {
+			i -= len(x.Pubkey)
+			copy(dAtA[i:], x.Pubkey)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Pubkey)))
+			i--
+			dAtA[i] = 0x22
 		}
 		if len(x.Identity) > 0 {
 			i -= len(x.Identity)
 			copy(dAtA[i:], x.Identity)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Identity)))
+			i--
+			dAtA[i] = 0x1a
+		}
+		if len(x.RequestId) > 0 {
+			i -= len(x.RequestId)
+			copy(dAtA[i:], x.RequestId)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.RequestId)))
 			i--
 			dAtA[i] = 0x12
 		}
@@ -2798,6 +2996,38 @@ func (x *fastReflection_GenEncTxExecutionQueue) ProtoMethods() *protoiface.Metho
 				iNdEx = postIndex
 			case 2:
 				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field RequestId", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.RequestId = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 3:
+				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Identity", wireType)
 				}
 				var stringLen uint64
@@ -2828,7 +3058,39 @@ func (x *fastReflection_GenEncTxExecutionQueue) ProtoMethods() *protoiface.Metho
 				}
 				x.Identity = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
-			case 3:
+			case 4:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Pubkey", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Pubkey = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 5:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TxList", wireType)
 				}
@@ -2863,6 +3125,38 @@ func (x *fastReflection_GenEncTxExecutionQueue) ProtoMethods() *protoiface.Metho
 				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.TxList); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
+				iNdEx = postIndex
+			case 6:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field AggrKeyshare", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.AggrKeyshare = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -2917,11 +3211,13 @@ type EncryptedTx struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	TargetHeight uint64        `protobuf:"varint,1,opt,name=targetHeight,proto3" json:"targetHeight,omitempty"`
-	Index        uint64        `protobuf:"varint,2,opt,name=index,proto3" json:"index,omitempty"`
-	Data         string        `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
-	Creator      string        `protobuf:"bytes,4,opt,name=creator,proto3" json:"creator,omitempty"`
-	ChargedGas   *v1beta1.Coin `protobuf:"bytes,5,opt,name=chargedGas,proto3" json:"chargedGas,omitempty"`
+	TargetHeight           uint64        `protobuf:"varint,1,opt,name=targetHeight,proto3" json:"targetHeight,omitempty"`
+	Index                  uint64        `protobuf:"varint,2,opt,name=index,proto3" json:"index,omitempty"`
+	Data                   string        `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	Creator                string        `protobuf:"bytes,4,opt,name=creator,proto3" json:"creator,omitempty"`
+	ChargedGas             *v1beta1.Coin `protobuf:"bytes,5,opt,name=chargedGas,proto3" json:"chargedGas,omitempty"`
+	ProcessedAtChainHeight uint64        `protobuf:"varint,6,opt,name=processedAtChainHeight,proto3" json:"processedAtChainHeight,omitempty"`
+	Expired                bool          `protobuf:"varint,7,opt,name=expired,proto3" json:"expired,omitempty"`
 }
 
 func (x *EncryptedTx) Reset() {
@@ -2977,6 +3273,20 @@ func (x *EncryptedTx) GetChargedGas() *v1beta1.Coin {
 		return x.ChargedGas
 	}
 	return nil
+}
+
+func (x *EncryptedTx) GetProcessedAtChainHeight() uint64 {
+	if x != nil {
+		return x.ProcessedAtChainHeight
+	}
+	return 0
+}
+
+func (x *EncryptedTx) GetExpired() bool {
+	if x != nil {
+		return x.Expired
+	}
+	return false
 }
 
 type EncryptedTxArray struct {
@@ -3121,9 +3431,12 @@ type GenEncTxExecutionQueue struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Creator  string                   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Identity string                   `protobuf:"bytes,2,opt,name=identity,proto3" json:"identity,omitempty"`
-	TxList   *GeneralEncryptedTxArray `protobuf:"bytes,3,opt,name=tx_list,json=txList,proto3" json:"tx_list,omitempty"`
+	Creator      string                   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	RequestId    string                   `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Identity     string                   `protobuf:"bytes,3,opt,name=identity,proto3" json:"identity,omitempty"`
+	Pubkey       string                   `protobuf:"bytes,4,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
+	TxList       *GeneralEncryptedTxArray `protobuf:"bytes,5,opt,name=tx_list,json=txList,proto3" json:"tx_list,omitempty"`
+	AggrKeyshare string                   `protobuf:"bytes,6,opt,name=aggr_keyshare,json=aggrKeyshare,proto3" json:"aggr_keyshare,omitempty"`
 }
 
 func (x *GenEncTxExecutionQueue) Reset() {
@@ -3153,9 +3466,23 @@ func (x *GenEncTxExecutionQueue) GetCreator() string {
 	return ""
 }
 
+func (x *GenEncTxExecutionQueue) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
 func (x *GenEncTxExecutionQueue) GetIdentity() string {
 	if x != nil {
 		return x.Identity
+	}
+	return ""
+}
+
+func (x *GenEncTxExecutionQueue) GetPubkey() string {
+	if x != nil {
+		return x.Pubkey
 	}
 	return ""
 }
@@ -3167,6 +3494,13 @@ func (x *GenEncTxExecutionQueue) GetTxList() *GeneralEncryptedTxArray {
 	return nil
 }
 
+func (x *GenEncTxExecutionQueue) GetAggrKeyshare() string {
+	if x != nil {
+		return x.AggrKeyshare
+	}
+	return ""
+}
+
 var File_fairyring_pep_encrypted_tx_proto protoreflect.FileDescriptor
 
 var file_fairyring_pep_encrypted_tx_proto_rawDesc = []byte{
@@ -3176,7 +3510,7 @@ var file_fairyring_pep_encrypted_tx_proto_rawDesc = []byte{
 	0x70, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67,
 	0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f,
 	0x62, 0x61, 0x73, 0x65, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x63, 0x6f, 0x69,
-	0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xb0, 0x01, 0x0a, 0x0b, 0x45, 0x6e, 0x63, 0x72,
+	0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x82, 0x02, 0x0a, 0x0b, 0x45, 0x6e, 0x63, 0x72,
 	0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x12, 0x22, 0x0a, 0x0c, 0x74, 0x61, 0x72, 0x67, 0x65,
 	0x74, 0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0c, 0x74,
 	0x61, 0x72, 0x67, 0x65, 0x74, 0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x69,
@@ -3187,50 +3521,60 @@ var file_fairyring_pep_encrypted_tx_proto_rawDesc = []byte{
 	0x39, 0x0a, 0x0a, 0x63, 0x68, 0x61, 0x72, 0x67, 0x65, 0x64, 0x47, 0x61, 0x73, 0x18, 0x05, 0x20,
 	0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73,
 	0x65, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x52, 0x0a,
-	0x63, 0x68, 0x61, 0x72, 0x67, 0x65, 0x64, 0x47, 0x61, 0x73, 0x22, 0x56, 0x0a, 0x10, 0x45, 0x6e,
-	0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x41, 0x72, 0x72, 0x61, 0x79, 0x12, 0x42,
-	0x0a, 0x0b, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x18, 0x01, 0x20,
-	0x03, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
-	0x70, 0x65, 0x70, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x42,
-	0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0b, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64,
-	0x54, 0x78, 0x22, 0xaf, 0x01, 0x0a, 0x12, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x45, 0x6e,
-	0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65,
-	0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65,
-	0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x12, 0x0a, 0x04, 0x64,
-	0x61, 0x74, 0x61, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x12,
-	0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x39, 0x0a, 0x0a, 0x63, 0x68, 0x61,
-	0x72, 0x67, 0x65, 0x64, 0x47, 0x61, 0x73, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e,
-	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x62, 0x65,
-	0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x52, 0x0a, 0x63, 0x68, 0x61, 0x72, 0x67, 0x65,
-	0x64, 0x47, 0x61, 0x73, 0x22, 0x64, 0x0a, 0x17, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x45,
-	0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x41, 0x72, 0x72, 0x61, 0x79, 0x12,
-	0x49, 0x0a, 0x0b, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x18, 0x01,
-	0x20, 0x03, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
-	0x2e, 0x70, 0x65, 0x70, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x45, 0x6e, 0x63, 0x72,
-	0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0b, 0x65,
-	0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x22, 0x8f, 0x01, 0x0a, 0x16, 0x47,
-	0x65, 0x6e, 0x45, 0x6e, 0x63, 0x54, 0x78, 0x45, 0x78, 0x65, 0x63, 0x75, 0x74, 0x69, 0x6f, 0x6e,
-	0x51, 0x75, 0x65, 0x75, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12,
-	0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x3f, 0x0a, 0x07, 0x74,
-	0x78, 0x5f, 0x6c, 0x69, 0x73, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x66,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x47, 0x65, 0x6e,
-	0x65, 0x72, 0x61, 0x6c, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x41,
-	0x72, 0x72, 0x61, 0x79, 0x52, 0x06, 0x74, 0x78, 0x4c, 0x69, 0x73, 0x74, 0x42, 0x9a, 0x01, 0x0a,
-	0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70,
-	0x65, 0x70, 0x42, 0x10, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x50,
-	0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x1e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64,
-	0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
-	0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0xa2, 0x02, 0x03, 0x46, 0x50, 0x58, 0xaa, 0x02, 0x0d, 0x46,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x50, 0x65, 0x70, 0xca, 0x02, 0x0d, 0x46,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50, 0x65, 0x70, 0xe2, 0x02, 0x19, 0x46,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50, 0x65, 0x70, 0x5c, 0x47, 0x50, 0x42,
-	0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e, 0x46, 0x61, 0x69, 0x72, 0x79,
-	0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x50, 0x65, 0x70, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x63, 0x68, 0x61, 0x72, 0x67, 0x65, 0x64, 0x47, 0x61, 0x73, 0x12, 0x36, 0x0a, 0x16, 0x70, 0x72,
+	0x6f, 0x63, 0x65, 0x73, 0x73, 0x65, 0x64, 0x41, 0x74, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x48, 0x65,
+	0x69, 0x67, 0x68, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x16, 0x70, 0x72, 0x6f, 0x63,
+	0x65, 0x73, 0x73, 0x65, 0x64, 0x41, 0x74, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x48, 0x65, 0x69, 0x67,
+	0x68, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x65, 0x78, 0x70, 0x69, 0x72, 0x65, 0x64, 0x18, 0x07, 0x20,
+	0x01, 0x28, 0x08, 0x52, 0x07, 0x65, 0x78, 0x70, 0x69, 0x72, 0x65, 0x64, 0x22, 0x56, 0x0a, 0x10,
+	0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x41, 0x72, 0x72, 0x61, 0x79,
+	0x12, 0x42, 0x0a, 0x0b, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x18,
+	0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
+	0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54,
+	0x78, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0b, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74,
+	0x65, 0x64, 0x54, 0x78, 0x22, 0xaf, 0x01, 0x0a, 0x12, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c,
+	0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x12, 0x1a, 0x0a, 0x08, 0x69,
+	0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69,
+	0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x12, 0x0a,
+	0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x64, 0x61, 0x74,
+	0x61, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x04, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x39, 0x0a, 0x0a, 0x63,
+	0x68, 0x61, 0x72, 0x67, 0x65, 0x64, 0x47, 0x61, 0x73, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x76, 0x31,
+	0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x52, 0x0a, 0x63, 0x68, 0x61, 0x72,
+	0x67, 0x65, 0x64, 0x47, 0x61, 0x73, 0x22, 0x64, 0x0a, 0x17, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61,
+	0x6c, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x41, 0x72, 0x72, 0x61,
+	0x79, 0x12, 0x49, 0x0a, 0x0b, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78,
+	0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x45, 0x6e,
+	0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52,
+	0x0b, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x22, 0xeb, 0x01, 0x0a,
+	0x16, 0x47, 0x65, 0x6e, 0x45, 0x6e, 0x63, 0x54, 0x78, 0x45, 0x78, 0x65, 0x63, 0x75, 0x74, 0x69,
+	0x6f, 0x6e, 0x51, 0x75, 0x65, 0x75, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74,
+	0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
+	0x72, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64,
+	0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x16, 0x0a, 0x06,
+	0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x75,
+	0x62, 0x6b, 0x65, 0x79, 0x12, 0x3f, 0x0a, 0x07, 0x74, 0x78, 0x5f, 0x6c, 0x69, 0x73, 0x74, 0x18,
+	0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
+	0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x45, 0x6e, 0x63,
+	0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x41, 0x72, 0x72, 0x61, 0x79, 0x52, 0x06, 0x74,
+	0x78, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x23, 0x0a, 0x0d, 0x61, 0x67, 0x67, 0x72, 0x5f, 0x6b, 0x65,
+	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x61, 0x67,
+	0x67, 0x72, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x42, 0x9a, 0x01, 0x0a, 0x11, 0x63,
+	0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70,
+	0x42, 0x10, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x50, 0x72, 0x6f,
+	0x74, 0x6f, 0x50, 0x01, 0x5a, 0x1e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e,
+	0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
+	0x2f, 0x70, 0x65, 0x70, 0xa2, 0x02, 0x03, 0x46, 0x50, 0x58, 0xaa, 0x02, 0x0d, 0x46, 0x61, 0x69,
+	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x50, 0x65, 0x70, 0xca, 0x02, 0x0d, 0x46, 0x61, 0x69,
+	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50, 0x65, 0x70, 0xe2, 0x02, 0x19, 0x46, 0x61, 0x69,
+	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50, 0x65, 0x70, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65,
+	0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x3a, 0x3a, 0x50, 0x65, 0x70, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (

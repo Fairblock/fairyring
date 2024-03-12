@@ -34,6 +34,8 @@ type QueryClient interface {
 	PepNonceAll(ctx context.Context, in *QueryAllPepNonceRequest, opts ...grpc.CallOption) (*QueryAllPepNonceResponse, error)
 	// Queries the public keys
 	PubKey(ctx context.Context, in *QueryPubKeyRequest, opts ...grpc.CallOption) (*QueryPubKeyResponse, error)
+	KeyshareReq(ctx context.Context, in *QueryKeyshareRequest, opts ...grpc.CallOption) (*QueryKeyshareResponse, error)
+	KeyshareReqAll(ctx context.Context, in *QueryAllKeyshareRequest, opts ...grpc.CallOption) (*QueryAllKeyshareResponse, error)
 }
 
 type queryClient struct {
@@ -116,6 +118,24 @@ func (c *queryClient) PubKey(ctx context.Context, in *QueryPubKeyRequest, opts .
 	return out, nil
 }
 
+func (c *queryClient) KeyshareReq(ctx context.Context, in *QueryKeyshareRequest, opts ...grpc.CallOption) (*QueryKeyshareResponse, error) {
+	out := new(QueryKeyshareResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/KeyshareReq", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) KeyshareReqAll(ctx context.Context, in *QueryAllKeyshareRequest, opts ...grpc.CallOption) (*QueryAllKeyshareResponse, error) {
+	out := new(QueryAllKeyshareResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/KeyshareReqAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 // All implementations must embed UnimplementedQueryServer
 // for forward compatibility
@@ -136,6 +156,8 @@ type QueryServer interface {
 	PepNonceAll(context.Context, *QueryAllPepNonceRequest) (*QueryAllPepNonceResponse, error)
 	// Queries the public keys
 	PubKey(context.Context, *QueryPubKeyRequest) (*QueryPubKeyResponse, error)
+	KeyshareReq(context.Context, *QueryKeyshareRequest) (*QueryKeyshareResponse, error)
+	KeyshareReqAll(context.Context, *QueryAllKeyshareRequest) (*QueryAllKeyshareResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -166,6 +188,12 @@ func (UnimplementedQueryServer) PepNonceAll(context.Context, *QueryAllPepNonceRe
 }
 func (UnimplementedQueryServer) PubKey(context.Context, *QueryPubKeyRequest) (*QueryPubKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PubKey not implemented")
+}
+func (UnimplementedQueryServer) KeyshareReq(context.Context, *QueryKeyshareRequest) (*QueryKeyshareResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KeyshareReq not implemented")
+}
+func (UnimplementedQueryServer) KeyshareReqAll(context.Context, *QueryAllKeyshareRequest) (*QueryAllKeyshareResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KeyshareReqAll not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 
@@ -324,6 +352,42 @@ func _Query_PubKey_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_KeyshareReq_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryKeyshareRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).KeyshareReq(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.pep.Query/KeyshareReq",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).KeyshareReq(ctx, req.(*QueryKeyshareRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_KeyshareReqAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllKeyshareRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).KeyshareReqAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.pep.Query/KeyshareReqAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).KeyshareReqAll(ctx, req.(*QueryAllKeyshareRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Query_ServiceDesc is the grpc.ServiceDesc for Query service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -362,6 +426,14 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PubKey",
 			Handler:    _Query_PubKey_Handler,
+		},
+		{
+			MethodName: "KeyshareReq",
+			Handler:    _Query_KeyshareReq_Handler,
+		},
+		{
+			MethodName: "KeyshareReqAll",
+			Handler:    _Query_KeyshareReqAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -145,10 +145,17 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 		stateGeneralKeyShares = append(stateGeneralKeyShares, eachGeneralKeyShare)
 	}
 
+	// Get the active public key for aggregating
+	activePubKey, found := k.GetActivePubKey(ctx)
+
+	if !found {
+		return nil, types.ErrPubKeyNotFound
+	}
+
 	expectedThreshold := sdk.NewDecFromInt(
 		sdk.NewInt(types.KeyAggregationThresholdNumerator)).Quo(
 		sdk.NewDecFromInt(sdk.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
-		int64(len(validatorList))).Ceil().TruncateInt64()
+		int64(activePubKey.NumberOfValidators)).Ceil().TruncateInt64()
 
 	// Emit KeyShare Submitted Event
 	ctx.EventManager().EmitEvent(
@@ -195,13 +202,6 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 				Success:             true,
 			}, nil
 		}
-	}
-
-	// Get the active public key for aggregating
-	activePubKey, found := k.pepKeeper.GetActivePubKey(ctx)
-
-	if !found {
-		return nil, types.ErrPubKeyNotFound
 	}
 
 	// Parse & append all the keyshare for aggregation
