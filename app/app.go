@@ -609,7 +609,7 @@ func New(
 		keyshareKeeper,
 	)
 
-	pepIBCModule := pepmodule.NewIBCModule(app.PepKeeper)
+	pepIBCModule := pepmodule.NewIBCModule(*pepKeeper)
 
 	scopedKeyshareKeeper := app.CapabilityKeeper.ScopeToModule(keysharemoduletypes.ModuleName)
 	keyshareKeeper = keysharemodulekeeper.NewKeeper(

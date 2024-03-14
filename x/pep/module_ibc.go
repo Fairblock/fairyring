@@ -169,6 +169,7 @@ func (im IBCModule) OnRecvPacket(
 					sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
 				),
 			)
+			return ack
 			// this line is used by starport scaffolding # ibc/packet/module/recv
 		default:
 			err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
@@ -194,6 +195,7 @@ func (im IBCModule) OnRecvPacket(
 					sdk.NewAttribute(kstypes.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
 				),
 			)
+			return ack
 		// this line is used by starport scaffolding # ibc/packet/module/recv
 		default:
 			err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
@@ -202,9 +204,6 @@ func (im IBCModule) OnRecvPacket(
 	} else {
 		return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
 	}
-
-	// NOTE: acknowledgement will be written synchronously during IBC handler execution.
-	return ack
 }
 
 // OnAcknowledgementPacket implements the IBCModule interface
@@ -215,7 +214,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 	relayer sdk.AccAddress,
 ) error {
 	var ack channeltypes.Acknowledgement
-	if err := types.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err == nil {
+	if err := types.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
 		return sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
 	}
 
