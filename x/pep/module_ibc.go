@@ -46,7 +46,7 @@ func (im IBCModule) OnChanOpenInit(
 		return "", sdkerrors.Wrapf(porttypes.ErrInvalidPort, "invalid port: %s, expected %s", portID, boundPort)
 	}
 
-	if version != types.Version {
+	if version != types.Version && version != types.KeyshareVersion {
 		return "", sdkerrors.Wrapf(types.ErrInvalidVersion, "got %s, expected %s", version, types.Version)
 	}
 
@@ -77,7 +77,7 @@ func (im IBCModule) OnChanOpenTry(
 	}
 
 	if counterpartyVersion != types.Version {
-		return "", sdkerrors.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: got: %s, expected %s", counterpartyVersion, types.Version)
+		return "", sdkerrors.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: got: %s, expected %s or %s", counterpartyVersion, types.Version, types.KeyshareVersion)
 	}
 
 	// Module may have already claimed capability in OnChanOpenInit in the case of crossing hellos
@@ -102,8 +102,8 @@ func (im IBCModule) OnChanOpenAck(
 	_,
 	counterpartyVersion string,
 ) error {
-	if counterpartyVersion != types.Version {
-		return sdkerrors.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: %s, expected %s", counterpartyVersion, types.Version)
+	if counterpartyVersion != types.Version && counterpartyVersion != types.KeyshareVersion {
+		return sdkerrors.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: %s, expected %s or %s", counterpartyVersion, types.Version, types.KeyshareVersion)
 	}
 	return nil
 }

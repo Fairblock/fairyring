@@ -16,6 +16,9 @@ const (
 	// Version defines the current version the IBC module supports
 	Version = "pep-1"
 
+	// KeyshareVersion defines the current version the IBC module supports
+	KeyshareVersion = "keyshare-1"
+
 	// PortID is the default port id that module binds to
 	PortID = "pep"
 
