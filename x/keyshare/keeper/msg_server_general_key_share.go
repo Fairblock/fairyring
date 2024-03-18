@@ -290,7 +290,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 					return nil, err
 				}
 			} else {
-				err = k.pepKeeper.ProcessAggrKeyshare(ctx, keyShareReq.ProposalId, keyShareReq.AggrKeyshare)
+				err = k.pepKeeper.ProcessAggrKeyshare(ctx, keyShareReq.Identity, keyShareReq.AggrKeyshare)
 				if err != nil {
 					return nil, err
 				}

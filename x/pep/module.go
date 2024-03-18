@@ -287,7 +287,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 	if err != nil {
 		am.keeper.Logger(ctx).Error("Latest height does not exists")
-		return
+		height = 0
 	}
 
 	am.keeper.Logger(ctx).Info(fmt.Sprintf("Last executed Height: %d", lastExecutedHeight))
@@ -879,7 +879,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				continue
 			}
 
-			am.keeper.Logger(ctx).Info("! Encrypted Tx Decrypted & Decoded & Executed successfully !")
+			am.keeper.Logger(ctx).Info("! General Encrypted Tx Decrypted & Decoded & Executed successfully !")
 
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxExecutedEventType,
@@ -893,7 +893,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			telemetry.IncrCounter(1, types.KeyTotalSuccessEncryptedTx)
 		}
 
-		am.keeper.Logger(ctx).Error("executed txs for entry with identity: ", entry.Identity)
+		am.keeper.Logger(ctx).Info("executed txs for entry with identity: ", entry.Identity)
 		am.keeper.RemoveQueueEntry(ctx, entry.Identity)
 	}
 }
