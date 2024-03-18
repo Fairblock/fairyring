@@ -142,6 +142,9 @@ sed -i -e 's/"key_expiry": "100"/"key_expiry": "10000"/g' $CHAIN_DIR/$CHAINID_2/
 
 sed -i -e 's/"is_source_chain": false/"is_source_chain": true/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 
+# jsonData2=$(cat "$CHAIN_DIR/$CHAINID_1/config/genesis.json")
+# modifiedJson1
+
 jsonData2=$(cat "$CHAIN_DIR/$CHAINID_2/config/genesis.json")
 modifiedJson2=$(echo "$jsonData2" |
   jq '.app_state.gov.params.channel_id = "channel-0" |
@@ -152,7 +155,7 @@ echo "$modifiedJson2" | jq '.' > "$CHAIN_DIR/$CHAINID_2/config/genesis.json"
 
 echo "Starting $CHAINID_1 in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID_1.log"
-$BINARY start --log_level trace --log_format json --home $CHAIN_DIR/$CHAINID_1 --pruning=nothing --grpc.address="0.0.0.0:$GRPCPORT_1" --grpc-web.address="0.0.0.0:$GRPCWEB_1" > $CHAIN_DIR/$CHAINID_1.log 2>&1 &
+$BINARY start --log_level info --log_format json --home $CHAIN_DIR/$CHAINID_1 --pruning=nothing --grpc.address="0.0.0.0:$GRPCPORT_1" --grpc-web.address="0.0.0.0:$GRPCWEB_1" > $CHAIN_DIR/$CHAINID_1.log 2>&1 &
 
 echo "Starting $CHAINID_2 in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID_2.log"

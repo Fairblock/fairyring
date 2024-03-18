@@ -64,9 +64,16 @@ func (k Keeper) GetAllGenEncTxEntry(ctx sdk.Context) (list []types.GenEncTxExecu
 
 func (k Keeper) AppendTxToEntry(ctx sdk.Context, identity string, encTx types.GeneralEncryptedTx) uint64 {
 	val, _ := k.GetEntry(ctx, identity)
-	index := len(val.TxList.EncryptedTx)
-	encTx.Index = uint64(index)
-	val.TxList.EncryptedTx = append(val.TxList.EncryptedTx, encTx)
+	var index uint64 = 0
+	var list types.GeneralEncryptedTxArray
+	if val.TxList != nil {
+		index = uint64(len(val.TxList.EncryptedTx))
+		list = *val.TxList
+	}
+	encTx.Index = index
+	list.EncryptedTx = append(list.EncryptedTx, encTx)
+
+	val.TxList = &list
 	k.SetEntry(ctx, val)
 	return uint64(index)
 }
