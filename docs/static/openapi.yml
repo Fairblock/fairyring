@@ -130,6 +130,620 @@ paths:
               invariance.
       tags:
         - Msg
+  /fairyring/pep/encrypted_tx:
+    get:
+      summary: Queries a list of EncryptedTx items.
+      operationId: FairyringPepQuery_EncryptedTxAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              encryptedTxArray:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    encryptedTx:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          targetHeight:
+                            type: string
+                            format: uint64
+                          index:
+                            type: string
+                            format: uint64
+                          data:
+                            type: string
+                          creator:
+                            type: string
+                          chargedGas:
+                            type: object
+                            properties:
+                              denom:
+                                type: string
+                              amount:
+                                type: string
+                            description: >-
+                              Coin defines a token with a denomination and an
+                              amount.
+
+
+                              NOTE: The amount field is an Int which implements
+                              the custom method
+
+                              signatures required by gogoproto.
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    description: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently. It will be empty if
+                      there are no more results.
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /fairyring/pep/encrypted_tx/{targetHeight}:
+    get:
+      summary: Queries a list of EncryptedTx items.
+      operationId: FairyringPepQuery_EncryptedTxAllFromHeight
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              encryptedTxArray:
+                type: object
+                properties:
+                  encryptedTx:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        targetHeight:
+                          type: string
+                          format: uint64
+                        index:
+                          type: string
+                          format: uint64
+                        data:
+                          type: string
+                        creator:
+                          type: string
+                        chargedGas:
+                          type: object
+                          properties:
+                            denom:
+                              type: string
+                            amount:
+                              type: string
+                          description: >-
+                            Coin defines a token with a denomination and an
+                            amount.
+
+
+                            NOTE: The amount field is an Int which implements
+                            the custom method
+
+                            signatures required by gogoproto.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: targetHeight
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /fairyring/pep/encrypted_tx/{targetHeight}/{index}:
+    get:
+      summary: Queries a EncryptedTx by index.
+      operationId: FairyringPepQuery_EncryptedTx
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              encryptedTx:
+                type: object
+                properties:
+                  targetHeight:
+                    type: string
+                    format: uint64
+                  index:
+                    type: string
+                    format: uint64
+                  data:
+                    type: string
+                  creator:
+                    type: string
+                  chargedGas:
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+                    description: >-
+                      Coin defines a token with a denomination and an amount.
+
+
+                      NOTE: The amount field is an Int which implements the
+                      custom method
+
+                      signatures required by gogoproto.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: targetHeight
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: index
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /fairyring/pep/latest_height:
+    get:
+      summary: Queries a list of LatestHeight items.
+      operationId: FairyringPepQuery_LatestHeight
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              height:
+                type: string
+                format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /fairyring/pep/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: FairyringPepQuery_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+                properties:
+                  trusted_counter_parties:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        client_id:
+                          type: string
+                        connection_id:
+                          type: string
+                        channel_id:
+                          type: string
+                  trusted_addresses:
+                    type: array
+                    items:
+                      type: string
+                  pep_channel_id:
+                    type: string
+                  keyshare_channel_id:
+                    type: string
+                  min_gas_price:
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+                    description: >-
+                      Coin defines a token with a denomination and an amount.
+
+
+                      NOTE: The amount field is an Int which implements the
+                      custom method
+
+                      signatures required by gogoproto.
+                  is_source_chain:
+                    type: boolean
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /fairyring/pep/pep_nonce:
+    get:
+      summary: Queries a list of PepNonce items.
+      operationId: FairyringPepQuery_PepNonceAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              pepNonce:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    address:
+                      type: string
+                    nonce:
+                      type: string
+                      format: uint64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    description: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently. It will be empty if
+                      there are no more results.
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /fairyring/pep/pep_nonce/{address}:
+    get:
+      summary: Queries a PepNonce by index.
+      operationId: FairyringPepQuery_PepNonce
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              pepNonce:
+                type: object
+                properties:
+                  address:
+                    type: string
+                  nonce:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /fairyring/pep/pub_key:
+    get:
+      summary: Queries the public keys
+      operationId: FairyringPepQuery_PubKey
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              activePubKey:
+                type: object
+                properties:
+                  publicKey:
+                    type: string
+                  creator:
+                    type: string
+                  expiry:
+                    type: string
+                    format: uint64
+              queuedPubKey:
+                type: object
+                properties:
+                  publicKey:
+                    type: string
+                  creator:
+                    type: string
+                  expiry:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /cosmwasm/wasm/v1/code:
     get:
       summary: Codes gets the metadata for all stored wasm codes
@@ -9426,7 +10040,7 @@ paths:
             properties:
               creator:
                 type: string
-              requestId:
+              request_id:
                 type: string
       tags:
         - Msg
@@ -9470,6 +10084,47 @@ paths:
               targetBlockHeight:
                 type: string
                 format: uint64
+      tags:
+        - Msg
+  /fairyring.pep.Msg/SubmitGeneralEncryptedTx:
+    post:
+      operationId: FairyringPepMsg_SubmitGeneralEncryptedTx
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              creator:
+                type: string
+              data:
+                type: string
+              identity:
+                type: string
       tags:
         - Msg
   /ibc/apps/interchain_accounts/controller/v1/owners/{owner}/connections/{connection_id}:
@@ -27159,2055 +27814,6 @@ definitions:
                repeated Bar results = 1;
                PageResponse page = 2;
        }
-  cosmwasm.wasm.v1.AbsoluteTxPosition:
-    type: object
-    properties:
-      block_height:
-        type: string
-        format: uint64
-        title: BlockHeight is the block the contract was created at
-      tx_index:
-        type: string
-        format: uint64
-        title: >-
-          TxIndex is a monotonic counter within the block (actual transaction
-          index,
-
-          or gas consumed)
-    description: |-
-      AbsoluteTxPosition is a unique transaction position that allows for global
-      ordering of transactions.
-  cosmwasm.wasm.v1.AccessConfig:
-    type: object
-    properties:
-      permission:
-        type: string
-        enum:
-          - ACCESS_TYPE_UNSPECIFIED
-          - ACCESS_TYPE_NOBODY
-          - ACCESS_TYPE_EVERYBODY
-          - ACCESS_TYPE_ANY_OF_ADDRESSES
-        default: ACCESS_TYPE_UNSPECIFIED
-        description: >-
-          - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder for empty
-          value
-           - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-           - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-           - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-        title: AccessType permission types
-      addresses:
-        type: array
-        items:
-          type: string
-    description: AccessConfig access control type.
-  cosmwasm.wasm.v1.AccessType:
-    type: string
-    enum:
-      - ACCESS_TYPE_UNSPECIFIED
-      - ACCESS_TYPE_NOBODY
-      - ACCESS_TYPE_EVERYBODY
-      - ACCESS_TYPE_ANY_OF_ADDRESSES
-    default: ACCESS_TYPE_UNSPECIFIED
-    description: >-
-      - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder for empty
-      value
-       - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-       - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-       - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-    title: AccessType permission types
-  cosmwasm.wasm.v1.CodeInfoResponse:
-    type: object
-    properties:
-      code_id:
-        type: string
-        format: uint64
-        title: id for legacy support
-      creator:
-        type: string
-      data_hash:
-        type: string
-        format: byte
-      instantiate_permission:
-        type: object
-        properties:
-          permission:
-            type: string
-            enum:
-              - ACCESS_TYPE_UNSPECIFIED
-              - ACCESS_TYPE_NOBODY
-              - ACCESS_TYPE_EVERYBODY
-              - ACCESS_TYPE_ANY_OF_ADDRESSES
-            default: ACCESS_TYPE_UNSPECIFIED
-            description: >-
-              - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder for
-              empty value
-               - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-               - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-               - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-            title: AccessType permission types
-          addresses:
-            type: array
-            items:
-              type: string
-        description: AccessConfig access control type.
-    title: CodeInfoResponse contains code meta data from CodeInfo
-  cosmwasm.wasm.v1.ContractCodeHistoryEntry:
-    type: object
-    properties:
-      operation:
-        type: string
-        enum:
-          - CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED
-          - CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT
-          - CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE
-          - CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS
-        default: CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED
-        description: >-
-          - CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED:
-          ContractCodeHistoryOperationTypeUnspecified placeholder for empty
-          value
-           - CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT: ContractCodeHistoryOperationTypeInit on chain contract instantiation
-           - CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE: ContractCodeHistoryOperationTypeMigrate code migration
-           - CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS: ContractCodeHistoryOperationTypeGenesis based on genesis data
-        title: ContractCodeHistoryOperationType actions that caused a code change
-      code_id:
-        type: string
-        format: uint64
-        title: CodeID is the reference to the stored WASM code
-      updated:
-        description: Updated Tx position when the operation was executed.
-        type: object
-        properties:
-          block_height:
-            type: string
-            format: uint64
-            title: BlockHeight is the block the contract was created at
-          tx_index:
-            type: string
-            format: uint64
-            title: >-
-              TxIndex is a monotonic counter within the block (actual
-              transaction index,
-
-              or gas consumed)
-      msg:
-        type: string
-        format: byte
-    description: ContractCodeHistoryEntry metadata to a contract.
-  cosmwasm.wasm.v1.ContractCodeHistoryOperationType:
-    type: string
-    enum:
-      - CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED
-      - CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT
-      - CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE
-      - CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS
-    default: CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED
-    description: >-
-      - CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED:
-      ContractCodeHistoryOperationTypeUnspecified placeholder for empty value
-       - CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT: ContractCodeHistoryOperationTypeInit on chain contract instantiation
-       - CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE: ContractCodeHistoryOperationTypeMigrate code migration
-       - CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS: ContractCodeHistoryOperationTypeGenesis based on genesis data
-    title: ContractCodeHistoryOperationType actions that caused a code change
-  cosmwasm.wasm.v1.ContractInfo:
-    type: object
-    properties:
-      code_id:
-        type: string
-        format: uint64
-        title: CodeID is the reference to the stored Wasm code
-      creator:
-        type: string
-        title: Creator address who initially instantiated the contract
-      admin:
-        type: string
-        title: Admin is an optional address that can execute migrations
-      label:
-        type: string
-        description: Label is optional metadata to be stored with a contract instance.
-      created:
-        description: Created Tx position when the contract was instantiated.
-        type: object
-        properties:
-          block_height:
-            type: string
-            format: uint64
-            title: BlockHeight is the block the contract was created at
-          tx_index:
-            type: string
-            format: uint64
-            title: >-
-              TxIndex is a monotonic counter within the block (actual
-              transaction index,
-
-              or gas consumed)
-      ibc_port_id:
-        type: string
-      extension:
-        description: |-
-          Extension is an extension point to store custom metadata within the
-          persistence model.
-        type: object
-        properties:
-          '@type':
-            type: string
-            description: >-
-              A URL/resource name that uniquely identifies the type of the
-              serialized
-
-              protocol buffer message. This string must contain at least
-
-              one "/" character. The last segment of the URL's path must
-              represent
-
-              the fully qualified name of the type (as in
-
-              `path/google.protobuf.Duration`). The name should be in a
-              canonical form
-
-              (e.g., leading "." is not accepted).
-
-
-              In practice, teams usually precompile into the binary all types
-              that they
-
-              expect it to use in the context of Any. However, for URLs which
-              use the
-
-              scheme `http`, `https`, or no scheme, one can optionally set up a
-              type
-
-              server that maps type URLs to message definitions as follows:
-
-
-              * If no scheme is provided, `https` is assumed.
-
-              * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-                value in binary format, or produce an error.
-              * Applications are allowed to cache lookup results based on the
-                URL, or have them precompiled into a binary to avoid any
-                lookup. Therefore, binary compatibility needs to be preserved
-                on changes to types. (Use versioned type names to manage
-                breaking changes.)
-
-              Note: this functionality is not currently available in the
-              official
-
-              protobuf release, and it is not used for type URLs beginning with
-
-              type.googleapis.com.
-
-
-              Schemes other than `http`, `https` (or the empty scheme) might be
-
-              used with implementation specific semantics.
-        additionalProperties: {}
-    title: ContractInfo stores a WASM contract instance
-  cosmwasm.wasm.v1.Model:
-    type: object
-    properties:
-      key:
-        type: string
-        format: byte
-        title: hex-encode key to read it better (this is often ascii)
-      value:
-        type: string
-        format: byte
-        title: base64-encode raw value
-    title: Model is a struct that holds a KV pair
-  cosmwasm.wasm.v1.Params:
-    type: object
-    properties:
-      code_upload_access:
-        type: object
-        properties:
-          permission:
-            type: string
-            enum:
-              - ACCESS_TYPE_UNSPECIFIED
-              - ACCESS_TYPE_NOBODY
-              - ACCESS_TYPE_EVERYBODY
-              - ACCESS_TYPE_ANY_OF_ADDRESSES
-            default: ACCESS_TYPE_UNSPECIFIED
-            description: >-
-              - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder for
-              empty value
-               - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-               - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-               - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-            title: AccessType permission types
-          addresses:
-            type: array
-            items:
-              type: string
-        description: AccessConfig access control type.
-      instantiate_default_permission:
-        type: string
-        enum:
-          - ACCESS_TYPE_UNSPECIFIED
-          - ACCESS_TYPE_NOBODY
-          - ACCESS_TYPE_EVERYBODY
-          - ACCESS_TYPE_ANY_OF_ADDRESSES
-        default: ACCESS_TYPE_UNSPECIFIED
-        description: >-
-          - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder for empty
-          value
-           - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-           - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-           - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-        title: AccessType permission types
-    description: Params defines the set of wasm parameters.
-  cosmwasm.wasm.v1.QueryAllContractStateResponse:
-    type: object
-    properties:
-      models:
-        type: array
-        items:
-          type: object
-          properties:
-            key:
-              type: string
-              format: byte
-              title: hex-encode key to read it better (this is often ascii)
-            value:
-              type: string
-              format: byte
-              title: base64-encode raw value
-          title: Model is a struct that holds a KV pair
-      pagination:
-        description: pagination defines the pagination in the response.
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            description: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently. It will be empty if
-              there are no more results.
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-    title: |-
-      QueryAllContractStateResponse is the response type for the
-      Query/AllContractState RPC method
-  cosmwasm.wasm.v1.QueryCodeResponse:
-    type: object
-    properties:
-      code_info:
-        type: object
-        properties:
-          code_id:
-            type: string
-            format: uint64
-            title: id for legacy support
-          creator:
-            type: string
-          data_hash:
-            type: string
-            format: byte
-          instantiate_permission:
-            type: object
-            properties:
-              permission:
-                type: string
-                enum:
-                  - ACCESS_TYPE_UNSPECIFIED
-                  - ACCESS_TYPE_NOBODY
-                  - ACCESS_TYPE_EVERYBODY
-                  - ACCESS_TYPE_ANY_OF_ADDRESSES
-                default: ACCESS_TYPE_UNSPECIFIED
-                description: >-
-                  - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder
-                  for empty value
-                   - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-                   - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-                   - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-                title: AccessType permission types
-              addresses:
-                type: array
-                items:
-                  type: string
-            description: AccessConfig access control type.
-        title: CodeInfoResponse contains code meta data from CodeInfo
-      data:
-        type: string
-        format: byte
-    title: QueryCodeResponse is the response type for the Query/Code RPC method
-  cosmwasm.wasm.v1.QueryCodesResponse:
-    type: object
-    properties:
-      code_infos:
-        type: array
-        items:
-          type: object
-          properties:
-            code_id:
-              type: string
-              format: uint64
-              title: id for legacy support
-            creator:
-              type: string
-            data_hash:
-              type: string
-              format: byte
-            instantiate_permission:
-              type: object
-              properties:
-                permission:
-                  type: string
-                  enum:
-                    - ACCESS_TYPE_UNSPECIFIED
-                    - ACCESS_TYPE_NOBODY
-                    - ACCESS_TYPE_EVERYBODY
-                    - ACCESS_TYPE_ANY_OF_ADDRESSES
-                  default: ACCESS_TYPE_UNSPECIFIED
-                  description: >-
-                    - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder
-                    for empty value
-                     - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-                     - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-                     - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-                  title: AccessType permission types
-                addresses:
-                  type: array
-                  items:
-                    type: string
-              description: AccessConfig access control type.
-          title: CodeInfoResponse contains code meta data from CodeInfo
-      pagination:
-        description: pagination defines the pagination in the response.
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            description: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently. It will be empty if
-              there are no more results.
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-    title: QueryCodesResponse is the response type for the Query/Codes RPC method
-  cosmwasm.wasm.v1.QueryContractHistoryResponse:
-    type: object
-    properties:
-      entries:
-        type: array
-        items:
-          type: object
-          properties:
-            operation:
-              type: string
-              enum:
-                - CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED
-                - CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT
-                - CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE
-                - CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS
-              default: CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED
-              description: >-
-                - CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED:
-                ContractCodeHistoryOperationTypeUnspecified placeholder for
-                empty value
-                 - CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT: ContractCodeHistoryOperationTypeInit on chain contract instantiation
-                 - CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE: ContractCodeHistoryOperationTypeMigrate code migration
-                 - CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS: ContractCodeHistoryOperationTypeGenesis based on genesis data
-              title: >-
-                ContractCodeHistoryOperationType actions that caused a code
-                change
-            code_id:
-              type: string
-              format: uint64
-              title: CodeID is the reference to the stored WASM code
-            updated:
-              description: Updated Tx position when the operation was executed.
-              type: object
-              properties:
-                block_height:
-                  type: string
-                  format: uint64
-                  title: BlockHeight is the block the contract was created at
-                tx_index:
-                  type: string
-                  format: uint64
-                  title: >-
-                    TxIndex is a monotonic counter within the block (actual
-                    transaction index,
-
-                    or gas consumed)
-            msg:
-              type: string
-              format: byte
-          description: ContractCodeHistoryEntry metadata to a contract.
-      pagination:
-        description: pagination defines the pagination in the response.
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            description: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently. It will be empty if
-              there are no more results.
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-    title: |-
-      QueryContractHistoryResponse is the response type for the
-      Query/ContractHistory RPC method
-  cosmwasm.wasm.v1.QueryContractInfoResponse:
-    type: object
-    properties:
-      address:
-        type: string
-        title: address is the address of the contract
-      contract_info:
-        type: object
-        properties:
-          code_id:
-            type: string
-            format: uint64
-            title: CodeID is the reference to the stored Wasm code
-          creator:
-            type: string
-            title: Creator address who initially instantiated the contract
-          admin:
-            type: string
-            title: Admin is an optional address that can execute migrations
-          label:
-            type: string
-            description: Label is optional metadata to be stored with a contract instance.
-          created:
-            description: Created Tx position when the contract was instantiated.
-            type: object
-            properties:
-              block_height:
-                type: string
-                format: uint64
-                title: BlockHeight is the block the contract was created at
-              tx_index:
-                type: string
-                format: uint64
-                title: >-
-                  TxIndex is a monotonic counter within the block (actual
-                  transaction index,
-
-                  or gas consumed)
-          ibc_port_id:
-            type: string
-          extension:
-            description: >-
-              Extension is an extension point to store custom metadata within
-              the
-
-              persistence model.
-            type: object
-            properties:
-              '@type':
-                type: string
-                description: >-
-                  A URL/resource name that uniquely identifies the type of the
-                  serialized
-
-                  protocol buffer message. This string must contain at least
-
-                  one "/" character. The last segment of the URL's path must
-                  represent
-
-                  the fully qualified name of the type (as in
-
-                  `path/google.protobuf.Duration`). The name should be in a
-                  canonical form
-
-                  (e.g., leading "." is not accepted).
-
-
-                  In practice, teams usually precompile into the binary all
-                  types that they
-
-                  expect it to use in the context of Any. However, for URLs
-                  which use the
-
-                  scheme `http`, `https`, or no scheme, one can optionally set
-                  up a type
-
-                  server that maps type URLs to message definitions as follows:
-
-
-                  * If no scheme is provided, `https` is assumed.
-
-                  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-                    value in binary format, or produce an error.
-                  * Applications are allowed to cache lookup results based on
-                  the
-                    URL, or have them precompiled into a binary to avoid any
-                    lookup. Therefore, binary compatibility needs to be preserved
-                    on changes to types. (Use versioned type names to manage
-                    breaking changes.)
-
-                  Note: this functionality is not currently available in the
-                  official
-
-                  protobuf release, and it is not used for type URLs beginning
-                  with
-
-                  type.googleapis.com.
-
-
-                  Schemes other than `http`, `https` (or the empty scheme) might
-                  be
-
-                  used with implementation specific semantics.
-            additionalProperties: {}
-        title: ContractInfo stores a WASM contract instance
-    title: >-
-      QueryContractInfoResponse is the response type for the Query/ContractInfo
-      RPC
-
-      method
-  cosmwasm.wasm.v1.QueryContractsByCodeResponse:
-    type: object
-    properties:
-      contracts:
-        type: array
-        items:
-          type: string
-        title: contracts are a set of contract addresses
-      pagination:
-        description: pagination defines the pagination in the response.
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            description: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently. It will be empty if
-              there are no more results.
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-    title: |-
-      QueryContractsByCodeResponse is the response type for the
-      Query/ContractsByCode RPC method
-  cosmwasm.wasm.v1.QueryContractsByCreatorResponse:
-    type: object
-    properties:
-      contract_addresses:
-        type: array
-        items:
-          type: string
-        title: ContractAddresses result set
-      pagination:
-        description: Pagination defines the pagination in the response.
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            description: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently. It will be empty if
-              there are no more results.
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-    description: |-
-      QueryContractsByCreatorResponse is the response type for the
-      Query/ContractsByCreator RPC method.
-  cosmwasm.wasm.v1.QueryParamsResponse:
-    type: object
-    properties:
-      params:
-        description: params defines the parameters of the module.
-        type: object
-        properties:
-          code_upload_access:
-            type: object
-            properties:
-              permission:
-                type: string
-                enum:
-                  - ACCESS_TYPE_UNSPECIFIED
-                  - ACCESS_TYPE_NOBODY
-                  - ACCESS_TYPE_EVERYBODY
-                  - ACCESS_TYPE_ANY_OF_ADDRESSES
-                default: ACCESS_TYPE_UNSPECIFIED
-                description: >-
-                  - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder
-                  for empty value
-                   - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-                   - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-                   - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-                title: AccessType permission types
-              addresses:
-                type: array
-                items:
-                  type: string
-            description: AccessConfig access control type.
-          instantiate_default_permission:
-            type: string
-            enum:
-              - ACCESS_TYPE_UNSPECIFIED
-              - ACCESS_TYPE_NOBODY
-              - ACCESS_TYPE_EVERYBODY
-              - ACCESS_TYPE_ANY_OF_ADDRESSES
-            default: ACCESS_TYPE_UNSPECIFIED
-            description: >-
-              - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder for
-              empty value
-               - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-               - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-               - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-            title: AccessType permission types
-    description: QueryParamsResponse is the response type for the Query/Params RPC method.
-  cosmwasm.wasm.v1.QueryPinnedCodesResponse:
-    type: object
-    properties:
-      code_ids:
-        type: array
-        items:
-          type: string
-          format: uint64
-      pagination:
-        description: pagination defines the pagination in the response.
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            description: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently. It will be empty if
-              there are no more results.
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-    title: |-
-      QueryPinnedCodesResponse is the response type for the
-      Query/PinnedCodes RPC method
-  cosmwasm.wasm.v1.QueryRawContractStateResponse:
-    type: object
-    properties:
-      data:
-        type: string
-        format: byte
-        title: Data contains the raw store data
-    title: |-
-      QueryRawContractStateResponse is the response type for the
-      Query/RawContractState RPC method
-  cosmwasm.wasm.v1.QuerySmartContractStateResponse:
-    type: object
-    properties:
-      data:
-        type: string
-        format: byte
-        title: Data contains the json data returned from the smart contract
-    title: |-
-      QuerySmartContractStateResponse is the response type for the
-      Query/SmartContractState RPC method
-  cosmwasm.wasm.v1.MsgAddCodeUploadParamsAddresses:
-    type: object
-    properties:
-      authority:
-        type: string
-        description: Authority is the address of the governance account.
-      addresses:
-        type: array
-        items:
-          type: string
-    description: |-
-      MsgAddCodeUploadParamsAddresses is the
-      MsgAddCodeUploadParamsAddresses request type.
-  cosmwasm.wasm.v1.MsgAddCodeUploadParamsAddressesResponse:
-    type: object
-    description: |-
-      MsgAddCodeUploadParamsAddressesResponse defines the response
-      structure for executing a MsgAddCodeUploadParamsAddresses message.
-  cosmwasm.wasm.v1.MsgClearAdmin:
-    type: object
-    properties:
-      sender:
-        type: string
-        title: Sender is the actor that signed the messages
-      contract:
-        type: string
-        title: Contract is the address of the smart contract
-    title: MsgClearAdmin removes any admin stored for a smart contract
-  cosmwasm.wasm.v1.MsgClearAdminResponse:
-    type: object
-    title: MsgClearAdminResponse returns empty data
-  cosmwasm.wasm.v1.MsgExecuteContract:
-    type: object
-    properties:
-      sender:
-        type: string
-        title: Sender is the that actor that signed the messages
-      contract:
-        type: string
-        title: Contract is the address of the smart contract
-      msg:
-        type: string
-        format: byte
-        title: Msg json encoded message to be passed to the contract
-      funds:
-        type: array
-        items:
-          type: object
-          properties:
-            denom:
-              type: string
-            amount:
-              type: string
-          description: |-
-            Coin defines a token with a denomination and an amount.
-
-            NOTE: The amount field is an Int which implements the custom method
-            signatures required by gogoproto.
-        title: Funds coins that are transferred to the contract on execution
-    title: MsgExecuteContract submits the given message data to a smart contract
-  cosmwasm.wasm.v1.MsgExecuteContractResponse:
-    type: object
-    properties:
-      data:
-        type: string
-        format: byte
-        title: Data contains bytes to returned from the contract
-    description: MsgExecuteContractResponse returns execution result data.
-  cosmwasm.wasm.v1.MsgInstantiateContract:
-    type: object
-    properties:
-      sender:
-        type: string
-        title: Sender is the that actor that signed the messages
-      admin:
-        type: string
-        title: Admin is an optional address that can execute migrations
-      code_id:
-        type: string
-        format: uint64
-        title: CodeID is the reference to the stored WASM code
-      label:
-        type: string
-        description: Label is optional metadata to be stored with a contract instance.
-      msg:
-        type: string
-        format: byte
-        title: Msg json encoded message to be passed to the contract on instantiation
-      funds:
-        type: array
-        items:
-          type: object
-          properties:
-            denom:
-              type: string
-            amount:
-              type: string
-          description: |-
-            Coin defines a token with a denomination and an amount.
-
-            NOTE: The amount field is an Int which implements the custom method
-            signatures required by gogoproto.
-        title: Funds coins that are transferred to the contract on instantiation
-    description: |-
-      MsgInstantiateContract create a new smart contract instance for the given
-      code id.
-  cosmwasm.wasm.v1.MsgInstantiateContract2:
-    type: object
-    properties:
-      sender:
-        type: string
-        title: Sender is the that actor that signed the messages
-      admin:
-        type: string
-        title: Admin is an optional address that can execute migrations
-      code_id:
-        type: string
-        format: uint64
-        title: CodeID is the reference to the stored WASM code
-      label:
-        type: string
-        description: Label is optional metadata to be stored with a contract instance.
-      msg:
-        type: string
-        format: byte
-        title: Msg json encoded message to be passed to the contract on instantiation
-      funds:
-        type: array
-        items:
-          type: object
-          properties:
-            denom:
-              type: string
-            amount:
-              type: string
-          description: |-
-            Coin defines a token with a denomination and an amount.
-
-            NOTE: The amount field is an Int which implements the custom method
-            signatures required by gogoproto.
-        title: Funds coins that are transferred to the contract on instantiation
-      salt:
-        type: string
-        format: byte
-        description: >-
-          Salt is an arbitrary value provided by the sender. Size can be 1 to
-          64.
-      fix_msg:
-        type: boolean
-        title: >-
-          FixMsg include the msg value into the hash for the predictable
-          address.
-
-          Default is false
-    description: |-
-      MsgInstantiateContract2 create a new smart contract instance for the given
-      code id with a predicable address.
-  cosmwasm.wasm.v1.MsgInstantiateContract2Response:
-    type: object
-    properties:
-      address:
-        type: string
-        description: Address is the bech32 address of the new contract instance.
-      data:
-        type: string
-        format: byte
-        title: Data contains bytes to returned from the contract
-    title: MsgInstantiateContract2Response return instantiation result data
-  cosmwasm.wasm.v1.MsgInstantiateContractResponse:
-    type: object
-    properties:
-      address:
-        type: string
-        description: Address is the bech32 address of the new contract instance.
-      data:
-        type: string
-        format: byte
-        title: Data contains bytes to returned from the contract
-    title: MsgInstantiateContractResponse return instantiation result data
-  cosmwasm.wasm.v1.MsgMigrateContract:
-    type: object
-    properties:
-      sender:
-        type: string
-        title: Sender is the that actor that signed the messages
-      contract:
-        type: string
-        title: Contract is the address of the smart contract
-      code_id:
-        type: string
-        format: uint64
-        title: CodeID references the new WASM code
-      msg:
-        type: string
-        format: byte
-        title: Msg json encoded message to be passed to the contract on migration
-    title: MsgMigrateContract runs a code upgrade/ downgrade for a smart contract
-  cosmwasm.wasm.v1.MsgMigrateContractResponse:
-    type: object
-    properties:
-      data:
-        type: string
-        format: byte
-        title: |-
-          Data contains same raw bytes returned as data from the wasm contract.
-          (May be empty)
-    description: MsgMigrateContractResponse returns contract migration result data.
-  cosmwasm.wasm.v1.MsgPinCodes:
-    type: object
-    properties:
-      authority:
-        type: string
-        description: Authority is the address of the governance account.
-      code_ids:
-        type: array
-        items:
-          type: string
-          format: uint64
-        title: CodeIDs references the new WASM codes
-    description: |-
-      MsgPinCodes is the MsgPinCodes request type.
-
-      Since: 0.40
-  cosmwasm.wasm.v1.MsgPinCodesResponse:
-    type: object
-    description: |-
-      MsgPinCodesResponse defines the response structure for executing a
-      MsgPinCodes message.
-
-      Since: 0.40
-  cosmwasm.wasm.v1.MsgRemoveCodeUploadParamsAddresses:
-    type: object
-    properties:
-      authority:
-        type: string
-        description: Authority is the address of the governance account.
-      addresses:
-        type: array
-        items:
-          type: string
-    description: |-
-      MsgRemoveCodeUploadParamsAddresses is the
-      MsgRemoveCodeUploadParamsAddresses request type.
-  cosmwasm.wasm.v1.MsgRemoveCodeUploadParamsAddressesResponse:
-    type: object
-    description: |-
-      MsgRemoveCodeUploadParamsAddressesResponse defines the response
-      structure for executing a MsgRemoveCodeUploadParamsAddresses message.
-  cosmwasm.wasm.v1.MsgStoreAndInstantiateContract:
-    type: object
-    properties:
-      authority:
-        type: string
-        description: Authority is the address of the governance account.
-      wasm_byte_code:
-        type: string
-        format: byte
-        title: WASMByteCode can be raw or gzip compressed
-      instantiate_permission:
-        title: InstantiatePermission to apply on contract creation, optional
-        type: object
-        properties:
-          permission:
-            type: string
-            enum:
-              - ACCESS_TYPE_UNSPECIFIED
-              - ACCESS_TYPE_NOBODY
-              - ACCESS_TYPE_EVERYBODY
-              - ACCESS_TYPE_ANY_OF_ADDRESSES
-            default: ACCESS_TYPE_UNSPECIFIED
-            description: >-
-              - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder for
-              empty value
-               - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-               - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-               - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-            title: AccessType permission types
-          addresses:
-            type: array
-            items:
-              type: string
-        description: AccessConfig access control type.
-      unpin_code:
-        type: boolean
-        description: >-
-          UnpinCode code on upload, optional. As default the uploaded contract
-          is
-
-          pinned to cache.
-      admin:
-        type: string
-        title: Admin is an optional address that can execute migrations
-      label:
-        type: string
-        description: Label is optional metadata to be stored with a constract instance.
-      msg:
-        type: string
-        format: byte
-        title: Msg json encoded message to be passed to the contract on instantiation
-      funds:
-        type: array
-        items:
-          type: object
-          properties:
-            denom:
-              type: string
-            amount:
-              type: string
-          description: |-
-            Coin defines a token with a denomination and an amount.
-
-            NOTE: The amount field is an Int which implements the custom method
-            signatures required by gogoproto.
-        title: >-
-          Funds coins that are transferred from the authority account to the
-          contract
-
-          on instantiation
-      source:
-        type: string
-        title: Source is the URL where the code is hosted
-      builder:
-        type: string
-        title: >-
-          Builder is the docker image used to build the code deterministically,
-          used
-
-          for smart contract verification
-      code_hash:
-        type: string
-        format: byte
-        title: >-
-          CodeHash is the SHA256 sum of the code outputted by builder, used for
-          smart
-
-          contract verification
-    description: |-
-      MsgStoreAndInstantiateContract is the MsgStoreAndInstantiateContract
-      request type.
-
-      Since: 0.40
-  cosmwasm.wasm.v1.MsgStoreAndInstantiateContractResponse:
-    type: object
-    properties:
-      address:
-        type: string
-        description: Address is the bech32 address of the new contract instance.
-      data:
-        type: string
-        format: byte
-        title: Data contains bytes to returned from the contract
-    description: |-
-      MsgStoreAndInstantiateContractResponse defines the response structure
-      for executing a MsgStoreAndInstantiateContract message.
-
-      Since: 0.40
-  cosmwasm.wasm.v1.MsgStoreAndMigrateContract:
-    type: object
-    properties:
-      authority:
-        type: string
-        description: Authority is the address of the governance account.
-      wasm_byte_code:
-        type: string
-        format: byte
-        title: WASMByteCode can be raw or gzip compressed
-      instantiate_permission:
-        title: InstantiatePermission to apply on contract creation, optional
-        type: object
-        properties:
-          permission:
-            type: string
-            enum:
-              - ACCESS_TYPE_UNSPECIFIED
-              - ACCESS_TYPE_NOBODY
-              - ACCESS_TYPE_EVERYBODY
-              - ACCESS_TYPE_ANY_OF_ADDRESSES
-            default: ACCESS_TYPE_UNSPECIFIED
-            description: >-
-              - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder for
-              empty value
-               - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-               - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-               - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-            title: AccessType permission types
-          addresses:
-            type: array
-            items:
-              type: string
-        description: AccessConfig access control type.
-      contract:
-        type: string
-        title: Contract is the address of the smart contract
-      msg:
-        type: string
-        format: byte
-        title: Msg json encoded message to be passed to the contract on migration
-    description: |-
-      MsgStoreAndMigrateContract is the MsgStoreAndMigrateContract
-      request type.
-
-      Since: 0.42
-  cosmwasm.wasm.v1.MsgStoreAndMigrateContractResponse:
-    type: object
-    properties:
-      code_id:
-        type: string
-        format: uint64
-        title: CodeID is the reference to the stored WASM code
-      checksum:
-        type: string
-        format: byte
-        title: Checksum is the sha256 hash of the stored code
-      data:
-        type: string
-        format: byte
-        title: Data contains bytes to returned from the contract
-    description: |-
-      MsgStoreAndMigrateContractResponse defines the response structure
-      for executing a MsgStoreAndMigrateContract message.
-
-      Since: 0.42
-  cosmwasm.wasm.v1.MsgStoreCode:
-    type: object
-    properties:
-      sender:
-        type: string
-        title: Sender is the actor that signed the messages
-      wasm_byte_code:
-        type: string
-        format: byte
-        title: WASMByteCode can be raw or gzip compressed
-      instantiate_permission:
-        title: |-
-          InstantiatePermission access control to apply on contract creation,
-          optional
-        type: object
-        properties:
-          permission:
-            type: string
-            enum:
-              - ACCESS_TYPE_UNSPECIFIED
-              - ACCESS_TYPE_NOBODY
-              - ACCESS_TYPE_EVERYBODY
-              - ACCESS_TYPE_ANY_OF_ADDRESSES
-            default: ACCESS_TYPE_UNSPECIFIED
-            description: >-
-              - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder for
-              empty value
-               - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-               - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-               - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-            title: AccessType permission types
-          addresses:
-            type: array
-            items:
-              type: string
-        description: AccessConfig access control type.
-    title: MsgStoreCode submit Wasm code to the system
-  cosmwasm.wasm.v1.MsgStoreCodeResponse:
-    type: object
-    properties:
-      code_id:
-        type: string
-        format: uint64
-        title: CodeID is the reference to the stored WASM code
-      checksum:
-        type: string
-        format: byte
-        title: Checksum is the sha256 hash of the stored code
-    description: MsgStoreCodeResponse returns store result data.
-  cosmwasm.wasm.v1.MsgSudoContract:
-    type: object
-    properties:
-      authority:
-        type: string
-        description: Authority is the address of the governance account.
-      contract:
-        type: string
-        title: Contract is the address of the smart contract
-      msg:
-        type: string
-        format: byte
-        title: Msg json encoded message to be passed to the contract as sudo
-    description: |-
-      MsgSudoContract is the MsgSudoContract request type.
-
-      Since: 0.40
-  cosmwasm.wasm.v1.MsgSudoContractResponse:
-    type: object
-    properties:
-      data:
-        type: string
-        format: byte
-        title: Data contains bytes to returned from the contract
-    description: |-
-      MsgSudoContractResponse defines the response structure for executing a
-      MsgSudoContract message.
-
-      Since: 0.40
-  cosmwasm.wasm.v1.MsgUnpinCodes:
-    type: object
-    properties:
-      authority:
-        type: string
-        description: Authority is the address of the governance account.
-      code_ids:
-        type: array
-        items:
-          type: string
-          format: uint64
-        title: CodeIDs references the WASM codes
-    description: |-
-      MsgUnpinCodes is the MsgUnpinCodes request type.
-
-      Since: 0.40
-  cosmwasm.wasm.v1.MsgUnpinCodesResponse:
-    type: object
-    description: |-
-      MsgUnpinCodesResponse defines the response structure for executing a
-      MsgUnpinCodes message.
-
-      Since: 0.40
-  cosmwasm.wasm.v1.MsgUpdateAdmin:
-    type: object
-    properties:
-      sender:
-        type: string
-        title: Sender is the that actor that signed the messages
-      new_admin:
-        type: string
-        title: NewAdmin address to be set
-      contract:
-        type: string
-        title: Contract is the address of the smart contract
-    title: MsgUpdateAdmin sets a new admin for a smart contract
-  cosmwasm.wasm.v1.MsgUpdateAdminResponse:
-    type: object
-    title: MsgUpdateAdminResponse returns empty data
-  cosmwasm.wasm.v1.MsgUpdateContractLabel:
-    type: object
-    properties:
-      sender:
-        type: string
-        title: Sender is the that actor that signed the messages
-      new_label:
-        type: string
-        title: NewLabel string to be set
-      contract:
-        type: string
-        title: Contract is the address of the smart contract
-    title: MsgUpdateContractLabel sets a new label for a smart contract
-  cosmwasm.wasm.v1.MsgUpdateContractLabelResponse:
-    type: object
-    title: MsgUpdateContractLabelResponse returns empty data
-  cosmwasm.wasm.v1.MsgUpdateInstantiateConfig:
-    type: object
-    properties:
-      sender:
-        type: string
-        title: Sender is the that actor that signed the messages
-      code_id:
-        type: string
-        format: uint64
-        title: CodeID references the stored WASM code
-      new_instantiate_permission:
-        title: NewInstantiatePermission is the new access control
-        type: object
-        properties:
-          permission:
-            type: string
-            enum:
-              - ACCESS_TYPE_UNSPECIFIED
-              - ACCESS_TYPE_NOBODY
-              - ACCESS_TYPE_EVERYBODY
-              - ACCESS_TYPE_ANY_OF_ADDRESSES
-            default: ACCESS_TYPE_UNSPECIFIED
-            description: >-
-              - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder for
-              empty value
-               - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-               - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-               - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-            title: AccessType permission types
-          addresses:
-            type: array
-            items:
-              type: string
-        description: AccessConfig access control type.
-    title: MsgUpdateInstantiateConfig updates instantiate config for a smart contract
-  cosmwasm.wasm.v1.MsgUpdateInstantiateConfigResponse:
-    type: object
-    title: MsgUpdateInstantiateConfigResponse returns empty data
-  cosmwasm.wasm.v1.MsgUpdateParams:
-    type: object
-    properties:
-      authority:
-        type: string
-        description: Authority is the address of the governance account.
-      params:
-        description: |-
-          params defines the x/wasm parameters to update.
-
-          NOTE: All parameters must be supplied.
-        type: object
-        properties:
-          code_upload_access:
-            type: object
-            properties:
-              permission:
-                type: string
-                enum:
-                  - ACCESS_TYPE_UNSPECIFIED
-                  - ACCESS_TYPE_NOBODY
-                  - ACCESS_TYPE_EVERYBODY
-                  - ACCESS_TYPE_ANY_OF_ADDRESSES
-                default: ACCESS_TYPE_UNSPECIFIED
-                description: >-
-                  - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder
-                  for empty value
-                   - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-                   - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-                   - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-                title: AccessType permission types
-              addresses:
-                type: array
-                items:
-                  type: string
-            description: AccessConfig access control type.
-          instantiate_default_permission:
-            type: string
-            enum:
-              - ACCESS_TYPE_UNSPECIFIED
-              - ACCESS_TYPE_NOBODY
-              - ACCESS_TYPE_EVERYBODY
-              - ACCESS_TYPE_ANY_OF_ADDRESSES
-            default: ACCESS_TYPE_UNSPECIFIED
-            description: >-
-              - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder for
-              empty value
-               - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-               - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-               - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-            title: AccessType permission types
-    description: |-
-      MsgUpdateParams is the MsgUpdateParams request type.
-
-      Since: 0.40
-  cosmwasm.wasm.v1.MsgUpdateParamsResponse:
-    type: object
-    description: |-
-      MsgUpdateParamsResponse defines the response structure for executing a
-      MsgUpdateParams message.
-
-      Since: 0.40
-  fairyring.keyshare.ActivePubKey:
-    type: object
-    properties:
-      publicKey:
-        type: string
-      creator:
-        type: string
-      expiry:
-        type: string
-        format: uint64
-  fairyring.keyshare.AggregatedKeyShare:
-    type: object
-    properties:
-      height:
-        type: string
-        format: uint64
-      data:
-        type: string
-  fairyring.keyshare.AuthorizedAddress:
-    type: object
-    properties:
-      target:
-        type: string
-      isAuthorized:
-        type: boolean
-      authorizedBy:
-        type: string
-  fairyring.keyshare.Commitments:
-    type: object
-    properties:
-      commitments:
-        type: array
-        items:
-          type: string
-  fairyring.keyshare.GeneralKeyShare:
-    type: object
-    properties:
-      validator:
-        type: string
-      idType:
-        type: string
-      idValue:
-        type: string
-      keyShare:
-        type: string
-      keyShareIndex:
-        type: string
-        format: uint64
-      receivedTimestamp:
-        type: string
-        format: uint64
-      receivedBlockHeight:
-        type: string
-        format: uint64
-  fairyring.keyshare.KeyShare:
-    type: object
-    properties:
-      validator:
-        type: string
-      blockHeight:
-        type: string
-        format: uint64
-      keyShare:
-        type: string
-      keyShareIndex:
-        type: string
-        format: uint64
-      receivedTimestamp:
-        type: string
-        format: uint64
-      receivedBlockHeight:
-        type: string
-        format: uint64
-  fairyring.keyshare.Params:
-    type: object
-    properties:
-      key_expiry:
-        type: string
-        format: uint64
-      trusted_addresses:
-        type: array
-        items:
-          type: string
-      slash_fraction_no_keyshare:
-        type: string
-        format: byte
-      slash_fraction_wrong_keyshare:
-        type: string
-        format: byte
-      minimum_bonded:
-        type: string
-        format: uint64
-      max_idled_block:
-        type: string
-        format: uint64
-    description: Params defines the parameters for the module.
-  fairyring.keyshare.QueryAllAggregatedKeyShareResponse:
-    type: object
-    properties:
-      aggregatedKeyShare:
-        type: array
-        items:
-          type: object
-          properties:
-            height:
-              type: string
-              format: uint64
-            data:
-              type: string
-      pagination:
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            description: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently. It will be empty if
-              there are no more results.
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-        description: |-
-          PageResponse is to be embedded in gRPC response messages where the
-          corresponding request message has used PageRequest.
-
-           message SomeResponse {
-                   repeated Bar results = 1;
-                   PageResponse page = 2;
-           }
-  fairyring.keyshare.QueryAllAuthorizedAddressResponse:
-    type: object
-    properties:
-      authorizedAddress:
-        type: array
-        items:
-          type: object
-          properties:
-            target:
-              type: string
-            isAuthorized:
-              type: boolean
-            authorizedBy:
-              type: string
-      pagination:
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            description: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently. It will be empty if
-              there are no more results.
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-        description: |-
-          PageResponse is to be embedded in gRPC response messages where the
-          corresponding request message has used PageRequest.
-
-           message SomeResponse {
-                   repeated Bar results = 1;
-                   PageResponse page = 2;
-           }
-  fairyring.keyshare.QueryAllGeneralKeyShareResponse:
-    type: object
-    properties:
-      generalKeyShare:
-        type: array
-        items:
-          type: object
-          properties:
-            validator:
-              type: string
-            idType:
-              type: string
-            idValue:
-              type: string
-            keyShare:
-              type: string
-            keyShareIndex:
-              type: string
-              format: uint64
-            receivedTimestamp:
-              type: string
-              format: uint64
-            receivedBlockHeight:
-              type: string
-              format: uint64
-      pagination:
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            description: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently. It will be empty if
-              there are no more results.
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-        description: |-
-          PageResponse is to be embedded in gRPC response messages where the
-          corresponding request message has used PageRequest.
-
-           message SomeResponse {
-                   repeated Bar results = 1;
-                   PageResponse page = 2;
-           }
-  fairyring.keyshare.QueryAllKeyShareResponse:
-    type: object
-    properties:
-      keyShare:
-        type: array
-        items:
-          type: object
-          properties:
-            validator:
-              type: string
-            blockHeight:
-              type: string
-              format: uint64
-            keyShare:
-              type: string
-            keyShareIndex:
-              type: string
-              format: uint64
-            receivedTimestamp:
-              type: string
-              format: uint64
-            receivedBlockHeight:
-              type: string
-              format: uint64
-      pagination:
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            description: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently. It will be empty if
-              there are no more results.
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-        description: |-
-          PageResponse is to be embedded in gRPC response messages where the
-          corresponding request message has used PageRequest.
-
-           message SomeResponse {
-                   repeated Bar results = 1;
-                   PageResponse page = 2;
-           }
-  fairyring.keyshare.QueryAllValidatorSetResponse:
-    type: object
-    properties:
-      validatorSet:
-        type: array
-        items:
-          type: object
-          properties:
-            index:
-              type: string
-            validator:
-              type: string
-            consAddr:
-              type: string
-            isActive:
-              type: boolean
-      pagination:
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            description: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently. It will be empty if
-              there are no more results.
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-        description: |-
-          PageResponse is to be embedded in gRPC response messages where the
-          corresponding request message has used PageRequest.
-
-           message SomeResponse {
-                   repeated Bar results = 1;
-                   PageResponse page = 2;
-           }
-  fairyring.keyshare.QueryCommitmentsResponse:
-    type: object
-    properties:
-      activeCommitments:
-        type: object
-        properties:
-          commitments:
-            type: array
-            items:
-              type: string
-      queuedCommitments:
-        type: object
-        properties:
-          commitments:
-            type: array
-            items:
-              type: string
-  fairyring.keyshare.QueryGetAggregatedKeyShareResponse:
-    type: object
-    properties:
-      aggregatedKeyShare:
-        type: object
-        properties:
-          height:
-            type: string
-            format: uint64
-          data:
-            type: string
-  fairyring.keyshare.QueryGetAuthorizedAddressResponse:
-    type: object
-    properties:
-      authorizedAddress:
-        type: object
-        properties:
-          target:
-            type: string
-          isAuthorized:
-            type: boolean
-          authorizedBy:
-            type: string
-  fairyring.keyshare.QueryGetGeneralKeyShareResponse:
-    type: object
-    properties:
-      generalKeyShare:
-        type: object
-        properties:
-          validator:
-            type: string
-          idType:
-            type: string
-          idValue:
-            type: string
-          keyShare:
-            type: string
-          keyShareIndex:
-            type: string
-            format: uint64
-          receivedTimestamp:
-            type: string
-            format: uint64
-          receivedBlockHeight:
-            type: string
-            format: uint64
-  fairyring.keyshare.QueryGetKeyShareResponse:
-    type: object
-    properties:
-      keyShare:
-        type: object
-        properties:
-          validator:
-            type: string
-          blockHeight:
-            type: string
-            format: uint64
-          keyShare:
-            type: string
-          keyShareIndex:
-            type: string
-            format: uint64
-          receivedTimestamp:
-            type: string
-            format: uint64
-          receivedBlockHeight:
-            type: string
-            format: uint64
-  fairyring.keyshare.QueryGetValidatorSetResponse:
-    type: object
-    properties:
-      validatorSet:
-        type: object
-        properties:
-          index:
-            type: string
-          validator:
-            type: string
-          consAddr:
-            type: string
-          isActive:
-            type: boolean
-  fairyring.keyshare.QueryParamsResponse:
-    type: object
-    properties:
-      params:
-        description: params holds all the parameters of this module.
-        type: object
-        properties:
-          key_expiry:
-            type: string
-            format: uint64
-          trusted_addresses:
-            type: array
-            items:
-              type: string
-          slash_fraction_no_keyshare:
-            type: string
-            format: byte
-          slash_fraction_wrong_keyshare:
-            type: string
-            format: byte
-          minimum_bonded:
-            type: string
-            format: uint64
-          max_idled_block:
-            type: string
-            format: uint64
-    description: QueryParamsResponse is response type for the Query/Params RPC method.
-  fairyring.keyshare.QueryPubKeyResponse:
-    type: object
-    properties:
-      activePubKey:
-        type: object
-        properties:
-          publicKey:
-            type: string
-          creator:
-            type: string
-          expiry:
-            type: string
-            format: uint64
-      queuedPubKey:
-        type: object
-        properties:
-          publicKey:
-            type: string
-          creator:
-            type: string
-          expiry:
-            type: string
-            format: uint64
-  fairyring.keyshare.QueuedPubKey:
-    type: object
-    properties:
-      publicKey:
-        type: string
-      creator:
-        type: string
-      expiry:
-        type: string
-        format: uint64
-  fairyring.keyshare.ValidatorSet:
-    type: object
-    properties:
-      index:
-        type: string
-      validator:
-        type: string
-      consAddr:
-        type: string
-      isActive:
-        type: boolean
-  fairyring.keyshare.MsgCreateAuthorizedAddress:
-    type: object
-    properties:
-      target:
-        type: string
-      creator:
-        type: string
-  fairyring.keyshare.MsgCreateAuthorizedAddressResponse:
-    type: object
-  fairyring.keyshare.MsgCreateGeneralKeyShare:
-    type: object
-    properties:
-      creator:
-        type: string
-      idType:
-        type: string
-      idValue:
-        type: string
-      keyShare:
-        type: string
-      keyShareIndex:
-        type: string
-        format: uint64
-      receivedTimestamp:
-        type: string
-        format: uint64
-      receivedBlockHeight:
-        type: string
-        format: uint64
-  fairyring.keyshare.MsgCreateGeneralKeyShareResponse:
-    type: object
-    properties:
-      creator:
-        type: string
-      idType:
-        type: string
-      idValue:
-        type: string
-      keyShare:
-        type: string
-      keyShareIndex:
-        type: string
-        format: uint64
-      receivedBlockHeight:
-        type: string
-        format: uint64
-      success:
-        type: boolean
-      errorMessage:
-        type: string
-  fairyring.keyshare.MsgCreateLatestPubKey:
-    type: object
-    properties:
-      creator:
-        type: string
-      publicKey:
-        type: string
-      commitments:
-        type: array
-        items:
-          type: string
-    title: 'this line is used by starport scaffolding # proto/tx/message'
-  fairyring.keyshare.MsgCreateLatestPubKeyResponse:
-    type: object
-  fairyring.keyshare.MsgDeleteAuthorizedAddress:
-    type: object
-    properties:
-      target:
-        type: string
-      creator:
-        type: string
-  fairyring.keyshare.MsgDeleteAuthorizedAddressResponse:
-    type: object
-  fairyring.keyshare.MsgRegisterValidator:
-    type: object
-    properties:
-      creator:
-        type: string
-  fairyring.keyshare.MsgRegisterValidatorResponse:
-    type: object
-    properties:
-      creator:
-        type: string
-  fairyring.keyshare.MsgSendKeyshare:
-    type: object
-    properties:
-      creator:
-        type: string
-      message:
-        type: string
-      keyShareIndex:
-        type: string
-        format: uint64
-      blockHeight:
-        type: string
-        format: uint64
-  fairyring.keyshare.MsgSendKeyshareResponse:
-    type: object
-    properties:
-      creator:
-        type: string
-      keyshare:
-        type: string
-      keyshareIndex:
-        type: string
-        format: uint64
-      blockHeight:
-        type: string
-        format: uint64
-      receivedBlockHeight:
-        type: string
-        format: uint64
-      success:
-        type: boolean
-      errorMessage:
-        type: string
-  fairyring.keyshare.MsgUpdateAuthorizedAddress:
-    type: object
-    properties:
-      target:
-        type: string
-      isAuthorized:
-        type: boolean
-      creator:
-        type: string
-  fairyring.keyshare.MsgUpdateAuthorizedAddressResponse:
-    type: object
   fairyring.pep.ActivePubKey:
     type: object
     properties:
@@ -29243,11 +27849,6 @@ definitions:
 
           NOTE: The amount field is an Int which implements the custom method
           signatures required by gogoproto.
-      processedAtChainHeight:
-        type: string
-        format: uint64
-      expired:
-        type: boolean
   fairyring.pep.EncryptedTxArray:
     type: object
     properties:
@@ -29281,11 +27882,6 @@ definitions:
                 method
 
                 signatures required by gogoproto.
-            processedAtChainHeight:
-              type: string
-              format: uint64
-            expired:
-              type: boolean
   fairyring.pep.Params:
     type: object
     properties:
@@ -29367,11 +27963,6 @@ definitions:
                     method
 
                     signatures required by gogoproto.
-                processedAtChainHeight:
-                  type: string
-                  format: uint64
-                expired:
-                  type: boolean
   fairyring.pep.QueryAllEncryptedTxResponse:
     type: object
     properties:
@@ -29410,11 +28001,6 @@ definitions:
                       custom method
 
                       signatures required by gogoproto.
-                  processedAtChainHeight:
-                    type: string
-                    format: uint64
-                  expired:
-                    type: boolean
       pagination:
         type: object
         properties:
@@ -29511,11 +28097,6 @@ definitions:
               method
 
               signatures required by gogoproto.
-          processedAtChainHeight:
-            type: string
-            format: uint64
-          expired:
-            type: boolean
   fairyring.pep.QueryGetPepNonceResponse:
     type: object
     properties:
@@ -29646,7 +28227,7 @@ definitions:
     properties:
       creator:
         type: string
-      requestId:
+      request_id:
         type: string
   fairyring.pep.MsgRequestGeneralKeyshareResponse:
     type: object
@@ -29667,6 +28248,15 @@ definitions:
         format: uint64
   fairyring.pep.MsgSubmitEncryptedTxResponse:
     type: object
+  fairyring.pep.MsgSubmitGeneralEncryptedTx:
+    type: object
+    properties:
+      creator:
+        type: string
+      data:
+        type: string
+      identity:
+        type: string
   ibc.applications.interchain_accounts.controller.v1.Params:
     type: object
     properties:

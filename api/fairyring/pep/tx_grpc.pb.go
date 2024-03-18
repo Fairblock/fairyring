@@ -19,6 +19,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MsgClient interface {
 	SubmitEncryptedTx(ctx context.Context, in *MsgSubmitEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error)
+	SubmitGeneralEncryptedTx(ctx context.Context, in *MsgSubmitGeneralEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
 	CreateAggregatedKeyShare(ctx context.Context, in *MsgCreateAggregatedKeyShare, opts ...grpc.CallOption) (*MsgCreateAggregatedKeyShareResponse, error)
 	RequestGeneralKeyshare(ctx context.Context, in *MsgRequestGeneralKeyshare, opts ...grpc.CallOption) (*MsgRequestGeneralKeyshareResponse, error)
@@ -36,6 +37,15 @@ func NewMsgClient(cc grpc.ClientConnInterface) MsgClient {
 func (c *msgClient) SubmitEncryptedTx(ctx context.Context, in *MsgSubmitEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error) {
 	out := new(MsgSubmitEncryptedTxResponse)
 	err := c.cc.Invoke(ctx, "/fairyring.pep.Msg/SubmitEncryptedTx", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) SubmitGeneralEncryptedTx(ctx context.Context, in *MsgSubmitGeneralEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error) {
+	out := new(MsgSubmitEncryptedTxResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Msg/SubmitGeneralEncryptedTx", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -74,6 +84,7 @@ func (c *msgClient) GetGeneralKeyshare(ctx context.Context, in *MsgGetGeneralKey
 // for forward compatibility
 type MsgServer interface {
 	SubmitEncryptedTx(context.Context, *MsgSubmitEncryptedTx) (*MsgSubmitEncryptedTxResponse, error)
+	SubmitGeneralEncryptedTx(context.Context, *MsgSubmitGeneralEncryptedTx) (*MsgSubmitEncryptedTxResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
 	CreateAggregatedKeyShare(context.Context, *MsgCreateAggregatedKeyShare) (*MsgCreateAggregatedKeyShareResponse, error)
 	RequestGeneralKeyshare(context.Context, *MsgRequestGeneralKeyshare) (*MsgRequestGeneralKeyshareResponse, error)
@@ -87,6 +98,9 @@ type UnimplementedMsgServer struct {
 
 func (UnimplementedMsgServer) SubmitEncryptedTx(context.Context, *MsgSubmitEncryptedTx) (*MsgSubmitEncryptedTxResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitEncryptedTx not implemented")
+}
+func (UnimplementedMsgServer) SubmitGeneralEncryptedTx(context.Context, *MsgSubmitGeneralEncryptedTx) (*MsgSubmitEncryptedTxResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitGeneralEncryptedTx not implemented")
 }
 func (UnimplementedMsgServer) CreateAggregatedKeyShare(context.Context, *MsgCreateAggregatedKeyShare) (*MsgCreateAggregatedKeyShareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAggregatedKeyShare not implemented")
@@ -124,6 +138,24 @@ func _Msg_SubmitEncryptedTx_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).SubmitEncryptedTx(ctx, req.(*MsgSubmitEncryptedTx))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_SubmitGeneralEncryptedTx_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSubmitGeneralEncryptedTx)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).SubmitGeneralEncryptedTx(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.pep.Msg/SubmitGeneralEncryptedTx",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).SubmitGeneralEncryptedTx(ctx, req.(*MsgSubmitGeneralEncryptedTx))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -192,6 +224,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SubmitEncryptedTx",
 			Handler:    _Msg_SubmitEncryptedTx_Handler,
+		},
+		{
+			MethodName: "SubmitGeneralEncryptedTx",
+			Handler:    _Msg_SubmitGeneralEncryptedTx_Handler,
 		},
 		{
 			MethodName: "CreateAggregatedKeyShare",

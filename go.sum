@@ -240,10 +240,6 @@ github.com/DataDog/zstd v1.4.1/go.mod h1:1jcaCB/ufaK+sKp1NBhlGmpz41jOoPQ35bpF36t
 github.com/Djarvur/go-err113 v0.0.0-20210108212216-aea10b59be24/go.mod h1:4UJr5HIiMZrwgkSPdsjy2uOQExX/WEILpIrO9UPGuXs=
 github.com/FairBlock/DistributedIBE v0.0.0-20230528025616-f58fb2b93eaf h1:b4eYrFmDvCv1cA4dIPsmH6cGhURs6aIERShJczjwFuA=
 github.com/FairBlock/DistributedIBE v0.0.0-20230528025616-f58fb2b93eaf/go.mod h1:qXpLBzZiSdWoweJkE/lAIPedf6GOl7WsYM8rxrZCCDk=
-github.com/Fairblock/cosmos-sdk v0.47.3-fairyring h1:7F4vq02Nw+mDlEbSs6oo2EaNez7g++j9tnFY9MpvlGE=
-github.com/Fairblock/cosmos-sdk v0.47.3-fairyring/go.mod h1:F7oJzvXxXhgxtmrjyILEeYjxA3/Gygr2htZRrY/mhTE=
-github.com/Fairblock/wasmd v0.45.0-fairy h1:A8KME+M1mPbnQ06b52InydSP0YDy1z2MRvF9X3fOwho=
-github.com/Fairblock/wasmd v0.45.0-fairy/go.mod h1:ZbWiki0Yy3csOxNJZEiNwDT8UcNbZjsnAzEnj+pz28w=
 github.com/GaijinEntertainment/go-exhaustruct/v2 v2.2.0/go.mod h1:n/vLeA7V+QY84iYAGwMkkUUp9ooeuftMEvaDrSVch+Q=
 github.com/HdrHistogram/hdrhistogram-go v1.1.0/go.mod h1:yDgFjdqOqDEKOvasDdhWNXYg9BVp4O+o5f6V/ehm6Oo=
 github.com/HdrHistogram/hdrhistogram-go v1.1.2/go.mod h1:yDgFjdqOqDEKOvasDdhWNXYg9BVp4O+o5f6V/ehm6Oo=

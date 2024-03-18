@@ -2,9 +2,10 @@ package keeper
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"time"
 
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
 
@@ -19,13 +20,43 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	params := k.GetParams(ctx)
+
 	if params.IsSourceChain {
-		//TODO: process for fairyring
+		req := commontypes.MsgRequestAggrKeyshare{
+			Id: &commontypes.MsgRequestAggrKeyshare_RequestId{
+				RequestId: msg.RequestId,
+			},
+		}
+
+		rsp, err := k.keyshareKeeper.ProcessKeyshareRequest(ctx, req)
+		if err == nil {
+			entry := types.GenEncTxExecutionQueue{
+				Creator:   msg.Creator,
+				RequestId: msg.RequestId,
+				Identity:  rsp.GetIdentity(),
+				Pubkey:    rsp.GetPubkey(),
+			}
+
+			k.SetEntry(ctx, entry)
+
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(
+					types.RequestIdentityEventType,
+					sdk.NewAttribute(types.RequestIdentityEventIdentity, rsp.Identity),
+					sdk.NewAttribute(types.RequestIdentityEventPubkey, rsp.Pubkey),
+				),
+			)
+			return &types.MsgRequestGeneralKeyshareResponse{
+				Identity: rsp.Identity,
+				Pubkey:   rsp.Pubkey,
+			}, nil
+		}
+		return &types.MsgRequestGeneralKeyshareResponse{}, err
 	} else {
-		id := "dummy_id" // TODO: can have a more robust request id sysytem in later phases
 		packetData := kstypes.RequestAggrKeysharePacketData{
+			Requester: msg.Creator,
 			Id: &kstypes.RequestAggrKeysharePacketData_RequestId{
-				RequestId: id,
+				RequestId: msg.RequestId,
 			},
 		}
 
@@ -43,7 +74,8 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeRequestKeyshare,
-				sdk.NewAttribute(types.AttributeKeyRequestID, fmt.Sprintf("%d", id)),
+				sdk.NewAttribute(types.AttributeKeyCreator, msg.Creator),
+				sdk.NewAttribute(types.AttributeKeyRequestID, msg.RequestId),
 			),
 		)
 
@@ -74,34 +106,52 @@ func (k Keeper) TransmitRequestAggrKeysharePacket(
 	return k.ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes)
 }
 
-// // OnAcknowledgementRequestAggrKeysharePacket responds to the the success or failure of a packet
-// // acknowledgement written on the receiving chain.
-// func (k Keeper) OnAcknowledgementRequestAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data kstypes.RequestAggrKeysharePacketData, ack channeltypes.Acknowledgement) error {
-// 	switch dispatchedAck := ack.Response.(type) {
-// 	case *channeltypes.Acknowledgement_Error:
+// OnAcknowledgementRequestAggrKeysharePacket responds to the the success or failure of a packet
+// acknowledgement written on the receiving chain.
+func (k Keeper) OnAcknowledgementRequestAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data kstypes.RequestAggrKeysharePacketData, ack channeltypes.Acknowledgement) error {
+	switch dispatchedAck := ack.Response.(type) {
+	case *channeltypes.Acknowledgement_Error:
 
-// 		// TODO: failed acknowledgement logic
-// 		_ = dispatchedAck.Error
-// 		return nil
-// 	case *channeltypes.Acknowledgement_Result:
-// 		// Decode the packet acknowledgment
-// 		var packetAck kstypes.RequestAggrKeysharePacketAck
+		// TODO: failed acknowledgement logic
+		_ = dispatchedAck.Error
+		return nil
+	case *channeltypes.Acknowledgement_Result:
+		// Decode the packet acknowledgment
+		var packetAck kstypes.RequestAggrKeysharePacketAck
 
-// 		if err := kstypes.ModuleCdc.UnmarshalJSON(dispatchedAck.Result, &packetAck); err != nil {
-// 			// The counter-party module doesn't implement the correct acknowledgment format
-// 			return errors.New("cannot unmarshal acknowledgment")
-// 		}
+		if err := kstypes.ModuleCdc.UnmarshalJSON(dispatchedAck.Result, &packetAck); err != nil {
+			// The counter-party module doesn't implement the correct acknowledgment format
+			return errors.New("cannot unmarshal acknowledgment")
+		}
 
-// 		req.Identity = packetAck.Identity
-// 		req.Pubkey = packetAck.Pubkey
+		entry := types.GenEncTxExecutionQueue{
+			Creator:   data.Requester,
+			RequestId: data.GetRequestId(),
+			Identity:  packetAck.GetIdentity(),
+			Pubkey:    packetAck.GetPubkey(),
+		}
 
-// 		k.SetRequest(ctx, req)
-// 		return nil
-// 	default:
-// 		// The counter-party module doesn't implement the correct acknowledgment format
-// 		return errors.New("invalid acknowledgment format")
-// 	}
-// }
+		_, found := k.GetEntry(ctx, entry.Identity)
+		if found {
+			return errors.New("entry already exists")
+		}
+
+		k.SetEntry(ctx, entry)
+
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeRequestKeyshare,
+				sdk.NewAttribute(types.AttributeKeyCreator, entry.Creator),
+				sdk.NewAttribute(types.AttributeKeyRequestID, entry.RequestId),
+			),
+		)
+
+		return nil
+	default:
+		// The counter-party module doesn't implement the correct acknowledgment format
+		return errors.New("invalid acknowledgment format")
+	}
+}
 
 // // OnTimeoutRequestAggrKeysharePacket responds to the case where a packet has not been transmitted because of a timeout
 // func (k Keeper) OnTimeoutRequestAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data kstypes.RequestAggrKeysharePacketData) error {

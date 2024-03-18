@@ -15,6 +15,7 @@ func (k Keeper) GetParams(ctx sdk.Context) types.Params {
 		k.PepChannelID(ctx),
 		k.KeyshareChannelID(ctx),
 		&coin,
+		k.IsSourceChain(ctx),
 	)
 }
 
@@ -49,5 +50,10 @@ func (k Keeper) KeyshareChannelID(ctx sdk.Context) (res string) {
 
 func (k Keeper) MinGasPrice(ctx sdk.Context) (res sdk.Coin) {
 	k.paramstore.Get(ctx, types.KeyMinGasPrice, &res)
+	return
+}
+
+func (k Keeper) IsSourceChain(ctx sdk.Context) (res bool) {
+	k.paramstore.Get(ctx, types.KeyIsSourceChain, &res)
 	return
 }

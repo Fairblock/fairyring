@@ -11,4 +11,5 @@ const (
 	AttributeKeyAck        = "acknowledgement"
 	AttributeKeyAckError   = "error"
 	AttributeKeyRequestID  = "request_id"
+	AttributeKeyCreator    = "creator"
 )

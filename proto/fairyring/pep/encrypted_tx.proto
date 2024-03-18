@@ -19,3 +19,24 @@ message EncryptedTx {
 message EncryptedTxArray {
   repeated EncryptedTx encryptedTx = 1 [(gogoproto.nullable) = false];
 }
+
+message GeneralEncryptedTx {
+  string identity = 1; 
+  uint64 index = 2; 
+  string data = 3; 
+  string creator = 4;
+  cosmos.base.v1beta1.Coin chargedGas = 5;
+}
+
+message GeneralEncryptedTxArray {
+  repeated GeneralEncryptedTx encryptedTx = 1 [(gogoproto.nullable) = false];
+}
+
+message GenEncTxExecutionQueue {
+  string creator = 1;
+  string request_id = 2;
+  string identity = 3;
+  string pubkey = 4;
+  GeneralEncryptedTxArray tx_list = 5;
+  string aggr_keyshare = 6;
+}

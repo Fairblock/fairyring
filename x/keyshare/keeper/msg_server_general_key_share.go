@@ -284,12 +284,18 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 				}
 			}
 		} else {
-			err = k.govKeeper.ProcessAggrKeyshare(ctx, keyShareReq.ProposalId, keyShareReq.AggrKeyshare)
-			if err != nil {
-				return nil, err
+			if keyShareReq.ProposalId != "" {
+				err = k.govKeeper.ProcessAggrKeyshare(ctx, keyShareReq.ProposalId, keyShareReq.AggrKeyshare)
+				if err != nil {
+					return nil, err
+				}
+			} else {
+				err = k.pepKeeper.ProcessAggrKeyshare(ctx, keyShareReq.ProposalId, keyShareReq.AggrKeyshare)
+				if err != nil {
+					return nil, err
+				}
 			}
 		}
-
 	}
 
 	return &types.MsgCreateGeneralKeyShareResponse{

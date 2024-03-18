@@ -8,7 +8,9 @@ var _ binary.ByteOrder
 
 const (
 	// EncryptedTxKeyPrefix is the prefix to retrieve all EncryptedTx
-	EncryptedTxKeyPrefix = "EncryptedTx/value/"
+	EncryptedTxKeyPrefix   = "EncryptedTx/value/"
+	GenEncTxKeyPrefix      = "GenEncTx/value/"
+	GenEncTxQueueKeyPrefix = "GenEncTxQueue/value/"
 )
 
 func EncryptedTxAllFromHeightKey(
@@ -20,6 +22,17 @@ func EncryptedTxAllFromHeightKey(
 	binary.BigEndian.PutUint64(targetHeightBytes, targetHeight)
 	key = append(key, targetHeightBytes...)
 	key = append(key, []byte("/")...)
+
+	return key
+}
+
+func GenEncTxQueueKey(
+	identity string,
+) []byte {
+	var key []byte
+
+	b := []byte(identity)
+	key = append(key, b...)
 
 	return key
 }

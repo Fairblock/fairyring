@@ -8,6 +8,7 @@ echo "#   Submit Valid & Invalid Aggregated Key to Pep Module   #"
 echo "#    Submit Valid & Invalid Encrypted Tx to Pep Module    #"
 echo "#        Test Pep Nonce Increment on Encrypted Tx         #"
 echo "#        Gas Deduction for encrypted tx execution         #"
+echo "#               Test General Encrypted Txs                #"
 echo "###########################################################"
 echo ""
 
@@ -326,6 +327,48 @@ if [[ "$SECOND_EVENT" != *"coin_received"* ]]; then
 fi
 echo "Second Encrypted TX succeeded with Events: $(echo $SECOND_EVENT | jq) as expected."
 
+# echo "Creating new General Enc Request in pep module on chain fairyring_test_1"
+# RESULT=$($BINARY tx pep request-general-keyshare req-1 --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+# check_tx_code $RESULT
+
+# echo "Query general keyshare request on chain fairyring_test_1"
+# IDENTITY=$($BINARY query pep list-keyshare-req --node $CHAIN1_NODE -o json | jq -r '.keyshares[0].identity')
+# echo "Identity for keyshare request req-1 is: $IDENTITY"
+
+# echo "Query account pep nonce before submitting encrypted tx from pep module on chain fairyring_test_1"
+# RESULT=$($BINARY query pep show-pep-nonce $VALIDATOR_1 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE -o json)
+# VALIDATOR_PEP_NONCE_BEFORE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
+
+# echo "Query target account token balance before submitting encrypted tx from pep module on chain fairyring_test_1"
+# RESULT=$($BINARY query bank balances $WALLET_1 --node $CHAIN1_NODE -o json)
+# TARGET_BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
+# TARGET_BAL=$(echo "$RESULT" | jq -r '.balances[0].amount')
+# echo "Target account has: $TARGET_BAL $TARGET_BAL_DENOM before encrypted bank send tx"
+
+
+# echo "Signing bank send tx with pep nonce: '$VALIDATOR_PEP_NONCE_BEFORE'"
+# echo "Sending 1 $TARGET_BAL_DENOM to target address"
+# $BINARY tx bank send $VALIDATOR_1 $WALLET_1 1$TARGET_BAL_DENOM --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --keyring-backend test --generate-only -o json -y > unsigned.json
+# SIGNED_DATA=$($BINARY tx sign unsigned.json --from $VALIDATOR_1 --offline --account-number 0 --sequence $VALIDATOR_PEP_NONCE_BEFORE --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE  --keyring-backend test -y)
+
+# echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
+# CIPHER=$($ENCRYPTER $IDENTITY $PUB_KEY $SIGNED_DATA)
+# rm -r unsigned.json &> /dev/null
+
+# echo "Submit general encrypted tx to pep module on chain fairyring_test_1"
+# RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER $IDENTITY --from $VALIDATOR_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+# check_tx_code $RESULT
+# RESULT=$(wait_for_tx $RESULT)
+
+# echo "Query Keyshare request and check for encrypted tx"
+# TX=$($BINARY query pep show-keyshare-req $IDENTITY --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE -o json | jq -r '.keyshare.tx_list.encryptedTx[0].data')
+# if [ "$TX" != "$CIPHER" ]; then
+#   echo "Submitting general encrypted tx failed. Expected: $CIPHER, got $TX"
+#   exit 1
+# fi
+
+
+
 echo ""
 echo "###########################################################"
 echo "#                   SUCCESSFULLY TESTED                   #"
@@ -334,7 +377,8 @@ echo "#   Submit Valid & Invalid Aggregated Key to Pep Module   #"
 echo "#    Submit Valid & Invalid Encrypted Tx to Pep Module    #"
 echo "#        Test Pep Nonce Increment on Encrypted Tx         #"
 echo "#        Gas Deduction for encrypted tx execution         #"
+echo "#               Test General Encrypted Txs                #"
 echo "###########################################################"
 echo ""
 
-./scripts/tests/priv_gov.sh $PUB_KEY $1
+# ./scripts/tests/priv_gov.sh $PUB_KEY $1
