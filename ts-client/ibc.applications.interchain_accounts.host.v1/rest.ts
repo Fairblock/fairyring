@@ -9,35 +9,24 @@
  * ---------------------------------------------------------------
  */
 
-export interface ProtobufAny {
+export interface Any {
   "@type"?: string;
 }
 
-export interface RpcStatus {
+export interface Status {
   /** @format int32 */
   code?: number;
   message?: string;
-  details?: ProtobufAny[];
+  details?: { "@type"?: string }[];
 }
 
-/**
-* Params defines the set of on-chain interchain accounts parameters.
-The following parameters may be used to disable the host submodule.
-*/
-export interface V1Params {
-  /** host_enabled enables or disables the host submodule. */
+export interface Params {
   host_enabled?: boolean;
-
-  /** allow_messages defines a list of sdk message typeURLs allowed to be executed on a host chain. */
   allow_messages?: string[];
 }
 
-/**
- * QueryParamsResponse is the response type for the Query/Params RPC method.
- */
-export interface V1QueryParamsResponse {
-  /** params defines the parameters of the module. */
-  params?: V1Params;
+export interface QueryParamsResponse {
+  params?: { host_enabled?: boolean; allow_messages?: string[] };
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
@@ -161,8 +150,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title ibc/applications/interchain_accounts/host/v1/host.proto
- * @version version not set
+ * @title HTTP API Console ibc.applications.interchain_accounts.host.v1
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   /**
@@ -170,14 +158,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryParams
-   * @summary Params queries all parameters of the ICA host submodule.
    * @request GET:/ibc/apps/interchain_accounts/host/v1/params
    */
   queryParams = (params: RequestParams = {}) =>
-    this.request<V1QueryParamsResponse, RpcStatus>({
+    this.request<
+      { params?: { host_enabled?: boolean; allow_messages?: string[] } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/ibc/apps/interchain_accounts/host/v1/params`,
       method: "GET",
-      format: "json",
       ...params,
     });
 }

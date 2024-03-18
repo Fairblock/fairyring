@@ -32,28 +32,45 @@ export const ValidatorSet = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ValidatorSet {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseValidatorSet();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.index = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.validator = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.consAddr = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.isActive = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -69,13 +86,24 @@ export const ValidatorSet = {
 
   toJSON(message: ValidatorSet): unknown {
     const obj: any = {};
-    message.index !== undefined && (obj.index = message.index);
-    message.validator !== undefined && (obj.validator = message.validator);
-    message.consAddr !== undefined && (obj.consAddr = message.consAddr);
-    message.isActive !== undefined && (obj.isActive = message.isActive);
+    if (message.index !== "") {
+      obj.index = message.index;
+    }
+    if (message.validator !== "") {
+      obj.validator = message.validator;
+    }
+    if (message.consAddr !== "") {
+      obj.consAddr = message.consAddr;
+    }
+    if (message.isActive === true) {
+      obj.isActive = message.isActive;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ValidatorSet>, I>>(base?: I): ValidatorSet {
+    return ValidatorSet.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ValidatorSet>, I>>(object: I): ValidatorSet {
     const message = createBaseValidatorSet();
     message.index = object.index ?? "";

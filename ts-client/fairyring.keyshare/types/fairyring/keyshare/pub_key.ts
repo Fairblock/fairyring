@@ -8,16 +8,18 @@ export interface ActivePubKey {
   publicKey: string;
   creator: string;
   expiry: number;
+  numberOfValidators: number;
 }
 
 export interface QueuedPubKey {
   publicKey: string;
   creator: string;
   expiry: number;
+  numberOfValidators: number;
 }
 
 function createBaseActivePubKey(): ActivePubKey {
-  return { publicKey: "", creator: "", expiry: 0 };
+  return { publicKey: "", creator: "", expiry: 0, numberOfValidators: 0 };
 }
 
 export const ActivePubKey = {
@@ -31,29 +33,52 @@ export const ActivePubKey = {
     if (message.expiry !== 0) {
       writer.uint32(24).uint64(message.expiry);
     }
+    if (message.numberOfValidators !== 0) {
+      writer.uint32(32).uint64(message.numberOfValidators);
+    }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ActivePubKey {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseActivePubKey();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.publicKey = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.creator = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.expiry = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.numberOfValidators = longToNumber(reader.uint64() as Long);
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -63,28 +88,42 @@ export const ActivePubKey = {
       publicKey: isSet(object.publicKey) ? String(object.publicKey) : "",
       creator: isSet(object.creator) ? String(object.creator) : "",
       expiry: isSet(object.expiry) ? Number(object.expiry) : 0,
+      numberOfValidators: isSet(object.numberOfValidators) ? Number(object.numberOfValidators) : 0,
     };
   },
 
   toJSON(message: ActivePubKey): unknown {
     const obj: any = {};
-    message.publicKey !== undefined && (obj.publicKey = message.publicKey);
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.expiry !== undefined && (obj.expiry = Math.round(message.expiry));
+    if (message.publicKey !== "") {
+      obj.publicKey = message.publicKey;
+    }
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.expiry !== 0) {
+      obj.expiry = Math.round(message.expiry);
+    }
+    if (message.numberOfValidators !== 0) {
+      obj.numberOfValidators = Math.round(message.numberOfValidators);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ActivePubKey>, I>>(base?: I): ActivePubKey {
+    return ActivePubKey.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ActivePubKey>, I>>(object: I): ActivePubKey {
     const message = createBaseActivePubKey();
     message.publicKey = object.publicKey ?? "";
     message.creator = object.creator ?? "";
     message.expiry = object.expiry ?? 0;
+    message.numberOfValidators = object.numberOfValidators ?? 0;
     return message;
   },
 };
 
 function createBaseQueuedPubKey(): QueuedPubKey {
-  return { publicKey: "", creator: "", expiry: 0 };
+  return { publicKey: "", creator: "", expiry: 0, numberOfValidators: 0 };
 }
 
 export const QueuedPubKey = {
@@ -98,29 +137,52 @@ export const QueuedPubKey = {
     if (message.expiry !== 0) {
       writer.uint32(24).uint64(message.expiry);
     }
+    if (message.numberOfValidators !== 0) {
+      writer.uint32(32).uint64(message.numberOfValidators);
+    }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): QueuedPubKey {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueuedPubKey();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.publicKey = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.creator = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.expiry = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.numberOfValidators = longToNumber(reader.uint64() as Long);
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -130,30 +192,44 @@ export const QueuedPubKey = {
       publicKey: isSet(object.publicKey) ? String(object.publicKey) : "",
       creator: isSet(object.creator) ? String(object.creator) : "",
       expiry: isSet(object.expiry) ? Number(object.expiry) : 0,
+      numberOfValidators: isSet(object.numberOfValidators) ? Number(object.numberOfValidators) : 0,
     };
   },
 
   toJSON(message: QueuedPubKey): unknown {
     const obj: any = {};
-    message.publicKey !== undefined && (obj.publicKey = message.publicKey);
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.expiry !== undefined && (obj.expiry = Math.round(message.expiry));
+    if (message.publicKey !== "") {
+      obj.publicKey = message.publicKey;
+    }
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.expiry !== 0) {
+      obj.expiry = Math.round(message.expiry);
+    }
+    if (message.numberOfValidators !== 0) {
+      obj.numberOfValidators = Math.round(message.numberOfValidators);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<QueuedPubKey>, I>>(base?: I): QueuedPubKey {
+    return QueuedPubKey.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<QueuedPubKey>, I>>(object: I): QueuedPubKey {
     const message = createBaseQueuedPubKey();
     message.publicKey = object.publicKey ?? "";
     message.creator = object.creator ?? "";
     message.expiry = object.expiry ?? 0;
+    message.numberOfValidators = object.numberOfValidators ?? 0;
     return message;
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -182,7 +258,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

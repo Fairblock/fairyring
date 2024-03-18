@@ -82,22 +82,22 @@ export function misbehaviorTypeToJSON(object: MisbehaviorType): string {
 }
 
 export interface Request {
-  echo: RequestEcho | undefined;
-  flush: RequestFlush | undefined;
-  info: RequestInfo | undefined;
-  initChain: RequestInitChain | undefined;
-  query: RequestQuery | undefined;
-  beginBlock: RequestBeginBlock | undefined;
-  checkTx: RequestCheckTx | undefined;
-  deliverTx: RequestDeliverTx | undefined;
-  endBlock: RequestEndBlock | undefined;
-  commit: RequestCommit | undefined;
-  listSnapshots: RequestListSnapshots | undefined;
-  offerSnapshot: RequestOfferSnapshot | undefined;
-  loadSnapshotChunk: RequestLoadSnapshotChunk | undefined;
-  applySnapshotChunk: RequestApplySnapshotChunk | undefined;
-  prepareProposal: RequestPrepareProposal | undefined;
-  processProposal: RequestProcessProposal | undefined;
+  echo?: RequestEcho | undefined;
+  flush?: RequestFlush | undefined;
+  info?: RequestInfo | undefined;
+  initChain?: RequestInitChain | undefined;
+  query?: RequestQuery | undefined;
+  beginBlock?: RequestBeginBlock | undefined;
+  checkTx?: RequestCheckTx | undefined;
+  deliverTx?: RequestDeliverTx | undefined;
+  endBlock?: RequestEndBlock | undefined;
+  commit?: RequestCommit | undefined;
+  listSnapshots?: RequestListSnapshots | undefined;
+  offerSnapshot?: RequestOfferSnapshot | undefined;
+  loadSnapshotChunk?: RequestLoadSnapshotChunk | undefined;
+  applySnapshotChunk?: RequestApplySnapshotChunk | undefined;
+  prepareProposal?: RequestPrepareProposal | undefined;
+  processProposal?: RequestProcessProposal | undefined;
 }
 
 export interface RequestEcho {
@@ -212,23 +212,23 @@ export interface RequestProcessProposal {
 }
 
 export interface Response {
-  exception: ResponseException | undefined;
-  echo: ResponseEcho | undefined;
-  flush: ResponseFlush | undefined;
-  info: ResponseInfo | undefined;
-  initChain: ResponseInitChain | undefined;
-  query: ResponseQuery | undefined;
-  beginBlock: ResponseBeginBlock | undefined;
-  checkTx: ResponseCheckTx | undefined;
-  deliverTx: ResponseDeliverTx | undefined;
-  endBlock: ResponseEndBlock | undefined;
-  commit: ResponseCommit | undefined;
-  listSnapshots: ResponseListSnapshots | undefined;
-  offerSnapshot: ResponseOfferSnapshot | undefined;
-  loadSnapshotChunk: ResponseLoadSnapshotChunk | undefined;
-  applySnapshotChunk: ResponseApplySnapshotChunk | undefined;
-  prepareProposal: ResponsePrepareProposal | undefined;
-  processProposal: ResponseProcessProposal | undefined;
+  exception?: ResponseException | undefined;
+  echo?: ResponseEcho | undefined;
+  flush?: ResponseFlush | undefined;
+  info?: ResponseInfo | undefined;
+  initChain?: ResponseInitChain | undefined;
+  query?: ResponseQuery | undefined;
+  beginBlock?: ResponseBeginBlock | undefined;
+  checkTx?: ResponseCheckTx | undefined;
+  deliverTx?: ResponseDeliverTx | undefined;
+  endBlock?: ResponseEndBlock | undefined;
+  commit?: ResponseCommit | undefined;
+  listSnapshots?: ResponseListSnapshots | undefined;
+  offerSnapshot?: ResponseOfferSnapshot | undefined;
+  loadSnapshotChunk?: ResponseLoadSnapshotChunk | undefined;
+  applySnapshotChunk?: ResponseApplySnapshotChunk | undefined;
+  prepareProposal?: ResponsePrepareProposal | undefined;
+  processProposal?: ResponseProcessProposal | undefined;
 }
 
 /** nondeterministic */
@@ -694,64 +694,129 @@ export const Request = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Request {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.echo = RequestEcho.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.flush = RequestFlush.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.info = RequestInfo.decode(reader, reader.uint32());
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.initChain = RequestInitChain.decode(reader, reader.uint32());
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.query = RequestQuery.decode(reader, reader.uint32());
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.beginBlock = RequestBeginBlock.decode(reader, reader.uint32());
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.checkTx = RequestCheckTx.decode(reader, reader.uint32());
-          break;
+          continue;
         case 9:
+          if (tag !== 74) {
+            break;
+          }
+
           message.deliverTx = RequestDeliverTx.decode(reader, reader.uint32());
-          break;
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.endBlock = RequestEndBlock.decode(reader, reader.uint32());
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.commit = RequestCommit.decode(reader, reader.uint32());
-          break;
+          continue;
         case 12:
+          if (tag !== 98) {
+            break;
+          }
+
           message.listSnapshots = RequestListSnapshots.decode(reader, reader.uint32());
-          break;
+          continue;
         case 13:
+          if (tag !== 106) {
+            break;
+          }
+
           message.offerSnapshot = RequestOfferSnapshot.decode(reader, reader.uint32());
-          break;
+          continue;
         case 14:
+          if (tag !== 114) {
+            break;
+          }
+
           message.loadSnapshotChunk = RequestLoadSnapshotChunk.decode(reader, reader.uint32());
-          break;
+          continue;
         case 15:
+          if (tag !== 122) {
+            break;
+          }
+
           message.applySnapshotChunk = RequestApplySnapshotChunk.decode(reader, reader.uint32());
-          break;
+          continue;
         case 16:
+          if (tag !== 130) {
+            break;
+          }
+
           message.prepareProposal = RequestPrepareProposal.decode(reader, reader.uint32());
-          break;
+          continue;
         case 17:
+          if (tag !== 138) {
+            break;
+          }
+
           message.processProposal = RequestProcessProposal.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -787,40 +852,60 @@ export const Request = {
 
   toJSON(message: Request): unknown {
     const obj: any = {};
-    message.echo !== undefined && (obj.echo = message.echo ? RequestEcho.toJSON(message.echo) : undefined);
-    message.flush !== undefined && (obj.flush = message.flush ? RequestFlush.toJSON(message.flush) : undefined);
-    message.info !== undefined && (obj.info = message.info ? RequestInfo.toJSON(message.info) : undefined);
-    message.initChain !== undefined
-      && (obj.initChain = message.initChain ? RequestInitChain.toJSON(message.initChain) : undefined);
-    message.query !== undefined && (obj.query = message.query ? RequestQuery.toJSON(message.query) : undefined);
-    message.beginBlock !== undefined
-      && (obj.beginBlock = message.beginBlock ? RequestBeginBlock.toJSON(message.beginBlock) : undefined);
-    message.checkTx !== undefined
-      && (obj.checkTx = message.checkTx ? RequestCheckTx.toJSON(message.checkTx) : undefined);
-    message.deliverTx !== undefined
-      && (obj.deliverTx = message.deliverTx ? RequestDeliverTx.toJSON(message.deliverTx) : undefined);
-    message.endBlock !== undefined
-      && (obj.endBlock = message.endBlock ? RequestEndBlock.toJSON(message.endBlock) : undefined);
-    message.commit !== undefined && (obj.commit = message.commit ? RequestCommit.toJSON(message.commit) : undefined);
-    message.listSnapshots !== undefined
-      && (obj.listSnapshots = message.listSnapshots ? RequestListSnapshots.toJSON(message.listSnapshots) : undefined);
-    message.offerSnapshot !== undefined
-      && (obj.offerSnapshot = message.offerSnapshot ? RequestOfferSnapshot.toJSON(message.offerSnapshot) : undefined);
-    message.loadSnapshotChunk !== undefined && (obj.loadSnapshotChunk = message.loadSnapshotChunk
-      ? RequestLoadSnapshotChunk.toJSON(message.loadSnapshotChunk)
-      : undefined);
-    message.applySnapshotChunk !== undefined && (obj.applySnapshotChunk = message.applySnapshotChunk
-      ? RequestApplySnapshotChunk.toJSON(message.applySnapshotChunk)
-      : undefined);
-    message.prepareProposal !== undefined && (obj.prepareProposal = message.prepareProposal
-      ? RequestPrepareProposal.toJSON(message.prepareProposal)
-      : undefined);
-    message.processProposal !== undefined && (obj.processProposal = message.processProposal
-      ? RequestProcessProposal.toJSON(message.processProposal)
-      : undefined);
+    if (message.echo !== undefined) {
+      obj.echo = RequestEcho.toJSON(message.echo);
+    }
+    if (message.flush !== undefined) {
+      obj.flush = RequestFlush.toJSON(message.flush);
+    }
+    if (message.info !== undefined) {
+      obj.info = RequestInfo.toJSON(message.info);
+    }
+    if (message.initChain !== undefined) {
+      obj.initChain = RequestInitChain.toJSON(message.initChain);
+    }
+    if (message.query !== undefined) {
+      obj.query = RequestQuery.toJSON(message.query);
+    }
+    if (message.beginBlock !== undefined) {
+      obj.beginBlock = RequestBeginBlock.toJSON(message.beginBlock);
+    }
+    if (message.checkTx !== undefined) {
+      obj.checkTx = RequestCheckTx.toJSON(message.checkTx);
+    }
+    if (message.deliverTx !== undefined) {
+      obj.deliverTx = RequestDeliverTx.toJSON(message.deliverTx);
+    }
+    if (message.endBlock !== undefined) {
+      obj.endBlock = RequestEndBlock.toJSON(message.endBlock);
+    }
+    if (message.commit !== undefined) {
+      obj.commit = RequestCommit.toJSON(message.commit);
+    }
+    if (message.listSnapshots !== undefined) {
+      obj.listSnapshots = RequestListSnapshots.toJSON(message.listSnapshots);
+    }
+    if (message.offerSnapshot !== undefined) {
+      obj.offerSnapshot = RequestOfferSnapshot.toJSON(message.offerSnapshot);
+    }
+    if (message.loadSnapshotChunk !== undefined) {
+      obj.loadSnapshotChunk = RequestLoadSnapshotChunk.toJSON(message.loadSnapshotChunk);
+    }
+    if (message.applySnapshotChunk !== undefined) {
+      obj.applySnapshotChunk = RequestApplySnapshotChunk.toJSON(message.applySnapshotChunk);
+    }
+    if (message.prepareProposal !== undefined) {
+      obj.prepareProposal = RequestPrepareProposal.toJSON(message.prepareProposal);
+    }
+    if (message.processProposal !== undefined) {
+      obj.processProposal = RequestProcessProposal.toJSON(message.processProposal);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Request>, I>>(base?: I): Request {
+    return Request.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Request>, I>>(object: I): Request {
     const message = createBaseRequest();
     message.echo = (object.echo !== undefined && object.echo !== null)
@@ -888,19 +973,24 @@ export const RequestEcho = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestEcho {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestEcho();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.message = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -911,10 +1001,15 @@ export const RequestEcho = {
 
   toJSON(message: RequestEcho): unknown {
     const obj: any = {};
-    message.message !== undefined && (obj.message = message.message);
+    if (message.message !== "") {
+      obj.message = message.message;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestEcho>, I>>(base?: I): RequestEcho {
+    return RequestEcho.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestEcho>, I>>(object: I): RequestEcho {
     const message = createBaseRequestEcho();
     message.message = object.message ?? "";
@@ -932,16 +1027,17 @@ export const RequestFlush = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestFlush {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestFlush();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -955,6 +1051,9 @@ export const RequestFlush = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestFlush>, I>>(base?: I): RequestFlush {
+    return RequestFlush.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestFlush>, I>>(_: I): RequestFlush {
     const message = createBaseRequestFlush();
     return message;
@@ -983,28 +1082,45 @@ export const RequestInfo = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestInfo();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.version = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.blockVersion = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.p2pVersion = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.abciVersion = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1020,13 +1136,24 @@ export const RequestInfo = {
 
   toJSON(message: RequestInfo): unknown {
     const obj: any = {};
-    message.version !== undefined && (obj.version = message.version);
-    message.blockVersion !== undefined && (obj.blockVersion = Math.round(message.blockVersion));
-    message.p2pVersion !== undefined && (obj.p2pVersion = Math.round(message.p2pVersion));
-    message.abciVersion !== undefined && (obj.abciVersion = message.abciVersion);
+    if (message.version !== "") {
+      obj.version = message.version;
+    }
+    if (message.blockVersion !== 0) {
+      obj.blockVersion = Math.round(message.blockVersion);
+    }
+    if (message.p2pVersion !== 0) {
+      obj.p2pVersion = Math.round(message.p2pVersion);
+    }
+    if (message.abciVersion !== "") {
+      obj.abciVersion = message.abciVersion;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestInfo>, I>>(base?: I): RequestInfo {
+    return RequestInfo.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestInfo>, I>>(object: I): RequestInfo {
     const message = createBaseRequestInfo();
     message.version = object.version ?? "";
@@ -1043,7 +1170,7 @@ function createBaseRequestInitChain(): RequestInitChain {
     chainId: "",
     consensusParams: undefined,
     validators: [],
-    appStateBytes: new Uint8Array(),
+    appStateBytes: new Uint8Array(0),
     initialHeight: 0,
   };
 }
@@ -1072,34 +1199,59 @@ export const RequestInitChain = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestInitChain {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestInitChain();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.chainId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.consensusParams = ConsensusParams.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.validators.push(ValidatorUpdate.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.appStateBytes = reader.bytes();
-          break;
+          continue;
         case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.initialHeight = longToNumber(reader.int64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1112,30 +1264,37 @@ export const RequestInitChain = {
       validators: Array.isArray(object?.validators)
         ? object.validators.map((e: any) => ValidatorUpdate.fromJSON(e))
         : [],
-      appStateBytes: isSet(object.appStateBytes) ? bytesFromBase64(object.appStateBytes) : new Uint8Array(),
+      appStateBytes: isSet(object.appStateBytes) ? bytesFromBase64(object.appStateBytes) : new Uint8Array(0),
       initialHeight: isSet(object.initialHeight) ? Number(object.initialHeight) : 0,
     };
   },
 
   toJSON(message: RequestInitChain): unknown {
     const obj: any = {};
-    message.time !== undefined && (obj.time = message.time.toISOString());
-    message.chainId !== undefined && (obj.chainId = message.chainId);
-    message.consensusParams !== undefined
-      && (obj.consensusParams = message.consensusParams ? ConsensusParams.toJSON(message.consensusParams) : undefined);
-    if (message.validators) {
-      obj.validators = message.validators.map((e) => e ? ValidatorUpdate.toJSON(e) : undefined);
-    } else {
-      obj.validators = [];
+    if (message.time !== undefined) {
+      obj.time = message.time.toISOString();
     }
-    message.appStateBytes !== undefined
-      && (obj.appStateBytes = base64FromBytes(
-        message.appStateBytes !== undefined ? message.appStateBytes : new Uint8Array(),
-      ));
-    message.initialHeight !== undefined && (obj.initialHeight = Math.round(message.initialHeight));
+    if (message.chainId !== "") {
+      obj.chainId = message.chainId;
+    }
+    if (message.consensusParams !== undefined) {
+      obj.consensusParams = ConsensusParams.toJSON(message.consensusParams);
+    }
+    if (message.validators?.length) {
+      obj.validators = message.validators.map((e) => ValidatorUpdate.toJSON(e));
+    }
+    if (message.appStateBytes.length !== 0) {
+      obj.appStateBytes = base64FromBytes(message.appStateBytes);
+    }
+    if (message.initialHeight !== 0) {
+      obj.initialHeight = Math.round(message.initialHeight);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestInitChain>, I>>(base?: I): RequestInitChain {
+    return RequestInitChain.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestInitChain>, I>>(object: I): RequestInitChain {
     const message = createBaseRequestInitChain();
     message.time = object.time ?? undefined;
@@ -1144,14 +1303,14 @@ export const RequestInitChain = {
       ? ConsensusParams.fromPartial(object.consensusParams)
       : undefined;
     message.validators = object.validators?.map((e) => ValidatorUpdate.fromPartial(e)) || [];
-    message.appStateBytes = object.appStateBytes ?? new Uint8Array();
+    message.appStateBytes = object.appStateBytes ?? new Uint8Array(0);
     message.initialHeight = object.initialHeight ?? 0;
     return message;
   },
 };
 
 function createBaseRequestQuery(): RequestQuery {
-  return { data: new Uint8Array(), path: "", height: 0, prove: false };
+  return { data: new Uint8Array(0), path: "", height: 0, prove: false };
 }
 
 export const RequestQuery = {
@@ -1172,35 +1331,52 @@ export const RequestQuery = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestQuery {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestQuery();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.data = reader.bytes();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.path = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.height = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.prove = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): RequestQuery {
     return {
-      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(),
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(0),
       path: isSet(object.path) ? String(object.path) : "",
       height: isSet(object.height) ? Number(object.height) : 0,
       prove: isSet(object.prove) ? Boolean(object.prove) : false,
@@ -1209,17 +1385,27 @@ export const RequestQuery = {
 
   toJSON(message: RequestQuery): unknown {
     const obj: any = {};
-    message.data !== undefined
-      && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
-    message.path !== undefined && (obj.path = message.path);
-    message.height !== undefined && (obj.height = Math.round(message.height));
-    message.prove !== undefined && (obj.prove = message.prove);
+    if (message.data.length !== 0) {
+      obj.data = base64FromBytes(message.data);
+    }
+    if (message.path !== "") {
+      obj.path = message.path;
+    }
+    if (message.height !== 0) {
+      obj.height = Math.round(message.height);
+    }
+    if (message.prove === true) {
+      obj.prove = message.prove;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestQuery>, I>>(base?: I): RequestQuery {
+    return RequestQuery.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestQuery>, I>>(object: I): RequestQuery {
     const message = createBaseRequestQuery();
-    message.data = object.data ?? new Uint8Array();
+    message.data = object.data ?? new Uint8Array(0);
     message.path = object.path ?? "";
     message.height = object.height ?? 0;
     message.prove = object.prove ?? false;
@@ -1228,7 +1414,7 @@ export const RequestQuery = {
 };
 
 function createBaseRequestBeginBlock(): RequestBeginBlock {
-  return { hash: new Uint8Array(), header: undefined, lastCommitInfo: undefined, byzantineValidators: [] };
+  return { hash: new Uint8Array(0), header: undefined, lastCommitInfo: undefined, byzantineValidators: [] };
 }
 
 export const RequestBeginBlock = {
@@ -1249,35 +1435,52 @@ export const RequestBeginBlock = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestBeginBlock {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestBeginBlock();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.hash = reader.bytes();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.header = Header.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.lastCommitInfo = CommitInfo.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.byzantineValidators.push(Misbehavior.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): RequestBeginBlock {
     return {
-      hash: isSet(object.hash) ? bytesFromBase64(object.hash) : new Uint8Array(),
+      hash: isSet(object.hash) ? bytesFromBase64(object.hash) : new Uint8Array(0),
       header: isSet(object.header) ? Header.fromJSON(object.header) : undefined,
       lastCommitInfo: isSet(object.lastCommitInfo) ? CommitInfo.fromJSON(object.lastCommitInfo) : undefined,
       byzantineValidators: Array.isArray(object?.byzantineValidators)
@@ -1288,22 +1491,27 @@ export const RequestBeginBlock = {
 
   toJSON(message: RequestBeginBlock): unknown {
     const obj: any = {};
-    message.hash !== undefined
-      && (obj.hash = base64FromBytes(message.hash !== undefined ? message.hash : new Uint8Array()));
-    message.header !== undefined && (obj.header = message.header ? Header.toJSON(message.header) : undefined);
-    message.lastCommitInfo !== undefined
-      && (obj.lastCommitInfo = message.lastCommitInfo ? CommitInfo.toJSON(message.lastCommitInfo) : undefined);
-    if (message.byzantineValidators) {
-      obj.byzantineValidators = message.byzantineValidators.map((e) => e ? Misbehavior.toJSON(e) : undefined);
-    } else {
-      obj.byzantineValidators = [];
+    if (message.hash.length !== 0) {
+      obj.hash = base64FromBytes(message.hash);
+    }
+    if (message.header !== undefined) {
+      obj.header = Header.toJSON(message.header);
+    }
+    if (message.lastCommitInfo !== undefined) {
+      obj.lastCommitInfo = CommitInfo.toJSON(message.lastCommitInfo);
+    }
+    if (message.byzantineValidators?.length) {
+      obj.byzantineValidators = message.byzantineValidators.map((e) => Misbehavior.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestBeginBlock>, I>>(base?: I): RequestBeginBlock {
+    return RequestBeginBlock.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestBeginBlock>, I>>(object: I): RequestBeginBlock {
     const message = createBaseRequestBeginBlock();
-    message.hash = object.hash ?? new Uint8Array();
+    message.hash = object.hash ?? new Uint8Array(0);
     message.header = (object.header !== undefined && object.header !== null)
       ? Header.fromPartial(object.header)
       : undefined;
@@ -1316,7 +1524,7 @@ export const RequestBeginBlock = {
 };
 
 function createBaseRequestCheckTx(): RequestCheckTx {
-  return { tx: new Uint8Array(), type: 0 };
+  return { tx: new Uint8Array(0), type: 0 };
 }
 
 export const RequestCheckTx = {
@@ -1331,50 +1539,66 @@ export const RequestCheckTx = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestCheckTx {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestCheckTx();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.tx = reader.bytes();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.type = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): RequestCheckTx {
     return {
-      tx: isSet(object.tx) ? bytesFromBase64(object.tx) : new Uint8Array(),
+      tx: isSet(object.tx) ? bytesFromBase64(object.tx) : new Uint8Array(0),
       type: isSet(object.type) ? checkTxTypeFromJSON(object.type) : 0,
     };
   },
 
   toJSON(message: RequestCheckTx): unknown {
     const obj: any = {};
-    message.tx !== undefined && (obj.tx = base64FromBytes(message.tx !== undefined ? message.tx : new Uint8Array()));
-    message.type !== undefined && (obj.type = checkTxTypeToJSON(message.type));
+    if (message.tx.length !== 0) {
+      obj.tx = base64FromBytes(message.tx);
+    }
+    if (message.type !== 0) {
+      obj.type = checkTxTypeToJSON(message.type);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestCheckTx>, I>>(base?: I): RequestCheckTx {
+    return RequestCheckTx.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestCheckTx>, I>>(object: I): RequestCheckTx {
     const message = createBaseRequestCheckTx();
-    message.tx = object.tx ?? new Uint8Array();
+    message.tx = object.tx ?? new Uint8Array(0);
     message.type = object.type ?? 0;
     return message;
   },
 };
 
 function createBaseRequestDeliverTx(): RequestDeliverTx {
-  return { tx: new Uint8Array() };
+  return { tx: new Uint8Array(0) };
 }
 
 export const RequestDeliverTx = {
@@ -1386,36 +1610,46 @@ export const RequestDeliverTx = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestDeliverTx {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestDeliverTx();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.tx = reader.bytes();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): RequestDeliverTx {
-    return { tx: isSet(object.tx) ? bytesFromBase64(object.tx) : new Uint8Array() };
+    return { tx: isSet(object.tx) ? bytesFromBase64(object.tx) : new Uint8Array(0) };
   },
 
   toJSON(message: RequestDeliverTx): unknown {
     const obj: any = {};
-    message.tx !== undefined && (obj.tx = base64FromBytes(message.tx !== undefined ? message.tx : new Uint8Array()));
+    if (message.tx.length !== 0) {
+      obj.tx = base64FromBytes(message.tx);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestDeliverTx>, I>>(base?: I): RequestDeliverTx {
+    return RequestDeliverTx.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestDeliverTx>, I>>(object: I): RequestDeliverTx {
     const message = createBaseRequestDeliverTx();
-    message.tx = object.tx ?? new Uint8Array();
+    message.tx = object.tx ?? new Uint8Array(0);
     return message;
   },
 };
@@ -1433,19 +1667,24 @@ export const RequestEndBlock = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestEndBlock {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestEndBlock();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.height = longToNumber(reader.int64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1456,10 +1695,15 @@ export const RequestEndBlock = {
 
   toJSON(message: RequestEndBlock): unknown {
     const obj: any = {};
-    message.height !== undefined && (obj.height = Math.round(message.height));
+    if (message.height !== 0) {
+      obj.height = Math.round(message.height);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestEndBlock>, I>>(base?: I): RequestEndBlock {
+    return RequestEndBlock.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestEndBlock>, I>>(object: I): RequestEndBlock {
     const message = createBaseRequestEndBlock();
     message.height = object.height ?? 0;
@@ -1477,16 +1721,17 @@ export const RequestCommit = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestCommit {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestCommit();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1500,6 +1745,9 @@ export const RequestCommit = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestCommit>, I>>(base?: I): RequestCommit {
+    return RequestCommit.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestCommit>, I>>(_: I): RequestCommit {
     const message = createBaseRequestCommit();
     return message;
@@ -1516,16 +1764,17 @@ export const RequestListSnapshots = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestListSnapshots {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestListSnapshots();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1539,6 +1788,9 @@ export const RequestListSnapshots = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestListSnapshots>, I>>(base?: I): RequestListSnapshots {
+    return RequestListSnapshots.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestListSnapshots>, I>>(_: I): RequestListSnapshots {
     const message = createBaseRequestListSnapshots();
     return message;
@@ -1546,7 +1798,7 @@ export const RequestListSnapshots = {
 };
 
 function createBaseRequestOfferSnapshot(): RequestOfferSnapshot {
-  return { snapshot: undefined, appHash: new Uint8Array() };
+  return { snapshot: undefined, appHash: new Uint8Array(0) };
 }
 
 export const RequestOfferSnapshot = {
@@ -1561,22 +1813,31 @@ export const RequestOfferSnapshot = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestOfferSnapshot {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestOfferSnapshot();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.snapshot = Snapshot.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.appHash = reader.bytes();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1584,24 +1845,30 @@ export const RequestOfferSnapshot = {
   fromJSON(object: any): RequestOfferSnapshot {
     return {
       snapshot: isSet(object.snapshot) ? Snapshot.fromJSON(object.snapshot) : undefined,
-      appHash: isSet(object.appHash) ? bytesFromBase64(object.appHash) : new Uint8Array(),
+      appHash: isSet(object.appHash) ? bytesFromBase64(object.appHash) : new Uint8Array(0),
     };
   },
 
   toJSON(message: RequestOfferSnapshot): unknown {
     const obj: any = {};
-    message.snapshot !== undefined && (obj.snapshot = message.snapshot ? Snapshot.toJSON(message.snapshot) : undefined);
-    message.appHash !== undefined
-      && (obj.appHash = base64FromBytes(message.appHash !== undefined ? message.appHash : new Uint8Array()));
+    if (message.snapshot !== undefined) {
+      obj.snapshot = Snapshot.toJSON(message.snapshot);
+    }
+    if (message.appHash.length !== 0) {
+      obj.appHash = base64FromBytes(message.appHash);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestOfferSnapshot>, I>>(base?: I): RequestOfferSnapshot {
+    return RequestOfferSnapshot.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestOfferSnapshot>, I>>(object: I): RequestOfferSnapshot {
     const message = createBaseRequestOfferSnapshot();
     message.snapshot = (object.snapshot !== undefined && object.snapshot !== null)
       ? Snapshot.fromPartial(object.snapshot)
       : undefined;
-    message.appHash = object.appHash ?? new Uint8Array();
+    message.appHash = object.appHash ?? new Uint8Array(0);
     return message;
   },
 };
@@ -1625,25 +1892,38 @@ export const RequestLoadSnapshotChunk = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestLoadSnapshotChunk {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestLoadSnapshotChunk();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.height = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.format = reader.uint32();
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.chunk = reader.uint32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1658,12 +1938,21 @@ export const RequestLoadSnapshotChunk = {
 
   toJSON(message: RequestLoadSnapshotChunk): unknown {
     const obj: any = {};
-    message.height !== undefined && (obj.height = Math.round(message.height));
-    message.format !== undefined && (obj.format = Math.round(message.format));
-    message.chunk !== undefined && (obj.chunk = Math.round(message.chunk));
+    if (message.height !== 0) {
+      obj.height = Math.round(message.height);
+    }
+    if (message.format !== 0) {
+      obj.format = Math.round(message.format);
+    }
+    if (message.chunk !== 0) {
+      obj.chunk = Math.round(message.chunk);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestLoadSnapshotChunk>, I>>(base?: I): RequestLoadSnapshotChunk {
+    return RequestLoadSnapshotChunk.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestLoadSnapshotChunk>, I>>(object: I): RequestLoadSnapshotChunk {
     const message = createBaseRequestLoadSnapshotChunk();
     message.height = object.height ?? 0;
@@ -1674,7 +1963,7 @@ export const RequestLoadSnapshotChunk = {
 };
 
 function createBaseRequestApplySnapshotChunk(): RequestApplySnapshotChunk {
-  return { index: 0, chunk: new Uint8Array(), sender: "" };
+  return { index: 0, chunk: new Uint8Array(0), sender: "" };
 }
 
 export const RequestApplySnapshotChunk = {
@@ -1692,25 +1981,38 @@ export const RequestApplySnapshotChunk = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestApplySnapshotChunk {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestApplySnapshotChunk();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.index = reader.uint32();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.chunk = reader.bytes();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.sender = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1718,24 +2020,32 @@ export const RequestApplySnapshotChunk = {
   fromJSON(object: any): RequestApplySnapshotChunk {
     return {
       index: isSet(object.index) ? Number(object.index) : 0,
-      chunk: isSet(object.chunk) ? bytesFromBase64(object.chunk) : new Uint8Array(),
+      chunk: isSet(object.chunk) ? bytesFromBase64(object.chunk) : new Uint8Array(0),
       sender: isSet(object.sender) ? String(object.sender) : "",
     };
   },
 
   toJSON(message: RequestApplySnapshotChunk): unknown {
     const obj: any = {};
-    message.index !== undefined && (obj.index = Math.round(message.index));
-    message.chunk !== undefined
-      && (obj.chunk = base64FromBytes(message.chunk !== undefined ? message.chunk : new Uint8Array()));
-    message.sender !== undefined && (obj.sender = message.sender);
+    if (message.index !== 0) {
+      obj.index = Math.round(message.index);
+    }
+    if (message.chunk.length !== 0) {
+      obj.chunk = base64FromBytes(message.chunk);
+    }
+    if (message.sender !== "") {
+      obj.sender = message.sender;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestApplySnapshotChunk>, I>>(base?: I): RequestApplySnapshotChunk {
+    return RequestApplySnapshotChunk.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestApplySnapshotChunk>, I>>(object: I): RequestApplySnapshotChunk {
     const message = createBaseRequestApplySnapshotChunk();
     message.index = object.index ?? 0;
-    message.chunk = object.chunk ?? new Uint8Array();
+    message.chunk = object.chunk ?? new Uint8Array(0);
     message.sender = object.sender ?? "";
     return message;
   },
@@ -1749,8 +2059,8 @@ function createBaseRequestPrepareProposal(): RequestPrepareProposal {
     misbehavior: [],
     height: 0,
     time: undefined,
-    nextValidatorsHash: new Uint8Array(),
-    proposerAddress: new Uint8Array(),
+    nextValidatorsHash: new Uint8Array(0),
+    proposerAddress: new Uint8Array(0),
   };
 }
 
@@ -1784,40 +2094,73 @@ export const RequestPrepareProposal = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestPrepareProposal {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestPrepareProposal();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.maxTxBytes = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.txs.push(reader.bytes());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.localLastCommit = ExtendedCommitInfo.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.misbehavior.push(Misbehavior.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.height = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.nextValidatorsHash = reader.bytes();
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.proposerAddress = reader.bytes();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1834,41 +2177,43 @@ export const RequestPrepareProposal = {
       time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
       nextValidatorsHash: isSet(object.nextValidatorsHash)
         ? bytesFromBase64(object.nextValidatorsHash)
-        : new Uint8Array(),
-      proposerAddress: isSet(object.proposerAddress) ? bytesFromBase64(object.proposerAddress) : new Uint8Array(),
+        : new Uint8Array(0),
+      proposerAddress: isSet(object.proposerAddress) ? bytesFromBase64(object.proposerAddress) : new Uint8Array(0),
     };
   },
 
   toJSON(message: RequestPrepareProposal): unknown {
     const obj: any = {};
-    message.maxTxBytes !== undefined && (obj.maxTxBytes = Math.round(message.maxTxBytes));
-    if (message.txs) {
-      obj.txs = message.txs.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
-    } else {
-      obj.txs = [];
+    if (message.maxTxBytes !== 0) {
+      obj.maxTxBytes = Math.round(message.maxTxBytes);
     }
-    message.localLastCommit !== undefined
-      && (obj.localLastCommit = message.localLastCommit
-        ? ExtendedCommitInfo.toJSON(message.localLastCommit)
-        : undefined);
-    if (message.misbehavior) {
-      obj.misbehavior = message.misbehavior.map((e) => e ? Misbehavior.toJSON(e) : undefined);
-    } else {
-      obj.misbehavior = [];
+    if (message.txs?.length) {
+      obj.txs = message.txs.map((e) => base64FromBytes(e));
     }
-    message.height !== undefined && (obj.height = Math.round(message.height));
-    message.time !== undefined && (obj.time = message.time.toISOString());
-    message.nextValidatorsHash !== undefined
-      && (obj.nextValidatorsHash = base64FromBytes(
-        message.nextValidatorsHash !== undefined ? message.nextValidatorsHash : new Uint8Array(),
-      ));
-    message.proposerAddress !== undefined
-      && (obj.proposerAddress = base64FromBytes(
-        message.proposerAddress !== undefined ? message.proposerAddress : new Uint8Array(),
-      ));
+    if (message.localLastCommit !== undefined) {
+      obj.localLastCommit = ExtendedCommitInfo.toJSON(message.localLastCommit);
+    }
+    if (message.misbehavior?.length) {
+      obj.misbehavior = message.misbehavior.map((e) => Misbehavior.toJSON(e));
+    }
+    if (message.height !== 0) {
+      obj.height = Math.round(message.height);
+    }
+    if (message.time !== undefined) {
+      obj.time = message.time.toISOString();
+    }
+    if (message.nextValidatorsHash.length !== 0) {
+      obj.nextValidatorsHash = base64FromBytes(message.nextValidatorsHash);
+    }
+    if (message.proposerAddress.length !== 0) {
+      obj.proposerAddress = base64FromBytes(message.proposerAddress);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestPrepareProposal>, I>>(base?: I): RequestPrepareProposal {
+    return RequestPrepareProposal.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestPrepareProposal>, I>>(object: I): RequestPrepareProposal {
     const message = createBaseRequestPrepareProposal();
     message.maxTxBytes = object.maxTxBytes ?? 0;
@@ -1879,8 +2224,8 @@ export const RequestPrepareProposal = {
     message.misbehavior = object.misbehavior?.map((e) => Misbehavior.fromPartial(e)) || [];
     message.height = object.height ?? 0;
     message.time = object.time ?? undefined;
-    message.nextValidatorsHash = object.nextValidatorsHash ?? new Uint8Array();
-    message.proposerAddress = object.proposerAddress ?? new Uint8Array();
+    message.nextValidatorsHash = object.nextValidatorsHash ?? new Uint8Array(0);
+    message.proposerAddress = object.proposerAddress ?? new Uint8Array(0);
     return message;
   },
 };
@@ -1890,11 +2235,11 @@ function createBaseRequestProcessProposal(): RequestProcessProposal {
     txs: [],
     proposedLastCommit: undefined,
     misbehavior: [],
-    hash: new Uint8Array(),
+    hash: new Uint8Array(0),
     height: 0,
     time: undefined,
-    nextValidatorsHash: new Uint8Array(),
-    proposerAddress: new Uint8Array(),
+    nextValidatorsHash: new Uint8Array(0),
+    proposerAddress: new Uint8Array(0),
   };
 }
 
@@ -1928,40 +2273,73 @@ export const RequestProcessProposal = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RequestProcessProposal {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRequestProcessProposal();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.txs.push(reader.bytes());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.proposedLastCommit = CommitInfo.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.misbehavior.push(Misbehavior.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.hash = reader.bytes();
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.height = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.nextValidatorsHash = reader.bytes();
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.proposerAddress = reader.bytes();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1973,46 +2351,48 @@ export const RequestProcessProposal = {
       misbehavior: Array.isArray(object?.misbehavior)
         ? object.misbehavior.map((e: any) => Misbehavior.fromJSON(e))
         : [],
-      hash: isSet(object.hash) ? bytesFromBase64(object.hash) : new Uint8Array(),
+      hash: isSet(object.hash) ? bytesFromBase64(object.hash) : new Uint8Array(0),
       height: isSet(object.height) ? Number(object.height) : 0,
       time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
       nextValidatorsHash: isSet(object.nextValidatorsHash)
         ? bytesFromBase64(object.nextValidatorsHash)
-        : new Uint8Array(),
-      proposerAddress: isSet(object.proposerAddress) ? bytesFromBase64(object.proposerAddress) : new Uint8Array(),
+        : new Uint8Array(0),
+      proposerAddress: isSet(object.proposerAddress) ? bytesFromBase64(object.proposerAddress) : new Uint8Array(0),
     };
   },
 
   toJSON(message: RequestProcessProposal): unknown {
     const obj: any = {};
-    if (message.txs) {
-      obj.txs = message.txs.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
-    } else {
-      obj.txs = [];
+    if (message.txs?.length) {
+      obj.txs = message.txs.map((e) => base64FromBytes(e));
     }
-    message.proposedLastCommit !== undefined && (obj.proposedLastCommit = message.proposedLastCommit
-      ? CommitInfo.toJSON(message.proposedLastCommit)
-      : undefined);
-    if (message.misbehavior) {
-      obj.misbehavior = message.misbehavior.map((e) => e ? Misbehavior.toJSON(e) : undefined);
-    } else {
-      obj.misbehavior = [];
+    if (message.proposedLastCommit !== undefined) {
+      obj.proposedLastCommit = CommitInfo.toJSON(message.proposedLastCommit);
     }
-    message.hash !== undefined
-      && (obj.hash = base64FromBytes(message.hash !== undefined ? message.hash : new Uint8Array()));
-    message.height !== undefined && (obj.height = Math.round(message.height));
-    message.time !== undefined && (obj.time = message.time.toISOString());
-    message.nextValidatorsHash !== undefined
-      && (obj.nextValidatorsHash = base64FromBytes(
-        message.nextValidatorsHash !== undefined ? message.nextValidatorsHash : new Uint8Array(),
-      ));
-    message.proposerAddress !== undefined
-      && (obj.proposerAddress = base64FromBytes(
-        message.proposerAddress !== undefined ? message.proposerAddress : new Uint8Array(),
-      ));
+    if (message.misbehavior?.length) {
+      obj.misbehavior = message.misbehavior.map((e) => Misbehavior.toJSON(e));
+    }
+    if (message.hash.length !== 0) {
+      obj.hash = base64FromBytes(message.hash);
+    }
+    if (message.height !== 0) {
+      obj.height = Math.round(message.height);
+    }
+    if (message.time !== undefined) {
+      obj.time = message.time.toISOString();
+    }
+    if (message.nextValidatorsHash.length !== 0) {
+      obj.nextValidatorsHash = base64FromBytes(message.nextValidatorsHash);
+    }
+    if (message.proposerAddress.length !== 0) {
+      obj.proposerAddress = base64FromBytes(message.proposerAddress);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RequestProcessProposal>, I>>(base?: I): RequestProcessProposal {
+    return RequestProcessProposal.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<RequestProcessProposal>, I>>(object: I): RequestProcessProposal {
     const message = createBaseRequestProcessProposal();
     message.txs = object.txs?.map((e) => e) || [];
@@ -2020,11 +2400,11 @@ export const RequestProcessProposal = {
       ? CommitInfo.fromPartial(object.proposedLastCommit)
       : undefined;
     message.misbehavior = object.misbehavior?.map((e) => Misbehavior.fromPartial(e)) || [];
-    message.hash = object.hash ?? new Uint8Array();
+    message.hash = object.hash ?? new Uint8Array(0);
     message.height = object.height ?? 0;
     message.time = object.time ?? undefined;
-    message.nextValidatorsHash = object.nextValidatorsHash ?? new Uint8Array();
-    message.proposerAddress = object.proposerAddress ?? new Uint8Array();
+    message.nextValidatorsHash = object.nextValidatorsHash ?? new Uint8Array(0);
+    message.proposerAddress = object.proposerAddress ?? new Uint8Array(0);
     return message;
   },
 };
@@ -2108,67 +2488,136 @@ export const Response = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Response {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.exception = ResponseException.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.echo = ResponseEcho.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.flush = ResponseFlush.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.info = ResponseInfo.decode(reader, reader.uint32());
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.initChain = ResponseInitChain.decode(reader, reader.uint32());
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.query = ResponseQuery.decode(reader, reader.uint32());
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.beginBlock = ResponseBeginBlock.decode(reader, reader.uint32());
-          break;
+          continue;
         case 9:
+          if (tag !== 74) {
+            break;
+          }
+
           message.checkTx = ResponseCheckTx.decode(reader, reader.uint32());
-          break;
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.deliverTx = ResponseDeliverTx.decode(reader, reader.uint32());
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.endBlock = ResponseEndBlock.decode(reader, reader.uint32());
-          break;
+          continue;
         case 12:
+          if (tag !== 98) {
+            break;
+          }
+
           message.commit = ResponseCommit.decode(reader, reader.uint32());
-          break;
+          continue;
         case 13:
+          if (tag !== 106) {
+            break;
+          }
+
           message.listSnapshots = ResponseListSnapshots.decode(reader, reader.uint32());
-          break;
+          continue;
         case 14:
+          if (tag !== 114) {
+            break;
+          }
+
           message.offerSnapshot = ResponseOfferSnapshot.decode(reader, reader.uint32());
-          break;
+          continue;
         case 15:
+          if (tag !== 122) {
+            break;
+          }
+
           message.loadSnapshotChunk = ResponseLoadSnapshotChunk.decode(reader, reader.uint32());
-          break;
+          continue;
         case 16:
+          if (tag !== 130) {
+            break;
+          }
+
           message.applySnapshotChunk = ResponseApplySnapshotChunk.decode(reader, reader.uint32());
-          break;
+          continue;
         case 17:
+          if (tag !== 138) {
+            break;
+          }
+
           message.prepareProposal = ResponsePrepareProposal.decode(reader, reader.uint32());
-          break;
+          continue;
         case 18:
+          if (tag !== 146) {
+            break;
+          }
+
           message.processProposal = ResponseProcessProposal.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2205,42 +2654,63 @@ export const Response = {
 
   toJSON(message: Response): unknown {
     const obj: any = {};
-    message.exception !== undefined
-      && (obj.exception = message.exception ? ResponseException.toJSON(message.exception) : undefined);
-    message.echo !== undefined && (obj.echo = message.echo ? ResponseEcho.toJSON(message.echo) : undefined);
-    message.flush !== undefined && (obj.flush = message.flush ? ResponseFlush.toJSON(message.flush) : undefined);
-    message.info !== undefined && (obj.info = message.info ? ResponseInfo.toJSON(message.info) : undefined);
-    message.initChain !== undefined
-      && (obj.initChain = message.initChain ? ResponseInitChain.toJSON(message.initChain) : undefined);
-    message.query !== undefined && (obj.query = message.query ? ResponseQuery.toJSON(message.query) : undefined);
-    message.beginBlock !== undefined
-      && (obj.beginBlock = message.beginBlock ? ResponseBeginBlock.toJSON(message.beginBlock) : undefined);
-    message.checkTx !== undefined
-      && (obj.checkTx = message.checkTx ? ResponseCheckTx.toJSON(message.checkTx) : undefined);
-    message.deliverTx !== undefined
-      && (obj.deliverTx = message.deliverTx ? ResponseDeliverTx.toJSON(message.deliverTx) : undefined);
-    message.endBlock !== undefined
-      && (obj.endBlock = message.endBlock ? ResponseEndBlock.toJSON(message.endBlock) : undefined);
-    message.commit !== undefined && (obj.commit = message.commit ? ResponseCommit.toJSON(message.commit) : undefined);
-    message.listSnapshots !== undefined
-      && (obj.listSnapshots = message.listSnapshots ? ResponseListSnapshots.toJSON(message.listSnapshots) : undefined);
-    message.offerSnapshot !== undefined
-      && (obj.offerSnapshot = message.offerSnapshot ? ResponseOfferSnapshot.toJSON(message.offerSnapshot) : undefined);
-    message.loadSnapshotChunk !== undefined && (obj.loadSnapshotChunk = message.loadSnapshotChunk
-      ? ResponseLoadSnapshotChunk.toJSON(message.loadSnapshotChunk)
-      : undefined);
-    message.applySnapshotChunk !== undefined && (obj.applySnapshotChunk = message.applySnapshotChunk
-      ? ResponseApplySnapshotChunk.toJSON(message.applySnapshotChunk)
-      : undefined);
-    message.prepareProposal !== undefined && (obj.prepareProposal = message.prepareProposal
-      ? ResponsePrepareProposal.toJSON(message.prepareProposal)
-      : undefined);
-    message.processProposal !== undefined && (obj.processProposal = message.processProposal
-      ? ResponseProcessProposal.toJSON(message.processProposal)
-      : undefined);
+    if (message.exception !== undefined) {
+      obj.exception = ResponseException.toJSON(message.exception);
+    }
+    if (message.echo !== undefined) {
+      obj.echo = ResponseEcho.toJSON(message.echo);
+    }
+    if (message.flush !== undefined) {
+      obj.flush = ResponseFlush.toJSON(message.flush);
+    }
+    if (message.info !== undefined) {
+      obj.info = ResponseInfo.toJSON(message.info);
+    }
+    if (message.initChain !== undefined) {
+      obj.initChain = ResponseInitChain.toJSON(message.initChain);
+    }
+    if (message.query !== undefined) {
+      obj.query = ResponseQuery.toJSON(message.query);
+    }
+    if (message.beginBlock !== undefined) {
+      obj.beginBlock = ResponseBeginBlock.toJSON(message.beginBlock);
+    }
+    if (message.checkTx !== undefined) {
+      obj.checkTx = ResponseCheckTx.toJSON(message.checkTx);
+    }
+    if (message.deliverTx !== undefined) {
+      obj.deliverTx = ResponseDeliverTx.toJSON(message.deliverTx);
+    }
+    if (message.endBlock !== undefined) {
+      obj.endBlock = ResponseEndBlock.toJSON(message.endBlock);
+    }
+    if (message.commit !== undefined) {
+      obj.commit = ResponseCommit.toJSON(message.commit);
+    }
+    if (message.listSnapshots !== undefined) {
+      obj.listSnapshots = ResponseListSnapshots.toJSON(message.listSnapshots);
+    }
+    if (message.offerSnapshot !== undefined) {
+      obj.offerSnapshot = ResponseOfferSnapshot.toJSON(message.offerSnapshot);
+    }
+    if (message.loadSnapshotChunk !== undefined) {
+      obj.loadSnapshotChunk = ResponseLoadSnapshotChunk.toJSON(message.loadSnapshotChunk);
+    }
+    if (message.applySnapshotChunk !== undefined) {
+      obj.applySnapshotChunk = ResponseApplySnapshotChunk.toJSON(message.applySnapshotChunk);
+    }
+    if (message.prepareProposal !== undefined) {
+      obj.prepareProposal = ResponsePrepareProposal.toJSON(message.prepareProposal);
+    }
+    if (message.processProposal !== undefined) {
+      obj.processProposal = ResponseProcessProposal.toJSON(message.processProposal);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Response>, I>>(base?: I): Response {
+    return Response.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Response>, I>>(object: I): Response {
     const message = createBaseResponse();
     message.exception = (object.exception !== undefined && object.exception !== null)
@@ -2311,19 +2781,24 @@ export const ResponseException = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseException {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseException();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.error = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2334,10 +2809,15 @@ export const ResponseException = {
 
   toJSON(message: ResponseException): unknown {
     const obj: any = {};
-    message.error !== undefined && (obj.error = message.error);
+    if (message.error !== "") {
+      obj.error = message.error;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseException>, I>>(base?: I): ResponseException {
+    return ResponseException.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseException>, I>>(object: I): ResponseException {
     const message = createBaseResponseException();
     message.error = object.error ?? "";
@@ -2358,19 +2838,24 @@ export const ResponseEcho = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseEcho {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseEcho();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.message = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2381,10 +2866,15 @@ export const ResponseEcho = {
 
   toJSON(message: ResponseEcho): unknown {
     const obj: any = {};
-    message.message !== undefined && (obj.message = message.message);
+    if (message.message !== "") {
+      obj.message = message.message;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseEcho>, I>>(base?: I): ResponseEcho {
+    return ResponseEcho.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseEcho>, I>>(object: I): ResponseEcho {
     const message = createBaseResponseEcho();
     message.message = object.message ?? "";
@@ -2402,16 +2892,17 @@ export const ResponseFlush = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseFlush {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseFlush();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2425,6 +2916,9 @@ export const ResponseFlush = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseFlush>, I>>(base?: I): ResponseFlush {
+    return ResponseFlush.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseFlush>, I>>(_: I): ResponseFlush {
     const message = createBaseResponseFlush();
     return message;
@@ -2432,7 +2926,7 @@ export const ResponseFlush = {
 };
 
 function createBaseResponseInfo(): ResponseInfo {
-  return { data: "", version: "", appVersion: 0, lastBlockHeight: 0, lastBlockAppHash: new Uint8Array() };
+  return { data: "", version: "", appVersion: 0, lastBlockHeight: 0, lastBlockAppHash: new Uint8Array(0) };
 }
 
 export const ResponseInfo = {
@@ -2456,31 +2950,52 @@ export const ResponseInfo = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseInfo();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.data = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.version = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.appVersion = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.lastBlockHeight = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.lastBlockAppHash = reader.bytes();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2491,36 +3006,46 @@ export const ResponseInfo = {
       version: isSet(object.version) ? String(object.version) : "",
       appVersion: isSet(object.appVersion) ? Number(object.appVersion) : 0,
       lastBlockHeight: isSet(object.lastBlockHeight) ? Number(object.lastBlockHeight) : 0,
-      lastBlockAppHash: isSet(object.lastBlockAppHash) ? bytesFromBase64(object.lastBlockAppHash) : new Uint8Array(),
+      lastBlockAppHash: isSet(object.lastBlockAppHash) ? bytesFromBase64(object.lastBlockAppHash) : new Uint8Array(0),
     };
   },
 
   toJSON(message: ResponseInfo): unknown {
     const obj: any = {};
-    message.data !== undefined && (obj.data = message.data);
-    message.version !== undefined && (obj.version = message.version);
-    message.appVersion !== undefined && (obj.appVersion = Math.round(message.appVersion));
-    message.lastBlockHeight !== undefined && (obj.lastBlockHeight = Math.round(message.lastBlockHeight));
-    message.lastBlockAppHash !== undefined
-      && (obj.lastBlockAppHash = base64FromBytes(
-        message.lastBlockAppHash !== undefined ? message.lastBlockAppHash : new Uint8Array(),
-      ));
+    if (message.data !== "") {
+      obj.data = message.data;
+    }
+    if (message.version !== "") {
+      obj.version = message.version;
+    }
+    if (message.appVersion !== 0) {
+      obj.appVersion = Math.round(message.appVersion);
+    }
+    if (message.lastBlockHeight !== 0) {
+      obj.lastBlockHeight = Math.round(message.lastBlockHeight);
+    }
+    if (message.lastBlockAppHash.length !== 0) {
+      obj.lastBlockAppHash = base64FromBytes(message.lastBlockAppHash);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseInfo>, I>>(base?: I): ResponseInfo {
+    return ResponseInfo.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseInfo>, I>>(object: I): ResponseInfo {
     const message = createBaseResponseInfo();
     message.data = object.data ?? "";
     message.version = object.version ?? "";
     message.appVersion = object.appVersion ?? 0;
     message.lastBlockHeight = object.lastBlockHeight ?? 0;
-    message.lastBlockAppHash = object.lastBlockAppHash ?? new Uint8Array();
+    message.lastBlockAppHash = object.lastBlockAppHash ?? new Uint8Array(0);
     return message;
   },
 };
 
 function createBaseResponseInitChain(): ResponseInitChain {
-  return { consensusParams: undefined, validators: [], appHash: new Uint8Array() };
+  return { consensusParams: undefined, validators: [], appHash: new Uint8Array(0) };
 }
 
 export const ResponseInitChain = {
@@ -2538,25 +3063,38 @@ export const ResponseInitChain = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseInitChain {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseInitChain();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.consensusParams = ConsensusParams.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.validators.push(ValidatorUpdate.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.appHash = reader.bytes();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2567,31 +3105,34 @@ export const ResponseInitChain = {
       validators: Array.isArray(object?.validators)
         ? object.validators.map((e: any) => ValidatorUpdate.fromJSON(e))
         : [],
-      appHash: isSet(object.appHash) ? bytesFromBase64(object.appHash) : new Uint8Array(),
+      appHash: isSet(object.appHash) ? bytesFromBase64(object.appHash) : new Uint8Array(0),
     };
   },
 
   toJSON(message: ResponseInitChain): unknown {
     const obj: any = {};
-    message.consensusParams !== undefined
-      && (obj.consensusParams = message.consensusParams ? ConsensusParams.toJSON(message.consensusParams) : undefined);
-    if (message.validators) {
-      obj.validators = message.validators.map((e) => e ? ValidatorUpdate.toJSON(e) : undefined);
-    } else {
-      obj.validators = [];
+    if (message.consensusParams !== undefined) {
+      obj.consensusParams = ConsensusParams.toJSON(message.consensusParams);
     }
-    message.appHash !== undefined
-      && (obj.appHash = base64FromBytes(message.appHash !== undefined ? message.appHash : new Uint8Array()));
+    if (message.validators?.length) {
+      obj.validators = message.validators.map((e) => ValidatorUpdate.toJSON(e));
+    }
+    if (message.appHash.length !== 0) {
+      obj.appHash = base64FromBytes(message.appHash);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseInitChain>, I>>(base?: I): ResponseInitChain {
+    return ResponseInitChain.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseInitChain>, I>>(object: I): ResponseInitChain {
     const message = createBaseResponseInitChain();
     message.consensusParams = (object.consensusParams !== undefined && object.consensusParams !== null)
       ? ConsensusParams.fromPartial(object.consensusParams)
       : undefined;
     message.validators = object.validators?.map((e) => ValidatorUpdate.fromPartial(e)) || [];
-    message.appHash = object.appHash ?? new Uint8Array();
+    message.appHash = object.appHash ?? new Uint8Array(0);
     return message;
   },
 };
@@ -2602,8 +3143,8 @@ function createBaseResponseQuery(): ResponseQuery {
     log: "",
     info: "",
     index: 0,
-    key: new Uint8Array(),
-    value: new Uint8Array(),
+    key: new Uint8Array(0),
+    value: new Uint8Array(0),
     proofOps: undefined,
     height: 0,
     codespace: "",
@@ -2643,43 +3184,80 @@ export const ResponseQuery = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseQuery {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseQuery();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.code = reader.uint32();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.log = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.info = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.index = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.key = reader.bytes();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.value = reader.bytes();
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.proofOps = ProofOps.decode(reader, reader.uint32());
-          break;
+          continue;
         case 9:
+          if (tag !== 72) {
+            break;
+          }
+
           message.height = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.codespace = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2690,8 +3268,8 @@ export const ResponseQuery = {
       log: isSet(object.log) ? String(object.log) : "",
       info: isSet(object.info) ? String(object.info) : "",
       index: isSet(object.index) ? Number(object.index) : 0,
-      key: isSet(object.key) ? bytesFromBase64(object.key) : new Uint8Array(),
-      value: isSet(object.value) ? bytesFromBase64(object.value) : new Uint8Array(),
+      key: isSet(object.key) ? bytesFromBase64(object.key) : new Uint8Array(0),
+      value: isSet(object.value) ? bytesFromBase64(object.value) : new Uint8Array(0),
       proofOps: isSet(object.proofOps) ? ProofOps.fromJSON(object.proofOps) : undefined,
       height: isSet(object.height) ? Number(object.height) : 0,
       codespace: isSet(object.codespace) ? String(object.codespace) : "",
@@ -2700,28 +3278,47 @@ export const ResponseQuery = {
 
   toJSON(message: ResponseQuery): unknown {
     const obj: any = {};
-    message.code !== undefined && (obj.code = Math.round(message.code));
-    message.log !== undefined && (obj.log = message.log);
-    message.info !== undefined && (obj.info = message.info);
-    message.index !== undefined && (obj.index = Math.round(message.index));
-    message.key !== undefined
-      && (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
-    message.value !== undefined
-      && (obj.value = base64FromBytes(message.value !== undefined ? message.value : new Uint8Array()));
-    message.proofOps !== undefined && (obj.proofOps = message.proofOps ? ProofOps.toJSON(message.proofOps) : undefined);
-    message.height !== undefined && (obj.height = Math.round(message.height));
-    message.codespace !== undefined && (obj.codespace = message.codespace);
+    if (message.code !== 0) {
+      obj.code = Math.round(message.code);
+    }
+    if (message.log !== "") {
+      obj.log = message.log;
+    }
+    if (message.info !== "") {
+      obj.info = message.info;
+    }
+    if (message.index !== 0) {
+      obj.index = Math.round(message.index);
+    }
+    if (message.key.length !== 0) {
+      obj.key = base64FromBytes(message.key);
+    }
+    if (message.value.length !== 0) {
+      obj.value = base64FromBytes(message.value);
+    }
+    if (message.proofOps !== undefined) {
+      obj.proofOps = ProofOps.toJSON(message.proofOps);
+    }
+    if (message.height !== 0) {
+      obj.height = Math.round(message.height);
+    }
+    if (message.codespace !== "") {
+      obj.codespace = message.codespace;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseQuery>, I>>(base?: I): ResponseQuery {
+    return ResponseQuery.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseQuery>, I>>(object: I): ResponseQuery {
     const message = createBaseResponseQuery();
     message.code = object.code ?? 0;
     message.log = object.log ?? "";
     message.info = object.info ?? "";
     message.index = object.index ?? 0;
-    message.key = object.key ?? new Uint8Array();
-    message.value = object.value ?? new Uint8Array();
+    message.key = object.key ?? new Uint8Array(0);
+    message.value = object.value ?? new Uint8Array(0);
     message.proofOps = (object.proofOps !== undefined && object.proofOps !== null)
       ? ProofOps.fromPartial(object.proofOps)
       : undefined;
@@ -2744,19 +3341,24 @@ export const ResponseBeginBlock = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseBeginBlock {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseBeginBlock();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.events.push(Event.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2767,14 +3369,15 @@ export const ResponseBeginBlock = {
 
   toJSON(message: ResponseBeginBlock): unknown {
     const obj: any = {};
-    if (message.events) {
-      obj.events = message.events.map((e) => e ? Event.toJSON(e) : undefined);
-    } else {
-      obj.events = [];
+    if (message.events?.length) {
+      obj.events = message.events.map((e) => Event.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseBeginBlock>, I>>(base?: I): ResponseBeginBlock {
+    return ResponseBeginBlock.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseBeginBlock>, I>>(object: I): ResponseBeginBlock {
     const message = createBaseResponseBeginBlock();
     message.events = object.events?.map((e) => Event.fromPartial(e)) || [];
@@ -2785,7 +3388,7 @@ export const ResponseBeginBlock = {
 function createBaseResponseCheckTx(): ResponseCheckTx {
   return {
     code: 0,
-    data: new Uint8Array(),
+    data: new Uint8Array(0),
     log: "",
     info: "",
     gasWanted: 0,
@@ -2837,49 +3440,94 @@ export const ResponseCheckTx = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseCheckTx {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseCheckTx();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.code = reader.uint32();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.data = reader.bytes();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.log = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.info = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.gasWanted = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.gasUsed = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.events.push(Event.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.codespace = reader.string();
-          break;
+          continue;
         case 9:
+          if (tag !== 74) {
+            break;
+          }
+
           message.sender = reader.string();
-          break;
+          continue;
         case 10:
+          if (tag !== 80) {
+            break;
+          }
+
           message.priority = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.mempoolError = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2887,7 +3535,7 @@ export const ResponseCheckTx = {
   fromJSON(object: any): ResponseCheckTx {
     return {
       code: isSet(object.code) ? Number(object.code) : 0,
-      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(),
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(0),
       log: isSet(object.log) ? String(object.log) : "",
       info: isSet(object.info) ? String(object.info) : "",
       gasWanted: isSet(object.gas_wanted) ? Number(object.gas_wanted) : 0,
@@ -2902,29 +3550,49 @@ export const ResponseCheckTx = {
 
   toJSON(message: ResponseCheckTx): unknown {
     const obj: any = {};
-    message.code !== undefined && (obj.code = Math.round(message.code));
-    message.data !== undefined
-      && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
-    message.log !== undefined && (obj.log = message.log);
-    message.info !== undefined && (obj.info = message.info);
-    message.gasWanted !== undefined && (obj.gas_wanted = Math.round(message.gasWanted));
-    message.gasUsed !== undefined && (obj.gas_used = Math.round(message.gasUsed));
-    if (message.events) {
-      obj.events = message.events.map((e) => e ? Event.toJSON(e) : undefined);
-    } else {
-      obj.events = [];
+    if (message.code !== 0) {
+      obj.code = Math.round(message.code);
     }
-    message.codespace !== undefined && (obj.codespace = message.codespace);
-    message.sender !== undefined && (obj.sender = message.sender);
-    message.priority !== undefined && (obj.priority = Math.round(message.priority));
-    message.mempoolError !== undefined && (obj.mempoolError = message.mempoolError);
+    if (message.data.length !== 0) {
+      obj.data = base64FromBytes(message.data);
+    }
+    if (message.log !== "") {
+      obj.log = message.log;
+    }
+    if (message.info !== "") {
+      obj.info = message.info;
+    }
+    if (message.gasWanted !== 0) {
+      obj.gas_wanted = Math.round(message.gasWanted);
+    }
+    if (message.gasUsed !== 0) {
+      obj.gas_used = Math.round(message.gasUsed);
+    }
+    if (message.events?.length) {
+      obj.events = message.events.map((e) => Event.toJSON(e));
+    }
+    if (message.codespace !== "") {
+      obj.codespace = message.codespace;
+    }
+    if (message.sender !== "") {
+      obj.sender = message.sender;
+    }
+    if (message.priority !== 0) {
+      obj.priority = Math.round(message.priority);
+    }
+    if (message.mempoolError !== "") {
+      obj.mempoolError = message.mempoolError;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseCheckTx>, I>>(base?: I): ResponseCheckTx {
+    return ResponseCheckTx.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseCheckTx>, I>>(object: I): ResponseCheckTx {
     const message = createBaseResponseCheckTx();
     message.code = object.code ?? 0;
-    message.data = object.data ?? new Uint8Array();
+    message.data = object.data ?? new Uint8Array(0);
     message.log = object.log ?? "";
     message.info = object.info ?? "";
     message.gasWanted = object.gasWanted ?? 0;
@@ -2939,7 +3607,7 @@ export const ResponseCheckTx = {
 };
 
 function createBaseResponseDeliverTx(): ResponseDeliverTx {
-  return { code: 0, data: new Uint8Array(), log: "", info: "", gasWanted: 0, gasUsed: 0, events: [], codespace: "" };
+  return { code: 0, data: new Uint8Array(0), log: "", info: "", gasWanted: 0, gasUsed: 0, events: [], codespace: "" };
 }
 
 export const ResponseDeliverTx = {
@@ -2972,40 +3640,73 @@ export const ResponseDeliverTx = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseDeliverTx {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseDeliverTx();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.code = reader.uint32();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.data = reader.bytes();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.log = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.info = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.gasWanted = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.gasUsed = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.events.push(Event.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.codespace = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -3013,7 +3714,7 @@ export const ResponseDeliverTx = {
   fromJSON(object: any): ResponseDeliverTx {
     return {
       code: isSet(object.code) ? Number(object.code) : 0,
-      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(),
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(0),
       log: isSet(object.log) ? String(object.log) : "",
       info: isSet(object.info) ? String(object.info) : "",
       gasWanted: isSet(object.gas_wanted) ? Number(object.gas_wanted) : 0,
@@ -3025,26 +3726,40 @@ export const ResponseDeliverTx = {
 
   toJSON(message: ResponseDeliverTx): unknown {
     const obj: any = {};
-    message.code !== undefined && (obj.code = Math.round(message.code));
-    message.data !== undefined
-      && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
-    message.log !== undefined && (obj.log = message.log);
-    message.info !== undefined && (obj.info = message.info);
-    message.gasWanted !== undefined && (obj.gas_wanted = Math.round(message.gasWanted));
-    message.gasUsed !== undefined && (obj.gas_used = Math.round(message.gasUsed));
-    if (message.events) {
-      obj.events = message.events.map((e) => e ? Event.toJSON(e) : undefined);
-    } else {
-      obj.events = [];
+    if (message.code !== 0) {
+      obj.code = Math.round(message.code);
     }
-    message.codespace !== undefined && (obj.codespace = message.codespace);
+    if (message.data.length !== 0) {
+      obj.data = base64FromBytes(message.data);
+    }
+    if (message.log !== "") {
+      obj.log = message.log;
+    }
+    if (message.info !== "") {
+      obj.info = message.info;
+    }
+    if (message.gasWanted !== 0) {
+      obj.gas_wanted = Math.round(message.gasWanted);
+    }
+    if (message.gasUsed !== 0) {
+      obj.gas_used = Math.round(message.gasUsed);
+    }
+    if (message.events?.length) {
+      obj.events = message.events.map((e) => Event.toJSON(e));
+    }
+    if (message.codespace !== "") {
+      obj.codespace = message.codespace;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseDeliverTx>, I>>(base?: I): ResponseDeliverTx {
+    return ResponseDeliverTx.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseDeliverTx>, I>>(object: I): ResponseDeliverTx {
     const message = createBaseResponseDeliverTx();
     message.code = object.code ?? 0;
-    message.data = object.data ?? new Uint8Array();
+    message.data = object.data ?? new Uint8Array(0);
     message.log = object.log ?? "";
     message.info = object.info ?? "";
     message.gasWanted = object.gasWanted ?? 0;
@@ -3074,25 +3789,38 @@ export const ResponseEndBlock = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseEndBlock {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseEndBlock();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.validatorUpdates.push(ValidatorUpdate.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.consensusParamUpdates = ConsensusParams.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.events.push(Event.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -3111,22 +3839,21 @@ export const ResponseEndBlock = {
 
   toJSON(message: ResponseEndBlock): unknown {
     const obj: any = {};
-    if (message.validatorUpdates) {
-      obj.validatorUpdates = message.validatorUpdates.map((e) => e ? ValidatorUpdate.toJSON(e) : undefined);
-    } else {
-      obj.validatorUpdates = [];
+    if (message.validatorUpdates?.length) {
+      obj.validatorUpdates = message.validatorUpdates.map((e) => ValidatorUpdate.toJSON(e));
     }
-    message.consensusParamUpdates !== undefined && (obj.consensusParamUpdates = message.consensusParamUpdates
-      ? ConsensusParams.toJSON(message.consensusParamUpdates)
-      : undefined);
-    if (message.events) {
-      obj.events = message.events.map((e) => e ? Event.toJSON(e) : undefined);
-    } else {
-      obj.events = [];
+    if (message.consensusParamUpdates !== undefined) {
+      obj.consensusParamUpdates = ConsensusParams.toJSON(message.consensusParamUpdates);
+    }
+    if (message.events?.length) {
+      obj.events = message.events.map((e) => Event.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseEndBlock>, I>>(base?: I): ResponseEndBlock {
+    return ResponseEndBlock.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseEndBlock>, I>>(object: I): ResponseEndBlock {
     const message = createBaseResponseEndBlock();
     message.validatorUpdates = object.validatorUpdates?.map((e) => ValidatorUpdate.fromPartial(e)) || [];
@@ -3140,7 +3867,7 @@ export const ResponseEndBlock = {
 };
 
 function createBaseResponseCommit(): ResponseCommit {
-  return { data: new Uint8Array(), retainHeight: 0 };
+  return { data: new Uint8Array(0), retainHeight: 0 };
 }
 
 export const ResponseCommit = {
@@ -3155,44 +3882,59 @@ export const ResponseCommit = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseCommit {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseCommit();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.data = reader.bytes();
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.retainHeight = longToNumber(reader.int64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): ResponseCommit {
     return {
-      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(),
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(0),
       retainHeight: isSet(object.retainHeight) ? Number(object.retainHeight) : 0,
     };
   },
 
   toJSON(message: ResponseCommit): unknown {
     const obj: any = {};
-    message.data !== undefined
-      && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
-    message.retainHeight !== undefined && (obj.retainHeight = Math.round(message.retainHeight));
+    if (message.data.length !== 0) {
+      obj.data = base64FromBytes(message.data);
+    }
+    if (message.retainHeight !== 0) {
+      obj.retainHeight = Math.round(message.retainHeight);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseCommit>, I>>(base?: I): ResponseCommit {
+    return ResponseCommit.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseCommit>, I>>(object: I): ResponseCommit {
     const message = createBaseResponseCommit();
-    message.data = object.data ?? new Uint8Array();
+    message.data = object.data ?? new Uint8Array(0);
     message.retainHeight = object.retainHeight ?? 0;
     return message;
   },
@@ -3211,19 +3953,24 @@ export const ResponseListSnapshots = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseListSnapshots {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseListSnapshots();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.snapshots.push(Snapshot.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -3236,14 +3983,15 @@ export const ResponseListSnapshots = {
 
   toJSON(message: ResponseListSnapshots): unknown {
     const obj: any = {};
-    if (message.snapshots) {
-      obj.snapshots = message.snapshots.map((e) => e ? Snapshot.toJSON(e) : undefined);
-    } else {
-      obj.snapshots = [];
+    if (message.snapshots?.length) {
+      obj.snapshots = message.snapshots.map((e) => Snapshot.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseListSnapshots>, I>>(base?: I): ResponseListSnapshots {
+    return ResponseListSnapshots.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseListSnapshots>, I>>(object: I): ResponseListSnapshots {
     const message = createBaseResponseListSnapshots();
     message.snapshots = object.snapshots?.map((e) => Snapshot.fromPartial(e)) || [];
@@ -3264,19 +4012,24 @@ export const ResponseOfferSnapshot = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseOfferSnapshot {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseOfferSnapshot();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.result = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -3287,10 +4040,15 @@ export const ResponseOfferSnapshot = {
 
   toJSON(message: ResponseOfferSnapshot): unknown {
     const obj: any = {};
-    message.result !== undefined && (obj.result = responseOfferSnapshot_ResultToJSON(message.result));
+    if (message.result !== 0) {
+      obj.result = responseOfferSnapshot_ResultToJSON(message.result);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseOfferSnapshot>, I>>(base?: I): ResponseOfferSnapshot {
+    return ResponseOfferSnapshot.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseOfferSnapshot>, I>>(object: I): ResponseOfferSnapshot {
     const message = createBaseResponseOfferSnapshot();
     message.result = object.result ?? 0;
@@ -3299,7 +4057,7 @@ export const ResponseOfferSnapshot = {
 };
 
 function createBaseResponseLoadSnapshotChunk(): ResponseLoadSnapshotChunk {
-  return { chunk: new Uint8Array() };
+  return { chunk: new Uint8Array(0) };
 }
 
 export const ResponseLoadSnapshotChunk = {
@@ -3311,37 +4069,46 @@ export const ResponseLoadSnapshotChunk = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseLoadSnapshotChunk {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseLoadSnapshotChunk();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.chunk = reader.bytes();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): ResponseLoadSnapshotChunk {
-    return { chunk: isSet(object.chunk) ? bytesFromBase64(object.chunk) : new Uint8Array() };
+    return { chunk: isSet(object.chunk) ? bytesFromBase64(object.chunk) : new Uint8Array(0) };
   },
 
   toJSON(message: ResponseLoadSnapshotChunk): unknown {
     const obj: any = {};
-    message.chunk !== undefined
-      && (obj.chunk = base64FromBytes(message.chunk !== undefined ? message.chunk : new Uint8Array()));
+    if (message.chunk.length !== 0) {
+      obj.chunk = base64FromBytes(message.chunk);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseLoadSnapshotChunk>, I>>(base?: I): ResponseLoadSnapshotChunk {
+    return ResponseLoadSnapshotChunk.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseLoadSnapshotChunk>, I>>(object: I): ResponseLoadSnapshotChunk {
     const message = createBaseResponseLoadSnapshotChunk();
-    message.chunk = object.chunk ?? new Uint8Array();
+    message.chunk = object.chunk ?? new Uint8Array(0);
     return message;
   },
 };
@@ -3367,32 +4134,48 @@ export const ResponseApplySnapshotChunk = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseApplySnapshotChunk {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseApplySnapshotChunk();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.result = reader.int32() as any;
-          break;
+          continue;
         case 2:
-          if ((tag & 7) === 2) {
+          if (tag === 16) {
+            message.refetchChunks.push(reader.uint32());
+
+            continue;
+          }
+
+          if (tag === 18) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
               message.refetchChunks.push(reader.uint32());
             }
-          } else {
-            message.refetchChunks.push(reader.uint32());
+
+            continue;
           }
+
           break;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.rejectSenders.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -3407,20 +4190,21 @@ export const ResponseApplySnapshotChunk = {
 
   toJSON(message: ResponseApplySnapshotChunk): unknown {
     const obj: any = {};
-    message.result !== undefined && (obj.result = responseApplySnapshotChunk_ResultToJSON(message.result));
-    if (message.refetchChunks) {
-      obj.refetchChunks = message.refetchChunks.map((e) => Math.round(e));
-    } else {
-      obj.refetchChunks = [];
+    if (message.result !== 0) {
+      obj.result = responseApplySnapshotChunk_ResultToJSON(message.result);
     }
-    if (message.rejectSenders) {
-      obj.rejectSenders = message.rejectSenders.map((e) => e);
-    } else {
-      obj.rejectSenders = [];
+    if (message.refetchChunks?.length) {
+      obj.refetchChunks = message.refetchChunks.map((e) => Math.round(e));
+    }
+    if (message.rejectSenders?.length) {
+      obj.rejectSenders = message.rejectSenders;
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseApplySnapshotChunk>, I>>(base?: I): ResponseApplySnapshotChunk {
+    return ResponseApplySnapshotChunk.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseApplySnapshotChunk>, I>>(object: I): ResponseApplySnapshotChunk {
     const message = createBaseResponseApplySnapshotChunk();
     message.result = object.result ?? 0;
@@ -3443,19 +4227,24 @@ export const ResponsePrepareProposal = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponsePrepareProposal {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponsePrepareProposal();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.txs.push(reader.bytes());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -3466,14 +4255,15 @@ export const ResponsePrepareProposal = {
 
   toJSON(message: ResponsePrepareProposal): unknown {
     const obj: any = {};
-    if (message.txs) {
-      obj.txs = message.txs.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
-    } else {
-      obj.txs = [];
+    if (message.txs?.length) {
+      obj.txs = message.txs.map((e) => base64FromBytes(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponsePrepareProposal>, I>>(base?: I): ResponsePrepareProposal {
+    return ResponsePrepareProposal.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponsePrepareProposal>, I>>(object: I): ResponsePrepareProposal {
     const message = createBaseResponsePrepareProposal();
     message.txs = object.txs?.map((e) => e) || [];
@@ -3494,19 +4284,24 @@ export const ResponseProcessProposal = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ResponseProcessProposal {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResponseProcessProposal();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.status = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -3517,10 +4312,15 @@ export const ResponseProcessProposal = {
 
   toJSON(message: ResponseProcessProposal): unknown {
     const obj: any = {};
-    message.status !== undefined && (obj.status = responseProcessProposal_ProposalStatusToJSON(message.status));
+    if (message.status !== 0) {
+      obj.status = responseProcessProposal_ProposalStatusToJSON(message.status);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ResponseProcessProposal>, I>>(base?: I): ResponseProcessProposal {
+    return ResponseProcessProposal.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ResponseProcessProposal>, I>>(object: I): ResponseProcessProposal {
     const message = createBaseResponseProcessProposal();
     message.status = object.status ?? 0;
@@ -3544,22 +4344,31 @@ export const CommitInfo = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CommitInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCommitInfo();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.round = reader.int32();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.votes.push(VoteInfo.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -3573,15 +4382,18 @@ export const CommitInfo = {
 
   toJSON(message: CommitInfo): unknown {
     const obj: any = {};
-    message.round !== undefined && (obj.round = Math.round(message.round));
-    if (message.votes) {
-      obj.votes = message.votes.map((e) => e ? VoteInfo.toJSON(e) : undefined);
-    } else {
-      obj.votes = [];
+    if (message.round !== 0) {
+      obj.round = Math.round(message.round);
+    }
+    if (message.votes?.length) {
+      obj.votes = message.votes.map((e) => VoteInfo.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CommitInfo>, I>>(base?: I): CommitInfo {
+    return CommitInfo.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<CommitInfo>, I>>(object: I): CommitInfo {
     const message = createBaseCommitInfo();
     message.round = object.round ?? 0;
@@ -3606,22 +4418,31 @@ export const ExtendedCommitInfo = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ExtendedCommitInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseExtendedCommitInfo();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.round = reader.int32();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.votes.push(ExtendedVoteInfo.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -3635,15 +4456,18 @@ export const ExtendedCommitInfo = {
 
   toJSON(message: ExtendedCommitInfo): unknown {
     const obj: any = {};
-    message.round !== undefined && (obj.round = Math.round(message.round));
-    if (message.votes) {
-      obj.votes = message.votes.map((e) => e ? ExtendedVoteInfo.toJSON(e) : undefined);
-    } else {
-      obj.votes = [];
+    if (message.round !== 0) {
+      obj.round = Math.round(message.round);
+    }
+    if (message.votes?.length) {
+      obj.votes = message.votes.map((e) => ExtendedVoteInfo.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ExtendedCommitInfo>, I>>(base?: I): ExtendedCommitInfo {
+    return ExtendedCommitInfo.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ExtendedCommitInfo>, I>>(object: I): ExtendedCommitInfo {
     const message = createBaseExtendedCommitInfo();
     message.round = object.round ?? 0;
@@ -3668,22 +4492,31 @@ export const Event = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Event {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEvent();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.type = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.attributes.push(EventAttribute.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -3699,15 +4532,18 @@ export const Event = {
 
   toJSON(message: Event): unknown {
     const obj: any = {};
-    message.type !== undefined && (obj.type = message.type);
-    if (message.attributes) {
-      obj.attributes = message.attributes.map((e) => e ? EventAttribute.toJSON(e) : undefined);
-    } else {
-      obj.attributes = [];
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.attributes?.length) {
+      obj.attributes = message.attributes.map((e) => EventAttribute.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Event>, I>>(base?: I): Event {
+    return Event.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Event>, I>>(object: I): Event {
     const message = createBaseEvent();
     message.type = object.type ?? "";
@@ -3735,25 +4571,38 @@ export const EventAttribute = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): EventAttribute {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventAttribute();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.key = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.value = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.index = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -3768,12 +4617,21 @@ export const EventAttribute = {
 
   toJSON(message: EventAttribute): unknown {
     const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value);
-    message.index !== undefined && (obj.index = message.index);
+    if (message.key !== "") {
+      obj.key = message.key;
+    }
+    if (message.value !== "") {
+      obj.value = message.value;
+    }
+    if (message.index === true) {
+      obj.index = message.index;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<EventAttribute>, I>>(base?: I): EventAttribute {
+    return EventAttribute.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<EventAttribute>, I>>(object: I): EventAttribute {
     const message = createBaseEventAttribute();
     message.key = object.key ?? "";
@@ -3784,7 +4642,7 @@ export const EventAttribute = {
 };
 
 function createBaseTxResult(): TxResult {
-  return { height: 0, index: 0, tx: new Uint8Array(), result: undefined };
+  return { height: 0, index: 0, tx: new Uint8Array(0), result: undefined };
 }
 
 export const TxResult = {
@@ -3805,28 +4663,45 @@ export const TxResult = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): TxResult {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTxResult();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.height = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.index = reader.uint32();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.tx = reader.bytes();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.result = ResponseDeliverTx.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -3835,26 +4710,36 @@ export const TxResult = {
     return {
       height: isSet(object.height) ? Number(object.height) : 0,
       index: isSet(object.index) ? Number(object.index) : 0,
-      tx: isSet(object.tx) ? bytesFromBase64(object.tx) : new Uint8Array(),
+      tx: isSet(object.tx) ? bytesFromBase64(object.tx) : new Uint8Array(0),
       result: isSet(object.result) ? ResponseDeliverTx.fromJSON(object.result) : undefined,
     };
   },
 
   toJSON(message: TxResult): unknown {
     const obj: any = {};
-    message.height !== undefined && (obj.height = Math.round(message.height));
-    message.index !== undefined && (obj.index = Math.round(message.index));
-    message.tx !== undefined && (obj.tx = base64FromBytes(message.tx !== undefined ? message.tx : new Uint8Array()));
-    message.result !== undefined
-      && (obj.result = message.result ? ResponseDeliverTx.toJSON(message.result) : undefined);
+    if (message.height !== 0) {
+      obj.height = Math.round(message.height);
+    }
+    if (message.index !== 0) {
+      obj.index = Math.round(message.index);
+    }
+    if (message.tx.length !== 0) {
+      obj.tx = base64FromBytes(message.tx);
+    }
+    if (message.result !== undefined) {
+      obj.result = ResponseDeliverTx.toJSON(message.result);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<TxResult>, I>>(base?: I): TxResult {
+    return TxResult.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<TxResult>, I>>(object: I): TxResult {
     const message = createBaseTxResult();
     message.height = object.height ?? 0;
     message.index = object.index ?? 0;
-    message.tx = object.tx ?? new Uint8Array();
+    message.tx = object.tx ?? new Uint8Array(0);
     message.result = (object.result !== undefined && object.result !== null)
       ? ResponseDeliverTx.fromPartial(object.result)
       : undefined;
@@ -3863,7 +4748,7 @@ export const TxResult = {
 };
 
 function createBaseValidator(): Validator {
-  return { address: new Uint8Array(), power: 0 };
+  return { address: new Uint8Array(0), power: 0 };
 }
 
 export const Validator = {
@@ -3878,44 +4763,59 @@ export const Validator = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Validator {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseValidator();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.address = reader.bytes();
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.power = longToNumber(reader.int64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): Validator {
     return {
-      address: isSet(object.address) ? bytesFromBase64(object.address) : new Uint8Array(),
+      address: isSet(object.address) ? bytesFromBase64(object.address) : new Uint8Array(0),
       power: isSet(object.power) ? Number(object.power) : 0,
     };
   },
 
   toJSON(message: Validator): unknown {
     const obj: any = {};
-    message.address !== undefined
-      && (obj.address = base64FromBytes(message.address !== undefined ? message.address : new Uint8Array()));
-    message.power !== undefined && (obj.power = Math.round(message.power));
+    if (message.address.length !== 0) {
+      obj.address = base64FromBytes(message.address);
+    }
+    if (message.power !== 0) {
+      obj.power = Math.round(message.power);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Validator>, I>>(base?: I): Validator {
+    return Validator.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Validator>, I>>(object: I): Validator {
     const message = createBaseValidator();
-    message.address = object.address ?? new Uint8Array();
+    message.address = object.address ?? new Uint8Array(0);
     message.power = object.power ?? 0;
     return message;
   },
@@ -3937,22 +4837,31 @@ export const ValidatorUpdate = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ValidatorUpdate {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseValidatorUpdate();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.pubKey = PublicKey.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.power = longToNumber(reader.int64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -3966,11 +4875,18 @@ export const ValidatorUpdate = {
 
   toJSON(message: ValidatorUpdate): unknown {
     const obj: any = {};
-    message.pubKey !== undefined && (obj.pubKey = message.pubKey ? PublicKey.toJSON(message.pubKey) : undefined);
-    message.power !== undefined && (obj.power = Math.round(message.power));
+    if (message.pubKey !== undefined) {
+      obj.pubKey = PublicKey.toJSON(message.pubKey);
+    }
+    if (message.power !== 0) {
+      obj.power = Math.round(message.power);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ValidatorUpdate>, I>>(base?: I): ValidatorUpdate {
+    return ValidatorUpdate.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ValidatorUpdate>, I>>(object: I): ValidatorUpdate {
     const message = createBaseValidatorUpdate();
     message.pubKey = (object.pubKey !== undefined && object.pubKey !== null)
@@ -3997,22 +4913,31 @@ export const VoteInfo = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): VoteInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseVoteInfo();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.validator = Validator.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.signedLastBlock = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -4026,12 +4951,18 @@ export const VoteInfo = {
 
   toJSON(message: VoteInfo): unknown {
     const obj: any = {};
-    message.validator !== undefined
-      && (obj.validator = message.validator ? Validator.toJSON(message.validator) : undefined);
-    message.signedLastBlock !== undefined && (obj.signedLastBlock = message.signedLastBlock);
+    if (message.validator !== undefined) {
+      obj.validator = Validator.toJSON(message.validator);
+    }
+    if (message.signedLastBlock === true) {
+      obj.signedLastBlock = message.signedLastBlock;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<VoteInfo>, I>>(base?: I): VoteInfo {
+    return VoteInfo.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<VoteInfo>, I>>(object: I): VoteInfo {
     const message = createBaseVoteInfo();
     message.validator = (object.validator !== undefined && object.validator !== null)
@@ -4043,7 +4974,7 @@ export const VoteInfo = {
 };
 
 function createBaseExtendedVoteInfo(): ExtendedVoteInfo {
-  return { validator: undefined, signedLastBlock: false, voteExtension: new Uint8Array() };
+  return { validator: undefined, signedLastBlock: false, voteExtension: new Uint8Array(0) };
 }
 
 export const ExtendedVoteInfo = {
@@ -4061,25 +4992,38 @@ export const ExtendedVoteInfo = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ExtendedVoteInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseExtendedVoteInfo();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.validator = Validator.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.signedLastBlock = reader.bool();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.voteExtension = reader.bytes();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -4088,29 +5032,34 @@ export const ExtendedVoteInfo = {
     return {
       validator: isSet(object.validator) ? Validator.fromJSON(object.validator) : undefined,
       signedLastBlock: isSet(object.signedLastBlock) ? Boolean(object.signedLastBlock) : false,
-      voteExtension: isSet(object.voteExtension) ? bytesFromBase64(object.voteExtension) : new Uint8Array(),
+      voteExtension: isSet(object.voteExtension) ? bytesFromBase64(object.voteExtension) : new Uint8Array(0),
     };
   },
 
   toJSON(message: ExtendedVoteInfo): unknown {
     const obj: any = {};
-    message.validator !== undefined
-      && (obj.validator = message.validator ? Validator.toJSON(message.validator) : undefined);
-    message.signedLastBlock !== undefined && (obj.signedLastBlock = message.signedLastBlock);
-    message.voteExtension !== undefined
-      && (obj.voteExtension = base64FromBytes(
-        message.voteExtension !== undefined ? message.voteExtension : new Uint8Array(),
-      ));
+    if (message.validator !== undefined) {
+      obj.validator = Validator.toJSON(message.validator);
+    }
+    if (message.signedLastBlock === true) {
+      obj.signedLastBlock = message.signedLastBlock;
+    }
+    if (message.voteExtension.length !== 0) {
+      obj.voteExtension = base64FromBytes(message.voteExtension);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ExtendedVoteInfo>, I>>(base?: I): ExtendedVoteInfo {
+    return ExtendedVoteInfo.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ExtendedVoteInfo>, I>>(object: I): ExtendedVoteInfo {
     const message = createBaseExtendedVoteInfo();
     message.validator = (object.validator !== undefined && object.validator !== null)
       ? Validator.fromPartial(object.validator)
       : undefined;
     message.signedLastBlock = object.signedLastBlock ?? false;
-    message.voteExtension = object.voteExtension ?? new Uint8Array();
+    message.voteExtension = object.voteExtension ?? new Uint8Array(0);
     return message;
   },
 };
@@ -4140,31 +5089,52 @@ export const Misbehavior = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Misbehavior {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMisbehavior();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.type = reader.int32() as any;
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.validator = Validator.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.height = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.totalVotingPower = longToNumber(reader.int64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -4181,15 +5151,27 @@ export const Misbehavior = {
 
   toJSON(message: Misbehavior): unknown {
     const obj: any = {};
-    message.type !== undefined && (obj.type = misbehaviorTypeToJSON(message.type));
-    message.validator !== undefined
-      && (obj.validator = message.validator ? Validator.toJSON(message.validator) : undefined);
-    message.height !== undefined && (obj.height = Math.round(message.height));
-    message.time !== undefined && (obj.time = message.time.toISOString());
-    message.totalVotingPower !== undefined && (obj.totalVotingPower = Math.round(message.totalVotingPower));
+    if (message.type !== 0) {
+      obj.type = misbehaviorTypeToJSON(message.type);
+    }
+    if (message.validator !== undefined) {
+      obj.validator = Validator.toJSON(message.validator);
+    }
+    if (message.height !== 0) {
+      obj.height = Math.round(message.height);
+    }
+    if (message.time !== undefined) {
+      obj.time = message.time.toISOString();
+    }
+    if (message.totalVotingPower !== 0) {
+      obj.totalVotingPower = Math.round(message.totalVotingPower);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Misbehavior>, I>>(base?: I): Misbehavior {
+    return Misbehavior.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Misbehavior>, I>>(object: I): Misbehavior {
     const message = createBaseMisbehavior();
     message.type = object.type ?? 0;
@@ -4204,7 +5186,7 @@ export const Misbehavior = {
 };
 
 function createBaseSnapshot(): Snapshot {
-  return { height: 0, format: 0, chunks: 0, hash: new Uint8Array(), metadata: new Uint8Array() };
+  return { height: 0, format: 0, chunks: 0, hash: new Uint8Array(0), metadata: new Uint8Array(0) };
 }
 
 export const Snapshot = {
@@ -4228,31 +5210,52 @@ export const Snapshot = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Snapshot {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSnapshot();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.height = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.format = reader.uint32();
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.chunks = reader.uint32();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.hash = reader.bytes();
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.metadata = reader.bytes();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -4262,30 +5265,41 @@ export const Snapshot = {
       height: isSet(object.height) ? Number(object.height) : 0,
       format: isSet(object.format) ? Number(object.format) : 0,
       chunks: isSet(object.chunks) ? Number(object.chunks) : 0,
-      hash: isSet(object.hash) ? bytesFromBase64(object.hash) : new Uint8Array(),
-      metadata: isSet(object.metadata) ? bytesFromBase64(object.metadata) : new Uint8Array(),
+      hash: isSet(object.hash) ? bytesFromBase64(object.hash) : new Uint8Array(0),
+      metadata: isSet(object.metadata) ? bytesFromBase64(object.metadata) : new Uint8Array(0),
     };
   },
 
   toJSON(message: Snapshot): unknown {
     const obj: any = {};
-    message.height !== undefined && (obj.height = Math.round(message.height));
-    message.format !== undefined && (obj.format = Math.round(message.format));
-    message.chunks !== undefined && (obj.chunks = Math.round(message.chunks));
-    message.hash !== undefined
-      && (obj.hash = base64FromBytes(message.hash !== undefined ? message.hash : new Uint8Array()));
-    message.metadata !== undefined
-      && (obj.metadata = base64FromBytes(message.metadata !== undefined ? message.metadata : new Uint8Array()));
+    if (message.height !== 0) {
+      obj.height = Math.round(message.height);
+    }
+    if (message.format !== 0) {
+      obj.format = Math.round(message.format);
+    }
+    if (message.chunks !== 0) {
+      obj.chunks = Math.round(message.chunks);
+    }
+    if (message.hash.length !== 0) {
+      obj.hash = base64FromBytes(message.hash);
+    }
+    if (message.metadata.length !== 0) {
+      obj.metadata = base64FromBytes(message.metadata);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Snapshot>, I>>(base?: I): Snapshot {
+    return Snapshot.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Snapshot>, I>>(object: I): Snapshot {
     const message = createBaseSnapshot();
     message.height = object.height ?? 0;
     message.format = object.format ?? 0;
     message.chunks = object.chunks ?? 0;
-    message.hash = object.hash ?? new Uint8Array();
-    message.metadata = object.metadata ?? new Uint8Array();
+    message.hash = object.hash ?? new Uint8Array(0);
+    message.metadata = object.metadata ?? new Uint8Array(0);
     return message;
   },
 };
@@ -4309,9 +5323,12 @@ export interface ABCIApplication {
   ProcessProposal(request: RequestProcessProposal): Promise<ResponseProcessProposal>;
 }
 
+export const ABCIApplicationServiceName = "tendermint.abci.ABCIApplication";
 export class ABCIApplicationClientImpl implements ABCIApplication {
   private readonly rpc: Rpc;
-  constructor(rpc: Rpc) {
+  private readonly service: string;
+  constructor(rpc: Rpc, opts?: { service?: string }) {
+    this.service = opts?.service || ABCIApplicationServiceName;
     this.rpc = rpc;
     this.Echo = this.Echo.bind(this);
     this.Flush = this.Flush.bind(this);
@@ -4332,98 +5349,98 @@ export class ABCIApplicationClientImpl implements ABCIApplication {
   }
   Echo(request: RequestEcho): Promise<ResponseEcho> {
     const data = RequestEcho.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "Echo", data);
-    return promise.then((data) => ResponseEcho.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "Echo", data);
+    return promise.then((data) => ResponseEcho.decode(_m0.Reader.create(data)));
   }
 
   Flush(request: RequestFlush): Promise<ResponseFlush> {
     const data = RequestFlush.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "Flush", data);
-    return promise.then((data) => ResponseFlush.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "Flush", data);
+    return promise.then((data) => ResponseFlush.decode(_m0.Reader.create(data)));
   }
 
   Info(request: RequestInfo): Promise<ResponseInfo> {
     const data = RequestInfo.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "Info", data);
-    return promise.then((data) => ResponseInfo.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "Info", data);
+    return promise.then((data) => ResponseInfo.decode(_m0.Reader.create(data)));
   }
 
   DeliverTx(request: RequestDeliverTx): Promise<ResponseDeliverTx> {
     const data = RequestDeliverTx.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "DeliverTx", data);
-    return promise.then((data) => ResponseDeliverTx.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "DeliverTx", data);
+    return promise.then((data) => ResponseDeliverTx.decode(_m0.Reader.create(data)));
   }
 
   CheckTx(request: RequestCheckTx): Promise<ResponseCheckTx> {
     const data = RequestCheckTx.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "CheckTx", data);
-    return promise.then((data) => ResponseCheckTx.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "CheckTx", data);
+    return promise.then((data) => ResponseCheckTx.decode(_m0.Reader.create(data)));
   }
 
   Query(request: RequestQuery): Promise<ResponseQuery> {
     const data = RequestQuery.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "Query", data);
-    return promise.then((data) => ResponseQuery.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "Query", data);
+    return promise.then((data) => ResponseQuery.decode(_m0.Reader.create(data)));
   }
 
   Commit(request: RequestCommit): Promise<ResponseCommit> {
     const data = RequestCommit.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "Commit", data);
-    return promise.then((data) => ResponseCommit.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "Commit", data);
+    return promise.then((data) => ResponseCommit.decode(_m0.Reader.create(data)));
   }
 
   InitChain(request: RequestInitChain): Promise<ResponseInitChain> {
     const data = RequestInitChain.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "InitChain", data);
-    return promise.then((data) => ResponseInitChain.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "InitChain", data);
+    return promise.then((data) => ResponseInitChain.decode(_m0.Reader.create(data)));
   }
 
   BeginBlock(request: RequestBeginBlock): Promise<ResponseBeginBlock> {
     const data = RequestBeginBlock.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "BeginBlock", data);
-    return promise.then((data) => ResponseBeginBlock.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "BeginBlock", data);
+    return promise.then((data) => ResponseBeginBlock.decode(_m0.Reader.create(data)));
   }
 
   EndBlock(request: RequestEndBlock): Promise<ResponseEndBlock> {
     const data = RequestEndBlock.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "EndBlock", data);
-    return promise.then((data) => ResponseEndBlock.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "EndBlock", data);
+    return promise.then((data) => ResponseEndBlock.decode(_m0.Reader.create(data)));
   }
 
   ListSnapshots(request: RequestListSnapshots): Promise<ResponseListSnapshots> {
     const data = RequestListSnapshots.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "ListSnapshots", data);
-    return promise.then((data) => ResponseListSnapshots.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "ListSnapshots", data);
+    return promise.then((data) => ResponseListSnapshots.decode(_m0.Reader.create(data)));
   }
 
   OfferSnapshot(request: RequestOfferSnapshot): Promise<ResponseOfferSnapshot> {
     const data = RequestOfferSnapshot.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "OfferSnapshot", data);
-    return promise.then((data) => ResponseOfferSnapshot.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "OfferSnapshot", data);
+    return promise.then((data) => ResponseOfferSnapshot.decode(_m0.Reader.create(data)));
   }
 
   LoadSnapshotChunk(request: RequestLoadSnapshotChunk): Promise<ResponseLoadSnapshotChunk> {
     const data = RequestLoadSnapshotChunk.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "LoadSnapshotChunk", data);
-    return promise.then((data) => ResponseLoadSnapshotChunk.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "LoadSnapshotChunk", data);
+    return promise.then((data) => ResponseLoadSnapshotChunk.decode(_m0.Reader.create(data)));
   }
 
   ApplySnapshotChunk(request: RequestApplySnapshotChunk): Promise<ResponseApplySnapshotChunk> {
     const data = RequestApplySnapshotChunk.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "ApplySnapshotChunk", data);
-    return promise.then((data) => ResponseApplySnapshotChunk.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "ApplySnapshotChunk", data);
+    return promise.then((data) => ResponseApplySnapshotChunk.decode(_m0.Reader.create(data)));
   }
 
   PrepareProposal(request: RequestPrepareProposal): Promise<ResponsePrepareProposal> {
     const data = RequestPrepareProposal.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "PrepareProposal", data);
-    return promise.then((data) => ResponsePrepareProposal.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "PrepareProposal", data);
+    return promise.then((data) => ResponsePrepareProposal.decode(_m0.Reader.create(data)));
   }
 
   ProcessProposal(request: RequestProcessProposal): Promise<ResponseProcessProposal> {
     const data = RequestProcessProposal.encode(request).finish();
-    const promise = this.rpc.request("tendermint.abci.ABCIApplication", "ProcessProposal", data);
-    return promise.then((data) => ResponseProcessProposal.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "ProcessProposal", data);
+    return promise.then((data) => ResponseProcessProposal.decode(_m0.Reader.create(data)));
   }
 }
 
@@ -4431,10 +5448,10 @@ interface Rpc {
   request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
 }
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -4451,10 +5468,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -4464,14 +5481,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 
@@ -4493,8 +5510,8 @@ function toTimestamp(date: Date): Timestamp {
 }
 
 function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
   return new Date(millis);
 }
 
@@ -4510,7 +5527,7 @@ function fromJsonTimestamp(o: any): Date {
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

@@ -48,34 +48,59 @@ export const KeyShare = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): KeyShare {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseKeyShare();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.validator = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.blockHeight = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.keyShare = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.keyShareIndex = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.receivedTimestamp = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.receivedBlockHeight = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -93,15 +118,30 @@ export const KeyShare = {
 
   toJSON(message: KeyShare): unknown {
     const obj: any = {};
-    message.validator !== undefined && (obj.validator = message.validator);
-    message.blockHeight !== undefined && (obj.blockHeight = Math.round(message.blockHeight));
-    message.keyShare !== undefined && (obj.keyShare = message.keyShare);
-    message.keyShareIndex !== undefined && (obj.keyShareIndex = Math.round(message.keyShareIndex));
-    message.receivedTimestamp !== undefined && (obj.receivedTimestamp = Math.round(message.receivedTimestamp));
-    message.receivedBlockHeight !== undefined && (obj.receivedBlockHeight = Math.round(message.receivedBlockHeight));
+    if (message.validator !== "") {
+      obj.validator = message.validator;
+    }
+    if (message.blockHeight !== 0) {
+      obj.blockHeight = Math.round(message.blockHeight);
+    }
+    if (message.keyShare !== "") {
+      obj.keyShare = message.keyShare;
+    }
+    if (message.keyShareIndex !== 0) {
+      obj.keyShareIndex = Math.round(message.keyShareIndex);
+    }
+    if (message.receivedTimestamp !== 0) {
+      obj.receivedTimestamp = Math.round(message.receivedTimestamp);
+    }
+    if (message.receivedBlockHeight !== 0) {
+      obj.receivedBlockHeight = Math.round(message.receivedBlockHeight);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<KeyShare>, I>>(base?: I): KeyShare {
+    return KeyShare.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<KeyShare>, I>>(object: I): KeyShare {
     const message = createBaseKeyShare();
     message.validator = object.validator ?? "";
@@ -114,10 +154,10 @@ export const KeyShare = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -146,7 +186,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

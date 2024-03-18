@@ -42,7 +42,7 @@ export interface MerkleProof {
 }
 
 function createBaseMerkleRoot(): MerkleRoot {
-  return { hash: new Uint8Array() };
+  return { hash: new Uint8Array(0) };
 }
 
 export const MerkleRoot = {
@@ -54,43 +54,52 @@ export const MerkleRoot = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MerkleRoot {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMerkleRoot();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.hash = reader.bytes();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): MerkleRoot {
-    return { hash: isSet(object.hash) ? bytesFromBase64(object.hash) : new Uint8Array() };
+    return { hash: isSet(object.hash) ? bytesFromBase64(object.hash) : new Uint8Array(0) };
   },
 
   toJSON(message: MerkleRoot): unknown {
     const obj: any = {};
-    message.hash !== undefined
-      && (obj.hash = base64FromBytes(message.hash !== undefined ? message.hash : new Uint8Array()));
+    if (message.hash.length !== 0) {
+      obj.hash = base64FromBytes(message.hash);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MerkleRoot>, I>>(base?: I): MerkleRoot {
+    return MerkleRoot.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MerkleRoot>, I>>(object: I): MerkleRoot {
     const message = createBaseMerkleRoot();
-    message.hash = object.hash ?? new Uint8Array();
+    message.hash = object.hash ?? new Uint8Array(0);
     return message;
   },
 };
 
 function createBaseMerklePrefix(): MerklePrefix {
-  return { keyPrefix: new Uint8Array() };
+  return { keyPrefix: new Uint8Array(0) };
 }
 
 export const MerklePrefix = {
@@ -102,37 +111,46 @@ export const MerklePrefix = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MerklePrefix {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMerklePrefix();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.keyPrefix = reader.bytes();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): MerklePrefix {
-    return { keyPrefix: isSet(object.keyPrefix) ? bytesFromBase64(object.keyPrefix) : new Uint8Array() };
+    return { keyPrefix: isSet(object.keyPrefix) ? bytesFromBase64(object.keyPrefix) : new Uint8Array(0) };
   },
 
   toJSON(message: MerklePrefix): unknown {
     const obj: any = {};
-    message.keyPrefix !== undefined
-      && (obj.keyPrefix = base64FromBytes(message.keyPrefix !== undefined ? message.keyPrefix : new Uint8Array()));
+    if (message.keyPrefix.length !== 0) {
+      obj.keyPrefix = base64FromBytes(message.keyPrefix);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MerklePrefix>, I>>(base?: I): MerklePrefix {
+    return MerklePrefix.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MerklePrefix>, I>>(object: I): MerklePrefix {
     const message = createBaseMerklePrefix();
-    message.keyPrefix = object.keyPrefix ?? new Uint8Array();
+    message.keyPrefix = object.keyPrefix ?? new Uint8Array(0);
     return message;
   },
 };
@@ -150,19 +168,24 @@ export const MerklePath = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MerklePath {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMerklePath();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.keyPath.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -173,14 +196,15 @@ export const MerklePath = {
 
   toJSON(message: MerklePath): unknown {
     const obj: any = {};
-    if (message.keyPath) {
-      obj.keyPath = message.keyPath.map((e) => e);
-    } else {
-      obj.keyPath = [];
+    if (message.keyPath?.length) {
+      obj.keyPath = message.keyPath;
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MerklePath>, I>>(base?: I): MerklePath {
+    return MerklePath.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MerklePath>, I>>(object: I): MerklePath {
     const message = createBaseMerklePath();
     message.keyPath = object.keyPath?.map((e) => e) || [];
@@ -201,19 +225,24 @@ export const MerkleProof = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MerkleProof {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMerkleProof();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.proofs.push(CommitmentProof.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -224,14 +253,15 @@ export const MerkleProof = {
 
   toJSON(message: MerkleProof): unknown {
     const obj: any = {};
-    if (message.proofs) {
-      obj.proofs = message.proofs.map((e) => e ? CommitmentProof.toJSON(e) : undefined);
-    } else {
-      obj.proofs = [];
+    if (message.proofs?.length) {
+      obj.proofs = message.proofs.map((e) => CommitmentProof.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MerkleProof>, I>>(base?: I): MerkleProof {
+    return MerkleProof.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MerkleProof>, I>>(object: I): MerkleProof {
     const message = createBaseMerkleProof();
     message.proofs = object.proofs?.map((e) => CommitmentProof.fromPartial(e)) || [];
@@ -239,10 +269,10 @@ export const MerkleProof = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -259,10 +289,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -272,14 +302,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 

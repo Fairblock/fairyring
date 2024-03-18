@@ -57,28 +57,45 @@ export const EventSend = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): EventSend {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventSend();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.classId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.sender = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.receiver = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -94,13 +111,24 @@ export const EventSend = {
 
   toJSON(message: EventSend): unknown {
     const obj: any = {};
-    message.classId !== undefined && (obj.classId = message.classId);
-    message.id !== undefined && (obj.id = message.id);
-    message.sender !== undefined && (obj.sender = message.sender);
-    message.receiver !== undefined && (obj.receiver = message.receiver);
+    if (message.classId !== "") {
+      obj.classId = message.classId;
+    }
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.sender !== "") {
+      obj.sender = message.sender;
+    }
+    if (message.receiver !== "") {
+      obj.receiver = message.receiver;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<EventSend>, I>>(base?: I): EventSend {
+    return EventSend.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<EventSend>, I>>(object: I): EventSend {
     const message = createBaseEventSend();
     message.classId = object.classId ?? "";
@@ -130,25 +158,38 @@ export const EventMint = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): EventMint {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventMint();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.classId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.owner = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -163,12 +204,21 @@ export const EventMint = {
 
   toJSON(message: EventMint): unknown {
     const obj: any = {};
-    message.classId !== undefined && (obj.classId = message.classId);
-    message.id !== undefined && (obj.id = message.id);
-    message.owner !== undefined && (obj.owner = message.owner);
+    if (message.classId !== "") {
+      obj.classId = message.classId;
+    }
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.owner !== "") {
+      obj.owner = message.owner;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<EventMint>, I>>(base?: I): EventMint {
+    return EventMint.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<EventMint>, I>>(object: I): EventMint {
     const message = createBaseEventMint();
     message.classId = object.classId ?? "";
@@ -197,25 +247,38 @@ export const EventBurn = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): EventBurn {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventBurn();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.classId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.owner = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -230,12 +293,21 @@ export const EventBurn = {
 
   toJSON(message: EventBurn): unknown {
     const obj: any = {};
-    message.classId !== undefined && (obj.classId = message.classId);
-    message.id !== undefined && (obj.id = message.id);
-    message.owner !== undefined && (obj.owner = message.owner);
+    if (message.classId !== "") {
+      obj.classId = message.classId;
+    }
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.owner !== "") {
+      obj.owner = message.owner;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<EventBurn>, I>>(base?: I): EventBurn {
+    return EventBurn.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<EventBurn>, I>>(object: I): EventBurn {
     const message = createBaseEventBurn();
     message.classId = object.classId ?? "";

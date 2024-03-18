@@ -59,37 +59,66 @@ export const GenesisState = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.params = Params.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.portId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.encryptedTxArray.push(EncryptedTxArray.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.pepNonceList.push(PepNonce.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.aggregatedKeyShareList.push(AggregatedKeyShare.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.activePubKey = ActivePubKey.decode(reader, reader.uint32());
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.queuedPubKey = QueuedPubKey.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -114,32 +143,33 @@ export const GenesisState = {
 
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
-    message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
-    message.portId !== undefined && (obj.portId = message.portId);
-    if (message.encryptedTxArray) {
-      obj.encryptedTxArray = message.encryptedTxArray.map((e) => e ? EncryptedTxArray.toJSON(e) : undefined);
-    } else {
-      obj.encryptedTxArray = [];
+    if (message.params !== undefined) {
+      obj.params = Params.toJSON(message.params);
     }
-    if (message.pepNonceList) {
-      obj.pepNonceList = message.pepNonceList.map((e) => e ? PepNonce.toJSON(e) : undefined);
-    } else {
-      obj.pepNonceList = [];
+    if (message.portId !== "") {
+      obj.portId = message.portId;
     }
-    if (message.aggregatedKeyShareList) {
-      obj.aggregatedKeyShareList = message.aggregatedKeyShareList.map((e) =>
-        e ? AggregatedKeyShare.toJSON(e) : undefined
-      );
-    } else {
-      obj.aggregatedKeyShareList = [];
+    if (message.encryptedTxArray?.length) {
+      obj.encryptedTxArray = message.encryptedTxArray.map((e) => EncryptedTxArray.toJSON(e));
     }
-    message.activePubKey !== undefined
-      && (obj.activePubKey = message.activePubKey ? ActivePubKey.toJSON(message.activePubKey) : undefined);
-    message.queuedPubKey !== undefined
-      && (obj.queuedPubKey = message.queuedPubKey ? QueuedPubKey.toJSON(message.queuedPubKey) : undefined);
+    if (message.pepNonceList?.length) {
+      obj.pepNonceList = message.pepNonceList.map((e) => PepNonce.toJSON(e));
+    }
+    if (message.aggregatedKeyShareList?.length) {
+      obj.aggregatedKeyShareList = message.aggregatedKeyShareList.map((e) => AggregatedKeyShare.toJSON(e));
+    }
+    if (message.activePubKey !== undefined) {
+      obj.activePubKey = ActivePubKey.toJSON(message.activePubKey);
+    }
+    if (message.queuedPubKey !== undefined) {
+      obj.queuedPubKey = QueuedPubKey.toJSON(message.queuedPubKey);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GenesisState>, I>>(base?: I): GenesisState {
+    return GenesisState.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(object: I): GenesisState {
     const message = createBaseGenesisState();
     message.params = (object.params !== undefined && object.params !== null)
