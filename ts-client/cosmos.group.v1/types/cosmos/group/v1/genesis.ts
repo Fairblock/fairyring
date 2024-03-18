@@ -79,40 +79,73 @@ export const GenesisState = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.groupSeq = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.groups.push(GroupInfo.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.groupMembers.push(GroupMember.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.groupPolicySeq = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.groupPolicies.push(GroupPolicyInfo.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.proposalSeq = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.proposals.push(Proposal.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.votes.push(Vote.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -136,37 +169,36 @@ export const GenesisState = {
 
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
-    message.groupSeq !== undefined && (obj.groupSeq = Math.round(message.groupSeq));
-    if (message.groups) {
-      obj.groups = message.groups.map((e) => e ? GroupInfo.toJSON(e) : undefined);
-    } else {
-      obj.groups = [];
+    if (message.groupSeq !== 0) {
+      obj.groupSeq = Math.round(message.groupSeq);
     }
-    if (message.groupMembers) {
-      obj.groupMembers = message.groupMembers.map((e) => e ? GroupMember.toJSON(e) : undefined);
-    } else {
-      obj.groupMembers = [];
+    if (message.groups?.length) {
+      obj.groups = message.groups.map((e) => GroupInfo.toJSON(e));
     }
-    message.groupPolicySeq !== undefined && (obj.groupPolicySeq = Math.round(message.groupPolicySeq));
-    if (message.groupPolicies) {
-      obj.groupPolicies = message.groupPolicies.map((e) => e ? GroupPolicyInfo.toJSON(e) : undefined);
-    } else {
-      obj.groupPolicies = [];
+    if (message.groupMembers?.length) {
+      obj.groupMembers = message.groupMembers.map((e) => GroupMember.toJSON(e));
     }
-    message.proposalSeq !== undefined && (obj.proposalSeq = Math.round(message.proposalSeq));
-    if (message.proposals) {
-      obj.proposals = message.proposals.map((e) => e ? Proposal.toJSON(e) : undefined);
-    } else {
-      obj.proposals = [];
+    if (message.groupPolicySeq !== 0) {
+      obj.groupPolicySeq = Math.round(message.groupPolicySeq);
     }
-    if (message.votes) {
-      obj.votes = message.votes.map((e) => e ? Vote.toJSON(e) : undefined);
-    } else {
-      obj.votes = [];
+    if (message.groupPolicies?.length) {
+      obj.groupPolicies = message.groupPolicies.map((e) => GroupPolicyInfo.toJSON(e));
+    }
+    if (message.proposalSeq !== 0) {
+      obj.proposalSeq = Math.round(message.proposalSeq);
+    }
+    if (message.proposals?.length) {
+      obj.proposals = message.proposals.map((e) => Proposal.toJSON(e));
+    }
+    if (message.votes?.length) {
+      obj.votes = message.votes.map((e) => Vote.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GenesisState>, I>>(base?: I): GenesisState {
+    return GenesisState.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(object: I): GenesisState {
     const message = createBaseGenesisState();
     message.groupSeq = object.groupSeq ?? 0;
@@ -181,10 +213,10 @@ export const GenesisState = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -213,7 +245,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

@@ -49,7 +49,7 @@ export interface QueryAllEvidenceResponse {
 }
 
 function createBaseQueryEvidenceRequest(): QueryEvidenceRequest {
-  return { evidenceHash: new Uint8Array(), hash: "" };
+  return { evidenceHash: new Uint8Array(0), hash: "" };
 }
 
 export const QueryEvidenceRequest = {
@@ -64,46 +64,59 @@ export const QueryEvidenceRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): QueryEvidenceRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryEvidenceRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.evidenceHash = reader.bytes();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.hash = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): QueryEvidenceRequest {
     return {
-      evidenceHash: isSet(object.evidenceHash) ? bytesFromBase64(object.evidenceHash) : new Uint8Array(),
+      evidenceHash: isSet(object.evidenceHash) ? bytesFromBase64(object.evidenceHash) : new Uint8Array(0),
       hash: isSet(object.hash) ? String(object.hash) : "",
     };
   },
 
   toJSON(message: QueryEvidenceRequest): unknown {
     const obj: any = {};
-    message.evidenceHash !== undefined
-      && (obj.evidenceHash = base64FromBytes(
-        message.evidenceHash !== undefined ? message.evidenceHash : new Uint8Array(),
-      ));
-    message.hash !== undefined && (obj.hash = message.hash);
+    if (message.evidenceHash.length !== 0) {
+      obj.evidenceHash = base64FromBytes(message.evidenceHash);
+    }
+    if (message.hash !== "") {
+      obj.hash = message.hash;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<QueryEvidenceRequest>, I>>(base?: I): QueryEvidenceRequest {
+    return QueryEvidenceRequest.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<QueryEvidenceRequest>, I>>(object: I): QueryEvidenceRequest {
     const message = createBaseQueryEvidenceRequest();
-    message.evidenceHash = object.evidenceHash ?? new Uint8Array();
+    message.evidenceHash = object.evidenceHash ?? new Uint8Array(0);
     message.hash = object.hash ?? "";
     return message;
   },
@@ -122,19 +135,24 @@ export const QueryEvidenceResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): QueryEvidenceResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryEvidenceResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.evidence = Any.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -145,10 +163,15 @@ export const QueryEvidenceResponse = {
 
   toJSON(message: QueryEvidenceResponse): unknown {
     const obj: any = {};
-    message.evidence !== undefined && (obj.evidence = message.evidence ? Any.toJSON(message.evidence) : undefined);
+    if (message.evidence !== undefined) {
+      obj.evidence = Any.toJSON(message.evidence);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<QueryEvidenceResponse>, I>>(base?: I): QueryEvidenceResponse {
+    return QueryEvidenceResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<QueryEvidenceResponse>, I>>(object: I): QueryEvidenceResponse {
     const message = createBaseQueryEvidenceResponse();
     message.evidence = (object.evidence !== undefined && object.evidence !== null)
@@ -171,19 +194,24 @@ export const QueryAllEvidenceRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllEvidenceRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAllEvidenceRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.pagination = PageRequest.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -194,11 +222,15 @@ export const QueryAllEvidenceRequest = {
 
   toJSON(message: QueryAllEvidenceRequest): unknown {
     const obj: any = {};
-    message.pagination !== undefined
-      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    if (message.pagination !== undefined) {
+      obj.pagination = PageRequest.toJSON(message.pagination);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<QueryAllEvidenceRequest>, I>>(base?: I): QueryAllEvidenceRequest {
+    return QueryAllEvidenceRequest.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<QueryAllEvidenceRequest>, I>>(object: I): QueryAllEvidenceRequest {
     const message = createBaseQueryAllEvidenceRequest();
     message.pagination = (object.pagination !== undefined && object.pagination !== null)
@@ -224,22 +256,31 @@ export const QueryAllEvidenceResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllEvidenceResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAllEvidenceResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.evidence.push(Any.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.pagination = PageResponse.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -253,16 +294,18 @@ export const QueryAllEvidenceResponse = {
 
   toJSON(message: QueryAllEvidenceResponse): unknown {
     const obj: any = {};
-    if (message.evidence) {
-      obj.evidence = message.evidence.map((e) => e ? Any.toJSON(e) : undefined);
-    } else {
-      obj.evidence = [];
+    if (message.evidence?.length) {
+      obj.evidence = message.evidence.map((e) => Any.toJSON(e));
     }
-    message.pagination !== undefined
-      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    if (message.pagination !== undefined) {
+      obj.pagination = PageResponse.toJSON(message.pagination);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<QueryAllEvidenceResponse>, I>>(base?: I): QueryAllEvidenceResponse {
+    return QueryAllEvidenceResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<QueryAllEvidenceResponse>, I>>(object: I): QueryAllEvidenceResponse {
     const message = createBaseQueryAllEvidenceResponse();
     message.evidence = object.evidence?.map((e) => Any.fromPartial(e)) || [];
@@ -281,23 +324,26 @@ export interface Query {
   AllEvidence(request: QueryAllEvidenceRequest): Promise<QueryAllEvidenceResponse>;
 }
 
+export const QueryServiceName = "cosmos.evidence.v1beta1.Query";
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
-  constructor(rpc: Rpc) {
+  private readonly service: string;
+  constructor(rpc: Rpc, opts?: { service?: string }) {
+    this.service = opts?.service || QueryServiceName;
     this.rpc = rpc;
     this.Evidence = this.Evidence.bind(this);
     this.AllEvidence = this.AllEvidence.bind(this);
   }
   Evidence(request: QueryEvidenceRequest): Promise<QueryEvidenceResponse> {
     const data = QueryEvidenceRequest.encode(request).finish();
-    const promise = this.rpc.request("cosmos.evidence.v1beta1.Query", "Evidence", data);
-    return promise.then((data) => QueryEvidenceResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "Evidence", data);
+    return promise.then((data) => QueryEvidenceResponse.decode(_m0.Reader.create(data)));
   }
 
   AllEvidence(request: QueryAllEvidenceRequest): Promise<QueryAllEvidenceResponse> {
     const data = QueryAllEvidenceRequest.encode(request).finish();
-    const promise = this.rpc.request("cosmos.evidence.v1beta1.Query", "AllEvidence", data);
-    return promise.then((data) => QueryAllEvidenceResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "AllEvidence", data);
+    return promise.then((data) => QueryAllEvidenceResponse.decode(_m0.Reader.create(data)));
   }
 }
 
@@ -305,10 +351,10 @@ interface Rpc {
   request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
 }
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -325,10 +371,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -338,14 +384,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 

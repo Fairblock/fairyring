@@ -66,37 +66,66 @@ export const GenesisState = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.startingProposalId = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.deposits.push(Deposit.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.votes.push(Vote.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.proposals.push(Proposal.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.depositParams = DepositParams.decode(reader, reader.uint32());
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.votingParams = VotingParams.decode(reader, reader.uint32());
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.tallyParams = TallyParams.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -115,31 +144,33 @@ export const GenesisState = {
 
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
-    message.startingProposalId !== undefined && (obj.startingProposalId = Math.round(message.startingProposalId));
-    if (message.deposits) {
-      obj.deposits = message.deposits.map((e) => e ? Deposit.toJSON(e) : undefined);
-    } else {
-      obj.deposits = [];
+    if (message.startingProposalId !== 0) {
+      obj.startingProposalId = Math.round(message.startingProposalId);
     }
-    if (message.votes) {
-      obj.votes = message.votes.map((e) => e ? Vote.toJSON(e) : undefined);
-    } else {
-      obj.votes = [];
+    if (message.deposits?.length) {
+      obj.deposits = message.deposits.map((e) => Deposit.toJSON(e));
     }
-    if (message.proposals) {
-      obj.proposals = message.proposals.map((e) => e ? Proposal.toJSON(e) : undefined);
-    } else {
-      obj.proposals = [];
+    if (message.votes?.length) {
+      obj.votes = message.votes.map((e) => Vote.toJSON(e));
     }
-    message.depositParams !== undefined
-      && (obj.depositParams = message.depositParams ? DepositParams.toJSON(message.depositParams) : undefined);
-    message.votingParams !== undefined
-      && (obj.votingParams = message.votingParams ? VotingParams.toJSON(message.votingParams) : undefined);
-    message.tallyParams !== undefined
-      && (obj.tallyParams = message.tallyParams ? TallyParams.toJSON(message.tallyParams) : undefined);
+    if (message.proposals?.length) {
+      obj.proposals = message.proposals.map((e) => Proposal.toJSON(e));
+    }
+    if (message.depositParams !== undefined) {
+      obj.depositParams = DepositParams.toJSON(message.depositParams);
+    }
+    if (message.votingParams !== undefined) {
+      obj.votingParams = VotingParams.toJSON(message.votingParams);
+    }
+    if (message.tallyParams !== undefined) {
+      obj.tallyParams = TallyParams.toJSON(message.tallyParams);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GenesisState>, I>>(base?: I): GenesisState {
+    return GenesisState.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(object: I): GenesisState {
     const message = createBaseGenesisState();
     message.startingProposalId = object.startingProposalId ?? 0;
@@ -159,10 +190,10 @@ export const GenesisState = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -191,7 +222,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

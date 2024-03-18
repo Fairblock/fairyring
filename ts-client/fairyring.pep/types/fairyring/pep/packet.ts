@@ -5,8 +5,8 @@ import { ActivePubKey, QueuedPubKey } from "./pub_key";
 export const protobufPackage = "fairyring.pep";
 
 export interface PepPacketData {
-  noData: NoData | undefined;
-  currentKeysPacket: CurrentKeysPacketData | undefined;
+  noData?: NoData | undefined;
+  currentKeysPacket?: CurrentKeysPacketData | undefined;
 }
 
 export interface NoData {
@@ -38,22 +38,31 @@ export const PepPacketData = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): PepPacketData {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePepPacketData();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.noData = NoData.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.currentKeysPacket = CurrentKeysPacketData.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -69,13 +78,18 @@ export const PepPacketData = {
 
   toJSON(message: PepPacketData): unknown {
     const obj: any = {};
-    message.noData !== undefined && (obj.noData = message.noData ? NoData.toJSON(message.noData) : undefined);
-    message.currentKeysPacket !== undefined && (obj.currentKeysPacket = message.currentKeysPacket
-      ? CurrentKeysPacketData.toJSON(message.currentKeysPacket)
-      : undefined);
+    if (message.noData !== undefined) {
+      obj.noData = NoData.toJSON(message.noData);
+    }
+    if (message.currentKeysPacket !== undefined) {
+      obj.currentKeysPacket = CurrentKeysPacketData.toJSON(message.currentKeysPacket);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<PepPacketData>, I>>(base?: I): PepPacketData {
+    return PepPacketData.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<PepPacketData>, I>>(object: I): PepPacketData {
     const message = createBasePepPacketData();
     message.noData = (object.noData !== undefined && object.noData !== null)
@@ -98,16 +112,17 @@ export const NoData = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): NoData {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseNoData();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -121,6 +136,9 @@ export const NoData = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<NoData>, I>>(base?: I): NoData {
+    return NoData.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<NoData>, I>>(_: I): NoData {
     const message = createBaseNoData();
     return message;
@@ -137,16 +155,17 @@ export const CurrentKeysPacketData = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CurrentKeysPacketData {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCurrentKeysPacketData();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -160,6 +179,9 @@ export const CurrentKeysPacketData = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CurrentKeysPacketData>, I>>(base?: I): CurrentKeysPacketData {
+    return CurrentKeysPacketData.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<CurrentKeysPacketData>, I>>(_: I): CurrentKeysPacketData {
     const message = createBaseCurrentKeysPacketData();
     return message;
@@ -182,22 +204,31 @@ export const CurrentKeysPacketAck = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CurrentKeysPacketAck {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCurrentKeysPacketAck();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.activeKey = ActivePubKey.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.queuedKey = QueuedPubKey.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -211,13 +242,18 @@ export const CurrentKeysPacketAck = {
 
   toJSON(message: CurrentKeysPacketAck): unknown {
     const obj: any = {};
-    message.activeKey !== undefined
-      && (obj.activeKey = message.activeKey ? ActivePubKey.toJSON(message.activeKey) : undefined);
-    message.queuedKey !== undefined
-      && (obj.queuedKey = message.queuedKey ? QueuedPubKey.toJSON(message.queuedKey) : undefined);
+    if (message.activeKey !== undefined) {
+      obj.activeKey = ActivePubKey.toJSON(message.activeKey);
+    }
+    if (message.queuedKey !== undefined) {
+      obj.queuedKey = QueuedPubKey.toJSON(message.queuedKey);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CurrentKeysPacketAck>, I>>(base?: I): CurrentKeysPacketAck {
+    return CurrentKeysPacketAck.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<CurrentKeysPacketAck>, I>>(object: I): CurrentKeysPacketAck {
     const message = createBaseCurrentKeysPacketAck();
     message.activeKey = (object.activeKey !== undefined && object.activeKey !== null)

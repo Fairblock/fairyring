@@ -28,25 +28,38 @@ export const AuthorizedAddress = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AuthorizedAddress {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAuthorizedAddress();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.target = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.isAuthorized = reader.bool();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.authorizedBy = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -61,12 +74,21 @@ export const AuthorizedAddress = {
 
   toJSON(message: AuthorizedAddress): unknown {
     const obj: any = {};
-    message.target !== undefined && (obj.target = message.target);
-    message.isAuthorized !== undefined && (obj.isAuthorized = message.isAuthorized);
-    message.authorizedBy !== undefined && (obj.authorizedBy = message.authorizedBy);
+    if (message.target !== "") {
+      obj.target = message.target;
+    }
+    if (message.isAuthorized === true) {
+      obj.isAuthorized = message.isAuthorized;
+    }
+    if (message.authorizedBy !== "") {
+      obj.authorizedBy = message.authorizedBy;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AuthorizedAddress>, I>>(base?: I): AuthorizedAddress {
+    return AuthorizedAddress.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<AuthorizedAddress>, I>>(object: I): AuthorizedAddress {
     const message = createBaseAuthorizedAddress();
     message.target = object.target ?? "";

@@ -36,28 +36,45 @@ export const GenesisState = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.connections.push(IdentifiedConnection.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.clientConnectionPaths.push(ConnectionPaths.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.nextConnectionSequence = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.params = Params.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -77,22 +94,24 @@ export const GenesisState = {
 
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
-    if (message.connections) {
-      obj.connections = message.connections.map((e) => e ? IdentifiedConnection.toJSON(e) : undefined);
-    } else {
-      obj.connections = [];
+    if (message.connections?.length) {
+      obj.connections = message.connections.map((e) => IdentifiedConnection.toJSON(e));
     }
-    if (message.clientConnectionPaths) {
-      obj.clientConnectionPaths = message.clientConnectionPaths.map((e) => e ? ConnectionPaths.toJSON(e) : undefined);
-    } else {
-      obj.clientConnectionPaths = [];
+    if (message.clientConnectionPaths?.length) {
+      obj.clientConnectionPaths = message.clientConnectionPaths.map((e) => ConnectionPaths.toJSON(e));
     }
-    message.nextConnectionSequence !== undefined
-      && (obj.nextConnectionSequence = Math.round(message.nextConnectionSequence));
-    message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
+    if (message.nextConnectionSequence !== 0) {
+      obj.nextConnectionSequence = Math.round(message.nextConnectionSequence);
+    }
+    if (message.params !== undefined) {
+      obj.params = Params.toJSON(message.params);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GenesisState>, I>>(base?: I): GenesisState {
+    return GenesisState.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(object: I): GenesisState {
     const message = createBaseGenesisState();
     message.connections = object.connections?.map((e) => IdentifiedConnection.fromPartial(e)) || [];
@@ -105,10 +124,10 @@ export const GenesisState = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -137,7 +156,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

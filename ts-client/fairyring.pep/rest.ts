@@ -9,7 +9,18 @@
  * ---------------------------------------------------------------
  */
 
-export interface PepActivePubKey {
+export interface Any {
+  "@type"?: string;
+}
+
+export interface Status {
+  /** @format int32 */
+  code?: number;
+  message?: string;
+  details?: { "@type"?: string }[];
+}
+
+export interface ActivePubKey {
   publicKey?: string;
   creator?: string;
 
@@ -17,7 +28,12 @@ export interface PepActivePubKey {
   expiry?: string;
 }
 
-export interface PepEncryptedTx {
+export interface Coin {
+  denom?: string;
+  amount?: string;
+}
+
+export interface EncryptedTx {
   /** @format uint64 */
   targetHeight?: string;
 
@@ -25,117 +41,134 @@ export interface PepEncryptedTx {
   index?: string;
   data?: string;
   creator?: string;
+  chargedGas?: { denom?: string; amount?: string };
 
-  /**
-   * Coin defines a token with a denomination and an amount.
-   *
-   * NOTE: The amount field is an Int which implements the custom method
-   * signatures required by gogoproto.
-   */
-  chargedGas?: V1Beta1Coin;
+  /** @format uint64 */
+  processedAtChainHeight?: string;
+  expired?: boolean;
 }
 
-export interface PepEncryptedTxArray {
-  encryptedTx?: PepEncryptedTx[];
+export interface EncryptedTxArray {
+  encryptedTx?: {
+    targetHeight?: string;
+    index?: string;
+    data?: string;
+    creator?: string;
+    chargedGas?: { denom?: string; amount?: string };
+    processedAtChainHeight?: string;
+    expired?: boolean;
+  }[];
 }
 
-export type PepMsgCreateAggregatedKeyShareResponse = object;
+export interface PageRequest {
+  /** @format byte */
+  key?: string;
 
-export type PepMsgGetGeneralKeyshareResponse = object;
+  /** @format uint64 */
+  offset?: string;
 
-export interface PepMsgRequestGeneralKeyshareResponse {
-  identity?: string;
-  pubkey?: string;
+  /** @format uint64 */
+  limit?: string;
+  count_total?: boolean;
+  reverse?: boolean;
 }
 
-export type PepMsgSubmitEncryptedTxResponse = object;
+export interface PageResponse {
+  /** @format byte */
+  next_key?: string;
 
-/**
- * Params defines the parameters for the module.
- */
-export interface PepParams {
-  trusted_counter_parties?: PepTrustedCounterParty[];
+  /** @format uint64 */
+  total?: string;
+}
+
+export interface Params {
+  trusted_counter_parties?: { client_id?: string; connection_id?: string; channel_id?: string }[];
   trusted_addresses?: string[];
-  channel_id?: string;
-
-  /**
-   * Coin defines a token with a denomination and an amount.
-   *
-   * NOTE: The amount field is an Int which implements the custom method
-   * signatures required by gogoproto.
-   */
-  min_gas_price?: V1Beta1Coin;
+  pep_channel_id?: string;
+  keyshare_channel_id?: string;
+  min_gas_price?: { denom?: string; amount?: string };
   is_source_chain?: boolean;
 }
 
-export interface PepPepNonce {
+export interface PepNonce {
   address?: string;
 
   /** @format uint64 */
   nonce?: string;
 }
 
-export interface PepQueryAllEncryptedTxFromHeightResponse {
-  encryptedTxArray?: PepEncryptedTxArray;
+export interface QueryAllEncryptedTxFromHeightResponse {
+  encryptedTxArray?: {
+    encryptedTx?: {
+      targetHeight?: string;
+      index?: string;
+      data?: string;
+      creator?: string;
+      chargedGas?: { denom?: string; amount?: string };
+      processedAtChainHeight?: string;
+      expired?: boolean;
+    }[];
+  };
 }
 
-export interface PepQueryAllEncryptedTxResponse {
-  encryptedTxArray?: PepEncryptedTxArray[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
+export interface QueryAllEncryptedTxResponse {
+  encryptedTxArray?: {
+    encryptedTx?: {
+      targetHeight?: string;
+      index?: string;
+      data?: string;
+      creator?: string;
+      chargedGas?: { denom?: string; amount?: string };
+      processedAtChainHeight?: string;
+      expired?: boolean;
+    }[];
+  }[];
+  pagination?: { next_key?: string; total?: string };
 }
 
-export interface PepQueryAllPepNonceResponse {
-  pepNonce?: PepPepNonce[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
+export interface QueryAllPepNonceResponse {
+  pepNonce?: { address?: string; nonce?: string }[];
+  pagination?: { next_key?: string; total?: string };
 }
 
-export interface PepQueryGetEncryptedTxResponse {
-  encryptedTx?: PepEncryptedTx;
+export interface QueryGetEncryptedTxResponse {
+  encryptedTx?: {
+    targetHeight?: string;
+    index?: string;
+    data?: string;
+    creator?: string;
+    chargedGas?: { denom?: string; amount?: string };
+    processedAtChainHeight?: string;
+    expired?: boolean;
+  };
 }
 
-export interface PepQueryGetPepNonceResponse {
-  pepNonce?: PepPepNonce;
+export interface QueryGetPepNonceResponse {
+  pepNonce?: { address?: string; nonce?: string };
 }
 
-export interface PepQueryLatestHeightResponse {
+export interface QueryLatestHeightResponse {
   /** @format uint64 */
   height?: string;
 }
 
-/**
- * QueryParamsResponse is response type for the Query/Params RPC method.
- */
-export interface PepQueryParamsResponse {
-  /** params holds all the parameters of this module. */
-  params?: PepParams;
+export interface QueryParamsResponse {
+  params?: {
+    trusted_counter_parties?: { client_id?: string; connection_id?: string; channel_id?: string }[];
+    trusted_addresses?: string[];
+    pep_channel_id?: string;
+    keyshare_channel_id?: string;
+    min_gas_price?: { denom?: string; amount?: string };
+    is_source_chain?: boolean;
+  };
 }
 
-export interface PepQueryPubKeyResponse {
-  activePubKey?: PepActivePubKey;
-  queuedPubKey?: PepQueuedPubKey;
+export interface QueryPubKeyResponse {
+  activePubKey?: { publicKey?: string; creator?: string; expiry?: string };
+  queuedPubKey?: { publicKey?: string; creator?: string; expiry?: string };
 }
 
-export interface PepQueuedPubKey {
+export interface QueuedPubKey {
   publicKey?: string;
   creator?: string;
 
@@ -143,105 +176,22 @@ export interface PepQueuedPubKey {
   expiry?: string;
 }
 
-export interface PepTrustedCounterParty {
+export interface TrustedCounterParty {
   client_id?: string;
   connection_id?: string;
   channel_id?: string;
 }
 
-export interface ProtobufAny {
-  "@type"?: string;
+export type MsgCreateAggregatedKeyShareResponse = object;
+
+export type MsgGetGeneralKeyshareResponse = object;
+
+export interface MsgRequestGeneralKeyshareResponse {
+  identity?: string;
+  pubkey?: string;
 }
 
-export interface RpcStatus {
-  /** @format int32 */
-  code?: number;
-  message?: string;
-  details?: ProtobufAny[];
-}
-
-/**
-* Coin defines a token with a denomination and an amount.
-
-NOTE: The amount field is an Int which implements the custom method
-signatures required by gogoproto.
-*/
-export interface V1Beta1Coin {
-  denom?: string;
-  amount?: string;
-}
-
-/**
-* message SomeRequest {
-         Foo some_parameter = 1;
-         PageRequest pagination = 2;
- }
-*/
-export interface V1Beta1PageRequest {
-  /**
-   * key is a value returned in PageResponse.next_key to begin
-   * querying the next page most efficiently. Only one of offset or key
-   * should be set.
-   * @format byte
-   */
-  key?: string;
-
-  /**
-   * offset is a numeric offset that can be used when key is unavailable.
-   * It is less efficient than using key. Only one of offset or key should
-   * be set.
-   * @format uint64
-   */
-  offset?: string;
-
-  /**
-   * limit is the total number of results to be returned in the result page.
-   * If left empty it will default to a value to be set by each app.
-   * @format uint64
-   */
-  limit?: string;
-
-  /**
-   * count_total is set to true  to indicate that the result set should include
-   * a count of the total number of items available for pagination in UIs.
-   * count_total is only respected when offset is used. It is ignored when key
-   * is set.
-   */
-  count_total?: boolean;
-
-  /**
-   * reverse is set to true if results are to be returned in the descending order.
-   *
-   * Since: cosmos-sdk 0.43
-   */
-  reverse?: boolean;
-}
-
-/**
-* PageResponse is to be embedded in gRPC response messages where the
-corresponding request message has used PageRequest.
-
- message SomeResponse {
-         repeated Bar results = 1;
-         PageResponse page = 2;
- }
-*/
-export interface V1Beta1PageResponse {
-  /**
-   * next_key is the key to be passed to PageRequest.key to
-   * query the next page most efficiently. It will be empty if
-   * there are no more results.
-   * @format byte
-   */
-  next_key?: string;
-
-  /**
-   * total is total number of results available if PageRequest.count_total
-   * was set, its value is undefined otherwise
-   * @format uint64
-   */
-  total?: string;
-}
+export type MsgSubmitEncryptedTxResponse = object;
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
@@ -364,8 +314,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title fairyring/pep/aggregated_key_share.proto
- * @version version not set
+ * @title HTTP API Console fairyring.pep
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   /**
@@ -373,7 +322,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryEncryptedTxAll
-   * @summary Queries a list of EncryptedTx items.
    * @request GET:/fairyring/pep/encrypted_tx
    */
   queryEncryptedTxAll = (
@@ -386,11 +334,26 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<PepQueryAllEncryptedTxResponse, RpcStatus>({
+    this.request<
+      {
+        encryptedTxArray?: {
+          encryptedTx?: {
+            targetHeight?: string;
+            index?: string;
+            data?: string;
+            creator?: string;
+            chargedGas?: { denom?: string; amount?: string };
+            processedAtChainHeight?: string;
+            expired?: boolean;
+          }[];
+        }[];
+        pagination?: { next_key?: string; total?: string };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/pep/encrypted_tx`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 
@@ -399,14 +362,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryEncryptedTxAllFromHeight
-   * @summary Queries a list of EncryptedTx items.
    * @request GET:/fairyring/pep/encrypted_tx/{targetHeight}
    */
   queryEncryptedTxAllFromHeight = (targetHeight: string, params: RequestParams = {}) =>
-    this.request<PepQueryAllEncryptedTxFromHeightResponse, RpcStatus>({
+    this.request<
+      {
+        encryptedTxArray?: {
+          encryptedTx?: {
+            targetHeight?: string;
+            index?: string;
+            data?: string;
+            creator?: string;
+            chargedGas?: { denom?: string; amount?: string };
+            processedAtChainHeight?: string;
+            expired?: boolean;
+          }[];
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/pep/encrypted_tx/${targetHeight}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -415,14 +391,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryEncryptedTx
-   * @summary Queries a EncryptedTx by index.
    * @request GET:/fairyring/pep/encrypted_tx/{targetHeight}/{index}
    */
   queryEncryptedTx = (targetHeight: string, index: string, params: RequestParams = {}) =>
-    this.request<PepQueryGetEncryptedTxResponse, RpcStatus>({
+    this.request<
+      {
+        encryptedTx?: {
+          targetHeight?: string;
+          index?: string;
+          data?: string;
+          creator?: string;
+          chargedGas?: { denom?: string; amount?: string };
+          processedAtChainHeight?: string;
+          expired?: boolean;
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/pep/encrypted_tx/${targetHeight}/${index}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -431,14 +418,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryLatestHeight
-   * @summary Queries a list of LatestHeight items.
    * @request GET:/fairyring/pep/latest_height
    */
   queryLatestHeight = (params: RequestParams = {}) =>
-    this.request<PepQueryLatestHeightResponse, RpcStatus>({
+    this.request<{ height?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
       path: `/fairyring/pep/latest_height`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -447,14 +432,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryParams
-   * @summary Parameters queries the parameters of the module.
    * @request GET:/fairyring/pep/params
    */
   queryParams = (params: RequestParams = {}) =>
-    this.request<PepQueryParamsResponse, RpcStatus>({
+    this.request<
+      {
+        params?: {
+          trusted_counter_parties?: { client_id?: string; connection_id?: string; channel_id?: string }[];
+          trusted_addresses?: string[];
+          pep_channel_id?: string;
+          keyshare_channel_id?: string;
+          min_gas_price?: { denom?: string; amount?: string };
+          is_source_chain?: boolean;
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/pep/params`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -463,7 +458,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryPepNonceAll
-   * @summary Queries a list of PepNonce items.
    * @request GET:/fairyring/pep/pep_nonce
    */
   queryPepNonceAll = (
@@ -476,11 +470,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<PepQueryAllPepNonceResponse, RpcStatus>({
+    this.request<
+      { pepNonce?: { address?: string; nonce?: string }[]; pagination?: { next_key?: string; total?: string } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/pep/pep_nonce`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 
@@ -489,14 +485,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryPepNonce
-   * @summary Queries a PepNonce by index.
    * @request GET:/fairyring/pep/pep_nonce/{address}
    */
   queryPepNonce = (address: string, params: RequestParams = {}) =>
-    this.request<PepQueryGetPepNonceResponse, RpcStatus>({
+    this.request<
+      { pepNonce?: { address?: string; nonce?: string } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/pep/pep_nonce/${address}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -505,14 +502,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryPubKey
-   * @summary Queries the public keys
    * @request GET:/fairyring/pep/pub_key
    */
   queryPubKey = (params: RequestParams = {}) =>
-    this.request<PepQueryPubKeyResponse, RpcStatus>({
+    this.request<
+      {
+        activePubKey?: { publicKey?: string; creator?: string; expiry?: string };
+        queuedPubKey?: { publicKey?: string; creator?: string; expiry?: string };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/pep/pub_key`,
       method: "GET",
-      format: "json",
       ...params,
     });
 }

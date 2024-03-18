@@ -9,31 +9,45 @@
  * ---------------------------------------------------------------
  */
 
-export interface KeyshareActivePubKey {
+export interface Any {
+  "@type"?: string;
+}
+
+export interface Status {
+  /** @format int32 */
+  code?: number;
+  message?: string;
+  details?: { "@type"?: string }[];
+}
+
+export interface ActivePubKey {
   publicKey?: string;
   creator?: string;
 
   /** @format uint64 */
   expiry?: string;
+
+  /** @format uint64 */
+  numberOfValidators?: string;
 }
 
-export interface KeyshareAggregatedKeyShare {
+export interface AggregatedKeyShare {
   /** @format uint64 */
   height?: string;
   data?: string;
 }
 
-export interface KeyshareAuthorizedAddress {
+export interface AuthorizedAddress {
   target?: string;
   isAuthorized?: boolean;
   authorizedBy?: string;
 }
 
-export interface KeyshareCommitments {
+export interface Commitments {
   commitments?: string[];
 }
 
-export interface KeyshareGeneralKeyShare {
+export interface GeneralKeyShare {
   validator?: string;
   idType?: string;
   idValue?: string;
@@ -49,7 +63,7 @@ export interface KeyshareGeneralKeyShare {
   receivedBlockHeight?: string;
 }
 
-export interface KeyshareKeyShare {
+export interface KeyShare {
   validator?: string;
 
   /** @format uint64 */
@@ -66,53 +80,28 @@ export interface KeyshareKeyShare {
   receivedBlockHeight?: string;
 }
 
-export type KeyshareMsgCreateAuthorizedAddressResponse = object;
-
-export interface KeyshareMsgCreateGeneralKeyShareResponse {
-  creator?: string;
-  idType?: string;
-  idValue?: string;
-  keyShare?: string;
+export interface PageRequest {
+  /** @format byte */
+  key?: string;
 
   /** @format uint64 */
-  keyShareIndex?: string;
+  offset?: string;
 
   /** @format uint64 */
-  receivedBlockHeight?: string;
-  success?: boolean;
-  errorMessage?: string;
+  limit?: string;
+  count_total?: boolean;
+  reverse?: boolean;
 }
 
-export type KeyshareMsgCreateLatestPubKeyResponse = object;
+export interface PageResponse {
+  /** @format byte */
+  next_key?: string;
 
-export type KeyshareMsgDeleteAuthorizedAddressResponse = object;
-
-export interface KeyshareMsgRegisterValidatorResponse {
-  creator?: string;
+  /** @format uint64 */
+  total?: string;
 }
 
-export interface KeyshareMsgSendKeyshareResponse {
-  creator?: string;
-  keyshare?: string;
-
-  /** @format uint64 */
-  keyshareIndex?: string;
-
-  /** @format uint64 */
-  blockHeight?: string;
-
-  /** @format uint64 */
-  receivedBlockHeight?: string;
-  success?: boolean;
-  errorMessage?: string;
-}
-
-export type KeyshareMsgUpdateAuthorizedAddressResponse = object;
-
-/**
- * Params defines the parameters for the module.
- */
-export interface KeyshareParams {
+export interface Params {
   /** @format uint64 */
   key_expiry?: string;
   trusted_addresses?: string[];
@@ -130,216 +119,162 @@ export interface KeyshareParams {
   max_idled_block?: string;
 }
 
-export interface KeyshareQueryAllAggregatedKeyShareResponse {
-  aggregatedKeyShare?: KeyshareAggregatedKeyShare[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
+export interface QueryAllAggregatedKeyShareResponse {
+  aggregatedKeyShare?: { height?: string; data?: string }[];
+  pagination?: { next_key?: string; total?: string };
 }
 
-export interface KeyshareQueryAllAuthorizedAddressResponse {
-  authorizedAddress?: KeyshareAuthorizedAddress[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
+export interface QueryAllAuthorizedAddressResponse {
+  authorizedAddress?: { target?: string; isAuthorized?: boolean; authorizedBy?: string }[];
+  pagination?: { next_key?: string; total?: string };
 }
 
-export interface KeyshareQueryAllGeneralKeyShareResponse {
-  generalKeyShare?: KeyshareGeneralKeyShare[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
+export interface QueryAllGeneralKeyShareResponse {
+  generalKeyShare?: {
+    validator?: string;
+    idType?: string;
+    idValue?: string;
+    keyShare?: string;
+    keyShareIndex?: string;
+    receivedTimestamp?: string;
+    receivedBlockHeight?: string;
+  }[];
+  pagination?: { next_key?: string; total?: string };
 }
 
-export interface KeyshareQueryAllKeyShareResponse {
-  keyShare?: KeyshareKeyShare[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
+export interface QueryAllKeyShareResponse {
+  keyShare?: {
+    validator?: string;
+    blockHeight?: string;
+    keyShare?: string;
+    keyShareIndex?: string;
+    receivedTimestamp?: string;
+    receivedBlockHeight?: string;
+  }[];
+  pagination?: { next_key?: string; total?: string };
 }
 
-export interface KeyshareQueryAllValidatorSetResponse {
-  validatorSet?: KeyshareValidatorSet[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
+export interface QueryAllValidatorSetResponse {
+  validatorSet?: { index?: string; validator?: string; consAddr?: string; isActive?: boolean }[];
+  pagination?: { next_key?: string; total?: string };
 }
 
-export interface KeyshareQueryCommitmentsResponse {
-  activeCommitments?: KeyshareCommitments;
-  queuedCommitments?: KeyshareCommitments;
+export interface QueryCommitmentsResponse {
+  activeCommitments?: { commitments?: string[] };
+  queuedCommitments?: { commitments?: string[] };
 }
 
-export interface KeyshareQueryGetAggregatedKeyShareResponse {
-  aggregatedKeyShare?: KeyshareAggregatedKeyShare;
+export interface QueryGetAggregatedKeyShareResponse {
+  aggregatedKeyShare?: { height?: string; data?: string };
 }
 
-export interface KeyshareQueryGetAuthorizedAddressResponse {
-  authorizedAddress?: KeyshareAuthorizedAddress;
+export interface QueryGetAuthorizedAddressResponse {
+  authorizedAddress?: { target?: string; isAuthorized?: boolean; authorizedBy?: string };
 }
 
-export interface KeyshareQueryGetGeneralKeyShareResponse {
-  generalKeyShare?: KeyshareGeneralKeyShare;
+export interface QueryGetGeneralKeyShareResponse {
+  generalKeyShare?: {
+    validator?: string;
+    idType?: string;
+    idValue?: string;
+    keyShare?: string;
+    keyShareIndex?: string;
+    receivedTimestamp?: string;
+    receivedBlockHeight?: string;
+  };
 }
 
-export interface KeyshareQueryGetKeyShareResponse {
-  keyShare?: KeyshareKeyShare;
+export interface QueryGetKeyShareResponse {
+  keyShare?: {
+    validator?: string;
+    blockHeight?: string;
+    keyShare?: string;
+    keyShareIndex?: string;
+    receivedTimestamp?: string;
+    receivedBlockHeight?: string;
+  };
 }
 
-export interface KeyshareQueryGetValidatorSetResponse {
-  validatorSet?: KeyshareValidatorSet;
+export interface QueryGetValidatorSetResponse {
+  validatorSet?: { index?: string; validator?: string; consAddr?: string; isActive?: boolean };
 }
 
-/**
- * QueryParamsResponse is response type for the Query/Params RPC method.
- */
-export interface KeyshareQueryParamsResponse {
-  /** params holds all the parameters of this module. */
-  params?: KeyshareParams;
+export interface QueryParamsResponse {
+  params?: {
+    key_expiry?: string;
+    trusted_addresses?: string[];
+    slash_fraction_no_keyshare?: string;
+    slash_fraction_wrong_keyshare?: string;
+    minimum_bonded?: string;
+    max_idled_block?: string;
+  };
 }
 
-export interface KeyshareQueryPubKeyResponse {
-  activePubKey?: KeyshareActivePubKey;
-  queuedPubKey?: KeyshareQueuedPubKey;
+export interface QueryPubKeyResponse {
+  activePubKey?: { publicKey?: string; creator?: string; expiry?: string; numberOfValidators?: string };
+  queuedPubKey?: { publicKey?: string; creator?: string; expiry?: string; numberOfValidators?: string };
 }
 
-export interface KeyshareQueuedPubKey {
+export interface QueuedPubKey {
   publicKey?: string;
   creator?: string;
 
   /** @format uint64 */
   expiry?: string;
+
+  /** @format uint64 */
+  numberOfValidators?: string;
 }
 
-export interface KeyshareValidatorSet {
+export interface ValidatorSet {
   index?: string;
   validator?: string;
   consAddr?: string;
   isActive?: boolean;
 }
 
-export interface ProtobufAny {
-  "@type"?: string;
+export type MsgCreateAuthorizedAddressResponse = object;
+
+export interface MsgCreateGeneralKeyShareResponse {
+  creator?: string;
+  idType?: string;
+  idValue?: string;
+  keyShare?: string;
+
+  /** @format uint64 */
+  keyShareIndex?: string;
+
+  /** @format uint64 */
+  receivedBlockHeight?: string;
+  success?: boolean;
+  errorMessage?: string;
 }
 
-export interface RpcStatus {
-  /** @format int32 */
-  code?: number;
-  message?: string;
-  details?: ProtobufAny[];
+export type MsgCreateLatestPubKeyResponse = object;
+
+export type MsgDeleteAuthorizedAddressResponse = object;
+
+export interface MsgRegisterValidatorResponse {
+  creator?: string;
 }
 
-/**
-* message SomeRequest {
-         Foo some_parameter = 1;
-         PageRequest pagination = 2;
- }
-*/
-export interface V1Beta1PageRequest {
-  /**
-   * key is a value returned in PageResponse.next_key to begin
-   * querying the next page most efficiently. Only one of offset or key
-   * should be set.
-   * @format byte
-   */
-  key?: string;
+export interface MsgSendKeyshareResponse {
+  creator?: string;
+  keyshare?: string;
 
-  /**
-   * offset is a numeric offset that can be used when key is unavailable.
-   * It is less efficient than using key. Only one of offset or key should
-   * be set.
-   * @format uint64
-   */
-  offset?: string;
+  /** @format uint64 */
+  keyshareIndex?: string;
 
-  /**
-   * limit is the total number of results to be returned in the result page.
-   * If left empty it will default to a value to be set by each app.
-   * @format uint64
-   */
-  limit?: string;
+  /** @format uint64 */
+  blockHeight?: string;
 
-  /**
-   * count_total is set to true  to indicate that the result set should include
-   * a count of the total number of items available for pagination in UIs.
-   * count_total is only respected when offset is used. It is ignored when key
-   * is set.
-   */
-  count_total?: boolean;
-
-  /**
-   * reverse is set to true if results are to be returned in the descending order.
-   *
-   * Since: cosmos-sdk 0.43
-   */
-  reverse?: boolean;
+  /** @format uint64 */
+  receivedBlockHeight?: string;
+  success?: boolean;
+  errorMessage?: string;
 }
 
-/**
-* PageResponse is to be embedded in gRPC response messages where the
-corresponding request message has used PageRequest.
-
- message SomeResponse {
-         repeated Bar results = 1;
-         PageResponse page = 2;
- }
-*/
-export interface V1Beta1PageResponse {
-  /**
-   * next_key is the key to be passed to PageRequest.key to
-   * query the next page most efficiently. It will be empty if
-   * there are no more results.
-   * @format byte
-   */
-  next_key?: string;
-
-  /**
-   * total is total number of results available if PageRequest.count_total
-   * was set, its value is undefined otherwise
-   * @format uint64
-   */
-  total?: string;
-}
+export type MsgUpdateAuthorizedAddressResponse = object;
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
@@ -462,8 +397,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title fairyring/keyshare/aggregated_key_share.proto
- * @version version not set
+ * @title HTTP API Console fairyring.keyshare
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   /**
@@ -483,11 +417,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<KeyshareQueryAllAggregatedKeyShareResponse, RpcStatus>({
+    this.request<
+      { aggregatedKeyShare?: { height?: string; data?: string }[]; pagination?: { next_key?: string; total?: string } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/keyshare/aggregated_key_share`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 
@@ -496,14 +432,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryAggregatedKeyShare
-   * @summary Queries a list of AggregatedKeyShare items.
    * @request GET:/fairyring/keyshare/aggregated_key_share/{height}
    */
   queryAggregatedKeyShare = (height: string, params: RequestParams = {}) =>
-    this.request<KeyshareQueryGetAggregatedKeyShareResponse, RpcStatus>({
+    this.request<
+      { aggregatedKeyShare?: { height?: string; data?: string } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/keyshare/aggregated_key_share/${height}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -524,11 +461,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<KeyshareQueryAllAuthorizedAddressResponse, RpcStatus>({
+    this.request<
+      {
+        authorizedAddress?: { target?: string; isAuthorized?: boolean; authorizedBy?: string }[];
+        pagination?: { next_key?: string; total?: string };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/keyshare/authorized_address`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 
@@ -537,14 +479,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryAuthorizedAddress
-   * @summary Queries a list of AuthorizedAddress items.
    * @request GET:/fairyring/keyshare/authorized_address/{target}
    */
   queryAuthorizedAddress = (target: string, params: RequestParams = {}) =>
-    this.request<KeyshareQueryGetAuthorizedAddressResponse, RpcStatus>({
+    this.request<
+      { authorizedAddress?: { target?: string; isAuthorized?: boolean; authorizedBy?: string } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/keyshare/authorized_address/${target}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -556,10 +499,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @request GET:/fairyring/keyshare/commitments
    */
   queryCommitments = (params: RequestParams = {}) =>
-    this.request<KeyshareQueryCommitmentsResponse, RpcStatus>({
+    this.request<
+      { activeCommitments?: { commitments?: string[] }; queuedCommitments?: { commitments?: string[] } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/keyshare/commitments`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -580,11 +525,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<KeyshareQueryAllGeneralKeyShareResponse, RpcStatus>({
+    this.request<
+      {
+        generalKeyShare?: {
+          validator?: string;
+          idType?: string;
+          idValue?: string;
+          keyShare?: string;
+          keyShareIndex?: string;
+          receivedTimestamp?: string;
+          receivedBlockHeight?: string;
+        }[];
+        pagination?: { next_key?: string; total?: string };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/keyshare/general_key_share`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 
@@ -593,14 +551,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryGeneralKeyShare
-   * @summary Queries a list of GeneralKeyShare items.
    * @request GET:/fairyring/keyshare/general_key_share/{validator}/{idType}/{idValue}
    */
   queryGeneralKeyShare = (validator: string, idType: string, idValue: string, params: RequestParams = {}) =>
-    this.request<KeyshareQueryGetGeneralKeyShareResponse, RpcStatus>({
+    this.request<
+      {
+        generalKeyShare?: {
+          validator?: string;
+          idType?: string;
+          idValue?: string;
+          keyShare?: string;
+          keyShareIndex?: string;
+          receivedTimestamp?: string;
+          receivedBlockHeight?: string;
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/keyshare/general_key_share/${validator}/${idType}/${idValue}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -609,7 +578,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryKeyShareAll
-   * @summary Queries a list of KeyShare items.
    * @request GET:/fairyring/keyshare/key_share
    */
   queryKeyShareAll = (
@@ -622,11 +590,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<KeyshareQueryAllKeyShareResponse, RpcStatus>({
+    this.request<
+      {
+        keyShare?: {
+          validator?: string;
+          blockHeight?: string;
+          keyShare?: string;
+          keyShareIndex?: string;
+          receivedTimestamp?: string;
+          receivedBlockHeight?: string;
+        }[];
+        pagination?: { next_key?: string; total?: string };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/keyshare/key_share`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 
@@ -635,14 +615,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryKeyShare
-   * @summary Queries a KeyShare by index.
    * @request GET:/fairyring/keyshare/key_share/{validator}/{blockHeight}
    */
   queryKeyShare = (validator: string, blockHeight: string, params: RequestParams = {}) =>
-    this.request<KeyshareQueryGetKeyShareResponse, RpcStatus>({
+    this.request<
+      {
+        keyShare?: {
+          validator?: string;
+          blockHeight?: string;
+          keyShare?: string;
+          keyShareIndex?: string;
+          receivedTimestamp?: string;
+          receivedBlockHeight?: string;
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/keyshare/key_share/${validator}/${blockHeight}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -651,14 +641,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryParams
-   * @summary Parameters queries the parameters of the module.
    * @request GET:/fairyring/keyshare/params
    */
   queryParams = (params: RequestParams = {}) =>
-    this.request<KeyshareQueryParamsResponse, RpcStatus>({
+    this.request<
+      {
+        params?: {
+          key_expiry?: string;
+          trusted_addresses?: string[];
+          slash_fraction_no_keyshare?: string;
+          slash_fraction_wrong_keyshare?: string;
+          minimum_bonded?: string;
+          max_idled_block?: string;
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/keyshare/params`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -667,14 +667,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryPubKey
-   * @summary Queries the public keys
    * @request GET:/fairyring/keyshare/pub_key
    */
   queryPubKey = (params: RequestParams = {}) =>
-    this.request<KeyshareQueryPubKeyResponse, RpcStatus>({
+    this.request<
+      {
+        activePubKey?: { publicKey?: string; creator?: string; expiry?: string; numberOfValidators?: string };
+        queuedPubKey?: { publicKey?: string; creator?: string; expiry?: string; numberOfValidators?: string };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/keyshare/pub_key`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -683,7 +687,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryValidatorSetAll
-   * @summary Queries a list of ValidatorSet items.
    * @request GET:/fairyring/keyshare/validator_set
    */
   queryValidatorSetAll = (
@@ -696,11 +699,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<KeyshareQueryAllValidatorSetResponse, RpcStatus>({
+    this.request<
+      {
+        validatorSet?: { index?: string; validator?: string; consAddr?: string; isActive?: boolean }[];
+        pagination?: { next_key?: string; total?: string };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/keyshare/validator_set`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 
@@ -709,14 +717,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryValidatorSet
-   * @summary Queries a ValidatorSet by index.
    * @request GET:/fairyring/keyshare/validator_set/{index}
    */
   queryValidatorSet = (index: string, params: RequestParams = {}) =>
-    this.request<KeyshareQueryGetValidatorSetResponse, RpcStatus>({
+    this.request<
+      { validatorSet?: { index?: string; validator?: string; consAddr?: string; isActive?: boolean } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/fairyring/keyshare/validator_set/${index}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 }

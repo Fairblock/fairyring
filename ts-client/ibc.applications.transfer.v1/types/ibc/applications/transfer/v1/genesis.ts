@@ -41,28 +41,45 @@ export const GenesisState = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.portId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.denomTraces.push(DenomTrace.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.params = Params.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.totalEscrowed.push(Coin.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -78,21 +95,24 @@ export const GenesisState = {
 
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
-    message.portId !== undefined && (obj.portId = message.portId);
-    if (message.denomTraces) {
-      obj.denomTraces = message.denomTraces.map((e) => e ? DenomTrace.toJSON(e) : undefined);
-    } else {
-      obj.denomTraces = [];
+    if (message.portId !== "") {
+      obj.portId = message.portId;
     }
-    message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
-    if (message.totalEscrowed) {
-      obj.totalEscrowed = message.totalEscrowed.map((e) => e ? Coin.toJSON(e) : undefined);
-    } else {
-      obj.totalEscrowed = [];
+    if (message.denomTraces?.length) {
+      obj.denomTraces = message.denomTraces.map((e) => DenomTrace.toJSON(e));
+    }
+    if (message.params !== undefined) {
+      obj.params = Params.toJSON(message.params);
+    }
+    if (message.totalEscrowed?.length) {
+      obj.totalEscrowed = message.totalEscrowed.map((e) => Coin.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GenesisState>, I>>(base?: I): GenesisState {
+    return GenesisState.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(object: I): GenesisState {
     const message = createBaseGenesisState();
     message.portId = object.portId ?? "";

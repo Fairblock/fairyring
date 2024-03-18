@@ -56,7 +56,7 @@ export interface CosmosTx {
 }
 
 function createBaseInterchainAccountPacketData(): InterchainAccountPacketData {
-  return { type: 0, data: new Uint8Array(), memo: "" };
+  return { type: 0, data: new Uint8Array(0), memo: "" };
 }
 
 export const InterchainAccountPacketData = {
@@ -74,25 +74,38 @@ export const InterchainAccountPacketData = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): InterchainAccountPacketData {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInterchainAccountPacketData();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.type = reader.int32() as any;
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.data = reader.bytes();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.memo = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -100,24 +113,32 @@ export const InterchainAccountPacketData = {
   fromJSON(object: any): InterchainAccountPacketData {
     return {
       type: isSet(object.type) ? typeFromJSON(object.type) : 0,
-      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(),
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(0),
       memo: isSet(object.memo) ? String(object.memo) : "",
     };
   },
 
   toJSON(message: InterchainAccountPacketData): unknown {
     const obj: any = {};
-    message.type !== undefined && (obj.type = typeToJSON(message.type));
-    message.data !== undefined
-      && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
-    message.memo !== undefined && (obj.memo = message.memo);
+    if (message.type !== 0) {
+      obj.type = typeToJSON(message.type);
+    }
+    if (message.data.length !== 0) {
+      obj.data = base64FromBytes(message.data);
+    }
+    if (message.memo !== "") {
+      obj.memo = message.memo;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<InterchainAccountPacketData>, I>>(base?: I): InterchainAccountPacketData {
+    return InterchainAccountPacketData.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<InterchainAccountPacketData>, I>>(object: I): InterchainAccountPacketData {
     const message = createBaseInterchainAccountPacketData();
     message.type = object.type ?? 0;
-    message.data = object.data ?? new Uint8Array();
+    message.data = object.data ?? new Uint8Array(0);
     message.memo = object.memo ?? "";
     return message;
   },
@@ -136,19 +157,24 @@ export const CosmosTx = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CosmosTx {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCosmosTx();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.messages.push(Any.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -159,14 +185,15 @@ export const CosmosTx = {
 
   toJSON(message: CosmosTx): unknown {
     const obj: any = {};
-    if (message.messages) {
-      obj.messages = message.messages.map((e) => e ? Any.toJSON(e) : undefined);
-    } else {
-      obj.messages = [];
+    if (message.messages?.length) {
+      obj.messages = message.messages.map((e) => Any.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CosmosTx>, I>>(base?: I): CosmosTx {
+    return CosmosTx.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<CosmosTx>, I>>(object: I): CosmosTx {
     const message = createBaseCosmosTx();
     message.messages = object.messages?.map((e) => Any.fromPartial(e)) || [];
@@ -174,10 +201,10 @@ export const CosmosTx = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -194,10 +221,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -207,14 +234,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 
