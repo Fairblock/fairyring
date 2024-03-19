@@ -365,9 +365,18 @@ echo "Sending 1 $TARGET_BAL_DENOM to target address"
 $BINARY tx bank send $WALLET_1 $VALIDATOR_1 1$TARGET_BAL_DENOM --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --keyring-backend test --generate-only -o json -y > unsigned.json
 SIGNED_DATA=$($BINARY tx sign unsigned.json --from $WALLET_1 --offline --account-number 1 --sequence $PEP_NONCE_BEFORE --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE  --keyring-backend test -y)
 
+PEP_NONCE_2ND=$(($PEP_NONCE_BEFORE+1))
+echo "Signing second bank send tx with pep nonce: '$PEP_NONCE_2ND'"
+echo "Sending 1 $TARGET_BAL_DENOM to target address"
+$BINARY tx bank send $WALLET_1 $VALIDATOR_1 1$TARGET_BAL_DENOM --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --keyring-backend test --generate-only -o json -y > unsigned2.json
+SIGNED_DATA_2=$($BINARY tx sign unsigned2.json --from $WALLET_1 --offline --account-number 1 --sequence $PEP_NONCE_2ND --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE  --keyring-backend test -y)
+
 echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
 CIPHER=$($ENCRYPTER $IDENTITY $PUB_KEY $SIGNED_DATA)
+CIPHER2=$($ENCRYPTER $IDENTITY $PUB_KEY $SIGNED_DATA_2)
+
 rm -r unsigned.json &> /dev/null
+rm -r unsigned2.json &> /dev/null
 
 sleep 10
 
@@ -385,8 +394,16 @@ if [ "$TX" != "$CIPHER" ]; then
   exit 1
 fi
 
+echo "Submit 2nd general encrypted tx to pep module on chain fairyring_test_1"
+RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER2 $IDENTITY --from $WALLET_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+echo "$RESULT"
+check_tx_code $RESULT
+
+sleep 6
+
 echo "Request Generation of Aggr keyshare"
 RESULT=$($BINARY tx pep get-general-keyshare $IDENTITY --from $WALLET_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+echo "$RESULT"
 check_tx_code $RESULT
 
 sleep 6
@@ -397,7 +414,7 @@ EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 while true; do
   echo "Submitting General Key Share"
   
-  RESULT=$($BINARY tx keyshare create-general-key-share "private-gov-identity" $IDENTITY $EXTRACTED_SHARE 1 --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+  RESULT=$($BINARY tx keyshare create-general-key-share "private-gov-identity" $IDENTITY $EXTRACTED_SHARE 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
   echo "$RESULT"
   check_tx_err $RESULT
   if [ $? -eq 0 ]; then
