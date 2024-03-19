@@ -2,6 +2,7 @@ package types
 
 import (
 	sdkerrors "cosmossdk.io/errors"
+	"encoding/base64"
 	"encoding/hex"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	cosmoserror "github.com/cosmos/cosmos-sdk/types/errors"
@@ -99,8 +100,8 @@ func (msg *MsgCreateLatestPubKey) ValidateBasic() error {
 			return ErrInvalidEncryptedShareData.Wrapf("encrypted share data is empty")
 		}
 
-		if _, err = hex.DecodeString(v.Data); err != nil {
-			return ErrInvalidEncryptedShareData.Wrapf("expected hex encoded encrypted key shares, got: %s", v.Data)
+		if _, err = base64.StdEncoding.DecodeString(v.Data); err != nil {
+			return ErrInvalidEncryptedShareData.Wrapf("expected base64 encoded encrypted key shares, got: %s", v.Data)
 		}
 	}
 	return nil
