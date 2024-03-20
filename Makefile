@@ -228,10 +228,12 @@ init-devnet: clean-devnet-data install
 	@sleep 5
 
 clean-devnet-data:
-	@echo "Killing fairyringd, fairyport and removing previous data"
+	@echo "Killing fairyringd, fairyport, fairyringclient, ShareGenerationClient and removing previous data"
 	-@rm -rf ./devnet_data
 	-@killall fairyringd 2>/dev/null
 	-@killall fairyport 2>/dev/null
+	-@killall fairyringclient 2>/dev/null
+	-@killall ShareGenerationClient 2>/dev/null
 
 clean-testing-data:
 	@echo "Killing fairyringd and removing previous data"
