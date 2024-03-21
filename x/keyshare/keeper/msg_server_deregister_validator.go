@@ -16,8 +16,12 @@ func (k msgServer) DeRegisterValidator(goCtx context.Context, msg *types.MsgDeRe
 		return nil, types.ErrValidatorNotRegistered.Wrap(msg.Creator)
 	}
 
-	if k.GetAuthorizedCount(ctx, msg.Creator) > 0 {
-		return nil, types.ErrAuthorizedAnotherAddr
+	for _, v := range k.GetAllAuthorizedAddress(ctx) {
+		if v.AuthorizedBy == msg.Creator {
+			k.RemoveAuthorizedAddress(ctx, v.Target)
+			k.DecreaseAuthorizedCount(ctx, msg.Creator)
+			break
+		}
 	}
 
 	k.RemoveValidatorSet(ctx, msg.Creator)
