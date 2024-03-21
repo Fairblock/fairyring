@@ -118,6 +118,21 @@ if [[ "$ERROR_MSG" != *"sender is not validator / authorized address to submit k
   exit 1
 fi
 
+GENERATED_RESULT=$($GENERATOR generate 1 1)
+GENERATED_SHARE=$(echo "$GENERATED_RESULT" | jq -r '.Shares[0].Value')
+PUB_KEY=$(echo "$GENERATED_RESULT" | jq -r '.MasterPublicKey')
+COMMITS=$(echo "$GENERATED_RESULT" | jq -r '.Commitments[0]')
+
+echo "Trusted address override pub key on chain fairyring_test_1"
+RESULT=$($BINARY tx keyshare override-latest-pub-key $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VALIDATOR_1"'"}]' false --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+VALIDATOR_ADDR=$(echo "$RESULT" | jq -r '.logs[0].events[1].attributes[2].value')
+if [ "$VALIDATOR_ADDR" != "$VALIDATOR_1" ]; then
+  echo "ERROR: KeyShare module override pub key from trusted address error. Expected creator address '$VALIDATOR_1', got '$VALIDATOR_ADDR'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  exit 1
+fi
 
 echo "Registered validator authorize another address to submit key share on chain fairyring_test_1"
 RESULT=$($BINARY tx keyshare create-authorized-address $WALLET_1 --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
