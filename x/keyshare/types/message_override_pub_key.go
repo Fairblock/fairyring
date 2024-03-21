@@ -20,7 +20,7 @@ func NewMsgOverrideLatestPubKey(
 	commitments []string,
 	numberOfValidators uint64,
 	encryptedKeyShares []*EncryptedKeyShare,
-	isPendingPubKey bool,
+	isQueuedPubKey bool,
 ) *MsgOverrideLatestPubKey {
 	return &MsgOverrideLatestPubKey{
 		Creator:            creator,
@@ -28,7 +28,7 @@ func NewMsgOverrideLatestPubKey(
 		Commitments:        commitments,
 		NumberOfValidators: numberOfValidators,
 		EncryptedKeyShares: encryptedKeyShares,
-		IsPendingPubKey:    isPendingPubKey,
+		IsQueuedPubKey:     isQueuedPubKey,
 	}
 }
 

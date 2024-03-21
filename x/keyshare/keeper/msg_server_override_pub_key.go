@@ -25,12 +25,35 @@ func (k msgServer) OverrideLatestPubKey(goCtx context.Context, msg *types.MsgOve
 		Commitments: msg.Commitments,
 	}
 
+	// Only use this expiry height when there is no active pub key
+	// and trying to override active pub key
 	expHeight := params.KeyExpiry + uint64(ctx.BlockHeight())
 
-	if msg.IsPendingPubKey {
-		if _, found := k.GetActivePubKey(ctx); !found {
-			return nil, types.ErrPubKeyNotFound
-		}
+	ak, found := k.GetActivePubKey(ctx)
+
+	// Throw error If no active pub key and trying to override queued pub key
+	if !found && msg.IsQueuedPubKey {
+		return nil, types.ErrPubKeyNotFound
+	}
+
+	// If overriding active pub key & there is active pub key,
+	// set the overriding active pub key expiry height to be current active pub key
+	if found && !msg.IsQueuedPubKey {
+		expHeight = ak.Expiry
+	}
+
+	// If overriding queued pub key & there is queued pub key,
+	// set the overriding queued pub key expiry height to be current queued pub key
+	qk, found := k.GetQueuedPubKey(ctx)
+	if found && msg.IsQueuedPubKey {
+		expHeight = qk.Expiry
+	}
+
+	// If no queued pub key & trying to override queued pub key
+	// Set the expiry height to be current active pub key expiry + params expiry
+	// to prevent there is no pub key in between round
+	if !found && msg.IsQueuedPubKey {
+		expHeight = ak.Expiry + params.KeyExpiry
 	}
 
 	encryptedKeyShares, err := json.Marshal(msg.EncryptedKeyShares)
@@ -38,7 +61,7 @@ func (k msgServer) OverrideLatestPubKey(goCtx context.Context, msg *types.MsgOve
 		return nil, err
 	}
 
-	if msg.IsPendingPubKey {
+	if msg.IsQueuedPubKey {
 		k.SetQueuedCommitments(
 			ctx,
 			commitments,
@@ -89,7 +112,7 @@ func (k msgServer) OverrideLatestPubKey(goCtx context.Context, msg *types.MsgOve
 		)
 	}
 
-	ak, found := k.GetActivePubKey(ctx)
+	ak, found = k.GetActivePubKey(ctx)
 	// Shouldn't be happening
 	if !found {
 		return nil, types.ErrPubKeyNotFound.Wrap("before emitting event")
@@ -103,7 +126,7 @@ func (k msgServer) OverrideLatestPubKey(goCtx context.Context, msg *types.MsgOve
 			sdk.NewAttribute(types.PubKeyOverrodeEventPubkey, msg.PublicKey),
 			sdk.NewAttribute(types.PubKeyOverrodeEventNumberOfValidators, strconv.FormatUint(msg.NumberOfValidators, 10)),
 			sdk.NewAttribute(types.PubKeyOverrodeEventEncryptedShares, string(encryptedKeyShares)),
-			sdk.NewAttribute(types.PubKeyOverrodeEventIsPendingPubKey, strconv.FormatBool(msg.IsPendingPubKey)),
+			sdk.NewAttribute(types.PubKeyOverrodeEventIsPendingPubKey, strconv.FormatBool(msg.IsQueuedPubKey)),
 		),
 	)
 

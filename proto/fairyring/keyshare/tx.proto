@@ -64,7 +64,7 @@ message MsgOverrideLatestPubKey {
   repeated string commitments = 3;
   uint64 numberOfValidators = 4;
   repeated EncryptedKeyShare encryptedKeyShares = 5;
-  bool isPendingPubKey = 6;
+  bool isQueuedPubKey = 6;
 }
 
 message MsgOverrideLatestPubKeyResponse {}
