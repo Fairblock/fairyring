@@ -33,6 +33,7 @@ var (
 	ErrInvalidVersion                 = sdkerrors.Register(ModuleName, 1123, "invalid version")
 	ErrRequestNotFound                = sdkerrors.Register(ModuleName, 1124, "no request found with this identity")
 	ErrInvalidNumberOfValidators      = sdkerrors.Register(ModuleName, 1125, "invalid number of validators")
+	ErrAuthorizedAnotherAddr          = sdkerrors.Register(ModuleName, 1126, "validator authorized another address, please remove authorized address before deregistering")
 	ErrAddressAlreadyAuthorized       = sdkerrors.Register(ModuleName, 1900, "address is already authorized")
 	ErrAuthorizedAddrNotFound         = sdkerrors.Register(ModuleName, 1901, "target authorized address not found")
 	ErrNotAuthorizedAddrCreator       = sdkerrors.Register(ModuleName, 1902, "sender is not the creator of target authorized address")

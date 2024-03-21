@@ -37,6 +37,17 @@ wait_for_tx () {
   echo "$RESULT"
 }
 
+echo "Non Validator deregistering validator on chain fairyring_test_1"
+RESULT=$($BINARY tx keyshare deregister-validator --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
+if [[ "$ERROR_MSG" != *"validator not registered"* ]]; then
+  echo "ERROR: KeyShare module deregister validator error. Expected to get validator not registered error, got '$ERROR_MSG'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  exit 1
+fi
+
 echo "Staked account registering as a validator on chain fairyring_test_1"
 RESULT=$($BINARY tx keyshare register-validator --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
@@ -48,6 +59,34 @@ if [ "$VALIDATOR_ADDR" != "$VALIDATOR_1" ]; then
   exit 1
 fi
 
+echo "Validator deregistering as a validator on chain fairyring_test_1"
+RESULT=$($BINARY tx keyshare deregister-validator --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+VALIDATOR_ADDR=$(echo "$RESULT" | jq -r '.logs[0].events[1].attributes[0].value')
+if [ "$VALIDATOR_ADDR" != "$VALIDATOR_1" ]; then
+  echo "ERROR: KeyShare module deregister validator error. Expected deregistered validator address '$VALIDATOR_1', got '$VALIDATOR_ADDR'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  exit 1
+fi
+
+RESULT=$($BINARY q keyshare list-validator-set --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 -o json)
+CURRENT_SET_LEN=$(echo $RESULT | jq '.validatorSet | length')
+if [ "$CURRENT_SET_LEN" != "0" ]; then
+  echo "ERROR: KeyShare module deregister validator error, Expected total validator set to be empty, got '$(echo $RESULT | jq '.validatorSet')'"
+  exit 1
+fi
+
+echo "Staked account registering as a validator on chain fairyring_test_1"
+RESULT=$($BINARY tx keyshare register-validator --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+VALIDATOR_ADDR=$(echo "$RESULT" | jq -r '.logs[0].events[1].attributes[0].value')
+if [ "$VALIDATOR_ADDR" != "$VALIDATOR_1" ]; then
+  echo "ERROR: KeyShare module register validator error. Expected registered validator address '$VALIDATOR_1', got '$VALIDATOR_ADDR'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  exit 1
+fi
 
 echo "Non staking account registering as a validator on chain fairyring_test_1"
 RESULT=$($BINARY tx keyshare register-validator --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
