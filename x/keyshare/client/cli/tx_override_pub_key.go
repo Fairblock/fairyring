@@ -14,9 +14,9 @@ import (
 
 func CmdOverrideLatestPubKey() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "override-latest-pub-key [public-key] [commitments] [number-of-validators] [encrypted-key-shares] [is-pending-pub-key",
+		Use:   "override-latest-pub-key [public-key] [commitments] [number-of-validators] [encrypted-key-shares]",
 		Short: "Override a latest public key",
-		Args:  cobra.ExactArgs(5),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			// Get value arguments
@@ -36,8 +36,6 @@ func CmdOverrideLatestPubKey() *cobra.Command {
 				return err
 			}
 
-			isPendingPubKey := cast.ToBool(args[4])
-
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -49,7 +47,6 @@ func CmdOverrideLatestPubKey() *cobra.Command {
 				commitments,
 				numberOfValidators,
 				encryptedShares,
-				isPendingPubKey,
 			)
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},

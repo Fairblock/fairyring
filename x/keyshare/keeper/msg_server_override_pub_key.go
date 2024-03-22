@@ -25,35 +25,14 @@ func (k msgServer) OverrideLatestPubKey(goCtx context.Context, msg *types.MsgOve
 		Commitments: msg.Commitments,
 	}
 
-	// Only use this expiry height when there is no active pub key
-	// and trying to override active pub key
 	expHeight := params.KeyExpiry + uint64(ctx.BlockHeight())
 
-	ak, found := k.GetActivePubKey(ctx)
-
-	// Throw error If no active pub key and trying to override queued pub key
-	if !found && msg.IsQueuedPubKey {
-		return nil, types.ErrPubKeyNotFound
+	if _, found := k.GetActivePubKey(ctx); found {
+		k.DeleteActivePubKey(ctx)
 	}
 
-	// If overriding active pub key & there is active pub key,
-	// set the overriding active pub key expiry height to be current active pub key
-	if found && !msg.IsQueuedPubKey {
-		expHeight = ak.Expiry
-	}
-
-	// If overriding queued pub key & there is queued pub key,
-	// set the overriding queued pub key expiry height to be current queued pub key
-	qk, found := k.GetQueuedPubKey(ctx)
-	if found && msg.IsQueuedPubKey {
-		expHeight = qk.Expiry
-	}
-
-	// If no queued pub key & trying to override queued pub key
-	// Set the expiry height to be current active pub key expiry + params expiry
-	// to prevent there is no pub key in between round
-	if !found && msg.IsQueuedPubKey {
-		expHeight = ak.Expiry + params.KeyExpiry
+	if _, found := k.GetQueuedPubKey(ctx); found {
+		k.DeleteQueuedPubKey(ctx)
 	}
 
 	encryptedKeyShares, err := json.Marshal(msg.EncryptedKeyShares)
@@ -61,72 +40,52 @@ func (k msgServer) OverrideLatestPubKey(goCtx context.Context, msg *types.MsgOve
 		return nil, err
 	}
 
-	if msg.IsQueuedPubKey {
-		k.SetQueuedCommitments(
-			ctx,
-			commitments,
-		)
-		k.SetQueuedPubKey(
-			ctx,
-			types.QueuedPubKey{
-				Creator:            msg.Creator,
-				PublicKey:          msg.PublicKey,
-				Expiry:             expHeight,
-				NumberOfValidators: msg.NumberOfValidators,
-				EncryptedKeyShares: msg.EncryptedKeyShares,
-			},
-		)
+	allValidatorSet := k.GetAllValidatorSet(ctx)
+	encSharesExistsValidators := make(map[string]bool, 0)
 
-		k.pepKeeper.SetQueuedPubKey(
-			ctx,
-			peptypes.QueuedPubKey{
-				Creator:   msg.Creator,
-				PublicKey: msg.PublicKey,
-				Expiry:    expHeight,
-			},
-		)
-	} else {
-		k.SetActiveCommitments(
-			ctx,
-			commitments,
-		)
-
-		k.SetActivePubKey(
-			ctx,
-			types.ActivePubKey{
-				Creator:            msg.Creator,
-				PublicKey:          msg.PublicKey,
-				Expiry:             expHeight,
-				NumberOfValidators: msg.NumberOfValidators,
-				EncryptedKeyShares: msg.EncryptedKeyShares,
-			},
-		)
-
-		k.pepKeeper.SetActivePubKey(
-			ctx,
-			peptypes.ActivePubKey{
-				Creator:   msg.Creator,
-				PublicKey: msg.PublicKey,
-				Expiry:    expHeight,
-			},
-		)
+	for _, encShare := range msg.EncryptedKeyShares {
+		encSharesExistsValidators[encShare.Validator] = true
 	}
 
-	ak, found = k.GetActivePubKey(ctx)
-	// Shouldn't be happening
-	if !found {
-		return nil, types.ErrPubKeyNotFound.Wrap("before emitting event")
+	for _, v := range allValidatorSet {
+		if _, exists := encSharesExistsValidators[v.Validator]; !exists {
+			k.RemoveValidatorSet(ctx, v.Validator)
+		}
 	}
+
+	k.SetActiveCommitments(
+		ctx,
+		commitments,
+	)
+
+	k.SetActivePubKey(
+		ctx,
+		types.ActivePubKey{
+			Creator:            msg.Creator,
+			PublicKey:          msg.PublicKey,
+			Expiry:             expHeight,
+			NumberOfValidators: msg.NumberOfValidators,
+			EncryptedKeyShares: msg.EncryptedKeyShares,
+		},
+	)
+
+	k.pepKeeper.SetActivePubKey(
+		ctx,
+		peptypes.ActivePubKey{
+			Creator:   msg.Creator,
+			PublicKey: msg.PublicKey,
+			Expiry:    expHeight,
+		},
+	)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.PubKeyOverrodeEventType,
-			sdk.NewAttribute(types.PubKeyOverrodeEventActivePubkeyExpiryHeight, strconv.FormatUint(ak.Expiry, 10)),
+			sdk.NewAttribute(types.PubKeyOverrodeEventActivePubkeyExpiryHeight, strconv.FormatUint(expHeight, 10)),
 			sdk.NewAttribute(types.PubKeyOverrodeEventExpiryHeight, strconv.FormatUint(expHeight, 10)),
 			sdk.NewAttribute(types.PubKeyOverrodeEventCreator, msg.Creator),
 			sdk.NewAttribute(types.PubKeyOverrodeEventPubkey, msg.PublicKey),
 			sdk.NewAttribute(types.PubKeyOverrodeEventNumberOfValidators, strconv.FormatUint(msg.NumberOfValidators, 10)),
 			sdk.NewAttribute(types.PubKeyOverrodeEventEncryptedShares, string(encryptedKeyShares)),
-			sdk.NewAttribute(types.PubKeyOverrodeEventIsPendingPubKey, strconv.FormatBool(msg.IsQueuedPubKey)),
 		),
 	)
 

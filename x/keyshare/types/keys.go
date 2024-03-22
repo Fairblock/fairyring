@@ -95,7 +95,6 @@ const (
 	PubKeyOverrodeEventPubkey                   = "pubkey"
 	PubKeyOverrodeEventNumberOfValidators       = "number-of-validators"
 	PubKeyOverrodeEventEncryptedShares          = "encrypted-shares"
-	PubKeyOverrodeEventIsPendingPubKey          = "is-pending-pub-key"
 )
 
 const (
