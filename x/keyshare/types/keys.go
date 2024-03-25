@@ -88,6 +88,17 @@ const (
 	QueuedPubKeyCreatedEventCreator                  = "creator"
 	QueuedPubKeyCreatedEventPubkey                   = "pubkey"
 	QueuedPubKeyCreatedEventNumberOfValidators       = "number-of-validators"
+	QueuedPubKeyCreatedEventEncryptedShares          = "encrypted-shares"
+)
+
+const (
+	PubKeyOverrodeEventType                     = "pubkey-overrode"
+	PubKeyOverrodeEventActivePubkeyExpiryHeight = "active-pubkey-expiry-height"
+	PubKeyOverrodeEventExpiryHeight             = "expiry-height"
+	PubKeyOverrodeEventCreator                  = "creator"
+	PubKeyOverrodeEventPubkey                   = "pubkey"
+	PubKeyOverrodeEventNumberOfValidators       = "number-of-validators"
+	PubKeyOverrodeEventEncryptedShares          = "encrypted-shares"
 )
 
 const (

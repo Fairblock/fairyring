@@ -12,10 +12,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdCreateLatestPubKey() *cobra.Command {
+func CmdOverrideLatestPubKey() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-latest-pub-key [public-key] [commitments] [number-of-validators] [encrypted-key-shares]",
-		Short: "Create a latest public key",
+		Use:   "override-latest-pub-key [public-key] [commitments] [number-of-validators] [encrypted-key-shares]",
+		Short: "Override a latest public key",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -41,7 +41,7 @@ func CmdCreateLatestPubKey() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreateLatestPubKey(
+			msg := types.NewMsgOverrideLatestPubKey(
 				clientCtx.GetFromAddress().String(),
 				argPublicKey,
 				commitments,

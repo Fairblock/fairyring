@@ -9,21 +9,19 @@ import (
 )
 
 const (
-	TypeMsgCreateLatestPubKeyID = "create_latest_pub_key"
-	PubKeyHexLength             = 96
-	CommitmentHexLength         = 96
+	TypeMsgOverrideLatestPubKeyID = "override_latest_pub_key"
 )
 
-var _ sdk.Msg = &MsgCreateLatestPubKey{}
+var _ sdk.Msg = &MsgOverrideLatestPubKey{}
 
-func NewMsgCreateLatestPubKey(
+func NewMsgOverrideLatestPubKey(
 	creator string,
 	publicKey string,
 	commitments []string,
 	numberOfValidators uint64,
 	encryptedKeyShares []*EncryptedKeyShare,
-) *MsgCreateLatestPubKey {
-	return &MsgCreateLatestPubKey{
+) *MsgOverrideLatestPubKey {
+	return &MsgOverrideLatestPubKey{
 		Creator:            creator,
 		PublicKey:          publicKey,
 		Commitments:        commitments,
@@ -32,15 +30,15 @@ func NewMsgCreateLatestPubKey(
 	}
 }
 
-func (msg *MsgCreateLatestPubKey) Route() string {
+func (msg *MsgOverrideLatestPubKey) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgCreateLatestPubKey) Type() string {
-	return TypeMsgCreateLatestPubKeyID
+func (msg *MsgOverrideLatestPubKey) Type() string {
+	return TypeMsgOverrideLatestPubKeyID
 }
 
-func (msg *MsgCreateLatestPubKey) GetSigners() []sdk.AccAddress {
+func (msg *MsgOverrideLatestPubKey) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -48,12 +46,12 @@ func (msg *MsgCreateLatestPubKey) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgCreateLatestPubKey) GetSignBytes() []byte {
+func (msg *MsgOverrideLatestPubKey) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgCreateLatestPubKey) ValidateBasic() error {
+func (msg *MsgOverrideLatestPubKey) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(cosmoserror.ErrInvalidAddress, "invalid creator address (%s)", err)

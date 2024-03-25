@@ -21,6 +21,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgUpdateAuthorizedAddress{}, "keyshare/UpdateAuthorizedAddress", nil)
 	cdc.RegisterConcrete(&MsgDeleteAuthorizedAddress{}, "keyshare/DeleteAuthorizedAddress", nil)
 	cdc.RegisterConcrete(&MsgCreateGeneralKeyShare{}, "keyshare/CreateGeneralKeyShare", nil)
+	cdc.RegisterConcrete(&MsgOverrideLatestPubKey{}, "keyshare/OverrideLatestPubKey", nil)
 	cdc.RegisterConcrete(&MsgDeRegisterValidator{}, "keyshare/DeRegisterValidator", nil)
 	// this line is used by starport scaffolding # 2
 }
@@ -42,6 +43,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateGeneralKeyShare{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgOverrideLatestPubKey{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgDeRegisterValidator{},

@@ -3,7 +3,8 @@
 BINARY=fairyringd
 CHAIN_DIR=$(pwd)/devnet_data
 CHAINID=fairyring_devnet
-GENERATOR=ShareGenerator
+FAIRYRINGCLIENT=fairyringclient
+SHAREGENERATIONCLIENT=ShareGenerationClient
 FAIRYPORT=fairyport
 
 VAL_MNEMONIC_1="clock post desk civil pottery foster expand merit dash seminar song memory figure uniform spice circle try happy obvious trash crime hybrid hood cushion"
@@ -115,11 +116,11 @@ echo "Changing genesis.json..."
 sed -i -e 's/"voting_period": "172800s"/"voting_period": "10s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 
-sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'","'"$RLY1_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'","'"$RLY1_ADDR"'","'"$WALLET5_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 TRUSTED_PARTIES='{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-0"}'
 
 sed -i -e 's/"trusted_counter_parties": \[\]/"trusted_counter_parties": \['"$TRUSTED_PARTIES"'\]/g' $CHAIN_DIR/$CHAINID/config/genesis.json
-sed -i -e 's/"key_expiry": "100"/"key_expiry": "10000"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+sed -i -e 's/"key_expiry": "100"/"key_expiry": "50"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 
 echo "Starting $CHAINID in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID.log"
@@ -151,27 +152,15 @@ if [ "$VALIDATOR_ADDR" != "$VAL1_ADDR" ]; then
   exit 1
 fi
 
-GENERATED_RESULT=$($GENERATOR generate 1 1)
-GENERATED_SHARE=$(echo "$GENERATED_RESULT" | jq -r '.Shares[0].Value')
-PUB_KEY=$(echo "$GENERATED_RESULT" | jq -r '.MasterPublicKey')
-COMMITS=$(echo "$GENERATED_RESULT" | jq -r '.Commitments[0]')
 
-echo "Submitting public key..."
-RESULT=$($BINARY tx keyshare create-latest-pub-key $PUB_KEY $COMMITS 1 --from val1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --node tcp://localhost:$RPCPORT --broadcast-mode sync --keyring-backend test -o json -y)
-check_tx_code $RESULT
-RESULT=$(wait_for_tx $RESULT)
-VALIDATOR_ADDR=$(echo "$RESULT" | jq -r '.logs[0].events[1].attributes[2].value')
-if [ "$VALIDATOR_ADDR" != "$VAL1_ADDR" ]; then
-  echo "ERROR: KeyShare module submit pub key from trusted address error. Expected creator address '$VAL1_ADDR', got '$VALIDATOR_ADDR'"
-  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
-  exit 1
-fi
-
-echo "Starting KeyShare Sender..."
-./scripts/tests/keyshareSender.sh $BINARY $CHAIN_DIR/$CHAINID tcp://localhost:$RPCPORT val1 $CHAINID $GENERATOR $GENERATED_SHARE > $CHAIN_DIR/keyshareSender.log 2>&1 &
-
-echo "Starting fairyport..."
+echo "Starting FairyRingClient..."
 cd "$(pwd)/scripts/devnet"
+$FAIRYRINGCLIENT start --config fairyringclient_config.yml > $CHAIN_DIR/fairyringclient.log 2>&1 &
+echo "Starting ShareGenerationClient..."
+sleep $BLOCK_TIME
+$SHAREGENERATIONCLIENT > $CHAIN_DIR/sharegenerationclient.log 2>&1 &
+echo "Starting FairyPort..."
+sleep $BLOCK_TIME
 $FAIRYPORT start --config config.yml > $CHAIN_DIR/fairyport.log 2>&1 &
 
 echo "*********************************************************"
@@ -191,7 +180,7 @@ echo ""
 echo "Name: 'wallet4' | Address: $WALLET4_ADDR"
 echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet4 --home $CHAIN_DIR/$CHAINID --keyring-backend test --unsafe --unarmored-hex)"
 echo ""
-echo "Name: 'wallet5' | Address: $WALLET5_ADDR"
+echo "Name: 'wallet5' | Address: $WALLET5_ADDR | (Trusted, for ShareGenerationClient)"
 echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet5 --home $CHAIN_DIR/$CHAINID --keyring-backend test --unsafe --unarmored-hex)"
 echo "*******************************************************"
 echo "*    Node RPC ENDPOINT: http://localhost:$RPCPORT        *"
