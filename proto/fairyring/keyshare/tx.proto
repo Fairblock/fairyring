@@ -11,6 +11,7 @@ option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 // Msg defines the Msg service.
 service Msg {
   rpc RegisterValidator (MsgRegisterValidator) returns (MsgRegisterValidatorResponse);
+  rpc DeRegisterValidator (MsgDeRegisterValidator) returns (MsgDeRegisterValidatorResponse);
   rpc SendKeyshare      (MsgSendKeyshare     ) returns (MsgSendKeyshareResponse     );
   
   // this line is used by starport scaffolding # proto/tx/rpc
@@ -25,6 +26,14 @@ message MsgRegisterValidator {
 }
 
 message MsgRegisterValidatorResponse {
+  string creator = 1;
+}
+
+message MsgDeRegisterValidator {
+  string creator = 1;
+}
+
+message MsgDeRegisterValidatorResponse {
   string creator = 1;
 }
 

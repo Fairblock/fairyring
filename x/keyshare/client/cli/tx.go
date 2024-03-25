@@ -26,6 +26,7 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdRegisterValidator())
+	cmd.AddCommand(CmdDeRegisterValidator())
 	cmd.AddCommand(CmdSendKeyshare())
 	cmd.AddCommand(CmdCreateLatestPubKey())
 	cmd.AddCommand(CmdCreateAuthorizedAddress())
