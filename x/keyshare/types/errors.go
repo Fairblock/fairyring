@@ -37,6 +37,7 @@ var (
 	ErrNotMatchNumOfCommits            = sdkerrors.Register(ModuleName, 1127, "provided number of commitments does not match number of validators")
 	ErrNotMatchNumOfEncryptedKeyShares = sdkerrors.Register(ModuleName, 1128, "provided number of commitments does not match number of encrypted key shares")
 	ErrInvalidEncryptedShareData       = sdkerrors.Register(ModuleName, 1129, "invalid encrypted share data")
+	ErrQueuedKeyNotFound               = sdkerrors.Register(ModuleName, 1130, "Queued public key not found")
 	ErrAddressAlreadyAuthorized        = sdkerrors.Register(ModuleName, 1900, "address is already authorized")
 	ErrAuthorizedAddrNotFound          = sdkerrors.Register(ModuleName, 1901, "target authorized address not found")
 	ErrNotAuthorizedAddrCreator        = sdkerrors.Register(ModuleName, 1902, "sender is not the creator of target authorized address")

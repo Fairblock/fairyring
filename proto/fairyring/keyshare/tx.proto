@@ -16,6 +16,7 @@ service Msg {
   
   // this line is used by starport scaffolding # proto/tx/rpc
   rpc CreateLatestPubKey      (MsgCreateLatestPubKey     ) returns (MsgCreateLatestPubKeyResponse     );
+  rpc OverrideLatestPubKey    (MsgOverrideLatestPubKey   ) returns (MsgOverrideLatestPubKeyResponse   );
   rpc CreateAuthorizedAddress (MsgCreateAuthorizedAddress) returns (MsgCreateAuthorizedAddressResponse);
   rpc UpdateAuthorizedAddress (MsgUpdateAuthorizedAddress) returns (MsgUpdateAuthorizedAddressResponse);
   rpc DeleteAuthorizedAddress (MsgDeleteAuthorizedAddress) returns (MsgDeleteAuthorizedAddressResponse);
@@ -56,6 +57,16 @@ message MsgCreateLatestPubKey {
 }
 
 message MsgCreateLatestPubKeyResponse {}
+
+message MsgOverrideLatestPubKey {
+  string creator     = 1;
+  string publicKey   = 2;
+  repeated string commitments = 3;
+  uint64 numberOfValidators = 4;
+  repeated EncryptedKeyShare encryptedKeyShares = 5;
+}
+
+message MsgOverrideLatestPubKeyResponse {}
 
 message MsgCreateAuthorizedAddress {
   string target  = 1;

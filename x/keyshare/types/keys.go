@@ -88,6 +88,16 @@ const (
 )
 
 const (
+	PubKeyOverrodeEventType                     = "pubkey-overrode"
+	PubKeyOverrodeEventActivePubkeyExpiryHeight = "active-pubkey-expiry-height"
+	PubKeyOverrodeEventExpiryHeight             = "expiry-height"
+	PubKeyOverrodeEventCreator                  = "creator"
+	PubKeyOverrodeEventPubkey                   = "pubkey"
+	PubKeyOverrodeEventNumberOfValidators       = "number-of-validators"
+	PubKeyOverrodeEventEncryptedShares          = "encrypted-shares"
+)
+
+const (
 	KeyTotalIdleValSlashed           = "total_idle_validator_slashed"
 	KeyTotalValidKeyShareSubmitted   = "total_valid_key_share"
 	KeyTotalInvalidKeyShareSubmitted = "total_invalid_key_share"
