@@ -24,7 +24,6 @@ const (
 )
 
 const (
-	KeyAggregationThresholdPercentage  = 2.0 / 3.0
 	KeyAggregationThresholdNumerator   = 2
 	KeyAggregationThresholdDenominator = 3
 )
@@ -36,6 +35,11 @@ const (
 const (
 	RegisteredValidatorEventType    = "new-validator-registered"
 	RegisteredValidatorEventCreator = "creator"
+)
+
+const (
+	DeRegisteredValidatorEventType    = "validator-deregistered"
+	DeRegisteredValidatorEventCreator = "creator"
 )
 
 const (
