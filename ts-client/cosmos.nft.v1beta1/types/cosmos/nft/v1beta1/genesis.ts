@@ -36,22 +36,31 @@ export const GenesisState = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.classes.push(Class.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.entries.push(Entry.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -65,19 +74,18 @@ export const GenesisState = {
 
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
-    if (message.classes) {
-      obj.classes = message.classes.map((e) => e ? Class.toJSON(e) : undefined);
-    } else {
-      obj.classes = [];
+    if (message.classes?.length) {
+      obj.classes = message.classes.map((e) => Class.toJSON(e));
     }
-    if (message.entries) {
-      obj.entries = message.entries.map((e) => e ? Entry.toJSON(e) : undefined);
-    } else {
-      obj.entries = [];
+    if (message.entries?.length) {
+      obj.entries = message.entries.map((e) => Entry.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GenesisState>, I>>(base?: I): GenesisState {
+    return GenesisState.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(object: I): GenesisState {
     const message = createBaseGenesisState();
     message.classes = object.classes?.map((e) => Class.fromPartial(e)) || [];
@@ -102,22 +110,31 @@ export const Entry = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Entry {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEntry();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.owner = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.nfts.push(NFT.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -131,15 +148,18 @@ export const Entry = {
 
   toJSON(message: Entry): unknown {
     const obj: any = {};
-    message.owner !== undefined && (obj.owner = message.owner);
-    if (message.nfts) {
-      obj.nfts = message.nfts.map((e) => e ? NFT.toJSON(e) : undefined);
-    } else {
-      obj.nfts = [];
+    if (message.owner !== "") {
+      obj.owner = message.owner;
+    }
+    if (message.nfts?.length) {
+      obj.nfts = message.nfts.map((e) => NFT.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Entry>, I>>(base?: I): Entry {
+    return Entry.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Entry>, I>>(object: I): Entry {
     const message = createBaseEntry();
     message.owner = object.owner ?? "";

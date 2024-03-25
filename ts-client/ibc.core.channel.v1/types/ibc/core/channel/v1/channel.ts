@@ -241,8 +241,8 @@ export interface PacketId {
  * https://github.com/cosmos/ibc/tree/master/spec/core/ics-004-channel-and-packet-semantics#acknowledgement-envelope
  */
 export interface Acknowledgement {
-  result: Uint8Array | undefined;
-  error: string | undefined;
+  result?: Uint8Array | undefined;
+  error?: string | undefined;
 }
 
 function createBaseChannel(): Channel {
@@ -270,31 +270,52 @@ export const Channel = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Channel {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseChannel();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.state = reader.int32() as any;
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.ordering = reader.int32() as any;
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.counterparty = Counterparty.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.connectionHops.push(reader.string());
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.version = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -311,19 +332,27 @@ export const Channel = {
 
   toJSON(message: Channel): unknown {
     const obj: any = {};
-    message.state !== undefined && (obj.state = stateToJSON(message.state));
-    message.ordering !== undefined && (obj.ordering = orderToJSON(message.ordering));
-    message.counterparty !== undefined
-      && (obj.counterparty = message.counterparty ? Counterparty.toJSON(message.counterparty) : undefined);
-    if (message.connectionHops) {
-      obj.connectionHops = message.connectionHops.map((e) => e);
-    } else {
-      obj.connectionHops = [];
+    if (message.state !== 0) {
+      obj.state = stateToJSON(message.state);
     }
-    message.version !== undefined && (obj.version = message.version);
+    if (message.ordering !== 0) {
+      obj.ordering = orderToJSON(message.ordering);
+    }
+    if (message.counterparty !== undefined) {
+      obj.counterparty = Counterparty.toJSON(message.counterparty);
+    }
+    if (message.connectionHops?.length) {
+      obj.connectionHops = message.connectionHops;
+    }
+    if (message.version !== "") {
+      obj.version = message.version;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Channel>, I>>(base?: I): Channel {
+    return Channel.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Channel>, I>>(object: I): Channel {
     const message = createBaseChannel();
     message.state = object.state ?? 0;
@@ -368,37 +397,66 @@ export const IdentifiedChannel = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): IdentifiedChannel {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseIdentifiedChannel();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.state = reader.int32() as any;
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.ordering = reader.int32() as any;
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.counterparty = Counterparty.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.connectionHops.push(reader.string());
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.version = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.portId = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.channelId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -417,21 +475,33 @@ export const IdentifiedChannel = {
 
   toJSON(message: IdentifiedChannel): unknown {
     const obj: any = {};
-    message.state !== undefined && (obj.state = stateToJSON(message.state));
-    message.ordering !== undefined && (obj.ordering = orderToJSON(message.ordering));
-    message.counterparty !== undefined
-      && (obj.counterparty = message.counterparty ? Counterparty.toJSON(message.counterparty) : undefined);
-    if (message.connectionHops) {
-      obj.connectionHops = message.connectionHops.map((e) => e);
-    } else {
-      obj.connectionHops = [];
+    if (message.state !== 0) {
+      obj.state = stateToJSON(message.state);
     }
-    message.version !== undefined && (obj.version = message.version);
-    message.portId !== undefined && (obj.portId = message.portId);
-    message.channelId !== undefined && (obj.channelId = message.channelId);
+    if (message.ordering !== 0) {
+      obj.ordering = orderToJSON(message.ordering);
+    }
+    if (message.counterparty !== undefined) {
+      obj.counterparty = Counterparty.toJSON(message.counterparty);
+    }
+    if (message.connectionHops?.length) {
+      obj.connectionHops = message.connectionHops;
+    }
+    if (message.version !== "") {
+      obj.version = message.version;
+    }
+    if (message.portId !== "") {
+      obj.portId = message.portId;
+    }
+    if (message.channelId !== "") {
+      obj.channelId = message.channelId;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<IdentifiedChannel>, I>>(base?: I): IdentifiedChannel {
+    return IdentifiedChannel.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<IdentifiedChannel>, I>>(object: I): IdentifiedChannel {
     const message = createBaseIdentifiedChannel();
     message.state = object.state ?? 0;
@@ -463,22 +533,31 @@ export const Counterparty = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Counterparty {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCounterparty();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.portId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.channelId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -492,11 +571,18 @@ export const Counterparty = {
 
   toJSON(message: Counterparty): unknown {
     const obj: any = {};
-    message.portId !== undefined && (obj.portId = message.portId);
-    message.channelId !== undefined && (obj.channelId = message.channelId);
+    if (message.portId !== "") {
+      obj.portId = message.portId;
+    }
+    if (message.channelId !== "") {
+      obj.channelId = message.channelId;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Counterparty>, I>>(base?: I): Counterparty {
+    return Counterparty.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Counterparty>, I>>(object: I): Counterparty {
     const message = createBaseCounterparty();
     message.portId = object.portId ?? "";
@@ -512,7 +598,7 @@ function createBasePacket(): Packet {
     sourceChannel: "",
     destinationPort: "",
     destinationChannel: "",
-    data: new Uint8Array(),
+    data: new Uint8Array(0),
     timeoutHeight: undefined,
     timeoutTimestamp: 0,
   };
@@ -548,40 +634,73 @@ export const Packet = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Packet {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePacket();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.sequence = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.sourcePort = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.sourceChannel = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.destinationPort = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.destinationChannel = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.data = reader.bytes();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.timeoutHeight = Height.decode(reader, reader.uint32());
-          break;
+          continue;
         case 8:
+          if (tag !== 64) {
+            break;
+          }
+
           message.timeoutTimestamp = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -593,7 +712,7 @@ export const Packet = {
       sourceChannel: isSet(object.sourceChannel) ? String(object.sourceChannel) : "",
       destinationPort: isSet(object.destinationPort) ? String(object.destinationPort) : "",
       destinationChannel: isSet(object.destinationChannel) ? String(object.destinationChannel) : "",
-      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(),
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(0),
       timeoutHeight: isSet(object.timeoutHeight) ? Height.fromJSON(object.timeoutHeight) : undefined,
       timeoutTimestamp: isSet(object.timeoutTimestamp) ? Number(object.timeoutTimestamp) : 0,
     };
@@ -601,19 +720,36 @@ export const Packet = {
 
   toJSON(message: Packet): unknown {
     const obj: any = {};
-    message.sequence !== undefined && (obj.sequence = Math.round(message.sequence));
-    message.sourcePort !== undefined && (obj.sourcePort = message.sourcePort);
-    message.sourceChannel !== undefined && (obj.sourceChannel = message.sourceChannel);
-    message.destinationPort !== undefined && (obj.destinationPort = message.destinationPort);
-    message.destinationChannel !== undefined && (obj.destinationChannel = message.destinationChannel);
-    message.data !== undefined
-      && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
-    message.timeoutHeight !== undefined
-      && (obj.timeoutHeight = message.timeoutHeight ? Height.toJSON(message.timeoutHeight) : undefined);
-    message.timeoutTimestamp !== undefined && (obj.timeoutTimestamp = Math.round(message.timeoutTimestamp));
+    if (message.sequence !== 0) {
+      obj.sequence = Math.round(message.sequence);
+    }
+    if (message.sourcePort !== "") {
+      obj.sourcePort = message.sourcePort;
+    }
+    if (message.sourceChannel !== "") {
+      obj.sourceChannel = message.sourceChannel;
+    }
+    if (message.destinationPort !== "") {
+      obj.destinationPort = message.destinationPort;
+    }
+    if (message.destinationChannel !== "") {
+      obj.destinationChannel = message.destinationChannel;
+    }
+    if (message.data.length !== 0) {
+      obj.data = base64FromBytes(message.data);
+    }
+    if (message.timeoutHeight !== undefined) {
+      obj.timeoutHeight = Height.toJSON(message.timeoutHeight);
+    }
+    if (message.timeoutTimestamp !== 0) {
+      obj.timeoutTimestamp = Math.round(message.timeoutTimestamp);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Packet>, I>>(base?: I): Packet {
+    return Packet.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Packet>, I>>(object: I): Packet {
     const message = createBasePacket();
     message.sequence = object.sequence ?? 0;
@@ -621,7 +757,7 @@ export const Packet = {
     message.sourceChannel = object.sourceChannel ?? "";
     message.destinationPort = object.destinationPort ?? "";
     message.destinationChannel = object.destinationChannel ?? "";
-    message.data = object.data ?? new Uint8Array();
+    message.data = object.data ?? new Uint8Array(0);
     message.timeoutHeight = (object.timeoutHeight !== undefined && object.timeoutHeight !== null)
       ? Height.fromPartial(object.timeoutHeight)
       : undefined;
@@ -631,7 +767,7 @@ export const Packet = {
 };
 
 function createBasePacketState(): PacketState {
-  return { portId: "", channelId: "", sequence: 0, data: new Uint8Array() };
+  return { portId: "", channelId: "", sequence: 0, data: new Uint8Array(0) };
 }
 
 export const PacketState = {
@@ -652,28 +788,45 @@ export const PacketState = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): PacketState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePacketState();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.portId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.channelId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.sequence = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.data = reader.bytes();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -683,26 +836,36 @@ export const PacketState = {
       portId: isSet(object.portId) ? String(object.portId) : "",
       channelId: isSet(object.channelId) ? String(object.channelId) : "",
       sequence: isSet(object.sequence) ? Number(object.sequence) : 0,
-      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(),
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(0),
     };
   },
 
   toJSON(message: PacketState): unknown {
     const obj: any = {};
-    message.portId !== undefined && (obj.portId = message.portId);
-    message.channelId !== undefined && (obj.channelId = message.channelId);
-    message.sequence !== undefined && (obj.sequence = Math.round(message.sequence));
-    message.data !== undefined
-      && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    if (message.portId !== "") {
+      obj.portId = message.portId;
+    }
+    if (message.channelId !== "") {
+      obj.channelId = message.channelId;
+    }
+    if (message.sequence !== 0) {
+      obj.sequence = Math.round(message.sequence);
+    }
+    if (message.data.length !== 0) {
+      obj.data = base64FromBytes(message.data);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<PacketState>, I>>(base?: I): PacketState {
+    return PacketState.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<PacketState>, I>>(object: I): PacketState {
     const message = createBasePacketState();
     message.portId = object.portId ?? "";
     message.channelId = object.channelId ?? "";
     message.sequence = object.sequence ?? 0;
-    message.data = object.data ?? new Uint8Array();
+    message.data = object.data ?? new Uint8Array(0);
     return message;
   },
 };
@@ -726,25 +889,38 @@ export const PacketId = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): PacketId {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePacketId();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.portId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.channelId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.sequence = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -759,12 +935,21 @@ export const PacketId = {
 
   toJSON(message: PacketId): unknown {
     const obj: any = {};
-    message.portId !== undefined && (obj.portId = message.portId);
-    message.channelId !== undefined && (obj.channelId = message.channelId);
-    message.sequence !== undefined && (obj.sequence = Math.round(message.sequence));
+    if (message.portId !== "") {
+      obj.portId = message.portId;
+    }
+    if (message.channelId !== "") {
+      obj.channelId = message.channelId;
+    }
+    if (message.sequence !== 0) {
+      obj.sequence = Math.round(message.sequence);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<PacketId>, I>>(base?: I): PacketId {
+    return PacketId.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<PacketId>, I>>(object: I): PacketId {
     const message = createBasePacketId();
     message.portId = object.portId ?? "";
@@ -790,22 +975,31 @@ export const Acknowledgement = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Acknowledgement {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAcknowledgement();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 21:
+          if (tag !== 170) {
+            break;
+          }
+
           message.result = reader.bytes();
-          break;
+          continue;
         case 22:
+          if (tag !== 178) {
+            break;
+          }
+
           message.error = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -819,12 +1013,18 @@ export const Acknowledgement = {
 
   toJSON(message: Acknowledgement): unknown {
     const obj: any = {};
-    message.result !== undefined
-      && (obj.result = message.result !== undefined ? base64FromBytes(message.result) : undefined);
-    message.error !== undefined && (obj.error = message.error);
+    if (message.result !== undefined) {
+      obj.result = base64FromBytes(message.result);
+    }
+    if (message.error !== undefined) {
+      obj.error = message.error;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Acknowledgement>, I>>(base?: I): Acknowledgement {
+    return Acknowledgement.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Acknowledgement>, I>>(object: I): Acknowledgement {
     const message = createBaseAcknowledgement();
     message.result = object.result ?? undefined;
@@ -833,10 +1033,10 @@ export const Acknowledgement = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -853,10 +1053,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -866,14 +1066,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 
@@ -890,7 +1090,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

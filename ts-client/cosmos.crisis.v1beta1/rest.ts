@@ -9,40 +9,25 @@
  * ---------------------------------------------------------------
  */
 
-export interface ProtobufAny {
+export interface Any {
   "@type"?: string;
 }
 
-export interface RpcStatus {
+export interface Status {
   /** @format int32 */
   code?: number;
   message?: string;
-  details?: ProtobufAny[];
+  details?: { "@type"?: string }[];
 }
 
-/**
-* Coin defines a token with a denomination and an amount.
-
-NOTE: The amount field is an Int which implements the custom method
-signatures required by gogoproto.
-*/
-export interface V1Beta1Coin {
+export interface Coin {
   denom?: string;
   amount?: string;
 }
 
-/**
-* MsgUpdateParamsResponse defines the response structure for executing a
-MsgUpdateParams message.
+export type MsgUpdateParamsResponse = object;
 
-Since: cosmos-sdk 0.47
-*/
-export type V1Beta1MsgUpdateParamsResponse = object;
-
-/**
- * MsgVerifyInvariantResponse defines the Msg/VerifyInvariant response type.
- */
-export type V1Beta1MsgVerifyInvariantResponse = object;
+export type MsgVerifyInvariantResponse = object;
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
@@ -165,7 +150,6 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title cosmos/crisis/v1beta1/genesis.proto
- * @version version not set
+ * @title HTTP API Console cosmos.crisis.v1beta1
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {}

@@ -25,22 +25,31 @@ export const AggregatedKeyShare = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AggregatedKeyShare {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAggregatedKeyShare();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.height = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.data = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -54,11 +63,18 @@ export const AggregatedKeyShare = {
 
   toJSON(message: AggregatedKeyShare): unknown {
     const obj: any = {};
-    message.height !== undefined && (obj.height = Math.round(message.height));
-    message.data !== undefined && (obj.data = message.data);
+    if (message.height !== 0) {
+      obj.height = Math.round(message.height);
+    }
+    if (message.data !== "") {
+      obj.data = message.data;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AggregatedKeyShare>, I>>(base?: I): AggregatedKeyShare {
+    return AggregatedKeyShare.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<AggregatedKeyShare>, I>>(object: I): AggregatedKeyShare {
     const message = createBaseAggregatedKeyShare();
     message.height = object.height ?? 0;
@@ -67,10 +83,10 @@ export const AggregatedKeyShare = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -99,7 +115,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

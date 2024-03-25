@@ -71,40 +71,73 @@ export const GenesisState = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.channels.push(IdentifiedChannel.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.acknowledgements.push(PacketState.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.commitments.push(PacketState.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.receipts.push(PacketState.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.sendSequences.push(PacketSequence.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.recvSequences.push(PacketSequence.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.ackSequences.push(PacketSequence.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 8:
+          if (tag !== 64) {
+            break;
+          }
+
           message.nextChannelSequence = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -134,45 +167,36 @@ export const GenesisState = {
 
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
-    if (message.channels) {
-      obj.channels = message.channels.map((e) => e ? IdentifiedChannel.toJSON(e) : undefined);
-    } else {
-      obj.channels = [];
+    if (message.channels?.length) {
+      obj.channels = message.channels.map((e) => IdentifiedChannel.toJSON(e));
     }
-    if (message.acknowledgements) {
-      obj.acknowledgements = message.acknowledgements.map((e) => e ? PacketState.toJSON(e) : undefined);
-    } else {
-      obj.acknowledgements = [];
+    if (message.acknowledgements?.length) {
+      obj.acknowledgements = message.acknowledgements.map((e) => PacketState.toJSON(e));
     }
-    if (message.commitments) {
-      obj.commitments = message.commitments.map((e) => e ? PacketState.toJSON(e) : undefined);
-    } else {
-      obj.commitments = [];
+    if (message.commitments?.length) {
+      obj.commitments = message.commitments.map((e) => PacketState.toJSON(e));
     }
-    if (message.receipts) {
-      obj.receipts = message.receipts.map((e) => e ? PacketState.toJSON(e) : undefined);
-    } else {
-      obj.receipts = [];
+    if (message.receipts?.length) {
+      obj.receipts = message.receipts.map((e) => PacketState.toJSON(e));
     }
-    if (message.sendSequences) {
-      obj.sendSequences = message.sendSequences.map((e) => e ? PacketSequence.toJSON(e) : undefined);
-    } else {
-      obj.sendSequences = [];
+    if (message.sendSequences?.length) {
+      obj.sendSequences = message.sendSequences.map((e) => PacketSequence.toJSON(e));
     }
-    if (message.recvSequences) {
-      obj.recvSequences = message.recvSequences.map((e) => e ? PacketSequence.toJSON(e) : undefined);
-    } else {
-      obj.recvSequences = [];
+    if (message.recvSequences?.length) {
+      obj.recvSequences = message.recvSequences.map((e) => PacketSequence.toJSON(e));
     }
-    if (message.ackSequences) {
-      obj.ackSequences = message.ackSequences.map((e) => e ? PacketSequence.toJSON(e) : undefined);
-    } else {
-      obj.ackSequences = [];
+    if (message.ackSequences?.length) {
+      obj.ackSequences = message.ackSequences.map((e) => PacketSequence.toJSON(e));
     }
-    message.nextChannelSequence !== undefined && (obj.nextChannelSequence = Math.round(message.nextChannelSequence));
+    if (message.nextChannelSequence !== 0) {
+      obj.nextChannelSequence = Math.round(message.nextChannelSequence);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GenesisState>, I>>(base?: I): GenesisState {
+    return GenesisState.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(object: I): GenesisState {
     const message = createBaseGenesisState();
     message.channels = object.channels?.map((e) => IdentifiedChannel.fromPartial(e)) || [];
@@ -206,25 +230,38 @@ export const PacketSequence = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): PacketSequence {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePacketSequence();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.portId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.channelId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.sequence = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -239,12 +276,21 @@ export const PacketSequence = {
 
   toJSON(message: PacketSequence): unknown {
     const obj: any = {};
-    message.portId !== undefined && (obj.portId = message.portId);
-    message.channelId !== undefined && (obj.channelId = message.channelId);
-    message.sequence !== undefined && (obj.sequence = Math.round(message.sequence));
+    if (message.portId !== "") {
+      obj.portId = message.portId;
+    }
+    if (message.channelId !== "") {
+      obj.channelId = message.channelId;
+    }
+    if (message.sequence !== 0) {
+      obj.sequence = Math.round(message.sequence);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<PacketSequence>, I>>(base?: I): PacketSequence {
+    return PacketSequence.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<PacketSequence>, I>>(object: I): PacketSequence {
     const message = createBasePacketSequence();
     message.portId = object.portId ?? "";
@@ -254,10 +300,10 @@ export const PacketSequence = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -286,7 +332,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

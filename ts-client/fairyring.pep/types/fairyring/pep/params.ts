@@ -8,7 +8,8 @@ export const protobufPackage = "fairyring.pep";
 export interface Params {
   trustedCounterParties: TrustedCounterParty[];
   trustedAddresses: string[];
-  channelId: string;
+  pepChannelId: string;
+  keyshareChannelId: string;
   minGasPrice: Coin | undefined;
   isSourceChain: boolean;
 }
@@ -23,7 +24,8 @@ function createBaseParams(): Params {
   return {
     trustedCounterParties: [],
     trustedAddresses: [],
-    channelId: "",
+    pepChannelId: "",
+    keyshareChannelId: "",
     minGasPrice: undefined,
     isSourceChain: false,
   };
@@ -37,44 +39,75 @@ export const Params = {
     for (const v of message.trustedAddresses) {
       writer.uint32(18).string(v!);
     }
-    if (message.channelId !== "") {
-      writer.uint32(26).string(message.channelId);
+    if (message.pepChannelId !== "") {
+      writer.uint32(26).string(message.pepChannelId);
+    }
+    if (message.keyshareChannelId !== "") {
+      writer.uint32(34).string(message.keyshareChannelId);
     }
     if (message.minGasPrice !== undefined) {
-      Coin.encode(message.minGasPrice, writer.uint32(34).fork()).ldelim();
+      Coin.encode(message.minGasPrice, writer.uint32(42).fork()).ldelim();
     }
     if (message.isSourceChain === true) {
-      writer.uint32(40).bool(message.isSourceChain);
+      writer.uint32(48).bool(message.isSourceChain);
     }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Params {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.trustedCounterParties.push(TrustedCounterParty.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.trustedAddresses.push(reader.string());
-          break;
+          continue;
         case 3:
-          message.channelId = reader.string();
-          break;
+          if (tag !== 26) {
+            break;
+          }
+
+          message.pepChannelId = reader.string();
+          continue;
         case 4:
-          message.minGasPrice = Coin.decode(reader, reader.uint32());
-          break;
+          if (tag !== 34) {
+            break;
+          }
+
+          message.keyshareChannelId = reader.string();
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.minGasPrice = Coin.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.isSourceChain = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -87,7 +120,8 @@ export const Params = {
       trustedAddresses: Array.isArray(object?.trustedAddresses)
         ? object.trustedAddresses.map((e: any) => String(e))
         : [],
-      channelId: isSet(object.channelId) ? String(object.channelId) : "",
+      pepChannelId: isSet(object.pepChannelId) ? String(object.pepChannelId) : "",
+      keyshareChannelId: isSet(object.keyshareChannelId) ? String(object.keyshareChannelId) : "",
       minGasPrice: isSet(object.minGasPrice) ? Coin.fromJSON(object.minGasPrice) : undefined,
       isSourceChain: isSet(object.isSourceChain) ? Boolean(object.isSourceChain) : false,
     };
@@ -95,30 +129,36 @@ export const Params = {
 
   toJSON(message: Params): unknown {
     const obj: any = {};
-    if (message.trustedCounterParties) {
-      obj.trustedCounterParties = message.trustedCounterParties.map((e) =>
-        e ? TrustedCounterParty.toJSON(e) : undefined
-      );
-    } else {
-      obj.trustedCounterParties = [];
+    if (message.trustedCounterParties?.length) {
+      obj.trustedCounterParties = message.trustedCounterParties.map((e) => TrustedCounterParty.toJSON(e));
     }
-    if (message.trustedAddresses) {
-      obj.trustedAddresses = message.trustedAddresses.map((e) => e);
-    } else {
-      obj.trustedAddresses = [];
+    if (message.trustedAddresses?.length) {
+      obj.trustedAddresses = message.trustedAddresses;
     }
-    message.channelId !== undefined && (obj.channelId = message.channelId);
-    message.minGasPrice !== undefined
-      && (obj.minGasPrice = message.minGasPrice ? Coin.toJSON(message.minGasPrice) : undefined);
-    message.isSourceChain !== undefined && (obj.isSourceChain = message.isSourceChain);
+    if (message.pepChannelId !== "") {
+      obj.pepChannelId = message.pepChannelId;
+    }
+    if (message.keyshareChannelId !== "") {
+      obj.keyshareChannelId = message.keyshareChannelId;
+    }
+    if (message.minGasPrice !== undefined) {
+      obj.minGasPrice = Coin.toJSON(message.minGasPrice);
+    }
+    if (message.isSourceChain === true) {
+      obj.isSourceChain = message.isSourceChain;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Params>, I>>(base?: I): Params {
+    return Params.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
     message.trustedCounterParties = object.trustedCounterParties?.map((e) => TrustedCounterParty.fromPartial(e)) || [];
     message.trustedAddresses = object.trustedAddresses?.map((e) => e) || [];
-    message.channelId = object.channelId ?? "";
+    message.pepChannelId = object.pepChannelId ?? "";
+    message.keyshareChannelId = object.keyshareChannelId ?? "";
     message.minGasPrice = (object.minGasPrice !== undefined && object.minGasPrice !== null)
       ? Coin.fromPartial(object.minGasPrice)
       : undefined;
@@ -146,25 +186,38 @@ export const TrustedCounterParty = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): TrustedCounterParty {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTrustedCounterParty();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.clientId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.connectionId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.channelId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -179,12 +232,21 @@ export const TrustedCounterParty = {
 
   toJSON(message: TrustedCounterParty): unknown {
     const obj: any = {};
-    message.clientId !== undefined && (obj.clientId = message.clientId);
-    message.connectionId !== undefined && (obj.connectionId = message.connectionId);
-    message.channelId !== undefined && (obj.channelId = message.channelId);
+    if (message.clientId !== "") {
+      obj.clientId = message.clientId;
+    }
+    if (message.connectionId !== "") {
+      obj.connectionId = message.connectionId;
+    }
+    if (message.channelId !== "") {
+      obj.channelId = message.channelId;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<TrustedCounterParty>, I>>(base?: I): TrustedCounterParty {
+    return TrustedCounterParty.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<TrustedCounterParty>, I>>(object: I): TrustedCounterParty {
     const message = createBaseTrustedCounterParty();
     message.clientId = object.clientId ?? "";

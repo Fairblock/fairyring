@@ -56,25 +56,38 @@ export const MsgRegisterInterchainAccount = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterInterchainAccount {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRegisterInterchainAccount();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.owner = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.connectionId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.version = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -89,12 +102,21 @@ export const MsgRegisterInterchainAccount = {
 
   toJSON(message: MsgRegisterInterchainAccount): unknown {
     const obj: any = {};
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.connectionId !== undefined && (obj.connectionId = message.connectionId);
-    message.version !== undefined && (obj.version = message.version);
+    if (message.owner !== "") {
+      obj.owner = message.owner;
+    }
+    if (message.connectionId !== "") {
+      obj.connectionId = message.connectionId;
+    }
+    if (message.version !== "") {
+      obj.version = message.version;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgRegisterInterchainAccount>, I>>(base?: I): MsgRegisterInterchainAccount {
+    return MsgRegisterInterchainAccount.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgRegisterInterchainAccount>, I>>(object: I): MsgRegisterInterchainAccount {
     const message = createBaseMsgRegisterInterchainAccount();
     message.owner = object.owner ?? "";
@@ -120,22 +142,31 @@ export const MsgRegisterInterchainAccountResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterInterchainAccountResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRegisterInterchainAccountResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.channelId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.portId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -149,11 +180,20 @@ export const MsgRegisterInterchainAccountResponse = {
 
   toJSON(message: MsgRegisterInterchainAccountResponse): unknown {
     const obj: any = {};
-    message.channelId !== undefined && (obj.channelId = message.channelId);
-    message.portId !== undefined && (obj.portId = message.portId);
+    if (message.channelId !== "") {
+      obj.channelId = message.channelId;
+    }
+    if (message.portId !== "") {
+      obj.portId = message.portId;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgRegisterInterchainAccountResponse>, I>>(
+    base?: I,
+  ): MsgRegisterInterchainAccountResponse {
+    return MsgRegisterInterchainAccountResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgRegisterInterchainAccountResponse>, I>>(
     object: I,
   ): MsgRegisterInterchainAccountResponse {
@@ -186,28 +226,45 @@ export const MsgSendTx = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgSendTx {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSendTx();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.owner = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.connectionId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.packetData = InterchainAccountPacketData.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.relativeTimeout = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -223,14 +280,24 @@ export const MsgSendTx = {
 
   toJSON(message: MsgSendTx): unknown {
     const obj: any = {};
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.connectionId !== undefined && (obj.connectionId = message.connectionId);
-    message.packetData !== undefined
-      && (obj.packetData = message.packetData ? InterchainAccountPacketData.toJSON(message.packetData) : undefined);
-    message.relativeTimeout !== undefined && (obj.relativeTimeout = Math.round(message.relativeTimeout));
+    if (message.owner !== "") {
+      obj.owner = message.owner;
+    }
+    if (message.connectionId !== "") {
+      obj.connectionId = message.connectionId;
+    }
+    if (message.packetData !== undefined) {
+      obj.packetData = InterchainAccountPacketData.toJSON(message.packetData);
+    }
+    if (message.relativeTimeout !== 0) {
+      obj.relativeTimeout = Math.round(message.relativeTimeout);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgSendTx>, I>>(base?: I): MsgSendTx {
+    return MsgSendTx.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgSendTx>, I>>(object: I): MsgSendTx {
     const message = createBaseMsgSendTx();
     message.owner = object.owner ?? "";
@@ -256,19 +323,24 @@ export const MsgSendTxResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgSendTxResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSendTxResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.sequence = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -279,10 +351,15 @@ export const MsgSendTxResponse = {
 
   toJSON(message: MsgSendTxResponse): unknown {
     const obj: any = {};
-    message.sequence !== undefined && (obj.sequence = Math.round(message.sequence));
+    if (message.sequence !== 0) {
+      obj.sequence = Math.round(message.sequence);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgSendTxResponse>, I>>(base?: I): MsgSendTxResponse {
+    return MsgSendTxResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgSendTxResponse>, I>>(object: I): MsgSendTxResponse {
     const message = createBaseMsgSendTxResponse();
     message.sequence = object.sequence ?? 0;
@@ -298,27 +375,26 @@ export interface Msg {
   SendTx(request: MsgSendTx): Promise<MsgSendTxResponse>;
 }
 
+export const MsgServiceName = "ibc.applications.interchain_accounts.controller.v1.Msg";
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
-  constructor(rpc: Rpc) {
+  private readonly service: string;
+  constructor(rpc: Rpc, opts?: { service?: string }) {
+    this.service = opts?.service || MsgServiceName;
     this.rpc = rpc;
     this.RegisterInterchainAccount = this.RegisterInterchainAccount.bind(this);
     this.SendTx = this.SendTx.bind(this);
   }
   RegisterInterchainAccount(request: MsgRegisterInterchainAccount): Promise<MsgRegisterInterchainAccountResponse> {
     const data = MsgRegisterInterchainAccount.encode(request).finish();
-    const promise = this.rpc.request(
-      "ibc.applications.interchain_accounts.controller.v1.Msg",
-      "RegisterInterchainAccount",
-      data,
-    );
-    return promise.then((data) => MsgRegisterInterchainAccountResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "RegisterInterchainAccount", data);
+    return promise.then((data) => MsgRegisterInterchainAccountResponse.decode(_m0.Reader.create(data)));
   }
 
   SendTx(request: MsgSendTx): Promise<MsgSendTxResponse> {
     const data = MsgSendTx.encode(request).finish();
-    const promise = this.rpc.request("ibc.applications.interchain_accounts.controller.v1.Msg", "SendTx", data);
-    return promise.then((data) => MsgSendTxResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "SendTx", data);
+    return promise.then((data) => MsgSendTxResponse.decode(_m0.Reader.create(data)));
   }
 }
 
@@ -326,10 +402,10 @@ interface Rpc {
   request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
 }
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -358,7 +434,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }
