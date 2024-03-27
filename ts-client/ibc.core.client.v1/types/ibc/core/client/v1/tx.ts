@@ -128,25 +128,38 @@ export const MsgCreateClient = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateClient {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateClient();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.clientState = Any.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.consensusState = Any.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.signer = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -161,14 +174,21 @@ export const MsgCreateClient = {
 
   toJSON(message: MsgCreateClient): unknown {
     const obj: any = {};
-    message.clientState !== undefined
-      && (obj.clientState = message.clientState ? Any.toJSON(message.clientState) : undefined);
-    message.consensusState !== undefined
-      && (obj.consensusState = message.consensusState ? Any.toJSON(message.consensusState) : undefined);
-    message.signer !== undefined && (obj.signer = message.signer);
+    if (message.clientState !== undefined) {
+      obj.clientState = Any.toJSON(message.clientState);
+    }
+    if (message.consensusState !== undefined) {
+      obj.consensusState = Any.toJSON(message.consensusState);
+    }
+    if (message.signer !== "") {
+      obj.signer = message.signer;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgCreateClient>, I>>(base?: I): MsgCreateClient {
+    return MsgCreateClient.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgCreateClient>, I>>(object: I): MsgCreateClient {
     const message = createBaseMsgCreateClient();
     message.clientState = (object.clientState !== undefined && object.clientState !== null)
@@ -192,16 +212,17 @@ export const MsgCreateClientResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateClientResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateClientResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -215,6 +236,9 @@ export const MsgCreateClientResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgCreateClientResponse>, I>>(base?: I): MsgCreateClientResponse {
+    return MsgCreateClientResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgCreateClientResponse>, I>>(_: I): MsgCreateClientResponse {
     const message = createBaseMsgCreateClientResponse();
     return message;
@@ -240,25 +264,38 @@ export const MsgUpdateClient = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateClient {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateClient();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.clientId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.clientMessage = Any.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.signer = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -273,13 +310,21 @@ export const MsgUpdateClient = {
 
   toJSON(message: MsgUpdateClient): unknown {
     const obj: any = {};
-    message.clientId !== undefined && (obj.clientId = message.clientId);
-    message.clientMessage !== undefined
-      && (obj.clientMessage = message.clientMessage ? Any.toJSON(message.clientMessage) : undefined);
-    message.signer !== undefined && (obj.signer = message.signer);
+    if (message.clientId !== "") {
+      obj.clientId = message.clientId;
+    }
+    if (message.clientMessage !== undefined) {
+      obj.clientMessage = Any.toJSON(message.clientMessage);
+    }
+    if (message.signer !== "") {
+      obj.signer = message.signer;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgUpdateClient>, I>>(base?: I): MsgUpdateClient {
+    return MsgUpdateClient.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgUpdateClient>, I>>(object: I): MsgUpdateClient {
     const message = createBaseMsgUpdateClient();
     message.clientId = object.clientId ?? "";
@@ -301,16 +346,17 @@ export const MsgUpdateClientResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateClientResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateClientResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -324,6 +370,9 @@ export const MsgUpdateClientResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgUpdateClientResponse>, I>>(base?: I): MsgUpdateClientResponse {
+    return MsgUpdateClientResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgUpdateClientResponse>, I>>(_: I): MsgUpdateClientResponse {
     const message = createBaseMsgUpdateClientResponse();
     return message;
@@ -335,8 +384,8 @@ function createBaseMsgUpgradeClient(): MsgUpgradeClient {
     clientId: "",
     clientState: undefined,
     consensusState: undefined,
-    proofUpgradeClient: new Uint8Array(),
-    proofUpgradeConsensusState: new Uint8Array(),
+    proofUpgradeClient: new Uint8Array(0),
+    proofUpgradeConsensusState: new Uint8Array(0),
     signer: "",
   };
 }
@@ -365,34 +414,59 @@ export const MsgUpgradeClient = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpgradeClient {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpgradeClient();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.clientId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.clientState = Any.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.consensusState = Any.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.proofUpgradeClient = reader.bytes();
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.proofUpgradeConsensusState = reader.bytes();
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.signer = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -404,33 +478,40 @@ export const MsgUpgradeClient = {
       consensusState: isSet(object.consensusState) ? Any.fromJSON(object.consensusState) : undefined,
       proofUpgradeClient: isSet(object.proofUpgradeClient)
         ? bytesFromBase64(object.proofUpgradeClient)
-        : new Uint8Array(),
+        : new Uint8Array(0),
       proofUpgradeConsensusState: isSet(object.proofUpgradeConsensusState)
         ? bytesFromBase64(object.proofUpgradeConsensusState)
-        : new Uint8Array(),
+        : new Uint8Array(0),
       signer: isSet(object.signer) ? String(object.signer) : "",
     };
   },
 
   toJSON(message: MsgUpgradeClient): unknown {
     const obj: any = {};
-    message.clientId !== undefined && (obj.clientId = message.clientId);
-    message.clientState !== undefined
-      && (obj.clientState = message.clientState ? Any.toJSON(message.clientState) : undefined);
-    message.consensusState !== undefined
-      && (obj.consensusState = message.consensusState ? Any.toJSON(message.consensusState) : undefined);
-    message.proofUpgradeClient !== undefined
-      && (obj.proofUpgradeClient = base64FromBytes(
-        message.proofUpgradeClient !== undefined ? message.proofUpgradeClient : new Uint8Array(),
-      ));
-    message.proofUpgradeConsensusState !== undefined
-      && (obj.proofUpgradeConsensusState = base64FromBytes(
-        message.proofUpgradeConsensusState !== undefined ? message.proofUpgradeConsensusState : new Uint8Array(),
-      ));
-    message.signer !== undefined && (obj.signer = message.signer);
+    if (message.clientId !== "") {
+      obj.clientId = message.clientId;
+    }
+    if (message.clientState !== undefined) {
+      obj.clientState = Any.toJSON(message.clientState);
+    }
+    if (message.consensusState !== undefined) {
+      obj.consensusState = Any.toJSON(message.consensusState);
+    }
+    if (message.proofUpgradeClient.length !== 0) {
+      obj.proofUpgradeClient = base64FromBytes(message.proofUpgradeClient);
+    }
+    if (message.proofUpgradeConsensusState.length !== 0) {
+      obj.proofUpgradeConsensusState = base64FromBytes(message.proofUpgradeConsensusState);
+    }
+    if (message.signer !== "") {
+      obj.signer = message.signer;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgUpgradeClient>, I>>(base?: I): MsgUpgradeClient {
+    return MsgUpgradeClient.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgUpgradeClient>, I>>(object: I): MsgUpgradeClient {
     const message = createBaseMsgUpgradeClient();
     message.clientId = object.clientId ?? "";
@@ -440,8 +521,8 @@ export const MsgUpgradeClient = {
     message.consensusState = (object.consensusState !== undefined && object.consensusState !== null)
       ? Any.fromPartial(object.consensusState)
       : undefined;
-    message.proofUpgradeClient = object.proofUpgradeClient ?? new Uint8Array();
-    message.proofUpgradeConsensusState = object.proofUpgradeConsensusState ?? new Uint8Array();
+    message.proofUpgradeClient = object.proofUpgradeClient ?? new Uint8Array(0);
+    message.proofUpgradeConsensusState = object.proofUpgradeConsensusState ?? new Uint8Array(0);
     message.signer = object.signer ?? "";
     return message;
   },
@@ -457,16 +538,17 @@ export const MsgUpgradeClientResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpgradeClientResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpgradeClientResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -480,6 +562,9 @@ export const MsgUpgradeClientResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgUpgradeClientResponse>, I>>(base?: I): MsgUpgradeClientResponse {
+    return MsgUpgradeClientResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgUpgradeClientResponse>, I>>(_: I): MsgUpgradeClientResponse {
     const message = createBaseMsgUpgradeClientResponse();
     return message;
@@ -505,25 +590,38 @@ export const MsgSubmitMisbehaviour = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitMisbehaviour {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSubmitMisbehaviour();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.clientId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.misbehaviour = Any.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.signer = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -538,13 +636,21 @@ export const MsgSubmitMisbehaviour = {
 
   toJSON(message: MsgSubmitMisbehaviour): unknown {
     const obj: any = {};
-    message.clientId !== undefined && (obj.clientId = message.clientId);
-    message.misbehaviour !== undefined
-      && (obj.misbehaviour = message.misbehaviour ? Any.toJSON(message.misbehaviour) : undefined);
-    message.signer !== undefined && (obj.signer = message.signer);
+    if (message.clientId !== "") {
+      obj.clientId = message.clientId;
+    }
+    if (message.misbehaviour !== undefined) {
+      obj.misbehaviour = Any.toJSON(message.misbehaviour);
+    }
+    if (message.signer !== "") {
+      obj.signer = message.signer;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgSubmitMisbehaviour>, I>>(base?: I): MsgSubmitMisbehaviour {
+    return MsgSubmitMisbehaviour.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgSubmitMisbehaviour>, I>>(object: I): MsgSubmitMisbehaviour {
     const message = createBaseMsgSubmitMisbehaviour();
     message.clientId = object.clientId ?? "";
@@ -566,16 +672,17 @@ export const MsgSubmitMisbehaviourResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitMisbehaviourResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSubmitMisbehaviourResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -589,6 +696,9 @@ export const MsgSubmitMisbehaviourResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgSubmitMisbehaviourResponse>, I>>(base?: I): MsgSubmitMisbehaviourResponse {
+    return MsgSubmitMisbehaviourResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgSubmitMisbehaviourResponse>, I>>(_: I): MsgSubmitMisbehaviourResponse {
     const message = createBaseMsgSubmitMisbehaviourResponse();
     return message;
@@ -607,9 +717,12 @@ export interface Msg {
   SubmitMisbehaviour(request: MsgSubmitMisbehaviour): Promise<MsgSubmitMisbehaviourResponse>;
 }
 
+export const MsgServiceName = "ibc.core.client.v1.Msg";
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
-  constructor(rpc: Rpc) {
+  private readonly service: string;
+  constructor(rpc: Rpc, opts?: { service?: string }) {
+    this.service = opts?.service || MsgServiceName;
     this.rpc = rpc;
     this.CreateClient = this.CreateClient.bind(this);
     this.UpdateClient = this.UpdateClient.bind(this);
@@ -618,26 +731,26 @@ export class MsgClientImpl implements Msg {
   }
   CreateClient(request: MsgCreateClient): Promise<MsgCreateClientResponse> {
     const data = MsgCreateClient.encode(request).finish();
-    const promise = this.rpc.request("ibc.core.client.v1.Msg", "CreateClient", data);
-    return promise.then((data) => MsgCreateClientResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "CreateClient", data);
+    return promise.then((data) => MsgCreateClientResponse.decode(_m0.Reader.create(data)));
   }
 
   UpdateClient(request: MsgUpdateClient): Promise<MsgUpdateClientResponse> {
     const data = MsgUpdateClient.encode(request).finish();
-    const promise = this.rpc.request("ibc.core.client.v1.Msg", "UpdateClient", data);
-    return promise.then((data) => MsgUpdateClientResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "UpdateClient", data);
+    return promise.then((data) => MsgUpdateClientResponse.decode(_m0.Reader.create(data)));
   }
 
   UpgradeClient(request: MsgUpgradeClient): Promise<MsgUpgradeClientResponse> {
     const data = MsgUpgradeClient.encode(request).finish();
-    const promise = this.rpc.request("ibc.core.client.v1.Msg", "UpgradeClient", data);
-    return promise.then((data) => MsgUpgradeClientResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "UpgradeClient", data);
+    return promise.then((data) => MsgUpgradeClientResponse.decode(_m0.Reader.create(data)));
   }
 
   SubmitMisbehaviour(request: MsgSubmitMisbehaviour): Promise<MsgSubmitMisbehaviourResponse> {
     const data = MsgSubmitMisbehaviour.encode(request).finish();
-    const promise = this.rpc.request("ibc.core.client.v1.Msg", "SubmitMisbehaviour", data);
-    return promise.then((data) => MsgSubmitMisbehaviourResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "SubmitMisbehaviour", data);
+    return promise.then((data) => MsgSubmitMisbehaviourResponse.decode(_m0.Reader.create(data)));
   }
 }
 
@@ -645,10 +758,10 @@ interface Rpc {
   request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
 }
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -665,10 +778,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -678,14 +791,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 

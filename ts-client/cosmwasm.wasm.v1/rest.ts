@@ -9,613 +9,324 @@
  * ---------------------------------------------------------------
  */
 
-/**
-* `Any` contains an arbitrary serialized protocol buffer message along with a
-URL that describes the type of the serialized message.
-
-Protobuf library provides support to pack/unpack Any values in the form
-of utility functions or additional generated methods of the Any type.
-
-Example 1: Pack and unpack a message in C++.
-
-    Foo foo = ...;
-    Any any;
-    any.PackFrom(foo);
-    ...
-    if (any.UnpackTo(&foo)) {
-      ...
-    }
-
-Example 2: Pack and unpack a message in Java.
-
-    Foo foo = ...;
-    Any any = Any.pack(foo);
-    ...
-    if (any.is(Foo.class)) {
-      foo = any.unpack(Foo.class);
-    }
-
- Example 3: Pack and unpack a message in Python.
-
-    foo = Foo(...)
-    any = Any()
-    any.Pack(foo)
-    ...
-    if any.Is(Foo.DESCRIPTOR):
-      any.Unpack(foo)
-      ...
-
- Example 4: Pack and unpack a message in Go
-
-     foo := &pb.Foo{...}
-     any, err := anypb.New(foo)
-     if err != nil {
-       ...
-     }
-     ...
-     foo := &pb.Foo{}
-     if err := any.UnmarshalTo(foo); err != nil {
-       ...
-     }
-
-The pack methods provided by protobuf library will by default use
-'type.googleapis.com/full.type.name' as the type URL and the unpack
-methods only use the fully qualified type name after the last '/'
-in the type URL, for example "foo.bar.com/x/y.z" will yield type
-name "y.z".
-
-
-JSON
-====
-The JSON representation of an `Any` value uses the regular
-representation of the deserialized, embedded message, with an
-additional field `@type` which contains the type URL. Example:
-
-    package google.profile;
-    message Person {
-      string first_name = 1;
-      string last_name = 2;
-    }
-
-    {
-      "@type": "type.googleapis.com/google.profile.Person",
-      "firstName": <string>,
-      "lastName": <string>
-    }
-
-If the embedded message type is well-known and has a custom JSON
-representation, that representation will be embedded adding a field
-`value` which holds the custom JSON in addition to the `@type`
-field. Example (for message [google.protobuf.Duration][]):
-
-    {
-      "@type": "type.googleapis.com/google.protobuf.Duration",
-      "value": "1.212s"
-    }
-*/
-export interface ProtobufAny {
-  /**
-   * A URL/resource name that uniquely identifies the type of the serialized
-   * protocol buffer message. This string must contain at least
-   * one "/" character. The last segment of the URL's path must represent
-   * the fully qualified name of the type (as in
-   * `path/google.protobuf.Duration`). The name should be in a canonical form
-   * (e.g., leading "." is not accepted).
-   *
-   * In practice, teams usually precompile into the binary all types that they
-   * expect it to use in the context of Any. However, for URLs which use the
-   * scheme `http`, `https`, or no scheme, one can optionally set up a type
-   * server that maps type URLs to message definitions as follows:
-   * * If no scheme is provided, `https` is assumed.
-   * * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-   *   value in binary format, or produce an error.
-   * * Applications are allowed to cache lookup results based on the
-   *   URL, or have them precompiled into a binary to avoid any
-   *   lookup. Therefore, binary compatibility needs to be preserved
-   *   on changes to types. (Use versioned type names to manage
-   *   breaking changes.)
-   * Note: this functionality is not currently available in the official
-   * protobuf release, and it is not used for type URLs beginning with
-   * type.googleapis.com.
-   * Schemes other than `http`, `https` (or the empty scheme) might be
-   * used with implementation specific semantics.
-   */
+export interface Any {
   "@type"?: string;
 }
 
-export interface RpcStatus {
+export interface Status {
   /** @format int32 */
   code?: number;
   message?: string;
-  details?: ProtobufAny[];
+  details?: { "@type"?: string }[];
 }
 
-/**
-* AbsoluteTxPosition is a unique transaction position that allows for global
-ordering of transactions.
-*/
-export interface V1AbsoluteTxPosition {
-  /**
-   * BlockHeight is the block the contract was created at
-   * @format uint64
-   */
+export interface AbsoluteTxPosition {
+  /** @format uint64 */
   block_height?: string;
 
-  /**
-   * TxIndex is a monotonic counter within the block (actual transaction index,
-   * or gas consumed)
-   * @format uint64
-   */
+  /** @format uint64 */
   tx_index?: string;
 }
 
-/**
- * AccessConfig access control type.
- */
-export interface V1AccessConfig {
-  /**
-   * - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder for empty value
-   *  - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-   *  - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-   *  - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-   */
-  permission?: V1AccessType;
+export interface AccessConfig {
+  permission?:
+    | "ACCESS_TYPE_UNSPECIFIED"
+    | "ACCESS_TYPE_NOBODY"
+    | "ACCESS_TYPE_EVERYBODY"
+    | "ACCESS_TYPE_ANY_OF_ADDRESSES";
   addresses?: string[];
 }
 
-/**
-* - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder for empty value
- - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
- - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
- - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-*/
-export enum V1AccessType {
+export enum AccessType {
   ACCESS_TYPE_UNSPECIFIED = "ACCESS_TYPE_UNSPECIFIED",
   ACCESS_TYPE_NOBODY = "ACCESS_TYPE_NOBODY",
   ACCESS_TYPE_EVERYBODY = "ACCESS_TYPE_EVERYBODY",
   ACCESS_TYPE_ANY_OF_ADDRESSES = "ACCESS_TYPE_ANY_OF_ADDRESSES",
 }
 
-export interface V1CodeInfoResponse {
-  /**
-   * id for legacy support
-   * @format uint64
-   */
+export interface CodeInfoResponse {
+  /** @format uint64 */
   code_id?: string;
   creator?: string;
 
   /** @format byte */
   data_hash?: string;
-
-  /** AccessConfig access control type. */
-  instantiate_permission?: V1AccessConfig;
+  instantiate_permission?: {
+    permission?:
+      | "ACCESS_TYPE_UNSPECIFIED"
+      | "ACCESS_TYPE_NOBODY"
+      | "ACCESS_TYPE_EVERYBODY"
+      | "ACCESS_TYPE_ANY_OF_ADDRESSES";
+    addresses?: string[];
+  };
 }
 
-/**
- * ContractCodeHistoryEntry metadata to a contract.
- */
-export interface V1ContractCodeHistoryEntry {
-  /**
-   * - CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED: ContractCodeHistoryOperationTypeUnspecified placeholder for empty value
-   *  - CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT: ContractCodeHistoryOperationTypeInit on chain contract instantiation
-   *  - CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE: ContractCodeHistoryOperationTypeMigrate code migration
-   *  - CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS: ContractCodeHistoryOperationTypeGenesis based on genesis data
-   */
-  operation?: V1ContractCodeHistoryOperationType;
+export interface ContractCodeHistoryEntry {
+  operation?:
+    | "CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED"
+    | "CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT"
+    | "CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE"
+    | "CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS";
 
-  /**
-   * CodeID is the reference to the stored WASM code
-   * @format uint64
-   */
+  /** @format uint64 */
   code_id?: string;
-
-  /** Updated Tx position when the operation was executed. */
-  updated?: V1AbsoluteTxPosition;
+  updated?: { block_height?: string; tx_index?: string };
 
   /** @format byte */
   msg?: string;
 }
 
-/**
-* - CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED: ContractCodeHistoryOperationTypeUnspecified placeholder for empty value
- - CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT: ContractCodeHistoryOperationTypeInit on chain contract instantiation
- - CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE: ContractCodeHistoryOperationTypeMigrate code migration
- - CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS: ContractCodeHistoryOperationTypeGenesis based on genesis data
-*/
-export enum V1ContractCodeHistoryOperationType {
+export enum ContractCodeHistoryOperationType {
   CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED = "CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED",
   CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT = "CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT",
   CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE = "CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE",
   CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS = "CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS",
 }
 
-export interface V1ContractInfo {
-  /**
-   * CodeID is the reference to the stored Wasm code
-   * @format uint64
-   */
+export interface ContractInfo {
+  /** @format uint64 */
   code_id?: string;
-
-  /** Creator address who initially instantiated the contract */
   creator?: string;
-
-  /** Admin is an optional address that can execute migrations */
   admin?: string;
-
-  /** Label is optional metadata to be stored with a contract instance. */
   label?: string;
-
-  /** Created Tx position when the contract was instantiated. */
-  created?: V1AbsoluteTxPosition;
+  created?: { block_height?: string; tx_index?: string };
   ibc_port_id?: string;
-
-  /**
-   * Extension is an extension point to store custom metadata within the
-   * persistence model.
-   */
-  extension?: ProtobufAny;
+  extension?: { "@type"?: string };
 }
 
-export interface V1Model {
-  /**
-   * hex-encode key to read it better (this is often ascii)
-   * @format byte
-   */
+export interface Model {
+  /** @format byte */
   key?: string;
 
-  /**
-   * base64-encode raw value
-   * @format byte
-   */
+  /** @format byte */
   value?: string;
 }
 
-/**
-* MsgAddCodeUploadParamsAddressesResponse defines the response
-structure for executing a MsgAddCodeUploadParamsAddresses message.
-*/
-export type V1MsgAddCodeUploadParamsAddressesResponse = object;
+export interface PageRequest {
+  /** @format byte */
+  key?: string;
 
-export type V1MsgClearAdminResponse = object;
+  /** @format uint64 */
+  offset?: string;
 
-/**
- * MsgExecuteContractResponse returns execution result data.
- */
-export interface V1MsgExecuteContractResponse {
-  /**
-   * Data contains bytes to returned from the contract
-   * @format byte
-   */
-  data?: string;
+  /** @format uint64 */
+  limit?: string;
+  count_total?: boolean;
+  reverse?: boolean;
 }
 
-export interface V1MsgInstantiateContract2Response {
-  /** Address is the bech32 address of the new contract instance. */
-  address?: string;
+export interface PageResponse {
+  /** @format byte */
+  next_key?: string;
 
-  /**
-   * Data contains bytes to returned from the contract
-   * @format byte
-   */
-  data?: string;
+  /** @format uint64 */
+  total?: string;
 }
 
-export interface V1MsgInstantiateContractResponse {
-  /** Address is the bech32 address of the new contract instance. */
-  address?: string;
-
-  /**
-   * Data contains bytes to returned from the contract
-   * @format byte
-   */
-  data?: string;
+export interface Params {
+  code_upload_access?: {
+    permission?:
+      | "ACCESS_TYPE_UNSPECIFIED"
+      | "ACCESS_TYPE_NOBODY"
+      | "ACCESS_TYPE_EVERYBODY"
+      | "ACCESS_TYPE_ANY_OF_ADDRESSES";
+    addresses?: string[];
+  };
+  instantiate_default_permission?:
+    | "ACCESS_TYPE_UNSPECIFIED"
+    | "ACCESS_TYPE_NOBODY"
+    | "ACCESS_TYPE_EVERYBODY"
+    | "ACCESS_TYPE_ANY_OF_ADDRESSES";
 }
 
-/**
- * MsgMigrateContractResponse returns contract migration result data.
- */
-export interface V1MsgMigrateContractResponse {
-  /**
-   * Data contains same raw bytes returned as data from the wasm contract.
-   * (May be empty)
-   * @format byte
-   */
-  data?: string;
+export interface QueryAllContractStateResponse {
+  models?: { key?: string; value?: string }[];
+  pagination?: { next_key?: string; total?: string };
 }
 
-/**
-* MsgPinCodesResponse defines the response structure for executing a
-MsgPinCodes message.
-
-Since: 0.40
-*/
-export type V1MsgPinCodesResponse = object;
-
-/**
-* MsgRemoveCodeUploadParamsAddressesResponse defines the response
-structure for executing a MsgRemoveCodeUploadParamsAddresses message.
-*/
-export type V1MsgRemoveCodeUploadParamsAddressesResponse = object;
-
-/**
-* MsgStoreAndInstantiateContractResponse defines the response structure
-for executing a MsgStoreAndInstantiateContract message.
-
-Since: 0.40
-*/
-export interface V1MsgStoreAndInstantiateContractResponse {
-  /** Address is the bech32 address of the new contract instance. */
-  address?: string;
-
-  /**
-   * Data contains bytes to returned from the contract
-   * @format byte
-   */
-  data?: string;
-}
-
-/**
-* MsgStoreAndMigrateContractResponse defines the response structure
-for executing a MsgStoreAndMigrateContract message.
-
-Since: 0.42
-*/
-export interface V1MsgStoreAndMigrateContractResponse {
-  /**
-   * CodeID is the reference to the stored WASM code
-   * @format uint64
-   */
-  code_id?: string;
-
-  /**
-   * Checksum is the sha256 hash of the stored code
-   * @format byte
-   */
-  checksum?: string;
-
-  /**
-   * Data contains bytes to returned from the contract
-   * @format byte
-   */
-  data?: string;
-}
-
-/**
- * MsgStoreCodeResponse returns store result data.
- */
-export interface V1MsgStoreCodeResponse {
-  /**
-   * CodeID is the reference to the stored WASM code
-   * @format uint64
-   */
-  code_id?: string;
-
-  /**
-   * Checksum is the sha256 hash of the stored code
-   * @format byte
-   */
-  checksum?: string;
-}
-
-/**
-* MsgSudoContractResponse defines the response structure for executing a
-MsgSudoContract message.
-
-Since: 0.40
-*/
-export interface V1MsgSudoContractResponse {
-  /**
-   * Data contains bytes to returned from the contract
-   * @format byte
-   */
-  data?: string;
-}
-
-/**
-* MsgUnpinCodesResponse defines the response structure for executing a
-MsgUnpinCodes message.
-
-Since: 0.40
-*/
-export type V1MsgUnpinCodesResponse = object;
-
-export type V1MsgUpdateAdminResponse = object;
-
-export type V1MsgUpdateContractLabelResponse = object;
-
-export type V1MsgUpdateInstantiateConfigResponse = object;
-
-/**
-* MsgUpdateParamsResponse defines the response structure for executing a
-MsgUpdateParams message.
-
-Since: 0.40
-*/
-export type V1MsgUpdateParamsResponse = object;
-
-/**
- * Params defines the set of wasm parameters.
- */
-export interface V1Params {
-  /** AccessConfig access control type. */
-  code_upload_access?: V1AccessConfig;
-
-  /**
-   * - ACCESS_TYPE_UNSPECIFIED: AccessTypeUnspecified placeholder for empty value
-   *  - ACCESS_TYPE_NOBODY: AccessTypeNobody forbidden
-   *  - ACCESS_TYPE_EVERYBODY: AccessTypeEverybody unrestricted
-   *  - ACCESS_TYPE_ANY_OF_ADDRESSES: AccessTypeAnyOfAddresses allow any of the addresses
-   */
-  instantiate_default_permission?: V1AccessType;
-}
-
-export interface V1QueryAllContractStateResponse {
-  models?: V1Model[];
-
-  /** pagination defines the pagination in the response. */
-  pagination?: V1Beta1PageResponse;
-}
-
-export interface V1QueryCodeResponse {
-  code_info?: V1CodeInfoResponse;
+export interface QueryCodeResponse {
+  code_info?: {
+    code_id?: string;
+    creator?: string;
+    data_hash?: string;
+    instantiate_permission?: {
+      permission?:
+        | "ACCESS_TYPE_UNSPECIFIED"
+        | "ACCESS_TYPE_NOBODY"
+        | "ACCESS_TYPE_EVERYBODY"
+        | "ACCESS_TYPE_ANY_OF_ADDRESSES";
+      addresses?: string[];
+    };
+  };
 
   /** @format byte */
   data?: string;
 }
 
-export interface V1QueryCodesResponse {
-  code_infos?: V1CodeInfoResponse[];
-
-  /** pagination defines the pagination in the response. */
-  pagination?: V1Beta1PageResponse;
+export interface QueryCodesResponse {
+  code_infos?: {
+    code_id?: string;
+    creator?: string;
+    data_hash?: string;
+    instantiate_permission?: {
+      permission?:
+        | "ACCESS_TYPE_UNSPECIFIED"
+        | "ACCESS_TYPE_NOBODY"
+        | "ACCESS_TYPE_EVERYBODY"
+        | "ACCESS_TYPE_ANY_OF_ADDRESSES";
+      addresses?: string[];
+    };
+  }[];
+  pagination?: { next_key?: string; total?: string };
 }
 
-export interface V1QueryContractHistoryResponse {
-  entries?: V1ContractCodeHistoryEntry[];
-
-  /** pagination defines the pagination in the response. */
-  pagination?: V1Beta1PageResponse;
+export interface QueryContractHistoryResponse {
+  entries?: {
+    operation?:
+      | "CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED"
+      | "CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT"
+      | "CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE"
+      | "CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS";
+    code_id?: string;
+    updated?: { block_height?: string; tx_index?: string };
+    msg?: string;
+  }[];
+  pagination?: { next_key?: string; total?: string };
 }
 
-export interface V1QueryContractInfoResponse {
-  /** address is the address of the contract */
+export interface QueryContractInfoResponse {
   address?: string;
-  contract_info?: V1ContractInfo;
+  contract_info?: {
+    code_id?: string;
+    creator?: string;
+    admin?: string;
+    label?: string;
+    created?: { block_height?: string; tx_index?: string };
+    ibc_port_id?: string;
+    extension?: { "@type"?: string };
+  };
 }
 
-export interface V1QueryContractsByCodeResponse {
-  /** contracts are a set of contract addresses */
+export interface QueryContractsByCodeResponse {
   contracts?: string[];
-
-  /** pagination defines the pagination in the response. */
-  pagination?: V1Beta1PageResponse;
+  pagination?: { next_key?: string; total?: string };
 }
 
-/**
-* QueryContractsByCreatorResponse is the response type for the
-Query/ContractsByCreator RPC method.
-*/
-export interface V1QueryContractsByCreatorResponse {
-  /** ContractAddresses result set */
+export interface QueryContractsByCreatorResponse {
   contract_addresses?: string[];
-
-  /** Pagination defines the pagination in the response. */
-  pagination?: V1Beta1PageResponse;
+  pagination?: { next_key?: string; total?: string };
 }
 
-/**
- * QueryParamsResponse is the response type for the Query/Params RPC method.
- */
-export interface V1QueryParamsResponse {
-  /** params defines the parameters of the module. */
-  params?: V1Params;
+export interface QueryParamsResponse {
+  params?: {
+    code_upload_access?: {
+      permission?:
+        | "ACCESS_TYPE_UNSPECIFIED"
+        | "ACCESS_TYPE_NOBODY"
+        | "ACCESS_TYPE_EVERYBODY"
+        | "ACCESS_TYPE_ANY_OF_ADDRESSES";
+      addresses?: string[];
+    };
+    instantiate_default_permission?:
+      | "ACCESS_TYPE_UNSPECIFIED"
+      | "ACCESS_TYPE_NOBODY"
+      | "ACCESS_TYPE_EVERYBODY"
+      | "ACCESS_TYPE_ANY_OF_ADDRESSES";
+  };
 }
 
-export interface V1QueryPinnedCodesResponse {
+export interface QueryPinnedCodesResponse {
   code_ids?: string[];
-
-  /** pagination defines the pagination in the response. */
-  pagination?: V1Beta1PageResponse;
+  pagination?: { next_key?: string; total?: string };
 }
 
-export interface V1QueryRawContractStateResponse {
-  /**
-   * Data contains the raw store data
-   * @format byte
-   */
+export interface QueryRawContractStateResponse {
+  /** @format byte */
   data?: string;
 }
 
-export interface V1QuerySmartContractStateResponse {
-  /**
-   * Data contains the json data returned from the smart contract
-   * @format byte
-   */
+export interface QuerySmartContractStateResponse {
+  /** @format byte */
   data?: string;
 }
 
-/**
-* Coin defines a token with a denomination and an amount.
-
-NOTE: The amount field is an Int which implements the custom method
-signatures required by gogoproto.
-*/
-export interface V1Beta1Coin {
+export interface Coin {
   denom?: string;
   amount?: string;
 }
 
-/**
-* message SomeRequest {
-         Foo some_parameter = 1;
-         PageRequest pagination = 2;
- }
-*/
-export interface V1Beta1PageRequest {
-  /**
-   * key is a value returned in PageResponse.next_key to begin
-   * querying the next page most efficiently. Only one of offset or key
-   * should be set.
-   * @format byte
-   */
-  key?: string;
+export type MsgAddCodeUploadParamsAddressesResponse = object;
 
-  /**
-   * offset is a numeric offset that can be used when key is unavailable.
-   * It is less efficient than using key. Only one of offset or key should
-   * be set.
-   * @format uint64
-   */
-  offset?: string;
+export type MsgClearAdminResponse = object;
 
-  /**
-   * limit is the total number of results to be returned in the result page.
-   * If left empty it will default to a value to be set by each app.
-   * @format uint64
-   */
-  limit?: string;
-
-  /**
-   * count_total is set to true  to indicate that the result set should include
-   * a count of the total number of items available for pagination in UIs.
-   * count_total is only respected when offset is used. It is ignored when key
-   * is set.
-   */
-  count_total?: boolean;
-
-  /**
-   * reverse is set to true if results are to be returned in the descending order.
-   *
-   * Since: cosmos-sdk 0.43
-   */
-  reverse?: boolean;
+export interface MsgExecuteContractResponse {
+  /** @format byte */
+  data?: string;
 }
 
-/**
-* PageResponse is to be embedded in gRPC response messages where the
-corresponding request message has used PageRequest.
+export interface MsgInstantiateContract2Response {
+  address?: string;
 
- message SomeResponse {
-         repeated Bar results = 1;
-         PageResponse page = 2;
- }
-*/
-export interface V1Beta1PageResponse {
-  /**
-   * next_key is the key to be passed to PageRequest.key to
-   * query the next page most efficiently. It will be empty if
-   * there are no more results.
-   * @format byte
-   */
-  next_key?: string;
-
-  /**
-   * total is total number of results available if PageRequest.count_total
-   * was set, its value is undefined otherwise
-   * @format uint64
-   */
-  total?: string;
+  /** @format byte */
+  data?: string;
 }
+
+export interface MsgInstantiateContractResponse {
+  address?: string;
+
+  /** @format byte */
+  data?: string;
+}
+
+export interface MsgMigrateContractResponse {
+  /** @format byte */
+  data?: string;
+}
+
+export type MsgPinCodesResponse = object;
+
+export type MsgRemoveCodeUploadParamsAddressesResponse = object;
+
+export interface MsgStoreAndInstantiateContractResponse {
+  address?: string;
+
+  /** @format byte */
+  data?: string;
+}
+
+export interface MsgStoreAndMigrateContractResponse {
+  /** @format uint64 */
+  code_id?: string;
+
+  /** @format byte */
+  checksum?: string;
+
+  /** @format byte */
+  data?: string;
+}
+
+export interface MsgStoreCodeResponse {
+  /** @format uint64 */
+  code_id?: string;
+
+  /** @format byte */
+  checksum?: string;
+}
+
+export interface MsgSudoContractResponse {
+  /** @format byte */
+  data?: string;
+}
+
+export type MsgUnpinCodesResponse = object;
+
+export type MsgUpdateAdminResponse = object;
+
+export type MsgUpdateContractLabelResponse = object;
+
+export type MsgUpdateInstantiateConfigResponse = object;
+
+export type MsgUpdateParamsResponse = object;
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
@@ -738,8 +449,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title cosmwasm/wasm/v1/authz.proto
- * @version version not set
+ * @title HTTP API Console cosmwasm.wasm.v1
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   /**
@@ -747,7 +457,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryCodes
-   * @summary Codes gets the metadata for all stored wasm codes
    * @request GET:/cosmwasm/wasm/v1/code
    */
   queryCodes = (
@@ -760,11 +469,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<V1QueryCodesResponse, RpcStatus>({
+    this.request<
+      {
+        code_infos?: {
+          code_id?: string;
+          creator?: string;
+          data_hash?: string;
+          instantiate_permission?: {
+            permission?:
+              | "ACCESS_TYPE_UNSPECIFIED"
+              | "ACCESS_TYPE_NOBODY"
+              | "ACCESS_TYPE_EVERYBODY"
+              | "ACCESS_TYPE_ANY_OF_ADDRESSES";
+            addresses?: string[];
+          };
+        }[];
+        pagination?: { next_key?: string; total?: string };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmwasm/wasm/v1/code`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 
@@ -773,14 +499,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryCode
-   * @summary Code gets the binary code and metadata for a singe wasm code
    * @request GET:/cosmwasm/wasm/v1/code/{code_id}
    */
   queryCode = (codeId: string, params: RequestParams = {}) =>
-    this.request<V1QueryCodeResponse, RpcStatus>({
+    this.request<
+      {
+        code_info?: {
+          code_id?: string;
+          creator?: string;
+          data_hash?: string;
+          instantiate_permission?: {
+            permission?:
+              | "ACCESS_TYPE_UNSPECIFIED"
+              | "ACCESS_TYPE_NOBODY"
+              | "ACCESS_TYPE_EVERYBODY"
+              | "ACCESS_TYPE_ANY_OF_ADDRESSES";
+            addresses?: string[];
+          };
+        };
+        data?: string;
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmwasm/wasm/v1/code/${codeId}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -789,7 +531,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryContractsByCode
-   * @summary ContractsByCode lists all smart contracts for a code id
    * @request GET:/cosmwasm/wasm/v1/code/{code_id}/contracts
    */
   queryContractsByCode = (
@@ -803,11 +544,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<V1QueryContractsByCodeResponse, RpcStatus>({
+    this.request<
+      { contracts?: string[]; pagination?: { next_key?: string; total?: string } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmwasm/wasm/v1/code/${codeId}/contracts`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 
@@ -816,14 +559,31 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryParams
-   * @summary Params gets the module params
    * @request GET:/cosmwasm/wasm/v1/codes/params
    */
   queryParams = (params: RequestParams = {}) =>
-    this.request<V1QueryParamsResponse, RpcStatus>({
+    this.request<
+      {
+        params?: {
+          code_upload_access?: {
+            permission?:
+              | "ACCESS_TYPE_UNSPECIFIED"
+              | "ACCESS_TYPE_NOBODY"
+              | "ACCESS_TYPE_EVERYBODY"
+              | "ACCESS_TYPE_ANY_OF_ADDRESSES";
+            addresses?: string[];
+          };
+          instantiate_default_permission?:
+            | "ACCESS_TYPE_UNSPECIFIED"
+            | "ACCESS_TYPE_NOBODY"
+            | "ACCESS_TYPE_EVERYBODY"
+            | "ACCESS_TYPE_ANY_OF_ADDRESSES";
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmwasm/wasm/v1/codes/params`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -832,7 +592,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryPinnedCodes
-   * @summary PinnedCodes gets the pinned code ids
    * @request GET:/cosmwasm/wasm/v1/codes/pinned
    */
   queryPinnedCodes = (
@@ -845,11 +604,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<V1QueryPinnedCodesResponse, RpcStatus>({
+    this.request<
+      { code_ids?: string[]; pagination?: { next_key?: string; total?: string } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmwasm/wasm/v1/codes/pinned`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 
@@ -858,14 +619,26 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryContractInfo
-   * @summary ContractInfo gets the contract meta data
    * @request GET:/cosmwasm/wasm/v1/contract/{address}
    */
   queryContractInfo = (address: string, params: RequestParams = {}) =>
-    this.request<V1QueryContractInfoResponse, RpcStatus>({
+    this.request<
+      {
+        address?: string;
+        contract_info?: {
+          code_id?: string;
+          creator?: string;
+          admin?: string;
+          label?: string;
+          created?: { block_height?: string; tx_index?: string };
+          ibc_port_id?: string;
+          extension?: { "@type"?: string };
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmwasm/wasm/v1/contract/${address}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -874,7 +647,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryContractHistory
-   * @summary ContractHistory gets the contract code history
    * @request GET:/cosmwasm/wasm/v1/contract/{address}/history
    */
   queryContractHistory = (
@@ -888,11 +660,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<V1QueryContractHistoryResponse, RpcStatus>({
+    this.request<
+      {
+        entries?: {
+          operation?:
+            | "CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED"
+            | "CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT"
+            | "CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE"
+            | "CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS";
+          code_id?: string;
+          updated?: { block_height?: string; tx_index?: string };
+          msg?: string;
+        }[];
+        pagination?: { next_key?: string; total?: string };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmwasm/wasm/v1/contract/${address}/history`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 
@@ -901,14 +687,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryRawContractState
-   * @summary RawContractState gets single key from the raw store data of a contract
    * @request GET:/cosmwasm/wasm/v1/contract/{address}/raw/{query_data}
    */
   queryRawContractState = (address: string, queryData: string, params: RequestParams = {}) =>
-    this.request<V1QueryRawContractStateResponse, RpcStatus>({
+    this.request<{ data?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
       path: `/cosmwasm/wasm/v1/contract/${address}/raw/${queryData}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -917,14 +701,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QuerySmartContractState
-   * @summary SmartContractState get smart query result from the contract
    * @request GET:/cosmwasm/wasm/v1/contract/{address}/smart/{query_data}
    */
   querySmartContractState = (address: string, queryData: string, params: RequestParams = {}) =>
-    this.request<V1QuerySmartContractStateResponse, RpcStatus>({
+    this.request<{ data?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
       path: `/cosmwasm/wasm/v1/contract/${address}/smart/${queryData}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -933,7 +715,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryAllContractState
-   * @summary AllContractState gets all raw store data for a single contract
    * @request GET:/cosmwasm/wasm/v1/contract/{address}/state
    */
   queryAllContractState = (
@@ -947,11 +728,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<V1QueryAllContractStateResponse, RpcStatus>({
+    this.request<
+      { models?: { key?: string; value?: string }[]; pagination?: { next_key?: string; total?: string } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmwasm/wasm/v1/contract/${address}/state`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 
@@ -960,7 +743,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryContractsByCreator
-   * @summary ContractsByCreator gets the contracts by creator
    * @request GET:/cosmwasm/wasm/v1/contracts/creator/{creator_address}
    */
   queryContractsByCreator = (
@@ -974,11 +756,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<V1QueryContractsByCreatorResponse, RpcStatus>({
+    this.request<
+      { contract_addresses?: string[]; pagination?: { next_key?: string; total?: string } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmwasm/wasm/v1/contracts/creator/${creatorAddress}`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 }

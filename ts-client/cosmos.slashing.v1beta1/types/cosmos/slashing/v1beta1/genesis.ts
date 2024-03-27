@@ -69,25 +69,38 @@ export const GenesisState = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.params = Params.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.signingInfos.push(SigningInfo.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.missedBlocks.push(ValidatorMissedBlocks.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -106,20 +119,21 @@ export const GenesisState = {
 
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
-    message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
-    if (message.signingInfos) {
-      obj.signingInfos = message.signingInfos.map((e) => e ? SigningInfo.toJSON(e) : undefined);
-    } else {
-      obj.signingInfos = [];
+    if (message.params !== undefined) {
+      obj.params = Params.toJSON(message.params);
     }
-    if (message.missedBlocks) {
-      obj.missedBlocks = message.missedBlocks.map((e) => e ? ValidatorMissedBlocks.toJSON(e) : undefined);
-    } else {
-      obj.missedBlocks = [];
+    if (message.signingInfos?.length) {
+      obj.signingInfos = message.signingInfos.map((e) => SigningInfo.toJSON(e));
+    }
+    if (message.missedBlocks?.length) {
+      obj.missedBlocks = message.missedBlocks.map((e) => ValidatorMissedBlocks.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GenesisState>, I>>(base?: I): GenesisState {
+    return GenesisState.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(object: I): GenesisState {
     const message = createBaseGenesisState();
     message.params = (object.params !== undefined && object.params !== null)
@@ -147,22 +161,31 @@ export const SigningInfo = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SigningInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSigningInfo();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.address = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.validatorSigningInfo = ValidatorSigningInfo.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -178,13 +201,18 @@ export const SigningInfo = {
 
   toJSON(message: SigningInfo): unknown {
     const obj: any = {};
-    message.address !== undefined && (obj.address = message.address);
-    message.validatorSigningInfo !== undefined && (obj.validatorSigningInfo = message.validatorSigningInfo
-      ? ValidatorSigningInfo.toJSON(message.validatorSigningInfo)
-      : undefined);
+    if (message.address !== "") {
+      obj.address = message.address;
+    }
+    if (message.validatorSigningInfo !== undefined) {
+      obj.validatorSigningInfo = ValidatorSigningInfo.toJSON(message.validatorSigningInfo);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SigningInfo>, I>>(base?: I): SigningInfo {
+    return SigningInfo.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<SigningInfo>, I>>(object: I): SigningInfo {
     const message = createBaseSigningInfo();
     message.address = object.address ?? "";
@@ -211,22 +239,31 @@ export const ValidatorMissedBlocks = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ValidatorMissedBlocks {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseValidatorMissedBlocks();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.address = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.missedBlocks.push(MissedBlock.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -242,15 +279,18 @@ export const ValidatorMissedBlocks = {
 
   toJSON(message: ValidatorMissedBlocks): unknown {
     const obj: any = {};
-    message.address !== undefined && (obj.address = message.address);
-    if (message.missedBlocks) {
-      obj.missedBlocks = message.missedBlocks.map((e) => e ? MissedBlock.toJSON(e) : undefined);
-    } else {
-      obj.missedBlocks = [];
+    if (message.address !== "") {
+      obj.address = message.address;
+    }
+    if (message.missedBlocks?.length) {
+      obj.missedBlocks = message.missedBlocks.map((e) => MissedBlock.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ValidatorMissedBlocks>, I>>(base?: I): ValidatorMissedBlocks {
+    return ValidatorMissedBlocks.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ValidatorMissedBlocks>, I>>(object: I): ValidatorMissedBlocks {
     const message = createBaseValidatorMissedBlocks();
     message.address = object.address ?? "";
@@ -275,22 +315,31 @@ export const MissedBlock = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MissedBlock {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMissedBlock();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.index = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.missed = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -304,11 +353,18 @@ export const MissedBlock = {
 
   toJSON(message: MissedBlock): unknown {
     const obj: any = {};
-    message.index !== undefined && (obj.index = Math.round(message.index));
-    message.missed !== undefined && (obj.missed = message.missed);
+    if (message.index !== 0) {
+      obj.index = Math.round(message.index);
+    }
+    if (message.missed === true) {
+      obj.missed = message.missed;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MissedBlock>, I>>(base?: I): MissedBlock {
+    return MissedBlock.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MissedBlock>, I>>(object: I): MissedBlock {
     const message = createBaseMissedBlock();
     message.index = object.index ?? 0;
@@ -317,10 +373,10 @@ export const MissedBlock = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -349,7 +405,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

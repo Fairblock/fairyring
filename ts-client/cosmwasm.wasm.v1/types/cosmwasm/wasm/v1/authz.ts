@@ -142,19 +142,24 @@ export const StoreCodeAuthorization = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): StoreCodeAuthorization {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStoreCodeAuthorization();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.grants.push(CodeGrant.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -165,14 +170,15 @@ export const StoreCodeAuthorization = {
 
   toJSON(message: StoreCodeAuthorization): unknown {
     const obj: any = {};
-    if (message.grants) {
-      obj.grants = message.grants.map((e) => e ? CodeGrant.toJSON(e) : undefined);
-    } else {
-      obj.grants = [];
+    if (message.grants?.length) {
+      obj.grants = message.grants.map((e) => CodeGrant.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<StoreCodeAuthorization>, I>>(base?: I): StoreCodeAuthorization {
+    return StoreCodeAuthorization.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<StoreCodeAuthorization>, I>>(object: I): StoreCodeAuthorization {
     const message = createBaseStoreCodeAuthorization();
     message.grants = object.grants?.map((e) => CodeGrant.fromPartial(e)) || [];
@@ -193,19 +199,24 @@ export const ContractExecutionAuthorization = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ContractExecutionAuthorization {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseContractExecutionAuthorization();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.grants.push(ContractGrant.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -216,14 +227,15 @@ export const ContractExecutionAuthorization = {
 
   toJSON(message: ContractExecutionAuthorization): unknown {
     const obj: any = {};
-    if (message.grants) {
-      obj.grants = message.grants.map((e) => e ? ContractGrant.toJSON(e) : undefined);
-    } else {
-      obj.grants = [];
+    if (message.grants?.length) {
+      obj.grants = message.grants.map((e) => ContractGrant.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ContractExecutionAuthorization>, I>>(base?: I): ContractExecutionAuthorization {
+    return ContractExecutionAuthorization.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ContractExecutionAuthorization>, I>>(
     object: I,
   ): ContractExecutionAuthorization {
@@ -246,19 +258,24 @@ export const ContractMigrationAuthorization = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ContractMigrationAuthorization {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseContractMigrationAuthorization();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.grants.push(ContractGrant.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -269,14 +286,15 @@ export const ContractMigrationAuthorization = {
 
   toJSON(message: ContractMigrationAuthorization): unknown {
     const obj: any = {};
-    if (message.grants) {
-      obj.grants = message.grants.map((e) => e ? ContractGrant.toJSON(e) : undefined);
-    } else {
-      obj.grants = [];
+    if (message.grants?.length) {
+      obj.grants = message.grants.map((e) => ContractGrant.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ContractMigrationAuthorization>, I>>(base?: I): ContractMigrationAuthorization {
+    return ContractMigrationAuthorization.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ContractMigrationAuthorization>, I>>(
     object: I,
   ): ContractMigrationAuthorization {
@@ -287,7 +305,7 @@ export const ContractMigrationAuthorization = {
 };
 
 function createBaseCodeGrant(): CodeGrant {
-  return { codeHash: new Uint8Array(), instantiatePermission: undefined };
+  return { codeHash: new Uint8Array(0), instantiatePermission: undefined };
 }
 
 export const CodeGrant = {
@@ -302,29 +320,38 @@ export const CodeGrant = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CodeGrant {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCodeGrant();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.codeHash = reader.bytes();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.instantiatePermission = AccessConfig.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): CodeGrant {
     return {
-      codeHash: isSet(object.codeHash) ? bytesFromBase64(object.codeHash) : new Uint8Array(),
+      codeHash: isSet(object.codeHash) ? bytesFromBase64(object.codeHash) : new Uint8Array(0),
       instantiatePermission: isSet(object.instantiatePermission)
         ? AccessConfig.fromJSON(object.instantiatePermission)
         : undefined,
@@ -333,17 +360,21 @@ export const CodeGrant = {
 
   toJSON(message: CodeGrant): unknown {
     const obj: any = {};
-    message.codeHash !== undefined
-      && (obj.codeHash = base64FromBytes(message.codeHash !== undefined ? message.codeHash : new Uint8Array()));
-    message.instantiatePermission !== undefined && (obj.instantiatePermission = message.instantiatePermission
-      ? AccessConfig.toJSON(message.instantiatePermission)
-      : undefined);
+    if (message.codeHash.length !== 0) {
+      obj.codeHash = base64FromBytes(message.codeHash);
+    }
+    if (message.instantiatePermission !== undefined) {
+      obj.instantiatePermission = AccessConfig.toJSON(message.instantiatePermission);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CodeGrant>, I>>(base?: I): CodeGrant {
+    return CodeGrant.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<CodeGrant>, I>>(object: I): CodeGrant {
     const message = createBaseCodeGrant();
-    message.codeHash = object.codeHash ?? new Uint8Array();
+    message.codeHash = object.codeHash ?? new Uint8Array(0);
     message.instantiatePermission =
       (object.instantiatePermission !== undefined && object.instantiatePermission !== null)
         ? AccessConfig.fromPartial(object.instantiatePermission)
@@ -371,25 +402,38 @@ export const ContractGrant = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ContractGrant {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseContractGrant();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.contract = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.limit = Any.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.filter = Any.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -404,12 +448,21 @@ export const ContractGrant = {
 
   toJSON(message: ContractGrant): unknown {
     const obj: any = {};
-    message.contract !== undefined && (obj.contract = message.contract);
-    message.limit !== undefined && (obj.limit = message.limit ? Any.toJSON(message.limit) : undefined);
-    message.filter !== undefined && (obj.filter = message.filter ? Any.toJSON(message.filter) : undefined);
+    if (message.contract !== "") {
+      obj.contract = message.contract;
+    }
+    if (message.limit !== undefined) {
+      obj.limit = Any.toJSON(message.limit);
+    }
+    if (message.filter !== undefined) {
+      obj.filter = Any.toJSON(message.filter);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ContractGrant>, I>>(base?: I): ContractGrant {
+    return ContractGrant.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<ContractGrant>, I>>(object: I): ContractGrant {
     const message = createBaseContractGrant();
     message.contract = object.contract ?? "";
@@ -434,19 +487,24 @@ export const MaxCallsLimit = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MaxCallsLimit {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMaxCallsLimit();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.remaining = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -457,10 +515,15 @@ export const MaxCallsLimit = {
 
   toJSON(message: MaxCallsLimit): unknown {
     const obj: any = {};
-    message.remaining !== undefined && (obj.remaining = Math.round(message.remaining));
+    if (message.remaining !== 0) {
+      obj.remaining = Math.round(message.remaining);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MaxCallsLimit>, I>>(base?: I): MaxCallsLimit {
+    return MaxCallsLimit.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MaxCallsLimit>, I>>(object: I): MaxCallsLimit {
     const message = createBaseMaxCallsLimit();
     message.remaining = object.remaining ?? 0;
@@ -481,19 +544,24 @@ export const MaxFundsLimit = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MaxFundsLimit {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMaxFundsLimit();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.amounts.push(Coin.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -504,14 +572,15 @@ export const MaxFundsLimit = {
 
   toJSON(message: MaxFundsLimit): unknown {
     const obj: any = {};
-    if (message.amounts) {
-      obj.amounts = message.amounts.map((e) => e ? Coin.toJSON(e) : undefined);
-    } else {
-      obj.amounts = [];
+    if (message.amounts?.length) {
+      obj.amounts = message.amounts.map((e) => Coin.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MaxFundsLimit>, I>>(base?: I): MaxFundsLimit {
+    return MaxFundsLimit.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MaxFundsLimit>, I>>(object: I): MaxFundsLimit {
     const message = createBaseMaxFundsLimit();
     message.amounts = object.amounts?.map((e) => Coin.fromPartial(e)) || [];
@@ -535,22 +604,31 @@ export const CombinedLimit = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CombinedLimit {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCombinedLimit();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.callsRemaining = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.amounts.push(Coin.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -564,15 +642,18 @@ export const CombinedLimit = {
 
   toJSON(message: CombinedLimit): unknown {
     const obj: any = {};
-    message.callsRemaining !== undefined && (obj.callsRemaining = Math.round(message.callsRemaining));
-    if (message.amounts) {
-      obj.amounts = message.amounts.map((e) => e ? Coin.toJSON(e) : undefined);
-    } else {
-      obj.amounts = [];
+    if (message.callsRemaining !== 0) {
+      obj.callsRemaining = Math.round(message.callsRemaining);
+    }
+    if (message.amounts?.length) {
+      obj.amounts = message.amounts.map((e) => Coin.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CombinedLimit>, I>>(base?: I): CombinedLimit {
+    return CombinedLimit.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<CombinedLimit>, I>>(object: I): CombinedLimit {
     const message = createBaseCombinedLimit();
     message.callsRemaining = object.callsRemaining ?? 0;
@@ -591,16 +672,17 @@ export const AllowAllMessagesFilter = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AllowAllMessagesFilter {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAllowAllMessagesFilter();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -614,6 +696,9 @@ export const AllowAllMessagesFilter = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AllowAllMessagesFilter>, I>>(base?: I): AllowAllMessagesFilter {
+    return AllowAllMessagesFilter.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<AllowAllMessagesFilter>, I>>(_: I): AllowAllMessagesFilter {
     const message = createBaseAllowAllMessagesFilter();
     return message;
@@ -633,19 +718,24 @@ export const AcceptedMessageKeysFilter = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AcceptedMessageKeysFilter {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAcceptedMessageKeysFilter();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.keys.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -656,14 +746,15 @@ export const AcceptedMessageKeysFilter = {
 
   toJSON(message: AcceptedMessageKeysFilter): unknown {
     const obj: any = {};
-    if (message.keys) {
-      obj.keys = message.keys.map((e) => e);
-    } else {
-      obj.keys = [];
+    if (message.keys?.length) {
+      obj.keys = message.keys;
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AcceptedMessageKeysFilter>, I>>(base?: I): AcceptedMessageKeysFilter {
+    return AcceptedMessageKeysFilter.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<AcceptedMessageKeysFilter>, I>>(object: I): AcceptedMessageKeysFilter {
     const message = createBaseAcceptedMessageKeysFilter();
     message.keys = object.keys?.map((e) => e) || [];
@@ -684,19 +775,24 @@ export const AcceptedMessagesFilter = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AcceptedMessagesFilter {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAcceptedMessagesFilter();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.messages.push(reader.bytes());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -707,14 +803,15 @@ export const AcceptedMessagesFilter = {
 
   toJSON(message: AcceptedMessagesFilter): unknown {
     const obj: any = {};
-    if (message.messages) {
-      obj.messages = message.messages.map((e) => base64FromBytes(e !== undefined ? e : new Uint8Array()));
-    } else {
-      obj.messages = [];
+    if (message.messages?.length) {
+      obj.messages = message.messages.map((e) => base64FromBytes(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AcceptedMessagesFilter>, I>>(base?: I): AcceptedMessagesFilter {
+    return AcceptedMessagesFilter.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<AcceptedMessagesFilter>, I>>(object: I): AcceptedMessagesFilter {
     const message = createBaseAcceptedMessagesFilter();
     message.messages = object.messages?.map((e) => e) || [];
@@ -722,10 +819,10 @@ export const AcceptedMessagesFilter = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -742,10 +839,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -755,14 +852,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 
@@ -779,7 +876,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

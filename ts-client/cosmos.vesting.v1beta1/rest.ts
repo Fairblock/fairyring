@@ -9,168 +9,32 @@
  * ---------------------------------------------------------------
  */
 
-/**
-* `Any` contains an arbitrary serialized protocol buffer message along with a
-URL that describes the type of the serialized message.
-
-Protobuf library provides support to pack/unpack Any values in the form
-of utility functions or additional generated methods of the Any type.
-
-Example 1: Pack and unpack a message in C++.
-
-    Foo foo = ...;
-    Any any;
-    any.PackFrom(foo);
-    ...
-    if (any.UnpackTo(&foo)) {
-      ...
-    }
-
-Example 2: Pack and unpack a message in Java.
-
-    Foo foo = ...;
-    Any any = Any.pack(foo);
-    ...
-    if (any.is(Foo.class)) {
-      foo = any.unpack(Foo.class);
-    }
-
- Example 3: Pack and unpack a message in Python.
-
-    foo = Foo(...)
-    any = Any()
-    any.Pack(foo)
-    ...
-    if any.Is(Foo.DESCRIPTOR):
-      any.Unpack(foo)
-      ...
-
- Example 4: Pack and unpack a message in Go
-
-     foo := &pb.Foo{...}
-     any, err := anypb.New(foo)
-     if err != nil {
-       ...
-     }
-     ...
-     foo := &pb.Foo{}
-     if err := any.UnmarshalTo(foo); err != nil {
-       ...
-     }
-
-The pack methods provided by protobuf library will by default use
-'type.googleapis.com/full.type.name' as the type URL and the unpack
-methods only use the fully qualified type name after the last '/'
-in the type URL, for example "foo.bar.com/x/y.z" will yield type
-name "y.z".
-
-
-JSON
-====
-The JSON representation of an `Any` value uses the regular
-representation of the deserialized, embedded message, with an
-additional field `@type` which contains the type URL. Example:
-
-    package google.profile;
-    message Person {
-      string first_name = 1;
-      string last_name = 2;
-    }
-
-    {
-      "@type": "type.googleapis.com/google.profile.Person",
-      "firstName": <string>,
-      "lastName": <string>
-    }
-
-If the embedded message type is well-known and has a custom JSON
-representation, that representation will be embedded adding a field
-`value` which holds the custom JSON in addition to the `@type`
-field. Example (for message [google.protobuf.Duration][]):
-
-    {
-      "@type": "type.googleapis.com/google.protobuf.Duration",
-      "value": "1.212s"
-    }
-*/
-export interface ProtobufAny {
-  /**
-   * A URL/resource name that uniquely identifies the type of the serialized
-   * protocol buffer message. This string must contain at least
-   * one "/" character. The last segment of the URL's path must represent
-   * the fully qualified name of the type (as in
-   * `path/google.protobuf.Duration`). The name should be in a canonical form
-   * (e.g., leading "." is not accepted).
-   *
-   * In practice, teams usually precompile into the binary all types that they
-   * expect it to use in the context of Any. However, for URLs which use the
-   * scheme `http`, `https`, or no scheme, one can optionally set up a type
-   * server that maps type URLs to message definitions as follows:
-   * * If no scheme is provided, `https` is assumed.
-   * * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-   *   value in binary format, or produce an error.
-   * * Applications are allowed to cache lookup results based on the
-   *   URL, or have them precompiled into a binary to avoid any
-   *   lookup. Therefore, binary compatibility needs to be preserved
-   *   on changes to types. (Use versioned type names to manage
-   *   breaking changes.)
-   * Note: this functionality is not currently available in the official
-   * protobuf release, and it is not used for type URLs beginning with
-   * type.googleapis.com.
-   * Schemes other than `http`, `https` (or the empty scheme) might be
-   * used with implementation specific semantics.
-   */
+export interface Any {
   "@type"?: string;
 }
 
-export interface RpcStatus {
-  /** @format int32 */
-  code?: number;
-  message?: string;
-  details?: ProtobufAny[];
-}
-
-/**
-* Coin defines a token with a denomination and an amount.
-
-NOTE: The amount field is an Int which implements the custom method
-signatures required by gogoproto.
-*/
-export interface V1Beta1Coin {
+export interface Coin {
   denom?: string;
   amount?: string;
 }
 
-/**
-* MsgCreateVestingAccountResponse defines the Msg/CreatePeriodicVestingAccount
-response type.
+export type MsgCreatePeriodicVestingAccountResponse = object;
 
-Since: cosmos-sdk 0.46
-*/
-export type V1Beta1MsgCreatePeriodicVestingAccountResponse = object;
+export type MsgCreatePermanentLockedAccountResponse = object;
 
-/**
-* MsgCreatePermanentLockedAccountResponse defines the Msg/CreatePermanentLockedAccount response type.
+export type MsgCreateVestingAccountResponse = object;
 
-Since: cosmos-sdk 0.46
-*/
-export type V1Beta1MsgCreatePermanentLockedAccountResponse = object;
-
-/**
- * MsgCreateVestingAccountResponse defines the Msg/CreateVestingAccount response type.
- */
-export type V1Beta1MsgCreateVestingAccountResponse = object;
-
-/**
- * Period defines a length of time and amount of coins that will vest.
- */
-export interface V1Beta1Period {
-  /**
-   * Period duration in seconds.
-   * @format int64
-   */
+export interface Period {
+  /** @format int64 */
   length?: string;
-  amount?: V1Beta1Coin[];
+  amount?: { denom?: string; amount?: string }[];
+}
+
+export interface Status {
+  /** @format int32 */
+  code?: number;
+  message?: string;
+  details?: { "@type"?: string }[];
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
@@ -294,7 +158,6 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title cosmos/vesting/v1beta1/tx.proto
- * @version version not set
+ * @title HTTP API Console cosmos.vesting.v1beta1
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {}

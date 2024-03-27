@@ -41,22 +41,31 @@ export const QueryInterchainAccountRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): QueryInterchainAccountRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryInterchainAccountRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.owner = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.connectionId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -70,11 +79,18 @@ export const QueryInterchainAccountRequest = {
 
   toJSON(message: QueryInterchainAccountRequest): unknown {
     const obj: any = {};
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.connectionId !== undefined && (obj.connectionId = message.connectionId);
+    if (message.owner !== "") {
+      obj.owner = message.owner;
+    }
+    if (message.connectionId !== "") {
+      obj.connectionId = message.connectionId;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<QueryInterchainAccountRequest>, I>>(base?: I): QueryInterchainAccountRequest {
+    return QueryInterchainAccountRequest.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<QueryInterchainAccountRequest>, I>>(
     object: I,
   ): QueryInterchainAccountRequest {
@@ -98,19 +114,24 @@ export const QueryInterchainAccountResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): QueryInterchainAccountResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryInterchainAccountResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.address = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -121,10 +142,15 @@ export const QueryInterchainAccountResponse = {
 
   toJSON(message: QueryInterchainAccountResponse): unknown {
     const obj: any = {};
-    message.address !== undefined && (obj.address = message.address);
+    if (message.address !== "") {
+      obj.address = message.address;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<QueryInterchainAccountResponse>, I>>(base?: I): QueryInterchainAccountResponse {
+    return QueryInterchainAccountResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<QueryInterchainAccountResponse>, I>>(
     object: I,
   ): QueryInterchainAccountResponse {
@@ -144,16 +170,17 @@ export const QueryParamsRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -167,6 +194,9 @@ export const QueryParamsRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(base?: I): QueryParamsRequest {
+    return QueryParamsRequest.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(_: I): QueryParamsRequest {
     const message = createBaseQueryParamsRequest();
     return message;
@@ -186,19 +216,24 @@ export const QueryParamsResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.params = Params.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -209,10 +244,15 @@ export const QueryParamsResponse = {
 
   toJSON(message: QueryParamsResponse): unknown {
     const obj: any = {};
-    message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
+    if (message.params !== undefined) {
+      obj.params = Params.toJSON(message.params);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<QueryParamsResponse>, I>>(base?: I): QueryParamsResponse {
+    return QueryParamsResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<QueryParamsResponse>, I>>(object: I): QueryParamsResponse {
     const message = createBaseQueryParamsResponse();
     message.params = (object.params !== undefined && object.params !== null)
@@ -230,27 +270,26 @@ export interface Query {
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
 }
 
+export const QueryServiceName = "ibc.applications.interchain_accounts.controller.v1.Query";
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
-  constructor(rpc: Rpc) {
+  private readonly service: string;
+  constructor(rpc: Rpc, opts?: { service?: string }) {
+    this.service = opts?.service || QueryServiceName;
     this.rpc = rpc;
     this.InterchainAccount = this.InterchainAccount.bind(this);
     this.Params = this.Params.bind(this);
   }
   InterchainAccount(request: QueryInterchainAccountRequest): Promise<QueryInterchainAccountResponse> {
     const data = QueryInterchainAccountRequest.encode(request).finish();
-    const promise = this.rpc.request(
-      "ibc.applications.interchain_accounts.controller.v1.Query",
-      "InterchainAccount",
-      data,
-    );
-    return promise.then((data) => QueryInterchainAccountResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "InterchainAccount", data);
+    return promise.then((data) => QueryInterchainAccountResponse.decode(_m0.Reader.create(data)));
   }
 
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
-    const promise = this.rpc.request("ibc.applications.interchain_accounts.controller.v1.Query", "Params", data);
-    return promise.then((data) => QueryParamsResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "Params", data);
+    return promise.then((data) => QueryParamsResponse.decode(_m0.Reader.create(data)));
   }
 }
 

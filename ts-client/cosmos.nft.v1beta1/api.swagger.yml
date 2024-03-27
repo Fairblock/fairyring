@@ -1,0 +1,631 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.nft.v1beta1
+  name: ''
+  description: ''
+paths:
+  /cosmos/nft/v1beta1/balance/{owner}/{class_id}:
+    get:
+      operationId: Query_Balance
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              amount:
+                type: string
+                format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: owner
+          description: owner is the owner address of the nft
+          in: path
+          required: true
+          type: string
+        - name: class_id
+          description: class_id associated with the nft
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/nft/v1beta1/classes:
+    get:
+      operationId: Query_Classes
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              classes:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    symbol:
+                      type: string
+                    description:
+                      type: string
+                    uri:
+                      type: string
+                    uri_hash:
+                      type: string
+                    data:
+                      type: object
+                      properties:
+                        '@type':
+                          type: string
+                      additionalProperties: {}
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/nft/v1beta1/classes/{class_id}:
+    get:
+      operationId: Query_Class
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              class:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  symbol:
+                    type: string
+                  description:
+                    type: string
+                  uri:
+                    type: string
+                  uri_hash:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      '@type':
+                        type: string
+                    additionalProperties: {}
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: class_id
+          description: class_id associated with the nft
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/nft/v1beta1/nfts:
+    get:
+      operationId: Query_NFTs
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              nfts:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    class_id:
+                      type: string
+                    id:
+                      type: string
+                    uri:
+                      type: string
+                    uri_hash:
+                      type: string
+                    data:
+                      type: object
+                      properties:
+                        '@type':
+                          type: string
+                      additionalProperties: {}
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: class_id
+          in: query
+          required: false
+          type: string
+        - name: owner
+          in: query
+          required: false
+          type: string
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /cosmos/nft/v1beta1/nfts/{class_id}/{id}:
+    get:
+      operationId: Query_NFT
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              nft:
+                type: object
+                properties:
+                  class_id:
+                    type: string
+                  id:
+                    type: string
+                  uri:
+                    type: string
+                  uri_hash:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      '@type':
+                        type: string
+                    additionalProperties: {}
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: class_id
+          description: class_id associated with the nft
+          in: path
+          required: true
+          type: string
+        - name: id
+          description: id is a unique identifier of the NFT
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/nft/v1beta1/owner/{class_id}/{id}:
+    get:
+      operationId: Query_Owner
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              owner:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: class_id
+          description: class_id associated with the nft
+          in: path
+          required: true
+          type: string
+        - name: id
+          description: id is a unique identifier of the NFT
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /cosmos/nft/v1beta1/supply/{class_id}:
+    get:
+      operationId: Query_Supply
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              amount:
+                type: string
+                format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: class_id
+          description: class_id associated with the nft
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  Class:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      symbol:
+        type: string
+      description:
+        type: string
+      uri:
+        type: string
+      uri_hash:
+        type: string
+      data:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+  NFT:
+    type: object
+    properties:
+      class_id:
+        type: string
+      id:
+        type: string
+      uri:
+        type: string
+      uri_hash:
+        type: string
+      data:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+  PageRequest:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      offset:
+        type: string
+        format: uint64
+      limit:
+        type: string
+        format: uint64
+      count_total:
+        type: boolean
+      reverse:
+        type: boolean
+  PageResponse:
+    type: object
+    properties:
+      next_key:
+        type: string
+        format: byte
+      total:
+        type: string
+        format: uint64
+  QueryBalanceResponse:
+    type: object
+    properties:
+      amount:
+        type: string
+        format: uint64
+  QueryClassResponse:
+    type: object
+    properties:
+      class:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          symbol:
+            type: string
+          description:
+            type: string
+          uri:
+            type: string
+          uri_hash:
+            type: string
+          data:
+            type: object
+            properties:
+              '@type':
+                type: string
+            additionalProperties: {}
+  QueryClassesResponse:
+    type: object
+    properties:
+      classes:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            symbol:
+              type: string
+            description:
+              type: string
+            uri:
+              type: string
+            uri_hash:
+              type: string
+            data:
+              type: object
+              properties:
+                '@type':
+                  type: string
+              additionalProperties: {}
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryNFTResponse:
+    type: object
+    properties:
+      nft:
+        type: object
+        properties:
+          class_id:
+            type: string
+          id:
+            type: string
+          uri:
+            type: string
+          uri_hash:
+            type: string
+          data:
+            type: object
+            properties:
+              '@type':
+                type: string
+            additionalProperties: {}
+  QueryNFTsResponse:
+    type: object
+    properties:
+      nfts:
+        type: array
+        items:
+          type: object
+          properties:
+            class_id:
+              type: string
+            id:
+              type: string
+            uri:
+              type: string
+            uri_hash:
+              type: string
+            data:
+              type: object
+              properties:
+                '@type':
+                  type: string
+              additionalProperties: {}
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryOwnerResponse:
+    type: object
+    properties:
+      owner:
+        type: string
+  QuerySupplyResponse:
+    type: object
+    properties:
+      amount:
+        type: string
+        format: uint64
+  MsgSendResponse:
+    type: object

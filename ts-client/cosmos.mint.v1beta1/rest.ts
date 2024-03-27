@@ -9,82 +9,50 @@
  * ---------------------------------------------------------------
  */
 
-export interface ProtobufAny {
+export interface Any {
   "@type"?: string;
 }
 
-export interface RpcStatus {
+export interface Status {
   /** @format int32 */
   code?: number;
   message?: string;
-  details?: ProtobufAny[];
+  details?: { "@type"?: string }[];
 }
 
-/**
-* MsgUpdateParamsResponse defines the response structure for executing a
-MsgUpdateParams message.
-
-Since: cosmos-sdk 0.47
-*/
-export type V1Beta1MsgUpdateParamsResponse = object;
-
-/**
- * Params defines the parameters for the x/mint module.
- */
-export interface V1Beta1Params {
-  /** type of coin to mint */
+export interface Params {
   mint_denom?: string;
-
-  /** maximum annual change in inflation rate */
   inflation_rate_change?: string;
-
-  /** maximum inflation rate */
   inflation_max?: string;
-
-  /** minimum inflation rate */
   inflation_min?: string;
-
-  /** goal of percent bonded atoms */
   goal_bonded?: string;
 
-  /**
-   * expected blocks per year
-   * @format uint64
-   */
+  /** @format uint64 */
   blocks_per_year?: string;
 }
 
-/**
-* QueryAnnualProvisionsResponse is the response type for the
-Query/AnnualProvisions RPC method.
-*/
-export interface V1Beta1QueryAnnualProvisionsResponse {
-  /**
-   * annual_provisions is the current minting annual provisions value.
-   * @format byte
-   */
+export interface QueryAnnualProvisionsResponse {
+  /** @format byte */
   annual_provisions?: string;
 }
 
-/**
-* QueryInflationResponse is the response type for the Query/Inflation RPC
-method.
-*/
-export interface V1Beta1QueryInflationResponse {
-  /**
-   * inflation is the current minting inflation value.
-   * @format byte
-   */
+export interface QueryInflationResponse {
+  /** @format byte */
   inflation?: string;
 }
 
-/**
- * QueryParamsResponse is the response type for the Query/Params RPC method.
- */
-export interface V1Beta1QueryParamsResponse {
-  /** params defines the parameters of the module. */
-  params?: V1Beta1Params;
+export interface QueryParamsResponse {
+  params?: {
+    mint_denom?: string;
+    inflation_rate_change?: string;
+    inflation_max?: string;
+    inflation_min?: string;
+    goal_bonded?: string;
+    blocks_per_year?: string;
+  };
 }
+
+export type MsgUpdateParamsResponse = object;
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
@@ -207,8 +175,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title cosmos/mint/v1beta1/genesis.proto
- * @version version not set
+ * @title HTTP API Console cosmos.mint.v1beta1
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   /**
@@ -216,30 +183,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryAnnualProvisions
-   * @summary AnnualProvisions current minting annual provisions value.
    * @request GET:/cosmos/mint/v1beta1/annual_provisions
    */
   queryAnnualProvisions = (params: RequestParams = {}) =>
-    this.request<V1Beta1QueryAnnualProvisionsResponse, RpcStatus>({
-      path: `/cosmos/mint/v1beta1/annual_provisions`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
+    this.request<{ annual_provisions?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>(
+      {
+        path: `/cosmos/mint/v1beta1/annual_provisions`,
+        method: "GET",
+        ...params,
+      },
+    );
 
   /**
    * No description
    *
    * @tags Query
    * @name QueryInflation
-   * @summary Inflation returns the current minting inflation value.
    * @request GET:/cosmos/mint/v1beta1/inflation
    */
   queryInflation = (params: RequestParams = {}) =>
-    this.request<V1Beta1QueryInflationResponse, RpcStatus>({
+    this.request<{ inflation?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
       path: `/cosmos/mint/v1beta1/inflation`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -248,14 +213,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryParams
-   * @summary Params returns the total set of minting parameters.
    * @request GET:/cosmos/mint/v1beta1/params
    */
   queryParams = (params: RequestParams = {}) =>
-    this.request<V1Beta1QueryParamsResponse, RpcStatus>({
+    this.request<
+      {
+        params?: {
+          mint_denom?: string;
+          inflation_rate_change?: string;
+          inflation_max?: string;
+          inflation_min?: string;
+          goal_bonded?: string;
+          blocks_per_year?: string;
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/mint/v1beta1/params`,
       method: "GET",
-      format: "json",
       ...params,
     });
 }
