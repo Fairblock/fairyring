@@ -63,7 +63,7 @@ if ! mkdir -p $CHAIN_DIR/$CHAINID 2>/dev/null; then
 fi
 
 echo "Initializing $CHAINID ..."
-$BINARY init devnet --home $CHAIN_DIR/$CHAINID --chain-id=$CHAINID &> /dev/null
+$BINARY init devnet --home $CHAIN_DIR/$CHAINID --default-denom ufairy --chain-id=$CHAINID &> /dev/null
 
 echo "Adding genesis accounts..."
 echo $VAL_MNEMONIC_1 | $BINARY keys add val1 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend=test
@@ -83,16 +83,16 @@ WALLET4_ADDR=$($BINARY keys show wallet4 --home $CHAIN_DIR/$CHAINID --keyring-ba
 WALLET5_ADDR=$($BINARY keys show wallet5 --home $CHAIN_DIR/$CHAINID --keyring-backend test -a)
 RLY1_ADDR=$($BINARY keys show rly1 --home $CHAIN_DIR/$CHAINID --keyring-backend test -a)
 
-$BINARY add-genesis-account $VAL1_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID
-$BINARY add-genesis-account $WALLET1_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID
-$BINARY add-genesis-account $WALLET2_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID
-$BINARY add-genesis-account $WALLET3_ADDR 1000000000000ufairy --vesting-amount 100000000000stake --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID
-$BINARY add-genesis-account $WALLET4_ADDR 1000000000000ufairy --vesting-amount 100000000000stake --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID
-$BINARY add-genesis-account $WALLET5_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID
-$BINARY add-genesis-account $RLY1_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID
+$BINARY add-genesis-account $VAL1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID
+$BINARY add-genesis-account $WALLET1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID
+$BINARY add-genesis-account $WALLET2_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID
+$BINARY add-genesis-account $WALLET3_ADDR 1000000000000ufairy --vesting-amount 1000000000000ufairy --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID
+$BINARY add-genesis-account $WALLET4_ADDR 1000000000000ufairy --vesting-amount 1000000000000ufairy --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID
+$BINARY add-genesis-account $WALLET5_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID
+$BINARY add-genesis-account $RLY1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID
 
 echo "Creating and collecting gentx..."
-$BINARY gentx val1 100000000000stake --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --keyring-backend test
+$BINARY gentx val1 100000000000ufairy --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --keyring-backend test
 $BINARY collect-gentxs --home $CHAIN_DIR/$CHAINID &> /dev/null
 
 echo "Changing defaults and ports in app.toml and config.toml files..."
@@ -113,6 +113,7 @@ sed -i -e 's/minimum-gas-prices = "0stake"/minimum-gas-prices = "0ufairy"/g' $CH
 
 
 echo "Changing genesis.json..."
+sed -i -e 's/"max_deposit_period": "172800s"/"max_deposit_period": "10s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 sed -i -e 's/"voting_period": "172800s"/"voting_period": "10s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 
@@ -125,14 +126,6 @@ sed -i -e 's/"key_expiry": "100"/"key_expiry": "50"/g' $CHAIN_DIR/$CHAINID/confi
 echo "Starting $CHAINID in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID.log"
 $BINARY start --log_level trace --log_format json --home $CHAIN_DIR/$CHAINID --pruning=nothing --grpc.address="0.0.0.0:$GRPCPORT" --grpc-web.address="0.0.0.0:$GRPCWEB" > $CHAIN_DIR/$CHAINID.log 2>&1 &
-
-#echo "Checking if there is an existing keys for Hermes Relayer..."
-#HKEY=$(hermes --config hermes_config.toml keys list --chain $CHAINID | sed -n '/SUCCESS/d; s/.*(\([^)]*\)).*/\1/p')
-#if [ "$HKEY" == "" ]; then
-#  echo "Key not found for chain id: $CHAINID in Hermes Relayer Keys..."
-#  echo "Creating key..."
-#  hermes --config hermes_config.toml keys add --chain $CHAINID --key-file rly1.json
-#fi
 
 rm rly1.json &> /dev/null
 
@@ -158,7 +151,7 @@ cd "$(pwd)/scripts/devnet"
 $FAIRYRINGCLIENT start --config fairyringclient_config.yml > $CHAIN_DIR/fairyringclient.log 2>&1 &
 echo "Starting ShareGenerationClient..."
 sleep $BLOCK_TIME
-$SHAREGENERATIONCLIENT > $CHAIN_DIR/sharegenerationclient.log 2>&1 &
+$SHAREGENERATIONCLIENT start --config sharegenerationclient_config.yml > $CHAIN_DIR/sharegenerationclient.log 2>&1 &
 echo "Starting FairyPort..."
 sleep $BLOCK_TIME
 $FAIRYPORT start --config config.yml > $CHAIN_DIR/fairyport.log 2>&1 &
