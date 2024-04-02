@@ -1,6 +1,8 @@
 package pep
 
 import (
+	"strconv"
+
 	"github.com/Fairblock/fairyring/x/pep/keeper"
 	"github.com/Fairblock/fairyring/x/pep/types"
 
@@ -47,6 +49,8 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		}
 	}
 
+	k.SetRequestCount(ctx, genState.RequestCount)
+
 	k.SetParams(ctx, genState.Params)
 }
 
@@ -67,6 +71,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	if found {
 		genesis.QueuedPubKey = qkey
 	}
+
+	genesis.RequestCount, _ = strconv.ParseUint(k.GetRequestCount(ctx), 10, 64)
 
 	return genesis
 }

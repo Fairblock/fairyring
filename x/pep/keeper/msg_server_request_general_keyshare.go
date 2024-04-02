@@ -3,9 +3,9 @@ package keeper
 import (
 	"context"
 	"errors"
+	"strconv"
 	"time"
 
-	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
 
@@ -20,43 +20,27 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	params := k.GetParams(ctx)
+	reqCountString := k.GetRequestCount(ctx)
+	reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
+	reqCount = reqCount + 1
 
 	if params.IsSourceChain {
-		req := commontypes.MsgRequestAggrKeyshare{
-			Id: &commontypes.MsgRequestAggrKeyshare_RequestId{
-				RequestId: msg.RequestId,
-			},
+		entry := types.GenEncTxExecutionQueue{
+			Creator:   msg.Creator,
+			RequestId: reqCountString,
 		}
 
-		rsp, err := k.keyshareKeeper.ProcessKeyshareRequest(ctx, req)
-		if err == nil {
-			entry := types.GenEncTxExecutionQueue{
-				Creator:   msg.Creator,
-				RequestId: msg.RequestId,
-				Identity:  rsp.GetIdentity(),
-				Pubkey:    rsp.GetPubkey(),
-			}
+		k.SetReqQueueEntry(ctx, entry)
+		k.SetRequestCount(ctx, reqCount)
 
-			k.SetEntry(ctx, entry)
-
-			ctx.EventManager().EmitEvent(
-				sdk.NewEvent(
-					types.RequestIdentityEventType,
-					sdk.NewAttribute(types.RequestIdentityEventIdentity, rsp.Identity),
-					sdk.NewAttribute(types.RequestIdentityEventPubkey, rsp.Pubkey),
-				),
-			)
-			return &types.MsgRequestGeneralKeyshareResponse{
-				Identity: rsp.Identity,
-				Pubkey:   rsp.Pubkey,
-			}, nil
-		}
-		return &types.MsgRequestGeneralKeyshareResponse{}, err
+		return &types.MsgRequestGeneralKeyshareResponse{
+			ReqId: reqCountString,
+		}, nil
 	} else {
 		packetData := kstypes.RequestAggrKeysharePacketData{
 			Requester: msg.Creator,
 			Id: &kstypes.RequestAggrKeysharePacketData_RequestId{
-				RequestId: msg.RequestId,
+				RequestId: reqCountString,
 			},
 		}
 
@@ -71,17 +55,20 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 			uint64(timeoutTimestamp),
 		)
 
+		k.SetRequestCount(ctx, reqCount)
+
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeRequestKeyshare,
 				sdk.NewAttribute(types.AttributeKeyCreator, msg.Creator),
-				sdk.NewAttribute(types.AttributeKeyRequestID, msg.RequestId),
+				sdk.NewAttribute(types.AttributeKeyRequestID, reqCountString),
 			),
 		)
 
+		return &types.MsgRequestGeneralKeyshareResponse{
+			ReqId: reqCountString,
+		}, nil
 	}
-
-	return &types.MsgRequestGeneralKeyshareResponse{}, nil
 }
 
 // TransmitRequestAggrKeysharePacket transmits the packet over IBC with the specified source port and source channel
@@ -131,7 +118,7 @@ func (k Keeper) OnAcknowledgementRequestAggrKeysharePacket(ctx sdk.Context, pack
 			Pubkey:    packetAck.GetPubkey(),
 		}
 
-		_, found := k.GetEntry(ctx, entry.Identity)
+		_, found := k.GetEntry(ctx, entry.RequestId)
 		if found {
 			return errors.New("entry already exists")
 		}

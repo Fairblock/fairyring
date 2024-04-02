@@ -103,8 +103,7 @@ func (k Keeper) OnTimeoutRequestAggrKeysharePacket(ctx sdk.Context, packet chann
 	return nil
 }
 
-func (k Keeper) ProcessKeyshareRequest(ctx sdk.Context, msg commontypes.MsgRequestAggrKeyshare,
-) (rsp commontypes.MsgRequestAggrKeyshareResponse, err error) {
+func (k Keeper) ProcessPepKeyshareRequest(ctx sdk.Context) (rsp commontypes.MsgRequestAggrKeyshareResponse, err error) {
 	var isProposalID bool
 
 	switch msg.Id.(type) {

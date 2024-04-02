@@ -67,7 +67,7 @@ service Query {
   }
 
   rpc KeyshareReq (QueryKeyshareRequest) returns (QueryKeyshareResponse) {
-    option (google.api.http).get = "/fairyring/pep/keyshare/{identity}";
+    option (google.api.http).get = "/fairyring/pep/keyshare/{req_id}";
   }
 
   rpc KeyshareReqAll (QueryAllKeyshareRequest) returns (QueryAllKeyshareResponse) {
@@ -86,7 +86,7 @@ message QueryParamsResponse {
 }
 
 message QueryKeyshareRequest {
-  string identity = 1;
+  string req_id = 1;
 }
 
 message QueryKeyshareResponse {

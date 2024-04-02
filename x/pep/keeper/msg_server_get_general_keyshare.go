@@ -6,7 +6,6 @@ import (
 	"time"
 
 	sdkerrors "cosmossdk.io/errors"
-	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -17,11 +16,10 @@ import (
 
 func (k msgServer) GetGeneralKeyshare(goCtx context.Context, msg *types.MsgGetGeneralKeyshare) (*types.MsgGetGeneralKeyshareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	logger := k.Logger(ctx)
 
-	entry, found := k.GetEntry(ctx, msg.Identity)
+	entry, found := k.GetEntry(ctx, msg.ReqId)
 	if !found {
-		return &types.MsgGetGeneralKeyshareResponse{}, errors.New("identity not found")
+		return &types.MsgGetGeneralKeyshareResponse{}, errors.New("Request not found")
 	}
 
 	if entry.Creator != msg.Creator {
@@ -30,23 +28,12 @@ func (k msgServer) GetGeneralKeyshare(goCtx context.Context, msg *types.MsgGetGe
 
 	params := k.GetParams(ctx)
 	if params.IsSourceChain {
-		req := commontypes.MsgGetAggrKeyshare{
-			Identity: entry.Identity,
-		}
-		err := k.GetAggrKeyshare(ctx, req)
-		if err != nil {
-			logger.Info(
-				"Request to fetch aggr. Keyshare failed",
-				"Request ID", entry.RequestId,
-				"Identity", entry.Identity,
-				"error", err,
-			)
-			return &types.MsgGetGeneralKeyshareResponse{}, err
-		}
 
+		k.SetSignalQueueEntry(ctx, entry)
+		return &types.MsgGetGeneralKeyshareResponse{}, nil
 	} else {
 		packetData := kstypes.GetAggrKeysharePacketData{
-			Identity: msg.Identity,
+			Identity: msg.ReqId,
 		}
 
 		sPort := k.GetPort(ctx)
@@ -63,10 +50,9 @@ func (k msgServer) GetGeneralKeyshare(goCtx context.Context, msg *types.MsgGetGe
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeRequestKeyshare,
-				sdk.NewAttribute(types.AttributeKeyRequestID, msg.Identity),
+				sdk.NewAttribute(types.AttributeKeyRequestID, msg.ReqId),
 			),
 		)
-
 	}
 
 	return &types.MsgGetGeneralKeyshareResponse{}, nil
@@ -92,15 +78,6 @@ func (k Keeper) TransmitGetAggrKeysharePacket(
 	// }
 
 	return k.ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes)
-}
-
-func (keeper Keeper) GetAggrKeyshare(ctx sdk.Context, req commontypes.MsgGetAggrKeyshare) error {
-	_, err := keeper.keyshareKeeper.ProcessGetKeyshareRequest(ctx, req)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 // OnAcknowledgementGetAggrKeysharePacket responds to the the success or failure of a packet

@@ -10,11 +10,11 @@ const TypeMsgSubmitGeneralEncryptedTx = "submit_general_encrypted_tx"
 
 var _ sdk.Msg = &MsgSubmitGeneralEncryptedTx{}
 
-func NewMsgSubmitGeneralEncryptedTx(creator string, data string, identity string) *MsgSubmitGeneralEncryptedTx {
+func NewMsgSubmitGeneralEncryptedTx(creator string, data string, reqID string) *MsgSubmitGeneralEncryptedTx {
 	return &MsgSubmitGeneralEncryptedTx{
-		Creator:  creator,
-		Data:     data,
-		Identity: identity,
+		Creator: creator,
+		Data:    data,
+		ReqId:   reqID,
 	}
 }
 

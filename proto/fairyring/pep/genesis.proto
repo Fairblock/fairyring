@@ -24,4 +24,5 @@ message GenesisState {
   repeated AggregatedKeyShare     aggregatedKeyShareList     = 6 [(gogoproto.nullable) = false];
   ActivePubKey                    activePubKey               = 7 [(gogoproto.nullable) = false];
   QueuedPubKey                    queuedPubKey               = 8 [(gogoproto.nullable) = false];
+  uint64                          request_count              = 9;
 }

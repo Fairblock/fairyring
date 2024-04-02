@@ -16,7 +16,7 @@ func (k Keeper) KeyshareReq(c context.Context, req *types.QueryKeyshareRequest) 
 
 	ctx := sdk.UnwrapSDKContext(c)
 
-	entry, found := k.GetEntry(ctx, req.Identity)
+	entry, found := k.GetEntry(ctx, req.ReqId)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")
 	}

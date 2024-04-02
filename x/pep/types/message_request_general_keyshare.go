@@ -11,8 +11,7 @@ var _ sdk.Msg = &MsgRequestGeneralKeyshare{}
 
 func NewMsgRequestGeneralKeyshare(creator string, requestId string) *MsgRequestGeneralKeyshare {
 	return &MsgRequestGeneralKeyshare{
-		Creator:   creator,
-		RequestId: requestId,
+		Creator: creator,
 	}
 }
 

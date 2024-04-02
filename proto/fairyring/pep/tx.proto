@@ -28,7 +28,7 @@ message MsgSubmitEncryptedTx {
 message MsgSubmitGeneralEncryptedTx {
   string creator           = 1;
   string data              = 2;
-  string identity          = 3;
+  string req_id            = 3;
 }
 
 message MsgSubmitEncryptedTxResponse {}
@@ -44,17 +44,15 @@ message MsgCreateAggregatedKeyShareResponse {}
 
 message MsgRequestGeneralKeyshare {
   string creator   = 1;
-  string request_id = 2;
 }
 
 message MsgRequestGeneralKeyshareResponse {
-  string identity = 1;
-  string pubkey   = 2;
+  string req_id   = 1;
 }
 
 message MsgGetGeneralKeyshare {
   string creator  = 1;
-  string identity = 2;
+  string req_id   = 2;
 }
 
 message MsgGetGeneralKeyshareResponse {}

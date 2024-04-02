@@ -35,6 +35,7 @@ var (
 	ChannelKey            = KeyPrefix("pep-channel-")
 	LatestHeightKey       = KeyPrefix("pep-latest-height-")
 	LastExecutedHeightKey = KeyPrefix("pep-last-executed-height-")
+	RequestsCountKey      = KeyPrefix("Pep-request-count-")
 )
 
 const (

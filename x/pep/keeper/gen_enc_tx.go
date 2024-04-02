@@ -9,12 +9,12 @@ import (
 // GetEntry returns a queue entry by its identity
 func (k Keeper) GetEntry(
 	ctx sdk.Context,
-	identity string,
+	reqID string,
 ) (val types.GenEncTxExecutionQueue, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxKeyPrefix))
 
 	b := store.Get(types.GenEncTxQueueKey(
-		identity,
+		reqID,
 	))
 	if b == nil {
 		return val, false
@@ -33,7 +33,7 @@ func (k Keeper) SetEntry(
 
 	entry := k.cdc.MustMarshal(&val)
 	store.Set(
-		types.GenEncTxQueueKey(val.Identity),
+		types.GenEncTxQueueKey(val.RequestId),
 		entry,
 	)
 }
@@ -41,10 +41,10 @@ func (k Keeper) SetEntry(
 // RemoveEntry removes an entry from the store
 func (k Keeper) RemoveEntry(
 	ctx sdk.Context,
-	identity string,
+	reqID string,
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxKeyPrefix))
-	store.Delete(types.GenEncTxQueueKey(identity))
+	store.Delete(types.GenEncTxQueueKey(reqID))
 }
 
 // GetAllGenEncTxEntry returns all GenEncTxQueue entries
@@ -62,8 +62,8 @@ func (k Keeper) GetAllGenEncTxEntry(ctx sdk.Context) (list []types.GenEncTxExecu
 	return
 }
 
-func (k Keeper) AppendTxToEntry(ctx sdk.Context, identity string, encTx types.GeneralEncryptedTx) uint64 {
-	val, _ := k.GetEntry(ctx, identity)
+func (k Keeper) AppendTxToEntry(ctx sdk.Context, reqID string, encTx types.GeneralEncryptedTx) uint64 {
+	val, _ := k.GetEntry(ctx, reqID)
 	var index uint64 = 0
 	var list types.GeneralEncryptedTxArray
 	if val.TxList != nil {
@@ -78,15 +78,15 @@ func (k Keeper) AppendTxToEntry(ctx sdk.Context, identity string, encTx types.Ge
 	return uint64(index)
 }
 
-// GetQueueEntry returns a queue entry by its identity
-func (k Keeper) GetQueueEntry(
+// GetRequestQueueEntry returns a queue entry by its identity
+func (k Keeper) GetRequestQueueEntry(
 	ctx sdk.Context,
-	identity string,
+	reqID string,
 ) (val types.GenEncTxExecutionQueue, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxQueueKeyPrefix))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxReqQueueKeyPrefix))
 
 	b := store.Get(types.GenEncTxQueueKey(
-		identity,
+		reqID,
 	))
 	if b == nil {
 		return val, false
@@ -97,31 +97,143 @@ func (k Keeper) GetQueueEntry(
 }
 
 // SetQueueEntry sets a queue entry by its identity
-func (k Keeper) SetQueueEntry(
+func (k Keeper) SetReqQueueEntry(
 	ctx sdk.Context,
 	val types.GenEncTxExecutionQueue,
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxQueueKeyPrefix))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxReqQueueKeyPrefix))
 
 	entry := k.cdc.MustMarshal(&val)
 	store.Set(
-		types.GenEncTxQueueKey(val.Identity),
+		types.GenEncTxQueueKey(val.RequestId),
 		entry,
 	)
 }
 
 // RemoveQueueEntry removes an entry from the store
-func (k Keeper) RemoveQueueEntry(
+func (k Keeper) RemoveReqQueueEntry(
 	ctx sdk.Context,
-	identity string,
+	reqID string,
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxQueueKeyPrefix))
-	store.Delete(types.GenEncTxQueueKey(identity))
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxReqQueueKeyPrefix))
+	store.Delete(types.GenEncTxQueueKey(reqID))
 }
 
 // GetAllGenEncTxQueueEntry returns all GenEncTxQueue entries
-func (k Keeper) GetAllGenEncTxQueueEntry(ctx sdk.Context) (list []types.GenEncTxExecutionQueue) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxQueueKeyPrefix))
+func (k Keeper) GetAllGenEncTxReqQueueEntry(ctx sdk.Context) (list []types.GenEncTxExecutionQueue) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxReqQueueKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.GenEncTxExecutionQueue
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+	return
+}
+
+// GetQueueEntry returns a queue entry by its identity
+func (k Keeper) GetSignalQueueEntry(
+	ctx sdk.Context,
+	reqID string,
+) (val types.GenEncTxExecutionQueue, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxSignalQueueKeyPrefix))
+
+	b := store.Get(types.GenEncTxQueueKey(
+		reqID,
+	))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
+
+// SetQueueEntry sets a queue entry by its identity
+func (k Keeper) SetSignalQueueEntry(
+	ctx sdk.Context,
+	val types.GenEncTxExecutionQueue,
+) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxSignalQueueKeyPrefix))
+
+	entry := k.cdc.MustMarshal(&val)
+	store.Set(
+		types.GenEncTxQueueKey(val.RequestId),
+		entry,
+	)
+}
+
+// RemoveQueueEntry removes an entry from the store
+func (k Keeper) RemoveSignalQueueEntry(
+	ctx sdk.Context,
+	reqID string,
+) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxSignalQueueKeyPrefix))
+	store.Delete(types.GenEncTxQueueKey(reqID))
+}
+
+// GetAllGenEncTxQueueEntry returns all GenEncTxQueue entries
+func (k Keeper) GetAllGenEncTxSignalQueueEntry(ctx sdk.Context) (list []types.GenEncTxExecutionQueue) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxSignalQueueKeyPrefix))
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.GenEncTxExecutionQueue
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+	return
+}
+
+// GetQueueEntry returns a queue entry by its identity
+func (k Keeper) GetExecutionQueueEntry(
+	ctx sdk.Context,
+	reqID string,
+) (val types.GenEncTxExecutionQueue, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxExeQueueKeyPrefix))
+
+	b := store.Get(types.GenEncTxQueueKey(
+		reqID,
+	))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
+
+// SetQueueEntry sets a queue entry by its identity
+func (k Keeper) SetExecutionQueueEntry(
+	ctx sdk.Context,
+	val types.GenEncTxExecutionQueue,
+) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxExeQueueKeyPrefix))
+
+	entry := k.cdc.MustMarshal(&val)
+	store.Set(
+		types.GenEncTxQueueKey(val.RequestId),
+		entry,
+	)
+}
+
+// RemoveQueueEntry removes an entry from the store
+func (k Keeper) RemoveExecutionQueueEntry(
+	ctx sdk.Context,
+	reqID string,
+) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxExeQueueKeyPrefix))
+	store.Delete(types.GenEncTxQueueKey(reqID))
+}
+
+// GetAllGenEncTxQueueEntry returns all GenEncTxQueue entries
+func (k Keeper) GetAllGenEncTxExecutionQueueEntry(ctx sdk.Context) (list []types.GenEncTxExecutionQueue) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxExeQueueKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()

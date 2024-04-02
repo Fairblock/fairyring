@@ -617,17 +617,17 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	}
 
 	// loop over all entries in the general enc tx queue
-	entries := am.keeper.GetAllGenEncTxQueueEntry(ctx)
+	entries := am.keeper.GetAllGenEncTxExecutionQueueEntry(ctx)
 	for _, entry := range entries {
 		if entry.AggrKeyshare == "" {
-			am.keeper.Logger(ctx).Error("aggregated keyshare not found in entry with identity: ", entry.Identity)
-			am.keeper.RemoveQueueEntry(ctx, entry.Identity)
+			am.keeper.Logger(ctx).Error("aggregated keyshare not found in entry with req-id: ", entry.RequestId)
+			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
 			continue
 		}
 
 		if entry.TxList == nil {
-			am.keeper.Logger(ctx).Info("No encrypted txs found for entry with identity: ", entry.Identity)
-			am.keeper.RemoveQueueEntry(ctx, entry.Identity)
+			am.keeper.Logger(ctx).Info("No encrypted txs found for entry with req-id: ", entry.RequestId)
+			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
 			continue
 		}
 
@@ -893,8 +893,8 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			telemetry.IncrCounter(1, types.KeyTotalSuccessEncryptedTx)
 		}
 
-		am.keeper.Logger(ctx).Info("executed txs for entry with identity: ", entry.Identity)
-		am.keeper.RemoveQueueEntry(ctx, entry.Identity)
+		am.keeper.Logger(ctx).Info("executed txs for entry with req-id: ", entry.RequestId)
+		am.keeper.RemoveExecutionQueueEntry(ctx, entry.RequestId)
 	}
 }
 
