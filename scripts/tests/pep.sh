@@ -381,28 +381,28 @@ rm -r unsigned2.json &> /dev/null
 sleep 10
 
 echo "Submit general encrypted tx to pep module on chain fairyring_test_1"
-RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER 1 --from $WALLET_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER 0 --from $WALLET_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
 sleep 6
 
 echo "Query Keyshare request and check for encrypted tx"
-TX=$($BINARY query pep show-keyshare-req 1 --node $CHAIN1_NODE -o json | jq -r '.keyshare.tx_list.encryptedTx[0].data')
+TX=$($BINARY query pep show-keyshare-req 0 --node $CHAIN1_NODE -o json | jq -r '.keyshare.tx_list.encryptedTx[0].data')
 if [ "$TX" != "$CIPHER" ]; then
   echo "Submitting general encrypted tx failed. Expected: $CIPHER, got $TX"
   exit 1
 fi
 
 echo "Submit 2nd general encrypted tx to pep module on chain fairyring_test_1"
-RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER2 $IDENTITY --from $WALLET_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER2 0 --from $WALLET_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
 sleep 6
 
 echo "Request Generation of Aggr keyshare"
-RESULT=$($BINARY tx pep get-general-keyshare $IDENTITY --from $WALLET_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep get-general-keyshare 0 --from $WALLET_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
