@@ -15,12 +15,12 @@ var _ = strconv.Itoa(0)
 
 func CmdSubmitGeneralEncryptedTx() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "submit-general-encrypted-tx [data] [identity]",
-		Short: "Submit an encrypted transaction along with its identity",
+		Use:   "submit-general-encrypted-tx [data] [req-id]",
+		Short: "Submit an encrypted transaction along with its req-id",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argData := args[0]
-			argIdentity := args[1]
+			argReqId := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -30,7 +30,7 @@ func CmdSubmitGeneralEncryptedTx() *cobra.Command {
 			msg := types.NewMsgSubmitGeneralEncryptedTx(
 				clientCtx.GetFromAddress().String(),
 				argData,
-				argIdentity,
+				argReqId,
 			)
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
