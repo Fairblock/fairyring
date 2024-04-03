@@ -1,8 +1,10 @@
 package types
 
 import (
+	"encoding/hex"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"slices"
 )
 
 const (
@@ -53,6 +55,20 @@ func (msg *MsgCreateGeneralKeyShare) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+
+	if len(msg.KeyShare) != KeyShareHexLen {
+		return ErrInvalidKeyShareLength.Wrapf("expected hex encoded key share length to be %d", KeyShareHexLen)
+	}
+	if _, err = hex.DecodeString(msg.KeyShare); err != nil {
+		return ErrInvalidShare.Wrapf("expected hex encoded key share, got: %s", msg.KeyShare)
+	}
+	if msg.KeyShareIndex < 1 {
+		return ErrInvalidShare.Wrapf("expected key share index to be at least 1, got: %d", msg.KeyShareIndex)
+	}
+
+	if !slices.Contains(SupportedIDTypes, msg.IdType) {
+		return ErrUnsupportedIDType.Wrapf("got: %d", msg.IdType)
 	}
 	return nil
 }

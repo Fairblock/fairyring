@@ -42,5 +42,8 @@ func (msg *MsgGetGeneralKeyshare) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	if len(msg.Identity) == 0 {
+		return sdkerrors.Wrapf(ErrInvalidIdentity, "empty identity")
+	}
 	return nil
 }

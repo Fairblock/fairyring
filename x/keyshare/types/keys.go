@@ -114,6 +114,12 @@ var (
 	RequestsCountKey = KeyPrefix("keyshare-request-count-")
 )
 
+const (
+	PrivateGovIdentity = "private-gov-identity"
+)
+
+var SupportedIDTypes = []string{PrivateGovIdentity}
+
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }

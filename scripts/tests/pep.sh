@@ -289,11 +289,11 @@ BAL_AMT=$(echo "$RESULT" | jq -r '.balances[0].amount')
 echo "Balance after encrypted tx execution: $BAL_AMT$BAL_DENOM"
 
 echo "Submit invalid aggregated key to pep module on chain fairyring_test_2"
-RESULT=$($BINARY tx pep create-aggregated-key-share $((AGG_KEY_HEIGHT+1)) 123123123 --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep create-aggregated-key-share $((AGG_KEY_HEIGHT+1)) b142cacfbb583a89c40703736f28dc4b82b254b66244f9c538ad88c2ef277b62c4b5119dddc1cfbe1ab2a17cce3d628f11be2948e2cfbcada1f7f7f37c970ed4d4adfe077cd51e6b10577e88c87aea83a6b18c3bd63771da4d992f658204366f --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
-if [[ "$RESULT" != *"input string length must be equal to 96 bytes"* ]]; then
-  echo "ERROR: Pep module submit aggregated key error. Expected tx action to be MsgCreateAggregatedKeyShare,  got '$ACTION'"
+if [[ "$RESULT" != *"age decrypt: errNoMatch"* ]]; then
+  echo "ERROR: Pep module submit aggregated key error. Expected tx error to be errNoMatch,  got '$RESULT'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   exit 1
 fi

@@ -16,12 +16,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-const (
-	PrivateGovIdentity = "private-gov-identity"
-)
-
-var SupportedIDTypes = []string{PrivateGovIdentity}
-
 func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCreateGeneralKeyShare) (*types.MsgCreateGeneralKeyShareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -46,7 +40,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 	}
 
 	isSupportedIDType := false
-	for _, v := range SupportedIDTypes {
+	for _, v := range types.SupportedIDTypes {
 		if v == msg.IdType {
 			isSupportedIDType = true
 			break
@@ -54,11 +48,11 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 	}
 
 	if !isSupportedIDType {
-		return nil, types.ErrUnsupportedIDType.Wrapf(", supported id types: %v", SupportedIDTypes)
+		return nil, types.ErrUnsupportedIDType.Wrapf(", supported id types: %v", types.SupportedIDTypes)
 	}
 
 	switch msg.IdType {
-	case PrivateGovIdentity:
+	case types.PrivateGovIdentity:
 		keyShareReq, found := k.GetKeyShareRequest(ctx, msg.IdValue)
 		if !found {
 			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
@@ -185,7 +179,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 
 	// Check if target general keyshare already aggregated a key
 	switch msg.IdType {
-	case PrivateGovIdentity:
+	case types.PrivateGovIdentity:
 		keyShareReq, found := k.GetKeyShareRequest(ctx, msg.IdValue)
 		if !found {
 			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
@@ -249,7 +243,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 	)
 
 	switch msg.IdType {
-	case PrivateGovIdentity:
+	case types.PrivateGovIdentity:
 		keyShareReq, found := k.GetKeyShareRequest(ctx, msg.IdValue)
 		if !found {
 			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)

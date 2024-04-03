@@ -2,6 +2,7 @@ package types
 
 import (
 	sdkerrors "cosmossdk.io/errors"
+	"encoding/hex"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	cosmoserror "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -49,6 +50,9 @@ func (msg *MsgCreateAggregatedKeyShare) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(cosmoserror.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+	if _, err = hex.DecodeString(msg.Data); err != nil {
+		return sdkerrors.Wrapf(ErrInvalidAggregatedKey, "expected hex encoded aggregated key, got %s", msg.Data)
 	}
 	return nil
 }

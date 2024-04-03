@@ -380,8 +380,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				continue
 			}
 
-			am.keeper.Logger(ctx).Info(fmt.Sprintf("Decrypt TX Successfully: %s", decryptedTx.String()))
-
 			txDecoderTx, err := am.txConfig.TxDecoder()(decryptedTx.Bytes())
 
 			if err != nil {
@@ -404,7 +402,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 					am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error trying to json decoding tx: %s", err.Error()), startConsumedGas)
 					continue
 				} else {
-					am.keeper.Logger(ctx).Error("TX Successfully Decode with JSON Decoder")
+					am.keeper.Logger(ctx).Info("TX Successfully Decode with JSON Decoder")
 				}
 			}
 
@@ -471,6 +469,11 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 			if err != nil {
 				am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error when verifying signature: invalid signature: %s", err.Error()), startConsumedGas)
+				continue
+			}
+
+			if txMsgs[0].ValidateBasic() != nil {
+				am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error when running validateBasic: %s", err.Error()), startConsumedGas)
 				continue
 			}
 
