@@ -37,7 +37,7 @@ export interface MsgIBCCloseChannel {
 }
 
 function createBaseMsgIBCSend(): MsgIBCSend {
-  return { channel: "", timeoutHeight: 0, timeoutTimestamp: 0, data: new Uint8Array() };
+  return { channel: "", timeoutHeight: 0, timeoutTimestamp: 0, data: new Uint8Array(0) };
 }
 
 export const MsgIBCSend = {
@@ -58,28 +58,45 @@ export const MsgIBCSend = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgIBCSend {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgIBCSend();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.channel = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.timeoutHeight = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.timeoutTimestamp = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.data = reader.bytes();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -89,26 +106,36 @@ export const MsgIBCSend = {
       channel: isSet(object.channel) ? String(object.channel) : "",
       timeoutHeight: isSet(object.timeoutHeight) ? Number(object.timeoutHeight) : 0,
       timeoutTimestamp: isSet(object.timeoutTimestamp) ? Number(object.timeoutTimestamp) : 0,
-      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(),
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(0),
     };
   },
 
   toJSON(message: MsgIBCSend): unknown {
     const obj: any = {};
-    message.channel !== undefined && (obj.channel = message.channel);
-    message.timeoutHeight !== undefined && (obj.timeoutHeight = Math.round(message.timeoutHeight));
-    message.timeoutTimestamp !== undefined && (obj.timeoutTimestamp = Math.round(message.timeoutTimestamp));
-    message.data !== undefined
-      && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    if (message.channel !== "") {
+      obj.channel = message.channel;
+    }
+    if (message.timeoutHeight !== 0) {
+      obj.timeoutHeight = Math.round(message.timeoutHeight);
+    }
+    if (message.timeoutTimestamp !== 0) {
+      obj.timeoutTimestamp = Math.round(message.timeoutTimestamp);
+    }
+    if (message.data.length !== 0) {
+      obj.data = base64FromBytes(message.data);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgIBCSend>, I>>(base?: I): MsgIBCSend {
+    return MsgIBCSend.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgIBCSend>, I>>(object: I): MsgIBCSend {
     const message = createBaseMsgIBCSend();
     message.channel = object.channel ?? "";
     message.timeoutHeight = object.timeoutHeight ?? 0;
     message.timeoutTimestamp = object.timeoutTimestamp ?? 0;
-    message.data = object.data ?? new Uint8Array();
+    message.data = object.data ?? new Uint8Array(0);
     return message;
   },
 };
@@ -126,19 +153,24 @@ export const MsgIBCSendResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgIBCSendResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgIBCSendResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.sequence = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -149,10 +181,15 @@ export const MsgIBCSendResponse = {
 
   toJSON(message: MsgIBCSendResponse): unknown {
     const obj: any = {};
-    message.sequence !== undefined && (obj.sequence = Math.round(message.sequence));
+    if (message.sequence !== 0) {
+      obj.sequence = Math.round(message.sequence);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgIBCSendResponse>, I>>(base?: I): MsgIBCSendResponse {
+    return MsgIBCSendResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgIBCSendResponse>, I>>(object: I): MsgIBCSendResponse {
     const message = createBaseMsgIBCSendResponse();
     message.sequence = object.sequence ?? 0;
@@ -173,19 +210,24 @@ export const MsgIBCCloseChannel = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgIBCCloseChannel {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgIBCCloseChannel();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.channel = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -196,10 +238,15 @@ export const MsgIBCCloseChannel = {
 
   toJSON(message: MsgIBCCloseChannel): unknown {
     const obj: any = {};
-    message.channel !== undefined && (obj.channel = message.channel);
+    if (message.channel !== "") {
+      obj.channel = message.channel;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgIBCCloseChannel>, I>>(base?: I): MsgIBCCloseChannel {
+    return MsgIBCCloseChannel.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgIBCCloseChannel>, I>>(object: I): MsgIBCCloseChannel {
     const message = createBaseMsgIBCCloseChannel();
     message.channel = object.channel ?? "";
@@ -207,10 +254,10 @@ export const MsgIBCCloseChannel = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -227,10 +274,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -240,14 +287,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 
@@ -264,7 +311,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

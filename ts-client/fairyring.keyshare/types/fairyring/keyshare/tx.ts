@@ -34,6 +34,7 @@ export interface MsgCreateLatestPubKey {
   creator: string;
   publicKey: string;
   commitments: string[];
+  numberOfValidators: number;
 }
 
 export interface MsgCreateLatestPubKeyResponse {
@@ -98,19 +99,24 @@ export const MsgRegisterValidator = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterValidator {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRegisterValidator();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.creator = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -121,10 +127,15 @@ export const MsgRegisterValidator = {
 
   toJSON(message: MsgRegisterValidator): unknown {
     const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgRegisterValidator>, I>>(base?: I): MsgRegisterValidator {
+    return MsgRegisterValidator.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgRegisterValidator>, I>>(object: I): MsgRegisterValidator {
     const message = createBaseMsgRegisterValidator();
     message.creator = object.creator ?? "";
@@ -145,19 +156,24 @@ export const MsgRegisterValidatorResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterValidatorResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRegisterValidatorResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.creator = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -168,10 +184,15 @@ export const MsgRegisterValidatorResponse = {
 
   toJSON(message: MsgRegisterValidatorResponse): unknown {
     const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgRegisterValidatorResponse>, I>>(base?: I): MsgRegisterValidatorResponse {
+    return MsgRegisterValidatorResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgRegisterValidatorResponse>, I>>(object: I): MsgRegisterValidatorResponse {
     const message = createBaseMsgRegisterValidatorResponse();
     message.creator = object.creator ?? "";
@@ -201,28 +222,45 @@ export const MsgSendKeyshare = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgSendKeyshare {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSendKeyshare();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.creator = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.message = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.keyShareIndex = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.blockHeight = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -238,13 +276,24 @@ export const MsgSendKeyshare = {
 
   toJSON(message: MsgSendKeyshare): unknown {
     const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.message !== undefined && (obj.message = message.message);
-    message.keyShareIndex !== undefined && (obj.keyShareIndex = Math.round(message.keyShareIndex));
-    message.blockHeight !== undefined && (obj.blockHeight = Math.round(message.blockHeight));
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.message !== "") {
+      obj.message = message.message;
+    }
+    if (message.keyShareIndex !== 0) {
+      obj.keyShareIndex = Math.round(message.keyShareIndex);
+    }
+    if (message.blockHeight !== 0) {
+      obj.blockHeight = Math.round(message.blockHeight);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgSendKeyshare>, I>>(base?: I): MsgSendKeyshare {
+    return MsgSendKeyshare.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgSendKeyshare>, I>>(object: I): MsgSendKeyshare {
     const message = createBaseMsgSendKeyshare();
     message.creator = object.creator ?? "";
@@ -294,37 +343,66 @@ export const MsgSendKeyshareResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgSendKeyshareResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSendKeyshareResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.creator = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.keyshare = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.keyshareIndex = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.blockHeight = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.receivedBlockHeight = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.success = reader.bool();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.errorMessage = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -343,16 +421,33 @@ export const MsgSendKeyshareResponse = {
 
   toJSON(message: MsgSendKeyshareResponse): unknown {
     const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.keyshare !== undefined && (obj.keyshare = message.keyshare);
-    message.keyshareIndex !== undefined && (obj.keyshareIndex = Math.round(message.keyshareIndex));
-    message.blockHeight !== undefined && (obj.blockHeight = Math.round(message.blockHeight));
-    message.receivedBlockHeight !== undefined && (obj.receivedBlockHeight = Math.round(message.receivedBlockHeight));
-    message.success !== undefined && (obj.success = message.success);
-    message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.keyshare !== "") {
+      obj.keyshare = message.keyshare;
+    }
+    if (message.keyshareIndex !== 0) {
+      obj.keyshareIndex = Math.round(message.keyshareIndex);
+    }
+    if (message.blockHeight !== 0) {
+      obj.blockHeight = Math.round(message.blockHeight);
+    }
+    if (message.receivedBlockHeight !== 0) {
+      obj.receivedBlockHeight = Math.round(message.receivedBlockHeight);
+    }
+    if (message.success === true) {
+      obj.success = message.success;
+    }
+    if (message.errorMessage !== "") {
+      obj.errorMessage = message.errorMessage;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgSendKeyshareResponse>, I>>(base?: I): MsgSendKeyshareResponse {
+    return MsgSendKeyshareResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgSendKeyshareResponse>, I>>(object: I): MsgSendKeyshareResponse {
     const message = createBaseMsgSendKeyshareResponse();
     message.creator = object.creator ?? "";
@@ -367,7 +462,7 @@ export const MsgSendKeyshareResponse = {
 };
 
 function createBaseMsgCreateLatestPubKey(): MsgCreateLatestPubKey {
-  return { creator: "", publicKey: "", commitments: [] };
+  return { creator: "", publicKey: "", commitments: [], numberOfValidators: 0 };
 }
 
 export const MsgCreateLatestPubKey = {
@@ -381,29 +476,52 @@ export const MsgCreateLatestPubKey = {
     for (const v of message.commitments) {
       writer.uint32(26).string(v!);
     }
+    if (message.numberOfValidators !== 0) {
+      writer.uint32(32).uint64(message.numberOfValidators);
+    }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateLatestPubKey {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateLatestPubKey();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.creator = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.publicKey = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.commitments.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.numberOfValidators = longToNumber(reader.uint64() as Long);
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -413,26 +531,36 @@ export const MsgCreateLatestPubKey = {
       creator: isSet(object.creator) ? String(object.creator) : "",
       publicKey: isSet(object.publicKey) ? String(object.publicKey) : "",
       commitments: Array.isArray(object?.commitments) ? object.commitments.map((e: any) => String(e)) : [],
+      numberOfValidators: isSet(object.numberOfValidators) ? Number(object.numberOfValidators) : 0,
     };
   },
 
   toJSON(message: MsgCreateLatestPubKey): unknown {
     const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.publicKey !== undefined && (obj.publicKey = message.publicKey);
-    if (message.commitments) {
-      obj.commitments = message.commitments.map((e) => e);
-    } else {
-      obj.commitments = [];
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.publicKey !== "") {
+      obj.publicKey = message.publicKey;
+    }
+    if (message.commitments?.length) {
+      obj.commitments = message.commitments;
+    }
+    if (message.numberOfValidators !== 0) {
+      obj.numberOfValidators = Math.round(message.numberOfValidators);
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgCreateLatestPubKey>, I>>(base?: I): MsgCreateLatestPubKey {
+    return MsgCreateLatestPubKey.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgCreateLatestPubKey>, I>>(object: I): MsgCreateLatestPubKey {
     const message = createBaseMsgCreateLatestPubKey();
     message.creator = object.creator ?? "";
     message.publicKey = object.publicKey ?? "";
     message.commitments = object.commitments?.map((e) => e) || [];
+    message.numberOfValidators = object.numberOfValidators ?? 0;
     return message;
   },
 };
@@ -447,16 +575,17 @@ export const MsgCreateLatestPubKeyResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateLatestPubKeyResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateLatestPubKeyResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -470,6 +599,9 @@ export const MsgCreateLatestPubKeyResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgCreateLatestPubKeyResponse>, I>>(base?: I): MsgCreateLatestPubKeyResponse {
+    return MsgCreateLatestPubKeyResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgCreateLatestPubKeyResponse>, I>>(_: I): MsgCreateLatestPubKeyResponse {
     const message = createBaseMsgCreateLatestPubKeyResponse();
     return message;
@@ -492,22 +624,31 @@ export const MsgCreateAuthorizedAddress = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateAuthorizedAddress {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateAuthorizedAddress();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.target = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.creator = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -521,11 +662,18 @@ export const MsgCreateAuthorizedAddress = {
 
   toJSON(message: MsgCreateAuthorizedAddress): unknown {
     const obj: any = {};
-    message.target !== undefined && (obj.target = message.target);
-    message.creator !== undefined && (obj.creator = message.creator);
+    if (message.target !== "") {
+      obj.target = message.target;
+    }
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgCreateAuthorizedAddress>, I>>(base?: I): MsgCreateAuthorizedAddress {
+    return MsgCreateAuthorizedAddress.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgCreateAuthorizedAddress>, I>>(object: I): MsgCreateAuthorizedAddress {
     const message = createBaseMsgCreateAuthorizedAddress();
     message.target = object.target ?? "";
@@ -544,16 +692,17 @@ export const MsgCreateAuthorizedAddressResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateAuthorizedAddressResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateAuthorizedAddressResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -567,6 +716,11 @@ export const MsgCreateAuthorizedAddressResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgCreateAuthorizedAddressResponse>, I>>(
+    base?: I,
+  ): MsgCreateAuthorizedAddressResponse {
+    return MsgCreateAuthorizedAddressResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgCreateAuthorizedAddressResponse>, I>>(
     _: I,
   ): MsgCreateAuthorizedAddressResponse {
@@ -594,25 +748,38 @@ export const MsgUpdateAuthorizedAddress = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateAuthorizedAddress {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateAuthorizedAddress();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.target = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.isAuthorized = reader.bool();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.creator = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -627,12 +794,21 @@ export const MsgUpdateAuthorizedAddress = {
 
   toJSON(message: MsgUpdateAuthorizedAddress): unknown {
     const obj: any = {};
-    message.target !== undefined && (obj.target = message.target);
-    message.isAuthorized !== undefined && (obj.isAuthorized = message.isAuthorized);
-    message.creator !== undefined && (obj.creator = message.creator);
+    if (message.target !== "") {
+      obj.target = message.target;
+    }
+    if (message.isAuthorized === true) {
+      obj.isAuthorized = message.isAuthorized;
+    }
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgUpdateAuthorizedAddress>, I>>(base?: I): MsgUpdateAuthorizedAddress {
+    return MsgUpdateAuthorizedAddress.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgUpdateAuthorizedAddress>, I>>(object: I): MsgUpdateAuthorizedAddress {
     const message = createBaseMsgUpdateAuthorizedAddress();
     message.target = object.target ?? "";
@@ -652,16 +828,17 @@ export const MsgUpdateAuthorizedAddressResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateAuthorizedAddressResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateAuthorizedAddressResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -675,6 +852,11 @@ export const MsgUpdateAuthorizedAddressResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgUpdateAuthorizedAddressResponse>, I>>(
+    base?: I,
+  ): MsgUpdateAuthorizedAddressResponse {
+    return MsgUpdateAuthorizedAddressResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgUpdateAuthorizedAddressResponse>, I>>(
     _: I,
   ): MsgUpdateAuthorizedAddressResponse {
@@ -699,22 +881,31 @@ export const MsgDeleteAuthorizedAddress = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteAuthorizedAddress {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDeleteAuthorizedAddress();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.target = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.creator = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -728,11 +919,18 @@ export const MsgDeleteAuthorizedAddress = {
 
   toJSON(message: MsgDeleteAuthorizedAddress): unknown {
     const obj: any = {};
-    message.target !== undefined && (obj.target = message.target);
-    message.creator !== undefined && (obj.creator = message.creator);
+    if (message.target !== "") {
+      obj.target = message.target;
+    }
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgDeleteAuthorizedAddress>, I>>(base?: I): MsgDeleteAuthorizedAddress {
+    return MsgDeleteAuthorizedAddress.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgDeleteAuthorizedAddress>, I>>(object: I): MsgDeleteAuthorizedAddress {
     const message = createBaseMsgDeleteAuthorizedAddress();
     message.target = object.target ?? "";
@@ -751,16 +949,17 @@ export const MsgDeleteAuthorizedAddressResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteAuthorizedAddressResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDeleteAuthorizedAddressResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -774,6 +973,11 @@ export const MsgDeleteAuthorizedAddressResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgDeleteAuthorizedAddressResponse>, I>>(
+    base?: I,
+  ): MsgDeleteAuthorizedAddressResponse {
+    return MsgDeleteAuthorizedAddressResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgDeleteAuthorizedAddressResponse>, I>>(
     _: I,
   ): MsgDeleteAuthorizedAddressResponse {
@@ -821,37 +1025,66 @@ export const MsgCreateGeneralKeyShare = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateGeneralKeyShare {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateGeneralKeyShare();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.creator = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.idType = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.idValue = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.keyShare = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.keyShareIndex = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.receivedTimestamp = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 7:
+          if (tag !== 56) {
+            break;
+          }
+
           message.receivedBlockHeight = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -870,16 +1103,33 @@ export const MsgCreateGeneralKeyShare = {
 
   toJSON(message: MsgCreateGeneralKeyShare): unknown {
     const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.idType !== undefined && (obj.idType = message.idType);
-    message.idValue !== undefined && (obj.idValue = message.idValue);
-    message.keyShare !== undefined && (obj.keyShare = message.keyShare);
-    message.keyShareIndex !== undefined && (obj.keyShareIndex = Math.round(message.keyShareIndex));
-    message.receivedTimestamp !== undefined && (obj.receivedTimestamp = Math.round(message.receivedTimestamp));
-    message.receivedBlockHeight !== undefined && (obj.receivedBlockHeight = Math.round(message.receivedBlockHeight));
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.idType !== "") {
+      obj.idType = message.idType;
+    }
+    if (message.idValue !== "") {
+      obj.idValue = message.idValue;
+    }
+    if (message.keyShare !== "") {
+      obj.keyShare = message.keyShare;
+    }
+    if (message.keyShareIndex !== 0) {
+      obj.keyShareIndex = Math.round(message.keyShareIndex);
+    }
+    if (message.receivedTimestamp !== 0) {
+      obj.receivedTimestamp = Math.round(message.receivedTimestamp);
+    }
+    if (message.receivedBlockHeight !== 0) {
+      obj.receivedBlockHeight = Math.round(message.receivedBlockHeight);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgCreateGeneralKeyShare>, I>>(base?: I): MsgCreateGeneralKeyShare {
+    return MsgCreateGeneralKeyShare.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgCreateGeneralKeyShare>, I>>(object: I): MsgCreateGeneralKeyShare {
     const message = createBaseMsgCreateGeneralKeyShare();
     message.creator = object.creator ?? "";
@@ -936,40 +1186,73 @@ export const MsgCreateGeneralKeyShareResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateGeneralKeyShareResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateGeneralKeyShareResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.creator = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.idType = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.idValue = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.keyShare = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.keyShareIndex = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.receivedBlockHeight = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 7:
+          if (tag !== 56) {
+            break;
+          }
+
           message.success = reader.bool();
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.errorMessage = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -989,17 +1272,38 @@ export const MsgCreateGeneralKeyShareResponse = {
 
   toJSON(message: MsgCreateGeneralKeyShareResponse): unknown {
     const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.idType !== undefined && (obj.idType = message.idType);
-    message.idValue !== undefined && (obj.idValue = message.idValue);
-    message.keyShare !== undefined && (obj.keyShare = message.keyShare);
-    message.keyShareIndex !== undefined && (obj.keyShareIndex = Math.round(message.keyShareIndex));
-    message.receivedBlockHeight !== undefined && (obj.receivedBlockHeight = Math.round(message.receivedBlockHeight));
-    message.success !== undefined && (obj.success = message.success);
-    message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.idType !== "") {
+      obj.idType = message.idType;
+    }
+    if (message.idValue !== "") {
+      obj.idValue = message.idValue;
+    }
+    if (message.keyShare !== "") {
+      obj.keyShare = message.keyShare;
+    }
+    if (message.keyShareIndex !== 0) {
+      obj.keyShareIndex = Math.round(message.keyShareIndex);
+    }
+    if (message.receivedBlockHeight !== 0) {
+      obj.receivedBlockHeight = Math.round(message.receivedBlockHeight);
+    }
+    if (message.success === true) {
+      obj.success = message.success;
+    }
+    if (message.errorMessage !== "") {
+      obj.errorMessage = message.errorMessage;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MsgCreateGeneralKeyShareResponse>, I>>(
+    base?: I,
+  ): MsgCreateGeneralKeyShareResponse {
+    return MsgCreateGeneralKeyShareResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<MsgCreateGeneralKeyShareResponse>, I>>(
     object: I,
   ): MsgCreateGeneralKeyShareResponse {
@@ -1028,9 +1332,12 @@ export interface Msg {
   CreateGeneralKeyShare(request: MsgCreateGeneralKeyShare): Promise<MsgCreateGeneralKeyShareResponse>;
 }
 
+export const MsgServiceName = "fairyring.keyshare.Msg";
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
-  constructor(rpc: Rpc) {
+  private readonly service: string;
+  constructor(rpc: Rpc, opts?: { service?: string }) {
+    this.service = opts?.service || MsgServiceName;
     this.rpc = rpc;
     this.RegisterValidator = this.RegisterValidator.bind(this);
     this.SendKeyshare = this.SendKeyshare.bind(this);
@@ -1042,44 +1349,44 @@ export class MsgClientImpl implements Msg {
   }
   RegisterValidator(request: MsgRegisterValidator): Promise<MsgRegisterValidatorResponse> {
     const data = MsgRegisterValidator.encode(request).finish();
-    const promise = this.rpc.request("fairyring.keyshare.Msg", "RegisterValidator", data);
-    return promise.then((data) => MsgRegisterValidatorResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "RegisterValidator", data);
+    return promise.then((data) => MsgRegisterValidatorResponse.decode(_m0.Reader.create(data)));
   }
 
   SendKeyshare(request: MsgSendKeyshare): Promise<MsgSendKeyshareResponse> {
     const data = MsgSendKeyshare.encode(request).finish();
-    const promise = this.rpc.request("fairyring.keyshare.Msg", "SendKeyshare", data);
-    return promise.then((data) => MsgSendKeyshareResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "SendKeyshare", data);
+    return promise.then((data) => MsgSendKeyshareResponse.decode(_m0.Reader.create(data)));
   }
 
   CreateLatestPubKey(request: MsgCreateLatestPubKey): Promise<MsgCreateLatestPubKeyResponse> {
     const data = MsgCreateLatestPubKey.encode(request).finish();
-    const promise = this.rpc.request("fairyring.keyshare.Msg", "CreateLatestPubKey", data);
-    return promise.then((data) => MsgCreateLatestPubKeyResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "CreateLatestPubKey", data);
+    return promise.then((data) => MsgCreateLatestPubKeyResponse.decode(_m0.Reader.create(data)));
   }
 
   CreateAuthorizedAddress(request: MsgCreateAuthorizedAddress): Promise<MsgCreateAuthorizedAddressResponse> {
     const data = MsgCreateAuthorizedAddress.encode(request).finish();
-    const promise = this.rpc.request("fairyring.keyshare.Msg", "CreateAuthorizedAddress", data);
-    return promise.then((data) => MsgCreateAuthorizedAddressResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "CreateAuthorizedAddress", data);
+    return promise.then((data) => MsgCreateAuthorizedAddressResponse.decode(_m0.Reader.create(data)));
   }
 
   UpdateAuthorizedAddress(request: MsgUpdateAuthorizedAddress): Promise<MsgUpdateAuthorizedAddressResponse> {
     const data = MsgUpdateAuthorizedAddress.encode(request).finish();
-    const promise = this.rpc.request("fairyring.keyshare.Msg", "UpdateAuthorizedAddress", data);
-    return promise.then((data) => MsgUpdateAuthorizedAddressResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "UpdateAuthorizedAddress", data);
+    return promise.then((data) => MsgUpdateAuthorizedAddressResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteAuthorizedAddress(request: MsgDeleteAuthorizedAddress): Promise<MsgDeleteAuthorizedAddressResponse> {
     const data = MsgDeleteAuthorizedAddress.encode(request).finish();
-    const promise = this.rpc.request("fairyring.keyshare.Msg", "DeleteAuthorizedAddress", data);
-    return promise.then((data) => MsgDeleteAuthorizedAddressResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "DeleteAuthorizedAddress", data);
+    return promise.then((data) => MsgDeleteAuthorizedAddressResponse.decode(_m0.Reader.create(data)));
   }
 
   CreateGeneralKeyShare(request: MsgCreateGeneralKeyShare): Promise<MsgCreateGeneralKeyShareResponse> {
     const data = MsgCreateGeneralKeyShare.encode(request).finish();
-    const promise = this.rpc.request("fairyring.keyshare.Msg", "CreateGeneralKeyShare", data);
-    return promise.then((data) => MsgCreateGeneralKeyShareResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "CreateGeneralKeyShare", data);
+    return promise.then((data) => MsgCreateGeneralKeyShareResponse.decode(_m0.Reader.create(data)));
   }
 }
 
@@ -1087,10 +1394,10 @@ interface Rpc {
   request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
 }
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -1119,7 +1426,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

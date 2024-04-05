@@ -139,11 +139,11 @@ export interface SignatureDescriptor {
 /** Data represents signature data */
 export interface SignatureDescriptor_Data {
   /** single represents a single signer */
-  single:
+  single?:
     | SignatureDescriptor_Data_Single
     | undefined;
   /** multi represents a multisig signer */
-  multi: SignatureDescriptor_Data_Multi | undefined;
+  multi?: SignatureDescriptor_Data_Multi | undefined;
 }
 
 /** Single is the signature data for a single signer */
@@ -177,19 +177,24 @@ export const SignatureDescriptors = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SignatureDescriptors {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignatureDescriptors();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.signatures.push(SignatureDescriptor.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -204,14 +209,15 @@ export const SignatureDescriptors = {
 
   toJSON(message: SignatureDescriptors): unknown {
     const obj: any = {};
-    if (message.signatures) {
-      obj.signatures = message.signatures.map((e) => e ? SignatureDescriptor.toJSON(e) : undefined);
-    } else {
-      obj.signatures = [];
+    if (message.signatures?.length) {
+      obj.signatures = message.signatures.map((e) => SignatureDescriptor.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SignatureDescriptors>, I>>(base?: I): SignatureDescriptors {
+    return SignatureDescriptors.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<SignatureDescriptors>, I>>(object: I): SignatureDescriptors {
     const message = createBaseSignatureDescriptors();
     message.signatures = object.signatures?.map((e) => SignatureDescriptor.fromPartial(e)) || [];
@@ -238,25 +244,38 @@ export const SignatureDescriptor = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SignatureDescriptor {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignatureDescriptor();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.publicKey = Any.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.data = SignatureDescriptor_Data.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.sequence = longToNumber(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -271,12 +290,21 @@ export const SignatureDescriptor = {
 
   toJSON(message: SignatureDescriptor): unknown {
     const obj: any = {};
-    message.publicKey !== undefined && (obj.publicKey = message.publicKey ? Any.toJSON(message.publicKey) : undefined);
-    message.data !== undefined && (obj.data = message.data ? SignatureDescriptor_Data.toJSON(message.data) : undefined);
-    message.sequence !== undefined && (obj.sequence = Math.round(message.sequence));
+    if (message.publicKey !== undefined) {
+      obj.publicKey = Any.toJSON(message.publicKey);
+    }
+    if (message.data !== undefined) {
+      obj.data = SignatureDescriptor_Data.toJSON(message.data);
+    }
+    if (message.sequence !== 0) {
+      obj.sequence = Math.round(message.sequence);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SignatureDescriptor>, I>>(base?: I): SignatureDescriptor {
+    return SignatureDescriptor.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<SignatureDescriptor>, I>>(object: I): SignatureDescriptor {
     const message = createBaseSignatureDescriptor();
     message.publicKey = (object.publicKey !== undefined && object.publicKey !== null)
@@ -306,22 +334,31 @@ export const SignatureDescriptor_Data = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SignatureDescriptor_Data {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignatureDescriptor_Data();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.single = SignatureDescriptor_Data_Single.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.multi = SignatureDescriptor_Data_Multi.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -335,13 +372,18 @@ export const SignatureDescriptor_Data = {
 
   toJSON(message: SignatureDescriptor_Data): unknown {
     const obj: any = {};
-    message.single !== undefined
-      && (obj.single = message.single ? SignatureDescriptor_Data_Single.toJSON(message.single) : undefined);
-    message.multi !== undefined
-      && (obj.multi = message.multi ? SignatureDescriptor_Data_Multi.toJSON(message.multi) : undefined);
+    if (message.single !== undefined) {
+      obj.single = SignatureDescriptor_Data_Single.toJSON(message.single);
+    }
+    if (message.multi !== undefined) {
+      obj.multi = SignatureDescriptor_Data_Multi.toJSON(message.multi);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SignatureDescriptor_Data>, I>>(base?: I): SignatureDescriptor_Data {
+    return SignatureDescriptor_Data.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<SignatureDescriptor_Data>, I>>(object: I): SignatureDescriptor_Data {
     const message = createBaseSignatureDescriptor_Data();
     message.single = (object.single !== undefined && object.single !== null)
@@ -355,7 +397,7 @@ export const SignatureDescriptor_Data = {
 };
 
 function createBaseSignatureDescriptor_Data_Single(): SignatureDescriptor_Data_Single {
-  return { mode: 0, signature: new Uint8Array() };
+  return { mode: 0, signature: new Uint8Array(0) };
 }
 
 export const SignatureDescriptor_Data_Single = {
@@ -370,22 +412,31 @@ export const SignatureDescriptor_Data_Single = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SignatureDescriptor_Data_Single {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignatureDescriptor_Data_Single();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.mode = reader.int32() as any;
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.signature = reader.bytes();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -393,24 +444,30 @@ export const SignatureDescriptor_Data_Single = {
   fromJSON(object: any): SignatureDescriptor_Data_Single {
     return {
       mode: isSet(object.mode) ? signModeFromJSON(object.mode) : 0,
-      signature: isSet(object.signature) ? bytesFromBase64(object.signature) : new Uint8Array(),
+      signature: isSet(object.signature) ? bytesFromBase64(object.signature) : new Uint8Array(0),
     };
   },
 
   toJSON(message: SignatureDescriptor_Data_Single): unknown {
     const obj: any = {};
-    message.mode !== undefined && (obj.mode = signModeToJSON(message.mode));
-    message.signature !== undefined
-      && (obj.signature = base64FromBytes(message.signature !== undefined ? message.signature : new Uint8Array()));
+    if (message.mode !== 0) {
+      obj.mode = signModeToJSON(message.mode);
+    }
+    if (message.signature.length !== 0) {
+      obj.signature = base64FromBytes(message.signature);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SignatureDescriptor_Data_Single>, I>>(base?: I): SignatureDescriptor_Data_Single {
+    return SignatureDescriptor_Data_Single.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<SignatureDescriptor_Data_Single>, I>>(
     object: I,
   ): SignatureDescriptor_Data_Single {
     const message = createBaseSignatureDescriptor_Data_Single();
     message.mode = object.mode ?? 0;
-    message.signature = object.signature ?? new Uint8Array();
+    message.signature = object.signature ?? new Uint8Array(0);
     return message;
   },
 };
@@ -431,22 +488,31 @@ export const SignatureDescriptor_Data_Multi = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SignatureDescriptor_Data_Multi {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignatureDescriptor_Data_Multi();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.bitarray = CompactBitArray.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.signatures.push(SignatureDescriptor_Data.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -462,16 +528,18 @@ export const SignatureDescriptor_Data_Multi = {
 
   toJSON(message: SignatureDescriptor_Data_Multi): unknown {
     const obj: any = {};
-    message.bitarray !== undefined
-      && (obj.bitarray = message.bitarray ? CompactBitArray.toJSON(message.bitarray) : undefined);
-    if (message.signatures) {
-      obj.signatures = message.signatures.map((e) => e ? SignatureDescriptor_Data.toJSON(e) : undefined);
-    } else {
-      obj.signatures = [];
+    if (message.bitarray !== undefined) {
+      obj.bitarray = CompactBitArray.toJSON(message.bitarray);
+    }
+    if (message.signatures?.length) {
+      obj.signatures = message.signatures.map((e) => SignatureDescriptor_Data.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SignatureDescriptor_Data_Multi>, I>>(base?: I): SignatureDescriptor_Data_Multi {
+    return SignatureDescriptor_Data_Multi.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<SignatureDescriptor_Data_Multi>, I>>(
     object: I,
   ): SignatureDescriptor_Data_Multi {
@@ -484,10 +552,10 @@ export const SignatureDescriptor_Data_Multi = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -504,10 +572,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -517,14 +585,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 
@@ -541,7 +609,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

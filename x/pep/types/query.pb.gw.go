@@ -354,15 +354,15 @@ func request_Query_KeyshareReq_0(ctx context.Context, marshaler runtime.Marshale
 		_   = err
 	)
 
-	val, ok = pathParams["identity"]
+	val, ok = pathParams["req_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "identity")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "req_id")
 	}
 
-	protoReq.Identity, err = runtime.String(val)
+	protoReq.ReqId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "identity", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "req_id", err)
 	}
 
 	msg, err := client.KeyshareReq(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -381,15 +381,15 @@ func local_request_Query_KeyshareReq_0(ctx context.Context, marshaler runtime.Ma
 		_   = err
 	)
 
-	val, ok = pathParams["identity"]
+	val, ok = pathParams["req_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "identity")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "req_id")
 	}
 
-	protoReq.Identity, err = runtime.String(val)
+	protoReq.ReqId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "identity", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "req_id", err)
 	}
 
 	msg, err := server.KeyshareReq(ctx, &protoReq)
@@ -930,7 +930,7 @@ var (
 
 	pattern_Query_PubKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "pub_key"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_KeyshareReq_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "pep", "keyshare", "identity"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_KeyshareReq_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "pep", "keyshare", "req_id"}, "", runtime.AssumeColonVerbOpt(false)))
 
 	pattern_Query_KeyshareReqAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "keyshare"}, "", runtime.AssumeColonVerbOpt(false)))
 )

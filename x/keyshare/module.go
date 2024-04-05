@@ -5,9 +5,10 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"strconv"
+
 	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 	"github.com/cosmos/cosmos-sdk/telemetry"
-	"strconv"
 
 	// this line is used by starport scaffolding # 1
 
@@ -172,6 +173,9 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			am.keeper.RemoveValidatorSet(ctx, eachValidator.Validator)
 		}
 	}
+
+	am.keeper.ProcessPepRequestQueue(ctx)
+	am.keeper.ProcessPepSignalQueue(ctx)
 
 	height := uint64(ctx.BlockHeight())
 

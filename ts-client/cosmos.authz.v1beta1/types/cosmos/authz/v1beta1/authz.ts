@@ -62,19 +62,24 @@ export const GenericAuthorization = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GenericAuthorization {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenericAuthorization();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.msg = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -85,10 +90,15 @@ export const GenericAuthorization = {
 
   toJSON(message: GenericAuthorization): unknown {
     const obj: any = {};
-    message.msg !== undefined && (obj.msg = message.msg);
+    if (message.msg !== "") {
+      obj.msg = message.msg;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GenericAuthorization>, I>>(base?: I): GenericAuthorization {
+    return GenericAuthorization.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<GenericAuthorization>, I>>(object: I): GenericAuthorization {
     const message = createBaseGenericAuthorization();
     message.msg = object.msg ?? "";
@@ -112,22 +122,31 @@ export const Grant = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Grant {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGrant();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.authorization = Any.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.expiration = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -141,12 +160,18 @@ export const Grant = {
 
   toJSON(message: Grant): unknown {
     const obj: any = {};
-    message.authorization !== undefined
-      && (obj.authorization = message.authorization ? Any.toJSON(message.authorization) : undefined);
-    message.expiration !== undefined && (obj.expiration = message.expiration.toISOString());
+    if (message.authorization !== undefined) {
+      obj.authorization = Any.toJSON(message.authorization);
+    }
+    if (message.expiration !== undefined) {
+      obj.expiration = message.expiration.toISOString();
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Grant>, I>>(base?: I): Grant {
+    return Grant.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Grant>, I>>(object: I): Grant {
     const message = createBaseGrant();
     message.authorization = (object.authorization !== undefined && object.authorization !== null)
@@ -179,28 +204,45 @@ export const GrantAuthorization = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GrantAuthorization {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGrantAuthorization();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.granter = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.grantee = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.authorization = Any.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.expiration = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -216,14 +258,24 @@ export const GrantAuthorization = {
 
   toJSON(message: GrantAuthorization): unknown {
     const obj: any = {};
-    message.granter !== undefined && (obj.granter = message.granter);
-    message.grantee !== undefined && (obj.grantee = message.grantee);
-    message.authorization !== undefined
-      && (obj.authorization = message.authorization ? Any.toJSON(message.authorization) : undefined);
-    message.expiration !== undefined && (obj.expiration = message.expiration.toISOString());
+    if (message.granter !== "") {
+      obj.granter = message.granter;
+    }
+    if (message.grantee !== "") {
+      obj.grantee = message.grantee;
+    }
+    if (message.authorization !== undefined) {
+      obj.authorization = Any.toJSON(message.authorization);
+    }
+    if (message.expiration !== undefined) {
+      obj.expiration = message.expiration.toISOString();
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GrantAuthorization>, I>>(base?: I): GrantAuthorization {
+    return GrantAuthorization.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<GrantAuthorization>, I>>(object: I): GrantAuthorization {
     const message = createBaseGrantAuthorization();
     message.granter = object.granter ?? "";
@@ -249,19 +301,24 @@ export const GrantQueueItem = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GrantQueueItem {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGrantQueueItem();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.msgTypeUrls.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -272,14 +329,15 @@ export const GrantQueueItem = {
 
   toJSON(message: GrantQueueItem): unknown {
     const obj: any = {};
-    if (message.msgTypeUrls) {
-      obj.msgTypeUrls = message.msgTypeUrls.map((e) => e);
-    } else {
-      obj.msgTypeUrls = [];
+    if (message.msgTypeUrls?.length) {
+      obj.msgTypeUrls = message.msgTypeUrls;
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GrantQueueItem>, I>>(base?: I): GrantQueueItem {
+    return GrantQueueItem.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<GrantQueueItem>, I>>(object: I): GrantQueueItem {
     const message = createBaseGrantQueueItem();
     message.msgTypeUrls = object.msgTypeUrls?.map((e) => e) || [];
@@ -305,8 +363,8 @@ function toTimestamp(date: Date): Timestamp {
 }
 
 function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
   return new Date(millis);
 }
 

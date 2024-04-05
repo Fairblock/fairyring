@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"encoding/json"
 	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 	"strconv"
 
@@ -25,14 +26,6 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 		return nil, types.ErrQueuedKeyAlreadyExists.Wrap(msg.Creator)
 	}
 
-	if len(msg.Commitments) == 0 {
-		return nil, types.ErrEmptyCommitments
-	}
-
-	if msg.NumberOfValidators == 0 {
-		return nil, types.ErrInvalidNumberOfValidators
-	}
-
 	commitments := types.Commitments{
 		Commitments: msg.Commitments,
 	}
@@ -48,6 +41,12 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 		PublicKey:          msg.PublicKey,
 		Expiry:             expHeight,
 		NumberOfValidators: msg.NumberOfValidators,
+		EncryptedKeyShares: msg.EncryptedKeyShares,
+	}
+
+	encryptedKeyShares, err := json.Marshal(msg.EncryptedKeyShares)
+	if err != nil {
+		return nil, err
 	}
 
 	k.SetQueuedCommitments(
@@ -76,6 +75,7 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 			sdk.NewAttribute(types.QueuedPubKeyCreatedEventCreator, msg.Creator),
 			sdk.NewAttribute(types.QueuedPubKeyCreatedEventPubkey, msg.PublicKey),
 			sdk.NewAttribute(types.QueuedPubKeyCreatedEventNumberOfValidators, strconv.FormatUint(msg.NumberOfValidators, 10)),
+			sdk.NewAttribute(types.QueuedPubKeyCreatedEventEncryptedShares, string(encryptedKeyShares)),
 		),
 	)
 

@@ -9,10 +9,10 @@ const TypeMsgGetGeneralKeyshare = "get_general_keyshare"
 
 var _ sdk.Msg = &MsgGetGeneralKeyshare{}
 
-func NewMsgGetGeneralKeyshare(creator string, identity string) *MsgGetGeneralKeyshare {
+func NewMsgGetGeneralKeyshare(creator string, reqID string) *MsgGetGeneralKeyshare {
 	return &MsgGetGeneralKeyshare{
-		Creator:  creator,
-		Identity: identity,
+		Creator: creator,
+		ReqId:   reqID,
 	}
 }
 

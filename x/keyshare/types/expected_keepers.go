@@ -36,7 +36,55 @@ type PepKeeper interface {
 	GetQueuedPubKey(ctx sdk.Context) (val peptypes.QueuedPubKey, found bool)
 	DeleteActivePubKey(ctx sdk.Context)
 	DeleteQueuedPubKey(ctx sdk.Context)
-	ProcessAggrKeyshare(ctx sdk.Context, identity string, aggrKeyshare string) error
+	SetEntry(ctx sdk.Context, val peptypes.GenEncTxExecutionQueue)
+	GetEntry(
+		ctx sdk.Context,
+		reqID string,
+	) (val peptypes.GenEncTxExecutionQueue, found bool)
+	RemoveEntry(
+		ctx sdk.Context,
+		reqID string,
+	)
+	GetAllGenEncTxEntry(ctx sdk.Context) (list []peptypes.GenEncTxExecutionQueue)
+	GetSignalQueueEntry(
+		ctx sdk.Context,
+		reqID string,
+	) (val peptypes.GenEncTxExecutionQueue, found bool)
+	SetSignalQueueEntry(
+		ctx sdk.Context,
+		val peptypes.GenEncTxExecutionQueue,
+	)
+	RemoveSignalQueueEntry(
+		ctx sdk.Context,
+		reqID string,
+	)
+	GetAllGenEncTxSignalQueueEntry(ctx sdk.Context) (list []peptypes.GenEncTxExecutionQueue)
+	GetExecutionQueueEntry(
+		ctx sdk.Context,
+		reqID string,
+	) (val peptypes.GenEncTxExecutionQueue, found bool)
+	SetExecutionQueueEntry(
+		ctx sdk.Context,
+		val peptypes.GenEncTxExecutionQueue,
+	)
+	RemoveExecutionQueueEntry(
+		ctx sdk.Context,
+		reqID string,
+	)
+	GetAllGenEncTxExecutionQueueEntry(ctx sdk.Context) (list []peptypes.GenEncTxExecutionQueue)
+	GetRequestQueueEntry(
+		ctx sdk.Context,
+		reqID string,
+	) (val peptypes.GenEncTxExecutionQueue, found bool)
+	SetReqQueueEntry(
+		ctx sdk.Context,
+		val peptypes.GenEncTxExecutionQueue,
+	)
+	RemoveReqQueueEntry(
+		ctx sdk.Context,
+		reqID string,
+	)
+	GetAllGenEncTxReqQueueEntry(ctx sdk.Context) (list []peptypes.GenEncTxExecutionQueue)
 }
 
 // StakingKeeper defines the expected interface needed to retrieve the list of validators.

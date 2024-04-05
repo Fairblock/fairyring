@@ -9,310 +9,137 @@
  * ---------------------------------------------------------------
  */
 
-export interface ProtobufAny {
+export interface Any {
   "@type"?: string;
 }
 
-export interface RpcStatus {
+export interface Status {
   /** @format int32 */
   code?: number;
   message?: string;
-  details?: ProtobufAny[];
+  details?: { "@type"?: string }[];
 }
 
-/**
-* Coin defines a token with a denomination and an amount.
-
-NOTE: The amount field is an Int which implements the custom method
-signatures required by gogoproto.
-*/
-export interface V1Beta1Coin {
+export interface DecCoin {
   denom?: string;
   amount?: string;
 }
 
-/**
-* DecCoin defines a token with a denomination and a decimal amount.
-
-NOTE: The amount field is an Dec which implements the custom method
-signatures required by gogoproto.
-*/
-export interface V1Beta1DecCoin {
-  denom?: string;
-  amount?: string;
-}
-
-/**
-* DelegationDelegatorReward represents the properties
-of a delegator's delegation reward.
-*/
-export interface V1Beta1DelegationDelegatorReward {
+export interface DelegationDelegatorReward {
   validator_address?: string;
-  reward?: V1Beta1DecCoin[];
+  reward?: { denom?: string; amount?: string }[];
 }
 
-/**
-* MsgCommunityPoolSpendResponse defines the response to executing a
-MsgCommunityPoolSpend message.
-
-Since: cosmos-sdk 0.47
-*/
-export type V1Beta1MsgCommunityPoolSpendResponse = object;
-
-/**
- * MsgFundCommunityPoolResponse defines the Msg/FundCommunityPool response type.
- */
-export type V1Beta1MsgFundCommunityPoolResponse = object;
-
-/**
-* MsgSetWithdrawAddressResponse defines the Msg/SetWithdrawAddress response
-type.
-*/
-export type V1Beta1MsgSetWithdrawAddressResponse = object;
-
-/**
-* MsgUpdateParamsResponse defines the response structure for executing a
-MsgUpdateParams message.
-
-Since: cosmos-sdk 0.47
-*/
-export type V1Beta1MsgUpdateParamsResponse = object;
-
-/**
-* MsgWithdrawDelegatorRewardResponse defines the Msg/WithdrawDelegatorReward
-response type.
-*/
-export interface V1Beta1MsgWithdrawDelegatorRewardResponse {
-  /** Since: cosmos-sdk 0.46 */
-  amount?: V1Beta1Coin[];
-}
-
-/**
-* MsgWithdrawValidatorCommissionResponse defines the
-Msg/WithdrawValidatorCommission response type.
-*/
-export interface V1Beta1MsgWithdrawValidatorCommissionResponse {
-  /** Since: cosmos-sdk 0.46 */
-  amount?: V1Beta1Coin[];
-}
-
-/**
-* message SomeRequest {
-         Foo some_parameter = 1;
-         PageRequest pagination = 2;
- }
-*/
-export interface V1Beta1PageRequest {
-  /**
-   * key is a value returned in PageResponse.next_key to begin
-   * querying the next page most efficiently. Only one of offset or key
-   * should be set.
-   * @format byte
-   */
+export interface PageRequest {
+  /** @format byte */
   key?: string;
 
-  /**
-   * offset is a numeric offset that can be used when key is unavailable.
-   * It is less efficient than using key. Only one of offset or key should
-   * be set.
-   * @format uint64
-   */
+  /** @format uint64 */
   offset?: string;
 
-  /**
-   * limit is the total number of results to be returned in the result page.
-   * If left empty it will default to a value to be set by each app.
-   * @format uint64
-   */
+  /** @format uint64 */
   limit?: string;
-
-  /**
-   * count_total is set to true  to indicate that the result set should include
-   * a count of the total number of items available for pagination in UIs.
-   * count_total is only respected when offset is used. It is ignored when key
-   * is set.
-   */
   count_total?: boolean;
-
-  /**
-   * reverse is set to true if results are to be returned in the descending order.
-   *
-   * Since: cosmos-sdk 0.43
-   */
   reverse?: boolean;
 }
 
-/**
-* PageResponse is to be embedded in gRPC response messages where the
-corresponding request message has used PageRequest.
-
- message SomeResponse {
-         repeated Bar results = 1;
-         PageResponse page = 2;
- }
-*/
-export interface V1Beta1PageResponse {
-  /**
-   * next_key is the key to be passed to PageRequest.key to
-   * query the next page most efficiently. It will be empty if
-   * there are no more results.
-   * @format byte
-   */
+export interface PageResponse {
+  /** @format byte */
   next_key?: string;
 
-  /**
-   * total is total number of results available if PageRequest.count_total
-   * was set, its value is undefined otherwise
-   * @format uint64
-   */
+  /** @format uint64 */
   total?: string;
 }
 
-/**
- * Params defines the set of params for the distribution module.
- */
-export interface V1Beta1Params {
+export interface Params {
   community_tax?: string;
-
-  /**
-   * Deprecated: The base_proposer_reward field is deprecated and is no longer used
-   * in the x/distribution module's reward mechanism.
-   */
   base_proposer_reward?: string;
-
-  /**
-   * Deprecated: The bonus_proposer_reward field is deprecated and is no longer used
-   * in the x/distribution module's reward mechanism.
-   */
   bonus_proposer_reward?: string;
   withdraw_addr_enabled?: boolean;
 }
 
-/**
-* QueryCommunityPoolResponse is the response type for the Query/CommunityPool
-RPC method.
-*/
-export interface V1Beta1QueryCommunityPoolResponse {
-  /** pool defines community pool's coins. */
-  pool?: V1Beta1DecCoin[];
+export interface QueryCommunityPoolResponse {
+  pool?: { denom?: string; amount?: string }[];
 }
 
-/**
-* QueryDelegationRewardsResponse is the response type for the
-Query/DelegationRewards RPC method.
-*/
-export interface V1Beta1QueryDelegationRewardsResponse {
-  /** rewards defines the rewards accrued by a delegation. */
-  rewards?: V1Beta1DecCoin[];
+export interface QueryDelegationRewardsResponse {
+  rewards?: { denom?: string; amount?: string }[];
 }
 
-/**
-* QueryDelegationTotalRewardsResponse is the response type for the
-Query/DelegationTotalRewards RPC method.
-*/
-export interface V1Beta1QueryDelegationTotalRewardsResponse {
-  /** rewards defines all the rewards accrued by a delegator. */
-  rewards?: V1Beta1DelegationDelegatorReward[];
-
-  /** total defines the sum of all the rewards. */
-  total?: V1Beta1DecCoin[];
+export interface QueryDelegationTotalRewardsResponse {
+  rewards?: { validator_address?: string; reward?: { denom?: string; amount?: string }[] }[];
+  total?: { denom?: string; amount?: string }[];
 }
 
-/**
-* QueryDelegatorValidatorsResponse is the response type for the
-Query/DelegatorValidators RPC method.
-*/
-export interface V1Beta1QueryDelegatorValidatorsResponse {
-  /** validators defines the validators a delegator is delegating for. */
+export interface QueryDelegatorValidatorsResponse {
   validators?: string[];
 }
 
-/**
-* QueryDelegatorWithdrawAddressResponse is the response type for the
-Query/DelegatorWithdrawAddress RPC method.
-*/
-export interface V1Beta1QueryDelegatorWithdrawAddressResponse {
-  /** withdraw_address defines the delegator address to query for. */
+export interface QueryDelegatorWithdrawAddressResponse {
   withdraw_address?: string;
 }
 
-/**
- * QueryParamsResponse is the response type for the Query/Params RPC method.
- */
-export interface V1Beta1QueryParamsResponse {
-  /** params defines the parameters of the module. */
-  params?: V1Beta1Params;
+export interface QueryParamsResponse {
+  params?: {
+    community_tax?: string;
+    base_proposer_reward?: string;
+    bonus_proposer_reward?: string;
+    withdraw_addr_enabled?: boolean;
+  };
 }
 
-export interface V1Beta1QueryValidatorCommissionResponse {
-  /** commission defines the commission the validator received. */
-  commission?: V1Beta1ValidatorAccumulatedCommission;
+export interface QueryValidatorCommissionResponse {
+  commission?: { commission?: { denom?: string; amount?: string }[] };
 }
 
-/**
- * QueryValidatorDistributionInfoResponse is the response type for the Query/ValidatorDistributionInfo RPC method.
- */
-export interface V1Beta1QueryValidatorDistributionInfoResponse {
-  /** operator_address defines the validator operator address. */
+export interface QueryValidatorDistributionInfoResponse {
   operator_address?: string;
-
-  /** self_bond_rewards defines the self delegations rewards. */
-  self_bond_rewards?: V1Beta1DecCoin[];
-
-  /** commission defines the commission the validator received. */
-  commission?: V1Beta1DecCoin[];
+  self_bond_rewards?: { denom?: string; amount?: string }[];
+  commission?: { denom?: string; amount?: string }[];
 }
 
-/**
-* QueryValidatorOutstandingRewardsResponse is the response type for the
-Query/ValidatorOutstandingRewards RPC method.
-*/
-export interface V1Beta1QueryValidatorOutstandingRewardsResponse {
-  /**
-   * ValidatorOutstandingRewards represents outstanding (un-withdrawn) rewards
-   * for a validator inexpensive to track, allows simple sanity checks.
-   */
-  rewards?: V1Beta1ValidatorOutstandingRewards;
+export interface QueryValidatorOutstandingRewardsResponse {
+  rewards?: { rewards?: { denom?: string; amount?: string }[] };
 }
 
-/**
-* QueryValidatorSlashesResponse is the response type for the
-Query/ValidatorSlashes RPC method.
-*/
-export interface V1Beta1QueryValidatorSlashesResponse {
-  /** slashes defines the slashes the validator received. */
-  slashes?: V1Beta1ValidatorSlashEvent[];
-
-  /** pagination defines the pagination in the response. */
-  pagination?: V1Beta1PageResponse;
+export interface QueryValidatorSlashesResponse {
+  slashes?: { validator_period?: string; fraction?: string }[];
+  pagination?: { next_key?: string; total?: string };
 }
 
-/**
-* ValidatorAccumulatedCommission represents accumulated commission
-for a validator kept as a running counter, can be withdrawn at any time.
-*/
-export interface V1Beta1ValidatorAccumulatedCommission {
-  commission?: V1Beta1DecCoin[];
+export interface ValidatorAccumulatedCommission {
+  commission?: { denom?: string; amount?: string }[];
 }
 
-/**
-* ValidatorOutstandingRewards represents outstanding (un-withdrawn) rewards
-for a validator inexpensive to track, allows simple sanity checks.
-*/
-export interface V1Beta1ValidatorOutstandingRewards {
-  rewards?: V1Beta1DecCoin[];
+export interface ValidatorOutstandingRewards {
+  rewards?: { denom?: string; amount?: string }[];
 }
 
-/**
-* ValidatorSlashEvent represents a validator slash event.
-Height is implicit within the store key.
-This is needed to calculate appropriate amount of staking tokens
-for delegations which are withdrawn after a slash has occurred.
-*/
-export interface V1Beta1ValidatorSlashEvent {
+export interface ValidatorSlashEvent {
   /** @format uint64 */
   validator_period?: string;
   fraction?: string;
+}
+
+export interface Coin {
+  denom?: string;
+  amount?: string;
+}
+
+export type MsgCommunityPoolSpendResponse = object;
+
+export type MsgFundCommunityPoolResponse = object;
+
+export type MsgSetWithdrawAddressResponse = object;
+
+export type MsgUpdateParamsResponse = object;
+
+export interface MsgWithdrawDelegatorRewardResponse {
+  amount?: { denom?: string; amount?: string }[];
+}
+
+export interface MsgWithdrawValidatorCommissionResponse {
+  amount?: { denom?: string; amount?: string }[];
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
@@ -436,8 +263,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title cosmos/distribution/v1beta1/distribution.proto
- * @version version not set
+ * @title HTTP API Console cosmos.distribution.v1beta1
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   /**
@@ -445,31 +271,35 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryCommunityPool
-   * @summary CommunityPool queries the community pool coins.
    * @request GET:/cosmos/distribution/v1beta1/community_pool
    */
   queryCommunityPool = (params: RequestParams = {}) =>
-    this.request<V1Beta1QueryCommunityPoolResponse, RpcStatus>({
+    this.request<
+      { pool?: { denom?: string; amount?: string }[] },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/distribution/v1beta1/community_pool`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
   /**
- * No description
- * 
- * @tags Query
- * @name QueryDelegationTotalRewards
- * @summary DelegationTotalRewards queries the total rewards accrued by a each
-validator.
- * @request GET:/cosmos/distribution/v1beta1/delegators/{delegator_address}/rewards
- */
+   * No description
+   *
+   * @tags Query
+   * @name QueryDelegationTotalRewards
+   * @request GET:/cosmos/distribution/v1beta1/delegators/{delegator_address}/rewards
+   */
   queryDelegationTotalRewards = (delegatorAddress: string, params: RequestParams = {}) =>
-    this.request<V1Beta1QueryDelegationTotalRewardsResponse, RpcStatus>({
+    this.request<
+      {
+        rewards?: { validator_address?: string; reward?: { denom?: string; amount?: string }[] }[];
+        total?: { denom?: string; amount?: string }[];
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/distribution/v1beta1/delegators/${delegatorAddress}/rewards`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -478,14 +308,15 @@ validator.
    *
    * @tags Query
    * @name QueryDelegationRewards
-   * @summary DelegationRewards queries the total rewards accrued by a delegation.
    * @request GET:/cosmos/distribution/v1beta1/delegators/{delegator_address}/rewards/{validator_address}
    */
   queryDelegationRewards = (delegatorAddress: string, validatorAddress: string, params: RequestParams = {}) =>
-    this.request<V1Beta1QueryDelegationRewardsResponse, RpcStatus>({
+    this.request<
+      { rewards?: { denom?: string; amount?: string }[] },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/distribution/v1beta1/delegators/${delegatorAddress}/rewards/${validatorAddress}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -494,14 +325,12 @@ validator.
    *
    * @tags Query
    * @name QueryDelegatorValidators
-   * @summary DelegatorValidators queries the validators of a delegator.
    * @request GET:/cosmos/distribution/v1beta1/delegators/{delegator_address}/validators
    */
   queryDelegatorValidators = (delegatorAddress: string, params: RequestParams = {}) =>
-    this.request<V1Beta1QueryDelegatorValidatorsResponse, RpcStatus>({
+    this.request<{ validators?: string[] }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
       path: `/cosmos/distribution/v1beta1/delegators/${delegatorAddress}/validators`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -510,14 +339,12 @@ validator.
    *
    * @tags Query
    * @name QueryDelegatorWithdrawAddress
-   * @summary DelegatorWithdrawAddress queries withdraw address of a delegator.
    * @request GET:/cosmos/distribution/v1beta1/delegators/{delegator_address}/withdraw_address
    */
   queryDelegatorWithdrawAddress = (delegatorAddress: string, params: RequestParams = {}) =>
-    this.request<V1Beta1QueryDelegatorWithdrawAddressResponse, RpcStatus>({
+    this.request<{ withdraw_address?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
       path: `/cosmos/distribution/v1beta1/delegators/${delegatorAddress}/withdraw_address`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -526,14 +353,22 @@ validator.
    *
    * @tags Query
    * @name QueryParams
-   * @summary Params queries params of the distribution module.
    * @request GET:/cosmos/distribution/v1beta1/params
    */
   queryParams = (params: RequestParams = {}) =>
-    this.request<V1Beta1QueryParamsResponse, RpcStatus>({
+    this.request<
+      {
+        params?: {
+          community_tax?: string;
+          base_proposer_reward?: string;
+          bonus_proposer_reward?: string;
+          withdraw_addr_enabled?: boolean;
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/distribution/v1beta1/params`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -542,14 +377,19 @@ validator.
    *
    * @tags Query
    * @name QueryValidatorDistributionInfo
-   * @summary ValidatorDistributionInfo queries validator commission and self-delegation rewards for validator
    * @request GET:/cosmos/distribution/v1beta1/validators/{validator_address}
    */
   queryValidatorDistributionInfo = (validatorAddress: string, params: RequestParams = {}) =>
-    this.request<V1Beta1QueryValidatorDistributionInfoResponse, RpcStatus>({
+    this.request<
+      {
+        operator_address?: string;
+        self_bond_rewards?: { denom?: string; amount?: string }[];
+        commission?: { denom?: string; amount?: string }[];
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/distribution/v1beta1/validators/${validatorAddress}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -558,14 +398,15 @@ validator.
    *
    * @tags Query
    * @name QueryValidatorCommission
-   * @summary ValidatorCommission queries accumulated commission for a validator.
    * @request GET:/cosmos/distribution/v1beta1/validators/{validator_address}/commission
    */
   queryValidatorCommission = (validatorAddress: string, params: RequestParams = {}) =>
-    this.request<V1Beta1QueryValidatorCommissionResponse, RpcStatus>({
+    this.request<
+      { commission?: { commission?: { denom?: string; amount?: string }[] } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/distribution/v1beta1/validators/${validatorAddress}/commission`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -574,14 +415,15 @@ validator.
    *
    * @tags Query
    * @name QueryValidatorOutstandingRewards
-   * @summary ValidatorOutstandingRewards queries rewards of a validator address.
    * @request GET:/cosmos/distribution/v1beta1/validators/{validator_address}/outstanding_rewards
    */
   queryValidatorOutstandingRewards = (validatorAddress: string, params: RequestParams = {}) =>
-    this.request<V1Beta1QueryValidatorOutstandingRewardsResponse, RpcStatus>({
+    this.request<
+      { rewards?: { rewards?: { denom?: string; amount?: string }[] } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/distribution/v1beta1/validators/${validatorAddress}/outstanding_rewards`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -590,7 +432,6 @@ validator.
    *
    * @tags Query
    * @name QueryValidatorSlashes
-   * @summary ValidatorSlashes queries slash events of a validator.
    * @request GET:/cosmos/distribution/v1beta1/validators/{validator_address}/slashes
    */
   queryValidatorSlashes = (
@@ -606,11 +447,16 @@ validator.
     },
     params: RequestParams = {},
   ) =>
-    this.request<V1Beta1QueryValidatorSlashesResponse, RpcStatus>({
+    this.request<
+      {
+        slashes?: { validator_period?: string; fraction?: string }[];
+        pagination?: { next_key?: string; total?: string };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/distribution/v1beta1/validators/${validatorAddress}/slashes`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 }

@@ -37,22 +37,31 @@ export const SendAuthorization = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SendAuthorization {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSendAuthorization();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.spendLimit.push(Coin.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.allowList.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -66,19 +75,18 @@ export const SendAuthorization = {
 
   toJSON(message: SendAuthorization): unknown {
     const obj: any = {};
-    if (message.spendLimit) {
-      obj.spendLimit = message.spendLimit.map((e) => e ? Coin.toJSON(e) : undefined);
-    } else {
-      obj.spendLimit = [];
+    if (message.spendLimit?.length) {
+      obj.spendLimit = message.spendLimit.map((e) => Coin.toJSON(e));
     }
-    if (message.allowList) {
-      obj.allowList = message.allowList.map((e) => e);
-    } else {
-      obj.allowList = [];
+    if (message.allowList?.length) {
+      obj.allowList = message.allowList;
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SendAuthorization>, I>>(base?: I): SendAuthorization {
+    return SendAuthorization.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<SendAuthorization>, I>>(object: I): SendAuthorization {
     const message = createBaseSendAuthorization();
     message.spendLimit = object.spendLimit?.map((e) => Coin.fromPartial(e)) || [];

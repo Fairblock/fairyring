@@ -20,19 +20,24 @@ export const Commitments = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Commitments {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCommitments();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.commitments.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -43,14 +48,15 @@ export const Commitments = {
 
   toJSON(message: Commitments): unknown {
     const obj: any = {};
-    if (message.commitments) {
-      obj.commitments = message.commitments.map((e) => e);
-    } else {
-      obj.commitments = [];
+    if (message.commitments?.length) {
+      obj.commitments = message.commitments;
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Commitments>, I>>(base?: I): Commitments {
+    return Commitments.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Commitments>, I>>(object: I): Commitments {
     const message = createBaseCommitments();
     message.commitments = object.commitments?.map((e) => e) || [];

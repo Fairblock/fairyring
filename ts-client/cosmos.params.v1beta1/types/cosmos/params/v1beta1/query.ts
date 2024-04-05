@@ -64,22 +64,31 @@ export const QueryParamsRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.subspace = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.key = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -93,11 +102,18 @@ export const QueryParamsRequest = {
 
   toJSON(message: QueryParamsRequest): unknown {
     const obj: any = {};
-    message.subspace !== undefined && (obj.subspace = message.subspace);
-    message.key !== undefined && (obj.key = message.key);
+    if (message.subspace !== "") {
+      obj.subspace = message.subspace;
+    }
+    if (message.key !== "") {
+      obj.key = message.key;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(base?: I): QueryParamsRequest {
+    return QueryParamsRequest.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(object: I): QueryParamsRequest {
     const message = createBaseQueryParamsRequest();
     message.subspace = object.subspace ?? "";
@@ -119,19 +135,24 @@ export const QueryParamsResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.param = ParamChange.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -142,10 +163,15 @@ export const QueryParamsResponse = {
 
   toJSON(message: QueryParamsResponse): unknown {
     const obj: any = {};
-    message.param !== undefined && (obj.param = message.param ? ParamChange.toJSON(message.param) : undefined);
+    if (message.param !== undefined) {
+      obj.param = ParamChange.toJSON(message.param);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<QueryParamsResponse>, I>>(base?: I): QueryParamsResponse {
+    return QueryParamsResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<QueryParamsResponse>, I>>(object: I): QueryParamsResponse {
     const message = createBaseQueryParamsResponse();
     message.param = (object.param !== undefined && object.param !== null)
@@ -165,16 +191,17 @@ export const QuerySubspacesRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): QuerySubspacesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySubspacesRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -188,6 +215,9 @@ export const QuerySubspacesRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<QuerySubspacesRequest>, I>>(base?: I): QuerySubspacesRequest {
+    return QuerySubspacesRequest.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<QuerySubspacesRequest>, I>>(_: I): QuerySubspacesRequest {
     const message = createBaseQuerySubspacesRequest();
     return message;
@@ -207,19 +237,24 @@ export const QuerySubspacesResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): QuerySubspacesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySubspacesResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.subspaces.push(Subspace.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -232,14 +267,15 @@ export const QuerySubspacesResponse = {
 
   toJSON(message: QuerySubspacesResponse): unknown {
     const obj: any = {};
-    if (message.subspaces) {
-      obj.subspaces = message.subspaces.map((e) => e ? Subspace.toJSON(e) : undefined);
-    } else {
-      obj.subspaces = [];
+    if (message.subspaces?.length) {
+      obj.subspaces = message.subspaces.map((e) => Subspace.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<QuerySubspacesResponse>, I>>(base?: I): QuerySubspacesResponse {
+    return QuerySubspacesResponse.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<QuerySubspacesResponse>, I>>(object: I): QuerySubspacesResponse {
     const message = createBaseQuerySubspacesResponse();
     message.subspaces = object.subspaces?.map((e) => Subspace.fromPartial(e)) || [];
@@ -263,22 +299,31 @@ export const Subspace = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Subspace {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSubspace();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.subspace = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.keys.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -292,15 +337,18 @@ export const Subspace = {
 
   toJSON(message: Subspace): unknown {
     const obj: any = {};
-    message.subspace !== undefined && (obj.subspace = message.subspace);
-    if (message.keys) {
-      obj.keys = message.keys.map((e) => e);
-    } else {
-      obj.keys = [];
+    if (message.subspace !== "") {
+      obj.subspace = message.subspace;
+    }
+    if (message.keys?.length) {
+      obj.keys = message.keys;
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Subspace>, I>>(base?: I): Subspace {
+    return Subspace.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Subspace>, I>>(object: I): Subspace {
     const message = createBaseSubspace();
     message.subspace = object.subspace ?? "";
@@ -324,23 +372,26 @@ export interface Query {
   Subspaces(request: QuerySubspacesRequest): Promise<QuerySubspacesResponse>;
 }
 
+export const QueryServiceName = "cosmos.params.v1beta1.Query";
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
-  constructor(rpc: Rpc) {
+  private readonly service: string;
+  constructor(rpc: Rpc, opts?: { service?: string }) {
+    this.service = opts?.service || QueryServiceName;
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
     this.Subspaces = this.Subspaces.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
-    const promise = this.rpc.request("cosmos.params.v1beta1.Query", "Params", data);
-    return promise.then((data) => QueryParamsResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "Params", data);
+    return promise.then((data) => QueryParamsResponse.decode(_m0.Reader.create(data)));
   }
 
   Subspaces(request: QuerySubspacesRequest): Promise<QuerySubspacesResponse> {
     const data = QuerySubspacesRequest.encode(request).finish();
-    const promise = this.rpc.request("cosmos.params.v1beta1.Query", "Subspaces", data);
-    return promise.then((data) => QuerySubspacesResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(this.service, "Subspaces", data);
+    return promise.then((data) => QuerySubspacesResponse.decode(_m0.Reader.create(data)));
   }
 }
 

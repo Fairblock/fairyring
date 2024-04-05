@@ -14,11 +14,11 @@ var _ = strconv.Itoa(0)
 
 func CmdGetGeneralKeyshare() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-general-keyshare [identity]",
+		Use:   "get-general-keyshare [req-id]",
 		Short: "Broadcast message get-general-keyshare",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argIdentity := args[0]
+			argReqId := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -27,7 +27,7 @@ func CmdGetGeneralKeyshare() *cobra.Command {
 
 			msg := types.NewMsgGetGeneralKeyshare(
 				clientCtx.GetFromAddress().String(),
-				argIdentity,
+				argReqId,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

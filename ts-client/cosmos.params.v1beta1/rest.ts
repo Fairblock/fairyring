@@ -9,52 +9,32 @@
  * ---------------------------------------------------------------
  */
 
-export interface ProtobufAny {
+export interface Any {
   "@type"?: string;
 }
 
-export interface RpcStatus {
+export interface Status {
   /** @format int32 */
   code?: number;
   message?: string;
-  details?: ProtobufAny[];
+  details?: { "@type"?: string }[];
 }
 
-/**
-* ParamChange defines an individual parameter change, for use in
-ParameterChangeProposal.
-*/
-export interface V1Beta1ParamChange {
+export interface ParamChange {
   subspace?: string;
   key?: string;
   value?: string;
 }
 
-/**
- * QueryParamsResponse is response type for the Query/Params RPC method.
- */
-export interface V1Beta1QueryParamsResponse {
-  /** param defines the queried parameter. */
-  param?: V1Beta1ParamChange;
+export interface QueryParamsResponse {
+  param?: { subspace?: string; key?: string; value?: string };
 }
 
-/**
-* QuerySubspacesResponse defines the response types for querying for all
-registered subspaces and all keys for a subspace.
-
-Since: cosmos-sdk 0.46
-*/
-export interface V1Beta1QuerySubspacesResponse {
-  subspaces?: V1Beta1Subspace[];
+export interface QuerySubspacesResponse {
+  subspaces?: { subspace?: string; keys?: string[] }[];
 }
 
-/**
-* Subspace defines a parameter subspace name and all the keys that exist for
-the subspace.
-
-Since: cosmos-sdk 0.46
-*/
-export interface V1Beta1Subspace {
+export interface Subspace {
   subspace?: string;
   keys?: string[];
 }
@@ -180,41 +160,41 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title cosmos/params/v1beta1/params.proto
- * @version version not set
+ * @title HTTP API Console cosmos.params.v1beta1
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   /**
- * No description
- * 
- * @tags Query
- * @name QueryParams
- * @summary Params queries a specific parameter of a module, given its subspace and
-key.
- * @request GET:/cosmos/params/v1beta1/params
- */
+   * No description
+   *
+   * @tags Query
+   * @name QueryParams
+   * @request GET:/cosmos/params/v1beta1/params
+   */
   queryParams = (query?: { subspace?: string; key?: string }, params: RequestParams = {}) =>
-    this.request<V1Beta1QueryParamsResponse, RpcStatus>({
+    this.request<
+      { param?: { subspace?: string; key?: string; value?: string } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/params/v1beta1/params`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 
   /**
-   * @description Since: cosmos-sdk 0.46
+   * No description
    *
    * @tags Query
    * @name QuerySubspaces
-   * @summary Subspaces queries for all registered subspaces and all keys for a subspace.
    * @request GET:/cosmos/params/v1beta1/subspaces
    */
   querySubspaces = (params: RequestParams = {}) =>
-    this.request<V1Beta1QuerySubspacesResponse, RpcStatus>({
+    this.request<
+      { subspaces?: { subspace?: string; keys?: string[] }[] },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/params/v1beta1/subspaces`,
       method: "GET",
-      format: "json",
       ...params,
     });
 }

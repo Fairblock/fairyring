@@ -30,22 +30,31 @@ export const Params = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Params {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.hostEnabled = reader.bool();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.allowMessages.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -59,15 +68,18 @@ export const Params = {
 
   toJSON(message: Params): unknown {
     const obj: any = {};
-    message.hostEnabled !== undefined && (obj.hostEnabled = message.hostEnabled);
-    if (message.allowMessages) {
-      obj.allowMessages = message.allowMessages.map((e) => e);
-    } else {
-      obj.allowMessages = [];
+    if (message.hostEnabled === true) {
+      obj.hostEnabled = message.hostEnabled;
+    }
+    if (message.allowMessages?.length) {
+      obj.allowMessages = message.allowMessages;
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Params>, I>>(base?: I): Params {
+    return Params.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
     message.hostEnabled = object.hostEnabled ?? false;

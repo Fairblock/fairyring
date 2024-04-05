@@ -24,7 +24,6 @@ const (
 )
 
 const (
-	KeyAggregationThresholdPercentage  = 2.0 / 3.0
 	KeyAggregationThresholdNumerator   = 2
 	KeyAggregationThresholdDenominator = 3
 )
@@ -36,6 +35,11 @@ const (
 const (
 	RegisteredValidatorEventType    = "new-validator-registered"
 	RegisteredValidatorEventCreator = "creator"
+)
+
+const (
+	DeRegisteredValidatorEventType    = "validator-deregistered"
+	DeRegisteredValidatorEventCreator = "creator"
 )
 
 const (
@@ -84,6 +88,17 @@ const (
 	QueuedPubKeyCreatedEventCreator                  = "creator"
 	QueuedPubKeyCreatedEventPubkey                   = "pubkey"
 	QueuedPubKeyCreatedEventNumberOfValidators       = "number-of-validators"
+	QueuedPubKeyCreatedEventEncryptedShares          = "encrypted-shares"
+)
+
+const (
+	PubKeyOverrodeEventType                     = "pubkey-overrode"
+	PubKeyOverrodeEventActivePubkeyExpiryHeight = "active-pubkey-expiry-height"
+	PubKeyOverrodeEventExpiryHeight             = "expiry-height"
+	PubKeyOverrodeEventCreator                  = "creator"
+	PubKeyOverrodeEventPubkey                   = "pubkey"
+	PubKeyOverrodeEventNumberOfValidators       = "number-of-validators"
+	PubKeyOverrodeEventEncryptedShares          = "encrypted-shares"
 )
 
 const (

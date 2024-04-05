@@ -77,46 +77,87 @@ export const GenesisState = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.params = Params.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.portId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.validatorSetList.push(ValidatorSet.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.keyShareList.push(KeyShare.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.aggregatedKeyShareList.push(AggregatedKeyShare.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.activePubKey = ActivePubKey.decode(reader, reader.uint32());
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.queuedPubKey = QueuedPubKey.decode(reader, reader.uint32());
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.authorizedAddressList.push(AuthorizedAddress.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 9:
+          if (tag !== 72) {
+            break;
+          }
+
           message.requestCount = longToNumber(reader.uint64() as Long);
-          break;
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.generalKeyShareList.push(GeneralKeyShare.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -148,43 +189,42 @@ export const GenesisState = {
 
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
-    message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
-    message.portId !== undefined && (obj.portId = message.portId);
-    if (message.validatorSetList) {
-      obj.validatorSetList = message.validatorSetList.map((e) => e ? ValidatorSet.toJSON(e) : undefined);
-    } else {
-      obj.validatorSetList = [];
+    if (message.params !== undefined) {
+      obj.params = Params.toJSON(message.params);
     }
-    if (message.keyShareList) {
-      obj.keyShareList = message.keyShareList.map((e) => e ? KeyShare.toJSON(e) : undefined);
-    } else {
-      obj.keyShareList = [];
+    if (message.portId !== "") {
+      obj.portId = message.portId;
     }
-    if (message.aggregatedKeyShareList) {
-      obj.aggregatedKeyShareList = message.aggregatedKeyShareList.map((e) =>
-        e ? AggregatedKeyShare.toJSON(e) : undefined
-      );
-    } else {
-      obj.aggregatedKeyShareList = [];
+    if (message.validatorSetList?.length) {
+      obj.validatorSetList = message.validatorSetList.map((e) => ValidatorSet.toJSON(e));
     }
-    message.activePubKey !== undefined
-      && (obj.activePubKey = message.activePubKey ? ActivePubKey.toJSON(message.activePubKey) : undefined);
-    message.queuedPubKey !== undefined
-      && (obj.queuedPubKey = message.queuedPubKey ? QueuedPubKey.toJSON(message.queuedPubKey) : undefined);
-    if (message.authorizedAddressList) {
-      obj.authorizedAddressList = message.authorizedAddressList.map((e) => e ? AuthorizedAddress.toJSON(e) : undefined);
-    } else {
-      obj.authorizedAddressList = [];
+    if (message.keyShareList?.length) {
+      obj.keyShareList = message.keyShareList.map((e) => KeyShare.toJSON(e));
     }
-    message.requestCount !== undefined && (obj.requestCount = Math.round(message.requestCount));
-    if (message.generalKeyShareList) {
-      obj.generalKeyShareList = message.generalKeyShareList.map((e) => e ? GeneralKeyShare.toJSON(e) : undefined);
-    } else {
-      obj.generalKeyShareList = [];
+    if (message.aggregatedKeyShareList?.length) {
+      obj.aggregatedKeyShareList = message.aggregatedKeyShareList.map((e) => AggregatedKeyShare.toJSON(e));
+    }
+    if (message.activePubKey !== undefined) {
+      obj.activePubKey = ActivePubKey.toJSON(message.activePubKey);
+    }
+    if (message.queuedPubKey !== undefined) {
+      obj.queuedPubKey = QueuedPubKey.toJSON(message.queuedPubKey);
+    }
+    if (message.authorizedAddressList?.length) {
+      obj.authorizedAddressList = message.authorizedAddressList.map((e) => AuthorizedAddress.toJSON(e));
+    }
+    if (message.requestCount !== 0) {
+      obj.requestCount = Math.round(message.requestCount);
+    }
+    if (message.generalKeyShareList?.length) {
+      obj.generalKeyShareList = message.generalKeyShareList.map((e) => GeneralKeyShare.toJSON(e));
     }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GenesisState>, I>>(base?: I): GenesisState {
+    return GenesisState.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(object: I): GenesisState {
     const message = createBaseGenesisState();
     message.params = (object.params !== undefined && object.params !== null)
@@ -207,10 +247,10 @@ export const GenesisState = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -239,7 +279,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

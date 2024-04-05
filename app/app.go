@@ -606,7 +606,6 @@ func New(
 		scopedPepKeeper,
 		app.IBCKeeper.ConnectionKeeper,
 		app.BankKeeper,
-		keyshareKeeper,
 	)
 
 	pepIBCModule := pepmodule.NewIBCModule(*pepKeeper)
@@ -628,8 +627,6 @@ func New(
 
 	govKeeper = govKeeper.SetKSKeeper(keyshareKeeper)
 	keyshareKeeper = keyshareKeeper.SetGovKeeper(govKeeper)
-	pepKeeper = pepKeeper.SetKSKeeper(keyshareKeeper)
-	keyshareKeeper = keyshareKeeper.SetPepKeeper(pepKeeper)
 
 	app.KeyshareKeeper = *keyshareKeeper
 	app.GovKeeper = *govKeeper

@@ -290,10 +290,10 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 					return nil, err
 				}
 			} else {
-				err = k.pepKeeper.ProcessAggrKeyshare(ctx, keyShareReq.Identity, keyShareReq.AggrKeyshare)
-				if err != nil {
-					return nil, err
-				}
+				val, _ := k.pepKeeper.GetEntry(ctx, keyShareReq.RequestId)
+				val.AggrKeyshare = keyShareReq.AggrKeyshare
+				k.pepKeeper.SetExecutionQueueEntry(ctx, val)
+				k.pepKeeper.RemoveEntry(ctx, val.RequestId)
 			}
 		}
 	}

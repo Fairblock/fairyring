@@ -9,121 +9,60 @@
  * ---------------------------------------------------------------
  */
 
-export interface ProtobufAny {
+export interface Any {
   "@type"?: string;
 }
 
-export interface RpcStatus {
-  /** @format int32 */
-  code?: number;
-  message?: string;
-  details?: ProtobufAny[];
-}
-
-/**
- * BlockParams contains limits on the block size.
- */
-export interface TypesBlockParams {
-  /**
-   * Max block size, in bytes.
-   * Note: must be greater than 0
-   * @format int64
-   */
+export interface BlockParams {
+  /** @format int64 */
   max_bytes?: string;
 
-  /**
-   * Max gas per block.
-   * Note: must be greater or equal to -1
-   * @format int64
-   */
+  /** @format int64 */
   max_gas?: string;
 }
 
-/**
-* ConsensusParams contains consensus critical parameters that determine the
-validity of blocks.
-*/
-export interface TypesConsensusParams {
-  /** BlockParams contains limits on the block size. */
-  block?: TypesBlockParams;
-
-  /** EvidenceParams determine how we handle evidence of malfeasance. */
-  evidence?: TypesEvidenceParams;
-
-  /**
-   * ValidatorParams restrict the public key types validators can use.
-   * NOTE: uses ABCI pubkey naming, not Amino names.
-   */
-  validator?: TypesValidatorParams;
-
-  /** VersionParams contains the ABCI application version. */
-  version?: TypesVersionParams;
+export interface ConsensusParams {
+  block?: { max_bytes?: string; max_gas?: string };
+  evidence?: { max_age_num_blocks?: string; max_age_duration?: string; max_bytes?: string };
+  validator?: { pub_key_types?: string[] };
+  version?: { app?: string };
 }
 
-/**
- * EvidenceParams determine how we handle evidence of malfeasance.
- */
-export interface TypesEvidenceParams {
-  /**
-   * Max age of evidence, in blocks.
-   *
-   * The basic formula for calculating this is: MaxAgeDuration / {average block
-   * time}.
-   * @format int64
-   */
+export interface EvidenceParams {
+  /** @format int64 */
   max_age_num_blocks?: string;
-
-  /**
-   * Max age of evidence, in time.
-   *
-   * It should correspond with an app's "unbonding period" or other similar
-   * mechanism for handling [Nothing-At-Stake
-   * attacks](https://github.com/ethereum/wiki/wiki/Proof-of-Stake-FAQ#what-is-the-nothing-at-stake-problem-and-how-can-it-be-fixed).
-   */
   max_age_duration?: string;
 
-  /**
-   * This sets the maximum size of total evidence in bytes that can be committed in a single block.
-   * and should fall comfortably under the max block bytes.
-   * Default is 1048576 or 1MB
-   * @format int64
-   */
+  /** @format int64 */
   max_bytes?: string;
 }
 
-/**
-* ValidatorParams restrict the public key types validators can use.
-NOTE: uses ABCI pubkey naming, not Amino names.
-*/
-export interface TypesValidatorParams {
+export interface QueryParamsResponse {
+  params?: {
+    block?: { max_bytes?: string; max_gas?: string };
+    evidence?: { max_age_num_blocks?: string; max_age_duration?: string; max_bytes?: string };
+    validator?: { pub_key_types?: string[] };
+    version?: { app?: string };
+  };
+}
+
+export interface Status {
+  /** @format int32 */
+  code?: number;
+  message?: string;
+  details?: { "@type"?: string }[];
+}
+
+export interface ValidatorParams {
   pub_key_types?: string[];
 }
 
-/**
- * VersionParams contains the ABCI application version.
- */
-export interface TypesVersionParams {
+export interface VersionParams {
   /** @format uint64 */
   app?: string;
 }
 
-/**
-* MsgUpdateParamsResponse defines the response structure for executing a
-MsgUpdateParams message.
-*/
-export type V1MsgUpdateParamsResponse = object;
-
-/**
- * QueryParamsResponse defines the response type for querying x/consensus parameters.
- */
-export interface V1QueryParamsResponse {
-  /**
-   * params are the tendermint consensus params stored in the consensus module.
-   * Please note that `params.version` is not populated in this response, it is
-   * tracked separately in the x/upgrade module.
-   */
-  params?: TypesConsensusParams;
-}
+export type MsgUpdateParamsResponse = object;
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
@@ -246,8 +185,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title cosmos/consensus/v1/query.proto
- * @version version not set
+ * @title HTTP API Console cosmos.consensus.v1
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   /**
@@ -255,14 +193,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryParams
-   * @summary Params queries the parameters of x/consensus_param module.
    * @request GET:/cosmos/consensus/v1/params
    */
   queryParams = (params: RequestParams = {}) =>
-    this.request<V1QueryParamsResponse, RpcStatus>({
+    this.request<
+      {
+        params?: {
+          block?: { max_bytes?: string; max_gas?: string };
+          evidence?: { max_age_num_blocks?: string; max_age_duration?: string; max_bytes?: string };
+          validator?: { pub_key_types?: string[] };
+          version?: { app?: string };
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/consensus/v1/params`,
       method: "GET",
-      format: "json",
       ...params,
     });
 }

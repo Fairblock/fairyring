@@ -9,415 +9,105 @@
  * ---------------------------------------------------------------
  */
 
-/**
-* `Any` contains an arbitrary serialized protocol buffer message along with a
-URL that describes the type of the serialized message.
-
-Protobuf library provides support to pack/unpack Any values in the form
-of utility functions or additional generated methods of the Any type.
-
-Example 1: Pack and unpack a message in C++.
-
-    Foo foo = ...;
-    Any any;
-    any.PackFrom(foo);
-    ...
-    if (any.UnpackTo(&foo)) {
-      ...
-    }
-
-Example 2: Pack and unpack a message in Java.
-
-    Foo foo = ...;
-    Any any = Any.pack(foo);
-    ...
-    if (any.is(Foo.class)) {
-      foo = any.unpack(Foo.class);
-    }
-
- Example 3: Pack and unpack a message in Python.
-
-    foo = Foo(...)
-    any = Any()
-    any.Pack(foo)
-    ...
-    if any.Is(Foo.DESCRIPTOR):
-      any.Unpack(foo)
-      ...
-
- Example 4: Pack and unpack a message in Go
-
-     foo := &pb.Foo{...}
-     any, err := anypb.New(foo)
-     if err != nil {
-       ...
-     }
-     ...
-     foo := &pb.Foo{}
-     if err := any.UnmarshalTo(foo); err != nil {
-       ...
-     }
-
-The pack methods provided by protobuf library will by default use
-'type.googleapis.com/full.type.name' as the type URL and the unpack
-methods only use the fully qualified type name after the last '/'
-in the type URL, for example "foo.bar.com/x/y.z" will yield type
-name "y.z".
-
-
-JSON
-====
-The JSON representation of an `Any` value uses the regular
-representation of the deserialized, embedded message, with an
-additional field `@type` which contains the type URL. Example:
-
-    package google.profile;
-    message Person {
-      string first_name = 1;
-      string last_name = 2;
-    }
-
-    {
-      "@type": "type.googleapis.com/google.profile.Person",
-      "firstName": <string>,
-      "lastName": <string>
-    }
-
-If the embedded message type is well-known and has a custom JSON
-representation, that representation will be embedded adding a field
-`value` which holds the custom JSON in addition to the `@type`
-field. Example (for message [google.protobuf.Duration][]):
-
-    {
-      "@type": "type.googleapis.com/google.protobuf.Duration",
-      "value": "1.212s"
-    }
-*/
-export interface ProtobufAny {
-  /**
-   * A URL/resource name that uniquely identifies the type of the serialized
-   * protocol buffer message. This string must contain at least
-   * one "/" character. The last segment of the URL's path must represent
-   * the fully qualified name of the type (as in
-   * `path/google.protobuf.Duration`). The name should be in a canonical form
-   * (e.g., leading "." is not accepted).
-   *
-   * In practice, teams usually precompile into the binary all types that they
-   * expect it to use in the context of Any. However, for URLs which use the
-   * scheme `http`, `https`, or no scheme, one can optionally set up a type
-   * server that maps type URLs to message definitions as follows:
-   * * If no scheme is provided, `https` is assumed.
-   * * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-   *   value in binary format, or produce an error.
-   * * Applications are allowed to cache lookup results based on the
-   *   URL, or have them precompiled into a binary to avoid any
-   *   lookup. Therefore, binary compatibility needs to be preserved
-   *   on changes to types. (Use versioned type names to manage
-   *   breaking changes.)
-   * Note: this functionality is not currently available in the official
-   * protobuf release, and it is not used for type URLs beginning with
-   * type.googleapis.com.
-   * Schemes other than `http`, `https` (or the empty scheme) might be
-   * used with implementation specific semantics.
-   */
+export interface Any {
   "@type"?: string;
 }
 
-export interface RpcStatus {
+export interface Status {
   /** @format int32 */
   code?: number;
   message?: string;
-  details?: ProtobufAny[];
+  details?: { "@type"?: string }[];
 }
 
-/**
- * Class defines the class of the nft type.
- */
-export interface V1Beta1Class {
-  /** id defines the unique identifier of the NFT classification, similar to the contract address of ERC721 */
+export interface Class {
   id?: string;
-
-  /** name defines the human-readable name of the NFT classification. Optional */
   name?: string;
-
-  /** symbol is an abbreviated name for nft classification. Optional */
   symbol?: string;
-
-  /** description is a brief description of nft classification. Optional */
   description?: string;
-
-  /** uri for the class metadata stored off chain. It can define schema for Class and NFT `Data` attributes. Optional */
   uri?: string;
-
-  /** uri_hash is a hash of the document pointed by uri. Optional */
   uri_hash?: string;
-
-  /**
-   * data is the app specific metadata of the NFT class. Optional
-   * `Any` contains an arbitrary serialized protocol buffer message along with a
-   * URL that describes the type of the serialized message.
-   *
-   * Protobuf library provides support to pack/unpack Any values in the form
-   * of utility functions or additional generated methods of the Any type.
-   * Example 1: Pack and unpack a message in C++.
-   *     Foo foo = ...;
-   *     Any any;
-   *     any.PackFrom(foo);
-   *     ...
-   *     if (any.UnpackTo(&foo)) {
-   *       ...
-   *     }
-   * Example 2: Pack and unpack a message in Java.
-   *     Any any = Any.pack(foo);
-   *     if (any.is(Foo.class)) {
-   *       foo = any.unpack(Foo.class);
-   *  Example 3: Pack and unpack a message in Python.
-   *     foo = Foo(...)
-   *     any = Any()
-   *     any.Pack(foo)
-   *     if any.Is(Foo.DESCRIPTOR):
-   *       any.Unpack(foo)
-   *  Example 4: Pack and unpack a message in Go
-   *      foo := &pb.Foo{...}
-   *      any, err := anypb.New(foo)
-   *      if err != nil {
-   *        ...
-   *      }
-   *      ...
-   *      foo := &pb.Foo{}
-   *      if err := any.UnmarshalTo(foo); err != nil {
-   * The pack methods provided by protobuf library will by default use
-   * 'type.googleapis.com/full.type.name' as the type URL and the unpack
-   * methods only use the fully qualified type name after the last '/'
-   * in the type URL, for example "foo.bar.com/x/y.z" will yield type
-   * name "y.z".
-   * JSON
-   * ====
-   * The JSON representation of an `Any` value uses the regular
-   * representation of the deserialized, embedded message, with an
-   * additional field `@type` which contains the type URL. Example:
-   *     package google.profile;
-   *     message Person {
-   *       string first_name = 1;
-   *       string last_name = 2;
-   *     {
-   *       "@type": "type.googleapis.com/google.profile.Person",
-   *       "firstName": <string>,
-   *       "lastName": <string>
-   * If the embedded message type is well-known and has a custom JSON
-   * representation, that representation will be embedded adding a field
-   * `value` which holds the custom JSON in addition to the `@type`
-   * field. Example (for message [google.protobuf.Duration][]):
-   *       "@type": "type.googleapis.com/google.protobuf.Duration",
-   *       "value": "1.212s"
-   */
-  data?: ProtobufAny;
+  data?: { "@type"?: string };
 }
 
-/**
- * MsgSendResponse defines the Msg/Send response type.
- */
-export type V1Beta1MsgSendResponse = object;
-
-/**
- * NFT defines the NFT.
- */
-export interface V1Beta1NFT {
-  /** class_id associated with the NFT, similar to the contract address of ERC721 */
+export interface NFT {
   class_id?: string;
-
-  /** id is a unique identifier of the NFT */
   id?: string;
-
-  /** uri for the NFT metadata stored off chain */
   uri?: string;
-
-  /** uri_hash is a hash of the document pointed by uri */
   uri_hash?: string;
-
-  /**
-   * data is an app specific data of the NFT. Optional
-   * `Any` contains an arbitrary serialized protocol buffer message along with a
-   * URL that describes the type of the serialized message.
-   *
-   * Protobuf library provides support to pack/unpack Any values in the form
-   * of utility functions or additional generated methods of the Any type.
-   * Example 1: Pack and unpack a message in C++.
-   *     Foo foo = ...;
-   *     Any any;
-   *     any.PackFrom(foo);
-   *     ...
-   *     if (any.UnpackTo(&foo)) {
-   *       ...
-   *     }
-   * Example 2: Pack and unpack a message in Java.
-   *     Any any = Any.pack(foo);
-   *     if (any.is(Foo.class)) {
-   *       foo = any.unpack(Foo.class);
-   *  Example 3: Pack and unpack a message in Python.
-   *     foo = Foo(...)
-   *     any = Any()
-   *     any.Pack(foo)
-   *     if any.Is(Foo.DESCRIPTOR):
-   *       any.Unpack(foo)
-   *  Example 4: Pack and unpack a message in Go
-   *      foo := &pb.Foo{...}
-   *      any, err := anypb.New(foo)
-   *      if err != nil {
-   *        ...
-   *      }
-   *      ...
-   *      foo := &pb.Foo{}
-   *      if err := any.UnmarshalTo(foo); err != nil {
-   * The pack methods provided by protobuf library will by default use
-   * 'type.googleapis.com/full.type.name' as the type URL and the unpack
-   * methods only use the fully qualified type name after the last '/'
-   * in the type URL, for example "foo.bar.com/x/y.z" will yield type
-   * name "y.z".
-   * JSON
-   * ====
-   * The JSON representation of an `Any` value uses the regular
-   * representation of the deserialized, embedded message, with an
-   * additional field `@type` which contains the type URL. Example:
-   *     package google.profile;
-   *     message Person {
-   *       string first_name = 1;
-   *       string last_name = 2;
-   *     {
-   *       "@type": "type.googleapis.com/google.profile.Person",
-   *       "firstName": <string>,
-   *       "lastName": <string>
-   * If the embedded message type is well-known and has a custom JSON
-   * representation, that representation will be embedded adding a field
-   * `value` which holds the custom JSON in addition to the `@type`
-   * field. Example (for message [google.protobuf.Duration][]):
-   *       "@type": "type.googleapis.com/google.protobuf.Duration",
-   *       "value": "1.212s"
-   */
-  data?: ProtobufAny;
+  data?: { "@type"?: string };
 }
 
-/**
-* message SomeRequest {
-         Foo some_parameter = 1;
-         PageRequest pagination = 2;
- }
-*/
-export interface V1Beta1PageRequest {
-  /**
-   * key is a value returned in PageResponse.next_key to begin
-   * querying the next page most efficiently. Only one of offset or key
-   * should be set.
-   * @format byte
-   */
+export interface PageRequest {
+  /** @format byte */
   key?: string;
 
-  /**
-   * offset is a numeric offset that can be used when key is unavailable.
-   * It is less efficient than using key. Only one of offset or key should
-   * be set.
-   * @format uint64
-   */
+  /** @format uint64 */
   offset?: string;
 
-  /**
-   * limit is the total number of results to be returned in the result page.
-   * If left empty it will default to a value to be set by each app.
-   * @format uint64
-   */
+  /** @format uint64 */
   limit?: string;
-
-  /**
-   * count_total is set to true  to indicate that the result set should include
-   * a count of the total number of items available for pagination in UIs.
-   * count_total is only respected when offset is used. It is ignored when key
-   * is set.
-   */
   count_total?: boolean;
-
-  /**
-   * reverse is set to true if results are to be returned in the descending order.
-   *
-   * Since: cosmos-sdk 0.43
-   */
   reverse?: boolean;
 }
 
-/**
-* PageResponse is to be embedded in gRPC response messages where the
-corresponding request message has used PageRequest.
-
- message SomeResponse {
-         repeated Bar results = 1;
-         PageResponse page = 2;
- }
-*/
-export interface V1Beta1PageResponse {
-  /**
-   * next_key is the key to be passed to PageRequest.key to
-   * query the next page most efficiently. It will be empty if
-   * there are no more results.
-   * @format byte
-   */
+export interface PageResponse {
+  /** @format byte */
   next_key?: string;
 
-  /**
-   * total is total number of results available if PageRequest.count_total
-   * was set, its value is undefined otherwise
-   * @format uint64
-   */
+  /** @format uint64 */
   total?: string;
 }
 
-export interface V1Beta1QueryBalanceResponse {
-  /**
-   * amount is the number of all NFTs of a given class owned by the owner
-   * @format uint64
-   */
+export interface QueryBalanceResponse {
+  /** @format uint64 */
   amount?: string;
 }
 
-export interface V1Beta1QueryClassResponse {
-  /** class defines the class of the nft type. */
-  class?: V1Beta1Class;
+export interface QueryClassResponse {
+  class?: {
+    id?: string;
+    name?: string;
+    symbol?: string;
+    description?: string;
+    uri?: string;
+    uri_hash?: string;
+    data?: { "@type"?: string };
+  };
 }
 
-export interface V1Beta1QueryClassesResponse {
-  /** class defines the class of the nft type. */
-  classes?: V1Beta1Class[];
-
-  /** pagination defines the pagination in the response. */
-  pagination?: V1Beta1PageResponse;
+export interface QueryClassesResponse {
+  classes?: {
+    id?: string;
+    name?: string;
+    symbol?: string;
+    description?: string;
+    uri?: string;
+    uri_hash?: string;
+    data?: { "@type"?: string };
+  }[];
+  pagination?: { next_key?: string; total?: string };
 }
 
-export interface V1Beta1QueryNFTResponse {
-  /**
-   * owner is the owner address of the nft
-   * NFT defines the NFT.
-   */
-  nft?: V1Beta1NFT;
+export interface QueryNFTResponse {
+  nft?: { class_id?: string; id?: string; uri?: string; uri_hash?: string; data?: { "@type"?: string } };
 }
 
-export interface V1Beta1QueryNFTsResponse {
-  /** NFT defines the NFT */
-  nfts?: V1Beta1NFT[];
-
-  /** pagination defines the pagination in the response. */
-  pagination?: V1Beta1PageResponse;
+export interface QueryNFTsResponse {
+  nfts?: { class_id?: string; id?: string; uri?: string; uri_hash?: string; data?: { "@type"?: string } }[];
+  pagination?: { next_key?: string; total?: string };
 }
 
-export interface V1Beta1QueryOwnerResponse {
-  /** owner is the owner address of the nft */
+export interface QueryOwnerResponse {
   owner?: string;
 }
 
-export interface V1Beta1QuerySupplyResponse {
-  /**
-   * amount is the number of all NFTs from the given class
-   * @format uint64
-   */
+export interface QuerySupplyResponse {
+  /** @format uint64 */
   amount?: string;
 }
+
+export type MsgSendResponse = object;
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
@@ -540,8 +230,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title cosmos/nft/v1beta1/event.proto
- * @version version not set
+ * @title HTTP API Console cosmos.nft.v1beta1
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   /**
@@ -549,14 +238,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryBalance
-   * @summary Balance queries the number of NFTs of a given class owned by the owner, same as balanceOf in ERC721
    * @request GET:/cosmos/nft/v1beta1/balance/{owner}/{class_id}
    */
   queryBalance = (owner: string, classId: string, params: RequestParams = {}) =>
-    this.request<V1Beta1QueryBalanceResponse, RpcStatus>({
+    this.request<{ amount?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
       path: `/cosmos/nft/v1beta1/balance/${owner}/${classId}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -565,7 +252,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryClasses
-   * @summary Classes queries all NFT classes
    * @request GET:/cosmos/nft/v1beta1/classes
    */
   queryClasses = (
@@ -578,11 +264,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<V1Beta1QueryClassesResponse, RpcStatus>({
+    this.request<
+      {
+        classes?: {
+          id?: string;
+          name?: string;
+          symbol?: string;
+          description?: string;
+          uri?: string;
+          uri_hash?: string;
+          data?: { "@type"?: string };
+        }[];
+        pagination?: { next_key?: string; total?: string };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/nft/v1beta1/classes`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 
@@ -591,26 +290,35 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryClass
-   * @summary Class queries an NFT class based on its id
    * @request GET:/cosmos/nft/v1beta1/classes/{class_id}
    */
   queryClass = (classId: string, params: RequestParams = {}) =>
-    this.request<V1Beta1QueryClassResponse, RpcStatus>({
+    this.request<
+      {
+        class?: {
+          id?: string;
+          name?: string;
+          symbol?: string;
+          description?: string;
+          uri?: string;
+          uri_hash?: string;
+          data?: { "@type"?: string };
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/nft/v1beta1/classes/${classId}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
   /**
- * No description
- * 
- * @tags Query
- * @name QueryNfTs
- * @summary NFTs queries all NFTs of a given class or owner,choose at least one of the two, similar to tokenByIndex in
-ERC721Enumerable
- * @request GET:/cosmos/nft/v1beta1/nfts
- */
+   * No description
+   *
+   * @tags Query
+   * @name QueryNfTs
+   * @request GET:/cosmos/nft/v1beta1/nfts
+   */
   queryNFTs = (
     query?: {
       class_id?: string;
@@ -623,11 +331,16 @@ ERC721Enumerable
     },
     params: RequestParams = {},
   ) =>
-    this.request<V1Beta1QueryNFTsResponse, RpcStatus>({
+    this.request<
+      {
+        nfts?: { class_id?: string; id?: string; uri?: string; uri_hash?: string; data?: { "@type"?: string } }[];
+        pagination?: { next_key?: string; total?: string };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/nft/v1beta1/nfts`,
       method: "GET",
       query: query,
-      format: "json",
       ...params,
     });
 
@@ -636,14 +349,15 @@ ERC721Enumerable
    *
    * @tags Query
    * @name QueryNft
-   * @summary NFT queries an NFT based on its class and id.
    * @request GET:/cosmos/nft/v1beta1/nfts/{class_id}/{id}
    */
   queryNFT = (classId: string, id: string, params: RequestParams = {}) =>
-    this.request<V1Beta1QueryNFTResponse, RpcStatus>({
+    this.request<
+      { nft?: { class_id?: string; id?: string; uri?: string; uri_hash?: string; data?: { "@type"?: string } } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/cosmos/nft/v1beta1/nfts/${classId}/${id}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -652,14 +366,12 @@ ERC721Enumerable
    *
    * @tags Query
    * @name QueryOwner
-   * @summary Owner queries the owner of the NFT based on its class and id, same as ownerOf in ERC721
    * @request GET:/cosmos/nft/v1beta1/owner/{class_id}/{id}
    */
   queryOwner = (classId: string, id: string, params: RequestParams = {}) =>
-    this.request<V1Beta1QueryOwnerResponse, RpcStatus>({
+    this.request<{ owner?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
       path: `/cosmos/nft/v1beta1/owner/${classId}/${id}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 
@@ -668,14 +380,12 @@ ERC721Enumerable
    *
    * @tags Query
    * @name QuerySupply
-   * @summary Supply queries the number of NFTs from the given class, same as totalSupply of ERC721.
    * @request GET:/cosmos/nft/v1beta1/supply/{class_id}
    */
   querySupply = (classId: string, params: RequestParams = {}) =>
-    this.request<V1Beta1QuerySupplyResponse, RpcStatus>({
+    this.request<{ amount?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
       path: `/cosmos/nft/v1beta1/supply/${classId}`,
       method: "GET",
-      format: "json",
       ...params,
     });
 }

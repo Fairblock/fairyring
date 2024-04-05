@@ -115,6 +115,94 @@ func (m *MsgRegisterValidatorResponse) GetCreator() string {
 	return ""
 }
 
+type MsgDeRegisterValidator struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+}
+
+func (m *MsgDeRegisterValidator) Reset()         { *m = MsgDeRegisterValidator{} }
+func (m *MsgDeRegisterValidator) String() string { return proto.CompactTextString(m) }
+func (*MsgDeRegisterValidator) ProtoMessage()    {}
+func (*MsgDeRegisterValidator) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{2}
+}
+func (m *MsgDeRegisterValidator) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgDeRegisterValidator) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgDeRegisterValidator.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgDeRegisterValidator) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeRegisterValidator.Merge(m, src)
+}
+func (m *MsgDeRegisterValidator) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgDeRegisterValidator) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeRegisterValidator.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgDeRegisterValidator proto.InternalMessageInfo
+
+func (m *MsgDeRegisterValidator) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+type MsgDeRegisterValidatorResponse struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+}
+
+func (m *MsgDeRegisterValidatorResponse) Reset()         { *m = MsgDeRegisterValidatorResponse{} }
+func (m *MsgDeRegisterValidatorResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgDeRegisterValidatorResponse) ProtoMessage()    {}
+func (*MsgDeRegisterValidatorResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{3}
+}
+func (m *MsgDeRegisterValidatorResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgDeRegisterValidatorResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgDeRegisterValidatorResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgDeRegisterValidatorResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgDeRegisterValidatorResponse.Merge(m, src)
+}
+func (m *MsgDeRegisterValidatorResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgDeRegisterValidatorResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgDeRegisterValidatorResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgDeRegisterValidatorResponse proto.InternalMessageInfo
+
+func (m *MsgDeRegisterValidatorResponse) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
 type MsgSendKeyshare struct {
 	Creator       string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Message       string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
@@ -126,7 +214,7 @@ func (m *MsgSendKeyshare) Reset()         { *m = MsgSendKeyshare{} }
 func (m *MsgSendKeyshare) String() string { return proto.CompactTextString(m) }
 func (*MsgSendKeyshare) ProtoMessage()    {}
 func (*MsgSendKeyshare) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1f96ac6a55f1845c, []int{2}
+	return fileDescriptor_1f96ac6a55f1845c, []int{4}
 }
 func (m *MsgSendKeyshare) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -197,7 +285,7 @@ func (m *MsgSendKeyshareResponse) Reset()         { *m = MsgSendKeyshareResponse
 func (m *MsgSendKeyshareResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgSendKeyshareResponse) ProtoMessage()    {}
 func (*MsgSendKeyshareResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1f96ac6a55f1845c, []int{3}
+	return fileDescriptor_1f96ac6a55f1845c, []int{5}
 }
 func (m *MsgSendKeyshareResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -277,17 +365,18 @@ func (m *MsgSendKeyshareResponse) GetErrorMessage() string {
 
 // this line is used by starport scaffolding # proto/tx/message
 type MsgCreateLatestPubKey struct {
-	Creator            string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	PublicKey          string   `protobuf:"bytes,2,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
-	Commitments        []string `protobuf:"bytes,3,rep,name=commitments,proto3" json:"commitments,omitempty"`
-	NumberOfValidators uint64   `protobuf:"varint,4,opt,name=numberOfValidators,proto3" json:"numberOfValidators,omitempty"`
+	Creator            string               `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	PublicKey          string               `protobuf:"bytes,2,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	Commitments        []string             `protobuf:"bytes,3,rep,name=commitments,proto3" json:"commitments,omitempty"`
+	NumberOfValidators uint64               `protobuf:"varint,4,opt,name=numberOfValidators,proto3" json:"numberOfValidators,omitempty"`
+	EncryptedKeyShares []*EncryptedKeyShare `protobuf:"bytes,5,rep,name=encryptedKeyShares,proto3" json:"encryptedKeyShares,omitempty"`
 }
 
 func (m *MsgCreateLatestPubKey) Reset()         { *m = MsgCreateLatestPubKey{} }
 func (m *MsgCreateLatestPubKey) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateLatestPubKey) ProtoMessage()    {}
 func (*MsgCreateLatestPubKey) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1f96ac6a55f1845c, []int{4}
+	return fileDescriptor_1f96ac6a55f1845c, []int{6}
 }
 func (m *MsgCreateLatestPubKey) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -344,6 +433,13 @@ func (m *MsgCreateLatestPubKey) GetNumberOfValidators() uint64 {
 	return 0
 }
 
+func (m *MsgCreateLatestPubKey) GetEncryptedKeyShares() []*EncryptedKeyShare {
+	if m != nil {
+		return m.EncryptedKeyShares
+	}
+	return nil
+}
+
 type MsgCreateLatestPubKeyResponse struct {
 }
 
@@ -351,7 +447,7 @@ func (m *MsgCreateLatestPubKeyResponse) Reset()         { *m = MsgCreateLatestPu
 func (m *MsgCreateLatestPubKeyResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateLatestPubKeyResponse) ProtoMessage()    {}
 func (*MsgCreateLatestPubKeyResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1f96ac6a55f1845c, []int{5}
+	return fileDescriptor_1f96ac6a55f1845c, []int{7}
 }
 func (m *MsgCreateLatestPubKeyResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -380,6 +476,118 @@ func (m *MsgCreateLatestPubKeyResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCreateLatestPubKeyResponse proto.InternalMessageInfo
 
+type MsgOverrideLatestPubKey struct {
+	Creator            string               `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	PublicKey          string               `protobuf:"bytes,2,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	Commitments        []string             `protobuf:"bytes,3,rep,name=commitments,proto3" json:"commitments,omitempty"`
+	NumberOfValidators uint64               `protobuf:"varint,4,opt,name=numberOfValidators,proto3" json:"numberOfValidators,omitempty"`
+	EncryptedKeyShares []*EncryptedKeyShare `protobuf:"bytes,5,rep,name=encryptedKeyShares,proto3" json:"encryptedKeyShares,omitempty"`
+}
+
+func (m *MsgOverrideLatestPubKey) Reset()         { *m = MsgOverrideLatestPubKey{} }
+func (m *MsgOverrideLatestPubKey) String() string { return proto.CompactTextString(m) }
+func (*MsgOverrideLatestPubKey) ProtoMessage()    {}
+func (*MsgOverrideLatestPubKey) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{8}
+}
+func (m *MsgOverrideLatestPubKey) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgOverrideLatestPubKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgOverrideLatestPubKey.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgOverrideLatestPubKey) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgOverrideLatestPubKey.Merge(m, src)
+}
+func (m *MsgOverrideLatestPubKey) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgOverrideLatestPubKey) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgOverrideLatestPubKey.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgOverrideLatestPubKey proto.InternalMessageInfo
+
+func (m *MsgOverrideLatestPubKey) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgOverrideLatestPubKey) GetPublicKey() string {
+	if m != nil {
+		return m.PublicKey
+	}
+	return ""
+}
+
+func (m *MsgOverrideLatestPubKey) GetCommitments() []string {
+	if m != nil {
+		return m.Commitments
+	}
+	return nil
+}
+
+func (m *MsgOverrideLatestPubKey) GetNumberOfValidators() uint64 {
+	if m != nil {
+		return m.NumberOfValidators
+	}
+	return 0
+}
+
+func (m *MsgOverrideLatestPubKey) GetEncryptedKeyShares() []*EncryptedKeyShare {
+	if m != nil {
+		return m.EncryptedKeyShares
+	}
+	return nil
+}
+
+type MsgOverrideLatestPubKeyResponse struct {
+}
+
+func (m *MsgOverrideLatestPubKeyResponse) Reset()         { *m = MsgOverrideLatestPubKeyResponse{} }
+func (m *MsgOverrideLatestPubKeyResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgOverrideLatestPubKeyResponse) ProtoMessage()    {}
+func (*MsgOverrideLatestPubKeyResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{9}
+}
+func (m *MsgOverrideLatestPubKeyResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgOverrideLatestPubKeyResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgOverrideLatestPubKeyResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgOverrideLatestPubKeyResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgOverrideLatestPubKeyResponse.Merge(m, src)
+}
+func (m *MsgOverrideLatestPubKeyResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgOverrideLatestPubKeyResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgOverrideLatestPubKeyResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgOverrideLatestPubKeyResponse proto.InternalMessageInfo
+
 type MsgCreateAuthorizedAddress struct {
 	Target  string `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
@@ -389,7 +597,7 @@ func (m *MsgCreateAuthorizedAddress) Reset()         { *m = MsgCreateAuthorizedA
 func (m *MsgCreateAuthorizedAddress) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateAuthorizedAddress) ProtoMessage()    {}
 func (*MsgCreateAuthorizedAddress) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1f96ac6a55f1845c, []int{6}
+	return fileDescriptor_1f96ac6a55f1845c, []int{10}
 }
 func (m *MsgCreateAuthorizedAddress) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -439,7 +647,7 @@ func (m *MsgCreateAuthorizedAddressResponse) Reset()         { *m = MsgCreateAut
 func (m *MsgCreateAuthorizedAddressResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateAuthorizedAddressResponse) ProtoMessage()    {}
 func (*MsgCreateAuthorizedAddressResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1f96ac6a55f1845c, []int{7}
+	return fileDescriptor_1f96ac6a55f1845c, []int{11}
 }
 func (m *MsgCreateAuthorizedAddressResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -478,7 +686,7 @@ func (m *MsgUpdateAuthorizedAddress) Reset()         { *m = MsgUpdateAuthorizedA
 func (m *MsgUpdateAuthorizedAddress) String() string { return proto.CompactTextString(m) }
 func (*MsgUpdateAuthorizedAddress) ProtoMessage()    {}
 func (*MsgUpdateAuthorizedAddress) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1f96ac6a55f1845c, []int{8}
+	return fileDescriptor_1f96ac6a55f1845c, []int{12}
 }
 func (m *MsgUpdateAuthorizedAddress) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -535,7 +743,7 @@ func (m *MsgUpdateAuthorizedAddressResponse) Reset()         { *m = MsgUpdateAut
 func (m *MsgUpdateAuthorizedAddressResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgUpdateAuthorizedAddressResponse) ProtoMessage()    {}
 func (*MsgUpdateAuthorizedAddressResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1f96ac6a55f1845c, []int{9}
+	return fileDescriptor_1f96ac6a55f1845c, []int{13}
 }
 func (m *MsgUpdateAuthorizedAddressResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -573,7 +781,7 @@ func (m *MsgDeleteAuthorizedAddress) Reset()         { *m = MsgDeleteAuthorizedA
 func (m *MsgDeleteAuthorizedAddress) String() string { return proto.CompactTextString(m) }
 func (*MsgDeleteAuthorizedAddress) ProtoMessage()    {}
 func (*MsgDeleteAuthorizedAddress) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1f96ac6a55f1845c, []int{10}
+	return fileDescriptor_1f96ac6a55f1845c, []int{14}
 }
 func (m *MsgDeleteAuthorizedAddress) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -623,7 +831,7 @@ func (m *MsgDeleteAuthorizedAddressResponse) Reset()         { *m = MsgDeleteAut
 func (m *MsgDeleteAuthorizedAddressResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgDeleteAuthorizedAddressResponse) ProtoMessage()    {}
 func (*MsgDeleteAuthorizedAddressResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1f96ac6a55f1845c, []int{11}
+	return fileDescriptor_1f96ac6a55f1845c, []int{15}
 }
 func (m *MsgDeleteAuthorizedAddressResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -666,7 +874,7 @@ func (m *MsgCreateGeneralKeyShare) Reset()         { *m = MsgCreateGeneralKeySha
 func (m *MsgCreateGeneralKeyShare) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateGeneralKeyShare) ProtoMessage()    {}
 func (*MsgCreateGeneralKeyShare) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1f96ac6a55f1845c, []int{12}
+	return fileDescriptor_1f96ac6a55f1845c, []int{16}
 }
 func (m *MsgCreateGeneralKeyShare) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -759,7 +967,7 @@ func (m *MsgCreateGeneralKeyShareResponse) Reset()         { *m = MsgCreateGener
 func (m *MsgCreateGeneralKeyShareResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateGeneralKeyShareResponse) ProtoMessage()    {}
 func (*MsgCreateGeneralKeyShareResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1f96ac6a55f1845c, []int{13}
+	return fileDescriptor_1f96ac6a55f1845c, []int{17}
 }
 func (m *MsgCreateGeneralKeyShareResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -847,10 +1055,14 @@ func (m *MsgCreateGeneralKeyShareResponse) GetErrorMessage() string {
 func init() {
 	proto.RegisterType((*MsgRegisterValidator)(nil), "fairyring.keyshare.MsgRegisterValidator")
 	proto.RegisterType((*MsgRegisterValidatorResponse)(nil), "fairyring.keyshare.MsgRegisterValidatorResponse")
+	proto.RegisterType((*MsgDeRegisterValidator)(nil), "fairyring.keyshare.MsgDeRegisterValidator")
+	proto.RegisterType((*MsgDeRegisterValidatorResponse)(nil), "fairyring.keyshare.MsgDeRegisterValidatorResponse")
 	proto.RegisterType((*MsgSendKeyshare)(nil), "fairyring.keyshare.MsgSendKeyshare")
 	proto.RegisterType((*MsgSendKeyshareResponse)(nil), "fairyring.keyshare.MsgSendKeyshareResponse")
 	proto.RegisterType((*MsgCreateLatestPubKey)(nil), "fairyring.keyshare.MsgCreateLatestPubKey")
 	proto.RegisterType((*MsgCreateLatestPubKeyResponse)(nil), "fairyring.keyshare.MsgCreateLatestPubKeyResponse")
+	proto.RegisterType((*MsgOverrideLatestPubKey)(nil), "fairyring.keyshare.MsgOverrideLatestPubKey")
+	proto.RegisterType((*MsgOverrideLatestPubKeyResponse)(nil), "fairyring.keyshare.MsgOverrideLatestPubKeyResponse")
 	proto.RegisterType((*MsgCreateAuthorizedAddress)(nil), "fairyring.keyshare.MsgCreateAuthorizedAddress")
 	proto.RegisterType((*MsgCreateAuthorizedAddressResponse)(nil), "fairyring.keyshare.MsgCreateAuthorizedAddressResponse")
 	proto.RegisterType((*MsgUpdateAuthorizedAddress)(nil), "fairyring.keyshare.MsgUpdateAuthorizedAddress")
@@ -864,55 +1076,62 @@ func init() {
 func init() { proto.RegisterFile("fairyring/keyshare/tx.proto", fileDescriptor_1f96ac6a55f1845c) }
 
 var fileDescriptor_1f96ac6a55f1845c = []byte{
-	// 755 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x56, 0x4d, 0x6f, 0xd3, 0x4a,
-	0x14, 0xad, 0x93, 0x36, 0x49, 0xef, 0xeb, 0xd3, 0x53, 0xfd, 0x5e, 0x5b, 0xcb, 0xaf, 0x84, 0xc8,
-	0x74, 0x11, 0xa0, 0x4a, 0xca, 0x87, 0x10, 0xdb, 0x16, 0x04, 0x54, 0x21, 0x80, 0xdc, 0xd2, 0x05,
-	0x9b, 0xe2, 0xd8, 0xb7, 0xce, 0x28, 0x71, 0x6c, 0xcd, 0x8c, 0x51, 0x0d, 0x2b, 0x56, 0xb0, 0x41,
-	0xe2, 0x27, 0xc0, 0xbf, 0x61, 0xd9, 0x0d, 0x12, 0x4b, 0xd4, 0xfe, 0x11, 0x64, 0xc7, 0x76, 0x9d,
-	0xc6, 0x93, 0x26, 0x12, 0x12, 0xbb, 0xdc, 0x7b, 0xcf, 0xcc, 0x3d, 0x73, 0xe2, 0x7b, 0x66, 0xe0,
-	0xff, 0x23, 0x83, 0xd0, 0x80, 0x92, 0x81, 0xdd, 0xec, 0x61, 0xc0, 0xba, 0x06, 0xc5, 0x26, 0x3f,
-	0x6e, 0x78, 0xd4, 0xe5, 0xae, 0x2c, 0xa7, 0xc5, 0x46, 0x52, 0x54, 0x6f, 0xe4, 0x2c, 0xb0, 0x71,
-	0x80, 0xd4, 0xe8, 0x1f, 0xf6, 0x30, 0x38, 0x8c, 0x32, 0xc3, 0xf5, 0xda, 0x16, 0xfc, 0xd7, 0x66,
-	0xb6, 0x8e, 0x36, 0x61, 0x1c, 0xe9, 0x81, 0xd1, 0x27, 0x96, 0xc1, 0x5d, 0x2a, 0x2b, 0x50, 0x36,
-	0x29, 0x86, 0x3f, 0x15, 0xa9, 0x26, 0xd5, 0x17, 0xf5, 0x24, 0xd4, 0xee, 0xc3, 0x7a, 0xde, 0x0a,
-	0x1d, 0x99, 0xe7, 0x0e, 0x18, 0x4e, 0x58, 0xf9, 0x49, 0x82, 0x7f, 0xda, 0xcc, 0xde, 0xc3, 0x81,
-	0xd5, 0x8a, 0x79, 0x89, 0xd1, 0x61, 0xc5, 0x41, 0xc6, 0x0c, 0x1b, 0x95, 0xc2, 0xb0, 0x12, 0x87,
-	0xf2, 0x06, 0xfc, 0xdd, 0xc3, 0x60, 0x2f, 0x5c, 0xbf, 0x3b, 0xb0, 0xf0, 0x58, 0x29, 0xd6, 0xa4,
-	0xfa, 0xbc, 0x3e, 0x9a, 0x94, 0x6b, 0xf0, 0x57, 0xa7, 0xef, 0x9a, 0xbd, 0x27, 0x48, 0xec, 0x2e,
-	0x57, 0xe6, 0x23, 0x4c, 0x36, 0xa5, 0x7d, 0x28, 0xc0, 0xda, 0x05, 0x3e, 0x97, 0x9f, 0x42, 0x56,
-	0xa1, 0x92, 0xa8, 0x1a, 0x13, 0x4b, 0xe3, 0x98, 0x19, 0xcb, 0x63, 0xc6, 0x66, 0x60, 0x26, 0x6f,
-	0xc1, 0xbf, 0x14, 0x4d, 0x24, 0x6f, 0xd0, 0xda, 0xc9, 0x20, 0x17, 0x22, 0x64, 0x5e, 0x29, 0xe4,
-	0xcb, 0x7c, 0xd3, 0x44, 0xc6, 0x94, 0x52, 0x4d, 0xaa, 0x57, 0xf4, 0x24, 0x94, 0x35, 0x58, 0x42,
-	0x4a, 0x5d, 0xda, 0x8e, 0xc5, 0x2c, 0x47, 0x9c, 0x47, 0x72, 0xda, 0x57, 0x09, 0x56, 0xda, 0xcc,
-	0x7e, 0x10, 0x1e, 0x11, 0x9f, 0x1a, 0x1c, 0x19, 0x7f, 0xe1, 0x77, 0x5a, 0x18, 0x4c, 0xd0, 0x61,
-	0x1d, 0x16, 0x3d, 0xbf, 0xd3, 0x27, 0x66, 0x0b, 0x83, 0x58, 0x88, 0xf3, 0x44, 0x78, 0x46, 0xd3,
-	0x75, 0x1c, 0xc2, 0x1d, 0x1c, 0x70, 0xa6, 0x14, 0x6b, 0xc5, 0xfa, 0xa2, 0x9e, 0x4d, 0xc9, 0x0d,
-	0x90, 0x07, 0xbe, 0xd3, 0x41, 0xfa, 0xfc, 0x28, 0xfd, 0x88, 0x58, 0x2c, 0x46, 0x4e, 0x45, 0xbb,
-	0x0a, 0x57, 0x72, 0x29, 0x26, 0x7f, 0x99, 0xf6, 0x0c, 0xd4, 0x14, 0xb0, 0xed, 0xf3, 0xae, 0x4b,
-	0xc9, 0x5b, 0xb4, 0xb6, 0x2d, 0x8b, 0x86, 0x32, 0xac, 0x42, 0x89, 0x1b, 0xd4, 0x46, 0x1e, 0x9f,
-	0x23, 0x8e, 0xb2, 0x07, 0x2c, 0x8c, 0x7e, 0xae, 0x1b, 0xa0, 0x89, 0xf7, 0x4b, 0xbb, 0xd2, 0xa8,
-	0xeb, 0x4b, 0xcf, 0x9a, 0xa9, 0xab, 0x06, 0x4b, 0x84, 0x9d, 0xc3, 0xa3, 0xd6, 0x15, 0x7d, 0x24,
-	0x97, 0x65, 0x56, 0xcc, 0x63, 0x26, 0xe8, 0x79, 0x41, 0x8f, 0x87, 0xd8, 0xc7, 0xdf, 0xa9, 0x87,
-	0x60, 0xbf, 0xb4, 0xeb, 0xc7, 0x02, 0x28, 0xa9, 0x6c, 0x8f, 0x87, 0xae, 0xd3, 0x8a, 0x07, 0x73,
-	0xc2, 0xd7, 0xb4, 0x0a, 0x25, 0x62, 0xed, 0x07, 0x5e, 0x32, 0x53, 0x71, 0x14, 0xae, 0x20, 0xd6,
-	0x81, 0xd1, 0xf7, 0x31, 0x11, 0x21, 0x0e, 0xe3, 0x39, 0x8c, 0xf6, 0x8d, 0xbe, 0x9a, 0xe1, 0x1c,
-	0xee, 0x65, 0xe6, 0x30, 0xe3, 0x10, 0x0b, 0x79, 0x0e, 0xb1, 0x09, 0xcb, 0xc9, 0x28, 0xed, 0x13,
-	0x07, 0x19, 0x37, 0x1c, 0x2f, 0x9a, 0x9e, 0x79, 0x7d, 0xbc, 0x20, 0x9a, 0xc9, 0xb2, 0x70, 0x26,
-	0xb5, 0x2f, 0x05, 0xa8, 0x89, 0xa4, 0x98, 0xc2, 0x68, 0xfe, 0x84, 0x24, 0x82, 0x43, 0x96, 0xa6,
-	0x32, 0x9e, 0xf2, 0x64, 0xe3, 0xa9, 0x8c, 0x1b, 0xcf, 0xed, 0xef, 0x25, 0x28, 0xb6, 0x99, 0x2d,
-	0xbb, 0xb0, 0x3c, 0x7e, 0x07, 0xd5, 0x1b, 0xe3, 0x97, 0x5b, 0x23, 0xef, 0xee, 0x51, 0xb7, 0xa6,
-	0x45, 0xa6, 0xb2, 0xbf, 0x86, 0xa5, 0x91, 0x7b, 0xe8, 0x9a, 0x60, 0x87, 0x2c, 0x48, 0xbd, 0x39,
-	0x05, 0x28, 0xed, 0x40, 0x41, 0xce, 0xf1, 0xd3, 0xeb, 0x82, 0x2d, 0xc6, 0xa1, 0xea, 0xad, 0xa9,
-	0xa1, 0x69, 0xcf, 0xf7, 0x12, 0xac, 0x89, 0x0c, 0xb0, 0x31, 0x71, 0xbb, 0x31, 0xbc, 0x7a, 0x6f,
-	0x36, 0xfc, 0x08, 0x07, 0x91, 0x1d, 0x8a, 0x38, 0x08, 0xf0, 0x42, 0x0e, 0x97, 0x58, 0x5f, 0xc4,
-	0x41, 0x64, 0x7c, 0x22, 0x0e, 0x02, 0xbc, 0x90, 0xc3, 0x25, 0x46, 0x28, 0xbf, 0x83, 0x95, 0x7c,
-	0x13, 0xdc, 0x9c, 0x28, 0xec, 0x05, 0xb4, 0x7a, 0x77, 0x16, 0x74, 0xd2, 0x7c, 0x67, 0xf7, 0xdb,
-	0x69, 0x55, 0x3a, 0x39, 0xad, 0x4a, 0x3f, 0x4f, 0xab, 0xd2, 0xe7, 0xb3, 0xea, 0xdc, 0xc9, 0x59,
-	0x75, 0xee, 0xc7, 0x59, 0x75, 0xee, 0x55, 0xd3, 0x26, 0xbc, 0xeb, 0x77, 0x1a, 0xa6, 0xeb, 0x34,
-	0x1f, 0x19, 0x84, 0x46, 0xcf, 0x8e, 0xe6, 0xf9, 0x8b, 0xf1, 0x38, 0xf3, 0xc8, 0x0c, 0x3c, 0x64,
-	0x9d, 0x52, 0xf4, 0x50, 0xbc, 0xf3, 0x2b, 0x00, 0x00, 0xff, 0xff, 0x58, 0x42, 0x78, 0x99, 0x87,
-	0x0a, 0x00, 0x00,
+	// 870 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe4, 0x57, 0xcf, 0x6f, 0xe3, 0x44,
+	0x14, 0xae, 0x93, 0x36, 0x49, 0xdf, 0x16, 0xa1, 0xf5, 0xee, 0x76, 0x2d, 0xb3, 0x64, 0x8d, 0x59,
+	0xa4, 0xb0, 0xac, 0x9c, 0x92, 0x45, 0x08, 0x71, 0xdb, 0x65, 0xf9, 0x51, 0x95, 0x50, 0xe4, 0xfe,
+	0x38, 0x70, 0x29, 0x8e, 0xfd, 0xea, 0x8c, 0x12, 0xff, 0xd0, 0x8c, 0x5d, 0xc5, 0x70, 0xe2, 0x04,
+	0x17, 0x24, 0xfe, 0x04, 0xfe, 0x1a, 0xc4, 0xb1, 0x47, 0x8e, 0xa8, 0xfd, 0x27, 0x10, 0x27, 0x64,
+	0xc7, 0x76, 0x9d, 0x64, 0x26, 0x4d, 0x24, 0x24, 0x0e, 0xdc, 0x32, 0x33, 0xdf, 0xbc, 0xf7, 0xbd,
+	0x6f, 0x5e, 0xbe, 0x19, 0xc3, 0x1b, 0xe7, 0x16, 0xa1, 0x09, 0x25, 0xbe, 0xdb, 0x1d, 0x61, 0xc2,
+	0x86, 0x16, 0xc5, 0x6e, 0x34, 0x31, 0x42, 0x1a, 0x44, 0x81, 0x2c, 0x97, 0x8b, 0x46, 0xb1, 0xa8,
+	0x3e, 0xe5, 0x6c, 0x70, 0xd1, 0x47, 0x6a, 0x8d, 0xcf, 0x46, 0x98, 0x9c, 0x65, 0x33, 0xd3, 0xfd,
+	0xaa, 0xc6, 0xc1, 0x86, 0xf1, 0x20, 0xc5, 0x4d, 0x11, 0xfa, 0x1e, 0xdc, 0xef, 0x33, 0xd7, 0x44,
+	0x97, 0xb0, 0x08, 0xe9, 0xa9, 0x35, 0x26, 0x8e, 0x15, 0x05, 0x54, 0x56, 0xa0, 0x69, 0x53, 0x4c,
+	0x7f, 0x2a, 0x92, 0x26, 0x75, 0xb6, 0xcd, 0x62, 0xa8, 0x7f, 0x04, 0x8f, 0x78, 0x3b, 0x4c, 0x64,
+	0x61, 0xe0, 0x33, 0x5c, 0xb2, 0xb3, 0x07, 0xbb, 0x7d, 0xe6, 0xbe, 0xc2, 0x75, 0xb2, 0x7d, 0x0c,
+	0x6d, 0xfe, 0x9e, 0x15, 0xf2, 0xfd, 0x2c, 0xc1, 0xeb, 0x7d, 0xe6, 0x1e, 0xa1, 0xef, 0x1c, 0xe4,
+	0xd5, 0x8b, 0xd1, 0xe9, 0x8a, 0x87, 0x8c, 0x59, 0x2e, 0x2a, 0xb5, 0xe9, 0x4a, 0x3e, 0x94, 0x9f,
+	0xc0, 0x6b, 0x23, 0x4c, 0x8e, 0xd2, 0xfd, 0xfb, 0xbe, 0x83, 0x13, 0xa5, 0xae, 0x49, 0x9d, 0x4d,
+	0x73, 0x76, 0x52, 0xd6, 0xe0, 0xce, 0x60, 0x1c, 0xd8, 0xa3, 0x2f, 0x90, 0xb8, 0xc3, 0x48, 0xd9,
+	0xcc, 0x30, 0xd5, 0x29, 0xfd, 0xc7, 0x1a, 0x3c, 0x9c, 0xe3, 0x73, 0x7b, 0x15, 0xb2, 0x0a, 0xad,
+	0xe2, 0xec, 0x72, 0x62, 0xe5, 0x38, 0x67, 0xc6, 0x78, 0xcc, 0xd8, 0x1a, 0xcc, 0xe4, 0x3d, 0xb8,
+	0x47, 0xd1, 0x46, 0x72, 0x81, 0xce, 0xcb, 0x0a, 0x72, 0x2b, 0x43, 0xf2, 0x96, 0x52, 0xbe, 0x2c,
+	0xb6, 0x6d, 0x64, 0x4c, 0x69, 0x68, 0x52, 0xa7, 0x65, 0x16, 0x43, 0x59, 0x87, 0x1d, 0xa4, 0x34,
+	0xa0, 0xfd, 0x5c, 0xcc, 0x66, 0xc6, 0x79, 0x66, 0x4e, 0xff, 0x4b, 0x82, 0x07, 0x7d, 0xe6, 0x7e,
+	0x92, 0x96, 0x88, 0x5f, 0x5a, 0x11, 0xb2, 0xe8, 0xeb, 0x78, 0x70, 0x80, 0xc9, 0x12, 0x1d, 0x1e,
+	0xc1, 0x76, 0x18, 0x0f, 0xc6, 0xc4, 0x3e, 0xc0, 0x24, 0x17, 0xe2, 0x66, 0x22, 0xad, 0xd1, 0x0e,
+	0x3c, 0x8f, 0x44, 0x1e, 0xfa, 0x11, 0x53, 0xea, 0x5a, 0xbd, 0xb3, 0x6d, 0x56, 0xa7, 0x64, 0x03,
+	0x64, 0x3f, 0xf6, 0x06, 0x48, 0x0f, 0xcf, 0xcb, 0x26, 0x62, 0xb9, 0x18, 0x9c, 0x15, 0xf9, 0x04,
+	0x64, 0xf4, 0x6d, 0x9a, 0x84, 0x11, 0xa6, 0xc7, 0x95, 0x9d, 0x34, 0x53, 0xb6, 0xb4, 0x7a, 0xe7,
+	0x4e, 0xef, 0x1d, 0x63, 0xf1, 0x8f, 0x69, 0x7c, 0x3a, 0x8f, 0x36, 0x39, 0x01, 0xf4, 0xc7, 0xf0,
+	0x26, 0xb7, 0xf2, 0xa2, 0x13, 0xf4, 0xbf, 0xa5, 0xac, 0x4b, 0x0e, 0x2f, 0x90, 0x52, 0xe2, 0xfc,
+	0xcf, 0xd4, 0x79, 0x0b, 0x1e, 0x0b, 0x6a, 0x2f, 0xf5, 0xf9, 0x0a, 0xd4, 0x52, 0xc0, 0x17, 0x71,
+	0x34, 0x0c, 0x28, 0xf9, 0x0e, 0x9d, 0x17, 0x8e, 0x43, 0xd3, 0xee, 0xdb, 0x85, 0x46, 0x64, 0x51,
+	0x17, 0xa3, 0x5c, 0xa0, 0x7c, 0x54, 0x55, 0xae, 0x36, 0xeb, 0x12, 0x4f, 0x40, 0x17, 0xc7, 0x2b,
+	0xb3, 0xd2, 0x2c, 0xeb, 0x49, 0xe8, 0xac, 0x95, 0x55, 0x87, 0x1d, 0xc2, 0x6e, 0xe0, 0x59, 0xea,
+	0x96, 0x39, 0x33, 0x57, 0x65, 0x56, 0xe7, 0x31, 0x13, 0xe4, 0x9c, 0xd3, 0xe3, 0x15, 0x8e, 0xf1,
+	0xdf, 0xd4, 0x43, 0x10, 0xaf, 0xcc, 0xfa, 0x53, 0x0d, 0x94, 0x52, 0xb6, 0xcf, 0xa7, 0xd7, 0x4f,
+	0x71, 0x8c, 0x4b, 0xda, 0x74, 0x17, 0x1a, 0xc4, 0x39, 0x4e, 0xc2, 0xc2, 0xca, 0xf2, 0x51, 0xba,
+	0x83, 0x38, 0xa7, 0xd6, 0x38, 0xc6, 0x42, 0x84, 0x7c, 0x98, 0xdb, 0x5f, 0x16, 0x37, 0x6b, 0xc7,
+	0xa9, 0xfd, 0x1d, 0x55, 0xec, 0xaf, 0x62, 0xcc, 0x5b, 0x3c, 0x63, 0x7e, 0x06, 0x77, 0x0b, 0x07,
+	0x3b, 0x26, 0x1e, 0xb2, 0xc8, 0xf2, 0xc2, 0xcc, 0xb4, 0x36, 0xcd, 0xc5, 0x05, 0x91, 0x15, 0x36,
+	0x85, 0x56, 0xa8, 0xff, 0x5a, 0x03, 0x4d, 0x24, 0xc5, 0x0a, 0xfe, 0xfe, 0x5f, 0x48, 0x22, 0x28,
+	0xb2, 0xb1, 0x92, 0xdf, 0x37, 0x97, 0xfb, 0x7d, 0x6b, 0xd1, 0xef, 0x7b, 0xbf, 0xb5, 0xa0, 0xde,
+	0x67, 0xae, 0x1c, 0xc0, 0xdd, 0xc5, 0xcb, 0xbf, 0xc3, 0xb3, 0x0b, 0xde, 0x13, 0x43, 0xdd, 0x5b,
+	0x15, 0x59, 0xca, 0x1e, 0xc3, 0x3d, 0xde, 0x7b, 0xe3, 0xa9, 0x20, 0x10, 0x07, 0xab, 0xf6, 0x56,
+	0xc7, 0x96, 0x69, 0xbf, 0x85, 0x9d, 0x99, 0x57, 0xc7, 0xdb, 0x82, 0x18, 0x55, 0x90, 0xfa, 0xde,
+	0x0a, 0xa0, 0x32, 0x03, 0x05, 0x99, 0x73, 0x7b, 0xbe, 0x2b, 0x08, 0xb1, 0x08, 0x55, 0xdf, 0x5f,
+	0x19, 0x5a, 0xe6, 0x9c, 0xc0, 0x7d, 0xee, 0xad, 0x24, 0x22, 0xce, 0x03, 0xab, 0xcf, 0xd7, 0x00,
+	0x97, 0x99, 0x7f, 0x90, 0xe0, 0xa1, 0xc8, 0xf1, 0x8d, 0xa5, 0x85, 0x2c, 0xe0, 0xd5, 0x0f, 0xd7,
+	0xc3, 0xcf, 0x70, 0x10, 0xf9, 0xbf, 0x88, 0x83, 0x00, 0x2f, 0xe4, 0x70, 0x8b, 0xd7, 0x67, 0x1c,
+	0x44, 0x4e, 0x6f, 0x08, 0xfb, 0x94, 0x8b, 0x17, 0x72, 0xb8, 0xc5, 0xf9, 0xe5, 0xef, 0xe1, 0x01,
+	0xdf, 0xf5, 0x9f, 0x2d, 0x15, 0x76, 0x0e, 0xad, 0x7e, 0xb0, 0x0e, 0xba, 0x48, 0xfe, 0x72, 0xff,
+	0xf7, 0xab, 0xb6, 0x74, 0x79, 0xd5, 0x96, 0xfe, 0xbc, 0x6a, 0x4b, 0xbf, 0x5c, 0xb7, 0x37, 0x2e,
+	0xaf, 0xdb, 0x1b, 0x7f, 0x5c, 0xb7, 0x37, 0xbe, 0xe9, 0xba, 0x24, 0x1a, 0xc6, 0x03, 0xc3, 0x0e,
+	0xbc, 0xee, 0x67, 0x16, 0xa1, 0xd9, 0xf3, 0xb6, 0x7b, 0xf3, 0xfd, 0x33, 0xa9, 0x7c, 0x5e, 0x25,
+	0x21, 0xb2, 0x41, 0x23, 0xfb, 0x00, 0x7a, 0xfe, 0x4f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x80, 0xd9,
+	0xd8, 0x73, 0x81, 0x0d, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -928,9 +1147,11 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	RegisterValidator(ctx context.Context, in *MsgRegisterValidator, opts ...grpc.CallOption) (*MsgRegisterValidatorResponse, error)
+	DeRegisterValidator(ctx context.Context, in *MsgDeRegisterValidator, opts ...grpc.CallOption) (*MsgDeRegisterValidatorResponse, error)
 	SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts ...grpc.CallOption) (*MsgSendKeyshareResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
 	CreateLatestPubKey(ctx context.Context, in *MsgCreateLatestPubKey, opts ...grpc.CallOption) (*MsgCreateLatestPubKeyResponse, error)
+	OverrideLatestPubKey(ctx context.Context, in *MsgOverrideLatestPubKey, opts ...grpc.CallOption) (*MsgOverrideLatestPubKeyResponse, error)
 	CreateAuthorizedAddress(ctx context.Context, in *MsgCreateAuthorizedAddress, opts ...grpc.CallOption) (*MsgCreateAuthorizedAddressResponse, error)
 	UpdateAuthorizedAddress(ctx context.Context, in *MsgUpdateAuthorizedAddress, opts ...grpc.CallOption) (*MsgUpdateAuthorizedAddressResponse, error)
 	DeleteAuthorizedAddress(ctx context.Context, in *MsgDeleteAuthorizedAddress, opts ...grpc.CallOption) (*MsgDeleteAuthorizedAddressResponse, error)
@@ -954,6 +1175,15 @@ func (c *msgClient) RegisterValidator(ctx context.Context, in *MsgRegisterValida
 	return out, nil
 }
 
+func (c *msgClient) DeRegisterValidator(ctx context.Context, in *MsgDeRegisterValidator, opts ...grpc.CallOption) (*MsgDeRegisterValidatorResponse, error) {
+	out := new(MsgDeRegisterValidatorResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/DeRegisterValidator", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *msgClient) SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts ...grpc.CallOption) (*MsgSendKeyshareResponse, error) {
 	out := new(MsgSendKeyshareResponse)
 	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/SendKeyshare", in, out, opts...)
@@ -966,6 +1196,15 @@ func (c *msgClient) SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts 
 func (c *msgClient) CreateLatestPubKey(ctx context.Context, in *MsgCreateLatestPubKey, opts ...grpc.CallOption) (*MsgCreateLatestPubKeyResponse, error) {
 	out := new(MsgCreateLatestPubKeyResponse)
 	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/CreateLatestPubKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) OverrideLatestPubKey(ctx context.Context, in *MsgOverrideLatestPubKey, opts ...grpc.CallOption) (*MsgOverrideLatestPubKeyResponse, error) {
+	out := new(MsgOverrideLatestPubKeyResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/OverrideLatestPubKey", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1011,9 +1250,11 @@ func (c *msgClient) CreateGeneralKeyShare(ctx context.Context, in *MsgCreateGene
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	RegisterValidator(context.Context, *MsgRegisterValidator) (*MsgRegisterValidatorResponse, error)
+	DeRegisterValidator(context.Context, *MsgDeRegisterValidator) (*MsgDeRegisterValidatorResponse, error)
 	SendKeyshare(context.Context, *MsgSendKeyshare) (*MsgSendKeyshareResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
 	CreateLatestPubKey(context.Context, *MsgCreateLatestPubKey) (*MsgCreateLatestPubKeyResponse, error)
+	OverrideLatestPubKey(context.Context, *MsgOverrideLatestPubKey) (*MsgOverrideLatestPubKeyResponse, error)
 	CreateAuthorizedAddress(context.Context, *MsgCreateAuthorizedAddress) (*MsgCreateAuthorizedAddressResponse, error)
 	UpdateAuthorizedAddress(context.Context, *MsgUpdateAuthorizedAddress) (*MsgUpdateAuthorizedAddressResponse, error)
 	DeleteAuthorizedAddress(context.Context, *MsgDeleteAuthorizedAddress) (*MsgDeleteAuthorizedAddressResponse, error)
@@ -1027,11 +1268,17 @@ type UnimplementedMsgServer struct {
 func (*UnimplementedMsgServer) RegisterValidator(ctx context.Context, req *MsgRegisterValidator) (*MsgRegisterValidatorResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterValidator not implemented")
 }
+func (*UnimplementedMsgServer) DeRegisterValidator(ctx context.Context, req *MsgDeRegisterValidator) (*MsgDeRegisterValidatorResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeRegisterValidator not implemented")
+}
 func (*UnimplementedMsgServer) SendKeyshare(ctx context.Context, req *MsgSendKeyshare) (*MsgSendKeyshareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendKeyshare not implemented")
 }
 func (*UnimplementedMsgServer) CreateLatestPubKey(ctx context.Context, req *MsgCreateLatestPubKey) (*MsgCreateLatestPubKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateLatestPubKey not implemented")
+}
+func (*UnimplementedMsgServer) OverrideLatestPubKey(ctx context.Context, req *MsgOverrideLatestPubKey) (*MsgOverrideLatestPubKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OverrideLatestPubKey not implemented")
 }
 func (*UnimplementedMsgServer) CreateAuthorizedAddress(ctx context.Context, req *MsgCreateAuthorizedAddress) (*MsgCreateAuthorizedAddressResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAuthorizedAddress not implemented")
@@ -1068,6 +1315,24 @@ func _Msg_RegisterValidator_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_DeRegisterValidator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDeRegisterValidator)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).DeRegisterValidator(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.keyshare.Msg/DeRegisterValidator",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).DeRegisterValidator(ctx, req.(*MsgDeRegisterValidator))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Msg_SendKeyshare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MsgSendKeyshare)
 	if err := dec(in); err != nil {
@@ -1100,6 +1365,24 @@ func _Msg_CreateLatestPubKey_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).CreateLatestPubKey(ctx, req.(*MsgCreateLatestPubKey))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_OverrideLatestPubKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgOverrideLatestPubKey)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).OverrideLatestPubKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.keyshare.Msg/OverrideLatestPubKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).OverrideLatestPubKey(ctx, req.(*MsgOverrideLatestPubKey))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1185,12 +1468,20 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_RegisterValidator_Handler,
 		},
 		{
+			MethodName: "DeRegisterValidator",
+			Handler:    _Msg_DeRegisterValidator_Handler,
+		},
+		{
 			MethodName: "SendKeyshare",
 			Handler:    _Msg_SendKeyshare_Handler,
 		},
 		{
 			MethodName: "CreateLatestPubKey",
 			Handler:    _Msg_CreateLatestPubKey_Handler,
+		},
+		{
+			MethodName: "OverrideLatestPubKey",
+			Handler:    _Msg_OverrideLatestPubKey_Handler,
 		},
 		{
 			MethodName: "CreateAuthorizedAddress",
@@ -1259,6 +1550,66 @@ func (m *MsgRegisterValidatorResponse) MarshalTo(dAtA []byte) (int, error) {
 }
 
 func (m *MsgRegisterValidatorResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgDeRegisterValidator) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgDeRegisterValidator) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgDeRegisterValidator) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgDeRegisterValidatorResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgDeRegisterValidatorResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgDeRegisterValidatorResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1409,6 +1760,20 @@ func (m *MsgCreateLatestPubKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.EncryptedKeyShares) > 0 {
+		for iNdEx := len(m.EncryptedKeyShares) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.EncryptedKeyShares[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTx(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x2a
+		}
+	}
 	if m.NumberOfValidators != 0 {
 		i = encodeVarintTx(dAtA, i, uint64(m.NumberOfValidators))
 		i--
@@ -1456,6 +1821,94 @@ func (m *MsgCreateLatestPubKeyResponse) MarshalTo(dAtA []byte) (int, error) {
 }
 
 func (m *MsgCreateLatestPubKeyResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgOverrideLatestPubKey) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgOverrideLatestPubKey) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgOverrideLatestPubKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.EncryptedKeyShares) > 0 {
+		for iNdEx := len(m.EncryptedKeyShares) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.EncryptedKeyShares[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTx(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x2a
+		}
+	}
+	if m.NumberOfValidators != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.NumberOfValidators))
+		i--
+		dAtA[i] = 0x20
+	}
+	if len(m.Commitments) > 0 {
+		for iNdEx := len(m.Commitments) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Commitments[iNdEx])
+			copy(dAtA[i:], m.Commitments[iNdEx])
+			i = encodeVarintTx(dAtA, i, uint64(len(m.Commitments[iNdEx])))
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if len(m.PublicKey) > 0 {
+		i -= len(m.PublicKey)
+		copy(dAtA[i:], m.PublicKey)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.PublicKey)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgOverrideLatestPubKeyResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgOverrideLatestPubKeyResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgOverrideLatestPubKeyResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1834,6 +2287,32 @@ func (m *MsgRegisterValidatorResponse) Size() (n int) {
 	return n
 }
 
+func (m *MsgDeRegisterValidator) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgDeRegisterValidatorResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
 func (m *MsgSendKeyshare) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1913,10 +2392,57 @@ func (m *MsgCreateLatestPubKey) Size() (n int) {
 	if m.NumberOfValidators != 0 {
 		n += 1 + sovTx(uint64(m.NumberOfValidators))
 	}
+	if len(m.EncryptedKeyShares) > 0 {
+		for _, e := range m.EncryptedKeyShares {
+			l = e.Size()
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
 	return n
 }
 
 func (m *MsgCreateLatestPubKeyResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgOverrideLatestPubKey) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.PublicKey)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if len(m.Commitments) > 0 {
+		for _, s := range m.Commitments {
+			l = len(s)
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
+	if m.NumberOfValidators != 0 {
+		n += 1 + sovTx(uint64(m.NumberOfValidators))
+	}
+	if len(m.EncryptedKeyShares) > 0 {
+		for _, e := range m.EncryptedKeyShares {
+			l = e.Size()
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *MsgOverrideLatestPubKeyResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2193,6 +2719,170 @@ func (m *MsgRegisterValidatorResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgRegisterValidatorResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgDeRegisterValidator) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgDeRegisterValidator: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgDeRegisterValidator: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgDeRegisterValidatorResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgDeRegisterValidatorResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgDeRegisterValidatorResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2767,6 +3457,40 @@ func (m *MsgCreateLatestPubKey) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field EncryptedKeyShares", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.EncryptedKeyShares = append(m.EncryptedKeyShares, &EncryptedKeyShare{})
+			if err := m.EncryptedKeyShares[len(m.EncryptedKeyShares)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -2815,6 +3539,255 @@ func (m *MsgCreateLatestPubKeyResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgCreateLatestPubKeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgOverrideLatestPubKey) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgOverrideLatestPubKey: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgOverrideLatestPubKey: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PublicKey", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PublicKey = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Commitments", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Commitments = append(m.Commitments, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NumberOfValidators", wireType)
+			}
+			m.NumberOfValidators = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.NumberOfValidators |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field EncryptedKeyShares", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.EncryptedKeyShares = append(m.EncryptedKeyShares, &EncryptedKeyShare{})
+			if err := m.EncryptedKeyShares[len(m.EncryptedKeyShares)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgOverrideLatestPubKeyResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgOverrideLatestPubKeyResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgOverrideLatestPubKeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
