@@ -446,4 +446,4 @@ echo "#               Test General Encrypted Txs                #"
 echo "###########################################################"
 echo ""
 
-# ./scripts/tests/priv_gov.sh $PUB_KEY $1
+./scripts/tests/priv_gov.sh $PUB_KEY $1

@@ -137,7 +137,6 @@ func KeyshareKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		keysharePortKeeper{},
 		scopedGovkeeper,
 		keyshareconnectionKeeper{},
-		keyshareKeeper,
 	)
 
 	pepKeeper, _ := PepKeeper(t)

@@ -3,7 +3,6 @@ package keeper
 import (
 	"strconv"
 
-	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -101,52 +100,4 @@ func (k Keeper) OnTimeoutRequestAggrKeysharePacket(ctx sdk.Context, packet chann
 	// (Not required for fairyring since this packet is never sent from fairyring)
 
 	return nil
-}
-
-func (k Keeper) ProcessKeyshareRequest(ctx sdk.Context, msg commontypes.MsgRequestAggrKeyshare,
-) (rsp commontypes.MsgRequestAggrKeyshareResponse, err error) {
-	var isProposalID bool
-
-	switch msg.Id.(type) {
-	case *commontypes.MsgRequestAggrKeyshare_ProposalId:
-		isProposalID = true
-		_, err := strconv.ParseUint(msg.GetProposalId(), 10, 64)
-		if err != nil {
-			return rsp, err
-		}
-	default:
-		isProposalID = false
-	}
-
-	reqCountString := k.GetRequestCount(ctx)
-	reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
-	reqCount = reqCount + 1
-
-	id := types.IdentityFromRequestCount(reqCount)
-	activePubKey, found := k.GetActivePubKey(ctx)
-	if !found {
-		return rsp, err
-	}
-
-	var keyshareRequest types.KeyShareRequest
-
-	keyshareRequest.Identity = id
-	keyshareRequest.Pubkey = activePubKey.PublicKey
-
-	keyshareRequest.AggrKeyshare = ""
-
-	if isProposalID {
-		keyshareRequest.ProposalId = msg.GetProposalId()
-	} else {
-		keyshareRequest.RequestId = msg.GetRequestId()
-	}
-
-	k.SetKeyShareRequest(ctx, keyshareRequest)
-
-	k.SetRequestCount(ctx, reqCount)
-
-	rsp.Identity = id
-	rsp.Pubkey = activePubKey.PublicKey
-
-	return rsp, nil
 }

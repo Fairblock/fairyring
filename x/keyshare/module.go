@@ -176,6 +176,8 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 	am.keeper.ProcessPepRequestQueue(ctx)
 	am.keeper.ProcessPepSignalQueue(ctx)
+	am.keeper.ProcessGovRequestQueue(ctx)
+	am.keeper.ProcessGovSignalQueue(ctx)
 
 	height := uint64(ctx.BlockHeight())
 

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	sdkerrors "cosmossdk.io/errors"
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -28,8 +29,12 @@ func (k msgServer) GetGeneralKeyshare(goCtx context.Context, msg *types.MsgGetGe
 
 	params := k.GetParams(ctx)
 	if params.IsSourceChain {
+		req := commontypes.GetAggrKeyshare{
+			Id:       &commontypes.GetAggrKeyshare_RequestId{RequestId: entry.RequestId},
+			Identity: entry.Identity,
+		}
 
-		k.SetSignalQueueEntry(ctx, entry)
+		k.SetSignalQueueEntry(ctx, req)
 		return &types.MsgGetGeneralKeyshareResponse{}, nil
 	} else {
 		packetData := kstypes.GetAggrKeysharePacketData{

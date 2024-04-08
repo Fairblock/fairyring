@@ -560,7 +560,6 @@ func New(
 	app.EvidenceKeeper = *evidenceKeeper
 
 	govConfig := govtypes.DefaultConfig()
-	var keyshareKeeper *keysharemodulekeeper.Keeper
 	scopedGovkeeper := app.CapabilityKeeper.ScopeToModule(govtypes.ModuleName)
 
 	govKeeper := govkeeper.NewKeeper(
@@ -576,7 +575,6 @@ func New(
 		&app.IBCKeeper.PortKeeper,
 		scopedGovkeeper,
 		app.IBCKeeper.ConnectionKeeper,
-		keyshareKeeper,
 	)
 
 	govIBCModule := gov.NewIBCModule(*govKeeper)
@@ -596,7 +594,7 @@ func New(
 	)
 
 	scopedPepKeeper := app.CapabilityKeeper.ScopeToModule(pepmoduletypes.ModuleName)
-	pepKeeper := pepmodulekeeper.NewKeeper(
+	app.PepKeeper = *pepmodulekeeper.NewKeeper(
 		appCodec,
 		keys[pepmoduletypes.StoreKey],
 		keys[pepmoduletypes.MemStoreKey],
@@ -608,10 +606,10 @@ func New(
 		app.BankKeeper,
 	)
 
-	pepIBCModule := pepmodule.NewIBCModule(*pepKeeper)
+	pepIBCModule := pepmodule.NewIBCModule(app.PepKeeper)
 
 	scopedKeyshareKeeper := app.CapabilityKeeper.ScopeToModule(keysharemoduletypes.ModuleName)
-	keyshareKeeper = keysharemodulekeeper.NewKeeper(
+	app.KeyshareKeeper = *keysharemodulekeeper.NewKeeper(
 		appCodec,
 		keys[keysharemoduletypes.StoreKey],
 		keys[keysharemoduletypes.MemStoreKey],
@@ -620,17 +618,10 @@ func New(
 		&app.IBCKeeper.PortKeeper,
 		scopedKeyshareKeeper,
 		app.IBCKeeper.ConnectionKeeper,
-		pepKeeper,
+		app.PepKeeper,
 		app.StakingKeeper,
-		govKeeper,
+		app.GovKeeper,
 	)
-
-	govKeeper = govKeeper.SetKSKeeper(keyshareKeeper)
-	keyshareKeeper = keyshareKeeper.SetGovKeeper(govKeeper)
-
-	app.KeyshareKeeper = *keyshareKeeper
-	app.GovKeeper = *govKeeper
-	app.PepKeeper = *pepKeeper
 
 	pepModule := pepmodule.NewAppModule(
 		appCodec,

@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
 
@@ -25,9 +26,9 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 	reqCount = reqCount + 1
 
 	if params.IsSourceChain {
-		entry := types.GenEncTxExecutionQueue{
-			Creator:   msg.Creator,
-			RequestId: reqCountString,
+		entry := commontypes.RequestAggrKeyshare{
+			Creator: msg.Creator,
+			Id:      &commontypes.RequestAggrKeyshare_RequestId{RequestId: reqCountString},
 		}
 
 		k.SetReqQueueEntry(ctx, entry)

@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -82,7 +83,7 @@ func (k Keeper) AppendTxToEntry(ctx sdk.Context, reqID string, encTx types.Gener
 func (k Keeper) GetRequestQueueEntry(
 	ctx sdk.Context,
 	reqID string,
-) (val types.GenEncTxExecutionQueue, found bool) {
+) (val commontypes.RequestAggrKeyshare, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxReqQueueKeyPrefix))
 
 	b := store.Get(types.GenEncTxQueueKey(
@@ -99,13 +100,13 @@ func (k Keeper) GetRequestQueueEntry(
 // SetQueueEntry sets a queue entry by its identity
 func (k Keeper) SetReqQueueEntry(
 	ctx sdk.Context,
-	val types.GenEncTxExecutionQueue,
+	val commontypes.RequestAggrKeyshare,
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxReqQueueKeyPrefix))
 
 	entry := k.cdc.MustMarshal(&val)
 	store.Set(
-		types.GenEncTxQueueKey(val.RequestId),
+		types.GenEncTxQueueKey(val.GetRequestId()),
 		entry,
 	)
 }
@@ -120,14 +121,14 @@ func (k Keeper) RemoveReqQueueEntry(
 }
 
 // GetAllGenEncTxQueueEntry returns all GenEncTxQueue entries
-func (k Keeper) GetAllGenEncTxReqQueueEntry(ctx sdk.Context) (list []types.GenEncTxExecutionQueue) {
+func (k Keeper) GetAllGenEncTxReqQueueEntry(ctx sdk.Context) (list []commontypes.RequestAggrKeyshare) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxReqQueueKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.GenEncTxExecutionQueue
+		var val commontypes.RequestAggrKeyshare
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
@@ -138,7 +139,7 @@ func (k Keeper) GetAllGenEncTxReqQueueEntry(ctx sdk.Context) (list []types.GenEn
 func (k Keeper) GetSignalQueueEntry(
 	ctx sdk.Context,
 	reqID string,
-) (val types.GenEncTxExecutionQueue, found bool) {
+) (val commontypes.GetAggrKeyshare, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxSignalQueueKeyPrefix))
 
 	b := store.Get(types.GenEncTxQueueKey(
@@ -155,13 +156,13 @@ func (k Keeper) GetSignalQueueEntry(
 // SetQueueEntry sets a queue entry by its identity
 func (k Keeper) SetSignalQueueEntry(
 	ctx sdk.Context,
-	val types.GenEncTxExecutionQueue,
+	val commontypes.GetAggrKeyshare,
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxSignalQueueKeyPrefix))
 
 	entry := k.cdc.MustMarshal(&val)
 	store.Set(
-		types.GenEncTxQueueKey(val.RequestId),
+		types.GenEncTxQueueKey(val.GetRequestId()),
 		entry,
 	)
 }
@@ -176,14 +177,14 @@ func (k Keeper) RemoveSignalQueueEntry(
 }
 
 // GetAllGenEncTxQueueEntry returns all GenEncTxQueue entries
-func (k Keeper) GetAllGenEncTxSignalQueueEntry(ctx sdk.Context) (list []types.GenEncTxExecutionQueue) {
+func (k Keeper) GetAllGenEncTxSignalQueueEntry(ctx sdk.Context) (list []commontypes.GetAggrKeyshare) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GenEncTxSignalQueueKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.GenEncTxExecutionQueue
+		var val commontypes.GetAggrKeyshare
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
