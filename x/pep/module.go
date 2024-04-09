@@ -29,6 +29,7 @@ import (
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/Fairblock/fairyring/x/pep/client/cli"
 	"github.com/Fairblock/fairyring/x/pep/keeper"
 	"github.com/Fairblock/fairyring/x/pep/types"
@@ -925,7 +926,7 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 	qk, found := am.keeper.GetQueuedPubKey(ctx)
 	if found {
 		if qk.Expiry > height {
-			newActiveKey := types.ActivePubKey(qk)
+			newActiveKey := commontypes.ActivePublicKey(qk)
 
 			am.keeper.SetActivePubKey(ctx, newActiveKey)
 		}

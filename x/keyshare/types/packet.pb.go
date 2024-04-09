@@ -5,6 +5,7 @@ package types
 
 import (
 	fmt "fmt"
+	types "github.com/Fairblock/fairyring/x/common/types"
 	proto "github.com/cosmos/gogoproto/proto"
 	io "io"
 	math "math"
@@ -24,11 +25,11 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type KeysharePacketData struct {
 	// Types that are valid to be assigned to Packet:
-	//
 	//	*KeysharePacketData_NoData
 	//	*KeysharePacketData_RequestAggrKeysharePacket
 	//	*KeysharePacketData_GetAggrKeysharePacket
 	//	*KeysharePacketData_AggrKeyshareDataPacket
+	//	*KeysharePacketData_CurrentKeysPacket
 	Packet isKeysharePacketData_Packet `protobuf_oneof:"packet"`
 }
 
@@ -83,11 +84,15 @@ type KeysharePacketData_GetAggrKeysharePacket struct {
 type KeysharePacketData_AggrKeyshareDataPacket struct {
 	AggrKeyshareDataPacket *AggrKeyshareDataPacketData `protobuf:"bytes,4,opt,name=aggrKeyshareDataPacket,proto3,oneof" json:"aggrKeyshareDataPacket,omitempty"`
 }
+type KeysharePacketData_CurrentKeysPacket struct {
+	CurrentKeysPacket *CurrentKeysPacketData `protobuf:"bytes,5,opt,name=currentKeysPacket,proto3,oneof" json:"currentKeysPacket,omitempty"`
+}
 
 func (*KeysharePacketData_NoData) isKeysharePacketData_Packet()                    {}
 func (*KeysharePacketData_RequestAggrKeysharePacket) isKeysharePacketData_Packet() {}
 func (*KeysharePacketData_GetAggrKeysharePacket) isKeysharePacketData_Packet()     {}
 func (*KeysharePacketData_AggrKeyshareDataPacket) isKeysharePacketData_Packet()    {}
+func (*KeysharePacketData_CurrentKeysPacket) isKeysharePacketData_Packet()         {}
 
 func (m *KeysharePacketData) GetPacket() isKeysharePacketData_Packet {
 	if m != nil {
@@ -124,6 +129,13 @@ func (m *KeysharePacketData) GetAggrKeyshareDataPacket() *AggrKeyshareDataPacket
 	return nil
 }
 
+func (m *KeysharePacketData) GetCurrentKeysPacket() *CurrentKeysPacketData {
+	if x, ok := m.GetPacket().(*KeysharePacketData_CurrentKeysPacket); ok {
+		return x.CurrentKeysPacket
+	}
+	return nil
+}
+
 // XXX_OneofWrappers is for the internal use of the proto package.
 func (*KeysharePacketData) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
@@ -131,6 +143,7 @@ func (*KeysharePacketData) XXX_OneofWrappers() []interface{} {
 		(*KeysharePacketData_RequestAggrKeysharePacket)(nil),
 		(*KeysharePacketData_GetAggrKeysharePacket)(nil),
 		(*KeysharePacketData_AggrKeyshareDataPacket)(nil),
+		(*KeysharePacketData_CurrentKeysPacket)(nil),
 	}
 }
 
@@ -174,7 +187,6 @@ var xxx_messageInfo_NoData proto.InternalMessageInfo
 type RequestAggrKeysharePacketData struct {
 	Requester string `protobuf:"bytes,1,opt,name=requester,proto3" json:"requester,omitempty"`
 	// Types that are valid to be assigned to Id:
-	//
 	//	*RequestAggrKeysharePacketData_ProposalId
 	//	*RequestAggrKeysharePacketData_RequestId
 	Id isRequestAggrKeysharePacketData_Id `protobuf_oneof:"id"`
@@ -530,6 +542,96 @@ func (m *AggrKeyshareDataPacketAck) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_AggrKeyshareDataPacketAck proto.InternalMessageInfo
 
+// CurrentKeysPacketData defines a struct for the packet payload
+type CurrentKeysPacketData struct {
+}
+
+func (m *CurrentKeysPacketData) Reset()         { *m = CurrentKeysPacketData{} }
+func (m *CurrentKeysPacketData) String() string { return proto.CompactTextString(m) }
+func (*CurrentKeysPacketData) ProtoMessage()    {}
+func (*CurrentKeysPacketData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_220841e1bebf3b1b, []int{8}
+}
+func (m *CurrentKeysPacketData) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CurrentKeysPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CurrentKeysPacketData.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CurrentKeysPacketData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CurrentKeysPacketData.Merge(m, src)
+}
+func (m *CurrentKeysPacketData) XXX_Size() int {
+	return m.Size()
+}
+func (m *CurrentKeysPacketData) XXX_DiscardUnknown() {
+	xxx_messageInfo_CurrentKeysPacketData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CurrentKeysPacketData proto.InternalMessageInfo
+
+// CurrentKeysPacketAck defines a struct for the packet acknowledgment
+type CurrentKeysPacketAck struct {
+	ActiveKey *types.ActivePublicKey `protobuf:"bytes,1,opt,name=activeKey,proto3" json:"activeKey,omitempty"`
+	QueuedKey *types.QueuedPublicKey `protobuf:"bytes,2,opt,name=queuedKey,proto3" json:"queuedKey,omitempty"`
+}
+
+func (m *CurrentKeysPacketAck) Reset()         { *m = CurrentKeysPacketAck{} }
+func (m *CurrentKeysPacketAck) String() string { return proto.CompactTextString(m) }
+func (*CurrentKeysPacketAck) ProtoMessage()    {}
+func (*CurrentKeysPacketAck) Descriptor() ([]byte, []int) {
+	return fileDescriptor_220841e1bebf3b1b, []int{9}
+}
+func (m *CurrentKeysPacketAck) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CurrentKeysPacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CurrentKeysPacketAck.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CurrentKeysPacketAck) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CurrentKeysPacketAck.Merge(m, src)
+}
+func (m *CurrentKeysPacketAck) XXX_Size() int {
+	return m.Size()
+}
+func (m *CurrentKeysPacketAck) XXX_DiscardUnknown() {
+	xxx_messageInfo_CurrentKeysPacketAck.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CurrentKeysPacketAck proto.InternalMessageInfo
+
+func (m *CurrentKeysPacketAck) GetActiveKey() *types.ActivePublicKey {
+	if m != nil {
+		return m.ActiveKey
+	}
+	return nil
+}
+
+func (m *CurrentKeysPacketAck) GetQueuedKey() *types.QueuedPublicKey {
+	if m != nil {
+		return m.QueuedKey
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*KeysharePacketData)(nil), "fairyring.keyshare.KeysharePacketData")
 	proto.RegisterType((*NoData)(nil), "fairyring.keyshare.NoData")
@@ -539,42 +641,50 @@ func init() {
 	proto.RegisterType((*GetAggrKeysharePacketAck)(nil), "fairyring.keyshare.GetAggrKeysharePacketAck")
 	proto.RegisterType((*AggrKeyshareDataPacketData)(nil), "fairyring.keyshare.AggrKeyshareDataPacketData")
 	proto.RegisterType((*AggrKeyshareDataPacketAck)(nil), "fairyring.keyshare.AggrKeyshareDataPacketAck")
+	proto.RegisterType((*CurrentKeysPacketData)(nil), "fairyring.keyshare.CurrentKeysPacketData")
+	proto.RegisterType((*CurrentKeysPacketAck)(nil), "fairyring.keyshare.CurrentKeysPacketAck")
 }
 
 func init() { proto.RegisterFile("fairyring/keyshare/packet.proto", fileDescriptor_220841e1bebf3b1b) }
 
 var fileDescriptor_220841e1bebf3b1b = []byte{
-	// 470 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0xcf, 0x6e, 0xd3, 0x40,
-	0x10, 0xc6, 0xed, 0x26, 0xb8, 0xc9, 0x04, 0x2e, 0x2b, 0x51, 0x39, 0xa1, 0x75, 0xca, 0x72, 0xe9,
-	0x05, 0x5b, 0xfc, 0x91, 0x38, 0x3b, 0x42, 0x90, 0x08, 0x09, 0xa1, 0x3d, 0x72, 0xa9, 0x36, 0xf6,
-	0x62, 0xaf, 0x5c, 0x62, 0x77, 0xbd, 0x91, 0xf0, 0x13, 0x70, 0xe5, 0xc8, 0x23, 0x71, 0xec, 0x91,
-	0x23, 0x4a, 0x5e, 0x80, 0x47, 0x40, 0x5e, 0xaf, 0x9b, 0x44, 0xac, 0x7b, 0xe8, 0x2d, 0x33, 0xfa,
-	0xcd, 0xf7, 0x4d, 0xe6, 0xb3, 0x16, 0xa6, 0x5f, 0x28, 0x17, 0x95, 0xe0, 0xab, 0x24, 0xc8, 0x58,
-	0x55, 0xa6, 0x54, 0xb0, 0xa0, 0xa0, 0x51, 0xc6, 0xa4, 0x5f, 0x88, 0x5c, 0xe6, 0x08, 0xdd, 0x02,
-	0x7e, 0x0b, 0xe0, 0x9f, 0x3d, 0x40, 0x1f, 0x74, 0xf1, 0x49, 0xc1, 0x6f, 0xa9, 0xa4, 0xe8, 0x35,
-	0x38, 0xab, 0xbc, 0xfe, 0xe5, 0xda, 0xe7, 0xf6, 0xc5, 0xe8, 0xe5, 0xc4, 0xff, 0x7f, 0xd6, 0xff,
-	0xa8, 0x88, 0xb9, 0x45, 0x34, 0x8b, 0xae, 0x61, 0x2c, 0xd8, 0xf5, 0x9a, 0x95, 0x32, 0x4c, 0x12,
-	0x71, 0x28, 0xeb, 0x1e, 0x29, 0xa1, 0x17, 0x26, 0x21, 0xd2, 0x35, 0xa4, 0xf5, 0xbb, 0x55, 0x11,
-	0x83, 0xc7, 0x09, 0x33, 0xd9, 0xf5, 0x94, 0xdd, 0x73, 0x93, 0xdd, 0x7b, 0xd6, 0x6d, 0x65, 0x56,
-	0x43, 0x29, 0x9c, 0xd0, 0xbd, 0x6e, 0x0d, 0x6b, 0x9f, 0xbe, 0xf2, 0xf1, 0x4d, 0x3e, 0xa1, 0x71,
-	0x42, 0x1b, 0x75, 0xe8, 0xcd, 0x06, 0xe0, 0x34, 0xa1, 0xe1, 0x01, 0x38, 0xcd, 0x85, 0xf1, 0x77,
-	0x1b, 0xce, 0xee, 0xbc, 0x11, 0x3a, 0x85, 0xa1, 0xbe, 0x11, 0x13, 0x2a, 0xb2, 0x21, 0xd9, 0x35,
-	0xd0, 0x53, 0x18, 0x15, 0x22, 0x2f, 0xf2, 0x92, 0x5e, 0x5d, 0xf2, 0x58, 0x25, 0x31, 0x9c, 0x5b,
-	0x04, 0xda, 0xe6, 0x22, 0x46, 0x53, 0x00, 0xcd, 0xd7, 0x44, 0x4f, 0x13, 0xad, 0xc6, 0x22, 0x9e,
-	0xf5, 0xe1, 0x88, 0xc7, 0x98, 0xc0, 0x69, 0xe7, 0x22, 0x61, 0x94, 0xa1, 0x09, 0x0c, 0x78, 0xcc,
-	0x56, 0x92, 0xcb, 0x4a, 0xaf, 0x71, 0x5b, 0xa3, 0x13, 0x70, 0x8a, 0xf5, 0x32, 0x63, 0x55, 0xb3,
-	0x00, 0xd1, 0x15, 0x7e, 0x03, 0xe3, 0xce, 0x44, 0xee, 0x12, 0xc4, 0x13, 0x70, 0x8d, 0x83, 0x61,
-	0x94, 0xe1, 0xbf, 0x36, 0x4c, 0xba, 0xef, 0x7f, 0x9f, 0x3d, 0xd1, 0x33, 0x78, 0x54, 0x67, 0x76,
-	0xd9, 0xe6, 0xdb, 0x5c, 0x89, 0x3c, 0xdc, 0x0f, 0x12, 0x4d, 0x61, 0xa4, 0xa0, 0x94, 0xf1, 0x24,
-	0x6d, 0xbe, 0x8e, 0x21, 0x81, 0xba, 0x35, 0x57, 0x9d, 0x1a, 0xd8, 0xcf, 0xe2, 0x41, 0x03, 0xec,
-	0x25, 0x71, 0x76, 0x90, 0x84, 0x73, 0x90, 0xe5, 0x22, 0x46, 0x2e, 0x1c, 0x0b, 0x26, 0x05, 0x67,
-	0xa5, 0x7b, 0x7c, 0x6e, 0x5f, 0xf4, 0x49, 0x5b, 0xe2, 0x27, 0x30, 0x36, 0xff, 0xe3, 0x30, 0xca,
-	0x66, 0x8b, 0x5f, 0x1b, 0xcf, 0xbe, 0xd9, 0x78, 0xf6, 0x9f, 0x8d, 0x67, 0xff, 0xd8, 0x7a, 0xd6,
-	0xcd, 0xd6, 0xb3, 0x7e, 0x6f, 0x3d, 0xeb, 0x73, 0x90, 0x70, 0x99, 0xae, 0x97, 0x7e, 0x94, 0x7f,
-	0x0d, 0xde, 0x51, 0x2e, 0x96, 0x57, 0x79, 0x94, 0x05, 0xbb, 0xb7, 0xe4, 0xdb, 0xee, 0x35, 0x91,
-	0x55, 0xc1, 0xca, 0xa5, 0xa3, 0x5e, 0x93, 0x57, 0xff, 0x02, 0x00, 0x00, 0xff, 0xff, 0x06, 0x47,
-	0xc9, 0xfe, 0x70, 0x04, 0x00, 0x00,
+	// 574 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0xcd, 0x6e, 0xd3, 0x40,
+	0x10, 0x8e, 0xdb, 0xd4, 0x4d, 0x26, 0x70, 0x60, 0x45, 0x4b, 0x12, 0x5a, 0xa7, 0x75, 0x2f, 0xe5,
+	0x80, 0x2d, 0x7e, 0x24, 0x8e, 0x28, 0x01, 0x41, 0xa2, 0x48, 0xa8, 0xf8, 0x06, 0x97, 0xc8, 0xb1,
+	0x17, 0x67, 0xe5, 0x34, 0x76, 0x36, 0x6b, 0x84, 0x9f, 0x80, 0x2b, 0x47, 0x1e, 0x89, 0x63, 0x8f,
+	0x1c, 0x51, 0xf2, 0x02, 0x48, 0xbc, 0x00, 0xda, 0xf5, 0x26, 0x76, 0xc8, 0xba, 0x07, 0x6e, 0xd9,
+	0xf1, 0xf7, 0x33, 0x99, 0x6f, 0x34, 0xd0, 0xf9, 0xe4, 0x12, 0x9a, 0x52, 0x32, 0x0b, 0xec, 0x10,
+	0xa7, 0x8b, 0x89, 0x4b, 0xb1, 0x1d, 0xbb, 0x5e, 0x88, 0x99, 0x15, 0xd3, 0x88, 0x45, 0x08, 0x6d,
+	0x00, 0xd6, 0x1a, 0xd0, 0xbe, 0xc8, 0x49, 0x5e, 0x74, 0x7d, 0x1d, 0xcd, 0x6c, 0x51, 0xf7, 0x47,
+	0x2c, 0x8d, 0xf1, 0x22, 0x23, 0x9a, 0x7f, 0xf6, 0x01, 0x0d, 0x25, 0xe3, 0x4a, 0x28, 0xbe, 0x76,
+	0x99, 0x8b, 0x9e, 0x83, 0x3e, 0x8b, 0xf8, 0xaf, 0xa6, 0x76, 0xa6, 0x5d, 0x36, 0x9e, 0xb6, 0xad,
+	0x5d, 0x03, 0xeb, 0x9d, 0x40, 0xf4, 0x2b, 0x8e, 0xc4, 0xa2, 0x39, 0xb4, 0x28, 0x9e, 0x27, 0x78,
+	0xc1, 0xba, 0x41, 0x40, 0xb7, 0x65, 0x9b, 0x7b, 0x42, 0xe8, 0x89, 0x4a, 0xc8, 0x29, 0x23, 0x49,
+	0xfd, 0x72, 0x55, 0x84, 0xe1, 0x28, 0xc0, 0x2a, 0xbb, 0x7d, 0x61, 0xf7, 0x58, 0x65, 0xf7, 0x16,
+	0x97, 0x5b, 0xa9, 0xd5, 0xd0, 0x04, 0x8e, 0xdd, 0x42, 0x95, 0x83, 0xa5, 0x4f, 0x55, 0xf8, 0x58,
+	0x2a, 0x9f, 0xae, 0x92, 0x21, 0x8d, 0x4a, 0xf4, 0xd0, 0x07, 0xb8, 0xe7, 0x25, 0x94, 0xe2, 0x19,
+	0xe3, 0x1f, 0xa5, 0xc9, 0x81, 0x30, 0x79, 0xa4, 0x32, 0x79, 0xf5, 0x2f, 0x58, 0xea, 0xef, 0xaa,
+	0xf4, 0x6a, 0xa0, 0x67, 0x4b, 0x63, 0xd6, 0x40, 0xcf, 0xc2, 0x33, 0xbf, 0x6a, 0x70, 0x7a, 0xeb,
+	0xf8, 0xd1, 0x09, 0xd4, 0xe5, 0xf8, 0x31, 0x15, 0xdb, 0x50, 0x77, 0xf2, 0x02, 0x3a, 0x87, 0x46,
+	0x4c, 0xa3, 0x38, 0x5a, 0xb8, 0xd3, 0x11, 0xf1, 0x45, 0xc8, 0xf5, 0x7e, 0xc5, 0x81, 0x75, 0x71,
+	0xe0, 0xa3, 0x0e, 0x80, 0xc4, 0x73, 0xc4, 0xbe, 0x44, 0xac, 0x35, 0x06, 0x7e, 0xaf, 0x0a, 0x7b,
+	0xc4, 0x37, 0x1d, 0x38, 0x29, 0x6d, 0xa4, 0xeb, 0x85, 0xa8, 0x0d, 0x35, 0xe2, 0xe3, 0x19, 0x23,
+	0x2c, 0x95, 0x6d, 0x6c, 0xde, 0xe8, 0x18, 0xf4, 0x38, 0x19, 0x87, 0x38, 0xcd, 0x1a, 0x70, 0xe4,
+	0xcb, 0x7c, 0x01, 0xad, 0xd2, 0xb0, 0x6f, 0x13, 0x34, 0xdb, 0xd0, 0x54, 0x12, 0xbb, 0x5e, 0x68,
+	0xfe, 0xd6, 0xa0, 0x5d, 0x1e, 0xed, 0xff, 0xf4, 0x89, 0x2e, 0xe0, 0x2e, 0x5f, 0x87, 0xd1, 0x3a,
+	0xd5, 0x6c, 0x4a, 0xce, 0x9d, 0xe2, 0x8e, 0xa0, 0x0e, 0x34, 0x04, 0x68, 0x82, 0x49, 0x30, 0xc9,
+	0x16, 0xaf, 0xee, 0x00, 0x2f, 0xf5, 0x45, 0x85, 0x03, 0x8a, 0x59, 0x1c, 0x64, 0x80, 0x42, 0x12,
+	0xa7, 0x5b, 0x49, 0xe8, 0x5b, 0x59, 0x0e, 0x7c, 0xd4, 0x84, 0x43, 0x8a, 0x19, 0x25, 0x78, 0xd1,
+	0x3c, 0x3c, 0xd3, 0x2e, 0xab, 0xce, 0xfa, 0x69, 0x3e, 0x84, 0x96, 0xfa, 0x1f, 0xf3, 0x79, 0x3c,
+	0x80, 0x23, 0xe5, 0x12, 0x9a, 0xdf, 0x35, 0xb8, 0xbf, 0xf3, 0x85, 0x47, 0xf9, 0x12, 0xea, 0xae,
+	0xc7, 0xc8, 0x67, 0x3c, 0xc4, 0xa9, 0x3c, 0x30, 0xe7, 0x85, 0xdd, 0xce, 0xae, 0x95, 0xd5, 0x15,
+	0x90, 0xab, 0x64, 0x3c, 0x25, 0xde, 0x10, 0xa7, 0x4e, 0xce, 0xe1, 0x02, 0xf3, 0x04, 0x27, 0xd8,
+	0x1f, 0xca, 0x51, 0x2a, 0x05, 0xde, 0x0b, 0x48, 0x41, 0x60, 0xc3, 0xe9, 0x0d, 0x7e, 0x2c, 0x0d,
+	0xed, 0x66, 0x69, 0x68, 0xbf, 0x96, 0x86, 0xf6, 0x6d, 0x65, 0x54, 0x6e, 0x56, 0x46, 0xe5, 0xe7,
+	0xca, 0xa8, 0x7c, 0xb4, 0x03, 0xc2, 0x26, 0xc9, 0x98, 0x6b, 0xd8, 0x6f, 0x5c, 0x42, 0xc7, 0xd3,
+	0xc8, 0x0b, 0xed, 0xfc, 0x94, 0x7e, 0xc9, 0x2f, 0xb0, 0xb8, 0xa3, 0x63, 0x5d, 0x1c, 0xd2, 0x67,
+	0x7f, 0x03, 0x00, 0x00, 0xff, 0xff, 0x42, 0x18, 0xd1, 0x64, 0xa4, 0x05, 0x00, 0x00,
 }
 
 func (m *KeysharePacketData) Marshal() (dAtA []byte, err error) {
@@ -690,6 +800,27 @@ func (m *KeysharePacketData_AggrKeyshareDataPacket) MarshalToSizedBuffer(dAtA []
 		}
 		i--
 		dAtA[i] = 0x22
+	}
+	return len(dAtA) - i, nil
+}
+func (m *KeysharePacketData_CurrentKeysPacket) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *KeysharePacketData_CurrentKeysPacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.CurrentKeysPacket != nil {
+		{
+			size, err := m.CurrentKeysPacket.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintPacket(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x2a
 	}
 	return len(dAtA) - i, nil
 }
@@ -966,6 +1097,76 @@ func (m *AggrKeyshareDataPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
+func (m *CurrentKeysPacketData) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CurrentKeysPacketData) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CurrentKeysPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *CurrentKeysPacketAck) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CurrentKeysPacketAck) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CurrentKeysPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.QueuedKey != nil {
+		{
+			size, err := m.QueuedKey.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintPacket(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.ActiveKey != nil {
+		{
+			size, err := m.ActiveKey.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintPacket(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintPacket(dAtA []byte, offset int, v uint64) int {
 	offset -= sovPacket(v)
 	base := offset
@@ -1033,6 +1234,18 @@ func (m *KeysharePacketData_AggrKeyshareDataPacket) Size() (n int) {
 	_ = l
 	if m.AggrKeyshareDataPacket != nil {
 		l = m.AggrKeyshareDataPacket.Size()
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	return n
+}
+func (m *KeysharePacketData_CurrentKeysPacket) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.CurrentKeysPacket != nil {
+		l = m.CurrentKeysPacket.Size()
 		n += 1 + l + sovPacket(uint64(l))
 	}
 	return n
@@ -1163,6 +1376,32 @@ func (m *AggrKeyshareDataPacketAck) Size() (n int) {
 	}
 	var l int
 	_ = l
+	return n
+}
+
+func (m *CurrentKeysPacketData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *CurrentKeysPacketAck) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ActiveKey != nil {
+		l = m.ActiveKey.Size()
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	if m.QueuedKey != nil {
+		l = m.QueuedKey.Size()
+		n += 1 + l + sovPacket(uint64(l))
+	}
 	return n
 }
 
@@ -1340,6 +1579,41 @@ func (m *KeysharePacketData) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			m.Packet = &KeysharePacketData_AggrKeyshareDataPacket{v}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CurrentKeysPacket", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &CurrentKeysPacketData{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Packet = &KeysharePacketData_CurrentKeysPacket{v}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -2094,6 +2368,178 @@ func (m *AggrKeyshareDataPacketAck) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: AggrKeyshareDataPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPacket(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CurrentKeysPacketData) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPacket
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CurrentKeysPacketData: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CurrentKeysPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPacket(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CurrentKeysPacketAck) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPacket
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CurrentKeysPacketAck: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CurrentKeysPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ActiveKey", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.ActiveKey == nil {
+				m.ActiveKey = &types.ActivePublicKey{}
+			}
+			if err := m.ActiveKey.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field QueuedKey", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.QueuedKey == nil {
+				m.QueuedKey = &types.QueuedPublicKey{}
+			}
+			if err := m.QueuedKey.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipPacket(dAtA[iNdEx:])

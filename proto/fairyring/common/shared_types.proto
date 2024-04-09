@@ -27,3 +27,16 @@ message GetAggrKeyshare {
 }
 
 message GetAggrKeyshareResponse {}
+
+message ActivePublicKey {
+    string publicKey = 1;
+    string creator = 2;
+    uint64 expiry = 3;
+}
+  
+message QueuedPublicKey {
+    string publicKey = 1;
+    string creator = 2;
+    uint64 expiry = 3;
+}
+  

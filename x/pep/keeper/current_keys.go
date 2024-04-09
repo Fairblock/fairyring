@@ -4,8 +4,7 @@ import (
 	"errors"
 	"time"
 
-	cosmoserror "github.com/cosmos/cosmos-sdk/types/errors"
-
+	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
 
 	sdkerrors "cosmossdk.io/errors"
@@ -18,10 +17,10 @@ import (
 func (k Keeper) QueryFairyringCurrentKeys(ctx sdk.Context) error {
 	srcPort := k.GetPort(ctx)
 	params := k.GetParams(ctx)
-	srcChannel := params.PepChannelId
+	srcChannel := params.KeyshareChannelId
 
 	timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
-	var packet types.CurrentKeysPacketData
+	var packet kstypes.CurrentKeysPacketData
 
 	// Transmit the packet
 	return k.TransmitCurrentKeysPacket(
@@ -37,7 +36,7 @@ func (k Keeper) QueryFairyringCurrentKeys(ctx sdk.Context) error {
 // TransmitCurrentKeysPacket transmits the packet over IBC with the specified source port and source channel
 func (k Keeper) TransmitCurrentKeysPacket(
 	ctx sdk.Context,
-	packetData types.CurrentKeysPacketData,
+	packetData kstypes.CurrentKeysPacketData,
 	sourcePort,
 	sourceChannel string,
 	timeoutHeight clienttypes.Height,
@@ -63,10 +62,7 @@ func (k Keeper) TransmitCurrentKeysPacket(
 		return sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
 	}
 
-	packetBytes, err := packetData.GetBytes()
-	if err != nil {
-		return sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, "cannot marshal the packet: "+err.Error())
-	}
+	packetBytes := packetData.GetBytes()
 
 	if _, err := k.ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes); err != nil {
 		return err
@@ -75,39 +71,9 @@ func (k Keeper) TransmitCurrentKeysPacket(
 	return nil
 }
 
-// OnRecvCurrentKeysPacket processes packet reception
-func (k Keeper) OnRecvCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CurrentKeysPacketData) (packetAck types.CurrentKeysPacketAck, err error) {
-	// validate packet data upon receiving
-	if err := data.ValidateBasic(); err != nil {
-		return packetAck, err
-	}
-
-	k.Logger(ctx).Info("Received keys packet req")
-
-	ak, found := k.GetActivePubKey(ctx)
-	if found {
-		packetAck.ActiveKey = &types.ActivePubKey{
-			PublicKey: ak.PublicKey,
-			Creator:   ak.Creator,
-			Expiry:    ak.Expiry,
-		}
-	}
-
-	qk, found := k.GetQueuedPubKey(ctx)
-	if found {
-		packetAck.QueuedKey = &types.QueuedPubKey{
-			PublicKey: qk.PublicKey,
-			Creator:   qk.Creator,
-			Expiry:    qk.Expiry,
-		}
-	}
-
-	return packetAck, nil
-}
-
 // OnAcknowledgementCurrentKeysPacket responds to the success or failure of a packet
 // acknowledgement written on the receiving chain.
-func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CurrentKeysPacketData, ack channeltypes.Acknowledgement) error {
+func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Packet, data kstypes.CurrentKeysPacketData, ack channeltypes.Acknowledgement) error {
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
 		k.Logger(ctx).Error("Ack Error")
@@ -139,7 +105,7 @@ func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet chann
 		}
 
 		// Decode the packet acknowledgment
-		var packetAck types.CurrentKeysPacketAck
+		var packetAck kstypes.CurrentKeysPacketAck
 
 		if err := types.ModuleCdc.UnmarshalJSON(dispatchedAck.Result, &packetAck); err != nil {
 			// The counter-party module doesn't implement the correct acknowledgment format
@@ -185,7 +151,7 @@ func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet chann
 }
 
 // OnTimeoutCurrentKeysPacket responds to the case where a packet has not been transmitted because of a timeout
-func (k Keeper) OnTimeoutCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CurrentKeysPacketData) error {
+func (k Keeper) OnTimeoutCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Packet, data kstypes.CurrentKeysPacketData) error {
 	k.Logger(ctx).Info("Packet timeout")
 	k.Logger(ctx).Info(data.String())
 	return nil

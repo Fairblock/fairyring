@@ -13,9 +13,6 @@ const (
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_pep"
 
-	// Version defines the current version the IBC module supports
-	Version = "pep-1"
-
 	// KeyshareVersion defines the current version the IBC module supports
 	KeyshareVersion = "keyshare-1"
 
@@ -23,7 +20,7 @@ const (
 	PortID = "pep"
 
 	// PepChannelID is the default channel id that module will use to transmit IBC packets to pep module.
-	PepChannelID = "channel-0"
+	// PepChannelID = "channel-0"
 
 	// KeushareChannelID is the default channel id that module will use to transmit IBC packets to keyshare module.
 	KeyshareChannelID = "channel-1"

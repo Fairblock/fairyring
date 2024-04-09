@@ -22,9 +22,8 @@ var (
 )
 
 var (
-	KeyPepChannelID          = []byte("PepChannelID")
+	// KeyPepChannelID          = []byte("PepChannelID")
 	KeyKeyshareChannelID     = []byte("KeyshareChannelID")
-	DefaultPepChannelID      = PepChannelID
 	DefaultKeyshareChannelID = KeyshareChannelID
 	KeyMinGasPrice           = []byte("MinGasPrice")
 	DefaultMinGasPrice       = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
@@ -40,7 +39,6 @@ func ParamKeyTable() paramtypes.KeyTable {
 func NewParams(
 	trAddrs []string,
 	trustedParties []*TrustedCounterParty,
-	pepChannelID string,
 	keyshareChannelID string,
 	minGasPrice *sdk.Coin,
 	isSourceChain bool,
@@ -48,7 +46,6 @@ func NewParams(
 	return Params{
 		TrustedAddresses:      trAddrs,
 		TrustedCounterParties: trustedParties,
-		PepChannelId:          pepChannelID,
 		KeyshareChannelId:     keyshareChannelID,
 		MinGasPrice:           minGasPrice,
 		IsSourceChain:         isSourceChain,
@@ -57,7 +54,7 @@ func NewParams(
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams(DefaultTrustedAddresses, DefaultTrustedCounterParties, DefaultPepChannelID, DefaultKeyshareChannelID, &DefaultMinGasPrice, false)
+	return NewParams(DefaultTrustedAddresses, DefaultTrustedCounterParties, DefaultKeyshareChannelID, &DefaultMinGasPrice, false)
 }
 
 // ParamSetPairs get the params.ParamSet
@@ -65,7 +62,6 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
 		paramtypes.NewParamSetPair(KeyTrustedAddresses, &p.TrustedAddresses, validateTrustedAddresses),
 		paramtypes.NewParamSetPair(KeyTrustedCounterParties, &p.TrustedCounterParties, validateTrustedCounterParties),
-		paramtypes.NewParamSetPair(KeyPepChannelID, &p.PepChannelId, validateChannelID),
 		paramtypes.NewParamSetPair(KeyKeyshareChannelID, &p.KeyshareChannelId, validateChannelID),
 		paramtypes.NewParamSetPair(KeyMinGasPrice, &p.MinGasPrice, validateMinGasPrice),
 		paramtypes.NewParamSetPair(KeyIsSourceChain, &p.IsSourceChain, vaidateIsSourceChain),
@@ -79,10 +75,6 @@ func (p Params) Validate() error {
 	}
 
 	if err := validateTrustedCounterParties(p.TrustedCounterParties); err != nil {
-		return err
-	}
-
-	if err := validateChannelID(p.PepChannelId); err != nil {
 		return err
 	}
 

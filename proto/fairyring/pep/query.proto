@@ -9,7 +9,7 @@ import "fairyring/pep/params.proto";
 import "fairyring/pep/encrypted_tx.proto";
 import "fairyring/pep/pep_nonce.proto";
 import "fairyring/pep/aggregated_key_share.proto";
-import "fairyring/pep/pub_key.proto";
+import "fairyring/common/shared_types.proto";
 
 // this line is used by starport scaffolding # 1
 
@@ -155,8 +155,8 @@ message QueryAllPepNonceResponse {
 message QueryPubKeyRequest {}
 
 message QueryPubKeyResponse {
-  ActivePubKey activePubKey   = 1 [(gogoproto.nullable) = false];
-  QueuedPubKey queuedPubKey = 2 [(gogoproto.nullable) = false];
+  fairyring.common.ActivePublicKey activePubKey   = 1 [(gogoproto.nullable) = false];
+  fairyring.common.QueuedPublicKey queuedPubKey   = 2 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

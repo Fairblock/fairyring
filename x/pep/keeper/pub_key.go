@@ -1,20 +1,21 @@
 package keeper
 
 import (
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // SetActivePubKey set a specific public key to active in the store
-func (k Keeper) SetActivePubKey(ctx sdk.Context, activePubKey types.ActivePubKey) {
+func (k Keeper) SetActivePubKey(ctx sdk.Context, activePubKey commontypes.ActivePublicKey) {
 	store := ctx.KVStore(k.storeKey)
 	b := k.cdc.MustMarshal(&activePubKey)
 	store.Set(types.KeyPrefix(types.ActivePubKeyPrefix), b)
 }
 
 // SetQueuedPubKey set a specific public key in the store
-func (k Keeper) SetQueuedPubKey(ctx sdk.Context, queuedPubKey types.QueuedPubKey) {
+func (k Keeper) SetQueuedPubKey(ctx sdk.Context, queuedPubKey commontypes.QueuedPublicKey) {
 	store := ctx.KVStore(k.storeKey)
 	b := k.cdc.MustMarshal(&queuedPubKey)
 	store.Set(types.KeyPrefix(types.QueuedPubKeyPrefix), b)
@@ -23,7 +24,7 @@ func (k Keeper) SetQueuedPubKey(ctx sdk.Context, queuedPubKey types.QueuedPubKey
 // GetActivePubKey returns the Active public key
 func (k Keeper) GetActivePubKey(
 	ctx sdk.Context,
-) (val types.ActivePubKey, found bool) {
+) (val commontypes.ActivePublicKey, found bool) {
 	store := ctx.KVStore(k.storeKey)
 
 	b := store.Get(types.KeyPrefix(types.ActivePubKeyPrefix))
@@ -39,7 +40,7 @@ func (k Keeper) GetActivePubKey(
 // GetQueuedPubKey returns the Queued public key
 func (k Keeper) GetQueuedPubKey(
 	ctx sdk.Context,
-) (val types.QueuedPubKey, found bool) {
+) (val commontypes.QueuedPublicKey, found bool) {
 	store := ctx.KVStore(k.storeKey)
 
 	b := store.Get(types.KeyPrefix(types.QueuedPubKeyPrefix))

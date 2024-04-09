@@ -142,15 +142,12 @@ sed -i -e 's/"key_expiry": "100"/"key_expiry": "10000"/g' $CHAIN_DIR/$CHAINID_2/
 
 sed -i -e 's/"is_source_chain": false/"is_source_chain": true/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 
-# jsonData2=$(cat "$CHAIN_DIR/$CHAINID_1/config/genesis.json")
-# modifiedJson1
-
 jsonData2=$(cat "$CHAIN_DIR/$CHAINID_2/config/genesis.json")
 modifiedJson2=$(echo "$jsonData2" |
   jq '.app_state.gov.params.channel_id = "channel-0" |
   .app_state.gov.params.trusted_counter_parties = [{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-0"}] |
   .app_state.pep.params.pep_channel_id = "channel-1" |
-  .app_state.pep.params.keyshare_channel_id = "channel-2"')
+  .app_state.pep.params.keyshare_channel_id = "channel-1"')
 echo "$modifiedJson2" | jq '.' > "$CHAIN_DIR/$CHAINID_2/config/genesis.json"
 
 echo "Starting $CHAINID_1 in $CHAIN_DIR..."

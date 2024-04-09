@@ -32,10 +32,10 @@ type BankKeeper interface {
 
 // PepKeeper defines the expected interface needed to get and set active and queued public keys
 type PepKeeper interface {
-	SetActivePubKey(ctx sdk.Context, activePubKey peptypes.ActivePubKey)
-	SetQueuedPubKey(ctx sdk.Context, queuedPubKey peptypes.QueuedPubKey)
-	GetActivePubKey(ctx sdk.Context) (val peptypes.ActivePubKey, found bool)
-	GetQueuedPubKey(ctx sdk.Context) (val peptypes.QueuedPubKey, found bool)
+	SetActivePubKey(ctx sdk.Context, activePubKey commontypes.ActivePublicKey)
+	SetQueuedPubKey(ctx sdk.Context, queuedPubKey commontypes.QueuedPublicKey)
+	GetActivePubKey(ctx sdk.Context) (val commontypes.ActivePublicKey, found bool)
+	GetQueuedPubKey(ctx sdk.Context) (val commontypes.QueuedPublicKey, found bool)
 	DeleteActivePubKey(ctx sdk.Context)
 	DeleteQueuedPubKey(ctx sdk.Context)
 	SetEntry(ctx sdk.Context, val peptypes.GenEncTxExecutionQueue)

@@ -2,6 +2,8 @@ package keeper
 
 import (
 	"context"
+
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -17,8 +19,8 @@ func (k Keeper) PubKey(goCtx context.Context, req *types.QueryPubKeyRequest) (*t
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var activePubKey types.ActivePubKey
-	var queuedPubKey types.QueuedPubKey
+	var activePubKey commontypes.ActivePublicKey
+	var queuedPubKey commontypes.QueuedPublicKey
 
 	store := ctx.KVStore(k.storeKey)
 	b := store.Get(types.KeyPrefix(types.ActivePubKeyPrefix))
