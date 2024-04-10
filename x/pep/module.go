@@ -901,36 +901,39 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
-	err := am.keeper.QueryFairyringCurrentKeys(ctx)
-	if err != nil {
-		am.keeper.Logger(ctx).Error("Endblocker get keys err", err)
-		am.keeper.Logger(ctx).Error(err.Error())
-	}
+	params := am.keeper.GetParams(ctx)
+	if !params.IsSourceChain {
+		err := am.keeper.QueryFairyringCurrentKeys(ctx)
+		if err != nil {
+			am.keeper.Logger(ctx).Error("Endblocker get keys err", err)
+			am.keeper.Logger(ctx).Error(err.Error())
+		}
 
-	strHeight := am.keeper.GetLatestHeight(ctx)
-	height, err := strconv.ParseUint(strHeight, 10, 64)
-	if err != nil {
-		am.keeper.Logger(ctx).Error("Latest height does not exists in EndBlock")
-		return []abci.ValidatorUpdate{}
-	}
-
-	ak, found := am.keeper.GetActivePubKey(ctx)
-	if found {
-		if ak.Expiry <= height {
-			am.keeper.DeleteActivePubKey(ctx)
-		} else {
+		strHeight := am.keeper.GetLatestHeight(ctx)
+		height, err := strconv.ParseUint(strHeight, 10, 64)
+		if err != nil {
+			am.keeper.Logger(ctx).Error("Latest height does not exists in EndBlock")
 			return []abci.ValidatorUpdate{}
 		}
-	}
 
-	qk, found := am.keeper.GetQueuedPubKey(ctx)
-	if found {
-		if qk.Expiry > height {
-			newActiveKey := commontypes.ActivePublicKey(qk)
-
-			am.keeper.SetActivePubKey(ctx, newActiveKey)
+		ak, found := am.keeper.GetActivePubKey(ctx)
+		if found {
+			if ak.Expiry <= height {
+				am.keeper.DeleteActivePubKey(ctx)
+			} else {
+				return []abci.ValidatorUpdate{}
+			}
 		}
-		am.keeper.DeleteQueuedPubKey(ctx)
+
+		qk, found := am.keeper.GetQueuedPubKey(ctx)
+		if found {
+			if qk.Expiry > height {
+				newActiveKey := commontypes.ActivePublicKey(qk)
+
+				am.keeper.SetActivePubKey(ctx, newActiveKey)
+			}
+			am.keeper.DeleteQueuedPubKey(ctx)
+		}
 	}
 
 	return []abci.ValidatorUpdate{}

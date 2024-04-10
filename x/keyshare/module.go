@@ -187,7 +187,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	qc, foundQc := am.keeper.GetQueuedCommitments(ctx)
 
 	if foundAk {
-		am.keeper.SetActivePubKey(ctx, ak)
 		am.pepKeeper.SetActivePubKey(ctx, commontypes.ActivePublicKey{
 			PublicKey: ak.PublicKey,
 			Creator:   ak.Creator,
@@ -200,7 +199,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			am.keeper.DeleteActiveCommitments(ctx)
 		} else {
 			if foundQk {
-				am.keeper.SetQueuedPubKey(ctx, qk)
 				am.pepKeeper.SetQueuedPubKey(ctx, commontypes.QueuedPublicKey{
 					PublicKey: qk.PublicKey,
 					Creator:   qk.Creator,
