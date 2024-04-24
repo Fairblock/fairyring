@@ -186,7 +186,8 @@ integration-test-all: init-test-framework \
 	# -@rm -rf ./data
 	# -@killall fairyringd 2>/dev/null
 
-devnet-up: init-devnet
+devnet-up: init-devnet \
+	init-devnet_relayer
 	@echo "Fairyring Devnet is now running in the background, run 'make devnet-down' to stop devnet."
 
 devnet-down: clean-devnet-data
@@ -212,6 +213,11 @@ init-relayer:
 	./scripts/tests/relayer.sh
 	@sleep 2
 
+init-devnet_relayer:
+	@echo "Initializing hermes relayer for devnet..."
+	./scripts/devnet/devnet_relayer.sh
+	@sleep 2
+
 init-test-block-limit-framework: clean-testing-data install
 	@echo "Initializing fairyring..."
 	./scripts/tests/start_test_block_tx_limit.sh
@@ -228,12 +234,13 @@ init-devnet: clean-devnet-data install
 	@sleep 5
 
 clean-devnet-data:
-	@echo "Killing fairyringd, fairyport, fairyringclient, ShareGenerationClient and removing previous data"
+	@echo "Killing fairyringd, fairyport, fairyringclient, ShareGenerationClient, Hermes Relayer and removing previous data"
 	-@rm -rf ./devnet_data
 	-@killall fairyringd 2>/dev/null
 	-@killall fairyport 2>/dev/null
 	-@killall fairyringclient 2>/dev/null
 	-@killall ShareGenerationClient 2>/dev/null
+	-@killall hermes 2>/dev/null
 
 clean-testing-data:
 	@echo "Killing fairyringd and removing previous data"
