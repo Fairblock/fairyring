@@ -135,7 +135,7 @@ import (
 const (
 	AccountAddressPrefix = "fairy"
 	Name                 = "fairyring"
-	ChainID              = "fairytest-1"
+	ChainID              = "fairyring-testnet-1"
 )
 
 // this line is used by starport scaffolding # stargate/wasm/app/enabledProposals
@@ -959,7 +959,7 @@ func New(
 	app.ScopedGovkeeper = scopedGovkeeper
 
 	// TODO: Check if posthandlers are necessary for our chain
-	//app.setPostHandler()
+	// app.setPostHandler()
 
 	// this line is used by starport scaffolding # stargate/app/beforeInitReturn
 
