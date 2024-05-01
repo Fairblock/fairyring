@@ -622,6 +622,14 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		return
 	}
 
+	suite := bls.NewBLS12381Suite()
+
+	publicKeyPoint, err := am.getPubKeyPoint(ctx, activePubkey, suite)
+	if err != nil {
+		am.keeper.Logger(ctx).Error("Unabe to get Pubkey Point with suite")
+		return
+	}
+
 	// loop over all encrypted Txs from the last executed height to the current height
 	for h := lastExecutedHeight + 1; h <= height; h++ {
 		arr := am.keeper.GetEncryptedTxAllFromHeight(ctx, h)
@@ -648,13 +656,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 				am.keeper.Logger(ctx).Info(fmt.Sprintf("No encrypted tx found at block %d", h))
 			}
 			continue
-		}
-
-		suite := bls.NewBLS12381Suite()
-
-		publicKeyPoint, err := am.getPubKeyPoint(ctx, activePubkey, suite)
-		if err != nil {
-			return
 		}
 
 		skPoint, err := am.getSKPoint(ctx, key.Data, suite)
@@ -687,13 +688,6 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			am.keeper.Logger(ctx).Info("No encrypted txs found for entry with req-id: ", entry.RequestId)
 			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
 			continue
-		}
-
-		suite := bls.NewBLS12381Suite()
-
-		publicKeyPoint, err := am.getPubKeyPoint(ctx, activePubkey, suite)
-		if err != nil {
-			return
 		}
 
 		skPoint, err := am.getSKPoint(ctx, entry.AggrKeyshare, suite)

@@ -18,6 +18,11 @@ import (
 func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.MsgCreateAggregatedKeyShare) (*types.MsgCreateAggregatedKeyShareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	params := k.GetParams(ctx)
+	if params.IsSourceChain {
+		return nil, errors.New("submission of external aggregated keyshare not permitted on source chain")
+	}
+
 	var trusted = false
 
 	for _, trustedAddr := range k.TrustedAddresses(ctx) {

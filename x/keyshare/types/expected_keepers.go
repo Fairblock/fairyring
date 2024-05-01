@@ -54,6 +54,10 @@ type PepKeeper interface {
 	SetReqQueueEntry(ctx sdk.Context, val commontypes.RequestAggrKeyshare)
 	RemoveReqQueueEntry(ctx sdk.Context, reqID string)
 	GetAllGenEncTxReqQueueEntry(ctx sdk.Context) (list []commontypes.RequestAggrKeyshare)
+	GetAggregatedKeyShare(ctx sdk.Context, height uint64) (val peptypes.AggregatedKeyShare, found bool)
+	SetAggregatedKeyShare(ctx sdk.Context, aggregatedKeyShare peptypes.AggregatedKeyShare)
+	GetLatestHeight(ctx sdk.Context) string
+	SetLatestHeight(ctx sdk.Context, height string)
 }
 
 // StakingKeeper defines the expected interface needed to retrieve the list of validators.
