@@ -19,9 +19,11 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MsgClient interface {
 	RegisterValidator(ctx context.Context, in *MsgRegisterValidator, opts ...grpc.CallOption) (*MsgRegisterValidatorResponse, error)
+	DeRegisterValidator(ctx context.Context, in *MsgDeRegisterValidator, opts ...grpc.CallOption) (*MsgDeRegisterValidatorResponse, error)
 	SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts ...grpc.CallOption) (*MsgSendKeyshareResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
 	CreateLatestPubKey(ctx context.Context, in *MsgCreateLatestPubKey, opts ...grpc.CallOption) (*MsgCreateLatestPubKeyResponse, error)
+	OverrideLatestPubKey(ctx context.Context, in *MsgOverrideLatestPubKey, opts ...grpc.CallOption) (*MsgOverrideLatestPubKeyResponse, error)
 	CreateAuthorizedAddress(ctx context.Context, in *MsgCreateAuthorizedAddress, opts ...grpc.CallOption) (*MsgCreateAuthorizedAddressResponse, error)
 	UpdateAuthorizedAddress(ctx context.Context, in *MsgUpdateAuthorizedAddress, opts ...grpc.CallOption) (*MsgUpdateAuthorizedAddressResponse, error)
 	DeleteAuthorizedAddress(ctx context.Context, in *MsgDeleteAuthorizedAddress, opts ...grpc.CallOption) (*MsgDeleteAuthorizedAddressResponse, error)
@@ -45,6 +47,15 @@ func (c *msgClient) RegisterValidator(ctx context.Context, in *MsgRegisterValida
 	return out, nil
 }
 
+func (c *msgClient) DeRegisterValidator(ctx context.Context, in *MsgDeRegisterValidator, opts ...grpc.CallOption) (*MsgDeRegisterValidatorResponse, error) {
+	out := new(MsgDeRegisterValidatorResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/DeRegisterValidator", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *msgClient) SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts ...grpc.CallOption) (*MsgSendKeyshareResponse, error) {
 	out := new(MsgSendKeyshareResponse)
 	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/SendKeyshare", in, out, opts...)
@@ -57,6 +68,15 @@ func (c *msgClient) SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts 
 func (c *msgClient) CreateLatestPubKey(ctx context.Context, in *MsgCreateLatestPubKey, opts ...grpc.CallOption) (*MsgCreateLatestPubKeyResponse, error) {
 	out := new(MsgCreateLatestPubKeyResponse)
 	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/CreateLatestPubKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) OverrideLatestPubKey(ctx context.Context, in *MsgOverrideLatestPubKey, opts ...grpc.CallOption) (*MsgOverrideLatestPubKeyResponse, error) {
+	out := new(MsgOverrideLatestPubKeyResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/OverrideLatestPubKey", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -104,9 +124,11 @@ func (c *msgClient) CreateGeneralKeyShare(ctx context.Context, in *MsgCreateGene
 // for forward compatibility
 type MsgServer interface {
 	RegisterValidator(context.Context, *MsgRegisterValidator) (*MsgRegisterValidatorResponse, error)
+	DeRegisterValidator(context.Context, *MsgDeRegisterValidator) (*MsgDeRegisterValidatorResponse, error)
 	SendKeyshare(context.Context, *MsgSendKeyshare) (*MsgSendKeyshareResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
 	CreateLatestPubKey(context.Context, *MsgCreateLatestPubKey) (*MsgCreateLatestPubKeyResponse, error)
+	OverrideLatestPubKey(context.Context, *MsgOverrideLatestPubKey) (*MsgOverrideLatestPubKeyResponse, error)
 	CreateAuthorizedAddress(context.Context, *MsgCreateAuthorizedAddress) (*MsgCreateAuthorizedAddressResponse, error)
 	UpdateAuthorizedAddress(context.Context, *MsgUpdateAuthorizedAddress) (*MsgUpdateAuthorizedAddressResponse, error)
 	DeleteAuthorizedAddress(context.Context, *MsgDeleteAuthorizedAddress) (*MsgDeleteAuthorizedAddressResponse, error)
@@ -121,11 +143,17 @@ type UnimplementedMsgServer struct {
 func (UnimplementedMsgServer) RegisterValidator(context.Context, *MsgRegisterValidator) (*MsgRegisterValidatorResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterValidator not implemented")
 }
+func (UnimplementedMsgServer) DeRegisterValidator(context.Context, *MsgDeRegisterValidator) (*MsgDeRegisterValidatorResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeRegisterValidator not implemented")
+}
 func (UnimplementedMsgServer) SendKeyshare(context.Context, *MsgSendKeyshare) (*MsgSendKeyshareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendKeyshare not implemented")
 }
 func (UnimplementedMsgServer) CreateLatestPubKey(context.Context, *MsgCreateLatestPubKey) (*MsgCreateLatestPubKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateLatestPubKey not implemented")
+}
+func (UnimplementedMsgServer) OverrideLatestPubKey(context.Context, *MsgOverrideLatestPubKey) (*MsgOverrideLatestPubKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OverrideLatestPubKey not implemented")
 }
 func (UnimplementedMsgServer) CreateAuthorizedAddress(context.Context, *MsgCreateAuthorizedAddress) (*MsgCreateAuthorizedAddressResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAuthorizedAddress not implemented")
@@ -170,6 +198,24 @@ func _Msg_RegisterValidator_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_DeRegisterValidator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDeRegisterValidator)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).DeRegisterValidator(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.keyshare.Msg/DeRegisterValidator",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).DeRegisterValidator(ctx, req.(*MsgDeRegisterValidator))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Msg_SendKeyshare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MsgSendKeyshare)
 	if err := dec(in); err != nil {
@@ -202,6 +248,24 @@ func _Msg_CreateLatestPubKey_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).CreateLatestPubKey(ctx, req.(*MsgCreateLatestPubKey))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_OverrideLatestPubKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgOverrideLatestPubKey)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).OverrideLatestPubKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.keyshare.Msg/OverrideLatestPubKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).OverrideLatestPubKey(ctx, req.(*MsgOverrideLatestPubKey))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -290,12 +354,20 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_RegisterValidator_Handler,
 		},
 		{
+			MethodName: "DeRegisterValidator",
+			Handler:    _Msg_DeRegisterValidator_Handler,
+		},
+		{
 			MethodName: "SendKeyshare",
 			Handler:    _Msg_SendKeyshare_Handler,
 		},
 		{
 			MethodName: "CreateLatestPubKey",
 			Handler:    _Msg_CreateLatestPubKey_Handler,
+		},
+		{
+			MethodName: "OverrideLatestPubKey",
+			Handler:    _Msg_OverrideLatestPubKey_Handler,
 		},
 		{
 			MethodName: "CreateAuthorizedAddress",

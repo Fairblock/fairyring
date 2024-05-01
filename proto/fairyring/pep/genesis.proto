@@ -7,7 +7,7 @@ import "fairyring/pep/params.proto";
 import "fairyring/pep/encrypted_tx.proto";
 import "fairyring/pep/pep_nonce.proto";
 import "fairyring/pep/aggregated_key_share.proto";
-import "fairyring/pep/pub_key.proto";
+import "fairyring/common/shared_types.proto";
 
 // this line is used by starport scaffolding # genesis/proto/import
 
@@ -22,6 +22,7 @@ message GenesisState {
 
   // this line is used by starport scaffolding # genesis/proto/state
   repeated AggregatedKeyShare     aggregatedKeyShareList     = 6 [(gogoproto.nullable) = false];
-  ActivePubKey                    activePubKey               = 7 [(gogoproto.nullable) = false];
-  QueuedPubKey                    queuedPubKey               = 8 [(gogoproto.nullable) = false];
+  fairyring.common.ActivePublicKey                 activePubKey               = 7 [(gogoproto.nullable) = false];
+  fairyring.common.QueuedPublicKey                 queuedPubKey               = 8 [(gogoproto.nullable) = false];
+  uint64                          request_count              = 9;
 }

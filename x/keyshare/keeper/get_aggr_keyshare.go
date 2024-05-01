@@ -3,7 +3,6 @@ package keeper
 import (
 	"errors"
 
-	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -47,28 +46,6 @@ func (k Keeper) OnTimeoutGetAggrKeysharePacket(ctx sdk.Context, packet channelty
 	// (Not required for fairyring since this packet is never sent from fairyring)
 
 	return nil
-}
-
-func (k Keeper) ProcessGetKeyshareRequest(ctx sdk.Context, msg commontypes.MsgGetAggrKeyshare,
-) (rsp commontypes.MsgGetAggrKeyshareResponse, err error) {
-	if msg.Identity == "" {
-		return rsp, errors.New("identity is blank")
-	}
-
-	keyshareReq, found := k.GetKeyShareRequest(ctx, msg.Identity)
-	if !found {
-		return rsp, types.ErrRequestNotFound
-	}
-
-	if keyshareReq.AggrKeyshare == "" {
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
-				sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, msg.Identity),
-			),
-		)
-	}
-
-	return rsp, nil
 }
 
 func verifyIBCInfo(packet channeltypes.Packet, keyshareReq types.KeyShareRequest) error {

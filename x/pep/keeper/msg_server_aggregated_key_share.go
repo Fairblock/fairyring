@@ -6,8 +6,9 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"github.com/Fairblock/fairyring/x/pep/types"
 	"strconv"
+
+	"github.com/Fairblock/fairyring/x/pep/types"
 
 	enc "github.com/FairBlock/DistributedIBE/encryption"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -16,6 +17,11 @@ import (
 
 func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.MsgCreateAggregatedKeyShare) (*types.MsgCreateAggregatedKeyShareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	params := k.GetParams(ctx)
+	if params.IsSourceChain {
+		return nil, errors.New("submission of external aggregated keyshare not permitted on source chain")
+	}
 
 	var trusted = false
 
@@ -77,7 +83,6 @@ func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.Ms
 
 	if decryptedDataBytes.String() != dummyData {
 		k.Logger(ctx).Error("Decrypted data does not match original data")
-		k.Logger(ctx).Error(err.Error())
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(types.KeyShareVerificationType,
 				sdk.NewAttribute(types.KeyShareVerificationCreator, msg.Creator),

@@ -5,9 +5,11 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	peptypes "github.com/Fairblock/fairyring/x/pep/types"
-	"github.com/cosmos/cosmos-sdk/telemetry"
 	"strconv"
+
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
+
+	"github.com/cosmos/cosmos-sdk/telemetry"
 
 	// this line is used by starport scaffolding # 1
 
@@ -173,6 +175,11 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		}
 	}
 
+	am.keeper.ProcessPepRequestQueue(ctx)
+	am.keeper.ProcessPepSignalQueue(ctx)
+	am.keeper.ProcessGovRequestQueue(ctx)
+	am.keeper.ProcessGovSignalQueue(ctx)
+
 	height := uint64(ctx.BlockHeight())
 
 	ak, foundAk := am.keeper.GetActivePubKey(ctx)
@@ -180,8 +187,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	qc, foundQc := am.keeper.GetQueuedCommitments(ctx)
 
 	if foundAk {
-		am.keeper.SetActivePubKey(ctx, ak)
-		am.pepKeeper.SetActivePubKey(ctx, peptypes.ActivePubKey{
+		am.pepKeeper.SetActivePubKey(ctx, commontypes.ActivePublicKey{
 			PublicKey: ak.PublicKey,
 			Creator:   ak.Creator,
 			Expiry:    ak.Expiry,
@@ -193,8 +199,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			am.keeper.DeleteActiveCommitments(ctx)
 		} else {
 			if foundQk {
-				am.keeper.SetQueuedPubKey(ctx, qk)
-				am.pepKeeper.SetQueuedPubKey(ctx, peptypes.QueuedPubKey{
+				am.pepKeeper.SetQueuedPubKey(ctx, commontypes.QueuedPublicKey{
 					PublicKey: qk.PublicKey,
 					Creator:   qk.Creator,
 					Expiry:    qk.Expiry,
@@ -207,7 +212,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	if foundQk {
 		if qk.Expiry > height {
 			am.keeper.SetActivePubKey(ctx, types.ActivePubKey(qk))
-			am.pepKeeper.SetActivePubKey(ctx, peptypes.ActivePubKey{
+			am.pepKeeper.SetActivePubKey(ctx, commontypes.ActivePublicKey{
 				PublicKey: qk.PublicKey,
 				Creator:   qk.Creator,
 				Expiry:    qk.Expiry,

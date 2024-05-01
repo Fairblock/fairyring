@@ -12,9 +12,9 @@ func (k Keeper) GetParams(ctx sdk.Context) types.Params {
 	return types.NewParams(
 		k.TrustedAddresses(ctx),
 		k.TrustedCounterParties(ctx),
-		k.PepChannelID(ctx),
 		k.KeyshareChannelID(ctx),
 		&coin,
+		k.IsSourceChain(ctx),
 	)
 }
 
@@ -35,12 +35,6 @@ func (k Keeper) TrustedCounterParties(ctx sdk.Context) (res []*types.TrustedCoun
 	return
 }
 
-// ChannelID returns the PepChannelID param
-func (k Keeper) PepChannelID(ctx sdk.Context) (res string) {
-	k.paramstore.Get(ctx, types.KeyPepChannelID, &res)
-	return
-}
-
 // KeyshareChannelID returns the KeyshareChannelID param
 func (k Keeper) KeyshareChannelID(ctx sdk.Context) (res string) {
 	k.paramstore.Get(ctx, types.KeyKeyshareChannelID, &res)
@@ -49,5 +43,10 @@ func (k Keeper) KeyshareChannelID(ctx sdk.Context) (res string) {
 
 func (k Keeper) MinGasPrice(ctx sdk.Context) (res sdk.Coin) {
 	k.paramstore.Get(ctx, types.KeyMinGasPrice, &res)
+	return
+}
+
+func (k Keeper) IsSourceChain(ctx sdk.Context) (res bool) {
+	k.paramstore.Get(ctx, types.KeyIsSourceChain, &res)
 	return
 }

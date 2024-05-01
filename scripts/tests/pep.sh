@@ -8,6 +8,7 @@ echo "#   Submit Valid & Invalid Aggregated Key to Pep Module   #"
 echo "#    Submit Valid & Invalid Encrypted Tx to Pep Module    #"
 echo "#        Test Pep Nonce Increment on Encrypted Tx         #"
 echo "#        Gas Deduction for encrypted tx execution         #"
+echo "#               Test General Encrypted Txs                #"
 echo "###########################################################"
 echo ""
 
@@ -27,6 +28,8 @@ VALIDATOR_1=$($BINARY keys show val1 -a --keyring-backend test --home $CHAIN_DIR
 WALLET_2=$($BINARY keys show wallet2 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_2)
 VALIDATOR_2=$($BINARY keys show val2 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_2)
 
+GENERATED_SHARE=$1
+
 check_tx_code () {
   local TX_CODE=$(echo "$1" | jq -r '.code')
   if [ "$TX_CODE" != "0" ]; then
@@ -35,7 +38,17 @@ check_tx_code () {
   fi
 }
 
+check_tx_err () {
+  local TX_CODE=$(echo "$1" | jq -r '.code')
+  if [ "$TX_CODE" -eq 0 ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 wait_for_tx () {
+  sleep $BLOCK_TIME
   sleep $BLOCK_TIME
   local TXHASH=$(echo "$1" | jq -r '.txhash')
   RESULT=$($BINARY q tx --type=hash $TXHASH --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
@@ -326,6 +339,101 @@ if [[ "$SECOND_EVENT" != *"coin_received"* ]]; then
 fi
 echo "Second Encrypted TX succeeded with Events: $(echo $SECOND_EVENT | jq) as expected."
 
+echo "Creating new General Enc Request in pep module on chain fairyring_test_1"
+RESULT=$($BINARY tx pep request-general-keyshare --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+
+sleep 10
+
+echo "Query general keyshare request on chain fairyring_test_1"
+IDENTITY=$($BINARY query pep list-keyshare-req --node $CHAIN1_NODE -o json | jq -r '.keyshares[0].identity')
+echo "Identity for keyshare request 1 is: $IDENTITY"
+
+echo "Query account pep nonce before submitting encrypted tx from pep module on chain fairyring_test_1"
+RESULT=$($BINARY query pep show-pep-nonce $WALLET_1 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE -o json)
+PEP_NONCE_BEFORE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
+
+echo "Query target account token balance before submitting encrypted tx from pep module on chain fairyring_test_1"
+RESULT=$($BINARY query bank balances $VALIDATOR_1 --node $CHAIN1_NODE -o json)
+TARGET_BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
+TARGET_BAL=$(echo "$RESULT" | jq -r '.balances[0].amount')
+echo "Target account has: $TARGET_BAL $TARGET_BAL_DENOM before encrypted bank send tx"
+
+
+echo "Signing bank send tx with pep nonce: '$PEP_NONCE_BEFORE'"
+echo "Sending 1 $TARGET_BAL_DENOM to target address"
+$BINARY tx bank send $WALLET_1 $VALIDATOR_1 1$TARGET_BAL_DENOM --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --keyring-backend test --generate-only -o json -y > unsigned.json
+SIGNED_DATA=$($BINARY tx sign unsigned.json --from $WALLET_1 --offline --account-number 1 --sequence $PEP_NONCE_BEFORE --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE  --keyring-backend test -y)
+
+PEP_NONCE_2ND=$(($PEP_NONCE_BEFORE+1))
+echo "Signing second bank send tx with pep nonce: '$PEP_NONCE_2ND'"
+echo "Sending 1 $TARGET_BAL_DENOM to target address"
+$BINARY tx bank send $WALLET_1 $VALIDATOR_1 1$TARGET_BAL_DENOM --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --keyring-backend test --generate-only -o json -y > unsigned2.json
+SIGNED_DATA_2=$($BINARY tx sign unsigned2.json --from $WALLET_1 --offline --account-number 1 --sequence $PEP_NONCE_2ND --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE  --keyring-backend test -y)
+
+echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
+CIPHER=$($ENCRYPTER $IDENTITY $PUB_KEY $SIGNED_DATA)
+CIPHER2=$($ENCRYPTER $IDENTITY $PUB_KEY $SIGNED_DATA_2)
+
+rm -r unsigned.json &> /dev/null
+rm -r unsigned2.json &> /dev/null
+
+sleep 10
+
+echo "Submit general encrypted tx to pep module on chain fairyring_test_1"
+RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER 0 --from $WALLET_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+echo "$RESULT"
+check_tx_code $RESULT
+
+sleep 6
+
+echo "Query Keyshare request and check for encrypted tx"
+TX=$($BINARY query pep show-keyshare-req 0 --node $CHAIN1_NODE -o json | jq -r '.keyshare.tx_list.encryptedTx[0].data')
+if [ "$TX" != "$CIPHER" ]; then
+  echo "Submitting general encrypted tx failed. Expected: $CIPHER, got $TX"
+  exit 1
+fi
+
+echo "Submit 2nd general encrypted tx to pep module on chain fairyring_test_1"
+RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER2 0 --from $WALLET_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+echo "$RESULT"
+check_tx_code $RESULT
+
+sleep 6
+
+echo "Request Generation of Aggr keyshare"
+RESULT=$($BINARY tx pep get-general-keyshare 0 --from $WALLET_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+echo "$RESULT"
+check_tx_code $RESULT
+
+sleep 6
+
+EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 1 $IDENTITY)
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+
+while true; do
+  echo "Submitting General Key Share"
+  
+  RESULT=$($BINARY tx keyshare create-general-key-share "private-gov-identity" $IDENTITY $EXTRACTED_SHARE 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+  echo "$RESULT"
+  check_tx_err $RESULT
+  if [ $? -eq 0 ]; then
+    break
+  fi
+done
+
+sleep 15
+
+echo "Query target account token balance after general encrypted tx being executed from pep module on chain fairyring_test_1"
+RESULT=$($BINARY query bank balances $VALIDATOR_1 --node $CHAIN1_NODE -o json)
+TARGET_BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
+TARGET_BAL_AFTER=$(echo "$RESULT" | jq -r '.balances[0].amount')
+echo "Target account has: $TARGET_BAL_AFTER $TARGET_BAL_DENOM after encrypted bank send tx being executed, balance increased $(($TARGET_BAL_AFTER - $TARGET_BAL)) $TARGET_BAL_DENOM"
+if [ "$TARGET_BAL_AFTER" == "$TARGET_BAL" ]; then
+  echo "ERROR: Pep module encrypted tx execution error. Expected Target Balance to be updated, got same balance: '$TARGET_BAL_AFTER $TARGET_BAL_DENOM'"
+  exit 1
+fi
+
 echo ""
 echo "###########################################################"
 echo "#                   SUCCESSFULLY TESTED                   #"
@@ -334,6 +442,7 @@ echo "#   Submit Valid & Invalid Aggregated Key to Pep Module   #"
 echo "#    Submit Valid & Invalid Encrypted Tx to Pep Module    #"
 echo "#        Test Pep Nonce Increment on Encrypted Tx         #"
 echo "#        Gas Deduction for encrypted tx execution         #"
+echo "#               Test General Encrypted Txs                #"
 echo "###########################################################"
 echo ""
 

@@ -5,10 +5,12 @@ import (
 
 	sdkerrors "cosmossdk.io/errors"
 	"cosmossdk.io/math"
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
+	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 	connTypes "github.com/cosmos/ibc-go/v7/modules/core/03-connection/types"
@@ -30,12 +32,32 @@ type BankKeeper interface {
 
 // PepKeeper defines the expected interface needed to get and set active and queued public keys
 type PepKeeper interface {
-	SetActivePubKey(ctx sdk.Context, activePubKey peptypes.ActivePubKey)
-	SetQueuedPubKey(ctx sdk.Context, queuedPubKey peptypes.QueuedPubKey)
-	GetActivePubKey(ctx sdk.Context) (val peptypes.ActivePubKey, found bool)
-	GetQueuedPubKey(ctx sdk.Context) (val peptypes.QueuedPubKey, found bool)
+	SetActivePubKey(ctx sdk.Context, activePubKey commontypes.ActivePublicKey)
+	SetQueuedPubKey(ctx sdk.Context, queuedPubKey commontypes.QueuedPublicKey)
+	GetActivePubKey(ctx sdk.Context) (val commontypes.ActivePublicKey, found bool)
+	GetQueuedPubKey(ctx sdk.Context) (val commontypes.QueuedPublicKey, found bool)
 	DeleteActivePubKey(ctx sdk.Context)
 	DeleteQueuedPubKey(ctx sdk.Context)
+	SetEntry(ctx sdk.Context, val peptypes.GenEncTxExecutionQueue)
+	GetEntry(ctx sdk.Context, reqID string) (val peptypes.GenEncTxExecutionQueue, found bool)
+	RemoveEntry(ctx sdk.Context, reqID string)
+	GetAllGenEncTxEntry(ctx sdk.Context) (list []peptypes.GenEncTxExecutionQueue)
+	GetSignalQueueEntry(ctx sdk.Context, reqID string) (val commontypes.GetAggrKeyshare, found bool)
+	SetSignalQueueEntry(ctx sdk.Context, val commontypes.GetAggrKeyshare)
+	RemoveSignalQueueEntry(ctx sdk.Context, reqID string)
+	GetAllGenEncTxSignalQueueEntry(ctx sdk.Context) (list []commontypes.GetAggrKeyshare)
+	GetExecutionQueueEntry(ctx sdk.Context, reqID string) (val peptypes.GenEncTxExecutionQueue, found bool)
+	SetExecutionQueueEntry(ctx sdk.Context, val peptypes.GenEncTxExecutionQueue)
+	RemoveExecutionQueueEntry(ctx sdk.Context, reqID string)
+	GetAllGenEncTxExecutionQueueEntry(ctx sdk.Context) (list []peptypes.GenEncTxExecutionQueue)
+	GetRequestQueueEntry(ctx sdk.Context, reqID string) (val commontypes.RequestAggrKeyshare, found bool)
+	SetReqQueueEntry(ctx sdk.Context, val commontypes.RequestAggrKeyshare)
+	RemoveReqQueueEntry(ctx sdk.Context, reqID string)
+	GetAllGenEncTxReqQueueEntry(ctx sdk.Context) (list []commontypes.RequestAggrKeyshare)
+	GetAggregatedKeyShare(ctx sdk.Context, height uint64) (val peptypes.AggregatedKeyShare, found bool)
+	SetAggregatedKeyShare(ctx sdk.Context, aggregatedKeyShare peptypes.AggregatedKeyShare)
+	GetLatestHeight(ctx sdk.Context) string
+	SetLatestHeight(ctx sdk.Context, height string)
 }
 
 // StakingKeeper defines the expected interface needed to retrieve the list of validators.
@@ -46,7 +68,16 @@ type StakingKeeper interface {
 }
 
 type GovKeeper interface {
-	ProcessAggrKeyshare(ctx sdk.Context, pID string, aggrKeyshare string) error
+	GetRequestQueueEntry(ctx sdk.Context, reqID string) (val commontypes.RequestAggrKeyshare, found bool)
+	SetReqQueueEntry(ctx sdk.Context, val commontypes.RequestAggrKeyshare)
+	RemoveReqQueueEntry(ctx sdk.Context, reqID string)
+	GetAllReqQueueEntry(ctx sdk.Context) (list []commontypes.RequestAggrKeyshare)
+	GetSignalQueueEntry(ctx sdk.Context, reqID string) (val commontypes.GetAggrKeyshare, found bool)
+	SetSignalQueueEntry(ctx sdk.Context, val commontypes.GetAggrKeyshare)
+	RemoveSignalQueueEntry(ctx sdk.Context, reqID string)
+	GetAllSignalQueueEntry(ctx sdk.Context) (list []commontypes.GetAggrKeyshare)
+	GetProposal(ctx sdk.Context, proposalID uint64) (v1.Proposal, bool)
+	SetProposal(ctx sdk.Context, proposal v1.Proposal)
 }
 
 // ConnectionKeeper defines the expected interfaces needed to retrieve connection info

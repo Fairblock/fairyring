@@ -9,7 +9,7 @@ import "fairyring/pep/params.proto";
 import "fairyring/pep/encrypted_tx.proto";
 import "fairyring/pep/pep_nonce.proto";
 import "fairyring/pep/aggregated_key_share.proto";
-import "fairyring/pep/pub_key.proto";
+import "fairyring/common/shared_types.proto";
 
 // this line is used by starport scaffolding # 1
 
@@ -66,6 +66,13 @@ service Query {
   
   }
 
+  rpc KeyshareReq (QueryKeyshareRequest) returns (QueryKeyshareResponse) {
+    option (google.api.http).get = "/fairyring/pep/keyshare/{req_id}";
+  }
+
+  rpc KeyshareReqAll (QueryAllKeyshareRequest) returns (QueryAllKeyshareResponse) {
+    option (google.api.http).get = "/fairyring/pep/keyshare";
+  }
   // this line is used by starport scaffolding # 2
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -76,6 +83,24 @@ message QueryParamsResponse {
   
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryKeyshareRequest {
+  string req_id = 1;
+}
+
+message QueryKeyshareResponse {
+  GenEncTxExecutionQueue keyshare = 1;
+}
+
+message QueryAllKeyshareRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllKeyshareResponse {
+  repeated GenEncTxExecutionQueue keyshares = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+
 }
 
 message QueryGetEncryptedTxRequest {
@@ -130,8 +155,8 @@ message QueryAllPepNonceResponse {
 message QueryPubKeyRequest {}
 
 message QueryPubKeyResponse {
-  ActivePubKey activePubKey   = 1 [(gogoproto.nullable) = false];
-  QueuedPubKey queuedPubKey = 2 [(gogoproto.nullable) = false];
+  fairyring.common.ActivePublicKey activePubKey   = 1 [(gogoproto.nullable) = false];
+  fairyring.common.QueuedPublicKey queuedPubKey   = 2 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

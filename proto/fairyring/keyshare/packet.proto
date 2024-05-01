@@ -2,6 +2,9 @@ syntax = "proto3";
 
 package fairyring.keyshare;
 
+import "fairyring/common/shared_types.proto";
+
+
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
 message KeysharePacketData {
@@ -10,6 +13,7 @@ message KeysharePacketData {
     RequestAggrKeysharePacketData requestAggrKeysharePacket = 2;
     GetAggrKeysharePacketData     getAggrKeysharePacket     = 3;
     AggrKeyshareDataPacketData    aggrKeyshareDataPacket    = 4;
+    CurrentKeysPacketData         currentKeysPacket         = 5;
   }
 }
 
@@ -17,9 +21,10 @@ message NoData {}
 
 // RequestAggrKeysharePacketData defines a struct for the packet payload
 message RequestAggrKeysharePacketData {
+  string requester = 1;
   oneof id {
-    string proposal_id = 1;
-    string request_id = 2;
+    string proposal_id = 2;
+    string request_id = 3;
   }
 }
 
@@ -50,3 +55,13 @@ message AggrKeyshareDataPacketData {
 
 // AggrKeyshareDataPacketAck defines a struct for the packet acknowledgment
 message AggrKeyshareDataPacketAck {}
+
+// CurrentKeysPacketData defines a struct for the packet payload
+message CurrentKeysPacketData {
+}
+
+// CurrentKeysPacketAck defines a struct for the packet acknowledgment
+message CurrentKeysPacketAck {
+  fairyring.common.ActivePublicKey activeKey = 1;
+  fairyring.common.QueuedPublicKey queuedKey = 2;
+}

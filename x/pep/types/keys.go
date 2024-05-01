@@ -13,14 +13,14 @@ const (
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_pep"
 
-	// Version defines the current version the IBC module supports
-	Version = "pep-1"
+	// KeyshareVersion defines the current version the IBC module supports
+	KeyshareVersion = "keyshare-1"
 
 	// PortID is the default port id that module binds to
 	PortID = "pep"
 
 	// PepChannelID is the default channel id that module will use to transmit IBC packets to pep module.
-	PepChannelID = "channel-0"
+	// PepChannelID = "channel-0"
 
 	// KeushareChannelID is the default channel id that module will use to transmit IBC packets to keyshare module.
 	KeyshareChannelID = "channel-1"
@@ -32,10 +32,13 @@ var (
 	ChannelKey            = KeyPrefix("pep-channel-")
 	LatestHeightKey       = KeyPrefix("pep-latest-height-")
 	LastExecutedHeightKey = KeyPrefix("pep-last-executed-height-")
+	RequestsCountKey      = KeyPrefix("Pep-request-count-")
 )
 
 const (
 	SubmittedEncryptedTxEventType         = "new-encrypted-tx-submitted"
+	SubmittedGeneralEncryptedTxEventType  = "new-general-encrypted-tx-submitted"
+	SubmittedEncryptedTxEventIdentity     = "identity"
 	SubmittedEncryptedTxEventCreator      = "creator"
 	SubmittedEncryptedTxEventTargetHeight = "target-height"
 	SubmittedEncryptedTxEventIndex        = "index"
@@ -43,21 +46,24 @@ const (
 )
 
 const (
-	EncryptedTxExecutedEventType             = "executed-encrypted-tx"
-	EncryptedTxExecutedEventCreator          = "creator"
-	EncryptedTxExecutedEventHeight           = "target-height"
-	EncryptedTxExecutedEventIndex            = "index"
+	EncryptedTxExecutedEventType     = "executed-encrypted-tx"
+	EncryptedTxExecutedEventCreator  = "creator"
+	EncryptedTxExecutedEventHeight   = "target-height"
+	EncryptedTxExecutedEventIndex    = "index"
+	EncryptedTxExecutedEventIdentity = "identity"
+
 	EncryptedTxExecutedEventData             = "data"
 	EncryptedTxExecutedEventMemo             = "memo"
 	EncryptedTxExecutedEventUnderlyingEvents = "events"
 )
 
 const (
-	EncryptedTxRevertedEventType    = "reverted-encrypted-tx"
-	EncryptedTxRevertedEventCreator = "creator"
-	EncryptedTxRevertedEventHeight  = "height"
-	EncryptedTxRevertedEventIndex   = "index"
-	EncryptedTxRevertedEventReason  = "reason"
+	EncryptedTxRevertedEventType     = "reverted-encrypted-tx"
+	EncryptedTxRevertedEventCreator  = "creator"
+	EncryptedTxRevertedEventHeight   = "height"
+	EncryptedTxRevertedEventIndex    = "index"
+	EncryptedTxRevertedEventIdentity = "identity"
+	EncryptedTxRevertedEventReason   = "reason"
 )
 
 const (
@@ -77,6 +83,12 @@ const (
 	KeyTotalEncryptedTxSubmitted = "total_encrypted_tx_submitted"
 	KeyTotalSuccessEncryptedTx   = "total_success_encrypted_tx"
 	KeyTotalFailedEncryptedTx    = "total_failed_encrypted_tx"
+)
+
+const (
+	RequestIdentityEventType     = "new-identity-requested"
+	RequestIdentityEventIdentity = "identity"
+	RequestIdentityEventPubkey   = "pubkey"
 )
 
 func KeyPrefix(p string) []byte {

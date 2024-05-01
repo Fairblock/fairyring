@@ -4,12 +4,14 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
+	"strconv"
+
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/armon/go-metrics"
 	"github.com/cosmos/cosmos-sdk/telemetry"
-	"strconv"
 
 	distIBE "github.com/FairBlock/DistributedIBE"
+	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"
@@ -220,6 +222,25 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			sdk.NewAttribute(types.KeyShareAggregatedEventPubKey, activePubKey.PublicKey),
 		),
 	)
+
+	k.pepKeeper.SetAggregatedKeyShare(
+		ctx,
+		peptypes.AggregatedKeyShare{
+			Height: msg.BlockHeight,
+			Data:   skHex,
+		},
+	)
+
+	latestHeight, err := strconv.ParseUint(k.pepKeeper.GetLatestHeight(ctx), 10, 64)
+	if err != nil {
+		latestHeight = 0
+	}
+
+	if latestHeight < msg.BlockHeight {
+		k.pepKeeper.SetLatestHeight(ctx, strconv.FormatUint(msg.BlockHeight, 10))
+	}
+
+	k.Logger(ctx).Info(fmt.Sprintf("[ProcessUnconfirmedTxs] Aggregated Key Added, height: %d", msg.BlockHeight))
 
 	return &types.MsgSendKeyshareResponse{
 		Creator:             msg.Creator,

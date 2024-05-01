@@ -6,6 +6,8 @@ const (
 	EventTypeRequestAggrKeysharePacket = "requestAggrKeyshare_packet"
 	EventTypeGetAggrKeysharePacket     = "getAggrKeyshare_packet"
 	EventTypeAggrKeyshareDataPacket    = "aggrKeyshareData_packet"
+	EventTypeCurrentKeysPacket         = "currentKeys_packet"
+
 	// this line is used by starport scaffolding # ibc/packet/event
 
 	AttributeKeyAckSuccess = "success"

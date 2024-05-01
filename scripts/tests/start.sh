@@ -146,13 +146,12 @@ jsonData2=$(cat "$CHAIN_DIR/$CHAINID_2/config/genesis.json")
 modifiedJson2=$(echo "$jsonData2" |
   jq '.app_state.gov.params.channel_id = "channel-0" |
   .app_state.gov.params.trusted_counter_parties = [{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-0"}] |
-  .app_state.pep.params.pep_channel_id = "channel-1" |
-  .app_state.pep.params.keyshare_channel_id = "channel-0"')
+  .app_state.pep.params.keyshare_channel_id = "channel-1"')
 echo "$modifiedJson2" | jq '.' > "$CHAIN_DIR/$CHAINID_2/config/genesis.json"
 
 echo "Starting $CHAINID_1 in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID_1.log"
-$BINARY start --log_level trace --log_format json --home $CHAIN_DIR/$CHAINID_1 --pruning=nothing --grpc.address="0.0.0.0:$GRPCPORT_1" --grpc-web.address="0.0.0.0:$GRPCWEB_1" > $CHAIN_DIR/$CHAINID_1.log 2>&1 &
+$BINARY start --log_level info --log_format json --home $CHAIN_DIR/$CHAINID_1 --pruning=nothing --grpc.address="0.0.0.0:$GRPCPORT_1" --grpc-web.address="0.0.0.0:$GRPCWEB_1" > $CHAIN_DIR/$CHAINID_1.log 2>&1 &
 
 echo "Starting $CHAINID_2 in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID_2.log"

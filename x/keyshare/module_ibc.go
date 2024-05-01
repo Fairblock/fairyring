@@ -174,15 +174,28 @@ func (im IBCModule) OnRecvPacket(
 		} else {
 			// Encode packet acknowledgment
 			packetAckBytes := types.MustProtoMarshalJSON(&packetAck)
-			// packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
-			// if err != nil {
-			// 	return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, err.Error()))
-			// }
 			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
 		}
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeGetAggrKeysharePacket,
+				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+			),
+		)
+
+	case *types.KeysharePacketData_CurrentKeysPacket:
+		packetAck, err := im.keeper.OnRecvCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket)
+		if err != nil {
+			ack = channeltypes.NewErrorAcknowledgement(err)
+		} else {
+			// Encode packet acknowledgment
+			packetAckBytes := types.MustProtoMarshalJSON(&packetAck)
+			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+		}
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeCurrentKeysPacket,
 				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
 				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
 			),

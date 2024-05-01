@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/Fairblock/fairyring/x/pep/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -12,23 +13,25 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdRequestGeneralKeyshare() *cobra.Command {
+func CmdSubmitGeneralEncryptedTx() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "request-general-keyshare",
-		Short: "Broadcast message request-general-keyshare",
-		Args:  cobra.ExactArgs(0),
+		Use:   "submit-general-encrypted-tx [data] [req-id]",
+		Short: "Submit an encrypted transaction along with its req-id",
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			argData := args[0]
+			argReqId := args[1]
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgRequestGeneralKeyshare(
+			msg := types.NewMsgSubmitGeneralEncryptedTx(
 				clientCtx.GetFromAddress().String(),
+				argData,
+				argReqId,
 			)
-			if err := msg.ValidateBasic(); err != nil {
-				return err
-			}
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}

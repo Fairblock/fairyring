@@ -52,7 +52,7 @@ wait_for_tx () {
 }
 #
 #echo "Creating a new proposal on destination chain"
-#RESULT=$($BINARY tx gov submit-proposal draft_proposal.json --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+#RESULT=$($BINARY tx gov submit-proposal ./scripts/tests/draft_proposal.json --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
 #check_tx_code $RESULT
 #RESULT=$(wait_for_tx $RESULT "destination")
 #

@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"strconv"
 	"time"
@@ -250,6 +251,14 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 
 	switch msg.IdType {
 	case PrivateGovIdentity:
+		val := types.MsgCreateGeneralKeyShareResponse{
+			Creator:             msg.Creator,
+			IdType:              msg.IdType,
+			IdValue:             msg.IdValue,
+			KeyShare:            msg.KeyShare,
+			KeyShareIndex:       msg.KeyShareIndex,
+			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+		}
 		keyShareReq, found := k.GetKeyShareRequest(ctx, msg.IdValue)
 		if !found {
 			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
@@ -284,12 +293,28 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 				}
 			}
 		} else {
-			err = k.govKeeper.ProcessAggrKeyshare(ctx, keyShareReq.ProposalId, keyShareReq.AggrKeyshare)
-			if err != nil {
-				return nil, err
+			if keyShareReq.ProposalId != "" {
+				id, err := strconv.ParseUint(keyShareReq.ProposalId, 10, 64)
+				if err != nil {
+					val.Success = false
+					return &val, err
+				}
+
+				proposal, found := k.govKeeper.GetProposal(ctx, id)
+				if !found {
+					val.Success = false
+					return &val, errors.New("Proposal not found")
+				}
+
+				proposal.AggrKeyshare = keyShareReq.AggrKeyshare
+				k.govKeeper.SetProposal(ctx, proposal)
+			} else {
+				val, _ := k.pepKeeper.GetEntry(ctx, keyShareReq.RequestId)
+				val.AggrKeyshare = keyShareReq.AggrKeyshare
+				k.pepKeeper.SetExecutionQueueEntry(ctx, val)
+				k.pepKeeper.RemoveEntry(ctx, val.RequestId)
 			}
 		}
-
 	}
 
 	return &types.MsgCreateGeneralKeyShareResponse{

@@ -3,8 +3,9 @@ package keeper
 import (
 	"context"
 	"encoding/json"
-	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 	"strconv"
+
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
 
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 
@@ -61,7 +62,7 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 
 	k.pepKeeper.SetQueuedPubKey(
 		ctx,
-		peptypes.QueuedPubKey{
+		commontypes.QueuedPublicKey{
 			Creator:   msg.Creator,
 			PublicKey: msg.PublicKey,
 			Expiry:    expHeight,

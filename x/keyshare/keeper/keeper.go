@@ -83,8 +83,3 @@ func (k Keeper) SetRequestCount(ctx sdk.Context, requestNumber uint64) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.RequestsCountKey, []byte(strconv.FormatUint(requestNumber, 10)))
 }
-
-func (k *Keeper) SetGovKeeper(govKeeper types.GovKeeper) *Keeper {
-	k.govKeeper = govKeeper
-	return k
-}

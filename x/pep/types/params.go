@@ -22,12 +22,12 @@ var (
 )
 
 var (
-	KeyPepChannelID          = []byte("PepChannelID")
+	// KeyPepChannelID          = []byte("PepChannelID")
 	KeyKeyshareChannelID     = []byte("KeyshareChannelID")
-	DefaultPepChannelID      = PepChannelID
 	DefaultKeyshareChannelID = KeyshareChannelID
 	KeyMinGasPrice           = []byte("MinGasPrice")
 	DefaultMinGasPrice       = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
+	KeyIsSourceChain         = []byte("IsSourceChain")
 )
 
 // ParamKeyTable the param key table for launch module
@@ -39,22 +39,22 @@ func ParamKeyTable() paramtypes.KeyTable {
 func NewParams(
 	trAddrs []string,
 	trustedParties []*TrustedCounterParty,
-	pepChannelID string,
 	keyshareChannelID string,
 	minGasPrice *sdk.Coin,
+	isSourceChain bool,
 ) Params {
 	return Params{
 		TrustedAddresses:      trAddrs,
 		TrustedCounterParties: trustedParties,
-		PepChannelId:          pepChannelID,
 		KeyshareChannelId:     keyshareChannelID,
 		MinGasPrice:           minGasPrice,
+		IsSourceChain:         isSourceChain,
 	}
 }
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams(DefaultTrustedAddresses, DefaultTrustedCounterParties, DefaultPepChannelID, DefaultKeyshareChannelID, &DefaultMinGasPrice)
+	return NewParams(DefaultTrustedAddresses, DefaultTrustedCounterParties, DefaultKeyshareChannelID, &DefaultMinGasPrice, false)
 }
 
 // ParamSetPairs get the params.ParamSet
@@ -62,9 +62,9 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
 		paramtypes.NewParamSetPair(KeyTrustedAddresses, &p.TrustedAddresses, validateTrustedAddresses),
 		paramtypes.NewParamSetPair(KeyTrustedCounterParties, &p.TrustedCounterParties, validateTrustedCounterParties),
-		paramtypes.NewParamSetPair(KeyPepChannelID, &p.PepChannelId, validateChannelID),
 		paramtypes.NewParamSetPair(KeyKeyshareChannelID, &p.KeyshareChannelId, validateChannelID),
 		paramtypes.NewParamSetPair(KeyMinGasPrice, &p.MinGasPrice, validateMinGasPrice),
+		paramtypes.NewParamSetPair(KeyIsSourceChain, &p.IsSourceChain, vaidateIsSourceChain),
 	}
 }
 
@@ -75,10 +75,6 @@ func (p Params) Validate() error {
 	}
 
 	if err := validateTrustedCounterParties(p.TrustedCounterParties); err != nil {
-		return err
-	}
-
-	if err := validateChannelID(p.PepChannelId); err != nil {
 		return err
 	}
 
@@ -109,6 +105,15 @@ func validateChannelID(v interface{}) error {
 
 	if len(channelID) < 1 {
 		return fmt.Errorf("invalid Channel ID")
+	}
+
+	return nil
+}
+
+func vaidateIsSourceChain(v interface{}) error {
+	_, ok := v.(bool)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", v)
 	}
 
 	return nil
