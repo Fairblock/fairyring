@@ -4,7 +4,7 @@ import (
 	"encoding/binary"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 
-	"github.com/cosmos/cosmos-sdk/store/prefix"
+	"cosmossdk.io/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

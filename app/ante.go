@@ -5,9 +5,9 @@ import (
 	pepante "github.com/Fairblock/fairyring/x/pep/ante"
 	pepkeeper "github.com/Fairblock/fairyring/x/pep/keeper"
 
+	storetypes "cosmossdk.io/store/types"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
-	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"

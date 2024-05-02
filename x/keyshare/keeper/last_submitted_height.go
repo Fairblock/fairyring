@@ -1,8 +1,8 @@
 package keeper
 
 import (
+	"cosmossdk.io/store/prefix"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"strconv"
 )
