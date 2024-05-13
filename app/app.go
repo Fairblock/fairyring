@@ -1,6 +1,7 @@
 package app
 
 import (
+	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -8,7 +9,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	reflectionv1 "cosmossdk.io/api/cosmos/reflection/v1"
 	dbm "github.com/cometbft/cometbft-db"
 	cometabci "github.com/cometbft/cometbft/abci/types"
@@ -955,6 +955,10 @@ func New(
 	//app.setPostHandler()
 
 	// this line is used by starport scaffolding # stargate/app/beforeInitReturn
+	app.UpgradeKeeper.SetUpgradeHandler("v050-to-v060", func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+		// returns a VersionMap with the updated module ConsensusVersions
+		return app.mm.RunMigrations(ctx, app.Configurator(), fromVM)
+	})
 
 	return app
 }
