@@ -28,6 +28,8 @@ var (
 	DefaultKeyshareChannelID = KeyshareChannelID
 	KeyMinGasPrice           = []byte("MinGasPrice")
 	DefaultMinGasPrice       = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
+	KeyIsSourceChain         = []byte("IsSourceChain")
+	DefaultIsSourceChain     = false
 )
 
 // ParamKeyTable the param key table for launch module
@@ -42,6 +44,7 @@ func NewParams(
 	pepChannelID string,
 	keyshareChannelID string,
 	minGasPrice *sdk.Coin,
+	isSourceChain bool,
 ) Params {
 	return Params{
 		TrustedAddresses:      trAddrs,
@@ -49,12 +52,13 @@ func NewParams(
 		PepChannelId:          pepChannelID,
 		KeyshareChannelId:     keyshareChannelID,
 		MinGasPrice:           minGasPrice,
+		IsSourceChain:         isSourceChain,
 	}
 }
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams(DefaultTrustedAddresses, DefaultTrustedCounterParties, DefaultPepChannelID, DefaultKeyshareChannelID, &DefaultMinGasPrice)
+	return NewParams(DefaultTrustedAddresses, DefaultTrustedCounterParties, DefaultPepChannelID, DefaultKeyshareChannelID, &DefaultMinGasPrice, DefaultIsSourceChain)
 }
 
 // ParamSetPairs get the params.ParamSet
@@ -65,6 +69,7 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(KeyPepChannelID, &p.PepChannelId, validateChannelID),
 		paramtypes.NewParamSetPair(KeyKeyshareChannelID, &p.KeyshareChannelId, validateChannelID),
 		paramtypes.NewParamSetPair(KeyMinGasPrice, &p.MinGasPrice, validateMinGasPrice),
+		paramtypes.NewParamSetPair(KeyIsSourceChain, &p.IsSourceChain, validateIsSourceChain),
 	}
 }
 
@@ -90,6 +95,10 @@ func (p Params) Validate() error {
 		return err
 	}
 
+	if err := validateIsSourceChain(p.IsSourceChain); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -97,6 +106,17 @@ func (p Params) Validate() error {
 func (p Params) String() string {
 	out, _ := yaml.Marshal(p)
 	return string(out)
+}
+
+// validateChannelID validates the channelID param
+func validateIsSourceChain(v interface{}) error {
+	_, ok := v.(bool)
+
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+
+	return nil
 }
 
 // validateChannelID validates the channelID param
