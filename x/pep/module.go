@@ -179,6 +179,19 @@ func NewAppModule(
 
 // RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries
 func (am AppModule) RegisterServices(cfg module.Configurator) {
+	if err := cfg.RegisterMigration(types.ModuleName, 1, func(ctx sdk.Context) error {
+		coin := am.keeper.MinGasPrice(ctx)
+		am.keeper.SetParams(ctx, types.NewParams(
+			am.keeper.TrustedAddresses(ctx),
+			am.keeper.TrustedCounterParties(ctx),
+			am.keeper.KeyshareChannelID(ctx),
+			&coin,
+			true,
+		))
+		return nil
+	}); err != nil {
+		panic(fmt.Errorf("failed to register migration of %s to v2: %w", types.ModuleName, err))
+	}
 	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
 	types.RegisterQueryServer(cfg.QueryServer(), am.keeper)
 }
@@ -193,7 +206,6 @@ func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, gs json.Ra
 	cdc.MustUnmarshalJSON(gs, &genState)
 
 	InitGenesis(ctx, am.keeper, genState)
-
 	return []abci.ValidatorUpdate{}
 }
 
@@ -204,7 +216,7 @@ func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.Raw
 }
 
 // ConsensusVersion is a sequence number for state-breaking change of the module. It should be incremented on each consensus-breaking change introduced by the module. To avoid wrong/empty versions, the initial version should be set to 1
-func (AppModule) ConsensusVersion() uint64 { return 1 }
+func (AppModule) ConsensusVersion() uint64 { return 2 }
 
 func (am AppModule) handleGasConsumption(ctx sdk.Context, recipient sdk.AccAddress, gasUsed cosmosmath.Int, gasCharged *sdk.Coin) {
 	creatorAccount := am.accountKeeper.GetAccount(ctx, recipient)
