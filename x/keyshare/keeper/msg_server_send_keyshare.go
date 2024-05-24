@@ -7,8 +7,6 @@ import (
 	"strconv"
 
 	"github.com/Fairblock/fairyring/x/keyshare/types"
-	"github.com/armon/go-metrics"
-	"github.com/cosmos/cosmos-sdk/telemetry"
 
 	distIBE "github.com/FairBlock/DistributedIBE"
 	peptypes "github.com/Fairblock/fairyring/x/pep/types"
@@ -70,7 +68,6 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	// Parse the keyshare & commitment then verify it
 	_, _, err := parseKeyShareCommitment(suite, msg.Message, commitments.Commitments[msg.KeyShareIndex-1], uint32(msg.KeyShareIndex), ibeID)
 	if err != nil {
-		defer telemetry.IncrCounter(1, types.KeyTotalInvalidKeyShareSubmitted)
 		k.Logger(ctx).Error(fmt.Sprintf("Error in parsing & verifying keyshare & commitment: %s", err.Error()))
 		k.Logger(ctx).Error(fmt.Sprintf("KeyShare is: %v | Commitment is: %v | Index: %d", msg.Message, commitments.Commitments, msg.KeyShareIndex))
 		// Invalid Share, slash validator
@@ -160,7 +157,6 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	// If there is not enough keyshares to aggregate OR there is already an aggregated key
 	// Only continue the code if there is enough keyshare to aggregate & no aggregated key for current height
 	if int64(len(stateKeyShares)) < expectedThreshold || found {
-		defer telemetry.IncrCounterWithLabels([]string{types.KeyTotalValidKeyShareSubmitted}, 1, []metrics.Label{telemetry.NewLabel("aggrkey", aggrKeyData.Data)})
 		return &types.MsgSendKeyshareResponse{
 			Creator:             msg.Creator,
 			Keyshare:            msg.Message,
@@ -212,8 +208,6 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	k.SetAggregatedKeyShareLength(ctx, k.GetAggregatedKeyShareLength(ctx)+1)
 
 	k.Logger(ctx).Info(fmt.Sprintf("Aggregated Decryption Key for Block %d: %s", msg.BlockHeight, skHex))
-
-	defer telemetry.IncrCounterWithLabels([]string{types.KeyTotalValidKeyShareSubmitted}, 1, []metrics.Label{telemetry.NewLabel("aggrkey", skHex)})
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.KeyShareAggregatedEventType,
