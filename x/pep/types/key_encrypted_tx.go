@@ -13,6 +13,7 @@ const (
 	GenEncTxReqQueueKeyPrefix    = "GenEncTxReqQueue/value/"
 	GenEncTxSignalQueueKeyPrefix = "GenEncTxSignalQueue/value/"
 	GenEncTxExeQueueKeyPrefix    = "GenEncTxExeQueue/value/"
+	ContractKeyPrefix            = "Contract/value/"
 )
 
 func EncryptedTxAllFromHeightKey(

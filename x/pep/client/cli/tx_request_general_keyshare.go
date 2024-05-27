@@ -23,8 +23,15 @@ func CmdRequestGeneralKeyshare() *cobra.Command {
 				return err
 			}
 
+			// Retrieve the flag value
+			cAddr, err := cmd.Flags().GetString("contract_address")
+			if err != nil {
+				return err
+			}
+
 			msg := types.NewMsgRequestGeneralKeyshare(
 				clientCtx.GetFromAddress().String(),
+				cAddr,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -33,6 +40,7 @@ func CmdRequestGeneralKeyshare() *cobra.Command {
 		},
 	}
 
+	cmd.Flags().String("contract_address", "", "should be ONLY filled when the tx is made from a contract, do not use otherwise")
 	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd

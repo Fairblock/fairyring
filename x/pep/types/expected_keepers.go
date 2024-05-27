@@ -28,6 +28,11 @@ type BankKeeper interface {
 	// Methods imported from bank should be defined here
 }
 
+// WasmKeeper defines the expected interface needed to evaluate contracts.
+type WasmKeeper interface {
+	Execute(ctx sdk.Context, contractAddress, caller sdk.AccAddress, msg []byte, coins sdk.Coins) ([]byte, error)
+}
+
 // ConnectionKeeper defines the expected interfaces needed to retrieve connection info
 type ConnectionKeeper interface {
 	GetConnection(ctx sdk.Context, connectionID string) (connTypes.ConnectionEnd, bool)

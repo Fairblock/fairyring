@@ -696,6 +696,9 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			continue
 		}
 
+		// Evaluate the contract associated with the entry (if any)
+		am.keeper.EvaluateContract(ctx, entry)
+
 		if entry.TxList == nil {
 			am.keeper.Logger(ctx).Info("No encrypted txs found for entry with req-id: ", entry.RequestId)
 			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)

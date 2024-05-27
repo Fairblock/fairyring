@@ -25,8 +25,15 @@ import (
 	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 	connTypes "github.com/cosmos/ibc-go/v7/modules/core/03-connection/types"
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
+
 	"github.com/stretchr/testify/require"
 )
+
+type pepWasmKeeper struct{}
+
+func (pepWasmKeeper) Execute(ctx sdk.Context, contractAddress, caller sdk.AccAddress, msg []byte, coins sdk.Coins) ([]byte, error) {
+	return []byte{}, nil
+}
 
 // pepChannelKeeper is a stub of cosmosibckeeper.ChannelKeeper.
 type pepChannelKeeper struct{}
@@ -117,6 +124,7 @@ func PepKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		capabilityKeeper.ScopeToModule("pepScopedKeeper"),
 		pepconnectionKeeper{},
 		bankKeeper,
+		pepWasmKeeper{},
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, logger)
