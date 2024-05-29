@@ -1,7 +1,9 @@
 package keeper
 
 import (
+	storetypes "cosmossdk.io/store/types"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
 	"cosmossdk.io/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -9,7 +11,8 @@ import (
 
 // SetValidatorSet set a specific validatorSet in the store from its index
 func (k Keeper) SetValidatorSet(ctx sdk.Context, validatorSet types.ValidatorSet) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ValidatorSetKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ValidatorSetKeyPrefix))
 	b := k.cdc.MustMarshal(&validatorSet)
 	store.Set(types.ValidatorSetKey(
 		validatorSet.Index,
@@ -22,7 +25,8 @@ func (k Keeper) GetValidatorSet(
 	index string,
 
 ) (val types.ValidatorSet, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ValidatorSetKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ValidatorSetKeyPrefix))
 
 	b := store.Get(types.ValidatorSetKey(
 		index,
@@ -41,7 +45,8 @@ func (k Keeper) RemoveValidatorSet(
 	index string,
 
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ValidatorSetKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ValidatorSetKeyPrefix))
 	store.Delete(types.ValidatorSetKey(
 		index,
 	))
@@ -49,8 +54,9 @@ func (k Keeper) RemoveValidatorSet(
 
 // GetAllValidatorSet returns all validatorSet
 func (k Keeper) GetAllValidatorSet(ctx sdk.Context) (list []types.ValidatorSet) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ValidatorSetKeyPrefix))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ValidatorSetKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 

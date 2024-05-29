@@ -1,9 +1,10 @@
 package base
 
 import (
+	sdkmath "cosmossdk.io/math"
 	"github.com/Fairblock/fairyring/blockbuster"
 
-	"github.com/cometbft/cometbft/libs/log"
+	"cosmossdk.io/log"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -69,7 +70,7 @@ func (l *DefaultLane) SetAnteHandler(anteHandler sdk.AnteHandler) {
 }
 
 // GetMaxBlockSpace returns the maximum block space for the lane as a relative percentage.
-func (l *DefaultLane) GetMaxBlockSpace() sdk.Dec {
+func (l *DefaultLane) GetMaxBlockSpace() sdkmath.LegacyDec {
 	return l.Cfg.MaxBlockSpace
 }
 

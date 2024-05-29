@@ -2,7 +2,9 @@ package keeper
 
 import (
 	"context"
+	"cosmossdk.io/store/prefix"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
@@ -19,7 +21,8 @@ func (k Keeper) Commitments(c context.Context, req *types.QueryCommitmentsReques
 	var queuedCommitments types.Commitments
 
 	ctx := sdk.UnwrapSDKContext(c)
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 
 	activeCommitmentBytes := store.Get(types.KeyPrefix(types.ActiveCommitmentsPrefix))
 	if activeCommitmentBytes == nil {

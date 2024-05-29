@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"cosmossdk.io/math"
 	"encoding/hex"
 	"errors"
 	"fmt"
@@ -9,7 +10,7 @@ import (
 	"time"
 
 	distIBE "github.com/FairBlock/DistributedIBE"
-	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
+	clienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types"
 	bls "github.com/drand/kyber-bls12381"
 
 	"github.com/Fairblock/fairyring/x/keyshare/types"
@@ -100,7 +101,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 			return nil, err
 		}
 
-		k.stakingKeeper.Slash(
+		k.SlashingKeeper().Slash(
 			ctx, consAddr,
 			ctx.BlockHeight()-1,
 			types.SlashPower,
@@ -153,9 +154,9 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 		return nil, types.ErrPubKeyNotFound
 	}
 
-	expectedThreshold := sdk.NewDecFromInt(
-		sdk.NewInt(types.KeyAggregationThresholdNumerator)).Quo(
-		sdk.NewDecFromInt(sdk.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
+	expectedThreshold := math.LegacyNewDecFromInt(
+		math.NewInt(types.KeyAggregationThresholdNumerator)).Quo(
+		math.LegacyNewDecFromInt(math.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
 		int64(activePubKey.NumberOfValidators)).Ceil().TruncateInt64()
 
 	// Emit KeyShare Submitted Event

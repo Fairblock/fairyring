@@ -37,8 +37,7 @@ func (k msgServer) RegisterValidator(goCtx context.Context, msg *types.MsgRegist
 		)
 	}
 
-	consAddr, _ := stakingValidator.GetConsAddr()
-	consByte := consAddr.Bytes()
+	consByte, _ := stakingValidator.GetConsAddr()
 	consHex := hex.EncodeToString(consByte)
 
 	validator := types.ValidatorSet{

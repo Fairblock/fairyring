@@ -2,16 +2,16 @@ package keeper
 
 import (
 	"context"
+	"cosmossdk.io/math"
 	"encoding/hex"
 	"fmt"
 	"strconv"
 
-	"github.com/Fairblock/fairyring/x/keyshare/types"
-	"github.com/armon/go-metrics"
-	"github.com/cosmos/cosmos-sdk/telemetry"
-
 	distIBE "github.com/FairBlock/DistributedIBE"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 	peptypes "github.com/Fairblock/fairyring/x/pep/types"
+	"github.com/cosmos/cosmos-sdk/telemetry"
+	"github.com/hashicorp/go-metrics"
 
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"
@@ -86,7 +86,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			return nil, err
 		}
 
-		k.stakingKeeper.Slash(
+		k.slashingKeeper.Slash(
 			ctx, consAddr,
 			ctx.BlockHeight()-1,
 			types.SlashPower,
@@ -138,9 +138,9 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		return nil, types.ErrPubKeyNotFound
 	}
 
-	expectedThreshold := sdk.NewDecFromInt(
-		sdk.NewInt(types.KeyAggregationThresholdNumerator)).Quo(
-		sdk.NewDecFromInt(sdk.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
+	expectedThreshold := math.LegacyNewDecFromInt(
+		math.NewInt(types.KeyAggregationThresholdNumerator)).Quo(
+		math.LegacyNewDecFromInt(math.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
 		int64(activePubKey.NumberOfValidators)).Ceil().TruncateInt64()
 
 	// Emit KeyShare Submitted Event

@@ -1,71 +1,74 @@
 package keeper
 
 import (
+	"cosmossdk.io/core/store"
+	"cosmossdk.io/store/prefix"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/runtime"
 	"strconv"
 
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 
-	storetypes "cosmossdk.io/store/types"
-	"github.com/cometbft/cometbft/libs/log"
+	"cosmossdk.io/log"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 )
 
 type (
 	Keeper struct {
 		*types.IBCKeeper
-		cdc              codec.BinaryCodec
-		storeKey         storetypes.StoreKey
-		memKey           storetypes.StoreKey
-		paramstore       paramtypes.Subspace
-		connectionKeeper types.ConnectionKeeper
+		cdc          codec.BinaryCodec
+		storeService store.KVStoreService
+		logger       log.Logger
+
+		// the address capable of executing a MsgUpdateParams message. Typically, this
+		// should be the x/gov module account.
+		authority string
+
+		slashingKeeper   types.SlashingKeeper
 		stakingKeeper    types.StakingKeeper
 		pepKeeper        types.PepKeeper
 		govKeeper        types.GovKeeper
+		connectionKeeper types.ConnectionKeeper
 	}
 )
 
 func NewKeeper(
 	cdc codec.BinaryCodec,
-	storeKey,
-	memKey storetypes.StoreKey,
-	ps paramtypes.Subspace,
+	storeService store.KVStoreService,
+	logger log.Logger,
+	authority string,
+	pk types.PepKeeper,
+	slashingKeeper types.SlashingKeeper,
+	stakingKeeper types.StakingKeeper,
+	govKeeper types.GovKeeper,
 	channelKeeper types.ChannelKeeper,
 	portKeeper types.PortKeeper,
 	scopedKeeper types.ScopedKeeper,
 	connectionKeeper types.ConnectionKeeper,
-	pk types.PepKeeper,
-	stakingKeeper types.StakingKeeper,
-	govKeeper types.GovKeeper,
-) *Keeper {
-	// set KeyTable if it has not already been set
-	if !ps.HasKeyTable() {
-		ps = ps.WithKeyTable(types.ParamKeyTable())
-	}
-
-	return &Keeper{
+) Keeper {
+	return Keeper{
+		cdc:              cdc,
+		storeService:     storeService,
+		logger:           logger,
+		authority:        authority,
+		pepKeeper:        pk,
+		slashingKeeper:   slashingKeeper,
+		stakingKeeper:    stakingKeeper,
+		govKeeper:        govKeeper,
+		connectionKeeper: connectionKeeper,
 		IBCKeeper: types.NewIBCKeeper(
 			types.PortKey,
-			storeKey,
+			storeService,
 			channelKeeper,
 			portKeeper,
 			scopedKeeper,
 		),
-		cdc:              cdc,
-		storeKey:         storeKey,
-		memKey:           memKey,
-		paramstore:       ps,
-		pepKeeper:        pk,
-		stakingKeeper:    stakingKeeper,
-		connectionKeeper: connectionKeeper,
-		govKeeper:        govKeeper,
 	}
 }
 
-func (k Keeper) StakingKeeper() types.StakingKeeper {
-	return k.stakingKeeper
+func (k Keeper) SlashingKeeper() types.SlashingKeeper {
+	return k.slashingKeeper
 }
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
@@ -74,12 +77,14 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 
 // GetRequestCount returns the request count
 func (k Keeper) GetRequestCount(ctx sdk.Context) string {
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 	return string(store.Get(types.RequestsCountKey))
 }
 
 // SetRequestCount sets RequestCount
 func (k Keeper) SetRequestCount(ctx sdk.Context, requestNumber uint64) {
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 	store.Set(types.RequestsCountKey, []byte(strconv.FormatUint(requestNumber, 10)))
 }

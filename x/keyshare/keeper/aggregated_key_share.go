@@ -1,8 +1,10 @@
 package keeper
 
 import (
+	storetypes "cosmossdk.io/store/types"
 	"encoding/binary"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
 	"cosmossdk.io/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -10,7 +12,9 @@ import (
 
 // SetAggregatedKeyShare set a specific aggregatedKeyShare in the store from its index
 func (k Keeper) SetAggregatedKeyShare(ctx sdk.Context, aggregatedKeyShare types.AggregatedKeyShare) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
+
 	b := k.cdc.MustMarshal(&aggregatedKeyShare)
 	store.Set(types.AggregatedKeyShareKey(
 		aggregatedKeyShare.Height,
@@ -23,7 +27,8 @@ func (k Keeper) GetAggregatedKeyShare(
 	height uint64,
 
 ) (val types.AggregatedKeyShare, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
 
 	b := store.Get(types.AggregatedKeyShareKey(
 		height,
@@ -42,7 +47,9 @@ func (k Keeper) RemoveAggregatedKeyShare(
 	height uint64,
 
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
+
 	store.Delete(types.AggregatedKeyShareKey(
 		height,
 	))
@@ -50,8 +57,9 @@ func (k Keeper) RemoveAggregatedKeyShare(
 
 // GetAllAggregatedKeyShare returns all aggregatedKeyShare
 func (k Keeper) GetAllAggregatedKeyShare(ctx sdk.Context) (list []types.AggregatedKeyShare) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 
@@ -66,7 +74,8 @@ func (k Keeper) GetAllAggregatedKeyShare(ctx sdk.Context) (list []types.Aggregat
 
 // SetAggregatedKeyShareLength set a specific length to aggregatedKeyShareLength
 func (k Keeper) SetAggregatedKeyShareLength(ctx sdk.Context, length uint64) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedKeyShareLengthPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AggregatedKeyShareLengthPrefix))
 	lengthBytes := make([]byte, 8)
 	binary.BigEndian.PutUint64(lengthBytes, length)
 	store.Set([]byte(types.AggregatedKeyShareLengthPrefix), lengthBytes)
@@ -76,7 +85,8 @@ func (k Keeper) SetAggregatedKeyShareLength(ctx sdk.Context, length uint64) {
 func (k Keeper) GetAggregatedKeyShareLength(
 	ctx sdk.Context,
 ) uint64 {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AggregatedKeyShareLengthPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AggregatedKeyShareLengthPrefix))
 	b := store.Get([]byte(types.AggregatedKeyShareLengthPrefix))
 	if len(b) == 0 {
 		return 0

@@ -2,13 +2,17 @@ package keeper
 
 import (
 	"cosmossdk.io/store/prefix"
+	storetypes "cosmossdk.io/store/types"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // SetGeneralKeyShare set a specific generalKeyShare in the store from its index
 func (k Keeper) SetGeneralKeyShare(ctx sdk.Context, generalKeyShare types.GeneralKeyShare) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
+
 	b := k.cdc.MustMarshal(&generalKeyShare)
 	store.Set(types.GeneralKeyShareKey(
 		generalKeyShare.Validator,
@@ -24,7 +28,8 @@ func (k Keeper) GetGeneralKeyShare(
 	idType string,
 	idValue string,
 ) (val types.GeneralKeyShare, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
 
 	b := store.Get(types.GeneralKeyShareKey(
 		validator,
@@ -47,7 +52,8 @@ func (k Keeper) RemoveGeneralKeyShare(
 	idValue string,
 
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
 	store.Delete(types.GeneralKeyShareKey(
 		validator,
 		idType,
@@ -57,8 +63,9 @@ func (k Keeper) RemoveGeneralKeyShare(
 
 // GetAllGeneralKeyShare returns all generalKeyShare
 func (k Keeper) GetAllGeneralKeyShare(ctx sdk.Context) (list []types.GeneralKeyShare) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 

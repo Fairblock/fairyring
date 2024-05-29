@@ -3,23 +3,23 @@ package keyshare
 import (
 	"math/rand"
 
-	"github.com/Fairblock/fairyring/testutil/sample"
-	keysharesimulation "github.com/Fairblock/fairyring/x/keyshare/simulation"
-	"github.com/Fairblock/fairyring/x/keyshare/types"
-
-	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
+
+	"github.com/Fairblock/fairyring/testutil/sample"
+	keysharesimulation "github.com/Fairblock/fairyring/x/keyshare/simulation"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 )
 
 // avoid unused import issue
 var (
-	_ = sample.AccAddress
 	_ = keysharesimulation.FindAccount
+	_ = rand.Rand{}
+	_ = sample.AccAddress
+	_ = sdk.AccAddress{}
 	_ = simulation.MsgEntryKind
-	_ = baseapp.Paramspace
 )
 
 const (
@@ -32,26 +32,21 @@ const (
 	opWeightMsgCreateLatestPubKey          = "op_weight_msg_latest_pub_key"
 	defaultWeightMsgCreateLatestPubKey int = 100
 
-	opWeightMsgCreateAuthorizedAddress = "op_weight_msg_authorized_address"
-	// TODO: Determine the simulation weight value
+	opWeightMsgCreateAuthorizedAddress          = "op_weight_msg_authorized_address"
 	defaultWeightMsgCreateAuthorizedAddress int = 100
 
-	opWeightMsgUpdateAuthorizedAddress = "op_weight_msg_authorized_address"
-	// TODO: Determine the simulation weight value
+	opWeightMsgUpdateAuthorizedAddress          = "op_weight_msg_authorized_address"
 	defaultWeightMsgUpdateAuthorizedAddress int = 100
 
-	opWeightMsgDeleteAuthorizedAddress = "op_weight_msg_authorized_address"
-	// TODO: Determine the simulation weight value
+	opWeightMsgDeleteAuthorizedAddress          = "op_weight_msg_authorized_address"
 	defaultWeightMsgDeleteAuthorizedAddress int = 100
 
-	opWeightMsgCreateGeneralKeyShare = "op_weight_msg_general_key_share"
-	// TODO: Determine the simulation weight value
+	opWeightMsgCreateGeneralKeyShare          = "op_weight_msg_general_key_share"
 	defaultWeightMsgCreateGeneralKeyShare int = 100
-
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
-// GenerateGenesisState creates a randomized GenState of the module
+// GenerateGenesisState creates a randomized GenState of the module.
 func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	accs := make([]string, len(simState.Accounts))
 	for i, acc := range simState.Accounts {
@@ -86,20 +81,15 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&keyshareGenesis)
 }
 
-// ProposalContents doesn't return any content functions for governance proposals
-func (AppModule) ProposalContents(_ module.SimulationState) []simtypes.WeightedProposalContent {
-	return nil
-}
-
-// RegisterStoreDecoder registers a decoder
-func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
+// RegisterStoreDecoder registers a decoder.
+func (am AppModule) RegisterStoreDecoder(_ simtypes.StoreDecoderRegistry) {}
 
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 
 	var weightMsgRegisterValidator int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRegisterValidator, &weightMsgRegisterValidator, nil,
+	simState.AppParams.GetOrGenerate(opWeightMsgRegisterValidator, &weightMsgRegisterValidator, nil,
 		func(_ *rand.Rand) {
 			weightMsgRegisterValidator = defaultWeightMsgRegisterValidator
 		},
@@ -110,7 +100,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	))
 
 	var weightMsgSendKeyshare int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgSendKeyshare, &weightMsgSendKeyshare, nil,
+	simState.AppParams.GetOrGenerate(opWeightMsgSendKeyshare, &weightMsgSendKeyshare, nil,
 		func(_ *rand.Rand) {
 			weightMsgSendKeyshare = defaultWeightMsgSendKeyshare
 		},
@@ -121,7 +111,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	))
 
 	var weightMsgCreateLatestPubKey int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateLatestPubKey, &weightMsgCreateLatestPubKey, nil,
+	simState.AppParams.GetOrGenerate(opWeightMsgCreateLatestPubKey, &weightMsgCreateLatestPubKey, nil,
 		func(_ *rand.Rand) {
 			weightMsgCreateLatestPubKey = defaultWeightMsgCreateLatestPubKey
 		},
@@ -132,7 +122,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	))
 
 	var weightMsgCreateAuthorizedAddress int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateAuthorizedAddress, &weightMsgCreateAuthorizedAddress, nil,
+	simState.AppParams.GetOrGenerate(opWeightMsgCreateAuthorizedAddress, &weightMsgCreateAuthorizedAddress, nil,
 		func(_ *rand.Rand) {
 			weightMsgCreateAuthorizedAddress = defaultWeightMsgCreateAuthorizedAddress
 		},
@@ -143,7 +133,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	))
 
 	var weightMsgUpdateAuthorizedAddress int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateAuthorizedAddress, &weightMsgUpdateAuthorizedAddress, nil,
+	simState.AppParams.GetOrGenerate(opWeightMsgUpdateAuthorizedAddress, &weightMsgUpdateAuthorizedAddress, nil,
 		func(_ *rand.Rand) {
 			weightMsgUpdateAuthorizedAddress = defaultWeightMsgUpdateAuthorizedAddress
 		},
@@ -154,7 +144,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	))
 
 	var weightMsgDeleteAuthorizedAddress int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteAuthorizedAddress, &weightMsgDeleteAuthorizedAddress, nil,
+	simState.AppParams.GetOrGenerate(opWeightMsgDeleteAuthorizedAddress, &weightMsgDeleteAuthorizedAddress, nil,
 		func(_ *rand.Rand) {
 			weightMsgDeleteAuthorizedAddress = defaultWeightMsgDeleteAuthorizedAddress
 		},
@@ -165,7 +155,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	))
 
 	var weightMsgCreateGeneralKeyShare int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateGeneralKeyShare, &weightMsgCreateGeneralKeyShare, nil,
+	simState.AppParams.GetOrGenerate(opWeightMsgCreateGeneralKeyShare, &weightMsgCreateGeneralKeyShare, nil,
 		func(_ *rand.Rand) {
 			weightMsgCreateGeneralKeyShare = defaultWeightMsgCreateGeneralKeyShare
 		},
@@ -174,8 +164,14 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		weightMsgCreateGeneralKeyShare,
 		keysharesimulation.SimulateMsgCreateGeneralKeyShare(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
-
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
+}
+
+// ProposalMsgs returns msgs used for governance proposals for simulations.
+func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.WeightedProposalMsg {
+	return []simtypes.WeightedProposalMsg{
+		// this line is used by starport scaffolding # simapp/module/OpMsg
+	}
 }

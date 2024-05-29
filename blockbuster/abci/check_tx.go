@@ -2,12 +2,13 @@ package abci
 
 import (
 	"context"
+	storetypes "cosmossdk.io/store/types"
 	"fmt"
 
 	"github.com/Fairblock/fairyring/x/pep/types"
 
+	log "cosmossdk.io/log"
 	cometabci "github.com/cometbft/cometbft/abci/types"
-	log "github.com/cometbft/cometbft/libs/log"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -41,7 +42,9 @@ type (
 
 	// CheckTx is baseapp's CheckTx method that checks the validity of a
 	// transaction.
-	CheckTx func(cometabci.RequestCheckTx) cometabci.ResponseCheckTx
+	CheckTx func(req *cometabci.RequestCheckTx) (*cometabci.ResponseCheckTx, error)
+	// CheckTx func(req *abci.RequestCheckTx) (*abci.ResponseCheckTx, error)
+	// CheckTx func(cometabci.RequestCheckTx) cometabci.ResponseCheckTx
 
 	// KeyShareLane is the interface that defines all of the dependencies that
 	// are required to interact with the top of block lane.
@@ -60,11 +63,11 @@ type (
 	// as well as retrieve the latest committed state.
 	BaseApp interface {
 		// CommitMultiStore is utilized to retrieve the latest committed state.
-		CommitMultiStore() sdk.CommitMultiStore
+		CommitMultiStore() storetypes.CommitMultiStore
 
 		// CheckTx is baseapp's CheckTx method that checks the validity of a
 		// transaction.
-		CheckTx(cometabci.RequestCheckTx) cometabci.ResponseCheckTx
+		CheckTx(*cometabci.RequestCheckTx) (*cometabci.ResponseCheckTx, error)
 
 		// Logger is utilized to log errors.
 		Logger() log.Logger
@@ -73,7 +76,7 @@ type (
 		LastBlockHeight() int64
 
 		// GetConsensusParams is utilized to retrieve the consensus params.
-		GetConsensusParams(ctx sdk.Context) *tmproto.ConsensusParams
+		GetConsensusParams(ctx sdk.Context) tmproto.ConsensusParams
 	}
 )
 
@@ -99,22 +102,23 @@ func NewCheckTxHandler(
 // are executed normally. No state changes are applied to the state
 // during this process.
 func (handler *CheckTxHandler) CheckTx() CheckTx {
-	return func(req cometabci.RequestCheckTx) (resp cometabci.ResponseCheckTx) {
+	return func(req *cometabci.RequestCheckTx) (res *cometabci.ResponseCheckTx, err error) {
 		defer func() {
-			if err := recover(); err != nil {
-				resp = sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("panic in check tx handler: %s", err), 0, 0, nil, false)
+			if rec := recover(); rec != nil {
+				res = sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("panic in check tx handler: %s", rec), 0, 0, nil, false)
+				err = fmt.Errorf("failed to check tx: %v", rec)
 			}
 		}()
 
 		tx, err := handler.txDecoder(req.Tx)
 		if err != nil {
-			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("failed to decode tx: %w", err), 0, 0, nil, false)
+			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("failed to decode tx: %w", err), 0, 0, nil, false), err
 		}
 
 		// Attempt to get the keyshare info of the transaction.
 		ksInfo, err := handler.keyShareLane.GetKeyShareInfo(tx)
 		if err != nil {
-			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("failed to get keyshare info: %w", err), 0, 0, nil, false)
+			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("failed to get keyshare info: %w", err), 0, 0, nil, false), err
 		}
 
 		// If this is not a keyshare transaction, we just execute it normally.
@@ -130,19 +134,19 @@ func (handler *CheckTxHandler) CheckTx() CheckTx {
 		// Verify the keyshare transaction.
 		gasInfo, err := handler.ValidateKeyshareTx(ctx, tx, ksInfo)
 		if err != nil {
-			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("invalid keyshare tx: %w", err), gasInfo.GasWanted, gasInfo.GasUsed, nil, false)
+			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("invalid keyshare tx: %w", err), gasInfo.GasWanted, gasInfo.GasUsed, nil, false), err
 		}
 
 		// If the keyshare transaction is valid, we know we can insert it into the mempool for consideration in the next block.
 		if err := handler.keyShareLane.Insert(ctx, tx); err != nil {
-			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("invalid keyshare tx; failed to insert keyshare transaction into mempool: %w", err), gasInfo.GasWanted, gasInfo.GasUsed, nil, false)
+			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("invalid keyshare tx; failed to insert keyshare transaction into mempool: %w", err), gasInfo.GasWanted, gasInfo.GasUsed, nil, false), err
 		}
 
-		return cometabci.ResponseCheckTx{
+		return &cometabci.ResponseCheckTx{
 			Code:      cometabci.CodeTypeOK,
 			GasWanted: int64(gasInfo.GasWanted),
 			GasUsed:   int64(gasInfo.GasUsed),
-		}
+		}, nil
 	}
 }
 
@@ -169,7 +173,7 @@ func (handler *CheckTxHandler) ValidateKeyshareTx(ctx sdk.Context, ksTx sdk.Tx, 
 
 // GetContextForTx is returns the latest committed state and sets the context given
 // the checkTx request.
-func (handler *CheckTxHandler) GetContextForKeyshareTx(req cometabci.RequestCheckTx) sdk.Context {
+func (handler *CheckTxHandler) GetContextForKeyshareTx(req *cometabci.RequestCheckTx) sdk.Context {
 	// Retrieve the commit multi-store which is used to retrieve the latest committed state.
 	ms := handler.baseApp.CommitMultiStore().CacheMultiStore()
 

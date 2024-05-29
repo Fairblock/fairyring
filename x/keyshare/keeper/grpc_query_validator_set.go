@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 
@@ -21,8 +22,8 @@ func (k Keeper) ValidatorSetAll(c context.Context, req *types.QueryAllValidatorS
 	var validatorSets []types.ValidatorSet
 	ctx := sdk.UnwrapSDKContext(c)
 
-	store := ctx.KVStore(k.storeKey)
-	validatorSetStore := prefix.NewStore(store, types.KeyPrefix(types.ValidatorSetKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	validatorSetStore := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ValidatorSetKeyPrefix))
 
 	pageRes, err := query.Paginate(validatorSetStore, req.Pagination, func(key []byte, value []byte) error {
 		var validatorSet types.ValidatorSet

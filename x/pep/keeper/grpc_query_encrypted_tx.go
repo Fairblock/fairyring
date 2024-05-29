@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"github.com/Fairblock/fairyring/x/pep/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
 	"cosmossdk.io/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -20,7 +21,8 @@ func (k Keeper) EncryptedTxAll(c context.Context, req *types.QueryAllEncryptedTx
 	var encryptedTxs []types.EncryptedTxArray
 	ctx := sdk.UnwrapSDKContext(c)
 
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 	encryptedTxStore := prefix.NewStore(store, types.KeyPrefix(types.EncryptedTxKeyPrefix))
 
 	pageRes, err := query.Paginate(encryptedTxStore, req.Pagination, func(key []byte, value []byte) error {

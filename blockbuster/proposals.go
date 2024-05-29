@@ -1,13 +1,13 @@
 package blockbuster
 
 import (
+	sdkmath "cosmossdk.io/math"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 
+	"cosmossdk.io/log"
 	"github.com/Fairblock/fairyring/blockbuster/utils"
-	"github.com/cometbft/cometbft/libs/log"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 var _ BlockProposal = (*Proposal)(nil)
@@ -20,7 +20,7 @@ type (
 		Logger() log.Logger
 
 		// GetMaxBlockSpace returns the maximum block space for the lane as a relative percentage.
-		GetMaxBlockSpace() sdk.Dec
+		GetMaxBlockSpace() sdkmath.LegacyDec
 
 		// Name returns the name of the lane.
 		Name() string

@@ -7,7 +7,6 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
-	authzcodec "github.com/cosmos/cosmos-sdk/x/authz/codec"
 	"github.com/cosmos/gogoproto/jsonpb"
 	proto "github.com/cosmos/gogoproto/proto"
 )
@@ -50,7 +49,6 @@ var (
 func init() {
 	RegisterCodec(Amino)
 	sdk.RegisterLegacyAminoCodec(Amino)
-	RegisterCodec(authzcodec.Amino)
 }
 
 // mustProtoMarshalJSON provides an auxiliary function to return Proto3 JSON encoded

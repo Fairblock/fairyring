@@ -1,25 +1,25 @@
 package pep
 
 import (
+	pepsimulation "github.com/Fairblock/fairyring/x/pep/simulation"
 	"math/rand"
 
-	"github.com/Fairblock/fairyring/testutil/sample"
-	pepsimulation "github.com/Fairblock/fairyring/x/pep/simulation"
-	"github.com/Fairblock/fairyring/x/pep/types"
-
-	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
+
+	"github.com/Fairblock/fairyring/testutil/sample"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 )
 
 // avoid unused import issue
 var (
-	_ = sample.AccAddress
 	_ = pepsimulation.FindAccount
+	_ = rand.Rand{}
+	_ = sample.AccAddress
+	_ = sdk.AccAddress{}
 	_ = simulation.MsgEntryKind
-	_ = baseapp.Paramspace
 )
 
 const (
@@ -29,18 +29,15 @@ const (
 	opWeightMsgCreateAggregatedKeyShare          = "op_weight_msg_aggregated_key_share"
 	defaultWeightMsgCreateAggregatedKeyShare int = 100
 
-	opWeightMsgRequestGeneralKeyshare = "op_weight_msg_request_general_keyshare"
-	// TODO: Determine the simulation weight value
+	opWeightMsgRequestGeneralKeyshare          = "op_weight_msg_request_general_keyshare"
 	defaultWeightMsgRequestGeneralKeyshare int = 100
 
-	opWeightMsgGetGeneralKeyshare = "op_weight_msg_get_general_keyshare"
-	// TODO: Determine the simulation weight value
+	opWeightMsgGetGeneralKeyshare          = "op_weight_msg_get_general_keyshare"
 	defaultWeightMsgGetGeneralKeyshare int = 100
-
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
-// GenerateGenesisState creates a randomized GenState of the module
+// GenerateGenesisState creates a randomized GenState of the module.
 func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	accs := make([]string, len(simState.Accounts))
 	for i, acc := range simState.Accounts {
@@ -50,12 +47,12 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 		Params: types.DefaultParams(),
 		AggregatedKeyShareList: []types.AggregatedKeyShare{
 			{
-				Creator: sample.AccAddress(),
-				Height:  0,
+				Data:   "0x1234",
+				Height: 0,
 			},
 			{
-				Creator: sample.AccAddress(),
-				Height:  1,
+				Data:   "0x1234",
+				Height: 1,
 			},
 		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
@@ -63,20 +60,15 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&pepGenesis)
 }
 
-// ProposalContents doesn't return any content functions for governance proposals
-func (AppModule) ProposalContents(_ module.SimulationState) []simtypes.WeightedProposalContent {
-	return nil
-}
-
-// RegisterStoreDecoder registers a decoder
-func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
+// RegisterStoreDecoder registers a decoder.
+func (am AppModule) RegisterStoreDecoder(_ simtypes.StoreDecoderRegistry) {}
 
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 
 	var weightMsgSubmitEncryptedTx int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgSubmitEncryptedTx, &weightMsgSubmitEncryptedTx, nil,
+	simState.AppParams.GetOrGenerate(opWeightMsgSubmitEncryptedTx, &weightMsgSubmitEncryptedTx, nil,
 		func(_ *rand.Rand) {
 			weightMsgSubmitEncryptedTx = defaultWeightMsgSubmitEncryptedTx
 		},
@@ -87,7 +79,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	))
 
 	var weightMsgCreateAggregatedKeyShare int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateAggregatedKeyShare, &weightMsgCreateAggregatedKeyShare, nil,
+	simState.AppParams.GetOrGenerate(opWeightMsgCreateAggregatedKeyShare, &weightMsgCreateAggregatedKeyShare, nil,
 		func(_ *rand.Rand) {
 			weightMsgCreateAggregatedKeyShare = defaultWeightMsgCreateAggregatedKeyShare
 		},
@@ -98,7 +90,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	))
 
 	var weightMsgRequestGeneralKeyshare int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRequestGeneralKeyshare, &weightMsgRequestGeneralKeyshare, nil,
+	simState.AppParams.GetOrGenerate(opWeightMsgRequestGeneralKeyshare, &weightMsgRequestGeneralKeyshare, nil,
 		func(_ *rand.Rand) {
 			weightMsgRequestGeneralKeyshare = defaultWeightMsgRequestGeneralKeyshare
 		},
@@ -109,7 +101,7 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	))
 
 	var weightMsgGetGeneralKeyshare int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgGetGeneralKeyshare, &weightMsgGetGeneralKeyshare, nil,
+	simState.AppParams.GetOrGenerate(opWeightMsgGetGeneralKeyshare, &weightMsgGetGeneralKeyshare, nil,
 		func(_ *rand.Rand) {
 			weightMsgGetGeneralKeyshare = defaultWeightMsgGetGeneralKeyshare
 		},
@@ -118,8 +110,14 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		weightMsgGetGeneralKeyshare,
 		pepsimulation.SimulateMsgGetGeneralKeyshare(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
-
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
+}
+
+// ProposalMsgs returns msgs used for governance proposals for simulations.
+func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.WeightedProposalMsg {
+	return []simtypes.WeightedProposalMsg{
+		// this line is used by starport scaffolding # simapp/module/OpMsg
+	}
 }

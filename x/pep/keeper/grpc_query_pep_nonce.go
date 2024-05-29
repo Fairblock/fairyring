@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
 	"github.com/Fairblock/fairyring/x/pep/types"
 
@@ -21,8 +22,8 @@ func (k Keeper) PepNonceAll(c context.Context, req *types.QueryAllPepNonceReques
 	var pepNonces []types.PepNonce
 	ctx := sdk.UnwrapSDKContext(c)
 
-	store := ctx.KVStore(k.storeKey)
-	pepNonceStore := prefix.NewStore(store, types.KeyPrefix(types.PepNonceKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	pepNonceStore := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PepNonceKeyPrefix))
 
 	pageRes, err := query.Paginate(pepNonceStore, req.Pagination, func(key []byte, value []byte) error {
 		var pepNonce types.PepNonce

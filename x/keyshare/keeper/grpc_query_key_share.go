@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 
@@ -21,7 +22,8 @@ func (k Keeper) KeyShareAll(c context.Context, req *types.QueryAllKeyShareReques
 	var keyShares []types.KeyShare
 	ctx := sdk.UnwrapSDKContext(c)
 
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 	keyShareStore := prefix.NewStore(store, types.KeyPrefix(types.KeyShareKeyPrefix))
 
 	pageRes, err := query.Paginate(keyShareStore, req.Pagination, func(key []byte, value []byte) error {

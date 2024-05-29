@@ -3,56 +3,60 @@ package pep
 import (
 	"bytes"
 	"context"
+	cosmosmath "cosmossdk.io/math"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
-
-	cosmosmath "cosmossdk.io/math"
-
-	"github.com/cosmos/cosmos-sdk/telemetry"
-
 	enc "github.com/FairBlock/DistributedIBE/encryption"
-
-	"math"
-	"strconv"
-	"strings"
-
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
+	"github.com/Fairblock/fairyring/x/pep/client/cli"
 	"github.com/cosmos/cosmos-sdk/baseapp"
+	"github.com/cosmos/cosmos-sdk/telemetry"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"
 	"github.com/drand/kyber/pairing"
-
-	// this line is used by starport scaffolding # 1
-
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
+	"google.golang.org/protobuf/types/known/anypb"
+	"math"
+	"strconv"
+	"strings"
 
-	abci "github.com/cometbft/cometbft/abci/types"
-
-	commontypes "github.com/Fairblock/fairyring/x/common/types"
-	"github.com/Fairblock/fairyring/x/pep/client/cli"
-	"github.com/Fairblock/fairyring/x/pep/keeper"
-	"github.com/Fairblock/fairyring/x/pep/types"
+	"cosmossdk.io/core/appmodule"
+	txsigning "cosmossdk.io/x/tx/signing"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	// this line is used by starport scaffolding # 1
+
+	"github.com/Fairblock/fairyring/x/pep/keeper"
+	"github.com/Fairblock/fairyring/x/pep/types"
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 )
 
 var (
-	_ module.AppModule      = AppModule{}
-	_ module.AppModuleBasic = AppModuleBasic{}
+	_ module.AppModuleBasic      = (*AppModule)(nil)
+	_ module.AppModuleSimulation = (*AppModule)(nil)
+	_ module.HasGenesis          = (*AppModule)(nil)
+	_ module.HasInvariants       = (*AppModule)(nil)
+	_ module.HasConsensusVersion = (*AppModule)(nil)
+
+	_ appmodule.AppModule       = (*AppModule)(nil)
+	_ appmodule.HasBeginBlocker = (*AppModule)(nil)
+	_ appmodule.HasEndBlocker   = (*AppModule)(nil)
 )
 
 // ----------------------------------------------------------------------------
 // AppModuleBasic
 // ----------------------------------------------------------------------------
 
-// AppModuleBasic implements the AppModuleBasic interface that defines the independent methods a Cosmos SDK module needs to implement.
+// AppModuleBasic implements the AppModuleBasic interface that defines the
+// independent methods a Cosmos SDK module needs to implement.
 type AppModuleBasic struct {
 	cdc     codec.BinaryCodec
 	cdcJson codec.JSONCodec
@@ -96,27 +100,29 @@ func convertGenEncTxToDecryptionTx(tx types.GeneralEncryptedTx) DecryptionTx {
 //	return AppModuleBasic{cdc: cdc}
 //}
 
-// Name returns the name of the module as a string
+// Name returns the name of the module as a string.
 func (AppModuleBasic) Name() string {
 	return types.ModuleName
 }
 
-// RegisterLegacyAminoCodec registers the amino codec for the module, which is used to marshal and unmarshal structs to/from []byte in order to persist them in the module's KVStore
+// RegisterLegacyAminoCodec registers the amino codec for the module, which is used
+// to marshal and unmarshal structs to/from []byte in order to persist them in the module's KVStore.
 func (AppModuleBasic) RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
 	types.RegisterCodec(cdc)
 }
 
-// RegisterInterfaces registers a module's interface types and their concrete implementations as proto.Message
+// RegisterInterfaces registers a module's interface types and their concrete implementations as proto.Message.
 func (a AppModuleBasic) RegisterInterfaces(reg cdctypes.InterfaceRegistry) {
 	types.RegisterInterfaces(reg)
 }
 
-// DefaultGenesis returns a default GenesisState for the module, marshalled to json.RawMessage. The default GenesisState need to be defined by the module developer and is primarily used for testing
+// DefaultGenesis returns a default GenesisState for the module, marshalled to json.RawMessage.
+// The default GenesisState need to be defined by the module developer and is primarily used for testing.
 func (AppModuleBasic) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
 	return cdc.MustMarshalJSON(types.DefaultGenesis())
 }
 
-// ValidateGenesis used to validate the GenesisState, given in its json.RawMessage form
+// ValidateGenesis used to validate the GenesisState, given in its json.RawMessage form.
 func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncodingConfig, bz json.RawMessage) error {
 	var genState types.GenesisState
 	if err := cdc.UnmarshalJSON(bz, &genState); err != nil {
@@ -125,19 +131,17 @@ func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncod
 	return genState.Validate()
 }
 
-// RegisterGRPCGatewayRoutes registers the gRPC Gateway routes for the module
+// RegisterGRPCGatewayRoutes registers the gRPC Gateway routes for the module.
 func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *runtime.ServeMux) {
-	_ = types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientCtx))
+	if err := types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientCtx)); err != nil {
+		panic(err)
+	}
 }
 
-// GetTxCmd returns the root Tx command for the module. The subcommands of this root command are used by end-users to generate new transactions containing messages defined in the module
+// GetTxCmd returns the root Tx command for the module.
+// These commands enrich the AutoCLI tx commands.
 func (a AppModuleBasic) GetTxCmd() *cobra.Command {
 	return cli.GetTxCmd()
-}
-
-// GetQueryCmd returns the root query command for the module. The subcommands of this root command are used by end-users to generate new queries to the subset of the state defined by the module
-func (AppModuleBasic) GetQueryCmd() *cobra.Command {
-	return cli.GetQueryCmd(types.StoreKey)
 }
 
 // ----------------------------------------------------------------------------
@@ -187,14 +191,12 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 func (am AppModule) RegisterInvariants(_ sdk.InvariantRegistry) {}
 
 // InitGenesis performs the module's genesis initialization. It returns no validator updates.
-func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, gs json.RawMessage) []abci.ValidatorUpdate {
+func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, gs json.RawMessage) {
 	var genState types.GenesisState
 	// Initialize global index to index in genesis state
 	cdc.MustUnmarshalJSON(gs, &genState)
 
 	InitGenesis(ctx, am.keeper, genState)
-
-	return []abci.ValidatorUpdate{}
 }
 
 // ExportGenesis returns the module's exported genesis state as raw JSON bytes.
@@ -203,7 +205,9 @@ func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.Raw
 	return cdc.MustMarshalJSON(genState)
 }
 
-// ConsensusVersion is a sequence number for state-breaking change of the module. It should be incremented on each consensus-breaking change introduced by the module. To avoid wrong/empty versions, the initial version should be set to 1
+// ConsensusVersion is a sequence number for state-breaking change of the module.
+// It should be incremented on each consensus-breaking change introduced by the module.
+// To avoid wrong/empty versions, the initial version should be set to 1.
 func (AppModule) ConsensusVersion() uint64 { return 1 }
 
 func (am AppModule) handleGasConsumption(ctx sdk.Context, recipient sdk.AccAddress, gasUsed cosmosmath.Int, gasCharged *sdk.Coin) {
@@ -455,22 +459,32 @@ func (am AppModule) decryptAndExecuteTx(
 		})
 	}
 
-	verifiableTx := wrappedTx.GetTx().(authsigning.SigVerifiableTx)
+	verifiableTx := wrappedTx.GetTx().(authsigning.V2AdaptableTx)
 
-	signingData := authsigning.SignerData{
+	anyPk, err := codectypes.NewAnyWithValue(sigs[0].PubKey)
+	if err != nil {
+		am.processFailedEncryptedTx(ctx, eachTx, "Unable to parse signature public key to anypb.Any", startConsumedGas)
+		return err
+	}
+
+	signingData := txsigning.SignerData{
 		Address:       creatorAddr.String(),
 		ChainID:       ctx.ChainID(),
 		AccountNumber: creatorAccount.GetAccountNumber(),
 		Sequence:      sigs[0].Sequence,
-		PubKey:        creatorAccount.GetPubKey(),
+		PubKey: &anypb.Any{
+			TypeUrl: anyPk.TypeUrl,
+			Value:   anyPk.Value,
+		},
 	}
 
 	err = authsigning.VerifySignature(
+		ctx,
 		creatorAccount.GetPubKey(),
 		signingData,
 		sigs[0].Data,
 		am.txConfig.SignModeHandler(),
-		verifiableTx,
+		verifiableTx.GetSigningTxData(),
 	)
 
 	if err != nil {
@@ -590,8 +604,10 @@ func (am AppModule) decryptAndExecuteTx(
 	return nil
 }
 
-// BeginBlock contains the logic that is automatically triggered at the beginning of each block
-func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
+// BeginBlock contains the logic that is automatically triggered at the beginning of each block.
+// The begin block implementation is optional.
+func (am AppModule) BeginBlock(cctx context.Context) error {
+	ctx := sdk.UnwrapSDKContext(cctx)
 	strLastExecutedHeight := am.keeper.GetLastExecutedHeight(ctx)
 	lastExecutedHeight, err := strconv.ParseUint(strLastExecutedHeight, 10, 64)
 
@@ -614,12 +630,12 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	activePubkey, found := am.keeper.GetActivePubKey(ctx)
 	if !found {
 		am.keeper.Logger(ctx).Error("Active public key does not exists")
-		return
+		return nil
 	}
 
 	if len(activePubkey.Creator) == 0 && len(activePubkey.PublicKey) == 0 {
 		am.keeper.Logger(ctx).Error("Active public key does not exists")
-		return
+		return nil
 	}
 
 	suite := bls.NewBLS12381Suite()
@@ -627,7 +643,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	publicKeyPoint, err := am.getPubKeyPoint(ctx, activePubkey, suite)
 	if err != nil {
 		am.keeper.Logger(ctx).Error("Unabe to get Pubkey Point with suite")
-		return
+		return nil
 	}
 
 	// loop over all encrypted Txs from the last executed height to the current height
@@ -711,10 +727,13 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 		am.keeper.Logger(ctx).Info("executed txs for entry with req-id: ", entry.RequestId)
 		am.keeper.RemoveExecutionQueueEntry(ctx, entry.RequestId)
 	}
+	return nil
 }
 
-// EndBlock contains the logic that is automatically triggered at the end of each block
-func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+// EndBlock contains the logic that is automatically triggered at the end of each block.
+// The end block implementation is optional.
+func (am AppModule) EndBlock(cctx context.Context) error {
+	ctx := sdk.UnwrapSDKContext(cctx)
 	params := am.keeper.GetParams(ctx)
 	if !params.IsSourceChain {
 		err := am.keeper.QueryFairyringCurrentKeys(ctx)
@@ -727,7 +746,7 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 		height, err := strconv.ParseUint(strHeight, 10, 64)
 		if err != nil {
 			am.keeper.Logger(ctx).Error("Latest height does not exists in EndBlock")
-			return []abci.ValidatorUpdate{}
+			return nil
 		}
 
 		ak, found := am.keeper.GetActivePubKey(ctx)
@@ -735,7 +754,7 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 			if ak.Expiry <= height {
 				am.keeper.DeleteActivePubKey(ctx)
 			} else {
-				return []abci.ValidatorUpdate{}
+				return nil
 			}
 		}
 
@@ -749,6 +768,11 @@ func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.Val
 			am.keeper.DeleteQueuedPubKey(ctx)
 		}
 	}
-
-	return []abci.ValidatorUpdate{}
+	return nil
 }
+
+// IsOnePerModuleType implements the depinject.OnePerModuleType interface.
+func (am AppModule) IsOnePerModuleType() {}
+
+// IsAppModule implements the appmodule.AppModule interface.
+func (am AppModule) IsAppModule() {}

@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"cosmossdk.io/math"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -42,13 +43,13 @@ func (k Keeper) MinimumBonded(ctx sdk.Context) (res uint64) {
 }
 
 // SlashFractionNoKeyshare returns the SlashFractionNoKeyshare param
-func (k Keeper) SlashFractionNoKeyshare(ctx sdk.Context) (res sdk.Dec) {
+func (k Keeper) SlashFractionNoKeyshare(ctx sdk.Context) (res math.LegacyDec) {
 	k.paramstore.Get(ctx, types.KeySlashFractionNoKeyShare, &res)
 	return
 }
 
 // SlashFractionWrongKeyshare returns the SlashFractionWrongKeyshare param
-func (k Keeper) SlashFractionWrongKeyshare(ctx sdk.Context) (res sdk.Dec) {
+func (k Keeper) SlashFractionWrongKeyshare(ctx sdk.Context) (res math.LegacyDec) {
 	k.paramstore.Get(ctx, types.KeySlashFractionWrongKeyShare, &res)
 	return
 }

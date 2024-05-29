@@ -1,21 +1,25 @@
 package keeper
 
 import (
+	"cosmossdk.io/store/prefix"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // SetActivePubKey set a specific public key to active in the store
 func (k Keeper) SetActivePubKey(ctx sdk.Context, activePubKey types.ActivePubKey) {
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 	b := k.cdc.MustMarshal(&activePubKey)
 	store.Set(types.KeyPrefix(types.ActivePubKeyPrefix), b)
 }
 
 // SetQueuedPubKey set a specific public key in the store
 func (k Keeper) SetQueuedPubKey(ctx sdk.Context, queuedPubKey types.QueuedPubKey) {
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 	b := k.cdc.MustMarshal(&queuedPubKey)
 	store.Set(types.KeyPrefix(types.QueuedPubKeyPrefix), b)
 }
@@ -24,7 +28,8 @@ func (k Keeper) SetQueuedPubKey(ctx sdk.Context, queuedPubKey types.QueuedPubKey
 func (k Keeper) GetActivePubKey(
 	ctx sdk.Context,
 ) (val types.ActivePubKey, found bool) {
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 
 	b := store.Get(types.KeyPrefix(types.ActivePubKeyPrefix))
 	if b == nil {
@@ -40,7 +45,8 @@ func (k Keeper) GetActivePubKey(
 func (k Keeper) GetQueuedPubKey(
 	ctx sdk.Context,
 ) (val types.QueuedPubKey, found bool) {
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 
 	b := store.Get(types.KeyPrefix(types.QueuedPubKeyPrefix))
 	if b == nil {
@@ -54,12 +60,14 @@ func (k Keeper) GetQueuedPubKey(
 
 // DeleteActivePubKey deletes the active public key in the store
 func (k Keeper) DeleteActivePubKey(ctx sdk.Context) {
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 	store.Delete(types.KeyPrefix(types.ActivePubKeyPrefix))
 }
 
 // DeleteQueuedPubKey deletes the queued public key in the store
 func (k Keeper) DeleteQueuedPubKey(ctx sdk.Context) {
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 	store.Delete(types.KeyPrefix(types.QueuedPubKeyPrefix))
 }

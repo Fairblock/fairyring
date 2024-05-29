@@ -1,6 +1,7 @@
 package utils
 
 import (
+	sdkmath "cosmossdk.io/math"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
@@ -51,7 +52,7 @@ func RemoveTxsFromLane(txs map[sdk.Tx]struct{}, mempool sdkmempool.Mempool) erro
 
 // GetMaxTxBytesForLane returns the maximum number of bytes that can be included in the proposal
 // for the given lane.
-func GetMaxTxBytesForLane(maxTxBytes, totalTxBytes int64, ratio sdk.Dec) int64 {
+func GetMaxTxBytesForLane(maxTxBytes, totalTxBytes int64, ratio sdkmath.LegacyDec) int64 {
 	// In the case where the ratio is zero, we return the max tx bytes remaining. Note, the only
 	// lane that should have a ratio of zero is the default lane. This means the default lane
 	// will have no limit on the number of transactions it can include in a block and is only

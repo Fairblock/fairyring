@@ -2,7 +2,7 @@
 package pep
 
 import (
-	common "github.com/Fairblock/fairyring/api/fairyring/common"
+	common "cosmossdk.io/api/fairyring/common"
 	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"

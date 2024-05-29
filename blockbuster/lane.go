@@ -1,9 +1,10 @@
 package blockbuster
 
 import (
+	sdkmath "cosmossdk.io/math"
 	"fmt"
 
-	"github.com/cometbft/cometbft/libs/log"
+	"cosmossdk.io/log"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkmempool "github.com/cosmos/cosmos-sdk/types/mempool"
 )
@@ -30,7 +31,7 @@ type (
 		// used by this lane. NOTE: If this is set to zero, then there is no limit
 		// on the number of transactions that can be included in the block for this
 		// lane (up to maxTxBytes as provided by the request). This is useful for the default lane.
-		MaxBlockSpace sdk.Dec
+		MaxBlockSpace sdkmath.LegacyDec
 
 		// IgnoreList defines the list of lanes to ignore when processing transactions. This
 		// is useful for when you want lanes to exist after the default lane. For example,
@@ -79,12 +80,12 @@ type (
 		Logger() log.Logger
 
 		// GetMaxBlockSpace returns the max block space for the lane as a relative percentage.
-		GetMaxBlockSpace() sdk.Dec
+		GetMaxBlockSpace() sdkmath.LegacyDec
 	}
 )
 
 // NewLaneConfig returns a new LaneConfig. This will be embedded in a lane.
-func NewBaseLaneConfig(logger log.Logger, txEncoder sdk.TxEncoder, txDecoder sdk.TxDecoder, anteHandler sdk.AnteHandler, maxBlockSpace sdk.Dec) BaseLaneConfig {
+func NewBaseLaneConfig(logger log.Logger, txEncoder sdk.TxEncoder, txDecoder sdk.TxDecoder, anteHandler sdk.AnteHandler, maxBlockSpace sdkmath.LegacyDec) BaseLaneConfig {
 	return BaseLaneConfig{
 		Logger:        logger,
 		TxEncoder:     txEncoder,
@@ -108,7 +109,7 @@ func (c *BaseLaneConfig) ValidateBasic() error {
 		return fmt.Errorf("tx decoder cannot be nil")
 	}
 
-	if c.MaxBlockSpace.IsNil() || c.MaxBlockSpace.IsNegative() || c.MaxBlockSpace.GT(sdk.OneDec()) {
+	if c.MaxBlockSpace.IsNil() || c.MaxBlockSpace.IsNegative() || c.MaxBlockSpace.GT(sdkmath.LegacyOneDec()) {
 		return fmt.Errorf("max block space must be set to a value between 0 and 1")
 	}
 

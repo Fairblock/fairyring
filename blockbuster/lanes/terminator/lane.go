@@ -2,11 +2,12 @@ package terminator
 
 import (
 	"context"
+	sdkmath "cosmossdk.io/math"
 	"fmt"
 
 	"github.com/Fairblock/fairyring/blockbuster"
 
-	"github.com/cometbft/cometbft/libs/log"
+	"cosmossdk.io/log"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkmempool "github.com/cosmos/cosmos-sdk/types/mempool"
 )
@@ -99,6 +100,6 @@ func (t Terminator) Logger() log.Logger {
 }
 
 // GetMaxBlockSpace is a no-op
-func (t Terminator) GetMaxBlockSpace() sdk.Dec {
-	return sdk.ZeroDec()
+func (t Terminator) GetMaxBlockSpace() sdkmath.LegacyDec {
+	return sdkmath.LegacyZeroDec()
 }

@@ -1,32 +1,34 @@
 package types
 
 import (
+	"context"
+	"cosmossdk.io/core/store"
+	sdkmath "cosmossdk.io/math"
+	"cosmossdk.io/store/prefix"
 	peptypes "github.com/Fairblock/fairyring/x/pep/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
 	sdkerrors "cosmossdk.io/errors"
-	"cosmossdk.io/math"
-	storetypes "cosmossdk.io/store/types"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/x/auth/types"
-	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
-	connTypes "github.com/cosmos/ibc-go/v7/modules/core/03-connection/types"
-	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
-	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
+	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
+	clienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types"
+	connTypes "github.com/cosmos/ibc-go/v8/modules/core/03-connection/types"
+	channeltypes "github.com/cosmos/ibc-go/v8/modules/core/04-channel/types"
+	host "github.com/cosmos/ibc-go/v8/modules/core/24-host"
 )
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)
 type AccountKeeper interface {
-	GetAccount(ctx sdk.Context, addr sdk.AccAddress) types.AccountI
+	GetAccount(ctx context.Context, addr sdk.AccAddress) sdk.AccountI
 	// Methods imported from account should be defined here
 }
 
 // BankKeeper defines the expected interface needed to retrieve account balances.
 type BankKeeper interface {
-	SpendableCoins(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins
+	SpendableCoins(ctx context.Context, addr sdk.AccAddress) sdk.Coins
 	// Methods imported from bank should be defined here
 }
 
@@ -62,9 +64,12 @@ type PepKeeper interface {
 
 // StakingKeeper defines the expected interface needed to retrieve the list of validators.
 type StakingKeeper interface {
-	GetAllValidators(ctx sdk.Context) []stakingtypes.Validator
-	GetValidator(ctx sdk.Context, addr sdk.ValAddress) (stakingtypes.Validator, bool)
-	Slash(sdk.Context, sdk.ConsAddress, int64, int64, sdk.Dec) math.Int
+	GetAllValidators(ctx context.Context) (validators []stakingtypes.Validator, err error)
+	GetValidator(ctx context.Context, addr sdk.ValAddress) (stakingtypes.Validator, error)
+}
+
+type SlashingKeeper interface {
+	Slash(ctx context.Context, consAddr sdk.ConsAddress, fraction sdkmath.LegacyDec, power int64, distributionHeight int64) error
 }
 
 type GovKeeper interface {
@@ -76,8 +81,8 @@ type GovKeeper interface {
 	SetSignalQueueEntry(ctx sdk.Context, val commontypes.GetAggrKeyshare)
 	RemoveSignalQueueEntry(ctx sdk.Context, reqID string)
 	GetAllSignalQueueEntry(ctx sdk.Context) (list []commontypes.GetAggrKeyshare)
-	GetProposal(ctx sdk.Context, proposalID uint64) (v1.Proposal, bool)
-	SetProposal(ctx sdk.Context, proposal v1.Proposal)
+	GetProposal(ctx context.Context, proposalID uint64) (v1.Proposal, bool)
+	SetProposal(ctx context.Context, proposal v1.Proposal) error
 }
 
 // ConnectionKeeper defines the expected interfaces needed to retrieve connection info
@@ -116,7 +121,7 @@ type ScopedKeeper interface {
 // IBCKeeper defines the IBC Keeper
 type IBCKeeper struct {
 	portKey       []byte
-	storeKey      storetypes.StoreKey
+	storeService  store.KVStoreService
 	ChannelKeeper ChannelKeeper
 	PortKeeper    PortKeeper
 	ScopedKeeper  ScopedKeeper
@@ -125,14 +130,14 @@ type IBCKeeper struct {
 // NewKeeper create an IBC Keeper
 func NewIBCKeeper(
 	portKey []byte,
-	storeKey storetypes.StoreKey,
+	storeService store.KVStoreService,
 	channelKeeper ChannelKeeper,
 	portKeeper PortKeeper,
 	scopedKeeper ScopedKeeper,
 ) *IBCKeeper {
 	return &IBCKeeper{
 		portKey:       portKey,
-		storeKey:      storeKey,
+		storeService:  storeService,
 		ChannelKeeper: channelKeeper,
 		PortKeeper:    portKeeper,
 		ScopedKeeper:  scopedKeeper,
@@ -164,14 +169,16 @@ func (k IBCKeeper) BindPort(ctx sdk.Context, portID string) error {
 
 // GetPort returns the portID for the module. Used in ExportGenesis
 func (k IBCKeeper) GetPort(ctx sdk.Context) string {
-	store := ctx.KVStore(k.storeKey)
-	return string(store.Get(k.portKey))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+	return string(store.Get(peptypes.PortKey))
 }
 
 // SetPort sets the portID for the module. Used in InitGenesis
 func (k IBCKeeper) SetPort(ctx sdk.Context, portID string) {
-	store := ctx.KVStore(k.storeKey)
-	store.Set(k.portKey, []byte(portID))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+	store.Set(peptypes.PortKey, []byte(portID))
 }
 
 // AuthenticateCapability wraps the scopedKeeper's AuthenticateCapability function

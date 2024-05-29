@@ -1,7 +1,9 @@
 package keeper
 
 import (
+	storetypes "cosmossdk.io/store/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
 	"cosmossdk.io/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -12,7 +14,8 @@ func (k Keeper) AppendEncryptedTx(
 	ctx sdk.Context,
 	encryptedTx types.EncryptedTx,
 ) uint64 {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedTxKeyPrefix))
 	var allTxsFromHeight types.EncryptedTxArray
 	b := store.Get(types.EncryptedTxAllFromHeightKey(
 		encryptedTx.TargetHeight,
@@ -39,7 +42,8 @@ func (k Keeper) SetEncryptedTx(
 	height uint64,
 	encryptedTxArr types.EncryptedTxArray,
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedTxKeyPrefix))
 
 	parsedEncryptedTxArr := k.cdc.MustMarshal(&encryptedTxArr)
 
@@ -85,7 +89,8 @@ func (k Keeper) GetEncryptedTx(
 	index uint64,
 
 ) (val types.EncryptedTx, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedTxKeyPrefix))
 
 	b := store.Get(types.EncryptedTxAllFromHeightKey(
 		targetHeight,
@@ -110,7 +115,8 @@ func (k Keeper) GetEncryptedTxAllFromHeight(
 	targetHeight uint64,
 
 ) types.EncryptedTxArray {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedTxKeyPrefix))
 
 	b := store.Get(types.EncryptedTxAllFromHeightKey(
 		targetHeight,
@@ -124,8 +130,9 @@ func (k Keeper) GetEncryptedTxAllFromHeight(
 
 // GetAllEncryptedArray returns the list of all encrypted txs
 func (k Keeper) GetAllEncryptedArray(ctx sdk.Context) (arr []types.EncryptedTxArray) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyPrefix))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedTxKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 
@@ -161,7 +168,8 @@ func (k Keeper) RemoveAllEncryptedTxFromHeight(
 	targetHeight uint64,
 
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.EncryptedTxKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedTxKeyPrefix))
 	store.Delete(types.EncryptedTxAllFromHeightKey(
 		targetHeight,
 	))

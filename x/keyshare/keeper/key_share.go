@@ -1,7 +1,9 @@
 package keeper
 
 import (
+	storetypes "cosmossdk.io/store/types"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
 	"cosmossdk.io/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -9,7 +11,8 @@ import (
 
 // SetKeyShare set a specific keyShare in the store from its index
 func (k Keeper) SetKeyShare(ctx sdk.Context, keyShare types.KeyShare) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.KeyShareKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyShareKeyPrefix))
 	b := k.cdc.MustMarshal(&keyShare)
 	store.Set(types.KeyShareKey(
 		keyShare.Validator,
@@ -24,7 +27,8 @@ func (k Keeper) GetKeyShare(
 	blockHeight uint64,
 
 ) (val types.KeyShare, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.KeyShareKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyShareKeyPrefix))
 
 	b := store.Get(types.KeyShareKey(
 		validator,
@@ -45,7 +49,8 @@ func (k Keeper) RemoveKeyShare(
 	blockHeight uint64,
 
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.KeyShareKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyShareKeyPrefix))
 	store.Delete(types.KeyShareKey(
 		validator,
 		blockHeight,
@@ -54,8 +59,9 @@ func (k Keeper) RemoveKeyShare(
 
 // GetAllKeyShare returns all keyShare
 func (k Keeper) GetAllKeyShare(ctx sdk.Context) (list []types.KeyShare) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.KeyShareKeyPrefix))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyShareKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 

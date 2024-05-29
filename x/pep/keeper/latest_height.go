@@ -1,7 +1,9 @@
 package keeper
 
 import (
+	"cosmossdk.io/store/prefix"
 	"github.com/Fairblock/fairyring/x/pep/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -10,7 +12,8 @@ import (
 func (k Keeper) GetLatestHeight(
 	ctx sdk.Context,
 ) string {
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 	return string(store.Get(types.LatestHeightKey))
 }
 
@@ -19,7 +22,8 @@ func (k Keeper) SetLatestHeight(
 	ctx sdk.Context,
 	height string,
 ) {
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 
 	store.Set(types.LatestHeightKey, []byte(height))
 }
@@ -28,7 +32,8 @@ func (k Keeper) SetLatestHeight(
 func (k Keeper) GetLastExecutedHeight(
 	ctx sdk.Context,
 ) string {
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 	return string(store.Get(types.LastExecutedHeightKey))
 }
 
@@ -37,7 +42,8 @@ func (k Keeper) SetLastExecutedHeight(
 	ctx sdk.Context,
 	height string,
 ) {
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 
 	store.Set(types.LastExecutedHeightKey, []byte(height))
 }

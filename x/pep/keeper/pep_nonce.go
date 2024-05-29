@@ -1,7 +1,9 @@
 package keeper
 
 import (
+	storetypes "cosmossdk.io/store/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
 	"cosmossdk.io/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -9,7 +11,8 @@ import (
 
 // SetPepNonce set a specific pepNonce in the store from its index
 func (k Keeper) SetPepNonce(ctx sdk.Context, pepNonce types.PepNonce) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PepNonceKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PepNonceKeyPrefix))
 	b := k.cdc.MustMarshal(&pepNonce)
 	store.Set(types.PepNonceKey(
 		pepNonce.Address,
@@ -21,7 +24,8 @@ func (k Keeper) IncreasePepNonce(
 	ctx sdk.Context,
 	address string,
 ) uint64 {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PepNonceKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PepNonceKeyPrefix))
 
 	b := store.Get(types.PepNonceKey(
 		address,
@@ -52,7 +56,8 @@ func (k Keeper) GetPepNonce(
 	address string,
 
 ) (val types.PepNonce, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PepNonceKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PepNonceKeyPrefix))
 
 	b := store.Get(types.PepNonceKey(
 		address,
@@ -76,7 +81,8 @@ func (k Keeper) RemovePepNonce(
 	address string,
 
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PepNonceKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PepNonceKeyPrefix))
 	store.Delete(types.PepNonceKey(
 		address,
 	))
@@ -84,8 +90,9 @@ func (k Keeper) RemovePepNonce(
 
 // GetAllPepNonce returns all pepNonce
 func (k Keeper) GetAllPepNonce(ctx sdk.Context) (list []types.PepNonce) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PepNonceKeyPrefix))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PepNonceKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 

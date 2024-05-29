@@ -13,7 +13,25 @@ protoc_gen_gocosmos() {
 
 protoc_gen_gocosmos
 
-cd proto
+set -e
+
+home=$PWD
+
+echo "Generating proto code"
+proto_dirs=$(find ./ -name 'buf.yaml' -print0 | xargs -0 -n1 dirname | sort | uniq)
+for dir in $proto_dirs; do
+  cd $dir
+  # check if buf.gen.pulsar.yaml exists in the proto directory
+  if [ -f "buf.gen.pulsar.yaml" ]; then
+    buf generate --template buf.gen.pulsar.yaml
+    # move generated files to the right places
+    cp -r $home/proto/api $home
+    rm -rf $home/proto/api
+  fi
+done
+
+
+cd $home/proto
 proto_dirs=$(find ./fairyring -path -prune -o -name '*.proto' -print0 | xargs -0 -n1 dirname | sort | uniq)
 for dir in $proto_dirs; do
   for file in $(find "${dir}" -maxdepth 1 -name '*.proto'); do
@@ -25,7 +43,7 @@ done
 
 cd ..
 
-# move proto files to the right places
+## move proto files to the right places
 cp -r github.com/Fairblock/fairyring/x/* x/
 rm -rf github.com
 rm -rf fairyring

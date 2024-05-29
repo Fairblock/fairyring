@@ -2,6 +2,8 @@ package keeper
 
 import (
 	"context"
+	"cosmossdk.io/store/prefix"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
@@ -22,7 +24,8 @@ func (k Keeper) PubKey(goCtx context.Context, req *types.QueryPubKeyRequest) (*t
 	var activePubKey commontypes.ActivePublicKey
 	var queuedPubKey commontypes.QueuedPublicKey
 
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 	b := store.Get(types.KeyPrefix(types.ActivePubKeyPrefix))
 	if b == nil {
 		return nil, status.Error(codes.Internal, "Active Public Key does not exists")
