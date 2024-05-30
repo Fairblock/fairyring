@@ -41,7 +41,7 @@ func (k msgServer) RequestAggrKeyshare(goCtx context.Context, msg *types.MsgRequ
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
-			sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, id),
+			sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, msg.ReqId),
 		),
 	)
 

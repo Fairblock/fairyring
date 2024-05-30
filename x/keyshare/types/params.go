@@ -17,7 +17,7 @@ var (
 
 var (
 	KeyKeyExpiry            = []byte("KeyExpiry")
-	DefaultKeyExpiry uint64 = 100
+	DefaultKeyExpiry uint64 = 100000
 )
 
 var (
