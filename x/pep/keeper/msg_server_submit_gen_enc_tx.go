@@ -11,7 +11,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k msgServer) SubmitGeneralEncryptedTx(goCtx context.Context, msg *types.MsgSubmitGeneralEncryptedTx) (*types.MsgSubmitEncryptedTxResponse, error) {
+func (k msgServer) SubmitGeneralEncryptedData(goCtx context.Context, msg *types.MsgSubmitGeneralEncryptedData) (*types.MsgSubmitEncryptedTxResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	entry, found := k.GetEntry(ctx, msg.ReqId)
@@ -30,6 +30,23 @@ func (k msgServer) SubmitGeneralEncryptedTx(goCtx context.Context, msg *types.Ms
 	senderAddr, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return nil, types.ErrInvalidMsgCreator
+	}
+
+	if msg.DataType == types.EncrytedDataType_DATA {
+		dataIndex := k.AppendEncryptedDataToEntry(ctx, msg.ReqId, msg.Data)
+
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(types.SubmittedGeneralEncryptedTxEventType,
+				sdk.NewAttribute(types.SubmittedEncryptedTxEventCreator, msg.Creator),
+				sdk.NewAttribute(types.SubmittedEncryptedTxEventIdentity, msg.ReqId),
+				sdk.NewAttribute(types.SubmittedEncryptedTxEventData, msg.Data),
+				sdk.NewAttribute(types.SubmittedEncryptedTxEventIndex, strconv.FormatUint(dataIndex, 10)),
+			),
+		)
+
+		defer telemetry.IncrCounter(1, types.KeyTotalEncryptedTxSubmitted)
+
+		return &types.MsgSubmitEncryptedTxResponse{}, nil
 	}
 
 	minGas := k.MinGasPrice(ctx)

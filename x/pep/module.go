@@ -602,6 +602,37 @@ func (am AppModule) decryptAndExecuteTx(
 	return nil
 }
 
+func (am AppModule) decryptData(
+	ctx sdk.Context,
+	encData string,
+	index int,
+	publicKeyPoint kyber.Point,
+	skPoint kyber.Point,
+) (string, error) {
+	dataBytes, err := hex.DecodeString(encData)
+	if err != nil {
+		defer telemetry.IncrCounter(1, types.KeyTotalFailedEncryptedTx)
+		return "", err
+	}
+
+	var decryptedData bytes.Buffer
+	var dataBuffer bytes.Buffer
+	_, err = dataBuffer.Write(dataBytes)
+	if err != nil {
+		defer telemetry.IncrCounter(1, types.KeyTotalFailedEncryptedTx)
+		return "", err
+	}
+
+	err = enc.Decrypt(publicKeyPoint, skPoint, &decryptedData, &dataBuffer)
+	if err != nil {
+		defer telemetry.IncrCounter(1, types.KeyTotalFailedEncryptedTx)
+		return "", err
+	}
+
+	am.keeper.Logger(ctx).Info(fmt.Sprintf("Decrypt Data Successfully: %s", decryptedData.String()))
+	return decryptedData.String(), nil
+}
+
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 	strLastExecutedHeight := am.keeper.GetLastExecutedHeight(ctx)
@@ -696,8 +727,8 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			continue
 		}
 
-		if entry.TxList == nil {
-			am.keeper.Logger(ctx).Info("No encrypted txs found for entry with req-id: ", entry.RequestId)
+		if entry.TxList == nil && len(entry.EncryptedDataList) == 0 {
+			am.keeper.Logger(ctx).Info("No encrypted data or txs found for entry with req-id: ", entry.RequestId)
 			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
 			continue
 		}
@@ -707,6 +738,18 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			continue
 		}
 
+		// loop over all encrypted data in the entry
+		for index, encData := range entry.EncryptedDataList {
+			decryptedData, err := am.decryptData(ctx, encData, index, publicKeyPoint, skPoint)
+			if err != nil {
+				continue
+			}
+			telemetry.IncrCounter(1, types.KeyTotalSuccessEncryptedTx)
+		}
+
+		if entry.TxList == nil {
+			continue
+		}
 		// loop over all txs in the entry
 		for _, eachTx := range entry.TxList.EncryptedTx {
 			startConsumedGas := ctx.GasMeter().GasConsumed()

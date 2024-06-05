@@ -11,12 +11,17 @@ option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 // Msg defines the Msg service.
 service Msg {
   rpc SubmitEncryptedTx (MsgSubmitEncryptedTx) returns (MsgSubmitEncryptedTxResponse);
-  rpc SubmitGeneralEncryptedTx (MsgSubmitGeneralEncryptedTx) returns (MsgSubmitEncryptedTxResponse);
+  rpc SubmitGeneralEncryptedData (MsgSubmitGeneralEncryptedData) returns (MsgSubmitEncryptedTxResponse);
   
   // this line is used by starport scaffolding # proto/tx/rpc
   rpc CreateAggregatedKeyShare (MsgCreateAggregatedKeyShare) returns (MsgCreateAggregatedKeyShareResponse);
   rpc RequestGeneralKeyshare   (MsgRequestGeneralKeyshare  ) returns (MsgRequestGeneralKeyshareResponse  );
   rpc GetGeneralKeyshare       (MsgGetGeneralKeyshare      ) returns (MsgGetGeneralKeyshareResponse      );
+}
+
+enum EncrytedDataType {
+  DATA        = 0;
+  TRANSACTION = 1;
 }
 
 message MsgSubmitEncryptedTx {
@@ -25,10 +30,11 @@ message MsgSubmitEncryptedTx {
   uint64 targetBlockHeight = 3;
 }
 
-message MsgSubmitGeneralEncryptedTx {
-  string creator           = 1;
-  string data              = 2;
-  string req_id            = 3;
+message MsgSubmitGeneralEncryptedData {
+  string creator             = 1;
+  string data                = 2;
+  string req_id              = 3;
+  EncrytedDataType data_type = 4;
 }
 
 message MsgSubmitEncryptedTxResponse {}

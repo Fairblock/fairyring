@@ -38,5 +38,6 @@ message GenEncTxExecutionQueue {
   string identity = 3;
   string pubkey = 4;
   GeneralEncryptedTxArray tx_list = 5;
-  string aggr_keyshare = 6;
+  repeated string encrypted_data_list = 6;
+  string aggr_keyshare = 7;
 }

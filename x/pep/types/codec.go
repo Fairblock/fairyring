@@ -17,7 +17,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateAggregatedKeyShare{}, "pep/CreateAggregatedKeyShare", nil)
 	cdc.RegisterConcrete(&MsgRequestGeneralKeyshare{}, "pep/RequestGeneralKeyshare", nil)
 	cdc.RegisterConcrete(&MsgGetGeneralKeyshare{}, "pep/GetGeneralKeyshare", nil)
-	cdc.RegisterConcrete(&MsgSubmitGeneralEncryptedTx{}, "pep/SubmitGeneralEncryptedTx", nil)
+	cdc.RegisterConcrete(&MsgSubmitGeneralEncryptedData{}, "pep/SubmitGeneralEncryptedData", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -35,7 +35,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgGetGeneralKeyshare{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgSubmitGeneralEncryptedTx{},
+		&MsgSubmitGeneralEncryptedData{},
 	)
 	// this line is used by starport scaffolding # 3
 

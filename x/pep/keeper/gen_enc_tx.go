@@ -79,6 +79,14 @@ func (k Keeper) AppendTxToEntry(ctx sdk.Context, reqID string, encTx types.Gener
 	return uint64(index)
 }
 
+func (k Keeper) AppendEncryptedDataToEntry(ctx sdk.Context, reqID string, encData string) uint64 {
+	val, _ := k.GetEntry(ctx, reqID)
+	val.EncryptedDataList = append(val.EncryptedDataList, encData)
+	k.SetEntry(ctx, val)
+	index := len(val.EncryptedDataList)
+	return uint64(index)
+}
+
 // GetRequestQueueEntry returns a queue entry by its identity
 func (k Keeper) GetRequestQueueEntry(
 	ctx sdk.Context,

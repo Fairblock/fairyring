@@ -131,3 +131,19 @@ func (k IBCKeeper) AuthenticateCapability(ctx sdk.Context, cap *capabilitytypes.
 func (k IBCKeeper) ClaimCapability(ctx sdk.Context, cap *capabilitytypes.Capability, name string) error {
 	return k.ScopedKeeper.ClaimCapability(ctx, cap, name)
 }
+
+// Event Hooks
+// These can be utilized to communicate between a pep keeper and another
+// keepers.
+
+// PepHooks event hooks for aggregated keyshare generation and decryption
+type PepHooks interface {
+	// Must be called after generation of aggregated keyshare
+	AfterAggregatedKeyshare(ctx sdk.Context, reqID string, identity string, aggrKeyshare string)
+	// Must be called after decryption of encrypted Tx
+	AfterEncTxDecryption(ctx sdk.Context, reqID string, identity string, aggrKeyshare string, tx sdk.Tx, index uint64)
+	// Must be called after execution of encrypted Tx
+	AfterEncTxExecution(ctx sdk.Context, reqID string, identity string, aggrKeyshare string, tx sdk.Tx, index uint64)
+	// Must be called after decryption of encrypted data
+	AfterEncDataDecryption(ctx sdk.Context, reqID string, identity string, aggrKeyshare string, decryptedData string, index uint64)
+}

@@ -6,27 +6,28 @@ import (
 	cosmoserror "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgSubmitGeneralEncryptedTx = "submit_general_encrypted_tx"
+const TypeMsgSubmitGeneralEncryptedData = "submit_general_encrypted_data"
 
-var _ sdk.Msg = &MsgSubmitGeneralEncryptedTx{}
+var _ sdk.Msg = &MsgSubmitGeneralEncryptedData{}
 
-func NewMsgSubmitGeneralEncryptedTx(creator string, data string, reqID string) *MsgSubmitGeneralEncryptedTx {
-	return &MsgSubmitGeneralEncryptedTx{
-		Creator: creator,
-		Data:    data,
-		ReqId:   reqID,
+func NewMsgSubmitGeneralEncryptedData(creator string, data string, reqID string, dataType EncrytedDataType) *MsgSubmitGeneralEncryptedData {
+	return &MsgSubmitGeneralEncryptedData{
+		Creator:  creator,
+		Data:     data,
+		ReqId:    reqID,
+		DataType: dataType,
 	}
 }
 
-func (msg *MsgSubmitGeneralEncryptedTx) Route() string {
+func (msg *MsgSubmitGeneralEncryptedData) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgSubmitGeneralEncryptedTx) Type() string {
-	return TypeMsgSubmitGeneralEncryptedTx
+func (msg *MsgSubmitGeneralEncryptedData) Type() string {
+	return TypeMsgSubmitGeneralEncryptedData
 }
 
-func (msg *MsgSubmitGeneralEncryptedTx) GetSigners() []sdk.AccAddress {
+func (msg *MsgSubmitGeneralEncryptedData) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -34,12 +35,12 @@ func (msg *MsgSubmitGeneralEncryptedTx) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgSubmitGeneralEncryptedTx) GetSignBytes() []byte {
+func (msg *MsgSubmitGeneralEncryptedData) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgSubmitGeneralEncryptedTx) ValidateBasic() error {
+func (msg *MsgSubmitGeneralEncryptedData) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(cosmoserror.ErrInvalidAddress, "invalid creator address (%s)", err)
