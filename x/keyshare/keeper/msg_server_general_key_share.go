@@ -103,9 +103,9 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 
 		k.SlashingKeeper().Slash(
 			ctx, consAddr,
-			ctx.BlockHeight()-1,
-			types.SlashPower,
 			k.SlashFractionWrongKeyshare(ctx),
+			types.SlashPower,
+			ctx.BlockHeight()-1,
 		)
 
 		return &types.MsgCreateGeneralKeyShareResponse{

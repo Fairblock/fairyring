@@ -23,6 +23,10 @@ const (
 	ChannelID = "channel-0"
 )
 
+var (
+	ParamsKey = []byte("b_keyshare")
+)
+
 const (
 	KeyAggregationThresholdNumerator   = 2
 	KeyAggregationThresholdDenominator = 3

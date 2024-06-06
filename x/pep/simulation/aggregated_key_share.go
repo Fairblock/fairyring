@@ -38,12 +38,12 @@ func SimulateMsgCreateAggregatedKeyShare(
 		}
 
 		txCtx := simulation.OperationInput{
-			R:               r,
-			App:             app,
-			TxGen:           testutil.MakeTestTxConfig(),
-			Cdc:             nil,
-			Msg:             msg,
-			MsgType:         msg.Type(),
+			R:     r,
+			App:   app,
+			TxGen: testutil.MakeTestTxConfig(),
+			Cdc:   nil,
+			Msg:   msg,
+			// MsgType:         msg.Type(),
 			Context:         ctx,
 			SimAccount:      simAccount,
 			ModuleName:      types.ModuleName,

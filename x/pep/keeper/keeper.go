@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/store/prefix"
 	"fmt"
@@ -25,6 +26,8 @@ type (
 		authority        string
 		bankKeeper       types.BankKeeper
 		connectionKeeper types.ConnectionKeeper
+
+		params collections.Item[types.Params]
 	}
 )
 
@@ -39,6 +42,7 @@ func NewKeeper(
 	scopedKeeper types.ScopedKeeper,
 	connectionKeeper types.ConnectionKeeper,
 ) Keeper {
+	sb := collections.NewSchemaBuilder(storeService)
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
 	}
@@ -57,6 +61,7 @@ func NewKeeper(
 		authority:        authority,
 		bankKeeper:       bankKeeper,
 		connectionKeeper: connectionKeeper,
+		params:           collections.NewItem(sb, types.ParamsKey, "params", codec.CollValue[types.Params](cdc)),
 	}
 }
 

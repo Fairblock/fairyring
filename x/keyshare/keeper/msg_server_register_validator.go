@@ -24,8 +24,8 @@ func (k msgServer) RegisterValidator(goCtx context.Context, msg *types.MsgRegist
 		return nil, err
 	}
 
-	stakingValidator, found := k.stakingKeeper.GetValidator(ctx, sdk.ValAddress(accAddr))
-	if !found {
+	stakingValidator, err := k.stakingKeeper.GetValidator(ctx, sdk.ValAddress(accAddr))
+	if err != nil {
 		return nil, types.ErrAccountNotStaking.Wrap(msg.Creator)
 	}
 

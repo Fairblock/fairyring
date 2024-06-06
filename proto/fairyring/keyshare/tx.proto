@@ -4,6 +4,8 @@ package fairyring.keyshare;
 
 import "fairyring/keyshare/general_key_share.proto";
 import "fairyring/keyshare/pub_key.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
 
 // this line is used by starport scaffolding # proto/tx/import
 
@@ -11,6 +13,8 @@ option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
 // Msg defines the Msg service.
 service Msg {
+  option (cosmos.msg.v1.service) = true;
+
   rpc RegisterValidator (MsgRegisterValidator) returns (MsgRegisterValidatorResponse);
   rpc DeRegisterValidator (MsgDeRegisterValidator) returns (MsgDeRegisterValidatorResponse);
   rpc SendKeyshare      (MsgSendKeyshare     ) returns (MsgSendKeyshareResponse     );
@@ -24,6 +28,7 @@ service Msg {
   rpc CreateGeneralKeyShare   (MsgCreateGeneralKeyShare  ) returns (MsgCreateGeneralKeyShareResponse  );
 }
 message MsgRegisterValidator {
+  option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
 }
 
@@ -32,6 +37,7 @@ message MsgRegisterValidatorResponse {
 }
 
 message MsgDeRegisterValidator {
+  option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
 }
 
@@ -40,6 +46,7 @@ message MsgDeRegisterValidatorResponse {
 }
 
 message MsgSendKeyshare {
+  option (cosmos.msg.v1.signer) = "creator";
   string creator       = 1;
   string message       = 2;
   uint64 keyShareIndex = 3;
@@ -58,6 +65,7 @@ message MsgSendKeyshareResponse {
 
 // this line is used by starport scaffolding # proto/tx/message
 message MsgCreateLatestPubKey {
+  option (cosmos.msg.v1.signer) = "creator";
            string creator     = 1;
            string publicKey   = 2;
   repeated string commitments = 3;
@@ -68,6 +76,7 @@ message MsgCreateLatestPubKey {
 message MsgCreateLatestPubKeyResponse {}
 
 message MsgOverrideLatestPubKey {
+  option (cosmos.msg.v1.signer) = "creator";
   string creator     = 1;
   string publicKey   = 2;
   repeated string commitments = 3;
@@ -78,6 +87,7 @@ message MsgOverrideLatestPubKey {
 message MsgOverrideLatestPubKeyResponse {}
 
 message MsgCreateAuthorizedAddress {
+  option (cosmos.msg.v1.signer) = "creator";
   string target  = 1;
   string creator = 2;
 }
@@ -85,6 +95,7 @@ message MsgCreateAuthorizedAddress {
 message MsgCreateAuthorizedAddressResponse {}
 
 message MsgUpdateAuthorizedAddress {
+  option (cosmos.msg.v1.signer) = "creator";
   string target       = 1;
   bool   isAuthorized = 2;
   string creator      = 3;
@@ -93,6 +104,7 @@ message MsgUpdateAuthorizedAddress {
 message MsgUpdateAuthorizedAddressResponse {}
 
 message MsgDeleteAuthorizedAddress {
+  option (cosmos.msg.v1.signer) = "creator";
   string target  = 1;
   string creator = 2;
 }
@@ -100,6 +112,7 @@ message MsgDeleteAuthorizedAddress {
 message MsgDeleteAuthorizedAddressResponse {}
 
 message MsgCreateGeneralKeyShare {
+  option (cosmos.msg.v1.signer) = "creator";
   string creator             = 1;
   string idType              = 2;
   string idValue             = 3;

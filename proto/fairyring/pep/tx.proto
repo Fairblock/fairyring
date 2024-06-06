@@ -3,6 +3,8 @@ syntax = "proto3";
 package fairyring.pep;
 
 import "fairyring/pep/aggregated_key_share.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
 
 // this line is used by starport scaffolding # proto/tx/import
 
@@ -10,6 +12,8 @@ option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
 // Msg defines the Msg service.
 service Msg {
+  option (cosmos.msg.v1.service) = true;
+
   rpc SubmitEncryptedTx (MsgSubmitEncryptedTx) returns (MsgSubmitEncryptedTxResponse);
   rpc SubmitGeneralEncryptedTx (MsgSubmitGeneralEncryptedTx) returns (MsgSubmitEncryptedTxResponse);
   
@@ -20,12 +24,14 @@ service Msg {
 }
 
 message MsgSubmitEncryptedTx {
+  option (cosmos.msg.v1.signer) = "creator";
   string creator           = 1;
   string data              = 2;
   uint64 targetBlockHeight = 3;
 }
 
 message MsgSubmitGeneralEncryptedTx {
+  option (cosmos.msg.v1.signer) = "creator";
   string creator           = 1;
   string data              = 2;
   string req_id            = 3;
@@ -35,6 +41,7 @@ message MsgSubmitEncryptedTxResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message
 message MsgCreateAggregatedKeyShare {
+  option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   uint64 height  = 2;
   string data    = 3;
@@ -43,6 +50,7 @@ message MsgCreateAggregatedKeyShare {
 message MsgCreateAggregatedKeyShareResponse {}
 
 message MsgRequestGeneralKeyshare {
+  option (cosmos.msg.v1.signer) = "creator";
   string creator   = 1;
 }
 
@@ -51,6 +59,7 @@ message MsgRequestGeneralKeyshareResponse {
 }
 
 message MsgGetGeneralKeyshare {
+  option (cosmos.msg.v1.signer) = "creator";
   string creator  = 1;
   string req_id   = 2;
 }

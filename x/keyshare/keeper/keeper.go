@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"cosmossdk.io/collections"
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/store/prefix"
 	"fmt"
@@ -30,6 +31,8 @@ type (
 		pepKeeper        types.PepKeeper
 		govKeeper        types.GovKeeper
 		connectionKeeper types.ConnectionKeeper
+
+		params collections.Item[types.Params]
 	}
 )
 
@@ -47,6 +50,7 @@ func NewKeeper(
 	scopedKeeper types.ScopedKeeper,
 	connectionKeeper types.ConnectionKeeper,
 ) Keeper {
+	sb := collections.NewSchemaBuilder(storeService)
 	return Keeper{
 		cdc:              cdc,
 		storeService:     storeService,
@@ -64,6 +68,7 @@ func NewKeeper(
 			portKeeper,
 			scopedKeeper,
 		),
+		params: collections.NewItem(sb, types.ParamsKey, "params", codec.CollValue[types.Params](cdc)),
 	}
 }
 

@@ -3,6 +3,9 @@ package pep
 import (
 	"bytes"
 	"context"
+	"cosmossdk.io/core/store"
+	"cosmossdk.io/depinject"
+	"cosmossdk.io/log"
 	cosmosmath "cosmossdk.io/math"
 	"encoding/hex"
 	"encoding/json"
@@ -15,6 +18,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
+	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"
 	"github.com/drand/kyber/pairing"
@@ -37,6 +44,8 @@ import (
 	"github.com/Fairblock/fairyring/x/pep/keeper"
 	"github.com/Fairblock/fairyring/x/pep/types"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+
+	modulev1 "github.com/Fairblock/fairyring/api/fairyring/pep/module"
 )
 
 var (
@@ -776,3 +785,70 @@ func (am AppModule) IsOnePerModuleType() {}
 
 // IsAppModule implements the appmodule.AppModule interface.
 func (am AppModule) IsAppModule() {}
+
+// ----------------------------------------------------------------------------
+// App Wiring Setup
+// ----------------------------------------------------------------------------
+
+func init() {
+	appmodule.Register(
+		&modulev1.Module{},
+		appmodule.Provide(ProvideModule),
+	)
+}
+
+type ModuleInputs struct {
+	depinject.In
+
+	StoreService store.KVStoreService
+	Cdc          codec.Codec
+	Config       *modulev1.Module
+	Logger       log.Logger
+
+	AccountKeeper types.AccountKeeper
+	BankKeeper    types.BankKeeper
+
+	IBCKeeperFn        func() *ibckeeper.Keeper                   `optional:"true"`
+	CapabilityScopedFn func(string) capabilitykeeper.ScopedKeeper `optional:"true"`
+
+	msgServiceRouter *baseapp.MsgServiceRouter
+	txConfig         client.TxConfig
+	simCheck         func(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error)
+}
+
+type ModuleOutputs struct {
+	depinject.Out
+
+	PepKeeper keeper.Keeper
+	Module    appmodule.AppModule
+}
+
+func ProvideModule(in ModuleInputs) ModuleOutputs {
+	// default to governance authority if not provided
+	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
+	if in.Config.Authority != "" {
+		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
+	}
+	k := keeper.NewKeeper(
+		in.Cdc,
+		in.StoreService,
+		in.Logger,
+		authority.String(),
+		in.BankKeeper,
+		in.IBCKeeperFn().ChannelKeeper,
+		in.IBCKeeperFn().PortKeeper,
+		in.CapabilityScopedFn(types.ModuleName),
+		in.IBCKeeperFn().ConnectionKeeper,
+	)
+	m := NewAppModule(
+		in.Cdc,
+		k,
+		in.AccountKeeper,
+		in.BankKeeper,
+		in.msgServiceRouter,
+		in.txConfig,
+		in.simCheck,
+	)
+
+	return ModuleOutputs{PepKeeper: k, Module: m}
+}

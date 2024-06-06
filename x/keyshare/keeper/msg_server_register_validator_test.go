@@ -2,8 +2,8 @@ package keeper_test
 
 import (
 	"context"
-	"github.com/Fairblock/fairyring/x/keyshare"
 	"github.com/Fairblock/fairyring/x/keyshare/keeper"
+	"github.com/Fairblock/fairyring/x/keyshare/module"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"testing"
 

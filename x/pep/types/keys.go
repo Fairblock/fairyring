@@ -27,6 +27,7 @@ const (
 )
 
 var (
+	ParamsKey = []byte("p_pep")
 	// PortKey defines the key to store the port ID in store
 	PortKey               = KeyPrefix("pep-port-")
 	ChannelKey            = KeyPrefix("pep-channel-")

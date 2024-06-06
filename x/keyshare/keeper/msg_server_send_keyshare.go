@@ -5,13 +5,12 @@ import (
 	"cosmossdk.io/math"
 	"encoding/hex"
 	"fmt"
-	"strconv"
-
 	distIBE "github.com/FairBlock/DistributedIBE"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	"github.com/hashicorp/go-metrics"
+	"strconv"
 
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"
@@ -88,9 +87,9 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 
 		k.slashingKeeper.Slash(
 			ctx, consAddr,
-			ctx.BlockHeight()-1,
-			types.SlashPower,
 			k.SlashFractionWrongKeyshare(ctx),
+			types.SlashPower,
+			ctx.BlockHeight()-1,
 		)
 
 		return &types.MsgSendKeyshareResponse{
