@@ -133,8 +133,7 @@ func (k IBCKeeper) ClaimCapability(ctx sdk.Context, cap *capabilitytypes.Capabil
 }
 
 // Event Hooks
-// These can be utilized to communicate between a pep keeper and another
-// keepers.
+// These can be utilized to communicate between a pep keeper and another keeper.
 
 // PepHooks event hooks for aggregated keyshare generation and decryption
 type PepHooks interface {

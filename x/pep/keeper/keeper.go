@@ -22,6 +22,7 @@ type (
 		paramstore       paramtypes.Subspace
 		connectionKeeper types.ConnectionKeeper
 		bankKeeper       types.BankKeeper
+		hooks            types.PepHooks
 	}
 )
 
@@ -56,6 +57,27 @@ func NewKeeper(
 		connectionKeeper: connectionKeeper,
 		bankKeeper:       bankKeeper,
 	}
+}
+
+// Hooks gets the hooks for Pep *Keeper {
+func (keeper *Keeper) Hooks() types.PepHooks {
+	if keeper.hooks == nil {
+		// return a no-op implementation if no hooks are set
+		return types.MultiPepHooks{}
+	}
+
+	return keeper.hooks
+}
+
+// SetHooks sets the hooks for governance
+func (keeper *Keeper) SetHooks(ph types.PepHooks) *Keeper {
+	if keeper.hooks != nil {
+		panic("cannot set pep hooks twice")
+	}
+
+	keeper.hooks = ph
+
+	return keeper
 }
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {

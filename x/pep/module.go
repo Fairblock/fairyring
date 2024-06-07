@@ -356,6 +356,8 @@ func (am AppModule) getSKPoint(
 
 func (am AppModule) decryptAndExecuteTx(
 	ctx sdk.Context,
+	reqID string,
+	aggrKeyshare string,
 	eachTx DecryptionTx,
 	startConsumedGas uint64,
 	publicKeyPoint kyber.Point,
@@ -395,7 +397,6 @@ func (am AppModule) decryptAndExecuteTx(
 		am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error decrypting tx data: %s", err.Error()), startConsumedGas)
 		return err
 	}
-
 	am.keeper.Logger(ctx).Info(fmt.Sprintf("Decrypt TX Successfully: %s", decryptedTx.String()))
 
 	txDecoderTx, err := am.txConfig.TxDecoder()(decryptedTx.Bytes())
@@ -423,6 +424,7 @@ func (am AppModule) decryptAndExecuteTx(
 			am.keeper.Logger(ctx).Error("TX Successfully Decode with JSON Decoder")
 		}
 	}
+	am.keeper.Hooks().AfterEncTxDecryption(ctx, reqID, eachTx.Identity, aggrKeyshare, txDecoderTx, eachTx.Index)
 
 	wrappedTx, err := am.txConfig.WrapTxBuilder(txDecoderTx)
 	if err != nil {
@@ -567,6 +569,7 @@ func (am AppModule) decryptAndExecuteTx(
 		am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error when handling tx message: %s", err.Error()), startConsumedGas)
 		return err
 	}
+	am.keeper.Hooks().AfterEncTxExecution(ctx, reqID, eachTx.Identity, aggrKeyshare, txDecoderTx, eachTx.Index)
 
 	underlyingTxEvents := make([]UnderlyingTxEvent, 0)
 
@@ -605,13 +608,11 @@ func (am AppModule) decryptAndExecuteTx(
 func (am AppModule) decryptData(
 	ctx sdk.Context,
 	encData string,
-	index int,
 	publicKeyPoint kyber.Point,
 	skPoint kyber.Point,
 ) (string, error) {
 	dataBytes, err := hex.DecodeString(encData)
 	if err != nil {
-		defer telemetry.IncrCounter(1, types.KeyTotalFailedEncryptedTx)
 		return "", err
 	}
 
@@ -619,13 +620,11 @@ func (am AppModule) decryptData(
 	var dataBuffer bytes.Buffer
 	_, err = dataBuffer.Write(dataBytes)
 	if err != nil {
-		defer telemetry.IncrCounter(1, types.KeyTotalFailedEncryptedTx)
 		return "", err
 	}
 
 	err = enc.Decrypt(publicKeyPoint, skPoint, &decryptedData, &dataBuffer)
 	if err != nil {
-		defer telemetry.IncrCounter(1, types.KeyTotalFailedEncryptedTx)
 		return "", err
 	}
 
@@ -710,7 +709,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			startConsumedGas := ctx.GasMeter().GasConsumed()
 			am.keeper.SetEncryptedTxProcessedHeight(ctx, eachTx.TargetHeight, eachTx.Index, uint64(ctx.BlockHeight()))
 			tx := convertEncTxToDecryptionTx(eachTx)
-			err := am.decryptAndExecuteTx(ctx, tx, startConsumedGas, publicKeyPoint, skPoint)
+			err := am.decryptAndExecuteTx(ctx, "", key.Data, tx, startConsumedGas, publicKeyPoint, skPoint)
 			if err != nil {
 				continue
 			}
@@ -726,6 +725,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
 			continue
 		}
+		am.keeper.Hooks().AfterAggregatedKeyshare(ctx, entry.RequestId, entry.Identity, entry.AggrKeyshare)
 
 		if entry.TxList == nil && len(entry.EncryptedDataList) == 0 {
 			am.keeper.Logger(ctx).Info("No encrypted data or txs found for entry with req-id: ", entry.RequestId)
@@ -740,11 +740,19 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 		// loop over all encrypted data in the entry
 		for index, encData := range entry.EncryptedDataList {
-			decryptedData, err := am.decryptData(ctx, encData, index, publicKeyPoint, skPoint)
+			decryptedData, err := am.decryptData(ctx, encData, publicKeyPoint, skPoint)
 			if err != nil {
 				continue
 			}
 			telemetry.IncrCounter(1, types.KeyTotalSuccessEncryptedTx)
+			am.keeper.Hooks().AfterEncDataDecryption(
+				ctx,
+				entry.RequestId,
+				entry.Identity,
+				entry.AggrKeyshare,
+				decryptedData,
+				uint64(index),
+			)
 		}
 
 		if entry.TxList == nil {
@@ -755,7 +763,7 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 			startConsumedGas := ctx.GasMeter().GasConsumed()
 
 			tx := convertGenEncTxToDecryptionTx(eachTx)
-			err := am.decryptAndExecuteTx(ctx, tx, startConsumedGas, publicKeyPoint, skPoint)
+			err := am.decryptAndExecuteTx(ctx, entry.RequestId, entry.AggrKeyshare, tx, startConsumedGas, publicKeyPoint, skPoint)
 			if err != nil {
 				continue
 			}

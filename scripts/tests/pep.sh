@@ -381,7 +381,7 @@ rm -r unsigned2.json &> /dev/null
 sleep 10
 
 echo "Submit general encrypted tx to pep module on chain fairyring_test_1"
-RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER 0 --from $WALLET_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER 0 TRANSACTION --from $WALLET_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
@@ -395,7 +395,7 @@ if [ "$TX" != "$CIPHER" ]; then
 fi
 
 echo "Submit 2nd general encrypted tx to pep module on chain fairyring_test_1"
-RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER2 0 --from $WALLET_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER2 0 TRANSACTION --from $WALLET_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 

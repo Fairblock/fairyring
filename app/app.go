@@ -1,13 +1,14 @@
 package app
 
 import (
-	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 	"encoding/json"
 	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 	"strings"
+
+	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 
 	reflectionv1 "cosmossdk.io/api/cosmos/reflection/v1"
 	dbm "github.com/cometbft/cometbft-db"
@@ -605,6 +606,9 @@ func New(
 		app.IBCKeeper.ConnectionKeeper,
 		app.BankKeeper,
 	)
+
+	hooks := pepmoduletypes.NewMultiPepHooks()
+	app.PepKeeper.SetHooks(hooks)
 
 	pepIBCModule := pepmodule.NewIBCModule(app.PepKeeper)
 
