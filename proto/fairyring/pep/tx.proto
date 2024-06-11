@@ -5,6 +5,8 @@ package fairyring.pep;
 import "fairyring/pep/aggregated_key_share.proto";
 import "cosmos/msg/v1/msg.proto";
 import "cosmos_proto/cosmos.proto";
+import "google/protobuf/duration.proto";
+import "gogoproto/gogo.proto";
 
 // this line is used by starport scaffolding # proto/tx/import
 
@@ -52,6 +54,7 @@ message MsgCreateAggregatedKeyShareResponse {}
 message MsgRequestGeneralKeyshare {
   option (cosmos.msg.v1.signer) = "creator";
   string creator   = 1;
+  google.protobuf.Duration estimated_delay = 2 [(gogoproto.stdduration) = true];
 }
 
 message MsgRequestGeneralKeyshareResponse {

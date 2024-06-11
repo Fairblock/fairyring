@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package fairyring.keyshare;
 
+import "google/protobuf/duration.proto";
+import "gogoproto/gogo.proto";
 import "fairyring/common/shared_types.proto";
 
 
@@ -26,6 +28,7 @@ message RequestAggrKeysharePacketData {
     string proposal_id = 2;
     string request_id = 3;
   }
+  google.protobuf.Duration estimated_delay = 4 [(gogoproto.stdduration) = true];
 }
 
 // RequestAggrKeysharePacketAck defines a struct for the packet acknowledgment
