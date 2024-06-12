@@ -4,8 +4,8 @@ package fairyring.pep;
 option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
 message PepNonce {
-  string address = 1; 
-  uint64 nonce = 2; 
-  
+  string address = 1;
+  uint64 nonce = 2;
+
 }
 

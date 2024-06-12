@@ -35,29 +35,24 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.GeneralKeyShareList {
 		k.SetGeneralKeyShare(ctx, elem)
 	}
-	// this line is used by starport scaffolding # genesis/module/init
-
-	var portID string
-	if genState.PortId == "" {
-		portID = types.PortID
-	}
 
 	k.SetRequestCount(ctx, genState.RequestCount)
 
-	k.SetPort(ctx, portID)
+	// this line is used by starport scaffolding # genesis/module/init
+	k.SetPort(ctx, genState.PortId)
 	// Only try to bind to port if it is not already bound, since we may already own
 	// port capability from capability InitGenesis
-	if !k.IsBound(ctx, portID) {
+	if k.ShouldBound(ctx, genState.PortId) {
 		// module binds to the port on InitChain
 		// and claims the returned capability
-		err := k.BindPort(ctx, portID)
+		err := k.BindPort(ctx, genState.PortId)
 		if err != nil {
 			panic("could not claim port capability: " + err.Error())
 		}
 	}
-
-	// this line is used by starport scaffolding # genesis/module/init
-	k.SetParams(ctx, genState.Params)
+	if err := k.SetParams(ctx, genState.Params); err != nil {
+		panic(err)
+	}
 }
 
 // ExportGenesis returns the module's exported genesis.
@@ -65,6 +60,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 	genesis.Params = k.GetParams(ctx)
 
+	genesis.PortId = k.GetPort(ctx)
 	genesis.ValidatorSetList = k.GetAllValidatorSet(ctx)
 	genesis.KeyShareList = k.GetAllKeyShare(ctx)
 	genesis.AggregatedKeyShareList = k.GetAllAggregatedKeyShare(ctx)
@@ -81,10 +77,10 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.AuthorizedAddressList = k.GetAllAuthorizedAddress(ctx)
 	genesis.GeneralKeyShareList = k.GetAllGeneralKeyShare(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
-
-	genesis.PortId = k.GetPort(ctx)
-
+	
 	genesis.RequestCount, _ = strconv.ParseUint(k.GetRequestCount(ctx), 10, 64)
+
+	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis
 }

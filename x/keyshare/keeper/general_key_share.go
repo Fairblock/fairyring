@@ -1,15 +1,15 @@
 package keeper
 
 import (
+	"context"
 	"cosmossdk.io/store/prefix"
 	storetypes "cosmossdk.io/store/types"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // SetGeneralKeyShare set a specific generalKeyShare in the store from its index
-func (k Keeper) SetGeneralKeyShare(ctx sdk.Context, generalKeyShare types.GeneralKeyShare) {
+func (k Keeper) SetGeneralKeyShare(ctx context.Context, generalKeyShare types.GeneralKeyShare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
 
@@ -23,7 +23,7 @@ func (k Keeper) SetGeneralKeyShare(ctx sdk.Context, generalKeyShare types.Genera
 
 // GetGeneralKeyShare returns a generalKeyShare from its index
 func (k Keeper) GetGeneralKeyShare(
-	ctx sdk.Context,
+	ctx context.Context,
 	validator string,
 	idType string,
 	idValue string,
@@ -46,7 +46,7 @@ func (k Keeper) GetGeneralKeyShare(
 
 // RemoveGeneralKeyShare removes a generalKeyShare from the store
 func (k Keeper) RemoveGeneralKeyShare(
-	ctx sdk.Context,
+	ctx context.Context,
 	validator string,
 	idType string,
 	idValue string,
@@ -62,7 +62,7 @@ func (k Keeper) RemoveGeneralKeyShare(
 }
 
 // GetAllGeneralKeyShare returns all generalKeyShare
-func (k Keeper) GetAllGeneralKeyShare(ctx sdk.Context) (list []types.GeneralKeyShare) {
+func (k Keeper) GetAllGeneralKeyShare(ctx context.Context) (list []types.GeneralKeyShare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})

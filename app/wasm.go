@@ -154,7 +154,7 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.Wa
 			WasmConfig:            &wasmConfig,
 			WasmKeeper:            &app.WasmKeeper,
 			TXCounterStoreService: runtime.NewKVStoreService(txCounterStoreKey),
-			CircuitKeeper:         &app.CircuitKeeper,
+			CircuitKeeper:         &app.CircuitBreakerKeeper,
 		},
 	)
 	if err != nil {

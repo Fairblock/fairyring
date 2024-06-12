@@ -1,16 +1,16 @@
 package keeper
 
 import (
+	"context"
 	"cosmossdk.io/store/prefix"
 	storetypes "cosmossdk.io/store/types"
 	"encoding/binary"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (k Keeper) GetAuthorizedCount(
-	ctx sdk.Context,
+	ctx context.Context,
 	creator string,
 ) uint64 {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
@@ -27,7 +27,7 @@ func (k Keeper) GetAuthorizedCount(
 }
 
 func (k Keeper) IncreaseAuthorizedCount(
-	ctx sdk.Context,
+	ctx context.Context,
 	creator string,
 ) {
 	count := k.GetAuthorizedCount(ctx, creator)
@@ -43,7 +43,7 @@ func (k Keeper) IncreaseAuthorizedCount(
 }
 
 func (k Keeper) DecreaseAuthorizedCount(
-	ctx sdk.Context,
+	ctx context.Context,
 	creator string,
 ) {
 	count := k.GetAuthorizedCount(ctx, creator)
@@ -65,7 +65,7 @@ func (k Keeper) DecreaseAuthorizedCount(
 }
 
 // SetAuthorizedAddress set a specific authorizedAddress in the store from its index
-func (k Keeper) SetAuthorizedAddress(ctx sdk.Context, authorizedAddress types.AuthorizedAddress) {
+func (k Keeper) SetAuthorizedAddress(ctx context.Context, authorizedAddress types.AuthorizedAddress) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedCountKeyPrefix))
 	b := k.cdc.MustMarshal(&authorizedAddress)
@@ -76,7 +76,7 @@ func (k Keeper) SetAuthorizedAddress(ctx sdk.Context, authorizedAddress types.Au
 
 // GetAuthorizedAddress returns a authorizedAddress from its index
 func (k Keeper) GetAuthorizedAddress(
-	ctx sdk.Context,
+	ctx context.Context,
 	target string,
 
 ) (val types.AuthorizedAddress, found bool) {
@@ -96,7 +96,7 @@ func (k Keeper) GetAuthorizedAddress(
 
 // RemoveAuthorizedAddress removes a authorizedAddress from the store
 func (k Keeper) RemoveAuthorizedAddress(
-	ctx sdk.Context,
+	ctx context.Context,
 	target string,
 
 ) {
@@ -108,7 +108,7 @@ func (k Keeper) RemoveAuthorizedAddress(
 }
 
 // GetAllAuthorizedAddress returns all authorizedAddress
-func (k Keeper) GetAllAuthorizedAddress(ctx sdk.Context) (list []types.AuthorizedAddress) {
+func (k Keeper) GetAllAuthorizedAddress(ctx context.Context) (list []types.AuthorizedAddress) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedCountKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})

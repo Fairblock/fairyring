@@ -2,6 +2,8 @@ package types
 
 import (
 	"fmt"
+
+	host "github.com/cosmos/ibc-go/v8/modules/core/24-host"
 )
 
 // DefaultIndex is the default global index
@@ -10,9 +12,10 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
+		PortId:                 PortID,
+		AggregatedKeyShareList: []AggregatedKeyShare{},
 		ValidatorSetList:       []ValidatorSet{},
 		KeyShareList:           []KeyShare{},
-		AggregatedKeyShareList: []AggregatedKeyShare{},
 		AuthorizedAddressList:  []AuthorizedAddress{},
 		GeneralKeyShareList:    []GeneralKeyShare{},
 		// this line is used by starport scaffolding # genesis/types/default
@@ -23,7 +26,20 @@ func DefaultGenesis() *GenesisState {
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
-	// Check for duplicated index in validatorSet
+	if err := host.PortIdentifierValidator(gs.PortId); err != nil {
+		return err
+	}
+	// Check for duplicated index in aggregatedKeyShare
+	aggregatedKeyShareIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.AggregatedKeyShareList {
+		index := string(AggregatedKeyShareKey(elem.Height))
+		if _, ok := aggregatedKeyShareIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for aggregatedKeyShare")
+		}
+		aggregatedKeyShareIndexMap[index] = struct{}{}
+	}
+
 	validatorSetIndexMap := make(map[string]struct{})
 	validatorMap := make(map[string]string)
 	consMap := make(map[string]string)
@@ -57,16 +73,7 @@ func (gs GenesisState) Validate() error {
 		}
 		keyShareIndexMap[index] = struct{}{}
 	}
-	// Check for duplicated index in aggregatedKeyShare
-	aggregatedKeyShareIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.AggregatedKeyShareList {
-		index := string(AggregatedKeyShareKey(elem.Height))
-		if _, ok := aggregatedKeyShareIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for aggregatedKeyShare")
-		}
-		aggregatedKeyShareIndexMap[index] = struct{}{}
-	}
 	// Check for duplicated index in authorizedAddress
 	authorizedAddressIndexMap := make(map[string]struct{})
 

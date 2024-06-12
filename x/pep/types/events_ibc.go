@@ -2,14 +2,16 @@ package types
 
 // IBC events
 const (
-	EventTypeTimeout           = "timeout"
-	EventTypeCurrentKeysPacket = "currentKeys_packet"
-	EventTypeRequestKeyshare   = "keyshare_request_packet"
+	EventTypeTimeout = "timeout"
 	// this line is used by starport scaffolding # ibc/packet/event
 
 	AttributeKeyAckSuccess = "success"
 	AttributeKeyAck        = "acknowledgement"
 	AttributeKeyAckError   = "error"
-	AttributeKeyRequestID  = "request_id"
-	AttributeKeyCreator    = "creator"
+
+	EventTypeCurrentKeysPacket = "currentKeys_packet"
+	EventTypeRequestKeyshare   = "keyshare_request_packet"
+
+	AttributeKeyRequestID = "request_id"
+	AttributeKeyCreator   = "creator"
 )

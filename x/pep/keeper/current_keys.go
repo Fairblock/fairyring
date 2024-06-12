@@ -43,13 +43,13 @@ func (k Keeper) TransmitCurrentKeysPacket(
 	timeoutTimestamp uint64,
 ) error {
 
-	_, found := k.ChannelKeeper.GetChannel(ctx, sourcePort, sourceChannel)
+	_, found := k.ibcKeeperFn().ChannelKeeper.GetChannel(ctx, sourcePort, sourceChannel)
 	if !found {
 		return sdkerrors.Wrapf(channeltypes.ErrChannelNotFound, "port ID (%s) channel ID (%s)", sourcePort, sourceChannel)
 	}
 
 	// get the next sequence
-	_, found = k.ChannelKeeper.GetNextSequenceSend(ctx, sourcePort, sourceChannel)
+	_, found = k.ibcKeeperFn().ChannelKeeper.GetNextSequenceSend(ctx, sourcePort, sourceChannel)
 	if !found {
 		return sdkerrors.Wrapf(
 			channeltypes.ErrSequenceSendNotFound,
@@ -57,14 +57,14 @@ func (k Keeper) TransmitCurrentKeysPacket(
 		)
 	}
 
-	channelCap, ok := k.ScopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath(sourcePort, sourceChannel))
+	channelCap, ok := k.ScopedKeeper().GetCapability(ctx, host.ChannelCapabilityPath(sourcePort, sourceChannel))
 	if !ok {
 		return sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
 	}
 
 	packetBytes := packetData.GetBytes()
 
-	if _, err := k.ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes); err != nil {
+	if _, err := k.ibcKeeperFn().ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes); err != nil {
 		return err
 	}
 
@@ -76,17 +76,17 @@ func (k Keeper) TransmitCurrentKeysPacket(
 func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Packet, data kstypes.CurrentKeysPacketData, ack channeltypes.Acknowledgement) error {
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
-		k.Logger(ctx).Error("Ack Error")
-		k.Logger(ctx).Error(dispatchedAck.Error)
+		k.Logger().Error("Ack Error")
+		k.Logger().Error(dispatchedAck.Error)
 		return errors.New(dispatchedAck.Error)
 	case *channeltypes.Acknowledgement_Result:
-		channel, found := k.ChannelKeeper.GetChannel(ctx, packet.SourcePort, packet.SourceChannel)
+		channel, found := k.ibcKeeperFn().ChannelKeeper.GetChannel(ctx, packet.SourcePort, packet.SourceChannel)
 		if !found {
 			return errors.New("channel info not found")
 		}
 
 		// Retrieve the connection associated with the channel
-		connection, found := k.connectionKeeper.GetConnection(ctx, channel.ConnectionHops[0])
+		connection, found := k.ibcKeeperFn().ConnectionKeeper.GetConnection(ctx, channel.ConnectionHops[0])
 		if !found {
 			return errors.New("connection info not found")
 		}
@@ -112,11 +112,11 @@ func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet chann
 			return errors.New("cannot unmarshal acknowledgment")
 		}
 
-		k.Logger(ctx).Info("Got ack result")
-		k.Logger(ctx).Info(packetAck.String())
+		k.Logger().Info("Got ack result")
+		k.Logger().Info(packetAck.String())
 
 		if packetAck.ActiveKey == nil {
-			k.Logger(ctx).Info("active key is nil in packet ack")
+			k.Logger().Info("active key is nil in packet ack")
 			return nil
 		}
 
@@ -130,7 +130,7 @@ func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet chann
 		}
 
 		if packetAck.QueuedKey == nil {
-			k.Logger(ctx).Info("queued key is nil in packet ack")
+			k.Logger().Info("queued key is nil in packet ack")
 			return nil
 		}
 
@@ -152,8 +152,8 @@ func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet chann
 
 // OnTimeoutCurrentKeysPacket responds to the case where a packet has not been transmitted because of a timeout
 func (k Keeper) OnTimeoutCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Packet, data kstypes.CurrentKeysPacketData) error {
-	k.Logger(ctx).Info("Packet timeout")
-	k.Logger(ctx).Info(data.String())
+	k.Logger().Info("Packet timeout")
+	k.Logger().Info(data.String())
 	return nil
 }
 

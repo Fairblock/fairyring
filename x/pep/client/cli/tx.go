@@ -11,11 +11,11 @@ import (
 	"github.com/Fairblock/fairyring/x/pep/types"
 )
 
-var (
-	DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
-)
+var DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
 
-// GetTxCmd returns the transaction commands for this module
+const listSeparator = ","
+
+// GetTxCmd returns the transaction commands for this module.
 func GetTxCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:                        types.ModuleName,
@@ -25,11 +25,6 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(CmdSubmitEncryptedTx())
-	cmd.AddCommand(CmdCreateAggregatedKeyShare())
-	cmd.AddCommand(CmdRequestGeneralKeyshare())
-	cmd.AddCommand(CmdGetGeneralKeyshare())
-	cmd.AddCommand(CmdSubmitGeneralEncryptedTx())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

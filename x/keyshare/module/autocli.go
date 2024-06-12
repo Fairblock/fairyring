@@ -107,7 +107,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "SendKeyshare",
 					Use:            "send-keyshare [message] [keyshare-index] [block-height]",
 					Short:          "Submit the key share for specific block height",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "message"}, {ProtoField: "keyshareIndex"}, {ProtoField: "blockHeight"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "message"}, {ProtoField: "keyShareIndex"}, {ProtoField: "blockHeight"}},
 				},
 				{
 					RpcMethod:      "CreateLatestPubKey",

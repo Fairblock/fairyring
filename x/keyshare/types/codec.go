@@ -2,27 +2,14 @@ package types
 
 import (
 	"bytes"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
 	"github.com/cosmos/gogoproto/jsonpb"
 	proto "github.com/cosmos/gogoproto/proto"
+	// this line is used by starport scaffolding # 1
 )
-
-func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgRegisterValidator{}, "github.com/Fairblock/fairyring/RegisterValidator", nil)
-	cdc.RegisterConcrete(&MsgSendKeyshare{}, "github.com/Fairblock/fairyring/SendKeyshare", nil)
-	cdc.RegisterConcrete(&MsgCreateLatestPubKey{}, "github.com/Fairblock/fairyring/CreateLatestPubKey", nil)
-	cdc.RegisterConcrete(&MsgCreateAuthorizedAddress{}, "keyshare/CreateAuthorizedAddress", nil)
-	cdc.RegisterConcrete(&MsgUpdateAuthorizedAddress{}, "keyshare/UpdateAuthorizedAddress", nil)
-	cdc.RegisterConcrete(&MsgDeleteAuthorizedAddress{}, "keyshare/DeleteAuthorizedAddress", nil)
-	cdc.RegisterConcrete(&MsgCreateGeneralKeyShare{}, "keyshare/CreateGeneralKeyShare", nil)
-	cdc.RegisterConcrete(&MsgOverrideLatestPubKey{}, "keyshare/OverrideLatestPubKey", nil)
-	cdc.RegisterConcrete(&MsgDeRegisterValidator{}, "keyshare/DeRegisterValidator", nil)
-	// this line is used by starport scaffolding # 2
-}
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
@@ -50,20 +37,22 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	// this line is used by starport scaffolding # 3
 
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgUpdateParams{},
+	)
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }
 
 var (
-	Amino     = codec.NewLegacyAmino()
+	// ModuleCdc references the global x/ibc-transfer module codec. Note, the codec
+	// should ONLY be used in certain instances of tests and for JSON encoding.
+	//
+	// The actual codec used for serialization should be provided to x/ibc transfer and
+	// defined at the application level.
 	ModuleCdc = codec.NewProtoCodec(cdctypes.NewInterfaceRegistry())
 )
 
-func init() {
-	RegisterCodec(Amino)
-	sdk.RegisterLegacyAminoCodec(Amino)
-}
-
-// mustProtoMarshalJSON provides an auxiliary function to return Proto3 JSON encoded
+// MustProtoMarshalJSON provides an auxiliary function to return Proto3 JSON encoded
 // bytes of a message.
 // NOTE: Copied from https://github.com/cosmos/cosmos-sdk/blob/971c542453e0972ef1dfc5a80159ad5049c7211c/codec/json.go
 // and modified in order to allow `EmitDefaults` to be set to false for ics20 packet marshalling.

@@ -1,42 +1,42 @@
 syntax = "proto3";
-
 package fairyring.keyshare;
 
 import "fairyring/common/shared_types.proto";
 
-
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
 message KeysharePacketData {
-  oneof packet {
-    NoData                        noData                    = 1;
-    RequestAggrKeysharePacketData requestAggrKeysharePacket = 2;
-    GetAggrKeysharePacketData     getAggrKeysharePacket     = 3;
-    AggrKeyshareDataPacketData    aggrKeyshareDataPacket    = 4;
-    CurrentKeysPacketData         currentKeysPacket         = 5;
-  }
+    oneof packet {
+        NoData noData = 1;
+        RequestAggrKeysharePacketData requestAggrKeysharePacket = 2;
+        GetAggrKeysharePacketData     getAggrKeysharePacket     = 3;
+        AggrKeyshareDataPacketData    aggrKeyshareDataPacket    = 4;
+        CurrentKeysPacketData         currentKeysPacket         = 5;
+    }
 }
 
-message NoData {}
+message NoData {
+}
+
 
 // RequestAggrKeysharePacketData defines a struct for the packet payload
 message RequestAggrKeysharePacketData {
-  string requester = 1;
-  oneof id {
-    string proposal_id = 2;
-    string request_id = 3;
-  }
+    string requester = 1;
+    oneof id {
+        string proposal_id = 2;
+        string request_id = 3;
+    }
 }
 
 // RequestAggrKeysharePacketAck defines a struct for the packet acknowledgment
 message RequestAggrKeysharePacketAck {
-  string identity = 1;
-  string pubkey   = 2;
+    string identity = 1;
+    string pubkey   = 2;
 }
 
 // GetAggrKeysharePacketData defines a struct for the packet payload
 message GetAggrKeysharePacketData {
-  string identity = 1;
+    string identity = 1;
 }
 
 // GetAggrKeysharePacketAck defines a struct for the packet acknowledgment
@@ -44,13 +44,13 @@ message GetAggrKeysharePacketAck {}
 
 // AggrKeyshareDataPacketData defines a struct for the packet payload
 message AggrKeyshareDataPacketData {
-  string identity      = 1;
-  string pubkey        = 2;
-  string aggr_keyshare = 3;
-  string aggr_height   = 4;
-  string proposal_id   = 5; // used for private governance
-  string request_id    = 6; // might be useful to destination chains to sort out the response
-  uint64 retries       = 7;
+    string identity      = 1;
+    string pubkey        = 2;
+    string aggr_keyshare = 3;
+    string aggr_height   = 4;
+    string proposal_id   = 5; // used for private governance
+    string request_id    = 6; // might be useful to destination chains to sort out the response
+    uint64 retries       = 7;
 }
 
 // AggrKeyshareDataPacketAck defines a struct for the packet acknowledgment
@@ -62,6 +62,6 @@ message CurrentKeysPacketData {
 
 // CurrentKeysPacketAck defines a struct for the packet acknowledgment
 message CurrentKeysPacketAck {
-  fairyring.common.ActivePublicKey activeKey = 1;
-  fairyring.common.QueuedPublicKey queuedKey = 2;
+    fairyring.common.ActivePublicKey activeKey = 1;
+    fairyring.common.QueuedPublicKey queuedKey = 2;
 }

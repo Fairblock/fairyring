@@ -7,20 +7,17 @@ const (
 	// StoreKey defines the primary module store key
 	StoreKey = ModuleName
 
-	// RouterKey defines the module's message routing key
-	RouterKey = ModuleName
-
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_pep"
 
-	// KeyshareVersion defines the current version the IBC module supports
-	KeyshareVersion = "keyshare-1"
+	// Version defines the current version the IBC module supports
+	Version = "pep-1"
 
 	// PortID is the default port id that module binds to
 	PortID = "pep"
 
-	// PepChannelID is the default channel id that module will use to transmit IBC packets to pep module.
-	// PepChannelID = "channel-0"
+	// KeyshareVersion defines the current version the IBC module supports
+	KeyshareVersion = "keyshare-1"
 
 	// KeushareChannelID is the default channel id that module will use to transmit IBC packets to keyshare module.
 	KeyshareChannelID = "channel-1"
@@ -28,6 +25,9 @@ const (
 
 var (
 	ParamsKey = []byte("p_pep")
+)
+
+var (
 	// PortKey defines the key to store the port ID in store
 	PortKey               = KeyPrefix("pep-port-")
 	ChannelKey            = KeyPrefix("pep-channel-")

@@ -5,8 +5,6 @@ import (
 	confixcmd "cosmossdk.io/tools/confix/cmd"
 	"errors"
 	"github.com/CosmWasm/wasmd/x/wasm"
-	wasmcli "github.com/CosmWasm/wasmd/x/wasm/client/cli"
-	"github.com/Fairblock/fairyring/app"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/debug"
@@ -24,6 +22,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"io"
+
+	wasmcli "github.com/CosmWasm/wasmd/x/wasm/client/cli"
+	"github.com/Fairblock/fairyring/app"
 )
 
 func initRootCmd(
@@ -50,7 +51,6 @@ func initRootCmd(
 		keys.Commands(),
 	)
 	wasmcli.ExtendUnsafeResetAllCmd(rootCmd)
-
 }
 
 func addModuleInitFlags(startCmd *cobra.Command) {
@@ -58,7 +58,7 @@ func addModuleInitFlags(startCmd *cobra.Command) {
 	wasm.AddModuleInitFlags(startCmd)
 }
 
-// genesisCommand builds genesis-related `v050x-chain-sample-ignited genesis` command. Users may provide application specific commands as a parameter
+// genesisCommand builds genesis-related `fairyringd genesis` command. Users may provide application specific commands as a parameter
 func genesisCommand(txConfig client.TxConfig, basicManager module.BasicManager, cmds ...*cobra.Command) *cobra.Command {
 	cmd := genutilcli.Commands(txConfig, basicManager, app.DefaultNodeHome)
 
@@ -118,6 +118,7 @@ func txCommand() *cobra.Command {
 	return cmd
 }
 
+// newApp creates the application
 func newApp(
 	logger log.Logger,
 	db dbm.DB,
@@ -137,83 +138,7 @@ func newApp(
 	return app
 }
 
-// newApp creates a new Cosmos SDK app
-//func newApp(
-//	logger log.Logger,
-//	db dbm.DB,
-//	traceStore io.Writer,
-//	appOpts servertypes.AppOptions,
-//) servertypes.Application {
-//	var cache storetypes.MultiStorePersistentCache
-//
-//	if cast.ToBool(appOpts.Get(server.FlagInterBlockCache)) {
-//		cache = store.NewCommitKVStoreCacheManager()
-//	}
-//
-//	skipUpgradeHeights := make(map[int64]bool)
-//	for _, h := range cast.ToIntSlice(appOpts.Get(server.FlagUnsafeSkipUpgrades)) {
-//		skipUpgradeHeights[int64(h)] = true
-//	}
-//
-//	pruningOpts, err := server.GetPruningOptionsFromFlags(appOpts)
-//	if err != nil {
-//		panic(err)
-//	}
-//
-//	homeDir := cast.ToString(appOpts.Get(flags.FlagHome))
-//	chainID := cast.ToString(appOpts.Get(flags.FlagChainID))
-//	if chainID == "" {
-//		// fallback to genesis chain-id
-//		appGenesis, err := tmtypes.GenesisDocFromFile(filepath.Join(homeDir, "config", "genesis.json"))
-//		if err != nil {
-//			panic(err)
-//		}
-//
-//		chainID = appGenesis.ChainID
-//	}
-//
-//	snapshotDir := filepath.Join(cast.ToString(appOpts.Get(flags.FlagHome)), "data", "snapshots")
-//	snapshotDB, err := dbm.NewDB("metadata", dbm.GoLevelDBBackend, snapshotDir)
-//	if err != nil {
-//		panic(err)
-//	}
-//	snapshotStore, err := snapshots.NewStore(snapshotDB, snapshotDir)
-//	if err != nil {
-//		panic(err)
-//	}
-//
-//	snapshotOptions := snapshottypes.NewSnapshotOptions(
-//		cast.ToUint64(appOpts.Get(server.FlagStateSyncSnapshotInterval)),
-//		cast.ToUint32(appOpts.Get(server.FlagStateSyncSnapshotKeepRecent)),
-//	)
-//
-//	var wasmOpts []wasmkeeper.Option
-//	if cast.ToBool(appOpts.Get("telemetry.enabled")) {
-//		wasmOpts = append(wasmOpts, wasmkeeper.WithVMCacheMetrics(prometheus.DefaultRegisterer))
-//	}
-//
-//	return app.New(
-//		logger,
-//		db,
-//		traceStore,
-//		true,
-//		appOpts,
-//		wasmOpts,
-//		baseapp.SetPruning(pruningOpts),
-//		baseapp.SetMinGasPrices(cast.ToString(appOpts.Get(server.FlagMinGasPrices))),
-//		baseapp.SetHaltHeight(cast.ToUint64(appOpts.Get(server.FlagHaltHeight))),
-//		baseapp.SetHaltTime(cast.ToUint64(appOpts.Get(server.FlagHaltTime))),
-//		baseapp.SetMinRetainBlocks(cast.ToUint64(appOpts.Get(server.FlagMinRetainBlocks))),
-//		baseapp.SetInterBlockCache(cache),
-//		baseapp.SetTrace(cast.ToBool(appOpts.Get(server.FlagTrace))),
-//		baseapp.SetIndexEvents(cast.ToStringSlice(appOpts.Get(server.FlagIndexEvents))),
-//		baseapp.SetSnapshot(snapshotStore, snapshotOptions),
-//		baseapp.SetIAVLCacheSize(cast.ToInt(appOpts.Get(server.FlagIAVLCacheSize))),
-//		baseapp.SetIAVLDisableFastNode(cast.ToBool(appOpts.Get(server.FlagDisableIAVLFastNode))),
-//		baseapp.SetChainID(chainID),
-//	)
-//}
-
+// appExport creates a new app (optionally at a given height) and exports state.
 func appExport(
 	logger log.Logger,
 	db dbm.DB,
@@ -263,38 +188,3 @@ func appExport(
 
 	return bApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)
 }
-
-// appExport creates a new simapp (optionally at a given height)
-//func appExport(
-//	logger log.Logger,
-//	db dbm.DB,
-//	traceStore io.Writer,
-//	height int64,
-//	forZeroHeight bool,
-//	jailAllowedAddrs []string,
-//	appOpts servertypes.AppOptions,
-//	modulesToExport []string,
-//) (servertypes.ExportedApp, error) {
-//
-//	homePath, ok := appOpts.Get(flags.FlagHome).(string)
-//	if !ok || homePath == "" {
-//		return servertypes.ExportedApp{}, errors.New("application home not set")
-//	}
-//
-//	app := app.New(
-//		logger,
-//		db,
-//		traceStore,
-//		height == -1, // -1: no height provided
-//		appOpts,
-//		app.EmptyWasmOpts,
-//	)
-//
-//	if height != -1 {
-//		if err := app.LoadHeight(height); err != nil {
-//			return servertypes.ExportedApp{}, err
-//		}
-//	}
-//
-//	return app.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)
-//}

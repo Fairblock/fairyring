@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Query_Commitments_FullMethodName           = "/fairyring.keyshare.Query/Commitments"
 	Query_Params_FullMethodName                = "/fairyring.keyshare.Query/Params"
+	Query_Commitments_FullMethodName           = "/fairyring.keyshare.Query/Commitments"
 	Query_ValidatorSet_FullMethodName          = "/fairyring.keyshare.Query/ValidatorSet"
 	Query_ValidatorSetAll_FullMethodName       = "/fairyring.keyshare.Query/ValidatorSetAll"
 	Query_KeyShare_FullMethodName              = "/fairyring.keyshare.Query/KeyShare"
@@ -38,9 +38,9 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type QueryClient interface {
-	Commitments(ctx context.Context, in *QueryCommitmentsRequest, opts ...grpc.CallOption) (*QueryCommitmentsResponse, error)
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
+	Commitments(ctx context.Context, in *QueryCommitmentsRequest, opts ...grpc.CallOption) (*QueryCommitmentsResponse, error)
 	// Queries a ValidatorSet by index.
 	ValidatorSet(ctx context.Context, in *QueryGetValidatorSetRequest, opts ...grpc.CallOption) (*QueryGetValidatorSetResponse, error)
 	// Queries a list of ValidatorSet items.
@@ -70,18 +70,18 @@ func NewQueryClient(cc grpc.ClientConnInterface) QueryClient {
 	return &queryClient{cc}
 }
 
-func (c *queryClient) Commitments(ctx context.Context, in *QueryCommitmentsRequest, opts ...grpc.CallOption) (*QueryCommitmentsResponse, error) {
-	out := new(QueryCommitmentsResponse)
-	err := c.cc.Invoke(ctx, Query_Commitments_FullMethodName, in, out, opts...)
+func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error) {
+	out := new(QueryParamsResponse)
+	err := c.cc.Invoke(ctx, Query_Params_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error) {
-	out := new(QueryParamsResponse)
-	err := c.cc.Invoke(ctx, Query_Params_FullMethodName, in, out, opts...)
+func (c *queryClient) Commitments(ctx context.Context, in *QueryCommitmentsRequest, opts ...grpc.CallOption) (*QueryCommitmentsResponse, error) {
+	out := new(QueryCommitmentsResponse)
+	err := c.cc.Invoke(ctx, Query_Commitments_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -191,9 +191,9 @@ func (c *queryClient) GeneralKeyShareAll(ctx context.Context, in *QueryAllGenera
 // All implementations must embed UnimplementedQueryServer
 // for forward compatibility
 type QueryServer interface {
-	Commitments(context.Context, *QueryCommitmentsRequest) (*QueryCommitmentsResponse, error)
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
+	Commitments(context.Context, *QueryCommitmentsRequest) (*QueryCommitmentsResponse, error)
 	// Queries a ValidatorSet by index.
 	ValidatorSet(context.Context, *QueryGetValidatorSetRequest) (*QueryGetValidatorSetResponse, error)
 	// Queries a list of ValidatorSet items.
@@ -220,11 +220,11 @@ type QueryServer interface {
 type UnimplementedQueryServer struct {
 }
 
-func (UnimplementedQueryServer) Commitments(context.Context, *QueryCommitmentsRequest) (*QueryCommitmentsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Commitments not implemented")
-}
 func (UnimplementedQueryServer) Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
+}
+func (UnimplementedQueryServer) Commitments(context.Context, *QueryCommitmentsRequest) (*QueryCommitmentsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Commitments not implemented")
 }
 func (UnimplementedQueryServer) ValidatorSet(context.Context, *QueryGetValidatorSetRequest) (*QueryGetValidatorSetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ValidatorSet not implemented")
@@ -272,24 +272,6 @@ func RegisterQueryServer(s grpc.ServiceRegistrar, srv QueryServer) {
 	s.RegisterService(&Query_ServiceDesc, srv)
 }
 
-func _Query_Commitments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryCommitmentsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).Commitments(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Query_Commitments_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Commitments(ctx, req.(*QueryCommitmentsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(QueryParamsRequest)
 	if err := dec(in); err != nil {
@@ -304,6 +286,24 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).Params(ctx, req.(*QueryParamsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_Commitments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryCommitmentsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Commitments(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_Commitments_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Commitments(ctx, req.(*QueryCommitmentsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -514,12 +514,12 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Commitments",
-			Handler:    _Query_Commitments_Handler,
-		},
-		{
 			MethodName: "Params",
 			Handler:    _Query_Params_Handler,
+		},
+		{
+			MethodName: "Commitments",
+			Handler:    _Query_Commitments_Handler,
 		},
 		{
 			MethodName: "ValidatorSet",

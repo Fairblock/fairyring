@@ -59,7 +59,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "KeyshareReq",
 					Use:            "show-keyshare-req [req-id]",
 					Short:          "show a particular pending keyshare request by request-id",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "reqId"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "req_id"}},
 				},
 				{
 					RpcMethod: "KeyshareReqAll",
@@ -87,23 +87,25 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "SubmitGeneralEncryptedTx",
 					Use:            "submit-general-encrypted-tx [data] [req-id]",
 					Short:          "Submit an encrypted transaction along with its req-id",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "data"}, {ProtoField: "reqId"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "data"}, {ProtoField: "req_id"}},
 				},
 				{
+					RpcMethod:      "CreateAggregatedKeyShare",
 					Use:            "create-aggregated-key-share [height] [data]",
 					Short:          "Submit a new aggregated keyshare into a destination chain",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "height"}, {ProtoField: "data"}},
 				},
 				{
-					Use:   "request-general-keyshare",
-					Short: "Broadcast message request-general-keyshare",
+					RpcMethod: "RequestGeneralKeyshare",
+					Use:       "request-general-keyshare",
+					Short:     "Broadcast message request-general-keyshare",
 				},
 				{
+					RpcMethod:      "GetGeneralKeyshare",
 					Use:            "get-general-keyshare [req-id]",
 					Short:          "Broadcast message get-general-keyshare",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "reqId"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "req_id"}},
 				},
-
 				// this line is used by ignite scaffolding # autocli/tx
 			},
 		},

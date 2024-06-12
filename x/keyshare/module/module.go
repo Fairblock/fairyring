@@ -2,33 +2,34 @@ package keyshare
 
 import (
 	"context"
-	"cosmossdk.io/core/store"
-	"cosmossdk.io/depinject"
-	"cosmossdk.io/log"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
-	"github.com/Fairblock/fairyring/x/keyshare/client/cli"
 	"github.com/cosmos/cosmos-sdk/telemetry"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
-	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
-	"github.com/spf13/cobra"
 	"strconv"
 
 	"cosmossdk.io/core/appmodule"
-	modulev1 "github.com/Fairblock/fairyring/api/fairyring/keyshare/module"
+	"cosmossdk.io/core/store"
+	"cosmossdk.io/depinject"
+	"cosmossdk.io/log"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
+	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
+	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/spf13/cobra"
 
 	// this line is used by starport scaffolding # 1
 
+	modulev1 "github.com/Fairblock/fairyring/api/fairyring/keyshare/module"
+	"github.com/Fairblock/fairyring/x/keyshare/client/cli"
 	"github.com/Fairblock/fairyring/x/keyshare/keeper"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 )
@@ -43,6 +44,7 @@ var (
 	_ appmodule.AppModule       = (*AppModule)(nil)
 	_ appmodule.HasBeginBlocker = (*AppModule)(nil)
 	_ appmodule.HasEndBlocker   = (*AppModule)(nil)
+	_ porttypes.IBCModule       = IBCModule{}
 )
 
 // ----------------------------------------------------------------------------
@@ -255,7 +257,7 @@ func (am AppModule) EndBlock(cctx context.Context) error {
 
 	for _, eachValidator := range validators {
 		lastSubmittedHeight := am.keeper.GetLastSubmittedHeight(ctx, eachValidator.Validator)
-		am.keeper.Logger(ctx).Info(fmt.Sprintf("Last submitted: %s: %d", eachValidator.Validator, lastSubmittedHeight))
+		am.keeper.Logger().Info(fmt.Sprintf("Last submitted: %s: %d", eachValidator.Validator, lastSubmittedHeight))
 		// Validator will be slashed if their last submitted height is N block ago
 		// Lets say N is 10, and last submitted height is 0, current height is 10
 		// then he/she will be slashed
@@ -265,14 +267,14 @@ func (am AppModule) EndBlock(cctx context.Context) error {
 
 		savedConsAddrByte, err := hex.DecodeString(eachValidator.ConsAddr)
 		if err != nil {
-			am.keeper.Logger(ctx).Error(fmt.Sprintf("Error while decoding validator %s cons addr: %s", eachValidator.Validator, err.Error()))
+			am.keeper.Logger().Error(fmt.Sprintf("Error while decoding validator %s cons addr: %s", eachValidator.Validator, err.Error()))
 			continue
 		}
 
 		var consAddr sdk.ConsAddress
 		err = consAddr.Unmarshal(savedConsAddrByte)
 		if err != nil {
-			am.keeper.Logger(ctx).Error(fmt.Sprintf("Error while unmarshaling validator %s cons addr: %s", eachValidator.Validator, err.Error()))
+			am.keeper.Logger().Error(fmt.Sprintf("Error while unmarshaling validator %s cons addr: %s", eachValidator.Validator, err.Error()))
 			continue
 		}
 
@@ -326,10 +328,10 @@ type ModuleInputs struct {
 
 	AccountKeeper  types.AccountKeeper
 	BankKeeper     types.BankKeeper
-	pepKeeper      types.PepKeeper
-	slashingKeeper types.SlashingKeeper
-	stakingKeeper  types.StakingKeeper
-	govKeeper      types.GovKeeper
+	PepKeeper      types.PepKeeper
+	SlashingKeeper types.SlashingKeeper
+	StakingKeeper  types.StakingKeeper
+	GovKeeper      types.GovKeeper
 
 	IBCKeeperFn        func() *ibckeeper.Keeper                   `optional:"true"`
 	CapabilityScopedFn func(string) capabilitykeeper.ScopedKeeper `optional:"true"`
@@ -353,22 +355,22 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.StoreService,
 		in.Logger,
 		authority.String(),
-		in.pepKeeper,
-		in.slashingKeeper,
-		in.stakingKeeper,
-		in.govKeeper,
-		in.IBCKeeperFn().ChannelKeeper,
-		in.IBCKeeperFn().PortKeeper,
-		in.CapabilityScopedFn(types.ModuleName),
-		in.IBCKeeperFn().ConnectionKeeper,
+		in.IBCKeeperFn,
+		in.CapabilityScopedFn,
+		in.AccountKeeper,
+		in.BankKeeper,
+		in.PepKeeper,
+		in.SlashingKeeper,
+		in.StakingKeeper,
+		in.GovKeeper,
 	)
 	m := NewAppModule(
 		in.Cdc,
 		k,
 		in.AccountKeeper,
 		in.BankKeeper,
-		in.pepKeeper,
-		in.stakingKeeper,
+		in.PepKeeper,
+		in.StakingKeeper,
 	)
 
 	return ModuleOutputs{KeyshareKeeper: k, Module: m}

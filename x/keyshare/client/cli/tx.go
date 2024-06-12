@@ -11,11 +11,11 @@ import (
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 )
 
-var (
-	DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
-)
+var DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
 
-// GetTxCmd returns the transaction commands for this module
+const listSeparator = ","
+
+// GetTxCmd returns the transaction commands for this module.
 func GetTxCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:                        types.ModuleName,
@@ -25,16 +25,6 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(CmdRegisterValidator())
-	cmd.AddCommand(CmdDeRegisterValidator())
-	cmd.AddCommand(CmdSendKeyshare())
-	cmd.AddCommand(CmdCreateLatestPubKey())
-	cmd.AddCommand(CmdCreateAuthorizedAddress())
-	cmd.AddCommand(CmdUpdateAuthorizedAddress())
-	cmd.AddCommand(CmdDeleteAuthorizedAddress())
-
-	cmd.AddCommand(CmdCreateGeneralKeyShare())
-	cmd.AddCommand(CmdOverrideLatestPubKey())
 	// this line is used by starport scaffolding # 1
 
 	return cmd
