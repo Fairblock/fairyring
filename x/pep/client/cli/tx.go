@@ -25,6 +25,11 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
+	cmd.AddCommand(CmdSubmitEncryptedTx())
+	cmd.AddCommand(CmdCreateAggregatedKeyShare())
+	cmd.AddCommand(CmdRequestGeneralKeyshare())
+	cmd.AddCommand(CmdGetGeneralKeyshare())
+	cmd.AddCommand(CmdSubmitGeneralEncryptedTx())
 	// this line is used by starport scaffolding # 1
 
 	return cmd
