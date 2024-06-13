@@ -84,6 +84,8 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	scopedICAControllerKeeper := app.CapabilityKeeper.ScopeToModule(icacontrollertypes.SubModuleName)
 	scopedICAHostKeeper := app.CapabilityKeeper.ScopeToModule(icahosttypes.SubModuleName)
 
+	scopedGovKeeper := app.CapabilityKeeper.ScopeToModule(govtypes.ModuleName)
+
 	// Create IBC keeper
 	app.IBCKeeper = ibckeeper.NewKeeper(
 		app.appCodec,
@@ -192,6 +194,8 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	app.ScopedICAHostKeeper = scopedICAHostKeeper
 	app.ScopedICAControllerKeeper = scopedICAControllerKeeper
 
+	app.ScopedGovkeeper = scopedGovKeeper
+
 	// register IBC modules
 	if err := app.RegisterModules(
 		ibc.NewAppModule(app.IBCKeeper),
@@ -213,16 +217,18 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 // This needs to be removed after IBC supports App Wiring.
 func RegisterIBC(registry cdctypes.InterfaceRegistry) map[string]appmodule.AppModule {
 	modules := map[string]appmodule.AppModule{
-		ibcexported.ModuleName:      ibc.AppModule{},
-		ibctransfertypes.ModuleName: ibctransfer.AppModule{},
-		ibcfeetypes.ModuleName:      ibcfee.AppModule{},
-		icatypes.ModuleName:         icamodule.AppModule{},
-		capabilitytypes.ModuleName:  capability.AppModule{},
-		ibctm.ModuleName:            ibctm.AppModule{},
-		solomachine.ModuleName:      solomachine.AppModule{},
-		ibcconsumertypes.ModuleName: ibcconsumer.AppModule{},
-		wasmtypes.ModuleName:        wasm.AppModule{},
-		govtypes.ModuleName:         gov.AppModule{},
+		ibcexported.ModuleName:         ibc.AppModule{},
+		ibctransfertypes.ModuleName:    ibctransfer.AppModule{},
+		ibcfeetypes.ModuleName:         ibcfee.AppModule{},
+		icatypes.ModuleName:            icamodule.AppModule{},
+		capabilitytypes.ModuleName:     capability.AppModule{},
+		ibctm.ModuleName:               ibctm.AppModule{},
+		solomachine.ModuleName:         solomachine.AppModule{},
+		ibcconsumertypes.ModuleName:    ibcconsumer.AppModule{},
+		wasmtypes.ModuleName:           wasm.AppModule{},
+		govtypes.ModuleName:            gov.AppModule{},
+		keysharemoduletypes.ModuleName: keysharemodule.AppModule{},
+		pepmoduletypes.ModuleName:      pepmodule.AppModule{},
 	}
 
 	for name, m := range modules {

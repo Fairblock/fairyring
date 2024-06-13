@@ -165,7 +165,7 @@ echo "Submit valid aggregated key to pep module on chain fairyring_test_2 from a
 RESULT=$($BINARY tx pep create-aggregated-key-share $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
-ACTION=$(echo "$RESULT" | jq -r '.logs[0].events[0].attributes[0].value')
+ACTION=$(echo "$RESULT" | jq -r | jq '.events' | jq 'map(select(any(.type; contains("message"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("action"))))[]' | jq -r '.value')
 if [ "$ACTION" != "/fairyring.pep.MsgCreateAggregatedKeyShare" ]; then
   echo "ERROR: Pep module submit aggregated key error. Expected tx action to be MsgCreateAggregatedKeyShare,  got '$ACTION'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
@@ -205,12 +205,12 @@ echo "Submit encrypted tx to pep module on chain fairyring_test_2"
 RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER $AGG_KEY_HEIGHT --from $VALIDATOR_2 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
-EVENT_TYPE=$(echo "$RESULT" | jq -r '.logs[0].events[5].type')
-TARGET_HEIGHT=$(echo "$RESULT" | jq -r '.logs[0].events[5].attributes[1].value')
-if [ "$EVENT_TYPE" != "new-encrypted-tx-submitted" ] && [ "$TARGET_HEIGHT" != "$AGG_KEY_HEIGHT" ]; then
+TARGET_HEIGHT=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("new-encrypted-tx-submitted"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("height"))))[]' | jq -r '.value')
+if [ "$TARGET_HEIGHT" != "$AGG_KEY_HEIGHT" ]; then
   echo "ERROR: Pep module submit encrypted tx error. Expected tx to submitted without error with target height '$AGG_KEY_HEIGHT', got '$TARGET_HEIGHT' and '$EVENT_TYPE' | '$CURRENT_BLOCK'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq '.')"
+  echo $RESULT | jq
   exit 1
 fi
 
@@ -225,12 +225,12 @@ echo "Submit 2nd encrypted tx (without gas fee) to pep module on chain fairyring
 RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER_2 $AGG_KEY_HEIGHT --from $VALIDATOR_2 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
-EVENT_TYPE=$(echo "$RESULT" | jq -r '.logs[0].events[5].type')
-TARGET_HEIGHT=$(echo "$RESULT" | jq -r '.logs[0].events[5].attributes[1].value')
-if [ "$EVENT_TYPE" != "new-encrypted-tx-submitted" ] && [ "$TARGET_HEIGHT" != "$AGG_KEY_HEIGHT" ]; then
+TARGET_HEIGHT=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("new-encrypted-tx-submitted"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("height"))))[]' | jq -r '.value')
+if [ "$TARGET_HEIGHT" != "$AGG_KEY_HEIGHT" ]; then
   echo "ERROR: Pep module submit 2nd encrypted tx error. Expected tx to submitted without error with target height '$AGG_KEY_HEIGHT', got '$TARGET_HEIGHT' and '$EVENT_TYPE' | '$CURRENT_BLOCK'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq '.')"
+  echo $RESULT | jq
   exit 1
 fi
 
@@ -257,10 +257,11 @@ echo "Submit valid aggregated key to pep module on chain fairyring_test_2 from a
 RESULT=$($BINARY tx pep create-aggregated-key-share $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
-ACTION=$(echo "$RESULT" | jq -r '.logs[0].events[0].attributes[0].value')
+ACTION=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("message"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("action"))))[]' | jq -r '.value')
 if [ "$ACTION" != "/fairyring.pep.MsgCreateAggregatedKeyShare" ]; then
   echo "ERROR: Pep module submit aggregated key error. Expected tx action to be MsgCreateAggregatedKeyShare,  got '$ACTION'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  echo $RESULT | jq
   exit 1
 fi
 

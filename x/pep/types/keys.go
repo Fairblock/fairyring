@@ -10,9 +10,6 @@ const (
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_pep"
 
-	// Version defines the current version the IBC module supports
-	Version = "pep-1"
-
 	// PortID is the default port id that module binds to
 	PortID = "pep"
 

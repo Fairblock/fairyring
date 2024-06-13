@@ -46,8 +46,8 @@ func (im IBCModule) OnChanOpenInit(
 		return "", errorsmod.Wrapf(porttypes.ErrInvalidPort, "invalid port: %s, expected %s", portID, boundPort)
 	}
 
-	if version != types.Version {
-		return "", errorsmod.Wrapf(types.ErrInvalidVersion, "got %s, expected %s", version, types.Version)
+	if version != types.KeyshareVersion {
+		return "", errorsmod.Wrapf(types.ErrInvalidVersion, "got %s, expected %s", version, types.KeyshareVersion)
 	}
 
 	// Claim channel capability passed back by IBC module
@@ -76,8 +76,8 @@ func (im IBCModule) OnChanOpenTry(
 		return "", errorsmod.Wrapf(porttypes.ErrInvalidPort, "invalid port: %s, expected %s", portID, boundPort)
 	}
 
-	if counterpartyVersion != types.Version {
-		return "", errorsmod.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: got: %s, expected %s", counterpartyVersion, types.Version)
+	if counterpartyVersion != types.KeyshareVersion {
+		return "", errorsmod.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: got: %s, expected %s", counterpartyVersion, types.KeyshareVersion)
 	}
 
 	// Module may have already claimed capability in OnChanOpenInit in the case of crossing hellos
@@ -91,7 +91,7 @@ func (im IBCModule) OnChanOpenTry(
 		}
 	}
 
-	return types.Version, nil
+	return types.KeyshareVersion, nil
 }
 
 // OnChanOpenAck implements the IBCModule interface
@@ -102,8 +102,8 @@ func (im IBCModule) OnChanOpenAck(
 	_,
 	counterpartyVersion string,
 ) error {
-	if counterpartyVersion != types.Version {
-		return errorsmod.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: %s, expected %s", counterpartyVersion, types.Version)
+	if counterpartyVersion != types.KeyshareVersion {
+		return errorsmod.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: %s, expected %s", counterpartyVersion, types.KeyshareVersion)
 	}
 	return nil
 }
