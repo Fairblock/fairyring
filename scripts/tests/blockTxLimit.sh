@@ -86,7 +86,7 @@ for testing_i in $(seq 1 $MAX_TEST_TIMES)
 do
   echo "Current Testing Times: $testing_i"
 
-  CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE | jq -r '.block.header.height')
+  CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE -o json | jq -r '.block.header.height')
 
   TARGET_BLOCK=$(($CURRENT_BLOCK+$TARGET_BLOCK_PLUS))
 
@@ -132,7 +132,7 @@ do
   echo "Start getting block height..."
 
   while true; do
-    CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE | jq -r '.block.header.height')
+    CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE | jq -r '.block.header.height')
 
     for i in "${PIPES[@]}"; do
       echo "$CURRENT_BLOCK" >$i

@@ -83,7 +83,7 @@ fi
 echo "Pub Key expires at: $PUB_KEY_EXPIRY"
 
 echo "Submit encrypted tx with invalid block height to pep module on chain fairyring_test_2"
-CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
+CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
 RESULT=$($BINARY tx pep submit-encrypted-tx 0000 $((CURRENT_BLOCK - 1)) --from $VALIDATOR_2 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
@@ -150,7 +150,7 @@ SIGNED_DATA_2=$($BINARY tx sign unsigned2.json --from $VALIDATOR_2 --offline --a
 
 
 echo "Query aggregated key share from key share module for submitting to pep module on chain fairyring_test_1"
-CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE | jq -r '.block.header.height')
+CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE | jq -r '.block.header.height')
 RESULT=$($BINARY query keyshare list-aggregated-key-share --node $CHAIN1_NODE -o json)
 AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .height')
 AGG_KEY=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .data')
@@ -159,7 +159,7 @@ if [ "$CURRENT_BLOCK" -gt "$AGG_KEY_HEIGHT" ]; then
   exit 1
 fi
 
-CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE | jq -r '.block.header.height')
+CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE -o json | jq -r '.block.header.height')
 echo "Chain 2 Current Block: $CURRENT_BLOCK"
 echo "Submit valid aggregated key to pep module on chain fairyring_test_2 from address: $VALIDATOR_2"
 RESULT=$($BINARY tx pep create-aggregated-key-share $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
@@ -174,7 +174,7 @@ fi
 
 
 echo "Query aggregated key share from key share module for submitting to pep module on chain fairyring_test_1"
-CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE | jq -r '.block.header.height')
+CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE | jq -r '.block.header.height')
 RESULT=$($BINARY query keyshare list-aggregated-key-share --node $CHAIN1_NODE -o json)
 AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .height')
 AGG_KEY=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .data')
@@ -251,7 +251,7 @@ if [ "$VALIDATOR_PEP_NONCE" != "1" ]; then
 fi
 
 
-CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE | jq -r '.block.header.height')
+CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE -o json | jq -r '.block.header.height')
 echo "Chain 2 Current Block: $CURRENT_BLOCK"
 echo "Submit valid aggregated key to pep module on chain fairyring_test_2 from address: $VALIDATOR_2"
 RESULT=$($BINARY tx pep create-aggregated-key-share $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
