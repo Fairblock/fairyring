@@ -11,7 +11,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
 	channeltypes "github.com/cosmos/ibc-go/v8/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v8/modules/core/24-host"
@@ -31,9 +30,9 @@ type (
 		// should be the x/gov module account.
 		authority string
 
-		ibcKeeperFn        func() *ibckeeper.Keeper
-		capabilityScopedFn func(string) capabilitykeeper.ScopedKeeper
-		scopedKeeper       exported.ScopedKeeper
+		ibcKeeperFn func() *ibckeeper.Keeper
+		// capabilityScopedFn func(string) capabilitykeeper.ScopedKeeper
+		scopedKeeper exported.ScopedKeeper
 
 		accountKeeper  types.AccountKeeper
 		bankKeeper     types.BankKeeper
@@ -50,7 +49,8 @@ func NewKeeper(
 	logger log.Logger,
 	authority string,
 	ibcKeeperFn func() *ibckeeper.Keeper,
-	capabilityScopedFn func(string) capabilitykeeper.ScopedKeeper,
+	scopedKeeper exported.ScopedKeeper,
+	// capabilityScopedFn func(string) capabilitykeeper.ScopedKeeper,
 
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
@@ -64,13 +64,13 @@ func NewKeeper(
 	}
 
 	return Keeper{
-		cdc:                cdc,
-		storeService:       storeService,
-		authority:          authority,
-		logger:             logger,
-		ibcKeeperFn:        ibcKeeperFn,
-		capabilityScopedFn: capabilityScopedFn,
-
+		cdc:          cdc,
+		storeService: storeService,
+		authority:    authority,
+		logger:       logger,
+		ibcKeeperFn:  ibcKeeperFn,
+		// capabilityScopedFn: capabilityScopedFn,
+		scopedKeeper:   scopedKeeper,
 		accountKeeper:  accountKeeper,
 		bankKeeper:     bankKeeper,
 		pepKeeper:      pepKeeper,
@@ -148,9 +148,9 @@ func (k *Keeper) ClaimCapability(ctx sdk.Context, cap *capabilitytypes.Capabilit
 
 // ScopedKeeper returns the ScopedKeeper
 func (k *Keeper) ScopedKeeper() exported.ScopedKeeper {
-	if k.scopedKeeper == nil && k.capabilityScopedFn != nil {
-		k.scopedKeeper = k.capabilityScopedFn(types.ModuleName)
-	}
+	//if k.scopedKeeper == nil && k.capabilityScopedFn != nil {
+	//	k.scopedKeeper = k.capabilityScopedFn(types.ModuleName)
+	//}
 	return k.scopedKeeper
 }
 

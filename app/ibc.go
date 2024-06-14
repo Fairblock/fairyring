@@ -5,6 +5,7 @@ import (
 	storetypes "cosmossdk.io/store/types"
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
@@ -43,7 +44,6 @@ import (
 	// this line is used by starport scaffolding # ibc/app/import
 	keysharemodule "github.com/Fairblock/fairyring/x/keyshare/module"
 	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
-	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
 	pepmoduletypes "github.com/Fairblock/fairyring/x/pep/types"
 )
 
@@ -83,8 +83,6 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	scopedIBCTransferKeeper := app.CapabilityKeeper.ScopeToModule(ibctransfertypes.ModuleName)
 	scopedICAControllerKeeper := app.CapabilityKeeper.ScopeToModule(icacontrollertypes.SubModuleName)
 	scopedICAHostKeeper := app.CapabilityKeeper.ScopeToModule(icahosttypes.SubModuleName)
-
-	scopedGovKeeper := app.CapabilityKeeper.ScopeToModule(govtypes.ModuleName)
 
 	// Create IBC keeper
 	app.IBCKeeper = ibckeeper.NewKeeper(
@@ -169,11 +167,17 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 		AddRoute(icacontrollertypes.SubModuleName, icaControllerIBCModule).
 		AddRoute(icahosttypes.SubModuleName, icaHostIBCModule)
 
-	pepIBCModule := ibcfee.NewIBCMiddleware(pepmodule.NewIBCModule(app.PepKeeper), app.IBCFeeKeeper)
-	ibcRouter.AddRoute(pepmoduletypes.ModuleName, pepIBCModule)
+	pepStack, err := app.registerPepModule()
+	if err != nil {
+		return err
+	}
+	ibcRouter.AddRoute(pepmoduletypes.ModuleName, pepStack)
 
-	keyshareIBCModule := ibcfee.NewIBCMiddleware(keysharemodule.NewIBCModule(app.KeyshareKeeper), app.IBCFeeKeeper)
-	ibcRouter.AddRoute(keysharemoduletypes.ModuleName, keyshareIBCModule)
+	keyshareStack, err := app.registerKeyshareModule()
+	if err != nil {
+		return err
+	}
+	ibcRouter.AddRoute(keysharemoduletypes.ModuleName, keyshareStack)
 
 	// Add gov module to IBC Router
 	govIBCModule := ibcfee.NewIBCMiddleware(gov.NewIBCModule(*app.GovKeeper), app.IBCFeeKeeper)
@@ -193,8 +197,6 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	app.ScopedIBCTransferKeeper = scopedIBCTransferKeeper
 	app.ScopedICAHostKeeper = scopedICAHostKeeper
 	app.ScopedICAControllerKeeper = scopedICAControllerKeeper
-
-	app.ScopedGovkeeper = scopedGovKeeper
 
 	// register IBC modules
 	if err := app.RegisterModules(

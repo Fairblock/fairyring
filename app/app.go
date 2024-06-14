@@ -27,7 +27,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/server/api"
 	"github.com/cosmos/cosmos-sdk/server/config"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	_ "github.com/cosmos/cosmos-sdk/x/auth" // import for side-effects
@@ -144,7 +143,8 @@ type App struct {
 	ScopedIBCTransferKeeper   capabilitykeeper.ScopedKeeper
 	ScopedICAControllerKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper       capabilitykeeper.ScopedKeeper
-	ScopedGovkeeper           capabilitykeeper.ScopedKeeper
+	ScopedPepKeeper           capabilitykeeper.ScopedKeeper
+	ScopedKeyshareKeeper      capabilitykeeper.ScopedKeeper
 
 	PepKeeper      pepmodulekeeper.Keeper
 	KeyshareKeeper keysharemodulekeeper.Keeper
@@ -222,7 +222,7 @@ func New(
 				// This needs to be removed after IBC supports App Wiring.
 				app.GetIBCKeeper,
 				app.GetCapabilityScopedKeeper,
-				app.SimCheck,
+				// app.SimCheck,
 				// Supply the logger
 				logger,
 
@@ -291,8 +291,8 @@ func New(
 		&app.NFTKeeper,
 		&app.GroupKeeper,
 		&app.CircuitBreakerKeeper,
-		&app.PepKeeper,
-		&app.KeyshareKeeper,
+		// &app.PepKeeper,
+		// &app.KeyshareKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)
@@ -483,8 +483,4 @@ func BlockedAddresses() map[string]bool {
 	// the provider chain
 	delete(result, authtypes.NewModuleAddress(ibcconsumertypes.ConsumerToSendToProviderName).String())
 	return result
-}
-
-func (app *App) SimCheck() func(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error) {
-	return app.SimCheck()
 }

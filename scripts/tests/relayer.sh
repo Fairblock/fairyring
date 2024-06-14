@@ -19,9 +19,10 @@ CONFIG_FILE=hermes_config.toml
 # hermes --config $CONFIG_FILE create connection --a-chain $CHAINID_2 --a-client 07-tendermint-0 --b-client 07-tendermint-0
 
 echo "Creating channel..."
-hermes --config $CONFIG_FILE create channel --new-client-connection --a-chain $CHAINID_2 --b-chain $CHAINID_1 --a-port gov --b-port keyshare --channel-version keyshare-1 --yes
+# hermes --config $CONFIG_FILE create channel --new-client-connection --a-chain $CHAINID_2 --b-chain $CHAINID_1 --a-port gov --b-port keyshare --channel-version keyshare-1 --yes
+# hermes --config $CONFIG_FILE create channel --new-client-connection --a-chain $CHAINID_2 --b-chain $CHAINID_1 --a-port pep --b-port keyshare --channel-version keyshare-1 --yes
 # hermes --config $CONFIG_FILE create channel --a-chain $CHAINID_2 --a-connection connection-0 --a-port pep --b-port pep --channel-version pep-1
-hermes --config $CONFIG_FILE create channel --a-chain $CHAINID_2 --a-connection connection-0 --a-port pep --b-port keyshare --channel-version keyshare-1
+# hermes --config $CONFIG_FILE create channel --a-chain $CHAINID_2 --a-connection connection-0 --a-port pep --b-port keyshare --channel-version keyshare-1
 
 
 echo ""

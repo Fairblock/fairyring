@@ -3,6 +3,7 @@ package pep
 import (
 	"bytes"
 	"context"
+	"cosmossdk.io/core/appmodule"
 	cosmosmath "cosmossdk.io/math"
 	txsigning "cosmossdk.io/x/tx/signing"
 	"encoding/hex"
@@ -16,6 +17,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
+	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"
 	"github.com/drand/kyber/pairing"
@@ -24,26 +26,16 @@ import (
 	"strconv"
 	"strings"
 
-	"cosmossdk.io/core/appmodule"
-	"cosmossdk.io/core/store"
-	"cosmossdk.io/depinject"
-	"cosmossdk.io/log"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
-	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
-	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
 
 	// this line is used by starport scaffolding # 1
 
-	modulev1 "github.com/Fairblock/fairyring/api/fairyring/pep/module"
 	"github.com/Fairblock/fairyring/x/pep/client/cli"
 	"github.com/Fairblock/fairyring/x/pep/keeper"
 	"github.com/Fairblock/fairyring/x/pep/types"
@@ -132,7 +124,7 @@ type AppModule struct {
 
 	msgServiceRouter *baseapp.MsgServiceRouter
 	txConfig         client.TxConfig
-	// simCheck         func(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error)
+	simCheck         func(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error)
 }
 
 func NewAppModule(
@@ -142,7 +134,7 @@ func NewAppModule(
 	bankKeeper types.BankKeeper,
 	msgServiceRouter *baseapp.MsgServiceRouter,
 	txConfig client.TxConfig,
-	// simCheck func(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error),
+	simCheck func(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error),
 ) AppModule {
 	return AppModule{
 		AppModuleBasic:   NewAppModuleBasic(cdc),
@@ -151,7 +143,7 @@ func NewAppModule(
 		bankKeeper:       bankKeeper,
 		msgServiceRouter: msgServiceRouter,
 		txConfig:         txConfig,
-		// simCheck:         simCheck,
+		simCheck:         simCheck,
 	}
 }
 
@@ -360,68 +352,68 @@ func (am AppModule) IsAppModule() {}
 // ----------------------------------------------------------------------------
 // App Wiring Setup
 // ----------------------------------------------------------------------------
-
-func init() {
-	appmodule.Register(
-		&modulev1.Module{},
-		appmodule.Provide(ProvideModule),
-	)
-}
-
-type ModuleInputs struct {
-	depinject.In
-
-	StoreService store.KVStoreService
-	Cdc          codec.Codec
-	Config       *modulev1.Module
-	Logger       log.Logger
-
-	AccountKeeper types.AccountKeeper
-	BankKeeper    types.BankKeeper
-
-	IBCKeeperFn        func() *ibckeeper.Keeper                   `optional:"true"`
-	CapabilityScopedFn func(string) capabilitykeeper.ScopedKeeper `optional:"true"`
-
-	MsgServiceRouter *baseapp.MsgServiceRouter
-	TxConfig         client.TxConfig
-	// imCheck         func(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error)
-}
-
-type ModuleOutputs struct {
-	depinject.Out
-
-	PepKeeper keeper.Keeper
-	Module    appmodule.AppModule
-}
-
-func ProvideModule(in ModuleInputs) ModuleOutputs {
-	// default to governance authority if not provided
-	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
-	if in.Config.Authority != "" {
-		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
-	}
-	k := keeper.NewKeeper(
-		in.Cdc,
-		in.StoreService,
-		in.Logger,
-		authority.String(),
-		in.IBCKeeperFn,
-		in.CapabilityScopedFn,
-		in.AccountKeeper,
-		in.BankKeeper,
-	)
-	m := NewAppModule(
-		in.Cdc,
-		k,
-		in.AccountKeeper,
-		in.BankKeeper,
-		in.MsgServiceRouter,
-		in.TxConfig,
-		// in.simCheck,
-	)
-
-	return ModuleOutputs{PepKeeper: k, Module: m}
-}
+//
+//func init() {
+//	appmodule.Register(
+//		&modulev1.Module{},
+//		appmodule.Provide(ProvideModule),
+//	)
+//}
+//
+//type ModuleInputs struct {
+//	depinject.In
+//
+//	StoreService store.KVStoreService
+//	Cdc          codec.Codec
+//	Config       *modulev1.Module
+//	Logger       log.Logger
+//
+//	AccountKeeper types.AccountKeeper
+//	BankKeeper    types.BankKeeper
+//
+//	IBCKeeperFn        func() *ibckeeper.Keeper                   `optional:"true"`
+//	CapabilityScopedFn func(string) capabilitykeeper.ScopedKeeper `optional:"true"`
+//
+//	MsgServiceRouter *baseapp.MsgServiceRouter
+//	TxConfig         client.TxConfig
+//	// imCheck         func(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error)
+//}
+//
+//type ModuleOutputs struct {
+//	depinject.Out
+//
+//	PepKeeper keeper.Keeper
+//	Module    appmodule.AppModule
+//}
+//
+//func ProvideModule(in ModuleInputs) ModuleOutputs {
+//	// default to governance authority if not provided
+//	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
+//	if in.Config.Authority != "" {
+//		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
+//	}
+//	k := keeper.NewKeeper(
+//		in.Cdc,
+//		in.StoreService,
+//		in.Logger,
+//		authority.String(),
+//		in.IBCKeeperFn,
+//		in.CapabilityScopedFn,
+//		in.AccountKeeper,
+//		in.BankKeeper,
+//	)
+//	m := NewAppModule(
+//		in.Cdc,
+//		k,
+//		in.AccountKeeper,
+//		in.BankKeeper,
+//		in.MsgServiceRouter,
+//		in.TxConfig,
+//		// in.simCheck,
+//	)
+//
+//	return ModuleOutputs{PepKeeper: k, Module: m}
+//}
 
 // --------------------------------------------------------------
 //	Functions for decrypting, parsing and handling encrypted tx

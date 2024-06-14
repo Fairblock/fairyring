@@ -144,15 +144,67 @@ func (im IBCModule) OnRecvPacket(
 ) ibcexported.Acknowledgement {
 	var ack channeltypes.Acknowledgement
 
-	// this line is used by starport scaffolding # oracle/packet/module/recv
-
 	var modulePacketData types.KeysharePacketData
-	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
+	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &modulePacketData); err != nil {
 		return channeltypes.NewErrorAcknowledgement(errorsmod.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
 	}
 
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
+
+	case *types.KeysharePacketData_RequestAggrKeysharePacket:
+		packetAck, err := im.keeper.OnRecvRequestAggrKeysharePacket(ctx, modulePacket, *packet.RequestAggrKeysharePacket)
+		if err != nil {
+			ack = channeltypes.NewErrorAcknowledgement(err)
+		} else {
+			// Encode packet acknowledgment
+			packetAckBytes := types.MustProtoMarshalJSON(&packetAck)
+			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+		}
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeRequestAggrKeysharePacket,
+				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+				sdk.NewAttribute(types.AttributeKeyAckIdentity, packetAck.Identity),
+				sdk.NewAttribute(types.AttributeKeyAckPubkey, packetAck.Pubkey),
+			),
+		)
+
+	case *types.KeysharePacketData_GetAggrKeysharePacket:
+		packetAck, err := im.keeper.OnRecvGetAggrKeysharePacket(ctx, modulePacket, *packet.GetAggrKeysharePacket)
+		if err != nil {
+			ack = channeltypes.NewErrorAcknowledgement(err)
+		} else {
+			// Encode packet acknowledgment
+			packetAckBytes := types.MustProtoMarshalJSON(&packetAck)
+			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+		}
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeGetAggrKeysharePacket,
+				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+			),
+		)
+
+	case *types.KeysharePacketData_CurrentKeysPacket:
+		packetAck, err := im.keeper.OnRecvCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket)
+		if err != nil {
+			ack = channeltypes.NewErrorAcknowledgement(err)
+		} else {
+			// Encode packet acknowledgment
+			packetAckBytes := types.MustProtoMarshalJSON(&packetAck)
+			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+		}
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeCurrentKeysPacket,
+				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+			),
+		)
+
 	// this line is used by starport scaffolding # ibc/packet/module/recv
 	default:
 		err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
@@ -178,7 +230,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 	// this line is used by starport scaffolding # oracle/packet/module/ack
 
 	var modulePacketData types.KeysharePacketData
-	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
+	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &modulePacketData); err != nil {
 		return errorsmod.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
 
@@ -186,7 +238,14 @@ func (im IBCModule) OnAcknowledgementPacket(
 
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
-	// this line is used by starport scaffolding # ibc/packet/module/ack
+
+	case *types.KeysharePacketData_AggrKeyshareDataPacket:
+		err := im.keeper.OnAcknowledgementAggrKeyshareDataPacket(ctx, modulePacket, *packet.AggrKeyshareDataPacket, ack)
+		if err != nil {
+			return err
+		}
+		eventType = types.EventTypeAggrKeyshareDataPacket
+		// this line is used by starport scaffolding # ibc/packet/module/ack
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return errorsmod.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
@@ -233,7 +292,25 @@ func (im IBCModule) OnTimeoutPacket(
 
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
-	// this line is used by starport scaffolding # ibc/packet/module/timeout
+
+	case *types.KeysharePacketData_RequestAggrKeysharePacket:
+		err := im.keeper.OnTimeoutRequestAggrKeysharePacket(ctx, modulePacket, *packet.RequestAggrKeysharePacket)
+		if err != nil {
+			return err
+		}
+
+	case *types.KeysharePacketData_GetAggrKeysharePacket:
+		err := im.keeper.OnTimeoutGetAggrKeysharePacket(ctx, modulePacket, *packet.GetAggrKeysharePacket)
+		if err != nil {
+			return err
+		}
+
+	case *types.KeysharePacketData_AggrKeyshareDataPacket:
+		err := im.keeper.OnTimeoutAggrKeyshareDataPacket(ctx, modulePacket, *packet.AggrKeyshareDataPacket)
+		if err != nil {
+			return err
+		}
+		// this line is used by starport scaffolding # ibc/packet/module/timeout
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return errorsmod.Wrap(sdkerrors.ErrUnknownRequest, errMsg)

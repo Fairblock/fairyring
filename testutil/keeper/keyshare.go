@@ -42,7 +42,7 @@ func KeyshareKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 
 	scopedKeeper := capabilityKeeper.ScopeToModule(ibcexported.ModuleName)
 	portKeeper := portkeeper.NewKeeper(scopedKeeper)
-	scopeModule := capabilityKeeper.ScopeToModule(types.ModuleName)
+	// scopeModule := capabilityKeeper.ScopeToModule(types.ModuleName)
 
 	k := keeper.NewKeeper(
 		appCodec,
@@ -54,9 +54,10 @@ func KeyshareKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 				PortKeeper: &portKeeper,
 			}
 		},
-		func(string) capabilitykeeper.ScopedKeeper {
-			return scopeModule
-		},
+		scopedKeeper,
+		//func(string) capabilitykeeper.ScopedKeeper {
+		//	return scopeModule
+		//},
 		nil,
 		nil,
 		nil,

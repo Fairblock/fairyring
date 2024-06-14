@@ -6,8 +6,6 @@ import (
 	mintmodulev1 "cosmossdk.io/api/cosmos/mint/module/v1"
 	stakingmodulev1 "cosmossdk.io/api/cosmos/staking/module/v1"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
-	keysharemodulev1 "github.com/Fairblock/fairyring/api/fairyring/keyshare/module"
-	pepmodulev1 "github.com/Fairblock/fairyring/api/fairyring/pep/module"
 	_ "github.com/Fairblock/fairyring/x/keyshare/module" // import for side-effects
 	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	_ "github.com/Fairblock/fairyring/x/pep/module" // import for side-effects
@@ -307,14 +305,14 @@ var (
 				Name:   circuittypes.ModuleName,
 				Config: appconfig.WrapAny(&circuitmodulev1.Module{}),
 			},
-			{
-				Name:   pepmoduletypes.ModuleName,
-				Config: appconfig.WrapAny(&pepmodulev1.Module{}),
-			},
-			{
-				Name:   keysharemoduletypes.ModuleName,
-				Config: appconfig.WrapAny(&keysharemodulev1.Module{}),
-			},
+			//{
+			//	Name:   pepmoduletypes.ModuleName,
+			//	Config: appconfig.WrapAny(&pepmodulev1.Module{}),
+			//},
+			//{
+			//	Name:   keysharemoduletypes.ModuleName,
+			//	Config: appconfig.WrapAny(&keysharemodulev1.Module{}),
+			//},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},
 	})

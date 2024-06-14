@@ -10,25 +10,17 @@ import (
 	"strconv"
 
 	"cosmossdk.io/core/appmodule"
-	"cosmossdk.io/core/store"
-	"cosmossdk.io/depinject"
-	"cosmossdk.io/log"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
 	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
-	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
 
 	// this line is used by starport scaffolding # 1
 
-	modulev1 "github.com/Fairblock/fairyring/api/fairyring/keyshare/module"
 	"github.com/Fairblock/fairyring/x/keyshare/client/cli"
 	"github.com/Fairblock/fairyring/x/keyshare/keeper"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
@@ -310,68 +302,68 @@ func (am AppModule) IsAppModule() {}
 // ----------------------------------------------------------------------------
 // App Wiring Setup
 // ----------------------------------------------------------------------------
-
-func init() {
-	appmodule.Register(
-		&modulev1.Module{},
-		appmodule.Provide(ProvideModule),
-	)
-}
-
-type ModuleInputs struct {
-	depinject.In
-
-	StoreService store.KVStoreService
-	Cdc          codec.Codec
-	Config       *modulev1.Module
-	Logger       log.Logger
-
-	AccountKeeper  types.AccountKeeper
-	BankKeeper     types.BankKeeper
-	PepKeeper      types.PepKeeper
-	SlashingKeeper types.SlashingKeeper
-	StakingKeeper  types.StakingKeeper
-	GovKeeper      types.GovKeeper
-
-	IBCKeeperFn        func() *ibckeeper.Keeper                   `optional:"true"`
-	CapabilityScopedFn func(string) capabilitykeeper.ScopedKeeper `optional:"true"`
-}
-
-type ModuleOutputs struct {
-	depinject.Out
-
-	KeyshareKeeper keeper.Keeper
-	Module         appmodule.AppModule
-}
-
-func ProvideModule(in ModuleInputs) ModuleOutputs {
-	// default to governance authority if not provided
-	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
-	if in.Config.Authority != "" {
-		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
-	}
-	k := keeper.NewKeeper(
-		in.Cdc,
-		in.StoreService,
-		in.Logger,
-		authority.String(),
-		in.IBCKeeperFn,
-		in.CapabilityScopedFn,
-		in.AccountKeeper,
-		in.BankKeeper,
-		in.PepKeeper,
-		in.SlashingKeeper,
-		in.StakingKeeper,
-		in.GovKeeper,
-	)
-	m := NewAppModule(
-		in.Cdc,
-		k,
-		in.AccountKeeper,
-		in.BankKeeper,
-		in.PepKeeper,
-		in.StakingKeeper,
-	)
-
-	return ModuleOutputs{KeyshareKeeper: k, Module: m}
-}
+//
+//func init() {
+//	appmodule.Register(
+//		&modulev1.Module{},
+//		appmodule.Provide(ProvideModule),
+//	)
+//}
+//
+//type ModuleInputs struct {
+//	depinject.In
+//
+//	StoreService store.KVStoreService
+//	Cdc          codec.Codec
+//	Config       *modulev1.Module
+//	Logger       log.Logger
+//
+//	AccountKeeper  types.AccountKeeper
+//	BankKeeper     types.BankKeeper
+//	PepKeeper      types.PepKeeper
+//	SlashingKeeper types.SlashingKeeper
+//	StakingKeeper  types.StakingKeeper
+//	GovKeeper      types.GovKeeper
+//
+//	IBCKeeperFn        func() *ibckeeper.Keeper                   `optional:"true"`
+//	CapabilityScopedFn func(string) capabilitykeeper.ScopedKeeper `optional:"true"`
+//}
+//
+//type ModuleOutputs struct {
+//	depinject.Out
+//
+//	KeyshareKeeper keeper.Keeper
+//	Module         appmodule.AppModule
+//}
+//
+//func ProvideModule(in ModuleInputs) ModuleOutputs {
+//	// default to governance authority if not provided
+//	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
+//	if in.Config.Authority != "" {
+//		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
+//	}
+//	k := keeper.NewKeeper(
+//		in.Cdc,
+//		in.StoreService,
+//		in.Logger,
+//		authority.String(),
+//		in.IBCKeeperFn,
+//		in.CapabilityScopedFn,
+//		in.AccountKeeper,
+//		in.BankKeeper,
+//		in.PepKeeper,
+//		in.SlashingKeeper,
+//		in.StakingKeeper,
+//		in.GovKeeper,
+//	)
+//	m := NewAppModule(
+//		in.Cdc,
+//		k,
+//		in.AccountKeeper,
+//		in.BankKeeper,
+//		in.PepKeeper,
+//		in.StakingKeeper,
+//	)
+//
+//	return ModuleOutputs{KeyshareKeeper: k, Module: m}
+//}
