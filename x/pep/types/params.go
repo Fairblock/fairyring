@@ -16,7 +16,7 @@ var (
 
 var (
 	KeyIsSourceChain          = []byte("IsSourceChain")
-	DefaultIsSourceChain bool = true
+	DefaultIsSourceChain bool = false
 )
 
 var (
