@@ -313,32 +313,31 @@ func (am AppModule) EndBlock(cctx context.Context) error {
 			am.keeper.Logger().Error("Endblocker get keys err", err)
 			am.keeper.Logger().Error(err.Error())
 		}
+	}
+	strHeight := am.keeper.GetLatestHeight(ctx)
+	height, err := strconv.ParseUint(strHeight, 10, 64)
+	if err != nil {
+		am.keeper.Logger().Error("Latest height does not exists in EndBlock")
+		return nil
+	}
 
-		strHeight := am.keeper.GetLatestHeight(ctx)
-		height, err := strconv.ParseUint(strHeight, 10, 64)
-		if err != nil {
-			am.keeper.Logger().Error("Latest height does not exists in EndBlock")
+	ak, found := am.keeper.GetActivePubKey(ctx)
+	if found {
+		if ak.Expiry <= height {
+			am.keeper.DeleteActivePubKey(ctx)
+		} else {
 			return nil
 		}
+	}
 
-		ak, found := am.keeper.GetActivePubKey(ctx)
-		if found {
-			if ak.Expiry <= height {
-				am.keeper.DeleteActivePubKey(ctx)
-			} else {
-				return nil
-			}
+	qk, found := am.keeper.GetQueuedPubKey(ctx)
+	if found {
+		if qk.Expiry > height {
+			newActiveKey := commontypes.ActivePublicKey(qk)
+
+			am.keeper.SetActivePubKey(ctx, newActiveKey)
 		}
-
-		qk, found := am.keeper.GetQueuedPubKey(ctx)
-		if found {
-			if qk.Expiry > height {
-				newActiveKey := commontypes.ActivePublicKey(qk)
-
-				am.keeper.SetActivePubKey(ctx, newActiveKey)
-			}
-			am.keeper.DeleteQueuedPubKey(ctx)
-		}
+		am.keeper.DeleteQueuedPubKey(ctx)
 	}
 	return nil
 }
@@ -676,6 +675,17 @@ func (am AppModule) decryptAndExecuteTx(
 		return err
 	}
 
+	signers, err := wrappedTx.GetTx().GetSigners()
+	if err != nil {
+		am.processFailedEncryptedTx(ctx, eachTx, "not able to get signature signers", startConsumedGas)
+		return err
+	}
+
+	if len(sigs) != len(signers) {
+		am.processFailedEncryptedTx(ctx, eachTx, "number of signature not equals to number of signers", startConsumedGas)
+		return err
+	}
+
 	txMsgs := wrappedTx.GetTx().GetMsgs()
 
 	if len(sigs) != len(txMsgs) {
@@ -702,7 +712,11 @@ func (am AppModule) decryptAndExecuteTx(
 		})
 	}
 
-	verifiableTx := wrappedTx.GetTx().(authsigning.V2AdaptableTx)
+	verifiableTx, ok := wrappedTx.GetTx().(authsigning.V2AdaptableTx)
+	if !ok {
+		am.processFailedEncryptedTx(ctx, eachTx, "Unable to parse tx to V2AdaptableTx", startConsumedGas)
+		return err
+	}
 
 	anyPk, err := codectypes.NewAnyWithValue(sigs[0].PubKey)
 	if err != nil {
