@@ -749,80 +749,76 @@ func (am AppModule) decryptAndExecuteTx(
 		return err
 	}
 
-	// UNCOMMENT BELOW
+	decryptionConsumed := ctx.GasMeter().GasConsumed() - startConsumedGas
+	simCheckGas, _, err := am.simCheck(am.txConfig.TxEncoder(), txDecoderTx)
+	// We are using SimCheck() to only estimate gas for the underlying transaction
+	// Since user is supposed to sign the underlying transaction with Pep Nonce,
+	// is expected that we gets 'account sequence mismatch' error
+	// however, the underlying tx is not expected to get other errors
+	// such as insufficient fee, out of gas etc...
+	if err != nil && !strings.Contains(err.Error(), "account sequence mismatch") {
+		am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error while performing check tx: %s", err.Error()), startConsumedGas)
+		return err
+	}
 
-	//decryptionConsumed := ctx.GasMeter().GasConsumed() - startConsumedGas
-	//simCheckGas, _, err := am.simCheck(am.txConfig.TxEncoder(), txDecoderTx)
-	//// We are using SimCheck() to only estimate gas for the underlying transaction
-	//// Since user is supposed to sign the underlying transaction with Pep Nonce,
-	//// is expected that we gets 'account sequence mismatch' error
-	//// however, the underlying tx is not expected to get other errors
-	//// such as insufficient fee, out of gas etc...
-	//if err != nil && !strings.Contains(err.Error(), "account sequence mismatch") {
-	//	am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error while performing check tx: %s", err.Error()), startConsumedGas)
-	//	return err
-	//}
-	//
-	//txFee := wrappedTx.GetTx().GetFee()
-	//
-	//// If it passes the CheckTx but Tx Fee is empty,
-	//// that means the minimum-gas-prices for the validator is 0
-	//// therefore, we are not charging for the tx execution
-	//if !txFee.Empty() {
-	//	gasProvided := cosmosmath.NewIntFromUint64(wrappedTx.GetTx().GetGas())
-	//	// Underlying tx consumed gas + gas consumed on decrypting & decoding tx
-	//	am.keeper.Logger().Info(fmt.Sprintf("Underlying tx consumed: %d, decryption consumed: %d", simCheckGas.GasUsed, decryptionConsumed))
-	//	gasUsedInBig := cosmosmath.NewIntFromUint64(simCheckGas.GasUsed).Add(cosmosmath.NewIntFromUint64(decryptionConsumed))
-	//	newCoins := make([]sdk.Coin, len(txFee))
-	//	refundDenom := txFee[0].Denom
-	//	refundAmount := cosmosmath.NewIntFromUint64(0)
-	//
-	//	usedGasFee := sdk.NewCoin(
-	//		txFee[0].Denom,
-	//		// Tx Fee Amount Divide Provide Gas => provided gas price
-	//		// Provided Gas Price * Gas Used => Amount to deduct as gas fee
-	//		txFee[0].Amount.Quo(gasProvided).Mul(gasUsedInBig),
-	//	)
-	//
-	//	if usedGasFee.Denom != eachTx.ChargedGas.Denom {
-	//		am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("underlying tx gas denom does not match charged gas denom, got: %s, expect: %s", usedGasFee.Denom, eachTx.ChargedGas.Denom), startConsumedGas)
-	//		return errors.New("underlying tx gas denom does not match charged gas denom")
-	//	}
-	//
-	//	if usedGasFee.Amount.GT(eachTx.ChargedGas.Amount) {
-	//		usedGasFee.Amount = usedGasFee.Amount.Sub(eachTx.ChargedGas.Amount)
-	//	} else { // less than or equals to
-	//		refundAmount = eachTx.ChargedGas.Amount.Sub(usedGasFee.Amount)
-	//		usedGasFee.Amount = cosmosmath.NewIntFromUint64(0)
-	//	}
-	//
-	//	am.keeper.Logger().Info(fmt.Sprintf("Deduct fee amount: %v | Refund amount: %v", newCoins, refundAmount))
-	//
-	//	if refundAmount.IsZero() {
-	//		deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, sdk.NewCoins(usedGasFee))
-	//		if deductFeeErr != nil {
-	//			am.keeper.Logger().Error("Deduct fee Err")
-	//			am.keeper.Logger().Error(deductFeeErr.Error())
-	//		} else {
-	//			am.keeper.Logger().Info("Fee deducted without error")
-	//		}
-	//	} else {
-	//		refundFeeErr := am.bankKeeper.SendCoinsFromModuleToAccount(
-	//			ctx,
-	//			types.ModuleName,
-	//			creatorAddr,
-	//			sdk.NewCoins(sdk.NewCoin(refundDenom, refundAmount)),
-	//		)
-	//		if refundFeeErr != nil {
-	//			am.keeper.Logger().Error("Refund fee Err")
-	//			am.keeper.Logger().Error(refundFeeErr.Error())
-	//		} else {
-	//			am.keeper.Logger().Info("Fee refunded without error")
-	//		}
-	//	}
-	//}
+	txFee := wrappedTx.GetTx().GetFee()
 
-	// UNCOMMENT ABOVE
+	// If it passes the CheckTx but Tx Fee is empty,
+	// that means the minimum-gas-prices for the validator is 0
+	// therefore, we are not charging for the tx execution
+	if !txFee.Empty() {
+		gasProvided := cosmosmath.NewIntFromUint64(wrappedTx.GetTx().GetGas())
+		// Underlying tx consumed gas + gas consumed on decrypting & decoding tx
+		am.keeper.Logger().Info(fmt.Sprintf("Underlying tx consumed: %d, decryption consumed: %d", simCheckGas.GasUsed, decryptionConsumed))
+		gasUsedInBig := cosmosmath.NewIntFromUint64(simCheckGas.GasUsed).Add(cosmosmath.NewIntFromUint64(decryptionConsumed))
+		newCoins := make([]sdk.Coin, len(txFee))
+		refundDenom := txFee[0].Denom
+		refundAmount := cosmosmath.NewIntFromUint64(0)
+
+		usedGasFee := sdk.NewCoin(
+			txFee[0].Denom,
+			// Tx Fee Amount Divide Provide Gas => provided gas price
+			// Provided Gas Price * Gas Used => Amount to deduct as gas fee
+			txFee[0].Amount.Quo(gasProvided).Mul(gasUsedInBig),
+		)
+
+		if usedGasFee.Denom != eachTx.ChargedGas.Denom {
+			am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("underlying tx gas denom does not match charged gas denom, got: %s, expect: %s", usedGasFee.Denom, eachTx.ChargedGas.Denom), startConsumedGas)
+			return errors.New("underlying tx gas denom does not match charged gas denom")
+		}
+
+		if usedGasFee.Amount.GT(eachTx.ChargedGas.Amount) {
+			usedGasFee.Amount = usedGasFee.Amount.Sub(eachTx.ChargedGas.Amount)
+		} else { // less than or equals to
+			refundAmount = eachTx.ChargedGas.Amount.Sub(usedGasFee.Amount)
+			usedGasFee.Amount = cosmosmath.NewIntFromUint64(0)
+		}
+
+		am.keeper.Logger().Info(fmt.Sprintf("Deduct fee amount: %v | Refund amount: %v", newCoins, refundAmount))
+
+		if refundAmount.IsZero() {
+			deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, sdk.NewCoins(usedGasFee))
+			if deductFeeErr != nil {
+				am.keeper.Logger().Error("Deduct fee Err")
+				am.keeper.Logger().Error(deductFeeErr.Error())
+			} else {
+				am.keeper.Logger().Info("Fee deducted without error")
+			}
+		} else {
+			refundFeeErr := am.bankKeeper.SendCoinsFromModuleToAccount(
+				ctx,
+				types.ModuleName,
+				creatorAddr,
+				sdk.NewCoins(sdk.NewCoin(refundDenom, refundAmount)),
+			)
+			if refundFeeErr != nil {
+				am.keeper.Logger().Error("Refund fee Err")
+				am.keeper.Logger().Error(refundFeeErr.Error())
+			} else {
+				am.keeper.Logger().Info("Fee refunded without error")
+			}
+		}
+	}
 
 	handler := am.msgServiceRouter.Handler(txMsgs[0])
 	handlerResult, err := handler(ctx, txMsgs[0])
