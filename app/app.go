@@ -145,6 +145,7 @@ type App struct {
 	ScopedICAHostKeeper       capabilitykeeper.ScopedKeeper
 	ScopedPepKeeper           capabilitykeeper.ScopedKeeper
 	ScopedKeyshareKeeper      capabilitykeeper.ScopedKeeper
+	ScopedGovKeeper           capabilitykeeper.ScopedKeeper
 
 	PepKeeper      pepmodulekeeper.Keeper
 	KeyshareKeeper keysharemodulekeeper.Keeper
@@ -281,7 +282,7 @@ func New(
 		&app.ConsensusParamsKeeper,
 		&app.SlashingKeeper,
 		&app.MintKeeper,
-		&app.GovKeeper,
+		// &app.GovKeeper,
 		&app.CrisisKeeper,
 		&app.UpgradeKeeper,
 		&app.ParamsKeeper,

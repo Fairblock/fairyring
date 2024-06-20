@@ -2,7 +2,6 @@ package app
 
 import (
 	distrmodulev1 "cosmossdk.io/api/cosmos/distribution/module/v1"
-	govmodulev1 "cosmossdk.io/api/cosmos/gov/module/v1"
 	mintmodulev1 "cosmossdk.io/api/cosmos/mint/module/v1"
 	stakingmodulev1 "cosmossdk.io/api/cosmos/staking/module/v1"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
@@ -289,10 +288,10 @@ var (
 				Name:   feegrant.ModuleName,
 				Config: appconfig.WrapAny(&feegrantmodulev1.Module{}),
 			},
-			{
-				Name:   govtypes.ModuleName,
-				Config: appconfig.WrapAny(&govmodulev1.Module{}),
-			},
+			//{
+			//	Name:   govtypes.ModuleName,
+			//	Config: appconfig.WrapAny(&govmodulev1.Module{}),
+			//},
 			{
 				Name:   crisistypes.ModuleName,
 				Config: appconfig.WrapAny(&crisismodulev1.Module{}),

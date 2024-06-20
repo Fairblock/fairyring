@@ -12,7 +12,6 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/gov"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	govv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/cosmos/ibc-go/modules/capability"
 	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
@@ -99,8 +98,8 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	// Deprecated: Avoid adding new handlers, instead use the new proposal flow
 	// by granting the governance module the right to execute the message.
 	// See: https://docs.cosmos.network/main/modules/gov#proposal-messages
-	govRouter := govv1beta1.NewRouter()
-	govRouter.AddRoute(govtypes.RouterKey, govv1beta1.ProposalHandler)
+	//govRouter := govv1beta1.NewRouter()
+	//govRouter.AddRoute(govtypes.RouterKey, govv1beta1.ProposalHandler)
 
 	app.IBCFeeKeeper = ibcfeekeeper.NewKeeper(
 		app.appCodec, app.GetKey(ibcfeetypes.StoreKey),
@@ -147,7 +146,7 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 		app.MsgServiceRouter(),
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
-	app.GovKeeper.SetLegacyRouter(govRouter)
+	// app.GovKeeper.SetLegacyRouter(govRouter)
 
 	// Create IBC modules with ibcfee middleware
 	transferIBCModule := ibcfee.NewIBCMiddleware(ibctransfer.NewIBCModule(app.TransferKeeper), app.IBCFeeKeeper)
@@ -180,8 +179,11 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	ibcRouter.AddRoute(keysharemoduletypes.ModuleName, keyshareStack)
 
 	// Add gov module to IBC Router
-	govIBCModule := ibcfee.NewIBCMiddleware(gov.NewIBCModule(*app.GovKeeper), app.IBCFeeKeeper)
-	ibcRouter.AddRoute(govtypes.ModuleName, govIBCModule)
+	govStack, err := app.registerGovModule()
+	if err != nil {
+		return err
+	}
+	ibcRouter.AddRoute(govtypes.ModuleName, govStack)
 
 	// Add wasmd to IBC Router
 	wasmStack, err := app.registerWasmModules(appOpts)
