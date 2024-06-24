@@ -1,6 +1,13 @@
 package app
 
 import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"os"
+	"path/filepath"
+	"sort"
+
 	_ "cosmossdk.io/api/cosmos/tx/config/v1" // import for side-effects
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
@@ -15,7 +22,7 @@ import (
 	_ "cosmossdk.io/x/nft/module" // import for side-effects
 	_ "cosmossdk.io/x/upgrade"    // import for side-effects
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
-	"encoding/json"
+	"github.com/Fairblock/fairyring/abci/checktx"
 	abci "github.com/cometbft/cometbft/abci/types"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	dbm "github.com/cosmos/cosmos-db"
@@ -34,6 +41,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	_ "github.com/cosmos/cosmos-sdk/x/auth" // import for side-effects
+	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authsims "github.com/cosmos/cosmos-sdk/x/auth/simulation"
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
@@ -88,13 +96,12 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	ibctestingtypes "github.com/cosmos/ibc-go/v8/testing/types"
-	"io"
-	"os"
-	"path/filepath"
-	"sort"
+	"github.com/skip-mev/block-sdk/v2/block"
+	"github.com/skip-mev/block-sdk/v2/block/base"
 
+	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
-	blockbusterabci "github.com/Fairblock/fairyring/blockbuster/abci"
+	fairyabci "github.com/Fairblock/fairyring/abci"
 	keysharemodulekeeper "github.com/Fairblock/fairyring/x/keyshare/keeper"
 	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	pepmodulekeeper "github.com/Fairblock/fairyring/x/pep/keeper"
@@ -218,7 +225,7 @@ type App struct {
 	configurator module.Configurator
 
 	// Custom checkTx handler
-	checkTxHandler blockbusterabci.CheckTx
+	checkTxHandler checktx.CheckTx
 }
 
 // AppConfig returns the default app config.
@@ -371,6 +378,96 @@ func New(
 	// }
 
 	app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
+
+	// ---------------------------------------------------------------------------- //
+	// ------------------------- Begin Custom Code -------------------------------- //
+	// ---------------------------------------------------------------------------- //
+	// STEP 1-3: Create the Block SDK lanes.
+	keyshareLane, freeLane, defaultLane := CreateLanes(app)
+
+	// STEP 4: Construct a mempool based off the lanes. Note that the order of the lanes
+	// matters. Blocks are constructed from the top lane to the bottom lane. The top lane
+	// is the first lane in the array and the bottom lane is the last lane in the array.
+	mempool, err := block.NewLanedMempool(
+		app.Logger(),
+		[]block.Lane{keyshareLane, freeLane, defaultLane},
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	// The application's mempool is now powered by the Block SDK!
+	app.App.SetMempool(mempool)
+
+	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
+	if err != nil {
+		panic(fmt.Sprintf("error while reading wasm config: %s", err))
+	}
+
+	// STEP 5: Create a global ante handler that will be called on each transaction when
+	// proposals are being built and verified. Note that this step must be done before
+	// setting the ante handler on the lanes.
+	handlerOptions := ante.HandlerOptions{
+		AccountKeeper:   app.AccountKeeper,
+		BankKeeper:      app.BankKeeper,
+		FeegrantKeeper:  app.FeeGrantKeeper,
+		SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
+		SignModeHandler: app.txConfig.SignModeHandler(),
+	}
+	options := FairyringHandlerOptions{
+		BaseOptions:  handlerOptions,
+		wasmConfig:   wasmConfig,
+		TxDecoder:    app.txConfig.TxDecoder(),
+		TxEncoder:    app.txConfig.TxEncoder(),
+		KeyShareLane: keyshareLane,
+	}
+	anteHandler := NewFairyringAnteHandler(options)
+	app.App.SetAnteHandler(anteHandler)
+
+	// Set the ante handler on the lanes.
+	opt := []base.LaneOption{
+		base.WithAnteHandler(anteHandler),
+	}
+	keyshareLane.WithOptions(
+		opt...,
+	)
+	freeLane.WithOptions(
+		opt...,
+	)
+	defaultLane.WithOptions(
+		opt...,
+	)
+
+	// Step 6: Create the proposal handler and set it on the app. Now the application
+	// will build and verify proposals using the Block SDK!
+	proposalHandler := fairyabci.NewProposalHandler(
+		app.Logger(),
+		app.txConfig.TxDecoder(),
+		app.txConfig.TxEncoder(),
+		mempool,
+	)
+	app.App.SetPrepareProposal(proposalHandler.PrepareProposalHandler())
+	app.App.SetProcessProposal(proposalHandler.ProcessProposalHandler())
+
+	// Step 7: Set the custom CheckTx handler on BaseApp. This is only required if you
+	// use the keyshare lane.
+	keyshareCheckTx := checktx.NewKeyshareCheckTxHandler(
+		app.App,
+		app.txConfig.TxDecoder(),
+		keyshareLane,
+		anteHandler,
+		app.App.CheckTx,
+	)
+	checkTxHandler := checktx.NewMempoolParityCheckTx(
+		app.Logger(), mempool,
+		app.txConfig.TxDecoder(), keyshareCheckTx.CheckTx(),
+	)
+
+	app.SetCheckTx(checkTxHandler.CheckTx())
+
+	// ---------------------------------------------------------------------------- //
+	// ------------------------- End Custom Code ---------------------------------- //
+	// ---------------------------------------------------------------------------- //
 
 	// Register legacy modules
 	if err := app.registerIBCModules(appOpts); err != nil {
@@ -1605,6 +1702,6 @@ func (app *App) GetTxConfig() client.TxConfig {
 }
 
 // SetCheckTx sets the checkTxHandler for the app.
-func (app *App) SetCheckTx(handler blockbusterabci.CheckTx) {
+func (app *App) SetCheckTx(handler checktx.CheckTx) {
 	app.checkTxHandler = handler
 }

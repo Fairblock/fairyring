@@ -2,14 +2,20 @@ package terminator
 
 import (
 	"context"
-	sdkmath "cosmossdk.io/math"
 	"fmt"
 
-	"github.com/Fairblock/fairyring/blockbuster"
-
 	"cosmossdk.io/log"
+	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkmempool "github.com/cosmos/cosmos-sdk/types/mempool"
+
+	"github.com/skip-mev/block-sdk/v2/block"
+	"github.com/skip-mev/block-sdk/v2/block/proposals"
+	"github.com/skip-mev/block-sdk/v2/block/utils"
+)
+
+const (
+	LaneName = "Terminator"
 )
 
 // Terminator Lane will get added to the chain to simplify chaining code so that we
@@ -34,36 +40,53 @@ import (
 //	 snd    \  \      \        /
 type Terminator struct{}
 
-var _ blockbuster.Lane = (*Terminator)(nil)
+var _ block.Lane = (*Terminator)(nil)
 
 // PrepareLane is a no-op
-func (t Terminator) PrepareLane(_ sdk.Context, proposal blockbuster.BlockProposal, _ int64, _ blockbuster.PrepareLanesHandler) (blockbuster.BlockProposal, error) {
+func (t Terminator) PrepareLane(_ sdk.Context, proposal proposals.Proposal, _ block.PrepareLanesHandler) (proposals.Proposal, error) {
 	return proposal, nil
 }
 
 // ProcessLane is a no-op
-func (t Terminator) ProcessLane(ctx sdk.Context, _ []sdk.Tx, _ blockbuster.ProcessLanesHandler) (sdk.Context, error) {
-	return ctx, nil
+func (t Terminator) ProcessLane(_ sdk.Context, p proposals.Proposal, txs []sdk.Tx, _ block.ProcessLanesHandler) (proposals.Proposal, error) {
+	if len(txs) > 0 {
+		return p, fmt.Errorf("terminator lane should not have any transactions")
+	}
+
+	return p, nil
+}
+
+// GetMaxBlockSpace is a no-op
+func (t Terminator) GetMaxBlockSpace() math.LegacyDec {
+	return math.LegacyZeroDec()
+}
+
+// Logger is a no-op
+func (t Terminator) Logger() log.Logger {
+	return log.NewNopLogger()
 }
 
 // Name returns the name of the lane
 func (t Terminator) Name() string {
-	return "Terminator"
+	return LaneName
 }
 
+// GetTxInfo is a no-op
+func (t Terminator) GetTxInfo(_ sdk.Context, _ sdk.Tx) (utils.TxWithInfo, error) {
+	return utils.TxWithInfo{}, fmt.Errorf("terminator lane should not have any transactions")
+}
+
+// SetAnteHandler is a no-op
+func (t Terminator) SetAnteHandler(sdk.AnteHandler) {}
+
 // Match is a no-op
-func (t Terminator) Match(sdk.Tx) bool {
+func (t Terminator) Match(sdk.Context, sdk.Tx) bool {
 	return false
 }
 
-// VerifyTx is a no-op
-func (t Terminator) VerifyTx(sdk.Context, sdk.Tx) error {
-	return fmt.Errorf("Terminator lane should not be called")
-}
-
 // Contains is a no-op
-func (t Terminator) Contains(sdk.Tx) (bool, error) {
-	return false, nil
+func (t Terminator) Contains(sdk.Tx) bool {
+	return false
 }
 
 // CountTx is a no-op
@@ -86,20 +109,12 @@ func (t Terminator) Select(context.Context, [][]byte) sdkmempool.Iterator {
 	return nil
 }
 
-// ValidateLaneBasic is a no-op
-func (t Terminator) ProcessLaneBasic([]sdk.Tx) error {
-	return nil
+// Compare is a no-op
+func (t Terminator) Compare(sdk.Context, sdk.Tx, sdk.Tx) (int, error) {
+	return 0, nil
 }
 
-// SetLaneConfig is a no-op
-func (t Terminator) SetAnteHandler(sdk.AnteHandler) {}
-
-// Logger is a no-op
-func (t Terminator) Logger() log.Logger {
-	return log.NewNopLogger()
-}
-
-// GetMaxBlockSpace is a no-op
-func (t Terminator) GetMaxBlockSpace() sdkmath.LegacyDec {
-	return sdkmath.LegacyZeroDec()
+// Priority is a no-op
+func (t Terminator) Priority(sdk.Context, sdk.Tx) any {
+	return 0
 }

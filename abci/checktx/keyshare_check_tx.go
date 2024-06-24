@@ -1,99 +1,95 @@
-package abci
+package checktx
 
 import (
 	"context"
-	storetypes "cosmossdk.io/store/types"
 	"fmt"
 
-	"github.com/Fairblock/fairyring/x/pep/types"
-
-	log "cosmossdk.io/log"
+	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 	cometabci "github.com/cometbft/cometbft/abci/types"
-	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	"cosmossdk.io/log"
+	storetypes "cosmossdk.io/store/types"
 )
 
-type (
-	// CheckTxHandler is a wrapper around baseapp's CheckTx method that allows us to
-	// verify aggregated keyshare transactions against the latest committed state. All other transactions
-	// are executed normally using base app's CheckTx. This defines all of the
-	// dependencies that are required to verify a keyshare transaction.
-	CheckTxHandler struct {
-		// baseApp is utilized to retrieve the latest committed state and to call
-		// baseapp's CheckTx method.
-		baseApp BaseApp
+// CheckTxHandler is a wrapper around baseapp's CheckTx method that allows us to
+// verify aggregated keyshare transactions against the latest committed state. All other transactions
+// are executed normally using base app's CheckTx. This defines all of the
+// dependencies that are required to verify a keyshare transaction.
+type KeyshareCheckTxHandler struct {
+	// baseApp is utilized to retrieve the latest committed state and to call
+	// baseapp's CheckTx method.
+	baseApp BaseApp
 
-		// txDecoder is utilized to decode transactions to determine if they are
-		// keyshare transactions.
-		txDecoder sdk.TxDecoder
+	// txDecoder is utilized to decode transactions to determine if they are
+	// bid transactions.
+	txDecoder sdk.TxDecoder
 
-		// KeyShareLane is utilized to retrieve the keyshare info of a transaction and to
-		// insert a Keyshare transaction into the application-side mempool.
-		keyShareLane KeyShareLane
+	// KeyShareLane is utilized to retrieve the keyshare info of a transaction and to
+	// insert a Keyshare transaction into the application-side mempool.
+	keyShareLane KeyShareLaneI
 
-		// anteHandler is utilized to verify the keyshare transaction against the latest
-		// committed state.
-		anteHandler sdk.AnteHandler
+	// anteHandler is utilized to verify the bid transaction against the latest
+	// committed state.
+	anteHandler sdk.AnteHandler
 
-		// chainID is the chain ID of the blockchain.
-		chainID string
-	}
+	// checkTxHandler is the wrapped CheckTx handler that is used to execute all non-bid txs
+	checkTxHandler CheckTx
+}
+
+// KeyShareLaneI is the interface that defines all of the dependencies that
+// are required to interact with the top of block lane.
+type KeyShareLaneI interface {
+	// GetKeyShareInfo is utilized to retrieve the Keyshare info of a transaction.
+	GetKeyShareInfo(tx sdk.Tx) (*peptypes.AggregatedKeyShare, error)
+
+	// Insert is utilized to insert a transaction into the application-side mempool.
+	Insert(ctx context.Context, tx sdk.Tx) error
+
+	// Remove is utilized to delete a transaction from the application-side mempool.
+	Remove(tx sdk.Tx) error
+}
+
+// BaseApp is an interface that allows us to call baseapp's CheckTx method
+// as well as retrieve the latest committed state.
+type BaseApp interface {
+	// CommitMultiStore is utilized to retrieve the latest committed state.
+	CommitMultiStore() storetypes.CommitMultiStore
 
 	// CheckTx is baseapp's CheckTx method that checks the validity of a
 	// transaction.
-	CheckTx func(req *cometabci.RequestCheckTx) (*cometabci.ResponseCheckTx, error)
-	// CheckTx func(req *abci.RequestCheckTx) (*abci.ResponseCheckTx, error)
-	// CheckTx func(cometabci.RequestCheckTx) cometabci.ResponseCheckTx
+	CheckTx(*cometabci.RequestCheckTx) (*cometabci.ResponseCheckTx, error)
 
-	// KeyShareLane is the interface that defines all of the dependencies that
-	// are required to interact with the top of block lane.
-	KeyShareLane interface {
-		// GetKeyShareInfo is utilized to retrieve the Keyshare info of a transaction.
-		GetKeyShareInfo(tx sdk.Tx) (*types.AggregatedKeyShare, error)
+	// Logger is utilized to log errors.
+	Logger() log.Logger
 
-		// Insert is utilized to insert a transaction into the application-side mempool.
-		Insert(ctx context.Context, tx sdk.Tx) error
+	// LastBlockHeight is utilized to retrieve the latest block height.
+	LastBlockHeight() int64
 
-		// Remove is utilized to delete a transaction from the application-side mempool.
-		Remove(tx sdk.Tx) error
-	}
+	// GetConsensusParams is utilized to retrieve the consensus params.
+	GetConsensusParams(ctx sdk.Context) cmtproto.ConsensusParams
 
-	// BaseApp is an interface that allows us to call baseapp's CheckTx method
-	// as well as retrieve the latest committed state.
-	BaseApp interface {
-		// CommitMultiStore is utilized to retrieve the latest committed state.
-		CommitMultiStore() storetypes.CommitMultiStore
+	// ChainID is utilized to retrieve the chain ID.
+	ChainID() string
+}
 
-		// CheckTx is baseapp's CheckTx method that checks the validity of a
-		// transaction.
-		CheckTx(*cometabci.RequestCheckTx) (*cometabci.ResponseCheckTx, error)
-
-		// Logger is utilized to log errors.
-		Logger() log.Logger
-
-		// LastBlockHeight is utilized to retrieve the latest block height.
-		LastBlockHeight() int64
-
-		// GetConsensusParams is utilized to retrieve the consensus params.
-		GetConsensusParams(ctx sdk.Context) tmproto.ConsensusParams
-	}
-)
-
-// NewCheckTxHandler is a constructor for CheckTxHandler.
-func NewCheckTxHandler(
+// NewKeyshareCheckTxHandler constructs a new CheckTxHandler instance. This method fails if the given
+// LanedMempool does not have a lane adhering to the KeyshareLaneI interface
+func NewKeyshareCheckTxHandler(
 	baseApp BaseApp,
 	txDecoder sdk.TxDecoder,
-	keyShareLane KeyShareLane,
+	keyshareLane KeyShareLaneI,
 	anteHandler sdk.AnteHandler,
-	chainID string,
-) *CheckTxHandler {
-	return &CheckTxHandler{
-		baseApp:      baseApp,
-		txDecoder:    txDecoder,
-		keyShareLane: keyShareLane,
-		anteHandler:  anteHandler,
-		chainID:      chainID,
+	checkTxHandler CheckTx,
+) *KeyshareCheckTxHandler {
+	return &KeyshareCheckTxHandler{
+		baseApp:        baseApp,
+		txDecoder:      txDecoder,
+		keyShareLane:   keyshareLane,
+		anteHandler:    anteHandler,
+		checkTxHandler: checkTxHandler,
 	}
 }
 
@@ -101,7 +97,7 @@ func NewCheckTxHandler(
 // verify keyshare transactions against the latest committed state. All other transactions
 // are executed normally. No state changes are applied to the state
 // during this process.
-func (handler *CheckTxHandler) CheckTx() CheckTx {
+func (handler *KeyshareCheckTxHandler) CheckTx() CheckTx {
 	return func(req *cometabci.RequestCheckTx) (res *cometabci.ResponseCheckTx, err error) {
 		defer func() {
 			if rec := recover(); rec != nil {
@@ -151,7 +147,7 @@ func (handler *CheckTxHandler) CheckTx() CheckTx {
 }
 
 // ValidateKeyshareTx is utilized to verify the keyshare transaction against the latest committed state.
-func (handler *CheckTxHandler) ValidateKeyshareTx(ctx sdk.Context, ksTx sdk.Tx, ksInfo *types.AggregatedKeyShare) (sdk.GasInfo, error) {
+func (handler *KeyshareCheckTxHandler) ValidateKeyshareTx(ctx sdk.Context, ksTx sdk.Tx, ksInfo *peptypes.AggregatedKeyShare) (sdk.GasInfo, error) {
 	// Verify the keyshare transaction.
 	ctx, err := handler.anteHandler(ctx, ksTx, false)
 	if err != nil {
@@ -173,14 +169,14 @@ func (handler *CheckTxHandler) ValidateKeyshareTx(ctx sdk.Context, ksTx sdk.Tx, 
 
 // GetContextForTx is returns the latest committed state and sets the context given
 // the checkTx request.
-func (handler *CheckTxHandler) GetContextForKeyshareTx(req *cometabci.RequestCheckTx) sdk.Context {
+func (handler *KeyshareCheckTxHandler) GetContextForKeyshareTx(req *cometabci.RequestCheckTx) sdk.Context {
 	// Retrieve the commit multi-store which is used to retrieve the latest committed state.
 	ms := handler.baseApp.CommitMultiStore().CacheMultiStore()
 
 	// Create a new context based off of the latest committed state.
-	header := tmproto.Header{
+	header := cmtproto.Header{
 		Height:  handler.baseApp.LastBlockHeight(),
-		ChainID: handler.chainID, // TODO: Replace with actual chain ID. This is currently not exposed by the app.
+		ChainID: handler.baseApp.ChainID(),
 	}
 	ctx, _ := sdk.NewContext(ms, header, true, handler.baseApp.Logger()).CacheContext()
 

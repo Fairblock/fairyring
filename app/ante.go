@@ -1,13 +1,13 @@
 package app
 
 import (
+	"errors"
+
 	corestoretypes "cosmossdk.io/core/store"
 	circuitante "cosmossdk.io/x/circuit/ante"
 	circuitkeeper "cosmossdk.io/x/circuit/keeper"
-	"errors"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
-	"github.com/Fairblock/fairyring/blockbuster"
 	pepante "github.com/Fairblock/fairyring/x/pep/ante"
 	pepkeeper "github.com/Fairblock/fairyring/x/pep/keeper"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -17,14 +17,12 @@ import (
 )
 
 type FairyringHandlerOptions struct {
-	BaseOptions           ante.HandlerOptions
-	wasmConfig            wasmtypes.WasmConfig
-	txCounterStoreService corestoretypes.KVStoreService
-	Mempool               blockbuster.Mempool
-	KeyShareLane          pepante.KeyShareLane
-	TxDecoder             sdk.TxDecoder
-	TxEncoder             sdk.TxEncoder
-	PepKeeper             pepkeeper.Keeper
+	BaseOptions  ante.HandlerOptions
+	wasmConfig   wasmtypes.WasmConfig
+	KeyShareLane pepante.KeyShareLane
+	TxDecoder    sdk.TxDecoder
+	TxEncoder    sdk.TxEncoder
+	PepKeeper    pepkeeper.Keeper
 }
 
 // NewFairyringAnteHandler wraps all of the default Cosmos SDK AnteDecorators with the Fairyring AnteHandler.
@@ -48,7 +46,6 @@ func NewFairyringAnteHandler(options FairyringHandlerOptions) sdk.AnteHandler {
 	anteDecorators := []sdk.AnteDecorator{
 		ante.NewSetUpContextDecorator(), // outermost AnteDecorator. SetUpContext must be called first
 		wasmkeeper.NewLimitSimulationGasDecorator(options.wasmConfig.SimulationGasLimit),
-		wasmkeeper.NewCountTXDecorator(options.txCounterStoreService),
 		ante.NewExtensionOptionsDecorator(options.BaseOptions.ExtensionOptionChecker),
 		ante.NewValidateBasicDecorator(),
 		ante.NewTxTimeoutHeightDecorator(),
@@ -65,7 +62,7 @@ func NewFairyringAnteHandler(options FairyringHandlerOptions) sdk.AnteHandler {
 		ante.NewSigGasConsumeDecorator(options.BaseOptions.AccountKeeper, options.BaseOptions.SigGasConsumer),
 		ante.NewSigVerificationDecorator(options.BaseOptions.AccountKeeper, options.BaseOptions.SignModeHandler),
 		ante.NewIncrementSequenceDecorator(options.BaseOptions.AccountKeeper),
-		pepante.NewPepDecorator(options.PepKeeper, options.TxEncoder, options.KeyShareLane, options.Mempool),
+		pepante.NewPepDecorator(options.PepKeeper, options.TxEncoder, options.KeyShareLane),
 	}
 
 	return sdk.ChainAnteDecorators(anteDecorators...)

@@ -1,10 +1,11 @@
-package utils
+package keyshare
 
 import (
-	sdkmath "cosmossdk.io/math"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+
+	sdkmath "cosmossdk.io/math"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkmempool "github.com/cosmos/cosmos-sdk/types/mempool"

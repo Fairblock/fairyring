@@ -2,9 +2,13 @@ package keyshare
 
 import (
 	"errors"
-	"github.com/Fairblock/fairyring/x/pep/types"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	peptypes "github.com/Fairblock/fairyring/x/pep/types"
+	signer_extraction "github.com/skip-mev/block-sdk/v2/adapters/signer_extraction_adapter"
+	"github.com/skip-mev/block-sdk/v2/block/base"
 )
 
 type (
@@ -16,13 +20,17 @@ type (
 		IsKeyshareTx(tx sdk.Tx) bool
 
 		// GetKeyShareInfo defines a function that returns the Aggregated KeyShare info from the Tx
-		GetKeyShareInfo(tx sdk.Tx) (*types.AggregatedKeyShare, error)
+		GetKeyShareInfo(tx sdk.Tx) (*peptypes.AggregatedKeyShare, error)
+
+		// MatchHandler defines a function that checks if a transaction matches the keyshare lane.
+		MatchHandler() base.MatchHandler
 	}
 
 	// DefaultKeyshareFactory defines a default implmentation for the keyshare factory interface
 	// for processing aggregate keyshare transactions.
 	DefaultKeyshareFactory struct {
-		txDecoder sdk.TxDecoder
+		txDecoder       sdk.TxDecoder
+		signerExtractor signer_extraction.Adapter
 	}
 
 	// TxWithTimeoutHeight is used to extract timeouts from sdk.Tx transactions. In the case where,
@@ -37,9 +45,10 @@ type (
 var _ Factory = (*DefaultKeyshareFactory)(nil)
 
 // NewDefaultKeyshareFactory returns a default keyshare factory interface implementation.
-func NewDefaultKeyshareFactory(txDecoder sdk.TxDecoder) Factory {
+func NewDefaultKeyshareFactory(txDecoder sdk.TxDecoder, extractor signer_extraction.Adapter) Factory {
 	return &DefaultKeyshareFactory{
-		txDecoder: txDecoder,
+		txDecoder:       txDecoder,
+		signerExtractor: extractor,
 	}
 }
 
@@ -50,36 +59,54 @@ func (config *DefaultKeyshareFactory) IsKeyshareTx(tx sdk.Tx) bool {
 	}
 
 	switch msgs[0].(type) {
-	case *types.MsgCreateAggregatedKeyShare:
+	case *peptypes.MsgCreateAggregatedKeyShare:
 		return true
 	}
 
 	return false
 }
 
-func (config *DefaultKeyshareFactory) GetKeyShareInfo(tx sdk.Tx) (*types.AggregatedKeyShare, error) {
+func (config *DefaultKeyshareFactory) GetKeyShareInfo(tx sdk.Tx) (*peptypes.AggregatedKeyShare, error) {
 	msg, err := GetAggregateKeyshareMsgFromTx(tx)
 	if err != nil {
 		return nil, err
 	}
 
-	return &types.AggregatedKeyShare{
+	return &peptypes.AggregatedKeyShare{
 		Height:  msg.Height,
 		Data:    msg.Data,
 		Creator: msg.Creator,
 	}, nil
 }
 
-func GetAggregateKeyshareMsgFromTx(tx sdk.Tx) (*types.MsgCreateAggregatedKeyShare, error) {
+func GetAggregateKeyshareMsgFromTx(tx sdk.Tx) (*peptypes.MsgCreateAggregatedKeyShare, error) {
 	msgs := tx.GetMsgs()
 	if len(msgs) != 1 {
 		return nil, errors.New("invalid MsgCreateAggregatedKeyShare transaction")
 	}
 
-	t, ok := msgs[0].(*types.MsgCreateAggregatedKeyShare)
+	t, ok := msgs[0].(*peptypes.MsgCreateAggregatedKeyShare)
 	if ok {
 		return t, nil
 	}
 
 	return nil, errors.New("invalid MsgCreateAggregatedKeyShare transaction")
+}
+
+// GetTimeoutHeight returns the timeout height of the transaction.
+func (config *DefaultKeyshareFactory) GetTimeoutHeight(tx sdk.Tx) (uint64, error) {
+	timeoutTx, ok := tx.(TxWithTimeoutHeight)
+	if !ok {
+		return 0, fmt.Errorf("cannot extract timeout; transaction does not implement TxWithTimeoutHeight")
+	}
+
+	return timeoutTx.GetTimeoutHeight(), nil
+}
+
+// MatchHandler defines a default function that checks if a transaction matches the keyshare lane.
+func (config *DefaultKeyshareFactory) MatchHandler() base.MatchHandler {
+	return func(ctx sdk.Context, tx sdk.Tx) bool {
+		bidInfo, err := config.GetKeyShareInfo(tx)
+		return bidInfo != nil && err == nil
+	}
 }
