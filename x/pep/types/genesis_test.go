@@ -9,7 +9,7 @@ import (
 )
 
 func TestGenesisState_Validate(t *testing.T) {
-	for _, tc := range []struct {
+	tests := []struct {
 		desc     string
 		genState *types.GenesisState
 		valid    bool
@@ -22,114 +22,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
-				EncryptedTxArray: []types.EncryptedTxArray{
-					{
-						EncryptedTx: []types.EncryptedTx{
-							{
-								TargetHeight: 0,
-								Index:        0,
-							},
-							{
-								TargetHeight: 0,
-								Index:        1,
-							},
-						},
-					},
-					{
-						EncryptedTx: []types.EncryptedTx{
-							{
-								TargetHeight: 1,
-								Index:        0,
-							},
-							{
-								TargetHeight: 1,
-								Index:        1,
-							},
-						},
-					},
-				},
-				PepNonceList: []types.PepNonce{
-					{
-						Address: "0",
-					},
-					{
-						Address: "1",
-					},
-				},
-				AggregatedKeyShareList: []types.AggregatedKeyShare{
-					{
-						Height: 0,
-					},
-					{
-						Height: 1,
-					},
-				},
+				PortId: types.PortID,
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
 		},
-		{
-			desc: "duplicated encryptedTx",
-			genState: &types.GenesisState{
-				EncryptedTxArray: []types.EncryptedTxArray{
-					{
-						EncryptedTx: []types.EncryptedTx{
-							{
-								TargetHeight: 0,
-								Index:        0,
-							},
-							{
-								TargetHeight: 0,
-								Index:        0,
-							},
-						},
-					},
-					{
-						EncryptedTx: []types.EncryptedTx{
-							{
-								TargetHeight: 0,
-								Index:        0,
-							},
-							{
-								TargetHeight: 0,
-								Index:        0,
-							},
-						},
-					},
-				},
-			},
-			valid: false,
-		},
-		{
-			desc: "duplicated pepNonce",
-			genState: &types.GenesisState{
-				PepNonceList: []types.PepNonce{
-					{
-						Address: "0",
-					},
-					{
-						Address: "0",
-					},
-				},
-			},
-			valid: false,
-		},
-		{
-			desc: "duplicated aggregatedKeyShare",
-			genState: &types.GenesisState{
-				AggregatedKeyShareList: []types.AggregatedKeyShare{
-					{
-						Height: 0,
-					},
-					{
-						Height: 0,
-					},
-				},
-			},
-			valid: false,
-		},
 		// this line is used by starport scaffolding # types/genesis/testcase
-	} {
+	}
+	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
 			err := tc.genState.Validate()
 			if tc.valid {

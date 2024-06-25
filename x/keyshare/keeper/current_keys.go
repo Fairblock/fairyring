@@ -14,7 +14,7 @@ func (k Keeper) OnRecvCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Pac
 		return packetAck, err
 	}
 
-	k.Logger(ctx).Info("Received keys packet req")
+	k.Logger().Info("Received keys packet req")
 
 	ak, found := k.GetActivePubKey(ctx)
 	if found {

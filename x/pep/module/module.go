@@ -3,49 +3,42 @@ package pep
 import (
 	"bytes"
 	"context"
-	"cosmossdk.io/core/store"
-	"cosmossdk.io/depinject"
-	"cosmossdk.io/log"
+	"cosmossdk.io/core/appmodule"
 	cosmosmath "cosmossdk.io/math"
+	txsigning "cosmossdk.io/x/tx/signing"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
 	enc "github.com/FairBlock/DistributedIBE/encryption"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
-	"github.com/Fairblock/fairyring/x/pep/client/cli"
 	"github.com/cosmos/cosmos-sdk/baseapp"
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
-	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
+	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"
 	"github.com/drand/kyber/pairing"
-	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/types/known/anypb"
 	"math"
 	"strconv"
 	"strings"
 
-	"cosmossdk.io/core/appmodule"
-	txsigning "cosmossdk.io/x/tx/signing"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/spf13/cobra"
+
 	// this line is used by starport scaffolding # 1
 
+	"github.com/Fairblock/fairyring/x/pep/client/cli"
 	"github.com/Fairblock/fairyring/x/pep/keeper"
 	"github.com/Fairblock/fairyring/x/pep/types"
-	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
-
-	modulev1 "github.com/Fairblock/fairyring/api/fairyring/pep/module"
 )
 
 var (
@@ -58,6 +51,7 @@ var (
 	_ appmodule.AppModule       = (*AppModule)(nil)
 	_ appmodule.HasBeginBlocker = (*AppModule)(nil)
 	_ appmodule.HasEndBlocker   = (*AppModule)(nil)
+	_ porttypes.IBCModule       = IBCModule{}
 )
 
 // ----------------------------------------------------------------------------
@@ -67,47 +61,12 @@ var (
 // AppModuleBasic implements the AppModuleBasic interface that defines the
 // independent methods a Cosmos SDK module needs to implement.
 type AppModuleBasic struct {
-	cdc     codec.BinaryCodec
-	cdcJson codec.JSONCodec
+	cdc codec.BinaryCodec
 }
 
-type DecryptionTx struct {
-	Identity               string
-	Index                  uint64
-	Data                   string
-	Creator                string
-	ChargedGas             *sdk.Coin
-	ProcessedAtChainHeight uint64
-	Expired                bool
+func NewAppModuleBasic(cdc codec.BinaryCodec) AppModuleBasic {
+	return AppModuleBasic{cdc: cdc}
 }
-
-func convertEncTxToDecryptionTx(tx types.EncryptedTx) DecryptionTx {
-	dtx := DecryptionTx{
-		Identity:               strconv.FormatUint(tx.TargetHeight, 10),
-		Index:                  tx.Index,
-		Data:                   tx.Data,
-		Creator:                tx.Creator,
-		ChargedGas:             tx.ChargedGas,
-		ProcessedAtChainHeight: tx.ProcessedAtChainHeight,
-		Expired:                tx.Expired,
-	}
-	return dtx
-}
-
-func convertGenEncTxToDecryptionTx(tx types.GeneralEncryptedTx) DecryptionTx {
-	dtx := DecryptionTx{
-		Identity:   tx.Identity,
-		Index:      tx.Index,
-		Data:       tx.Data,
-		Creator:    tx.Creator,
-		ChargedGas: tx.ChargedGas,
-	}
-	return dtx
-}
-
-//func NewAppModuleBasic(cdc codec.BinaryCodec) AppModuleBasic {
-//	return AppModuleBasic{cdc: cdc}
-//}
 
 // Name returns the name of the module as a string.
 func (AppModuleBasic) Name() string {
@@ -116,9 +75,7 @@ func (AppModuleBasic) Name() string {
 
 // RegisterLegacyAminoCodec registers the amino codec for the module, which is used
 // to marshal and unmarshal structs to/from []byte in order to persist them in the module's KVStore.
-func (AppModuleBasic) RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
-	types.RegisterCodec(cdc)
-}
+func (AppModuleBasic) RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {}
 
 // RegisterInterfaces registers a module's interface types and their concrete implementations as proto.Message.
 func (a AppModuleBasic) RegisterInterfaces(reg cdctypes.InterfaceRegistry) {
@@ -180,7 +137,7 @@ func NewAppModule(
 	simCheck func(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error),
 ) AppModule {
 	return AppModule{
-		AppModuleBasic:   AppModuleBasic{cdc: cdc, cdcJson: cdc},
+		AppModuleBasic:   NewAppModuleBasic(cdc),
 		keeper:           keeper,
 		accountKeeper:    accountKeeper,
 		bankKeeper:       bankKeeper,
@@ -219,6 +176,282 @@ func (am AppModule) ExportGenesis(ctx sdk.Context, cdc codec.JSONCodec) json.Raw
 // To avoid wrong/empty versions, the initial version should be set to 1.
 func (AppModule) ConsensusVersion() uint64 { return 1 }
 
+// BeginBlock contains the logic that is automatically triggered at the beginning of each block.
+// The begin block implementation is optional.
+func (am AppModule) BeginBlock(cctx context.Context) error {
+	ctx := sdk.UnwrapSDKContext(cctx)
+	strLastExecutedHeight := am.keeper.GetLastExecutedHeight(ctx)
+	lastExecutedHeight, err := strconv.ParseUint(strLastExecutedHeight, 10, 64)
+
+	if err != nil {
+		am.keeper.Logger().Error("Last executed height not exists")
+		lastExecutedHeight = 0
+	}
+
+	strHeight := am.keeper.GetLatestHeight(ctx)
+	height, err := strconv.ParseUint(strHeight, 10, 64)
+
+	if err != nil {
+		am.keeper.Logger().Error("Latest height does not exists")
+		height = 0
+	}
+
+	am.keeper.Logger().Info(fmt.Sprintf("Last executed Height: %d", lastExecutedHeight))
+	am.keeper.Logger().Info(fmt.Sprintf("Latest height from fairyring: %s", strHeight))
+
+	activePubkey, found := am.keeper.GetActivePubKey(ctx)
+	if !found {
+		am.keeper.Logger().Error("Active public key does not exists")
+		return nil
+	}
+
+	if len(activePubkey.Creator) == 0 && len(activePubkey.PublicKey) == 0 {
+		am.keeper.Logger().Error("Active public key does not exists")
+		return nil
+	}
+
+	suite := bls.NewBLS12381Suite()
+
+	publicKeyPoint, err := am.getPubKeyPoint(ctx, activePubkey, suite)
+	if err != nil {
+		am.keeper.Logger().Error("Unabe to get Pubkey Point with suite")
+		return nil
+	}
+
+	// loop over all encrypted Txs from the last executed height to the current height
+	for h := lastExecutedHeight + 1; h <= height; h++ {
+		arr := am.keeper.GetEncryptedTxAllFromHeight(ctx, h)
+		am.keeper.SetLastExecutedHeight(ctx, strconv.FormatUint(h, 10))
+
+		key, found := am.keeper.GetAggregatedKeyShare(ctx, h)
+		if !found {
+			am.keeper.Logger().Error(fmt.Sprintf("Decryption key not found for block height: %d, Removing all the encrypted txs...", h))
+			encryptedTxs := am.keeper.GetEncryptedTxAllFromHeight(ctx, h)
+			if len(encryptedTxs.EncryptedTx) > 0 {
+				am.keeper.SetAllEncryptedTxExpired(ctx, h)
+				am.keeper.Logger().Info(fmt.Sprintf("Updated total %d encrypted txs at block %d to expired", len(encryptedTxs.EncryptedTx), h))
+				indexes := make([]string, len(encryptedTxs.EncryptedTx))
+				for _, v := range encryptedTxs.EncryptedTx {
+					indexes = append(indexes, strconv.FormatUint(v.Index, 10))
+				}
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.EncryptedTxDiscardedEventType,
+						sdk.NewAttribute(types.EncryptedTxDiscardedEventTxIDs, strings.Join(indexes, ",")),
+						sdk.NewAttribute(types.EncryptedTxDiscardedEventHeight, strconv.FormatUint(h, 10)),
+					),
+				)
+			} else {
+				am.keeper.Logger().Info(fmt.Sprintf("No encrypted tx found at block %d", h))
+			}
+			continue
+		}
+
+		skPoint, err := am.getSKPoint(ctx, key.Data, suite)
+		if err != nil {
+			continue
+		}
+
+		for _, eachTx := range arr.EncryptedTx {
+			startConsumedGas := ctx.GasMeter().GasConsumed()
+			am.keeper.SetEncryptedTxProcessedHeight(ctx, eachTx.TargetHeight, eachTx.Index, uint64(ctx.BlockHeight()))
+			tx := convertEncTxToDecryptionTx(eachTx)
+			err := am.decryptAndExecuteTx(ctx, tx, startConsumedGas, publicKeyPoint, skPoint)
+			if err != nil {
+				continue
+			}
+			telemetry.IncrCounter(1, types.KeyTotalSuccessEncryptedTx)
+		}
+	}
+
+	// loop over all entries in the general enc tx queue
+	entries := am.keeper.GetAllGenEncTxExecutionQueueEntry(ctx)
+	for _, entry := range entries {
+		if entry.AggrKeyshare == "" {
+			am.keeper.Logger().Error("aggregated keyshare not found in entry with req-id: ", entry.RequestId)
+			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
+			continue
+		}
+
+		if entry.TxList == nil {
+			am.keeper.Logger().Info("No encrypted txs found for entry with req-id: ", entry.RequestId)
+			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
+			continue
+		}
+
+		skPoint, err := am.getSKPoint(ctx, entry.AggrKeyshare, suite)
+		if err != nil {
+			continue
+		}
+
+		// loop over all txs in the entry
+		for _, eachTx := range entry.TxList.EncryptedTx {
+			startConsumedGas := ctx.GasMeter().GasConsumed()
+
+			tx := convertGenEncTxToDecryptionTx(eachTx)
+			err := am.decryptAndExecuteTx(ctx, tx, startConsumedGas, publicKeyPoint, skPoint)
+			if err != nil {
+				continue
+			}
+
+			telemetry.IncrCounter(1, types.KeyTotalSuccessEncryptedTx)
+		}
+
+		am.keeper.Logger().Info("executed txs for entry with req-id: ", entry.RequestId)
+		am.keeper.RemoveExecutionQueueEntry(ctx, entry.RequestId)
+	}
+	return nil
+}
+
+// EndBlock contains the logic that is automatically triggered at the end of each block.
+// The end block implementation is optional.
+func (am AppModule) EndBlock(cctx context.Context) error {
+	ctx := sdk.UnwrapSDKContext(cctx)
+	params := am.keeper.GetParams(ctx)
+	if !params.IsSourceChain {
+		err := am.keeper.QueryFairyringCurrentKeys(ctx)
+		if err != nil {
+			am.keeper.Logger().Error("Endblocker get keys err", err)
+			am.keeper.Logger().Error(err.Error())
+		}
+	}
+	strHeight := am.keeper.GetLatestHeight(ctx)
+	height, err := strconv.ParseUint(strHeight, 10, 64)
+	if err != nil {
+		am.keeper.Logger().Error("Latest height does not exists in EndBlock")
+		return nil
+	}
+
+	ak, found := am.keeper.GetActivePubKey(ctx)
+	if found {
+		if ak.Expiry <= height {
+			am.keeper.DeleteActivePubKey(ctx)
+		} else {
+			return nil
+		}
+	}
+
+	qk, found := am.keeper.GetQueuedPubKey(ctx)
+	if found {
+		if qk.Expiry > height {
+			newActiveKey := commontypes.ActivePublicKey(qk)
+
+			am.keeper.SetActivePubKey(ctx, newActiveKey)
+		}
+		am.keeper.DeleteQueuedPubKey(ctx)
+	}
+	return nil
+}
+
+// IsOnePerModuleType implements the depinject.OnePerModuleType interface.
+func (am AppModule) IsOnePerModuleType() {}
+
+// IsAppModule implements the appmodule.AppModule interface.
+func (am AppModule) IsAppModule() {}
+
+// ----------------------------------------------------------------------------
+// App Wiring Setup
+// ----------------------------------------------------------------------------
+//
+//func init() {
+//	appmodule.Register(
+//		&modulev1.Module{},
+//		appmodule.Provide(ProvideModule),
+//	)
+//}
+//
+//type ModuleInputs struct {
+//	depinject.In
+//
+//	StoreService store.KVStoreService
+//	Cdc          codec.Codec
+//	Config       *modulev1.Module
+//	Logger       log.Logger
+//
+//	AccountKeeper types.AccountKeeper
+//	BankKeeper    types.BankKeeper
+//
+//	IBCKeeperFn        func() *ibckeeper.Keeper                   `optional:"true"`
+//	CapabilityScopedFn func(string) capabilitykeeper.ScopedKeeper `optional:"true"`
+//
+//	MsgServiceRouter *baseapp.MsgServiceRouter
+//	TxConfig         client.TxConfig
+//	// imCheck         func(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error)
+//}
+//
+//type ModuleOutputs struct {
+//	depinject.Out
+//
+//	PepKeeper keeper.Keeper
+//	Module    appmodule.AppModule
+//}
+//
+//func ProvideModule(in ModuleInputs) ModuleOutputs {
+//	// default to governance authority if not provided
+//	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
+//	if in.Config.Authority != "" {
+//		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
+//	}
+//	k := keeper.NewKeeper(
+//		in.Cdc,
+//		in.StoreService,
+//		in.Logger,
+//		authority.String(),
+//		in.IBCKeeperFn,
+//		in.CapabilityScopedFn,
+//		in.AccountKeeper,
+//		in.BankKeeper,
+//	)
+//	m := NewAppModule(
+//		in.Cdc,
+//		k,
+//		in.AccountKeeper,
+//		in.BankKeeper,
+//		in.MsgServiceRouter,
+//		in.TxConfig,
+//		// in.simCheck,
+//	)
+//
+//	return ModuleOutputs{PepKeeper: k, Module: m}
+//}
+
+// --------------------------------------------------------------
+//	Functions for decrypting, parsing and handling encrypted tx
+// --------------------------------------------------------------
+
+type DecryptionTx struct {
+	Identity               string
+	Index                  uint64
+	Data                   string
+	Creator                string
+	ChargedGas             *sdk.Coin
+	ProcessedAtChainHeight uint64
+	Expired                bool
+}
+
+func convertEncTxToDecryptionTx(tx types.EncryptedTx) DecryptionTx {
+	dtx := DecryptionTx{
+		Identity:               strconv.FormatUint(tx.TargetHeight, 10),
+		Index:                  tx.Index,
+		Data:                   tx.Data,
+		Creator:                tx.Creator,
+		ChargedGas:             tx.ChargedGas,
+		ProcessedAtChainHeight: tx.ProcessedAtChainHeight,
+		Expired:                tx.Expired,
+	}
+	return dtx
+}
+
+func convertGenEncTxToDecryptionTx(tx types.GeneralEncryptedTx) DecryptionTx {
+	dtx := DecryptionTx{
+		Identity:   tx.Identity,
+		Index:      tx.Index,
+		Data:       tx.Data,
+		Creator:    tx.Creator,
+		ChargedGas: tx.ChargedGas,
+	}
+	return dtx
+}
+
 func (am AppModule) handleGasConsumption(ctx sdk.Context, recipient sdk.AccAddress, gasUsed cosmosmath.Int, gasCharged *sdk.Coin) {
 	creatorAccount := am.accountKeeper.GetAccount(ctx, recipient)
 
@@ -234,15 +467,15 @@ func (am AppModule) handleGasConsumption(ctx sdk.Context, recipient sdk.AccAddre
 			),
 		)
 		if deductFeeErr != nil {
-			am.keeper.Logger(ctx).Error("deduct failed tx fee error")
-			am.keeper.Logger(ctx).Error(deductFeeErr.Error())
+			am.keeper.Logger().Error("deduct failed tx fee error")
+			am.keeper.Logger().Error(deductFeeErr.Error())
 		} else {
-			am.keeper.Logger(ctx).Info("failed tx fee deducted without error")
+			am.keeper.Logger().Info("failed tx fee deducted without error")
 		}
 	} else {
 		amount := gasCharged.Amount.Sub(gasUsed)
 		if amount.IsZero() {
-			am.keeper.Logger(ctx).Info("refund failed tx fee amount is zero, no need to refund...")
+			am.keeper.Logger().Info("refund failed tx fee amount is zero, no need to refund...")
 			return
 		}
 		refundFeeErr := am.bankKeeper.SendCoinsFromModuleToAccount(
@@ -252,10 +485,10 @@ func (am AppModule) handleGasConsumption(ctx sdk.Context, recipient sdk.AccAddre
 			sdk.NewCoins(sdk.NewCoin(gasCharged.Denom, amount)),
 		)
 		if refundFeeErr != nil {
-			am.keeper.Logger(ctx).Error("refund failed tx fee error")
-			am.keeper.Logger(ctx).Error(refundFeeErr.Error())
+			am.keeper.Logger().Error("refund failed tx fee error")
+			am.keeper.Logger().Error(refundFeeErr.Error())
 		} else {
-			am.keeper.Logger(ctx).Info("failed tx fee refunded without error")
+			am.keeper.Logger().Info("failed tx fee refunded without error")
 		}
 	}
 }
@@ -277,7 +510,7 @@ func (am AppModule) processFailedEncryptedTx(
 	failReason string,
 	startConsumedGas uint64,
 ) {
-	am.keeper.Logger(ctx).Error(fmt.Sprintf("failed to process encrypted tx: %s", failReason))
+	am.keeper.Logger().Error(fmt.Sprintf("failed to process encrypted tx: %s", failReason))
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.EncryptedTxRevertedEventType,
 			sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, tx.Creator),
@@ -289,8 +522,8 @@ func (am AppModule) processFailedEncryptedTx(
 
 	creatorAddr, err := sdk.AccAddressFromBech32(tx.Creator)
 	if err != nil {
-		am.keeper.Logger(ctx).Error("error while trying to parse tx creator address when processing failed encrypted tx")
-		am.keeper.Logger(ctx).Error(err.Error())
+		am.keeper.Logger().Error("error while trying to parse tx creator address when processing failed encrypted tx")
+		am.keeper.Logger().Error(err.Error())
 		return
 	}
 
@@ -310,21 +543,21 @@ func (am AppModule) getPubKeyPoint(
 
 	publicKeyByte, err := hex.DecodeString(ak.PublicKey)
 	if err != nil {
-		am.keeper.Logger(ctx).Error("Error decoding active public key")
-		am.keeper.Logger(ctx).Error(err.Error())
+		am.keeper.Logger().Error("Error decoding active public key")
+		am.keeper.Logger().Error(err.Error())
 		return nil, err
 	}
 
 	publicKeyPoint := suite.G1().Point()
 	err = publicKeyPoint.UnmarshalBinary(publicKeyByte)
 	if err != nil {
-		am.keeper.Logger(ctx).Error("Error unmarshalling public key")
-		am.keeper.Logger(ctx).Error(err.Error())
+		am.keeper.Logger().Error("Error unmarshalling public key")
+		am.keeper.Logger().Error(err.Error())
 		return nil, err
 	}
 
-	am.keeper.Logger(ctx).Info("Unmarshal public key successfully")
-	am.keeper.Logger(ctx).Info(publicKeyPoint.String())
+	am.keeper.Logger().Info("Unmarshal public key successfully")
+	am.keeper.Logger().Info(publicKeyPoint.String())
 
 	return publicKeyPoint, nil
 }
@@ -336,21 +569,21 @@ func (am AppModule) getSKPoint(
 ) (kyber.Point, error) {
 	keyByte, err := hex.DecodeString(key)
 	if err != nil {
-		am.keeper.Logger(ctx).Error("Error decoding aggregated key")
-		am.keeper.Logger(ctx).Error(err.Error())
+		am.keeper.Logger().Error("Error decoding aggregated key")
+		am.keeper.Logger().Error(err.Error())
 		return nil, err
 	}
 
 	skPoint := suite.G2().Point()
 	err = skPoint.UnmarshalBinary(keyByte)
 	if err != nil {
-		am.keeper.Logger(ctx).Error("Error unmarshalling aggregated key")
-		am.keeper.Logger(ctx).Error(err.Error())
+		am.keeper.Logger().Error("Error unmarshalling aggregated key")
+		am.keeper.Logger().Error(err.Error())
 		return nil, err
 	}
 
-	am.keeper.Logger(ctx).Info("Unmarshal decryption key successfully")
-	am.keeper.Logger(ctx).Info(skPoint.String())
+	am.keeper.Logger().Info("Unmarshal decryption key successfully")
+	am.keeper.Logger().Info(skPoint.String())
 
 	return skPoint, nil
 }
@@ -397,18 +630,18 @@ func (am AppModule) decryptAndExecuteTx(
 		return err
 	}
 
-	am.keeper.Logger(ctx).Info(fmt.Sprintf("Decrypt TX Successfully: %s", decryptedTx.String()))
+	am.keeper.Logger().Info(fmt.Sprintf("Decrypt TX Successfully: %s", decryptedTx.String()))
 
 	txDecoderTx, err := am.txConfig.TxDecoder()(decryptedTx.Bytes())
 
 	if err != nil {
-		am.keeper.Logger(ctx).Error("Decoding Tx error in BeginBlock... Trying JSON Decoder")
-		am.keeper.Logger(ctx).Error(err.Error())
+		am.keeper.Logger().Error("Decoding Tx error in BeginBlock... Trying JSON Decoder")
+		am.keeper.Logger().Error(err.Error())
 
 		txDecoderTx, err = am.txConfig.TxJSONDecoder()(decryptedTx.Bytes())
 		if err != nil {
-			am.keeper.Logger(ctx).Error("JSON Decoding Tx error in BeginBlock")
-			am.keeper.Logger(ctx).Error(err.Error())
+			am.keeper.Logger().Error("JSON Decoding Tx error in BeginBlock")
+			am.keeper.Logger().Error(err.Error())
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxRevertedEventType,
 					sdk.NewAttribute(types.EncryptedTxRevertedEventCreator, eachTx.Creator),
@@ -421,7 +654,7 @@ func (am AppModule) decryptAndExecuteTx(
 			am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error trying to json decoding tx: %s", err.Error()), startConsumedGas)
 			return err
 		} else {
-			am.keeper.Logger(ctx).Error("TX Successfully Decode with JSON Decoder")
+			am.keeper.Logger().Error("TX Successfully Decode with JSON Decoder")
 		}
 	}
 
@@ -439,6 +672,17 @@ func (am AppModule) decryptAndExecuteTx(
 
 	if len(sigs) != 1 {
 		am.processFailedEncryptedTx(ctx, eachTx, "number of provided signatures is more than one", startConsumedGas)
+		return err
+	}
+
+	signers, err := wrappedTx.GetTx().GetSigners()
+	if err != nil {
+		am.processFailedEncryptedTx(ctx, eachTx, "not able to get signature signers", startConsumedGas)
+		return err
+	}
+
+	if len(sigs) != len(signers) {
+		am.processFailedEncryptedTx(ctx, eachTx, "number of signature not equals to number of signers", startConsumedGas)
 		return err
 	}
 
@@ -468,7 +712,11 @@ func (am AppModule) decryptAndExecuteTx(
 		})
 	}
 
-	verifiableTx := wrappedTx.GetTx().(authsigning.V2AdaptableTx)
+	verifiableTx, ok := wrappedTx.GetTx().(authsigning.V2AdaptableTx)
+	if !ok {
+		am.processFailedEncryptedTx(ctx, eachTx, "Unable to parse tx to V2AdaptableTx", startConsumedGas)
+		return err
+	}
 
 	anyPk, err := codectypes.NewAnyWithValue(sigs[0].PubKey)
 	if err != nil {
@@ -521,7 +769,7 @@ func (am AppModule) decryptAndExecuteTx(
 	if !txFee.Empty() {
 		gasProvided := cosmosmath.NewIntFromUint64(wrappedTx.GetTx().GetGas())
 		// Underlying tx consumed gas + gas consumed on decrypting & decoding tx
-		am.keeper.Logger(ctx).Info(fmt.Sprintf("Underlying tx consumed: %d, decryption consumed: %d", simCheckGas.GasUsed, decryptionConsumed))
+		am.keeper.Logger().Info(fmt.Sprintf("Underlying tx consumed: %d, decryption consumed: %d", simCheckGas.GasUsed, decryptionConsumed))
 		gasUsedInBig := cosmosmath.NewIntFromUint64(simCheckGas.GasUsed).Add(cosmosmath.NewIntFromUint64(decryptionConsumed))
 		newCoins := make([]sdk.Coin, len(txFee))
 		refundDenom := txFee[0].Denom
@@ -546,15 +794,15 @@ func (am AppModule) decryptAndExecuteTx(
 			usedGasFee.Amount = cosmosmath.NewIntFromUint64(0)
 		}
 
-		am.keeper.Logger(ctx).Info(fmt.Sprintf("Deduct fee amount: %v | Refund amount: %v", newCoins, refundAmount))
+		am.keeper.Logger().Info(fmt.Sprintf("Deduct fee amount: %v | Refund amount: %v", newCoins, refundAmount))
 
 		if refundAmount.IsZero() {
 			deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, sdk.NewCoins(usedGasFee))
 			if deductFeeErr != nil {
-				am.keeper.Logger(ctx).Error("Deduct fee Err")
-				am.keeper.Logger(ctx).Error(deductFeeErr.Error())
+				am.keeper.Logger().Error("Deduct fee Err")
+				am.keeper.Logger().Error(deductFeeErr.Error())
 			} else {
-				am.keeper.Logger(ctx).Info("Fee deducted without error")
+				am.keeper.Logger().Info("Fee deducted without error")
 			}
 		} else {
 			refundFeeErr := am.bankKeeper.SendCoinsFromModuleToAccount(
@@ -564,10 +812,10 @@ func (am AppModule) decryptAndExecuteTx(
 				sdk.NewCoins(sdk.NewCoin(refundDenom, refundAmount)),
 			)
 			if refundFeeErr != nil {
-				am.keeper.Logger(ctx).Error("Refund fee Err")
-				am.keeper.Logger(ctx).Error(refundFeeErr.Error())
+				am.keeper.Logger().Error("Refund fee Err")
+				am.keeper.Logger().Error(refundFeeErr.Error())
 			} else {
-				am.keeper.Logger(ctx).Info("Fee refunded without error")
+				am.keeper.Logger().Info("Fee refunded without error")
 			}
 		}
 	}
@@ -598,7 +846,7 @@ func (am AppModule) decryptAndExecuteTx(
 
 	eventStrArrJson, _ := json.Marshal(underlyingTxEvents)
 
-	am.keeper.Logger(ctx).Info("! Encrypted Tx Decrypted & Decoded & Executed successfully !")
+	am.keeper.Logger().Info("! Encrypted Tx Decrypted & Decoded & Executed successfully !")
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.EncryptedTxExecutedEventType,
@@ -611,244 +859,4 @@ func (am AppModule) decryptAndExecuteTx(
 		),
 	)
 	return nil
-}
-
-// BeginBlock contains the logic that is automatically triggered at the beginning of each block.
-// The begin block implementation is optional.
-func (am AppModule) BeginBlock(cctx context.Context) error {
-	ctx := sdk.UnwrapSDKContext(cctx)
-	strLastExecutedHeight := am.keeper.GetLastExecutedHeight(ctx)
-	lastExecutedHeight, err := strconv.ParseUint(strLastExecutedHeight, 10, 64)
-
-	if err != nil {
-		am.keeper.Logger(ctx).Error("Last executed height not exists")
-		lastExecutedHeight = 0
-	}
-
-	strHeight := am.keeper.GetLatestHeight(ctx)
-	height, err := strconv.ParseUint(strHeight, 10, 64)
-
-	if err != nil {
-		am.keeper.Logger(ctx).Error("Latest height does not exists")
-		height = 0
-	}
-
-	am.keeper.Logger(ctx).Info(fmt.Sprintf("Last executed Height: %d", lastExecutedHeight))
-	am.keeper.Logger(ctx).Info(fmt.Sprintf("Latest height from fairyring: %s", strHeight))
-
-	activePubkey, found := am.keeper.GetActivePubKey(ctx)
-	if !found {
-		am.keeper.Logger(ctx).Error("Active public key does not exists")
-		return nil
-	}
-
-	if len(activePubkey.Creator) == 0 && len(activePubkey.PublicKey) == 0 {
-		am.keeper.Logger(ctx).Error("Active public key does not exists")
-		return nil
-	}
-
-	suite := bls.NewBLS12381Suite()
-
-	publicKeyPoint, err := am.getPubKeyPoint(ctx, activePubkey, suite)
-	if err != nil {
-		am.keeper.Logger(ctx).Error("Unabe to get Pubkey Point with suite")
-		return nil
-	}
-
-	// loop over all encrypted Txs from the last executed height to the current height
-	for h := lastExecutedHeight + 1; h <= height; h++ {
-		arr := am.keeper.GetEncryptedTxAllFromHeight(ctx, h)
-		am.keeper.SetLastExecutedHeight(ctx, strconv.FormatUint(h, 10))
-
-		key, found := am.keeper.GetAggregatedKeyShare(ctx, h)
-		if !found {
-			am.keeper.Logger(ctx).Error(fmt.Sprintf("Decryption key not found for block height: %d, Removing all the encrypted txs...", h))
-			encryptedTxs := am.keeper.GetEncryptedTxAllFromHeight(ctx, h)
-			if len(encryptedTxs.EncryptedTx) > 0 {
-				am.keeper.SetAllEncryptedTxExpired(ctx, h)
-				am.keeper.Logger(ctx).Info(fmt.Sprintf("Updated total %d encrypted txs at block %d to expired", len(encryptedTxs.EncryptedTx), h))
-				indexes := make([]string, len(encryptedTxs.EncryptedTx))
-				for _, v := range encryptedTxs.EncryptedTx {
-					indexes = append(indexes, strconv.FormatUint(v.Index, 10))
-				}
-				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.EncryptedTxDiscardedEventType,
-						sdk.NewAttribute(types.EncryptedTxDiscardedEventTxIDs, strings.Join(indexes, ",")),
-						sdk.NewAttribute(types.EncryptedTxDiscardedEventHeight, strconv.FormatUint(h, 10)),
-					),
-				)
-			} else {
-				am.keeper.Logger(ctx).Info(fmt.Sprintf("No encrypted tx found at block %d", h))
-			}
-			continue
-		}
-
-		skPoint, err := am.getSKPoint(ctx, key.Data, suite)
-		if err != nil {
-			continue
-		}
-
-		for _, eachTx := range arr.EncryptedTx {
-			startConsumedGas := ctx.GasMeter().GasConsumed()
-			am.keeper.SetEncryptedTxProcessedHeight(ctx, eachTx.TargetHeight, eachTx.Index, uint64(ctx.BlockHeight()))
-			tx := convertEncTxToDecryptionTx(eachTx)
-			err := am.decryptAndExecuteTx(ctx, tx, startConsumedGas, publicKeyPoint, skPoint)
-			if err != nil {
-				continue
-			}
-			telemetry.IncrCounter(1, types.KeyTotalSuccessEncryptedTx)
-		}
-	}
-
-	// loop over all entries in the general enc tx queue
-	entries := am.keeper.GetAllGenEncTxExecutionQueueEntry(ctx)
-	for _, entry := range entries {
-		if entry.AggrKeyshare == "" {
-			am.keeper.Logger(ctx).Error("aggregated keyshare not found in entry with req-id: ", entry.RequestId)
-			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
-			continue
-		}
-
-		if entry.TxList == nil {
-			am.keeper.Logger(ctx).Info("No encrypted txs found for entry with req-id: ", entry.RequestId)
-			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
-			continue
-		}
-
-		skPoint, err := am.getSKPoint(ctx, entry.AggrKeyshare, suite)
-		if err != nil {
-			continue
-		}
-
-		// loop over all txs in the entry
-		for _, eachTx := range entry.TxList.EncryptedTx {
-			startConsumedGas := ctx.GasMeter().GasConsumed()
-
-			tx := convertGenEncTxToDecryptionTx(eachTx)
-			err := am.decryptAndExecuteTx(ctx, tx, startConsumedGas, publicKeyPoint, skPoint)
-			if err != nil {
-				continue
-			}
-
-			telemetry.IncrCounter(1, types.KeyTotalSuccessEncryptedTx)
-		}
-
-		am.keeper.Logger(ctx).Info("executed txs for entry with req-id: ", entry.RequestId)
-		am.keeper.RemoveExecutionQueueEntry(ctx, entry.RequestId)
-	}
-	return nil
-}
-
-// EndBlock contains the logic that is automatically triggered at the end of each block.
-// The end block implementation is optional.
-func (am AppModule) EndBlock(cctx context.Context) error {
-	ctx := sdk.UnwrapSDKContext(cctx)
-	params := am.keeper.GetParams(ctx)
-	if !params.IsSourceChain {
-		err := am.keeper.QueryFairyringCurrentKeys(ctx)
-		if err != nil {
-			am.keeper.Logger(ctx).Error("Endblocker get keys err", err)
-			am.keeper.Logger(ctx).Error(err.Error())
-		}
-
-		strHeight := am.keeper.GetLatestHeight(ctx)
-		height, err := strconv.ParseUint(strHeight, 10, 64)
-		if err != nil {
-			am.keeper.Logger(ctx).Error("Latest height does not exists in EndBlock")
-			return nil
-		}
-
-		ak, found := am.keeper.GetActivePubKey(ctx)
-		if found {
-			if ak.Expiry <= height {
-				am.keeper.DeleteActivePubKey(ctx)
-			} else {
-				return nil
-			}
-		}
-
-		qk, found := am.keeper.GetQueuedPubKey(ctx)
-		if found {
-			if qk.Expiry > height {
-				newActiveKey := commontypes.ActivePublicKey(qk)
-
-				am.keeper.SetActivePubKey(ctx, newActiveKey)
-			}
-			am.keeper.DeleteQueuedPubKey(ctx)
-		}
-	}
-	return nil
-}
-
-// IsOnePerModuleType implements the depinject.OnePerModuleType interface.
-func (am AppModule) IsOnePerModuleType() {}
-
-// IsAppModule implements the appmodule.AppModule interface.
-func (am AppModule) IsAppModule() {}
-
-// ----------------------------------------------------------------------------
-// App Wiring Setup
-// ----------------------------------------------------------------------------
-
-func init() {
-	appmodule.Register(
-		&modulev1.Module{},
-		appmodule.Provide(ProvideModule),
-	)
-}
-
-type ModuleInputs struct {
-	depinject.In
-
-	StoreService store.KVStoreService
-	Cdc          codec.Codec
-	Config       *modulev1.Module
-	Logger       log.Logger
-
-	AccountKeeper types.AccountKeeper
-	BankKeeper    types.BankKeeper
-
-	IBCKeeperFn        func() *ibckeeper.Keeper                   `optional:"true"`
-	CapabilityScopedFn func(string) capabilitykeeper.ScopedKeeper `optional:"true"`
-
-	msgServiceRouter *baseapp.MsgServiceRouter
-	txConfig         client.TxConfig
-	simCheck         func(txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error)
-}
-
-type ModuleOutputs struct {
-	depinject.Out
-
-	PepKeeper keeper.Keeper
-	Module    appmodule.AppModule
-}
-
-func ProvideModule(in ModuleInputs) ModuleOutputs {
-	// default to governance authority if not provided
-	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
-	if in.Config.Authority != "" {
-		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
-	}
-	k := keeper.NewKeeper(
-		in.Cdc,
-		in.StoreService,
-		in.Logger,
-		authority.String(),
-		in.BankKeeper,
-		in.IBCKeeperFn().ChannelKeeper,
-		in.IBCKeeperFn().PortKeeper,
-		in.CapabilityScopedFn(types.ModuleName),
-		in.IBCKeeperFn().ConnectionKeeper,
-	)
-	m := NewAppModule(
-		in.Cdc,
-		k,
-		in.AccountKeeper,
-		in.BankKeeper,
-		in.msgServiceRouter,
-		in.txConfig,
-		in.simCheck,
-	)
-
-	return ModuleOutputs{PepKeeper: k, Module: m}
 }

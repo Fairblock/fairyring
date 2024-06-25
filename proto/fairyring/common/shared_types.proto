@@ -8,39 +8,38 @@ option go_package = "github.com/Fairblock/fairyring/x/common/types";
 
 // RequestAggrKeyshare defines a struct for the data payload
 message RequestAggrKeyshare {
-    string creator = 1;
-    oneof id {
-      string proposal_id = 2;
-      string request_id = 3;
-    }
+  string creator = 1;
+  oneof id {
+    string proposal_id = 2;
+    string request_id = 3;
+  }
     google.protobuf.Duration estimated_delay = 4 [(gogoproto.stdduration) = true];
 }
 
 message RequestAggrKeyshareResponse {
-    string identity = 1;
-    string pubkey   = 2;
+  string identity = 1;
+  string pubkey   = 2;
 }
 
 // GetAggrKeyshare defines a struct for the data payload
 message GetAggrKeyshare {
-    oneof id {
-        string proposal_id = 1;
-        string request_id = 2;
-    }
-    string identity = 3;
+  oneof id {
+    string proposal_id = 1;
+    string request_id = 2;
+  }
+  string identity = 3;
 }
 
 message GetAggrKeyshareResponse {}
 
 message ActivePublicKey {
-    string publicKey = 1;
-    string creator = 2;
-    uint64 expiry = 3;
+  string publicKey = 1;
+  string creator = 2;
+  uint64 expiry = 3;
 }
-  
+
 message QueuedPublicKey {
-    string publicKey = 1;
-    string creator = 2;
-    uint64 expiry = 3;
+  string publicKey = 1;
+  string creator = 2;
+  uint64 expiry = 3;
 }
-  

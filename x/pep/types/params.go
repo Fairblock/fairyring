@@ -1,15 +1,28 @@
 package types
 
 import (
-	"fmt"
-
 	cosmosmath "cosmossdk.io/math"
+	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"gopkg.in/yaml.v2"
 )
 
 var _ paramtypes.ParamSet = (*Params)(nil)
+
+var (
+	KeyKeyshareChannelID            = []byte("KeyshareChannelId")
+	DefaultKeyshareChannelID string = KeyshareChannelID
+)
+
+var (
+	KeyIsSourceChain          = []byte("IsSourceChain")
+	DefaultIsSourceChain bool = false
+)
+
+var (
+	KeyMinGasPrice     = []byte("MinGasPrice")
+	DefaultMinGasPrice = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
+)
 
 var (
 	KeyTrustedAddresses     = []byte("TrustedAddresses")
@@ -19,15 +32,6 @@ var (
 var (
 	KeyTrustedCounterParties     = []byte("TrustedCounterParty")
 	DefaultTrustedCounterParties []*TrustedCounterParty
-)
-
-var (
-	// KeyPepChannelID          = []byte("PepChannelID")
-	KeyKeyshareChannelID     = []byte("KeyshareChannelID")
-	DefaultKeyshareChannelID = KeyshareChannelID
-	KeyMinGasPrice           = []byte("MinGasPrice")
-	DefaultMinGasPrice       = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
-	KeyIsSourceChain         = []byte("IsSourceChain")
 )
 
 // ParamKeyTable the param key table for launch module
@@ -54,7 +58,7 @@ func NewParams(
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams(DefaultTrustedAddresses, DefaultTrustedCounterParties, DefaultKeyshareChannelID, &DefaultMinGasPrice, false)
+	return NewParams(DefaultTrustedAddresses, DefaultTrustedCounterParties, DefaultKeyshareChannelID, &DefaultMinGasPrice, DefaultIsSourceChain)
 }
 
 // ParamSetPairs get the params.ParamSet
@@ -62,9 +66,9 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
 		paramtypes.NewParamSetPair(KeyTrustedAddresses, &p.TrustedAddresses, validateTrustedAddresses),
 		paramtypes.NewParamSetPair(KeyTrustedCounterParties, &p.TrustedCounterParties, validateTrustedCounterParties),
-		paramtypes.NewParamSetPair(KeyKeyshareChannelID, &p.KeyshareChannelId, validateChannelID),
+		paramtypes.NewParamSetPair(KeyKeyshareChannelID, &p.KeyshareChannelId, validateKeyshareChannelId),
 		paramtypes.NewParamSetPair(KeyMinGasPrice, &p.MinGasPrice, validateMinGasPrice),
-		paramtypes.NewParamSetPair(KeyIsSourceChain, &p.IsSourceChain, vaidateIsSourceChain),
+		paramtypes.NewParamSetPair(KeyIsSourceChain, &p.IsSourceChain, validateIsSourceChain),
 	}
 }
 
@@ -78,7 +82,7 @@ func (p Params) Validate() error {
 		return err
 	}
 
-	if err := validateChannelID(p.KeyshareChannelId); err != nil {
+	if err := validateKeyshareChannelId(p.KeyshareChannelId); err != nil {
 		return err
 	}
 
@@ -86,31 +90,29 @@ func (p Params) Validate() error {
 		return err
 	}
 
+	if err := validateIsSourceChain(p.IsSourceChain); err != nil {
+		return err
+	}
+
 	return nil
 }
 
-// String implements the Stringer interface.
-func (p Params) String() string {
-	out, _ := yaml.Marshal(p)
-	return string(out)
-}
-
-// validateChannelID validates the channelID param
-func validateChannelID(v interface{}) error {
-	channelID, ok := v.(string)
-
+// validateKeyshareChannelId validates the KeyshareChannelId param
+func validateKeyshareChannelId(v interface{}) error {
+	keyshareChannelId, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", v)
 	}
 
-	if len(channelID) < 1 {
+	if len(keyshareChannelId) < 1 {
 		return fmt.Errorf("invalid Channel ID")
 	}
 
 	return nil
 }
 
-func vaidateIsSourceChain(v interface{}) error {
+// validateIsSourceChain validates the IsSourceChain param
+func validateIsSourceChain(v interface{}) error {
 	_, ok := v.(bool)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", v)

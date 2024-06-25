@@ -3,17 +3,16 @@ package keeper_test
 import (
 	"testing"
 
-	testkeeper "github.com/Fairblock/fairyring/testutil/keeper"
-	"github.com/Fairblock/fairyring/x/keyshare/types"
-
 	"github.com/stretchr/testify/require"
+
+	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 )
 
 func TestGetParams(t *testing.T) {
-	k, ctx := testkeeper.KeyshareKeeper(t)
+	k, ctx := keepertest.KeyshareKeeper(t)
 	params := types.DefaultParams()
 
-	k.SetParams(ctx, params)
-
+	require.NoError(t, k.SetParams(ctx, params))
 	require.EqualValues(t, params, k.GetParams(ctx))
 }

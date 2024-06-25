@@ -5,8 +5,7 @@ import (
 	storetypes "cosmossdk.io/store/types"
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
-	keysharemodule "github.com/Fairblock/fairyring/x/keyshare/module"
-	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
+	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
@@ -33,16 +32,18 @@ import (
 	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
 	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	ibc "github.com/cosmos/ibc-go/v8/modules/core"
-	ibcclienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types"
+	ibcclienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types" // nolint:staticcheck // Deprecated: params key table is needed for params migration
 	ibcconnectiontypes "github.com/cosmos/ibc-go/v8/modules/core/03-connection/types"
 	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	solomachine "github.com/cosmos/ibc-go/v8/modules/light-clients/06-solomachine"
 	ibctm "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint"
-
+	ibcconsumer "github.com/cosmos/interchain-security/v3/x/ccv/consumer"
+	ibcconsumertypes "github.com/cosmos/interchain-security/v3/x/ccv/consumer/types"
 	// this line is used by starport scaffolding # ibc/app/import
-	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
+	keysharemodule "github.com/Fairblock/fairyring/x/keyshare/module"
+	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	pepmoduletypes "github.com/Fairblock/fairyring/x/pep/types"
 )
 
@@ -166,21 +167,28 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 		AddRoute(icacontrollertypes.SubModuleName, icaControllerIBCModule).
 		AddRoute(icahosttypes.SubModuleName, icaHostIBCModule)
 
-	pepIBCModule := ibcfee.NewIBCMiddleware(pepmodule.NewIBCModule(app.PepKeeper), app.IBCFeeKeeper)
-	ibcRouter.AddRoute(pepmoduletypes.ModuleName, pepIBCModule)
+	pepStack, err := app.registerPepModule()
+	if err != nil {
+		return err
+	}
+	ibcRouter.AddRoute(pepmoduletypes.ModuleName, pepStack)
 
-	keyshareIBCModule := ibcfee.NewIBCMiddleware(keysharemodule.NewIBCModule(app.KeyshareKeeper), app.IBCFeeKeeper)
-	ibcRouter.AddRoute(keysharemoduletypes.ModuleName, keyshareIBCModule)
+	keyshareStack, err := app.registerKeyshareModule()
+	if err != nil {
+		return err
+	}
+	ibcRouter.AddRoute(keysharemoduletypes.ModuleName, keyshareStack)
 
+	// Add gov module to IBC Router
 	govIBCModule := ibcfee.NewIBCMiddleware(gov.NewIBCModule(*app.GovKeeper), app.IBCFeeKeeper)
 	ibcRouter.AddRoute(govtypes.ModuleName, govIBCModule)
 
+	// Add wasmd to IBC Router
 	wasmStack, err := app.registerWasmModules(appOpts)
 	if err != nil {
 		return err
 	}
 	ibcRouter.AddRoute(wasmtypes.ModuleName, wasmStack)
-
 	// this line is used by starport scaffolding # ibc/app/module
 
 	app.IBCKeeper.SetRouter(ibcRouter)
@@ -206,8 +214,8 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	return nil
 }
 
-// RegisterIBC Since the IBC modules don't support dependency injection,
-// we need to manually register the modules on the client side.
+// Since the IBC modules don't support dependency injection, we need to
+// manually register the modules on the client side.
 // This needs to be removed after IBC supports App Wiring.
 func RegisterIBC(registry cdctypes.InterfaceRegistry) map[string]appmodule.AppModule {
 	modules := map[string]appmodule.AppModule{
@@ -218,10 +226,11 @@ func RegisterIBC(registry cdctypes.InterfaceRegistry) map[string]appmodule.AppMo
 		capabilitytypes.ModuleName:     capability.AppModule{},
 		ibctm.ModuleName:               ibctm.AppModule{},
 		solomachine.ModuleName:         solomachine.AppModule{},
+		ibcconsumertypes.ModuleName:    ibcconsumer.AppModule{},
 		wasmtypes.ModuleName:           wasm.AppModule{},
-		pepmoduletypes.ModuleName:      pepmodule.AppModule{},
-		keysharemoduletypes.ModuleName: keysharemodule.AppModule{},
 		govtypes.ModuleName:            gov.AppModule{},
+		keysharemoduletypes.ModuleName: keysharemodule.AppModule{},
+		pepmoduletypes.ModuleName:      pepmodule.AppModule{},
 	}
 
 	for name, m := range modules {

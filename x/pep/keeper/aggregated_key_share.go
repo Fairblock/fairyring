@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"context"
 	storetypes "cosmossdk.io/store/types"
 	"errors"
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -9,12 +10,11 @@ import (
 	"github.com/Fairblock/fairyring/x/pep/types"
 
 	"cosmossdk.io/store/prefix"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	channeltypes "github.com/cosmos/ibc-go/v8/modules/core/04-channel/types"
 )
 
 // SetAggregatedKeyShare set a specific aggregatedKeyShare in the store from its index
-func (k Keeper) SetAggregatedKeyShare(ctx sdk.Context, aggregatedKeyShare types.AggregatedKeyShare) {
+func (k Keeper) SetAggregatedKeyShare(ctx context.Context, aggregatedKeyShare types.AggregatedKeyShare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
 	b := k.cdc.MustMarshal(&aggregatedKeyShare)
@@ -25,7 +25,7 @@ func (k Keeper) SetAggregatedKeyShare(ctx sdk.Context, aggregatedKeyShare types.
 
 // GetAggregatedKeyShare returns a aggregatedKeyShare from its index
 func (k Keeper) GetAggregatedKeyShare(
-	ctx sdk.Context,
+	ctx context.Context,
 	height uint64,
 
 ) (val types.AggregatedKeyShare, found bool) {
@@ -45,7 +45,7 @@ func (k Keeper) GetAggregatedKeyShare(
 
 // RemoveAggregatedKeyShare removes a aggregatedKeyShare from the store
 func (k Keeper) RemoveAggregatedKeyShare(
-	ctx sdk.Context,
+	ctx context.Context,
 	height uint64,
 
 ) {
@@ -57,7 +57,7 @@ func (k Keeper) RemoveAggregatedKeyShare(
 }
 
 // GetAllAggregatedKeyShare returns all aggregatedKeyShare
-func (k Keeper) GetAllAggregatedKeyShare(ctx sdk.Context) (list []types.AggregatedKeyShare) {
+func (k Keeper) GetAllAggregatedKeyShare(ctx context.Context) (list []types.AggregatedKeyShare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
@@ -74,7 +74,7 @@ func (k Keeper) GetAllAggregatedKeyShare(ctx sdk.Context) (list []types.Aggregat
 }
 
 // OnRecvAggrKeyshareDataPacket processes packet reception
-func (k Keeper) OnRecvAggrKeyshareDataPacket(ctx sdk.Context, packet channeltypes.Packet, data kstypes.AggrKeyshareDataPacketData) (packetAck kstypes.AggrKeyshareDataPacketAck, err error) {
+func (k Keeper) OnRecvAggrKeyshareDataPacket(ctx context.Context, packet channeltypes.Packet, data kstypes.AggrKeyshareDataPacketData) (packetAck kstypes.AggrKeyshareDataPacketAck, err error) {
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err

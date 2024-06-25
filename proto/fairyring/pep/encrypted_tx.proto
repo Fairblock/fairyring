@@ -7,9 +7,9 @@ import "cosmos/base/v1beta1/coin.proto";
 option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
 message EncryptedTx {
-  uint64 targetHeight = 1; 
-  uint64 index = 2; 
-  string data = 3; 
+  uint64 targetHeight = 1;
+  uint64 index = 2;
+  string data = 3;
   string creator = 4;
   cosmos.base.v1beta1.Coin chargedGas = 5;
   uint64 processedAtChainHeight = 6;
@@ -21,9 +21,9 @@ message EncryptedTxArray {
 }
 
 message GeneralEncryptedTx {
-  string identity = 1; 
-  uint64 index = 2; 
-  string data = 3; 
+  string identity = 1;
+  uint64 index = 2;
+  string data = 3;
   string creator = 4;
   cosmos.base.v1beta1.Coin chargedGas = 5;
 }

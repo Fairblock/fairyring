@@ -7,6 +7,7 @@ import (
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
@@ -18,6 +19,8 @@ import (
 	"github.com/cosmos/gogoproto/proto"
 	ibcfee "github.com/cosmos/ibc-go/v8/modules/apps/29-fee"
 	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
+	"github.com/spf13/cast"
+	"path/filepath"
 )
 
 // AllCapabilities returns all capabilities available with the current wasmvm
@@ -49,6 +52,8 @@ func (app *App) registerWasmModules(
 
 	scopedWasmKeeper := app.CapabilityKeeper.ScopeToModule(wasmtypes.ModuleName)
 
+	homePath := cast.ToString(appOpts.Get(flags.FlagHome))
+	wasmDir := filepath.Join(homePath, "wasm")
 	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
 	if err != nil {
 		return nil, fmt.Errorf("error while reading wasm config: %s", err)
@@ -71,7 +76,7 @@ func (app *App) registerWasmModules(
 		app.TransferKeeper,
 		app.MsgServiceRouter(),
 		app.GRPCQueryRouter(),
-		DefaultNodeHome,
+		wasmDir,
 		wasmConfig,
 		AllCapabilities(),
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
@@ -154,7 +159,7 @@ func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.Wa
 			WasmConfig:            &wasmConfig,
 			WasmKeeper:            &app.WasmKeeper,
 			TXCounterStoreService: runtime.NewKVStoreService(txCounterStoreKey),
-			CircuitKeeper:         &app.CircuitKeeper,
+			CircuitKeeper:         &app.CircuitBreakerKeeper,
 		},
 	)
 	if err != nil {

@@ -2,15 +2,15 @@ package pep
 
 import (
 	"fmt"
-
 	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
+	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
+
 	"github.com/Fairblock/fairyring/x/pep/keeper"
 	"github.com/Fairblock/fairyring/x/pep/types"
 
-	sdkerrors "cosmossdk.io/errors"
+	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	cosmoserror "github.com/cosmos/cosmos-sdk/types/errors"
-	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
 	channeltypes "github.com/cosmos/ibc-go/v8/modules/core/04-channel/types"
 	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
@@ -18,10 +18,12 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 )
 
+// IBCModule implements the ICS26 interface for interchain accounts host chains
 type IBCModule struct {
 	keeper keeper.Keeper
 }
 
+// NewIBCModule creates a new IBCModule given the associated keeper
 func NewIBCModule(k keeper.Keeper) IBCModule {
 	return IBCModule{
 		keeper: k,
@@ -43,11 +45,11 @@ func (im IBCModule) OnChanOpenInit(
 	// Require portID is the portID module is bound to
 	boundPort := im.keeper.GetPort(ctx)
 	if boundPort != portID {
-		return "", sdkerrors.Wrapf(porttypes.ErrInvalidPort, "invalid port: %s, expected %s", portID, boundPort)
+		return "", errorsmod.Wrapf(porttypes.ErrInvalidPort, "invalid port: %s, expected %s", portID, boundPort)
 	}
 
 	if version != types.KeyshareVersion {
-		return "", sdkerrors.Wrapf(types.ErrInvalidVersion, "got %s, expected %s", version, types.KeyshareVersion)
+		return "", errorsmod.Wrapf(types.ErrInvalidVersion, "got %s, expected %s", version, types.KeyshareVersion)
 	}
 
 	// Claim channel capability passed back by IBC module
@@ -73,11 +75,11 @@ func (im IBCModule) OnChanOpenTry(
 	// Require portID is the portID module is bound to
 	boundPort := im.keeper.GetPort(ctx)
 	if boundPort != portID {
-		return "", sdkerrors.Wrapf(porttypes.ErrInvalidPort, "invalid port: %s, expected %s", portID, boundPort)
+		return "", errorsmod.Wrapf(porttypes.ErrInvalidPort, "invalid port: %s, expected %s", portID, boundPort)
 	}
 
 	if counterpartyVersion != types.KeyshareVersion {
-		return "", sdkerrors.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: got: %s, expected %s", counterpartyVersion, types.KeyshareVersion)
+		return "", errorsmod.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: got: %s, expected %s", counterpartyVersion, types.KeyshareVersion)
 	}
 
 	// Module may have already claimed capability in OnChanOpenInit in the case of crossing hellos
@@ -103,7 +105,7 @@ func (im IBCModule) OnChanOpenAck(
 	counterpartyVersion string,
 ) error {
 	if counterpartyVersion != types.KeyshareVersion {
-		return sdkerrors.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: %s, expected %s", counterpartyVersion, types.KeyshareVersion)
+		return errorsmod.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: %s, expected %s", counterpartyVersion, types.KeyshareVersion)
 	}
 	return nil
 }
@@ -114,7 +116,6 @@ func (im IBCModule) OnChanOpenConfirm(
 	portID,
 	channelID string,
 ) error {
-	// im.keeper.SetChannel(ctx, channelID)
 	return nil
 }
 
@@ -125,7 +126,7 @@ func (im IBCModule) OnChanCloseInit(
 	channelID string,
 ) error {
 	// Disallow user-initiated channel closing for channels
-	return sdkerrors.Wrap(cosmoserror.ErrInvalidRequest, "user cannot close channel")
+	return errorsmod.Wrap(sdkerrors.ErrInvalidRequest, "user cannot close channel")
 }
 
 // OnChanCloseConfirm implements the IBCModule interface
@@ -144,36 +145,8 @@ func (im IBCModule) OnRecvPacket(
 	relayer sdk.AccAddress,
 ) ibcexported.Acknowledgement {
 	var ack channeltypes.Acknowledgement
-
 	var ksModulePacketData kstypes.KeysharePacketData
-	// if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &pepModulePacketData); err == nil {
-	// 	// Dispatch packet
-	// 	switch packet := pepModulePacketData.Packet.(type) {
-	// 	case *types.PepPacketData_CurrentKeysPacket:
-	// 		packetAck, err := im.keeper.OnRecvCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket)
-	// 		if err != nil {
-	// 			ack = channeltypes.NewErrorAcknowledgement(err)
-	// 		} else {
-	// 			// Encode packet acknowledgment
-	// 			packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
-	// 			if err != nil {
-	// 				return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(cosmoserror.ErrJSONMarshal, err.Error()))
-	// 			}
-	// 			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
-	// 		}
-	// 		ctx.EventManager().EmitEvent(
-	// 			sdk.NewEvent(
-	// 				types.EventTypeCurrentKeysPacket,
-	// 				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-	// 				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
-	// 			),
-	// 		)
-	// 		return ack
-	// 		// this line is used by starport scaffolding # ibc/packet/module/recv
-	// 	default:
-	// 		err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
-	// 		return channeltypes.NewErrorAcknowledgement(err)
-	// 	}
+
 	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &ksModulePacketData); err == nil {
 		// Dispatch packet
 		switch packet := ksModulePacketData.Packet.(type) {
@@ -201,7 +174,7 @@ func (im IBCModule) OnRecvPacket(
 			return channeltypes.NewErrorAcknowledgement(err)
 		}
 	} else {
-		return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
+		return channeltypes.NewErrorAcknowledgement(errorsmod.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
 	}
 }
 
@@ -214,7 +187,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 ) error {
 	var ack channeltypes.Acknowledgement
 	if err := types.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
-		return sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
+		return errorsmod.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
 	}
 
 	// this line is used by starport scaffolding # oracle/packet/module/ack
@@ -259,7 +232,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 		// this line is used by starport scaffolding # ibc/packet/module/ack
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
-			return sdkerrors.Wrap(cosmoserror.ErrUnknownRequest, errMsg)
+			return errorsmod.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
 		}
 
 		ctx.EventManager().EmitEvent(
@@ -287,7 +260,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 			)
 		}
 	} else {
-		return sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
+		return errorsmod.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
 	return nil
 }
@@ -300,7 +273,7 @@ func (im IBCModule) OnTimeoutPacket(
 ) error {
 	var modulePacketData kstypes.KeysharePacketData
 	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
-		return sdkerrors.Wrapf(cosmoserror.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
+		return errorsmod.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
 
 	// Dispatch packet
@@ -313,7 +286,7 @@ func (im IBCModule) OnTimeoutPacket(
 		// this line is used by starport scaffolding # ibc/packet/module/timeout
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
-		return sdkerrors.Wrap(cosmoserror.ErrUnknownRequest, errMsg)
+		return errorsmod.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
 	}
 
 	return nil

@@ -5,7 +5,6 @@ import (
 
 	corestoretypes "cosmossdk.io/core/store"
 	circuitante "cosmossdk.io/x/circuit/ante"
-	circuitkeeper "cosmossdk.io/x/circuit/keeper"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	pepante "github.com/Fairblock/fairyring/x/pep/ante"
@@ -77,10 +76,9 @@ type HandlerOptions struct {
 	WasmConfig            *wasmtypes.WasmConfig
 	WasmKeeper            *wasmkeeper.Keeper
 	TXCounterStoreService corestoretypes.KVStoreService
-	CircuitKeeper         *circuitkeeper.Keeper
+	CircuitKeeper         circuitante.CircuitBreaker
 }
 
-// NewAnteHandler constructor
 func NewAnteHandler(options HandlerOptions) (sdk.AnteHandler, error) {
 	if options.AccountKeeper == nil {
 		return nil, errors.New("account keeper is required for ante builder")

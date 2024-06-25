@@ -1,5 +1,24 @@
 package keeper_test
 
-const (
-	alice = "cosmos1jmjfq0tplp9tmx4v9uemw72y4d2wa5nr3xn9d3"
+import (
+	"context"
+	"testing"
+
+	"github.com/stretchr/testify/require"
+
+	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
+	"github.com/Fairblock/fairyring/x/keyshare/keeper"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 )
+
+func setupMsgServer(t testing.TB) (keeper.Keeper, types.MsgServer, context.Context) {
+	k, ctx := keepertest.KeyshareKeeper(t)
+	return k, keeper.NewMsgServerImpl(k), ctx
+}
+
+func TestMsgServer(t *testing.T) {
+	k, ms, ctx := setupMsgServer(t)
+	require.NotNil(t, ms)
+	require.NotNil(t, ctx)
+	require.NotEmpty(t, k)
+}

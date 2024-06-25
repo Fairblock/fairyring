@@ -30,7 +30,7 @@ GENERATED_SHARE=$(echo $RESULT | jq -r '.activePubKey.encryptedKeyShares[0].data
 
 while true
 do
-  CURRENT_BLOCK=$($BINARY query block --home $HOME --node $NODE | jq -r '.block.header.height')
+  CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $HOME --node $NODE -o json | jq -r '.block.header.height')
   TARGET_HEIGHT=$((CURRENT_BLOCK+1))
   EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
   EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')

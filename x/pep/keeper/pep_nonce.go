@@ -1,16 +1,16 @@
 package keeper
 
 import (
+	"context"
 	storetypes "cosmossdk.io/store/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 
 	"cosmossdk.io/store/prefix"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // SetPepNonce set a specific pepNonce in the store from its index
-func (k Keeper) SetPepNonce(ctx sdk.Context, pepNonce types.PepNonce) {
+func (k Keeper) SetPepNonce(ctx context.Context, pepNonce types.PepNonce) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PepNonceKeyPrefix))
 	b := k.cdc.MustMarshal(&pepNonce)
@@ -21,7 +21,7 @@ func (k Keeper) SetPepNonce(ctx sdk.Context, pepNonce types.PepNonce) {
 
 // IncreasePepNonce increase specific pepNonce by 1 and returns the new nonce
 func (k Keeper) IncreasePepNonce(
-	ctx sdk.Context,
+	ctx context.Context,
 	address string,
 ) uint64 {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
@@ -52,7 +52,7 @@ func (k Keeper) IncreasePepNonce(
 
 // GetPepNonce returns a pepNonce from its index
 func (k Keeper) GetPepNonce(
-	ctx sdk.Context,
+	ctx context.Context,
 	address string,
 
 ) (val types.PepNonce, found bool) {
@@ -77,7 +77,7 @@ func (k Keeper) GetPepNonce(
 
 // RemovePepNonce removes a pepNonce from the store
 func (k Keeper) RemovePepNonce(
-	ctx sdk.Context,
+	ctx context.Context,
 	address string,
 
 ) {
@@ -89,7 +89,7 @@ func (k Keeper) RemovePepNonce(
 }
 
 // GetAllPepNonce returns all pepNonce
-func (k Keeper) GetAllPepNonce(ctx sdk.Context) (list []types.PepNonce) {
+func (k Keeper) GetAllPepNonce(ctx context.Context) (list []types.PepNonce) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PepNonceKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})

@@ -83,7 +83,7 @@ fi
 echo "Pub Key expires at: $PUB_KEY_EXPIRY"
 
 echo "Submit encrypted tx with invalid block height to pep module on chain fairyring_test_2"
-CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 | jq -r '.block.header.height')
+CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
 RESULT=$($BINARY tx pep submit-encrypted-tx 0000 $((CURRENT_BLOCK - 1)) --from $VALIDATOR_2 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
@@ -150,7 +150,7 @@ SIGNED_DATA_2=$($BINARY tx sign unsigned2.json --from $VALIDATOR_2 --offline --a
 
 
 echo "Query aggregated key share from key share module for submitting to pep module on chain fairyring_test_1"
-CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE | jq -r '.block.header.height')
+CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE -o json | jq -r '.block.header.height')
 RESULT=$($BINARY query keyshare list-aggregated-key-share --node $CHAIN1_NODE -o json)
 AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .height')
 AGG_KEY=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .data')
@@ -159,13 +159,13 @@ if [ "$CURRENT_BLOCK" -gt "$AGG_KEY_HEIGHT" ]; then
   exit 1
 fi
 
-CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE | jq -r '.block.header.height')
+CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE -o json | jq -r '.block.header.height')
 echo "Chain 2 Current Block: $CURRENT_BLOCK"
 echo "Submit valid aggregated key to pep module on chain fairyring_test_2 from address: $VALIDATOR_2"
 RESULT=$($BINARY tx pep create-aggregated-key-share $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
-ACTION=$(echo "$RESULT" | jq -r '.logs[0].events[0].attributes[0].value')
+ACTION=$(echo "$RESULT" | jq -r | jq '.events' | jq 'map(select(any(.type; contains("message"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("action"))))[]' | jq -r '.value')
 if [ "$ACTION" != "/fairyring.pep.MsgCreateAggregatedKeyShare" ]; then
   echo "ERROR: Pep module submit aggregated key error. Expected tx action to be MsgCreateAggregatedKeyShare,  got '$ACTION'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
@@ -174,7 +174,7 @@ fi
 
 
 echo "Query aggregated key share from key share module for submitting to pep module on chain fairyring_test_1"
-CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE | jq -r '.block.header.height')
+CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE -o json | jq -r '.block.header.height')
 RESULT=$($BINARY query keyshare list-aggregated-key-share --node $CHAIN1_NODE -o json)
 AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .height')
 AGG_KEY=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .data')
@@ -205,12 +205,12 @@ echo "Submit encrypted tx to pep module on chain fairyring_test_2"
 RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER $AGG_KEY_HEIGHT --from $VALIDATOR_2 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
-EVENT_TYPE=$(echo "$RESULT" | jq -r '.logs[0].events[5].type')
-TARGET_HEIGHT=$(echo "$RESULT" | jq -r '.logs[0].events[5].attributes[1].value')
-if [ "$EVENT_TYPE" != "new-encrypted-tx-submitted" ] && [ "$TARGET_HEIGHT" != "$AGG_KEY_HEIGHT" ]; then
+TARGET_HEIGHT=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("new-encrypted-tx-submitted"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("height"))))[]' | jq -r '.value')
+if [ "$TARGET_HEIGHT" != "$AGG_KEY_HEIGHT" ]; then
   echo "ERROR: Pep module submit encrypted tx error. Expected tx to submitted without error with target height '$AGG_KEY_HEIGHT', got '$TARGET_HEIGHT' and '$EVENT_TYPE' | '$CURRENT_BLOCK'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq '.')"
+  echo $RESULT | jq
   exit 1
 fi
 
@@ -225,12 +225,12 @@ echo "Submit 2nd encrypted tx (without gas fee) to pep module on chain fairyring
 RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER_2 $AGG_KEY_HEIGHT --from $VALIDATOR_2 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
-EVENT_TYPE=$(echo "$RESULT" | jq -r '.logs[0].events[5].type')
-TARGET_HEIGHT=$(echo "$RESULT" | jq -r '.logs[0].events[5].attributes[1].value')
-if [ "$EVENT_TYPE" != "new-encrypted-tx-submitted" ] && [ "$TARGET_HEIGHT" != "$AGG_KEY_HEIGHT" ]; then
+TARGET_HEIGHT=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("new-encrypted-tx-submitted"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("height"))))[]' | jq -r '.value')
+if [ "$TARGET_HEIGHT" != "$AGG_KEY_HEIGHT" ]; then
   echo "ERROR: Pep module submit 2nd encrypted tx error. Expected tx to submitted without error with target height '$AGG_KEY_HEIGHT', got '$TARGET_HEIGHT' and '$EVENT_TYPE' | '$CURRENT_BLOCK'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq '.')"
+  echo $RESULT | jq
   exit 1
 fi
 
@@ -251,16 +251,17 @@ if [ "$VALIDATOR_PEP_NONCE" != "1" ]; then
 fi
 
 
-CURRENT_BLOCK=$($BINARY query block --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE | jq -r '.block.header.height')
+CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE -o json | jq -r '.block.header.height')
 echo "Chain 2 Current Block: $CURRENT_BLOCK"
 echo "Submit valid aggregated key to pep module on chain fairyring_test_2 from address: $VALIDATOR_2"
 RESULT=$($BINARY tx pep create-aggregated-key-share $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
-ACTION=$(echo "$RESULT" | jq -r '.logs[0].events[0].attributes[0].value')
+ACTION=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("message"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("action"))))[]' | jq -r '.value')
 if [ "$ACTION" != "/fairyring.pep.MsgCreateAggregatedKeyShare" ]; then
   echo "ERROR: Pep module submit aggregated key error. Expected tx action to be MsgCreateAggregatedKeyShare,  got '$ACTION'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  echo $RESULT | jq
   exit 1
 fi
 
@@ -320,19 +321,19 @@ if [ "$RESULT" != "$AGG_KEY_HEIGHT" ]; then
   exit 1
 fi
 
-FIRST_ENCRYPTED_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq '.encryptedTxArray[0].encryptedTx[0].processedAtChainHeight')
-SECOND_ENCRYPTED_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq '.encryptedTxArray[0].encryptedTx[1].processedAtChainHeight')
+FIRST_ENCRYPTED_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq -r '.encryptedTxArray[0].encryptedTx[0].processedAtChainHeight')
+SECOND_ENCRYPTED_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq -r '.encryptedTxArray[0].encryptedTx[1].processedAtChainHeight')
 
 echo "First Encrypted tx processed at height: $FIRST_ENCRYPTED_TX_HEIGHT, 2nd one processed at: $SECOND_ENCRYPTED_TX_HEIGHT"
 
-FIRST_EVENT=$(curl -s http://localhost:26657/block_results?height=$FIRST_ENCRYPTED_TX_HEIGHT | jq '.result.begin_block_events[] | select(.type == "reverted-encrypted-tx") | .attributes[] | select(.key == "reason") | .value')
+FIRST_EVENT=$($BINARY q block-results $FIRST_ENCRYPTED_TX_HEIGHT -o json | jq '.finalize_block_events[] | select(.type == "reverted-encrypted-tx") | .attributes[] | select(.key == "reason") | .value')
 if [[ "$FIRST_EVENT" != *"insufficient fees"* ]]; then
   echo "ERROR: Pep module expected first encrypted tx failed with reason insufficient fee, got: $FIRST_EVENT instead"
   exit 1
 fi
 echo "First Encrypted TX Failed with Reason: $FIRST_EVENT as expected."
 
-SECOND_EVENT=$(curl -s http://localhost:26657/block_results?height=$SECOND_ENCRYPTED_TX_HEIGHT | jq '.result.begin_block_events[] | select(.type == "executed-encrypted-tx") | .attributes[] | select(.key == "events") | .value')
+SECOND_EVENT=$($BINARY q block-results $SECOND_ENCRYPTED_TX_HEIGHT -o json | jq '.finalize_block_events[] | select(.type == "executed-encrypted-tx") | .attributes[] | select(.key == "events") | .value')
 if [[ "$SECOND_EVENT" != *"coin_received"* ]]; then
   echo "ERROR: Pep module expected second encrypted tx succeeded with events, got: $SECOND_EVENT instead"
   exit 1

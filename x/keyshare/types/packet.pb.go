@@ -5,11 +5,11 @@ package types
 
 import (
 	fmt "fmt"
-	types1 "github.com/Fairblock/fairyring/x/common/types"
+	types "github.com/Fairblock/fairyring/x/common/types"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	proto "github.com/cosmos/gogoproto/proto"
 	github_com_cosmos_gogoproto_types "github.com/cosmos/gogoproto/types"
-	_ "github.com/gogo/protobuf/types"
+	_ "google.golang.org/protobuf/types/known/durationpb"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -594,8 +594,8 @@ var xxx_messageInfo_CurrentKeysPacketData proto.InternalMessageInfo
 
 // CurrentKeysPacketAck defines a struct for the packet acknowledgment
 type CurrentKeysPacketAck struct {
-	ActiveKey *types1.ActivePublicKey `protobuf:"bytes,1,opt,name=activeKey,proto3" json:"activeKey,omitempty"`
-	QueuedKey *types1.QueuedPublicKey `protobuf:"bytes,2,opt,name=queuedKey,proto3" json:"queuedKey,omitempty"`
+	ActiveKey *types.ActivePublicKey `protobuf:"bytes,1,opt,name=activeKey,proto3" json:"activeKey,omitempty"`
+	QueuedKey *types.QueuedPublicKey `protobuf:"bytes,2,opt,name=queuedKey,proto3" json:"queuedKey,omitempty"`
 }
 
 func (m *CurrentKeysPacketAck) Reset()         { *m = CurrentKeysPacketAck{} }
@@ -631,14 +631,14 @@ func (m *CurrentKeysPacketAck) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CurrentKeysPacketAck proto.InternalMessageInfo
 
-func (m *CurrentKeysPacketAck) GetActiveKey() *types1.ActivePublicKey {
+func (m *CurrentKeysPacketAck) GetActiveKey() *types.ActivePublicKey {
 	if m != nil {
 		return m.ActiveKey
 	}
 	return nil
 }
 
-func (m *CurrentKeysPacketAck) GetQueuedKey() *types1.QueuedPublicKey {
+func (m *CurrentKeysPacketAck) GetQueuedKey() *types.QueuedPublicKey {
 	if m != nil {
 		return m.QueuedKey
 	}
@@ -2566,7 +2566,7 @@ func (m *CurrentKeysPacketAck) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.ActiveKey == nil {
-				m.ActiveKey = &types1.ActivePublicKey{}
+				m.ActiveKey = &types.ActivePublicKey{}
 			}
 			if err := m.ActiveKey.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -2602,7 +2602,7 @@ func (m *CurrentKeysPacketAck) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.QueuedKey == nil {
-				m.QueuedKey = &types1.QueuedPublicKey{}
+				m.QueuedKey = &types.QueuedPublicKey{}
 			}
 			if err := m.QueuedKey.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err

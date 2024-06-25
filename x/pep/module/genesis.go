@@ -31,32 +31,30 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	k.SetQueuedPubKey(ctx, genState.QueuedPubKey)
 	// this line is used by starport scaffolding # genesis/module/init
 
-	var portID string
-	if genState.PortId == "" {
-		portID = types.PortID
-	}
-
-	k.SetPort(ctx, portID)
+	// this line is used by starport scaffolding # genesis/module/init
+	k.SetPort(ctx, genState.PortId)
 	// Only try to bind to port if it is not already bound, since we may already own
 	// port capability from capability InitGenesis
-	if !k.IsBound(ctx, portID) {
+	if k.ShouldBound(ctx, genState.PortId) {
 		// module binds to the port on InitChain
 		// and claims the returned capability
-		err := k.BindPort(ctx, portID)
+		err := k.BindPort(ctx, genState.PortId)
 		if err != nil {
 			panic("could not claim port capability: " + err.Error())
 		}
 	}
-
-	k.SetRequestCount(ctx, genState.RequestCount)
-	// this line is used by starport scaffolding # genesis/module/init
-	k.SetParams(ctx, genState.Params)
+	if err := k.SetParams(ctx, genState.Params); err != nil {
+		panic(err)
+	}
 }
 
 // ExportGenesis returns the module's exported genesis.
 func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 	genesis.Params = k.GetParams(ctx)
+
+	genesis.PortId = k.GetPort(ctx)
+	// this line is used by starport scaffolding # genesis/module/export
 
 	genesis.EncryptedTxArray = k.GetAllEncryptedArray(ctx)
 	genesis.PepNonceList = k.GetAllPepNonce(ctx)

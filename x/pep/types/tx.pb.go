@@ -8,14 +8,15 @@ import (
 	fmt "fmt"
 	_ "github.com/cosmos/cosmos-proto"
 	_ "github.com/cosmos/cosmos-sdk/types/msgservice"
+	_ "github.com/cosmos/cosmos-sdk/types/tx/amino"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	grpc1 "github.com/cosmos/gogoproto/grpc"
 	proto "github.com/cosmos/gogoproto/proto"
 	github_com_cosmos_gogoproto_types "github.com/cosmos/gogoproto/types"
-	_ "github.com/gogo/protobuf/types"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	_ "google.golang.org/protobuf/types/known/durationpb"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -34,6 +35,101 @@ var _ = time.Kitchen
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// MsgUpdateParams is the Msg/UpdateParams request type.
+type MsgUpdateParams struct {
+	// authority is the address that controls the module (defaults to x/gov unless overwritten).
+	Authority string `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
+	// params defines the module parameters to update.
+	//
+	// NOTE: All parameters must be supplied.
+	Params Params `protobuf:"bytes,2,opt,name=params,proto3" json:"params"`
+}
+
+func (m *MsgUpdateParams) Reset()         { *m = MsgUpdateParams{} }
+func (m *MsgUpdateParams) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateParams) ProtoMessage()    {}
+func (*MsgUpdateParams) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f6953e463911e1ec, []int{0}
+}
+func (m *MsgUpdateParams) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateParams) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateParams.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateParams) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateParams.Merge(m, src)
+}
+func (m *MsgUpdateParams) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateParams) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateParams.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateParams proto.InternalMessageInfo
+
+func (m *MsgUpdateParams) GetAuthority() string {
+	if m != nil {
+		return m.Authority
+	}
+	return ""
+}
+
+func (m *MsgUpdateParams) GetParams() Params {
+	if m != nil {
+		return m.Params
+	}
+	return Params{}
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+type MsgUpdateParamsResponse struct {
+}
+
+func (m *MsgUpdateParamsResponse) Reset()         { *m = MsgUpdateParamsResponse{} }
+func (m *MsgUpdateParamsResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateParamsResponse) ProtoMessage()    {}
+func (*MsgUpdateParamsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f6953e463911e1ec, []int{1}
+}
+func (m *MsgUpdateParamsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateParamsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateParamsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateParamsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateParamsResponse.Merge(m, src)
+}
+func (m *MsgUpdateParamsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateParamsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateParamsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateParamsResponse proto.InternalMessageInfo
+
 type MsgSubmitEncryptedTx struct {
 	Creator           string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Data              string `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
@@ -44,7 +140,7 @@ func (m *MsgSubmitEncryptedTx) Reset()         { *m = MsgSubmitEncryptedTx{} }
 func (m *MsgSubmitEncryptedTx) String() string { return proto.CompactTextString(m) }
 func (*MsgSubmitEncryptedTx) ProtoMessage()    {}
 func (*MsgSubmitEncryptedTx) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{0}
+	return fileDescriptor_f6953e463911e1ec, []int{2}
 }
 func (m *MsgSubmitEncryptedTx) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -104,7 +200,7 @@ func (m *MsgSubmitGeneralEncryptedTx) Reset()         { *m = MsgSubmitGeneralEnc
 func (m *MsgSubmitGeneralEncryptedTx) String() string { return proto.CompactTextString(m) }
 func (*MsgSubmitGeneralEncryptedTx) ProtoMessage()    {}
 func (*MsgSubmitGeneralEncryptedTx) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{1}
+	return fileDescriptor_f6953e463911e1ec, []int{3}
 }
 func (m *MsgSubmitGeneralEncryptedTx) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -161,7 +257,7 @@ func (m *MsgSubmitEncryptedTxResponse) Reset()         { *m = MsgSubmitEncrypted
 func (m *MsgSubmitEncryptedTxResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgSubmitEncryptedTxResponse) ProtoMessage()    {}
 func (*MsgSubmitEncryptedTxResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{2}
+	return fileDescriptor_f6953e463911e1ec, []int{4}
 }
 func (m *MsgSubmitEncryptedTxResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -201,7 +297,7 @@ func (m *MsgCreateAggregatedKeyShare) Reset()         { *m = MsgCreateAggregated
 func (m *MsgCreateAggregatedKeyShare) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateAggregatedKeyShare) ProtoMessage()    {}
 func (*MsgCreateAggregatedKeyShare) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{3}
+	return fileDescriptor_f6953e463911e1ec, []int{5}
 }
 func (m *MsgCreateAggregatedKeyShare) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -258,7 +354,7 @@ func (m *MsgCreateAggregatedKeyShareResponse) Reset()         { *m = MsgCreateAg
 func (m *MsgCreateAggregatedKeyShareResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateAggregatedKeyShareResponse) ProtoMessage()    {}
 func (*MsgCreateAggregatedKeyShareResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{4}
+	return fileDescriptor_f6953e463911e1ec, []int{6}
 }
 func (m *MsgCreateAggregatedKeyShareResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -296,7 +392,7 @@ func (m *MsgRequestGeneralKeyshare) Reset()         { *m = MsgRequestGeneralKeys
 func (m *MsgRequestGeneralKeyshare) String() string { return proto.CompactTextString(m) }
 func (*MsgRequestGeneralKeyshare) ProtoMessage()    {}
 func (*MsgRequestGeneralKeyshare) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{5}
+	return fileDescriptor_f6953e463911e1ec, []int{7}
 }
 func (m *MsgRequestGeneralKeyshare) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -347,7 +443,7 @@ func (m *MsgRequestGeneralKeyshareResponse) Reset()         { *m = MsgRequestGen
 func (m *MsgRequestGeneralKeyshareResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgRequestGeneralKeyshareResponse) ProtoMessage()    {}
 func (*MsgRequestGeneralKeyshareResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{6}
+	return fileDescriptor_f6953e463911e1ec, []int{8}
 }
 func (m *MsgRequestGeneralKeyshareResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -392,7 +488,7 @@ func (m *MsgGetGeneralKeyshare) Reset()         { *m = MsgGetGeneralKeyshare{} }
 func (m *MsgGetGeneralKeyshare) String() string { return proto.CompactTextString(m) }
 func (*MsgGetGeneralKeyshare) ProtoMessage()    {}
 func (*MsgGetGeneralKeyshare) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{7}
+	return fileDescriptor_f6953e463911e1ec, []int{9}
 }
 func (m *MsgGetGeneralKeyshare) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -442,7 +538,7 @@ func (m *MsgGetGeneralKeyshareResponse) Reset()         { *m = MsgGetGeneralKeys
 func (m *MsgGetGeneralKeyshareResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgGetGeneralKeyshareResponse) ProtoMessage()    {}
 func (*MsgGetGeneralKeyshareResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{8}
+	return fileDescriptor_f6953e463911e1ec, []int{10}
 }
 func (m *MsgGetGeneralKeyshareResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -472,6 +568,8 @@ func (m *MsgGetGeneralKeyshareResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgGetGeneralKeyshareResponse proto.InternalMessageInfo
 
 func init() {
+	proto.RegisterType((*MsgUpdateParams)(nil), "fairyring.pep.MsgUpdateParams")
+	proto.RegisterType((*MsgUpdateParamsResponse)(nil), "fairyring.pep.MsgUpdateParamsResponse")
 	proto.RegisterType((*MsgSubmitEncryptedTx)(nil), "fairyring.pep.MsgSubmitEncryptedTx")
 	proto.RegisterType((*MsgSubmitGeneralEncryptedTx)(nil), "fairyring.pep.MsgSubmitGeneralEncryptedTx")
 	proto.RegisterType((*MsgSubmitEncryptedTxResponse)(nil), "fairyring.pep.MsgSubmitEncryptedTxResponse")
@@ -486,44 +584,53 @@ func init() {
 func init() { proto.RegisterFile("fairyring/pep/tx.proto", fileDescriptor_f6953e463911e1ec) }
 
 var fileDescriptor_f6953e463911e1ec = []byte{
-	// 592 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x55, 0x4d, 0x6f, 0xd3, 0x40,
-	0x10, 0x8d, 0x93, 0x34, 0xa8, 0xcb, 0x97, 0x6a, 0xb5, 0xc1, 0x31, 0xe0, 0x96, 0x14, 0xa4, 0x28,
-	0x54, 0x36, 0x84, 0x5b, 0x6f, 0x84, 0x40, 0x8b, 0xaa, 0x5c, 0x5c, 0xc4, 0x81, 0x4b, 0xb4, 0x89,
-	0xa7, 0x1b, 0xab, 0x49, 0xd6, 0xd9, 0xdd, 0xa0, 0x98, 0x53, 0xc5, 0x1d, 0x89, 0x23, 0x3f, 0xa3,
-	0x3f, 0x82, 0x03, 0xc7, 0x1e, 0xb9, 0x81, 0x92, 0x43, 0xff, 0x06, 0xb2, 0x1d, 0x3b, 0x6d, 0x6c,
-	0x97, 0xb4, 0xa7, 0x78, 0x76, 0xde, 0xcc, 0x7b, 0x93, 0x79, 0x5e, 0xa3, 0xe2, 0x11, 0xb6, 0x99,
-	0xcb, 0xec, 0x01, 0x31, 0x1c, 0x70, 0x0c, 0x31, 0xd6, 0x1d, 0x46, 0x05, 0x95, 0xef, 0x46, 0xe7,
-	0xba, 0x03, 0x8e, 0x5a, 0xb9, 0x0c, 0xc3, 0x84, 0x30, 0x20, 0x58, 0x80, 0xd5, 0x3a, 0x06, 0xb7,
-	0xc5, 0xbb, 0x98, 0x41, 0x50, 0xa8, 0x3e, 0xe8, 0x50, 0xde, 0xa7, 0xdc, 0xe8, 0x73, 0x62, 0x7c,
-	0x7e, 0xe9, 0xfd, 0xcc, 0x12, 0xa5, 0x20, 0xd1, 0xf2, 0x23, 0x23, 0x08, 0x66, 0x29, 0x8d, 0x50,
-	0x4a, 0x7a, 0x60, 0xf8, 0x51, 0x7b, 0x74, 0x64, 0x58, 0x23, 0x86, 0x85, 0x4d, 0x07, 0xb3, 0xfc,
-	0x3a, 0xa1, 0x84, 0x06, 0x75, 0xde, 0x53, 0x70, 0x5a, 0x3e, 0x91, 0xd0, 0x7a, 0x93, 0x93, 0xc3,
-	0x51, 0xbb, 0x6f, 0x8b, 0xb7, 0x83, 0x0e, 0x73, 0x1d, 0x01, 0xd6, 0x87, 0xb1, 0xac, 0xa0, 0x5b,
-	0x1d, 0x06, 0x58, 0x50, 0xa6, 0x48, 0x5b, 0x52, 0x65, 0xd5, 0x0c, 0x43, 0x59, 0x46, 0x79, 0x0b,
-	0x0b, 0xac, 0x64, 0xfd, 0x63, 0xff, 0x59, 0xde, 0x41, 0x6b, 0x02, 0x33, 0x02, 0xa2, 0xde, 0xa3,
-	0x9d, 0xe3, 0x7d, 0xb0, 0x49, 0x57, 0x28, 0xb9, 0x2d, 0xa9, 0x92, 0x37, 0xe3, 0x89, 0xdd, 0x3b,
-	0x5f, 0xcf, 0x4f, 0xab, 0x61, 0xbf, 0xb2, 0x83, 0x1e, 0x46, 0x0a, 0xf6, 0x60, 0x00, 0x0c, 0xf7,
-	0x6e, 0x2e, 0x64, 0x03, 0x15, 0x18, 0x0c, 0x5b, 0xb6, 0xe5, 0xb3, 0xaf, 0x9a, 0x2b, 0x0c, 0x86,
-	0xef, 0xad, 0x05, 0x46, 0x0d, 0x3d, 0x4a, 0x9a, 0xd9, 0x04, 0xee, 0xd0, 0x01, 0x87, 0xf2, 0xd0,
-	0x57, 0xf4, 0xc6, 0x43, 0xc3, 0xeb, 0x68, 0x4b, 0x07, 0xe0, 0x1e, 0x7a, 0x3b, 0xba, 0x42, 0x51,
-	0x11, 0x15, 0xba, 0xc1, 0xec, 0x59, 0x7f, 0xf6, 0x59, 0x14, 0x29, 0xcd, 0xcd, 0x95, 0x2e, 0x48,
-	0x7a, 0x86, 0xb6, 0xaf, 0xa0, 0x8c, 0x94, 0x7d, 0x93, 0x50, 0xa9, 0xc9, 0x89, 0x09, 0xc3, 0x11,
-	0xf0, 0xf0, 0xdf, 0x3a, 0x00, 0x97, 0xff, 0x47, 0xd8, 0x3e, 0xba, 0x0f, 0x5c, 0xd8, 0x7d, 0xdf,
-	0x6d, 0x16, 0xf4, 0xb0, 0xeb, 0x2b, 0xbc, 0x5d, 0x2b, 0xe9, 0x81, 0x6d, 0xf4, 0xd0, 0x36, 0x7a,
-	0x63, 0x66, 0x9b, 0x7a, 0xfe, 0xc7, 0x9f, 0x4d, 0xc9, 0xbc, 0x17, 0xd5, 0x35, 0xbc, 0xb2, 0x05,
-	0xd9, 0xbb, 0xe8, 0x49, 0xaa, 0x9c, 0x50, 0xf4, 0x85, 0x9d, 0x48, 0x17, 0x76, 0x52, 0xfe, 0x88,
-	0x36, 0x9a, 0x9c, 0xec, 0xc1, 0x35, 0xc6, 0x98, 0x77, 0xca, 0xa6, 0x6f, 0x77, 0x13, 0x3d, 0x4e,
-	0xec, 0x1b, 0xea, 0xa9, 0xfd, 0xcc, 0xa3, 0x5c, 0x93, 0x13, 0x19, 0xd0, 0x5a, 0xdc, 0xf7, 0xdb,
-	0xfa, 0xa5, 0x97, 0x56, 0x4f, 0x32, 0x8a, 0xfa, 0x7c, 0x09, 0x50, 0x34, 0x3e, 0x47, 0x4a, 0xaa,
-	0xb9, 0xab, 0x69, 0x8d, 0xe2, 0xd8, 0xeb, 0x91, 0x7e, 0x41, 0x4a, 0xaa, 0x7f, 0x13, 0x48, 0xd3,
-	0xb0, 0x6a, 0x6d, 0x79, 0x6c, 0xc4, 0x2d, 0x50, 0x31, 0xc5, 0xa0, 0x95, 0x78, 0xb7, 0x64, 0xa4,
-	0xfa, 0x62, 0x59, 0x64, 0xc4, 0xda, 0x45, 0x72, 0x82, 0x97, 0x9e, 0xc6, 0xfb, 0xc4, 0x51, 0xea,
-	0xce, 0x32, 0xa8, 0x90, 0x49, 0x5d, 0x39, 0x39, 0x3f, 0xad, 0x4a, 0xf5, 0xc6, 0xaf, 0x89, 0x26,
-	0x9d, 0x4d, 0x34, 0xe9, 0xef, 0x44, 0x93, 0xbe, 0x4f, 0xb5, 0xcc, 0xd9, 0x54, 0xcb, 0xfc, 0x9e,
-	0x6a, 0x99, 0x4f, 0x55, 0x62, 0x8b, 0xee, 0xa8, 0xad, 0x77, 0x68, 0xdf, 0x78, 0x87, 0x6d, 0xd6,
-	0xf6, 0xee, 0x3e, 0x63, 0x7e, 0xfb, 0x8f, 0x83, 0xcf, 0x84, 0xeb, 0x00, 0x6f, 0x17, 0xfc, 0x17,
-	0xef, 0xd5, 0xbf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x1b, 0x88, 0xe2, 0x1e, 0x44, 0x06, 0x00, 0x00,
+	// 727 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0x3d, 0x6f, 0xd3, 0x40,
+	0x18, 0x8e, 0xfb, 0x11, 0x94, 0xa3, 0x50, 0xd5, 0xea, 0x47, 0x62, 0xc0, 0x2d, 0x29, 0xa0, 0x28,
+	0x14, 0x1b, 0x0a, 0x42, 0xa8, 0x5b, 0x43, 0xa1, 0x45, 0x55, 0x24, 0xe4, 0x42, 0x07, 0x96, 0xe8,
+	0x12, 0xbf, 0xbd, 0x58, 0x4d, 0x72, 0xce, 0xdd, 0x05, 0xd5, 0x4c, 0x15, 0x23, 0x12, 0x12, 0x23,
+	0x03, 0x3f, 0x80, 0xb1, 0x03, 0x3f, 0xa2, 0x03, 0x43, 0xc5, 0xc4, 0x04, 0xa8, 0x1d, 0xfa, 0x37,
+	0x90, 0x3f, 0xd3, 0xc4, 0x71, 0x49, 0x59, 0x12, 0x9f, 0xdf, 0xe7, 0x9e, 0xf7, 0x79, 0xee, 0xde,
+	0xc7, 0x68, 0x76, 0x07, 0x5b, 0xcc, 0x61, 0x56, 0x8b, 0xe8, 0x36, 0xd8, 0xba, 0xd8, 0xd3, 0x6c,
+	0x46, 0x05, 0x95, 0xaf, 0x44, 0xef, 0x35, 0x1b, 0x6c, 0x65, 0x0a, 0x37, 0xad, 0x16, 0xd5, 0xbd,
+	0x5f, 0x1f, 0xa1, 0xcc, 0xd5, 0x28, 0x6f, 0x52, 0xae, 0x37, 0x39, 0xd1, 0xdf, 0x3e, 0x70, 0xff,
+	0x82, 0x42, 0xce, 0x2f, 0x54, 0xbc, 0x95, 0xee, 0x2f, 0x82, 0x92, 0x4a, 0x28, 0x25, 0x0d, 0xd0,
+	0xbd, 0x55, 0xb5, 0xb3, 0xa3, 0x9b, 0x1d, 0x86, 0x85, 0x45, 0x5b, 0x41, 0x7d, 0x9a, 0x50, 0x42,
+	0xfd, 0x7d, 0xee, 0x53, 0xf0, 0x56, 0xe9, 0xd5, 0x68, 0x63, 0x86, 0x9b, 0x21, 0x63, 0xa1, 0xb7,
+	0x86, 0x09, 0x61, 0x40, 0xb0, 0x00, 0xb3, 0xb2, 0x0b, 0x4e, 0x85, 0xd7, 0x31, 0x03, 0x1f, 0x99,
+	0xff, 0x2e, 0xa1, 0xc9, 0x32, 0x27, 0xaf, 0x6d, 0x13, 0x0b, 0x78, 0xe9, 0x71, 0xc8, 0x8f, 0x51,
+	0x06, 0x77, 0x44, 0x9d, 0x32, 0x4b, 0x38, 0x59, 0x69, 0x41, 0x2a, 0x64, 0x4a, 0xd9, 0x1f, 0xdf,
+	0xee, 0x4d, 0x07, 0xa2, 0x57, 0x4d, 0x93, 0x01, 0xe7, 0x5b, 0xc2, 0xe5, 0x37, 0xba, 0x50, 0xf9,
+	0x09, 0x4a, 0xfb, 0x2a, 0xb2, 0x23, 0x0b, 0x52, 0xe1, 0xf2, 0xf2, 0x8c, 0xd6, 0x73, 0x5c, 0x9a,
+	0x4f, 0x5f, 0xca, 0x1c, 0xfe, 0x9a, 0x4f, 0x7d, 0x3d, 0x3d, 0x28, 0x4a, 0x46, 0x80, 0x5f, 0x59,
+	0x7f, 0x7f, 0x7a, 0x50, 0xec, 0x32, 0x7d, 0x38, 0x3d, 0x28, 0x3e, 0x22, 0x96, 0xa8, 0x77, 0xaa,
+	0x5a, 0x8d, 0x36, 0xf5, 0xe7, 0xd8, 0x62, 0xd5, 0x06, 0xad, 0xed, 0xea, 0x5d, 0x5f, 0x7b, 0x9e,
+	0xb3, 0x3e, 0xe9, 0xf9, 0x1c, 0x9a, 0xeb, 0x7b, 0x65, 0x00, 0xb7, 0x69, 0x8b, 0x43, 0x7e, 0x5f,
+	0x42, 0xd3, 0x65, 0x4e, 0xb6, 0x3a, 0xd5, 0xa6, 0x25, 0x9e, 0xb5, 0x6a, 0xcc, 0xb1, 0x05, 0x98,
+	0xaf, 0xf6, 0xe4, 0x2c, 0xba, 0x54, 0x63, 0x80, 0x05, 0x65, 0xbe, 0x59, 0x23, 0x5c, 0xca, 0x32,
+	0x1a, 0x33, 0xb1, 0xc0, 0x9e, 0x9d, 0x8c, 0xe1, 0x3d, 0xcb, 0x4b, 0x68, 0x4a, 0x60, 0x46, 0x40,
+	0x94, 0x5c, 0x41, 0x1b, 0x60, 0x91, 0xba, 0xc8, 0x8e, 0x2e, 0x48, 0x85, 0x31, 0x23, 0x5e, 0x58,
+	0x99, 0x70, 0x8d, 0x85, 0x7c, 0x79, 0x1b, 0x5d, 0x8b, 0x14, 0xac, 0x43, 0x0b, 0x18, 0x6e, 0xfc,
+	0xbf, 0x90, 0x19, 0x94, 0x66, 0xd0, 0xae, 0x58, 0xa6, 0xd7, 0x3d, 0x63, 0x8c, 0x33, 0x68, 0xbf,
+	0x30, 0xfb, 0x3a, 0xaa, 0xe8, 0xfa, 0x20, 0xcf, 0xd1, 0xa1, 0xb4, 0x3d, 0x45, 0x4f, 0x5d, 0x34,
+	0xac, 0x46, 0x53, 0xb2, 0x09, 0xce, 0x96, 0x3b, 0x23, 0xe7, 0x28, 0x9a, 0x45, 0xe9, 0xba, 0xef,
+	0x7d, 0xc4, 0xf3, 0x1e, 0xac, 0x22, 0xa5, 0xa3, 0x5d, 0xa5, 0x7d, 0x92, 0x6e, 0xa3, 0xc5, 0x73,
+	0x5a, 0x46, 0xca, 0x3e, 0x4a, 0x28, 0x57, 0xe6, 0xc4, 0x80, 0x76, 0x07, 0x78, 0x78, 0x5a, 0x9b,
+	0xe0, 0xf0, 0x7f, 0x08, 0xdb, 0x40, 0x93, 0xc0, 0x85, 0xd5, 0xf4, 0xa6, 0xdd, 0x84, 0x06, 0x76,
+	0x82, 0x69, 0xcc, 0x69, 0x7e, 0xcc, 0xb4, 0x30, 0x66, 0xda, 0x5a, 0x10, 0xb3, 0xd2, 0xd8, 0xe7,
+	0xdf, 0xf3, 0x92, 0x71, 0x35, 0xda, 0xb7, 0xe6, 0x6e, 0xeb, 0x93, 0xbd, 0x82, 0x6e, 0x26, 0xca,
+	0x09, 0x45, 0x9f, 0xb9, 0x13, 0xe9, 0xcc, 0x9d, 0xe4, 0xb7, 0xd1, 0x4c, 0x99, 0x93, 0x75, 0xb8,
+	0x80, 0x8d, 0x2e, 0xd3, 0x48, 0xf2, 0xed, 0xce, 0xa3, 0x1b, 0x03, 0x79, 0x43, 0x3d, 0xcb, 0x5f,
+	0xc6, 0xd1, 0x68, 0x99, 0x13, 0x79, 0x1b, 0x4d, 0xf4, 0x24, 0x5c, 0xed, 0x4b, 0x66, 0x5f, 0x66,
+	0x94, 0x3b, 0xe7, 0xd7, 0x23, 0xbf, 0x80, 0xa6, 0xe2, 0x79, 0x5a, 0x8c, 0x6f, 0x8e, 0x81, 0x94,
+	0xbb, 0x43, 0x80, 0xa2, 0x36, 0x1c, 0x65, 0x13, 0x43, 0x53, 0x4c, 0x22, 0x8a, 0x63, 0x2f, 0xd6,
+	0xf4, 0x1d, 0xca, 0x26, 0xe6, 0x62, 0x40, 0xd3, 0x24, 0xac, 0xb2, 0x3c, 0x3c, 0x36, 0xea, 0x2d,
+	0xd0, 0x6c, 0xc2, 0xe0, 0x17, 0xe2, 0x6c, 0x83, 0x91, 0xca, 0xfd, 0x61, 0x91, 0x51, 0xd7, 0x3a,
+	0x92, 0x07, 0xcc, 0xe8, 0xad, 0x38, 0x4f, 0x1c, 0xa5, 0x2c, 0x0d, 0x83, 0x0a, 0x3b, 0x29, 0xe3,
+	0xfb, 0xee, 0xe7, 0xbf, 0xb4, 0x76, 0x78, 0xac, 0x4a, 0x47, 0xc7, 0xaa, 0xf4, 0xe7, 0x58, 0x95,
+	0x3e, 0x9d, 0xa8, 0xa9, 0xa3, 0x13, 0x35, 0xf5, 0xf3, 0x44, 0x4d, 0xbd, 0x29, 0x0e, 0xf5, 0xf5,
+	0x17, 0x8e, 0x0d, 0xbc, 0x9a, 0xf6, 0x02, 0xfd, 0xf0, 0x6f, 0x00, 0x00, 0x00, 0xff, 0xff, 0xdb,
+	0x92, 0xbc, 0xa0, 0xb5, 0x07, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -538,6 +645,9 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
+	// UpdateParams defines a (governance) operation for updating the module
+	// parameters. The authority defaults to the x/gov module account.
+	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
 	SubmitEncryptedTx(ctx context.Context, in *MsgSubmitEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error)
 	SubmitGeneralEncryptedTx(ctx context.Context, in *MsgSubmitGeneralEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
@@ -552,6 +662,15 @@ type msgClient struct {
 
 func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
+}
+
+func (c *msgClient) UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error) {
+	out := new(MsgUpdateParamsResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Msg/UpdateParams", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *msgClient) SubmitEncryptedTx(ctx context.Context, in *MsgSubmitEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error) {
@@ -601,6 +720,9 @@ func (c *msgClient) GetGeneralKeyshare(ctx context.Context, in *MsgGetGeneralKey
 
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
+	// UpdateParams defines a (governance) operation for updating the module
+	// parameters. The authority defaults to the x/gov module account.
+	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
 	SubmitEncryptedTx(context.Context, *MsgSubmitEncryptedTx) (*MsgSubmitEncryptedTxResponse, error)
 	SubmitGeneralEncryptedTx(context.Context, *MsgSubmitGeneralEncryptedTx) (*MsgSubmitEncryptedTxResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
@@ -613,6 +735,9 @@ type MsgServer interface {
 type UnimplementedMsgServer struct {
 }
 
+func (*UnimplementedMsgServer) UpdateParams(ctx context.Context, req *MsgUpdateParams) (*MsgUpdateParamsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateParams not implemented")
+}
 func (*UnimplementedMsgServer) SubmitEncryptedTx(ctx context.Context, req *MsgSubmitEncryptedTx) (*MsgSubmitEncryptedTxResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitEncryptedTx not implemented")
 }
@@ -631,6 +756,24 @@ func (*UnimplementedMsgServer) GetGeneralKeyshare(ctx context.Context, req *MsgG
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 	s.RegisterService(&_Msg_serviceDesc, srv)
+}
+
+func _Msg_UpdateParams_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateParams)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateParams(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.pep.Msg/UpdateParams",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateParams(ctx, req.(*MsgUpdateParams))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Msg_SubmitEncryptedTx_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -728,6 +871,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "UpdateParams",
+			Handler:    _Msg_UpdateParams_Handler,
+		},
+		{
 			MethodName: "SubmitEncryptedTx",
 			Handler:    _Msg_SubmitEncryptedTx_Handler,
 		},
@@ -750,6 +897,69 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "fairyring/pep/tx.proto",
+}
+
+func (m *MsgUpdateParams) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateParams) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateParams) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.Params.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintTx(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x12
+	if len(m.Authority) > 0 {
+		i -= len(m.Authority)
+		copy(dAtA[i:], m.Authority)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Authority)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgUpdateParamsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateParamsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
 }
 
 func (m *MsgSubmitEncryptedTx) Marshal() (dAtA []byte, err error) {
@@ -947,12 +1157,12 @@ func (m *MsgRequestGeneralKeyshare) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	var l int
 	_ = l
 	if m.EstimatedDelay != nil {
-		n1, err1 := github_com_cosmos_gogoproto_types.StdDurationMarshalTo(*m.EstimatedDelay, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdDuration(*m.EstimatedDelay):])
-		if err1 != nil {
-			return 0, err1
+		n2, err2 := github_com_cosmos_gogoproto_types.StdDurationMarshalTo(*m.EstimatedDelay, dAtA[i-github_com_cosmos_gogoproto_types.SizeOfStdDuration(*m.EstimatedDelay):])
+		if err2 != nil {
+			return 0, err2
 		}
-		i -= n1
-		i = encodeVarintTx(dAtA, i, uint64(n1))
+		i -= n2
+		i = encodeVarintTx(dAtA, i, uint64(n2))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -1067,6 +1277,30 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
+func (m *MsgUpdateParams) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Authority)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = m.Params.Size()
+	n += 1 + l + sovTx(uint64(l))
+	return n
+}
+
+func (m *MsgUpdateParamsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
 func (m *MsgSubmitEncryptedTx) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1207,6 +1441,171 @@ func sovTx(x uint64) (n int) {
 }
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *MsgUpdateParams) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateParams: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateParams: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Authority", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Authority = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Params", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Params.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateParamsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateParamsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateParamsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
 }
 func (m *MsgSubmitEncryptedTx) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)

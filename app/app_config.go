@@ -1,7 +1,18 @@
 package app
 
 import (
+	distrmodulev1 "cosmossdk.io/api/cosmos/distribution/module/v1"
+	govmodulev1 "cosmossdk.io/api/cosmos/gov/module/v1"
+	mintmodulev1 "cosmossdk.io/api/cosmos/mint/module/v1"
+	stakingmodulev1 "cosmossdk.io/api/cosmos/staking/module/v1"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	_ "github.com/Fairblock/fairyring/x/keyshare/module" // import for side-effects
+	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
+	_ "github.com/Fairblock/fairyring/x/pep/module" // import for side-effects
+	pepmoduletypes "github.com/Fairblock/fairyring/x/pep/types"
+	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
+	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"time"
 
 	runtimev1alpha1 "cosmossdk.io/api/cosmos/app/runtime/v1alpha1"
@@ -12,17 +23,13 @@ import (
 	circuitmodulev1 "cosmossdk.io/api/cosmos/circuit/module/v1"
 	consensusmodulev1 "cosmossdk.io/api/cosmos/consensus/module/v1"
 	crisismodulev1 "cosmossdk.io/api/cosmos/crisis/module/v1"
-	distrmodulev1 "cosmossdk.io/api/cosmos/distribution/module/v1"
 	evidencemodulev1 "cosmossdk.io/api/cosmos/evidence/module/v1"
 	feegrantmodulev1 "cosmossdk.io/api/cosmos/feegrant/module/v1"
 	genutilmodulev1 "cosmossdk.io/api/cosmos/genutil/module/v1"
-	govmodulev1 "cosmossdk.io/api/cosmos/gov/module/v1"
 	groupmodulev1 "cosmossdk.io/api/cosmos/group/module/v1"
-	mintmodulev1 "cosmossdk.io/api/cosmos/mint/module/v1"
 	nftmodulev1 "cosmossdk.io/api/cosmos/nft/module/v1"
 	paramsmodulev1 "cosmossdk.io/api/cosmos/params/module/v1"
 	slashingmodulev1 "cosmossdk.io/api/cosmos/slashing/module/v1"
-	stakingmodulev1 "cosmossdk.io/api/cosmos/staking/module/v1"
 	txconfigv1 "cosmossdk.io/api/cosmos/tx/config/v1"
 	upgrademodulev1 "cosmossdk.io/api/cosmos/upgrade/module/v1"
 	vestingmodulev1 "cosmossdk.io/api/cosmos/vesting/module/v1"
@@ -39,28 +46,17 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
 	crisistypes "github.com/cosmos/cosmos-sdk/x/crisis/types"
-	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
-	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/cosmos/cosmos-sdk/x/group"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
-	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
 	icatypes "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/types"
 	ibcfeetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
 	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 	"google.golang.org/protobuf/types/known/durationpb"
-
-	fairyringkeysharemodulev1 "github.com/Fairblock/fairyring/api/fairyring/keyshare/module"
-	_ "github.com/Fairblock/fairyring/x/keyshare/module" // import for side-effects
-	fairyringkeysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
-
-	fairyringpepmodulev1 "github.com/Fairblock/fairyring/api/fairyring/pep/module"
-	_ "github.com/Fairblock/fairyring/x/pep/module" // import for side-effects
-	fairyringpepmoduletypes "github.com/Fairblock/fairyring/x/pep/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -99,8 +95,8 @@ var (
 		consensustypes.ModuleName,
 		circuittypes.ModuleName,
 		// chain modules
-		fairyringkeysharemoduletypes.ModuleName,
-		fairyringpepmoduletypes.ModuleName,
+		pepmoduletypes.ModuleName,
+		keysharemoduletypes.ModuleName,
 		wasmtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
@@ -126,9 +122,10 @@ var (
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
 		// chain modules
-		fairyringkeysharemoduletypes.ModuleName,
-		fairyringpepmoduletypes.ModuleName,
+		pepmoduletypes.ModuleName,
+		keysharemoduletypes.ModuleName,
 		wasmtypes.ModuleName,
+		govtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -147,8 +144,8 @@ var (
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
 		// chain modules
-		fairyringkeysharemoduletypes.ModuleName,
-		fairyringpepmoduletypes.ModuleName,
+		pepmoduletypes.ModuleName,
+		keysharemoduletypes.ModuleName,
 		wasmtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
@@ -165,30 +162,15 @@ var (
 		{Account: minttypes.ModuleName, Permissions: []string{authtypes.Minter}},
 		{Account: stakingtypes.BondedPoolName, Permissions: []string{authtypes.Burner, stakingtypes.ModuleName}},
 		{Account: stakingtypes.NotBondedPoolName, Permissions: []string{authtypes.Burner, stakingtypes.ModuleName}},
+		{Account: icatypes.ModuleName},
 		{Account: govtypes.ModuleName, Permissions: []string{authtypes.Burner}},
 		{Account: nft.ModuleName},
 		{Account: ibctransfertypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},
 		{Account: ibcfeetypes.ModuleName},
 		{Account: icatypes.ModuleName},
-		{Account: fairyringpepmoduletypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner, authtypes.Staking}},
-		{Account: wasmtypes.ModuleName, Permissions: []string{authtypes.Burner}},
+		{Account: pepmoduletypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner, authtypes.Staking}},
+		{Account: keysharemoduletypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner, authtypes.Staking}},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
-	}
-
-	maccPerms = map[string][]string{
-		authtypes.FeeCollectorName:     nil,
-		distrtypes.ModuleName:          nil,
-		minttypes.ModuleName:           {authtypes.Minter},
-		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
-		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
-		govtypes.ModuleName:            {authtypes.Burner},
-		nft.ModuleName:                 nil,
-		// non sdk modules
-		ibctransfertypes.ModuleName:        {authtypes.Minter, authtypes.Burner},
-		ibcfeetypes.ModuleName:             nil,
-		icatypes.ModuleName:                nil,
-		wasmtypes.ModuleName:               {authtypes.Burner},
-		fairyringpepmoduletypes.ModuleName: {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 	}
 
 	// blocked account addresses
@@ -252,6 +234,18 @@ var (
 				}),
 			},
 			{
+				Name:   slashingtypes.ModuleName,
+				Config: appconfig.WrapAny(&slashingmodulev1.Module{}),
+			},
+			{
+				Name:   paramstypes.ModuleName,
+				Config: appconfig.WrapAny(&paramsmodulev1.Module{}),
+			},
+			{
+				Name:   distrtypes.ModuleName,
+				Config: appconfig.WrapAny(&distrmodulev1.Module{}),
+			},
+			{
 				Name: stakingtypes.ModuleName,
 				Config: appconfig.WrapAny(&stakingmodulev1.Module{
 					// NOTE: specifying a prefix is only necessary when using bech32 addresses
@@ -259,14 +253,6 @@ var (
 					Bech32PrefixValidator: AccountAddressPrefix + "valoper",
 					Bech32PrefixConsensus: AccountAddressPrefix + "valcons",
 				}),
-			},
-			{
-				Name:   slashingtypes.ModuleName,
-				Config: appconfig.WrapAny(&slashingmodulev1.Module{}),
-			},
-			{
-				Name:   paramstypes.ModuleName,
-				Config: appconfig.WrapAny(&paramsmodulev1.Module{}),
 			},
 			{
 				Name:   "tx",
@@ -283,10 +269,6 @@ var (
 			{
 				Name:   upgradetypes.ModuleName,
 				Config: appconfig.WrapAny(&upgrademodulev1.Module{}),
-			},
-			{
-				Name:   distrtypes.ModuleName,
-				Config: appconfig.WrapAny(&distrmodulev1.Module{}),
 			},
 			{
 				Name:   evidencetypes.ModuleName,
@@ -323,14 +305,14 @@ var (
 				Name:   circuittypes.ModuleName,
 				Config: appconfig.WrapAny(&circuitmodulev1.Module{}),
 			},
-			{
-				Name:   fairyringkeysharemoduletypes.ModuleName,
-				Config: appconfig.WrapAny(&fairyringkeysharemodulev1.Module{}),
-			},
-			{
-				Name:   fairyringpepmoduletypes.ModuleName,
-				Config: appconfig.WrapAny(&fairyringpepmodulev1.Module{}),
-			},
+			//{
+			//	Name:   pepmoduletypes.ModuleName,
+			//	Config: appconfig.WrapAny(&pepmodulev1.Module{}),
+			//},
+			//{
+			//	Name:   keysharemoduletypes.ModuleName,
+			//	Config: appconfig.WrapAny(&keysharemodulev1.Module{}),
+			//},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},
 	})

@@ -2,6 +2,7 @@
 package keyshare
 
 import (
+	_ "cosmossdk.io/api/amino"
 	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"
@@ -13,71 +14,71 @@ import (
 	sync "sync"
 )
 
-var _ protoreflect.List = (*_Params_2_list)(nil)
+var _ protoreflect.List = (*_Params_4_list)(nil)
 
-type _Params_2_list struct {
+type _Params_4_list struct {
 	list *[]string
 }
 
-func (x *_Params_2_list) Len() int {
+func (x *_Params_4_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_Params_2_list) Get(i int) protoreflect.Value {
+func (x *_Params_4_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfString((*x.list)[i])
 }
 
-func (x *_Params_2_list) Set(i int, value protoreflect.Value) {
+func (x *_Params_4_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_Params_2_list) Append(value protoreflect.Value) {
+func (x *_Params_4_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_Params_2_list) AppendMutable() protoreflect.Value {
+func (x *_Params_4_list) AppendMutable() protoreflect.Value {
 	panic(fmt.Errorf("AppendMutable can not be called on message Params at list field TrustedAddresses as it is not of Message kind"))
 }
 
-func (x *_Params_2_list) Truncate(n int) {
+func (x *_Params_4_list) Truncate(n int) {
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_Params_2_list) NewElement() protoreflect.Value {
+func (x *_Params_4_list) NewElement() protoreflect.Value {
 	v := ""
 	return protoreflect.ValueOfString(v)
 }
 
-func (x *_Params_2_list) IsValid() bool {
+func (x *_Params_4_list) IsValid() bool {
 	return x.list != nil
 }
 
 var (
 	md_Params                               protoreflect.MessageDescriptor
 	fd_Params_key_expiry                    protoreflect.FieldDescriptor
+	fd_Params_minimum_bonded                protoreflect.FieldDescriptor
+	fd_Params_max_idled_block               protoreflect.FieldDescriptor
 	fd_Params_trusted_addresses             protoreflect.FieldDescriptor
 	fd_Params_slash_fraction_no_keyshare    protoreflect.FieldDescriptor
 	fd_Params_slash_fraction_wrong_keyshare protoreflect.FieldDescriptor
-	fd_Params_minimum_bonded                protoreflect.FieldDescriptor
-	fd_Params_max_idled_block               protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_keyshare_params_proto_init()
 	md_Params = File_fairyring_keyshare_params_proto.Messages().ByName("Params")
 	fd_Params_key_expiry = md_Params.Fields().ByName("key_expiry")
+	fd_Params_minimum_bonded = md_Params.Fields().ByName("minimum_bonded")
+	fd_Params_max_idled_block = md_Params.Fields().ByName("max_idled_block")
 	fd_Params_trusted_addresses = md_Params.Fields().ByName("trusted_addresses")
 	fd_Params_slash_fraction_no_keyshare = md_Params.Fields().ByName("slash_fraction_no_keyshare")
 	fd_Params_slash_fraction_wrong_keyshare = md_Params.Fields().ByName("slash_fraction_wrong_keyshare")
-	fd_Params_minimum_bonded = md_Params.Fields().ByName("minimum_bonded")
-	fd_Params_max_idled_block = md_Params.Fields().ByName("max_idled_block")
 }
 
 var _ protoreflect.Message = (*fastReflection_Params)(nil)
@@ -151,8 +152,20 @@ func (x *fastReflection_Params) Range(f func(protoreflect.FieldDescriptor, proto
 			return
 		}
 	}
+	if x.MinimumBonded != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.MinimumBonded)
+		if !f(fd_Params_minimum_bonded, value) {
+			return
+		}
+	}
+	if x.MaxIdledBlock != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.MaxIdledBlock)
+		if !f(fd_Params_max_idled_block, value) {
+			return
+		}
+	}
 	if len(x.TrustedAddresses) != 0 {
-		value := protoreflect.ValueOfList(&_Params_2_list{list: &x.TrustedAddresses})
+		value := protoreflect.ValueOfList(&_Params_4_list{list: &x.TrustedAddresses})
 		if !f(fd_Params_trusted_addresses, value) {
 			return
 		}
@@ -166,18 +179,6 @@ func (x *fastReflection_Params) Range(f func(protoreflect.FieldDescriptor, proto
 	if len(x.SlashFractionWrongKeyshare) != 0 {
 		value := protoreflect.ValueOfBytes(x.SlashFractionWrongKeyshare)
 		if !f(fd_Params_slash_fraction_wrong_keyshare, value) {
-			return
-		}
-	}
-	if x.MinimumBonded != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.MinimumBonded)
-		if !f(fd_Params_minimum_bonded, value) {
-			return
-		}
-	}
-	if x.MaxIdledBlock != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.MaxIdledBlock)
-		if !f(fd_Params_max_idled_block, value) {
 			return
 		}
 	}
@@ -198,16 +199,16 @@ func (x *fastReflection_Params) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
 	case "fairyring.keyshare.Params.key_expiry":
 		return x.KeyExpiry != uint64(0)
+	case "fairyring.keyshare.Params.minimum_bonded":
+		return x.MinimumBonded != uint64(0)
+	case "fairyring.keyshare.Params.max_idled_block":
+		return x.MaxIdledBlock != uint64(0)
 	case "fairyring.keyshare.Params.trusted_addresses":
 		return len(x.TrustedAddresses) != 0
 	case "fairyring.keyshare.Params.slash_fraction_no_keyshare":
 		return len(x.SlashFractionNoKeyshare) != 0
 	case "fairyring.keyshare.Params.slash_fraction_wrong_keyshare":
 		return len(x.SlashFractionWrongKeyshare) != 0
-	case "fairyring.keyshare.Params.minimum_bonded":
-		return x.MinimumBonded != uint64(0)
-	case "fairyring.keyshare.Params.max_idled_block":
-		return x.MaxIdledBlock != uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.Params"))
@@ -226,16 +227,16 @@ func (x *fastReflection_Params) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
 	case "fairyring.keyshare.Params.key_expiry":
 		x.KeyExpiry = uint64(0)
+	case "fairyring.keyshare.Params.minimum_bonded":
+		x.MinimumBonded = uint64(0)
+	case "fairyring.keyshare.Params.max_idled_block":
+		x.MaxIdledBlock = uint64(0)
 	case "fairyring.keyshare.Params.trusted_addresses":
 		x.TrustedAddresses = nil
 	case "fairyring.keyshare.Params.slash_fraction_no_keyshare":
 		x.SlashFractionNoKeyshare = nil
 	case "fairyring.keyshare.Params.slash_fraction_wrong_keyshare":
 		x.SlashFractionWrongKeyshare = nil
-	case "fairyring.keyshare.Params.minimum_bonded":
-		x.MinimumBonded = uint64(0)
-	case "fairyring.keyshare.Params.max_idled_block":
-		x.MaxIdledBlock = uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.Params"))
@@ -255,11 +256,17 @@ func (x *fastReflection_Params) Get(descriptor protoreflect.FieldDescriptor) pro
 	case "fairyring.keyshare.Params.key_expiry":
 		value := x.KeyExpiry
 		return protoreflect.ValueOfUint64(value)
+	case "fairyring.keyshare.Params.minimum_bonded":
+		value := x.MinimumBonded
+		return protoreflect.ValueOfUint64(value)
+	case "fairyring.keyshare.Params.max_idled_block":
+		value := x.MaxIdledBlock
+		return protoreflect.ValueOfUint64(value)
 	case "fairyring.keyshare.Params.trusted_addresses":
 		if len(x.TrustedAddresses) == 0 {
-			return protoreflect.ValueOfList(&_Params_2_list{})
+			return protoreflect.ValueOfList(&_Params_4_list{})
 		}
-		listValue := &_Params_2_list{list: &x.TrustedAddresses}
+		listValue := &_Params_4_list{list: &x.TrustedAddresses}
 		return protoreflect.ValueOfList(listValue)
 	case "fairyring.keyshare.Params.slash_fraction_no_keyshare":
 		value := x.SlashFractionNoKeyshare
@@ -267,12 +274,6 @@ func (x *fastReflection_Params) Get(descriptor protoreflect.FieldDescriptor) pro
 	case "fairyring.keyshare.Params.slash_fraction_wrong_keyshare":
 		value := x.SlashFractionWrongKeyshare
 		return protoreflect.ValueOfBytes(value)
-	case "fairyring.keyshare.Params.minimum_bonded":
-		value := x.MinimumBonded
-		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.Params.max_idled_block":
-		value := x.MaxIdledBlock
-		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.Params"))
@@ -295,18 +296,18 @@ func (x *fastReflection_Params) Set(fd protoreflect.FieldDescriptor, value proto
 	switch fd.FullName() {
 	case "fairyring.keyshare.Params.key_expiry":
 		x.KeyExpiry = value.Uint()
+	case "fairyring.keyshare.Params.minimum_bonded":
+		x.MinimumBonded = value.Uint()
+	case "fairyring.keyshare.Params.max_idled_block":
+		x.MaxIdledBlock = value.Uint()
 	case "fairyring.keyshare.Params.trusted_addresses":
 		lv := value.List()
-		clv := lv.(*_Params_2_list)
+		clv := lv.(*_Params_4_list)
 		x.TrustedAddresses = *clv.list
 	case "fairyring.keyshare.Params.slash_fraction_no_keyshare":
 		x.SlashFractionNoKeyshare = value.Bytes()
 	case "fairyring.keyshare.Params.slash_fraction_wrong_keyshare":
 		x.SlashFractionWrongKeyshare = value.Bytes()
-	case "fairyring.keyshare.Params.minimum_bonded":
-		x.MinimumBonded = value.Uint()
-	case "fairyring.keyshare.Params.max_idled_block":
-		x.MaxIdledBlock = value.Uint()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.Params"))
@@ -331,18 +332,18 @@ func (x *fastReflection_Params) Mutable(fd protoreflect.FieldDescriptor) protore
 		if x.TrustedAddresses == nil {
 			x.TrustedAddresses = []string{}
 		}
-		value := &_Params_2_list{list: &x.TrustedAddresses}
+		value := &_Params_4_list{list: &x.TrustedAddresses}
 		return protoreflect.ValueOfList(value)
 	case "fairyring.keyshare.Params.key_expiry":
 		panic(fmt.Errorf("field key_expiry of message fairyring.keyshare.Params is not mutable"))
-	case "fairyring.keyshare.Params.slash_fraction_no_keyshare":
-		panic(fmt.Errorf("field slash_fraction_no_keyshare of message fairyring.keyshare.Params is not mutable"))
-	case "fairyring.keyshare.Params.slash_fraction_wrong_keyshare":
-		panic(fmt.Errorf("field slash_fraction_wrong_keyshare of message fairyring.keyshare.Params is not mutable"))
 	case "fairyring.keyshare.Params.minimum_bonded":
 		panic(fmt.Errorf("field minimum_bonded of message fairyring.keyshare.Params is not mutable"))
 	case "fairyring.keyshare.Params.max_idled_block":
 		panic(fmt.Errorf("field max_idled_block of message fairyring.keyshare.Params is not mutable"))
+	case "fairyring.keyshare.Params.slash_fraction_no_keyshare":
+		panic(fmt.Errorf("field slash_fraction_no_keyshare of message fairyring.keyshare.Params is not mutable"))
+	case "fairyring.keyshare.Params.slash_fraction_wrong_keyshare":
+		panic(fmt.Errorf("field slash_fraction_wrong_keyshare of message fairyring.keyshare.Params is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.Params"))
@@ -358,17 +359,17 @@ func (x *fastReflection_Params) NewField(fd protoreflect.FieldDescriptor) protor
 	switch fd.FullName() {
 	case "fairyring.keyshare.Params.key_expiry":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.Params.trusted_addresses":
-		list := []string{}
-		return protoreflect.ValueOfList(&_Params_2_list{list: &list})
-	case "fairyring.keyshare.Params.slash_fraction_no_keyshare":
-		return protoreflect.ValueOfBytes(nil)
-	case "fairyring.keyshare.Params.slash_fraction_wrong_keyshare":
-		return protoreflect.ValueOfBytes(nil)
 	case "fairyring.keyshare.Params.minimum_bonded":
 		return protoreflect.ValueOfUint64(uint64(0))
 	case "fairyring.keyshare.Params.max_idled_block":
 		return protoreflect.ValueOfUint64(uint64(0))
+	case "fairyring.keyshare.Params.trusted_addresses":
+		list := []string{}
+		return protoreflect.ValueOfList(&_Params_4_list{list: &list})
+	case "fairyring.keyshare.Params.slash_fraction_no_keyshare":
+		return protoreflect.ValueOfBytes(nil)
+	case "fairyring.keyshare.Params.slash_fraction_wrong_keyshare":
+		return protoreflect.ValueOfBytes(nil)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.Params"))
@@ -441,6 +442,12 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 		if x.KeyExpiry != 0 {
 			n += 1 + runtime.Sov(uint64(x.KeyExpiry))
 		}
+		if x.MinimumBonded != 0 {
+			n += 1 + runtime.Sov(uint64(x.MinimumBonded))
+		}
+		if x.MaxIdledBlock != 0 {
+			n += 1 + runtime.Sov(uint64(x.MaxIdledBlock))
+		}
 		if len(x.TrustedAddresses) > 0 {
 			for _, s := range x.TrustedAddresses {
 				l = len(s)
@@ -454,12 +461,6 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 		l = len(x.SlashFractionWrongKeyshare)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		if x.MinimumBonded != 0 {
-			n += 1 + runtime.Sov(uint64(x.MinimumBonded))
-		}
-		if x.MaxIdledBlock != 0 {
-			n += 1 + runtime.Sov(uint64(x.MaxIdledBlock))
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -490,29 +491,19 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.MaxIdledBlock != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.MaxIdledBlock))
-			i--
-			dAtA[i] = 0x30
-		}
-		if x.MinimumBonded != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.MinimumBonded))
-			i--
-			dAtA[i] = 0x28
-		}
 		if len(x.SlashFractionWrongKeyshare) > 0 {
 			i -= len(x.SlashFractionWrongKeyshare)
 			copy(dAtA[i:], x.SlashFractionWrongKeyshare)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.SlashFractionWrongKeyshare)))
 			i--
-			dAtA[i] = 0x22
+			dAtA[i] = 0x32
 		}
 		if len(x.SlashFractionNoKeyshare) > 0 {
 			i -= len(x.SlashFractionNoKeyshare)
 			copy(dAtA[i:], x.SlashFractionNoKeyshare)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.SlashFractionNoKeyshare)))
 			i--
-			dAtA[i] = 0x1a
+			dAtA[i] = 0x2a
 		}
 		if len(x.TrustedAddresses) > 0 {
 			for iNdEx := len(x.TrustedAddresses) - 1; iNdEx >= 0; iNdEx-- {
@@ -520,8 +511,18 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 				copy(dAtA[i:], x.TrustedAddresses[iNdEx])
 				i = runtime.EncodeVarint(dAtA, i, uint64(len(x.TrustedAddresses[iNdEx])))
 				i--
-				dAtA[i] = 0x12
+				dAtA[i] = 0x22
 			}
+		}
+		if x.MaxIdledBlock != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.MaxIdledBlock))
+			i--
+			dAtA[i] = 0x18
+		}
+		if x.MinimumBonded != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.MinimumBonded))
+			i--
+			dAtA[i] = 0x10
 		}
 		if x.KeyExpiry != 0 {
 			i = runtime.EncodeVarint(dAtA, i, uint64(x.KeyExpiry))
@@ -597,6 +598,44 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 					}
 				}
 			case 2:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field MinimumBonded", wireType)
+				}
+				x.MinimumBonded = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.MinimumBonded |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 3:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field MaxIdledBlock", wireType)
+				}
+				x.MaxIdledBlock = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.MaxIdledBlock |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 4:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TrustedAddresses", wireType)
 				}
@@ -628,7 +667,7 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 				}
 				x.TrustedAddresses = append(x.TrustedAddresses, string(dAtA[iNdEx:postIndex]))
 				iNdEx = postIndex
-			case 3:
+			case 5:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SlashFractionNoKeyshare", wireType)
 				}
@@ -662,7 +701,7 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 					x.SlashFractionNoKeyshare = []byte{}
 				}
 				iNdEx = postIndex
-			case 4:
+			case 6:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SlashFractionWrongKeyshare", wireType)
 				}
@@ -696,44 +735,6 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 					x.SlashFractionWrongKeyshare = []byte{}
 				}
 				iNdEx = postIndex
-			case 5:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field MinimumBonded", wireType)
-				}
-				x.MinimumBonded = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.MinimumBonded |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-			case 6:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field MaxIdledBlock", wireType)
-				}
-				x.MaxIdledBlock = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.MaxIdledBlock |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -789,11 +790,11 @@ type Params struct {
 	unknownFields protoimpl.UnknownFields
 
 	KeyExpiry                  uint64   `protobuf:"varint,1,opt,name=key_expiry,json=keyExpiry,proto3" json:"key_expiry,omitempty"`
-	TrustedAddresses           []string `protobuf:"bytes,2,rep,name=trusted_addresses,json=trustedAddresses,proto3" json:"trusted_addresses,omitempty"`
-	SlashFractionNoKeyshare    []byte   `protobuf:"bytes,3,opt,name=slash_fraction_no_keyshare,json=slashFractionNoKeyshare,proto3" json:"slash_fraction_no_keyshare,omitempty"`
-	SlashFractionWrongKeyshare []byte   `protobuf:"bytes,4,opt,name=slash_fraction_wrong_keyshare,json=slashFractionWrongKeyshare,proto3" json:"slash_fraction_wrong_keyshare,omitempty"`
-	MinimumBonded              uint64   `protobuf:"varint,5,opt,name=minimum_bonded,json=minimumBonded,proto3" json:"minimum_bonded,omitempty"`
-	MaxIdledBlock              uint64   `protobuf:"varint,6,opt,name=max_idled_block,json=maxIdledBlock,proto3" json:"max_idled_block,omitempty"`
+	MinimumBonded              uint64   `protobuf:"varint,2,opt,name=minimum_bonded,json=minimumBonded,proto3" json:"minimum_bonded,omitempty"`
+	MaxIdledBlock              uint64   `protobuf:"varint,3,opt,name=max_idled_block,json=maxIdledBlock,proto3" json:"max_idled_block,omitempty"`
+	TrustedAddresses           []string `protobuf:"bytes,4,rep,name=trusted_addresses,json=trustedAddresses,proto3" json:"trusted_addresses,omitempty"`
+	SlashFractionNoKeyshare    []byte   `protobuf:"bytes,5,opt,name=slash_fraction_no_keyshare,json=slashFractionNoKeyshare,proto3" json:"slash_fraction_no_keyshare,omitempty"`
+	SlashFractionWrongKeyshare []byte   `protobuf:"bytes,6,opt,name=slash_fraction_wrong_keyshare,json=slashFractionWrongKeyshare,proto3" json:"slash_fraction_wrong_keyshare,omitempty"`
 }
 
 func (x *Params) Reset() {
@@ -823,6 +824,20 @@ func (x *Params) GetKeyExpiry() uint64 {
 	return 0
 }
 
+func (x *Params) GetMinimumBonded() uint64 {
+	if x != nil {
+		return x.MinimumBonded
+	}
+	return 0
+}
+
+func (x *Params) GetMaxIdledBlock() uint64 {
+	if x != nil {
+		return x.MaxIdledBlock
+	}
+	return 0
+}
+
 func (x *Params) GetTrustedAddresses() []string {
 	if x != nil {
 		return x.TrustedAddresses
@@ -844,63 +859,66 @@ func (x *Params) GetSlashFractionWrongKeyshare() []byte {
 	return nil
 }
 
-func (x *Params) GetMinimumBonded() uint64 {
-	if x != nil {
-		return x.MinimumBonded
-	}
-	return 0
-}
-
-func (x *Params) GetMaxIdledBlock() uint64 {
-	if x != nil {
-		return x.MaxIdledBlock
-	}
-	return 0
-}
-
 var File_fairyring_keyshare_params_proto protoreflect.FileDescriptor
 
 var file_fairyring_keyshare_params_proto_rawDesc = []byte{
 	0x0a, 0x1f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x6b, 0x65, 0x79, 0x73,
 	0x68, 0x61, 0x72, 0x65, 0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74,
 	0x6f, 0x12, 0x12, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79,
-	0x73, 0x68, 0x61, 0x72, 0x65, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xf3, 0x02, 0x0a, 0x06,
-	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x1d, 0x0a, 0x0a, 0x6b, 0x65, 0x79, 0x5f, 0x65, 0x78,
-	0x70, 0x69, 0x72, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x6b, 0x65, 0x79, 0x45,
-	0x78, 0x70, 0x69, 0x72, 0x79, 0x12, 0x2b, 0x0a, 0x11, 0x74, 0x72, 0x75, 0x73, 0x74, 0x65, 0x64,
-	0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x09,
-	0x52, 0x10, 0x74, 0x72, 0x75, 0x73, 0x74, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73,
-	0x65, 0x73, 0x12, 0x60, 0x0a, 0x1a, 0x73, 0x6c, 0x61, 0x73, 0x68, 0x5f, 0x66, 0x72, 0x61, 0x63,
-	0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6e, 0x6f, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65,
-	0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x42, 0x23, 0xc8, 0xde, 0x1f, 0x00, 0xda, 0xde, 0x1f, 0x1b,
-	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x6d, 0x61, 0x74,
-	0x68, 0x2e, 0x4c, 0x65, 0x67, 0x61, 0x63, 0x79, 0x44, 0x65, 0x63, 0x52, 0x17, 0x73, 0x6c, 0x61,
-	0x73, 0x68, 0x46, 0x72, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x4e, 0x6f, 0x4b, 0x65, 0x79, 0x73,
-	0x68, 0x61, 0x72, 0x65, 0x12, 0x66, 0x0a, 0x1d, 0x73, 0x6c, 0x61, 0x73, 0x68, 0x5f, 0x66, 0x72,
-	0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x77, 0x72, 0x6f, 0x6e, 0x67, 0x5f, 0x6b, 0x65, 0x79,
-	0x73, 0x68, 0x61, 0x72, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0c, 0x42, 0x23, 0xc8, 0xde, 0x1f,
-	0x00, 0xda, 0xde, 0x1f, 0x1b, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69,
-	0x6f, 0x2f, 0x6d, 0x61, 0x74, 0x68, 0x2e, 0x4c, 0x65, 0x67, 0x61, 0x63, 0x79, 0x44, 0x65, 0x63,
-	0x52, 0x1a, 0x73, 0x6c, 0x61, 0x73, 0x68, 0x46, 0x72, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x57,
-	0x72, 0x6f, 0x6e, 0x67, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x12, 0x25, 0x0a, 0x0e,
-	0x6d, 0x69, 0x6e, 0x69, 0x6d, 0x75, 0x6d, 0x5f, 0x62, 0x6f, 0x6e, 0x64, 0x65, 0x64, 0x18, 0x05,
-	0x20, 0x01, 0x28, 0x04, 0x52, 0x0d, 0x6d, 0x69, 0x6e, 0x69, 0x6d, 0x75, 0x6d, 0x42, 0x6f, 0x6e,
-	0x64, 0x65, 0x64, 0x12, 0x26, 0x0a, 0x0f, 0x6d, 0x61, 0x78, 0x5f, 0x69, 0x64, 0x6c, 0x65, 0x64,
-	0x5f, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0d, 0x6d, 0x61,
-	0x78, 0x49, 0x64, 0x6c, 0x65, 0x64, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x3a, 0x04, 0x98, 0xa0, 0x1f,
-	0x00, 0x42, 0xb3, 0x01, 0x0a, 0x16, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
-	0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x42, 0x0b, 0x50, 0x61,
-	0x72, 0x61, 0x6d, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x23, 0x63, 0x6f, 0x73,
-	0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61,
-	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65,
-	0xa2, 0x02, 0x03, 0x46, 0x4b, 0x58, 0xaa, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
-	0x6e, 0x67, 0x2e, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xca, 0x02, 0x12, 0x46, 0x61,
-	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65,
-	0xe2, 0x02, 0x1e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79,
-	0x73, 0x68, 0x61, 0x72, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74,
-	0x61, 0xea, 0x02, 0x13, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x4b,
-	0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x73, 0x68, 0x61, 0x72, 0x65, 0x1a, 0x11, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2f, 0x61, 0x6d, 0x69,
+	0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xe3,
+	0x04, 0x0a, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x34, 0x0a, 0x0a, 0x6b, 0x65, 0x79,
+	0x5f, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x42, 0x15, 0xf2,
+	0xde, 0x1f, 0x11, 0x79, 0x61, 0x6d, 0x6c, 0x3a, 0x22, 0x6b, 0x65, 0x79, 0x5f, 0x65, 0x78, 0x70,
+	0x69, 0x72, 0x79, 0x22, 0x52, 0x09, 0x6b, 0x65, 0x79, 0x45, 0x78, 0x70, 0x69, 0x72, 0x79, 0x12,
+	0x40, 0x0a, 0x0e, 0x6d, 0x69, 0x6e, 0x69, 0x6d, 0x75, 0x6d, 0x5f, 0x62, 0x6f, 0x6e, 0x64, 0x65,
+	0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x42, 0x19, 0xf2, 0xde, 0x1f, 0x15, 0x79, 0x61, 0x6d,
+	0x6c, 0x3a, 0x22, 0x6d, 0x69, 0x6e, 0x69, 0x6d, 0x75, 0x6d, 0x5f, 0x62, 0x6f, 0x6e, 0x64, 0x65,
+	0x64, 0x22, 0x52, 0x0d, 0x6d, 0x69, 0x6e, 0x69, 0x6d, 0x75, 0x6d, 0x42, 0x6f, 0x6e, 0x64, 0x65,
+	0x64, 0x12, 0x42, 0x0a, 0x0f, 0x6d, 0x61, 0x78, 0x5f, 0x69, 0x64, 0x6c, 0x65, 0x64, 0x5f, 0x62,
+	0x6c, 0x6f, 0x63, 0x6b, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x42, 0x1a, 0xf2, 0xde, 0x1f, 0x16,
+	0x79, 0x61, 0x6d, 0x6c, 0x3a, 0x22, 0x6d, 0x61, 0x78, 0x5f, 0x69, 0x64, 0x6c, 0x65, 0x64, 0x5f,
+	0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x22, 0x52, 0x0d, 0x6d, 0x61, 0x78, 0x49, 0x64, 0x6c, 0x65, 0x64,
+	0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x12, 0x49, 0x0a, 0x11, 0x74, 0x72, 0x75, 0x73, 0x74, 0x65, 0x64,
+	0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x65, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x09,
+	0x42, 0x1c, 0xf2, 0xde, 0x1f, 0x18, 0x79, 0x61, 0x6d, 0x6c, 0x3a, 0x22, 0x74, 0x72, 0x75, 0x73,
+	0x74, 0x65, 0x64, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x65, 0x73, 0x22, 0x52, 0x10,
+	0x74, 0x72, 0x75, 0x73, 0x74, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x65, 0x73,
+	0x12, 0x85, 0x01, 0x0a, 0x1a, 0x73, 0x6c, 0x61, 0x73, 0x68, 0x5f, 0x66, 0x72, 0x61, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x5f, 0x6e, 0x6f, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x18,
+	0x05, 0x20, 0x01, 0x28, 0x0c, 0x42, 0x48, 0xc8, 0xde, 0x1f, 0x00, 0xda, 0xde, 0x1f, 0x1b, 0x63,
+	0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x6d, 0x61, 0x74, 0x68,
+	0x2e, 0x4c, 0x65, 0x67, 0x61, 0x63, 0x79, 0x44, 0x65, 0x63, 0xf2, 0xde, 0x1f, 0x21, 0x79, 0x61,
+	0x6d, 0x6c, 0x3a, 0x22, 0x73, 0x6c, 0x61, 0x73, 0x68, 0x5f, 0x66, 0x72, 0x61, 0x63, 0x74, 0x69,
+	0x6f, 0x6e, 0x5f, 0x6e, 0x6f, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x22, 0x52,
+	0x17, 0x73, 0x6c, 0x61, 0x73, 0x68, 0x46, 0x72, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x4e, 0x6f,
+	0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x12, 0x8e, 0x01, 0x0a, 0x1d, 0x73, 0x6c, 0x61,
+	0x73, 0x68, 0x5f, 0x66, 0x72, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x77, 0x72, 0x6f, 0x6e,
+	0x67, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0c,
+	0x42, 0x4b, 0xc8, 0xde, 0x1f, 0x00, 0xda, 0xde, 0x1f, 0x1b, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
+	0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x6d, 0x61, 0x74, 0x68, 0x2e, 0x4c, 0x65, 0x67, 0x61,
+	0x63, 0x79, 0x44, 0x65, 0x63, 0xf2, 0xde, 0x1f, 0x24, 0x79, 0x61, 0x6d, 0x6c, 0x3a, 0x22, 0x73,
+	0x6c, 0x61, 0x73, 0x68, 0x5f, 0x66, 0x72, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x77, 0x72,
+	0x6f, 0x6e, 0x67, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x22, 0x52, 0x1a, 0x73,
+	0x6c, 0x61, 0x73, 0x68, 0x46, 0x72, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x57, 0x72, 0x6f, 0x6e,
+	0x67, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x3a, 0x39, 0xe8, 0xa0, 0x1f, 0x01, 0x8a,
+	0xe7, 0xb0, 0x2a, 0x30, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x46,
+	0x61, 0x69, 0x72, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x2f, 0x78, 0x2f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2f, 0x50, 0x61,
+	0x72, 0x61, 0x6d, 0x73, 0x42, 0xb3, 0x01, 0x0a, 0x16, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69,
+	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x42,
+	0x0b, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x23,
+	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69,
+	0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x6b, 0x65, 0x79, 0x73, 0x68,
+	0x61, 0x72, 0x65, 0xa2, 0x02, 0x03, 0x46, 0x4b, 0x58, 0xaa, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72,
+	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xca, 0x02,
+	0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68,
+	0x61, 0x72, 0x65, 0xe2, 0x02, 0x1e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c,
+	0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61,
+	0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x13, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
+	0x3a, 0x3a, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (

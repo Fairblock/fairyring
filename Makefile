@@ -301,6 +301,7 @@ test-docker-push: test-docker
 proto-gen:
 	@echo "Generating Protobuf files"
 	@sh ./proto/scripts/protocgen.sh
+	@sh ./proto/scripts/protocgen-pulsar.sh
 
 proto-doc:
 	@echo "Generating Protoc docs"

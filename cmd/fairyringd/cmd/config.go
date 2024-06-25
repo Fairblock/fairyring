@@ -1,10 +1,11 @@
 package cmd
 
 import (
-	"github.com/Fairblock/fairyring/app"
 	cmtcfg "github.com/cometbft/cometbft/config"
 	serverconfig "github.com/cosmos/cosmos-sdk/server/config"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	"github.com/Fairblock/fairyring/app"
 )
 
 func initSDKConfig() {
@@ -60,7 +61,6 @@ func initAppConfig() (string, interface{}) {
 	// In tests, we set the min gas prices to 0.
 	// srvCfg.MinGasPrices = "0stake"
 	// srvCfg.BaseConfig.IAVLDisableFastNode = true // disable fastnode by default
-	srvCfg.MinGasPrices = "0fairy"
 
 	customAppConfig := CustomAppConfig{
 		Config: *srvCfg,

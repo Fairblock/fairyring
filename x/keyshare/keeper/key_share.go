@@ -5,12 +5,12 @@ import (
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 
+	"context"
 	"cosmossdk.io/store/prefix"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // SetKeyShare set a specific keyShare in the store from its index
-func (k Keeper) SetKeyShare(ctx sdk.Context, keyShare types.KeyShare) {
+func (k Keeper) SetKeyShare(ctx context.Context, keyShare types.KeyShare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyShareKeyPrefix))
 	b := k.cdc.MustMarshal(&keyShare)
@@ -22,7 +22,7 @@ func (k Keeper) SetKeyShare(ctx sdk.Context, keyShare types.KeyShare) {
 
 // GetKeyShare returns a keyShare from its index
 func (k Keeper) GetKeyShare(
-	ctx sdk.Context,
+	ctx context.Context,
 	validator string,
 	blockHeight uint64,
 
@@ -44,7 +44,7 @@ func (k Keeper) GetKeyShare(
 
 // RemoveKeyShare removes a keyShare from the store
 func (k Keeper) RemoveKeyShare(
-	ctx sdk.Context,
+	ctx context.Context,
 	validator string,
 	blockHeight uint64,
 
@@ -58,7 +58,7 @@ func (k Keeper) RemoveKeyShare(
 }
 
 // GetAllKeyShare returns all keyShare
-func (k Keeper) GetAllKeyShare(ctx sdk.Context) (list []types.KeyShare) {
+func (k Keeper) GetAllKeyShare(ctx context.Context) (list []types.KeyShare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyShareKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
