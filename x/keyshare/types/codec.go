@@ -23,10 +23,18 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateGeneralKeyShare{}, "keyshare/CreateGeneralKeyShare", nil)
 	cdc.RegisterConcrete(&MsgOverrideLatestPubKey{}, "keyshare/OverrideLatestPubKey", nil)
 	cdc.RegisterConcrete(&MsgDeRegisterValidator{}, "keyshare/DeRegisterValidator", nil)
+	cdc.RegisterConcrete(&MsgRoundMsg{}, "keyshare/RoundMsg", nil)
+	cdc.RegisterConcrete(&MsgResharing{}, "keyshare/Resharing", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+	&MsgRoundMsg{},
+)
+registry.RegisterImplementations((*sdk.Msg)(nil),
+&MsgResharing{},
+)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgRegisterValidator{},
 	)

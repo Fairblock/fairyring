@@ -1,0 +1,45 @@
+{
+  "threshold": 1,
+  "period": 10,
+  "scheme": null,
+  "id": "new-group-id",
+  "catchup_period": 5,
+  "nodes": [
+    {
+      "identity": {
+        "key": "a87fb85b26f08ec5db8362646b5f0253fe39193e12708667b7b0e20c8555ca83b9b23c2fa45dfb55bab601e5e0652581",
+        "addr": "fairy1llqvdm6qj0nq3vcnnt35fnj6s7rvvqkex5s523",
+        "tls": false,
+        "signature": null,
+        "scheme": ""
+      },
+      "index": 0
+    },
+    {
+      "identity": {
+        "key": "b4825cde9d948225f1689a81d2974164003f3b7729baa6b15fcb64c7e33752b56f350991ca7dfa2ffea95d1f47ef0084",
+        "addr": "fairy1dpeennq37ty0zyv6ctyuuh22pxh79h03fkx04s",
+        "tls": false,
+        "signature": null,
+        "scheme": ""
+      },
+      "index": 1
+    },
+    {
+      "identity": {
+        "key": "8bf4273fe14c43f00eb0da163af7a576c53979337e34cf38b6747efadd27c5a5b439ec2d871c0576143ee7f0b6fb1717",
+        "addr": "fairy144urnc9up4mg4vnv7yjsv2k02duk99dgjegwt6",
+        "tls": false,
+        "signature": null,
+        "scheme": ""
+      },
+      "index": 2
+    }
+  ],
+  "genesis_time": 0,
+  "genesis_seed": null,
+  "transition_time": 0,
+  "public_key": {
+    "coefficients": []
+  }
+}

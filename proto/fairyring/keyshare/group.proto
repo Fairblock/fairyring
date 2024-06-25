@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package fairyring.keyshare;
+
+
+
+// import "nexus/exported/v1beta1/types.proto";
+option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
+
+
+
+message Group {
+           int32                    threshold       =  1;
+           int32 period          =  2;
+           string                   scheme          =  3;
+           string                   id              =  4;
+           int32 catchup_period  =  5;
+  repeated Node                     nodes           =  6;
+           int64                    genesis_time    =  7;
+           bytes                    genesis_seed    =  8;
+           int64                    transition_time =  9;
+           DistPublic               public_key      = 10;
+}
+
+message DistPublic {
+  repeated string coefficients = 1;
+}
+
+message Node {
+  Identity identity = 1;
+  uint32   index    = 2;
+}
+
+message Identity {
+  string  key       = 1;
+  string addr      = 2;
+  bool   tls       = 3;
+  bytes  signature = 4;
+  string scheme    = 5;
+}
+
+

@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 
@@ -82,4 +83,44 @@ func (k Keeper) GetRequestCount(ctx sdk.Context) string {
 func (k Keeper) SetRequestCount(ctx sdk.Context, requestNumber uint64) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.RequestsCountKey, []byte(strconv.FormatUint(requestNumber, 10)))
+}
+type TimeoutData struct {
+	Round   uint64 `json:"round"`
+	Id      string `json:"id"`
+	Timeout uint64 `json:"timeout"`
+	Start   uint64 `json:"start"`
+}
+func (t TimeoutData) MustMarshalBinaryBare() []byte {
+	bz, err := json.Marshal(t)
+	if err != nil {
+		panic(err) // handle the error according to your use case
+	}
+	return sdk.MustSortJSON(bz)
+}
+
+func (t *TimeoutData) MustUnmarshalBinaryBare(bz []byte) {
+	if err := json.Unmarshal(bz, t); err != nil {
+		panic(err) // handle the error according to your use case
+	}
+}
+func (k Keeper) InitTimeout(ctx sdk.Context, round uint64, timeout uint64, start uint64, id string) {
+	store := ctx.KVStore(k.storeKey)
+	timeoutData := TimeoutData{Round: round, Start: start, Timeout: timeout, Id: id}
+	store.Set([]byte("timeoutData"), timeoutData.MustMarshalBinaryBare())
+}
+func (k Keeper) DeleteTimeout(ctx sdk.Context) {
+	store := ctx.KVStore(k.storeKey)
+	timeoutData := TimeoutData{}
+	store.Set([]byte("timeoutData"), timeoutData.MustMarshalBinaryBare())
+}
+
+func (k Keeper) GetTimeout(ctx sdk.Context) TimeoutData {
+	store := ctx.KVStore(k.storeKey)
+	var timeoutData TimeoutData
+	bz := store.Get([]byte("timeoutData"))
+	if bz == nil {
+		return TimeoutData{}
+	}
+	timeoutData.MustUnmarshalBinaryBare(bz)
+	return timeoutData
 }

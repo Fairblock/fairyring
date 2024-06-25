@@ -1052,6 +1052,214 @@ func (m *MsgCreateGeneralKeyShareResponse) GetErrorMessage() string {
 	return ""
 }
 
+type MsgRoundMsg struct {
+	Creator      string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	InnerMessage string `protobuf:"bytes,2,opt,name=innerMessage,proto3" json:"innerMessage,omitempty"`
+	Round        string `protobuf:"bytes,3,opt,name=round,proto3" json:"round,omitempty"`
+	DealerIndex  string `protobuf:"bytes,4,opt,name=dealerIndex,proto3" json:"dealerIndex,omitempty"`
+}
+
+func (m *MsgRoundMsg) Reset()         { *m = MsgRoundMsg{} }
+func (m *MsgRoundMsg) String() string { return proto.CompactTextString(m) }
+func (*MsgRoundMsg) ProtoMessage()    {}
+func (*MsgRoundMsg) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{18}
+}
+func (m *MsgRoundMsg) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRoundMsg) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRoundMsg.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRoundMsg) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRoundMsg.Merge(m, src)
+}
+func (m *MsgRoundMsg) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRoundMsg) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRoundMsg.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRoundMsg proto.InternalMessageInfo
+
+func (m *MsgRoundMsg) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgRoundMsg) GetInnerMessage() string {
+	if m != nil {
+		return m.InnerMessage
+	}
+	return ""
+}
+
+func (m *MsgRoundMsg) GetRound() string {
+	if m != nil {
+		return m.Round
+	}
+	return ""
+}
+
+func (m *MsgRoundMsg) GetDealerIndex() string {
+	if m != nil {
+		return m.DealerIndex
+	}
+	return ""
+}
+
+type MsgRoundMsgResponse struct {
+}
+
+func (m *MsgRoundMsgResponse) Reset()         { *m = MsgRoundMsgResponse{} }
+func (m *MsgRoundMsgResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRoundMsgResponse) ProtoMessage()    {}
+func (*MsgRoundMsgResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{19}
+}
+func (m *MsgRoundMsgResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRoundMsgResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRoundMsgResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRoundMsgResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRoundMsgResponse.Merge(m, src)
+}
+func (m *MsgRoundMsgResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRoundMsgResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRoundMsgResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRoundMsgResponse proto.InternalMessageInfo
+
+type MsgResharing struct {
+	Creator  string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	OldGroup *Group `protobuf:"bytes,2,opt,name=oldGroup,proto3" json:"oldGroup,omitempty"`
+	NewGroup *Group `protobuf:"bytes,3,opt,name=newGroup,proto3" json:"newGroup,omitempty"`
+	Timeout  string `protobuf:"bytes,4,opt,name=timeout,proto3" json:"timeout,omitempty"`
+}
+
+func (m *MsgResharing) Reset()         { *m = MsgResharing{} }
+func (m *MsgResharing) String() string { return proto.CompactTextString(m) }
+func (*MsgResharing) ProtoMessage()    {}
+func (*MsgResharing) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{20}
+}
+func (m *MsgResharing) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgResharing) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgResharing.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgResharing) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgResharing.Merge(m, src)
+}
+func (m *MsgResharing) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgResharing) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgResharing.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgResharing proto.InternalMessageInfo
+
+func (m *MsgResharing) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgResharing) GetOldGroup() *Group {
+	if m != nil {
+		return m.OldGroup
+	}
+	return nil
+}
+
+func (m *MsgResharing) GetNewGroup() *Group {
+	if m != nil {
+		return m.NewGroup
+	}
+	return nil
+}
+
+func (m *MsgResharing) GetTimeout() string {
+	if m != nil {
+		return m.Timeout
+	}
+	return ""
+}
+
+type MsgResharingResponse struct {
+}
+
+func (m *MsgResharingResponse) Reset()         { *m = MsgResharingResponse{} }
+func (m *MsgResharingResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgResharingResponse) ProtoMessage()    {}
+func (*MsgResharingResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1f96ac6a55f1845c, []int{21}
+}
+func (m *MsgResharingResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgResharingResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgResharingResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgResharingResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgResharingResponse.Merge(m, src)
+}
+func (m *MsgResharingResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgResharingResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgResharingResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgResharingResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgRegisterValidator)(nil), "fairyring.keyshare.MsgRegisterValidator")
 	proto.RegisterType((*MsgRegisterValidatorResponse)(nil), "fairyring.keyshare.MsgRegisterValidatorResponse")
@@ -1071,67 +1279,81 @@ func init() {
 	proto.RegisterType((*MsgDeleteAuthorizedAddressResponse)(nil), "fairyring.keyshare.MsgDeleteAuthorizedAddressResponse")
 	proto.RegisterType((*MsgCreateGeneralKeyShare)(nil), "fairyring.keyshare.MsgCreateGeneralKeyShare")
 	proto.RegisterType((*MsgCreateGeneralKeyShareResponse)(nil), "fairyring.keyshare.MsgCreateGeneralKeyShareResponse")
+	proto.RegisterType((*MsgRoundMsg)(nil), "fairyring.keyshare.MsgRoundMsg")
+	proto.RegisterType((*MsgRoundMsgResponse)(nil), "fairyring.keyshare.MsgRoundMsgResponse")
+	proto.RegisterType((*MsgResharing)(nil), "fairyring.keyshare.MsgResharing")
+	proto.RegisterType((*MsgResharingResponse)(nil), "fairyring.keyshare.MsgResharingResponse")
 }
 
 func init() { proto.RegisterFile("fairyring/keyshare/tx.proto", fileDescriptor_1f96ac6a55f1845c) }
 
 var fileDescriptor_1f96ac6a55f1845c = []byte{
-	// 870 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe4, 0x57, 0xcf, 0x6f, 0xe3, 0x44,
-	0x14, 0xae, 0x93, 0x36, 0x49, 0xdf, 0x16, 0xa1, 0xf5, 0xee, 0x76, 0x2d, 0xb3, 0x64, 0x8d, 0x59,
-	0xa4, 0xb0, 0xac, 0x9c, 0x92, 0x45, 0x08, 0x71, 0xdb, 0x65, 0xf9, 0x51, 0x95, 0x50, 0xe4, 0xfe,
-	0x38, 0x70, 0x29, 0x8e, 0xfd, 0xea, 0x8c, 0x12, 0xff, 0xd0, 0x8c, 0x5d, 0xc5, 0x70, 0xe2, 0x04,
-	0x17, 0x24, 0xfe, 0x04, 0xfe, 0x1a, 0xc4, 0xb1, 0x47, 0x8e, 0xa8, 0xfd, 0x27, 0x10, 0x27, 0x64,
-	0xc7, 0x76, 0x9d, 0x64, 0x26, 0x4d, 0x24, 0x24, 0x0e, 0xdc, 0x32, 0x33, 0xdf, 0xbc, 0xf7, 0xbd,
-	0x6f, 0x5e, 0xbe, 0x19, 0xc3, 0x1b, 0xe7, 0x16, 0xa1, 0x09, 0x25, 0xbe, 0xdb, 0x1d, 0x61, 0xc2,
-	0x86, 0x16, 0xc5, 0x6e, 0x34, 0x31, 0x42, 0x1a, 0x44, 0x81, 0x2c, 0x97, 0x8b, 0x46, 0xb1, 0xa8,
-	0x3e, 0xe5, 0x6c, 0x70, 0xd1, 0x47, 0x6a, 0x8d, 0xcf, 0x46, 0x98, 0x9c, 0x65, 0x33, 0xd3, 0xfd,
-	0xaa, 0xc6, 0xc1, 0x86, 0xf1, 0x20, 0xc5, 0x4d, 0x11, 0xfa, 0x1e, 0xdc, 0xef, 0x33, 0xd7, 0x44,
-	0x97, 0xb0, 0x08, 0xe9, 0xa9, 0x35, 0x26, 0x8e, 0x15, 0x05, 0x54, 0x56, 0xa0, 0x69, 0x53, 0x4c,
-	0x7f, 0x2a, 0x92, 0x26, 0x75, 0xb6, 0xcd, 0x62, 0xa8, 0x7f, 0x04, 0x8f, 0x78, 0x3b, 0x4c, 0x64,
-	0x61, 0xe0, 0x33, 0x5c, 0xb2, 0xb3, 0x07, 0xbb, 0x7d, 0xe6, 0xbe, 0xc2, 0x75, 0xb2, 0x7d, 0x0c,
-	0x6d, 0xfe, 0x9e, 0x15, 0xf2, 0xfd, 0x2c, 0xc1, 0xeb, 0x7d, 0xe6, 0x1e, 0xa1, 0xef, 0x1c, 0xe4,
-	0xd5, 0x8b, 0xd1, 0xe9, 0x8a, 0x87, 0x8c, 0x59, 0x2e, 0x2a, 0xb5, 0xe9, 0x4a, 0x3e, 0x94, 0x9f,
-	0xc0, 0x6b, 0x23, 0x4c, 0x8e, 0xd2, 0xfd, 0xfb, 0xbe, 0x83, 0x13, 0xa5, 0xae, 0x49, 0x9d, 0x4d,
-	0x73, 0x76, 0x52, 0xd6, 0xe0, 0xce, 0x60, 0x1c, 0xd8, 0xa3, 0x2f, 0x90, 0xb8, 0xc3, 0x48, 0xd9,
-	0xcc, 0x30, 0xd5, 0x29, 0xfd, 0xc7, 0x1a, 0x3c, 0x9c, 0xe3, 0x73, 0x7b, 0x15, 0xb2, 0x0a, 0xad,
-	0xe2, 0xec, 0x72, 0x62, 0xe5, 0x38, 0x67, 0xc6, 0x78, 0xcc, 0xd8, 0x1a, 0xcc, 0xe4, 0x3d, 0xb8,
-	0x47, 0xd1, 0x46, 0x72, 0x81, 0xce, 0xcb, 0x0a, 0x72, 0x2b, 0x43, 0xf2, 0x96, 0x52, 0xbe, 0x2c,
-	0xb6, 0x6d, 0x64, 0x4c, 0x69, 0x68, 0x52, 0xa7, 0x65, 0x16, 0x43, 0x59, 0x87, 0x1d, 0xa4, 0x34,
-	0xa0, 0xfd, 0x5c, 0xcc, 0x66, 0xc6, 0x79, 0x66, 0x4e, 0xff, 0x4b, 0x82, 0x07, 0x7d, 0xe6, 0x7e,
-	0x92, 0x96, 0x88, 0x5f, 0x5a, 0x11, 0xb2, 0xe8, 0xeb, 0x78, 0x70, 0x80, 0xc9, 0x12, 0x1d, 0x1e,
-	0xc1, 0x76, 0x18, 0x0f, 0xc6, 0xc4, 0x3e, 0xc0, 0x24, 0x17, 0xe2, 0x66, 0x22, 0xad, 0xd1, 0x0e,
-	0x3c, 0x8f, 0x44, 0x1e, 0xfa, 0x11, 0x53, 0xea, 0x5a, 0xbd, 0xb3, 0x6d, 0x56, 0xa7, 0x64, 0x03,
-	0x64, 0x3f, 0xf6, 0x06, 0x48, 0x0f, 0xcf, 0xcb, 0x26, 0x62, 0xb9, 0x18, 0x9c, 0x15, 0xf9, 0x04,
-	0x64, 0xf4, 0x6d, 0x9a, 0x84, 0x11, 0xa6, 0xc7, 0x95, 0x9d, 0x34, 0x53, 0xb6, 0xb4, 0x7a, 0xe7,
-	0x4e, 0xef, 0x1d, 0x63, 0xf1, 0x8f, 0x69, 0x7c, 0x3a, 0x8f, 0x36, 0x39, 0x01, 0xf4, 0xc7, 0xf0,
-	0x26, 0xb7, 0xf2, 0xa2, 0x13, 0xf4, 0xbf, 0xa5, 0xac, 0x4b, 0x0e, 0x2f, 0x90, 0x52, 0xe2, 0xfc,
-	0xcf, 0xd4, 0x79, 0x0b, 0x1e, 0x0b, 0x6a, 0x2f, 0xf5, 0xf9, 0x0a, 0xd4, 0x52, 0xc0, 0x17, 0x71,
-	0x34, 0x0c, 0x28, 0xf9, 0x0e, 0x9d, 0x17, 0x8e, 0x43, 0xd3, 0xee, 0xdb, 0x85, 0x46, 0x64, 0x51,
-	0x17, 0xa3, 0x5c, 0xa0, 0x7c, 0x54, 0x55, 0xae, 0x36, 0xeb, 0x12, 0x4f, 0x40, 0x17, 0xc7, 0x2b,
-	0xb3, 0xd2, 0x2c, 0xeb, 0x49, 0xe8, 0xac, 0x95, 0x55, 0x87, 0x1d, 0xc2, 0x6e, 0xe0, 0x59, 0xea,
-	0x96, 0x39, 0x33, 0x57, 0x65, 0x56, 0xe7, 0x31, 0x13, 0xe4, 0x9c, 0xd3, 0xe3, 0x15, 0x8e, 0xf1,
-	0xdf, 0xd4, 0x43, 0x10, 0xaf, 0xcc, 0xfa, 0x53, 0x0d, 0x94, 0x52, 0xb6, 0xcf, 0xa7, 0xd7, 0x4f,
-	0x71, 0x8c, 0x4b, 0xda, 0x74, 0x17, 0x1a, 0xc4, 0x39, 0x4e, 0xc2, 0xc2, 0xca, 0xf2, 0x51, 0xba,
-	0x83, 0x38, 0xa7, 0xd6, 0x38, 0xc6, 0x42, 0x84, 0x7c, 0x98, 0xdb, 0x5f, 0x16, 0x37, 0x6b, 0xc7,
-	0xa9, 0xfd, 0x1d, 0x55, 0xec, 0xaf, 0x62, 0xcc, 0x5b, 0x3c, 0x63, 0x7e, 0x06, 0x77, 0x0b, 0x07,
-	0x3b, 0x26, 0x1e, 0xb2, 0xc8, 0xf2, 0xc2, 0xcc, 0xb4, 0x36, 0xcd, 0xc5, 0x05, 0x91, 0x15, 0x36,
-	0x85, 0x56, 0xa8, 0xff, 0x5a, 0x03, 0x4d, 0x24, 0xc5, 0x0a, 0xfe, 0xfe, 0x5f, 0x48, 0x22, 0x28,
-	0xb2, 0xb1, 0x92, 0xdf, 0x37, 0x97, 0xfb, 0x7d, 0x6b, 0xd1, 0xef, 0x7b, 0xbf, 0xb5, 0xa0, 0xde,
-	0x67, 0xae, 0x1c, 0xc0, 0xdd, 0xc5, 0xcb, 0xbf, 0xc3, 0xb3, 0x0b, 0xde, 0x13, 0x43, 0xdd, 0x5b,
-	0x15, 0x59, 0xca, 0x1e, 0xc3, 0x3d, 0xde, 0x7b, 0xe3, 0xa9, 0x20, 0x10, 0x07, 0xab, 0xf6, 0x56,
-	0xc7, 0x96, 0x69, 0xbf, 0x85, 0x9d, 0x99, 0x57, 0xc7, 0xdb, 0x82, 0x18, 0x55, 0x90, 0xfa, 0xde,
-	0x0a, 0xa0, 0x32, 0x03, 0x05, 0x99, 0x73, 0x7b, 0xbe, 0x2b, 0x08, 0xb1, 0x08, 0x55, 0xdf, 0x5f,
-	0x19, 0x5a, 0xe6, 0x9c, 0xc0, 0x7d, 0xee, 0xad, 0x24, 0x22, 0xce, 0x03, 0xab, 0xcf, 0xd7, 0x00,
-	0x97, 0x99, 0x7f, 0x90, 0xe0, 0xa1, 0xc8, 0xf1, 0x8d, 0xa5, 0x85, 0x2c, 0xe0, 0xd5, 0x0f, 0xd7,
-	0xc3, 0xcf, 0x70, 0x10, 0xf9, 0xbf, 0x88, 0x83, 0x00, 0x2f, 0xe4, 0x70, 0x8b, 0xd7, 0x67, 0x1c,
-	0x44, 0x4e, 0x6f, 0x08, 0xfb, 0x94, 0x8b, 0x17, 0x72, 0xb8, 0xc5, 0xf9, 0xe5, 0xef, 0xe1, 0x01,
-	0xdf, 0xf5, 0x9f, 0x2d, 0x15, 0x76, 0x0e, 0xad, 0x7e, 0xb0, 0x0e, 0xba, 0x48, 0xfe, 0x72, 0xff,
-	0xf7, 0xab, 0xb6, 0x74, 0x79, 0xd5, 0x96, 0xfe, 0xbc, 0x6a, 0x4b, 0xbf, 0x5c, 0xb7, 0x37, 0x2e,
-	0xaf, 0xdb, 0x1b, 0x7f, 0x5c, 0xb7, 0x37, 0xbe, 0xe9, 0xba, 0x24, 0x1a, 0xc6, 0x03, 0xc3, 0x0e,
-	0xbc, 0xee, 0x67, 0x16, 0xa1, 0xd9, 0xf3, 0xb6, 0x7b, 0xf3, 0xfd, 0x33, 0xa9, 0x7c, 0x5e, 0x25,
-	0x21, 0xb2, 0x41, 0x23, 0xfb, 0x00, 0x7a, 0xfe, 0x4f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x80, 0xd9,
-	0xd8, 0x73, 0x81, 0x0d, 0x00, 0x00,
+	// 1025 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe4, 0x57, 0x4f, 0x8f, 0xdb, 0x54,
+	0x10, 0xaf, 0x93, 0xdd, 0x6c, 0x32, 0xbb, 0x08, 0xd5, 0xfb, 0xa7, 0xc1, 0x94, 0x6c, 0x30, 0x45,
+	0x84, 0x52, 0x25, 0x4b, 0x0a, 0x08, 0x71, 0x6b, 0x29, 0x94, 0x6a, 0x09, 0x45, 0xde, 0x6d, 0x91,
+	0xb8, 0x14, 0x27, 0x9e, 0x3a, 0xd6, 0xc6, 0x7f, 0xf4, 0x9e, 0x5d, 0xd6, 0x70, 0x42, 0x1c, 0xe0,
+	0x82, 0xc4, 0x47, 0xe0, 0x23, 0xf0, 0x31, 0x38, 0xf6, 0xc8, 0x11, 0xed, 0x7e, 0x06, 0x24, 0xc4,
+	0x09, 0x3d, 0xfb, 0xf9, 0xad, 0xb3, 0x79, 0x2f, 0x7f, 0x24, 0x24, 0x0e, 0xdc, 0x32, 0xef, 0xfd,
+	0x66, 0xe6, 0x37, 0x3f, 0x8f, 0x27, 0x63, 0x78, 0xf9, 0xa9, 0xed, 0x91, 0x94, 0x78, 0x81, 0xdb,
+	0x3b, 0xc1, 0x94, 0x8e, 0x6d, 0x82, 0xbd, 0xf8, 0xb4, 0x1b, 0x91, 0x30, 0x0e, 0x75, 0x5d, 0x5c,
+	0x76, 0x8b, 0x4b, 0xe3, 0xa6, 0xc4, 0xc1, 0xc5, 0x00, 0x89, 0x3d, 0x79, 0x72, 0x82, 0xe9, 0x93,
+	0xec, 0x24, 0xf7, 0x37, 0xda, 0x12, 0x6c, 0x94, 0x0c, 0x19, 0x8e, 0x23, 0x5a, 0xb2, 0x68, 0x24,
+	0x4c, 0xa2, 0xfc, 0xde, 0x3c, 0x80, 0x9d, 0x01, 0x75, 0x2d, 0x74, 0x3d, 0x1a, 0x23, 0x79, 0x6c,
+	0x4f, 0x3c, 0xc7, 0x8e, 0x43, 0xa2, 0x37, 0x61, 0x63, 0x44, 0x90, 0xfd, 0x6c, 0x6a, 0x6d, 0xad,
+	0xd3, 0xb0, 0x0a, 0xd3, 0x7c, 0x1f, 0xae, 0xcb, 0x3c, 0x2c, 0xa4, 0x51, 0x18, 0x50, 0x9c, 0xe3,
+	0xd9, 0x87, 0xbd, 0x01, 0x75, 0xef, 0xe1, 0x2a, 0xd9, 0x3e, 0x80, 0x96, 0xdc, 0x67, 0x89, 0x7c,
+	0x3f, 0x69, 0xf0, 0xe2, 0x80, 0xba, 0x47, 0x18, 0x38, 0x87, 0xbc, 0x76, 0x35, 0x9a, 0xdd, 0xf8,
+	0x48, 0xa9, 0xed, 0x62, 0xb3, 0x92, 0xdf, 0x70, 0x53, 0xbf, 0x01, 0x2f, 0x9c, 0x60, 0x7a, 0xc4,
+	0xfc, 0x1f, 0x04, 0x0e, 0x9e, 0x36, 0xab, 0x6d, 0xad, 0xb3, 0x66, 0x4d, 0x1f, 0xea, 0x6d, 0xd8,
+	0x1c, 0x4e, 0xc2, 0xd1, 0xc9, 0x27, 0xe8, 0xb9, 0xe3, 0xb8, 0xb9, 0x96, 0x61, 0xca, 0x47, 0xe6,
+	0x0f, 0x15, 0xb8, 0x76, 0x89, 0xcf, 0xe2, 0x2a, 0x74, 0x03, 0xea, 0xc5, 0x93, 0xe3, 0xc4, 0x84,
+	0xcd, 0x99, 0x51, 0x19, 0x33, 0xba, 0x02, 0x33, 0xfd, 0x00, 0xb6, 0x09, 0x8e, 0xd0, 0x7b, 0x86,
+	0xce, 0xdd, 0x12, 0x72, 0x3d, 0x43, 0xca, 0xae, 0x18, 0x5f, 0x9a, 0x8c, 0x46, 0x48, 0x69, 0xb3,
+	0xd6, 0xd6, 0x3a, 0x75, 0xab, 0x30, 0x75, 0x13, 0xb6, 0x90, 0x90, 0x90, 0x0c, 0xb8, 0x98, 0x1b,
+	0x19, 0xe7, 0xa9, 0x33, 0xf3, 0x2f, 0x0d, 0x76, 0x07, 0xd4, 0xfd, 0x90, 0x95, 0x88, 0x9f, 0xda,
+	0x31, 0xd2, 0xf8, 0xf3, 0x64, 0x78, 0x88, 0xe9, 0x1c, 0x1d, 0xae, 0x43, 0x23, 0x4a, 0x86, 0x13,
+	0x6f, 0x74, 0x88, 0x29, 0x17, 0xe2, 0xe2, 0x80, 0xd5, 0x38, 0x0a, 0x7d, 0xdf, 0x8b, 0x7d, 0x0c,
+	0x62, 0xda, 0xac, 0xb6, 0xab, 0x9d, 0x86, 0x55, 0x3e, 0xd2, 0xbb, 0xa0, 0x07, 0x89, 0x3f, 0x44,
+	0xf2, 0xf0, 0xa9, 0x68, 0x22, 0xca, 0xc5, 0x90, 0xdc, 0xe8, 0x8f, 0x40, 0xc7, 0x60, 0x44, 0xd2,
+	0x28, 0x46, 0xf6, 0xb8, 0xb2, 0x27, 0x4d, 0x9b, 0xeb, 0xed, 0x6a, 0x67, 0xb3, 0xff, 0x7a, 0x77,
+	0xf6, 0xc5, 0xed, 0x7e, 0x74, 0x19, 0x6d, 0x49, 0x02, 0x98, 0xfb, 0xf0, 0x8a, 0xb4, 0xf2, 0xa2,
+	0x13, 0xcc, 0xbf, 0xb5, 0xac, 0x4b, 0x1e, 0x3e, 0x43, 0x42, 0x3c, 0xe7, 0x7f, 0xa6, 0xce, 0xab,
+	0xb0, 0xaf, 0xa8, 0x5d, 0xe8, 0xf3, 0x19, 0x18, 0x42, 0xc0, 0x3b, 0x49, 0x3c, 0x0e, 0x89, 0xf7,
+	0x0d, 0x3a, 0x77, 0x1c, 0x87, 0xb0, 0xee, 0xdb, 0x83, 0x5a, 0x6c, 0x13, 0x17, 0x63, 0x2e, 0x10,
+	0xb7, 0xca, 0xca, 0x55, 0xa6, 0xa7, 0xc4, 0x0d, 0x30, 0xd5, 0xf1, 0x44, 0x56, 0x92, 0x65, 0x7d,
+	0x14, 0x39, 0x2b, 0x65, 0x35, 0x61, 0xcb, 0xa3, 0x17, 0xf0, 0x2c, 0x75, 0xdd, 0x9a, 0x3a, 0x2b,
+	0x33, 0xab, 0xca, 0x98, 0x29, 0x72, 0x5e, 0xd2, 0xe3, 0x1e, 0x4e, 0xf0, 0xdf, 0xd4, 0x43, 0x11,
+	0x4f, 0x64, 0xfd, 0xb1, 0x02, 0x4d, 0x21, 0xdb, 0xfd, 0xfc, 0xef, 0xa9, 0x78, 0x8c, 0x73, 0xda,
+	0x74, 0x0f, 0x6a, 0x9e, 0x73, 0x9c, 0x46, 0xc5, 0x28, 0xe3, 0x16, 0xf3, 0xf0, 0x9c, 0xc7, 0xf6,
+	0x24, 0xc1, 0x42, 0x04, 0x6e, 0xf2, 0xf1, 0x97, 0xc5, 0xcd, 0xda, 0x31, 0x1f, 0x7f, 0x47, 0xa5,
+	0xf1, 0x57, 0x1a, 0xcc, 0xeb, 0xb2, 0xc1, 0x7c, 0x0b, 0xae, 0x16, 0x13, 0xec, 0xd8, 0xf3, 0x91,
+	0xc6, 0xb6, 0x1f, 0x65, 0x43, 0x6b, 0xcd, 0x9a, 0xbd, 0x50, 0x8d, 0xc2, 0x0d, 0xe5, 0x28, 0x34,
+	0x7f, 0xa9, 0x40, 0x5b, 0x25, 0xc5, 0x12, 0xf3, 0xfd, 0xbf, 0x90, 0x44, 0x51, 0x64, 0x6d, 0xa9,
+	0x79, 0xbf, 0x31, 0x7f, 0xde, 0xd7, 0x25, 0xf3, 0xfe, 0x7b, 0x0d, 0x36, 0xd9, 0xd2, 0x10, 0x26,
+	0x81, 0x33, 0xa0, 0xee, 0x1c, 0x35, 0xd8, 0x1b, 0x13, 0x04, 0x28, 0xa2, 0xe5, 0x9a, 0x4c, 0x9d,
+	0xe9, 0x3b, 0xb0, 0x4e, 0x58, 0x24, 0xae, 0x4b, 0x6e, 0xb0, 0x19, 0xe7, 0xa0, 0x3d, 0x41, 0x92,
+	0xd7, 0x9d, 0x0b, 0x53, 0x3e, 0x32, 0x77, 0x61, 0xbb, 0x44, 0x42, 0xb4, 0xf2, 0xaf, 0x1a, 0x6c,
+	0xe5, 0xf6, 0xd8, 0x66, 0x33, 0x6b, 0x0e, 0xbb, 0x77, 0xa1, 0x1e, 0x4e, 0x9c, 0xfb, 0x6c, 0x7f,
+	0xca, 0x98, 0x6d, 0xf6, 0x5f, 0x92, 0xcd, 0xba, 0x0c, 0x60, 0x09, 0x28, 0x73, 0x0b, 0xf0, 0xeb,
+	0xdc, 0xad, 0xba, 0xd0, 0xad, 0x80, 0x32, 0x1e, 0xb1, 0xe7, 0x63, 0x98, 0xc4, 0xbc, 0x9a, 0xc2,
+	0x34, 0xf7, 0xf8, 0xd6, 0xc6, 0x19, 0x17, 0xa5, 0xf4, 0xff, 0x6c, 0x40, 0x95, 0xe9, 0x1b, 0xc2,
+	0xd5, 0xd9, 0x25, 0xab, 0x23, 0xcb, 0x29, 0x5b, 0xe5, 0x8c, 0x83, 0x65, 0x91, 0xa2, 0xbd, 0x13,
+	0xd8, 0x96, 0xed, 0x75, 0x37, 0x15, 0x81, 0x24, 0x58, 0xa3, 0xbf, 0x3c, 0x56, 0xa4, 0xfd, 0x0a,
+	0xb6, 0xa6, 0xb6, 0xbb, 0xd7, 0x14, 0x31, 0xca, 0x20, 0xe3, 0xad, 0x25, 0x40, 0x22, 0xc3, 0x31,
+	0xd4, 0x45, 0xd7, 0xee, 0xab, 0x64, 0xe1, 0x00, 0xe3, 0x8d, 0x05, 0x00, 0x11, 0xf5, 0x0b, 0x68,
+	0x5c, 0xb4, 0x5b, 0x5b, 0xa9, 0x36, 0x47, 0x18, 0x9d, 0x45, 0x08, 0x11, 0x98, 0x80, 0x2e, 0x59,
+	0xaa, 0xde, 0x54, 0xf8, 0xcf, 0x42, 0x8d, 0xb7, 0x97, 0x86, 0x8a, 0x9c, 0xa7, 0xb0, 0x23, 0x5d,
+	0x56, 0x54, 0x3a, 0xcb, 0xc0, 0xc6, 0xed, 0x15, 0xc0, 0x22, 0xf3, 0x77, 0x1a, 0x5c, 0x53, 0x2d,
+	0x02, 0xdd, 0xb9, 0x85, 0xcc, 0xe0, 0x8d, 0xf7, 0x56, 0xc3, 0x4f, 0x71, 0x50, 0xad, 0x05, 0x2a,
+	0x0e, 0x0a, 0xbc, 0x92, 0xc3, 0x82, 0x15, 0x20, 0xe3, 0xa0, 0x5a, 0x00, 0xba, 0xca, 0xd7, 0x4a,
+	0x8a, 0x57, 0x72, 0x58, 0xb0, 0x10, 0xe8, 0xdf, 0xc2, 0xae, 0x7c, 0x19, 0xb8, 0x35, 0x57, 0xd8,
+	0x4b, 0x68, 0xe3, 0x9d, 0x55, 0xd0, 0x45, 0xf2, 0xbb, 0x0f, 0x7e, 0x3b, 0x6b, 0x69, 0xcf, 0xcf,
+	0x5a, 0xda, 0x1f, 0x67, 0x2d, 0xed, 0xe7, 0xf3, 0xd6, 0x95, 0xe7, 0xe7, 0xad, 0x2b, 0xbf, 0x9f,
+	0xb7, 0xae, 0x7c, 0xd9, 0x73, 0xbd, 0x78, 0x9c, 0x0c, 0xbb, 0xa3, 0xd0, 0xef, 0x7d, 0x6c, 0x7b,
+	0x24, 0xfb, 0xea, 0xe9, 0x5d, 0x7c, 0x14, 0x9f, 0x96, 0xbe, 0xca, 0xd3, 0x08, 0xe9, 0xb0, 0x96,
+	0x7d, 0x17, 0xdf, 0xfe, 0x27, 0x00, 0x00, 0xff, 0xff, 0x69, 0x0d, 0x74, 0xa4, 0xb8, 0x0f, 0x00,
+	0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1149,6 +1371,8 @@ type MsgClient interface {
 	RegisterValidator(ctx context.Context, in *MsgRegisterValidator, opts ...grpc.CallOption) (*MsgRegisterValidatorResponse, error)
 	DeRegisterValidator(ctx context.Context, in *MsgDeRegisterValidator, opts ...grpc.CallOption) (*MsgDeRegisterValidatorResponse, error)
 	SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts ...grpc.CallOption) (*MsgSendKeyshareResponse, error)
+	RoundMsg(ctx context.Context, in *MsgRoundMsg, opts ...grpc.CallOption) (*MsgRoundMsgResponse, error)
+	Resharing(ctx context.Context, in *MsgResharing, opts ...grpc.CallOption) (*MsgResharingResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
 	CreateLatestPubKey(ctx context.Context, in *MsgCreateLatestPubKey, opts ...grpc.CallOption) (*MsgCreateLatestPubKeyResponse, error)
 	OverrideLatestPubKey(ctx context.Context, in *MsgOverrideLatestPubKey, opts ...grpc.CallOption) (*MsgOverrideLatestPubKeyResponse, error)
@@ -1187,6 +1411,24 @@ func (c *msgClient) DeRegisterValidator(ctx context.Context, in *MsgDeRegisterVa
 func (c *msgClient) SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts ...grpc.CallOption) (*MsgSendKeyshareResponse, error) {
 	out := new(MsgSendKeyshareResponse)
 	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/SendKeyshare", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) RoundMsg(ctx context.Context, in *MsgRoundMsg, opts ...grpc.CallOption) (*MsgRoundMsgResponse, error) {
+	out := new(MsgRoundMsgResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/RoundMsg", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) Resharing(ctx context.Context, in *MsgResharing, opts ...grpc.CallOption) (*MsgResharingResponse, error) {
+	out := new(MsgResharingResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/Resharing", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1252,6 +1494,8 @@ type MsgServer interface {
 	RegisterValidator(context.Context, *MsgRegisterValidator) (*MsgRegisterValidatorResponse, error)
 	DeRegisterValidator(context.Context, *MsgDeRegisterValidator) (*MsgDeRegisterValidatorResponse, error)
 	SendKeyshare(context.Context, *MsgSendKeyshare) (*MsgSendKeyshareResponse, error)
+	RoundMsg(context.Context, *MsgRoundMsg) (*MsgRoundMsgResponse, error)
+	Resharing(context.Context, *MsgResharing) (*MsgResharingResponse, error)
 	// this line is used by starport scaffolding # proto/tx/rpc
 	CreateLatestPubKey(context.Context, *MsgCreateLatestPubKey) (*MsgCreateLatestPubKeyResponse, error)
 	OverrideLatestPubKey(context.Context, *MsgOverrideLatestPubKey) (*MsgOverrideLatestPubKeyResponse, error)
@@ -1273,6 +1517,12 @@ func (*UnimplementedMsgServer) DeRegisterValidator(ctx context.Context, req *Msg
 }
 func (*UnimplementedMsgServer) SendKeyshare(ctx context.Context, req *MsgSendKeyshare) (*MsgSendKeyshareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendKeyshare not implemented")
+}
+func (*UnimplementedMsgServer) RoundMsg(ctx context.Context, req *MsgRoundMsg) (*MsgRoundMsgResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RoundMsg not implemented")
+}
+func (*UnimplementedMsgServer) Resharing(ctx context.Context, req *MsgResharing) (*MsgResharingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Resharing not implemented")
 }
 func (*UnimplementedMsgServer) CreateLatestPubKey(ctx context.Context, req *MsgCreateLatestPubKey) (*MsgCreateLatestPubKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateLatestPubKey not implemented")
@@ -1347,6 +1597,42 @@ func _Msg_SendKeyshare_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).SendKeyshare(ctx, req.(*MsgSendKeyshare))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_RoundMsg_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRoundMsg)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RoundMsg(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.keyshare.Msg/RoundMsg",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RoundMsg(ctx, req.(*MsgRoundMsg))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_Resharing_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgResharing)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).Resharing(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.keyshare.Msg/Resharing",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).Resharing(ctx, req.(*MsgResharing))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1474,6 +1760,14 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendKeyshare",
 			Handler:    _Msg_SendKeyshare_Handler,
+		},
+		{
+			MethodName: "RoundMsg",
+			Handler:    _Msg_RoundMsg_Handler,
+		},
+		{
+			MethodName: "Resharing",
+			Handler:    _Msg_Resharing_Handler,
 		},
 		{
 			MethodName: "CreateLatestPubKey",
@@ -2250,6 +2544,164 @@ func (m *MsgCreateGeneralKeyShareResponse) MarshalToSizedBuffer(dAtA []byte) (in
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgRoundMsg) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRoundMsg) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRoundMsg) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.DealerIndex) > 0 {
+		i -= len(m.DealerIndex)
+		copy(dAtA[i:], m.DealerIndex)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.DealerIndex)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.Round) > 0 {
+		i -= len(m.Round)
+		copy(dAtA[i:], m.Round)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Round)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.InnerMessage) > 0 {
+		i -= len(m.InnerMessage)
+		copy(dAtA[i:], m.InnerMessage)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.InnerMessage)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRoundMsgResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRoundMsgResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRoundMsgResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgResharing) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgResharing) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgResharing) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Timeout) > 0 {
+		i -= len(m.Timeout)
+		copy(dAtA[i:], m.Timeout)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Timeout)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if m.NewGroup != nil {
+		{
+			size, err := m.NewGroup.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintTx(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.OldGroup != nil {
+		{
+			size, err := m.OldGroup.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintTx(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgResharingResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgResharingResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgResharingResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -2601,6 +3053,74 @@ func (m *MsgCreateGeneralKeyShareResponse) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
+	return n
+}
+
+func (m *MsgRoundMsg) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.InnerMessage)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Round)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.DealerIndex)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgRoundMsgResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgResharing) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.OldGroup != nil {
+		l = m.OldGroup.Size()
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.NewGroup != nil {
+		l = m.NewGroup.Size()
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Timeout)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgResharingResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
 	return n
 }
 
@@ -4805,6 +5325,470 @@ func (m *MsgCreateGeneralKeyShareResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.ErrorMessage = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRoundMsg) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRoundMsg: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRoundMsg: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field InnerMessage", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.InnerMessage = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Round", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Round = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DealerIndex", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DealerIndex = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRoundMsgResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRoundMsgResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRoundMsgResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgResharing) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgResharing: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgResharing: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OldGroup", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.OldGroup == nil {
+				m.OldGroup = &Group{}
+			}
+			if err := m.OldGroup.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NewGroup", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.NewGroup == nil {
+				m.NewGroup = &Group{}
+			}
+			if err := m.NewGroup.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Timeout", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Timeout = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgResharingResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgResharingResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgResharingResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])

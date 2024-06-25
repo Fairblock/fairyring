@@ -914,25 +914,25 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "params"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "params"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_EncryptedTx_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"fairyring", "pep", "encrypted_tx", "targetHeight", "index"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_EncryptedTx_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"fairyring", "pep", "encrypted_tx", "targetHeight", "index"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_EncryptedTxAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "encrypted_tx"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_EncryptedTxAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "encrypted_tx"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_EncryptedTxAllFromHeight_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "pep", "encrypted_tx", "targetHeight"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_EncryptedTxAllFromHeight_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "pep", "encrypted_tx", "targetHeight"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_LatestHeight_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "latest_height"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_LatestHeight_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "latest_height"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_PepNonce_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "pep", "pep_nonce", "address"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_PepNonce_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "pep", "pep_nonce", "address"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_PepNonceAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "pep_nonce"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_PepNonceAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "pep_nonce"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_PubKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "pub_key"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_PubKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "pub_key"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_KeyshareReq_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "pep", "keyshare", "req_id"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_KeyshareReq_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "pep", "keyshare", "req_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_KeyshareReqAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "keyshare"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_KeyshareReqAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "keyshare"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

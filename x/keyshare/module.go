@@ -231,6 +231,28 @@ func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
 
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+	timeoutData := am.keeper.GetTimeout(ctx)
+	if ctx.BlockHeight() == int64(timeoutData.Start) + int64(timeoutData.Timeout) {
+		event := sdk.NewEvent(
+			"dkg-timeout",
+			sdk.NewAttribute("round", strconv.FormatUint(timeoutData.Round, 10)),
+
+		)
+
+		// Emit the event
+		ctx.EventManager().EmitEvent(event)
+		
+		timeoutData.Round ++
+		timeoutData.Start = uint64(ctx.BlockHeight())
+		if timeoutData.Round < 5 {
+			am.keeper.InitTimeout(ctx,timeoutData.Round,timeoutData.Timeout,timeoutData.Start, timeoutData.Id)
+		}
+		if timeoutData.Round == 5 {
+			am.keeper.DeleteTimeout(ctx)
+		}
+		
+		
+	}
 	validators := am.keeper.GetAllValidatorSet(ctx)
 	params := am.keeper.GetParams(ctx)
 

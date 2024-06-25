@@ -1,0 +1,619 @@
+version: 1
+accounts:
+- name: alice
+  coins:
+  - 20000token
+  - 200000000stake
+- name: bob
+  coins:
+  - 10000token
+  - 100000000stake
+- name: star
+  coins:
+  - 10000token
+  - 100000000stake
+- name: jack
+  coins:
+  - 10000token
+  - 100000000stake
+- name: peter
+  coins:
+  - 10000token
+  - 100000000stake
+- name: sarah
+  coins:
+  - 10000token
+  - 100000000stake
+- name: sahar
+  coins:
+  - 10000token
+  - 100000000stake
+- name: bahar
+  coins:
+  - 10000token
+  - 100000000stake
+# - name: negar
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: sima
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: nahid
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: sepid
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: sama
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: sadaf
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: david
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: dina
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: nina
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: oliver
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: paul
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: quincy
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: rachel
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia
+#   coins:
+#     - 10000token
+#     - 100000000stake
+# - name: jacqueline
+#   coins:
+#     - 10000token
+#     - 100000000stake
+# - name: june
+#   coins:
+#     - 10000token
+#     - 100000000stake
+# - name: joy
+#   coins:
+#     - 10000token
+#     - 100000000stake
+# - name: jade
+#   coins:
+#     - 10000token
+#     - 100000000stake
+# - name: jesse
+#   coins:
+#     - 10000token
+#     - 100000000stake
+# - name: jeremy
+#   coins:
+#     - 10000token
+#     - 100000000stake
+# - name: jordan
+#   coins:
+#     - 10000token
+#     - 100000000stake
+# - name: joan
+#   coins:
+#     - 10000token
+#     - 100000000stake
+# - name: jared
+#   coins:
+#     - 10000token
+#     - 100000000stake
+# - name: Jessica1
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica2
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica3
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica4
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica5
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica6
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica7
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica8
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica9
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica10
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica11
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica12
+#   coins:
+#   - 10000token
+#   - 100000000stake 
+# - name: Jessica13
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica14
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica15
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica16
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica17
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica18
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica19
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: Jessica20
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia1
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia2
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia3
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia4
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia5
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia6
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia7
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia8
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia9
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia10
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia11
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia12
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia13
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia14
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia15
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia16
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia17
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia18
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia19
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia20
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia21
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia22
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia23
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia24
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia25
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia26
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia27
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia28
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia29
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia30
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia31
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia32
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia33
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia34
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia35
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia36
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia37
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia38
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia39
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia40
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia41
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia42
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia43
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia44
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia45
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia46
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia47
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia48
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia49
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia50
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia51
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia52
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia53
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia54
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia55
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia56
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia57
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia58
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia59
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia60
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia61
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia62
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia63
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia64
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia65
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia66
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia67
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia68
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia69
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia70
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia71
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia72
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia73
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia74
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia75
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia76
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia77
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia78
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia79
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia80
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia81
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia82
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia83
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia84
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia85
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia86
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia87
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia88
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia89
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia90
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia91
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia92
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia93
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia94
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia95
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia96
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia97
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia98
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia99
+#   coins:
+#   - 10000token
+#   - 100000000stake
+# - name: julia100
+#   coins:
+#   - 10000token
+#   - 100000000stake
+client:
+  openapi:
+    path: docs/static/openapi.yml
+faucet:
+  name: bob
+  coins:
+  - 5token
+  - 100000stake
+validators:
+- name: alice
+  bonded: 100000000stake
+- name: bob
+  bonded: 100000000stake

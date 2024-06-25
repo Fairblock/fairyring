@@ -4,7 +4,7 @@ package fairyring.keyshare;
 
 import "fairyring/keyshare/general_key_share.proto";
 import "fairyring/keyshare/pub_key.proto";
-
+import "fairyring/keyshare/group.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
@@ -14,7 +14,8 @@ service Msg {
   rpc RegisterValidator (MsgRegisterValidator) returns (MsgRegisterValidatorResponse);
   rpc DeRegisterValidator (MsgDeRegisterValidator) returns (MsgDeRegisterValidatorResponse);
   rpc SendKeyshare      (MsgSendKeyshare     ) returns (MsgSendKeyshareResponse     );
-  
+  rpc RoundMsg     (MsgRoundMsg    ) returns (MsgRoundMsgResponse    );
+  rpc Resharing         (MsgResharing        ) returns (MsgResharingResponse        );
   // this line is used by starport scaffolding # proto/tx/rpc
   rpc CreateLatestPubKey      (MsgCreateLatestPubKey     ) returns (MsgCreateLatestPubKeyResponse     );
   rpc OverrideLatestPubKey    (MsgOverrideLatestPubKey   ) returns (MsgOverrideLatestPubKeyResponse   );
@@ -119,3 +120,21 @@ message MsgCreateGeneralKeyShareResponse {
   bool   success             = 7;
   string errorMessage        = 8;
 }
+message MsgRoundMsg {
+ 
+  string creator      = 1;
+  string innerMessage = 2;
+  string round = 3;
+  string dealerIndex = 4;
+}
+
+message MsgRoundMsgResponse {}
+
+message MsgResharing {
+  string creator  = 1;
+  Group  oldGroup = 2;
+  Group  newGroup = 3;
+  string timeout  = 4;
+}
+
+message MsgResharingResponse {}
