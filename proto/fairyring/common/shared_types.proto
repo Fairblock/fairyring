@@ -1,6 +1,9 @@
 syntax = "proto3";
 package fairyring.common;
 
+import "google/protobuf/duration.proto";
+import "gogoproto/gogo.proto";
+
 option go_package = "github.com/Fairblock/fairyring/x/common/types";
 
 // RequestAggrKeyshare defines a struct for the data payload
@@ -10,6 +13,7 @@ message RequestAggrKeyshare {
     string proposal_id = 2;
     string request_id = 3;
   }
+    google.protobuf.Duration estimated_delay = 4 [(gogoproto.stdduration) = true];
 }
 
 message RequestAggrKeyshareResponse {
