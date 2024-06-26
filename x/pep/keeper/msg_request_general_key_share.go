@@ -27,8 +27,9 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 
 	if params.IsSourceChain {
 		entry := commontypes.RequestAggrKeyshare{
-			Creator: msg.Creator,
-			Id:      &commontypes.RequestAggrKeyshare_RequestId{RequestId: reqCountString},
+			Creator:        msg.Creator,
+			Id:             &commontypes.RequestAggrKeyshare_RequestId{RequestId: reqCountString},
+			EstimatedDelay: msg.EstimatedDelay,
 		}
 
 		k.SetReqQueueEntry(ctx, entry)
@@ -43,6 +44,7 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 			Id: &kstypes.RequestAggrKeysharePacketData_RequestId{
 				RequestId: reqCountString,
 			},
+			EstimatedDelay: msg.EstimatedDelay,
 		}
 
 		sPort := k.GetPort(ctx)

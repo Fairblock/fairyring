@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"errors"
+	"math"
 	"strconv"
 
 	"github.com/Fairblock/fairyring/x/keyshare/types"
@@ -17,6 +18,23 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 
 	reqs := k.pepKeeper.GetAllGenEncTxReqQueueEntry(ctx)
 	for _, req := range reqs {
+		delay := req.EstimatedDelay
+		blockDelay := uint64(math.Ceil(delay.Seconds() / types.AvgBlockTime))
+		currentHeight := uint64(ctx.BlockHeight())
+		executionHeight := currentHeight + blockDelay
+		if executionHeight > activePubKey.Expiry {
+			queuedPubKey, found := k.GetQueuedPubKey(ctx)
+			if !found {
+				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
+				return errors.New("estimated delay too long")
+			}
+			if executionHeight > queuedPubKey.Expiry {
+				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
+				return errors.New("estimated delay too long")
+			}
+			activePubKey = types.ActivePubKey(queuedPubKey)
+		}
+
 		reqCountString := k.GetRequestCount(ctx)
 		reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
 		reqCount = reqCount + 1
@@ -56,6 +74,19 @@ func (k Keeper) ProcessPepSignalQueue(ctx sdk.Context) error {
 				k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
 				continue
 			}
+			key, _ := k.GetActivePubKey(ctx)
+			if keyshareReq.Pubkey != key.PublicKey {
+				qKey, found := k.GetQueuedPubKey(ctx)
+				if !found {
+					k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
+					continue
+				}
+				if qKey.PublicKey != keyshareReq.Pubkey {
+					k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
+					continue
+				}
+				continue
+			}
 
 			if keyshareReq.AggrKeyshare == "" {
 				ctx.EventManager().EmitEvent(
@@ -78,6 +109,24 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 
 	reqs := k.govKeeper.GetAllReqQueueEntry(ctx)
 	for _, req := range reqs {
+		delay := req.EstimatedDelay
+		blockDelay := uint64(math.Ceil(delay.Seconds() / types.AvgBlockTime))
+		currentHeight := uint64(ctx.BlockHeight())
+		executionHeight := currentHeight + blockDelay
+
+		if executionHeight > activePubKey.Expiry {
+			queuedPubKey, found := k.GetQueuedPubKey(ctx)
+			if !found {
+				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
+				return errors.New("estimated delay too long")
+			}
+			if executionHeight > queuedPubKey.Expiry {
+				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
+				return errors.New("estimated delay too long")
+			}
+			activePubKey = types.ActivePubKey(queuedPubKey)
+		}
+
 		reqCountString := k.GetRequestCount(ctx)
 		reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
 		reqCount = reqCount + 1
@@ -118,6 +167,20 @@ func (k Keeper) ProcessGovSignalQueue(ctx sdk.Context) error {
 			keyshareReq, found := k.GetKeyShareRequest(ctx, req.Identity)
 			if !found {
 				k.govKeeper.RemoveSignalQueueEntry(ctx, req.GetProposalId())
+				continue
+			}
+
+			key, _ := k.GetActivePubKey(ctx)
+			if keyshareReq.Pubkey != key.PublicKey {
+				qKey, found := k.GetQueuedPubKey(ctx)
+				if !found {
+					k.govKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
+					continue
+				}
+				if qKey.PublicKey != keyshareReq.Pubkey {
+					k.govKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
+					continue
+				}
 				continue
 			}
 

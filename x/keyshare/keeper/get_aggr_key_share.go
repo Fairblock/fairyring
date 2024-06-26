@@ -21,6 +21,18 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 		return packetAck, types.ErrRequestNotFound
 	}
 
+	key, _ := k.GetActivePubKey(ctx)
+	if keyshareReq.Pubkey != key.PublicKey {
+		qKey, found := k.GetQueuedPubKey(ctx)
+		if !found {
+			return packetAck, errors.New("pubkey not found")
+		}
+		if qKey.PublicKey != keyshareReq.Pubkey {
+			return packetAck, errors.New("pubkey not found")
+		}
+		return packetAck, errors.New("retry after current queued key becomes active key")
+	}
+
 	if err := verifyIBCInfo(packet, keyshareReq); err != nil {
 		return packetAck, err
 	}

@@ -2,12 +2,13 @@ package keeper
 
 import (
 	"context"
-	"cosmossdk.io/math"
 	"encoding/hex"
 	"errors"
 	"fmt"
 	"strconv"
 	"time"
+
+	"cosmossdk.io/math"
 
 	distIBE "github.com/FairBlock/DistributedIBE"
 	clienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types"
@@ -304,7 +305,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 				proposal, found := k.govKeeper.GetProposal(ctx, id)
 				if !found {
 					val.Success = false
-					return &val, errors.New("Proposal not found")
+					return &val, errors.New("proposal not found")
 				}
 
 				proposal.AggrKeyshare = keyShareReq.AggrKeyshare

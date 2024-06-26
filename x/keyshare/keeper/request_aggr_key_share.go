@@ -1,6 +1,8 @@
 package keeper
 
 import (
+	"errors"
+	"math"
 	"strconv"
 
 	"github.com/Fairblock/fairyring/x/keyshare/types"
@@ -42,6 +44,26 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 		return packetAck, err
 	}
 
+	activePubKey, found := k.GetActivePubKey(ctx)
+	if !found {
+		return packetAck, err
+	}
+
+	delay := data.EstimatedDelay
+	blockDelay := uint64(math.Ceil(delay.Seconds() / types.AvgBlockTime))
+	currentHeight := uint64(ctx.BlockHeight())
+	executionHeight := currentHeight + blockDelay
+	if executionHeight > activePubKey.Expiry {
+		queuedPubKey, found := k.GetQueuedPubKey(ctx)
+		if !found {
+			return packetAck, errors.New("estimated delay too long")
+		}
+		if executionHeight > queuedPubKey.Expiry {
+			return packetAck, errors.New("estimated delay too long")
+		}
+		activePubKey = types.ActivePubKey(queuedPubKey)
+	}
+
 	var isProposalID bool
 	switch data.Id.(type) {
 	case *types.RequestAggrKeysharePacketData_ProposalId:
@@ -55,10 +77,6 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 	reqCount = reqCount + 1
 
 	id := types.IdentityFromRequestCount(reqCount)
-	activePubKey, found := k.GetActivePubKey(ctx)
-	if !found {
-		return packetAck, err
-	}
 
 	var keyshareRequest types.KeyShareRequest
 
