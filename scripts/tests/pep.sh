@@ -13,8 +13,6 @@ echo "###########################################################"
 echo ""
 
 
-GENERATOR=ShareGenerator
-ENCRYPTER=encrypter
 BINARY=fairyringd
 CHAIN_DIR=$(pwd)/data
 CHAINID_1=fairyring_test_1
@@ -185,10 +183,10 @@ fi
 
 
 echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
-CIPHER=$($ENCRYPTER $AGG_KEY_HEIGHT $PUB_KEY $SIGNED_DATA)
+CIPHER=$($BINARY encrypt $AGG_KEY_HEIGHT $SIGNED_DATA --node $CHAIN1_NODE)
 
 echo "Encrypting 2nd signed tx with Pub key: '$PUB_KEY'"
-CIPHER_2=$($ENCRYPTER $AGG_KEY_HEIGHT $PUB_KEY $SIGNED_DATA_2)
+CIPHER_2=$($BINARY encrypt $AGG_KEY_HEIGHT $SIGNED_DATA_2 --node $CHAIN1_NODE)
 
 
 rm -r unsigned.json &> /dev/null
@@ -373,8 +371,8 @@ $BINARY tx bank send $WALLET_1 $VALIDATOR_1 1$TARGET_BAL_DENOM --from $WALLET_1 
 SIGNED_DATA_2=$($BINARY tx sign unsigned2.json --from $WALLET_1 --offline --account-number 1 --sequence $PEP_NONCE_2ND --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE  --keyring-backend test -y)
 
 echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
-CIPHER=$($ENCRYPTER $IDENTITY $PUB_KEY $SIGNED_DATA)
-CIPHER2=$($ENCRYPTER $IDENTITY $PUB_KEY $SIGNED_DATA_2)
+CIPHER=$($BINARY encrypt $IDENTITY $SIGNED_DATA --node $CHAIN1_NODE)
+CIPHER2=$($BINARY encrypt $IDENTITY $SIGNED_DATA_2 --node $CHAIN1_NODE)
 
 rm -r unsigned.json &> /dev/null
 rm -r unsigned2.json &> /dev/null
@@ -409,7 +407,7 @@ check_tx_code $RESULT
 
 sleep 6
 
-EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 1 $IDENTITY)
+EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $IDENTITY)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
 while true; do

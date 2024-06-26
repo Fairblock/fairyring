@@ -5,6 +5,9 @@ import (
 	confixcmd "cosmossdk.io/tools/confix/cmd"
 	"errors"
 	"github.com/CosmWasm/wasmd/x/wasm"
+	"github.com/Fairblock/fairyring/cmd/fairyringd/cmd/encrypter"
+	"github.com/Fairblock/fairyring/cmd/fairyringd/cmd/sharegenerator"
+	"github.com/Fairblock/fairyring/cmd/fairyringd/cmd/verifiable_randomness"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/debug"
@@ -51,6 +54,17 @@ func initRootCmd(
 		keys.Commands(),
 	)
 	wasmcli.ExtendUnsafeResetAllCmd(rootCmd)
+
+	encryptCmd := encrypter.EncryptCmd()
+	flags.AddQueryFlagsToCmd(encryptCmd)
+
+	randomness := verifiable_randomness.VerifiableRandomness()
+	randomness.Flags().String(flags.FlagNode, "http://localhost:26657", "The fairyring node endpoint")
+	randomness.Flags().StringP(flags.FlagOutput, "o", flags.OutputFormatJSON, "Output format (text|json)")
+
+	rootCmd.AddCommand(encryptCmd)
+	rootCmd.AddCommand(randomness)
+	rootCmd.AddCommand(sharegenerator.RootCmd)
 }
 
 func addModuleInitFlags(startCmd *cobra.Command) {
