@@ -153,6 +153,7 @@ type App struct {
 	ScopedICAHostKeeper       capabilitykeeper.ScopedKeeper
 	ScopedPepKeeper           capabilitykeeper.ScopedKeeper
 	ScopedKeyshareKeeper      capabilitykeeper.ScopedKeeper
+	ScopedGovKeeper           capabilitykeeper.ScopedKeeper
 
 	PepKeeper      pepmodulekeeper.Keeper
 	KeyshareKeeper keysharemodulekeeper.Keeper

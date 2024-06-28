@@ -41,6 +41,7 @@ import (
 	ibctm "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint"
 	ibcconsumer "github.com/cosmos/interchain-security/v3/x/ccv/consumer"
 	ibcconsumertypes "github.com/cosmos/interchain-security/v3/x/ccv/consumer/types"
+
 	// this line is used by starport scaffolding # ibc/app/import
 	keysharemodule "github.com/Fairblock/fairyring/x/keyshare/module"
 	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
@@ -83,6 +84,7 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	scopedIBCTransferKeeper := app.CapabilityKeeper.ScopeToModule(ibctransfertypes.ModuleName)
 	scopedICAControllerKeeper := app.CapabilityKeeper.ScopeToModule(icacontrollertypes.SubModuleName)
 	scopedICAHostKeeper := app.CapabilityKeeper.ScopeToModule(icahosttypes.SubModuleName)
+	scopedGovKeeper := app.CapabilityKeeper.ScopeToModule(govtypes.ModuleName)
 
 	// Create IBC keeper
 	app.IBCKeeper = ibckeeper.NewKeeper(
@@ -197,6 +199,7 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	app.ScopedIBCTransferKeeper = scopedIBCTransferKeeper
 	app.ScopedICAHostKeeper = scopedICAHostKeeper
 	app.ScopedICAControllerKeeper = scopedICAControllerKeeper
+	app.ScopedGovKeeper = scopedGovKeeper
 
 	// register IBC modules
 	if err := app.RegisterModules(
