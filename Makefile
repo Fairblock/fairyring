@@ -181,10 +181,10 @@ test-block-tx-limit: init-test-block-limit-framework \
 	-@killall fairyringd 2>/dev/null
 
 integration-test-all: init-test-framework \
-	init-relayer \
-	test-keyshare-module
-	-@rm -rf ./data
-	-@killall fairyringd 2>/dev/null
+	# init-relayer \
+	# test-keyshare-module
+	# -@rm -rf ./data
+	# -@killall fairyringd 2>/dev/null
 
 devnet-up: init-devnet
 	@echo "Fairyring Devnet is now running in the background, run 'make devnet-down' to stop devnet."

@@ -55,7 +55,7 @@ numerator = '1'
 denominator = '3'
 
 [chains.gas_price]
-price = 1
+price = 10
 denom = 'ufairy'
 
 [chains.address_type]
@@ -88,7 +88,7 @@ numerator = '1'
 denominator = '3'
 
 [chains.gas_price]
-price = 1
+price = 10
 denom = 'ufairy'
 
 [chains.address_type]

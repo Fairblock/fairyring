@@ -10,6 +10,7 @@ echo ""
 CHAINID_1=fairyring_test_1
 CHAINID_2=fairyring_test_2
 CONFIG_FILE=hermes_config.toml
+CHAIN_DIR=$(pwd)/data
 
 # echo "Creating client on both chain..."
 # hermes --config $CONFIG_FILE create client --host-chain $CHAINID_1 --reference-chain $CHAINID_2
@@ -24,6 +25,9 @@ hermes --config $CONFIG_FILE create channel --new-client-connection --a-chain $C
 # hermes --config $CONFIG_FILE create channel --a-chain $CHAINID_2 --a-connection connection-0 --a-port pep --b-port pep --channel-version pep-1
 # hermes --config $CONFIG_FILE create channel --a-chain $CHAINID_2 --a-connection connection-0 --a-port pep --b-port keyshare --channel-version keyshare-1
 
+echo "Starting Hermes Relayer..."
+echo "Creating log file at $CHAIN_DIR/relayer.log"
+hermes --config hermes_config.toml start > $CHAIN_DIR/relayer.log 2>&1 &
 
 echo ""
 echo "###########################################################"

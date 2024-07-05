@@ -115,10 +115,10 @@ func (h *ProposalHandler) ProcessProposalHandler() sdk.ProcessProposalHandler {
 		}()
 
 		txs := req.Txs
-		if len(txs) == 0 {
-			h.logger.Info("accepted empty proposal")
-			return &abci.ResponseProcessProposal{Status: abci.ResponseProcessProposal_ACCEPT}, fmt.Errorf("failed to process an empty proposal: %v", err)
-		}
+		// if len(txs) == 0 {
+		// 	h.logger.Info("accepted empty proposal")
+		// 	return &abci.ResponseProcessProposal{Status: abci.ResponseProcessProposal_ACCEPT}, fmt.Errorf("failed to process an empty proposal: %v", err)
+		// }
 
 		// Decode the transactions from the proposal.
 		decodedTxs, err := utils.GetDecodedTxs(h.txDecoder, txs)

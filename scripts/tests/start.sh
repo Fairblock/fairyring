@@ -155,7 +155,7 @@ $BINARY start --log_level info --log_format json --home $CHAIN_DIR/$CHAINID_1 --
 
 echo "Starting $CHAINID_2 in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID_2.log"
-$BINARY start --log_level trace --log_format json --home $CHAIN_DIR/$CHAINID_2 --pruning=nothing --grpc.address="0.0.0.0:$GRPCPORT_2" > $CHAIN_DIR/$CHAINID_2.log 2>&1 &
+$BINARY start --log_level info --log_format json --home $CHAIN_DIR/$CHAINID_2 --pruning=nothing --grpc.address="0.0.0.0:$GRPCPORT_2" > $CHAIN_DIR/$CHAINID_2.log 2>&1 &
 
 echo "Checking if there is an existing keys for Hermes Relayer..."
 HKEY_1=$(hermes --config hermes_config.toml keys list --chain fairyring_test_1 | sed -n '/SUCCESS/d; s/.*(\([^)]*\)).*/\1/p')
@@ -177,7 +177,3 @@ rm rly2.json &> /dev/null
 
 echo "Waiting both chain to run..."
 sleep $((BLOCK_TIME*2))
-
-echo "Starting Hermes Relayer..."
-echo "Creating log file at $CHAIN_DIR/relayer.log"
-hermes --config hermes_config.toml start > $CHAIN_DIR/relayer.log 2>&1 &

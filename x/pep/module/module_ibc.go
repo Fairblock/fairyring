@@ -2,6 +2,7 @@ package pep
 
 import (
 	"fmt"
+
 	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 
@@ -42,6 +43,8 @@ func (im IBCModule) OnChanOpenInit(
 	version string,
 ) (string, error) {
 
+	im.keeper.Logger().Info("\n\n\n\n OnChanOpenInit \n\n\n\n")
+
 	// Require portID is the portID module is bound to
 	boundPort := im.keeper.GetPort(ctx)
 	if boundPort != portID {
@@ -56,6 +59,8 @@ func (im IBCModule) OnChanOpenInit(
 	if err := im.keeper.ClaimCapability(ctx, chanCap, host.ChannelCapabilityPath(portID, channelID)); err != nil {
 		return "", err
 	}
+
+	im.keeper.Logger().Info("\n\n\n\n OnChanOpenInit \n\n\n\n", version)
 
 	return version, nil
 }
@@ -72,6 +77,7 @@ func (im IBCModule) OnChanOpenTry(
 	counterpartyVersion string,
 ) (string, error) {
 
+	im.keeper.Logger().Info("\n\n\n\n OnChanOpenTry \n\n\n\n")
 	// Require portID is the portID module is bound to
 	boundPort := im.keeper.GetPort(ctx)
 	if boundPort != portID {
@@ -92,6 +98,7 @@ func (im IBCModule) OnChanOpenTry(
 			return "", err
 		}
 	}
+	im.keeper.Logger().Info("\n\n\n\n OnChanOpenTry \n\n\n\n")
 
 	return types.KeyshareVersion, nil
 }
@@ -104,9 +111,13 @@ func (im IBCModule) OnChanOpenAck(
 	_,
 	counterpartyVersion string,
 ) error {
+	im.keeper.Logger().Info("\n\n\n\n OnChanOpenAck \n\n\n\n")
+
 	if counterpartyVersion != types.KeyshareVersion {
 		return errorsmod.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: %s, expected %s", counterpartyVersion, types.KeyshareVersion)
 	}
+	im.keeper.Logger().Info("\n\n\n\n OnChanOpenAck \n\n\n\n")
+
 	return nil
 }
 
@@ -116,6 +127,8 @@ func (im IBCModule) OnChanOpenConfirm(
 	portID,
 	channelID string,
 ) error {
+	im.keeper.Logger().Info("\n\n\n\n OnChanOpenConfirm \n\n\n\n")
+
 	return nil
 }
 
