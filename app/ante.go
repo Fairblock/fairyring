@@ -13,12 +13,14 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	ibcante "github.com/cosmos/ibc-go/v8/modules/core/ante"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
+	"github.com/skip-mev/block-sdk/v2/block"
 )
 
 type FairyringHandlerOptions struct {
 	BaseOptions  ante.HandlerOptions
 	wasmConfig   wasmtypes.WasmConfig
 	KeyShareLane pepante.KeyShareLane
+	FreeLane     block.Lane
 	TxDecoder    sdk.TxDecoder
 	TxEncoder    sdk.TxEncoder
 	PepKeeper    pepkeeper.Keeper
@@ -50,11 +52,14 @@ func NewFairyringAnteHandler(options FairyringHandlerOptions) sdk.AnteHandler {
 		ante.NewTxTimeoutHeightDecorator(),
 		ante.NewValidateMemoDecorator(options.BaseOptions.AccountKeeper),
 		ante.NewConsumeGasForTxSizeDecorator(options.BaseOptions.AccountKeeper),
-		ante.NewDeductFeeDecorator(
-			options.BaseOptions.AccountKeeper,
-			options.BaseOptions.BankKeeper,
-			options.BaseOptions.FeegrantKeeper,
-			options.BaseOptions.TxFeeChecker,
+		block.NewIgnoreDecorator(
+			ante.NewDeductFeeDecorator(
+				options.BaseOptions.AccountKeeper,
+				options.BaseOptions.BankKeeper,
+				options.BaseOptions.FeegrantKeeper,
+				options.BaseOptions.TxFeeChecker,
+			),
+			options.FreeLane,
 		),
 		ante.NewSetPubKeyDecorator(options.BaseOptions.AccountKeeper), // SetPubKeyDecorator must be called before all signature verification decorators
 		ante.NewValidateSigCountDecorator(options.BaseOptions.AccountKeeper),

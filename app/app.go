@@ -20,6 +20,7 @@ import (
 	_ "cosmossdk.io/x/nft/module" // import for side-effects
 	_ "cosmossdk.io/x/upgrade"    // import for side-effects
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
+	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	"github.com/Fairblock/fairyring/abci/checktx"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
@@ -81,7 +82,6 @@ import (
 	"github.com/skip-mev/block-sdk/v2/block"
 	"github.com/skip-mev/block-sdk/v2/block/base"
 
-	"github.com/CosmWasm/wasmd/x/wasm"
 	fairyabci "github.com/Fairblock/fairyring/abci"
 	ibcconsumertypes "github.com/cosmos/interchain-security/v3/x/ccv/consumer/types"
 
@@ -385,6 +385,8 @@ func New(
 		TxDecoder:    app.txConfig.TxDecoder(),
 		TxEncoder:    app.txConfig.TxEncoder(),
 		KeyShareLane: keyshareLane,
+		PepKeeper:    app.PepKeeper,
+		FreeLane:     freeLane,
 	}
 	anteHandler := NewFairyringAnteHandler(options)
 	app.App.SetAnteHandler(anteHandler)
@@ -399,9 +401,9 @@ func New(
 	freeLane.WithOptions(
 		opt...,
 	)
-	defaultLane.WithOptions(
-		opt...,
-	)
+	// defaultLane.WithOptions(
+	// 	opt...,
+	// )
 
 	// Step 6: Create the proposal handler and set it on the app. Now the application
 	// will build and verify proposals using the Block SDK!

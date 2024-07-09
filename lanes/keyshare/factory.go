@@ -106,7 +106,7 @@ func (config *DefaultKeyshareFactory) GetTimeoutHeight(tx sdk.Tx) (uint64, error
 // MatchHandler defines a default function that checks if a transaction matches the keyshare lane.
 func (config *DefaultKeyshareFactory) MatchHandler() base.MatchHandler {
 	return func(ctx sdk.Context, tx sdk.Tx) bool {
-		bidInfo, err := config.GetKeyShareInfo(tx)
-		return bidInfo != nil && err == nil
+		ksInfo, err := config.GetKeyShareInfo(tx)
+		return ksInfo != nil && err == nil
 	}
 }

@@ -28,7 +28,6 @@ func NewPepDecorator(pk keeper.Keeper, txEncoder sdk.TxEncoder, lane KeyShareLan
 
 // AnteHandle validates that the keyshare is valid if one exists.
 func (pd PEPDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (sdk.Context, error) {
-
 	ksInfo, err := pd.lane.GetKeyShareInfo(tx)
 	if ksInfo == nil {
 		return ctx, err

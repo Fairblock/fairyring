@@ -68,7 +68,11 @@ func (h *ProposalHandler) PrepareProposalHandler() sdk.PrepareProposalHandler {
 
 		// Get the max gas limit and max block size for the proposal.
 		_, maxGasLimit := proposals.GetBlockLimits(ctx)
-		proposal, err := h.prepareLanesHandler(ctx, proposals.NewProposal(h.logger, req.MaxTxBytes, maxGasLimit))
+
+		proposal := proposals.NewProposal(h.logger, req.MaxTxBytes, maxGasLimit)
+		prepareLanesHandler := ChainPrepareLanes(h.mempool.Registry())
+		finalProposal, err := prepareLanesHandler(ctx, proposal)
+
 		if err != nil {
 			h.logger.Error("failed to prepare proposal", "err", err)
 			return &abci.ResponsePrepareProposal{Txs: make([][]byte, 0)}, err
@@ -76,11 +80,11 @@ func (h *ProposalHandler) PrepareProposalHandler() sdk.PrepareProposalHandler {
 
 		h.logger.Info(
 			"prepared proposal",
-			"num_txs", len(proposal.Txs),
-			"total_tx_bytes", proposal.Info.BlockSize,
-			"max_tx_bytes", proposal.Info.MaxBlockSize,
-			"total_gas_limit", proposal.Info.GasLimit,
-			"max_gas_limit", proposal.Info.MaxGasLimit,
+			"num_txs", len(finalProposal.Txs),
+			"total_tx_bytes", finalProposal.Info.BlockSize,
+			"max_tx_bytes", finalProposal.Info.MaxBlockSize,
+			"total_gas_limit", finalProposal.Info.GasLimit,
+			"max_gas_limit", finalProposal.Info.MaxGasLimit,
 			"height", req.Height,
 		)
 
@@ -91,7 +95,7 @@ func (h *ProposalHandler) PrepareProposalHandler() sdk.PrepareProposalHandler {
 		)
 
 		return &abci.ResponsePrepareProposal{
-			Txs: proposal.Txs,
+			Txs: finalProposal.Txs,
 		}, nil
 	}
 }
