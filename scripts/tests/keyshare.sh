@@ -12,11 +12,9 @@ echo "######################################################"
 echo ""
 
 
-GENERATOR=ShareGenerator
 BINARY=fairyringd
 CHAIN_DIR=$(pwd)/data
 CHAINID_1=fairyring_test_1
-CHAINID_2=fairyring_test_2
 BLOCK_TIME=6
 
 WALLET_1=$($BINARY keys show wallet1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
@@ -110,7 +108,7 @@ if [[ "$ERROR_MSG" != *"only validator can authorize address to submit key share
 fi
 
 
-GENERATED_RESULT=$($GENERATOR generate 1 1)
+GENERATED_RESULT=$($BINARY share-generation generate 1 1)
 GENERATED_SHARE=$(echo "$GENERATED_RESULT" | jq -r '.Shares[0].Value')
 PUB_KEY=$(echo "$GENERATED_RESULT" | jq -r '.MasterPublicKey')
 COMMITS=$(echo "$GENERATED_RESULT" | jq -r '.Commitments[0]')
@@ -141,7 +139,7 @@ fi
 
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+1))
-EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 0 $TARGET_HEIGHT)
+EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 0 $TARGET_HEIGHT)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
 
@@ -157,7 +155,7 @@ if [[ "$ERROR_MSG" != *"sender is not validator / authorized address to submit k
   exit 1
 fi
 
-GENERATED_RESULT=$($GENERATOR generate 1 1)
+GENERATED_RESULT=$($BINARY share-generation generate 1 1)
 GENERATED_SHARE=$(echo "$GENERATED_RESULT" | jq -r '.Shares[0].Value')
 PUB_KEY=$(echo "$GENERATED_RESULT" | jq -r '.MasterPublicKey')
 COMMITS=$(echo "$GENERATED_RESULT" | jq -r '.Commitments[0]')
@@ -187,7 +185,7 @@ fi
 
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+1))
-EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
+EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
 
@@ -217,7 +215,7 @@ fi
 
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+1))
-EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
+EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
 
@@ -235,7 +233,7 @@ fi
 
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+1))
-EXTRACTED_RESULT=$($GENERATOR derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
+EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
 
@@ -251,7 +249,7 @@ if [ "$AGGRED_SHARE" != $EXTRACTED_SHARE ]; then
 exit 1
 fi
 
-./scripts/tests/keyshareSender.sh $BINARY $CHAIN_DIR/$CHAINID_1 tcp://localhost:16657 $VALIDATOR_1 $CHAINID_1 $GENERATOR > $CHAIN_DIR/keyshareSender.log 2>&1 &
+./scripts/tests/keyshareSender.sh $BINARY $CHAIN_DIR/$CHAINID_1 tcp://localhost:16657 $VALIDATOR_1 $CHAINID_1 > $CHAIN_DIR/keyshareSender.log 2>&1 &
 
 echo "Query submitted key share on chain fairyring_test_1"
 RESULT=$($BINARY query keyshare list-key-share --node tcp://localhost:16657 -o json)

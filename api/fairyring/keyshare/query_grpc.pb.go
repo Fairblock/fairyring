@@ -32,6 +32,7 @@ const (
 	Query_AuthorizedAddressAll_FullMethodName  = "/fairyring.keyshare.Query/AuthorizedAddressAll"
 	Query_GeneralKeyShare_FullMethodName       = "/fairyring.keyshare.Query/GeneralKeyShare"
 	Query_GeneralKeyShareAll_FullMethodName    = "/fairyring.keyshare.Query/GeneralKeyShareAll"
+	Query_VerifiableRandomness_FullMethodName  = "/fairyring.keyshare.Query/VerifiableRandomness"
 )
 
 // QueryClient is the client API for Query service.
@@ -60,6 +61,7 @@ type QueryClient interface {
 	// Queries a list of GeneralKeyShare items.
 	GeneralKeyShare(ctx context.Context, in *QueryGetGeneralKeyShareRequest, opts ...grpc.CallOption) (*QueryGetGeneralKeyShareResponse, error)
 	GeneralKeyShareAll(ctx context.Context, in *QueryAllGeneralKeyShareRequest, opts ...grpc.CallOption) (*QueryAllGeneralKeyShareResponse, error)
+	VerifiableRandomness(ctx context.Context, in *QueryVerifiableRandomnessQuery, opts ...grpc.CallOption) (*QueryVerifiableRandomnessResponse, error)
 }
 
 type queryClient struct {
@@ -187,6 +189,15 @@ func (c *queryClient) GeneralKeyShareAll(ctx context.Context, in *QueryAllGenera
 	return out, nil
 }
 
+func (c *queryClient) VerifiableRandomness(ctx context.Context, in *QueryVerifiableRandomnessQuery, opts ...grpc.CallOption) (*QueryVerifiableRandomnessResponse, error) {
+	out := new(QueryVerifiableRandomnessResponse)
+	err := c.cc.Invoke(ctx, Query_VerifiableRandomness_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 // All implementations must embed UnimplementedQueryServer
 // for forward compatibility
@@ -213,6 +224,7 @@ type QueryServer interface {
 	// Queries a list of GeneralKeyShare items.
 	GeneralKeyShare(context.Context, *QueryGetGeneralKeyShareRequest) (*QueryGetGeneralKeyShareResponse, error)
 	GeneralKeyShareAll(context.Context, *QueryAllGeneralKeyShareRequest) (*QueryAllGeneralKeyShareResponse, error)
+	VerifiableRandomness(context.Context, *QueryVerifiableRandomnessQuery) (*QueryVerifiableRandomnessResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -258,6 +270,9 @@ func (UnimplementedQueryServer) GeneralKeyShare(context.Context, *QueryGetGenera
 }
 func (UnimplementedQueryServer) GeneralKeyShareAll(context.Context, *QueryAllGeneralKeyShareRequest) (*QueryAllGeneralKeyShareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GeneralKeyShareAll not implemented")
+}
+func (UnimplementedQueryServer) VerifiableRandomness(context.Context, *QueryVerifiableRandomnessQuery) (*QueryVerifiableRandomnessResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifiableRandomness not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 
@@ -506,6 +521,24 @@ func _Query_GeneralKeyShareAll_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_VerifiableRandomness_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryVerifiableRandomnessQuery)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).VerifiableRandomness(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_VerifiableRandomness_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).VerifiableRandomness(ctx, req.(*QueryVerifiableRandomnessQuery))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Query_ServiceDesc is the grpc.ServiceDesc for Query service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -564,6 +597,10 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GeneralKeyShareAll",
 			Handler:    _Query_GeneralKeyShareAll_Handler,
+		},
+		{
+			MethodName: "VerifiableRandomness",
+			Handler:    _Query_VerifiableRandomness_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
