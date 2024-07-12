@@ -91,7 +91,19 @@ service Query {
     option (google.api.http).get = "/fairyring/keyshare/general_key_share";
 
   }
+
+  rpc VerifiableRandomness (QueryVerifiableRandomnessQuery) returns (QueryVerifiableRandomnessResponse) {
+    option (google.api.http).get = "/fairyring/keyshare/verifiable_randomness";
+  }
 }
+
+message QueryVerifiableRandomnessQuery {}
+
+message QueryVerifiableRandomnessResponse {
+  string randomness = 1;
+  uint64 round = 2;
+}
+
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 

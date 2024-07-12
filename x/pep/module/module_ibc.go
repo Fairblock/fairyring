@@ -4,8 +4,6 @@ import (
 	"fmt"
 
 	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
-	v1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
-
 	"github.com/Fairblock/fairyring/x/pep/keeper"
 	"github.com/Fairblock/fairyring/x/pep/types"
 
@@ -170,7 +168,7 @@ func (im IBCModule) OnRecvPacket(
 				ack = channeltypes.NewErrorAcknowledgement(err)
 			} else {
 				// Encode packet acknowledgment
-				packetAckBytes := v1.MustProtoMarshalJSON(&packetAck)
+				packetAckBytes := types.MustProtoMarshalJSON(&packetAck)
 				ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
 			}
 			ctx.EventManager().EmitEvent(
