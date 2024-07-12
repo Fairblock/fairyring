@@ -84,7 +84,6 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	scopedIBCTransferKeeper := app.CapabilityKeeper.ScopeToModule(ibctransfertypes.ModuleName)
 	scopedICAControllerKeeper := app.CapabilityKeeper.ScopeToModule(icacontrollertypes.SubModuleName)
 	scopedICAHostKeeper := app.CapabilityKeeper.ScopeToModule(icahosttypes.SubModuleName)
-	scopedGovKeeper := app.CapabilityKeeper.ScopeToModule(govtypes.ModuleName)
 
 	// Create IBC keeper
 	app.IBCKeeper = ibckeeper.NewKeeper(
@@ -182,7 +181,8 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	ibcRouter.AddRoute(keysharemoduletypes.ModuleName, keyshareStack)
 
 	// Add gov module to IBC Router
-	govIBCModule := ibcfee.NewIBCMiddleware(gov.NewIBCModule(*app.GovKeeper), app.IBCFeeKeeper)
+	// fmt.Println("\n\n\n\n gov keeper: ", app.GovKeeper, "\n\n\n\n")
+	govIBCModule := ibcfee.NewIBCMiddleware(gov.NewIBCModule(app.GovKeeper), app.IBCFeeKeeper)
 	ibcRouter.AddRoute(govtypes.ModuleName, govIBCModule)
 
 	// Add wasmd to IBC Router
@@ -199,7 +199,6 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	app.ScopedIBCTransferKeeper = scopedIBCTransferKeeper
 	app.ScopedICAHostKeeper = scopedICAHostKeeper
 	app.ScopedICAControllerKeeper = scopedICAControllerKeeper
-	app.ScopedGovKeeper = scopedGovKeeper
 
 	// register IBC modules
 	if err := app.RegisterModules(
@@ -222,16 +221,16 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 // This needs to be removed after IBC supports App Wiring.
 func RegisterIBC(registry cdctypes.InterfaceRegistry) map[string]appmodule.AppModule {
 	modules := map[string]appmodule.AppModule{
-		ibcexported.ModuleName:         ibc.AppModule{},
-		ibctransfertypes.ModuleName:    ibctransfer.AppModule{},
-		ibcfeetypes.ModuleName:         ibcfee.AppModule{},
-		icatypes.ModuleName:            icamodule.AppModule{},
-		capabilitytypes.ModuleName:     capability.AppModule{},
-		ibctm.ModuleName:               ibctm.AppModule{},
-		solomachine.ModuleName:         solomachine.AppModule{},
-		ibcconsumertypes.ModuleName:    ibcconsumer.AppModule{},
-		wasmtypes.ModuleName:           wasm.AppModule{},
-		govtypes.ModuleName:            gov.AppModule{},
+		ibcexported.ModuleName:      ibc.AppModule{},
+		ibctransfertypes.ModuleName: ibctransfer.AppModule{},
+		ibcfeetypes.ModuleName:      ibcfee.AppModule{},
+		icatypes.ModuleName:         icamodule.AppModule{},
+		capabilitytypes.ModuleName:  capability.AppModule{},
+		ibctm.ModuleName:            ibctm.AppModule{},
+		solomachine.ModuleName:      solomachine.AppModule{},
+		ibcconsumertypes.ModuleName: ibcconsumer.AppModule{},
+		wasmtypes.ModuleName:        wasm.AppModule{},
+		// govtypes.ModuleName:            gov.AppModule{},
 		keysharemoduletypes.ModuleName: keysharemodule.AppModule{},
 		pepmoduletypes.ModuleName:      pepmodule.AppModule{},
 	}

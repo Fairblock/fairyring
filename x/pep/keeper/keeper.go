@@ -131,6 +131,7 @@ func (k *Keeper) AuthenticateCapability(ctx sdk.Context, cap *capabilitytypes.Ca
 // ClaimCapability allows the IBC app module to claim a capability that core IBC
 // passes to it
 func (k *Keeper) ClaimCapability(ctx sdk.Context, cap *capabilitytypes.Capability, name string) error {
+	fmt.Println("\n\n\n\nClaim Cap pep: ", cap.Index, name, "\n\n\n")
 	return k.ScopedKeeper().ClaimCapability(ctx, cap, name)
 }
 
