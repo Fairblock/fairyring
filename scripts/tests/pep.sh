@@ -339,7 +339,7 @@ fi
 echo "Second Encrypted TX succeeded with Events: $(echo $SECOND_EVENT | jq) as expected."
 
 echo "Creating new General Enc Request in pep module on chain fairyring_test_1"
-RESULT=$($BINARY tx pep request-general-keyshare --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-general-keyshare 30s --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 10

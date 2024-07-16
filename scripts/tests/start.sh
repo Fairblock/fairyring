@@ -125,6 +125,8 @@ sed -i -e 's/minimum-gas-prices = ""/minimum-gas-prices = "1ufairy"/g' $CHAIN_DI
 echo "Changing genesis.json..."
 sed -i -e 's/"voting_period": "172800s"/"voting_period": "60s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 sed -i -e 's/"voting_period": "172800s"/"voting_period": "60s"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
+sed -i -e 's/"max_deposit_period": "172800s"/"max_deposit_period": "60s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
+sed -i -e 's/"max_deposit_period": "172800s"/"max_deposit_period": "60s"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
 
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
@@ -132,7 +134,7 @@ sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_
 sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'","'"$VAL2_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'","'"$VAL2_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
 
-TRUSTED_PARTIES='{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-0"}'
+TRUSTED_PARTIES='{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-1"}'
 
 # sed -i -e 's/"trusted_counter_parties": \[\]/"trusted_counter_parties": \['"$TRUSTED_PARTIES"'\]/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 sed -i -e 's/"trusted_counter_parties": \[\]/"trusted_counter_parties": \['"$TRUSTED_PARTIES"'\]/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
@@ -146,7 +148,7 @@ jsonData2=$(cat "$CHAIN_DIR/$CHAINID_2/config/genesis.json")
 modifiedJson2=$(echo "$jsonData2" |
   jq '.app_state.gov.params.channel_id = "channel-0" |
   .app_state.gov.params.trusted_counter_parties = [{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-0"}] |
-  .app_state.pep.params.keyshare_channel_id = "channel-0"')
+  .app_state.pep.params.keyshare_channel_id = "channel-1"')
 echo "$modifiedJson2" | jq '.' > "$CHAIN_DIR/$CHAINID_2/config/genesis.json"
 
 echo "Starting $CHAINID_1 in $CHAIN_DIR..."
@@ -177,3 +179,13 @@ rm rly2.json &> /dev/null
 
 echo "Waiting both chain to run..."
 sleep $((BLOCK_TIME*2))
+
+echo "Starting Hermes Relayer..."
+echo "Creating log file at $CHAIN_DIR/relayer.log"
+hermes --config hermes_config.toml start > $CHAIN_DIR/relayer.log 2>&1 &
+
+echo ""
+echo "###########################################################"
+echo "#      Successfully Setup Relayer between two chain       #"
+echo "###########################################################"
+echo ""

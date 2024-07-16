@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"errors"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -22,6 +23,7 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 
 	params := k.GetParams(ctx)
 	reqCountString := k.GetRequestCount(ctx)
+	fmt.Println("\n\n\n\nReq Count : ", reqCountString, "\n\n\n\n")
 	reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
 	reqCount = reqCount + 1
 
@@ -33,6 +35,7 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 		}
 
 		k.SetReqQueueEntry(ctx, entry)
+		fmt.Println("\n\n\n\n Request que entry set: ", entry, "\n\n\n\n")
 		k.SetRequestCount(ctx, reqCount)
 
 		return &types.MsgRequestGeneralKeyshareResponse{

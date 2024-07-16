@@ -128,6 +128,9 @@ ENCVOTE=$($ENCRYPTER "yes" 100 $IDENTITY $PUBKEY)
 
 while true; do
   echo "Submitting encrypted vote on source chain"
+  echo $IDENTITY
+  echo $PUBKEY
+  echo $ENCVOTE
 
   RESULT=$(fairyringd tx gov vote-encrypted 1 $ENCVOTE --from $VAL1 --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 --keyring-backend test --gas-prices 1ufairy -o json -y)
   echo "$RESULT"

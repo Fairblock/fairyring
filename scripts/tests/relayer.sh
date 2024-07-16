@@ -23,12 +23,3 @@ echo "Creating channel..."
 hermes --config $CONFIG_FILE create channel --new-client-connection --a-chain $CHAINID_2 --b-chain $CHAINID_1 --a-port gov --b-port keyshare --channel-version keyshare-1 --yes
 hermes --config $CONFIG_FILE create channel --a-chain $CHAINID_2 --a-connection connection-0 --a-port pep --b-port keyshare --channel-version keyshare-1
 
-echo "Starting Hermes Relayer..."
-echo "Creating log file at $CHAIN_DIR/relayer.log"
-hermes --config hermes_config.toml start > $CHAIN_DIR/relayer.log 2>&1 &
-
-echo ""
-echo "###########################################################"
-echo "#      Successfully Setup Relayer between two chain       #"
-echo "###########################################################"
-echo ""
