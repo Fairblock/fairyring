@@ -109,11 +109,11 @@ PROPOSAL=$(fairyringd q gov proposals --home $CHAIN_DIR/$CHAINID_1 --node tcp://
 IDENTITY=$(echo "$PROPOSAL" | jq -r '.identity')
 PUBKEY=$(echo "$PROPOSAL" | jq -r '.pubkey')
 
-if [ -z "$IDENTITY" ]; then
+if [[ "$IDENTITY" == "null" ]]; then
   echo "ERROR: The identity is blank"
   echo "$PROPOSAL"
   exit 1
-elif [ -z "$PUBKEY" ]; then
+elif [[ "$PUBKEY" == "null" ]]; then
   echo "The pubkey is blank"
   echo "$PROPOSAL"
   exit 1
