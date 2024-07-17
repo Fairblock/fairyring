@@ -8,7 +8,7 @@ export const protobufPackage = "fairyring.pep";
 export interface Params {
   trustedCounterParties: TrustedCounterParty[];
   trustedAddresses: string[];
-  pepChannelId: string;
+  /** string pep_channel_id = 3; */
   keyshareChannelId: string;
   minGasPrice: Coin | undefined;
   isSourceChain: boolean;
@@ -24,7 +24,6 @@ function createBaseParams(): Params {
   return {
     trustedCounterParties: [],
     trustedAddresses: [],
-    pepChannelId: "",
     keyshareChannelId: "",
     minGasPrice: undefined,
     isSourceChain: false,
@@ -38,9 +37,6 @@ export const Params = {
     }
     for (const v of message.trustedAddresses) {
       writer.uint32(18).string(v!);
-    }
-    if (message.pepChannelId !== "") {
-      writer.uint32(26).string(message.pepChannelId);
     }
     if (message.keyshareChannelId !== "") {
       writer.uint32(34).string(message.keyshareChannelId);
@@ -74,13 +70,6 @@ export const Params = {
           }
 
           message.trustedAddresses.push(reader.string());
-          continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
-          message.pepChannelId = reader.string();
           continue;
         case 4:
           if (tag !== 34) {
@@ -120,7 +109,6 @@ export const Params = {
       trustedAddresses: Array.isArray(object?.trustedAddresses)
         ? object.trustedAddresses.map((e: any) => String(e))
         : [],
-      pepChannelId: isSet(object.pepChannelId) ? String(object.pepChannelId) : "",
       keyshareChannelId: isSet(object.keyshareChannelId) ? String(object.keyshareChannelId) : "",
       minGasPrice: isSet(object.minGasPrice) ? Coin.fromJSON(object.minGasPrice) : undefined,
       isSourceChain: isSet(object.isSourceChain) ? Boolean(object.isSourceChain) : false,
@@ -134,9 +122,6 @@ export const Params = {
     }
     if (message.trustedAddresses?.length) {
       obj.trustedAddresses = message.trustedAddresses;
-    }
-    if (message.pepChannelId !== "") {
-      obj.pepChannelId = message.pepChannelId;
     }
     if (message.keyshareChannelId !== "") {
       obj.keyshareChannelId = message.keyshareChannelId;
@@ -157,7 +142,6 @@ export const Params = {
     const message = createBaseParams();
     message.trustedCounterParties = object.trustedCounterParties?.map((e) => TrustedCounterParty.fromPartial(e)) || [];
     message.trustedAddresses = object.trustedAddresses?.map((e) => e) || [];
-    message.pepChannelId = object.pepChannelId ?? "";
     message.keyshareChannelId = object.keyshareChannelId ?? "";
     message.minGasPrice = (object.minGasPrice !== undefined && object.minGasPrice !== null)
       ? Coin.fromPartial(object.minGasPrice)

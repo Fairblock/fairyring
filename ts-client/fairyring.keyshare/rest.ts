@@ -29,6 +29,7 @@ export interface ActivePubKey {
 
   /** @format uint64 */
   numberOfValidators?: string;
+  encryptedKeyShares?: { data?: string; validator?: string }[];
 }
 
 export interface AggregatedKeyShare {
@@ -45,6 +46,11 @@ export interface AuthorizedAddress {
 
 export interface Commitments {
   commitments?: string[];
+}
+
+export interface EncryptedKeyShare {
+  data?: string;
+  validator?: string;
 }
 
 export interface GeneralKeyShare {
@@ -211,8 +217,20 @@ export interface QueryParamsResponse {
 }
 
 export interface QueryPubKeyResponse {
-  activePubKey?: { publicKey?: string; creator?: string; expiry?: string; numberOfValidators?: string };
-  queuedPubKey?: { publicKey?: string; creator?: string; expiry?: string; numberOfValidators?: string };
+  activePubKey?: {
+    publicKey?: string;
+    creator?: string;
+    expiry?: string;
+    numberOfValidators?: string;
+    encryptedKeyShares?: { data?: string; validator?: string }[];
+  };
+  queuedPubKey?: {
+    publicKey?: string;
+    creator?: string;
+    expiry?: string;
+    numberOfValidators?: string;
+    encryptedKeyShares?: { data?: string; validator?: string }[];
+  };
 }
 
 export interface QueuedPubKey {
@@ -224,6 +242,7 @@ export interface QueuedPubKey {
 
   /** @format uint64 */
   numberOfValidators?: string;
+  encryptedKeyShares?: { data?: string; validator?: string }[];
 }
 
 export interface ValidatorSet {
@@ -252,7 +271,13 @@ export interface MsgCreateGeneralKeyShareResponse {
 
 export type MsgCreateLatestPubKeyResponse = object;
 
+export interface MsgDeRegisterValidatorResponse {
+  creator?: string;
+}
+
 export type MsgDeleteAuthorizedAddressResponse = object;
+
+export type MsgOverrideLatestPubKeyResponse = object;
 
 export interface MsgRegisterValidatorResponse {
   creator?: string;
@@ -672,8 +697,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryPubKey = (params: RequestParams = {}) =>
     this.request<
       {
-        activePubKey?: { publicKey?: string; creator?: string; expiry?: string; numberOfValidators?: string };
-        queuedPubKey?: { publicKey?: string; creator?: string; expiry?: string; numberOfValidators?: string };
+        activePubKey?: {
+          publicKey?: string;
+          creator?: string;
+          expiry?: string;
+          numberOfValidators?: string;
+          encryptedKeyShares?: { data?: string; validator?: string }[];
+        };
+        queuedPubKey?: {
+          publicKey?: string;
+          creator?: string;
+          expiry?: string;
+          numberOfValidators?: string;
+          encryptedKeyShares?: { data?: string; validator?: string }[];
+        };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({

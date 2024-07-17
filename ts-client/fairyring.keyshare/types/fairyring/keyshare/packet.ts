@@ -1,6 +1,7 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { ActivePublicKey, QueuedPublicKey } from "../common/shared_types";
 
 export const protobufPackage = "fairyring.keyshare";
 
@@ -9,6 +10,7 @@ export interface KeysharePacketData {
   requestAggrKeysharePacket?: RequestAggrKeysharePacketData | undefined;
   getAggrKeysharePacket?: GetAggrKeysharePacketData | undefined;
   aggrKeyshareDataPacket?: AggrKeyshareDataPacketData | undefined;
+  currentKeysPacket?: CurrentKeysPacketData | undefined;
 }
 
 export interface NoData {
@@ -16,6 +18,7 @@ export interface NoData {
 
 /** RequestAggrKeysharePacketData defines a struct for the packet payload */
 export interface RequestAggrKeysharePacketData {
+  requester: string;
   proposalId?: string | undefined;
   requestId?: string | undefined;
 }
@@ -52,12 +55,23 @@ export interface AggrKeyshareDataPacketData {
 export interface AggrKeyshareDataPacketAck {
 }
 
+/** CurrentKeysPacketData defines a struct for the packet payload */
+export interface CurrentKeysPacketData {
+}
+
+/** CurrentKeysPacketAck defines a struct for the packet acknowledgment */
+export interface CurrentKeysPacketAck {
+  activeKey: ActivePublicKey | undefined;
+  queuedKey: QueuedPublicKey | undefined;
+}
+
 function createBaseKeysharePacketData(): KeysharePacketData {
   return {
     noData: undefined,
     requestAggrKeysharePacket: undefined,
     getAggrKeysharePacket: undefined,
     aggrKeyshareDataPacket: undefined,
+    currentKeysPacket: undefined,
   };
 }
 
@@ -74,6 +88,9 @@ export const KeysharePacketData = {
     }
     if (message.aggrKeyshareDataPacket !== undefined) {
       AggrKeyshareDataPacketData.encode(message.aggrKeyshareDataPacket, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.currentKeysPacket !== undefined) {
+      CurrentKeysPacketData.encode(message.currentKeysPacket, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -113,6 +130,13 @@ export const KeysharePacketData = {
 
           message.aggrKeyshareDataPacket = AggrKeyshareDataPacketData.decode(reader, reader.uint32());
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.currentKeysPacket = CurrentKeysPacketData.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -134,6 +158,9 @@ export const KeysharePacketData = {
       aggrKeyshareDataPacket: isSet(object.aggrKeyshareDataPacket)
         ? AggrKeyshareDataPacketData.fromJSON(object.aggrKeyshareDataPacket)
         : undefined,
+      currentKeysPacket: isSet(object.currentKeysPacket)
+        ? CurrentKeysPacketData.fromJSON(object.currentKeysPacket)
+        : undefined,
     };
   },
 
@@ -150,6 +177,9 @@ export const KeysharePacketData = {
     }
     if (message.aggrKeyshareDataPacket !== undefined) {
       obj.aggrKeyshareDataPacket = AggrKeyshareDataPacketData.toJSON(message.aggrKeyshareDataPacket);
+    }
+    if (message.currentKeysPacket !== undefined) {
+      obj.currentKeysPacket = CurrentKeysPacketData.toJSON(message.currentKeysPacket);
     }
     return obj;
   },
@@ -174,6 +204,9 @@ export const KeysharePacketData = {
       (object.aggrKeyshareDataPacket !== undefined && object.aggrKeyshareDataPacket !== null)
         ? AggrKeyshareDataPacketData.fromPartial(object.aggrKeyshareDataPacket)
         : undefined;
+    message.currentKeysPacket = (object.currentKeysPacket !== undefined && object.currentKeysPacket !== null)
+      ? CurrentKeysPacketData.fromPartial(object.currentKeysPacket)
+      : undefined;
     return message;
   },
 };
@@ -222,16 +255,19 @@ export const NoData = {
 };
 
 function createBaseRequestAggrKeysharePacketData(): RequestAggrKeysharePacketData {
-  return { proposalId: undefined, requestId: undefined };
+  return { requester: "", proposalId: undefined, requestId: undefined };
 }
 
 export const RequestAggrKeysharePacketData = {
   encode(message: RequestAggrKeysharePacketData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.requester !== "") {
+      writer.uint32(10).string(message.requester);
+    }
     if (message.proposalId !== undefined) {
-      writer.uint32(10).string(message.proposalId);
+      writer.uint32(18).string(message.proposalId);
     }
     if (message.requestId !== undefined) {
-      writer.uint32(18).string(message.requestId);
+      writer.uint32(26).string(message.requestId);
     }
     return writer;
   },
@@ -248,10 +284,17 @@ export const RequestAggrKeysharePacketData = {
             break;
           }
 
-          message.proposalId = reader.string();
+          message.requester = reader.string();
           continue;
         case 2:
           if (tag !== 18) {
+            break;
+          }
+
+          message.proposalId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
             break;
           }
 
@@ -268,6 +311,7 @@ export const RequestAggrKeysharePacketData = {
 
   fromJSON(object: any): RequestAggrKeysharePacketData {
     return {
+      requester: isSet(object.requester) ? String(object.requester) : "",
       proposalId: isSet(object.proposalId) ? String(object.proposalId) : undefined,
       requestId: isSet(object.requestId) ? String(object.requestId) : undefined,
     };
@@ -275,6 +319,9 @@ export const RequestAggrKeysharePacketData = {
 
   toJSON(message: RequestAggrKeysharePacketData): unknown {
     const obj: any = {};
+    if (message.requester !== "") {
+      obj.requester = message.requester;
+    }
     if (message.proposalId !== undefined) {
       obj.proposalId = message.proposalId;
     }
@@ -291,6 +338,7 @@ export const RequestAggrKeysharePacketData = {
     object: I,
   ): RequestAggrKeysharePacketData {
     const message = createBaseRequestAggrKeysharePacketData();
+    message.requester = object.requester ?? "";
     message.proposalId = object.proposalId ?? undefined;
     message.requestId = object.requestId ?? undefined;
     return message;
@@ -659,6 +707,127 @@ export const AggrKeyshareDataPacketAck = {
   },
   fromPartial<I extends Exact<DeepPartial<AggrKeyshareDataPacketAck>, I>>(_: I): AggrKeyshareDataPacketAck {
     const message = createBaseAggrKeyshareDataPacketAck();
+    return message;
+  },
+};
+
+function createBaseCurrentKeysPacketData(): CurrentKeysPacketData {
+  return {};
+}
+
+export const CurrentKeysPacketData = {
+  encode(_: CurrentKeysPacketData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CurrentKeysPacketData {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCurrentKeysPacketData();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): CurrentKeysPacketData {
+    return {};
+  },
+
+  toJSON(_: CurrentKeysPacketData): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CurrentKeysPacketData>, I>>(base?: I): CurrentKeysPacketData {
+    return CurrentKeysPacketData.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CurrentKeysPacketData>, I>>(_: I): CurrentKeysPacketData {
+    const message = createBaseCurrentKeysPacketData();
+    return message;
+  },
+};
+
+function createBaseCurrentKeysPacketAck(): CurrentKeysPacketAck {
+  return { activeKey: undefined, queuedKey: undefined };
+}
+
+export const CurrentKeysPacketAck = {
+  encode(message: CurrentKeysPacketAck, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.activeKey !== undefined) {
+      ActivePublicKey.encode(message.activeKey, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.queuedKey !== undefined) {
+      QueuedPublicKey.encode(message.queuedKey, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CurrentKeysPacketAck {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCurrentKeysPacketAck();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.activeKey = ActivePublicKey.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.queuedKey = QueuedPublicKey.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CurrentKeysPacketAck {
+    return {
+      activeKey: isSet(object.activeKey) ? ActivePublicKey.fromJSON(object.activeKey) : undefined,
+      queuedKey: isSet(object.queuedKey) ? QueuedPublicKey.fromJSON(object.queuedKey) : undefined,
+    };
+  },
+
+  toJSON(message: CurrentKeysPacketAck): unknown {
+    const obj: any = {};
+    if (message.activeKey !== undefined) {
+      obj.activeKey = ActivePublicKey.toJSON(message.activeKey);
+    }
+    if (message.queuedKey !== undefined) {
+      obj.queuedKey = QueuedPublicKey.toJSON(message.queuedKey);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CurrentKeysPacketAck>, I>>(base?: I): CurrentKeysPacketAck {
+    return CurrentKeysPacketAck.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CurrentKeysPacketAck>, I>>(object: I): CurrentKeysPacketAck {
+    const message = createBaseCurrentKeysPacketAck();
+    message.activeKey = (object.activeKey !== undefined && object.activeKey !== null)
+      ? ActivePublicKey.fromPartial(object.activeKey)
+      : undefined;
+    message.queuedKey = (object.queuedKey !== undefined && object.queuedKey !== null)
+      ? QueuedPublicKey.fromPartial(object.queuedKey)
+      : undefined;
     return message;
   },
 };
