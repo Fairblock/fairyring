@@ -163,7 +163,14 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 		proposal.Identity = id
 		proposal.Pubkey = keyshareRequest.Pubkey
 
-		k.govKeeper.SetProposal(ctx, proposal)
+		fmt.Println("\n\n\n\nProposal: ", proposal, "\n\n\n\n")
+
+		err := k.govKeeper.SetProposal(ctx, proposal)
+		if err != nil {
+			fmt.Println("\n\n\n\n Proposal Set Failed: ", err, "\n\n\n\n")
+		}
+		fmt.Println("\n\n\n\n Proposal Set successfully\n\n\n\n")
+
 		k.govKeeper.RemoveReqQueueEntry(ctx, req.GetProposalId())
 	}
 	return nil
