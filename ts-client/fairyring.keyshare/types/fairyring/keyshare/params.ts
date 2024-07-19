@@ -7,21 +7,21 @@ export const protobufPackage = "fairyring.keyshare";
 /** Params defines the parameters for the module. */
 export interface Params {
   keyExpiry: number;
+  minimumBonded: number;
+  maxIdledBlock: number;
   trustedAddresses: string[];
   slashFractionNoKeyshare: Uint8Array;
   slashFractionWrongKeyshare: Uint8Array;
-  minimumBonded: number;
-  maxIdledBlock: number;
 }
 
 function createBaseParams(): Params {
   return {
     keyExpiry: 0,
+    minimumBonded: 0,
+    maxIdledBlock: 0,
     trustedAddresses: [],
     slashFractionNoKeyshare: new Uint8Array(0),
     slashFractionWrongKeyshare: new Uint8Array(0),
-    minimumBonded: 0,
-    maxIdledBlock: 0,
   };
 }
 
@@ -30,20 +30,20 @@ export const Params = {
     if (message.keyExpiry !== 0) {
       writer.uint32(8).uint64(message.keyExpiry);
     }
-    for (const v of message.trustedAddresses) {
-      writer.uint32(18).string(v!);
-    }
-    if (message.slashFractionNoKeyshare.length !== 0) {
-      writer.uint32(26).bytes(message.slashFractionNoKeyshare);
-    }
-    if (message.slashFractionWrongKeyshare.length !== 0) {
-      writer.uint32(34).bytes(message.slashFractionWrongKeyshare);
-    }
     if (message.minimumBonded !== 0) {
-      writer.uint32(40).uint64(message.minimumBonded);
+      writer.uint32(16).uint64(message.minimumBonded);
     }
     if (message.maxIdledBlock !== 0) {
-      writer.uint32(48).uint64(message.maxIdledBlock);
+      writer.uint32(24).uint64(message.maxIdledBlock);
+    }
+    for (const v of message.trustedAddresses) {
+      writer.uint32(34).string(v!);
+    }
+    if (message.slashFractionNoKeyshare.length !== 0) {
+      writer.uint32(42).bytes(message.slashFractionNoKeyshare);
+    }
+    if (message.slashFractionWrongKeyshare.length !== 0) {
+      writer.uint32(50).bytes(message.slashFractionWrongKeyshare);
     }
     return writer;
   },
@@ -63,39 +63,39 @@ export const Params = {
           message.keyExpiry = longToNumber(reader.uint64() as Long);
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.trustedAddresses.push(reader.string());
+          message.minimumBonded = longToNumber(reader.uint64() as Long);
           continue;
         case 3:
-          if (tag !== 26) {
+          if (tag !== 24) {
             break;
           }
 
-          message.slashFractionNoKeyshare = reader.bytes();
+          message.maxIdledBlock = longToNumber(reader.uint64() as Long);
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.slashFractionWrongKeyshare = reader.bytes();
+          message.trustedAddresses.push(reader.string());
           continue;
         case 5:
-          if (tag !== 40) {
+          if (tag !== 42) {
             break;
           }
 
-          message.minimumBonded = longToNumber(reader.uint64() as Long);
+          message.slashFractionNoKeyshare = reader.bytes();
           continue;
         case 6:
-          if (tag !== 48) {
+          if (tag !== 50) {
             break;
           }
 
-          message.maxIdledBlock = longToNumber(reader.uint64() as Long);
+          message.slashFractionWrongKeyshare = reader.bytes();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -109,6 +109,8 @@ export const Params = {
   fromJSON(object: any): Params {
     return {
       keyExpiry: isSet(object.keyExpiry) ? Number(object.keyExpiry) : 0,
+      minimumBonded: isSet(object.minimumBonded) ? Number(object.minimumBonded) : 0,
+      maxIdledBlock: isSet(object.maxIdledBlock) ? Number(object.maxIdledBlock) : 0,
       trustedAddresses: Array.isArray(object?.trustedAddresses)
         ? object.trustedAddresses.map((e: any) => String(e))
         : [],
@@ -118,8 +120,6 @@ export const Params = {
       slashFractionWrongKeyshare: isSet(object.slashFractionWrongKeyshare)
         ? bytesFromBase64(object.slashFractionWrongKeyshare)
         : new Uint8Array(0),
-      minimumBonded: isSet(object.minimumBonded) ? Number(object.minimumBonded) : 0,
-      maxIdledBlock: isSet(object.maxIdledBlock) ? Number(object.maxIdledBlock) : 0,
     };
   },
 
@@ -127,6 +127,12 @@ export const Params = {
     const obj: any = {};
     if (message.keyExpiry !== 0) {
       obj.keyExpiry = Math.round(message.keyExpiry);
+    }
+    if (message.minimumBonded !== 0) {
+      obj.minimumBonded = Math.round(message.minimumBonded);
+    }
+    if (message.maxIdledBlock !== 0) {
+      obj.maxIdledBlock = Math.round(message.maxIdledBlock);
     }
     if (message.trustedAddresses?.length) {
       obj.trustedAddresses = message.trustedAddresses;
@@ -137,12 +143,6 @@ export const Params = {
     if (message.slashFractionWrongKeyshare.length !== 0) {
       obj.slashFractionWrongKeyshare = base64FromBytes(message.slashFractionWrongKeyshare);
     }
-    if (message.minimumBonded !== 0) {
-      obj.minimumBonded = Math.round(message.minimumBonded);
-    }
-    if (message.maxIdledBlock !== 0) {
-      obj.maxIdledBlock = Math.round(message.maxIdledBlock);
-    }
     return obj;
   },
 
@@ -152,11 +152,11 @@ export const Params = {
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
     message.keyExpiry = object.keyExpiry ?? 0;
+    message.minimumBonded = object.minimumBonded ?? 0;
+    message.maxIdledBlock = object.maxIdledBlock ?? 0;
     message.trustedAddresses = object.trustedAddresses?.map((e) => e) || [];
     message.slashFractionNoKeyshare = object.slashFractionNoKeyshare ?? new Uint8Array(0);
     message.slashFractionWrongKeyshare = object.slashFractionWrongKeyshare ?? new Uint8Array(0);
-    message.minimumBonded = object.minimumBonded ?? 0;
-    message.maxIdledBlock = object.maxIdledBlock ?? 0;
     return message;
   },
 };

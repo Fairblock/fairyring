@@ -104,12 +104,9 @@ export interface SignDocDirectAux {
   /** sequence is the sequence number of the signing account. */
   sequence: number;
   /**
-   * Tip is the optional tip used for transactions fees paid in another denom.
-   * It should be left empty if the signer is not the tipper for this
-   * transaction.
+   * tips have been depreacted and should not be used
    *
-   * This field is ignored if the chain didn't enable tips, i.e. didn't add the
-   * `TipDecorator` in its posthandler.
+   * @deprecated
    */
   tip: Tip | undefined;
 }
@@ -179,6 +176,8 @@ export interface AuthInfo {
    * `TipDecorator` in its posthandler.
    *
    * Since: cosmos-sdk 0.46
+   *
+   * @deprecated
    */
   tip: Tip | undefined;
 }
@@ -275,6 +274,8 @@ export interface Fee {
  * Tip is the tip used for meta-transactions.
  *
  * Since: cosmos-sdk 0.46
+ *
+ * @deprecated
  */
 export interface Tip {
   /** amount is the amount of the tip */

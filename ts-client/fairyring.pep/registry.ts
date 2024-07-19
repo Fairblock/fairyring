@@ -1,80 +1,88 @@
 import { GeneratedType } from "@cosmjs/proto-signing";
+import { GenesisState } from "./types/fairyring/pep/genesis";
+import { MsgSubmitEncryptedTx } from "./types/fairyring/pep/tx";
+import { MsgCreateAggregatedKeyShare } from "./types/fairyring/pep/tx";
+import { EncryptedTxArray } from "./types/fairyring/pep/encrypted_tx";
+import { QueryAllEncryptedTxFromHeightRequest } from "./types/fairyring/pep/query";
+import { QueryAllEncryptedTxFromHeightResponse } from "./types/fairyring/pep/query";
 import { Params } from "./types/fairyring/pep/params";
+import { MsgSubmitGeneralEncryptedTx } from "./types/fairyring/pep/tx";
+import { MsgGetGeneralKeyshare } from "./types/fairyring/pep/tx";
+import { MsgGetGeneralKeyshareResponse } from "./types/fairyring/pep/tx";
+import { AggregatedKeyShare } from "./types/fairyring/pep/aggregated_key_share";
 import { TrustedCounterParty } from "./types/fairyring/pep/params";
-import { EncryptedTx } from "./types/fairyring/pep/encrypted_tx";
-import { QueuedPubKey } from "./types/fairyring/pep/pub_key";
-import { QueryLatestHeightRequest } from "./types/fairyring/pep/query";
-import { PepPacketData } from "./types/fairyring/pep/packet";
-import { CurrentKeysPacketAck } from "./types/fairyring/pep/packet";
-import { NoData } from "./types/fairyring/pep/packet";
+import { QueryGetEncryptedTxRequest } from "./types/fairyring/pep/query";
+import { QueryAllEncryptedTxRequest } from "./types/fairyring/pep/query";
+import { QueryLatestHeightResponse } from "./types/fairyring/pep/query";
+import { QueryGetPepNonceResponse } from "./types/fairyring/pep/query";
 import { MsgRequestGeneralKeyshareResponse } from "./types/fairyring/pep/tx";
 import { QueryParamsRequest } from "./types/fairyring/pep/query";
-import { QueryGetEncryptedTxResponse } from "./types/fairyring/pep/query";
-import { QueryAllEncryptedTxRequest } from "./types/fairyring/pep/query";
-import { QueryGetPepNonceResponse } from "./types/fairyring/pep/query";
-import { QueryAllPepNonceResponse } from "./types/fairyring/pep/query";
-import { CurrentKeysPacketData } from "./types/fairyring/pep/packet";
-import { ActivePubKey } from "./types/fairyring/pep/pub_key";
-import { QueryAllEncryptedTxResponse } from "./types/fairyring/pep/query";
-import { QueryLatestHeightResponse } from "./types/fairyring/pep/query";
-import { EncryptedTxArray } from "./types/fairyring/pep/encrypted_tx";
-import { MsgGetGeneralKeyshareResponse } from "./types/fairyring/pep/tx";
-import { PepNonce } from "./types/fairyring/pep/pep_nonce";
-import { QueryAllEncryptedTxFromHeightResponse } from "./types/fairyring/pep/query";
-import { QueryGetPepNonceRequest } from "./types/fairyring/pep/query";
-import { MsgCreateAggregatedKeyShare } from "./types/fairyring/pep/tx";
-import { MsgCreateAggregatedKeyShareResponse } from "./types/fairyring/pep/tx";
-import { QueryPubKeyRequest } from "./types/fairyring/pep/query";
-import { MsgGetGeneralKeyshare } from "./types/fairyring/pep/tx";
-import { MsgRequestGeneralKeyshare } from "./types/fairyring/pep/tx";
-import { AggregatedKeyShare } from "./types/fairyring/pep/aggregated_key_share";
+import { QueryKeyshareRequest } from "./types/fairyring/pep/query";
+import { QueryAllKeyshareResponse } from "./types/fairyring/pep/query";
+import { MsgUpdateParamsResponse } from "./types/fairyring/pep/tx";
 import { MsgSubmitEncryptedTxResponse } from "./types/fairyring/pep/tx";
-import { MsgSubmitEncryptedTx } from "./types/fairyring/pep/tx";
-import { QueryGetEncryptedTxRequest } from "./types/fairyring/pep/query";
+import { MsgCreateAggregatedKeyShareResponse } from "./types/fairyring/pep/tx";
+import { GeneralEncryptedTx } from "./types/fairyring/pep/encrypted_tx";
+import { GenEncTxExecutionQueue } from "./types/fairyring/pep/encrypted_tx";
+import { QueryGetEncryptedTxResponse } from "./types/fairyring/pep/query";
+import { QueryLatestHeightRequest } from "./types/fairyring/pep/query";
+import { QueryGetPepNonceRequest } from "./types/fairyring/pep/query";
+import { PepNonce } from "./types/fairyring/pep/pep_nonce";
+import { EncryptedTx } from "./types/fairyring/pep/encrypted_tx";
+import { QueryAllPepNonceResponse } from "./types/fairyring/pep/query";
+import { MsgRequestGeneralKeyshare } from "./types/fairyring/pep/tx";
+import { MsgUpdateParams } from "./types/fairyring/pep/tx";
+import { GeneralEncryptedTxArray } from "./types/fairyring/pep/encrypted_tx";
+import { QueryAllKeyshareRequest } from "./types/fairyring/pep/query";
+import { QueryAllEncryptedTxResponse } from "./types/fairyring/pep/query";
 import { QueryAllPepNonceRequest } from "./types/fairyring/pep/query";
-import { QueryPubKeyResponse } from "./types/fairyring/pep/query";
-import { GenesisState } from "./types/fairyring/pep/genesis";
 import { QueryParamsResponse } from "./types/fairyring/pep/query";
-import { QueryAllEncryptedTxFromHeightRequest } from "./types/fairyring/pep/query";
+import { QueryKeyshareResponse } from "./types/fairyring/pep/query";
+import { QueryPubKeyRequest } from "./types/fairyring/pep/query";
+import { QueryPubKeyResponse } from "./types/fairyring/pep/query";
 
 const msgTypes: Array<[string, GeneratedType]>  = [
+    ["/fairyring.pep.GenesisState", GenesisState],
+    ["/fairyring.pep.MsgSubmitEncryptedTx", MsgSubmitEncryptedTx],
+    ["/fairyring.pep.MsgCreateAggregatedKeyShare", MsgCreateAggregatedKeyShare],
+    ["/fairyring.pep.EncryptedTxArray", EncryptedTxArray],
+    ["/fairyring.pep.QueryAllEncryptedTxFromHeightRequest", QueryAllEncryptedTxFromHeightRequest],
+    ["/fairyring.pep.QueryAllEncryptedTxFromHeightResponse", QueryAllEncryptedTxFromHeightResponse],
     ["/fairyring.pep.Params", Params],
+    ["/fairyring.pep.MsgSubmitGeneralEncryptedTx", MsgSubmitGeneralEncryptedTx],
+    ["/fairyring.pep.MsgGetGeneralKeyshare", MsgGetGeneralKeyshare],
+    ["/fairyring.pep.MsgGetGeneralKeyshareResponse", MsgGetGeneralKeyshareResponse],
+    ["/fairyring.pep.AggregatedKeyShare", AggregatedKeyShare],
     ["/fairyring.pep.TrustedCounterParty", TrustedCounterParty],
-    ["/fairyring.pep.EncryptedTx", EncryptedTx],
-    ["/fairyring.pep.QueuedPubKey", QueuedPubKey],
-    ["/fairyring.pep.QueryLatestHeightRequest", QueryLatestHeightRequest],
-    ["/fairyring.pep.PepPacketData", PepPacketData],
-    ["/fairyring.pep.CurrentKeysPacketAck", CurrentKeysPacketAck],
-    ["/fairyring.pep.NoData", NoData],
+    ["/fairyring.pep.QueryGetEncryptedTxRequest", QueryGetEncryptedTxRequest],
+    ["/fairyring.pep.QueryAllEncryptedTxRequest", QueryAllEncryptedTxRequest],
+    ["/fairyring.pep.QueryLatestHeightResponse", QueryLatestHeightResponse],
+    ["/fairyring.pep.QueryGetPepNonceResponse", QueryGetPepNonceResponse],
     ["/fairyring.pep.MsgRequestGeneralKeyshareResponse", MsgRequestGeneralKeyshareResponse],
     ["/fairyring.pep.QueryParamsRequest", QueryParamsRequest],
-    ["/fairyring.pep.QueryGetEncryptedTxResponse", QueryGetEncryptedTxResponse],
-    ["/fairyring.pep.QueryAllEncryptedTxRequest", QueryAllEncryptedTxRequest],
-    ["/fairyring.pep.QueryGetPepNonceResponse", QueryGetPepNonceResponse],
-    ["/fairyring.pep.QueryAllPepNonceResponse", QueryAllPepNonceResponse],
-    ["/fairyring.pep.CurrentKeysPacketData", CurrentKeysPacketData],
-    ["/fairyring.pep.ActivePubKey", ActivePubKey],
-    ["/fairyring.pep.QueryAllEncryptedTxResponse", QueryAllEncryptedTxResponse],
-    ["/fairyring.pep.QueryLatestHeightResponse", QueryLatestHeightResponse],
-    ["/fairyring.pep.EncryptedTxArray", EncryptedTxArray],
-    ["/fairyring.pep.MsgGetGeneralKeyshareResponse", MsgGetGeneralKeyshareResponse],
-    ["/fairyring.pep.PepNonce", PepNonce],
-    ["/fairyring.pep.QueryAllEncryptedTxFromHeightResponse", QueryAllEncryptedTxFromHeightResponse],
-    ["/fairyring.pep.QueryGetPepNonceRequest", QueryGetPepNonceRequest],
-    ["/fairyring.pep.MsgCreateAggregatedKeyShare", MsgCreateAggregatedKeyShare],
-    ["/fairyring.pep.MsgCreateAggregatedKeyShareResponse", MsgCreateAggregatedKeyShareResponse],
-    ["/fairyring.pep.QueryPubKeyRequest", QueryPubKeyRequest],
-    ["/fairyring.pep.MsgGetGeneralKeyshare", MsgGetGeneralKeyshare],
-    ["/fairyring.pep.MsgRequestGeneralKeyshare", MsgRequestGeneralKeyshare],
-    ["/fairyring.pep.AggregatedKeyShare", AggregatedKeyShare],
+    ["/fairyring.pep.QueryKeyshareRequest", QueryKeyshareRequest],
+    ["/fairyring.pep.QueryAllKeyshareResponse", QueryAllKeyshareResponse],
+    ["/fairyring.pep.MsgUpdateParamsResponse", MsgUpdateParamsResponse],
     ["/fairyring.pep.MsgSubmitEncryptedTxResponse", MsgSubmitEncryptedTxResponse],
-    ["/fairyring.pep.MsgSubmitEncryptedTx", MsgSubmitEncryptedTx],
-    ["/fairyring.pep.QueryGetEncryptedTxRequest", QueryGetEncryptedTxRequest],
+    ["/fairyring.pep.MsgCreateAggregatedKeyShareResponse", MsgCreateAggregatedKeyShareResponse],
+    ["/fairyring.pep.GeneralEncryptedTx", GeneralEncryptedTx],
+    ["/fairyring.pep.GenEncTxExecutionQueue", GenEncTxExecutionQueue],
+    ["/fairyring.pep.QueryGetEncryptedTxResponse", QueryGetEncryptedTxResponse],
+    ["/fairyring.pep.QueryLatestHeightRequest", QueryLatestHeightRequest],
+    ["/fairyring.pep.QueryGetPepNonceRequest", QueryGetPepNonceRequest],
+    ["/fairyring.pep.PepNonce", PepNonce],
+    ["/fairyring.pep.EncryptedTx", EncryptedTx],
+    ["/fairyring.pep.QueryAllPepNonceResponse", QueryAllPepNonceResponse],
+    ["/fairyring.pep.MsgRequestGeneralKeyshare", MsgRequestGeneralKeyshare],
+    ["/fairyring.pep.MsgUpdateParams", MsgUpdateParams],
+    ["/fairyring.pep.GeneralEncryptedTxArray", GeneralEncryptedTxArray],
+    ["/fairyring.pep.QueryAllKeyshareRequest", QueryAllKeyshareRequest],
+    ["/fairyring.pep.QueryAllEncryptedTxResponse", QueryAllEncryptedTxResponse],
     ["/fairyring.pep.QueryAllPepNonceRequest", QueryAllPepNonceRequest],
-    ["/fairyring.pep.QueryPubKeyResponse", QueryPubKeyResponse],
-    ["/fairyring.pep.GenesisState", GenesisState],
     ["/fairyring.pep.QueryParamsResponse", QueryParamsResponse],
-    ["/fairyring.pep.QueryAllEncryptedTxFromHeightRequest", QueryAllEncryptedTxFromHeightRequest],
+    ["/fairyring.pep.QueryKeyshareResponse", QueryKeyshareResponse],
+    ["/fairyring.pep.QueryPubKeyRequest", QueryPubKeyRequest],
+    ["/fairyring.pep.QueryPubKeyResponse", QueryPubKeyResponse],
     
 ];
 

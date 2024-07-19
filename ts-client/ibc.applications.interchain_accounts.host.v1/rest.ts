@@ -20,13 +20,20 @@ export interface Status {
   details?: { "@type"?: string }[];
 }
 
-export interface Params {
+export interface QueryParamsResponse {
+  params?: { host_enabled?: boolean; allow_messages?: string[] };
+}
+
+export interface V1Params {
   host_enabled?: boolean;
   allow_messages?: string[];
 }
 
-export interface QueryParamsResponse {
-  params?: { host_enabled?: boolean; allow_messages?: string[] };
+export type MsgUpdateParamsResponse = object;
+
+export interface Params {
+  host_enabled?: boolean;
+  allow_messages?: string[];
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";

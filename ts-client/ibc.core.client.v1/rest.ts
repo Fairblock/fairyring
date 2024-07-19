@@ -115,11 +115,29 @@ export interface QueryUpgradedConsensusStateResponse {
 
 export type MsgCreateClientResponse = object;
 
+export type MsgIBCSoftwareUpgradeResponse = object;
+
+export type MsgRecoverClientResponse = object;
+
 export type MsgSubmitMisbehaviourResponse = object;
 
 export type MsgUpdateClientResponse = object;
 
+export type MsgUpdateParamsResponse = object;
+
 export type MsgUpgradeClientResponse = object;
+
+export interface Plan {
+  name?: string;
+
+  /** @format date-time */
+  time?: string;
+
+  /** @format int64 */
+  height?: string;
+  info?: string;
+  upgraded_client_state?: { "@type"?: string };
+}
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 

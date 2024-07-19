@@ -759,9 +759,34 @@ definitions:
         additionalProperties: {}
   MsgCreateClientResponse:
     type: object
+  MsgIBCSoftwareUpgradeResponse:
+    type: object
+  MsgRecoverClientResponse:
+    type: object
   MsgSubmitMisbehaviourResponse:
     type: object
   MsgUpdateClientResponse:
     type: object
+  MsgUpdateParamsResponse:
+    type: object
   MsgUpgradeClientResponse:
     type: object
+  Plan:
+    type: object
+    properties:
+      name:
+        type: string
+      time:
+        type: string
+        format: date-time
+      height:
+        type: string
+        format: int64
+      info:
+        type: string
+      upgraded_client_state:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}

@@ -1,13 +1,40 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { Duration } from "../../google/protobuf/duration";
+import { Params } from "./params";
 
 export const protobufPackage = "fairyring.pep";
+
+/** MsgUpdateParams is the Msg/UpdateParams request type. */
+export interface MsgUpdateParams {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority: string;
+  /**
+   * params defines the module parameters to update.
+   *
+   * NOTE: All parameters must be supplied.
+   */
+  params: Params | undefined;
+}
+
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ */
+export interface MsgUpdateParamsResponse {
+}
 
 export interface MsgSubmitEncryptedTx {
   creator: string;
   data: string;
   targetBlockHeight: number;
+}
+
+export interface MsgSubmitGeneralEncryptedTx {
+  creator: string;
+  data: string;
+  reqId: string;
 }
 
 export interface MsgSubmitEncryptedTxResponse {
@@ -25,21 +52,139 @@ export interface MsgCreateAggregatedKeyShareResponse {
 
 export interface MsgRequestGeneralKeyshare {
   creator: string;
-  requestId: string;
+  estimatedDelay: Duration | undefined;
 }
 
 export interface MsgRequestGeneralKeyshareResponse {
-  identity: string;
-  pubkey: string;
+  reqId: string;
 }
 
 export interface MsgGetGeneralKeyshare {
   creator: string;
-  identity: string;
+  reqId: string;
 }
 
 export interface MsgGetGeneralKeyshareResponse {
 }
+
+function createBaseMsgUpdateParams(): MsgUpdateParams {
+  return { authority: "", params: undefined };
+}
+
+export const MsgUpdateParams = {
+  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+    if (message.params !== undefined) {
+      Params.encode(message.params, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateParams();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.authority = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.params = Params.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateParams {
+    return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
+      params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
+    };
+  },
+
+  toJSON(message: MsgUpdateParams): unknown {
+    const obj: any = {};
+    if (message.authority !== "") {
+      obj.authority = message.authority;
+    }
+    if (message.params !== undefined) {
+      obj.params = Params.toJSON(message.params);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgUpdateParams>, I>>(base?: I): MsgUpdateParams {
+    return MsgUpdateParams.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateParams>, I>>(object: I): MsgUpdateParams {
+    const message = createBaseMsgUpdateParams();
+    message.authority = object.authority ?? "";
+    message.params = (object.params !== undefined && object.params !== null)
+      ? Params.fromPartial(object.params)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
+  return {};
+}
+
+export const MsgUpdateParamsResponse = {
+  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateParamsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateParamsResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdateParamsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgUpdateParamsResponse>, I>>(base?: I): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateParamsResponse>, I>>(_: I): MsgUpdateParamsResponse {
+    const message = createBaseMsgUpdateParamsResponse();
+    return message;
+  },
+};
 
 function createBaseMsgSubmitEncryptedTx(): MsgSubmitEncryptedTx {
   return { creator: "", data: "", targetBlockHeight: 0 };
@@ -126,6 +271,95 @@ export const MsgSubmitEncryptedTx = {
     message.creator = object.creator ?? "";
     message.data = object.data ?? "";
     message.targetBlockHeight = object.targetBlockHeight ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgSubmitGeneralEncryptedTx(): MsgSubmitGeneralEncryptedTx {
+  return { creator: "", data: "", reqId: "" };
+}
+
+export const MsgSubmitGeneralEncryptedTx = {
+  encode(message: MsgSubmitGeneralEncryptedTx, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.data !== "") {
+      writer.uint32(18).string(message.data);
+    }
+    if (message.reqId !== "") {
+      writer.uint32(26).string(message.reqId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitGeneralEncryptedTx {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSubmitGeneralEncryptedTx();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.creator = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.data = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.reqId = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSubmitGeneralEncryptedTx {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      data: isSet(object.data) ? String(object.data) : "",
+      reqId: isSet(object.reqId) ? String(object.reqId) : "",
+    };
+  },
+
+  toJSON(message: MsgSubmitGeneralEncryptedTx): unknown {
+    const obj: any = {};
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.data !== "") {
+      obj.data = message.data;
+    }
+    if (message.reqId !== "") {
+      obj.reqId = message.reqId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgSubmitGeneralEncryptedTx>, I>>(base?: I): MsgSubmitGeneralEncryptedTx {
+    return MsgSubmitGeneralEncryptedTx.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgSubmitGeneralEncryptedTx>, I>>(object: I): MsgSubmitGeneralEncryptedTx {
+    const message = createBaseMsgSubmitGeneralEncryptedTx();
+    message.creator = object.creator ?? "";
+    message.data = object.data ?? "";
+    message.reqId = object.reqId ?? "";
     return message;
   },
 };
@@ -310,7 +544,7 @@ export const MsgCreateAggregatedKeyShareResponse = {
 };
 
 function createBaseMsgRequestGeneralKeyshare(): MsgRequestGeneralKeyshare {
-  return { creator: "", requestId: "" };
+  return { creator: "", estimatedDelay: undefined };
 }
 
 export const MsgRequestGeneralKeyshare = {
@@ -318,8 +552,8 @@ export const MsgRequestGeneralKeyshare = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.requestId !== "") {
-      writer.uint32(18).string(message.requestId);
+    if (message.estimatedDelay !== undefined) {
+      Duration.encode(message.estimatedDelay, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -343,7 +577,7 @@ export const MsgRequestGeneralKeyshare = {
             break;
           }
 
-          message.requestId = reader.string();
+          message.estimatedDelay = Duration.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -357,7 +591,7 @@ export const MsgRequestGeneralKeyshare = {
   fromJSON(object: any): MsgRequestGeneralKeyshare {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      requestId: isSet(object.requestId) ? String(object.requestId) : "",
+      estimatedDelay: isSet(object.estimatedDelay) ? Duration.fromJSON(object.estimatedDelay) : undefined,
     };
   },
 
@@ -366,8 +600,8 @@ export const MsgRequestGeneralKeyshare = {
     if (message.creator !== "") {
       obj.creator = message.creator;
     }
-    if (message.requestId !== "") {
-      obj.requestId = message.requestId;
+    if (message.estimatedDelay !== undefined) {
+      obj.estimatedDelay = Duration.toJSON(message.estimatedDelay);
     }
     return obj;
   },
@@ -378,22 +612,21 @@ export const MsgRequestGeneralKeyshare = {
   fromPartial<I extends Exact<DeepPartial<MsgRequestGeneralKeyshare>, I>>(object: I): MsgRequestGeneralKeyshare {
     const message = createBaseMsgRequestGeneralKeyshare();
     message.creator = object.creator ?? "";
-    message.requestId = object.requestId ?? "";
+    message.estimatedDelay = (object.estimatedDelay !== undefined && object.estimatedDelay !== null)
+      ? Duration.fromPartial(object.estimatedDelay)
+      : undefined;
     return message;
   },
 };
 
 function createBaseMsgRequestGeneralKeyshareResponse(): MsgRequestGeneralKeyshareResponse {
-  return { identity: "", pubkey: "" };
+  return { reqId: "" };
 }
 
 export const MsgRequestGeneralKeyshareResponse = {
   encode(message: MsgRequestGeneralKeyshareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.identity !== "") {
-      writer.uint32(10).string(message.identity);
-    }
-    if (message.pubkey !== "") {
-      writer.uint32(18).string(message.pubkey);
+    if (message.reqId !== "") {
+      writer.uint32(10).string(message.reqId);
     }
     return writer;
   },
@@ -410,14 +643,7 @@ export const MsgRequestGeneralKeyshareResponse = {
             break;
           }
 
-          message.identity = reader.string();
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.pubkey = reader.string();
+          message.reqId = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -429,19 +655,13 @@ export const MsgRequestGeneralKeyshareResponse = {
   },
 
   fromJSON(object: any): MsgRequestGeneralKeyshareResponse {
-    return {
-      identity: isSet(object.identity) ? String(object.identity) : "",
-      pubkey: isSet(object.pubkey) ? String(object.pubkey) : "",
-    };
+    return { reqId: isSet(object.reqId) ? String(object.reqId) : "" };
   },
 
   toJSON(message: MsgRequestGeneralKeyshareResponse): unknown {
     const obj: any = {};
-    if (message.identity !== "") {
-      obj.identity = message.identity;
-    }
-    if (message.pubkey !== "") {
-      obj.pubkey = message.pubkey;
+    if (message.reqId !== "") {
+      obj.reqId = message.reqId;
     }
     return obj;
   },
@@ -455,14 +675,13 @@ export const MsgRequestGeneralKeyshareResponse = {
     object: I,
   ): MsgRequestGeneralKeyshareResponse {
     const message = createBaseMsgRequestGeneralKeyshareResponse();
-    message.identity = object.identity ?? "";
-    message.pubkey = object.pubkey ?? "";
+    message.reqId = object.reqId ?? "";
     return message;
   },
 };
 
 function createBaseMsgGetGeneralKeyshare(): MsgGetGeneralKeyshare {
-  return { creator: "", identity: "" };
+  return { creator: "", reqId: "" };
 }
 
 export const MsgGetGeneralKeyshare = {
@@ -470,8 +689,8 @@ export const MsgGetGeneralKeyshare = {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
-    if (message.identity !== "") {
-      writer.uint32(18).string(message.identity);
+    if (message.reqId !== "") {
+      writer.uint32(18).string(message.reqId);
     }
     return writer;
   },
@@ -495,7 +714,7 @@ export const MsgGetGeneralKeyshare = {
             break;
           }
 
-          message.identity = reader.string();
+          message.reqId = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -509,7 +728,7 @@ export const MsgGetGeneralKeyshare = {
   fromJSON(object: any): MsgGetGeneralKeyshare {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      identity: isSet(object.identity) ? String(object.identity) : "",
+      reqId: isSet(object.reqId) ? String(object.reqId) : "",
     };
   },
 
@@ -518,8 +737,8 @@ export const MsgGetGeneralKeyshare = {
     if (message.creator !== "") {
       obj.creator = message.creator;
     }
-    if (message.identity !== "") {
-      obj.identity = message.identity;
+    if (message.reqId !== "") {
+      obj.reqId = message.reqId;
     }
     return obj;
   },
@@ -530,7 +749,7 @@ export const MsgGetGeneralKeyshare = {
   fromPartial<I extends Exact<DeepPartial<MsgGetGeneralKeyshare>, I>>(object: I): MsgGetGeneralKeyshare {
     const message = createBaseMsgGetGeneralKeyshare();
     message.creator = object.creator ?? "";
-    message.identity = object.identity ?? "";
+    message.reqId = object.reqId ?? "";
     return message;
   },
 };
@@ -580,7 +799,13 @@ export const MsgGetGeneralKeyshareResponse = {
 
 /** Msg defines the Msg service. */
 export interface Msg {
+  /**
+   * UpdateParams defines a (governance) operation for updating the module
+   * parameters. The authority defaults to the x/gov module account.
+   */
+  UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse>;
   SubmitEncryptedTx(request: MsgSubmitEncryptedTx): Promise<MsgSubmitEncryptedTxResponse>;
+  SubmitGeneralEncryptedTx(request: MsgSubmitGeneralEncryptedTx): Promise<MsgSubmitEncryptedTxResponse>;
   /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateAggregatedKeyShare(request: MsgCreateAggregatedKeyShare): Promise<MsgCreateAggregatedKeyShareResponse>;
   RequestGeneralKeyshare(request: MsgRequestGeneralKeyshare): Promise<MsgRequestGeneralKeyshareResponse>;
@@ -594,14 +819,28 @@ export class MsgClientImpl implements Msg {
   constructor(rpc: Rpc, opts?: { service?: string }) {
     this.service = opts?.service || MsgServiceName;
     this.rpc = rpc;
+    this.UpdateParams = this.UpdateParams.bind(this);
     this.SubmitEncryptedTx = this.SubmitEncryptedTx.bind(this);
+    this.SubmitGeneralEncryptedTx = this.SubmitGeneralEncryptedTx.bind(this);
     this.CreateAggregatedKeyShare = this.CreateAggregatedKeyShare.bind(this);
     this.RequestGeneralKeyshare = this.RequestGeneralKeyshare.bind(this);
     this.GetGeneralKeyshare = this.GetGeneralKeyshare.bind(this);
   }
+  UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
+    const data = MsgUpdateParams.encode(request).finish();
+    const promise = this.rpc.request(this.service, "UpdateParams", data);
+    return promise.then((data) => MsgUpdateParamsResponse.decode(_m0.Reader.create(data)));
+  }
+
   SubmitEncryptedTx(request: MsgSubmitEncryptedTx): Promise<MsgSubmitEncryptedTxResponse> {
     const data = MsgSubmitEncryptedTx.encode(request).finish();
     const promise = this.rpc.request(this.service, "SubmitEncryptedTx", data);
+    return promise.then((data) => MsgSubmitEncryptedTxResponse.decode(_m0.Reader.create(data)));
+  }
+
+  SubmitGeneralEncryptedTx(request: MsgSubmitGeneralEncryptedTx): Promise<MsgSubmitEncryptedTxResponse> {
+    const data = MsgSubmitGeneralEncryptedTx.encode(request).finish();
+    const promise = this.rpc.request(this.service, "SubmitGeneralEncryptedTx", data);
     return promise.then((data) => MsgSubmitEncryptedTxResponse.decode(_m0.Reader.create(data)));
   }
 

@@ -83,17 +83,6 @@ export enum ContractCodeHistoryOperationType {
   CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS = "CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS",
 }
 
-export interface ContractInfo {
-  /** @format uint64 */
-  code_id?: string;
-  creator?: string;
-  admin?: string;
-  label?: string;
-  created?: { block_height?: string; tx_index?: string };
-  ibc_port_id?: string;
-  extension?: { "@type"?: string };
-}
-
 export interface Model {
   /** @format byte */
   key?: string;
@@ -121,22 +110,6 @@ export interface PageResponse {
 
   /** @format uint64 */
   total?: string;
-}
-
-export interface Params {
-  code_upload_access?: {
-    permission?:
-      | "ACCESS_TYPE_UNSPECIFIED"
-      | "ACCESS_TYPE_NOBODY"
-      | "ACCESS_TYPE_EVERYBODY"
-      | "ACCESS_TYPE_ANY_OF_ADDRESSES";
-    addresses?: string[];
-  };
-  instantiate_default_permission?:
-    | "ACCESS_TYPE_UNSPECIFIED"
-    | "ACCESS_TYPE_NOBODY"
-    | "ACCESS_TYPE_EVERYBODY"
-    | "ACCESS_TYPE_ANY_OF_ADDRESSES";
 }
 
 export interface QueryAllContractStateResponse {
@@ -250,6 +223,33 @@ export interface QuerySmartContractStateResponse {
   data?: string;
 }
 
+export interface V1ContractInfo {
+  /** @format uint64 */
+  code_id?: string;
+  creator?: string;
+  admin?: string;
+  label?: string;
+  created?: { block_height?: string; tx_index?: string };
+  ibc_port_id?: string;
+  extension?: { "@type"?: string };
+}
+
+export interface V1Params {
+  code_upload_access?: {
+    permission?:
+      | "ACCESS_TYPE_UNSPECIFIED"
+      | "ACCESS_TYPE_NOBODY"
+      | "ACCESS_TYPE_EVERYBODY"
+      | "ACCESS_TYPE_ANY_OF_ADDRESSES";
+    addresses?: string[];
+  };
+  instantiate_default_permission?:
+    | "ACCESS_TYPE_UNSPECIFIED"
+    | "ACCESS_TYPE_NOBODY"
+    | "ACCESS_TYPE_EVERYBODY"
+    | "ACCESS_TYPE_ANY_OF_ADDRESSES";
+}
+
 export interface Coin {
   denom?: string;
   amount?: string;
@@ -327,6 +327,22 @@ export type MsgUpdateContractLabelResponse = object;
 export type MsgUpdateInstantiateConfigResponse = object;
 
 export type MsgUpdateParamsResponse = object;
+
+export interface Params {
+  code_upload_access?: {
+    permission?:
+      | "ACCESS_TYPE_UNSPECIFIED"
+      | "ACCESS_TYPE_NOBODY"
+      | "ACCESS_TYPE_EVERYBODY"
+      | "ACCESS_TYPE_ANY_OF_ADDRESSES";
+    addresses?: string[];
+  };
+  instantiate_default_permission?:
+    | "ACCESS_TYPE_UNSPECIFIED"
+    | "ACCESS_TYPE_NOBODY"
+    | "ACCESS_TYPE_EVERYBODY"
+    | "ACCESS_TYPE_ANY_OF_ADDRESSES";
+}
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 

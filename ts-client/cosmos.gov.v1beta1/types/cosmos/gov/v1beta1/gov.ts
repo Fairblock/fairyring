@@ -87,25 +87,20 @@ export enum ProposalStatus {
    */
   PROPOSAL_STATUS_VOTING_PERIOD = 2,
   /**
-   * PROPOSAL_STATUS_TALLY_PERIOD - PROPOSAL_STATUS_TALLY_PERIOD defines a proposal status during the tally
-   * period.
-   */
-  PROPOSAL_STATUS_TALLY_PERIOD = 3,
-  /**
    * PROPOSAL_STATUS_PASSED - PROPOSAL_STATUS_PASSED defines a proposal status of a proposal that has
    * passed.
    */
-  PROPOSAL_STATUS_PASSED = 4,
+  PROPOSAL_STATUS_PASSED = 3,
   /**
    * PROPOSAL_STATUS_REJECTED - PROPOSAL_STATUS_REJECTED defines a proposal status of a proposal that has
    * been rejected.
    */
-  PROPOSAL_STATUS_REJECTED = 5,
+  PROPOSAL_STATUS_REJECTED = 4,
   /**
    * PROPOSAL_STATUS_FAILED - PROPOSAL_STATUS_FAILED defines a proposal status of a proposal that has
    * failed.
    */
-  PROPOSAL_STATUS_FAILED = 6,
+  PROPOSAL_STATUS_FAILED = 5,
   UNRECOGNIZED = -1,
 }
 
@@ -121,15 +116,12 @@ export function proposalStatusFromJSON(object: any): ProposalStatus {
     case "PROPOSAL_STATUS_VOTING_PERIOD":
       return ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD;
     case 3:
-    case "PROPOSAL_STATUS_TALLY_PERIOD":
-      return ProposalStatus.PROPOSAL_STATUS_TALLY_PERIOD;
-    case 4:
     case "PROPOSAL_STATUS_PASSED":
       return ProposalStatus.PROPOSAL_STATUS_PASSED;
-    case 5:
+    case 4:
     case "PROPOSAL_STATUS_REJECTED":
       return ProposalStatus.PROPOSAL_STATUS_REJECTED;
-    case 6:
+    case 5:
     case "PROPOSAL_STATUS_FAILED":
       return ProposalStatus.PROPOSAL_STATUS_FAILED;
     case -1:
@@ -147,8 +139,6 @@ export function proposalStatusToJSON(object: ProposalStatus): string {
       return "PROPOSAL_STATUS_DEPOSIT_PERIOD";
     case ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD:
       return "PROPOSAL_STATUS_VOTING_PERIOD";
-    case ProposalStatus.PROPOSAL_STATUS_TALLY_PERIOD:
-      return "PROPOSAL_STATUS_TALLY_PERIOD";
     case ProposalStatus.PROPOSAL_STATUS_PASSED:
       return "PROPOSAL_STATUS_PASSED";
     case ProposalStatus.PROPOSAL_STATUS_REJECTED:
@@ -313,8 +303,6 @@ export interface TallyParams {
    * vetoed. Default value: 1/3.
    */
   vetoThreshold: Uint8Array;
-  /** Duration of the tally period. */
-  tallyPeriod: Duration | undefined;
 }
 
 function createBaseWeightedVoteOption(): WeightedVoteOption {
@@ -1185,12 +1173,7 @@ export const VotingParams = {
 };
 
 function createBaseTallyParams(): TallyParams {
-  return {
-    quorum: new Uint8Array(0),
-    threshold: new Uint8Array(0),
-    vetoThreshold: new Uint8Array(0),
-    tallyPeriod: undefined,
-  };
+  return { quorum: new Uint8Array(0), threshold: new Uint8Array(0), vetoThreshold: new Uint8Array(0) };
 }
 
 export const TallyParams = {
@@ -1203,9 +1186,6 @@ export const TallyParams = {
     }
     if (message.vetoThreshold.length !== 0) {
       writer.uint32(26).bytes(message.vetoThreshold);
-    }
-    if (message.tallyPeriod !== undefined) {
-      Duration.encode(message.tallyPeriod, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -1238,13 +1218,6 @@ export const TallyParams = {
 
           message.vetoThreshold = reader.bytes();
           continue;
-        case 4:
-          if (tag !== 34) {
-            break;
-          }
-
-          message.tallyPeriod = Duration.decode(reader, reader.uint32());
-          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1259,7 +1232,6 @@ export const TallyParams = {
       quorum: isSet(object.quorum) ? bytesFromBase64(object.quorum) : new Uint8Array(0),
       threshold: isSet(object.threshold) ? bytesFromBase64(object.threshold) : new Uint8Array(0),
       vetoThreshold: isSet(object.vetoThreshold) ? bytesFromBase64(object.vetoThreshold) : new Uint8Array(0),
-      tallyPeriod: isSet(object.tallyPeriod) ? Duration.fromJSON(object.tallyPeriod) : undefined,
     };
   },
 
@@ -1274,9 +1246,6 @@ export const TallyParams = {
     if (message.vetoThreshold.length !== 0) {
       obj.vetoThreshold = base64FromBytes(message.vetoThreshold);
     }
-    if (message.tallyPeriod !== undefined) {
-      obj.tallyPeriod = Duration.toJSON(message.tallyPeriod);
-    }
     return obj;
   },
 
@@ -1288,9 +1257,6 @@ export const TallyParams = {
     message.quorum = object.quorum ?? new Uint8Array(0);
     message.threshold = object.threshold ?? new Uint8Array(0);
     message.vetoThreshold = object.vetoThreshold ?? new Uint8Array(0);
-    message.tallyPeriod = (object.tallyPeriod !== undefined && object.tallyPeriod !== null)
-      ? Duration.fromPartial(object.tallyPeriod)
-      : undefined;
     return message;
   },
 };
