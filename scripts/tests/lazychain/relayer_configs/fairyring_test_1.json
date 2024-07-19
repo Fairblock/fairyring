@@ -1,0 +1,16 @@
+{
+  "type": "cosmos",
+  "value": {
+    "key": "default",
+    "chain-id": "fairyring_test_1",
+    "rpc-addr": "http://localhost:16657",
+    "account-prefix": "fairy",
+    "keyring-backend": "test",
+    "gas-adjustment": 1.2,
+    "gas-prices": "10ufairy",
+    "debug": true,
+    "timeout": "20s",
+    "output-format": "json",
+    "sign-mode": "direct"
+  }
+}

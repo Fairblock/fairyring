@@ -1,0 +1,16 @@
+{
+  "type": "cosmos",
+  "value": {
+    "key": "default",
+    "chain-id": "lazychain_pep",
+    "rpc-addr": "http://localhost:26657",
+    "account-prefix": "lazy",
+    "keyring-backend": "test",
+    "gas-adjustment": 1.2,
+    "gas-prices": "10ulazy",
+    "debug": true,
+    "timeout": "20s",
+    "output-format": "json",
+    "sign-mode": "direct"
+  }
+}

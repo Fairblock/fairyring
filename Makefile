@@ -239,6 +239,47 @@ clean-testing-data:
 	@echo "Killing fairyringd and removing previous data"
 	-@rm -rf ./data
 	-@killall fairyringd 2>/dev/null
+
+clean-lazychain-testing-data:
+	@echo "Killing fairyringd, lazychaind, celestia, go relayer, hermes relayer and removing fairyring previous data"
+	-@rm -rf ./data
+	-@killall fairyringd 2>/dev/null
+	-@killall lazychaind 2>/dev/null
+	-@killall celestia 2>/dev/null
+	-@killall hermes 2>/dev/null
+	-@killall rly 2>/dev/null
+
+init-chains: clean-lazychain-testing-data
+	@echo "Initializing fairyring..."
+	./scripts/tests/lazychain/init_fairyring.sh
+	@sleep 5
+	@echo "Initializing celestia..."
+	./scripts/tests/lazychain/celestia.sh
+	@sleep 10
+	@echo "Initializing lazychain..."
+	./scripts/tests/lazychain/init_lazychain.sh
+	@sleep 5
+
+setup-relayer:
+	@echo "Setting up relayer client & connection..."
+	./scripts/tests/lazychain/relayer.sh
+	@sleep 5
+
+start-keyshare-test:
+	@echo "Starting keyshare test from fairyring..."
+	./scripts/tests/lazychain/keyshare.sh
+
+integration-test-lazychain: init-chains \
+	setup-relayer \
+	start-keyshare-test
+	@echo "Killing fairyringd, lazychaind, celestia, go relayer, hermes relayer and removing fairyring previous data"
+	-@rm -rf ./data
+	-@killall fairyringd 2>/dev/null
+	-@killall lazychaind 2>/dev/null
+	-@killall celestia 2>/dev/null
+	-@killall hermes 2>/dev/null
+	-@killall rly 2>/dev/null
+
 ###############################################################################
 ###                           Tests & Simulation                            ###
 ###############################################################################
