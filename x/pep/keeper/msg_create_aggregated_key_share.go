@@ -48,6 +48,11 @@ func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.Ms
 		return nil, errors.New("active key not found")
 	}
 
+	if len(ak.PublicKey) == 0 {
+		k.Logger().Error("Active key not found")
+		return nil, errors.New("active key not found")
+	}
+
 	keyByte, _ := hex.DecodeString(msg.Data)
 	publicKeyByte, _ := hex.DecodeString(ak.PublicKey)
 
