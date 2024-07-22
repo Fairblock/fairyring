@@ -1,6 +1,6 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
-import { BlockParams, EvidenceParams, ValidatorParams } from "../../../tendermint/types/params";
+import { ABCIParams, BlockParams, EvidenceParams, ValidatorParams } from "../../../tendermint/types/params";
 
 export const protobufPackage = "cosmos.consensus.v1";
 
@@ -19,7 +19,11 @@ export interface MsgUpdateParams {
    */
   block: BlockParams | undefined;
   evidence: EvidenceParams | undefined;
-  validator: ValidatorParams | undefined;
+  validator:
+    | ValidatorParams
+    | undefined;
+  /** Since: cosmos-sdk 0.50 */
+  abci: ABCIParams | undefined;
 }
 
 /**
@@ -30,7 +34,7 @@ export interface MsgUpdateParamsResponse {
 }
 
 function createBaseMsgUpdateParams(): MsgUpdateParams {
-  return { authority: "", block: undefined, evidence: undefined, validator: undefined };
+  return { authority: "", block: undefined, evidence: undefined, validator: undefined, abci: undefined };
 }
 
 export const MsgUpdateParams = {
@@ -46,6 +50,9 @@ export const MsgUpdateParams = {
     }
     if (message.validator !== undefined) {
       ValidatorParams.encode(message.validator, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.abci !== undefined) {
+      ABCIParams.encode(message.abci, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -85,6 +92,13 @@ export const MsgUpdateParams = {
 
           message.validator = ValidatorParams.decode(reader, reader.uint32());
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.abci = ABCIParams.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -100,6 +114,7 @@ export const MsgUpdateParams = {
       block: isSet(object.block) ? BlockParams.fromJSON(object.block) : undefined,
       evidence: isSet(object.evidence) ? EvidenceParams.fromJSON(object.evidence) : undefined,
       validator: isSet(object.validator) ? ValidatorParams.fromJSON(object.validator) : undefined,
+      abci: isSet(object.abci) ? ABCIParams.fromJSON(object.abci) : undefined,
     };
   },
 
@@ -116,6 +131,9 @@ export const MsgUpdateParams = {
     }
     if (message.validator !== undefined) {
       obj.validator = ValidatorParams.toJSON(message.validator);
+    }
+    if (message.abci !== undefined) {
+      obj.abci = ABCIParams.toJSON(message.abci);
     }
     return obj;
   },
@@ -134,6 +152,9 @@ export const MsgUpdateParams = {
       : undefined;
     message.validator = (object.validator !== undefined && object.validator !== null)
       ? ValidatorParams.fromPartial(object.validator)
+      : undefined;
+    message.abci = (object.abci !== undefined && object.abci !== null)
+      ? ABCIParams.fromPartial(object.abci)
       : undefined;
     return message;
   },
@@ -182,10 +203,10 @@ export const MsgUpdateParamsResponse = {
   },
 };
 
-/** Msg defines the bank Msg service. */
+/** Msg defines the consensus Msg service. */
 export interface Msg {
   /**
-   * UpdateParams defines a governance operation for updating the x/consensus_param module parameters.
+   * UpdateParams defines a governance operation for updating the x/consensus module parameters.
    * The authority is defined in the keeper.
    *
    * Since: cosmos-sdk 0.47

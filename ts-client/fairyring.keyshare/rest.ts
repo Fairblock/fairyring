@@ -29,55 +29,12 @@ export interface ActivePubKey {
 
   /** @format uint64 */
   numberOfValidators?: string;
+  encryptedKeyShares?: { data?: string; validator?: string }[];
 }
 
-export interface AggregatedKeyShare {
-  /** @format uint64 */
-  height?: string;
+export interface EncryptedKeyShare {
   data?: string;
-}
-
-export interface AuthorizedAddress {
-  target?: string;
-  isAuthorized?: boolean;
-  authorizedBy?: string;
-}
-
-export interface Commitments {
-  commitments?: string[];
-}
-
-export interface GeneralKeyShare {
   validator?: string;
-  idType?: string;
-  idValue?: string;
-  keyShare?: string;
-
-  /** @format uint64 */
-  keyShareIndex?: string;
-
-  /** @format uint64 */
-  receivedTimestamp?: string;
-
-  /** @format uint64 */
-  receivedBlockHeight?: string;
-}
-
-export interface KeyShare {
-  validator?: string;
-
-  /** @format uint64 */
-  blockHeight?: string;
-  keyShare?: string;
-
-  /** @format uint64 */
-  keyShareIndex?: string;
-
-  /** @format uint64 */
-  receivedTimestamp?: string;
-
-  /** @format uint64 */
-  receivedBlockHeight?: string;
 }
 
 export interface PageRequest {
@@ -99,24 +56,6 @@ export interface PageResponse {
 
   /** @format uint64 */
   total?: string;
-}
-
-export interface Params {
-  /** @format uint64 */
-  key_expiry?: string;
-  trusted_addresses?: string[];
-
-  /** @format byte */
-  slash_fraction_no_keyshare?: string;
-
-  /** @format byte */
-  slash_fraction_wrong_keyshare?: string;
-
-  /** @format uint64 */
-  minimum_bonded?: string;
-
-  /** @format uint64 */
-  max_idled_block?: string;
 }
 
 export interface QueryAllAggregatedKeyShareResponse {
@@ -202,17 +141,36 @@ export interface QueryGetValidatorSetResponse {
 export interface QueryParamsResponse {
   params?: {
     key_expiry?: string;
+    minimum_bonded?: string;
+    max_idled_block?: string;
     trusted_addresses?: string[];
     slash_fraction_no_keyshare?: string;
     slash_fraction_wrong_keyshare?: string;
-    minimum_bonded?: string;
-    max_idled_block?: string;
   };
 }
 
 export interface QueryPubKeyResponse {
-  activePubKey?: { publicKey?: string; creator?: string; expiry?: string; numberOfValidators?: string };
-  queuedPubKey?: { publicKey?: string; creator?: string; expiry?: string; numberOfValidators?: string };
+  activePubKey?: {
+    publicKey?: string;
+    creator?: string;
+    expiry?: string;
+    numberOfValidators?: string;
+    encryptedKeyShares?: { data?: string; validator?: string }[];
+  };
+  queuedPubKey?: {
+    publicKey?: string;
+    creator?: string;
+    expiry?: string;
+    numberOfValidators?: string;
+    encryptedKeyShares?: { data?: string; validator?: string }[];
+  };
+}
+
+export interface QueryVerifiableRandomnessResponse {
+  randomness?: string;
+
+  /** @format uint64 */
+  round?: string;
 }
 
 export interface QueuedPubKey {
@@ -224,9 +182,77 @@ export interface QueuedPubKey {
 
   /** @format uint64 */
   numberOfValidators?: string;
+  encryptedKeyShares?: { data?: string; validator?: string }[];
 }
 
-export interface ValidatorSet {
+export interface KeyshareAggregatedKeyShare {
+  /** @format uint64 */
+  height?: string;
+  data?: string;
+}
+
+export interface KeyshareAuthorizedAddress {
+  target?: string;
+  isAuthorized?: boolean;
+  authorizedBy?: string;
+}
+
+export interface KeyshareCommitments {
+  commitments?: string[];
+}
+
+export interface KeyshareGeneralKeyShare {
+  validator?: string;
+  idType?: string;
+  idValue?: string;
+  keyShare?: string;
+
+  /** @format uint64 */
+  keyShareIndex?: string;
+
+  /** @format uint64 */
+  receivedTimestamp?: string;
+
+  /** @format uint64 */
+  receivedBlockHeight?: string;
+}
+
+export interface KeyshareKeyShare {
+  validator?: string;
+
+  /** @format uint64 */
+  blockHeight?: string;
+  keyShare?: string;
+
+  /** @format uint64 */
+  keyShareIndex?: string;
+
+  /** @format uint64 */
+  receivedTimestamp?: string;
+
+  /** @format uint64 */
+  receivedBlockHeight?: string;
+}
+
+export interface KeyshareParams {
+  /** @format uint64 */
+  key_expiry?: string;
+
+  /** @format uint64 */
+  minimum_bonded?: string;
+
+  /** @format uint64 */
+  max_idled_block?: string;
+  trusted_addresses?: string[];
+
+  /** @format byte */
+  slash_fraction_no_keyshare?: string;
+
+  /** @format byte */
+  slash_fraction_wrong_keyshare?: string;
+}
+
+export interface KeyshareValidatorSet {
   index?: string;
   validator?: string;
   consAddr?: string;
@@ -252,7 +278,13 @@ export interface MsgCreateGeneralKeyShareResponse {
 
 export type MsgCreateLatestPubKeyResponse = object;
 
+export interface MsgDeRegisterValidatorResponse {
+  creator?: string;
+}
+
 export type MsgDeleteAuthorizedAddressResponse = object;
+
+export type MsgOverrideLatestPubKeyResponse = object;
 
 export interface MsgRegisterValidatorResponse {
   creator?: string;
@@ -275,6 +307,26 @@ export interface MsgSendKeyshareResponse {
 }
 
 export type MsgUpdateAuthorizedAddressResponse = object;
+
+export type MsgUpdateParamsResponse = object;
+
+export interface Params {
+  /** @format uint64 */
+  key_expiry?: string;
+
+  /** @format uint64 */
+  minimum_bonded?: string;
+
+  /** @format uint64 */
+  max_idled_block?: string;
+  trusted_addresses?: string[];
+
+  /** @format byte */
+  slash_fraction_no_keyshare?: string;
+
+  /** @format byte */
+  slash_fraction_wrong_keyshare?: string;
+}
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
@@ -648,11 +700,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       {
         params?: {
           key_expiry?: string;
+          minimum_bonded?: string;
+          max_idled_block?: string;
           trusted_addresses?: string[];
           slash_fraction_no_keyshare?: string;
           slash_fraction_wrong_keyshare?: string;
-          minimum_bonded?: string;
-          max_idled_block?: string;
         };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
@@ -672,8 +724,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryPubKey = (params: RequestParams = {}) =>
     this.request<
       {
-        activePubKey?: { publicKey?: string; creator?: string; expiry?: string; numberOfValidators?: string };
-        queuedPubKey?: { publicKey?: string; creator?: string; expiry?: string; numberOfValidators?: string };
+        activePubKey?: {
+          publicKey?: string;
+          creator?: string;
+          expiry?: string;
+          numberOfValidators?: string;
+          encryptedKeyShares?: { data?: string; validator?: string }[];
+        };
+        queuedPubKey?: {
+          publicKey?: string;
+          creator?: string;
+          expiry?: string;
+          numberOfValidators?: string;
+          encryptedKeyShares?: { data?: string; validator?: string }[];
+        };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
@@ -725,6 +789,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
       path: `/fairyring/keyshare/validator_set/${index}`,
+      method: "GET",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryVerifiableRandomness
+   * @request GET:/fairyring/keyshare/verifiable_randomness
+   */
+  queryVerifiableRandomness = (params: RequestParams = {}) =>
+    this.request<
+      { randomness?: string; round?: string },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
+      path: `/fairyring/keyshare/verifiable_randomness`,
       method: "GET",
       ...params,
     });

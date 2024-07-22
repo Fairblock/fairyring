@@ -9,61 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-export interface Any {
-  "@type"?: string;
-}
-
-export interface BlockParams {
-  /** @format int64 */
-  max_bytes?: string;
-
-  /** @format int64 */
-  max_gas?: string;
-}
-
-export interface ConsensusParams {
-  block?: { max_bytes?: string; max_gas?: string };
-  evidence?: { max_age_num_blocks?: string; max_age_duration?: string; max_bytes?: string };
-  validator?: { pub_key_types?: string[] };
-  version?: { app?: string };
-}
-
-export interface EvidenceParams {
-  /** @format int64 */
-  max_age_num_blocks?: string;
-  max_age_duration?: string;
-
-  /** @format int64 */
-  max_bytes?: string;
-}
-
-export interface QueryParamsResponse {
-  params?: {
-    block?: { max_bytes?: string; max_gas?: string };
-    evidence?: { max_age_num_blocks?: string; max_age_duration?: string; max_bytes?: string };
-    validator?: { pub_key_types?: string[] };
-    version?: { app?: string };
-  };
-}
-
-export interface Status {
-  /** @format int32 */
-  code?: number;
-  message?: string;
-  details?: { "@type"?: string }[];
-}
-
-export interface ValidatorParams {
-  pub_key_types?: string[];
-}
-
-export interface VersionParams {
-  /** @format uint64 */
-  app?: string;
-}
-
-export type MsgUpdateParamsResponse = object;
-
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
@@ -187,28 +132,4 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title HTTP API Console cosmos.consensus.v1
  */
-export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryParams
-   * @request GET:/cosmos/consensus/v1/params
-   */
-  queryParams = (params: RequestParams = {}) =>
-    this.request<
-      {
-        params?: {
-          block?: { max_bytes?: string; max_gas?: string };
-          evidence?: { max_age_num_blocks?: string; max_age_duration?: string; max_bytes?: string };
-          validator?: { pub_key_types?: string[] };
-          version?: { app?: string };
-        };
-      },
-      { code?: number; message?: string; details?: { "@type"?: string }[] }
-    >({
-      path: `/cosmos/consensus/v1/params`,
-      method: "GET",
-      ...params,
-    });
-}
+export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {}

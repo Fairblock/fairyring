@@ -865,35 +865,6 @@ definitions:
       - CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE
       - CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS
     default: CONTRACT_CODE_HISTORY_OPERATION_TYPE_UNSPECIFIED
-  ContractInfo:
-    type: object
-    properties:
-      code_id:
-        type: string
-        format: uint64
-      creator:
-        type: string
-      admin:
-        type: string
-      label:
-        type: string
-      created:
-        type: object
-        properties:
-          block_height:
-            type: string
-            format: uint64
-          tx_index:
-            type: string
-            format: uint64
-      ibc_port_id:
-        type: string
-      extension:
-        type: object
-        properties:
-          '@type':
-            type: string
-        additionalProperties: {}
   Model:
     type: object
     properties:
@@ -928,32 +899,6 @@ definitions:
       total:
         type: string
         format: uint64
-  Params:
-    type: object
-    properties:
-      code_upload_access:
-        type: object
-        properties:
-          permission:
-            type: string
-            enum:
-              - ACCESS_TYPE_UNSPECIFIED
-              - ACCESS_TYPE_NOBODY
-              - ACCESS_TYPE_EVERYBODY
-              - ACCESS_TYPE_ANY_OF_ADDRESSES
-            default: ACCESS_TYPE_UNSPECIFIED
-          addresses:
-            type: array
-            items:
-              type: string
-      instantiate_default_permission:
-        type: string
-        enum:
-          - ACCESS_TYPE_UNSPECIFIED
-          - ACCESS_TYPE_NOBODY
-          - ACCESS_TYPE_EVERYBODY
-          - ACCESS_TYPE_ANY_OF_ADDRESSES
-        default: ACCESS_TYPE_UNSPECIFIED
   QueryAllContractStateResponse:
     type: object
     properties:
@@ -1213,6 +1158,61 @@ definitions:
       data:
         type: string
         format: byte
+  v1.ContractInfo:
+    type: object
+    properties:
+      code_id:
+        type: string
+        format: uint64
+      creator:
+        type: string
+      admin:
+        type: string
+      label:
+        type: string
+      created:
+        type: object
+        properties:
+          block_height:
+            type: string
+            format: uint64
+          tx_index:
+            type: string
+            format: uint64
+      ibc_port_id:
+        type: string
+      extension:
+        type: object
+        properties:
+          '@type':
+            type: string
+        additionalProperties: {}
+  v1.Params:
+    type: object
+    properties:
+      code_upload_access:
+        type: object
+        properties:
+          permission:
+            type: string
+            enum:
+              - ACCESS_TYPE_UNSPECIFIED
+              - ACCESS_TYPE_NOBODY
+              - ACCESS_TYPE_EVERYBODY
+              - ACCESS_TYPE_ANY_OF_ADDRESSES
+            default: ACCESS_TYPE_UNSPECIFIED
+          addresses:
+            type: array
+            items:
+              type: string
+      instantiate_default_permission:
+        type: string
+        enum:
+          - ACCESS_TYPE_UNSPECIFIED
+          - ACCESS_TYPE_NOBODY
+          - ACCESS_TYPE_EVERYBODY
+          - ACCESS_TYPE_ANY_OF_ADDRESSES
+        default: ACCESS_TYPE_UNSPECIFIED
   Coin:
     type: object
     properties:
@@ -1301,3 +1301,29 @@ definitions:
     type: object
   MsgUpdateParamsResponse:
     type: object
+  Params:
+    type: object
+    properties:
+      code_upload_access:
+        type: object
+        properties:
+          permission:
+            type: string
+            enum:
+              - ACCESS_TYPE_UNSPECIFIED
+              - ACCESS_TYPE_NOBODY
+              - ACCESS_TYPE_EVERYBODY
+              - ACCESS_TYPE_ANY_OF_ADDRESSES
+            default: ACCESS_TYPE_UNSPECIFIED
+          addresses:
+            type: array
+            items:
+              type: string
+      instantiate_default_permission:
+        type: string
+        enum:
+          - ACCESS_TYPE_UNSPECIFIED
+          - ACCESS_TYPE_NOBODY
+          - ACCESS_TYPE_EVERYBODY
+          - ACCESS_TYPE_ANY_OF_ADDRESSES
+        default: ACCESS_TYPE_UNSPECIFIED

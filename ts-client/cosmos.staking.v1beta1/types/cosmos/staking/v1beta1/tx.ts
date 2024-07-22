@@ -13,6 +13,13 @@ export interface MsgCreateValidator {
   description: Description | undefined;
   commission: CommissionRates | undefined;
   minSelfDelegation: string;
+  /**
+   * Deprecated: Use of Delegator Address in MsgCreateValidator is deprecated.
+   * The validator address bytes and delegator address bytes refer to the same account while creating validator (defer
+   * only in bech32 notation).
+   *
+   * @deprecated
+   */
   delegatorAddress: string;
   validatorAddress: string;
   pubkey: Any | undefined;
@@ -83,7 +90,15 @@ export interface MsgUndelegate {
 
 /** MsgUndelegateResponse defines the Msg/Undelegate response type. */
 export interface MsgUndelegateResponse {
-  completionTime: Date | undefined;
+  completionTime:
+    | Date
+    | undefined;
+  /**
+   * amount returns the amount of undelegated coins
+   *
+   * Since: cosmos-sdk 0.50
+   */
+  amount: Coin | undefined;
 }
 
 /**
@@ -879,13 +894,16 @@ export const MsgUndelegate = {
 };
 
 function createBaseMsgUndelegateResponse(): MsgUndelegateResponse {
-  return { completionTime: undefined };
+  return { completionTime: undefined, amount: undefined };
 }
 
 export const MsgUndelegateResponse = {
   encode(message: MsgUndelegateResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.completionTime !== undefined) {
       Timestamp.encode(toTimestamp(message.completionTime), writer.uint32(10).fork()).ldelim();
+    }
+    if (message.amount !== undefined) {
+      Coin.encode(message.amount, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -904,6 +922,13 @@ export const MsgUndelegateResponse = {
 
           message.completionTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.amount = Coin.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -914,13 +939,19 @@ export const MsgUndelegateResponse = {
   },
 
   fromJSON(object: any): MsgUndelegateResponse {
-    return { completionTime: isSet(object.completionTime) ? fromJsonTimestamp(object.completionTime) : undefined };
+    return {
+      completionTime: isSet(object.completionTime) ? fromJsonTimestamp(object.completionTime) : undefined,
+      amount: isSet(object.amount) ? Coin.fromJSON(object.amount) : undefined,
+    };
   },
 
   toJSON(message: MsgUndelegateResponse): unknown {
     const obj: any = {};
     if (message.completionTime !== undefined) {
       obj.completionTime = message.completionTime.toISOString();
+    }
+    if (message.amount !== undefined) {
+      obj.amount = Coin.toJSON(message.amount);
     }
     return obj;
   },
@@ -931,6 +962,9 @@ export const MsgUndelegateResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgUndelegateResponse>, I>>(object: I): MsgUndelegateResponse {
     const message = createBaseMsgUndelegateResponse();
     message.completionTime = object.completionTime ?? undefined;
+    message.amount = (object.amount !== undefined && object.amount !== null)
+      ? Coin.fromPartial(object.amount)
+      : undefined;
     return message;
   },
 };

@@ -101,11 +101,6 @@ definitions:
             '@type':
               type: string
           additionalProperties: {}
-  Params:
-    type: object
-    properties:
-      controller_enabled:
-        type: boolean
   QueryInterchainAccountResponse:
     type: object
     properties:
@@ -119,6 +114,11 @@ definitions:
         properties:
           controller_enabled:
             type: boolean
+  v1.Params:
+    type: object
+    properties:
+      controller_enabled:
+        type: boolean
   InterchainAccountPacketData:
     type: object
     properties:
@@ -146,6 +146,20 @@ definitions:
       sequence:
         type: string
         format: uint64
+  MsgUpdateParamsResponse:
+    type: object
+  Order:
+    type: string
+    enum:
+      - ORDER_NONE_UNSPECIFIED
+      - ORDER_UNORDERED
+      - ORDER_ORDERED
+    default: ORDER_NONE_UNSPECIFIED
+  controller.v1.Params:
+    type: object
+    properties:
+      controller_enabled:
+        type: boolean
   v1.Type:
     type: string
     enum:

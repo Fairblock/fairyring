@@ -1,7 +1,9 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { Order, orderFromJSON, orderToJSON } from "../../../../core/channel/v1/channel";
 import { InterchainAccountPacketData } from "../../v1/packet";
+import { Params } from "./controller";
 
 export const protobufPackage = "ibc.applications.interchain_accounts.controller.v1";
 
@@ -10,6 +12,7 @@ export interface MsgRegisterInterchainAccount {
   owner: string;
   connectionId: string;
   version: string;
+  ordering: Order;
 }
 
 /** MsgRegisterInterchainAccountResponse defines the response for Msg/RegisterAccount */
@@ -37,8 +40,24 @@ export interface MsgSendTxResponse {
   sequence: number;
 }
 
+/** MsgUpdateParams defines the payload for Msg/UpdateParams */
+export interface MsgUpdateParams {
+  /** signer address */
+  signer: string;
+  /**
+   * params defines the 27-interchain-accounts/controller parameters to update.
+   *
+   * NOTE: All parameters must be supplied.
+   */
+  params: Params | undefined;
+}
+
+/** MsgUpdateParamsResponse defines the response for Msg/UpdateParams */
+export interface MsgUpdateParamsResponse {
+}
+
 function createBaseMsgRegisterInterchainAccount(): MsgRegisterInterchainAccount {
-  return { owner: "", connectionId: "", version: "" };
+  return { owner: "", connectionId: "", version: "", ordering: 0 };
 }
 
 export const MsgRegisterInterchainAccount = {
@@ -51,6 +70,9 @@ export const MsgRegisterInterchainAccount = {
     }
     if (message.version !== "") {
       writer.uint32(26).string(message.version);
+    }
+    if (message.ordering !== 0) {
+      writer.uint32(32).int32(message.ordering);
     }
     return writer;
   },
@@ -83,6 +105,13 @@ export const MsgRegisterInterchainAccount = {
 
           message.version = reader.string();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.ordering = reader.int32() as any;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -97,6 +126,7 @@ export const MsgRegisterInterchainAccount = {
       owner: isSet(object.owner) ? String(object.owner) : "",
       connectionId: isSet(object.connectionId) ? String(object.connectionId) : "",
       version: isSet(object.version) ? String(object.version) : "",
+      ordering: isSet(object.ordering) ? orderFromJSON(object.ordering) : 0,
     };
   },
 
@@ -111,6 +141,9 @@ export const MsgRegisterInterchainAccount = {
     if (message.version !== "") {
       obj.version = message.version;
     }
+    if (message.ordering !== 0) {
+      obj.ordering = orderToJSON(message.ordering);
+    }
     return obj;
   },
 
@@ -122,6 +155,7 @@ export const MsgRegisterInterchainAccount = {
     message.owner = object.owner ?? "";
     message.connectionId = object.connectionId ?? "";
     message.version = object.version ?? "";
+    message.ordering = object.ordering ?? 0;
     return message;
   },
 };
@@ -367,12 +401,133 @@ export const MsgSendTxResponse = {
   },
 };
 
+function createBaseMsgUpdateParams(): MsgUpdateParams {
+  return { signer: "", params: undefined };
+}
+
+export const MsgUpdateParams = {
+  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.signer !== "") {
+      writer.uint32(10).string(message.signer);
+    }
+    if (message.params !== undefined) {
+      Params.encode(message.params, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateParams();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.signer = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.params = Params.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateParams {
+    return {
+      signer: isSet(object.signer) ? String(object.signer) : "",
+      params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
+    };
+  },
+
+  toJSON(message: MsgUpdateParams): unknown {
+    const obj: any = {};
+    if (message.signer !== "") {
+      obj.signer = message.signer;
+    }
+    if (message.params !== undefined) {
+      obj.params = Params.toJSON(message.params);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgUpdateParams>, I>>(base?: I): MsgUpdateParams {
+    return MsgUpdateParams.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateParams>, I>>(object: I): MsgUpdateParams {
+    const message = createBaseMsgUpdateParams();
+    message.signer = object.signer ?? "";
+    message.params = (object.params !== undefined && object.params !== null)
+      ? Params.fromPartial(object.params)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
+  return {};
+}
+
+export const MsgUpdateParamsResponse = {
+  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateParamsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateParamsResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdateParamsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgUpdateParamsResponse>, I>>(base?: I): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateParamsResponse>, I>>(_: I): MsgUpdateParamsResponse {
+    const message = createBaseMsgUpdateParamsResponse();
+    return message;
+  },
+};
+
 /** Msg defines the 27-interchain-accounts/controller Msg service. */
 export interface Msg {
   /** RegisterInterchainAccount defines a rpc handler for MsgRegisterInterchainAccount. */
   RegisterInterchainAccount(request: MsgRegisterInterchainAccount): Promise<MsgRegisterInterchainAccountResponse>;
   /** SendTx defines a rpc handler for MsgSendTx. */
   SendTx(request: MsgSendTx): Promise<MsgSendTxResponse>;
+  /** UpdateParams defines a rpc handler for MsgUpdateParams. */
+  UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse>;
 }
 
 export const MsgServiceName = "ibc.applications.interchain_accounts.controller.v1.Msg";
@@ -384,6 +539,7 @@ export class MsgClientImpl implements Msg {
     this.rpc = rpc;
     this.RegisterInterchainAccount = this.RegisterInterchainAccount.bind(this);
     this.SendTx = this.SendTx.bind(this);
+    this.UpdateParams = this.UpdateParams.bind(this);
   }
   RegisterInterchainAccount(request: MsgRegisterInterchainAccount): Promise<MsgRegisterInterchainAccountResponse> {
     const data = MsgRegisterInterchainAccount.encode(request).finish();
@@ -395,6 +551,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgSendTx.encode(request).finish();
     const promise = this.rpc.request(this.service, "SendTx", data);
     return promise.then((data) => MsgSendTxResponse.decode(_m0.Reader.create(data)));
+  }
+
+  UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
+    const data = MsgUpdateParams.encode(request).finish();
+    const promise = this.rpc.request(this.service, "UpdateParams", data);
+    return promise.then((data) => MsgUpdateParamsResponse.decode(_m0.Reader.create(data)));
   }
 }
 

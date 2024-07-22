@@ -228,6 +228,178 @@ paths:
           format: uint64
       tags:
         - Query
+  /fairyring/pep/keyshare:
+    get:
+      operationId: Query_KeyshareReqAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              keyshares:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    creator:
+                      type: string
+                    request_id:
+                      type: string
+                    identity:
+                      type: string
+                    pubkey:
+                      type: string
+                    tx_list:
+                      type: object
+                      properties:
+                        encryptedTx:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              identity:
+                                type: string
+                              index:
+                                type: string
+                                format: uint64
+                              data:
+                                type: string
+                              creator:
+                                type: string
+                              chargedGas:
+                                type: object
+                                properties:
+                                  denom:
+                                    type: string
+                                  amount:
+                                    type: string
+                    aggr_keyshare:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                  total:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /fairyring/pep/keyshare/{req_id}:
+    get:
+      operationId: Query_KeyshareReq
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              keyshare:
+                type: object
+                properties:
+                  creator:
+                    type: string
+                  request_id:
+                    type: string
+                  identity:
+                    type: string
+                  pubkey:
+                    type: string
+                  tx_list:
+                    type: object
+                    properties:
+                      encryptedTx:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            identity:
+                              type: string
+                            index:
+                              type: string
+                              format: uint64
+                            data:
+                              type: string
+                            creator:
+                              type: string
+                            chargedGas:
+                              type: object
+                              properties:
+                                denom:
+                                  type: string
+                                amount:
+                                  type: string
+                  aggr_keyshare:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: req_id
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /fairyring/pep/latest_height:
     get:
       operationId: Query_LatestHeight
@@ -272,6 +444,10 @@ paths:
               params:
                 type: object
                 properties:
+                  keyshare_channel_id:
+                    type: string
+                  is_source_chain:
+                    type: boolean
                   trusted_counter_parties:
                     type: array
                     items:
@@ -287,10 +463,6 @@ paths:
                     type: array
                     items:
                       type: string
-                  pep_channel_id:
-                    type: string
-                  keyshare_channel_id:
-                    type: string
                   min_gas_price:
                     type: object
                     properties:
@@ -298,8 +470,6 @@ paths:
                         type: string
                       amount:
                         type: string
-                  is_source_chain:
-                    type: boolean
         default:
           description: An unexpected error response.
           schema:
@@ -506,7 +676,7 @@ definitions:
             '@type':
               type: string
           additionalProperties: {}
-  ActivePubKey:
+  ActivePublicKey:
     type: object
     properties:
       publicKey:
@@ -523,31 +693,6 @@ definitions:
         type: string
       amount:
         type: string
-  EncryptedTx:
-    type: object
-    properties:
-      targetHeight:
-        type: string
-        format: uint64
-      index:
-        type: string
-        format: uint64
-      data:
-        type: string
-      creator:
-        type: string
-      chargedGas:
-        type: object
-        properties:
-          denom:
-            type: string
-          amount:
-            type: string
-      processedAtChainHeight:
-        type: string
-        format: uint64
-      expired:
-        type: boolean
   EncryptedTxArray:
     type: object
     properties:
@@ -578,6 +723,86 @@ definitions:
               format: uint64
             expired:
               type: boolean
+  GenEncTxExecutionQueue:
+    type: object
+    properties:
+      creator:
+        type: string
+      request_id:
+        type: string
+      identity:
+        type: string
+      pubkey:
+        type: string
+      tx_list:
+        type: object
+        properties:
+          encryptedTx:
+            type: array
+            items:
+              type: object
+              properties:
+                identity:
+                  type: string
+                index:
+                  type: string
+                  format: uint64
+                data:
+                  type: string
+                creator:
+                  type: string
+                chargedGas:
+                  type: object
+                  properties:
+                    denom:
+                      type: string
+                    amount:
+                      type: string
+      aggr_keyshare:
+        type: string
+  GeneralEncryptedTx:
+    type: object
+    properties:
+      identity:
+        type: string
+      index:
+        type: string
+        format: uint64
+      data:
+        type: string
+      creator:
+        type: string
+      chargedGas:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+  GeneralEncryptedTxArray:
+    type: object
+    properties:
+      encryptedTx:
+        type: array
+        items:
+          type: object
+          properties:
+            identity:
+              type: string
+            index:
+              type: string
+              format: uint64
+            data:
+              type: string
+            creator:
+              type: string
+            chargedGas:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
   PageRequest:
     type: object
     properties:
@@ -601,45 +826,6 @@ definitions:
         type: string
         format: byte
       total:
-        type: string
-        format: uint64
-  Params:
-    type: object
-    properties:
-      trusted_counter_parties:
-        type: array
-        items:
-          type: object
-          properties:
-            client_id:
-              type: string
-            connection_id:
-              type: string
-            channel_id:
-              type: string
-      trusted_addresses:
-        type: array
-        items:
-          type: string
-      pep_channel_id:
-        type: string
-      keyshare_channel_id:
-        type: string
-      min_gas_price:
-        type: object
-        properties:
-          denom:
-            type: string
-          amount:
-            type: string
-      is_source_chain:
-        type: boolean
-  PepNonce:
-    type: object
-    properties:
-      address:
-        type: string
-      nonce:
         type: string
         format: uint64
   QueryAllEncryptedTxFromHeightResponse:
@@ -719,6 +905,57 @@ definitions:
           total:
             type: string
             format: uint64
+  QueryAllKeyshareResponse:
+    type: object
+    properties:
+      keyshares:
+        type: array
+        items:
+          type: object
+          properties:
+            creator:
+              type: string
+            request_id:
+              type: string
+            identity:
+              type: string
+            pubkey:
+              type: string
+            tx_list:
+              type: object
+              properties:
+                encryptedTx:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      identity:
+                        type: string
+                      index:
+                        type: string
+                        format: uint64
+                      data:
+                        type: string
+                      creator:
+                        type: string
+                      chargedGas:
+                        type: object
+                        properties:
+                          denom:
+                            type: string
+                          amount:
+                            type: string
+            aggr_keyshare:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
   QueryAllPepNonceResponse:
     type: object
     properties:
@@ -780,6 +1017,46 @@ definitions:
           nonce:
             type: string
             format: uint64
+  QueryKeyshareResponse:
+    type: object
+    properties:
+      keyshare:
+        type: object
+        properties:
+          creator:
+            type: string
+          request_id:
+            type: string
+          identity:
+            type: string
+          pubkey:
+            type: string
+          tx_list:
+            type: object
+            properties:
+              encryptedTx:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    identity:
+                      type: string
+                    index:
+                      type: string
+                      format: uint64
+                    data:
+                      type: string
+                    creator:
+                      type: string
+                    chargedGas:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        amount:
+                          type: string
+          aggr_keyshare:
+            type: string
   QueryLatestHeightResponse:
     type: object
     properties:
@@ -792,6 +1069,10 @@ definitions:
       params:
         type: object
         properties:
+          keyshare_channel_id:
+            type: string
+          is_source_chain:
+            type: boolean
           trusted_counter_parties:
             type: array
             items:
@@ -807,10 +1088,6 @@ definitions:
             type: array
             items:
               type: string
-          pep_channel_id:
-            type: string
-          keyshare_channel_id:
-            type: string
           min_gas_price:
             type: object
             properties:
@@ -818,8 +1095,6 @@ definitions:
                 type: string
               amount:
                 type: string
-          is_source_chain:
-            type: boolean
   QueryPubKeyResponse:
     type: object
     properties:
@@ -843,7 +1118,7 @@ definitions:
           expiry:
             type: string
             format: uint64
-  QueuedPubKey:
+  QueuedPublicKey:
     type: object
     properties:
       publicKey:
@@ -862,6 +1137,68 @@ definitions:
         type: string
       channel_id:
         type: string
+  pep.EncryptedTx:
+    type: object
+    properties:
+      targetHeight:
+        type: string
+        format: uint64
+      index:
+        type: string
+        format: uint64
+      data:
+        type: string
+      creator:
+        type: string
+      chargedGas:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+      processedAtChainHeight:
+        type: string
+        format: uint64
+      expired:
+        type: boolean
+  pep.Params:
+    type: object
+    properties:
+      keyshare_channel_id:
+        type: string
+      is_source_chain:
+        type: boolean
+      trusted_counter_parties:
+        type: array
+        items:
+          type: object
+          properties:
+            client_id:
+              type: string
+            connection_id:
+              type: string
+            channel_id:
+              type: string
+      trusted_addresses:
+        type: array
+        items:
+          type: string
+      min_gas_price:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+  pep.PepNonce:
+    type: object
+    properties:
+      address:
+        type: string
+      nonce:
+        type: string
+        format: uint64
   MsgCreateAggregatedKeyShareResponse:
     type: object
   MsgGetGeneralKeyshareResponse:
@@ -869,9 +1206,38 @@ definitions:
   MsgRequestGeneralKeyshareResponse:
     type: object
     properties:
-      identity:
-        type: string
-      pubkey:
+      req_id:
         type: string
   MsgSubmitEncryptedTxResponse:
     type: object
+  MsgUpdateParamsResponse:
+    type: object
+  Params:
+    type: object
+    properties:
+      keyshare_channel_id:
+        type: string
+      is_source_chain:
+        type: boolean
+      trusted_counter_parties:
+        type: array
+        items:
+          type: object
+          properties:
+            client_id:
+              type: string
+            connection_id:
+              type: string
+            channel_id:
+              type: string
+      trusted_addresses:
+        type: array
+        items:
+          type: string
+      min_gas_price:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string

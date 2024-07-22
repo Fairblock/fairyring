@@ -25,11 +25,6 @@ export interface Coin {
   amount?: string;
 }
 
-export interface DenomTrace {
-  path?: string;
-  base_denom?: string;
-}
-
 export interface PageRequest {
   /** @format byte */
   key?: string;
@@ -49,11 +44,6 @@ export interface PageResponse {
 
   /** @format uint64 */
   total?: string;
-}
-
-export interface Params {
-  send_enabled?: boolean;
-  receive_enabled?: boolean;
 }
 
 export interface QueryDenomHashResponse {
@@ -81,6 +71,16 @@ export interface QueryTotalEscrowForDenomResponse {
   amount?: { denom?: string; amount?: string };
 }
 
+export interface V1DenomTrace {
+  path?: string;
+  base_denom?: string;
+}
+
+export interface V1Params {
+  send_enabled?: boolean;
+  receive_enabled?: boolean;
+}
+
 export interface Height {
   /** @format uint64 */
   revision_number?: string;
@@ -92,6 +92,13 @@ export interface Height {
 export interface MsgTransferResponse {
   /** @format uint64 */
   sequence?: string;
+}
+
+export type MsgUpdateParamsResponse = object;
+
+export interface TransferV1Params {
+  send_enabled?: boolean;
+  receive_enabled?: boolean;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";

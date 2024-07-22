@@ -42,47 +42,6 @@ export interface ClientConsensusStates {
 }
 
 /**
- * ClientUpdateProposal is a governance proposal. If it passes, the substitute
- * client's latest consensus state is copied over to the subject client. The proposal
- * handler may fail if the subject and the substitute do not match in client and
- * chain parameters (with exception to latest height, frozen height, and chain-id).
- */
-export interface ClientUpdateProposal {
-  /** the title of the update proposal */
-  title: string;
-  /** the description of the proposal */
-  description: string;
-  /** the client identifier for the client to be updated if the proposal passes */
-  subjectClientId: string;
-  /**
-   * the substitute client identifier for the client standing in for the subject
-   * client
-   */
-  substituteClientId: string;
-}
-
-/**
- * UpgradeProposal is a gov Content type for initiating an IBC breaking
- * upgrade.
- */
-export interface UpgradeProposal {
-  title: string;
-  description: string;
-  plan:
-    | Plan
-    | undefined;
-  /**
-   * An UpgradedClientState must be provided to perform an IBC breaking upgrade.
-   * This will make the chain commit to the correct upgraded (self) client state
-   * before the upgrade occurs, so that connecting chains can verify that the
-   * new upgraded client is valid by verifying a proof on the previous version
-   * of the chain. This will allow IBC connections to persist smoothly across
-   * planned chain upgrades
-   */
-  upgradedClientState: Any | undefined;
-}
-
-/**
  * Height is a monotonically increasing data type
  * that can be compared against another Height for the purposes of updating and
  * freezing clients
@@ -109,6 +68,55 @@ export interface Params {
    * of this client will be disabled until it is added again to the list.
    */
   allowedClients: string[];
+}
+
+/**
+ * ClientUpdateProposal is a legacy governance proposal. If it passes, the substitute
+ * client's latest consensus state is copied over to the subject client. The proposal
+ * handler may fail if the subject and the substitute do not match in client and
+ * chain parameters (with exception to latest height, frozen height, and chain-id).
+ *
+ * Deprecated: Please use MsgRecoverClient in favour of this message type.
+ *
+ * @deprecated
+ */
+export interface ClientUpdateProposal {
+  /** the title of the update proposal */
+  title: string;
+  /** the description of the proposal */
+  description: string;
+  /** the client identifier for the client to be updated if the proposal passes */
+  subjectClientId: string;
+  /**
+   * the substitute client identifier for the client standing in for the subject
+   * client
+   */
+  substituteClientId: string;
+}
+
+/**
+ * UpgradeProposal is a gov Content type for initiating an IBC breaking
+ * upgrade.
+ *
+ * Deprecated: Please use MsgIBCSoftwareUpgrade in favour of this message type.
+ *
+ * @deprecated
+ */
+export interface UpgradeProposal {
+  title: string;
+  description: string;
+  plan:
+    | Plan
+    | undefined;
+  /**
+   * An UpgradedClientState must be provided to perform an IBC breaking upgrade.
+   * This will make the chain commit to the correct upgraded (self) client state
+   * before the upgrade occurs, so that connecting chains can verify that the
+   * new upgraded client is valid by verifying a proof on the previous version
+   * of the chain. This will allow IBC connections to persist smoothly across
+   * planned chain upgrades
+   */
+  upgradedClientState: Any | undefined;
 }
 
 function createBaseIdentifiedClientState(): IdentifiedClientState {
@@ -341,6 +349,139 @@ export const ClientConsensusStates = {
   },
 };
 
+function createBaseHeight(): Height {
+  return { revisionNumber: 0, revisionHeight: 0 };
+}
+
+export const Height = {
+  encode(message: Height, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.revisionNumber !== 0) {
+      writer.uint32(8).uint64(message.revisionNumber);
+    }
+    if (message.revisionHeight !== 0) {
+      writer.uint32(16).uint64(message.revisionHeight);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Height {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseHeight();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.revisionNumber = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.revisionHeight = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Height {
+    return {
+      revisionNumber: isSet(object.revisionNumber) ? Number(object.revisionNumber) : 0,
+      revisionHeight: isSet(object.revisionHeight) ? Number(object.revisionHeight) : 0,
+    };
+  },
+
+  toJSON(message: Height): unknown {
+    const obj: any = {};
+    if (message.revisionNumber !== 0) {
+      obj.revisionNumber = Math.round(message.revisionNumber);
+    }
+    if (message.revisionHeight !== 0) {
+      obj.revisionHeight = Math.round(message.revisionHeight);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<Height>, I>>(base?: I): Height {
+    return Height.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<Height>, I>>(object: I): Height {
+    const message = createBaseHeight();
+    message.revisionNumber = object.revisionNumber ?? 0;
+    message.revisionHeight = object.revisionHeight ?? 0;
+    return message;
+  },
+};
+
+function createBaseParams(): Params {
+  return { allowedClients: [] };
+}
+
+export const Params = {
+  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.allowedClients) {
+      writer.uint32(10).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseParams();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.allowedClients.push(reader.string());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Params {
+    return {
+      allowedClients: Array.isArray(object?.allowedClients) ? object.allowedClients.map((e: any) => String(e)) : [],
+    };
+  },
+
+  toJSON(message: Params): unknown {
+    const obj: any = {};
+    if (message.allowedClients?.length) {
+      obj.allowedClients = message.allowedClients;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<Params>, I>>(base?: I): Params {
+    return Params.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
+    const message = createBaseParams();
+    message.allowedClients = object.allowedClients?.map((e) => e) || [];
+    return message;
+  },
+};
+
 function createBaseClientUpdateProposal(): ClientUpdateProposal {
   return { title: "", description: "", subjectClientId: "", substituteClientId: "" };
 }
@@ -547,139 +688,6 @@ export const UpgradeProposal = {
     message.upgradedClientState = (object.upgradedClientState !== undefined && object.upgradedClientState !== null)
       ? Any.fromPartial(object.upgradedClientState)
       : undefined;
-    return message;
-  },
-};
-
-function createBaseHeight(): Height {
-  return { revisionNumber: 0, revisionHeight: 0 };
-}
-
-export const Height = {
-  encode(message: Height, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.revisionNumber !== 0) {
-      writer.uint32(8).uint64(message.revisionNumber);
-    }
-    if (message.revisionHeight !== 0) {
-      writer.uint32(16).uint64(message.revisionHeight);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): Height {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseHeight();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.revisionNumber = longToNumber(reader.uint64() as Long);
-          continue;
-        case 2:
-          if (tag !== 16) {
-            break;
-          }
-
-          message.revisionHeight = longToNumber(reader.uint64() as Long);
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): Height {
-    return {
-      revisionNumber: isSet(object.revisionNumber) ? Number(object.revisionNumber) : 0,
-      revisionHeight: isSet(object.revisionHeight) ? Number(object.revisionHeight) : 0,
-    };
-  },
-
-  toJSON(message: Height): unknown {
-    const obj: any = {};
-    if (message.revisionNumber !== 0) {
-      obj.revisionNumber = Math.round(message.revisionNumber);
-    }
-    if (message.revisionHeight !== 0) {
-      obj.revisionHeight = Math.round(message.revisionHeight);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<Height>, I>>(base?: I): Height {
-    return Height.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<Height>, I>>(object: I): Height {
-    const message = createBaseHeight();
-    message.revisionNumber = object.revisionNumber ?? 0;
-    message.revisionHeight = object.revisionHeight ?? 0;
-    return message;
-  },
-};
-
-function createBaseParams(): Params {
-  return { allowedClients: [] };
-}
-
-export const Params = {
-  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.allowedClients) {
-      writer.uint32(10).string(v!);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseParams();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.allowedClients.push(reader.string());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): Params {
-    return {
-      allowedClients: Array.isArray(object?.allowedClients) ? object.allowedClients.map((e: any) => String(e)) : [],
-    };
-  },
-
-  toJSON(message: Params): unknown {
-    const obj: any = {};
-    if (message.allowedClients?.length) {
-      obj.allowedClients = message.allowedClients;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<Params>, I>>(base?: I): Params {
-    return Params.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
-    const message = createBaseParams();
-    message.allowedClients = object.allowedClients?.map((e) => e) || [];
     return message;
   },
 };
