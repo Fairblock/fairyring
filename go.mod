@@ -5,6 +5,7 @@ go 1.21.5
 toolchain go1.22.4
 
 replace (
+	cosmossdk.io/api => ../cosmos-api/api
 	github.com/CosmWasm/wasmd => ../wasmd
 	github.com/cosmos/cosmos-sdk => ../cosmos-sdk
 	// fix upstream GHSA-h395-qcrw-5vmq vulnerability.

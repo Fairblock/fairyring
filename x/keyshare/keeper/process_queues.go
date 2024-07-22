@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"errors"
-	"fmt"
 	"math"
 	"strconv"
 
@@ -111,21 +110,14 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 	reqs := k.govKeeper.GetAllReqQueueEntry(ctx)
 	for _, req := range reqs {
 		delay := req.EstimatedDelay
-		fmt.Println("\n\n\n\n Delay: ", delay, "\n\n\n\n")
 		blockDelay := uint64(math.Ceil(delay.Seconds() / types.AvgBlockTime))
-		fmt.Println("\n\n\n\n Block Delay: ", blockDelay, "\n\n\n\n")
 
 		currentHeight := uint64(ctx.BlockHeight())
 		executionHeight := currentHeight + blockDelay
 
-		fmt.Println("\n\n\n\n executionHeight: ", executionHeight, "\n\n\n\n")
-		fmt.Println("\n\n\n\n pubkey expiry: ", activePubKey.Expiry, "\n\n\n\n")
-
 		if executionHeight > activePubKey.Expiry {
 			queuedPubKey, found := k.GetQueuedPubKey(ctx)
 			if !found {
-				fmt.Println("\n\n\n\nestimated delay too long\n\n\n\n")
-				fmt.Println("\n\n\n\n PID: ", req.GetProposalId(), "\n\n\n\n")
 				k.govKeeper.RemoveReqQueueEntry(ctx, req.GetProposalId())
 				return errors.New("estimated delay too long")
 			}
@@ -163,13 +155,7 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 		proposal.Identity = id
 		proposal.Pubkey = keyshareRequest.Pubkey
 
-		fmt.Println("\n\n\n\nProposal: ", proposal, "\n\n\n\n")
-
-		err := k.govKeeper.SetProposal(ctx, proposal)
-		if err != nil {
-			fmt.Println("\n\n\n\n Proposal Set Failed: ", err, "\n\n\n\n")
-		}
-		fmt.Println("\n\n\n\n Proposal Set successfully\n\n\n\n")
+		k.govKeeper.SetProposal(ctx, proposal)
 
 		k.govKeeper.RemoveReqQueueEntry(ctx, req.GetProposalId())
 	}

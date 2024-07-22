@@ -132,7 +132,7 @@ while true; do
   echo $PUBKEY
   echo $ENCVOTE
 
-  RESULT=$(fairyringd tx gov vote-encrypted 1 $ENCVOTE --from $VAL1 --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 --keyring-backend test --gas-prices 1ufairy -o json -y)
+  RESULT=$(fairyringd tx gov vote-encrypted 1 $ENCVOTE --from $VAL1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
   echo "$RESULT"
   check_tx_err $RESULT
   if [ $? -eq 0 ]; then
@@ -188,7 +188,7 @@ sleep 5
 PROPOSAL=$(fairyringd q gov proposals --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq '.proposals[0]')
 STATUS=$(echo "$PROPOSAL" | jq -r '.status')
 
-if [ "$STATUS" != "PROPOSAL_STATUS_PASSED" ]; then
+if [ "$STATUS" != "3" ]; then
   echo "ERROR: Failed to pass proposal on source chain"
   echo "$PROPOSAL"
   exit 1
