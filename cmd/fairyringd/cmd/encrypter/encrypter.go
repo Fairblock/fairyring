@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+
 	enc "github.com/FairBlock/DistributedIBE/encryption"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/cosmos/cosmos-sdk/client"

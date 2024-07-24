@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
@@ -40,7 +39,6 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 		}
 
 		k.SetReqQueueEntry(ctx, entry)
-		fmt.Println("\n\n\n\n Request que entry set: ", entry, "\n\n\n\n")
 		// k.SetRequestCount(ctx, reqCount)
 
 		return &types.MsgRequestGeneralKeyshareResponse{

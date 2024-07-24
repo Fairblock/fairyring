@@ -40,9 +40,6 @@ func (im IBCModule) OnChanOpenInit(
 	counterparty channeltypes.Counterparty,
 	version string,
 ) (string, error) {
-
-	fmt.Println("\n\n\n\n OnChanOpenInit pep\n\n\n\n")
-
 	// Require portID is the portID module is bound to
 	boundPort := im.keeper.GetPort(ctx)
 	if boundPort != portID {
@@ -58,8 +55,6 @@ func (im IBCModule) OnChanOpenInit(
 		return "", err
 	}
 
-	fmt.Println("\n\n\n\n OnChanOpenInit pep\n\n\n\n", version)
-
 	return version, nil
 }
 
@@ -74,8 +69,6 @@ func (im IBCModule) OnChanOpenTry(
 	counterparty channeltypes.Counterparty,
 	counterpartyVersion string,
 ) (string, error) {
-
-	fmt.Println("\n\n\n\n OnChanOpenTry pep\n\n\n\n")
 	// Require portID is the portID module is bound to
 	boundPort := im.keeper.GetPort(ctx)
 	if boundPort != portID {
@@ -96,7 +89,6 @@ func (im IBCModule) OnChanOpenTry(
 			return "", err
 		}
 	}
-	fmt.Println("\n\n\n\n OnChanOpenTry pep \n\n\n\n")
 
 	return types.KeyshareVersion, nil
 }
@@ -109,12 +101,9 @@ func (im IBCModule) OnChanOpenAck(
 	_,
 	counterpartyVersion string,
 ) error {
-	fmt.Println("\n\n\n\n OnChanOpenAck pep\n\n\n\n")
-
 	if counterpartyVersion != types.KeyshareVersion {
 		return errorsmod.Wrapf(types.ErrInvalidVersion, "invalid counterparty version: %s, expected %s", counterpartyVersion, types.KeyshareVersion)
 	}
-	fmt.Println("\n\n\n\n OnChanOpenAck pep\n\n\n\n")
 
 	return nil
 }
@@ -125,8 +114,6 @@ func (im IBCModule) OnChanOpenConfirm(
 	portID,
 	channelID string,
 ) error {
-	fmt.Println("\n\n\n\n OnChanOpenConfirm pep\n\n\n\n")
-
 	return nil
 }
 

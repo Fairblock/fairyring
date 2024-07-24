@@ -181,7 +181,6 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	ibcRouter.AddRoute(keysharemoduletypes.ModuleName, keyshareStack)
 
 	// Add gov module to IBC Router
-	// fmt.Println("\n\n\n\n gov keeper: ", app.GovKeeper, "\n\n\n\n")
 	govIBCModule := ibcfee.NewIBCMiddleware(gov.NewIBCModule(app.GovKeeper), app.IBCFeeKeeper)
 	ibcRouter.AddRoute(govtypes.ModuleName, govIBCModule)
 
