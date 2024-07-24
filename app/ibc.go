@@ -4,6 +4,7 @@ import (
 	"cosmossdk.io/core/appmodule"
 	storetypes "cosmossdk.io/store/types"
 	"github.com/CosmWasm/wasmd/x/wasm"
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -14,6 +15,7 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	govv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
+	"github.com/cosmos/gogoproto/proto"
 	"github.com/cosmos/ibc-go/modules/capability"
 	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
@@ -184,8 +186,15 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	govIBCModule := ibcfee.NewIBCMiddleware(gov.NewIBCModule(app.GovKeeper), app.IBCFeeKeeper)
 	ibcRouter.AddRoute(govtypes.ModuleName, govIBCModule)
 
+	acceptList := map[string]proto.Message{
+		"/fairyring.keyshare.Query/VerifiableRandomness": &keysharemoduletypes.QueryVerifiableRandomnessResponse{},
+	}
+
 	// Add wasmd to IBC Router
-	wasmStack, err := app.registerWasmModules(appOpts)
+	wasmStack, err := app.registerWasmModules(appOpts, wasmkeeper.WithQueryPlugins(
+		&wasmkeeper.QueryPlugins{
+			Grpc: wasmkeeper.AcceptListGrpcQuerier(acceptList, app.GRPCQueryRouter(), app.appCodec),
+		}))
 	if err != nil {
 		return err
 	}
