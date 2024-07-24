@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"strconv"
 	"time"
 
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
@@ -22,30 +21,36 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	params := k.GetParams(ctx)
-	reqCountString := k.GetRequestCount(ctx)
-	fmt.Println("\n\n\n\nReq Count : ", reqCountString, "\n\n\n\n")
-	reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
-	reqCount = reqCount + 1
+	// reqCountString := k.GetRequestCount(ctx)
+	reqID, found := k.GetRequestId(ctx, msg.Creator, msg.ReqId)
+	if found || len(reqID.ReqId) != 0 {
+		return nil, types.ErrReqIDAlreadyExists
+	}
+
+	//fmt.Println("\n\n\n\nReq Count : ", reqCountString, "\n\n\n\n")
+	//reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
+	//reqCount = reqCount + 1
+	requestIDStr := types.GetReqIDStr(msg.Creator, msg.ReqId)
 
 	if params.IsSourceChain {
 		entry := commontypes.RequestAggrKeyshare{
 			Creator:        msg.Creator,
-			Id:             &commontypes.RequestAggrKeyshare_RequestId{RequestId: reqCountString},
+			Id:             &commontypes.RequestAggrKeyshare_RequestId{RequestId: requestIDStr},
 			EstimatedDelay: msg.EstimatedDelay,
 		}
 
 		k.SetReqQueueEntry(ctx, entry)
 		fmt.Println("\n\n\n\n Request que entry set: ", entry, "\n\n\n\n")
-		k.SetRequestCount(ctx, reqCount)
+		// k.SetRequestCount(ctx, reqCount)
 
 		return &types.MsgRequestGeneralKeyshareResponse{
-			ReqId: reqCountString,
+			ReqId: requestIDStr,
 		}, nil
 	} else {
 		packetData := kstypes.RequestAggrKeysharePacketData{
 			Requester: msg.Creator,
 			Id: &kstypes.RequestAggrKeysharePacketData_RequestId{
-				RequestId: reqCountString,
+				RequestId: requestIDStr,
 			},
 			EstimatedDelay: msg.EstimatedDelay,
 		}
@@ -61,18 +66,18 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 			uint64(timeoutTimestamp),
 		)
 
-		k.SetRequestCount(ctx, reqCount)
+		// k.SetRequestCount(ctx, reqCount)
 
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeRequestKeyshare,
 				sdk.NewAttribute(types.AttributeKeyCreator, msg.Creator),
-				sdk.NewAttribute(types.AttributeKeyRequestID, reqCountString),
+				sdk.NewAttribute(types.AttributeKeyRequestID, requestIDStr),
 			),
 		)
 
 		return &types.MsgRequestGeneralKeyshareResponse{
-			ReqId: reqCountString,
+			ReqId: requestIDStr,
 		}, nil
 	}
 }

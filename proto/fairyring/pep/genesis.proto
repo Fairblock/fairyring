@@ -9,6 +9,7 @@ import "fairyring/pep/encrypted_tx.proto";
 import "fairyring/pep/pep_nonce.proto";
 import "fairyring/pep/aggregated_key_share.proto";
 import "fairyring/common/shared_types.proto";
+import "fairyring/pep/request_id.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
@@ -16,16 +17,16 @@ option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 message GenesisState {
   
   // params defines all the parameters of the module.
-  Params params  = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
-  string port_id = 2;
-  repeated EncryptedTxArray       encryptedTxArray           = 3 [(gogoproto.nullable) = false];
-  repeated PepNonce               pepNonceList         = 4 [(gogoproto.nullable) = false];
-
+           Params           params           = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+           string           port_id          = 2;
+  repeated EncryptedTxArray encryptedTxArray = 3 [(gogoproto.nullable) = false] ;
+  repeated PepNonce         pepNonceList     = 4 [(gogoproto.nullable) = false] ;
+  
   // this line is used by starport scaffolding # genesis/proto/state
-  repeated AggregatedKeyShare     aggregatedKeyShareList     = 6 [(gogoproto.nullable) = false];
-  fairyring.common.ActivePublicKey                 activePubKey               = 7 [(gogoproto.nullable) = false];
-  fairyring.common.QueuedPublicKey                 queuedPubKey               = 8 [(gogoproto.nullable) = false];
-  uint64                          request_count              = 9;
-
+  repeated AggregatedKeyShare               aggregatedKeyShareList =  6 [(gogoproto.nullable) = false];
+           fairyring.common.ActivePublicKey activePubKey           =  7 [(gogoproto.nullable) = false];
+           fairyring.common.QueuedPublicKey queuedPubKey           =  8 [(gogoproto.nullable) = false];
+           uint64                           request_count          =  9;
+  repeated RequestId                        requestIdList          = 10 [(gogoproto.nullable) = false];
 }
 
