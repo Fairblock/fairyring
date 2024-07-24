@@ -13,6 +13,7 @@ export const protobufPackage = "fairyring.keyshare";
 
 /** GenesisState defines the keyshare module's genesis state. */
 export interface GenesisState {
+  /** params defines all the parameters of the module. */
   params: Params | undefined;
   portId: string;
   validatorSetList: ValidatorSet[];

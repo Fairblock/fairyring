@@ -812,3 +812,5 @@ definitions:
     type: object
   MsgConnectionOpenTryResponse:
     type: object
+  MsgUpdateParamsResponse:
+    type: object

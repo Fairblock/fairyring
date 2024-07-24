@@ -1,8 +1,9 @@
 package pep
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"strconv"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/Fairblock/fairyring/x/pep/keeper"
 	"github.com/Fairblock/fairyring/x/pep/types"
@@ -43,6 +44,9 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 			panic("could not claim port capability: " + err.Error())
 		}
 	}
+
+	k.SetRequestCount(ctx, genState.RequestCount)
+
 	if err := k.SetParams(ctx, genState.Params); err != nil {
 		panic(err)
 	}

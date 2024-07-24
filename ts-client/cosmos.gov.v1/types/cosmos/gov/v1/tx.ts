@@ -2,6 +2,7 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { Any } from "../../../google/protobuf/any";
+import { Timestamp } from "../../../google/protobuf/timestamp";
 import { Coin } from "../../base/v1beta1/coin";
 import { Params, VoteOption, voteOptionFromJSON, voteOptionToJSON, WeightedVoteOption } from "./gov";
 
@@ -34,6 +35,12 @@ export interface MsgSubmitProposal {
    * Since: cosmos-sdk 0.47
    */
   summary: string;
+  /**
+   * expedited defines if the proposal is expedited or not
+   *
+   * Since: cosmos-sdk 0.50
+   */
+  expedited: boolean;
 }
 
 /** MsgSubmitProposalResponse defines the Msg/SubmitProposal response type. */
@@ -146,8 +153,37 @@ export interface MsgUpdateParams {
 export interface MsgUpdateParamsResponse {
 }
 
+/**
+ * MsgCancelProposal is the Msg/CancelProposal request type.
+ *
+ * Since: cosmos-sdk 0.50
+ */
+export interface MsgCancelProposal {
+  /** proposal_id defines the unique id of the proposal. */
+  proposalId: number;
+  /** proposer is the account address of the proposer. */
+  proposer: string;
+}
+
+/**
+ * MsgCancelProposalResponse defines the response structure for executing a
+ * MsgCancelProposal message.
+ *
+ * Since: cosmos-sdk 0.50
+ */
+export interface MsgCancelProposalResponse {
+  /** proposal_id defines the unique id of the proposal. */
+  proposalId: number;
+  /** canceled_time is the time when proposal is canceled. */
+  canceledTime:
+    | Date
+    | undefined;
+  /** canceled_height defines the block height at which the proposal is canceled. */
+  canceledHeight: number;
+}
+
 function createBaseMsgSubmitProposal(): MsgSubmitProposal {
-  return { messages: [], initialDeposit: [], proposer: "", metadata: "", title: "", summary: "" };
+  return { messages: [], initialDeposit: [], proposer: "", metadata: "", title: "", summary: "", expedited: false };
 }
 
 export const MsgSubmitProposal = {
@@ -169,6 +205,9 @@ export const MsgSubmitProposal = {
     }
     if (message.summary !== "") {
       writer.uint32(50).string(message.summary);
+    }
+    if (message.expedited === true) {
+      writer.uint32(56).bool(message.expedited);
     }
     return writer;
   },
@@ -222,6 +261,13 @@ export const MsgSubmitProposal = {
 
           message.summary = reader.string();
           continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.expedited = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -241,6 +287,7 @@ export const MsgSubmitProposal = {
       metadata: isSet(object.metadata) ? String(object.metadata) : "",
       title: isSet(object.title) ? String(object.title) : "",
       summary: isSet(object.summary) ? String(object.summary) : "",
+      expedited: isSet(object.expedited) ? Boolean(object.expedited) : false,
     };
   },
 
@@ -264,6 +311,9 @@ export const MsgSubmitProposal = {
     if (message.summary !== "") {
       obj.summary = message.summary;
     }
+    if (message.expedited === true) {
+      obj.expedited = message.expedited;
+    }
     return obj;
   },
 
@@ -278,6 +328,7 @@ export const MsgSubmitProposal = {
     message.metadata = object.metadata ?? "";
     message.title = object.title ?? "";
     message.summary = object.summary ?? "";
+    message.expedited = object.expedited ?? false;
     return message;
   },
 };
@@ -1150,6 +1201,169 @@ export const MsgUpdateParamsResponse = {
   },
 };
 
+function createBaseMsgCancelProposal(): MsgCancelProposal {
+  return { proposalId: 0, proposer: "" };
+}
+
+export const MsgCancelProposal = {
+  encode(message: MsgCancelProposal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.proposalId !== 0) {
+      writer.uint32(8).uint64(message.proposalId);
+    }
+    if (message.proposer !== "") {
+      writer.uint32(18).string(message.proposer);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCancelProposal {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCancelProposal();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.proposalId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.proposer = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCancelProposal {
+    return {
+      proposalId: isSet(object.proposalId) ? Number(object.proposalId) : 0,
+      proposer: isSet(object.proposer) ? String(object.proposer) : "",
+    };
+  },
+
+  toJSON(message: MsgCancelProposal): unknown {
+    const obj: any = {};
+    if (message.proposalId !== 0) {
+      obj.proposalId = Math.round(message.proposalId);
+    }
+    if (message.proposer !== "") {
+      obj.proposer = message.proposer;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgCancelProposal>, I>>(base?: I): MsgCancelProposal {
+    return MsgCancelProposal.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgCancelProposal>, I>>(object: I): MsgCancelProposal {
+    const message = createBaseMsgCancelProposal();
+    message.proposalId = object.proposalId ?? 0;
+    message.proposer = object.proposer ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgCancelProposalResponse(): MsgCancelProposalResponse {
+  return { proposalId: 0, canceledTime: undefined, canceledHeight: 0 };
+}
+
+export const MsgCancelProposalResponse = {
+  encode(message: MsgCancelProposalResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.proposalId !== 0) {
+      writer.uint32(8).uint64(message.proposalId);
+    }
+    if (message.canceledTime !== undefined) {
+      Timestamp.encode(toTimestamp(message.canceledTime), writer.uint32(18).fork()).ldelim();
+    }
+    if (message.canceledHeight !== 0) {
+      writer.uint32(24).uint64(message.canceledHeight);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCancelProposalResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCancelProposalResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.proposalId = longToNumber(reader.uint64() as Long);
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.canceledTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.canceledHeight = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCancelProposalResponse {
+    return {
+      proposalId: isSet(object.proposalId) ? Number(object.proposalId) : 0,
+      canceledTime: isSet(object.canceledTime) ? fromJsonTimestamp(object.canceledTime) : undefined,
+      canceledHeight: isSet(object.canceledHeight) ? Number(object.canceledHeight) : 0,
+    };
+  },
+
+  toJSON(message: MsgCancelProposalResponse): unknown {
+    const obj: any = {};
+    if (message.proposalId !== 0) {
+      obj.proposalId = Math.round(message.proposalId);
+    }
+    if (message.canceledTime !== undefined) {
+      obj.canceledTime = message.canceledTime.toISOString();
+    }
+    if (message.canceledHeight !== 0) {
+      obj.canceledHeight = Math.round(message.canceledHeight);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgCancelProposalResponse>, I>>(base?: I): MsgCancelProposalResponse {
+    return MsgCancelProposalResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgCancelProposalResponse>, I>>(object: I): MsgCancelProposalResponse {
+    const message = createBaseMsgCancelProposalResponse();
+    message.proposalId = object.proposalId ?? 0;
+    message.canceledTime = object.canceledTime ?? undefined;
+    message.canceledHeight = object.canceledHeight ?? 0;
+    return message;
+  },
+};
+
 /** Msg defines the gov Msg service. */
 export interface Msg {
   /** SubmitProposal defines a method to create new proposal given the messages. */
@@ -1174,6 +1388,12 @@ export interface Msg {
    * Since: cosmos-sdk 0.47
    */
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse>;
+  /**
+   * CancelProposal defines a method to cancel governance proposal
+   *
+   * Since: cosmos-sdk 0.50
+   */
+  CancelProposal(request: MsgCancelProposal): Promise<MsgCancelProposalResponse>;
 }
 
 export const MsgServiceName = "cosmos.gov.v1.Msg";
@@ -1190,6 +1410,7 @@ export class MsgClientImpl implements Msg {
     this.VoteWeighted = this.VoteWeighted.bind(this);
     this.Deposit = this.Deposit.bind(this);
     this.UpdateParams = this.UpdateParams.bind(this);
+    this.CancelProposal = this.CancelProposal.bind(this);
   }
   SubmitProposal(request: MsgSubmitProposal): Promise<MsgSubmitProposalResponse> {
     const data = MsgSubmitProposal.encode(request).finish();
@@ -1232,6 +1453,12 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request(this.service, "UpdateParams", data);
     return promise.then((data) => MsgUpdateParamsResponse.decode(_m0.Reader.create(data)));
   }
+
+  CancelProposal(request: MsgCancelProposal): Promise<MsgCancelProposalResponse> {
+    const data = MsgCancelProposal.encode(request).finish();
+    const promise = this.rpc.request(this.service, "CancelProposal", data);
+    return promise.then((data) => MsgCancelProposalResponse.decode(_m0.Reader.create(data)));
+  }
 }
 
 interface Rpc {
@@ -1267,6 +1494,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = date.getTime() / 1_000;
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {

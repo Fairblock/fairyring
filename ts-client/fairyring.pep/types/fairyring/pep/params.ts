@@ -6,12 +6,11 @@ export const protobufPackage = "fairyring.pep";
 
 /** Params defines the parameters for the module. */
 export interface Params {
+  keyshareChannelId: string;
+  isSourceChain: boolean;
   trustedCounterParties: TrustedCounterParty[];
   trustedAddresses: string[];
-  pepChannelId: string;
-  keyshareChannelId: string;
   minGasPrice: Coin | undefined;
-  isSourceChain: boolean;
 }
 
 export interface TrustedCounterParty {
@@ -22,34 +21,30 @@ export interface TrustedCounterParty {
 
 function createBaseParams(): Params {
   return {
+    keyshareChannelId: "",
+    isSourceChain: false,
     trustedCounterParties: [],
     trustedAddresses: [],
-    pepChannelId: "",
-    keyshareChannelId: "",
     minGasPrice: undefined,
-    isSourceChain: false,
   };
 }
 
 export const Params = {
   encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.keyshareChannelId !== "") {
+      writer.uint32(10).string(message.keyshareChannelId);
+    }
+    if (message.isSourceChain === true) {
+      writer.uint32(16).bool(message.isSourceChain);
+    }
     for (const v of message.trustedCounterParties) {
-      TrustedCounterParty.encode(v!, writer.uint32(10).fork()).ldelim();
+      TrustedCounterParty.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     for (const v of message.trustedAddresses) {
-      writer.uint32(18).string(v!);
-    }
-    if (message.pepChannelId !== "") {
-      writer.uint32(26).string(message.pepChannelId);
-    }
-    if (message.keyshareChannelId !== "") {
-      writer.uint32(34).string(message.keyshareChannelId);
+      writer.uint32(34).string(v!);
     }
     if (message.minGasPrice !== undefined) {
       Coin.encode(message.minGasPrice, writer.uint32(42).fork()).ldelim();
-    }
-    if (message.isSourceChain === true) {
-      writer.uint32(48).bool(message.isSourceChain);
     }
     return writer;
   },
@@ -66,28 +61,28 @@ export const Params = {
             break;
           }
 
-          message.trustedCounterParties.push(TrustedCounterParty.decode(reader, reader.uint32()));
+          message.keyshareChannelId = reader.string();
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.trustedAddresses.push(reader.string());
+          message.isSourceChain = reader.bool();
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.pepChannelId = reader.string();
+          message.trustedCounterParties.push(TrustedCounterParty.decode(reader, reader.uint32()));
           continue;
         case 4:
           if (tag !== 34) {
             break;
           }
 
-          message.keyshareChannelId = reader.string();
+          message.trustedAddresses.push(reader.string());
           continue;
         case 5:
           if (tag !== 42) {
@@ -95,13 +90,6 @@ export const Params = {
           }
 
           message.minGasPrice = Coin.decode(reader, reader.uint32());
-          continue;
-        case 6:
-          if (tag !== 48) {
-            break;
-          }
-
-          message.isSourceChain = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -114,38 +102,34 @@ export const Params = {
 
   fromJSON(object: any): Params {
     return {
+      keyshareChannelId: isSet(object.keyshareChannelId) ? String(object.keyshareChannelId) : "",
+      isSourceChain: isSet(object.isSourceChain) ? Boolean(object.isSourceChain) : false,
       trustedCounterParties: Array.isArray(object?.trustedCounterParties)
         ? object.trustedCounterParties.map((e: any) => TrustedCounterParty.fromJSON(e))
         : [],
       trustedAddresses: Array.isArray(object?.trustedAddresses)
         ? object.trustedAddresses.map((e: any) => String(e))
         : [],
-      pepChannelId: isSet(object.pepChannelId) ? String(object.pepChannelId) : "",
-      keyshareChannelId: isSet(object.keyshareChannelId) ? String(object.keyshareChannelId) : "",
       minGasPrice: isSet(object.minGasPrice) ? Coin.fromJSON(object.minGasPrice) : undefined,
-      isSourceChain: isSet(object.isSourceChain) ? Boolean(object.isSourceChain) : false,
     };
   },
 
   toJSON(message: Params): unknown {
     const obj: any = {};
+    if (message.keyshareChannelId !== "") {
+      obj.keyshareChannelId = message.keyshareChannelId;
+    }
+    if (message.isSourceChain === true) {
+      obj.isSourceChain = message.isSourceChain;
+    }
     if (message.trustedCounterParties?.length) {
       obj.trustedCounterParties = message.trustedCounterParties.map((e) => TrustedCounterParty.toJSON(e));
     }
     if (message.trustedAddresses?.length) {
       obj.trustedAddresses = message.trustedAddresses;
     }
-    if (message.pepChannelId !== "") {
-      obj.pepChannelId = message.pepChannelId;
-    }
-    if (message.keyshareChannelId !== "") {
-      obj.keyshareChannelId = message.keyshareChannelId;
-    }
     if (message.minGasPrice !== undefined) {
       obj.minGasPrice = Coin.toJSON(message.minGasPrice);
-    }
-    if (message.isSourceChain === true) {
-      obj.isSourceChain = message.isSourceChain;
     }
     return obj;
   },
@@ -155,14 +139,13 @@ export const Params = {
   },
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
+    message.keyshareChannelId = object.keyshareChannelId ?? "";
+    message.isSourceChain = object.isSourceChain ?? false;
     message.trustedCounterParties = object.trustedCounterParties?.map((e) => TrustedCounterParty.fromPartial(e)) || [];
     message.trustedAddresses = object.trustedAddresses?.map((e) => e) || [];
-    message.pepChannelId = object.pepChannelId ?? "";
-    message.keyshareChannelId = object.keyshareChannelId ?? "";
     message.minGasPrice = (object.minGasPrice !== undefined && object.minGasPrice !== null)
       ? Coin.fromPartial(object.minGasPrice)
       : undefined;
-    message.isSourceChain = object.isSourceChain ?? false;
     return message;
   },
 };

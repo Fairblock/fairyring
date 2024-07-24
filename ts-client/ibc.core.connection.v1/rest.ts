@@ -167,6 +167,8 @@ export type MsgConnectionOpenInitResponse = object;
 
 export type MsgConnectionOpenTryResponse = object;
 
+export type MsgUpdateParamsResponse = object;
+
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
 export type QueryParamsType = Record<string | number, any>;

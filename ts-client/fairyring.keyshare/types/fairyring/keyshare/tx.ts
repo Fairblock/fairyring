@@ -1,14 +1,39 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { Params } from "./params";
+import { EncryptedKeyShare } from "./pub_key";
 
 export const protobufPackage = "fairyring.keyshare";
+
+/** MsgUpdateParams is the Msg/UpdateParams request type. */
+export interface MsgUpdateParams {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority: string;
+  /** NOTE: All parameters must be supplied. */
+  params: Params | undefined;
+}
+
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ */
+export interface MsgUpdateParamsResponse {
+}
 
 export interface MsgRegisterValidator {
   creator: string;
 }
 
 export interface MsgRegisterValidatorResponse {
+  creator: string;
+}
+
+export interface MsgDeRegisterValidator {
+  creator: string;
+}
+
+export interface MsgDeRegisterValidatorResponse {
   creator: string;
 }
 
@@ -35,9 +60,21 @@ export interface MsgCreateLatestPubKey {
   publicKey: string;
   commitments: string[];
   numberOfValidators: number;
+  encryptedKeyShares: EncryptedKeyShare[];
 }
 
 export interface MsgCreateLatestPubKeyResponse {
+}
+
+export interface MsgOverrideLatestPubKey {
+  creator: string;
+  publicKey: string;
+  commitments: string[];
+  numberOfValidators: number;
+  encryptedKeyShares: EncryptedKeyShare[];
+}
+
+export interface MsgOverrideLatestPubKeyResponse {
 }
 
 export interface MsgCreateAuthorizedAddress {
@@ -85,6 +122,125 @@ export interface MsgCreateGeneralKeyShareResponse {
   success: boolean;
   errorMessage: string;
 }
+
+function createBaseMsgUpdateParams(): MsgUpdateParams {
+  return { authority: "", params: undefined };
+}
+
+export const MsgUpdateParams = {
+  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+    if (message.params !== undefined) {
+      Params.encode(message.params, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateParams();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.authority = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.params = Params.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateParams {
+    return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
+      params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
+    };
+  },
+
+  toJSON(message: MsgUpdateParams): unknown {
+    const obj: any = {};
+    if (message.authority !== "") {
+      obj.authority = message.authority;
+    }
+    if (message.params !== undefined) {
+      obj.params = Params.toJSON(message.params);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgUpdateParams>, I>>(base?: I): MsgUpdateParams {
+    return MsgUpdateParams.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateParams>, I>>(object: I): MsgUpdateParams {
+    const message = createBaseMsgUpdateParams();
+    message.authority = object.authority ?? "";
+    message.params = (object.params !== undefined && object.params !== null)
+      ? Params.fromPartial(object.params)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
+  return {};
+}
+
+export const MsgUpdateParamsResponse = {
+  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateParamsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateParamsResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdateParamsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgUpdateParamsResponse>, I>>(base?: I): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateParamsResponse>, I>>(_: I): MsgUpdateParamsResponse {
+    const message = createBaseMsgUpdateParamsResponse();
+    return message;
+  },
+};
 
 function createBaseMsgRegisterValidator(): MsgRegisterValidator {
   return { creator: "" };
@@ -195,6 +351,122 @@ export const MsgRegisterValidatorResponse = {
   },
   fromPartial<I extends Exact<DeepPartial<MsgRegisterValidatorResponse>, I>>(object: I): MsgRegisterValidatorResponse {
     const message = createBaseMsgRegisterValidatorResponse();
+    message.creator = object.creator ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgDeRegisterValidator(): MsgDeRegisterValidator {
+  return { creator: "" };
+}
+
+export const MsgDeRegisterValidator = {
+  encode(message: MsgDeRegisterValidator, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeRegisterValidator {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDeRegisterValidator();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.creator = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgDeRegisterValidator {
+    return { creator: isSet(object.creator) ? String(object.creator) : "" };
+  },
+
+  toJSON(message: MsgDeRegisterValidator): unknown {
+    const obj: any = {};
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgDeRegisterValidator>, I>>(base?: I): MsgDeRegisterValidator {
+    return MsgDeRegisterValidator.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgDeRegisterValidator>, I>>(object: I): MsgDeRegisterValidator {
+    const message = createBaseMsgDeRegisterValidator();
+    message.creator = object.creator ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgDeRegisterValidatorResponse(): MsgDeRegisterValidatorResponse {
+  return { creator: "" };
+}
+
+export const MsgDeRegisterValidatorResponse = {
+  encode(message: MsgDeRegisterValidatorResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeRegisterValidatorResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDeRegisterValidatorResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.creator = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgDeRegisterValidatorResponse {
+    return { creator: isSet(object.creator) ? String(object.creator) : "" };
+  },
+
+  toJSON(message: MsgDeRegisterValidatorResponse): unknown {
+    const obj: any = {};
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgDeRegisterValidatorResponse>, I>>(base?: I): MsgDeRegisterValidatorResponse {
+    return MsgDeRegisterValidatorResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgDeRegisterValidatorResponse>, I>>(
+    object: I,
+  ): MsgDeRegisterValidatorResponse {
+    const message = createBaseMsgDeRegisterValidatorResponse();
     message.creator = object.creator ?? "";
     return message;
   },
@@ -462,7 +734,7 @@ export const MsgSendKeyshareResponse = {
 };
 
 function createBaseMsgCreateLatestPubKey(): MsgCreateLatestPubKey {
-  return { creator: "", publicKey: "", commitments: [], numberOfValidators: 0 };
+  return { creator: "", publicKey: "", commitments: [], numberOfValidators: 0, encryptedKeyShares: [] };
 }
 
 export const MsgCreateLatestPubKey = {
@@ -478,6 +750,9 @@ export const MsgCreateLatestPubKey = {
     }
     if (message.numberOfValidators !== 0) {
       writer.uint32(32).uint64(message.numberOfValidators);
+    }
+    for (const v of message.encryptedKeyShares) {
+      EncryptedKeyShare.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -517,6 +792,13 @@ export const MsgCreateLatestPubKey = {
 
           message.numberOfValidators = longToNumber(reader.uint64() as Long);
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.encryptedKeyShares.push(EncryptedKeyShare.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -532,6 +814,9 @@ export const MsgCreateLatestPubKey = {
       publicKey: isSet(object.publicKey) ? String(object.publicKey) : "",
       commitments: Array.isArray(object?.commitments) ? object.commitments.map((e: any) => String(e)) : [],
       numberOfValidators: isSet(object.numberOfValidators) ? Number(object.numberOfValidators) : 0,
+      encryptedKeyShares: Array.isArray(object?.encryptedKeyShares)
+        ? object.encryptedKeyShares.map((e: any) => EncryptedKeyShare.fromJSON(e))
+        : [],
     };
   },
 
@@ -549,6 +834,9 @@ export const MsgCreateLatestPubKey = {
     if (message.numberOfValidators !== 0) {
       obj.numberOfValidators = Math.round(message.numberOfValidators);
     }
+    if (message.encryptedKeyShares?.length) {
+      obj.encryptedKeyShares = message.encryptedKeyShares.map((e) => EncryptedKeyShare.toJSON(e));
+    }
     return obj;
   },
 
@@ -561,6 +849,7 @@ export const MsgCreateLatestPubKey = {
     message.publicKey = object.publicKey ?? "";
     message.commitments = object.commitments?.map((e) => e) || [];
     message.numberOfValidators = object.numberOfValidators ?? 0;
+    message.encryptedKeyShares = object.encryptedKeyShares?.map((e) => EncryptedKeyShare.fromPartial(e)) || [];
     return message;
   },
 };
@@ -604,6 +893,170 @@ export const MsgCreateLatestPubKeyResponse = {
   },
   fromPartial<I extends Exact<DeepPartial<MsgCreateLatestPubKeyResponse>, I>>(_: I): MsgCreateLatestPubKeyResponse {
     const message = createBaseMsgCreateLatestPubKeyResponse();
+    return message;
+  },
+};
+
+function createBaseMsgOverrideLatestPubKey(): MsgOverrideLatestPubKey {
+  return { creator: "", publicKey: "", commitments: [], numberOfValidators: 0, encryptedKeyShares: [] };
+}
+
+export const MsgOverrideLatestPubKey = {
+  encode(message: MsgOverrideLatestPubKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.publicKey !== "") {
+      writer.uint32(18).string(message.publicKey);
+    }
+    for (const v of message.commitments) {
+      writer.uint32(26).string(v!);
+    }
+    if (message.numberOfValidators !== 0) {
+      writer.uint32(32).uint64(message.numberOfValidators);
+    }
+    for (const v of message.encryptedKeyShares) {
+      EncryptedKeyShare.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgOverrideLatestPubKey {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgOverrideLatestPubKey();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.creator = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.publicKey = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.commitments.push(reader.string());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.numberOfValidators = longToNumber(reader.uint64() as Long);
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.encryptedKeyShares.push(EncryptedKeyShare.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgOverrideLatestPubKey {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      publicKey: isSet(object.publicKey) ? String(object.publicKey) : "",
+      commitments: Array.isArray(object?.commitments) ? object.commitments.map((e: any) => String(e)) : [],
+      numberOfValidators: isSet(object.numberOfValidators) ? Number(object.numberOfValidators) : 0,
+      encryptedKeyShares: Array.isArray(object?.encryptedKeyShares)
+        ? object.encryptedKeyShares.map((e: any) => EncryptedKeyShare.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: MsgOverrideLatestPubKey): unknown {
+    const obj: any = {};
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.publicKey !== "") {
+      obj.publicKey = message.publicKey;
+    }
+    if (message.commitments?.length) {
+      obj.commitments = message.commitments;
+    }
+    if (message.numberOfValidators !== 0) {
+      obj.numberOfValidators = Math.round(message.numberOfValidators);
+    }
+    if (message.encryptedKeyShares?.length) {
+      obj.encryptedKeyShares = message.encryptedKeyShares.map((e) => EncryptedKeyShare.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgOverrideLatestPubKey>, I>>(base?: I): MsgOverrideLatestPubKey {
+    return MsgOverrideLatestPubKey.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgOverrideLatestPubKey>, I>>(object: I): MsgOverrideLatestPubKey {
+    const message = createBaseMsgOverrideLatestPubKey();
+    message.creator = object.creator ?? "";
+    message.publicKey = object.publicKey ?? "";
+    message.commitments = object.commitments?.map((e) => e) || [];
+    message.numberOfValidators = object.numberOfValidators ?? 0;
+    message.encryptedKeyShares = object.encryptedKeyShares?.map((e) => EncryptedKeyShare.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseMsgOverrideLatestPubKeyResponse(): MsgOverrideLatestPubKeyResponse {
+  return {};
+}
+
+export const MsgOverrideLatestPubKeyResponse = {
+  encode(_: MsgOverrideLatestPubKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgOverrideLatestPubKeyResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgOverrideLatestPubKeyResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgOverrideLatestPubKeyResponse {
+    return {};
+  },
+
+  toJSON(_: MsgOverrideLatestPubKeyResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgOverrideLatestPubKeyResponse>, I>>(base?: I): MsgOverrideLatestPubKeyResponse {
+    return MsgOverrideLatestPubKeyResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgOverrideLatestPubKeyResponse>, I>>(_: I): MsgOverrideLatestPubKeyResponse {
+    const message = createBaseMsgOverrideLatestPubKeyResponse();
     return message;
   },
 };
@@ -1322,10 +1775,17 @@ export const MsgCreateGeneralKeyShareResponse = {
 
 /** Msg defines the Msg service. */
 export interface Msg {
+  /**
+   * UpdateParams defines a (governance) operation for updating the module
+   * parameters. The authority defaults to the x/gov module account.
+   */
+  UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse>;
   RegisterValidator(request: MsgRegisterValidator): Promise<MsgRegisterValidatorResponse>;
+  DeRegisterValidator(request: MsgDeRegisterValidator): Promise<MsgDeRegisterValidatorResponse>;
   SendKeyshare(request: MsgSendKeyshare): Promise<MsgSendKeyshareResponse>;
   /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateLatestPubKey(request: MsgCreateLatestPubKey): Promise<MsgCreateLatestPubKeyResponse>;
+  OverrideLatestPubKey(request: MsgOverrideLatestPubKey): Promise<MsgOverrideLatestPubKeyResponse>;
   CreateAuthorizedAddress(request: MsgCreateAuthorizedAddress): Promise<MsgCreateAuthorizedAddressResponse>;
   UpdateAuthorizedAddress(request: MsgUpdateAuthorizedAddress): Promise<MsgUpdateAuthorizedAddressResponse>;
   DeleteAuthorizedAddress(request: MsgDeleteAuthorizedAddress): Promise<MsgDeleteAuthorizedAddressResponse>;
@@ -1339,18 +1799,33 @@ export class MsgClientImpl implements Msg {
   constructor(rpc: Rpc, opts?: { service?: string }) {
     this.service = opts?.service || MsgServiceName;
     this.rpc = rpc;
+    this.UpdateParams = this.UpdateParams.bind(this);
     this.RegisterValidator = this.RegisterValidator.bind(this);
+    this.DeRegisterValidator = this.DeRegisterValidator.bind(this);
     this.SendKeyshare = this.SendKeyshare.bind(this);
     this.CreateLatestPubKey = this.CreateLatestPubKey.bind(this);
+    this.OverrideLatestPubKey = this.OverrideLatestPubKey.bind(this);
     this.CreateAuthorizedAddress = this.CreateAuthorizedAddress.bind(this);
     this.UpdateAuthorizedAddress = this.UpdateAuthorizedAddress.bind(this);
     this.DeleteAuthorizedAddress = this.DeleteAuthorizedAddress.bind(this);
     this.CreateGeneralKeyShare = this.CreateGeneralKeyShare.bind(this);
   }
+  UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
+    const data = MsgUpdateParams.encode(request).finish();
+    const promise = this.rpc.request(this.service, "UpdateParams", data);
+    return promise.then((data) => MsgUpdateParamsResponse.decode(_m0.Reader.create(data)));
+  }
+
   RegisterValidator(request: MsgRegisterValidator): Promise<MsgRegisterValidatorResponse> {
     const data = MsgRegisterValidator.encode(request).finish();
     const promise = this.rpc.request(this.service, "RegisterValidator", data);
     return promise.then((data) => MsgRegisterValidatorResponse.decode(_m0.Reader.create(data)));
+  }
+
+  DeRegisterValidator(request: MsgDeRegisterValidator): Promise<MsgDeRegisterValidatorResponse> {
+    const data = MsgDeRegisterValidator.encode(request).finish();
+    const promise = this.rpc.request(this.service, "DeRegisterValidator", data);
+    return promise.then((data) => MsgDeRegisterValidatorResponse.decode(_m0.Reader.create(data)));
   }
 
   SendKeyshare(request: MsgSendKeyshare): Promise<MsgSendKeyshareResponse> {
@@ -1363,6 +1838,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgCreateLatestPubKey.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateLatestPubKey", data);
     return promise.then((data) => MsgCreateLatestPubKeyResponse.decode(_m0.Reader.create(data)));
+  }
+
+  OverrideLatestPubKey(request: MsgOverrideLatestPubKey): Promise<MsgOverrideLatestPubKeyResponse> {
+    const data = MsgOverrideLatestPubKey.encode(request).finish();
+    const promise = this.rpc.request(this.service, "OverrideLatestPubKey", data);
+    return promise.then((data) => MsgOverrideLatestPubKeyResponse.decode(_m0.Reader.create(data)));
   }
 
   CreateAuthorizedAddress(request: MsgCreateAuthorizedAddress): Promise<MsgCreateAuthorizedAddressResponse> {

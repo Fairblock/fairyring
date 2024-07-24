@@ -9,24 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-export interface ProtobufAny {
-  "@type"?: string;
-}
-
-export interface RpcStatus {
-  /** @format int32 */
-  code?: number;
-  message?: string;
-  details?: ProtobufAny[];
-}
-
-/**
- * ConfigResponse defines the response structure for the Config gRPC query.
- */
-export interface V1Beta1ConfigResponse {
-  minimum_gas_price?: string;
-}
-
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
@@ -148,23 +130,6 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title cosmos/base/node/v1beta1/query.proto
- * @version version not set
+ * @title HTTP API Console cosmos.base.node.v1beta1
  */
-export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-  /**
-   * No description
-   *
-   * @tags Service
-   * @name ServiceConfig
-   * @summary Config queries for the operator configuration.
-   * @request GET:/cosmos/base/node/v1beta1/config
-   */
-  serviceConfig = (params: RequestParams = {}) =>
-    this.request<V1Beta1ConfigResponse, RpcStatus>({
-      path: `/cosmos/base/node/v1beta1/config`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-}
+export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {}

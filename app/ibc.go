@@ -41,6 +41,7 @@ import (
 	ibctm "github.com/cosmos/ibc-go/v8/modules/light-clients/07-tendermint"
 	ibcconsumer "github.com/cosmos/interchain-security/v3/x/ccv/consumer"
 	ibcconsumertypes "github.com/cosmos/interchain-security/v3/x/ccv/consumer/types"
+
 	// this line is used by starport scaffolding # ibc/app/import
 	keysharemodule "github.com/Fairblock/fairyring/x/keyshare/module"
 	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
@@ -180,7 +181,7 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	ibcRouter.AddRoute(keysharemoduletypes.ModuleName, keyshareStack)
 
 	// Add gov module to IBC Router
-	govIBCModule := ibcfee.NewIBCMiddleware(gov.NewIBCModule(*app.GovKeeper), app.IBCFeeKeeper)
+	govIBCModule := ibcfee.NewIBCMiddleware(gov.NewIBCModule(app.GovKeeper), app.IBCFeeKeeper)
 	ibcRouter.AddRoute(govtypes.ModuleName, govIBCModule)
 
 	// Add wasmd to IBC Router
@@ -219,16 +220,16 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 // This needs to be removed after IBC supports App Wiring.
 func RegisterIBC(registry cdctypes.InterfaceRegistry) map[string]appmodule.AppModule {
 	modules := map[string]appmodule.AppModule{
-		ibcexported.ModuleName:         ibc.AppModule{},
-		ibctransfertypes.ModuleName:    ibctransfer.AppModule{},
-		ibcfeetypes.ModuleName:         ibcfee.AppModule{},
-		icatypes.ModuleName:            icamodule.AppModule{},
-		capabilitytypes.ModuleName:     capability.AppModule{},
-		ibctm.ModuleName:               ibctm.AppModule{},
-		solomachine.ModuleName:         solomachine.AppModule{},
-		ibcconsumertypes.ModuleName:    ibcconsumer.AppModule{},
-		wasmtypes.ModuleName:           wasm.AppModule{},
-		govtypes.ModuleName:            gov.AppModule{},
+		ibcexported.ModuleName:      ibc.AppModule{},
+		ibctransfertypes.ModuleName: ibctransfer.AppModule{},
+		ibcfeetypes.ModuleName:      ibcfee.AppModule{},
+		icatypes.ModuleName:         icamodule.AppModule{},
+		capabilitytypes.ModuleName:  capability.AppModule{},
+		ibctm.ModuleName:            ibctm.AppModule{},
+		solomachine.ModuleName:      solomachine.AppModule{},
+		ibcconsumertypes.ModuleName: ibcconsumer.AppModule{},
+		wasmtypes.ModuleName:        wasm.AppModule{},
+		// govtypes.ModuleName:            gov.AppModule{},
 		keysharemoduletypes.ModuleName: keysharemodule.AppModule{},
 		pepmoduletypes.ModuleName:      pepmodule.AppModule{},
 	}

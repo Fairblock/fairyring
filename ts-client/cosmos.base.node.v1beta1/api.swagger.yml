@@ -1,0 +1,5 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console cosmos.base.node.v1beta1
+  name: ''
+  description: ''

@@ -1,6 +1,8 @@
 package types
 
 import (
+	"time"
+
 	sdkioerrors "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -10,9 +12,10 @@ const TypeMsgRequestGeneralKeyshare = "request_general_keyshare"
 
 var _ sdk.Msg = &MsgRequestGeneralKeyshare{}
 
-func NewMsgRequestGeneralKeyshare(creator string) *MsgRequestGeneralKeyshare {
+func NewMsgRequestGeneralKeyshare(creator string, estimatedDelay time.Duration) *MsgRequestGeneralKeyshare {
 	return &MsgRequestGeneralKeyshare{
-		Creator: creator,
+		Creator:        creator,
+		EstimatedDelay: &estimatedDelay,
 	}
 }
 

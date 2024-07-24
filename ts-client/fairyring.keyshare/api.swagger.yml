@@ -580,6 +580,12 @@ paths:
                   key_expiry:
                     type: string
                     format: uint64
+                  minimum_bonded:
+                    type: string
+                    format: uint64
+                  max_idled_block:
+                    type: string
+                    format: uint64
                   trusted_addresses:
                     type: array
                     items:
@@ -590,12 +596,6 @@ paths:
                   slash_fraction_wrong_keyshare:
                     type: string
                     format: byte
-                  minimum_bonded:
-                    type: string
-                    format: uint64
-                  max_idled_block:
-                    type: string
-                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -638,6 +638,15 @@ paths:
                   numberOfValidators:
                     type: string
                     format: uint64
+                  encryptedKeyShares:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        data:
+                          type: string
+                        validator:
+                          type: string
               queuedPubKey:
                 type: object
                 properties:
@@ -651,6 +660,15 @@ paths:
                   numberOfValidators:
                     type: string
                     format: uint64
+                  encryptedKeyShares:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        data:
+                          type: string
+                        validator:
+                          type: string
         default:
           description: An unexpected error response.
           schema:
@@ -791,6 +809,40 @@ paths:
           type: string
       tags:
         - Query
+  /fairyring/keyshare/verifiable_randomness:
+    get:
+      operationId: Query_VerifiableRandomness
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              randomness:
+                type: string
+              round:
+                type: string
+                format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
 definitions:
   Any:
     type: object
@@ -827,69 +879,22 @@ definitions:
       numberOfValidators:
         type: string
         format: uint64
-  AggregatedKeyShare:
-    type: object
-    properties:
-      height:
-        type: string
-        format: uint64
-      data:
-        type: string
-  AuthorizedAddress:
-    type: object
-    properties:
-      target:
-        type: string
-      isAuthorized:
-        type: boolean
-      authorizedBy:
-        type: string
-  Commitments:
-    type: object
-    properties:
-      commitments:
+      encryptedKeyShares:
         type: array
         items:
-          type: string
-  GeneralKeyShare:
+          type: object
+          properties:
+            data:
+              type: string
+            validator:
+              type: string
+  EncryptedKeyShare:
     type: object
     properties:
+      data:
+        type: string
       validator:
         type: string
-      idType:
-        type: string
-      idValue:
-        type: string
-      keyShare:
-        type: string
-      keyShareIndex:
-        type: string
-        format: uint64
-      receivedTimestamp:
-        type: string
-        format: uint64
-      receivedBlockHeight:
-        type: string
-        format: uint64
-  KeyShare:
-    type: object
-    properties:
-      validator:
-        type: string
-      blockHeight:
-        type: string
-        format: uint64
-      keyShare:
-        type: string
-      keyShareIndex:
-        type: string
-        format: uint64
-      receivedTimestamp:
-        type: string
-        format: uint64
-      receivedBlockHeight:
-        type: string
-        format: uint64
   PageRequest:
     type: object
     properties:
@@ -913,28 +918,6 @@ definitions:
         type: string
         format: byte
       total:
-        type: string
-        format: uint64
-  Params:
-    type: object
-    properties:
-      key_expiry:
-        type: string
-        format: uint64
-      trusted_addresses:
-        type: array
-        items:
-          type: string
-      slash_fraction_no_keyshare:
-        type: string
-        format: byte
-      slash_fraction_wrong_keyshare:
-        type: string
-        format: byte
-      minimum_bonded:
-        type: string
-        format: uint64
-      max_idled_block:
         type: string
         format: uint64
   QueryAllAggregatedKeyShareResponse:
@@ -1182,6 +1165,12 @@ definitions:
           key_expiry:
             type: string
             format: uint64
+          minimum_bonded:
+            type: string
+            format: uint64
+          max_idled_block:
+            type: string
+            format: uint64
           trusted_addresses:
             type: array
             items:
@@ -1192,12 +1181,6 @@ definitions:
           slash_fraction_wrong_keyshare:
             type: string
             format: byte
-          minimum_bonded:
-            type: string
-            format: uint64
-          max_idled_block:
-            type: string
-            format: uint64
   QueryPubKeyResponse:
     type: object
     properties:
@@ -1214,6 +1197,15 @@ definitions:
           numberOfValidators:
             type: string
             format: uint64
+          encryptedKeyShares:
+            type: array
+            items:
+              type: object
+              properties:
+                data:
+                  type: string
+                validator:
+                  type: string
       queuedPubKey:
         type: object
         properties:
@@ -1227,6 +1219,23 @@ definitions:
           numberOfValidators:
             type: string
             format: uint64
+          encryptedKeyShares:
+            type: array
+            items:
+              type: object
+              properties:
+                data:
+                  type: string
+                validator:
+                  type: string
+  QueryVerifiableRandomnessResponse:
+    type: object
+    properties:
+      randomness:
+        type: string
+      round:
+        type: string
+        format: uint64
   QueuedPubKey:
     type: object
     properties:
@@ -1240,7 +1249,101 @@ definitions:
       numberOfValidators:
         type: string
         format: uint64
-  ValidatorSet:
+      encryptedKeyShares:
+        type: array
+        items:
+          type: object
+          properties:
+            data:
+              type: string
+            validator:
+              type: string
+  keyshare.AggregatedKeyShare:
+    type: object
+    properties:
+      height:
+        type: string
+        format: uint64
+      data:
+        type: string
+  keyshare.AuthorizedAddress:
+    type: object
+    properties:
+      target:
+        type: string
+      isAuthorized:
+        type: boolean
+      authorizedBy:
+        type: string
+  keyshare.Commitments:
+    type: object
+    properties:
+      commitments:
+        type: array
+        items:
+          type: string
+  keyshare.GeneralKeyShare:
+    type: object
+    properties:
+      validator:
+        type: string
+      idType:
+        type: string
+      idValue:
+        type: string
+      keyShare:
+        type: string
+      keyShareIndex:
+        type: string
+        format: uint64
+      receivedTimestamp:
+        type: string
+        format: uint64
+      receivedBlockHeight:
+        type: string
+        format: uint64
+  keyshare.KeyShare:
+    type: object
+    properties:
+      validator:
+        type: string
+      blockHeight:
+        type: string
+        format: uint64
+      keyShare:
+        type: string
+      keyShareIndex:
+        type: string
+        format: uint64
+      receivedTimestamp:
+        type: string
+        format: uint64
+      receivedBlockHeight:
+        type: string
+        format: uint64
+  keyshare.Params:
+    type: object
+    properties:
+      key_expiry:
+        type: string
+        format: uint64
+      minimum_bonded:
+        type: string
+        format: uint64
+      max_idled_block:
+        type: string
+        format: uint64
+      trusted_addresses:
+        type: array
+        items:
+          type: string
+      slash_fraction_no_keyshare:
+        type: string
+        format: byte
+      slash_fraction_wrong_keyshare:
+        type: string
+        format: byte
+  keyshare.ValidatorSet:
     type: object
     properties:
       index:
@@ -1276,7 +1379,14 @@ definitions:
         type: string
   MsgCreateLatestPubKeyResponse:
     type: object
+  MsgDeRegisterValidatorResponse:
+    type: object
+    properties:
+      creator:
+        type: string
   MsgDeleteAuthorizedAddressResponse:
+    type: object
+  MsgOverrideLatestPubKeyResponse:
     type: object
   MsgRegisterValidatorResponse:
     type: object
@@ -1305,3 +1415,27 @@ definitions:
         type: string
   MsgUpdateAuthorizedAddressResponse:
     type: object
+  MsgUpdateParamsResponse:
+    type: object
+  Params:
+    type: object
+    properties:
+      key_expiry:
+        type: string
+        format: uint64
+      minimum_bonded:
+        type: string
+        format: uint64
+      max_idled_block:
+        type: string
+        format: uint64
+      trusted_addresses:
+        type: array
+        items:
+          type: string
+      slash_fraction_no_keyshare:
+        type: string
+        format: byte
+      slash_fraction_wrong_keyshare:
+        type: string
+        format: byte
