@@ -468,6 +468,23 @@ func New(
 	app.UpgradeKeeper.SetUpgradeHandler(
 		"v0.6.0-to-update-cosmos-sdk-v0.50.6",
 		func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			upgradeStoreService := runtime.NewKVStoreService(app.GetKey("upgrade"))
+			consensusKeeper := consensuskeeper.NewKeeper(
+				app.appCodec,
+				upgradeStoreService,
+				app.AccountKeeper.GetAuthority(),
+				runtime.EventService{},
+			)
+
+			params, err := consensusKeeper.ParamsStore.Get(ctx)
+			if err != nil {
+				return nil, err
+			}
+
+			err = app.ConsensusParamsKeeper.ParamsStore.Set(ctx, params)
+			if err != nil {
+				return nil, err
+			}
 			return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
 		},
 	)
