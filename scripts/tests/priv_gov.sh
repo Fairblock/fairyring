@@ -160,8 +160,7 @@ EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
 while true; do
   echo "Submitting General Key Share"
-  
-  RESULT=$($BINARY tx keyshare create-general-key-share "private-gov-identity" $IDENTITY $EXTRACTED_SHARE 1 --from $VAL1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+  RESULT=$($BINARY tx keyshare create-general-key-share '[{"IdType":"private-gov-identity", "IdValue":"'"$IDENTITY"'", "KeyShare":"'"$EXTRACTED_SHARE"'", "KeyShareIndex":1}]' --from $VAL1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
   echo "$RESULT"
   check_tx_err $RESULT
   if [ $? -eq 0 ]; then

@@ -2,10 +2,9 @@ module github.com/Fairblock/fairyring
 
 go 1.21.5
 
-toolchain go1.22.4
-
 replace (
-	github.com/CosmWasm/wasmd => ../wasmd
+	cosmossdk.io/api => ../cosmos-api/api
+	github.com/CosmWasm/wasmd => ../wasmd_latest
 	github.com/cosmos/cosmos-sdk => ../cosmos-sdk
 	// fix upstream GHSA-h395-qcrw-5vmq vulnerability.
 	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.7.0
@@ -215,6 +214,7 @@ require (
 	github.com/prometheus/common v0.52.2 // indirect
 	github.com/prometheus/procfs v0.13.0 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
+	github.com/regen-network/cosmos-proto v0.3.1 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/rs/cors v1.10.1 // indirect
 	github.com/rs/zerolog v1.32.0 // indirect

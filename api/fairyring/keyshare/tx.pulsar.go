@@ -8751,27 +8751,68 @@ func (x *fastReflection_MsgDeleteAuthorizedAddressResponse) ProtoMethods() *prot
 	}
 }
 
+var _ protoreflect.List = (*_MsgCreateGeneralKeyShare_2_list)(nil)
+
+type _MsgCreateGeneralKeyShare_2_list struct {
+	list *[]*GeneralKeyShare
+}
+
+func (x *_MsgCreateGeneralKeyShare_2_list) Len() int {
+	if x.list == nil {
+		return 0
+	}
+	return len(*x.list)
+}
+
+func (x *_MsgCreateGeneralKeyShare_2_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
+}
+
+func (x *_MsgCreateGeneralKeyShare_2_list) Set(i int, value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*GeneralKeyShare)
+	(*x.list)[i] = concreteValue
+}
+
+func (x *_MsgCreateGeneralKeyShare_2_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*GeneralKeyShare)
+	*x.list = append(*x.list, concreteValue)
+}
+
+func (x *_MsgCreateGeneralKeyShare_2_list) AppendMutable() protoreflect.Value {
+	v := new(GeneralKeyShare)
+	*x.list = append(*x.list, v)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_MsgCreateGeneralKeyShare_2_list) Truncate(n int) {
+	for i := n; i < len(*x.list); i++ {
+		(*x.list)[i] = nil
+	}
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_MsgCreateGeneralKeyShare_2_list) NewElement() protoreflect.Value {
+	v := new(GeneralKeyShare)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_MsgCreateGeneralKeyShare_2_list) IsValid() bool {
+	return x.list != nil
+}
+
 var (
-	md_MsgCreateGeneralKeyShare                     protoreflect.MessageDescriptor
-	fd_MsgCreateGeneralKeyShare_creator             protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShare_idType              protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShare_idValue             protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShare_keyShare            protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShare_keyShareIndex       protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShare_receivedTimestamp   protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShare_receivedBlockHeight protoreflect.FieldDescriptor
+	md_MsgCreateGeneralKeyShare                  protoreflect.MessageDescriptor
+	fd_MsgCreateGeneralKeyShare_creator          protoreflect.FieldDescriptor
+	fd_MsgCreateGeneralKeyShare_generalKeyShares protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_keyshare_tx_proto_init()
 	md_MsgCreateGeneralKeyShare = File_fairyring_keyshare_tx_proto.Messages().ByName("MsgCreateGeneralKeyShare")
 	fd_MsgCreateGeneralKeyShare_creator = md_MsgCreateGeneralKeyShare.Fields().ByName("creator")
-	fd_MsgCreateGeneralKeyShare_idType = md_MsgCreateGeneralKeyShare.Fields().ByName("idType")
-	fd_MsgCreateGeneralKeyShare_idValue = md_MsgCreateGeneralKeyShare.Fields().ByName("idValue")
-	fd_MsgCreateGeneralKeyShare_keyShare = md_MsgCreateGeneralKeyShare.Fields().ByName("keyShare")
-	fd_MsgCreateGeneralKeyShare_keyShareIndex = md_MsgCreateGeneralKeyShare.Fields().ByName("keyShareIndex")
-	fd_MsgCreateGeneralKeyShare_receivedTimestamp = md_MsgCreateGeneralKeyShare.Fields().ByName("receivedTimestamp")
-	fd_MsgCreateGeneralKeyShare_receivedBlockHeight = md_MsgCreateGeneralKeyShare.Fields().ByName("receivedBlockHeight")
+	fd_MsgCreateGeneralKeyShare_generalKeyShares = md_MsgCreateGeneralKeyShare.Fields().ByName("generalKeyShares")
 }
 
 var _ protoreflect.Message = (*fastReflection_MsgCreateGeneralKeyShare)(nil)
@@ -8845,39 +8886,9 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) Range(f func(protoreflect.Fiel
 			return
 		}
 	}
-	if x.IdType != "" {
-		value := protoreflect.ValueOfString(x.IdType)
-		if !f(fd_MsgCreateGeneralKeyShare_idType, value) {
-			return
-		}
-	}
-	if x.IdValue != "" {
-		value := protoreflect.ValueOfString(x.IdValue)
-		if !f(fd_MsgCreateGeneralKeyShare_idValue, value) {
-			return
-		}
-	}
-	if x.KeyShare != "" {
-		value := protoreflect.ValueOfString(x.KeyShare)
-		if !f(fd_MsgCreateGeneralKeyShare_keyShare, value) {
-			return
-		}
-	}
-	if x.KeyShareIndex != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.KeyShareIndex)
-		if !f(fd_MsgCreateGeneralKeyShare_keyShareIndex, value) {
-			return
-		}
-	}
-	if x.ReceivedTimestamp != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.ReceivedTimestamp)
-		if !f(fd_MsgCreateGeneralKeyShare_receivedTimestamp, value) {
-			return
-		}
-	}
-	if x.ReceivedBlockHeight != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.ReceivedBlockHeight)
-		if !f(fd_MsgCreateGeneralKeyShare_receivedBlockHeight, value) {
+	if len(x.GeneralKeyShares) != 0 {
+		value := protoreflect.ValueOfList(&_MsgCreateGeneralKeyShare_2_list{list: &x.GeneralKeyShares})
+		if !f(fd_MsgCreateGeneralKeyShare_generalKeyShares, value) {
 			return
 		}
 	}
@@ -8898,18 +8909,8 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) Has(fd protoreflect.FieldDescr
 	switch fd.FullName() {
 	case "fairyring.keyshare.MsgCreateGeneralKeyShare.creator":
 		return x.Creator != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.idType":
-		return x.IdType != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.idValue":
-		return x.IdValue != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.keyShare":
-		return x.KeyShare != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.keyShareIndex":
-		return x.KeyShareIndex != uint64(0)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.receivedTimestamp":
-		return x.ReceivedTimestamp != uint64(0)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.receivedBlockHeight":
-		return x.ReceivedBlockHeight != uint64(0)
+	case "fairyring.keyshare.MsgCreateGeneralKeyShare.generalKeyShares":
+		return len(x.GeneralKeyShares) != 0
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShare"))
@@ -8928,18 +8929,8 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) Clear(fd protoreflect.FieldDes
 	switch fd.FullName() {
 	case "fairyring.keyshare.MsgCreateGeneralKeyShare.creator":
 		x.Creator = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.idType":
-		x.IdType = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.idValue":
-		x.IdValue = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.keyShare":
-		x.KeyShare = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.keyShareIndex":
-		x.KeyShareIndex = uint64(0)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.receivedTimestamp":
-		x.ReceivedTimestamp = uint64(0)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.receivedBlockHeight":
-		x.ReceivedBlockHeight = uint64(0)
+	case "fairyring.keyshare.MsgCreateGeneralKeyShare.generalKeyShares":
+		x.GeneralKeyShares = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShare"))
@@ -8959,24 +8950,12 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) Get(descriptor protoreflect.Fi
 	case "fairyring.keyshare.MsgCreateGeneralKeyShare.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.idType":
-		value := x.IdType
-		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.idValue":
-		value := x.IdValue
-		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.keyShare":
-		value := x.KeyShare
-		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.keyShareIndex":
-		value := x.KeyShareIndex
-		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.receivedTimestamp":
-		value := x.ReceivedTimestamp
-		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.receivedBlockHeight":
-		value := x.ReceivedBlockHeight
-		return protoreflect.ValueOfUint64(value)
+	case "fairyring.keyshare.MsgCreateGeneralKeyShare.generalKeyShares":
+		if len(x.GeneralKeyShares) == 0 {
+			return protoreflect.ValueOfList(&_MsgCreateGeneralKeyShare_2_list{})
+		}
+		listValue := &_MsgCreateGeneralKeyShare_2_list{list: &x.GeneralKeyShares}
+		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShare"))
@@ -8999,18 +8978,10 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) Set(fd protoreflect.FieldDescr
 	switch fd.FullName() {
 	case "fairyring.keyshare.MsgCreateGeneralKeyShare.creator":
 		x.Creator = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.idType":
-		x.IdType = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.idValue":
-		x.IdValue = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.keyShare":
-		x.KeyShare = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.keyShareIndex":
-		x.KeyShareIndex = value.Uint()
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.receivedTimestamp":
-		x.ReceivedTimestamp = value.Uint()
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.receivedBlockHeight":
-		x.ReceivedBlockHeight = value.Uint()
+	case "fairyring.keyshare.MsgCreateGeneralKeyShare.generalKeyShares":
+		lv := value.List()
+		clv := lv.(*_MsgCreateGeneralKeyShare_2_list)
+		x.GeneralKeyShares = *clv.list
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShare"))
@@ -9031,20 +9002,14 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) Set(fd protoreflect.FieldDescr
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgCreateGeneralKeyShare) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
+	case "fairyring.keyshare.MsgCreateGeneralKeyShare.generalKeyShares":
+		if x.GeneralKeyShares == nil {
+			x.GeneralKeyShares = []*GeneralKeyShare{}
+		}
+		value := &_MsgCreateGeneralKeyShare_2_list{list: &x.GeneralKeyShares}
+		return protoreflect.ValueOfList(value)
 	case "fairyring.keyshare.MsgCreateGeneralKeyShare.creator":
 		panic(fmt.Errorf("field creator of message fairyring.keyshare.MsgCreateGeneralKeyShare is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.idType":
-		panic(fmt.Errorf("field idType of message fairyring.keyshare.MsgCreateGeneralKeyShare is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.idValue":
-		panic(fmt.Errorf("field idValue of message fairyring.keyshare.MsgCreateGeneralKeyShare is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.keyShare":
-		panic(fmt.Errorf("field keyShare of message fairyring.keyshare.MsgCreateGeneralKeyShare is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.keyShareIndex":
-		panic(fmt.Errorf("field keyShareIndex of message fairyring.keyshare.MsgCreateGeneralKeyShare is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.receivedTimestamp":
-		panic(fmt.Errorf("field receivedTimestamp of message fairyring.keyshare.MsgCreateGeneralKeyShare is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.receivedBlockHeight":
-		panic(fmt.Errorf("field receivedBlockHeight of message fairyring.keyshare.MsgCreateGeneralKeyShare is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShare"))
@@ -9060,18 +9025,9 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) NewField(fd protoreflect.Field
 	switch fd.FullName() {
 	case "fairyring.keyshare.MsgCreateGeneralKeyShare.creator":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.idType":
-		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.idValue":
-		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.keyShare":
-		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.keyShareIndex":
-		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.receivedTimestamp":
-		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.receivedBlockHeight":
-		return protoreflect.ValueOfUint64(uint64(0))
+	case "fairyring.keyshare.MsgCreateGeneralKeyShare.generalKeyShares":
+		list := []*GeneralKeyShare{}
+		return protoreflect.ValueOfList(&_MsgCreateGeneralKeyShare_2_list{list: &list})
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShare"))
@@ -9145,26 +9101,11 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) ProtoMethods() *protoiface.Met
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.IdType)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		l = len(x.IdValue)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		l = len(x.KeyShare)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		if x.KeyShareIndex != 0 {
-			n += 1 + runtime.Sov(uint64(x.KeyShareIndex))
-		}
-		if x.ReceivedTimestamp != 0 {
-			n += 1 + runtime.Sov(uint64(x.ReceivedTimestamp))
-		}
-		if x.ReceivedBlockHeight != 0 {
-			n += 1 + runtime.Sov(uint64(x.ReceivedBlockHeight))
+		if len(x.GeneralKeyShares) > 0 {
+			for _, e := range x.GeneralKeyShares {
+				l = options.Size(e)
+				n += 1 + l + runtime.Sov(uint64(l))
+			}
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -9195,41 +9136,21 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) ProtoMethods() *protoiface.Met
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.ReceivedBlockHeight != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.ReceivedBlockHeight))
-			i--
-			dAtA[i] = 0x38
-		}
-		if x.ReceivedTimestamp != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.ReceivedTimestamp))
-			i--
-			dAtA[i] = 0x30
-		}
-		if x.KeyShareIndex != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.KeyShareIndex))
-			i--
-			dAtA[i] = 0x28
-		}
-		if len(x.KeyShare) > 0 {
-			i -= len(x.KeyShare)
-			copy(dAtA[i:], x.KeyShare)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.KeyShare)))
-			i--
-			dAtA[i] = 0x22
-		}
-		if len(x.IdValue) > 0 {
-			i -= len(x.IdValue)
-			copy(dAtA[i:], x.IdValue)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.IdValue)))
-			i--
-			dAtA[i] = 0x1a
-		}
-		if len(x.IdType) > 0 {
-			i -= len(x.IdType)
-			copy(dAtA[i:], x.IdType)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.IdType)))
-			i--
-			dAtA[i] = 0x12
+		if len(x.GeneralKeyShares) > 0 {
+			for iNdEx := len(x.GeneralKeyShares) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.GeneralKeyShares[iNdEx])
+				if err != nil {
+					return protoiface.MarshalOutput{
+						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+						Buf:               input.Buf,
+					}, err
+				}
+				i -= len(encoded)
+				copy(dAtA[i:], encoded)
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+				i--
+				dAtA[i] = 0x12
+			}
 		}
 		if len(x.Creator) > 0 {
 			i -= len(x.Creator)
@@ -9321,9 +9242,9 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) ProtoMethods() *protoiface.Met
 				iNdEx = postIndex
 			case 2:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field IdType", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field GeneralKeyShares", wireType)
 				}
-				var stringLen uint64
+				var msglen int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -9333,145 +9254,26 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) ProtoMethods() *protoiface.Met
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					msglen |= int(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
+				if msglen < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
-				postIndex := iNdEx + intStringLen
+				postIndex := iNdEx + msglen
 				if postIndex < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.IdType = string(dAtA[iNdEx:postIndex])
+				x.GeneralKeyShares = append(x.GeneralKeyShares, &GeneralKeyShare{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.GeneralKeyShares[len(x.GeneralKeyShares)-1]); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
 				iNdEx = postIndex
-			case 3:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field IdValue", wireType)
-				}
-				var stringLen uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.IdValue = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
-			case 4:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeyShare", wireType)
-				}
-				var stringLen uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.KeyShare = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
-			case 5:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeyShareIndex", wireType)
-				}
-				x.KeyShareIndex = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.KeyShareIndex |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-			case 6:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ReceivedTimestamp", wireType)
-				}
-				x.ReceivedTimestamp = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.ReceivedTimestamp |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-			case 7:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ReceivedBlockHeight", wireType)
-				}
-				x.ReceivedBlockHeight = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.ReceivedBlockHeight |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -9507,27 +9309,70 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) ProtoMethods() *protoiface.Met
 	}
 }
 
+var _ protoreflect.List = (*_MsgCreateGeneralKeyShareResponse_2_list)(nil)
+
+type _MsgCreateGeneralKeyShareResponse_2_list struct {
+	list *[]*GeneralKeyShare
+}
+
+func (x *_MsgCreateGeneralKeyShareResponse_2_list) Len() int {
+	if x.list == nil {
+		return 0
+	}
+	return len(*x.list)
+}
+
+func (x *_MsgCreateGeneralKeyShareResponse_2_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
+}
+
+func (x *_MsgCreateGeneralKeyShareResponse_2_list) Set(i int, value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*GeneralKeyShare)
+	(*x.list)[i] = concreteValue
+}
+
+func (x *_MsgCreateGeneralKeyShareResponse_2_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*GeneralKeyShare)
+	*x.list = append(*x.list, concreteValue)
+}
+
+func (x *_MsgCreateGeneralKeyShareResponse_2_list) AppendMutable() protoreflect.Value {
+	v := new(GeneralKeyShare)
+	*x.list = append(*x.list, v)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_MsgCreateGeneralKeyShareResponse_2_list) Truncate(n int) {
+	for i := n; i < len(*x.list); i++ {
+		(*x.list)[i] = nil
+	}
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_MsgCreateGeneralKeyShareResponse_2_list) NewElement() protoreflect.Value {
+	v := new(GeneralKeyShare)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_MsgCreateGeneralKeyShareResponse_2_list) IsValid() bool {
+	return x.list != nil
+}
+
 var (
-	md_MsgCreateGeneralKeyShareResponse                     protoreflect.MessageDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_creator             protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_idType              protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_idValue             protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_keyShare            protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_keyShareIndex       protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_receivedBlockHeight protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_success             protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_errorMessage        protoreflect.FieldDescriptor
+	md_MsgCreateGeneralKeyShareResponse                  protoreflect.MessageDescriptor
+	fd_MsgCreateGeneralKeyShareResponse_creator          protoreflect.FieldDescriptor
+	fd_MsgCreateGeneralKeyShareResponse_generalKeyShares protoreflect.FieldDescriptor
+	fd_MsgCreateGeneralKeyShareResponse_success          protoreflect.FieldDescriptor
+	fd_MsgCreateGeneralKeyShareResponse_errorMessage     protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_keyshare_tx_proto_init()
 	md_MsgCreateGeneralKeyShareResponse = File_fairyring_keyshare_tx_proto.Messages().ByName("MsgCreateGeneralKeyShareResponse")
 	fd_MsgCreateGeneralKeyShareResponse_creator = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("creator")
-	fd_MsgCreateGeneralKeyShareResponse_idType = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("idType")
-	fd_MsgCreateGeneralKeyShareResponse_idValue = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("idValue")
-	fd_MsgCreateGeneralKeyShareResponse_keyShare = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("keyShare")
-	fd_MsgCreateGeneralKeyShareResponse_keyShareIndex = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("keyShareIndex")
-	fd_MsgCreateGeneralKeyShareResponse_receivedBlockHeight = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("receivedBlockHeight")
+	fd_MsgCreateGeneralKeyShareResponse_generalKeyShares = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("generalKeyShares")
 	fd_MsgCreateGeneralKeyShareResponse_success = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("success")
 	fd_MsgCreateGeneralKeyShareResponse_errorMessage = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("errorMessage")
 }
@@ -9603,33 +9448,9 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Range(f func(protorefl
 			return
 		}
 	}
-	if x.IdType != "" {
-		value := protoreflect.ValueOfString(x.IdType)
-		if !f(fd_MsgCreateGeneralKeyShareResponse_idType, value) {
-			return
-		}
-	}
-	if x.IdValue != "" {
-		value := protoreflect.ValueOfString(x.IdValue)
-		if !f(fd_MsgCreateGeneralKeyShareResponse_idValue, value) {
-			return
-		}
-	}
-	if x.KeyShare != "" {
-		value := protoreflect.ValueOfString(x.KeyShare)
-		if !f(fd_MsgCreateGeneralKeyShareResponse_keyShare, value) {
-			return
-		}
-	}
-	if x.KeyShareIndex != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.KeyShareIndex)
-		if !f(fd_MsgCreateGeneralKeyShareResponse_keyShareIndex, value) {
-			return
-		}
-	}
-	if x.ReceivedBlockHeight != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.ReceivedBlockHeight)
-		if !f(fd_MsgCreateGeneralKeyShareResponse_receivedBlockHeight, value) {
+	if len(x.GeneralKeyShares) != 0 {
+		value := protoreflect.ValueOfList(&_MsgCreateGeneralKeyShareResponse_2_list{list: &x.GeneralKeyShares})
+		if !f(fd_MsgCreateGeneralKeyShareResponse_generalKeyShares, value) {
 			return
 		}
 	}
@@ -9662,16 +9483,8 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Has(fd protoreflect.Fi
 	switch fd.FullName() {
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.creator":
 		return x.Creator != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.idType":
-		return x.IdType != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.idValue":
-		return x.IdValue != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.keyShare":
-		return x.KeyShare != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.keyShareIndex":
-		return x.KeyShareIndex != uint64(0)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.receivedBlockHeight":
-		return x.ReceivedBlockHeight != uint64(0)
+	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.generalKeyShares":
+		return len(x.GeneralKeyShares) != 0
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.success":
 		return x.Success != false
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.errorMessage":
@@ -9694,16 +9507,8 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Clear(fd protoreflect.
 	switch fd.FullName() {
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.creator":
 		x.Creator = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.idType":
-		x.IdType = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.idValue":
-		x.IdValue = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.keyShare":
-		x.KeyShare = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.keyShareIndex":
-		x.KeyShareIndex = uint64(0)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.receivedBlockHeight":
-		x.ReceivedBlockHeight = uint64(0)
+	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.generalKeyShares":
+		x.GeneralKeyShares = nil
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.success":
 		x.Success = false
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.errorMessage":
@@ -9727,21 +9532,12 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Get(descriptor protore
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.idType":
-		value := x.IdType
-		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.idValue":
-		value := x.IdValue
-		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.keyShare":
-		value := x.KeyShare
-		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.keyShareIndex":
-		value := x.KeyShareIndex
-		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.receivedBlockHeight":
-		value := x.ReceivedBlockHeight
-		return protoreflect.ValueOfUint64(value)
+	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.generalKeyShares":
+		if len(x.GeneralKeyShares) == 0 {
+			return protoreflect.ValueOfList(&_MsgCreateGeneralKeyShareResponse_2_list{})
+		}
+		listValue := &_MsgCreateGeneralKeyShareResponse_2_list{list: &x.GeneralKeyShares}
+		return protoreflect.ValueOfList(listValue)
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.success":
 		value := x.Success
 		return protoreflect.ValueOfBool(value)
@@ -9770,16 +9566,10 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Set(fd protoreflect.Fi
 	switch fd.FullName() {
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.creator":
 		x.Creator = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.idType":
-		x.IdType = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.idValue":
-		x.IdValue = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.keyShare":
-		x.KeyShare = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.keyShareIndex":
-		x.KeyShareIndex = value.Uint()
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.receivedBlockHeight":
-		x.ReceivedBlockHeight = value.Uint()
+	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.generalKeyShares":
+		lv := value.List()
+		clv := lv.(*_MsgCreateGeneralKeyShareResponse_2_list)
+		x.GeneralKeyShares = *clv.list
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.success":
 		x.Success = value.Bool()
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.errorMessage":
@@ -9804,18 +9594,14 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Set(fd protoreflect.Fi
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
+	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.generalKeyShares":
+		if x.GeneralKeyShares == nil {
+			x.GeneralKeyShares = []*GeneralKeyShare{}
+		}
+		value := &_MsgCreateGeneralKeyShareResponse_2_list{list: &x.GeneralKeyShares}
+		return protoreflect.ValueOfList(value)
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.creator":
 		panic(fmt.Errorf("field creator of message fairyring.keyshare.MsgCreateGeneralKeyShareResponse is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.idType":
-		panic(fmt.Errorf("field idType of message fairyring.keyshare.MsgCreateGeneralKeyShareResponse is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.idValue":
-		panic(fmt.Errorf("field idValue of message fairyring.keyshare.MsgCreateGeneralKeyShareResponse is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.keyShare":
-		panic(fmt.Errorf("field keyShare of message fairyring.keyshare.MsgCreateGeneralKeyShareResponse is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.keyShareIndex":
-		panic(fmt.Errorf("field keyShareIndex of message fairyring.keyshare.MsgCreateGeneralKeyShareResponse is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.receivedBlockHeight":
-		panic(fmt.Errorf("field receivedBlockHeight of message fairyring.keyshare.MsgCreateGeneralKeyShareResponse is not mutable"))
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.success":
 		panic(fmt.Errorf("field success of message fairyring.keyshare.MsgCreateGeneralKeyShareResponse is not mutable"))
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.errorMessage":
@@ -9835,16 +9621,9 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) NewField(fd protorefle
 	switch fd.FullName() {
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.creator":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.idType":
-		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.idValue":
-		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.keyShare":
-		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.keyShareIndex":
-		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.receivedBlockHeight":
-		return protoreflect.ValueOfUint64(uint64(0))
+	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.generalKeyShares":
+		list := []*GeneralKeyShare{}
+		return protoreflect.ValueOfList(&_MsgCreateGeneralKeyShareResponse_2_list{list: &list})
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.success":
 		return protoreflect.ValueOfBool(false)
 	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.errorMessage":
@@ -9922,23 +9701,11 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) ProtoMethods() *protoi
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.IdType)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		l = len(x.IdValue)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		l = len(x.KeyShare)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		if x.KeyShareIndex != 0 {
-			n += 1 + runtime.Sov(uint64(x.KeyShareIndex))
-		}
-		if x.ReceivedBlockHeight != 0 {
-			n += 1 + runtime.Sov(uint64(x.ReceivedBlockHeight))
+		if len(x.GeneralKeyShares) > 0 {
+			for _, e := range x.GeneralKeyShares {
+				l = options.Size(e)
+				n += 1 + l + runtime.Sov(uint64(l))
+			}
 		}
 		if x.Success {
 			n += 2
@@ -9993,36 +9760,21 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) ProtoMethods() *protoi
 			i--
 			dAtA[i] = 0x38
 		}
-		if x.ReceivedBlockHeight != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.ReceivedBlockHeight))
-			i--
-			dAtA[i] = 0x30
-		}
-		if x.KeyShareIndex != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.KeyShareIndex))
-			i--
-			dAtA[i] = 0x28
-		}
-		if len(x.KeyShare) > 0 {
-			i -= len(x.KeyShare)
-			copy(dAtA[i:], x.KeyShare)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.KeyShare)))
-			i--
-			dAtA[i] = 0x22
-		}
-		if len(x.IdValue) > 0 {
-			i -= len(x.IdValue)
-			copy(dAtA[i:], x.IdValue)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.IdValue)))
-			i--
-			dAtA[i] = 0x1a
-		}
-		if len(x.IdType) > 0 {
-			i -= len(x.IdType)
-			copy(dAtA[i:], x.IdType)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.IdType)))
-			i--
-			dAtA[i] = 0x12
+		if len(x.GeneralKeyShares) > 0 {
+			for iNdEx := len(x.GeneralKeyShares) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.GeneralKeyShares[iNdEx])
+				if err != nil {
+					return protoiface.MarshalOutput{
+						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+						Buf:               input.Buf,
+					}, err
+				}
+				i -= len(encoded)
+				copy(dAtA[i:], encoded)
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+				i--
+				dAtA[i] = 0x12
+			}
 		}
 		if len(x.Creator) > 0 {
 			i -= len(x.Creator)
@@ -10114,9 +9866,9 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) ProtoMethods() *protoi
 				iNdEx = postIndex
 			case 2:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field IdType", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field GeneralKeyShares", wireType)
 				}
-				var stringLen uint64
+				var msglen int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -10126,126 +9878,26 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) ProtoMethods() *protoi
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					msglen |= int(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
+				if msglen < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
-				postIndex := iNdEx + intStringLen
+				postIndex := iNdEx + msglen
 				if postIndex < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.IdType = string(dAtA[iNdEx:postIndex])
+				x.GeneralKeyShares = append(x.GeneralKeyShares, &GeneralKeyShare{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.GeneralKeyShares[len(x.GeneralKeyShares)-1]); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
 				iNdEx = postIndex
-			case 3:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field IdValue", wireType)
-				}
-				var stringLen uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.IdValue = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
-			case 4:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeyShare", wireType)
-				}
-				var stringLen uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.KeyShare = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
-			case 5:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeyShareIndex", wireType)
-				}
-				x.KeyShareIndex = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.KeyShareIndex |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-			case 6:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ReceivedBlockHeight", wireType)
-				}
-				x.ReceivedBlockHeight = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.ReceivedBlockHeight |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
 			case 7:
 				if wireType != 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Success", wireType)
@@ -11109,13 +10761,8 @@ type MsgCreateGeneralKeyShare struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Creator             string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	IdType              string `protobuf:"bytes,2,opt,name=idType,proto3" json:"idType,omitempty"`
-	IdValue             string `protobuf:"bytes,3,opt,name=idValue,proto3" json:"idValue,omitempty"`
-	KeyShare            string `protobuf:"bytes,4,opt,name=keyShare,proto3" json:"keyShare,omitempty"`
-	KeyShareIndex       uint64 `protobuf:"varint,5,opt,name=keyShareIndex,proto3" json:"keyShareIndex,omitempty"`
-	ReceivedTimestamp   uint64 `protobuf:"varint,6,opt,name=receivedTimestamp,proto3" json:"receivedTimestamp,omitempty"`
-	ReceivedBlockHeight uint64 `protobuf:"varint,7,opt,name=receivedBlockHeight,proto3" json:"receivedBlockHeight,omitempty"`
+	Creator          string             `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	GeneralKeyShares []*GeneralKeyShare `protobuf:"bytes,2,rep,name=generalKeyShares,proto3" json:"generalKeyShares,omitempty"`
 }
 
 func (x *MsgCreateGeneralKeyShare) Reset() {
@@ -11145,46 +10792,11 @@ func (x *MsgCreateGeneralKeyShare) GetCreator() string {
 	return ""
 }
 
-func (x *MsgCreateGeneralKeyShare) GetIdType() string {
+func (x *MsgCreateGeneralKeyShare) GetGeneralKeyShares() []*GeneralKeyShare {
 	if x != nil {
-		return x.IdType
+		return x.GeneralKeyShares
 	}
-	return ""
-}
-
-func (x *MsgCreateGeneralKeyShare) GetIdValue() string {
-	if x != nil {
-		return x.IdValue
-	}
-	return ""
-}
-
-func (x *MsgCreateGeneralKeyShare) GetKeyShare() string {
-	if x != nil {
-		return x.KeyShare
-	}
-	return ""
-}
-
-func (x *MsgCreateGeneralKeyShare) GetKeyShareIndex() uint64 {
-	if x != nil {
-		return x.KeyShareIndex
-	}
-	return 0
-}
-
-func (x *MsgCreateGeneralKeyShare) GetReceivedTimestamp() uint64 {
-	if x != nil {
-		return x.ReceivedTimestamp
-	}
-	return 0
-}
-
-func (x *MsgCreateGeneralKeyShare) GetReceivedBlockHeight() uint64 {
-	if x != nil {
-		return x.ReceivedBlockHeight
-	}
-	return 0
+	return nil
 }
 
 type MsgCreateGeneralKeyShareResponse struct {
@@ -11192,14 +10804,15 @@ type MsgCreateGeneralKeyShareResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Creator             string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	IdType              string `protobuf:"bytes,2,opt,name=idType,proto3" json:"idType,omitempty"`
-	IdValue             string `protobuf:"bytes,3,opt,name=idValue,proto3" json:"idValue,omitempty"`
-	KeyShare            string `protobuf:"bytes,4,opt,name=keyShare,proto3" json:"keyShare,omitempty"`
-	KeyShareIndex       uint64 `protobuf:"varint,5,opt,name=keyShareIndex,proto3" json:"keyShareIndex,omitempty"`
-	ReceivedBlockHeight uint64 `protobuf:"varint,6,opt,name=receivedBlockHeight,proto3" json:"receivedBlockHeight,omitempty"`
-	Success             bool   `protobuf:"varint,7,opt,name=success,proto3" json:"success,omitempty"`
-	ErrorMessage        string `protobuf:"bytes,8,opt,name=errorMessage,proto3" json:"errorMessage,omitempty"`
+	Creator          string             `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	GeneralKeyShares []*GeneralKeyShare `protobuf:"bytes,2,rep,name=generalKeyShares,proto3" json:"generalKeyShares,omitempty"`
+	// string idType              = 2;
+	// string idValue             = 3;
+	// string keyShare            = 4;
+	// uint64 keyShareIndex       = 5;
+	// uint64 receivedBlockHeight = 6;
+	Success      bool   `protobuf:"varint,7,opt,name=success,proto3" json:"success,omitempty"`
+	ErrorMessage string `protobuf:"bytes,8,opt,name=errorMessage,proto3" json:"errorMessage,omitempty"`
 }
 
 func (x *MsgCreateGeneralKeyShareResponse) Reset() {
@@ -11229,39 +10842,11 @@ func (x *MsgCreateGeneralKeyShareResponse) GetCreator() string {
 	return ""
 }
 
-func (x *MsgCreateGeneralKeyShareResponse) GetIdType() string {
+func (x *MsgCreateGeneralKeyShareResponse) GetGeneralKeyShares() []*GeneralKeyShare {
 	if x != nil {
-		return x.IdType
+		return x.GeneralKeyShares
 	}
-	return ""
-}
-
-func (x *MsgCreateGeneralKeyShareResponse) GetIdValue() string {
-	if x != nil {
-		return x.IdValue
-	}
-	return ""
-}
-
-func (x *MsgCreateGeneralKeyShareResponse) GetKeyShare() string {
-	if x != nil {
-		return x.KeyShare
-	}
-	return ""
-}
-
-func (x *MsgCreateGeneralKeyShareResponse) GetKeyShareIndex() uint64 {
-	if x != nil {
-		return x.KeyShareIndex
-	}
-	return 0
-}
-
-func (x *MsgCreateGeneralKeyShareResponse) GetReceivedBlockHeight() uint64 {
-	if x != nil {
-		return x.ReceivedBlockHeight
-	}
-	return 0
+	return nil
 }
 
 func (x *MsgCreateGeneralKeyShareResponse) GetSuccess() bool {
@@ -11417,129 +11002,116 @@ var file_fairyring_keyshare_tx_proto_rawDesc = []byte{
 	0x72, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22,
 	0x24, 0x0a, 0x22, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68,
 	0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x96, 0x02, 0x0a, 0x18, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x93, 0x01, 0x0a, 0x18, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65,
 	0x61, 0x74, 0x65, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61,
 	0x72, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16, 0x0a, 0x06,
-	0x69, 0x64, 0x54, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x69, 0x64,
-	0x54, 0x79, 0x70, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x69, 0x64, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x18,
-	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x69, 0x64, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x1a,
-	0x0a, 0x08, 0x6b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x08, 0x6b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x12, 0x24, 0x0a, 0x0d, 0x6b, 0x65,
-	0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x18, 0x05, 0x20, 0x01, 0x28,
-	0x04, 0x52, 0x0d, 0x6b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x49, 0x6e, 0x64, 0x65, 0x78,
-	0x12, 0x2c, 0x0a, 0x11, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64, 0x54, 0x69, 0x6d, 0x65,
-	0x73, 0x74, 0x61, 0x6d, 0x70, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x11, 0x72, 0x65, 0x63,
-	0x65, 0x69, 0x76, 0x65, 0x64, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x12, 0x30,
-	0x0a, 0x13, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x48,
-	0x65, 0x69, 0x67, 0x68, 0x74, 0x18, 0x07, 0x20, 0x01, 0x28, 0x04, 0x52, 0x13, 0x72, 0x65, 0x63,
-	0x65, 0x69, 0x76, 0x65, 0x64, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x48, 0x65, 0x69, 0x67, 0x68, 0x74,
-	0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0xa0,
-	0x02, 0x0a, 0x20, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x47, 0x65, 0x6e, 0x65,
-	0x72, 0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16, 0x0a,
-	0x06, 0x69, 0x64, 0x54, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x69,
-	0x64, 0x54, 0x79, 0x70, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x69, 0x64, 0x56, 0x61, 0x6c, 0x75, 0x65,
-	0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x69, 0x64, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x12,
-	0x1a, 0x0a, 0x08, 0x6b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x08, 0x6b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x12, 0x24, 0x0a, 0x0d, 0x6b,
-	0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x18, 0x05, 0x20, 0x01,
-	0x28, 0x04, 0x52, 0x0d, 0x6b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x49, 0x6e, 0x64, 0x65,
-	0x78, 0x12, 0x30, 0x0a, 0x13, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64, 0x42, 0x6c, 0x6f,
-	0x63, 0x6b, 0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x13,
-	0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x48, 0x65, 0x69,
-	0x67, 0x68, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x73, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x18, 0x07,
-	0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x73, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x12, 0x22, 0x0a,
-	0x0c, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x08, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x0c, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67,
-	0x65, 0x32, 0xaf, 0x09, 0x0a, 0x03, 0x4d, 0x73, 0x67, 0x12, 0x60, 0x0a, 0x0c, 0x55, 0x70, 0x64,
-	0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x23, 0x2e, 0x66, 0x61, 0x69, 0x72,
-	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d,
-	0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x1a, 0x2b,
-	0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68,
-	0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72,
-	0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x6f, 0x0a, 0x11, 0x52,
-	0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72,
-	0x12, 0x28, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79,
-	0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65,
-	0x72, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x1a, 0x30, 0x2e, 0x66, 0x61, 0x69,
-	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e,
-	0x4d, 0x73, 0x67, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x56, 0x61, 0x6c, 0x69, 0x64,
-	0x61, 0x74, 0x6f, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x75, 0x0a, 0x13,
-	0x44, 0x65, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61,
-	0x74, 0x6f, 0x72, 0x12, 0x2a, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
-	0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x52, 0x65,
-	0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x1a,
-	0x32, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73,
-	0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74,
-	0x65, 0x72, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x12, 0x60, 0x0a, 0x0c, 0x53, 0x65, 0x6e, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68,
-	0x61, 0x72, 0x65, 0x12, 0x23, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
-	0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x53, 0x65, 0x6e, 0x64,
-	0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x1a, 0x2b, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
+	0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x4f, 0x0a, 0x10,
+	0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x73,
+	0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x47, 0x65, 0x6e, 0x65,
+	0x72, 0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x52, 0x10, 0x67, 0x65, 0x6e,
+	0x65, 0x72, 0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x73, 0x3a, 0x0c, 0x82,
+	0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0xcb, 0x01, 0x0a, 0x20,
+	0x4d, 0x73, 0x67, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c,
+	0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x4f, 0x0a, 0x10, 0x67, 0x65,
+	0x6e, 0x65, 0x72, 0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18, 0x02,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
+	0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61,
+	0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x52, 0x10, 0x67, 0x65, 0x6e, 0x65, 0x72,
+	0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x73, 0x12, 0x18, 0x0a, 0x07, 0x73,
+	0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x18, 0x07, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x73, 0x75,
+	0x63, 0x63, 0x65, 0x73, 0x73, 0x12, 0x22, 0x0a, 0x0c, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x4d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x65, 0x72, 0x72,
+	0x6f, 0x72, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x32, 0xaf, 0x09, 0x0a, 0x03, 0x4d, 0x73,
+	0x67, 0x12, 0x60, 0x0a, 0x0c, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d,
+	0x73, 0x12, 0x23, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65,
+	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
+	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x1a, 0x2b, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x55,
+	0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x6f, 0x0a, 0x11, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x56,
+	0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x28, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
 	0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73,
-	0x67, 0x53, 0x65, 0x6e, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x72, 0x0a, 0x12, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4c,
-	0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x12, 0x29, 0x2e, 0x66, 0x61,
+	0x67, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74,
+	0x6f, 0x72, 0x1a, 0x30, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b,
+	0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x52, 0x65, 0x67, 0x69, 0x73,
+	0x74, 0x65, 0x72, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x75, 0x0a, 0x13, 0x44, 0x65, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74,
+	0x65, 0x72, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x2a, 0x2e, 0x66, 0x61,
 	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65,
-	0x2e, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74,
-	0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x1a, 0x31, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
-	0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x43,
-	0x72, 0x65, 0x61, 0x74, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65,
-	0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x78, 0x0a, 0x14, 0x4f, 0x76, 0x65,
-	0x72, 0x72, 0x69, 0x64, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65,
-	0x79, 0x12, 0x2b, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65,
-	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x4f, 0x76, 0x65, 0x72, 0x72, 0x69,
-	0x64, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x1a, 0x33,
+	0x2e, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x56, 0x61,
+	0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x1a, 0x32, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
+	0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67,
+	0x44, 0x65, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61,
+	0x74, 0x6f, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x60, 0x0a, 0x0c, 0x53,
+	0x65, 0x6e, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x12, 0x23, 0x2e, 0x66, 0x61,
+	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65,
+	0x2e, 0x4d, 0x73, 0x67, 0x53, 0x65, 0x6e, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65,
+	0x1a, 0x2b, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79,
+	0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x53, 0x65, 0x6e, 0x64, 0x4b, 0x65, 0x79,
+	0x73, 0x68, 0x61, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x72, 0x0a,
+	0x12, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62,
+	0x4b, 0x65, 0x79, 0x12, 0x29, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
+	0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65, 0x61,
+	0x74, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x1a, 0x31,
 	0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68,
-	0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x4f, 0x76, 0x65, 0x72, 0x72, 0x69, 0x64, 0x65, 0x4c,
-	0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x12, 0x81, 0x01, 0x0a, 0x17, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x75,
-	0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12,
-	0x2e, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73,
-	0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x75,
-	0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x1a,
-	0x36, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73,
-	0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x75,
-	0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x81, 0x01, 0x0a, 0x17, 0x55, 0x70, 0x64, 0x61,
-	0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72,
-	0x65, 0x73, 0x73, 0x12, 0x2e, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
-	0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61,
-	0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72,
-	0x65, 0x73, 0x73, 0x1a, 0x36, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
-	0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61,
-	0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72,
-	0x65, 0x73, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x81, 0x01, 0x0a, 0x17,
-	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64,
+	0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4c, 0x61, 0x74,
+	0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x78, 0x0a, 0x14, 0x4f, 0x76, 0x65, 0x72, 0x72, 0x69, 0x64, 0x65, 0x4c, 0x61, 0x74,
+	0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x12, 0x2b, 0x2e, 0x66, 0x61, 0x69, 0x72,
+	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d,
+	0x73, 0x67, 0x4f, 0x76, 0x65, 0x72, 0x72, 0x69, 0x64, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74,
+	0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x1a, 0x33, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x4f,
+	0x76, 0x65, 0x72, 0x72, 0x69, 0x64, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62,
+	0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x81, 0x01, 0x0a, 0x17,
+	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64,
 	0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x2e, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
 	0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67,
-	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64,
+	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64,
 	0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x1a, 0x36, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
 	0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67,
-	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64,
+	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64,
 	0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
-	0x7b, 0x0a, 0x15, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c,
-	0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x12, 0x2c, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
-	0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73,
-	0x67, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x4b, 0x65,
-	0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x1a, 0x34, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
-	0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x43,
-	0x72, 0x65, 0x61, 0x74, 0x65, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53,
-	0x68, 0x61, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x1a, 0x05, 0x80, 0xe7,
-	0xb0, 0x2a, 0x01, 0x42, 0xaf, 0x01, 0x0a, 0x16, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72,
-	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x42, 0x07,
-	0x54, 0x78, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x23, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
-	0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72,
-	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xa2, 0x02,
-	0x03, 0x46, 0x4b, 0x58, 0xaa, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
-	0x2e, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xca, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72,
-	0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xe2, 0x02,
-	0x1e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68,
-	0x61, 0x72, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea,
-	0x02, 0x13, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x4b, 0x65, 0x79,
-	0x73, 0x68, 0x61, 0x72, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x81, 0x01, 0x0a, 0x17, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72,
+	0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x2e, 0x2e, 0x66, 0x61,
+	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65,
+	0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72,
+	0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x1a, 0x36, 0x2e, 0x66, 0x61,
+	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65,
+	0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72,
+	0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x81, 0x01, 0x0a, 0x17, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x75,
+	0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12,
+	0x2e, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73,
+	0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x75,
+	0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x1a,
+	0x36, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73,
+	0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x75,
+	0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x7b, 0x0a, 0x15, 0x43, 0x72, 0x65, 0x61, 0x74,
+	0x65, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65,
+	0x12, 0x2c, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79,
+	0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x47,
+	0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x1a, 0x34,
+	0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68,
+	0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x47, 0x65, 0x6e,
+	0x65, 0x72, 0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x1a, 0x05, 0x80, 0xe7, 0xb0, 0x2a, 0x01, 0x42, 0xaf, 0x01, 0x0a, 0x16,
+	0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65,
+	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x42, 0x07, 0x54, 0x78, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50,
+	0x01, 0x5a, 0x23, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f,
+	0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x6b, 0x65,
+	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xa2, 0x02, 0x03, 0x46, 0x4b, 0x58, 0xaa, 0x02, 0x12, 0x46,
+	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
+	0x65, 0xca, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65,
+	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xe2, 0x02, 0x1e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d,
+	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x13, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72,
+	0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -11578,36 +11150,39 @@ var file_fairyring_keyshare_tx_proto_goTypes = []interface{}{
 	(*MsgCreateGeneralKeyShareResponse)(nil),   // 19: fairyring.keyshare.MsgCreateGeneralKeyShareResponse
 	(*Params)(nil),                             // 20: fairyring.keyshare.Params
 	(*EncryptedKeyShare)(nil),                  // 21: fairyring.keyshare.EncryptedKeyShare
+	(*GeneralKeyShare)(nil),                    // 22: fairyring.keyshare.GeneralKeyShare
 }
 var file_fairyring_keyshare_tx_proto_depIdxs = []int32{
 	20, // 0: fairyring.keyshare.MsgUpdateParams.params:type_name -> fairyring.keyshare.Params
 	21, // 1: fairyring.keyshare.MsgCreateLatestPubKey.encryptedKeyShares:type_name -> fairyring.keyshare.EncryptedKeyShare
 	21, // 2: fairyring.keyshare.MsgOverrideLatestPubKey.encryptedKeyShares:type_name -> fairyring.keyshare.EncryptedKeyShare
-	0,  // 3: fairyring.keyshare.Msg.UpdateParams:input_type -> fairyring.keyshare.MsgUpdateParams
-	2,  // 4: fairyring.keyshare.Msg.RegisterValidator:input_type -> fairyring.keyshare.MsgRegisterValidator
-	4,  // 5: fairyring.keyshare.Msg.DeRegisterValidator:input_type -> fairyring.keyshare.MsgDeRegisterValidator
-	6,  // 6: fairyring.keyshare.Msg.SendKeyshare:input_type -> fairyring.keyshare.MsgSendKeyshare
-	8,  // 7: fairyring.keyshare.Msg.CreateLatestPubKey:input_type -> fairyring.keyshare.MsgCreateLatestPubKey
-	10, // 8: fairyring.keyshare.Msg.OverrideLatestPubKey:input_type -> fairyring.keyshare.MsgOverrideLatestPubKey
-	12, // 9: fairyring.keyshare.Msg.CreateAuthorizedAddress:input_type -> fairyring.keyshare.MsgCreateAuthorizedAddress
-	14, // 10: fairyring.keyshare.Msg.UpdateAuthorizedAddress:input_type -> fairyring.keyshare.MsgUpdateAuthorizedAddress
-	16, // 11: fairyring.keyshare.Msg.DeleteAuthorizedAddress:input_type -> fairyring.keyshare.MsgDeleteAuthorizedAddress
-	18, // 12: fairyring.keyshare.Msg.CreateGeneralKeyShare:input_type -> fairyring.keyshare.MsgCreateGeneralKeyShare
-	1,  // 13: fairyring.keyshare.Msg.UpdateParams:output_type -> fairyring.keyshare.MsgUpdateParamsResponse
-	3,  // 14: fairyring.keyshare.Msg.RegisterValidator:output_type -> fairyring.keyshare.MsgRegisterValidatorResponse
-	5,  // 15: fairyring.keyshare.Msg.DeRegisterValidator:output_type -> fairyring.keyshare.MsgDeRegisterValidatorResponse
-	7,  // 16: fairyring.keyshare.Msg.SendKeyshare:output_type -> fairyring.keyshare.MsgSendKeyshareResponse
-	9,  // 17: fairyring.keyshare.Msg.CreateLatestPubKey:output_type -> fairyring.keyshare.MsgCreateLatestPubKeyResponse
-	11, // 18: fairyring.keyshare.Msg.OverrideLatestPubKey:output_type -> fairyring.keyshare.MsgOverrideLatestPubKeyResponse
-	13, // 19: fairyring.keyshare.Msg.CreateAuthorizedAddress:output_type -> fairyring.keyshare.MsgCreateAuthorizedAddressResponse
-	15, // 20: fairyring.keyshare.Msg.UpdateAuthorizedAddress:output_type -> fairyring.keyshare.MsgUpdateAuthorizedAddressResponse
-	17, // 21: fairyring.keyshare.Msg.DeleteAuthorizedAddress:output_type -> fairyring.keyshare.MsgDeleteAuthorizedAddressResponse
-	19, // 22: fairyring.keyshare.Msg.CreateGeneralKeyShare:output_type -> fairyring.keyshare.MsgCreateGeneralKeyShareResponse
-	13, // [13:23] is the sub-list for method output_type
-	3,  // [3:13] is the sub-list for method input_type
-	3,  // [3:3] is the sub-list for extension type_name
-	3,  // [3:3] is the sub-list for extension extendee
-	0,  // [0:3] is the sub-list for field type_name
+	22, // 3: fairyring.keyshare.MsgCreateGeneralKeyShare.generalKeyShares:type_name -> fairyring.keyshare.GeneralKeyShare
+	22, // 4: fairyring.keyshare.MsgCreateGeneralKeyShareResponse.generalKeyShares:type_name -> fairyring.keyshare.GeneralKeyShare
+	0,  // 5: fairyring.keyshare.Msg.UpdateParams:input_type -> fairyring.keyshare.MsgUpdateParams
+	2,  // 6: fairyring.keyshare.Msg.RegisterValidator:input_type -> fairyring.keyshare.MsgRegisterValidator
+	4,  // 7: fairyring.keyshare.Msg.DeRegisterValidator:input_type -> fairyring.keyshare.MsgDeRegisterValidator
+	6,  // 8: fairyring.keyshare.Msg.SendKeyshare:input_type -> fairyring.keyshare.MsgSendKeyshare
+	8,  // 9: fairyring.keyshare.Msg.CreateLatestPubKey:input_type -> fairyring.keyshare.MsgCreateLatestPubKey
+	10, // 10: fairyring.keyshare.Msg.OverrideLatestPubKey:input_type -> fairyring.keyshare.MsgOverrideLatestPubKey
+	12, // 11: fairyring.keyshare.Msg.CreateAuthorizedAddress:input_type -> fairyring.keyshare.MsgCreateAuthorizedAddress
+	14, // 12: fairyring.keyshare.Msg.UpdateAuthorizedAddress:input_type -> fairyring.keyshare.MsgUpdateAuthorizedAddress
+	16, // 13: fairyring.keyshare.Msg.DeleteAuthorizedAddress:input_type -> fairyring.keyshare.MsgDeleteAuthorizedAddress
+	18, // 14: fairyring.keyshare.Msg.CreateGeneralKeyShare:input_type -> fairyring.keyshare.MsgCreateGeneralKeyShare
+	1,  // 15: fairyring.keyshare.Msg.UpdateParams:output_type -> fairyring.keyshare.MsgUpdateParamsResponse
+	3,  // 16: fairyring.keyshare.Msg.RegisterValidator:output_type -> fairyring.keyshare.MsgRegisterValidatorResponse
+	5,  // 17: fairyring.keyshare.Msg.DeRegisterValidator:output_type -> fairyring.keyshare.MsgDeRegisterValidatorResponse
+	7,  // 18: fairyring.keyshare.Msg.SendKeyshare:output_type -> fairyring.keyshare.MsgSendKeyshareResponse
+	9,  // 19: fairyring.keyshare.Msg.CreateLatestPubKey:output_type -> fairyring.keyshare.MsgCreateLatestPubKeyResponse
+	11, // 20: fairyring.keyshare.Msg.OverrideLatestPubKey:output_type -> fairyring.keyshare.MsgOverrideLatestPubKeyResponse
+	13, // 21: fairyring.keyshare.Msg.CreateAuthorizedAddress:output_type -> fairyring.keyshare.MsgCreateAuthorizedAddressResponse
+	15, // 22: fairyring.keyshare.Msg.UpdateAuthorizedAddress:output_type -> fairyring.keyshare.MsgUpdateAuthorizedAddressResponse
+	17, // 23: fairyring.keyshare.Msg.DeleteAuthorizedAddress:output_type -> fairyring.keyshare.MsgDeleteAuthorizedAddressResponse
+	19, // 24: fairyring.keyshare.Msg.CreateGeneralKeyShare:output_type -> fairyring.keyshare.MsgCreateGeneralKeyShareResponse
+	15, // [15:25] is the sub-list for method output_type
+	5,  // [5:15] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_fairyring_keyshare_tx_proto_init() }
