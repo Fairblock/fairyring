@@ -1,31 +1,67 @@
 syntax = "proto3";
-
 package fairyring.pep;
 
-import "fairyring/pep/aggregated_key_share.proto";
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "google/protobuf/duration.proto";
 
 // this line is used by starport scaffolding # proto/tx/import
+import "gogoproto/gogo.proto";
+import "fairyring/pep/params.proto";
+import "fairyring/pep/aggregated_key_share.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
 // Msg defines the Msg service.
 service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+
   rpc SubmitEncryptedTx (MsgSubmitEncryptedTx) returns (MsgSubmitEncryptedTxResponse);
   rpc SubmitGeneralEncryptedTx (MsgSubmitGeneralEncryptedTx) returns (MsgSubmitEncryptedTxResponse);
-  
+
   // this line is used by starport scaffolding # proto/tx/rpc
   rpc CreateAggregatedKeyShare (MsgCreateAggregatedKeyShare) returns (MsgCreateAggregatedKeyShareResponse);
   rpc RequestGeneralKeyshare   (MsgRequestGeneralKeyshare  ) returns (MsgRequestGeneralKeyshareResponse  );
   rpc GetGeneralKeyshare       (MsgGetGeneralKeyshare      ) returns (MsgGetGeneralKeyshareResponse      );
+
 }
 
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "github.com/Fairblock/fairyring/x/pep/MsgUpdateParams";
+
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+  //
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+
 message MsgSubmitEncryptedTx {
+  option (cosmos.msg.v1.signer) = "creator";
   string creator           = 1;
   string data              = 2;
   uint64 targetBlockHeight = 3;
 }
 
 message MsgSubmitGeneralEncryptedTx {
+  option (cosmos.msg.v1.signer) = "creator";
   string creator           = 1;
   string data              = 2;
   string req_id            = 3;
@@ -35,6 +71,7 @@ message MsgSubmitEncryptedTxResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message
 message MsgCreateAggregatedKeyShare {
+  option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   uint64 height  = 2;
   string data    = 3;
@@ -43,7 +80,9 @@ message MsgCreateAggregatedKeyShare {
 message MsgCreateAggregatedKeyShareResponse {}
 
 message MsgRequestGeneralKeyshare {
+  option (cosmos.msg.v1.signer) = "creator";
   string creator   = 1;
+  google.protobuf.Duration estimated_delay = 2 [(gogoproto.stdduration) = true];
 }
 
 message MsgRequestGeneralKeyshareResponse {
@@ -51,6 +90,7 @@ message MsgRequestGeneralKeyshareResponse {
 }
 
 message MsgGetGeneralKeyshare {
+  option (cosmos.msg.v1.signer) = "creator";
   string creator  = 1;
   string req_id   = 2;
 }

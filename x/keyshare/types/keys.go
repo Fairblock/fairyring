@@ -7,9 +7,6 @@ const (
 	// StoreKey defines the primary module store key
 	StoreKey = ModuleName
 
-	// RouterKey defines the module's message routing key
-	RouterKey = ModuleName
-
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_keyshare"
 
@@ -18,9 +15,17 @@ const (
 
 	// PortID is the default port id that module binds to
 	PortID = "keyshare"
+)
 
-	// ChannelID is the default channel id that module will use to transmit IBC packets.
-	ChannelID = "channel-0"
+var (
+	ParamsKey = []byte("p_keyshare")
+)
+
+var (
+	// PortKey defines the key to store the port ID in store
+	PortKey          = KeyPrefix("keyshare-port-")
+	ChannelKey       = KeyPrefix("keyshare-channel-")
+	RequestsCountKey = KeyPrefix("keyshare-request-count-")
 )
 
 const (
@@ -107,13 +112,8 @@ const (
 	KeyTotalInvalidKeyShareSubmitted = "total_invalid_key_share"
 )
 
-var (
-	// PortKey defines the key to store the port ID in store
-	PortKey          = KeyPrefix("keyshare-port-")
-	ChannelKey       = KeyPrefix("keyshare-channel-")
-	RequestsCountKey = KeyPrefix("keyshare-request-count-")
-)
-
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
+
+const AvgBlockTime = 5.6

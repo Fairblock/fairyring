@@ -78,28 +78,45 @@ export const Block = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Block {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBlock();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.header = Header.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.data = Data.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.evidence = EvidenceList.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.lastCommit = Commit.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -115,15 +132,24 @@ export const Block = {
 
   toJSON(message: Block): unknown {
     const obj: any = {};
-    message.header !== undefined && (obj.header = message.header ? Header.toJSON(message.header) : undefined);
-    message.data !== undefined && (obj.data = message.data ? Data.toJSON(message.data) : undefined);
-    message.evidence !== undefined
-      && (obj.evidence = message.evidence ? EvidenceList.toJSON(message.evidence) : undefined);
-    message.lastCommit !== undefined
-      && (obj.lastCommit = message.lastCommit ? Commit.toJSON(message.lastCommit) : undefined);
+    if (message.header !== undefined) {
+      obj.header = Header.toJSON(message.header);
+    }
+    if (message.data !== undefined) {
+      obj.data = Data.toJSON(message.data);
+    }
+    if (message.evidence !== undefined) {
+      obj.evidence = EvidenceList.toJSON(message.evidence);
+    }
+    if (message.lastCommit !== undefined) {
+      obj.lastCommit = Commit.toJSON(message.lastCommit);
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Block>, I>>(base?: I): Block {
+    return Block.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Block>, I>>(object: I): Block {
     const message = createBaseBlock();
     message.header = (object.header !== undefined && object.header !== null)
@@ -147,14 +173,14 @@ function createBaseHeader(): Header {
     height: 0,
     time: undefined,
     lastBlockId: undefined,
-    lastCommitHash: new Uint8Array(),
-    dataHash: new Uint8Array(),
-    validatorsHash: new Uint8Array(),
-    nextValidatorsHash: new Uint8Array(),
-    consensusHash: new Uint8Array(),
-    appHash: new Uint8Array(),
-    lastResultsHash: new Uint8Array(),
-    evidenceHash: new Uint8Array(),
+    lastCommitHash: new Uint8Array(0),
+    dataHash: new Uint8Array(0),
+    validatorsHash: new Uint8Array(0),
+    nextValidatorsHash: new Uint8Array(0),
+    consensusHash: new Uint8Array(0),
+    appHash: new Uint8Array(0),
+    lastResultsHash: new Uint8Array(0),
+    evidenceHash: new Uint8Array(0),
     proposerAddress: "",
   };
 }
@@ -207,58 +233,115 @@ export const Header = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Header {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseHeader();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.version = Consensus.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.chainId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.height = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.lastBlockId = BlockID.decode(reader, reader.uint32());
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.lastCommitHash = reader.bytes();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.dataHash = reader.bytes();
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.validatorsHash = reader.bytes();
-          break;
+          continue;
         case 9:
+          if (tag !== 74) {
+            break;
+          }
+
           message.nextValidatorsHash = reader.bytes();
-          break;
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.consensusHash = reader.bytes();
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.appHash = reader.bytes();
-          break;
+          continue;
         case 12:
+          if (tag !== 98) {
+            break;
+          }
+
           message.lastResultsHash = reader.bytes();
-          break;
+          continue;
         case 13:
+          if (tag !== 106) {
+            break;
+          }
+
           message.evidenceHash = reader.bytes();
-          break;
+          continue;
         case 14:
+          if (tag !== 114) {
+            break;
+          }
+
           message.proposerAddress = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -270,60 +353,70 @@ export const Header = {
       height: isSet(object.height) ? Number(object.height) : 0,
       time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
       lastBlockId: isSet(object.lastBlockId) ? BlockID.fromJSON(object.lastBlockId) : undefined,
-      lastCommitHash: isSet(object.lastCommitHash) ? bytesFromBase64(object.lastCommitHash) : new Uint8Array(),
-      dataHash: isSet(object.dataHash) ? bytesFromBase64(object.dataHash) : new Uint8Array(),
-      validatorsHash: isSet(object.validatorsHash) ? bytesFromBase64(object.validatorsHash) : new Uint8Array(),
+      lastCommitHash: isSet(object.lastCommitHash) ? bytesFromBase64(object.lastCommitHash) : new Uint8Array(0),
+      dataHash: isSet(object.dataHash) ? bytesFromBase64(object.dataHash) : new Uint8Array(0),
+      validatorsHash: isSet(object.validatorsHash) ? bytesFromBase64(object.validatorsHash) : new Uint8Array(0),
       nextValidatorsHash: isSet(object.nextValidatorsHash)
         ? bytesFromBase64(object.nextValidatorsHash)
-        : new Uint8Array(),
-      consensusHash: isSet(object.consensusHash) ? bytesFromBase64(object.consensusHash) : new Uint8Array(),
-      appHash: isSet(object.appHash) ? bytesFromBase64(object.appHash) : new Uint8Array(),
-      lastResultsHash: isSet(object.lastResultsHash) ? bytesFromBase64(object.lastResultsHash) : new Uint8Array(),
-      evidenceHash: isSet(object.evidenceHash) ? bytesFromBase64(object.evidenceHash) : new Uint8Array(),
+        : new Uint8Array(0),
+      consensusHash: isSet(object.consensusHash) ? bytesFromBase64(object.consensusHash) : new Uint8Array(0),
+      appHash: isSet(object.appHash) ? bytesFromBase64(object.appHash) : new Uint8Array(0),
+      lastResultsHash: isSet(object.lastResultsHash) ? bytesFromBase64(object.lastResultsHash) : new Uint8Array(0),
+      evidenceHash: isSet(object.evidenceHash) ? bytesFromBase64(object.evidenceHash) : new Uint8Array(0),
       proposerAddress: isSet(object.proposerAddress) ? String(object.proposerAddress) : "",
     };
   },
 
   toJSON(message: Header): unknown {
     const obj: any = {};
-    message.version !== undefined && (obj.version = message.version ? Consensus.toJSON(message.version) : undefined);
-    message.chainId !== undefined && (obj.chainId = message.chainId);
-    message.height !== undefined && (obj.height = Math.round(message.height));
-    message.time !== undefined && (obj.time = message.time.toISOString());
-    message.lastBlockId !== undefined
-      && (obj.lastBlockId = message.lastBlockId ? BlockID.toJSON(message.lastBlockId) : undefined);
-    message.lastCommitHash !== undefined
-      && (obj.lastCommitHash = base64FromBytes(
-        message.lastCommitHash !== undefined ? message.lastCommitHash : new Uint8Array(),
-      ));
-    message.dataHash !== undefined
-      && (obj.dataHash = base64FromBytes(message.dataHash !== undefined ? message.dataHash : new Uint8Array()));
-    message.validatorsHash !== undefined
-      && (obj.validatorsHash = base64FromBytes(
-        message.validatorsHash !== undefined ? message.validatorsHash : new Uint8Array(),
-      ));
-    message.nextValidatorsHash !== undefined
-      && (obj.nextValidatorsHash = base64FromBytes(
-        message.nextValidatorsHash !== undefined ? message.nextValidatorsHash : new Uint8Array(),
-      ));
-    message.consensusHash !== undefined
-      && (obj.consensusHash = base64FromBytes(
-        message.consensusHash !== undefined ? message.consensusHash : new Uint8Array(),
-      ));
-    message.appHash !== undefined
-      && (obj.appHash = base64FromBytes(message.appHash !== undefined ? message.appHash : new Uint8Array()));
-    message.lastResultsHash !== undefined
-      && (obj.lastResultsHash = base64FromBytes(
-        message.lastResultsHash !== undefined ? message.lastResultsHash : new Uint8Array(),
-      ));
-    message.evidenceHash !== undefined
-      && (obj.evidenceHash = base64FromBytes(
-        message.evidenceHash !== undefined ? message.evidenceHash : new Uint8Array(),
-      ));
-    message.proposerAddress !== undefined && (obj.proposerAddress = message.proposerAddress);
+    if (message.version !== undefined) {
+      obj.version = Consensus.toJSON(message.version);
+    }
+    if (message.chainId !== "") {
+      obj.chainId = message.chainId;
+    }
+    if (message.height !== 0) {
+      obj.height = Math.round(message.height);
+    }
+    if (message.time !== undefined) {
+      obj.time = message.time.toISOString();
+    }
+    if (message.lastBlockId !== undefined) {
+      obj.lastBlockId = BlockID.toJSON(message.lastBlockId);
+    }
+    if (message.lastCommitHash.length !== 0) {
+      obj.lastCommitHash = base64FromBytes(message.lastCommitHash);
+    }
+    if (message.dataHash.length !== 0) {
+      obj.dataHash = base64FromBytes(message.dataHash);
+    }
+    if (message.validatorsHash.length !== 0) {
+      obj.validatorsHash = base64FromBytes(message.validatorsHash);
+    }
+    if (message.nextValidatorsHash.length !== 0) {
+      obj.nextValidatorsHash = base64FromBytes(message.nextValidatorsHash);
+    }
+    if (message.consensusHash.length !== 0) {
+      obj.consensusHash = base64FromBytes(message.consensusHash);
+    }
+    if (message.appHash.length !== 0) {
+      obj.appHash = base64FromBytes(message.appHash);
+    }
+    if (message.lastResultsHash.length !== 0) {
+      obj.lastResultsHash = base64FromBytes(message.lastResultsHash);
+    }
+    if (message.evidenceHash.length !== 0) {
+      obj.evidenceHash = base64FromBytes(message.evidenceHash);
+    }
+    if (message.proposerAddress !== "") {
+      obj.proposerAddress = message.proposerAddress;
+    }
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Header>, I>>(base?: I): Header {
+    return Header.fromPartial(base ?? ({} as any));
+  },
   fromPartial<I extends Exact<DeepPartial<Header>, I>>(object: I): Header {
     const message = createBaseHeader();
     message.version = (object.version !== undefined && object.version !== null)
@@ -335,23 +428,23 @@ export const Header = {
     message.lastBlockId = (object.lastBlockId !== undefined && object.lastBlockId !== null)
       ? BlockID.fromPartial(object.lastBlockId)
       : undefined;
-    message.lastCommitHash = object.lastCommitHash ?? new Uint8Array();
-    message.dataHash = object.dataHash ?? new Uint8Array();
-    message.validatorsHash = object.validatorsHash ?? new Uint8Array();
-    message.nextValidatorsHash = object.nextValidatorsHash ?? new Uint8Array();
-    message.consensusHash = object.consensusHash ?? new Uint8Array();
-    message.appHash = object.appHash ?? new Uint8Array();
-    message.lastResultsHash = object.lastResultsHash ?? new Uint8Array();
-    message.evidenceHash = object.evidenceHash ?? new Uint8Array();
+    message.lastCommitHash = object.lastCommitHash ?? new Uint8Array(0);
+    message.dataHash = object.dataHash ?? new Uint8Array(0);
+    message.validatorsHash = object.validatorsHash ?? new Uint8Array(0);
+    message.nextValidatorsHash = object.nextValidatorsHash ?? new Uint8Array(0);
+    message.consensusHash = object.consensusHash ?? new Uint8Array(0);
+    message.appHash = object.appHash ?? new Uint8Array(0);
+    message.lastResultsHash = object.lastResultsHash ?? new Uint8Array(0);
+    message.evidenceHash = object.evidenceHash ?? new Uint8Array(0);
     message.proposerAddress = object.proposerAddress ?? "";
     return message;
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
+declare const self: any | undefined;
+declare const window: any | undefined;
+declare const global: any | undefined;
+const tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -368,10 +461,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -381,14 +474,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 
@@ -410,8 +503,8 @@ function toTimestamp(date: Date): Timestamp {
 }
 
 function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
   return new Date(millis);
 }
 
@@ -427,7 +520,7 @@ function fromJsonTimestamp(o: any): Date {
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

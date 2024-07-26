@@ -3,6 +3,7 @@ import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { Any } from "../../../../google/protobuf/any";
 import { Event } from "../../../../tendermint/abci/types";
+import { Block } from "../../../../tendermint/types/block";
 
 export const protobufPackage = "cosmos.base.abci.v1beta1";
 
@@ -171,6 +172,22 @@ export interface SearchTxsResult {
   limit: number;
   /** List of txs in current page */
   txs: TxResponse[];
+}
+
+/** SearchBlocksResult defines a structure for querying blocks pageable */
+export interface SearchBlocksResult {
+  /** Count of all blocks */
+  totalCount: number;
+  /** Count of blocks in current page */
+  count: number;
+  /** Index of current page, start from 1 */
+  pageNumber: number;
+  /** Count of total pages */
+  pageTotal: number;
+  /** Max count blocks per page */
+  limit: number;
+  /** List of blocks in current page */
+  blocks: Block[];
 }
 
 function createBaseTxResponse(): TxResponse {
@@ -1194,6 +1211,140 @@ export const SearchTxsResult = {
     message.pageTotal = object.pageTotal ?? 0;
     message.limit = object.limit ?? 0;
     message.txs = object.txs?.map((e) => TxResponse.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseSearchBlocksResult(): SearchBlocksResult {
+  return { totalCount: 0, count: 0, pageNumber: 0, pageTotal: 0, limit: 0, blocks: [] };
+}
+
+export const SearchBlocksResult = {
+  encode(message: SearchBlocksResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.totalCount !== 0) {
+      writer.uint32(8).int64(message.totalCount);
+    }
+    if (message.count !== 0) {
+      writer.uint32(16).int64(message.count);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(24).int64(message.pageNumber);
+    }
+    if (message.pageTotal !== 0) {
+      writer.uint32(32).int64(message.pageTotal);
+    }
+    if (message.limit !== 0) {
+      writer.uint32(40).int64(message.limit);
+    }
+    for (const v of message.blocks) {
+      Block.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SearchBlocksResult {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSearchBlocksResult();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.totalCount = longToNumber(reader.int64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.count = longToNumber(reader.int64() as Long);
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageNumber = longToNumber(reader.int64() as Long);
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageTotal = longToNumber(reader.int64() as Long);
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.limit = longToNumber(reader.int64() as Long);
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.blocks.push(Block.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SearchBlocksResult {
+    return {
+      totalCount: isSet(object.totalCount) ? Number(object.totalCount) : 0,
+      count: isSet(object.count) ? Number(object.count) : 0,
+      pageNumber: isSet(object.pageNumber) ? Number(object.pageNumber) : 0,
+      pageTotal: isSet(object.pageTotal) ? Number(object.pageTotal) : 0,
+      limit: isSet(object.limit) ? Number(object.limit) : 0,
+      blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => Block.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: SearchBlocksResult): unknown {
+    const obj: any = {};
+    if (message.totalCount !== 0) {
+      obj.totalCount = Math.round(message.totalCount);
+    }
+    if (message.count !== 0) {
+      obj.count = Math.round(message.count);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageTotal !== 0) {
+      obj.pageTotal = Math.round(message.pageTotal);
+    }
+    if (message.limit !== 0) {
+      obj.limit = Math.round(message.limit);
+    }
+    if (message.blocks?.length) {
+      obj.blocks = message.blocks.map((e) => Block.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SearchBlocksResult>, I>>(base?: I): SearchBlocksResult {
+    return SearchBlocksResult.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SearchBlocksResult>, I>>(object: I): SearchBlocksResult {
+    const message = createBaseSearchBlocksResult();
+    message.totalCount = object.totalCount ?? 0;
+    message.count = object.count ?? 0;
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageTotal = object.pageTotal ?? 0;
+    message.limit = object.limit ?? 0;
+    message.blocks = object.blocks?.map((e) => Block.fromPartial(e)) || [];
     return message;
   },
 };

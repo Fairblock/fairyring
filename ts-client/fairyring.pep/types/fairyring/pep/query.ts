@@ -2,10 +2,10 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
-import { EncryptedTx, EncryptedTxArray } from "./encrypted_tx";
+import { ActivePublicKey, QueuedPublicKey } from "../common/shared_types";
+import { EncryptedTx, EncryptedTxArray, GenEncTxExecutionQueue } from "./encrypted_tx";
 import { Params } from "./params";
 import { PepNonce } from "./pep_nonce";
-import { ActivePubKey, QueuedPubKey } from "./pub_key";
 
 export const protobufPackage = "fairyring.pep";
 
@@ -17,6 +17,23 @@ export interface QueryParamsRequest {
 export interface QueryParamsResponse {
   /** params holds all the parameters of this module. */
   params: Params | undefined;
+}
+
+export interface QueryKeyshareRequest {
+  reqId: string;
+}
+
+export interface QueryKeyshareResponse {
+  keyshare: GenEncTxExecutionQueue | undefined;
+}
+
+export interface QueryAllKeyshareRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllKeyshareResponse {
+  keyshares: GenEncTxExecutionQueue[];
+  pagination: PageResponse | undefined;
 }
 
 export interface QueryGetEncryptedTxRequest {
@@ -73,8 +90,8 @@ export interface QueryPubKeyRequest {
 }
 
 export interface QueryPubKeyResponse {
-  activePubKey: ActivePubKey | undefined;
-  queuedPubKey: QueuedPubKey | undefined;
+  activePubKey: ActivePublicKey | undefined;
+  queuedPubKey: QueuedPublicKey | undefined;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -174,6 +191,259 @@ export const QueryParamsResponse = {
     const message = createBaseQueryParamsResponse();
     message.params = (object.params !== undefined && object.params !== null)
       ? Params.fromPartial(object.params)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryKeyshareRequest(): QueryKeyshareRequest {
+  return { reqId: "" };
+}
+
+export const QueryKeyshareRequest = {
+  encode(message: QueryKeyshareRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.reqId !== "") {
+      writer.uint32(10).string(message.reqId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeyshareRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryKeyshareRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.reqId = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryKeyshareRequest {
+    return { reqId: isSet(object.reqId) ? String(object.reqId) : "" };
+  },
+
+  toJSON(message: QueryKeyshareRequest): unknown {
+    const obj: any = {};
+    if (message.reqId !== "") {
+      obj.reqId = message.reqId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryKeyshareRequest>, I>>(base?: I): QueryKeyshareRequest {
+    return QueryKeyshareRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryKeyshareRequest>, I>>(object: I): QueryKeyshareRequest {
+    const message = createBaseQueryKeyshareRequest();
+    message.reqId = object.reqId ?? "";
+    return message;
+  },
+};
+
+function createBaseQueryKeyshareResponse(): QueryKeyshareResponse {
+  return { keyshare: undefined };
+}
+
+export const QueryKeyshareResponse = {
+  encode(message: QueryKeyshareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.keyshare !== undefined) {
+      GenEncTxExecutionQueue.encode(message.keyshare, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryKeyshareResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryKeyshareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.keyshare = GenEncTxExecutionQueue.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryKeyshareResponse {
+    return { keyshare: isSet(object.keyshare) ? GenEncTxExecutionQueue.fromJSON(object.keyshare) : undefined };
+  },
+
+  toJSON(message: QueryKeyshareResponse): unknown {
+    const obj: any = {};
+    if (message.keyshare !== undefined) {
+      obj.keyshare = GenEncTxExecutionQueue.toJSON(message.keyshare);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryKeyshareResponse>, I>>(base?: I): QueryKeyshareResponse {
+    return QueryKeyshareResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryKeyshareResponse>, I>>(object: I): QueryKeyshareResponse {
+    const message = createBaseQueryKeyshareResponse();
+    message.keyshare = (object.keyshare !== undefined && object.keyshare !== null)
+      ? GenEncTxExecutionQueue.fromPartial(object.keyshare)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllKeyshareRequest(): QueryAllKeyshareRequest {
+  return { pagination: undefined };
+}
+
+export const QueryAllKeyshareRequest = {
+  encode(message: QueryAllKeyshareRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllKeyshareRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllKeyshareRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllKeyshareRequest {
+    return { pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined };
+  },
+
+  toJSON(message: QueryAllKeyshareRequest): unknown {
+    const obj: any = {};
+    if (message.pagination !== undefined) {
+      obj.pagination = PageRequest.toJSON(message.pagination);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryAllKeyshareRequest>, I>>(base?: I): QueryAllKeyshareRequest {
+    return QueryAllKeyshareRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryAllKeyshareRequest>, I>>(object: I): QueryAllKeyshareRequest {
+    const message = createBaseQueryAllKeyshareRequest();
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllKeyshareResponse(): QueryAllKeyshareResponse {
+  return { keyshares: [], pagination: undefined };
+}
+
+export const QueryAllKeyshareResponse = {
+  encode(message: QueryAllKeyshareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.keyshares) {
+      GenEncTxExecutionQueue.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllKeyshareResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllKeyshareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.keyshares.push(GenEncTxExecutionQueue.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllKeyshareResponse {
+    return {
+      keyshares: Array.isArray(object?.keyshares)
+        ? object.keyshares.map((e: any) => GenEncTxExecutionQueue.fromJSON(e))
+        : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllKeyshareResponse): unknown {
+    const obj: any = {};
+    if (message.keyshares?.length) {
+      obj.keyshares = message.keyshares.map((e) => GenEncTxExecutionQueue.toJSON(e));
+    }
+    if (message.pagination !== undefined) {
+      obj.pagination = PageResponse.toJSON(message.pagination);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryAllKeyshareResponse>, I>>(base?: I): QueryAllKeyshareResponse {
+    return QueryAllKeyshareResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryAllKeyshareResponse>, I>>(object: I): QueryAllKeyshareResponse {
+    const message = createBaseQueryAllKeyshareResponse();
+    message.keyshares = object.keyshares?.map((e) => GenEncTxExecutionQueue.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
       : undefined;
     return message;
   },
@@ -976,10 +1246,10 @@ function createBaseQueryPubKeyResponse(): QueryPubKeyResponse {
 export const QueryPubKeyResponse = {
   encode(message: QueryPubKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.activePubKey !== undefined) {
-      ActivePubKey.encode(message.activePubKey, writer.uint32(10).fork()).ldelim();
+      ActivePublicKey.encode(message.activePubKey, writer.uint32(10).fork()).ldelim();
     }
     if (message.queuedPubKey !== undefined) {
-      QueuedPubKey.encode(message.queuedPubKey, writer.uint32(18).fork()).ldelim();
+      QueuedPublicKey.encode(message.queuedPubKey, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -996,14 +1266,14 @@ export const QueryPubKeyResponse = {
             break;
           }
 
-          message.activePubKey = ActivePubKey.decode(reader, reader.uint32());
+          message.activePubKey = ActivePublicKey.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 18) {
             break;
           }
 
-          message.queuedPubKey = QueuedPubKey.decode(reader, reader.uint32());
+          message.queuedPubKey = QueuedPublicKey.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1016,18 +1286,18 @@ export const QueryPubKeyResponse = {
 
   fromJSON(object: any): QueryPubKeyResponse {
     return {
-      activePubKey: isSet(object.activePubKey) ? ActivePubKey.fromJSON(object.activePubKey) : undefined,
-      queuedPubKey: isSet(object.queuedPubKey) ? QueuedPubKey.fromJSON(object.queuedPubKey) : undefined,
+      activePubKey: isSet(object.activePubKey) ? ActivePublicKey.fromJSON(object.activePubKey) : undefined,
+      queuedPubKey: isSet(object.queuedPubKey) ? QueuedPublicKey.fromJSON(object.queuedPubKey) : undefined,
     };
   },
 
   toJSON(message: QueryPubKeyResponse): unknown {
     const obj: any = {};
     if (message.activePubKey !== undefined) {
-      obj.activePubKey = ActivePubKey.toJSON(message.activePubKey);
+      obj.activePubKey = ActivePublicKey.toJSON(message.activePubKey);
     }
     if (message.queuedPubKey !== undefined) {
-      obj.queuedPubKey = QueuedPubKey.toJSON(message.queuedPubKey);
+      obj.queuedPubKey = QueuedPublicKey.toJSON(message.queuedPubKey);
     }
     return obj;
   },
@@ -1038,10 +1308,10 @@ export const QueryPubKeyResponse = {
   fromPartial<I extends Exact<DeepPartial<QueryPubKeyResponse>, I>>(object: I): QueryPubKeyResponse {
     const message = createBaseQueryPubKeyResponse();
     message.activePubKey = (object.activePubKey !== undefined && object.activePubKey !== null)
-      ? ActivePubKey.fromPartial(object.activePubKey)
+      ? ActivePublicKey.fromPartial(object.activePubKey)
       : undefined;
     message.queuedPubKey = (object.queuedPubKey !== undefined && object.queuedPubKey !== null)
-      ? QueuedPubKey.fromPartial(object.queuedPubKey)
+      ? QueuedPublicKey.fromPartial(object.queuedPubKey)
       : undefined;
     return message;
   },
@@ -1067,6 +1337,8 @@ export interface Query {
   PepNonceAll(request: QueryAllPepNonceRequest): Promise<QueryAllPepNonceResponse>;
   /** Queries the public keys */
   PubKey(request: QueryPubKeyRequest): Promise<QueryPubKeyResponse>;
+  KeyshareReq(request: QueryKeyshareRequest): Promise<QueryKeyshareResponse>;
+  KeyshareReqAll(request: QueryAllKeyshareRequest): Promise<QueryAllKeyshareResponse>;
 }
 
 export const QueryServiceName = "fairyring.pep.Query";
@@ -1084,6 +1356,8 @@ export class QueryClientImpl implements Query {
     this.PepNonce = this.PepNonce.bind(this);
     this.PepNonceAll = this.PepNonceAll.bind(this);
     this.PubKey = this.PubKey.bind(this);
+    this.KeyshareReq = this.KeyshareReq.bind(this);
+    this.KeyshareReqAll = this.KeyshareReqAll.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -1133,6 +1407,18 @@ export class QueryClientImpl implements Query {
     const data = QueryPubKeyRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "PubKey", data);
     return promise.then((data) => QueryPubKeyResponse.decode(_m0.Reader.create(data)));
+  }
+
+  KeyshareReq(request: QueryKeyshareRequest): Promise<QueryKeyshareResponse> {
+    const data = QueryKeyshareRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "KeyshareReq", data);
+    return promise.then((data) => QueryKeyshareResponse.decode(_m0.Reader.create(data)));
+  }
+
+  KeyshareReqAll(request: QueryAllKeyshareRequest): Promise<QueryAllKeyshareResponse> {
+    const data = QueryAllKeyshareRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "KeyshareReqAll", data);
+    return promise.then((data) => QueryAllKeyshareResponse.decode(_m0.Reader.create(data)));
   }
 }
 

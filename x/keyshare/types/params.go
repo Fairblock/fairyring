@@ -1,11 +1,11 @@
 package types
 
 import (
-	fmt "fmt"
-
+	"cosmossdk.io/math"
+	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"gopkg.in/yaml.v2"
 )
 
 var _ paramtypes.ParamSet = (*Params)(nil)
@@ -26,12 +26,12 @@ var (
 )
 var (
 	KeySlashFractionNoKeyShare     = []byte("KeyNoShareSlashFraction")
-	DefaultSlashFractionNoKeyShare = sdk.NewDecWithPrec(5, 1) // 0.5
+	DefaultSlashFractionNoKeyShare = math.LegacyNewDecWithPrec(5, 1) // 0.5
 )
 
 var (
 	KeySlashFractionWrongKeyShare     = []byte("KeyWrongShareSlashFraction")
-	DefaultSlashFractionWrongKeyShare = sdk.NewDecWithPrec(5, 1) // 0.5
+	DefaultSlashFractionWrongKeyShare = math.LegacyNewDecWithPrec(5, 1) // 0.5
 )
 
 var (
@@ -49,8 +49,8 @@ func NewParams(
 	keyExp uint64,
 	trAddrs []string,
 	minimumBonded uint64,
-	noKeyShareFraction sdk.Dec,
-	wrongKeyShareFraction sdk.Dec,
+	noKeyShareFraction math.LegacyDec,
+	wrongKeyShareFraction math.LegacyDec,
 	maxIdledBlock uint64,
 ) Params {
 	return Params{
@@ -103,12 +103,6 @@ func (p Params) Validate() error {
 	return nil
 }
 
-// String implements the Stringer interface.
-func (p Params) String() string {
-	out, _ := yaml.Marshal(p)
-	return string(out)
-}
-
 // validateKeyExpiry validates the KeyExpiry param
 func validateKeyExpiry(v interface{}) error {
 	_, ok := v.(uint64)
@@ -150,11 +144,11 @@ func validateMinimumBonded(v interface{}) error {
 
 // validateSlashFractionNoKeyshare validates the SlashFractionNoKeyshare param
 func validateSlashFractionNoKeyshare(v interface{}) error {
-	val, ok := v.(sdk.Dec)
+	val, ok := v.(math.LegacyDec)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", v)
 	}
-	if val.LTE(sdk.NewDec(0)) || val.GT(sdk.NewDec(1)) {
+	if val.LTE(math.LegacyNewDec(0)) || val.GT(math.LegacyNewDec(1)) {
 		return fmt.Errorf("invalid parameter value, expected value between 0 and 1, not including 0, got %v", val)
 	}
 	return nil
@@ -162,11 +156,11 @@ func validateSlashFractionNoKeyshare(v interface{}) error {
 
 // validateSlashFractionWrongKeyshare validates the SlashFractionWrongKeyshare param
 func validateSlashFractionWrongKeyshare(v interface{}) error {
-	val, ok := v.(sdk.Dec)
+	val, ok := v.(math.LegacyDec)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", v)
 	}
-	if val.LTE(sdk.NewDec(0)) || val.GT(sdk.NewDec(1)) {
+	if val.LTE(math.LegacyNewDec(0)) || val.GT(math.LegacyNewDec(1)) {
 		return fmt.Errorf("invalid parameter value, expected value between 0 and 1, not including 0, got %v", val)
 	}
 	return nil

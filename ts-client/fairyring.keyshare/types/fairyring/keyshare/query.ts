@@ -13,12 +13,12 @@ import { ValidatorSet } from "./validator_set";
 
 export const protobufPackage = "fairyring.keyshare";
 
-export interface QueryCommitmentsRequest {
+export interface QueryVerifiableRandomnessQuery {
 }
 
-export interface QueryCommitmentsResponse {
-  activeCommitments: Commitments | undefined;
-  queuedCommitments: Commitments | undefined;
+export interface QueryVerifiableRandomnessResponse {
+  randomness: string;
+  round: number;
 }
 
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
@@ -29,6 +29,14 @@ export interface QueryParamsRequest {
 export interface QueryParamsResponse {
   /** params holds all the parameters of this module. */
   params: Params | undefined;
+}
+
+export interface QueryCommitmentsRequest {
+}
+
+export interface QueryCommitmentsResponse {
+  activeCommitments: Commitments | undefined;
+  queuedCommitments: Commitments | undefined;
 }
 
 export interface QueryGetValidatorSetRequest {
@@ -127,6 +135,229 @@ export interface QueryAllGeneralKeyShareResponse {
   generalKeyShare: GeneralKeyShare[];
   pagination: PageResponse | undefined;
 }
+
+function createBaseQueryVerifiableRandomnessQuery(): QueryVerifiableRandomnessQuery {
+  return {};
+}
+
+export const QueryVerifiableRandomnessQuery = {
+  encode(_: QueryVerifiableRandomnessQuery, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryVerifiableRandomnessQuery {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryVerifiableRandomnessQuery();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryVerifiableRandomnessQuery {
+    return {};
+  },
+
+  toJSON(_: QueryVerifiableRandomnessQuery): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryVerifiableRandomnessQuery>, I>>(base?: I): QueryVerifiableRandomnessQuery {
+    return QueryVerifiableRandomnessQuery.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryVerifiableRandomnessQuery>, I>>(_: I): QueryVerifiableRandomnessQuery {
+    const message = createBaseQueryVerifiableRandomnessQuery();
+    return message;
+  },
+};
+
+function createBaseQueryVerifiableRandomnessResponse(): QueryVerifiableRandomnessResponse {
+  return { randomness: "", round: 0 };
+}
+
+export const QueryVerifiableRandomnessResponse = {
+  encode(message: QueryVerifiableRandomnessResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.randomness !== "") {
+      writer.uint32(10).string(message.randomness);
+    }
+    if (message.round !== 0) {
+      writer.uint32(16).uint64(message.round);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryVerifiableRandomnessResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryVerifiableRandomnessResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.randomness = reader.string();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.round = longToNumber(reader.uint64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryVerifiableRandomnessResponse {
+    return {
+      randomness: isSet(object.randomness) ? String(object.randomness) : "",
+      round: isSet(object.round) ? Number(object.round) : 0,
+    };
+  },
+
+  toJSON(message: QueryVerifiableRandomnessResponse): unknown {
+    const obj: any = {};
+    if (message.randomness !== "") {
+      obj.randomness = message.randomness;
+    }
+    if (message.round !== 0) {
+      obj.round = Math.round(message.round);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryVerifiableRandomnessResponse>, I>>(
+    base?: I,
+  ): QueryVerifiableRandomnessResponse {
+    return QueryVerifiableRandomnessResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryVerifiableRandomnessResponse>, I>>(
+    object: I,
+  ): QueryVerifiableRandomnessResponse {
+    const message = createBaseQueryVerifiableRandomnessResponse();
+    message.randomness = object.randomness ?? "";
+    message.round = object.round ?? 0;
+    return message;
+  },
+};
+
+function createBaseQueryParamsRequest(): QueryParamsRequest {
+  return {};
+}
+
+export const QueryParamsRequest = {
+  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryParamsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryParamsRequest {
+    return {};
+  },
+
+  toJSON(_: QueryParamsRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(base?: I): QueryParamsRequest {
+    return QueryParamsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(_: I): QueryParamsRequest {
+    const message = createBaseQueryParamsRequest();
+    return message;
+  },
+};
+
+function createBaseQueryParamsResponse(): QueryParamsResponse {
+  return { params: undefined };
+}
+
+export const QueryParamsResponse = {
+  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.params !== undefined) {
+      Params.encode(message.params, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryParamsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.params = Params.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryParamsResponse {
+    return { params: isSet(object.params) ? Params.fromJSON(object.params) : undefined };
+  },
+
+  toJSON(message: QueryParamsResponse): unknown {
+    const obj: any = {};
+    if (message.params !== undefined) {
+      obj.params = Params.toJSON(message.params);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryParamsResponse>, I>>(base?: I): QueryParamsResponse {
+    return QueryParamsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryParamsResponse>, I>>(object: I): QueryParamsResponse {
+    const message = createBaseQueryParamsResponse();
+    message.params = (object.params !== undefined && object.params !== null)
+      ? Params.fromPartial(object.params)
+      : undefined;
+    return message;
+  },
+};
 
 function createBaseQueryCommitmentsRequest(): QueryCommitmentsRequest {
   return {};
@@ -244,108 +475,6 @@ export const QueryCommitmentsResponse = {
       : undefined;
     message.queuedCommitments = (object.queuedCommitments !== undefined && object.queuedCommitments !== null)
       ? Commitments.fromPartial(object.queuedCommitments)
-      : undefined;
-    return message;
-  },
-};
-
-function createBaseQueryParamsRequest(): QueryParamsRequest {
-  return {};
-}
-
-export const QueryParamsRequest = {
-  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryParamsRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(_: any): QueryParamsRequest {
-    return {};
-  },
-
-  toJSON(_: QueryParamsRequest): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(base?: I): QueryParamsRequest {
-    return QueryParamsRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(_: I): QueryParamsRequest {
-    const message = createBaseQueryParamsRequest();
-    return message;
-  },
-};
-
-function createBaseQueryParamsResponse(): QueryParamsResponse {
-  return { params: undefined };
-}
-
-export const QueryParamsResponse = {
-  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.params !== undefined) {
-      Params.encode(message.params, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryParamsResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.params = Params.decode(reader, reader.uint32());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): QueryParamsResponse {
-    return { params: isSet(object.params) ? Params.fromJSON(object.params) : undefined };
-  },
-
-  toJSON(message: QueryParamsResponse): unknown {
-    const obj: any = {};
-    if (message.params !== undefined) {
-      obj.params = Params.toJSON(message.params);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<QueryParamsResponse>, I>>(base?: I): QueryParamsResponse {
-    return QueryParamsResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<QueryParamsResponse>, I>>(object: I): QueryParamsResponse {
-    const message = createBaseQueryParamsResponse();
-    message.params = (object.params !== undefined && object.params !== null)
-      ? Params.fromPartial(object.params)
       : undefined;
     return message;
   },
@@ -1836,9 +1965,9 @@ export const QueryAllGeneralKeyShareResponse = {
 
 /** Query defines the gRPC querier service. */
 export interface Query {
-  Commitments(request: QueryCommitmentsRequest): Promise<QueryCommitmentsResponse>;
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
+  Commitments(request: QueryCommitmentsRequest): Promise<QueryCommitmentsResponse>;
   /** Queries a ValidatorSet by index. */
   ValidatorSet(request: QueryGetValidatorSetRequest): Promise<QueryGetValidatorSetResponse>;
   /** Queries a list of ValidatorSet items. */
@@ -1858,6 +1987,7 @@ export interface Query {
   /** Queries a list of GeneralKeyShare items. */
   GeneralKeyShare(request: QueryGetGeneralKeyShareRequest): Promise<QueryGetGeneralKeyShareResponse>;
   GeneralKeyShareAll(request: QueryAllGeneralKeyShareRequest): Promise<QueryAllGeneralKeyShareResponse>;
+  VerifiableRandomness(request: QueryVerifiableRandomnessQuery): Promise<QueryVerifiableRandomnessResponse>;
 }
 
 export const QueryServiceName = "fairyring.keyshare.Query";
@@ -1867,8 +1997,8 @@ export class QueryClientImpl implements Query {
   constructor(rpc: Rpc, opts?: { service?: string }) {
     this.service = opts?.service || QueryServiceName;
     this.rpc = rpc;
-    this.Commitments = this.Commitments.bind(this);
     this.Params = this.Params.bind(this);
+    this.Commitments = this.Commitments.bind(this);
     this.ValidatorSet = this.ValidatorSet.bind(this);
     this.ValidatorSetAll = this.ValidatorSetAll.bind(this);
     this.KeyShare = this.KeyShare.bind(this);
@@ -1880,17 +2010,18 @@ export class QueryClientImpl implements Query {
     this.AuthorizedAddressAll = this.AuthorizedAddressAll.bind(this);
     this.GeneralKeyShare = this.GeneralKeyShare.bind(this);
     this.GeneralKeyShareAll = this.GeneralKeyShareAll.bind(this);
+    this.VerifiableRandomness = this.VerifiableRandomness.bind(this);
   }
-  Commitments(request: QueryCommitmentsRequest): Promise<QueryCommitmentsResponse> {
-    const data = QueryCommitmentsRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "Commitments", data);
-    return promise.then((data) => QueryCommitmentsResponse.decode(_m0.Reader.create(data)));
-  }
-
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "Params", data);
     return promise.then((data) => QueryParamsResponse.decode(_m0.Reader.create(data)));
+  }
+
+  Commitments(request: QueryCommitmentsRequest): Promise<QueryCommitmentsResponse> {
+    const data = QueryCommitmentsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "Commitments", data);
+    return promise.then((data) => QueryCommitmentsResponse.decode(_m0.Reader.create(data)));
   }
 
   ValidatorSet(request: QueryGetValidatorSetRequest): Promise<QueryGetValidatorSetResponse> {
@@ -1957,6 +2088,12 @@ export class QueryClientImpl implements Query {
     const data = QueryAllGeneralKeyShareRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GeneralKeyShareAll", data);
     return promise.then((data) => QueryAllGeneralKeyShareResponse.decode(_m0.Reader.create(data)));
+  }
+
+  VerifiableRandomness(request: QueryVerifiableRandomnessQuery): Promise<QueryVerifiableRandomnessResponse> {
+    const data = QueryVerifiableRandomnessQuery.encode(request).finish();
+    const promise = this.rpc.request(this.service, "VerifiableRandomness", data);
+    return promise.then((data) => QueryVerifiableRandomnessResponse.decode(_m0.Reader.create(data)));
   }
 }
 

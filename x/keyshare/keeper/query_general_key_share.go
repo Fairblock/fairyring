@@ -2,9 +2,10 @@ package keeper
 
 import (
 	"context"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
+	"cosmossdk.io/store/prefix"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
@@ -19,7 +20,8 @@ func (k Keeper) GeneralKeyShareAll(goCtx context.Context, req *types.QueryAllGen
 	var generalKeyShares []types.GeneralKeyShare
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	store := ctx.KVStore(k.storeKey)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
 	generalKeyShareStore := prefix.NewStore(store, types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
 
 	pageRes, err := query.Paginate(generalKeyShareStore, req.Pagination, func(key []byte, value []byte) error {

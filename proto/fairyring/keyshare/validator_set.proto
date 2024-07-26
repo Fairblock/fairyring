@@ -4,7 +4,7 @@ package fairyring.keyshare;
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
 message ValidatorSet {
-  string index = 1; 
+  string index = 1;
   string validator = 2;
   string consAddr = 3;
   bool isActive = 4;

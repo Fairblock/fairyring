@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package fairyring.pep;
 
+import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 import "fairyring/pep/params.proto";
 import "fairyring/pep/encrypted_tx.proto";
@@ -9,14 +10,14 @@ import "fairyring/pep/pep_nonce.proto";
 import "fairyring/pep/aggregated_key_share.proto";
 import "fairyring/common/shared_types.proto";
 
-// this line is used by starport scaffolding # genesis/proto/import
-
 option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
 // GenesisState defines the pep module's genesis state.
 message GenesisState {
-  Params                 params                     = 1 [(gogoproto.nullable) = false];
-  string                 port_id                    = 2;
+  
+  // params defines all the parameters of the module.
+  Params params  = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  string port_id = 2;
   repeated EncryptedTxArray       encryptedTxArray           = 3 [(gogoproto.nullable) = false];
   repeated PepNonce               pepNonceList         = 4 [(gogoproto.nullable) = false];
 
@@ -25,4 +26,6 @@ message GenesisState {
   fairyring.common.ActivePublicKey                 activePubKey               = 7 [(gogoproto.nullable) = false];
   fairyring.common.QueuedPublicKey                 queuedPubKey               = 8 [(gogoproto.nullable) = false];
   uint64                          request_count              = 9;
+
 }
+

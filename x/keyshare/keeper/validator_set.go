@@ -1,15 +1,18 @@
 package keeper
 
 import (
+	storetypes "cosmossdk.io/store/types"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 
-	"github.com/cosmos/cosmos-sdk/store/prefix"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	"context"
+	"cosmossdk.io/store/prefix"
 )
 
 // SetValidatorSet set a specific validatorSet in the store from its index
-func (k Keeper) SetValidatorSet(ctx sdk.Context, validatorSet types.ValidatorSet) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ValidatorSetKeyPrefix))
+func (k Keeper) SetValidatorSet(ctx context.Context, validatorSet types.ValidatorSet) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ValidatorSetKeyPrefix))
 	b := k.cdc.MustMarshal(&validatorSet)
 	store.Set(types.ValidatorSetKey(
 		validatorSet.Index,
@@ -18,11 +21,12 @@ func (k Keeper) SetValidatorSet(ctx sdk.Context, validatorSet types.ValidatorSet
 
 // GetValidatorSet returns a validatorSet from its index
 func (k Keeper) GetValidatorSet(
-	ctx sdk.Context,
+	ctx context.Context,
 	index string,
 
 ) (val types.ValidatorSet, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ValidatorSetKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ValidatorSetKeyPrefix))
 
 	b := store.Get(types.ValidatorSetKey(
 		index,
@@ -37,20 +41,22 @@ func (k Keeper) GetValidatorSet(
 
 // RemoveValidatorSet removes a validatorSet from the store
 func (k Keeper) RemoveValidatorSet(
-	ctx sdk.Context,
+	ctx context.Context,
 	index string,
 
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ValidatorSetKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ValidatorSetKeyPrefix))
 	store.Delete(types.ValidatorSetKey(
 		index,
 	))
 }
 
 // GetAllValidatorSet returns all validatorSet
-func (k Keeper) GetAllValidatorSet(ctx sdk.Context) (list []types.ValidatorSet) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ValidatorSetKeyPrefix))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+func (k Keeper) GetAllValidatorSet(ctx context.Context) (list []types.ValidatorSet) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ValidatorSetKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 

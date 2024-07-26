@@ -26,7 +26,6 @@ done
 cd ..
 
 # move proto files to the right places
-cp -r github.com/Fairblock/fairyring/x/* x/
-rm -rf github.com
-rm -rf fairyring
-
+cp -r proto/github.com/Fairblock/fairyring/x/* x/
+rm -rf proto/github.com
+find proto/ -type f -name "*.pb.go" -exec rm -f {} +

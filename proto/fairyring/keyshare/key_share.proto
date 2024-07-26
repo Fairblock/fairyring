@@ -4,7 +4,7 @@ package fairyring.keyshare;
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
 message KeyShare {
-  string validator = 1; 
+  string validator = 1;
   uint64 blockHeight = 2;
   string keyShare = 3;
   uint64 keyShareIndex = 4;

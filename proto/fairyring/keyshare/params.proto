@@ -1,17 +1,22 @@
 syntax = "proto3";
 package fairyring.keyshare;
 
+import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
 // Params defines the parameters for the module.
 message Params {
-  option (gogoproto.goproto_stringer) = false;
-  uint64 key_expiry = 1;
-  repeated string trusted_addresses = 2;
-  bytes slash_fraction_no_keyshare = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
-  bytes slash_fraction_wrong_keyshare = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
-  uint64 minimum_bonded = 5;
-  uint64 max_idled_block = 6;
+  option (amino.name) = "github.com/Fairblock/fairyring/x/keyshare/Params";
+  option (gogoproto.equal) = true;
+
+  
+  uint64 key_expiry = 1 [(gogoproto.moretags) = "yaml:\"key_expiry\""];
+  uint64 minimum_bonded = 2 [(gogoproto.moretags) = "yaml:\"minimum_bonded\""];
+  uint64 max_idled_block = 3 [(gogoproto.moretags) = "yaml:\"max_idled_block\""];
+  repeated string trusted_addresses = 4 [(gogoproto.moretags) = "yaml:\"trusted_addresses\""];
+  bytes slash_fraction_no_keyshare = 5 [(gogoproto.customtype) = "cosmossdk.io/math.LegacyDec", (gogoproto.nullable) = false, (gogoproto.moretags) = "yaml:\"slash_fraction_no_keyshare\""];
+  bytes slash_fraction_wrong_keyshare = 6 [(gogoproto.customtype) = "cosmossdk.io/math.LegacyDec", (gogoproto.nullable) = false, (gogoproto.moretags) = "yaml:\"slash_fraction_wrong_keyshare\""];
+
 }

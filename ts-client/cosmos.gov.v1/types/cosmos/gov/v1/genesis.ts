@@ -49,7 +49,18 @@ export interface GenesisState {
    *
    * Since: cosmos-sdk 0.47
    */
-  params: Params | undefined;
+  params:
+    | Params
+    | undefined;
+  /**
+   * The constitution allows builders to lay a foundation and define purpose.
+   * This is an immutable string set in genesis.
+   * There are no amendments, to go outside of scope, just fork.
+   * constitution is an immutable string in genesis for a chain builder to lay out their vision, ideas and ideals.
+   *
+   * Since: cosmos-sdk 0.50
+   */
+  constitution: string;
   portId: string;
 }
 
@@ -63,6 +74,7 @@ function createBaseGenesisState(): GenesisState {
     votingParams: undefined,
     tallyParams: undefined,
     params: undefined,
+    constitution: "",
     portId: "",
   };
 }
@@ -93,8 +105,11 @@ export const GenesisState = {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(66).fork()).ldelim();
     }
+    if (message.constitution !== "") {
+      writer.uint32(74).string(message.constitution);
+    }
     if (message.portId !== "") {
-      writer.uint32(74).string(message.portId);
+      writer.uint32(82).string(message.portId);
     }
     return writer;
   },
@@ -167,6 +182,13 @@ export const GenesisState = {
             break;
           }
 
+          message.constitution = reader.string();
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.portId = reader.string();
           continue;
       }
@@ -188,6 +210,7 @@ export const GenesisState = {
       votingParams: isSet(object.votingParams) ? VotingParams.fromJSON(object.votingParams) : undefined,
       tallyParams: isSet(object.tallyParams) ? TallyParams.fromJSON(object.tallyParams) : undefined,
       params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
+      constitution: isSet(object.constitution) ? String(object.constitution) : "",
       portId: isSet(object.portId) ? String(object.portId) : "",
     };
   },
@@ -218,6 +241,9 @@ export const GenesisState = {
     if (message.params !== undefined) {
       obj.params = Params.toJSON(message.params);
     }
+    if (message.constitution !== "") {
+      obj.constitution = message.constitution;
+    }
     if (message.portId !== "") {
       obj.portId = message.portId;
     }
@@ -245,6 +271,7 @@ export const GenesisState = {
     message.params = (object.params !== undefined && object.params !== null)
       ? Params.fromPartial(object.params)
       : undefined;
+    message.constitution = object.constitution ?? "";
     message.portId = object.portId ?? "";
     return message;
   },

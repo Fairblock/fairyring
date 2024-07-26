@@ -14,6 +14,7 @@ export interface ConsensusParams {
   evidence: EvidenceParams | undefined;
   validator: ValidatorParams | undefined;
   version: VersionParams | undefined;
+  abci: ABCIParams | undefined;
 }
 
 /** BlockParams contains limits on the block size. */
@@ -80,8 +81,24 @@ export interface HashedParams {
   blockMaxGas: number;
 }
 
+/** ABCIParams configure functionality specific to the Application Blockchain Interface. */
+export interface ABCIParams {
+  /**
+   * vote_extensions_enable_height configures the first height during which
+   * vote extensions will be enabled. During this specified height, and for all
+   * subsequent heights, precommit messages that do not contain valid extension data
+   * will be considered invalid. Prior to this height, vote extensions will not
+   * be used or accepted by validators on the network.
+   *
+   * Once enabled, vote extensions will be created by the application in ExtendVote,
+   * passed to the application for validation in VerifyVoteExtension and given
+   * to the application to use when proposing a block during PrepareProposal.
+   */
+  voteExtensionsEnableHeight: number;
+}
+
 function createBaseConsensusParams(): ConsensusParams {
-  return { block: undefined, evidence: undefined, validator: undefined, version: undefined };
+  return { block: undefined, evidence: undefined, validator: undefined, version: undefined, abci: undefined };
 }
 
 export const ConsensusParams = {
@@ -97,6 +114,9 @@ export const ConsensusParams = {
     }
     if (message.version !== undefined) {
       VersionParams.encode(message.version, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.abci !== undefined) {
+      ABCIParams.encode(message.abci, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -136,6 +156,13 @@ export const ConsensusParams = {
 
           message.version = VersionParams.decode(reader, reader.uint32());
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.abci = ABCIParams.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -151,6 +178,7 @@ export const ConsensusParams = {
       evidence: isSet(object.evidence) ? EvidenceParams.fromJSON(object.evidence) : undefined,
       validator: isSet(object.validator) ? ValidatorParams.fromJSON(object.validator) : undefined,
       version: isSet(object.version) ? VersionParams.fromJSON(object.version) : undefined,
+      abci: isSet(object.abci) ? ABCIParams.fromJSON(object.abci) : undefined,
     };
   },
 
@@ -167,6 +195,9 @@ export const ConsensusParams = {
     }
     if (message.version !== undefined) {
       obj.version = VersionParams.toJSON(message.version);
+    }
+    if (message.abci !== undefined) {
+      obj.abci = ABCIParams.toJSON(message.abci);
     }
     return obj;
   },
@@ -187,6 +218,9 @@ export const ConsensusParams = {
       : undefined;
     message.version = (object.version !== undefined && object.version !== null)
       ? VersionParams.fromPartial(object.version)
+      : undefined;
+    message.abci = (object.abci !== undefined && object.abci !== null)
+      ? ABCIParams.fromPartial(object.abci)
       : undefined;
     return message;
   },
@@ -541,6 +575,67 @@ export const HashedParams = {
     const message = createBaseHashedParams();
     message.blockMaxBytes = object.blockMaxBytes ?? 0;
     message.blockMaxGas = object.blockMaxGas ?? 0;
+    return message;
+  },
+};
+
+function createBaseABCIParams(): ABCIParams {
+  return { voteExtensionsEnableHeight: 0 };
+}
+
+export const ABCIParams = {
+  encode(message: ABCIParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.voteExtensionsEnableHeight !== 0) {
+      writer.uint32(8).int64(message.voteExtensionsEnableHeight);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ABCIParams {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseABCIParams();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.voteExtensionsEnableHeight = longToNumber(reader.int64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ABCIParams {
+    return {
+      voteExtensionsEnableHeight: isSet(object.voteExtensionsEnableHeight)
+        ? Number(object.voteExtensionsEnableHeight)
+        : 0,
+    };
+  },
+
+  toJSON(message: ABCIParams): unknown {
+    const obj: any = {};
+    if (message.voteExtensionsEnableHeight !== 0) {
+      obj.voteExtensionsEnableHeight = Math.round(message.voteExtensionsEnableHeight);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ABCIParams>, I>>(base?: I): ABCIParams {
+    return ABCIParams.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ABCIParams>, I>>(object: I): ABCIParams {
+    const message = createBaseABCIParams();
+    message.voteExtensionsEnableHeight = object.voteExtensionsEnableHeight ?? 0;
     return message;
   },
 };

@@ -4,7 +4,7 @@ import (
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
+	channeltypes "github.com/cosmos/ibc-go/v8/modules/core/04-channel/types"
 )
 
 // OnRecvCurrentKeysPacket processes packet reception
@@ -14,7 +14,7 @@ func (k Keeper) OnRecvCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Pac
 		return packetAck, err
 	}
 
-	k.Logger(ctx).Info("Received keys packet req")
+	k.Logger().Info("Received keys packet req")
 
 	ak, found := k.GetActivePubKey(ctx)
 	if found {

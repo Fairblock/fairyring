@@ -1,60 +1,65 @@
 package keeper
 
 import (
-	"github.com/Fairblock/fairyring/x/keyshare/types"
-
+	"context"
+	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
+	"github.com/cosmos/cosmos-sdk/runtime"
+
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 )
 
 // GetParams get all parameters as types.Params
-func (k Keeper) GetParams(ctx sdk.Context) types.Params {
-	return types.NewParams(
-		k.KeyExpiry(ctx),
-		k.TrustedAddresses(ctx),
-		k.MinimumBonded(ctx),
-		k.SlashFractionNoKeyshare(ctx),
-		k.SlashFractionWrongKeyshare(ctx),
-		k.MaxIdledBlock(ctx),
-	)
+func (k Keeper) GetParams(ctx context.Context) (params types.Params) {
+	store := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	bz := store.Get(types.ParamsKey)
+	if bz == nil {
+		return params
+	}
+
+	k.cdc.MustUnmarshal(bz, &params)
+	return params
 }
 
 // SetParams set the params
-func (k Keeper) SetParams(ctx sdk.Context, params types.Params) {
-	k.paramstore.SetParamSet(ctx, &params)
+func (k Keeper) SetParams(ctx context.Context, params types.Params) error {
+	store := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	bz, err := k.cdc.Marshal(&params)
+	if err != nil {
+		return err
+	}
+	store.Set(types.ParamsKey, bz)
+
+	return nil
 }
 
 // KeyExpiry returns the KeyExpiry param
-func (k Keeper) KeyExpiry(ctx sdk.Context) (res uint64) {
-	k.paramstore.Get(ctx, types.KeyKeyExpiry, &res)
-	return
+func (k Keeper) KeyExpiry(ctx sdk.Context) uint64 {
+	return k.GetParams(ctx).KeyExpiry
 }
 
 // TrustedAddresses returns the TrustedAddresses param
 func (k Keeper) TrustedAddresses(ctx sdk.Context) (res []string) {
-	k.paramstore.Get(ctx, types.KeyTrustedAddresses, &res)
-	return
+	return k.GetParams(ctx).TrustedAddresses
 }
 
 // MinimumBonded returns the MinimumBonded param
 func (k Keeper) MinimumBonded(ctx sdk.Context) (res uint64) {
-	k.paramstore.Get(ctx, types.KeyMinimumBonded, &res)
-	return
+	return k.GetParams(ctx).MinimumBonded
 }
 
 // SlashFractionNoKeyshare returns the SlashFractionNoKeyshare param
-func (k Keeper) SlashFractionNoKeyshare(ctx sdk.Context) (res sdk.Dec) {
-	k.paramstore.Get(ctx, types.KeySlashFractionNoKeyShare, &res)
-	return
+func (k Keeper) SlashFractionNoKeyshare(ctx sdk.Context) (res math.LegacyDec) {
+	return k.GetParams(ctx).SlashFractionNoKeyshare
 }
 
 // SlashFractionWrongKeyshare returns the SlashFractionWrongKeyshare param
-func (k Keeper) SlashFractionWrongKeyshare(ctx sdk.Context) (res sdk.Dec) {
-	k.paramstore.Get(ctx, types.KeySlashFractionWrongKeyShare, &res)
-	return
+func (k Keeper) SlashFractionWrongKeyshare(ctx sdk.Context) (res math.LegacyDec) {
+	return k.GetParams(ctx).SlashFractionWrongKeyshare
 }
 
 // MaxIdledBlock returns the MaxIdledBlock param
 func (k Keeper) MaxIdledBlock(ctx sdk.Context) (res uint64) {
-	k.paramstore.Get(ctx, types.KeyMaxIdledBlock, &res)
-	return
+	return k.GetParams(ctx).MaxIdledBlock
 }

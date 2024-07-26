@@ -8,6 +8,7 @@ import (
 
 // x/keyshare module sentinel errors
 var (
+	ErrInvalidSigner                   = sdkerrors.Register(ModuleName, 1100, "expected gov account as only signer for proposal message")
 	ErrValidatorAlreadyRegistered      = sdkerrors.Register(ModuleName, 1101, "validator already registered")
 	ErrValidatorNotRegistered          = sdkerrors.Register(ModuleName, 1102, "validator not registered")
 	ErrInvalidBlockHeight              = sdkerrors.Register(ModuleName, 1103, "invalid block height")
@@ -33,12 +34,10 @@ var (
 	ErrInvalidVersion                  = sdkerrors.Register(ModuleName, 1123, "invalid version")
 	ErrRequestNotFound                 = sdkerrors.Register(ModuleName, 1124, "no request found with this identity")
 	ErrInvalidNumberOfValidators       = sdkerrors.Register(ModuleName, 1125, "invalid number of validators")
-	ErrAuthorizedAnotherAddr           = sdkerrors.Register(ModuleName, 1126, "validator authorized another address, please remove authorized address before deregistering")
 	ErrEmptyEncryptedShares            = sdkerrors.Register(ModuleName, 1127, "provided encrypted key shares are empty")
 	ErrNotMatchNumOfCommits            = sdkerrors.Register(ModuleName, 1128, "provided number of commitments does not match number of validators")
 	ErrNotMatchNumOfEncryptedKeyShares = sdkerrors.Register(ModuleName, 1129, "provided number of commitments does not match number of encrypted key shares")
 	ErrInvalidEncryptedShareData       = sdkerrors.Register(ModuleName, 1130, "invalid encrypted share data")
-	ErrQueuedKeyNotFound               = sdkerrors.Register(ModuleName, 1131, "Queued public key not found")
 	ErrAddressAlreadyAuthorized        = sdkerrors.Register(ModuleName, 1900, "address is already authorized")
 	ErrAuthorizedAddrNotFound          = sdkerrors.Register(ModuleName, 1901, "target authorized address not found")
 	ErrNotAuthorizedAddrCreator        = sdkerrors.Register(ModuleName, 1902, "sender is not the creator of target authorized address")

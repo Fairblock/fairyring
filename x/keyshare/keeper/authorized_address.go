@@ -1,17 +1,20 @@
 package keeper
 
 import (
+	"context"
+	"cosmossdk.io/store/prefix"
+	storetypes "cosmossdk.io/store/types"
 	"encoding/binary"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 )
 
 func (k Keeper) GetAuthorizedCount(
-	ctx sdk.Context,
+	ctx context.Context,
 	creator string,
 ) uint64 {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AuthorizedCountKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedCountKeyPrefix))
 
 	b := store.Get(types.AuthorizedCountKey(
 		creator,
@@ -24,7 +27,7 @@ func (k Keeper) GetAuthorizedCount(
 }
 
 func (k Keeper) IncreaseAuthorizedCount(
-	ctx sdk.Context,
+	ctx context.Context,
 	creator string,
 ) {
 	count := k.GetAuthorizedCount(ctx, creator)
@@ -33,13 +36,14 @@ func (k Keeper) IncreaseAuthorizedCount(
 
 	binary.BigEndian.PutUint64(countByte, count+1)
 
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AuthorizedCountKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedCountKeyPrefix))
 
 	store.Set(types.AuthorizedCountKey(creator), countByte)
 }
 
 func (k Keeper) DecreaseAuthorizedCount(
-	ctx sdk.Context,
+	ctx context.Context,
 	creator string,
 ) {
 	count := k.GetAuthorizedCount(ctx, creator)
@@ -54,14 +58,16 @@ func (k Keeper) DecreaseAuthorizedCount(
 
 	binary.BigEndian.PutUint64(countByte, newCount)
 
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AuthorizedCountKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedCountKeyPrefix))
 
 	store.Set(types.AuthorizedCountKey(creator), countByte)
 }
 
 // SetAuthorizedAddress set a specific authorizedAddress in the store from its index
-func (k Keeper) SetAuthorizedAddress(ctx sdk.Context, authorizedAddress types.AuthorizedAddress) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AuthorizedAddressKeyPrefix))
+func (k Keeper) SetAuthorizedAddress(ctx context.Context, authorizedAddress types.AuthorizedAddress) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedCountKeyPrefix))
 	b := k.cdc.MustMarshal(&authorizedAddress)
 	store.Set(types.AuthorizedAddressKey(
 		authorizedAddress.Target,
@@ -70,11 +76,12 @@ func (k Keeper) SetAuthorizedAddress(ctx sdk.Context, authorizedAddress types.Au
 
 // GetAuthorizedAddress returns a authorizedAddress from its index
 func (k Keeper) GetAuthorizedAddress(
-	ctx sdk.Context,
+	ctx context.Context,
 	target string,
 
 ) (val types.AuthorizedAddress, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AuthorizedAddressKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedCountKeyPrefix))
 
 	b := store.Get(types.AuthorizedAddressKey(
 		target,
@@ -89,20 +96,22 @@ func (k Keeper) GetAuthorizedAddress(
 
 // RemoveAuthorizedAddress removes a authorizedAddress from the store
 func (k Keeper) RemoveAuthorizedAddress(
-	ctx sdk.Context,
+	ctx context.Context,
 	target string,
 
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AuthorizedAddressKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedCountKeyPrefix))
 	store.Delete(types.AuthorizedAddressKey(
 		target,
 	))
 }
 
 // GetAllAuthorizedAddress returns all authorizedAddress
-func (k Keeper) GetAllAuthorizedAddress(ctx sdk.Context) (list []types.AuthorizedAddress) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AuthorizedAddressKeyPrefix))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+func (k Keeper) GetAllAuthorizedAddress(ctx context.Context) (list []types.AuthorizedAddress) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedCountKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 
