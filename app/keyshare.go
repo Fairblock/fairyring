@@ -49,7 +49,6 @@ func (app *App) registerKeyshareModule() (porttypes.IBCModule, error) {
 			app.BankKeeper,
 			app.PepKeeper,
 			app.StakingKeeper,
-			app.GetSubspace(keysharemoduletypes.StoreKey),
 		)); err != nil {
 		return nil, err
 	}

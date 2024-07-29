@@ -7,7 +7,6 @@ import (
 	"fmt"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/cosmos/cosmos-sdk/telemetry"
-	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"strconv"
 
 	"cosmossdk.io/core/appmodule"
@@ -107,12 +106,11 @@ func (a AppModuleBasic) GetTxCmd() *cobra.Command {
 type AppModule struct {
 	AppModuleBasic
 
-	keeper         keeper.Keeper
-	accountKeeper  types.AccountKeeper
-	bankKeeper     types.BankKeeper
-	pepKeeper      types.PepKeeper
-	stakingKeeper  types.StakingKeeper
-	legacySubSpace paramstypes.Subspace
+	keeper        keeper.Keeper
+	accountKeeper types.AccountKeeper
+	bankKeeper    types.BankKeeper
+	pepKeeper     types.PepKeeper
+	stakingKeeper types.StakingKeeper
 }
 
 func NewAppModule(
@@ -122,7 +120,6 @@ func NewAppModule(
 	bankKeeper types.BankKeeper,
 	pk types.PepKeeper,
 	sk types.StakingKeeper,
-	legacySubSpace paramstypes.Subspace,
 ) AppModule {
 	return AppModule{
 		AppModuleBasic: NewAppModuleBasic(cdc),
@@ -131,7 +128,6 @@ func NewAppModule(
 		bankKeeper:     bankKeeper,
 		pepKeeper:      pk,
 		stakingKeeper:  sk,
-		legacySubSpace: legacySubSpace,
 	}
 }
 
@@ -139,7 +135,7 @@ func NewAppModule(
 func (am AppModule) RegisterServices(cfg module.Configurator) {
 	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
 	types.RegisterQueryServer(cfg.QueryServer(), am.keeper)
-	m := keeper.NewMigrator(am.keeper, am.legacySubSpace)
+	m := keeper.NewMigrator(am.keeper)
 	if err := cfg.RegisterMigration(types.ModuleName, 1, m.Migrate1to2); err != nil {
 		panic(fmt.Errorf("failed to migrate x/%s from version 1 to 2: %w", types.ModuleName, err))
 	}
