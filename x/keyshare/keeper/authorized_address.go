@@ -67,7 +67,7 @@ func (k Keeper) DecreaseAuthorizedCount(
 // SetAuthorizedAddress set a specific authorizedAddress in the store from its index
 func (k Keeper) SetAuthorizedAddress(ctx context.Context, authorizedAddress types.AuthorizedAddress) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedCountKeyPrefix))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedAddressKeyPrefix))
 	b := k.cdc.MustMarshal(&authorizedAddress)
 	store.Set(types.AuthorizedAddressKey(
 		authorizedAddress.Target,
@@ -81,7 +81,7 @@ func (k Keeper) GetAuthorizedAddress(
 
 ) (val types.AuthorizedAddress, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedCountKeyPrefix))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedAddressKeyPrefix))
 
 	b := store.Get(types.AuthorizedAddressKey(
 		target,
@@ -101,7 +101,7 @@ func (k Keeper) RemoveAuthorizedAddress(
 
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedCountKeyPrefix))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedAddressKeyPrefix))
 	store.Delete(types.AuthorizedAddressKey(
 		target,
 	))
@@ -110,7 +110,7 @@ func (k Keeper) RemoveAuthorizedAddress(
 // GetAllAuthorizedAddress returns all authorizedAddress
 func (k Keeper) GetAllAuthorizedAddress(ctx context.Context) (list []types.AuthorizedAddress) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedCountKeyPrefix))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuthorizedAddressKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
