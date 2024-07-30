@@ -5,7 +5,7 @@ go 1.22
 replace (
 	cosmossdk.io/api => github.com/Fairblock/cosmossdk-api v0.7.5
 	github.com/CosmWasm/wasmd => github.com/Fairblock/wasmd v0.50.6-fairyring
-	github.com/cosmos/cosmos-sdk => github.com/Fairblock/cosmos-sdk v0.50.6-fairyring
+	github.com/cosmos/cosmos-sdk => github.com/Fairblock/cosmos-sdk v0.50.6-fairyring-1
 	// fix upstream GHSA-h395-qcrw-5vmq vulnerability.
 	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.7.0
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
