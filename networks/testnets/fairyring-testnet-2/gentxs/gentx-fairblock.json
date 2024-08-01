@@ -11,7 +11,7 @@
           "details": "The modular ecosystem of privacy-enabled infrastructure and dapps."
         },
         "commission": {
-          "rate": "0.100000000000000000",
+          "rate": "0.050000000000000000",
           "max_rate": "0.200000000000000000",
           "max_change_rate": "0.010000000000000000"
         },
@@ -28,7 +28,7 @@
         }
       }
     ],
-    "memo": "cd1cbf64a3e85d511c2a40b9e3e7b2e9b40d5905@18.183.243.242:26656",
+    "memo": "cd1cbf64a3e85d511c2a40b9e3e7b2e9b40d5905@172.31.18.9:26656",
     "timeout_height": "0",
     "extension_options": [],
     "non_critical_extension_options": []
@@ -57,6 +57,6 @@
     "tip": null
   },
   "signatures": [
-    "G55bLAtTtLxbJcgZbjP8aO1G8JlPnVhiISjKsOweXl5H/kweOkSmugiaL47CynbsCFMzoBtwLeKCHbwngeA1ew=="
+    "Ol6tW87khw2TFyICALACuLArnF4tmdPl0FSxJw4YYqQCIl75ZQAZ7UbRHHdNrnZkhOEvUjxdP3qUBjckPHfXFQ=="
   ]
 }
