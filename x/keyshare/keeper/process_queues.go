@@ -18,6 +18,10 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 
 	reqs := k.pepKeeper.GetAllGenEncTxReqQueueEntry(ctx)
 	for _, req := range reqs {
+		if req.EstimatedDelay == nil {
+			k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
+			return errors.New("estimated delay has not been set")
+		}
 		delay := req.EstimatedDelay
 		blockDelay := uint64(math.Ceil(delay.Seconds() / types.AvgBlockTime))
 		currentHeight := uint64(ctx.BlockHeight())
