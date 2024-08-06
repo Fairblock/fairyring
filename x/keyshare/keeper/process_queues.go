@@ -20,7 +20,8 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 	for _, req := range reqs {
 		if req.EstimatedDelay == nil {
 			k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
-			return errors.New("estimated delay has not been set")
+			continue
+			// return errors.New("estimated delay has not been set")
 		}
 		delay := req.EstimatedDelay
 		blockDelay := uint64(math.Ceil(delay.Seconds() / types.AvgBlockTime))
@@ -30,11 +31,13 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 			queuedPubKey, found := k.GetQueuedPubKey(ctx)
 			if !found {
 				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
-				return errors.New("estimated delay too long")
+				continue
+				// return errors.New("estimated delay too long")
 			}
 			if executionHeight > queuedPubKey.Expiry {
 				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
-				return errors.New("estimated delay too long")
+				continue
+				// return errors.New("estimated delay too long")
 			}
 			activePubKey = types.ActivePubKey(queuedPubKey)
 		}
