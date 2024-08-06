@@ -25,6 +25,10 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 	reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
 	reqCount = reqCount + 1
 
+	if msg.EstimatedDelay == nil {
+		return &types.MsgRequestGeneralKeyshareResponse{}, errors.New("could not parse estimated delay")
+	}
+
 	if params.IsSourceChain {
 		entry := commontypes.RequestAggrKeyshare{
 			Creator:        msg.Creator,

@@ -3,13 +3,17 @@ package pep
 import (
 	"bytes"
 	"context"
-	"cosmossdk.io/core/appmodule"
-	cosmosmath "cosmossdk.io/math"
-	txsigning "cosmossdk.io/x/tx/signing"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math"
+	"strconv"
+	"strings"
+
+	"cosmossdk.io/core/appmodule"
+	cosmosmath "cosmossdk.io/math"
+	txsigning "cosmossdk.io/x/tx/signing"
 	enc "github.com/FairBlock/DistributedIBE/encryption"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -22,9 +26,6 @@ import (
 	bls "github.com/drand/kyber-bls12381"
 	"github.com/drand/kyber/pairing"
 	"google.golang.org/protobuf/types/known/anypb"
-	"math"
-	"strconv"
-	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -462,6 +463,10 @@ func convertGenEncTxToDecryptionTx(tx types.GeneralEncryptedTx) DecryptionTx {
 func (am AppModule) handleGasConsumption(ctx sdk.Context, recipient sdk.AccAddress, gasUsed cosmosmath.Int, gasCharged *sdk.Coin) {
 	creatorAccount := am.accountKeeper.GetAccount(ctx, recipient)
 
+	if gasCharged == nil {
+		gasCharged = &sdk.Coin{}
+	}
+
 	if gasUsed.GT(gasCharged.Amount) {
 		deductFeeErr := ante.DeductFees(
 			am.bankKeeper,
@@ -788,6 +793,10 @@ func (am AppModule) decryptAndExecuteTx(
 			// Provided Gas Price * Gas Used => Amount to deduct as gas fee
 			txFee[0].Amount.Quo(gasProvided).Mul(gasUsedInBig),
 		)
+
+		if eachTx.ChargedGas == nil {
+			eachTx.ChargedGas = &sdk.Coin{}
+		}
 
 		if usedGasFee.Denom != eachTx.ChargedGas.Denom {
 			am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("underlying tx gas denom does not match charged gas denom, got: %s, expect: %s", usedGasFee.Denom, eachTx.ChargedGas.Denom), startConsumedGas)
