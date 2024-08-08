@@ -10,12 +10,17 @@ var _ sdk.Msg = &MsgCreateGeneralKeyShare{}
 
 func NewMsgCreateGeneralKeyShare(
 	creator string,
-	shares []*GeneralKeyShare,
-
+	idType string,
+	idValue string,
+	keyShare string,
+	keyShareIndex uint64,
 ) *MsgCreateGeneralKeyShare {
 	return &MsgCreateGeneralKeyShare{
-		Creator:          creator,
-		GeneralKeyShares: shares,
+		Creator:       creator,
+		IdType:        idType,
+		IdValue:       idValue,
+		KeyShare:      keyShare,
+		KeyShareIndex: keyShareIndex,
 	}
 }
 
