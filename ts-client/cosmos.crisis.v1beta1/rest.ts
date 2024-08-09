@@ -9,6 +9,26 @@
  * ---------------------------------------------------------------
  */
 
+export interface Any {
+  "@type"?: string;
+}
+
+export interface Status {
+  /** @format int32 */
+  code?: number;
+  message?: string;
+  details?: { "@type"?: string }[];
+}
+
+export interface Coin {
+  denom?: string;
+  amount?: string;
+}
+
+export type MsgUpdateParamsResponse = object;
+
+export type MsgVerifyInvariantResponse = object;
+
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
