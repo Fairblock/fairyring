@@ -9,6 +9,62 @@
  * ---------------------------------------------------------------
  */
 
+export interface Any {
+  "@type"?: string;
+}
+
+export interface Status {
+  /** @format int32 */
+  code?: number;
+  message?: string;
+  details?: { "@type"?: string }[];
+}
+
+export interface QueryAnnualProvisionsResponse {
+  /** @format byte */
+  annual_provisions?: string;
+}
+
+export interface QueryInflationResponse {
+  /** @format byte */
+  inflation?: string;
+}
+
+export interface QueryParamsResponse {
+  params?: {
+    mint_denom?: string;
+    inflation_rate_change?: string;
+    inflation_max?: string;
+    inflation_min?: string;
+    goal_bonded?: string;
+    blocks_per_year?: string;
+  };
+}
+
+export interface V1Beta1Params {
+  mint_denom?: string;
+  inflation_rate_change?: string;
+  inflation_max?: string;
+  inflation_min?: string;
+  goal_bonded?: string;
+
+  /** @format uint64 */
+  blocks_per_year?: string;
+}
+
+export type MsgUpdateParamsResponse = object;
+
+export interface Params {
+  mint_denom?: string;
+  inflation_rate_change?: string;
+  inflation_max?: string;
+  inflation_min?: string;
+  goal_bonded?: string;
+
+  /** @format uint64 */
+  blocks_per_year?: string;
+}
+
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
@@ -132,4 +188,60 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title HTTP API Console cosmos.mint.v1beta1
  */
-export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {}
+export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAnnualProvisions
+   * @request GET:/cosmos/mint/v1beta1/annual_provisions
+   */
+  queryAnnualProvisions = (params: RequestParams = {}) =>
+    this.request<{ annual_provisions?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>(
+      {
+        path: `/cosmos/mint/v1beta1/annual_provisions`,
+        method: "GET",
+        ...params,
+      },
+    );
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryInflation
+   * @request GET:/cosmos/mint/v1beta1/inflation
+   */
+  queryInflation = (params: RequestParams = {}) =>
+    this.request<{ inflation?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
+      path: `/cosmos/mint/v1beta1/inflation`,
+      method: "GET",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryParams
+   * @request GET:/cosmos/mint/v1beta1/params
+   */
+  queryParams = (params: RequestParams = {}) =>
+    this.request<
+      {
+        params?: {
+          mint_denom?: string;
+          inflation_rate_change?: string;
+          inflation_max?: string;
+          inflation_min?: string;
+          goal_bonded?: string;
+          blocks_per_year?: string;
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
+      path: `/cosmos/mint/v1beta1/params`,
+      method: "GET",
+      ...params,
+    });
+}

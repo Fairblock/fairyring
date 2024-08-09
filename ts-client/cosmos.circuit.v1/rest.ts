@@ -9,6 +9,92 @@
  * ---------------------------------------------------------------
  */
 
+export interface AccountResponse {
+  permission?: {
+    level?: "LEVEL_NONE_UNSPECIFIED" | "LEVEL_SOME_MSGS" | "LEVEL_ALL_MSGS" | "LEVEL_SUPER_ADMIN";
+    limit_type_urls?: string[];
+  };
+}
+
+export interface AccountsResponse {
+  accounts?: {
+    address?: string;
+    permissions?: {
+      level?: "LEVEL_NONE_UNSPECIFIED" | "LEVEL_SOME_MSGS" | "LEVEL_ALL_MSGS" | "LEVEL_SUPER_ADMIN";
+      limit_type_urls?: string[];
+    };
+  }[];
+  pagination?: { next_key?: string; total?: string };
+}
+
+export interface Any {
+  "@type"?: string;
+}
+
+export interface DisabledListResponse {
+  disabled_list?: string[];
+}
+
+export interface GenesisAccountPermissions {
+  address?: string;
+  permissions?: {
+    level?: "LEVEL_NONE_UNSPECIFIED" | "LEVEL_SOME_MSGS" | "LEVEL_ALL_MSGS" | "LEVEL_SUPER_ADMIN";
+    limit_type_urls?: string[];
+  };
+}
+
+export enum Level {
+  LEVEL_NONE_UNSPECIFIED = "LEVEL_NONE_UNSPECIFIED",
+  LEVEL_SOME_MSGS = "LEVEL_SOME_MSGS",
+  LEVEL_ALL_MSGS = "LEVEL_ALL_MSGS",
+  LEVEL_SUPER_ADMIN = "LEVEL_SUPER_ADMIN",
+}
+
+export interface PageRequest {
+  /** @format byte */
+  key?: string;
+
+  /** @format uint64 */
+  offset?: string;
+
+  /** @format uint64 */
+  limit?: string;
+  count_total?: boolean;
+  reverse?: boolean;
+}
+
+export interface PageResponse {
+  /** @format byte */
+  next_key?: string;
+
+  /** @format uint64 */
+  total?: string;
+}
+
+export interface Permissions {
+  level?: "LEVEL_NONE_UNSPECIFIED" | "LEVEL_SOME_MSGS" | "LEVEL_ALL_MSGS" | "LEVEL_SUPER_ADMIN";
+  limit_type_urls?: string[];
+}
+
+export interface Status {
+  /** @format int32 */
+  code?: number;
+  message?: string;
+  details?: { "@type"?: string }[];
+}
+
+export interface MsgAuthorizeCircuitBreakerResponse {
+  success?: boolean;
+}
+
+export interface MsgResetCircuitBreakerResponse {
+  success?: boolean;
+}
+
+export interface MsgTripCircuitBreakerResponse {
+  success?: boolean;
+}
+
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
@@ -132,4 +218,76 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title HTTP API Console cosmos.circuit.v1
  */
-export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {}
+export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAccounts
+   * @request GET:/cosmos/circuit/v1/accounts
+   */
+  queryAccounts = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<
+      {
+        accounts?: {
+          address?: string;
+          permissions?: {
+            level?: "LEVEL_NONE_UNSPECIFIED" | "LEVEL_SOME_MSGS" | "LEVEL_ALL_MSGS" | "LEVEL_SUPER_ADMIN";
+            limit_type_urls?: string[];
+          };
+        }[];
+        pagination?: { next_key?: string; total?: string };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
+      path: `/cosmos/circuit/v1/accounts`,
+      method: "GET",
+      query: query,
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAccount
+   * @request GET:/cosmos/circuit/v1/accounts/{address}
+   */
+  queryAccount = (address: string, params: RequestParams = {}) =>
+    this.request<
+      {
+        permission?: {
+          level?: "LEVEL_NONE_UNSPECIFIED" | "LEVEL_SOME_MSGS" | "LEVEL_ALL_MSGS" | "LEVEL_SUPER_ADMIN";
+          limit_type_urls?: string[];
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
+      path: `/cosmos/circuit/v1/accounts/${address}`,
+      method: "GET",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryDisabledList
+   * @request GET:/cosmos/circuit/v1/disable_list
+   */
+  queryDisabledList = (params: RequestParams = {}) =>
+    this.request<{ disabled_list?: string[] }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
+      path: `/cosmos/circuit/v1/disable_list`,
+      method: "GET",
+      ...params,
+    });
+}

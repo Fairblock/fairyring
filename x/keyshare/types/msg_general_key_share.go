@@ -14,7 +14,6 @@ func NewMsgCreateGeneralKeyShare(
 	idValue string,
 	keyShare string,
 	keyShareIndex uint64,
-
 ) *MsgCreateGeneralKeyShare {
 	return &MsgCreateGeneralKeyShare{
 		Creator:       creator,

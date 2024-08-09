@@ -12,10 +12,11 @@ const TypeMsgRequestGeneralKeyshare = "request_general_keyshare"
 
 var _ sdk.Msg = &MsgRequestGeneralKeyshare{}
 
-func NewMsgRequestGeneralKeyshare(creator string, estimatedDelay time.Duration) *MsgRequestGeneralKeyshare {
+func NewMsgRequestGeneralKeyshare(creator string, estimatedDelay time.Duration, reqID string) *MsgRequestGeneralKeyshare {
 	return &MsgRequestGeneralKeyshare{
 		Creator:        creator,
 		EstimatedDelay: &estimatedDelay,
+		ReqId:          reqID,
 	}
 }
 

@@ -23,9 +23,31 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
 				PortId: types.PortID,
+				RequestIdList: []types.RequestId{
+					{
+						Creator: "0",
+					},
+					{
+						Creator: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
+		},
+		{
+			desc: "duplicated requestId",
+			genState: &types.GenesisState{
+				RequestIdList: []types.RequestId{
+					{
+						Creator: "0",
+					},
+					{
+						Creator: "0",
+					},
+				},
+			},
+			valid: false,
 		},
 		// this line is used by starport scaffolding # types/genesis/testcase
 	}

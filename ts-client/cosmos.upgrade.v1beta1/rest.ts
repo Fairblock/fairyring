@@ -9,6 +9,62 @@
  * ---------------------------------------------------------------
  */
 
+export interface Any {
+  "@type"?: string;
+}
+
+export interface ModuleVersion {
+  name?: string;
+
+  /** @format uint64 */
+  version?: string;
+}
+
+export interface Plan {
+  name?: string;
+
+  /** @format date-time */
+  time?: string;
+
+  /** @format int64 */
+  height?: string;
+  info?: string;
+  upgraded_client_state?: { "@type"?: string };
+}
+
+export interface QueryAppliedPlanResponse {
+  /** @format int64 */
+  height?: string;
+}
+
+export interface QueryAuthorityResponse {
+  address?: string;
+}
+
+export interface QueryCurrentPlanResponse {
+  plan?: { name?: string; time?: string; height?: string; info?: string; upgraded_client_state?: { "@type"?: string } };
+}
+
+export interface QueryModuleVersionsResponse {
+  module_versions?: { name?: string; version?: string }[];
+}
+
+export interface QueryUpgradedConsensusStateResponse {
+  /** @format byte */
+  upgraded_consensus_state?: string;
+}
+
+export interface Status {
+  /** @format int32 */
+  code?: number;
+  message?: string;
+  details?: { "@type"?: string }[];
+}
+
+export type MsgCancelUpgradeResponse = object;
+
+export type MsgSoftwareUpgradeResponse = object;
+
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
@@ -132,4 +188,92 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title HTTP API Console cosmos.upgrade.v1beta1
  */
-export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {}
+export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAppliedPlan
+   * @request GET:/cosmos/upgrade/v1beta1/applied_plan/{name}
+   */
+  queryAppliedPlan = (name: string, params: RequestParams = {}) =>
+    this.request<{ height?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
+      path: `/cosmos/upgrade/v1beta1/applied_plan/${name}`,
+      method: "GET",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAuthority
+   * @request GET:/cosmos/upgrade/v1beta1/authority
+   */
+  queryAuthority = (params: RequestParams = {}) =>
+    this.request<{ address?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
+      path: `/cosmos/upgrade/v1beta1/authority`,
+      method: "GET",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryCurrentPlan
+   * @request GET:/cosmos/upgrade/v1beta1/current_plan
+   */
+  queryCurrentPlan = (params: RequestParams = {}) =>
+    this.request<
+      {
+        plan?: {
+          name?: string;
+          time?: string;
+          height?: string;
+          info?: string;
+          upgraded_client_state?: { "@type"?: string };
+        };
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
+      path: `/cosmos/upgrade/v1beta1/current_plan`,
+      method: "GET",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryModuleVersions
+   * @request GET:/cosmos/upgrade/v1beta1/module_versions
+   */
+  queryModuleVersions = (query?: { module_name?: string }, params: RequestParams = {}) =>
+    this.request<
+      { module_versions?: { name?: string; version?: string }[] },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
+      path: `/cosmos/upgrade/v1beta1/module_versions`,
+      method: "GET",
+      query: query,
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryUpgradedConsensusState
+   * @request GET:/cosmos/upgrade/v1beta1/upgraded_consensus_state/{last_height}
+   */
+  queryUpgradedConsensusState = (lastHeight: string, params: RequestParams = {}) =>
+    this.request<
+      { upgraded_consensus_state?: string },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
+      path: `/cosmos/upgrade/v1beta1/upgraded_consensus_state/${lastHeight}`,
+      method: "GET",
+      ...params,
+    });
+}

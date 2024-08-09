@@ -14,4 +14,5 @@ var (
 	ErrInvalidIdentity          = sdkerrors.Register(ModuleName, 1601, "Invalid identity")
 	ErrInvalidMsgCreator        = sdkerrors.Register(ModuleName, 1700, "Invalid msg creator address")
 	ErrActivePubKeyNotFound     = sdkerrors.Register(ModuleName, 1800, "Active public key not found")
+	ErrReqIDAlreadyExists       = sdkerrors.Register(ModuleName, 1900, "Request ID already exists")
 )

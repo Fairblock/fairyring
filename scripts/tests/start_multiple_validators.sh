@@ -62,18 +62,18 @@ do
   WALLET1_ADDR=$($BINARY keys show wallet1 --home $CHAIN_DIR/$CHAIN_ID/$i --keyring-backend test -a)
   WALLET2_ADDR=$($BINARY keys show wallet2 --home $CHAIN_DIR/$CHAIN_ID/$i --keyring-backend test -a)
 
-  $BINARY add-genesis-account $VAL1_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAIN_ID/$i
-  $BINARY add-genesis-account $WALLET1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAIN_ID/$i
-  $BINARY add-genesis-account $WALLET2_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAIN_ID/$i
+  $BINARY genesis add-genesis-account $VAL1_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAIN_ID/$i
+  $BINARY genesis add-genesis-account $WALLET1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAIN_ID/$i
+  $BINARY genesis dd-genesis-account $WALLET2_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAIN_ID/$i
 
   if [ "$i" != "1" ]; then
-    $BINARY add-genesis-account $VAL1_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAIN_ID/1
-    $BINARY add-genesis-account $WALLET1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAIN_ID/1
-    $BINARY add-genesis-account $WALLET2_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAIN_ID/1
+    $BINARY genesis add-genesis-account $VAL1_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAIN_ID/1
+    $BINARY genesis add-genesis-account $WALLET1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAIN_ID/1
+    $BINARY genesis add-genesis-account $WALLET2_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAIN_ID/1
   fi
 
   echo "[$i] Creating gentx..."
-  $BINARY gentx val1 100000000000stake --home $CHAIN_DIR/$CHAIN_ID/$i --chain-id $CHAIN_ID --keyring-backend test
+  $BINARY genesis gentx val1 100000000000stake --home $CHAIN_DIR/$CHAIN_ID/$i --chain-id $CHAIN_ID --keyring-backend test
 done
 
 for i in $(seq 2 $TOTAL_VALIDATOR_AMOUNT)
@@ -84,7 +84,7 @@ done
 
 
 echo "Collecting gentx..."
-$BINARY collect-gentxs --home $CHAIN_DIR/$CHAIN_ID/1 &> /dev/null
+$BINARY genesis collect-gentxs --home $CHAIN_DIR/$CHAIN_ID/1 &> /dev/null
 
 echo "Creating persistent peers list..."
 PEERS_LIST=""

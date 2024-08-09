@@ -1,4 +1,5 @@
 syntax = "proto3";
+
 package fairyring.pep;
 
 import "amino/amino.proto";
@@ -15,75 +16,72 @@ option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
 // Query defines the gRPC querier service.
 service Query {
+  
   // Parameters queries the parameters of the module.
-  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/fairyring/pep/params";
+  
   }
-
-
+  
   // Queries a EncryptedTx by index.
   rpc EncryptedTx (QueryGetEncryptedTxRequest) returns (QueryGetEncryptedTxResponse) {
     option (google.api.http).get = "/fairyring/pep/encrypted_tx/{targetHeight}/{index}";
-
+  
   }
-
+  
   // Queries a list of EncryptedTx items.
   rpc EncryptedTxAll (QueryAllEncryptedTxRequest) returns (QueryAllEncryptedTxResponse) {
     option (google.api.http).get = "/fairyring/pep/encrypted_tx";
-
+  
   }
-
+  
   // Queries a list of EncryptedTx items.
   rpc EncryptedTxAllFromHeight (QueryAllEncryptedTxFromHeightRequest) returns (QueryAllEncryptedTxFromHeightResponse) {
     option (google.api.http).get = "/fairyring/pep/encrypted_tx/{targetHeight}";
-
+  
   }
-
+  
   // Queries a list of LatestHeight items.
   rpc LatestHeight (QueryLatestHeightRequest) returns (QueryLatestHeightResponse) {
     option (google.api.http).get = "/fairyring/pep/latest_height";
-
+  
   }
-
+  
   // Queries a PepNonce by index.
   rpc PepNonce (QueryGetPepNonceRequest) returns (QueryGetPepNonceResponse) {
     option (google.api.http).get = "/fairyring/pep/pep_nonce/{address}";
-
+  
   }
-
+  
   // Queries a list of PepNonce items.
   rpc PepNonceAll (QueryAllPepNonceRequest) returns (QueryAllPepNonceResponse) {
     option (google.api.http).get = "/fairyring/pep/pep_nonce";
-
+  
   }
-
+  
   // Queries the public keys
-  rpc PubKey    (QueryPubKeyRequest) returns (QueryPubKeyResponse) {
+  rpc PubKey         (QueryPubKeyRequest     ) returns (QueryPubKeyResponse     ) {
     option (google.api.http).get = "/fairyring/pep/pub_key";
-
+  
   }
-
-  rpc KeyshareReq (QueryKeyshareRequest) returns (QueryKeyshareResponse) {
+  rpc KeyshareReq    (QueryKeyshareRequest   ) returns (QueryKeyshareResponse   ) {
     option (google.api.http).get = "/fairyring/pep/keyshare/{req_id}";
+  
   }
-
   rpc KeyshareReqAll (QueryAllKeyshareRequest) returns (QueryAllKeyshareResponse) {
     option (google.api.http).get = "/fairyring/pep/keyshare";
+  
   }
 }
-
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
+  
   // params holds all the parameters of this module.
-  Params params = 1 [
-    (gogoproto.nullable) = false,
-    (amino.dont_omitempty) = true
-  ];
+  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }
-
 
 message QueryKeyshareRequest {
   string req_id = 1;
@@ -98,9 +96,8 @@ message QueryAllKeyshareRequest {
 }
 
 message QueryAllKeyshareResponse {
-  repeated GenEncTxExecutionQueue keyshares = 1;
-  cosmos.base.query.v1beta1.PageResponse pagination = 2;
-
+  repeated GenEncTxExecutionQueue                 keyshares  = 1;
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 message QueryGetEncryptedTxRequest {
@@ -118,7 +115,7 @@ message QueryAllEncryptedTxRequest {
 
 message QueryAllEncryptedTxResponse {
   repeated EncryptedTxArray                       encryptedTxArray = 1 [(gogoproto.nullable) = false];
-  cosmos.base.query.v1beta1.PageResponse pagination       = 2;
+           cosmos.base.query.v1beta1.PageResponse pagination       = 2;
 }
 
 message QueryAllEncryptedTxFromHeightRequest {
@@ -148,13 +145,13 @@ message QueryAllPepNonceRequest {
 }
 
 message QueryAllPepNonceResponse {
-  repeated PepNonce                         pepNonce = 1 [(gogoproto.nullable) = false];
-  cosmos.base.query.v1beta1.PageResponse pagination     = 2;
+  repeated PepNonce                               pepNonce   = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 message QueryPubKeyRequest {}
 
 message QueryPubKeyResponse {
-  fairyring.common.ActivePublicKey activePubKey   = 1 [(gogoproto.nullable) = false];
-  fairyring.common.QueuedPublicKey queuedPubKey   = 2 [(gogoproto.nullable) = false];
+  fairyring.common.ActivePublicKey activePubKey = 1 [(gogoproto.nullable) = false];
+  fairyring.common.QueuedPublicKey queuedPubKey = 2 [(gogoproto.nullable) = false];
 }

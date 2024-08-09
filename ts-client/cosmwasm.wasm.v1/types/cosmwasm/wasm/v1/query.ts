@@ -213,6 +213,33 @@ export interface QueryContractsByCreatorResponse {
   pagination: PageResponse | undefined;
 }
 
+/**
+ * QueryBuildAddressRequest is the request type for the Query/BuildAddress RPC
+ * method.
+ */
+export interface QueryBuildAddressRequest {
+  /** CodeHash is the hash of the code */
+  codeHash: string;
+  /** CreatorAddress is the address of the contract instantiator */
+  creatorAddress: string;
+  /** Salt is a hex encoded salt */
+  salt: string;
+  /**
+   * InitArgs are optional json encoded init args to be used in contract address
+   * building if provided
+   */
+  initArgs: Uint8Array;
+}
+
+/**
+ * QueryBuildAddressResponse is the response type for the Query/BuildAddress RPC
+ * method.
+ */
+export interface QueryBuildAddressResponse {
+  /** Address is the contract address */
+  address: string;
+}
+
 function createBaseQueryContractInfoRequest(): QueryContractInfoRequest {
   return { address: "" };
 }
@@ -1858,6 +1885,167 @@ export const QueryContractsByCreatorResponse = {
   },
 };
 
+function createBaseQueryBuildAddressRequest(): QueryBuildAddressRequest {
+  return { codeHash: "", creatorAddress: "", salt: "", initArgs: new Uint8Array(0) };
+}
+
+export const QueryBuildAddressRequest = {
+  encode(message: QueryBuildAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.codeHash !== "") {
+      writer.uint32(10).string(message.codeHash);
+    }
+    if (message.creatorAddress !== "") {
+      writer.uint32(18).string(message.creatorAddress);
+    }
+    if (message.salt !== "") {
+      writer.uint32(26).string(message.salt);
+    }
+    if (message.initArgs.length !== 0) {
+      writer.uint32(34).bytes(message.initArgs);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryBuildAddressRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryBuildAddressRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.codeHash = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.creatorAddress = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.salt = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.initArgs = reader.bytes();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryBuildAddressRequest {
+    return {
+      codeHash: isSet(object.codeHash) ? String(object.codeHash) : "",
+      creatorAddress: isSet(object.creatorAddress) ? String(object.creatorAddress) : "",
+      salt: isSet(object.salt) ? String(object.salt) : "",
+      initArgs: isSet(object.initArgs) ? bytesFromBase64(object.initArgs) : new Uint8Array(0),
+    };
+  },
+
+  toJSON(message: QueryBuildAddressRequest): unknown {
+    const obj: any = {};
+    if (message.codeHash !== "") {
+      obj.codeHash = message.codeHash;
+    }
+    if (message.creatorAddress !== "") {
+      obj.creatorAddress = message.creatorAddress;
+    }
+    if (message.salt !== "") {
+      obj.salt = message.salt;
+    }
+    if (message.initArgs.length !== 0) {
+      obj.initArgs = base64FromBytes(message.initArgs);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryBuildAddressRequest>, I>>(base?: I): QueryBuildAddressRequest {
+    return QueryBuildAddressRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryBuildAddressRequest>, I>>(object: I): QueryBuildAddressRequest {
+    const message = createBaseQueryBuildAddressRequest();
+    message.codeHash = object.codeHash ?? "";
+    message.creatorAddress = object.creatorAddress ?? "";
+    message.salt = object.salt ?? "";
+    message.initArgs = object.initArgs ?? new Uint8Array(0);
+    return message;
+  },
+};
+
+function createBaseQueryBuildAddressResponse(): QueryBuildAddressResponse {
+  return { address: "" };
+}
+
+export const QueryBuildAddressResponse = {
+  encode(message: QueryBuildAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryBuildAddressResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryBuildAddressResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.address = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryBuildAddressResponse {
+    return { address: isSet(object.address) ? String(object.address) : "" };
+  },
+
+  toJSON(message: QueryBuildAddressResponse): unknown {
+    const obj: any = {};
+    if (message.address !== "") {
+      obj.address = message.address;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryBuildAddressResponse>, I>>(base?: I): QueryBuildAddressResponse {
+    return QueryBuildAddressResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryBuildAddressResponse>, I>>(object: I): QueryBuildAddressResponse {
+    const message = createBaseQueryBuildAddressResponse();
+    message.address = object.address ?? "";
+    return message;
+  },
+};
+
 /** Query provides defines the gRPC querier service */
 export interface Query {
   /** ContractInfo gets the contract meta data */
@@ -1882,6 +2070,8 @@ export interface Query {
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** ContractsByCreator gets the contracts by creator */
   ContractsByCreator(request: QueryContractsByCreatorRequest): Promise<QueryContractsByCreatorResponse>;
+  /** BuildAddress builds a contract address */
+  BuildAddress(request: QueryBuildAddressRequest): Promise<QueryBuildAddressResponse>;
 }
 
 export const QueryServiceName = "cosmwasm.wasm.v1.Query";
@@ -1902,6 +2092,7 @@ export class QueryClientImpl implements Query {
     this.PinnedCodes = this.PinnedCodes.bind(this);
     this.Params = this.Params.bind(this);
     this.ContractsByCreator = this.ContractsByCreator.bind(this);
+    this.BuildAddress = this.BuildAddress.bind(this);
   }
   ContractInfo(request: QueryContractInfoRequest): Promise<QueryContractInfoResponse> {
     const data = QueryContractInfoRequest.encode(request).finish();
@@ -1967,6 +2158,12 @@ export class QueryClientImpl implements Query {
     const data = QueryContractsByCreatorRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ContractsByCreator", data);
     return promise.then((data) => QueryContractsByCreatorResponse.decode(_m0.Reader.create(data)));
+  }
+
+  BuildAddress(request: QueryBuildAddressRequest): Promise<QueryBuildAddressResponse> {
+    const data = QueryBuildAddressRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "BuildAddress", data);
+    return promise.then((data) => QueryBuildAddressResponse.decode(_m0.Reader.create(data)));
   }
 }
 
