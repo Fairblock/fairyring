@@ -24,7 +24,7 @@ func IdentityFromRequestCount(
 func IdentityFromRequestID(
 	reqID string,
 ) string {
-	identity := reqID + "/rq"
+	identity := reqID + "/id"
 	return identity
 }
 

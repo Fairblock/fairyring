@@ -19,21 +19,23 @@ import (
 func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgRequestGeneralKeyshare) (*types.MsgRequestGeneralKeyshareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	params := k.GetParams(ctx)
-	// reqCountString := k.GetRequestCount(ctx)
 	reqID, found := k.GetRequestId(ctx, msg.Creator, msg.ReqId)
 	if found || len(reqID.ReqId) != 0 {
 		return nil, types.ErrReqIDAlreadyExists
 	}
 
-	//fmt.Println("\n\n\n\nReq Count : ", reqCountString, "\n\n\n\n")
-	//reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
-	//reqCount = reqCount + 1
 	requestIDStr := types.GetReqIDStr(msg.Creator, msg.ReqId)
 
 	if msg.EstimatedDelay == nil {
 		return &types.MsgRequestGeneralKeyshareResponse{}, errors.New("could not parse estimated delay")
 	}
+
+	k.SetRequestId(ctx, types.RequestId{
+		Creator: msg.Creator,
+		ReqId:   msg.ReqId,
+	})
+
+	params := k.GetParams(ctx)
 
 	if params.IsSourceChain {
 		entry := commontypes.RequestAggrKeyshare{
@@ -43,7 +45,6 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 		}
 
 		k.SetReqQueueEntry(ctx, entry)
-		// k.SetRequestCount(ctx, reqCount)
 
 		return &types.MsgRequestGeneralKeyshareResponse{
 			ReqId: requestIDStr,
@@ -67,8 +68,6 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 			clienttypes.ZeroHeight(),
 			uint64(timeoutTimestamp),
 		)
-
-		// k.SetRequestCount(ctx, reqCount)
 
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
