@@ -6,23 +6,23 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgRegisterInterchainAccountResponse } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/tx";
+import { MsgRegisterInterchainAccount } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/tx";
 import { Params } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/controller";
+import { QueryInterchainAccountRequest } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/query";
 import { QueryInterchainAccountResponse } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/query";
+import { QueryParamsResponse } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/query";
+import { MsgRegisterInterchainAccountResponse } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/tx";
 import { QueryParamsRequest } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/query";
 import { MsgSendTx } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/tx";
-import { MsgUpdateParams } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/tx";
-import { MsgRegisterInterchainAccount } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/tx";
-import { MsgUpdateParamsResponse } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/tx";
-import { QueryInterchainAccountRequest } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/query";
-import { QueryParamsResponse } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/query";
 import { MsgSendTxResponse } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/tx";
+import { MsgUpdateParams } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/tx";
+import { MsgUpdateParamsResponse } from "./types/../../../go/pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/interchain_accounts/controller/v1/tx";
 
 
-export { MsgRegisterInterchainAccountResponse, Params, QueryInterchainAccountResponse, QueryParamsRequest, MsgSendTx, MsgUpdateParams, MsgRegisterInterchainAccount, MsgUpdateParamsResponse, QueryInterchainAccountRequest, QueryParamsResponse, MsgSendTxResponse };
+export { MsgRegisterInterchainAccount, Params, QueryInterchainAccountRequest, QueryInterchainAccountResponse, QueryParamsResponse, MsgRegisterInterchainAccountResponse, QueryParamsRequest, MsgSendTx, MsgSendTxResponse, MsgUpdateParams, MsgUpdateParamsResponse };
 
-type sendMsgRegisterInterchainAccountResponseParams = {
-  value: MsgRegisterInterchainAccountResponse,
+type sendMsgRegisterInterchainAccountParams = {
+  value: MsgRegisterInterchainAccount,
   fee?: StdFee,
   memo?: string
 };
@@ -33,8 +33,26 @@ type sendParamsParams = {
   memo?: string
 };
 
+type sendQueryInterchainAccountRequestParams = {
+  value: QueryInterchainAccountRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
 type sendQueryInterchainAccountResponseParams = {
   value: QueryInterchainAccountResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryParamsResponseParams = {
+  value: QueryParamsResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgRegisterInterchainAccountResponseParams = {
+  value: MsgRegisterInterchainAccountResponse,
   fee?: StdFee,
   memo?: string
 };
@@ -51,14 +69,14 @@ type sendMsgSendTxParams = {
   memo?: string
 };
 
-type sendMsgUpdateParamsParams = {
-  value: MsgUpdateParams,
+type sendMsgSendTxResponseParams = {
+  value: MsgSendTxResponse,
   fee?: StdFee,
   memo?: string
 };
 
-type sendMsgRegisterInterchainAccountParams = {
-  value: MsgRegisterInterchainAccount,
+type sendMsgUpdateParamsParams = {
+  value: MsgUpdateParams,
   fee?: StdFee,
   memo?: string
 };
@@ -69,35 +87,29 @@ type sendMsgUpdateParamsResponseParams = {
   memo?: string
 };
 
-type sendQueryInterchainAccountRequestParams = {
-  value: QueryInterchainAccountRequest,
-  fee?: StdFee,
-  memo?: string
-};
 
-type sendQueryParamsResponseParams = {
-  value: QueryParamsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgSendTxResponseParams = {
-  value: MsgSendTxResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-
-type msgRegisterInterchainAccountResponseParams = {
-  value: MsgRegisterInterchainAccountResponse,
+type msgRegisterInterchainAccountParams = {
+  value: MsgRegisterInterchainAccount,
 };
 
 type paramsParams = {
   value: Params,
 };
 
+type queryInterchainAccountRequestParams = {
+  value: QueryInterchainAccountRequest,
+};
+
 type queryInterchainAccountResponseParams = {
   value: QueryInterchainAccountResponse,
+};
+
+type queryParamsResponseParams = {
+  value: QueryParamsResponse,
+};
+
+type msgRegisterInterchainAccountResponseParams = {
+  value: MsgRegisterInterchainAccountResponse,
 };
 
 type queryParamsRequestParams = {
@@ -108,28 +120,16 @@ type msgSendTxParams = {
   value: MsgSendTx,
 };
 
+type msgSendTxResponseParams = {
+  value: MsgSendTxResponse,
+};
+
 type msgUpdateParamsParams = {
   value: MsgUpdateParams,
 };
 
-type msgRegisterInterchainAccountParams = {
-  value: MsgRegisterInterchainAccount,
-};
-
 type msgUpdateParamsResponseParams = {
   value: MsgUpdateParamsResponse,
-};
-
-type queryInterchainAccountRequestParams = {
-  value: QueryInterchainAccountRequest,
-};
-
-type queryParamsResponseParams = {
-  value: QueryParamsResponse,
-};
-
-type msgSendTxResponseParams = {
-  value: MsgSendTxResponse,
 };
 
 
@@ -162,17 +162,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendMsgRegisterInterchainAccountResponse({ value, fee, memo }: sendMsgRegisterInterchainAccountResponseParams): Promise<DeliverTxResponse> {
+		async sendMsgRegisterInterchainAccount({ value, fee, memo }: sendMsgRegisterInterchainAccountParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgRegisterInterchainAccountResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgRegisterInterchainAccount: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgRegisterInterchainAccountResponse({ value: MsgRegisterInterchainAccountResponse.fromPartial(value) })
+				let msg = this.msgRegisterInterchainAccount({ value: MsgRegisterInterchainAccount.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgRegisterInterchainAccountResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgRegisterInterchainAccount: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -190,6 +190,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendQueryInterchainAccountRequest({ value, fee, memo }: sendQueryInterchainAccountRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryInterchainAccountRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryInterchainAccountRequest({ value: QueryInterchainAccountRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryInterchainAccountRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		async sendQueryInterchainAccountResponse({ value, fee, memo }: sendQueryInterchainAccountResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendQueryInterchainAccountResponse: Unable to sign Tx. Signer is not present.')
@@ -201,6 +215,34 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
 				throw new Error('TxClient:sendQueryInterchainAccountResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryParamsResponse({ value, fee, memo }: sendQueryParamsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryParamsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryParamsResponse({ value: QueryParamsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryParamsResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgRegisterInterchainAccountResponse({ value, fee, memo }: sendMsgRegisterInterchainAccountResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgRegisterInterchainAccountResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgRegisterInterchainAccountResponse({ value: MsgRegisterInterchainAccountResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgRegisterInterchainAccountResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -232,6 +274,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendMsgSendTxResponse({ value, fee, memo }: sendMsgSendTxResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgSendTxResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgSendTxResponse({ value: MsgSendTxResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgSendTxResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		async sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgUpdateParams: Unable to sign Tx. Signer is not present.')
@@ -243,20 +299,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
 				throw new Error('TxClient:sendMsgUpdateParams: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgRegisterInterchainAccount({ value, fee, memo }: sendMsgRegisterInterchainAccountParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgRegisterInterchainAccount: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgRegisterInterchainAccount({ value: MsgRegisterInterchainAccount.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgRegisterInterchainAccount: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -274,54 +316,12 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryInterchainAccountRequest({ value, fee, memo }: sendQueryInterchainAccountRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryInterchainAccountRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryInterchainAccountRequest({ value: QueryInterchainAccountRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryInterchainAccountRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
 		
-		async sendQueryParamsResponse({ value, fee, memo }: sendQueryParamsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryParamsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryParamsResponse({ value: QueryParamsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryParamsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgSendTxResponse({ value, fee, memo }: sendMsgSendTxResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgSendTxResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgSendTxResponse({ value: MsgSendTxResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgSendTxResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		
-		msgRegisterInterchainAccountResponse({ value }: msgRegisterInterchainAccountResponseParams): EncodeObject {
+		msgRegisterInterchainAccount({ value }: msgRegisterInterchainAccountParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.applications.interchain_accounts.controller.v1.MsgRegisterInterchainAccountResponse", value: MsgRegisterInterchainAccountResponse.fromPartial( value ) }  
+				return { typeUrl: "/ibc.applications.interchain_accounts.controller.v1.MsgRegisterInterchainAccount", value: MsgRegisterInterchainAccount.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgRegisterInterchainAccountResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgRegisterInterchainAccount: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -333,11 +333,35 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		queryInterchainAccountRequest({ value }: queryInterchainAccountRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.interchain_accounts.controller.v1.QueryInterchainAccountRequest", value: QueryInterchainAccountRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryInterchainAccountRequest: Could not create message: ' + e.message)
+			}
+		},
+		
 		queryInterchainAccountResponse({ value }: queryInterchainAccountResponseParams): EncodeObject {
 			try {
 				return { typeUrl: "/ibc.applications.interchain_accounts.controller.v1.QueryInterchainAccountResponse", value: QueryInterchainAccountResponse.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:QueryInterchainAccountResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryParamsResponse({ value }: queryParamsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.interchain_accounts.controller.v1.QueryParamsResponse", value: QueryParamsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryParamsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgRegisterInterchainAccountResponse({ value }: msgRegisterInterchainAccountResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.interchain_accounts.controller.v1.MsgRegisterInterchainAccountResponse", value: MsgRegisterInterchainAccountResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgRegisterInterchainAccountResponse: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -357,6 +381,14 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		msgSendTxResponse({ value }: msgSendTxResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.interchain_accounts.controller.v1.MsgSendTxResponse", value: MsgSendTxResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgSendTxResponse: Could not create message: ' + e.message)
+			}
+		},
+		
 		msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject {
 			try {
 				return { typeUrl: "/ibc.applications.interchain_accounts.controller.v1.MsgUpdateParams", value: MsgUpdateParams.fromPartial( value ) }  
@@ -365,43 +397,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgRegisterInterchainAccount({ value }: msgRegisterInterchainAccountParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.interchain_accounts.controller.v1.MsgRegisterInterchainAccount", value: MsgRegisterInterchainAccount.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgRegisterInterchainAccount: Could not create message: ' + e.message)
-			}
-		},
-		
 		msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject {
 			try {
 				return { typeUrl: "/ibc.applications.interchain_accounts.controller.v1.MsgUpdateParamsResponse", value: MsgUpdateParamsResponse.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryInterchainAccountRequest({ value }: queryInterchainAccountRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.interchain_accounts.controller.v1.QueryInterchainAccountRequest", value: QueryInterchainAccountRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryInterchainAccountRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryParamsResponse({ value }: queryParamsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.interchain_accounts.controller.v1.QueryParamsResponse", value: QueryParamsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryParamsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgSendTxResponse({ value }: msgSendTxResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.interchain_accounts.controller.v1.MsgSendTxResponse", value: MsgSendTxResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgSendTxResponse: Could not create message: ' + e.message)
 			}
 		},
 		
