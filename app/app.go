@@ -6,6 +6,7 @@ import (
 	"cosmossdk.io/x/nft"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	"fmt"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	feetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
 	"io"
 	"os"
@@ -385,13 +386,17 @@ func New(
 		SignModeHandler: app.txConfig.SignModeHandler(),
 	}
 	options := FairyringHandlerOptions{
-		BaseOptions:  handlerOptions,
-		wasmConfig:   wasmConfig,
-		TxDecoder:    app.txConfig.TxDecoder(),
-		TxEncoder:    app.txConfig.TxEncoder(),
-		KeyShareLane: keyshareLane,
-		PepKeeper:    app.PepKeeper,
-		FreeLane:     freeLane,
+		BaseOptions:           handlerOptions,
+		WasmConfig:            &wasmConfig,
+		WasmKeeper:            &app.WasmKeeper,
+		TxDecoder:             app.txConfig.TxDecoder(),
+		TxEncoder:             app.txConfig.TxEncoder(),
+		KeyShareLane:          keyshareLane,
+		PepKeeper:             app.PepKeeper,
+		FreeLane:              freeLane,
+		IBCKeeper:             app.IBCKeeper,
+		CircuitKeeper:         &app.CircuitBreakerKeeper,
+		TXCounterStoreService: runtime.NewKVStoreService(app.GetKey(wasmtypes.StoreKey)),
 	}
 	anteHandler := NewFairyringAnteHandler(options)
 	app.App.SetAnteHandler(anteHandler)
