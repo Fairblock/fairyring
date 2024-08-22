@@ -31,10 +31,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	// Set queued public key
 	k.SetQueuedPubKey(ctx, genState.QueuedPubKey)
 	// Set all the requestId
-for _, elem := range genState.RequestIdList {
-	k.SetRequestId(ctx, elem)
-}
-// this line is used by starport scaffolding # genesis/module/init
+	for _, elem := range genState.RequestIdList {
+		k.SetRequestId(ctx, elem)
+	}
+	// this line is used by starport scaffolding # genesis/module/init
 
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetPort(ctx, genState.PortId)
@@ -63,7 +63,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.PortId = k.GetPort(ctx)
 	genesis.RequestIdList = k.GetAllRequestId(ctx)
-// this line is used by starport scaffolding # genesis/module/export
+	// this line is used by starport scaffolding # genesis/module/export
 
 	genesis.EncryptedTxArray = k.GetAllEncryptedArray(ctx)
 	genesis.PepNonceList = k.GetAllPepNonce(ctx)

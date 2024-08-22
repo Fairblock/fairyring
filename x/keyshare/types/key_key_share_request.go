@@ -13,21 +13,6 @@ const (
 	KeyShareRequestKeyPrefix = "KeyshareRequest/value/"
 )
 
-func IdentityFromRequestCount(
-	reqCount uint64,
-) string {
-	reqNumber := strconv.FormatUint(reqCount, 10)
-	identity := reqNumber + "/rq"
-	return identity
-}
-
-func IdentityFromRequestID(
-	reqID string,
-) string {
-	identity := reqID + "/id"
-	return identity
-}
-
 func RequestCountFromIdentity(
 	identity string,
 ) uint64 {
