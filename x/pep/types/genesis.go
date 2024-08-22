@@ -27,6 +27,16 @@ func (gs GenesisState) Validate() error {
 	if err := host.PortIdentifierValidator(gs.PortId); err != nil {
 		return err
 	}
+	// Check for duplicated index in requestId
+	requestIdIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.RequestIdList {
+		index := string(RequestIdKey(elem.Creator, elem.ReqId))
+		if _, ok := requestIdIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for requestId")
+		}
+		requestIdIndexMap[index] = struct{}{}
+	}
 	// this line is used by starport scaffolding # genesis/types/validate
 	encryptedTxArrIndexMap := make(map[string]struct{})
 	for height, elem := range gs.EncryptedTxArray {

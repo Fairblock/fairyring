@@ -353,6 +353,55 @@ paths:
           type: boolean
       tags:
         - Query
+  /cosmwasm/wasm/v1/contract/build_address:
+    get:
+      operationId: Query_BuildAddress
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              address:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: code_hash
+          in: query
+          required: false
+          type: string
+        - name: creator_address
+          in: query
+          required: false
+          type: string
+        - name: salt
+          in: query
+          required: false
+          type: string
+        - name: init_args
+          in: query
+          required: false
+          type: string
+          format: byte
+      tags:
+        - Query
   /cosmwasm/wasm/v1/contract/{address}:
     get:
       operationId: Query_ContractInfo
@@ -922,6 +971,11 @@ definitions:
           total:
             type: string
             format: uint64
+  QueryBuildAddressResponse:
+    type: object
+    properties:
+      address:
+        type: string
   QueryCodeResponse:
     type: object
     properties:
