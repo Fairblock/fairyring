@@ -122,8 +122,8 @@ $UPGRADER add-upgrade $UPGRADE_NAME $WORKING_DIR/$GIT_TAG_UPGRADE_TO/build/$BINA
 
 sleep 10
 
-$BINARY_FULL_PATH tx gov submit-proposal upgrade_proposal.json --from validator --keyring-backend test --home $CHAIN_HOME --yes
+$BINARY_FULL_PATH tx gov submit-proposal upgrade_proposal.json --from validator --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME --yes
 sleep 3
-$BINARY_FULL_PATH tx gov vote 1 yes --from validator --yes --keyring-backend test --home $CHAIN_HOME
+$BINARY_FULL_PATH tx gov vote 1 yes --from validator --yes --keyring-backend test --chain-id $CHAIN_ID --home $CHAIN_HOME
 
 echo "Run 'pkill fairyringd' later to stop fairyring"

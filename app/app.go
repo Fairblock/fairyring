@@ -4,7 +4,6 @@ import (
 	"context"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	"fmt"
-	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	keysharemodule "github.com/Fairblock/fairyring/x/keyshare/module"
 	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
@@ -20,11 +19,6 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-
-	circuittypes "cosmossdk.io/x/circuit/types"
-	"cosmossdk.io/x/nft"
-	upgradetypes "cosmossdk.io/x/upgrade/types"
-	feetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
 
 	_ "cosmossdk.io/api/cosmos/tx/config/v1" // import for side-effects
 	"cosmossdk.io/depinject"
