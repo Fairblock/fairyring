@@ -42,11 +42,7 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 			activePubKey = types.ActivePubKey(queuedPubKey)
 		}
 
-		reqCountString := k.GetRequestCount(ctx)
-		reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
-		reqCount = reqCount + 1
-
-		id := types.IdentityFromRequestCount(reqCount)
+		id := types.IdentityFromRequestID(req.GetRequestId())
 
 		var keyshareRequest types.KeyShareRequest
 
@@ -57,7 +53,6 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 		keyshareRequest.RequestId = req.GetRequestId()
 
 		k.SetKeyShareRequest(ctx, keyshareRequest)
-		k.SetRequestCount(ctx, reqCount)
 
 		entry := peptypes.GenEncTxExecutionQueue{
 			Creator:   req.Creator,

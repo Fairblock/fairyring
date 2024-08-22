@@ -117,6 +117,10 @@ export interface QueryAllContractStateResponse {
   pagination?: { next_key?: string; total?: string };
 }
 
+export interface QueryBuildAddressResponse {
+  address?: string;
+}
+
 export interface QueryCodeResponse {
   code_info?: {
     code_id?: string;
@@ -625,6 +629,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
       path: `/cosmwasm/wasm/v1/codes/pinned`,
+      method: "GET",
+      query: query,
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryBuildAddress
+   * @request GET:/cosmwasm/wasm/v1/contract/build_address
+   */
+  queryBuildAddress = (
+    query?: { code_hash?: string; creator_address?: string; salt?: string; init_args?: string },
+    params: RequestParams = {},
+  ) =>
+    this.request<{ address?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
+      path: `/cosmwasm/wasm/v1/contract/build_address`,
       method: "GET",
       query: query,
       ...params,

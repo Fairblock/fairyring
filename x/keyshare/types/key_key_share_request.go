@@ -21,6 +21,13 @@ func IdentityFromRequestCount(
 	return identity
 }
 
+func IdentityFromRequestID(
+	reqID string,
+) string {
+	identity := reqID + "/id"
+	return identity
+}
+
 func RequestCountFromIdentity(
 	identity string,
 ) uint64 {

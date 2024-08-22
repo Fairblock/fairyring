@@ -38,6 +38,7 @@ func CmdCreateGeneralKeyShare() *cobra.Command {
 				argKeyShare,
 				argKeyShareIndex,
 			)
+
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

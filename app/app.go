@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	upgradetypes "cosmossdk.io/x/upgrade/types"
 	"fmt"
 	"io"
 	"os"
@@ -471,25 +472,8 @@ func New(
 	app.sm.RegisterStoreDecoders()
 
 	app.UpgradeKeeper.SetUpgradeHandler(
-		"v0.6.0-to-update-cosmos-sdk-v0.50.6",
+		"v0.8.2-to-custom-req-id",
 		func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-			upgradeStoreService := runtime.NewKVStoreService(app.GetKey("upgrade"))
-			consensusKeeper := consensuskeeper.NewKeeper(
-				app.appCodec,
-				upgradeStoreService,
-				app.AccountKeeper.GetAuthority(),
-				runtime.EventService{},
-			)
-
-			params, err := consensusKeeper.ParamsStore.Get(ctx)
-			if err != nil {
-				return nil, err
-			}
-
-			err = app.ConsensusParamsKeeper.ParamsStore.Set(ctx, params)
-			if err != nil {
-				return nil, err
-			}
 			return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
 		},
 	)
@@ -499,13 +483,9 @@ func New(
 		panic(err)
 	}
 
-	if upgradeInfo.Name == "v0.6.0-to-update-cosmos-sdk-v0.50.6" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+	if upgradeInfo.Name == "v0.8.2-to-custom-req-id" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
 		storeUpgrades := storetypes.StoreUpgrades{
-			Added: []string{
-				nft.StoreKey,
-				circuittypes.StoreKey,
-				feetypes.StoreKey,
-			},
+			Deleted: []string{"capability"},
 		}
 
 		// configure store loader that checks if version == upgradeHeight and applies store upgrades

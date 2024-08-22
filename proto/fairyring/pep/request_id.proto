@@ -1,0 +1,10 @@
+syntax = "proto3";
+package fairyring.pep;
+
+option go_package = "github.com/Fairblock/fairyring/x/pep/types";
+
+message RequestId {
+  string creator = 1; 
+  string reqId = 2;
+}
+

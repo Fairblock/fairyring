@@ -2,10 +2,10 @@
 
 WORKING_DIR="$HOME/.chain_upgrade_test_env"
 GIT_FAIRYRING_REPO=https://github.com/Fairblock/fairyring.git
-GO_VERSION_FROM=go1.21
+GO_VERSION_FROM=system
 GO_VERSION_TO=system
-GIT_TAG_UPGRADE_FROM=v0.6.0
-GIT_TAG_UPGRADE_TO=update-cosmos-sdk-v0.50.6
+GIT_TAG_UPGRADE_FROM=v0.8.2
+GIT_TAG_UPGRADE_TO=custom-req-id
 
 BINARY=fairyringd
 BINARY_FULL_PATH=$WORKING_DIR/$GIT_TAG_UPGRADE_FROM/build/$BINARY
@@ -64,17 +64,19 @@ UPGRADE_NAME="$GIT_TAG_UPGRADE_FROM-to-$GIT_TAG_UPGRADE_TO"
 
 cd "$WORKING_DIR/$GIT_TAG_UPGRADE_FROM"
 
-$BINARY_FULL_PATH config chain-id test
-$BINARY_FULL_PATH config keyring-backend test
-$BINARY_FULL_PATH config broadcast-mode sync
+$BINARY_FULL_PATH config set client chain-id $CHAIN_ID --home $CHAIN_HOME
+$BINARY_FULL_PATH config set client keyring-backend test --home $CHAIN_HOME
+$BINARY_FULL_PATH config set client broadcast-mode sync --home $CHAIN_HOME
+$BINARY_FULL_PATH config set app minimum-gas-prices 0ufairy --home $CHAIN_HOME
 $BINARY_FULL_PATH init test --chain-id $CHAIN_ID --home $CHAIN_HOME --overwrite
 
 cat <<< $(jq '.app_state.gov.params.voting_period = "20s"' $CHAIN_HOME/config/genesis.json) > $CHAIN_HOME/config/genesis.json
+cat <<< $(jq '.app_state.gov.params.expedited_voting_period = "10s"' $CHAIN_HOME/config/genesis.json) > $CHAIN_HOME/config/genesis.json
 
 $BINARY_FULL_PATH keys add validator --keyring-backend test --home $CHAIN_HOME
-$BINARY_FULL_PATH add-genesis-account validator 100000000000stake --keyring-backend test --home $CHAIN_HOME
-$BINARY_FULL_PATH gentx validator 1000000stake --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME
-$BINARY_FULL_PATH collect-gentxs --home $CHAIN_HOME
+$BINARY_FULL_PATH genesis add-genesis-account validator 100000000000stake --keyring-backend test --home $CHAIN_HOME
+$BINARY_FULL_PATH genesis gentx validator 1000000stake --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME
+$BINARY_FULL_PATH genesis collect-gentxs --home $CHAIN_HOME
 
 export DAEMON_NAME=$BINARY
 export DAEMON_HOME=$CHAIN_HOME
