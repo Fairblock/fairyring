@@ -4,6 +4,19 @@ import (
 	"context"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	"fmt"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	keysharemodule "github.com/Fairblock/fairyring/x/keyshare/module"
+	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
+	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
+	peptypes "github.com/Fairblock/fairyring/x/pep/types"
+	"github.com/cosmos/ibc-go/modules/capability"
+	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
+	interchainaccountsmodule "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts"
+	interchainaccountstypes "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/types"
+	ibcfeemodule "github.com/cosmos/ibc-go/v8/modules/apps/29-fee"
+	ibcfeetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
+	"github.com/cosmos/ibc-go/v8/modules/apps/transfer"
+	transfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	"io"
 	"os"
 	"path/filepath"
@@ -86,6 +99,7 @@ import (
 	_ "github.com/cosmos/ibc-go/v8/modules/apps/29-fee" // import for side-effects
 	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
 	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
+	ibcmodule "github.com/cosmos/ibc-go/v8/modules/core"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	"github.com/skip-mev/block-sdk/v2/block"
 	"github.com/skip-mev/block-sdk/v2/block/base"
@@ -472,25 +486,22 @@ func New(
 	app.sm.RegisterStoreDecoders()
 
 	app.UpgradeKeeper.SetUpgradeHandler(
-		"v0.8.2-to-custom-req-id",
+		"v0.8.2-to-0.8.3-release",
 		func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+
+			fromVM[capabilitytypes.ModuleName] = capability.AppModule{}.ConsensusVersion()
+			fromVM[peptypes.ModuleName] = pepmodule.AppModule{}.ConsensusVersion()
+			fromVM[keysharemoduletypes.ModuleName] = keysharemodule.AppModule{}.ConsensusVersion()
+			fromVM[ibcmodule.AppModule{}.Name()] = ibcmodule.AppModule{}.ConsensusVersion()
+			fromVM[ibcfeetypes.ModuleName] = ibcfeemodule.AppModule{}.ConsensusVersion()
+			fromVM[wasmtypes.ModuleName] = wasm.AppModule{}.ConsensusVersion()
+			fromVM[transfertypes.ModuleName] = transfer.AppModule{}.ConsensusVersion()
+			fromVM[interchainaccountstypes.ModuleName] = interchainaccountsmodule.AppModule{}.ConsensusVersion()
+			// 07-tendermint, 06-solomachine
+
 			return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
 		},
 	)
-
-	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
-	if err != nil {
-		panic(err)
-	}
-
-	if upgradeInfo.Name == "v0.8.2-to-custom-req-id" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
-		storeUpgrades := storetypes.StoreUpgrades{
-			Deleted: []string{"capability"},
-		}
-
-		// configure store loader that checks if version == upgradeHeight and applies store upgrades
-		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
-	}
 
 	// A custom InitChainer can be set if extra pre-init-genesis logic is required.
 	// By default, when using app wiring enabled module, this is not required.

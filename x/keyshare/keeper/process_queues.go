@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"errors"
+	"fmt"
 	"math"
 	"strconv"
 
@@ -17,11 +18,12 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 	}
 
 	reqs := k.pepKeeper.GetAllGenEncTxReqQueueEntry(ctx)
+	k.Logger().Info(fmt.Sprintf("PROCESSING PEP REQUEST QUEUE: %v", reqs))
 	for _, req := range reqs {
 		if req.EstimatedDelay == nil {
 			k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
+			k.Logger().Info("[ProcessPepRequestQueue] Estimated delay has not been set")
 			continue
-			// return errors.New("estimated delay has not been set")
 		}
 		delay := req.EstimatedDelay
 		blockDelay := uint64(math.Ceil(delay.Seconds() / types.AvgBlockTime))
@@ -30,19 +32,19 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 		if executionHeight > activePubKey.Expiry {
 			queuedPubKey, found := k.GetQueuedPubKey(ctx)
 			if !found {
+				k.Logger().Info("[ProcessPepRequestQueue] Queued Pub Key not found")
 				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
 				continue
-				// return errors.New("estimated delay too long")
 			}
 			if executionHeight > queuedPubKey.Expiry {
+				k.Logger().Info("[ProcessPepRequestQueue] Estimated delay too long")
 				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
 				continue
-				// return errors.New("estimated delay too long")
 			}
 			activePubKey = types.ActivePubKey(queuedPubKey)
 		}
 
-		id := types.IdentityFromRequestID(req.GetRequestId())
+		id := req.GetRequestId()
 
 		var keyshareRequest types.KeyShareRequest
 
@@ -69,6 +71,7 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 
 func (k Keeper) ProcessPepSignalQueue(ctx sdk.Context) error {
 	reqs := k.pepKeeper.GetAllGenEncTxSignalQueueEntry(ctx)
+	k.Logger().Info(fmt.Sprintf("PROCESSING PEP SIGNAL QUEUE: %v", reqs))
 	for _, req := range reqs {
 		if req.Identity != "" {
 			keyshareReq, found := k.GetKeyShareRequest(ctx, req.Identity)
@@ -134,7 +137,7 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 		reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
 		reqCount = reqCount + 1
 
-		id := types.IdentityFromRequestCount(reqCount)
+		id := req.GetRequestId()
 
 		var keyshareRequest types.KeyShareRequest
 
