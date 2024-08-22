@@ -1,17 +1,17 @@
 package app
 
 import (
-	storetypes "cosmossdk.io/store/types"
 	"fmt"
+	"path/filepath"
+
+	storetypes "cosmossdk.io/store/types"
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
-	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
-	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	"github.com/cosmos/cosmos-sdk/x/auth/posthandler"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	distrkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
@@ -20,7 +20,6 @@ import (
 	ibcfee "github.com/cosmos/ibc-go/v8/modules/apps/29-fee"
 	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
 	"github.com/spf13/cast"
-	"path/filepath"
 )
 
 // AllCapabilities returns all capabilities available with the current wasmvm
@@ -98,9 +97,9 @@ func (app *App) registerWasmModules(
 		return nil, err
 	}
 
-	if err := app.setAnteHandler(app.txConfig, wasmConfig, app.GetKey(wasmtypes.StoreKey)); err != nil {
-		return nil, err
-	}
+	// if err := app.setAnteHandler(app.txConfig, wasmConfig, app.GetKey(wasmtypes.StoreKey)); err != nil {
+	// 	return nil, err
+	// }
 
 	if manager := app.SnapshotManager(); manager != nil {
 		err := manager.RegisterExtensions(
@@ -146,28 +145,28 @@ func (app *App) setPostHandler() error {
 	return nil
 }
 
-func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.WasmConfig, txCounterStoreKey *storetypes.KVStoreKey) error {
-	anteHandler, err := NewAnteHandler(
-		HandlerOptions{
-			HandlerOptions: ante.HandlerOptions{
-				AccountKeeper:   app.AccountKeeper,
-				BankKeeper:      app.BankKeeper,
-				SignModeHandler: txConfig.SignModeHandler(),
-				FeegrantKeeper:  app.FeeGrantKeeper,
-				SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
-			},
-			IBCKeeper:             app.IBCKeeper,
-			WasmConfig:            &wasmConfig,
-			WasmKeeper:            &app.WasmKeeper,
-			TXCounterStoreService: runtime.NewKVStoreService(txCounterStoreKey),
-			CircuitKeeper:         &app.CircuitBreakerKeeper,
-		},
-	)
-	if err != nil {
-		return fmt.Errorf("failed to create AnteHandler: %s", err)
-	}
+// func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.WasmConfig, txCounterStoreKey *storetypes.KVStoreKey) error {
+// 	anteHandler, err := NewAnteHandler(
+// 		HandlerOptions{
+// 			HandlerOptions: ante.HandlerOptions{
+// 				AccountKeeper:   app.AccountKeeper,
+// 				BankKeeper:      app.BankKeeper,
+// 				SignModeHandler: txConfig.SignModeHandler(),
+// 				FeegrantKeeper:  app.FeeGrantKeeper,
+// 				SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
+// 			},
+// 			IBCKeeper:             app.IBCKeeper,
+// 			WasmConfig:            &wasmConfig,
+// 			WasmKeeper:            &app.WasmKeeper,
+// 			TXCounterStoreService: runtime.NewKVStoreService(txCounterStoreKey),
+// 			CircuitKeeper:         &app.CircuitBreakerKeeper,
+// 		},
+// 	)
+// 	if err != nil {
+// 		return fmt.Errorf("failed to create AnteHandler: %s", err)
+// 	}
 
-	// Set the AnteHandler for the app
-	app.SetAnteHandler(anteHandler)
-	return nil
-}
+// 	// Set the AnteHandler for the app
+// 	app.SetAnteHandler(anteHandler)
+// 	return nil
+// }

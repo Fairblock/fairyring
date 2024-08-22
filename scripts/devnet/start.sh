@@ -126,7 +126,7 @@ sed -i -e 's/"is_source_chain": false/"is_source_chain": true/g' $CHAIN_DIR/$CHA
 
 echo "Starting $CHAINID in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID.log"
-$BINARY start --log_level trace --log_format json --home $CHAIN_DIR/$CHAINID --pruning=nothing --grpc.address="0.0.0.0:$GRPCPORT" > $CHAIN_DIR/$CHAINID.log 2>&1 &
+$BINARY start --log_level info --log_format json --home $CHAIN_DIR/$CHAINID --pruning=nothing --grpc.address="0.0.0.0:$GRPCPORT" > $CHAIN_DIR/$CHAINID.log 2>&1 &
 
 rm rly1.json &> /dev/null
 
