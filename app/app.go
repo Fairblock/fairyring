@@ -5,7 +5,6 @@ import (
 	circuittypes "cosmossdk.io/x/circuit/types"
 	"cosmossdk.io/x/nft"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-	"fmt"
 	feetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
 	"io"
 	"os"
@@ -25,7 +24,6 @@ import (
 	_ "cosmossdk.io/x/nft/module" // import for side-effects
 	_ "cosmossdk.io/x/upgrade"    // import for side-effects
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
-	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	"github.com/Fairblock/fairyring/abci/checktx"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
@@ -41,7 +39,6 @@ import (
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth"
-	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authsims "github.com/cosmos/cosmos-sdk/x/auth/simulation"
 	_ "github.com/cosmos/cosmos-sdk/x/auth/tx/config" // import for side-effects
@@ -369,36 +366,36 @@ func New(
 	// The application's mempool is now powered by the Block SDK!
 	app.App.SetMempool(mempool)
 
-	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
-	if err != nil {
-		panic(fmt.Sprintf("error while reading wasm config: %s", err))
-	}
+	//wasmConfig, err := wasm.ReadWasmConfig(appOpts)
+	//if err != nil {
+	//	panic(fmt.Sprintf("error while reading wasm config: %s", err))
+	//}
 
 	// STEP 5: Create a global ante handler that will be called on each transaction when
 	// proposals are being built and verified. Note that this step must be done before
 	// setting the ante handler on the lanes.
-	handlerOptions := ante.HandlerOptions{
-		AccountKeeper:   app.AccountKeeper,
-		BankKeeper:      app.BankKeeper,
-		FeegrantKeeper:  app.FeeGrantKeeper,
-		SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
-		SignModeHandler: app.txConfig.SignModeHandler(),
-	}
-	options := FairyringHandlerOptions{
-		BaseOptions:  handlerOptions,
-		wasmConfig:   wasmConfig,
-		TxDecoder:    app.txConfig.TxDecoder(),
-		TxEncoder:    app.txConfig.TxEncoder(),
-		KeyShareLane: keyshareLane,
-		PepKeeper:    app.PepKeeper,
-		FreeLane:     freeLane,
-	}
-	anteHandler := NewFairyringAnteHandler(options)
-	app.App.SetAnteHandler(anteHandler)
+	//handlerOptions := ante.HandlerOptions{
+	//	AccountKeeper:   app.AccountKeeper,
+	//	BankKeeper:      app.BankKeeper,
+	//	FeegrantKeeper:  app.FeeGrantKeeper,
+	//	SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
+	//	SignModeHandler: app.txConfig.SignModeHandler(),
+	//}
+	//options := FairyringHandlerOptions{
+	//	BaseOptions:  handlerOptions,
+	//	wasmConfig:   wasmConfig,
+	//	TxDecoder:    app.txConfig.TxDecoder(),
+	//	TxEncoder:    app.txConfig.TxEncoder(),
+	//	KeyShareLane: keyshareLane,
+	//	PepKeeper:    app.PepKeeper,
+	//	FreeLane:     freeLane,
+	//}
+	// anteHandler := NewFairyringAnteHandler(options)
+	// app.App.SetAnteHandler(anteHandler)
 
 	// Set the ante handler on the lanes.
 	opt := []base.LaneOption{
-		base.WithAnteHandler(anteHandler),
+		base.WithAnteHandler(app.App.AnteHandler()),
 	}
 	keyshareLane.WithOptions(
 		opt...,
@@ -406,9 +403,9 @@ func New(
 	freeLane.WithOptions(
 		opt...,
 	)
-	// defaultLane.WithOptions(
-	// 	opt...,
-	// )
+	defaultLane.WithOptions(
+		opt...,
+	)
 
 	// Step 6: Create the proposal handler and set it on the app. Now the application
 	// will build and verify proposals using the Block SDK!
@@ -427,7 +424,7 @@ func New(
 		app.App,
 		app.txConfig.TxDecoder(),
 		keyshareLane,
-		anteHandler,
+		app.App.AnteHandler(),
 		app.App.CheckTx,
 	)
 	checkTxHandler := checktx.NewMempoolParityCheckTx(
