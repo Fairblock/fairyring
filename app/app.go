@@ -477,7 +477,7 @@ func New(
 	app.sm.RegisterStoreDecoders()
 
 	app.UpgradeKeeper.SetUpgradeHandler(
-		"v0.8.2-to-custom-req-id",
+		"v0.8.2-to-0.8.3-release",
 		func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
 
 			fromVM[capabilitytypes.ModuleName] = capability.AppModule{}.ConsensusVersion()
