@@ -50,49 +50,6 @@ wait_for_tx () {
   fi
   echo "$RESULT"
 }
-#
-#echo "Creating a new proposal on destination chain"
-#RESULT=$($BINARY tx gov submit-proposal ./scripts/tests/draft_proposal.json --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
-#check_tx_code $RESULT
-#RESULT=$(wait_for_tx $RESULT "destination")
-#
-## waiting for identity to be updated
-#sleep 25
-#PROPOSAL=$(fairyringd q gov proposals --home $CHAIN_DIR/$CHAINID_1 -o json | jq '.proposals[0]')
-#IDENTITY=$(echo "$PROPOSAL" | jq -r '.identity')
-#PUBKEY=$(echo "$PROPOSAL" | jq -r '.pubkey')
-#
-#if [ -z "$IDENTITY" ]; then
-#  echo "ERROR: The identity is blank"
-#  echo "$PROPOSAL"
-#  exit 1
-#elif [ -z "$PUBKEY" ]; then
-#  echo "The pubkey is blank"
-#  echo "$PROPOSAL"
-#  exit 1
-#else
-#  echo "Successfully created proposal on destination chain"
-#fi
-#
-#
-#echo "Submitting encrypted vote on destination chain"
-#echo "Encrypting vote with Pub key: '$PUBKEY' and Identity: $IDENTITY"
-#ENCVOTE=$($ENCRYPTER "yes" 100 $IDENTITY $PUBKEY)
-#echo "$ENCVOTE"
-#
-#RESULT=$(fairyringd tx gov vote-encrypted 1 $ENCVOTE --from val2 --home $CHAIN_DIR/$CHAINID_1 --keyring-backend test --gas-prices 1ufairy -o json -y)
-#check_tx_code $RESULT
-#RESULT=$(wait_for_tx $RESULT "destination")
-#
-#VOTE=$(fairyringd q gov votes 1 --home $CHAIN_DIR/$CHAINID_1 -o json | jq '.votes[0]')
-#VOTEDATA=$(echo "$VOTE" | jq -r '.encrypted_vote_data')
-#
-#if [ -z "$VOTEDATA" ]; then
-#  echo "ERROR: Encrypted vote option is blank"
-#  echo "$VOTE"
-#  exit 1
-#fi
-#echo "Successfully submitted encrypted vote on destination chain"
 
 echo "PUBKEY: $1"
 echo "SHARE: $2"
@@ -160,7 +117,6 @@ EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
 while true; do
   echo "Submitting General Key Share"
-  
   RESULT=$($BINARY tx keyshare create-general-key-share "private-gov-identity" $IDENTITY $EXTRACTED_SHARE 1 --from $VAL1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
   echo "$RESULT"
   check_tx_err $RESULT
@@ -171,17 +127,6 @@ done
 
 RESULT=$(wait_for_tx $RESULT "source")
 sleep 25
-
-#echo "Checking Status of proposal on Destination chain"
-#PROPOSAL=$(fairyringd q gov proposals --home $CHAIN_DIR/$CHAINID_1 -o json | jq '.proposals[0]')
-#STATUS=$(echo "$PROPOSAL" | jq -r '.status')
-#
-#if [ "$STATUS" != "PROPOSAL_STATUS_PASSED" ]; then
-#  echo "ERROR: Failed to pass proposal on destination chain"
-#  echo "$PROPOSAL"
-#  exit 1
-#fi
-#echo "Successfully passed proposal with enc vote on destination chain"
 
 echo "Checking Status of proposal on Source chain"
 sleep 5

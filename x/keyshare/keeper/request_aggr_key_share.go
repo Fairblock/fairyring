@@ -2,10 +2,8 @@ package keeper
 
 import (
 	"errors"
-	"math"
-	"strconv"
-
 	"github.com/Fairblock/fairyring/x/keyshare/types"
+	"math"
 
 	sdkerrors "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -72,11 +70,7 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 		isProposalID = false
 	}
 
-	reqCountString := k.GetRequestCount(ctx)
-	reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
-	reqCount = reqCount + 1
-
-	id := types.IdentityFromRequestCount(reqCount)
+	id := data.GetRequestId()
 
 	var keyshareRequest types.KeyShareRequest
 
@@ -102,8 +96,6 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 	keyshareRequest.Sent = false
 
 	k.SetKeyShareRequest(ctx, keyshareRequest)
-
-	k.SetRequestCount(ctx, reqCount)
 
 	packetAck.Identity = id
 	packetAck.Pubkey = activePubKey.PublicKey

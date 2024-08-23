@@ -8,7 +8,7 @@ import (
 	"fmt"
 
 	enc "github.com/FairBlock/DistributedIBE/encryption"
-	"github.com/Fairblock/fairyring/x/keyshare/types"
+	"github.com/Fairblock/fairyring/x/pep/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	bls "github.com/drand/kyber-bls12381"
 	"github.com/spf13/cobra"

@@ -189,7 +189,12 @@ integration-test-all: init-test-framework \
 devnet-up: init-devnet
 	@echo "Fairyring Devnet is now running in the background, run 'make devnet-down' to stop devnet."
 
-devnet-down: clean-devnet-data
+devnet-down:
+	@echo "Killing fairyringd, fairyport, fairyringclient, ShareGenerationClient and removing previous data"
+	-@killall fairyringd 2>/dev/null
+	-@killall fairyport 2>/dev/null
+	-@killall fairyringclient 2>/dev/null
+	-@killall ShareGenerationClient 2>/dev/null
 
 test-tx-limit:
 	@echo "Testing Block tx limit..."

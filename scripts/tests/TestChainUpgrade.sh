@@ -2,10 +2,10 @@
 
 WORKING_DIR="$HOME/.chain_upgrade_test_env"
 GIT_FAIRYRING_REPO=https://github.com/Fairblock/fairyring.git
-GO_VERSION_FROM=go1.21
+GO_VERSION_FROM=system
 GO_VERSION_TO=system
-GIT_TAG_UPGRADE_FROM=v0.6.0
-GIT_TAG_UPGRADE_TO=update-cosmos-sdk-v0.50.6
+GIT_TAG_UPGRADE_FROM=v0.8.2
+GIT_TAG_UPGRADE_TO=0.8.3-release
 
 BINARY=fairyringd
 BINARY_FULL_PATH=$WORKING_DIR/$GIT_TAG_UPGRADE_FROM/build/$BINARY
@@ -64,17 +64,21 @@ UPGRADE_NAME="$GIT_TAG_UPGRADE_FROM-to-$GIT_TAG_UPGRADE_TO"
 
 cd "$WORKING_DIR/$GIT_TAG_UPGRADE_FROM"
 
-$BINARY_FULL_PATH config chain-id test
-$BINARY_FULL_PATH config keyring-backend test
-$BINARY_FULL_PATH config broadcast-mode sync
+$BINARY_FULL_PATH config set client chain-id $CHAIN_ID --home $CHAIN_HOME
+$BINARY_FULL_PATH config set client keyring-backend test --home $CHAIN_HOME
+$BINARY_FULL_PATH config set client broadcast-mode sync --home $CHAIN_HOME
+$BINARY_FULL_PATH config set app minimum-gas-prices 0ufairy --home $CHAIN_HOME
 $BINARY_FULL_PATH init test --chain-id $CHAIN_ID --home $CHAIN_HOME --overwrite
 
 cat <<< $(jq '.app_state.gov.params.voting_period = "20s"' $CHAIN_HOME/config/genesis.json) > $CHAIN_HOME/config/genesis.json
+cat <<< $(jq '.app_state.gov.params.expedited_voting_period = "10s"' $CHAIN_HOME/config/genesis.json) > $CHAIN_HOME/config/genesis.json
 
 $BINARY_FULL_PATH keys add validator --keyring-backend test --home $CHAIN_HOME
-$BINARY_FULL_PATH add-genesis-account validator 100000000000stake --keyring-backend test --home $CHAIN_HOME
-$BINARY_FULL_PATH gentx validator 1000000stake --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME
-$BINARY_FULL_PATH collect-gentxs --home $CHAIN_HOME
+$BINARY_FULL_PATH keys add wallet1 --keyring-backend test --home $CHAIN_HOME
+$BINARY_FULL_PATH genesis add-genesis-account validator 100000000000stake --keyring-backend test --home $CHAIN_HOME
+$BINARY_FULL_PATH genesis add-genesis-account wallet1 100000000000stake --keyring-backend test --home $CHAIN_HOME
+$BINARY_FULL_PATH genesis gentx validator 1000000stake --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME
+$BINARY_FULL_PATH genesis collect-gentxs --home $CHAIN_HOME
 
 export DAEMON_NAME=$BINARY
 export DAEMON_HOME=$CHAIN_HOME
@@ -120,8 +124,48 @@ $UPGRADER add-upgrade $UPGRADE_NAME $WORKING_DIR/$GIT_TAG_UPGRADE_TO/build/$BINA
 
 sleep 10
 
-$BINARY_FULL_PATH tx gov submit-proposal upgrade_proposal.json --from validator --keyring-backend test --home $CHAIN_HOME --yes
-sleep 3
-$BINARY_FULL_PATH tx gov vote 1 yes --from validator --yes --keyring-backend test --home $CHAIN_HOME
+$BINARY_FULL_PATH tx gov submit-proposal upgrade_proposal.json --from validator --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME --yes
+sleep 5
+$BINARY_FULL_PATH tx gov vote 1 yes --from validator --yes --keyring-backend test --chain-id $CHAIN_ID --home $CHAIN_HOME
+sleep 5
+VAL_OP_ADDR=$($BINARY_FULL_PATH q staking validators -o json | jq -r '.validators[0].operator_address')
+
+OUT=$($BINARY_FULL_PATH tx staking delegate $VAL_OP_ADDR 10stake --from wallet1 --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME --yes -o json)
+echo "Sent Delegate Tx: Code: $(echo $OUT | jq -r '.code'), Logs: $(echo $OUT | jq -r '.raw_log'), Hash: $(echo $OUT | jq -r '.txhash')"
+
+sleep 5
+
+VAL_ADDR=$($BINARY_FULL_PATH keys show validator --keyring-backend test --home $CHAIN_HOME -a)
+WAL1_ADDR=$($BINARY_FULL_PATH keys show wallet1 --keyring-backend test --home $CHAIN_HOME -a)
+
+OUT=$($BINARY_FULL_PATH tx bank send $WAL1_ADDR $VAL_ADDR 1stake --from wallet1 --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME --yes -o json)
+echo "Sent Bank Send Tx: Code: $(echo $OUT | jq -r '.code'), Logs: $(echo $OUT | jq -r '.raw_log'), Hash: $(echo $OUT | jq -r '.txhash')"
+sleep 6
+echo "Sequence after tx: $($BINARY_FULL_PATH q auth account $WAL1_ADDR -o json | jq -r '.account.value.sequence'), Balance after tx: $($BINARY_FULL_PATH q bank balances $VAL_ADDR -o json | jq -r '.balances[0]')"
+
+echo "Waiting chain to upgrade..."
+sleep 45
+
+echo "Sequence after upgrade: $($BINARY_FULL_PATH q auth account $WAL1_ADDR -o json | jq -r '.account.value.sequence'), Balance after upgrade: $($BINARY_FULL_PATH q bank balances $VAL_ADDR -o json | jq -r '.balances[0]')"
+
+OUT=$($BINARY_FULL_PATH tx bank send $WAL1_ADDR $VAL_ADDR 1stake --from wallet1 --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME --yes -o json)
+echo "Sent Bank Send Tx After UPGRADE: Code: $(echo $OUT | jq -r '.code'), Logs: $(echo $OUT | jq -r '.raw_log'), Hash: $(echo $OUT | jq -r '.txhash')"
+sleep 6
+
+echo "Sequence after tx: $($BINARY_FULL_PATH q auth account $WAL1_ADDR -o json | jq -r '.account.value.sequence'), Balance after tx: $($BINARY_FULL_PATH q bank balances $VAL_ADDR -o json | jq -r '.balances[0]')"
+
+OUT=$($BINARY_FULL_PATH tx staking delegate $VAL_OP_ADDR 10stake --from wallet1 --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME --yes -o json)
+echo "Sent Delegate Tx: Code: $(echo $OUT | jq -r '.code'), Logs: $(echo $OUT | jq -r '.raw_log'), Hash: $(echo $OUT | jq -r '.txhash')"
+
+sleep 5
+
+VAL_ADDR=$($BINARY_FULL_PATH keys show validator --keyring-backend test --home $CHAIN_HOME -a)
+WAL1_ADDR=$($BINARY_FULL_PATH keys show wallet1 --keyring-backend test --home $CHAIN_HOME -a)
+
+OUT=$($BINARY_FULL_PATH tx bank send $WAL1_ADDR $VAL_ADDR 1stake --from wallet1 --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME --yes -o json)
+echo "Sent Bank Send Tx: Code: $(echo $OUT | jq -r '.code'), Logs: $(echo $OUT | jq -r '.raw_log'), Hash: $(echo $OUT | jq -r '.txhash')"
+sleep 6
+echo "Sequence after tx: $($BINARY_FULL_PATH q auth account $WAL1_ADDR -o json | jq -r '.account.value.sequence'), Balance after tx: $($BINARY_FULL_PATH q bank balances $VAL_ADDR -o json | jq -r '.balances[0]')"
+
 
 echo "Run 'pkill fairyringd' later to stop fairyring"

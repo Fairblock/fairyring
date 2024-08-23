@@ -9,6 +9,34 @@
  * ---------------------------------------------------------------
  */
 
+export interface Any {
+  "@type"?: string;
+}
+
+export interface Coin {
+  denom?: string;
+  amount?: string;
+}
+
+export type MsgCreatePeriodicVestingAccountResponse = object;
+
+export type MsgCreatePermanentLockedAccountResponse = object;
+
+export type MsgCreateVestingAccountResponse = object;
+
+export interface Period {
+  /** @format int64 */
+  length?: string;
+  amount?: { denom?: string; amount?: string }[];
+}
+
+export interface Status {
+  /** @format int32 */
+  code?: number;
+  message?: string;
+  details?: { "@type"?: string }[];
+}
+
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
 export type QueryParamsType = Record<string | number, any>;

@@ -2,11 +2,20 @@ package app
 
 import (
 	"context"
-	circuittypes "cosmossdk.io/x/circuit/types"
-	"cosmossdk.io/x/nft"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	"fmt"
-	feetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
+	keysharemodule "github.com/Fairblock/fairyring/x/keyshare/module"
+	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
+	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
+	peptypes "github.com/Fairblock/fairyring/x/pep/types"
+	"github.com/cosmos/ibc-go/modules/capability"
+	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
+	interchainaccountsmodule "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts"
+	interchainaccountstypes "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/types"
+	ibcfeemodule "github.com/cosmos/ibc-go/v8/modules/apps/29-fee"
+	ibcfeetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
+	"github.com/cosmos/ibc-go/v8/modules/apps/transfer"
+	transfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	"io"
 	"os"
 	"path/filepath"
@@ -27,6 +36,7 @@ import (
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	"github.com/Fairblock/fairyring/abci/checktx"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	dbm "github.com/cosmos/cosmos-db"
@@ -83,6 +93,7 @@ import (
 	_ "github.com/cosmos/ibc-go/v8/modules/apps/29-fee" // import for side-effects
 	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
 	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
+	ibcmodule "github.com/cosmos/ibc-go/v8/modules/core"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	"github.com/skip-mev/block-sdk/v2/block"
 	"github.com/skip-mev/block-sdk/v2/block/base"
@@ -349,18 +360,23 @@ func New(
 
 	app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
 
+	// Register legacy modules
+	if err := app.registerIBCModules(appOpts); err != nil {
+		return nil, err
+	}
+
 	// ---------------------------------------------------------------------------- //
 	// ------------------------- Begin Custom Code -------------------------------- //
 	// ---------------------------------------------------------------------------- //
 	// STEP 1-3: Create the Block SDK lanes.
-	keyshareLane, freeLane, defaultLane := CreateLanes(app)
+	keyshareLane, defaultLane := CreateLanes(app)
 
 	// STEP 4: Construct a mempool based off the lanes. Note that the order of the lanes
 	// matters. Blocks are constructed from the top lane to the bottom lane. The top lane
 	// is the first lane in the array and the bottom lane is the last lane in the array.
 	mempool, err := block.NewLanedMempool(
 		app.Logger(),
-		[]block.Lane{keyshareLane, freeLane, defaultLane},
+		[]block.Lane{keyshareLane, defaultLane},
 	)
 	if err != nil {
 		panic(err)
@@ -385,13 +401,16 @@ func New(
 		SignModeHandler: app.txConfig.SignModeHandler(),
 	}
 	options := FairyringHandlerOptions{
-		BaseOptions:  handlerOptions,
-		wasmConfig:   wasmConfig,
-		TxDecoder:    app.txConfig.TxDecoder(),
-		TxEncoder:    app.txConfig.TxEncoder(),
-		KeyShareLane: keyshareLane,
-		PepKeeper:    app.PepKeeper,
-		FreeLane:     freeLane,
+		BaseOptions:           handlerOptions,
+		IBCKeeper:             app.IBCKeeper,
+		WasmConfig:            &wasmConfig,
+		WasmKeeper:            &app.WasmKeeper,
+		TXCounterStoreService: runtime.NewKVStoreService(app.GetKey(wasmtypes.StoreKey)),
+		CircuitKeeper:         &app.CircuitBreakerKeeper,
+		TxDecoder:             app.txConfig.TxDecoder(),
+		TxEncoder:             app.txConfig.TxEncoder(),
+		KeyShareLane:          keyshareLane,
+		PepKeeper:             app.PepKeeper,
 	}
 	anteHandler := NewFairyringAnteHandler(options)
 	app.App.SetAnteHandler(anteHandler)
@@ -403,12 +422,12 @@ func New(
 	keyshareLane.WithOptions(
 		opt...,
 	)
-	freeLane.WithOptions(
-		opt...,
-	)
-	// defaultLane.WithOptions(
+	// freeLane.WithOptions(
 	// 	opt...,
 	// )
+	defaultLane.WithOptions(
+		opt...,
+	)
 
 	// Step 6: Create the proposal handler and set it on the app. Now the application
 	// will build and verify proposals using the Block SDK!
@@ -441,11 +460,6 @@ func New(
 	// ------------------------- End Custom Code ---------------------------------- //
 	// ---------------------------------------------------------------------------- //
 
-	// Register legacy modules
-	if err := app.registerIBCModules(appOpts); err != nil {
-		return nil, err
-	}
-
 	// register streaming services
 	if err := app.RegisterStreamingServices(appOpts, app.kvStoreKeys()); err != nil {
 		return nil, err
@@ -466,46 +480,22 @@ func New(
 	app.sm.RegisterStoreDecoders()
 
 	app.UpgradeKeeper.SetUpgradeHandler(
-		"v0.6.0-to-update-cosmos-sdk-v0.50.6",
+		"v0.8.2-to-0.8.3-release",
 		func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-			upgradeStoreService := runtime.NewKVStoreService(app.GetKey("upgrade"))
-			consensusKeeper := consensuskeeper.NewKeeper(
-				app.appCodec,
-				upgradeStoreService,
-				app.AccountKeeper.GetAuthority(),
-				runtime.EventService{},
-			)
 
-			params, err := consensusKeeper.ParamsStore.Get(ctx)
-			if err != nil {
-				return nil, err
-			}
+			fromVM[capabilitytypes.ModuleName] = capability.AppModule{}.ConsensusVersion()
+			fromVM[peptypes.ModuleName] = pepmodule.AppModule{}.ConsensusVersion()
+			fromVM[keysharemoduletypes.ModuleName] = keysharemodule.AppModule{}.ConsensusVersion()
+			fromVM[ibcmodule.AppModule{}.Name()] = ibcmodule.AppModule{}.ConsensusVersion()
+			fromVM[ibcfeetypes.ModuleName] = ibcfeemodule.AppModule{}.ConsensusVersion()
+			fromVM[wasmtypes.ModuleName] = wasm.AppModule{}.ConsensusVersion()
+			fromVM[transfertypes.ModuleName] = transfer.AppModule{}.ConsensusVersion()
+			fromVM[interchainaccountstypes.ModuleName] = interchainaccountsmodule.AppModule{}.ConsensusVersion()
+			// 07-tendermint, 06-solomachine
 
-			err = app.ConsensusParamsKeeper.ParamsStore.Set(ctx, params)
-			if err != nil {
-				return nil, err
-			}
 			return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
 		},
 	)
-
-	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
-	if err != nil {
-		panic(err)
-	}
-
-	if upgradeInfo.Name == "v0.6.0-to-update-cosmos-sdk-v0.50.6" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
-		storeUpgrades := storetypes.StoreUpgrades{
-			Added: []string{
-				nft.StoreKey,
-				circuittypes.StoreKey,
-				feetypes.StoreKey,
-			},
-		}
-
-		// configure store loader that checks if version == upgradeHeight and applies store upgrades
-		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
-	}
 
 	// A custom InitChainer can be set if extra pre-init-genesis logic is required.
 	// By default, when using app wiring enabled module, this is not required.
