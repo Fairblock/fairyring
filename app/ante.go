@@ -78,63 +78,7 @@ func NewFairyringAnteHandler(options FairyringHandlerOptions) sdk.AnteHandler {
 		ante.NewSigVerificationDecorator(options.BaseOptions.AccountKeeper, options.BaseOptions.SignModeHandler),
 		ante.NewIncrementSequenceDecorator(options.BaseOptions.AccountKeeper),
 		ibcante.NewRedundantRelayDecorator(options.IBCKeeper),
-		// pepante.NewPepDecorator(options.PepKeeper, options.TxEncoder, options.KeyShareLane),
 	}
 
 	return sdk.ChainAnteDecorators(anteDecorators...)
 }
-
-// // HandlerOptions extend the SDK's AnteHandler options by requiring the IBC
-// // channel keeper.
-// type HandlerOptions struct {
-// 	ante.HandlerOptions
-
-// 	IBCKeeper             *ibckeeper.Keeper
-// 	WasmConfig            *wasmtypes.WasmConfig
-// 	WasmKeeper            *wasmkeeper.Keeper
-// 	TXCounterStoreService corestoretypes.KVStoreService
-// 	CircuitKeeper         circuitante.CircuitBreaker
-// }
-
-// func NewAnteHandler(options HandlerOptions) (sdk.AnteHandler, error) {
-// 	if options.AccountKeeper == nil {
-// 		return nil, errors.New("account keeper is required for ante builder")
-// 	}
-// 	if options.BankKeeper == nil {
-// 		return nil, errors.New("bank keeper is required for ante builder")
-// 	}
-// 	if options.SignModeHandler == nil {
-// 		return nil, errors.New("sign mode handler is required for ante builder")
-// 	}
-// 	if options.WasmConfig == nil {
-// 		return nil, errors.New("wasm config is required for ante builder")
-// 	}
-// 	if options.TXCounterStoreService == nil {
-// 		return nil, errors.New("wasm store service is required for ante builder")
-// 	}
-// 	if options.CircuitKeeper == nil {
-// 		return nil, errors.New("circuit keeper is required for ante builder")
-// 	}
-
-// 	anteDecorators := []sdk.AnteDecorator{
-// 		ante.NewSetUpContextDecorator(), // outermost AnteDecorator. SetUpContext must be called first
-// 		wasmkeeper.NewLimitSimulationGasDecorator(options.WasmConfig.SimulationGasLimit), // after setup context to enforce limits early
-// 		wasmkeeper.NewCountTXDecorator(options.TXCounterStoreService),
-// 		wasmkeeper.NewGasRegisterDecorator(options.WasmKeeper.GetGasRegister()),
-// 		circuitante.NewCircuitBreakerDecorator(options.CircuitKeeper),
-// 		ante.NewExtensionOptionsDecorator(options.ExtensionOptionChecker),
-// 		ante.NewValidateBasicDecorator(),
-// 		ante.NewTxTimeoutHeightDecorator(),
-// 		ante.NewValidateMemoDecorator(options.AccountKeeper),
-// 		ante.NewConsumeGasForTxSizeDecorator(options.AccountKeeper),
-// 		ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker),
-// 		ante.NewSetPubKeyDecorator(options.AccountKeeper), // SetPubKeyDecorator must be called before all signature verification decorators
-// 		ante.NewValidateSigCountDecorator(options.AccountKeeper),
-// 		ante.NewSigGasConsumeDecorator(options.AccountKeeper, options.SigGasConsumer),
-// 		ante.NewSigVerificationDecorator(options.AccountKeeper, options.SignModeHandler),
-// 		ante.NewIncrementSequenceDecorator(options.AccountKeeper),
-// 		ibcante.NewRedundantRelayDecorator(options.IBCKeeper),
-// 	}
-
-// 	return sdk.ChainAnteDecorators(anteDecorators...), nil
-// }

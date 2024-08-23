@@ -18,7 +18,7 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 	}
 
 	reqs := k.pepKeeper.GetAllGenEncTxReqQueueEntry(ctx)
-	k.Logger().Info(fmt.Sprintf("PROCESSING PEP REQUEST QUEUE: %v", reqs))
+
 	for _, req := range reqs {
 		if req.EstimatedDelay == nil {
 			k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
@@ -137,7 +137,7 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 		reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
 		reqCount = reqCount + 1
 
-		id := req.GetRequestId()
+		id := types.IdentityFromRequestCount(reqCount)
 
 		var keyshareRequest types.KeyShareRequest
 
