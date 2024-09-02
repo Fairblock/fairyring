@@ -1,9 +1,11 @@
 package cmd
 
 import (
+	"errors"
+	"io"
+
 	"cosmossdk.io/log"
 	confixcmd "cosmossdk.io/tools/confix/cmd"
-	"errors"
 	"github.com/CosmWasm/wasmd/x/wasm"
 	"github.com/Fairblock/fairyring/cmd/fairyringd/cmd/encrypter"
 	"github.com/Fairblock/fairyring/cmd/fairyringd/cmd/sharegenerator"
@@ -24,7 +26,6 @@ import (
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"io"
 
 	wasmcli "github.com/CosmWasm/wasmd/x/wasm/client/cli"
 	"github.com/Fairblock/fairyring/app"

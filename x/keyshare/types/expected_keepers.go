@@ -2,6 +2,7 @@ package types
 
 import (
 	"context"
+
 	sdkmath "cosmossdk.io/math"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	peptypes "github.com/Fairblock/fairyring/x/pep/types"

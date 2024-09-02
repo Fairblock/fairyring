@@ -14,6 +14,7 @@ message KeysharePacketData {
         GetAggrKeysharePacketData     getAggrKeysharePacket     = 3;
         AggrKeyshareDataPacketData    aggrKeyshareDataPacket    = 4;
         CurrentKeysPacketData         currentKeysPacket         = 5;
+        RequestPrivateKeysharePacketData request_priv_keyshare_packet = 6;
     }
 }
 
@@ -29,6 +30,16 @@ message RequestAggrKeysharePacketData {
     string request_id = 3;
   }
   google.protobuf.Duration estimated_delay = 4 [(gogoproto.stdduration) = true];
+}
+
+message RequestPrivateKeysharePacketData {
+    string requester = 1;
+    string request_id = 2;
+}
+
+message RequestPrivateKeysharePacketAck {
+    string identity = 1;
+    string pubkey   = 2;
 }
 
 // RequestAggrKeysharePacketAck defines a struct for the packet acknowledgment
@@ -58,6 +69,16 @@ message AggrKeyshareDataPacketData {
 
 // AggrKeyshareDataPacketAck defines a struct for the packet acknowledgment
 message AggrKeyshareDataPacketAck {}
+
+
+message EncryptedKeysharesPacketData {
+    string identity      = 1;
+    string pubkey        = 2;
+    string request_id    = 3;
+    map<string, fairyring.common.KeyshareList> encrypted_keyshares = 4;
+}
+
+message EncryptedKeysharesPacketAck{}
 
 // CurrentKeysPacketData defines a struct for the packet payload
 message CurrentKeysPacketData {

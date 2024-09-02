@@ -2,8 +2,9 @@ package keeper
 
 import (
 	"errors"
-	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"math"
+
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 
 	sdkerrors "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"

@@ -5,10 +5,10 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/Fairblock/fairyring/x/pep/keeper"
-	"github.com/Fairblock/fairyring/x/pep/types"
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
+	"github.com/Fairblock/fairyring/x/pep/keeper"
+	"github.com/Fairblock/fairyring/x/pep/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -19,7 +19,7 @@ func createNRequestId(keeper keeper.Keeper, ctx context.Context, n int) []types.
 	items := make([]types.RequestId, n)
 	for i := range items {
 		items[i].Creator = strconv.Itoa(i)
-        
+
 		keeper.SetRequestId(ctx, items[i])
 	}
 	return items
@@ -30,8 +30,7 @@ func TestRequestIdGet(t *testing.T) {
 	items := createNRequestId(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetRequestId(ctx,
-		    item.Creator,
-            
+			item.Creator,
 		)
 		require.True(t, found)
 		require.Equal(t,
@@ -45,12 +44,10 @@ func TestRequestIdRemove(t *testing.T) {
 	items := createNRequestId(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveRequestId(ctx,
-		    item.Creator,
-            
+			item.Creator,
 		)
 		_, found := keeper.GetRequestId(ctx,
-		    item.Creator,
-            
+			item.Creator,
 		)
 		require.False(t, found)
 	}

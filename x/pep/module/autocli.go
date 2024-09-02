@@ -66,48 +66,74 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Use:       "list-keyshare-req",
 					Short:     "list all pending keyshare requests",
 				},
+				{
+					RpcMethod:      "ShowPrivateKeyshareReq",
+					Use:            "show-private-keyshare-req [req-id]",
+					Short:          "Query show-private-keyshare-req",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "reqId"}},
+				},
+
+				{
+					RpcMethod:      "ShowPrivateKeyshareReq",
+					Use:            "show-private-keyshare-req [req-id]",
+					Short:          "Query show-private-keyshare-req",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "reqId"}},
+				},
+
 				// this line is used by ignite scaffolding # autocli/query
 			},
 		},
-		//Tx: &autocliv1.ServiceCommandDescriptor{
-		//	Service:              modulev1.Msg_ServiceDesc.ServiceName,
-		//	EnhanceCustomCommand: true, // only required if you want to use the custom command
-		//	RpcCommandOptions: []*autocliv1.RpcCommandOptions{
-		//		{
-		//			RpcMethod: "UpdateParams",
-		//			Skip:      true, // skipped because authority gated
-		//		},
-		//		{
-		//			RpcMethod:      "SubmitEncryptedTx",
-		//			Use:            "submit-encrypted-tx [data] [target-block-height]",
-		//			Short:          "Submit an encrypted transaction along with its execution height (execution height refers to the height in the FairyRing chain)",
-		//			PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "data"}, {ProtoField: "targetBlockHeight"}},
-		//		},
-		//		{
-		//			RpcMethod:      "SubmitGeneralEncryptedTx",
-		//			Use:            "submit-general-encrypted-tx [data] [req-id]",
-		//			Short:          "Submit an encrypted transaction along with its req-id",
-		//			PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "data"}, {ProtoField: "req_id"}},
-		//		},
-		//		{
-		//			RpcMethod:      "CreateAggregatedKeyShare",
-		//			Use:            "create-aggregated-key-share [height] [data]",
-		//			Short:          "Submit a new aggregated keyshare into a destination chain",
-		//			PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "height"}, {ProtoField: "data"}},
-		//		},
-		//		{
-		//			RpcMethod: "RequestGeneralKeyshare",
-		//			Use:       "request-general-keyshare",
-		//			Short:     "Broadcast message request-general-keyshare",
-		//		},
-		//		{
-		//			RpcMethod:      "GetGeneralKeyshare",
-		//			Use:            "get-general-keyshare [req-id]",
-		//			Short:          "Broadcast message get-general-keyshare",
-		//			PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "req_id"}},
-		//		},
-		//		// this line is used by ignite scaffolding # autocli/tx
-		//	},
-		//},
+		Tx: &autocliv1.ServiceCommandDescriptor{
+			Service:              modulev1.Msg_ServiceDesc.ServiceName,
+			EnhanceCustomCommand: true, // only required if you want to use the custom command
+			RpcCommandOptions: []*autocliv1.RpcCommandOptions{
+				{
+					RpcMethod: "UpdateParams",
+					Skip:      true, // skipped because authority gated
+				},
+				{
+					RpcMethod:      "SubmitEncryptedTx",
+					Use:            "submit-encrypted-tx [data] [target-block-height]",
+					Short:          "Submit an encrypted transaction along with its execution height (execution height refers to the height in the FairyRing chain)",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "data"}, {ProtoField: "targetBlockHeight"}},
+				},
+				{
+					RpcMethod:      "SubmitGeneralEncryptedTx",
+					Use:            "submit-general-encrypted-tx [data] [req-id]",
+					Short:          "Submit an encrypted transaction along with its req-id",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "data"}, {ProtoField: "req_id"}},
+				},
+				{
+					RpcMethod:      "CreateAggregatedKeyShare",
+					Use:            "create-aggregated-key-share [height] [data]",
+					Short:          "Submit a new aggregated keyshare into a destination chain",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "height"}, {ProtoField: "data"}},
+				},
+				{
+					RpcMethod: "RequestGeneralKeyshare",
+					Use:       "request-general-keyshare",
+					Short:     "Broadcast message request-general-keyshare",
+				},
+				{
+					RpcMethod:      "GetGeneralKeyshare",
+					Use:            "get-general-keyshare [req-id]",
+					Short:          "Broadcast message get-general-keyshare",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "req_id"}},
+				},
+				{
+					RpcMethod:      "RequestPrivateIdentity",
+					Use:            "request-private-identity [req-id] [amount]",
+					Short:          "Send a request-private-identity tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "reqId"}, {ProtoField: "amount"}},
+				},
+				{
+					RpcMethod:      "GetPrivateKeyshares",
+					Use:            "get-private-keyshares [req-id]",
+					Short:          "Send a get-private-keyshares tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "reqId"}},
+				},
+				// this line is used by ignite scaffolding # autocli/tx
+			},
+		},
 	}
 }

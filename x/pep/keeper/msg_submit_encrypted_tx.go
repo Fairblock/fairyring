@@ -3,9 +3,10 @@ package keeper
 import (
 	"context"
 	"fmt"
+	"strconv"
+
 	"github.com/Fairblock/fairyring/x/pep/types"
 	"github.com/cosmos/cosmos-sdk/telemetry"
-	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

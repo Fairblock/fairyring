@@ -29,6 +29,7 @@ const (
 	Query_PubKey_FullMethodName                   = "/fairyring.pep.Query/PubKey"
 	Query_KeyshareReq_FullMethodName              = "/fairyring.pep.Query/KeyshareReq"
 	Query_KeyshareReqAll_FullMethodName           = "/fairyring.pep.Query/KeyshareReqAll"
+	Query_ShowPrivateKeyshareReq_FullMethodName   = "/fairyring.pep.Query/ShowPrivateKeyshareReq"
 )
 
 // QueryClient is the client API for Query service.
@@ -53,6 +54,8 @@ type QueryClient interface {
 	PubKey(ctx context.Context, in *QueryPubKeyRequest, opts ...grpc.CallOption) (*QueryPubKeyResponse, error)
 	KeyshareReq(ctx context.Context, in *QueryKeyshareRequest, opts ...grpc.CallOption) (*QueryKeyshareResponse, error)
 	KeyshareReqAll(ctx context.Context, in *QueryAllKeyshareRequest, opts ...grpc.CallOption) (*QueryAllKeyshareResponse, error)
+	// Queries a list of ShowPrivateKeyshareReq items.
+	ShowPrivateKeyshareReq(ctx context.Context, in *QueryShowPrivateKeyshareReqRequest, opts ...grpc.CallOption) (*QueryShowPrivateKeyshareReqResponse, error)
 }
 
 type queryClient struct {
@@ -153,6 +156,15 @@ func (c *queryClient) KeyshareReqAll(ctx context.Context, in *QueryAllKeyshareRe
 	return out, nil
 }
 
+func (c *queryClient) ShowPrivateKeyshareReq(ctx context.Context, in *QueryShowPrivateKeyshareReqRequest, opts ...grpc.CallOption) (*QueryShowPrivateKeyshareReqResponse, error) {
+	out := new(QueryShowPrivateKeyshareReqResponse)
+	err := c.cc.Invoke(ctx, Query_ShowPrivateKeyshareReq_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 // All implementations must embed UnimplementedQueryServer
 // for forward compatibility
@@ -175,6 +187,8 @@ type QueryServer interface {
 	PubKey(context.Context, *QueryPubKeyRequest) (*QueryPubKeyResponse, error)
 	KeyshareReq(context.Context, *QueryKeyshareRequest) (*QueryKeyshareResponse, error)
 	KeyshareReqAll(context.Context, *QueryAllKeyshareRequest) (*QueryAllKeyshareResponse, error)
+	// Queries a list of ShowPrivateKeyshareReq items.
+	ShowPrivateKeyshareReq(context.Context, *QueryShowPrivateKeyshareReqRequest) (*QueryShowPrivateKeyshareReqResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -211,6 +225,9 @@ func (UnimplementedQueryServer) KeyshareReq(context.Context, *QueryKeyshareReque
 }
 func (UnimplementedQueryServer) KeyshareReqAll(context.Context, *QueryAllKeyshareRequest) (*QueryAllKeyshareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KeyshareReqAll not implemented")
+}
+func (UnimplementedQueryServer) ShowPrivateKeyshareReq(context.Context, *QueryShowPrivateKeyshareReqRequest) (*QueryShowPrivateKeyshareReqResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ShowPrivateKeyshareReq not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 
@@ -405,6 +422,24 @@ func _Query_KeyshareReqAll_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_ShowPrivateKeyshareReq_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryShowPrivateKeyshareReqRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).ShowPrivateKeyshareReq(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_ShowPrivateKeyshareReq_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).ShowPrivateKeyshareReq(ctx, req.(*QueryShowPrivateKeyshareReqRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Query_ServiceDesc is the grpc.ServiceDesc for Query service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -451,6 +486,10 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "KeyshareReqAll",
 			Handler:    _Query_KeyshareReqAll_Handler,
+		},
+		{
+			MethodName: "ShowPrivateKeyshareReq",
+			Handler:    _Query_ShowPrivateKeyshareReq_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

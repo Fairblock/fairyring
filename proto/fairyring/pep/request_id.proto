@@ -1,10 +1,23 @@
 syntax = "proto3";
 package fairyring.pep;
 
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
+import "fairyring/common/shared_types.proto";
+
 option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
 message RequestId {
   string creator = 1; 
   string reqId = 2;
 }
+
+message PrivateRequest {
+  string creator = 1;
+  string req_id = 2;
+  string pubkey = 3;
+  cosmos.base.v1beta1.Coin amount  = 4 [(gogoproto.nullable) = false];
+  map<string, fairyring.common.KeyshareList> encrypted_keyshares = 5;
+}
+
 

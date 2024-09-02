@@ -2,9 +2,10 @@ package keeper
 
 import (
 	"context"
+	"encoding/binary"
+
 	"cosmossdk.io/store/prefix"
 	storetypes "cosmossdk.io/store/types"
-	"encoding/binary"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 )

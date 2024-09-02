@@ -2,9 +2,10 @@ package cli
 
 import (
 	"encoding/json"
+	"strings"
+
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/spf13/cast"
-	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"

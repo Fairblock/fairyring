@@ -57,3 +57,45 @@ func (k Keeper) GetAllRequestId(ctx context.Context) (list []types.RequestId) {
 
 	return
 }
+
+// SetPrivateRequest set a specific requestId in the store from its index
+func (k Keeper) SetPrivateRequest(ctx context.Context, request types.PrivateRequest) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateRequestIdKeyPrefix))
+	b := k.cdc.MustMarshal(&request)
+	store.Set([]byte(request.ReqId), b)
+}
+
+// GetPrivateRequest returns a requestId from its index
+func (k Keeper) GetPrivateRequest(
+	ctx context.Context,
+	reqID string,
+) (val types.PrivateRequest, found bool) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateRequestIdKeyPrefix))
+
+	b := store.Get([]byte(reqID))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
+
+// GetAllRequestId returns all requestId
+func (k Keeper) GetAllPrivateRequest(ctx context.Context) (list []types.PrivateRequest) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateRequestIdKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.PrivateRequest
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+
+	return
+}

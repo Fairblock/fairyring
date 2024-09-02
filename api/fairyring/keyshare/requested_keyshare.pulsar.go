@@ -2,6 +2,7 @@
 package keyshare
 
 import (
+	common "github.com/Fairblock/fairyring/api/fairyring/common"
 	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -9,6 +10,7 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
 	reflect "reflect"
+	sort "sort"
 	sync "sync"
 )
 
@@ -2124,6 +2126,1092 @@ func (x *fastReflection_CounterPartyIBCInfo) ProtoMethods() *protoiface.Methods 
 	}
 }
 
+var _ protoreflect.Map = (*_PrivateKeyshareRequest_5_map)(nil)
+
+type _PrivateKeyshareRequest_5_map struct {
+	m *map[string]*common.KeyshareList
+}
+
+func (x *_PrivateKeyshareRequest_5_map) Len() int {
+	if x.m == nil {
+		return 0
+	}
+	return len(*x.m)
+}
+
+func (x *_PrivateKeyshareRequest_5_map) Range(f func(protoreflect.MapKey, protoreflect.Value) bool) {
+	if x.m == nil {
+		return
+	}
+	for k, v := range *x.m {
+		mapKey := (protoreflect.MapKey)(protoreflect.ValueOfString(k))
+		mapValue := protoreflect.ValueOfMessage(v.ProtoReflect())
+		if !f(mapKey, mapValue) {
+			break
+		}
+	}
+}
+
+func (x *_PrivateKeyshareRequest_5_map) Has(key protoreflect.MapKey) bool {
+	if x.m == nil {
+		return false
+	}
+	keyUnwrapped := key.String()
+	concreteValue := keyUnwrapped
+	_, ok := (*x.m)[concreteValue]
+	return ok
+}
+
+func (x *_PrivateKeyshareRequest_5_map) Clear(key protoreflect.MapKey) {
+	if x.m == nil {
+		return
+	}
+	keyUnwrapped := key.String()
+	concreteKey := keyUnwrapped
+	delete(*x.m, concreteKey)
+}
+
+func (x *_PrivateKeyshareRequest_5_map) Get(key protoreflect.MapKey) protoreflect.Value {
+	if x.m == nil {
+		return protoreflect.Value{}
+	}
+	keyUnwrapped := key.String()
+	concreteKey := keyUnwrapped
+	v, ok := (*x.m)[concreteKey]
+	if !ok {
+		return protoreflect.Value{}
+	}
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_PrivateKeyshareRequest_5_map) Set(key protoreflect.MapKey, value protoreflect.Value) {
+	if !key.IsValid() || !value.IsValid() {
+		panic("invalid key or value provided")
+	}
+	keyUnwrapped := key.String()
+	concreteKey := keyUnwrapped
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*common.KeyshareList)
+	(*x.m)[concreteKey] = concreteValue
+}
+
+func (x *_PrivateKeyshareRequest_5_map) Mutable(key protoreflect.MapKey) protoreflect.Value {
+	keyUnwrapped := key.String()
+	concreteKey := keyUnwrapped
+	v, ok := (*x.m)[concreteKey]
+	if ok {
+		return protoreflect.ValueOfMessage(v.ProtoReflect())
+	}
+	newValue := new(common.KeyshareList)
+	(*x.m)[concreteKey] = newValue
+	return protoreflect.ValueOfMessage(newValue.ProtoReflect())
+}
+
+func (x *_PrivateKeyshareRequest_5_map) NewValue() protoreflect.Value {
+	v := new(common.KeyshareList)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_PrivateKeyshareRequest_5_map) IsValid() bool {
+	return x.m != nil
+}
+
+var (
+	md_PrivateKeyshareRequest                     protoreflect.MessageDescriptor
+	fd_PrivateKeyshareRequest_identity            protoreflect.FieldDescriptor
+	fd_PrivateKeyshareRequest_pubkey              protoreflect.FieldDescriptor
+	fd_PrivateKeyshareRequest_ibc_info            protoreflect.FieldDescriptor
+	fd_PrivateKeyshareRequest_counterparty        protoreflect.FieldDescriptor
+	fd_PrivateKeyshareRequest_encrypted_keyshares protoreflect.FieldDescriptor
+	fd_PrivateKeyshareRequest_request_id          protoreflect.FieldDescriptor
+	fd_PrivateKeyshareRequest_sent                protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_fairyring_keyshare_requested_keyshare_proto_init()
+	md_PrivateKeyshareRequest = File_fairyring_keyshare_requested_keyshare_proto.Messages().ByName("PrivateKeyshareRequest")
+	fd_PrivateKeyshareRequest_identity = md_PrivateKeyshareRequest.Fields().ByName("identity")
+	fd_PrivateKeyshareRequest_pubkey = md_PrivateKeyshareRequest.Fields().ByName("pubkey")
+	fd_PrivateKeyshareRequest_ibc_info = md_PrivateKeyshareRequest.Fields().ByName("ibc_info")
+	fd_PrivateKeyshareRequest_counterparty = md_PrivateKeyshareRequest.Fields().ByName("counterparty")
+	fd_PrivateKeyshareRequest_encrypted_keyshares = md_PrivateKeyshareRequest.Fields().ByName("encrypted_keyshares")
+	fd_PrivateKeyshareRequest_request_id = md_PrivateKeyshareRequest.Fields().ByName("request_id")
+	fd_PrivateKeyshareRequest_sent = md_PrivateKeyshareRequest.Fields().ByName("sent")
+}
+
+var _ protoreflect.Message = (*fastReflection_PrivateKeyshareRequest)(nil)
+
+type fastReflection_PrivateKeyshareRequest PrivateKeyshareRequest
+
+func (x *PrivateKeyshareRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_PrivateKeyshareRequest)(x)
+}
+
+func (x *PrivateKeyshareRequest) slowProtoReflect() protoreflect.Message {
+	mi := &file_fairyring_keyshare_requested_keyshare_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_PrivateKeyshareRequest_messageType fastReflection_PrivateKeyshareRequest_messageType
+var _ protoreflect.MessageType = fastReflection_PrivateKeyshareRequest_messageType{}
+
+type fastReflection_PrivateKeyshareRequest_messageType struct{}
+
+func (x fastReflection_PrivateKeyshareRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_PrivateKeyshareRequest)(nil)
+}
+func (x fastReflection_PrivateKeyshareRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_PrivateKeyshareRequest)
+}
+func (x fastReflection_PrivateKeyshareRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_PrivateKeyshareRequest
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_PrivateKeyshareRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_PrivateKeyshareRequest
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_PrivateKeyshareRequest) Type() protoreflect.MessageType {
+	return _fastReflection_PrivateKeyshareRequest_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_PrivateKeyshareRequest) New() protoreflect.Message {
+	return new(fastReflection_PrivateKeyshareRequest)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_PrivateKeyshareRequest) Interface() protoreflect.ProtoMessage {
+	return (*PrivateKeyshareRequest)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_PrivateKeyshareRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.Identity != "" {
+		value := protoreflect.ValueOfString(x.Identity)
+		if !f(fd_PrivateKeyshareRequest_identity, value) {
+			return
+		}
+	}
+	if x.Pubkey != "" {
+		value := protoreflect.ValueOfString(x.Pubkey)
+		if !f(fd_PrivateKeyshareRequest_pubkey, value) {
+			return
+		}
+	}
+	if x.IbcInfo != nil {
+		value := protoreflect.ValueOfMessage(x.IbcInfo.ProtoReflect())
+		if !f(fd_PrivateKeyshareRequest_ibc_info, value) {
+			return
+		}
+	}
+	if x.Counterparty != nil {
+		value := protoreflect.ValueOfMessage(x.Counterparty.ProtoReflect())
+		if !f(fd_PrivateKeyshareRequest_counterparty, value) {
+			return
+		}
+	}
+	if len(x.EncryptedKeyshares) != 0 {
+		value := protoreflect.ValueOfMap(&_PrivateKeyshareRequest_5_map{m: &x.EncryptedKeyshares})
+		if !f(fd_PrivateKeyshareRequest_encrypted_keyshares, value) {
+			return
+		}
+	}
+	if x.RequestId != "" {
+		value := protoreflect.ValueOfString(x.RequestId)
+		if !f(fd_PrivateKeyshareRequest_request_id, value) {
+			return
+		}
+	}
+	if x.Sent != false {
+		value := protoreflect.ValueOfBool(x.Sent)
+		if !f(fd_PrivateKeyshareRequest_sent, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_PrivateKeyshareRequest) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "fairyring.keyshare.PrivateKeyshareRequest.identity":
+		return x.Identity != ""
+	case "fairyring.keyshare.PrivateKeyshareRequest.pubkey":
+		return x.Pubkey != ""
+	case "fairyring.keyshare.PrivateKeyshareRequest.ibc_info":
+		return x.IbcInfo != nil
+	case "fairyring.keyshare.PrivateKeyshareRequest.counterparty":
+		return x.Counterparty != nil
+	case "fairyring.keyshare.PrivateKeyshareRequest.encrypted_keyshares":
+		return len(x.EncryptedKeyshares) != 0
+	case "fairyring.keyshare.PrivateKeyshareRequest.request_id":
+		return x.RequestId != ""
+	case "fairyring.keyshare.PrivateKeyshareRequest.sent":
+		return x.Sent != false
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.PrivateKeyshareRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.PrivateKeyshareRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_PrivateKeyshareRequest) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "fairyring.keyshare.PrivateKeyshareRequest.identity":
+		x.Identity = ""
+	case "fairyring.keyshare.PrivateKeyshareRequest.pubkey":
+		x.Pubkey = ""
+	case "fairyring.keyshare.PrivateKeyshareRequest.ibc_info":
+		x.IbcInfo = nil
+	case "fairyring.keyshare.PrivateKeyshareRequest.counterparty":
+		x.Counterparty = nil
+	case "fairyring.keyshare.PrivateKeyshareRequest.encrypted_keyshares":
+		x.EncryptedKeyshares = nil
+	case "fairyring.keyshare.PrivateKeyshareRequest.request_id":
+		x.RequestId = ""
+	case "fairyring.keyshare.PrivateKeyshareRequest.sent":
+		x.Sent = false
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.PrivateKeyshareRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.PrivateKeyshareRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_PrivateKeyshareRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "fairyring.keyshare.PrivateKeyshareRequest.identity":
+		value := x.Identity
+		return protoreflect.ValueOfString(value)
+	case "fairyring.keyshare.PrivateKeyshareRequest.pubkey":
+		value := x.Pubkey
+		return protoreflect.ValueOfString(value)
+	case "fairyring.keyshare.PrivateKeyshareRequest.ibc_info":
+		value := x.IbcInfo
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "fairyring.keyshare.PrivateKeyshareRequest.counterparty":
+		value := x.Counterparty
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	case "fairyring.keyshare.PrivateKeyshareRequest.encrypted_keyshares":
+		if len(x.EncryptedKeyshares) == 0 {
+			return protoreflect.ValueOfMap(&_PrivateKeyshareRequest_5_map{})
+		}
+		mapValue := &_PrivateKeyshareRequest_5_map{m: &x.EncryptedKeyshares}
+		return protoreflect.ValueOfMap(mapValue)
+	case "fairyring.keyshare.PrivateKeyshareRequest.request_id":
+		value := x.RequestId
+		return protoreflect.ValueOfString(value)
+	case "fairyring.keyshare.PrivateKeyshareRequest.sent":
+		value := x.Sent
+		return protoreflect.ValueOfBool(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.PrivateKeyshareRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.PrivateKeyshareRequest does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_PrivateKeyshareRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "fairyring.keyshare.PrivateKeyshareRequest.identity":
+		x.Identity = value.Interface().(string)
+	case "fairyring.keyshare.PrivateKeyshareRequest.pubkey":
+		x.Pubkey = value.Interface().(string)
+	case "fairyring.keyshare.PrivateKeyshareRequest.ibc_info":
+		x.IbcInfo = value.Message().Interface().(*IBCInfo)
+	case "fairyring.keyshare.PrivateKeyshareRequest.counterparty":
+		x.Counterparty = value.Message().Interface().(*CounterPartyIBCInfo)
+	case "fairyring.keyshare.PrivateKeyshareRequest.encrypted_keyshares":
+		mv := value.Map()
+		cmv := mv.(*_PrivateKeyshareRequest_5_map)
+		x.EncryptedKeyshares = *cmv.m
+	case "fairyring.keyshare.PrivateKeyshareRequest.request_id":
+		x.RequestId = value.Interface().(string)
+	case "fairyring.keyshare.PrivateKeyshareRequest.sent":
+		x.Sent = value.Bool()
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.PrivateKeyshareRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.PrivateKeyshareRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_PrivateKeyshareRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "fairyring.keyshare.PrivateKeyshareRequest.ibc_info":
+		if x.IbcInfo == nil {
+			x.IbcInfo = new(IBCInfo)
+		}
+		return protoreflect.ValueOfMessage(x.IbcInfo.ProtoReflect())
+	case "fairyring.keyshare.PrivateKeyshareRequest.counterparty":
+		if x.Counterparty == nil {
+			x.Counterparty = new(CounterPartyIBCInfo)
+		}
+		return protoreflect.ValueOfMessage(x.Counterparty.ProtoReflect())
+	case "fairyring.keyshare.PrivateKeyshareRequest.encrypted_keyshares":
+		if x.EncryptedKeyshares == nil {
+			x.EncryptedKeyshares = make(map[string]*common.KeyshareList)
+		}
+		value := &_PrivateKeyshareRequest_5_map{m: &x.EncryptedKeyshares}
+		return protoreflect.ValueOfMap(value)
+	case "fairyring.keyshare.PrivateKeyshareRequest.identity":
+		panic(fmt.Errorf("field identity of message fairyring.keyshare.PrivateKeyshareRequest is not mutable"))
+	case "fairyring.keyshare.PrivateKeyshareRequest.pubkey":
+		panic(fmt.Errorf("field pubkey of message fairyring.keyshare.PrivateKeyshareRequest is not mutable"))
+	case "fairyring.keyshare.PrivateKeyshareRequest.request_id":
+		panic(fmt.Errorf("field request_id of message fairyring.keyshare.PrivateKeyshareRequest is not mutable"))
+	case "fairyring.keyshare.PrivateKeyshareRequest.sent":
+		panic(fmt.Errorf("field sent of message fairyring.keyshare.PrivateKeyshareRequest is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.PrivateKeyshareRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.PrivateKeyshareRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_PrivateKeyshareRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "fairyring.keyshare.PrivateKeyshareRequest.identity":
+		return protoreflect.ValueOfString("")
+	case "fairyring.keyshare.PrivateKeyshareRequest.pubkey":
+		return protoreflect.ValueOfString("")
+	case "fairyring.keyshare.PrivateKeyshareRequest.ibc_info":
+		m := new(IBCInfo)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	case "fairyring.keyshare.PrivateKeyshareRequest.counterparty":
+		m := new(CounterPartyIBCInfo)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	case "fairyring.keyshare.PrivateKeyshareRequest.encrypted_keyshares":
+		m := make(map[string]*common.KeyshareList)
+		return protoreflect.ValueOfMap(&_PrivateKeyshareRequest_5_map{m: &m})
+	case "fairyring.keyshare.PrivateKeyshareRequest.request_id":
+		return protoreflect.ValueOfString("")
+	case "fairyring.keyshare.PrivateKeyshareRequest.sent":
+		return protoreflect.ValueOfBool(false)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.PrivateKeyshareRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.PrivateKeyshareRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_PrivateKeyshareRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.keyshare.PrivateKeyshareRequest", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_PrivateKeyshareRequest) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_PrivateKeyshareRequest) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_PrivateKeyshareRequest) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_PrivateKeyshareRequest) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*PrivateKeyshareRequest)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		l = len(x.Identity)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.Pubkey)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.IbcInfo != nil {
+			l = options.Size(x.IbcInfo)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.Counterparty != nil {
+			l = options.Size(x.Counterparty)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if len(x.EncryptedKeyshares) > 0 {
+			SiZeMaP := func(k string, v *common.KeyshareList) {
+				l := 0
+				if v != nil {
+					l = options.Size(v)
+				}
+				l += 1 + runtime.Sov(uint64(l))
+				mapEntrySize := 1 + len(k) + runtime.Sov(uint64(len(k))) + l
+				n += mapEntrySize + 1 + runtime.Sov(uint64(mapEntrySize))
+			}
+			if options.Deterministic {
+				sortme := make([]string, 0, len(x.EncryptedKeyshares))
+				for k := range x.EncryptedKeyshares {
+					sortme = append(sortme, k)
+				}
+				sort.Strings(sortme)
+				for _, k := range sortme {
+					v := x.EncryptedKeyshares[k]
+					SiZeMaP(k, v)
+				}
+			} else {
+				for k, v := range x.EncryptedKeyshares {
+					SiZeMaP(k, v)
+				}
+			}
+		}
+		l = len(x.RequestId)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.Sent {
+			n += 2
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*PrivateKeyshareRequest)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.Sent {
+			i--
+			if x.Sent {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x38
+		}
+		if len(x.RequestId) > 0 {
+			i -= len(x.RequestId)
+			copy(dAtA[i:], x.RequestId)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.RequestId)))
+			i--
+			dAtA[i] = 0x32
+		}
+		if len(x.EncryptedKeyshares) > 0 {
+			MaRsHaLmAp := func(k string, v *common.KeyshareList) (protoiface.MarshalOutput, error) {
+				baseI := i
+				encoded, err := options.Marshal(v)
+				if err != nil {
+					return protoiface.MarshalOutput{
+						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+						Buf:               input.Buf,
+					}, err
+				}
+				i -= len(encoded)
+				copy(dAtA[i:], encoded)
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+				i--
+				dAtA[i] = 0x12
+				i -= len(k)
+				copy(dAtA[i:], k)
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(k)))
+				i--
+				dAtA[i] = 0xa
+				i = runtime.EncodeVarint(dAtA, i, uint64(baseI-i))
+				i--
+				dAtA[i] = 0x2a
+				return protoiface.MarshalOutput{}, nil
+			}
+			if options.Deterministic {
+				keysForEncryptedKeyshares := make([]string, 0, len(x.EncryptedKeyshares))
+				for k := range x.EncryptedKeyshares {
+					keysForEncryptedKeyshares = append(keysForEncryptedKeyshares, string(k))
+				}
+				sort.Slice(keysForEncryptedKeyshares, func(i, j int) bool {
+					return keysForEncryptedKeyshares[i] < keysForEncryptedKeyshares[j]
+				})
+				for iNdEx := len(keysForEncryptedKeyshares) - 1; iNdEx >= 0; iNdEx-- {
+					v := x.EncryptedKeyshares[string(keysForEncryptedKeyshares[iNdEx])]
+					out, err := MaRsHaLmAp(keysForEncryptedKeyshares[iNdEx], v)
+					if err != nil {
+						return out, err
+					}
+				}
+			} else {
+				for k := range x.EncryptedKeyshares {
+					v := x.EncryptedKeyshares[k]
+					out, err := MaRsHaLmAp(k, v)
+					if err != nil {
+						return out, err
+					}
+				}
+			}
+		}
+		if x.Counterparty != nil {
+			encoded, err := options.Marshal(x.Counterparty)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0x22
+		}
+		if x.IbcInfo != nil {
+			encoded, err := options.Marshal(x.IbcInfo)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0x1a
+		}
+		if len(x.Pubkey) > 0 {
+			i -= len(x.Pubkey)
+			copy(dAtA[i:], x.Pubkey)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Pubkey)))
+			i--
+			dAtA[i] = 0x12
+		}
+		if len(x.Identity) > 0 {
+			i -= len(x.Identity)
+			copy(dAtA[i:], x.Identity)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Identity)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*PrivateKeyshareRequest)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: PrivateKeyshareRequest: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: PrivateKeyshareRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Identity", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Identity = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 2:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Pubkey", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Pubkey = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 3:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field IbcInfo", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.IbcInfo == nil {
+					x.IbcInfo = &IBCInfo{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.IbcInfo); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			case 4:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Counterparty", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.Counterparty == nil {
+					x.Counterparty = &CounterPartyIBCInfo{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Counterparty); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			case 5:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field EncryptedKeyshares", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.EncryptedKeyshares == nil {
+					x.EncryptedKeyshares = make(map[string]*common.KeyshareList)
+				}
+				var mapkey string
+				var mapvalue *common.KeyshareList
+				for iNdEx < postIndex {
+					entryPreIndex := iNdEx
+					var wire uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+						}
+						if iNdEx >= l {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						wire |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					fieldNum := int32(wire >> 3)
+					if fieldNum == 1 {
+						var stringLenmapkey uint64
+						for shift := uint(0); ; shift += 7 {
+							if shift >= 64 {
+								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+							}
+							if iNdEx >= l {
+								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+							}
+							b := dAtA[iNdEx]
+							iNdEx++
+							stringLenmapkey |= uint64(b&0x7F) << shift
+							if b < 0x80 {
+								break
+							}
+						}
+						intStringLenmapkey := int(stringLenmapkey)
+						if intStringLenmapkey < 0 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+						}
+						postStringIndexmapkey := iNdEx + intStringLenmapkey
+						if postStringIndexmapkey < 0 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+						}
+						if postStringIndexmapkey > l {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+						}
+						mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+						iNdEx = postStringIndexmapkey
+					} else if fieldNum == 2 {
+						var mapmsglen int
+						for shift := uint(0); ; shift += 7 {
+							if shift >= 64 {
+								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+							}
+							if iNdEx >= l {
+								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+							}
+							b := dAtA[iNdEx]
+							iNdEx++
+							mapmsglen |= int(b&0x7F) << shift
+							if b < 0x80 {
+								break
+							}
+						}
+						if mapmsglen < 0 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+						}
+						postmsgIndex := iNdEx + mapmsglen
+						if postmsgIndex < 0 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+						}
+						if postmsgIndex > l {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+						}
+						mapvalue = &common.KeyshareList{}
+						if err := options.Unmarshal(dAtA[iNdEx:postmsgIndex], mapvalue); err != nil {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+						}
+						iNdEx = postmsgIndex
+					} else {
+						iNdEx = entryPreIndex
+						skippy, err := runtime.Skip(dAtA[iNdEx:])
+						if err != nil {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+						}
+						if (skippy < 0) || (iNdEx+skippy) < 0 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+						}
+						if (iNdEx + skippy) > postIndex {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+						}
+						iNdEx += skippy
+					}
+				}
+				x.EncryptedKeyshares[mapkey] = mapvalue
+				iNdEx = postIndex
+			case 6:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field RequestId", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.RequestId = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 7:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Sent", wireType)
+				}
+				var v int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				x.Sent = bool(v != 0)
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
 // Code generated by protoc-gen-go. DO NOT EDIT.
 // versions:
 // 	protoc-gen-go v1.27.0
@@ -2346,6 +3434,89 @@ func (x *CounterPartyIBCInfo) GetPortID() string {
 	return ""
 }
 
+type PrivateKeyshareRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Identity           string                          `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
+	Pubkey             string                          `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
+	IbcInfo            *IBCInfo                        `protobuf:"bytes,3,opt,name=ibc_info,json=ibcInfo,proto3" json:"ibc_info,omitempty"` // Used only when the request is made via IBC
+	Counterparty       *CounterPartyIBCInfo            `protobuf:"bytes,4,opt,name=counterparty,proto3" json:"counterparty,omitempty"`      // Used only when the request is made via IBC
+	EncryptedKeyshares map[string]*common.KeyshareList `protobuf:"bytes,5,rep,name=encrypted_keyshares,json=encryptedKeyshares,proto3" json:"encrypted_keyshares,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	RequestId          string                          `protobuf:"bytes,6,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Sent               bool                            `protobuf:"varint,7,opt,name=sent,proto3" json:"sent,omitempty"`
+}
+
+func (x *PrivateKeyshareRequest) Reset() {
+	*x = PrivateKeyshareRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_fairyring_keyshare_requested_keyshare_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PrivateKeyshareRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PrivateKeyshareRequest) ProtoMessage() {}
+
+// Deprecated: Use PrivateKeyshareRequest.ProtoReflect.Descriptor instead.
+func (*PrivateKeyshareRequest) Descriptor() ([]byte, []int) {
+	return file_fairyring_keyshare_requested_keyshare_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *PrivateKeyshareRequest) GetIdentity() string {
+	if x != nil {
+		return x.Identity
+	}
+	return ""
+}
+
+func (x *PrivateKeyshareRequest) GetPubkey() string {
+	if x != nil {
+		return x.Pubkey
+	}
+	return ""
+}
+
+func (x *PrivateKeyshareRequest) GetIbcInfo() *IBCInfo {
+	if x != nil {
+		return x.IbcInfo
+	}
+	return nil
+}
+
+func (x *PrivateKeyshareRequest) GetCounterparty() *CounterPartyIBCInfo {
+	if x != nil {
+		return x.Counterparty
+	}
+	return nil
+}
+
+func (x *PrivateKeyshareRequest) GetEncryptedKeyshares() map[string]*common.KeyshareList {
+	if x != nil {
+		return x.EncryptedKeyshares
+	}
+	return nil
+}
+
+func (x *PrivateKeyshareRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *PrivateKeyshareRequest) GetSent() bool {
+	if x != nil {
+		return x.Sent
+	}
+	return false
+}
+
 var File_fairyring_keyshare_requested_keyshare_proto protoreflect.FileDescriptor
 
 var file_fairyring_keyshare_requested_keyshare_proto_rawDesc = []byte{
@@ -2353,56 +3524,89 @@ var file_fairyring_keyshare_requested_keyshare_proto_rawDesc = []byte{
 	0x68, 0x61, 0x72, 0x65, 0x2f, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x65, 0x64, 0x5f, 0x6b,
 	0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x12, 0x66,
 	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
-	0x65, 0x22, 0xc3, 0x02, 0x0a, 0x0f, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74,
-	0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74,
-	0x79, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x36, 0x0a, 0x08, 0x69, 0x62, 0x63,
-	0x5f, 0x69, 0x6e, 0x66, 0x6f, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x66, 0x61,
-	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65,
-	0x2e, 0x49, 0x42, 0x43, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x07, 0x69, 0x62, 0x63, 0x49, 0x6e, 0x66,
-	0x6f, 0x12, 0x4b, 0x0a, 0x0c, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x65, 0x72, 0x70, 0x61, 0x72, 0x74,
-	0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
-	0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x43, 0x6f, 0x75,
-	0x6e, 0x74, 0x65, 0x72, 0x50, 0x61, 0x72, 0x74, 0x79, 0x49, 0x42, 0x43, 0x49, 0x6e, 0x66, 0x6f,
-	0x52, 0x0c, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x65, 0x72, 0x70, 0x61, 0x72, 0x74, 0x79, 0x12, 0x23,
-	0x0a, 0x0d, 0x61, 0x67, 0x67, 0x72, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x18,
-	0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x61, 0x67, 0x67, 0x72, 0x4b, 0x65, 0x79, 0x73, 0x68,
-	0x61, 0x72, 0x65, 0x12, 0x1f, 0x0a, 0x0b, 0x70, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x5f,
-	0x69, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x70, 0x72, 0x6f, 0x70, 0x6f, 0x73,
-	0x61, 0x6c, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f,
-	0x69, 0x64, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x49, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x73, 0x65, 0x6e, 0x74, 0x18, 0x08, 0x20, 0x01, 0x28,
-	0x08, 0x52, 0x04, 0x73, 0x65, 0x6e, 0x74, 0x22, 0x7f, 0x0a, 0x07, 0x49, 0x42, 0x43, 0x49, 0x6e,
-	0x66, 0x6f, 0x12, 0x1a, 0x0a, 0x08, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49, 0x44, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49, 0x44, 0x12, 0x22,
-	0x0a, 0x0c, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x44, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x49, 0x44, 0x12, 0x1c, 0x0a, 0x09, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x49, 0x44, 0x18,
-	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x49, 0x44,
-	0x12, 0x16, 0x0a, 0x06, 0x50, 0x6f, 0x72, 0x74, 0x49, 0x44, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x06, 0x50, 0x6f, 0x72, 0x74, 0x49, 0x44, 0x22, 0x8b, 0x01, 0x0a, 0x13, 0x43, 0x6f, 0x75,
-	0x6e, 0x74, 0x65, 0x72, 0x50, 0x61, 0x72, 0x74, 0x79, 0x49, 0x42, 0x43, 0x49, 0x6e, 0x66, 0x6f,
-	0x12, 0x1a, 0x0a, 0x08, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49, 0x44, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x08, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49, 0x44, 0x12, 0x22, 0x0a, 0x0c,
-	0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x44, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x0c, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x44,
-	0x12, 0x1c, 0x0a, 0x09, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x49, 0x44, 0x18, 0x03, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x09, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x49, 0x44, 0x12, 0x16,
-	0x0a, 0x06, 0x50, 0x6f, 0x72, 0x74, 0x49, 0x44, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06,
-	0x50, 0x6f, 0x72, 0x74, 0x49, 0x44, 0x42, 0xbe, 0x01, 0x0a, 0x16, 0x63, 0x6f, 0x6d, 0x2e, 0x66,
+	0x65, 0x1a, 0x23, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x63, 0x6f, 0x6d,
+	0x6d, 0x6f, 0x6e, 0x2f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x64, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x73,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xc3, 0x02, 0x0a, 0x0f, 0x4b, 0x65, 0x79, 0x53, 0x68,
+	0x61, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64,
+	0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x64,
+	0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x36,
+	0x0a, 0x08, 0x69, 0x62, 0x63, 0x5f, 0x69, 0x6e, 0x66, 0x6f, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x1b, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79,
+	0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x49, 0x42, 0x43, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x07, 0x69,
+	0x62, 0x63, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x4b, 0x0a, 0x0c, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x65,
+	0x72, 0x70, 0x61, 0x72, 0x74, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x66,
 	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
-	0x65, 0x42, 0x16, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73,
-	0x68, 0x61, 0x72, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x23, 0x63, 0x6f, 0x73,
-	0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61,
-	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65,
-	0xa2, 0x02, 0x03, 0x46, 0x4b, 0x58, 0xaa, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
-	0x6e, 0x67, 0x2e, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xca, 0x02, 0x12, 0x46, 0x61,
-	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65,
-	0xe2, 0x02, 0x1e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79,
-	0x73, 0x68, 0x61, 0x72, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74,
-	0x61, 0xea, 0x02, 0x13, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x4b,
-	0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x2e, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x65, 0x72, 0x50, 0x61, 0x72, 0x74, 0x79, 0x49, 0x42,
+	0x43, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x0c, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x65, 0x72, 0x70, 0x61,
+	0x72, 0x74, 0x79, 0x12, 0x23, 0x0a, 0x0d, 0x61, 0x67, 0x67, 0x72, 0x5f, 0x6b, 0x65, 0x79, 0x73,
+	0x68, 0x61, 0x72, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x61, 0x67, 0x67, 0x72,
+	0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x12, 0x1f, 0x0a, 0x0b, 0x70, 0x72, 0x6f, 0x70,
+	0x6f, 0x73, 0x61, 0x6c, 0x5f, 0x69, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x70,
+	0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x73, 0x65, 0x6e, 0x74,
+	0x18, 0x08, 0x20, 0x01, 0x28, 0x08, 0x52, 0x04, 0x73, 0x65, 0x6e, 0x74, 0x22, 0x7f, 0x0a, 0x07,
+	0x49, 0x42, 0x43, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x1a, 0x0a, 0x08, 0x43, 0x6c, 0x69, 0x65, 0x6e,
+	0x74, 0x49, 0x44, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x43, 0x6c, 0x69, 0x65, 0x6e,
+	0x74, 0x49, 0x44, 0x12, 0x22, 0x0a, 0x0c, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f,
+	0x6e, 0x49, 0x44, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x43, 0x6f, 0x6e, 0x6e, 0x65,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x44, 0x12, 0x1c, 0x0a, 0x09, 0x43, 0x68, 0x61, 0x6e, 0x6e,
+	0x65, 0x6c, 0x49, 0x44, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x43, 0x68, 0x61, 0x6e,
+	0x6e, 0x65, 0x6c, 0x49, 0x44, 0x12, 0x16, 0x0a, 0x06, 0x50, 0x6f, 0x72, 0x74, 0x49, 0x44, 0x18,
+	0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x50, 0x6f, 0x72, 0x74, 0x49, 0x44, 0x22, 0x8b, 0x01,
+	0x0a, 0x13, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x65, 0x72, 0x50, 0x61, 0x72, 0x74, 0x79, 0x49, 0x42,
+	0x43, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x1a, 0x0a, 0x08, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49,
+	0x44, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49,
+	0x44, 0x12, 0x22, 0x0a, 0x0c, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x49,
+	0x44, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x49, 0x44, 0x12, 0x1c, 0x0a, 0x09, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c,
+	0x49, 0x44, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65,
+	0x6c, 0x49, 0x44, 0x12, 0x16, 0x0a, 0x06, 0x50, 0x6f, 0x72, 0x74, 0x49, 0x44, 0x18, 0x04, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x06, 0x50, 0x6f, 0x72, 0x74, 0x49, 0x44, 0x22, 0xe0, 0x03, 0x0a, 0x16,
+	0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69,
+	0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69,
+	0x74, 0x79, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x36, 0x0a, 0x08, 0x69, 0x62,
+	0x63, 0x5f, 0x69, 0x6e, 0x66, 0x6f, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x66,
+	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
+	0x65, 0x2e, 0x49, 0x42, 0x43, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x07, 0x69, 0x62, 0x63, 0x49, 0x6e,
+	0x66, 0x6f, 0x12, 0x4b, 0x0a, 0x0c, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x65, 0x72, 0x70, 0x61, 0x72,
+	0x74, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
+	0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x43, 0x6f,
+	0x75, 0x6e, 0x74, 0x65, 0x72, 0x50, 0x61, 0x72, 0x74, 0x79, 0x49, 0x42, 0x43, 0x49, 0x6e, 0x66,
+	0x6f, 0x52, 0x0c, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x65, 0x72, 0x70, 0x61, 0x72, 0x74, 0x79, 0x12,
+	0x73, 0x0a, 0x13, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x5f, 0x6b, 0x65, 0x79,
+	0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x42, 0x2e, 0x66,
+	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
+	0x65, 0x2e, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
+	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74,
+	0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79,
+	0x52, 0x12, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68,
+	0x61, 0x72, 0x65, 0x73, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f,
+	0x69, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x49, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x73, 0x65, 0x6e, 0x74, 0x18, 0x07, 0x20, 0x01, 0x28,
+	0x08, 0x52, 0x04, 0x73, 0x65, 0x6e, 0x74, 0x1a, 0x65, 0x0a, 0x17, 0x45, 0x6e, 0x63, 0x72, 0x79,
+	0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x45, 0x6e, 0x74,
+	0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x03, 0x6b, 0x65, 0x79, 0x12, 0x34, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
+	0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x4c,
+	0x69, 0x73, 0x74, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x42, 0xbe,
+	0x01, 0x0a, 0x16, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
+	0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x42, 0x16, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x50, 0x72, 0x6f, 0x74,
+	0x6f, 0x50, 0x01, 0x5a, 0x23, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69,
+	0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f,
+	0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xa2, 0x02, 0x03, 0x46, 0x4b, 0x58, 0xaa, 0x02,
+	0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x4b, 0x65, 0x79, 0x73, 0x68,
+	0x61, 0x72, 0x65, 0xca, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c,
+	0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xe2, 0x02, 0x1e, 0x46, 0x61, 0x69, 0x72, 0x79,
+	0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x5c, 0x47, 0x50,
+	0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x13, 0x46, 0x61, 0x69, 0x72,
+	0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2417,20 +3621,27 @@ func file_fairyring_keyshare_requested_keyshare_proto_rawDescGZIP() []byte {
 	return file_fairyring_keyshare_requested_keyshare_proto_rawDescData
 }
 
-var file_fairyring_keyshare_requested_keyshare_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_fairyring_keyshare_requested_keyshare_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_fairyring_keyshare_requested_keyshare_proto_goTypes = []interface{}{
-	(*KeyShareRequest)(nil),     // 0: fairyring.keyshare.KeyShareRequest
-	(*IBCInfo)(nil),             // 1: fairyring.keyshare.IBCInfo
-	(*CounterPartyIBCInfo)(nil), // 2: fairyring.keyshare.CounterPartyIBCInfo
+	(*KeyShareRequest)(nil),        // 0: fairyring.keyshare.KeyShareRequest
+	(*IBCInfo)(nil),                // 1: fairyring.keyshare.IBCInfo
+	(*CounterPartyIBCInfo)(nil),    // 2: fairyring.keyshare.CounterPartyIBCInfo
+	(*PrivateKeyshareRequest)(nil), // 3: fairyring.keyshare.PrivateKeyshareRequest
+	nil,                            // 4: fairyring.keyshare.PrivateKeyshareRequest.EncryptedKeysharesEntry
+	(*common.KeyshareList)(nil),    // 5: fairyring.common.KeyshareList
 }
 var file_fairyring_keyshare_requested_keyshare_proto_depIdxs = []int32{
 	1, // 0: fairyring.keyshare.KeyShareRequest.ibc_info:type_name -> fairyring.keyshare.IBCInfo
 	2, // 1: fairyring.keyshare.KeyShareRequest.counterparty:type_name -> fairyring.keyshare.CounterPartyIBCInfo
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	1, // 2: fairyring.keyshare.PrivateKeyshareRequest.ibc_info:type_name -> fairyring.keyshare.IBCInfo
+	2, // 3: fairyring.keyshare.PrivateKeyshareRequest.counterparty:type_name -> fairyring.keyshare.CounterPartyIBCInfo
+	4, // 4: fairyring.keyshare.PrivateKeyshareRequest.encrypted_keyshares:type_name -> fairyring.keyshare.PrivateKeyshareRequest.EncryptedKeysharesEntry
+	5, // 5: fairyring.keyshare.PrivateKeyshareRequest.EncryptedKeysharesEntry.value:type_name -> fairyring.common.KeyshareList
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_fairyring_keyshare_requested_keyshare_proto_init() }
@@ -2475,6 +3686,18 @@ func file_fairyring_keyshare_requested_keyshare_proto_init() {
 				return nil
 			}
 		}
+		file_fairyring_keyshare_requested_keyshare_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PrivateKeyshareRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -2482,7 +3705,7 @@ func file_fairyring_keyshare_requested_keyshare_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_fairyring_keyshare_requested_keyshare_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

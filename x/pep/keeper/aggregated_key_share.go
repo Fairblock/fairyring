@@ -2,8 +2,9 @@ package keeper
 
 import (
 	"context"
-	storetypes "cosmossdk.io/store/types"
 	"errors"
+
+	storetypes "cosmossdk.io/store/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 
 	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"

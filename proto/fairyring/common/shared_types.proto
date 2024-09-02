@@ -43,3 +43,12 @@ message QueuedPublicKey {
   string creator = 2;
   uint64 expiry = 3;
 }
+
+message RequestPrivateKeyshare {
+  string creator = 1;
+  string request_id = 2;
+}
+
+message KeyshareList {
+  repeated string values = 1;
+}
