@@ -325,3 +325,63 @@ func (k Keeper) GetAllPrivateReqQueueEntry(ctx context.Context) (list []commonty
 	}
 	return
 }
+
+// GetQueueEntry returns a queue entry by its identity
+func (k Keeper) GetPrivateSignalQueueEntry(
+	ctx context.Context,
+	reqID string,
+) (val commontypes.GetPrivateKeyshare, found bool) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateSignalQueueKeyPrefix))
+
+	b := store.Get(types.GenEncTxQueueKey(
+		reqID,
+	))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
+
+// SetPrivateSignalQueueEntry sets a queue entry by its identity
+func (k Keeper) SetPrivateSignalQueueEntry(
+	ctx context.Context,
+	val commontypes.GetPrivateKeyshare,
+) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateSignalQueueKeyPrefix))
+
+	entry := k.cdc.MustMarshal(&val)
+	store.Set(
+		types.GenEncTxQueueKey(val.GetRequestId()),
+		entry,
+	)
+}
+
+// RemovePrivateSignalQueueEntry removes an entry from the store
+func (k Keeper) RemovePrivateSignalQueueEntry(
+	ctx context.Context,
+	reqID string,
+) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateSignalQueueKeyPrefix))
+	store.Delete(types.GenEncTxQueueKey(reqID))
+}
+
+// GetAllPrivateSignalQueueEntry returns all GenEncTxQueue entries
+func (k Keeper) GetAllPrivateSignalQueueEntry(ctx context.Context) (list []commontypes.GetPrivateKeyshare) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateSignalQueueKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val commontypes.GetPrivateKeyshare
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+	return
+}

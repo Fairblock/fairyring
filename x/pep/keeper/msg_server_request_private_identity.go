@@ -133,18 +133,19 @@ func (k Keeper) OnAcknowledgementRequestPrivateKeysharePacket(
 			Pubkey:  packetAck.GetPubkey(),
 		}
 
-		_, found := k.GetEntry(ctx, entry.RequestId)
-		if found {
-			return errors.New("entry already exists")
+		entry, found := k.GetPrivateRequest(ctx, data.RequestId)
+		if !found {
+			return errors.New("entry does not exists")
 		}
+		entry.Pubkey = packetAck.Pubkey
 
-		k.SetEntry(ctx, entry)
+		k.SetPrivateRequest(ctx, entry)
 
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				types.EventTypeRequestKeyshare,
+				types.EventTypePrivateKeyshareRequest,
 				sdk.NewAttribute(types.AttributeKeyCreator, entry.Creator),
-				sdk.NewAttribute(types.AttributeKeyRequestID, entry.RequestId),
+				sdk.NewAttribute(types.AttributeKeyRequestID, entry.ReqId),
 			),
 		)
 

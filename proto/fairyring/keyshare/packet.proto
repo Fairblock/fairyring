@@ -15,6 +15,7 @@ message KeysharePacketData {
         AggrKeyshareDataPacketData    aggrKeyshareDataPacket    = 4;
         CurrentKeysPacketData         currentKeysPacket         = 5;
         RequestPrivateKeysharePacketData request_priv_keyshare_packet = 6;
+        GetPrivateKeysharePacketData     getPrivateKeysharePacket     = 7;
     }
 }
 
@@ -55,6 +56,16 @@ message GetAggrKeysharePacketData {
 
 // GetAggrKeysharePacketAck defines a struct for the packet acknowledgment
 message GetAggrKeysharePacketAck {}
+
+// GetPrivateKeysharePacketData defines a struct for the packet payload
+message GetPrivateKeysharePacketData {
+    string identity = 1;
+    string requester = 2;
+    string rsa_64_pubkey = 3;
+}
+
+// GetPrivateKeysharePacketAck defines a struct for the packet acknowledgment
+message GetPrivateKeysharePacketAck {}
 
 // AggrKeyshareDataPacketData defines a struct for the packet payload
 message AggrKeyshareDataPacketData {

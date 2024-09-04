@@ -29,6 +29,7 @@ const (
 	Msg_UpdateAuthorizedAddress_FullMethodName = "/fairyring.keyshare.Msg/UpdateAuthorizedAddress"
 	Msg_DeleteAuthorizedAddress_FullMethodName = "/fairyring.keyshare.Msg/DeleteAuthorizedAddress"
 	Msg_CreateGeneralKeyShare_FullMethodName   = "/fairyring.keyshare.Msg/CreateGeneralKeyShare"
+	Msg_SubmitEncryptedKeyshare_FullMethodName = "/fairyring.keyshare.Msg/SubmitEncryptedKeyshare"
 )
 
 // MsgClient is the client API for Msg service.
@@ -48,6 +49,7 @@ type MsgClient interface {
 	UpdateAuthorizedAddress(ctx context.Context, in *MsgUpdateAuthorizedAddress, opts ...grpc.CallOption) (*MsgUpdateAuthorizedAddressResponse, error)
 	DeleteAuthorizedAddress(ctx context.Context, in *MsgDeleteAuthorizedAddress, opts ...grpc.CallOption) (*MsgDeleteAuthorizedAddressResponse, error)
 	CreateGeneralKeyShare(ctx context.Context, in *MsgCreateGeneralKeyShare, opts ...grpc.CallOption) (*MsgCreateGeneralKeyShareResponse, error)
+	SubmitEncryptedKeyshare(ctx context.Context, in *MsgSubmitEncryptedKeyshare, opts ...grpc.CallOption) (*MsgSubmitEncryptedKeyshareResponse, error)
 }
 
 type msgClient struct {
@@ -148,6 +150,15 @@ func (c *msgClient) CreateGeneralKeyShare(ctx context.Context, in *MsgCreateGene
 	return out, nil
 }
 
+func (c *msgClient) SubmitEncryptedKeyshare(ctx context.Context, in *MsgSubmitEncryptedKeyshare, opts ...grpc.CallOption) (*MsgSubmitEncryptedKeyshareResponse, error) {
+	out := new(MsgSubmitEncryptedKeyshareResponse)
+	err := c.cc.Invoke(ctx, Msg_SubmitEncryptedKeyshare_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -165,6 +176,7 @@ type MsgServer interface {
 	UpdateAuthorizedAddress(context.Context, *MsgUpdateAuthorizedAddress) (*MsgUpdateAuthorizedAddressResponse, error)
 	DeleteAuthorizedAddress(context.Context, *MsgDeleteAuthorizedAddress) (*MsgDeleteAuthorizedAddressResponse, error)
 	CreateGeneralKeyShare(context.Context, *MsgCreateGeneralKeyShare) (*MsgCreateGeneralKeyShareResponse, error)
+	SubmitEncryptedKeyshare(context.Context, *MsgSubmitEncryptedKeyshare) (*MsgSubmitEncryptedKeyshareResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -201,6 +213,9 @@ func (UnimplementedMsgServer) DeleteAuthorizedAddress(context.Context, *MsgDelet
 }
 func (UnimplementedMsgServer) CreateGeneralKeyShare(context.Context, *MsgCreateGeneralKeyShare) (*MsgCreateGeneralKeyShareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateGeneralKeyShare not implemented")
+}
+func (UnimplementedMsgServer) SubmitEncryptedKeyshare(context.Context, *MsgSubmitEncryptedKeyshare) (*MsgSubmitEncryptedKeyshareResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitEncryptedKeyshare not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -395,6 +410,24 @@ func _Msg_CreateGeneralKeyShare_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_SubmitEncryptedKeyshare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSubmitEncryptedKeyshare)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).SubmitEncryptedKeyshare(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_SubmitEncryptedKeyshare_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).SubmitEncryptedKeyshare(ctx, req.(*MsgSubmitEncryptedKeyshare))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -441,6 +474,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateGeneralKeyShare",
 			Handler:    _Msg_CreateGeneralKeyShare_Handler,
+		},
+		{
+			MethodName: "SubmitEncryptedKeyshare",
+			Handler:    _Msg_SubmitEncryptedKeyshare_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

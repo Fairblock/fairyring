@@ -227,6 +227,20 @@ func (im IBCModule) OnAcknowledgementPacket(
 			}
 			eventType = kstypes.EventTypeGetAggrKeysharePacket
 
+		case *kstypes.KeysharePacketData_RequestPrivKeysharePacket:
+			err := im.keeper.OnAcknowledgementRequestPrivateKeysharePacket(ctx, modulePacket, *packet.RequestPrivKeysharePacket, ack)
+			if err != nil {
+				return err
+			}
+			eventType = kstypes.EventTypeRequestPrivateKeysharePacket
+
+		case *kstypes.KeysharePacketData_GetPrivateKeysharePacket:
+			err := im.keeper.OnAcknowledgementGetPrivateKeysharePacket(ctx, modulePacket, *packet.GetPrivateKeysharePacket, ack)
+			if err != nil {
+				return err
+			}
+			eventType = kstypes.EventTypeGetEncryptedKeysharePacket
+
 		// this line is used by starport scaffolding # ibc/packet/module/ack
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)

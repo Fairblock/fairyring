@@ -11,6 +11,7 @@ const (
 	EncryptedTxKeyPrefix         = "EncryptedTx/value/"
 	GenEncTxKeyPrefix            = "GenEncTx/value/"
 	PrivateRequestQueueKeyPrefix = "PrivateReq/value/"
+	PrivateSignalQueueKeyPrefix  = "PrivateSignal/value/"
 	GenEncTxReqQueueKeyPrefix    = "GenEncTxReqQueue/value/"
 	GenEncTxSignalQueueKeyPrefix = "GenEncTxSignalQueue/value/"
 	GenEncTxExeQueueKeyPrefix    = "GenEncTxExeQueue/value/"

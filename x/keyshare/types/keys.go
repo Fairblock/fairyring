@@ -57,8 +57,11 @@ const (
 )
 
 const (
-	StartSendGeneralKeyShareEventType     = "start-send-general-keyshare"
-	StartSendGeneralKeyShareEventIdentity = "identity"
+	StartSendGeneralKeyShareEventType        = "start-send-general-keyshare"
+	StartSendEncryptedKeyShareEventType      = "start-send-encrypted-keyshare"
+	StartSendGeneralKeyShareEventIdentity    = "identity"
+	StartSendEncryptedKeyShareEventRequester = "requester"
+	StartSendEncryptedKeyShareEventPubkey    = "rsa-64-pubkey"
 )
 
 const (

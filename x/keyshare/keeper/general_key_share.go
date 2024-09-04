@@ -78,3 +78,72 @@ func (k Keeper) GetAllGeneralKeyShare(ctx context.Context) (list []types.General
 
 	return
 }
+
+// SetPrivateKeyShare set a specific generalKeyShare in the store from its index
+func (k Keeper) SetPrivateKeyShare(ctx context.Context, encKeyShare types.ValidatorEncryptedKeyShare) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedKeyShareKeyPrefix))
+
+	b := k.cdc.MustMarshal(&encKeyShare)
+	store.Set(types.EncryptedlKeyShareKey(
+		encKeyShare.Validator,
+		encKeyShare.Identity,
+		encKeyShare.Requester,
+	), b)
+}
+
+// GetPrivateKeyShare returns a generalKeyShare from its index
+func (k Keeper) GetPrivateKeyShare(
+	ctx context.Context,
+	validator string,
+	identity string,
+	requester string,
+) (val types.ValidatorEncryptedKeyShare, found bool) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedKeyShareKeyPrefix))
+
+	b := store.Get(types.EncryptedlKeyShareKey(
+		validator,
+		identity,
+		requester,
+	))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
+
+// RemoveEncryptedKeyShare removes a generalKeyShare from the store
+func (k Keeper) RemoveEncryptedKeyShare(
+	ctx context.Context,
+	validator string,
+	identiy string,
+	requester string,
+) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedKeyShareKeyPrefix))
+	store.Delete(types.EncryptedlKeyShareKey(
+		validator,
+		identiy,
+		requester,
+	))
+}
+
+// GetAllGeneralKeyShare returns all generalKeyShare
+func (k Keeper) GetAllEncryptedKeyShare(ctx context.Context) (list []types.ValidatorEncryptedKeyShare) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedKeyShareKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.ValidatorEncryptedKeyShare
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+
+	return
+}

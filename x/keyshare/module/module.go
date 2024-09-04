@@ -194,6 +194,8 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 
 	am.keeper.ProcessPepRequestQueue(ctx)
 	am.keeper.ProcessPepSignalQueue(ctx)
+	am.keeper.ProcessPrivateRequestQueue(ctx)
+	am.keeper.ProcessPrivateSignalQueue(ctx)
 	am.keeper.ProcessGovRequestQueue(ctx)
 	am.keeper.ProcessGovSignalQueue(ctx)
 

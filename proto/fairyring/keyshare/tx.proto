@@ -18,11 +18,11 @@ service Msg {
   
   // UpdateParams defines a (governance) operation for updating the module
   // parameters. The authority defaults to the x/gov module account.
-  rpc UpdateParams             (MsgUpdateParams            ) returns (MsgUpdateParamsResponse            );
-  rpc RegisterValidator (MsgRegisterValidator) returns (MsgRegisterValidatorResponse);
+  rpc UpdateParams        (MsgUpdateParams       ) returns (MsgUpdateParamsResponse       );
+  rpc RegisterValidator   (MsgRegisterValidator  ) returns (MsgRegisterValidatorResponse  );
   rpc DeRegisterValidator (MsgDeRegisterValidator) returns (MsgDeRegisterValidatorResponse);
-  rpc SendKeyshare      (MsgSendKeyshare     ) returns (MsgSendKeyshareResponse     );
-
+  rpc SendKeyshare        (MsgSendKeyshare       ) returns (MsgSendKeyshareResponse       );
+  
   // this line is used by starport scaffolding # proto/tx/rpc
   rpc CreateLatestPubKey      (MsgCreateLatestPubKey     ) returns (MsgCreateLatestPubKeyResponse     );
   rpc OverrideLatestPubKey    (MsgOverrideLatestPubKey   ) returns (MsgOverrideLatestPubKeyResponse   );
@@ -30,6 +30,7 @@ service Msg {
   rpc UpdateAuthorizedAddress (MsgUpdateAuthorizedAddress) returns (MsgUpdateAuthorizedAddressResponse);
   rpc DeleteAuthorizedAddress (MsgDeleteAuthorizedAddress) returns (MsgDeleteAuthorizedAddressResponse);
   rpc CreateGeneralKeyShare   (MsgCreateGeneralKeyShare  ) returns (MsgCreateGeneralKeyShareResponse  );
+  rpc SubmitEncryptedKeyshare (MsgSubmitEncryptedKeyshare) returns (MsgSubmitEncryptedKeyshareResponse);
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
@@ -38,7 +39,7 @@ message MsgUpdateParams {
   
   // authority is the address that controls the module (defaults to x/gov unless overwritten).
   string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
-  
+
   // params defines the module parameters to update.
   
   // NOTE: All parameters must be supplied.
@@ -88,10 +89,10 @@ message MsgSendKeyshareResponse {
 // this line is used by starport scaffolding # proto/tx/message
 message MsgCreateLatestPubKey {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator     = 1;
-  string publicKey   = 2;
-  repeated string commitments = 3;
-  uint64 numberOfValidators = 4;
+           string            creator            = 1;
+           string            publicKey          = 2;
+  repeated string            commitments        = 3;
+           uint64            numberOfValidators = 4;
   repeated EncryptedKeyShare encryptedKeyShares = 5;
 }
 
@@ -99,10 +100,10 @@ message MsgCreateLatestPubKeyResponse {}
 
 message MsgOverrideLatestPubKey {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator     = 1;
-  string publicKey   = 2;
-  repeated string commitments = 3;
-  uint64 numberOfValidators = 4;
+           string            creator            = 1;
+           string            publicKey          = 2;
+  repeated string            commitments        = 3;
+           uint64            numberOfValidators = 4;
   repeated EncryptedKeyShare encryptedKeyShares = 5;
 }
 
@@ -154,3 +155,17 @@ message MsgCreateGeneralKeyShareResponse {
   bool   success             = 7;
   string errorMessage        = 8;
 }
+
+message MsgSubmitEncryptedKeyshare {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator             = 1;
+  string identity            = 2;
+  string encryptedKeyshare   = 3;
+  uint64 keyShareIndex       = 4;
+  uint64 receivedTimestamp   = 5;
+  uint64 receivedBlockHeight = 6;
+  string requester           = 7;
+}
+
+message MsgSubmitEncryptedKeyshareResponse {}
+

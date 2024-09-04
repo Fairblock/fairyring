@@ -9,10 +9,12 @@ const (
 	AttributeKeyAck        = "acknowledgement"
 	AttributeKeyAckError   = "error"
 
-	EventTypeRequestAggrKeysharePacket = "requestAggrKeyshare_packet"
-	EventTypeGetAggrKeysharePacket     = "getAggrKeyshare_packet"
-	EventTypeAggrKeyshareDataPacket    = "aggrKeyshareData_packet"
-	EventTypeCurrentKeysPacket         = "currentKeys_packet"
+	EventTypeRequestAggrKeysharePacket    = "requestAggrKeyshare_packet"
+	EventTypeRequestPrivateKeysharePacket = "requestPrivateKeyshare_packet"
+	EventTypeGetAggrKeysharePacket        = "getAggrKeyshare_packet"
+	EventTypeGetEncryptedKeysharePacket   = "getEncryptedKeyshare_packet"
+	EventTypeAggrKeyshareDataPacket       = "aggrKeyshareData_packet"
+	EventTypeCurrentKeysPacket            = "currentKeys_packet"
 
 	AttributeKeyAckIdentity = "identity"
 	AttributeKeyAckPubkey   = "pubkey"

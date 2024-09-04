@@ -23,3 +23,21 @@ func (p GetAggrKeysharePacketData) GetBytes() []byte {
 
 	return sdk.MustSortJSON(MustProtoMarshalJSON(&modulePacket))
 }
+
+// ValidateBasic is used for validating the packet
+func (p GetPrivateKeysharePacketData) ValidateBasic() error {
+
+	if p.Identity == "" {
+		return errors.New("identity is blank")
+	}
+	return nil
+}
+
+// GetBytes is a helper for serialising
+func (p GetPrivateKeysharePacketData) GetBytes() []byte {
+	var modulePacket KeysharePacketData
+
+	modulePacket.Packet = &KeysharePacketData_GetPrivateKeysharePacket{&p}
+
+	return sdk.MustSortJSON(MustProtoMarshalJSON(&modulePacket))
+}
