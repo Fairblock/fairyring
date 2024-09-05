@@ -166,6 +166,24 @@ func (im IBCModule) OnRecvPacket(
 				),
 			)
 			return ack
+
+		case *kstypes.KeysharePacketData_EncryptedKeysharesPacketData:
+			packetAck, err := im.keeper.OnRecvEncKeyshareDataPacket(ctx, modulePacket, *packet.EncryptedKeysharesPacketData)
+			if err != nil {
+				ack = channeltypes.NewErrorAcknowledgement(err)
+			} else {
+				// Encode packet acknowledgment
+				packetAckBytes := types.MustProtoMarshalJSON(&packetAck)
+				ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+			}
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(
+					kstypes.EventTypeEncKeyshareDataPacket,
+					sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+					sdk.NewAttribute(kstypes.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+				),
+			)
+			return ack
 		// this line is used by starport scaffolding # ibc/packet/module/recv
 		default:
 			err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)

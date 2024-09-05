@@ -93,3 +93,25 @@ func (k Keeper) OnRecvAggrKeyshareDataPacket(ctx context.Context, packet channel
 
 	return packetAck, nil
 }
+
+// OnRecvEncKeyshareDataPacket processes packet reception
+func (k Keeper) OnRecvEncKeyshareDataPacket(
+	ctx context.Context,
+	packet channeltypes.Packet,
+	data kstypes.EncryptedKeysharesPacketData,
+) (packetAck kstypes.EncryptedKeysharesPacketAck, err error) {
+	// validate packet data upon receiving
+	if err := data.ValidateBasic(); err != nil {
+		return packetAck, err
+	}
+
+	entry, found := k.GetPrivateRequest(ctx, data.RequestId)
+	if !found {
+		return packetAck, errors.New("request not found for this id")
+	}
+
+	entry.EncryptedKeyshares = data.EncryptedKeyshares
+	k.SetPrivateRequest(ctx, entry)
+
+	return packetAck, nil
+}

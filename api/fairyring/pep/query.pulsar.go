@@ -5,7 +5,7 @@ import (
 	_ "cosmossdk.io/api/amino"
 	v1beta1 "cosmossdk.io/api/cosmos/base/query/v1beta1"
 	v1beta11 "cosmossdk.io/api/cosmos/base/v1beta1"
-	common "cosmossdk.io/api/fairyring/common"
+	common "github.com/Fairblock/fairyring/api/fairyring/common"
 	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"

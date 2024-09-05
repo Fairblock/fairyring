@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Fairblock/fairyring/x/pep/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -16,8 +17,16 @@ func (k Keeper) ShowPrivateKeyshareReq(goCtx context.Context, req *types.QuerySh
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Process the query
-	_ = ctx
+	val, found := k.GetPrivateRequest(ctx, req.ReqId)
+	if !found {
+		return nil, errors.New("entry not found")
+	}
 
-	return &types.QueryShowPrivateKeyshareReqResponse{}, nil
+	return &types.QueryShowPrivateKeyshareReqResponse{
+		Creator:            val.Creator,
+		ReqId:              val.ReqId,
+		Pubkey:             val.Pubkey,
+		Amount:             val.Amount,
+		EncryptedKeyshares: val.EncryptedKeyshares,
+	}, nil
 }

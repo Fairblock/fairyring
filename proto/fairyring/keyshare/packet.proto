@@ -13,9 +13,10 @@ message KeysharePacketData {
         RequestAggrKeysharePacketData requestAggrKeysharePacket = 2;
         GetAggrKeysharePacketData     getAggrKeysharePacket     = 3;
         AggrKeyshareDataPacketData    aggrKeyshareDataPacket    = 4;
-        CurrentKeysPacketData         currentKeysPacket         = 5;
-        RequestPrivateKeysharePacketData request_priv_keyshare_packet = 6;
-        GetPrivateKeysharePacketData     getPrivateKeysharePacket     = 7;
+        EncryptedKeysharesPacketData  encryptedKeysharesPacketData = 5;
+        CurrentKeysPacketData         currentKeysPacket         = 6;
+        RequestPrivateKeysharePacketData request_priv_keyshare_packet = 7;
+        GetPrivateKeysharePacketData     getPrivateKeysharePacket     = 8;
     }
 }
 

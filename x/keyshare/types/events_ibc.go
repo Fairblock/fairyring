@@ -14,6 +14,7 @@ const (
 	EventTypeGetAggrKeysharePacket        = "getAggrKeyshare_packet"
 	EventTypeGetEncryptedKeysharePacket   = "getEncryptedKeyshare_packet"
 	EventTypeAggrKeyshareDataPacket       = "aggrKeyshareData_packet"
+	EventTypeEncKeyshareDataPacket        = "encryptedKeyshareData_packet"
 	EventTypeCurrentKeysPacket            = "currentKeys_packet"
 
 	AttributeKeyAckIdentity = "identity"

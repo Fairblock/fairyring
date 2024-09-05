@@ -3,17 +3,20 @@ package keeper
 import (
 	"context"
 	"strconv"
+	"time"
 
 	"cosmossdk.io/math"
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	clienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types"
 )
 
 func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.MsgSubmitEncryptedKeyshare) (*types.MsgSubmitEncryptedKeyshareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// check if validator is registered
-	validatorInfo, found := k.GetValidatorSet(ctx, msg.Creator)
+	_, found := k.GetValidatorSet(ctx, msg.Creator)
 
 	if !found {
 		authorizedAddrInfo, found := k.GetAuthorizedAddress(ctx, msg.Creator)
@@ -21,11 +24,10 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 			return nil, types.ErrAddrIsNotValidatorOrAuthorized.Wrap(msg.Creator)
 		}
 
-		authorizedByValInfo, found := k.GetValidatorSet(ctx, authorizedAddrInfo.AuthorizedBy)
+		_, found = k.GetValidatorSet(ctx, authorizedAddrInfo.AuthorizedBy)
 		if !found {
 			return nil, types.ErrAuthorizerIsNotValidator.Wrap(authorizedAddrInfo.AuthorizedBy)
 		}
-		validatorInfo = authorizedByValInfo
 
 		// If the sender is in the validator set & authorized another address to submit key share
 	} else if count := k.GetAuthorizedCount(ctx, msg.Creator); count != 0 {
@@ -93,12 +95,43 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 		return &types.MsgSubmitEncryptedKeyshareResponse{}, nil
 	}
 
-	if len(keyShareReq.EncryptedKeyshares) != 0 {
+	if len(keyShareReq.EncryptedKeyshares[msg.Requester].Values) != 0 {
 		return &types.MsgSubmitEncryptedKeyshareResponse{}, nil
 	}
 
+	var kslist commontypes.KeyshareList
 	for _, eachKeyShare := range stateEncryptedKeyShares {
+		kslist.Values = append(kslist.Values, eachKeyShare.KeyShare)
+	}
 
+	keyShareReq.EncryptedKeyshares[msg.Requester] = &kslist
+	k.SetPrivateKeyShareRequest(ctx, keyShareReq)
+
+	timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
+
+	if keyShareReq.IbcInfo != nil {
+		if keyShareReq.IbcInfo.ChannelID != "" {
+			_, err := k.TransmitEncryptedKeyshareDataPacket(
+				ctx,
+				types.EncryptedKeysharesPacketData{
+					Identity:           keyShareReq.Identity,
+					Pubkey:             keyShareReq.Pubkey,
+					RequestId:          keyShareReq.RequestId,
+					EncryptedKeyshares: keyShareReq.EncryptedKeyshares,
+				},
+				keyShareReq.IbcInfo.PortID,
+				keyShareReq.IbcInfo.ChannelID,
+				clienttypes.ZeroHeight(),
+				uint64(timeoutTimestamp),
+			)
+			if err != nil {
+				return nil, err
+			}
+		}
+	} else {
+		entry, _ := k.pepKeeper.GetPrivateRequest(ctx, keyShareReq.RequestId)
+		entry.EncryptedKeyshares = keyShareReq.EncryptedKeyshares
+		k.pepKeeper.SetPrivateRequest(ctx, entry)
 	}
 
 	return &types.MsgSubmitEncryptedKeyshareResponse{}, nil

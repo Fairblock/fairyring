@@ -3,7 +3,7 @@ package pep
 
 import (
 	v1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
-	common "cosmossdk.io/api/fairyring/common"
+	common "github.com/Fairblock/fairyring/api/fairyring/common"
 	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"
