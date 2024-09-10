@@ -123,7 +123,7 @@ func (k Keeper) ProcessPrivateRequestQueue(ctx sdk.Context) error {
 		keyshareRequest.Identity = id
 		keyshareRequest.Pubkey = activePubKey.PublicKey
 
-		keyshareRequest.EncryptedKeyshares = make(map[string]*common.KeyshareList)
+		keyshareRequest.EncryptedKeyshares = make([]*common.EncryptedKeyshare, 0)
 		keyshareRequest.RequestId = req.GetRequestId()
 
 		k.SetPrivateKeyShareRequest(ctx, keyshareRequest)
@@ -158,7 +158,7 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 				keyshareRequest.Identity = req.Identity
 				keyshareRequest.Pubkey = activePubKey.PublicKey
 
-				keyshareRequest.EncryptedKeyshares = make(map[string]*common.KeyshareList)
+				keyshareRequest.EncryptedKeyshares = make([]*common.EncryptedKeyshare, 0)
 				keyshareRequest.RequestId = req.GetRequestId()
 
 				k.SetPrivateKeyShareRequest(ctx, keyshareRequest)

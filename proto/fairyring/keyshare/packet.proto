@@ -87,7 +87,7 @@ message EncryptedKeysharesPacketData {
     string identity      = 1;
     string pubkey        = 2;
     string request_id    = 3;
-    map<string, fairyring.common.KeyshareList> encrypted_keyshares = 4;
+    repeated fairyring.common.EncryptedKeyshare encrypted_keyshares = 4;
 }
 
 message EncryptedKeysharesPacketAck{}

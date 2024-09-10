@@ -95,16 +95,21 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 		return &types.MsgSubmitEncryptedKeyshareResponse{}, nil
 	}
 
-	if len(keyShareReq.EncryptedKeyshares[msg.Requester].Values) != 0 {
-		return &types.MsgSubmitEncryptedKeyshareResponse{}, nil
+	if len(keyShareReq.EncryptedKeyshares) != 0 {
+		for _, entry := range keyShareReq.EncryptedKeyshares {
+			if entry.Requester == msg.Requester && len(entry.PrivateKeyshares) != 0 {
+				return &types.MsgSubmitEncryptedKeyshareResponse{}, nil
+			}
+		}
 	}
 
-	var kslist commontypes.KeyshareList
+	var kslist commontypes.EncryptedKeyshare
 	for _, eachKeyShare := range stateEncryptedKeyShares {
-		kslist.Values = append(kslist.Values, eachKeyShare.KeyShare)
+		kslist.PrivateKeyshares = append(kslist.PrivateKeyshares, eachKeyShare.KeyShare)
 	}
+	kslist.Requester = msg.Requester
 
-	keyShareReq.EncryptedKeyshares[msg.Requester] = &kslist
+	keyShareReq.EncryptedKeyshares = append(keyShareReq.EncryptedKeyshares, &kslist)
 	k.SetPrivateKeyShareRequest(ctx, keyShareReq)
 
 	timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()

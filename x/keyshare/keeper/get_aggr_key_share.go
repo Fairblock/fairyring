@@ -91,7 +91,7 @@ func (k Keeper) OnRecvGetPrivateKeysharePacket(
 			PortID:    packet.SourcePort,
 		}
 
-		keyshareReq.EncryptedKeyshares = make(map[string]*commontypes.KeyshareList)
+		keyshareReq.EncryptedKeyshares = make([]*commontypes.EncryptedKeyshare, 0)
 		keyshareReq.RequestId = data.Identity
 		keyshareReq.Sent = false
 

@@ -12,7 +12,6 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
 	reflect "reflect"
-	sort "sort"
 	sync "sync"
 )
 
@@ -500,94 +499,55 @@ func (x *fastReflection_RequestId) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var _ protoreflect.Map = (*_PrivateRequest_5_map)(nil)
+var _ protoreflect.List = (*_PrivateRequest_5_list)(nil)
 
-type _PrivateRequest_5_map struct {
-	m *map[string]*common.KeyshareList
+type _PrivateRequest_5_list struct {
+	list *[]*common.EncryptedKeyshare
 }
 
-func (x *_PrivateRequest_5_map) Len() int {
-	if x.m == nil {
+func (x *_PrivateRequest_5_list) Len() int {
+	if x.list == nil {
 		return 0
 	}
-	return len(*x.m)
+	return len(*x.list)
 }
 
-func (x *_PrivateRequest_5_map) Range(f func(protoreflect.MapKey, protoreflect.Value) bool) {
-	if x.m == nil {
-		return
-	}
-	for k, v := range *x.m {
-		mapKey := (protoreflect.MapKey)(protoreflect.ValueOfString(k))
-		mapValue := protoreflect.ValueOfMessage(v.ProtoReflect())
-		if !f(mapKey, mapValue) {
-			break
-		}
-	}
+func (x *_PrivateRequest_5_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
 }
 
-func (x *_PrivateRequest_5_map) Has(key protoreflect.MapKey) bool {
-	if x.m == nil {
-		return false
-	}
-	keyUnwrapped := key.String()
-	concreteValue := keyUnwrapped
-	_, ok := (*x.m)[concreteValue]
-	return ok
-}
-
-func (x *_PrivateRequest_5_map) Clear(key protoreflect.MapKey) {
-	if x.m == nil {
-		return
-	}
-	keyUnwrapped := key.String()
-	concreteKey := keyUnwrapped
-	delete(*x.m, concreteKey)
-}
-
-func (x *_PrivateRequest_5_map) Get(key protoreflect.MapKey) protoreflect.Value {
-	if x.m == nil {
-		return protoreflect.Value{}
-	}
-	keyUnwrapped := key.String()
-	concreteKey := keyUnwrapped
-	v, ok := (*x.m)[concreteKey]
-	if !ok {
-		return protoreflect.Value{}
-	}
-	return protoreflect.ValueOfMessage(v.ProtoReflect())
-}
-
-func (x *_PrivateRequest_5_map) Set(key protoreflect.MapKey, value protoreflect.Value) {
-	if !key.IsValid() || !value.IsValid() {
-		panic("invalid key or value provided")
-	}
-	keyUnwrapped := key.String()
-	concreteKey := keyUnwrapped
+func (x *_PrivateRequest_5_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*common.KeyshareList)
-	(*x.m)[concreteKey] = concreteValue
+	concreteValue := valueUnwrapped.Interface().(*common.EncryptedKeyshare)
+	(*x.list)[i] = concreteValue
 }
 
-func (x *_PrivateRequest_5_map) Mutable(key protoreflect.MapKey) protoreflect.Value {
-	keyUnwrapped := key.String()
-	concreteKey := keyUnwrapped
-	v, ok := (*x.m)[concreteKey]
-	if ok {
-		return protoreflect.ValueOfMessage(v.ProtoReflect())
-	}
-	newValue := new(common.KeyshareList)
-	(*x.m)[concreteKey] = newValue
-	return protoreflect.ValueOfMessage(newValue.ProtoReflect())
+func (x *_PrivateRequest_5_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*common.EncryptedKeyshare)
+	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_PrivateRequest_5_map) NewValue() protoreflect.Value {
-	v := new(common.KeyshareList)
+func (x *_PrivateRequest_5_list) AppendMutable() protoreflect.Value {
+	v := new(common.EncryptedKeyshare)
+	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_PrivateRequest_5_map) IsValid() bool {
-	return x.m != nil
+func (x *_PrivateRequest_5_list) Truncate(n int) {
+	for i := n; i < len(*x.list); i++ {
+		(*x.list)[i] = nil
+	}
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_PrivateRequest_5_list) NewElement() protoreflect.Value {
+	v := new(common.EncryptedKeyshare)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_PrivateRequest_5_list) IsValid() bool {
+	return x.list != nil
 }
 
 var (
@@ -699,7 +659,7 @@ func (x *fastReflection_PrivateRequest) Range(f func(protoreflect.FieldDescripto
 		}
 	}
 	if len(x.EncryptedKeyshares) != 0 {
-		value := protoreflect.ValueOfMap(&_PrivateRequest_5_map{m: &x.EncryptedKeyshares})
+		value := protoreflect.ValueOfList(&_PrivateRequest_5_list{list: &x.EncryptedKeyshares})
 		if !f(fd_PrivateRequest_encrypted_keyshares, value) {
 			return
 		}
@@ -785,10 +745,10 @@ func (x *fastReflection_PrivateRequest) Get(descriptor protoreflect.FieldDescrip
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	case "fairyring.pep.PrivateRequest.encrypted_keyshares":
 		if len(x.EncryptedKeyshares) == 0 {
-			return protoreflect.ValueOfMap(&_PrivateRequest_5_map{})
+			return protoreflect.ValueOfList(&_PrivateRequest_5_list{})
 		}
-		mapValue := &_PrivateRequest_5_map{m: &x.EncryptedKeyshares}
-		return protoreflect.ValueOfMap(mapValue)
+		listValue := &_PrivateRequest_5_list{list: &x.EncryptedKeyshares}
+		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.PrivateRequest"))
@@ -818,9 +778,9 @@ func (x *fastReflection_PrivateRequest) Set(fd protoreflect.FieldDescriptor, val
 	case "fairyring.pep.PrivateRequest.amount":
 		x.Amount = value.Message().Interface().(*v1beta1.Coin)
 	case "fairyring.pep.PrivateRequest.encrypted_keyshares":
-		mv := value.Map()
-		cmv := mv.(*_PrivateRequest_5_map)
-		x.EncryptedKeyshares = *cmv.m
+		lv := value.List()
+		clv := lv.(*_PrivateRequest_5_list)
+		x.EncryptedKeyshares = *clv.list
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.PrivateRequest"))
@@ -848,10 +808,10 @@ func (x *fastReflection_PrivateRequest) Mutable(fd protoreflect.FieldDescriptor)
 		return protoreflect.ValueOfMessage(x.Amount.ProtoReflect())
 	case "fairyring.pep.PrivateRequest.encrypted_keyshares":
 		if x.EncryptedKeyshares == nil {
-			x.EncryptedKeyshares = make(map[string]*common.KeyshareList)
+			x.EncryptedKeyshares = []*common.EncryptedKeyshare{}
 		}
-		value := &_PrivateRequest_5_map{m: &x.EncryptedKeyshares}
-		return protoreflect.ValueOfMap(value)
+		value := &_PrivateRequest_5_list{list: &x.EncryptedKeyshares}
+		return protoreflect.ValueOfList(value)
 	case "fairyring.pep.PrivateRequest.creator":
 		panic(fmt.Errorf("field creator of message fairyring.pep.PrivateRequest is not mutable"))
 	case "fairyring.pep.PrivateRequest.req_id":
@@ -881,8 +841,8 @@ func (x *fastReflection_PrivateRequest) NewField(fd protoreflect.FieldDescriptor
 		m := new(v1beta1.Coin)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	case "fairyring.pep.PrivateRequest.encrypted_keyshares":
-		m := make(map[string]*common.KeyshareList)
-		return protoreflect.ValueOfMap(&_PrivateRequest_5_map{m: &m})
+		list := []*common.EncryptedKeyshare{}
+		return protoreflect.ValueOfList(&_PrivateRequest_5_list{list: &list})
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.PrivateRequest"))
@@ -969,29 +929,9 @@ func (x *fastReflection_PrivateRequest) ProtoMethods() *protoiface.Methods {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		if len(x.EncryptedKeyshares) > 0 {
-			SiZeMaP := func(k string, v *common.KeyshareList) {
-				l := 0
-				if v != nil {
-					l = options.Size(v)
-				}
-				l += 1 + runtime.Sov(uint64(l))
-				mapEntrySize := 1 + len(k) + runtime.Sov(uint64(len(k))) + l
-				n += mapEntrySize + 1 + runtime.Sov(uint64(mapEntrySize))
-			}
-			if options.Deterministic {
-				sortme := make([]string, 0, len(x.EncryptedKeyshares))
-				for k := range x.EncryptedKeyshares {
-					sortme = append(sortme, k)
-				}
-				sort.Strings(sortme)
-				for _, k := range sortme {
-					v := x.EncryptedKeyshares[k]
-					SiZeMaP(k, v)
-				}
-			} else {
-				for k, v := range x.EncryptedKeyshares {
-					SiZeMaP(k, v)
-				}
+			for _, e := range x.EncryptedKeyshares {
+				l = options.Size(e)
+				n += 1 + l + runtime.Sov(uint64(l))
 			}
 		}
 		if x.unknownFields != nil {
@@ -1024,9 +964,8 @@ func (x *fastReflection_PrivateRequest) ProtoMethods() *protoiface.Methods {
 			copy(dAtA[i:], x.unknownFields)
 		}
 		if len(x.EncryptedKeyshares) > 0 {
-			MaRsHaLmAp := func(k string, v *common.KeyshareList) (protoiface.MarshalOutput, error) {
-				baseI := i
-				encoded, err := options.Marshal(v)
+			for iNdEx := len(x.EncryptedKeyshares) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.EncryptedKeyshares[iNdEx])
 				if err != nil {
 					return protoiface.MarshalOutput{
 						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -1037,40 +976,7 @@ func (x *fastReflection_PrivateRequest) ProtoMethods() *protoiface.Methods {
 				copy(dAtA[i:], encoded)
 				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 				i--
-				dAtA[i] = 0x12
-				i -= len(k)
-				copy(dAtA[i:], k)
-				i = runtime.EncodeVarint(dAtA, i, uint64(len(k)))
-				i--
-				dAtA[i] = 0xa
-				i = runtime.EncodeVarint(dAtA, i, uint64(baseI-i))
-				i--
 				dAtA[i] = 0x2a
-				return protoiface.MarshalOutput{}, nil
-			}
-			if options.Deterministic {
-				keysForEncryptedKeyshares := make([]string, 0, len(x.EncryptedKeyshares))
-				for k := range x.EncryptedKeyshares {
-					keysForEncryptedKeyshares = append(keysForEncryptedKeyshares, string(k))
-				}
-				sort.Slice(keysForEncryptedKeyshares, func(i, j int) bool {
-					return keysForEncryptedKeyshares[i] < keysForEncryptedKeyshares[j]
-				})
-				for iNdEx := len(keysForEncryptedKeyshares) - 1; iNdEx >= 0; iNdEx-- {
-					v := x.EncryptedKeyshares[string(keysForEncryptedKeyshares[iNdEx])]
-					out, err := MaRsHaLmAp(keysForEncryptedKeyshares[iNdEx], v)
-					if err != nil {
-						return out, err
-					}
-				}
-			} else {
-				for k := range x.EncryptedKeyshares {
-					v := x.EncryptedKeyshares[k]
-					out, err := MaRsHaLmAp(k, v)
-					if err != nil {
-						return out, err
-					}
-				}
 			}
 		}
 		if x.Amount != nil {
@@ -1318,105 +1224,10 @@ func (x *fastReflection_PrivateRequest) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				if x.EncryptedKeyshares == nil {
-					x.EncryptedKeyshares = make(map[string]*common.KeyshareList)
+				x.EncryptedKeyshares = append(x.EncryptedKeyshares, &common.EncryptedKeyshare{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.EncryptedKeyshares[len(x.EncryptedKeyshares)-1]); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
-				var mapkey string
-				var mapvalue *common.KeyshareList
-				for iNdEx < postIndex {
-					entryPreIndex := iNdEx
-					var wire uint64
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-						}
-						if iNdEx >= l {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						wire |= uint64(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					fieldNum := int32(wire >> 3)
-					if fieldNum == 1 {
-						var stringLenmapkey uint64
-						for shift := uint(0); ; shift += 7 {
-							if shift >= 64 {
-								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-							}
-							if iNdEx >= l {
-								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-							}
-							b := dAtA[iNdEx]
-							iNdEx++
-							stringLenmapkey |= uint64(b&0x7F) << shift
-							if b < 0x80 {
-								break
-							}
-						}
-						intStringLenmapkey := int(stringLenmapkey)
-						if intStringLenmapkey < 0 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-						}
-						postStringIndexmapkey := iNdEx + intStringLenmapkey
-						if postStringIndexmapkey < 0 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-						}
-						if postStringIndexmapkey > l {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-						}
-						mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
-						iNdEx = postStringIndexmapkey
-					} else if fieldNum == 2 {
-						var mapmsglen int
-						for shift := uint(0); ; shift += 7 {
-							if shift >= 64 {
-								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-							}
-							if iNdEx >= l {
-								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-							}
-							b := dAtA[iNdEx]
-							iNdEx++
-							mapmsglen |= int(b&0x7F) << shift
-							if b < 0x80 {
-								break
-							}
-						}
-						if mapmsglen < 0 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-						}
-						postmsgIndex := iNdEx + mapmsglen
-						if postmsgIndex < 0 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-						}
-						if postmsgIndex > l {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-						}
-						mapvalue = &common.KeyshareList{}
-						if err := options.Unmarshal(dAtA[iNdEx:postmsgIndex], mapvalue); err != nil {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-						}
-						iNdEx = postmsgIndex
-					} else {
-						iNdEx = entryPreIndex
-						skippy, err := runtime.Skip(dAtA[iNdEx:])
-						if err != nil {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-						}
-						if (skippy < 0) || (iNdEx+skippy) < 0 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-						}
-						if (iNdEx + skippy) > postIndex {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-						}
-						iNdEx += skippy
-					}
-				}
-				x.EncryptedKeyshares[mapkey] = mapvalue
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -1514,11 +1325,11 @@ type PrivateRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Creator            string                          `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	ReqId              string                          `protobuf:"bytes,2,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
-	Pubkey             string                          `protobuf:"bytes,3,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
-	Amount             *v1beta1.Coin                   `protobuf:"bytes,4,opt,name=amount,proto3" json:"amount,omitempty"`
-	EncryptedKeyshares map[string]*common.KeyshareList `protobuf:"bytes,5,rep,name=encrypted_keyshares,json=encryptedKeyshares,proto3" json:"encrypted_keyshares,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Creator            string                      `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	ReqId              string                      `protobuf:"bytes,2,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
+	Pubkey             string                      `protobuf:"bytes,3,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
+	Amount             *v1beta1.Coin               `protobuf:"bytes,4,opt,name=amount,proto3" json:"amount,omitempty"`
+	EncryptedKeyshares []*common.EncryptedKeyshare `protobuf:"bytes,5,rep,name=encrypted_keyshares,json=encryptedKeyshares,proto3" json:"encrypted_keyshares,omitempty"`
 }
 
 func (x *PrivateRequest) Reset() {
@@ -1569,7 +1380,7 @@ func (x *PrivateRequest) GetAmount() *v1beta1.Coin {
 	return nil
 }
 
-func (x *PrivateRequest) GetEncryptedKeyshares() map[string]*common.KeyshareList {
+func (x *PrivateRequest) GetEncryptedKeyshares() []*common.EncryptedKeyshare {
 	if x != nil {
 		return x.EncryptedKeyshares
 	}
@@ -1591,7 +1402,7 @@ var file_fairyring_pep_request_id_proto_rawDesc = []byte{
 	0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74,
 	0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
 	0x72, 0x12, 0x14, 0x0a, 0x05, 0x72, 0x65, 0x71, 0x49, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x05, 0x72, 0x65, 0x71, 0x49, 0x64, 0x22, 0xe1, 0x02, 0x0a, 0x0e, 0x50, 0x72, 0x69, 0x76,
+	0x52, 0x05, 0x72, 0x65, 0x71, 0x49, 0x64, 0x22, 0xe8, 0x01, 0x0a, 0x0e, 0x50, 0x72, 0x69, 0x76,
 	0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72,
 	0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65,
 	0x61, 0x74, 0x6f, 0x72, 0x12, 0x15, 0x0a, 0x06, 0x72, 0x65, 0x71, 0x5f, 0x69, 0x64, 0x18, 0x02,
@@ -1600,30 +1411,23 @@ var file_fairyring_pep_request_id_proto_rawDesc = []byte{
 	0x6b, 0x65, 0x79, 0x12, 0x37, 0x0a, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x04, 0x20,
 	0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73,
 	0x65, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x42, 0x04,
-	0xc8, 0xde, 0x1f, 0x00, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x66, 0x0a, 0x13,
+	0xc8, 0xde, 0x1f, 0x00, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x54, 0x0a, 0x13,
 	0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61,
-	0x72, 0x65, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x35, 0x2e, 0x66, 0x61, 0x69, 0x72,
-	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74,
-	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74,
-	0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79,
-	0x52, 0x12, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68,
-	0x61, 0x72, 0x65, 0x73, 0x1a, 0x65, 0x0a, 0x17, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65,
-	0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12,
-	0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65,
-	0x79, 0x12, 0x34, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b,
-	0x32, 0x1e, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f, 0x6d,
-	0x6d, 0x6f, 0x6e, 0x2e, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x4c, 0x69, 0x73, 0x74,
-	0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x42, 0x98, 0x01, 0x0a, 0x11,
-	0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65,
-	0x70, 0x42, 0x0e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x50, 0x72, 0x6f, 0x74,
-	0x6f, 0x50, 0x01, 0x5a, 0x1e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69,
-	0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f,
-	0x70, 0x65, 0x70, 0xa2, 0x02, 0x03, 0x46, 0x50, 0x58, 0xaa, 0x02, 0x0d, 0x46, 0x61, 0x69, 0x72,
-	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x50, 0x65, 0x70, 0xca, 0x02, 0x0d, 0x46, 0x61, 0x69, 0x72,
-	0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50, 0x65, 0x70, 0xe2, 0x02, 0x19, 0x46, 0x61, 0x69, 0x72,
-	0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50, 0x65, 0x70, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74,
-	0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
-	0x67, 0x3a, 0x3a, 0x50, 0x65, 0x70, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x72, 0x65, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x66, 0x61, 0x69, 0x72,
+	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x45, 0x6e, 0x63,
+	0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x52, 0x12,
+	0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
+	0x65, 0x73, 0x42, 0x98, 0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
+	0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x42, 0x0e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x49, 0x64, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x1e, 0x63, 0x6f, 0x73, 0x6d,
+	0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69,
+	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0xa2, 0x02, 0x03, 0x46, 0x50, 0x58,
+	0xaa, 0x02, 0x0d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x50, 0x65, 0x70,
+	0xca, 0x02, 0x0d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50, 0x65, 0x70,
+	0xe2, 0x02, 0x19, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50, 0x65, 0x70,
+	0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e, 0x46,
+	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x50, 0x65, 0x70, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1638,23 +1442,21 @@ func file_fairyring_pep_request_id_proto_rawDescGZIP() []byte {
 	return file_fairyring_pep_request_id_proto_rawDescData
 }
 
-var file_fairyring_pep_request_id_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_fairyring_pep_request_id_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_fairyring_pep_request_id_proto_goTypes = []interface{}{
-	(*RequestId)(nil),           // 0: fairyring.pep.RequestId
-	(*PrivateRequest)(nil),      // 1: fairyring.pep.PrivateRequest
-	nil,                         // 2: fairyring.pep.PrivateRequest.EncryptedKeysharesEntry
-	(*v1beta1.Coin)(nil),        // 3: cosmos.base.v1beta1.Coin
-	(*common.KeyshareList)(nil), // 4: fairyring.common.KeyshareList
+	(*RequestId)(nil),                // 0: fairyring.pep.RequestId
+	(*PrivateRequest)(nil),           // 1: fairyring.pep.PrivateRequest
+	(*v1beta1.Coin)(nil),             // 2: cosmos.base.v1beta1.Coin
+	(*common.EncryptedKeyshare)(nil), // 3: fairyring.common.EncryptedKeyshare
 }
 var file_fairyring_pep_request_id_proto_depIdxs = []int32{
-	3, // 0: fairyring.pep.PrivateRequest.amount:type_name -> cosmos.base.v1beta1.Coin
-	2, // 1: fairyring.pep.PrivateRequest.encrypted_keyshares:type_name -> fairyring.pep.PrivateRequest.EncryptedKeysharesEntry
-	4, // 2: fairyring.pep.PrivateRequest.EncryptedKeysharesEntry.value:type_name -> fairyring.common.KeyshareList
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	2, // 0: fairyring.pep.PrivateRequest.amount:type_name -> cosmos.base.v1beta1.Coin
+	3, // 1: fairyring.pep.PrivateRequest.encrypted_keyshares:type_name -> fairyring.common.EncryptedKeyshare
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_fairyring_pep_request_id_proto_init() }
@@ -1694,7 +1496,7 @@ func file_fairyring_pep_request_id_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_fairyring_pep_request_id_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

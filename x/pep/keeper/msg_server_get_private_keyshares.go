@@ -28,7 +28,7 @@ func (k msgServer) GetPrivateKeyshares(goCtx context.Context, msg *types.MsgGetP
 
 		entry.Creator = ""
 		entry.Amount = sdk.NewCoin("ufairy", math.NewInt(0))
-		entry.EncryptedKeyshares = make(map[string]*commontypes.KeyshareList)
+		entry.EncryptedKeyshares = make([]*commontypes.EncryptedKeyshare, 0)
 		entry.Pubkey = pubkey.PublicKey
 		entry.ReqId = msg.ReqId
 

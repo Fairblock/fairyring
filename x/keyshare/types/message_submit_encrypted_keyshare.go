@@ -14,17 +14,13 @@ func NewMsgSubmitEncryptedKeyshare(
 	requester string,
 	encryptedKeyshare string,
 	keyshareIndex uint64,
-	receivedTimestamp uint64,
-	receivedBlockHeight uint64,
 ) *MsgSubmitEncryptedKeyshare {
 	return &MsgSubmitEncryptedKeyshare{
-		Creator:             creator,
-		Identity:            identity,
-		EncryptedKeyshare:   encryptedKeyshare,
-		KeyShareIndex:       keyshareIndex,
-		ReceivedTimestamp:   receivedTimestamp,
-		ReceivedBlockHeight: receivedBlockHeight,
-		Requester:           requester,
+		Creator:           creator,
+		Identity:          identity,
+		EncryptedKeyshare: encryptedKeyshare,
+		KeyShareIndex:     keyshareIndex,
+		Requester:         requester,
 	}
 }
 

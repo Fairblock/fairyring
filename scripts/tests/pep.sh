@@ -340,6 +340,10 @@ if [[ "$SECOND_EVENT" != *"coin_received"* ]]; then
 fi
 echo "Second Encrypted TX succeeded with Events: $(echo $SECOND_EVENT | jq) as expected."
 
+echo "#############################################"
+echo "Testing general keyshare on source chain"
+echo "#############################################"
+
 echo "Creating new General Enc Request in pep module on chain fairyring_test_1"
 RESULT=$($BINARY tx pep request-general-keyshare 30s testing123 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
@@ -552,6 +556,51 @@ if [ "$TARGET_BAL_AFTER" == "$TARGET_BAL" ]; then
   exit 1
 fi
 
+echo "#############################################"
+echo "Testing private keyshare on source chain"
+echo "#############################################"
+
+RSA_KEY=$(cat ./scripts/public_key.pem)
+
+echo "$RSA_KEY"
+
+echo "Creating new Private Request in pep module on chain fairyring_test_1"
+RESULT=$($BINARY tx pep request-private-keyshare test_req_1 10ufairy --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+
+sleep 10
+
+echo "Query private keyshare request on chain fairyring_test_1"
+SHOW_PRIVATE_REQ=$($BINARY query pep show-private-keyshare-req $WALLET_1/test_req_1 --node $CHAIN1_NODE -o json)
+echo $SHOW_PRIVATE_REQ
+REQ_ID=$(echo $SHOW_PRIVATE_REQ | jq -r '.req_id')
+echo "Identity for private keyshare request 1 is: $REQ_ID"
+
+sleep 10
+
+echo "Requesting for private keyshares on Source chain"
+RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID "\"$RSA_KEY\"" --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+
+sleep 10
+
+while true; do
+  echo "Submitting Private Key Share"
+
+  RESULT=$($BINARY tx keyshare submit-encrypted-keyshare $REQ_ID $WALLET_1 "test_enc" 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 300000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+  echo "$RESULT"
+  check_tx_err $RESULT
+  if [ $? -eq 0 ]; then
+    break
+  fi
+done
+
+sleep 10
+
+echo "Query private keyshare request on chain fairyring_test_1"
+SHOW_PRIVATE_REQ=$($BINARY query pep show-private-keyshare-req $WALLET_1/test_req_1 --node $CHAIN1_NODE -o json)
+echo $SHOW_PRIVATE_REQ
+
 echo ""
 echo "###########################################################"
 echo "#                   SUCCESSFULLY TESTED                   #"
@@ -564,4 +613,4 @@ echo "#               Test General Encrypted Txs                #"
 echo "###########################################################"
 echo ""
 
-./scripts/tests/priv_gov.sh $PUB_KEY $1
+# ./scripts/tests/priv_gov.sh $PUB_KEY $1

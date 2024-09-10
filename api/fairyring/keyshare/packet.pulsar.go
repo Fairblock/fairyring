@@ -12,7 +12,6 @@ import (
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	io "io"
 	reflect "reflect"
-	sort "sort"
 	sync "sync"
 )
 
@@ -6521,94 +6520,55 @@ func (x *fastReflection_AggrKeyshareDataPacketAck) ProtoMethods() *protoiface.Me
 	}
 }
 
-var _ protoreflect.Map = (*_EncryptedKeysharesPacketData_4_map)(nil)
+var _ protoreflect.List = (*_EncryptedKeysharesPacketData_4_list)(nil)
 
-type _EncryptedKeysharesPacketData_4_map struct {
-	m *map[string]*common.KeyshareList
+type _EncryptedKeysharesPacketData_4_list struct {
+	list *[]*common.EncryptedKeyshare
 }
 
-func (x *_EncryptedKeysharesPacketData_4_map) Len() int {
-	if x.m == nil {
+func (x *_EncryptedKeysharesPacketData_4_list) Len() int {
+	if x.list == nil {
 		return 0
 	}
-	return len(*x.m)
+	return len(*x.list)
 }
 
-func (x *_EncryptedKeysharesPacketData_4_map) Range(f func(protoreflect.MapKey, protoreflect.Value) bool) {
-	if x.m == nil {
-		return
-	}
-	for k, v := range *x.m {
-		mapKey := (protoreflect.MapKey)(protoreflect.ValueOfString(k))
-		mapValue := protoreflect.ValueOfMessage(v.ProtoReflect())
-		if !f(mapKey, mapValue) {
-			break
-		}
-	}
+func (x *_EncryptedKeysharesPacketData_4_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
 }
 
-func (x *_EncryptedKeysharesPacketData_4_map) Has(key protoreflect.MapKey) bool {
-	if x.m == nil {
-		return false
-	}
-	keyUnwrapped := key.String()
-	concreteValue := keyUnwrapped
-	_, ok := (*x.m)[concreteValue]
-	return ok
-}
-
-func (x *_EncryptedKeysharesPacketData_4_map) Clear(key protoreflect.MapKey) {
-	if x.m == nil {
-		return
-	}
-	keyUnwrapped := key.String()
-	concreteKey := keyUnwrapped
-	delete(*x.m, concreteKey)
-}
-
-func (x *_EncryptedKeysharesPacketData_4_map) Get(key protoreflect.MapKey) protoreflect.Value {
-	if x.m == nil {
-		return protoreflect.Value{}
-	}
-	keyUnwrapped := key.String()
-	concreteKey := keyUnwrapped
-	v, ok := (*x.m)[concreteKey]
-	if !ok {
-		return protoreflect.Value{}
-	}
-	return protoreflect.ValueOfMessage(v.ProtoReflect())
-}
-
-func (x *_EncryptedKeysharesPacketData_4_map) Set(key protoreflect.MapKey, value protoreflect.Value) {
-	if !key.IsValid() || !value.IsValid() {
-		panic("invalid key or value provided")
-	}
-	keyUnwrapped := key.String()
-	concreteKey := keyUnwrapped
+func (x *_EncryptedKeysharesPacketData_4_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*common.KeyshareList)
-	(*x.m)[concreteKey] = concreteValue
+	concreteValue := valueUnwrapped.Interface().(*common.EncryptedKeyshare)
+	(*x.list)[i] = concreteValue
 }
 
-func (x *_EncryptedKeysharesPacketData_4_map) Mutable(key protoreflect.MapKey) protoreflect.Value {
-	keyUnwrapped := key.String()
-	concreteKey := keyUnwrapped
-	v, ok := (*x.m)[concreteKey]
-	if ok {
-		return protoreflect.ValueOfMessage(v.ProtoReflect())
-	}
-	newValue := new(common.KeyshareList)
-	(*x.m)[concreteKey] = newValue
-	return protoreflect.ValueOfMessage(newValue.ProtoReflect())
+func (x *_EncryptedKeysharesPacketData_4_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*common.EncryptedKeyshare)
+	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_EncryptedKeysharesPacketData_4_map) NewValue() protoreflect.Value {
-	v := new(common.KeyshareList)
+func (x *_EncryptedKeysharesPacketData_4_list) AppendMutable() protoreflect.Value {
+	v := new(common.EncryptedKeyshare)
+	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_EncryptedKeysharesPacketData_4_map) IsValid() bool {
-	return x.m != nil
+func (x *_EncryptedKeysharesPacketData_4_list) Truncate(n int) {
+	for i := n; i < len(*x.list); i++ {
+		(*x.list)[i] = nil
+	}
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_EncryptedKeysharesPacketData_4_list) NewElement() protoreflect.Value {
+	v := new(common.EncryptedKeyshare)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_EncryptedKeysharesPacketData_4_list) IsValid() bool {
+	return x.list != nil
 }
 
 var (
@@ -6712,7 +6672,7 @@ func (x *fastReflection_EncryptedKeysharesPacketData) Range(f func(protoreflect.
 		}
 	}
 	if len(x.EncryptedKeyshares) != 0 {
-		value := protoreflect.ValueOfMap(&_EncryptedKeysharesPacketData_4_map{m: &x.EncryptedKeyshares})
+		value := protoreflect.ValueOfList(&_EncryptedKeysharesPacketData_4_list{list: &x.EncryptedKeyshares})
 		if !f(fd_EncryptedKeysharesPacketData_encrypted_keyshares, value) {
 			return
 		}
@@ -6791,10 +6751,10 @@ func (x *fastReflection_EncryptedKeysharesPacketData) Get(descriptor protoreflec
 		return protoreflect.ValueOfString(value)
 	case "fairyring.keyshare.EncryptedKeysharesPacketData.encrypted_keyshares":
 		if len(x.EncryptedKeyshares) == 0 {
-			return protoreflect.ValueOfMap(&_EncryptedKeysharesPacketData_4_map{})
+			return protoreflect.ValueOfList(&_EncryptedKeysharesPacketData_4_list{})
 		}
-		mapValue := &_EncryptedKeysharesPacketData_4_map{m: &x.EncryptedKeyshares}
-		return protoreflect.ValueOfMap(mapValue)
+		listValue := &_EncryptedKeysharesPacketData_4_list{list: &x.EncryptedKeyshares}
+		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.EncryptedKeysharesPacketData"))
@@ -6822,9 +6782,9 @@ func (x *fastReflection_EncryptedKeysharesPacketData) Set(fd protoreflect.FieldD
 	case "fairyring.keyshare.EncryptedKeysharesPacketData.request_id":
 		x.RequestId = value.Interface().(string)
 	case "fairyring.keyshare.EncryptedKeysharesPacketData.encrypted_keyshares":
-		mv := value.Map()
-		cmv := mv.(*_EncryptedKeysharesPacketData_4_map)
-		x.EncryptedKeyshares = *cmv.m
+		lv := value.List()
+		clv := lv.(*_EncryptedKeysharesPacketData_4_list)
+		x.EncryptedKeyshares = *clv.list
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.EncryptedKeysharesPacketData"))
@@ -6847,10 +6807,10 @@ func (x *fastReflection_EncryptedKeysharesPacketData) Mutable(fd protoreflect.Fi
 	switch fd.FullName() {
 	case "fairyring.keyshare.EncryptedKeysharesPacketData.encrypted_keyshares":
 		if x.EncryptedKeyshares == nil {
-			x.EncryptedKeyshares = make(map[string]*common.KeyshareList)
+			x.EncryptedKeyshares = []*common.EncryptedKeyshare{}
 		}
-		value := &_EncryptedKeysharesPacketData_4_map{m: &x.EncryptedKeyshares}
-		return protoreflect.ValueOfMap(value)
+		value := &_EncryptedKeysharesPacketData_4_list{list: &x.EncryptedKeyshares}
+		return protoreflect.ValueOfList(value)
 	case "fairyring.keyshare.EncryptedKeysharesPacketData.identity":
 		panic(fmt.Errorf("field identity of message fairyring.keyshare.EncryptedKeysharesPacketData is not mutable"))
 	case "fairyring.keyshare.EncryptedKeysharesPacketData.pubkey":
@@ -6877,8 +6837,8 @@ func (x *fastReflection_EncryptedKeysharesPacketData) NewField(fd protoreflect.F
 	case "fairyring.keyshare.EncryptedKeysharesPacketData.request_id":
 		return protoreflect.ValueOfString("")
 	case "fairyring.keyshare.EncryptedKeysharesPacketData.encrypted_keyshares":
-		m := make(map[string]*common.KeyshareList)
-		return protoreflect.ValueOfMap(&_EncryptedKeysharesPacketData_4_map{m: &m})
+		list := []*common.EncryptedKeyshare{}
+		return protoreflect.ValueOfList(&_EncryptedKeysharesPacketData_4_list{list: &list})
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.EncryptedKeysharesPacketData"))
@@ -6961,29 +6921,9 @@ func (x *fastReflection_EncryptedKeysharesPacketData) ProtoMethods() *protoiface
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		if len(x.EncryptedKeyshares) > 0 {
-			SiZeMaP := func(k string, v *common.KeyshareList) {
-				l := 0
-				if v != nil {
-					l = options.Size(v)
-				}
-				l += 1 + runtime.Sov(uint64(l))
-				mapEntrySize := 1 + len(k) + runtime.Sov(uint64(len(k))) + l
-				n += mapEntrySize + 1 + runtime.Sov(uint64(mapEntrySize))
-			}
-			if options.Deterministic {
-				sortme := make([]string, 0, len(x.EncryptedKeyshares))
-				for k := range x.EncryptedKeyshares {
-					sortme = append(sortme, k)
-				}
-				sort.Strings(sortme)
-				for _, k := range sortme {
-					v := x.EncryptedKeyshares[k]
-					SiZeMaP(k, v)
-				}
-			} else {
-				for k, v := range x.EncryptedKeyshares {
-					SiZeMaP(k, v)
-				}
+			for _, e := range x.EncryptedKeyshares {
+				l = options.Size(e)
+				n += 1 + l + runtime.Sov(uint64(l))
 			}
 		}
 		if x.unknownFields != nil {
@@ -7016,9 +6956,8 @@ func (x *fastReflection_EncryptedKeysharesPacketData) ProtoMethods() *protoiface
 			copy(dAtA[i:], x.unknownFields)
 		}
 		if len(x.EncryptedKeyshares) > 0 {
-			MaRsHaLmAp := func(k string, v *common.KeyshareList) (protoiface.MarshalOutput, error) {
-				baseI := i
-				encoded, err := options.Marshal(v)
+			for iNdEx := len(x.EncryptedKeyshares) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.EncryptedKeyshares[iNdEx])
 				if err != nil {
 					return protoiface.MarshalOutput{
 						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -7029,40 +6968,7 @@ func (x *fastReflection_EncryptedKeysharesPacketData) ProtoMethods() *protoiface
 				copy(dAtA[i:], encoded)
 				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 				i--
-				dAtA[i] = 0x12
-				i -= len(k)
-				copy(dAtA[i:], k)
-				i = runtime.EncodeVarint(dAtA, i, uint64(len(k)))
-				i--
-				dAtA[i] = 0xa
-				i = runtime.EncodeVarint(dAtA, i, uint64(baseI-i))
-				i--
 				dAtA[i] = 0x22
-				return protoiface.MarshalOutput{}, nil
-			}
-			if options.Deterministic {
-				keysForEncryptedKeyshares := make([]string, 0, len(x.EncryptedKeyshares))
-				for k := range x.EncryptedKeyshares {
-					keysForEncryptedKeyshares = append(keysForEncryptedKeyshares, string(k))
-				}
-				sort.Slice(keysForEncryptedKeyshares, func(i, j int) bool {
-					return keysForEncryptedKeyshares[i] < keysForEncryptedKeyshares[j]
-				})
-				for iNdEx := len(keysForEncryptedKeyshares) - 1; iNdEx >= 0; iNdEx-- {
-					v := x.EncryptedKeyshares[string(keysForEncryptedKeyshares[iNdEx])]
-					out, err := MaRsHaLmAp(keysForEncryptedKeyshares[iNdEx], v)
-					if err != nil {
-						return out, err
-					}
-				}
-			} else {
-				for k := range x.EncryptedKeyshares {
-					v := x.EncryptedKeyshares[k]
-					out, err := MaRsHaLmAp(k, v)
-					if err != nil {
-						return out, err
-					}
-				}
 			}
 		}
 		if len(x.RequestId) > 0 {
@@ -7260,105 +7166,10 @@ func (x *fastReflection_EncryptedKeysharesPacketData) ProtoMethods() *protoiface
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				if x.EncryptedKeyshares == nil {
-					x.EncryptedKeyshares = make(map[string]*common.KeyshareList)
+				x.EncryptedKeyshares = append(x.EncryptedKeyshares, &common.EncryptedKeyshare{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.EncryptedKeyshares[len(x.EncryptedKeyshares)-1]); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
-				var mapkey string
-				var mapvalue *common.KeyshareList
-				for iNdEx < postIndex {
-					entryPreIndex := iNdEx
-					var wire uint64
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-						}
-						if iNdEx >= l {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						wire |= uint64(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					fieldNum := int32(wire >> 3)
-					if fieldNum == 1 {
-						var stringLenmapkey uint64
-						for shift := uint(0); ; shift += 7 {
-							if shift >= 64 {
-								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-							}
-							if iNdEx >= l {
-								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-							}
-							b := dAtA[iNdEx]
-							iNdEx++
-							stringLenmapkey |= uint64(b&0x7F) << shift
-							if b < 0x80 {
-								break
-							}
-						}
-						intStringLenmapkey := int(stringLenmapkey)
-						if intStringLenmapkey < 0 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-						}
-						postStringIndexmapkey := iNdEx + intStringLenmapkey
-						if postStringIndexmapkey < 0 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-						}
-						if postStringIndexmapkey > l {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-						}
-						mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
-						iNdEx = postStringIndexmapkey
-					} else if fieldNum == 2 {
-						var mapmsglen int
-						for shift := uint(0); ; shift += 7 {
-							if shift >= 64 {
-								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-							}
-							if iNdEx >= l {
-								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-							}
-							b := dAtA[iNdEx]
-							iNdEx++
-							mapmsglen |= int(b&0x7F) << shift
-							if b < 0x80 {
-								break
-							}
-						}
-						if mapmsglen < 0 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-						}
-						postmsgIndex := iNdEx + mapmsglen
-						if postmsgIndex < 0 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-						}
-						if postmsgIndex > l {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-						}
-						mapvalue = &common.KeyshareList{}
-						if err := options.Unmarshal(dAtA[iNdEx:postmsgIndex], mapvalue); err != nil {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-						}
-						iNdEx = postmsgIndex
-					} else {
-						iNdEx = entryPreIndex
-						skippy, err := runtime.Skip(dAtA[iNdEx:])
-						if err != nil {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-						}
-						if (skippy < 0) || (iNdEx+skippy) < 0 {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-						}
-						if (iNdEx + skippy) > postIndex {
-							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-						}
-						iNdEx += skippy
-					}
-				}
-				x.EncryptedKeyshares[mapkey] = mapvalue
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -9287,10 +9098,10 @@ type EncryptedKeysharesPacketData struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Identity           string                          `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
-	Pubkey             string                          `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
-	RequestId          string                          `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	EncryptedKeyshares map[string]*common.KeyshareList `protobuf:"bytes,4,rep,name=encrypted_keyshares,json=encryptedKeyshares,proto3" json:"encrypted_keyshares,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Identity           string                      `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
+	Pubkey             string                      `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
+	RequestId          string                      `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	EncryptedKeyshares []*common.EncryptedKeyshare `protobuf:"bytes,4,rep,name=encrypted_keyshares,json=encryptedKeyshares,proto3" json:"encrypted_keyshares,omitempty"`
 }
 
 func (x *EncryptedKeysharesPacketData) Reset() {
@@ -9334,7 +9145,7 @@ func (x *EncryptedKeysharesPacketData) GetRequestId() string {
 	return ""
 }
 
-func (x *EncryptedKeysharesPacketData) GetEncryptedKeyshares() map[string]*common.KeyshareList {
+func (x *EncryptedKeysharesPacketData) GetEncryptedKeyshares() []*common.EncryptedKeyshare {
 	if x != nil {
 		return x.EncryptedKeyshares
 	}
@@ -9566,53 +9377,44 @@ var file_fairyring_keyshare_packet_proto_rawDesc = []byte{
 	0x72, 0x65, 0x74, 0x72, 0x69, 0x65, 0x73, 0x18, 0x07, 0x20, 0x01, 0x28, 0x04, 0x52, 0x07, 0x72,
 	0x65, 0x74, 0x72, 0x69, 0x65, 0x73, 0x22, 0x1b, 0x0a, 0x19, 0x41, 0x67, 0x67, 0x72, 0x4b, 0x65,
 	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x44, 0x61, 0x74, 0x61, 0x50, 0x61, 0x63, 0x6b, 0x65, 0x74,
-	0x41, 0x63, 0x6b, 0x22, 0xd3, 0x02, 0x0a, 0x1c, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65,
+	0x41, 0x63, 0x6b, 0x22, 0xc7, 0x01, 0x0a, 0x1c, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65,
 	0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x50, 0x61, 0x63, 0x6b, 0x65, 0x74,
 	0x44, 0x61, 0x74, 0x61, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79,
 	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79,
 	0x12, 0x16, 0x0a, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
 	0x52, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75,
 	0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x79, 0x0a, 0x13, 0x65, 0x6e, 0x63, 0x72, 0x79,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x54, 0x0a, 0x13, 0x65, 0x6e, 0x63, 0x72, 0x79,
 	0x70, 0x74, 0x65, 0x64, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18, 0x04,
-	0x20, 0x03, 0x28, 0x0b, 0x32, 0x48, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
-	0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70,
-	0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x50, 0x61, 0x63, 0x6b,
-	0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64,
-	0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x12,
-	0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
-	0x65, 0x73, 0x1a, 0x65, 0x0a, 0x17, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b,
-	0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a,
-	0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12,
-	0x34, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1e,
-	0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f,
-	0x6e, 0x2e, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x05,
-	0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x1d, 0x0a, 0x1b, 0x45, 0x6e, 0x63,
-	0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x50,
-	0x61, 0x63, 0x6b, 0x65, 0x74, 0x41, 0x63, 0x6b, 0x22, 0x17, 0x0a, 0x15, 0x43, 0x75, 0x72, 0x72,
-	0x65, 0x6e, 0x74, 0x4b, 0x65, 0x79, 0x73, 0x50, 0x61, 0x63, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74,
-	0x61, 0x22, 0x98, 0x01, 0x0a, 0x14, 0x43, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x4b, 0x65, 0x79,
-	0x73, 0x50, 0x61, 0x63, 0x6b, 0x65, 0x74, 0x41, 0x63, 0x6b, 0x12, 0x3f, 0x0a, 0x09, 0x61, 0x63,
-	0x74, 0x69, 0x76, 0x65, 0x4b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e,
-	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e,
-	0x2e, 0x41, 0x63, 0x74, 0x69, 0x76, 0x65, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79,
-	0x52, 0x09, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x4b, 0x65, 0x79, 0x12, 0x3f, 0x0a, 0x09, 0x71,
-	0x75, 0x65, 0x75, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21,
-	0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f,
-	0x6e, 0x2e, 0x51, 0x75, 0x65, 0x75, 0x65, 0x64, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65,
-	0x79, 0x52, 0x09, 0x71, 0x75, 0x65, 0x75, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x42, 0xb3, 0x01, 0x0a,
-	0x16, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b,
-	0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x42, 0x0b, 0x50, 0x61, 0x63, 0x6b, 0x65, 0x74, 0x50,
-	0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x23, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64,
-	0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
-	0x6e, 0x67, 0x2f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xa2, 0x02, 0x03, 0x46, 0x4b,
-	0x58, 0xaa, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x4b, 0x65,
-	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xca, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
-	0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xe2, 0x02, 0x1e, 0x46, 0x61,
-	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65,
-	0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x13, 0x46,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61,
-	0x72, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
+	0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65,
+	0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x52, 0x12, 0x65, 0x6e, 0x63, 0x72, 0x79,
+	0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x22, 0x1d, 0x0a,
+	0x1b, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61,
+	0x72, 0x65, 0x73, 0x50, 0x61, 0x63, 0x6b, 0x65, 0x74, 0x41, 0x63, 0x6b, 0x22, 0x17, 0x0a, 0x15,
+	0x43, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x4b, 0x65, 0x79, 0x73, 0x50, 0x61, 0x63, 0x6b, 0x65,
+	0x74, 0x44, 0x61, 0x74, 0x61, 0x22, 0x98, 0x01, 0x0a, 0x14, 0x43, 0x75, 0x72, 0x72, 0x65, 0x6e,
+	0x74, 0x4b, 0x65, 0x79, 0x73, 0x50, 0x61, 0x63, 0x6b, 0x65, 0x74, 0x41, 0x63, 0x6b, 0x12, 0x3f,
+	0x0a, 0x09, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x4b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x21, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f,
+	0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x76, 0x65, 0x50, 0x75, 0x62, 0x6c, 0x69,
+	0x63, 0x4b, 0x65, 0x79, 0x52, 0x09, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x4b, 0x65, 0x79, 0x12,
+	0x3f, 0x0a, 0x09, 0x71, 0x75, 0x65, 0x75, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x21, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63,
+	0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x75, 0x65, 0x64, 0x50, 0x75, 0x62, 0x6c,
+	0x69, 0x63, 0x4b, 0x65, 0x79, 0x52, 0x09, 0x71, 0x75, 0x65, 0x75, 0x65, 0x64, 0x4b, 0x65, 0x79,
+	0x42, 0xb3, 0x01, 0x0a, 0x16, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x42, 0x0b, 0x50, 0x61, 0x63,
+	0x6b, 0x65, 0x74, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x23, 0x63, 0x6f, 0x73, 0x6d,
+	0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69,
+	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xa2,
+	0x02, 0x03, 0x46, 0x4b, 0x58, 0xaa, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
+	0x67, 0x2e, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xca, 0x02, 0x12, 0x46, 0x61, 0x69,
+	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xe2,
+	0x02, 0x1e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73,
+	0x68, 0x61, 0x72, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61,
+	0xea, 0x02, 0x13, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x4b, 0x65,
+	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -9627,7 +9429,7 @@ func file_fairyring_keyshare_packet_proto_rawDescGZIP() []byte {
 	return file_fairyring_keyshare_packet_proto_rawDescData
 }
 
-var file_fairyring_keyshare_packet_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_fairyring_keyshare_packet_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_fairyring_keyshare_packet_proto_goTypes = []interface{}{
 	(*KeysharePacketData)(nil),               // 0: fairyring.keyshare.KeysharePacketData
 	(*NoData)(nil),                           // 1: fairyring.keyshare.NoData
@@ -9645,11 +9447,10 @@ var file_fairyring_keyshare_packet_proto_goTypes = []interface{}{
 	(*EncryptedKeysharesPacketAck)(nil),      // 13: fairyring.keyshare.EncryptedKeysharesPacketAck
 	(*CurrentKeysPacketData)(nil),            // 14: fairyring.keyshare.CurrentKeysPacketData
 	(*CurrentKeysPacketAck)(nil),             // 15: fairyring.keyshare.CurrentKeysPacketAck
-	nil,                                      // 16: fairyring.keyshare.EncryptedKeysharesPacketData.EncryptedKeysharesEntry
-	(*durationpb.Duration)(nil),              // 17: google.protobuf.Duration
+	(*durationpb.Duration)(nil),              // 16: google.protobuf.Duration
+	(*common.EncryptedKeyshare)(nil),         // 17: fairyring.common.EncryptedKeyshare
 	(*common.ActivePublicKey)(nil),           // 18: fairyring.common.ActivePublicKey
 	(*common.QueuedPublicKey)(nil),           // 19: fairyring.common.QueuedPublicKey
-	(*common.KeyshareList)(nil),              // 20: fairyring.common.KeyshareList
 }
 var file_fairyring_keyshare_packet_proto_depIdxs = []int32{
 	1,  // 0: fairyring.keyshare.KeysharePacketData.noData:type_name -> fairyring.keyshare.NoData
@@ -9660,16 +9461,15 @@ var file_fairyring_keyshare_packet_proto_depIdxs = []int32{
 	14, // 5: fairyring.keyshare.KeysharePacketData.currentKeysPacket:type_name -> fairyring.keyshare.CurrentKeysPacketData
 	3,  // 6: fairyring.keyshare.KeysharePacketData.request_priv_keyshare_packet:type_name -> fairyring.keyshare.RequestPrivateKeysharePacketData
 	8,  // 7: fairyring.keyshare.KeysharePacketData.getPrivateKeysharePacket:type_name -> fairyring.keyshare.GetPrivateKeysharePacketData
-	17, // 8: fairyring.keyshare.RequestAggrKeysharePacketData.estimated_delay:type_name -> google.protobuf.Duration
-	16, // 9: fairyring.keyshare.EncryptedKeysharesPacketData.encrypted_keyshares:type_name -> fairyring.keyshare.EncryptedKeysharesPacketData.EncryptedKeysharesEntry
+	16, // 8: fairyring.keyshare.RequestAggrKeysharePacketData.estimated_delay:type_name -> google.protobuf.Duration
+	17, // 9: fairyring.keyshare.EncryptedKeysharesPacketData.encrypted_keyshares:type_name -> fairyring.common.EncryptedKeyshare
 	18, // 10: fairyring.keyshare.CurrentKeysPacketAck.activeKey:type_name -> fairyring.common.ActivePublicKey
 	19, // 11: fairyring.keyshare.CurrentKeysPacketAck.queuedKey:type_name -> fairyring.common.QueuedPublicKey
-	20, // 12: fairyring.keyshare.EncryptedKeysharesPacketData.EncryptedKeysharesEntry.value:type_name -> fairyring.common.KeyshareList
-	13, // [13:13] is the sub-list for method output_type
-	13, // [13:13] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_fairyring_keyshare_packet_proto_init() }
@@ -9891,7 +9691,7 @@ func file_fairyring_keyshare_packet_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_fairyring_keyshare_packet_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   17,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

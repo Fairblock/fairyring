@@ -172,5 +172,5 @@ message QueryShowPrivateKeyshareReqResponse {
   string req_id = 2;
   string pubkey = 3;
   cosmos.base.v1beta1.Coin amount  = 4 [(gogoproto.nullable) = false];
-  map<string, fairyring.common.KeyshareList> encrypted_keyshares = 5;
+  repeated fairyring.common.EncryptedKeyshare encrypted_keyshares = 5;
 }

@@ -61,6 +61,7 @@ message RequestPrivateKeyshare {
   string request_id = 2;
 }
 
-message KeyshareList {
-  repeated string values = 1;
+message EncryptedKeyshare {
+  string requester = 1;
+  repeated string private_keyshares = 2;
 }

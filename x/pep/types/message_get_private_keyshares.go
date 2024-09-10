@@ -8,10 +8,11 @@ import (
 
 var _ sdk.Msg = &MsgGetPrivateKeyshares{}
 
-func NewMsgGetPrivateKeyshares(creator string, reqId string) *MsgGetPrivateKeyshares {
+func NewMsgGetPrivateKeyshares(creator string, reqId string, pubkey string) *MsgGetPrivateKeyshares {
 	return &MsgGetPrivateKeyshares{
-		Creator: creator,
-		ReqId:   reqId,
+		Creator:      creator,
+		ReqId:        reqId,
+		Rsa_64Pubkey: pubkey,
 	}
 }
 
