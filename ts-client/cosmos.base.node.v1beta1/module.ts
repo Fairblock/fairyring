@@ -6,13 +6,19 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { ConfigResponse } from "./types/../../../../../pkg/mod/github.com/!fairblock/cosmos-sdk@v0.50.8-fairyring/proto/cosmos/base/node/v1beta1/query";
-import { StatusRequest } from "./types/../../../../../pkg/mod/github.com/!fairblock/cosmos-sdk@v0.50.8-fairyring/proto/cosmos/base/node/v1beta1/query";
-import { StatusResponse } from "./types/../../../../../pkg/mod/github.com/!fairblock/cosmos-sdk@v0.50.8-fairyring/proto/cosmos/base/node/v1beta1/query";
-import { ConfigRequest } from "./types/../../../../../pkg/mod/github.com/!fairblock/cosmos-sdk@v0.50.8-fairyring/proto/cosmos/base/node/v1beta1/query";
+import { ConfigRequest } from "./types/cosmos/base/node/v1beta1/query";
+import { ConfigResponse } from "./types/cosmos/base/node/v1beta1/query";
+import { StatusRequest } from "./types/cosmos/base/node/v1beta1/query";
+import { StatusResponse } from "./types/cosmos/base/node/v1beta1/query";
 
 
-export { ConfigResponse, StatusRequest, StatusResponse, ConfigRequest };
+export { ConfigRequest, ConfigResponse, StatusRequest, StatusResponse };
+
+type sendConfigRequestParams = {
+  value: ConfigRequest,
+  fee?: StdFee,
+  memo?: string
+};
 
 type sendConfigResponseParams = {
   value: ConfigResponse,
@@ -32,12 +38,10 @@ type sendStatusResponseParams = {
   memo?: string
 };
 
-type sendConfigRequestParams = {
-  value: ConfigRequest,
-  fee?: StdFee,
-  memo?: string
-};
 
+type configRequestParams = {
+  value: ConfigRequest,
+};
 
 type configResponseParams = {
   value: ConfigResponse,
@@ -49,10 +53,6 @@ type statusRequestParams = {
 
 type statusResponseParams = {
   value: StatusResponse,
-};
-
-type configRequestParams = {
-  value: ConfigRequest,
 };
 
 
@@ -84,6 +84,20 @@ interface TxClientOptions {
 export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "http://localhost:26657", prefix: "cosmos" }) => {
 
   return {
+		
+		async sendConfigRequest({ value, fee, memo }: sendConfigRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendConfigRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.configRequest({ value: ConfigRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendConfigRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
 		
 		async sendConfigResponse({ value, fee, memo }: sendConfigResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
@@ -127,20 +141,14 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendConfigRequest({ value, fee, memo }: sendConfigRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendConfigRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.configRequest({ value: ConfigRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+		
+		configRequest({ value }: configRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/cosmos.base.node.v1beta1.ConfigRequest", value: ConfigRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:sendConfigRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:ConfigRequest: Could not create message: ' + e.message)
 			}
 		},
-		
 		
 		configResponse({ value }: configResponseParams): EncodeObject {
 			try {
@@ -163,14 +171,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/cosmos.base.node.v1beta1.StatusResponse", value: StatusResponse.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:StatusResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		configRequest({ value }: configRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/cosmos.base.node.v1beta1.ConfigRequest", value: ConfigRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:ConfigRequest: Could not create message: ' + e.message)
 			}
 		},
 		
