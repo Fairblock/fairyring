@@ -7,7 +7,8 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
-import { ActivePublicKey, QueuedPublicKey } from "../common/shared_types";
+import { Coin } from "../../cosmos/base/v1beta1/coin";
+import { ActivePublicKey, EncryptedKeyshare, QueuedPublicKey } from "../common/shared_types";
 import { EncryptedTx, EncryptedTxArray, GenEncTxExecutionQueue } from "./encrypted_tx";
 import { Params } from "./params";
 import { PepNonce } from "./pep_nonce";
@@ -98,6 +99,26 @@ export interface QueryPubKeyRequest {
 export interface QueryPubKeyResponse {
   activePubKey: ActivePublicKey | undefined;
   queuedPubKey: QueuedPublicKey | undefined;
+}
+
+export interface QueryShowPrivateKeyshareReqRequest {
+  reqId: string;
+}
+
+export interface QueryShowPrivateKeyshareReqResponse {
+  creator: string;
+  reqId: string;
+  pubkey: string;
+  amount: Coin | undefined;
+  encryptedKeyshares: EncryptedKeyshare[];
+}
+
+export interface QueryDecryptDataRequest {
+  aggrKeyshare: string;
+  encryptedData: string;
+}
+
+export interface QueryDecryptDataResponse {
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -1323,6 +1344,311 @@ export const QueryPubKeyResponse = {
   },
 };
 
+function createBaseQueryShowPrivateKeyshareReqRequest(): QueryShowPrivateKeyshareReqRequest {
+  return { reqId: "" };
+}
+
+export const QueryShowPrivateKeyshareReqRequest = {
+  encode(message: QueryShowPrivateKeyshareReqRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.reqId !== "") {
+      writer.uint32(10).string(message.reqId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryShowPrivateKeyshareReqRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryShowPrivateKeyshareReqRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.reqId = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryShowPrivateKeyshareReqRequest {
+    return { reqId: isSet(object.reqId) ? globalThis.String(object.reqId) : "" };
+  },
+
+  toJSON(message: QueryShowPrivateKeyshareReqRequest): unknown {
+    const obj: any = {};
+    if (message.reqId !== "") {
+      obj.reqId = message.reqId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryShowPrivateKeyshareReqRequest>, I>>(
+    base?: I,
+  ): QueryShowPrivateKeyshareReqRequest {
+    return QueryShowPrivateKeyshareReqRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryShowPrivateKeyshareReqRequest>, I>>(
+    object: I,
+  ): QueryShowPrivateKeyshareReqRequest {
+    const message = createBaseQueryShowPrivateKeyshareReqRequest();
+    message.reqId = object.reqId ?? "";
+    return message;
+  },
+};
+
+function createBaseQueryShowPrivateKeyshareReqResponse(): QueryShowPrivateKeyshareReqResponse {
+  return { creator: "", reqId: "", pubkey: "", amount: undefined, encryptedKeyshares: [] };
+}
+
+export const QueryShowPrivateKeyshareReqResponse = {
+  encode(message: QueryShowPrivateKeyshareReqResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.reqId !== "") {
+      writer.uint32(18).string(message.reqId);
+    }
+    if (message.pubkey !== "") {
+      writer.uint32(26).string(message.pubkey);
+    }
+    if (message.amount !== undefined) {
+      Coin.encode(message.amount, writer.uint32(34).fork()).ldelim();
+    }
+    for (const v of message.encryptedKeyshares) {
+      EncryptedKeyshare.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryShowPrivateKeyshareReqResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryShowPrivateKeyshareReqResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.creator = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.reqId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.pubkey = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.amount = Coin.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.encryptedKeyshares.push(EncryptedKeyshare.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryShowPrivateKeyshareReqResponse {
+    return {
+      creator: isSet(object.creator) ? globalThis.String(object.creator) : "",
+      reqId: isSet(object.reqId) ? globalThis.String(object.reqId) : "",
+      pubkey: isSet(object.pubkey) ? globalThis.String(object.pubkey) : "",
+      amount: isSet(object.amount) ? Coin.fromJSON(object.amount) : undefined,
+      encryptedKeyshares: globalThis.Array.isArray(object?.encryptedKeyshares)
+        ? object.encryptedKeyshares.map((e: any) => EncryptedKeyshare.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: QueryShowPrivateKeyshareReqResponse): unknown {
+    const obj: any = {};
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.reqId !== "") {
+      obj.reqId = message.reqId;
+    }
+    if (message.pubkey !== "") {
+      obj.pubkey = message.pubkey;
+    }
+    if (message.amount !== undefined) {
+      obj.amount = Coin.toJSON(message.amount);
+    }
+    if (message.encryptedKeyshares?.length) {
+      obj.encryptedKeyshares = message.encryptedKeyshares.map((e) => EncryptedKeyshare.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryShowPrivateKeyshareReqResponse>, I>>(
+    base?: I,
+  ): QueryShowPrivateKeyshareReqResponse {
+    return QueryShowPrivateKeyshareReqResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryShowPrivateKeyshareReqResponse>, I>>(
+    object: I,
+  ): QueryShowPrivateKeyshareReqResponse {
+    const message = createBaseQueryShowPrivateKeyshareReqResponse();
+    message.creator = object.creator ?? "";
+    message.reqId = object.reqId ?? "";
+    message.pubkey = object.pubkey ?? "";
+    message.amount = (object.amount !== undefined && object.amount !== null)
+      ? Coin.fromPartial(object.amount)
+      : undefined;
+    message.encryptedKeyshares = object.encryptedKeyshares?.map((e) => EncryptedKeyshare.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseQueryDecryptDataRequest(): QueryDecryptDataRequest {
+  return { aggrKeyshare: "", encryptedData: "" };
+}
+
+export const QueryDecryptDataRequest = {
+  encode(message: QueryDecryptDataRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.aggrKeyshare !== "") {
+      writer.uint32(10).string(message.aggrKeyshare);
+    }
+    if (message.encryptedData !== "") {
+      writer.uint32(18).string(message.encryptedData);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryDecryptDataRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryDecryptDataRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.aggrKeyshare = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.encryptedData = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryDecryptDataRequest {
+    return {
+      aggrKeyshare: isSet(object.aggrKeyshare) ? globalThis.String(object.aggrKeyshare) : "",
+      encryptedData: isSet(object.encryptedData) ? globalThis.String(object.encryptedData) : "",
+    };
+  },
+
+  toJSON(message: QueryDecryptDataRequest): unknown {
+    const obj: any = {};
+    if (message.aggrKeyshare !== "") {
+      obj.aggrKeyshare = message.aggrKeyshare;
+    }
+    if (message.encryptedData !== "") {
+      obj.encryptedData = message.encryptedData;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryDecryptDataRequest>, I>>(base?: I): QueryDecryptDataRequest {
+    return QueryDecryptDataRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryDecryptDataRequest>, I>>(object: I): QueryDecryptDataRequest {
+    const message = createBaseQueryDecryptDataRequest();
+    message.aggrKeyshare = object.aggrKeyshare ?? "";
+    message.encryptedData = object.encryptedData ?? "";
+    return message;
+  },
+};
+
+function createBaseQueryDecryptDataResponse(): QueryDecryptDataResponse {
+  return {};
+}
+
+export const QueryDecryptDataResponse = {
+  encode(_: QueryDecryptDataResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryDecryptDataResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryDecryptDataResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryDecryptDataResponse {
+    return {};
+  },
+
+  toJSON(_: QueryDecryptDataResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryDecryptDataResponse>, I>>(base?: I): QueryDecryptDataResponse {
+    return QueryDecryptDataResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryDecryptDataResponse>, I>>(_: I): QueryDecryptDataResponse {
+    const message = createBaseQueryDecryptDataResponse();
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1345,6 +1671,10 @@ export interface Query {
   PubKey(request: QueryPubKeyRequest): Promise<QueryPubKeyResponse>;
   KeyshareReq(request: QueryKeyshareRequest): Promise<QueryKeyshareResponse>;
   KeyshareReqAll(request: QueryAllKeyshareRequest): Promise<QueryAllKeyshareResponse>;
+  /** Queries a list of ShowPrivateKeyshareReq items. */
+  ShowPrivateKeyshareReq(request: QueryShowPrivateKeyshareReqRequest): Promise<QueryShowPrivateKeyshareReqResponse>;
+  /** Queries a list of DecryptData items. */
+  DecryptData(request: QueryDecryptDataRequest): Promise<QueryDecryptDataResponse>;
 }
 
 export const QueryServiceName = "fairyring.pep.Query";
@@ -1364,6 +1694,8 @@ export class QueryClientImpl implements Query {
     this.PubKey = this.PubKey.bind(this);
     this.KeyshareReq = this.KeyshareReq.bind(this);
     this.KeyshareReqAll = this.KeyshareReqAll.bind(this);
+    this.ShowPrivateKeyshareReq = this.ShowPrivateKeyshareReq.bind(this);
+    this.DecryptData = this.DecryptData.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -1425,6 +1757,18 @@ export class QueryClientImpl implements Query {
     const data = QueryAllKeyshareRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "KeyshareReqAll", data);
     return promise.then((data) => QueryAllKeyshareResponse.decode(_m0.Reader.create(data)));
+  }
+
+  ShowPrivateKeyshareReq(request: QueryShowPrivateKeyshareReqRequest): Promise<QueryShowPrivateKeyshareReqResponse> {
+    const data = QueryShowPrivateKeyshareReqRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ShowPrivateKeyshareReq", data);
+    return promise.then((data) => QueryShowPrivateKeyshareReqResponse.decode(_m0.Reader.create(data)));
+  }
+
+  DecryptData(request: QueryDecryptDataRequest): Promise<QueryDecryptDataResponse> {
+    const data = QueryDecryptDataRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "DecryptData", data);
+    return promise.then((data) => QueryDecryptDataResponse.decode(_m0.Reader.create(data)));
   }
 }
 

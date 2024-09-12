@@ -275,146 +275,6 @@ export default {
 		},
 		
 		
-		async sendQueryDenomTraceResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendQueryDenomTraceResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDenomTraceResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryDenomTraceResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryDenomHashResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendQueryDenomHashResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDenomHashResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryDenomHashResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgUpdateParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendMsgUpdateParams({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgUpdateParams:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendAllocation({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendAllocation({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Allocation:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Allocation:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgTransferResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendMsgTransferResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgTransferResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgTransferResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendGenesisState({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendGenesisState({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:GenesisState:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryDenomHashRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendQueryDenomHashRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDenomHashRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryDenomHashRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryDenomTracesResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendQueryDenomTracesResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDenomTracesResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryDenomTracesResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendDenomTrace({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendDenomTrace({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:DenomTrace:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:DenomTrace:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendParams({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Params:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendQueryDenomTraceRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -426,104 +286,6 @@ export default {
 					throw new Error('TxClient:QueryDenomTraceRequest:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:QueryDenomTraceRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryEscrowAddressResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendQueryEscrowAddressResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryEscrowAddressResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryEscrowAddressResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryTotalEscrowForDenomRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendQueryTotalEscrowForDenomRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryTotalEscrowForDenomRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryTotalEscrowForDenomRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryTotalEscrowForDenomResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendQueryTotalEscrowForDenomResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryTotalEscrowForDenomResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryTotalEscrowForDenomResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgTransfer({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendMsgTransfer({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgTransfer:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgTransfer:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryParamsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendQueryParamsRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryParamsRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryParamsRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgUpdateParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendMsgUpdateParamsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgUpdateParamsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendTransferAuthorization({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsTransferV1.tx.sendTransferAuthorization({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:TransferAuthorization:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:TransferAuthorization:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -555,6 +317,230 @@ export default {
 				}
 			}
 		},
+		async sendQueryTotalEscrowForDenomRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendQueryTotalEscrowForDenomRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryTotalEscrowForDenomRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryTotalEscrowForDenomRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgUpdateParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendMsgUpdateParams({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgUpdateParams:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendDenomTrace({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendDenomTrace({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:DenomTrace:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:DenomTrace:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendGenesisState({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendGenesisState({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:GenesisState:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryParamsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendQueryParamsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryParamsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryParamsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgTransferResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendMsgTransferResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgTransferResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgTransferResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgUpdateParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendMsgUpdateParamsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgUpdateParamsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendAllocation({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendAllocation({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Allocation:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Allocation:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendTransferAuthorization({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendTransferAuthorization({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:TransferAuthorization:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:TransferAuthorization:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryDenomTraceResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendQueryDenomTraceResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDenomTraceResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryDenomTraceResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryTotalEscrowForDenomResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendQueryTotalEscrowForDenomResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryTotalEscrowForDenomResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryTotalEscrowForDenomResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryEscrowAddressResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendQueryEscrowAddressResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryEscrowAddressResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryEscrowAddressResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryDenomHashRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendQueryDenomHashRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDenomHashRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryDenomHashRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgTransfer({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendMsgTransfer({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgTransfer:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgTransfer:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendParams({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Params:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryDenomTracesResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendQueryDenomTracesResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDenomTracesResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryDenomTracesResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendQueryDenomTracesRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -569,137 +555,21 @@ export default {
 				}
 			}
 		},
-		
-		async QueryDenomTraceResponse({ rootGetters }, { value }) {
+		async sendQueryDenomHashResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.queryDenomTraceResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDenomTraceResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryDenomTraceResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryDenomHashResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.queryDenomHashResponse({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsTransferV1.tx.sendQueryDenomHashResponse({ value, fee: fullFee, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:QueryDenomHashResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryDenomHashResponse:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:QueryDenomHashResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async MsgUpdateParams({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.msgUpdateParams({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgUpdateParams:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Allocation({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.allocation({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Allocation:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Allocation:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgTransferResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.msgTransferResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgTransferResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgTransferResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async GenesisState({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.genesisState({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:GenesisState:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryDenomHashRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.queryDenomHashRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDenomHashRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryDenomHashRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryDenomTracesResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.queryDenomTracesResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDenomTracesResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryDenomTracesResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async DenomTrace({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.denomTrace({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:DenomTrace:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:DenomTrace:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Params({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.params({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Params:Create Could not create message: ' + e.message)
-				}
-			}
-		},
+		
 		async QueryDenomTraceRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -710,97 +580,6 @@ export default {
 					throw new Error('TxClient:QueryDenomTraceRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:QueryDenomTraceRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryEscrowAddressResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.queryEscrowAddressResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryEscrowAddressResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryEscrowAddressResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryTotalEscrowForDenomRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.queryTotalEscrowForDenomRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryTotalEscrowForDenomRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryTotalEscrowForDenomRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryTotalEscrowForDenomResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.queryTotalEscrowForDenomResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryTotalEscrowForDenomResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryTotalEscrowForDenomResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgTransfer({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.msgTransfer({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgTransfer:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgTransfer:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryParamsRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.queryParamsRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryParamsRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryParamsRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgUpdateParamsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.msgUpdateParamsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgUpdateParamsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async TransferAuthorization({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsTransferV1.tx.transferAuthorization({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:TransferAuthorization:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:TransferAuthorization:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -830,6 +609,214 @@ export default {
 				}
 			}
 		},
+		async QueryTotalEscrowForDenomRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.queryTotalEscrowForDenomRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryTotalEscrowForDenomRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryTotalEscrowForDenomRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgUpdateParams({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.msgUpdateParams({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgUpdateParams:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async DenomTrace({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.denomTrace({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:DenomTrace:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:DenomTrace:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async GenesisState({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.genesisState({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:GenesisState:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryParamsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.queryParamsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryParamsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryParamsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgTransferResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.msgTransferResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgTransferResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgTransferResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgUpdateParamsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.msgUpdateParamsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgUpdateParamsResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Allocation({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.allocation({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Allocation:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Allocation:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async TransferAuthorization({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.transferAuthorization({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:TransferAuthorization:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:TransferAuthorization:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryDenomTraceResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.queryDenomTraceResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDenomTraceResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryDenomTraceResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryTotalEscrowForDenomResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.queryTotalEscrowForDenomResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryTotalEscrowForDenomResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryTotalEscrowForDenomResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryEscrowAddressResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.queryEscrowAddressResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryEscrowAddressResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryEscrowAddressResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryDenomHashRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.queryDenomHashRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDenomHashRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryDenomHashRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgTransfer({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.msgTransfer({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgTransfer:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgTransfer:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Params({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.params({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Params:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryDenomTracesResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.queryDenomTracesResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDenomTracesResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryDenomTracesResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		async QueryDenomTracesRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -840,6 +827,19 @@ export default {
 					throw new Error('TxClient:QueryDenomTracesRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:QueryDenomTracesRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryDenomHashResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsTransferV1.tx.queryDenomHashResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDenomHashResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryDenomHashResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},

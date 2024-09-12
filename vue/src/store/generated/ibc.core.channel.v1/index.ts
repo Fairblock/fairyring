@@ -606,101 +606,17 @@ export default {
 		},
 		
 		
-		async sendMsgChannelOpenConfirm({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendPacketState({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenConfirm({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendPacketState({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenConfirm:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:PacketState:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgChannelOpenConfirm:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryConnectionChannelsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryConnectionChannelsRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryConnectionChannelsRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryConnectionChannelsRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryPacketReceiptRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketReceiptRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketReceiptRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryPacketReceiptRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryPacketAcknowledgementRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketAcknowledgementRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketAcknowledgementRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryPacketAcknowledgementRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgChannelOpenTryResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenTryResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenTryResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgChannelOpenTryResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendUpgrade({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendUpgrade({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Upgrade:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Upgrade:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendCounterparty({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendCounterparty({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Counterparty:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Counterparty:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:PacketState:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -718,31 +634,17 @@ export default {
 				}
 			}
 		},
-		async sendAcknowledgement({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgTimeoutOnClose({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendAcknowledgement({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendMsgTimeoutOnClose({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:Acknowledgement:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgTimeoutOnClose:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:Acknowledgement:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryNextSequenceSendResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryNextSequenceSendResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryNextSequenceSendResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryNextSequenceSendResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgTimeoutOnClose:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -760,563 +662,45 @@ export default {
 				}
 			}
 		},
-		async sendMsgChannelUpgradeAck({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgChannelUpgradeTry({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeAck({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeTry({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeAck:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelUpgradeTry:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgChannelUpgradeAck:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgChannelUpgradeTry:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendPacketSequence({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgChannelOpenTryResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendPacketSequence({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenTryResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:PacketSequence:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelOpenTryResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:PacketSequence:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgChannelOpenTryResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendQueryChannelsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgChannelUpgradeCancel({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelsRequest({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeCancel({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelsRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelUpgradeCancel:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:QueryChannelsRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryPacketCommitmentsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketCommitmentsRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketCommitmentsRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryPacketCommitmentsRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryUnreceivedPacketsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryUnreceivedPacketsRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUnreceivedPacketsRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryUnreceivedPacketsRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryNextSequenceSendRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryNextSequenceSendRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryNextSequenceSendRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryNextSequenceSendRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryUpgradeRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryUpgradeRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUpgradeRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryUpgradeRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryChannelParamsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelParamsRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelParamsRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryChannelParamsRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendPacketId({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendPacketId({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:PacketId:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:PacketId:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgChannelUpgradeInitResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeInitResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeInitResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgChannelUpgradeInitResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryChannelRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryChannelRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryConnectionChannelsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryConnectionChannelsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryConnectionChannelsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryConnectionChannelsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryPacketCommitmentResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketCommitmentResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketCommitmentResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryPacketCommitmentResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryUnreceivedAcksRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryUnreceivedAcksRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUnreceivedAcksRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryUnreceivedAcksRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgChannelCloseInitResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelCloseInitResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelCloseInitResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgChannelCloseInitResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgChannelUpgradeTryResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeTryResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeTryResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgChannelUpgradeTryResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgChannelOpenAck({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenAck({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenAck:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgChannelOpenAck:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgChannelUpgradeTimeout({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeTimeout({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeTimeout:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgChannelUpgradeTimeout:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryPacketAcknowledgementResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketAcknowledgementResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketAcknowledgementResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryPacketAcknowledgementResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryPacketAcknowledgementsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketAcknowledgementsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketAcknowledgementsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryPacketAcknowledgementsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryChannelParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelParamsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelParamsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryChannelParamsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryChannelConsensusStateResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelConsensusStateResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelConsensusStateResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryChannelConsensusStateResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryNextSequenceReceiveResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryNextSequenceReceiveResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryNextSequenceReceiveResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryNextSequenceReceiveResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryUpgradeErrorRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryUpgradeErrorRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUpgradeErrorRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryUpgradeErrorRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgRecvPacketResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgRecvPacketResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRecvPacketResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgRecvPacketResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgChannelUpgradeOpen({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeOpen({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeOpen:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgChannelUpgradeOpen:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgTimeoutResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgTimeoutResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgTimeoutResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgTimeoutResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgTimeout({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgTimeout({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgTimeout:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgTimeout:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryChannelsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryChannelsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgTimeoutOnCloseResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgTimeoutOnCloseResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgTimeoutOnCloseResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgTimeoutOnCloseResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryPacketCommitmentRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketCommitmentRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketCommitmentRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryPacketCommitmentRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendTimeout({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendTimeout({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Timeout:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Timeout:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgChannelOpenTry({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenTry({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenTry:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgChannelOpenTry:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgUpdateParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgUpdateParams({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgUpdateParams:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryChannelResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryChannelResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryPacketCommitmentsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketCommitmentsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketCommitmentsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryPacketCommitmentsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryNextSequenceReceiveRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryNextSequenceReceiveRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryNextSequenceReceiveRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryNextSequenceReceiveRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryUpgradeErrorResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryUpgradeErrorResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUpgradeErrorResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryUpgradeErrorResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgChannelUpgradeTimeoutResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeTimeoutResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeTimeoutResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgChannelUpgradeTimeoutResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgTimeoutOnClose({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgTimeoutOnClose({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgTimeoutOnClose:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgTimeoutOnClose:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgChannelUpgradeCancel:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -1334,59 +718,73 @@ export default {
 				}
 			}
 		},
-		async sendQueryPacketReceiptResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryChannelsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketReceiptResponse({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelsResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketReceiptResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryChannelsResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:QueryPacketReceiptResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryChannelsResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendMsgChannelOpenInitResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgChannelOpenConfirmResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenInitResponse({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenConfirmResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenInitResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelOpenConfirmResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgChannelOpenInitResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgChannelOpenConfirmResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendMsgChannelOpenInit({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgRecvPacketResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenInit({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendMsgRecvPacketResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenInit:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgRecvPacketResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgChannelOpenInit:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgRecvPacketResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendMsgChannelCloseConfirm({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgChannelOpenConfirm({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelCloseConfirm({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenConfirm({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelCloseConfirm:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelOpenConfirm:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgChannelCloseConfirm:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgChannelOpenConfirm:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgChannelUpgradeAck({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeAck({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelUpgradeAck:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgChannelUpgradeAck:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -1404,17 +802,17 @@ export default {
 				}
 			}
 		},
-		async sendQueryUnreceivedPacketsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgChannelUpgradeInitResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryUnreceivedPacketsResponse({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeInitResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUnreceivedPacketsResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelUpgradeInitResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:QueryUnreceivedPacketsResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgChannelUpgradeInitResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -1446,87 +844,17 @@ export default {
 				}
 			}
 		},
-		async sendPacket({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgPruneAcknowledgementsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendPacket({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendMsgPruneAcknowledgementsResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:Packet:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgPruneAcknowledgementsResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:Packet:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendUpgradeFields({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendUpgradeFields({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:UpgradeFields:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:UpgradeFields:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgChannelCloseInit({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelCloseInit({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelCloseInit:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgChannelCloseInit:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgPruneAcknowledgements({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgPruneAcknowledgements({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPruneAcknowledgements:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgPruneAcknowledgements:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryChannelClientStateRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelClientStateRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelClientStateRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryChannelClientStateRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryUpgradeResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryUpgradeResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUpgradeResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryUpgradeResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgPruneAcknowledgementsResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -1544,45 +872,59 @@ export default {
 				}
 			}
 		},
-		async sendMsgChannelOpenAckResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgChannelOpenInit({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenAckResponse({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenInit({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenAckResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelOpenInit:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgChannelOpenAckResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgChannelOpenInit:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendMsgUpdateParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryConnectionChannelsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgUpdateParamsResponse({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendQueryConnectionChannelsResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryConnectionChannelsResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgUpdateParamsResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryConnectionChannelsResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendMsgPruneAcknowledgementsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryUnreceivedAcksRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgPruneAcknowledgementsResponse({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendQueryUnreceivedAcksRequest({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPruneAcknowledgementsResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryUnreceivedAcksRequest:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgPruneAcknowledgementsResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryUnreceivedAcksRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryUpgradeRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryUpgradeRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUpgradeRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryUpgradeRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -1600,73 +942,17 @@ export default {
 				}
 			}
 		},
-		async sendIdentifiedChannel({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgChannelUpgradeConfirmResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendIdentifiedChannel({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeConfirmResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:IdentifiedChannel:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelUpgradeConfirmResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:IdentifiedChannel:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgAcknowledgement({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgAcknowledgement({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgAcknowledgement:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgAcknowledgement:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgChannelUpgradeConfirm({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeConfirm({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeConfirm:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgChannelUpgradeConfirm:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgChannelOpenConfirmResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenConfirmResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenConfirmResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgChannelOpenConfirmResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgChannelCloseConfirmResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelCloseConfirmResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelCloseConfirmResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgChannelCloseConfirmResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgChannelUpgradeConfirmResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -1698,6 +984,510 @@ export default {
 				}
 			}
 		},
+		async sendMsgChannelUpgradeConfirm({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeConfirm({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelUpgradeConfirm:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgChannelUpgradeConfirm:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryChannelConsensusStateResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelConsensusStateResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryChannelConsensusStateResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryChannelConsensusStateResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryChannelParamsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelParamsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryChannelParamsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryChannelParamsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendPacketId({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendPacketId({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:PacketId:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:PacketId:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgChannelCloseConfirmResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelCloseConfirmResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelCloseConfirmResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgChannelCloseConfirmResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgChannelUpgradeTryResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeTryResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelUpgradeTryResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgChannelUpgradeTryResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryPacketReceiptResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketReceiptResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketReceiptResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryPacketReceiptResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgAcknowledgement({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgAcknowledgement({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgAcknowledgement:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgAcknowledgement:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryPacketAcknowledgementResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketAcknowledgementResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketAcknowledgementResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryPacketAcknowledgementResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryNextSequenceSendRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryNextSequenceSendRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryNextSequenceSendRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryNextSequenceSendRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryUpgradeErrorResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryUpgradeErrorResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUpgradeErrorResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryUpgradeErrorResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendAcknowledgement({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendAcknowledgement({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Acknowledgement:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Acknowledgement:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgChannelOpenAckResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenAckResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelOpenAckResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgChannelOpenAckResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgChannelUpgradeTimeoutResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeTimeoutResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelUpgradeTimeoutResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgChannelUpgradeTimeoutResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendPacketSequence({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendPacketSequence({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:PacketSequence:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:PacketSequence:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgChannelUpgradeTimeout({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeTimeout({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelUpgradeTimeout:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgChannelUpgradeTimeout:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryNextSequenceReceiveRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryNextSequenceReceiveRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryNextSequenceReceiveRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryNextSequenceReceiveRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryNextSequenceReceiveResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryNextSequenceReceiveResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryNextSequenceReceiveResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryNextSequenceReceiveResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendIdentifiedChannel({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendIdentifiedChannel({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:IdentifiedChannel:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:IdentifiedChannel:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendPacket({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendPacket({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Packet:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Packet:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgTimeoutResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgTimeoutResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgTimeoutResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgTimeoutResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendUpgradeFields({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendUpgradeFields({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:UpgradeFields:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:UpgradeFields:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgUpdateParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgUpdateParams({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgUpdateParams:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryPacketCommitmentResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketCommitmentResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketCommitmentResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryPacketCommitmentResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryPacketCommitmentsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketCommitmentsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketCommitmentsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryPacketCommitmentsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryPacketAcknowledgementRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketAcknowledgementRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketAcknowledgementRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryPacketAcknowledgementRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgTimeoutOnCloseResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgTimeoutOnCloseResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgTimeoutOnCloseResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgTimeoutOnCloseResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendUpgrade({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendUpgrade({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Upgrade:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Upgrade:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgChannelOpenAck({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenAck({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelOpenAck:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgChannelOpenAck:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryChannelsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryChannelsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryChannelsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryChannelParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelParamsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryChannelParamsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryChannelParamsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgChannelCloseInitResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelCloseInitResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelCloseInitResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgChannelCloseInitResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryChannelRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryChannelRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryChannelRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryConnectionChannelsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryConnectionChannelsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryConnectionChannelsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryConnectionChannelsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryPacketCommitmentsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketCommitmentsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketCommitmentsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryPacketCommitmentsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendCounterparty({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendCounterparty({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Counterparty:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Counterparty:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -1712,59 +1502,45 @@ export default {
 				}
 			}
 		},
-		async sendQueryPacketAcknowledgementsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgChannelOpenInitResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketAcknowledgementsRequest({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenInitResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketAcknowledgementsRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelOpenInitResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:QueryPacketAcknowledgementsRequest:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgChannelOpenInitResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendMsgAcknowledgementResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgChannelUpgradeOpen({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgAcknowledgementResponse({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeOpen({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgAcknowledgementResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelUpgradeOpen:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgAcknowledgementResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgChannelUpgradeOpen:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendMsgChannelUpgradeTry({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryPacketReceiptRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeTry({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketReceiptRequest({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeTry:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryPacketReceiptRequest:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgChannelUpgradeTry:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgChannelUpgradeCancel({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeCancel({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeCancel:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgChannelUpgradeCancel:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryPacketReceiptRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -1782,123 +1558,269 @@ export default {
 				}
 			}
 		},
-		async sendPacketState({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgAcknowledgementResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendPacketState({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendMsgAcknowledgementResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:PacketState:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgAcknowledgementResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:PacketState:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgAcknowledgementResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendMsgChannelUpgradeConfirmResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgChannelCloseInit({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelUpgradeConfirmResponse({ value, fee: fullFee, memo })
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelCloseInit({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeConfirmResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelCloseInit:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgChannelUpgradeConfirmResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgChannelCloseInit:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgChannelCloseConfirm({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelCloseConfirm({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelCloseConfirm:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgChannelCloseConfirm:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryUnreceivedPacketsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryUnreceivedPacketsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUnreceivedPacketsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryUnreceivedPacketsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryUpgradeResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryUpgradeResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUpgradeResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryUpgradeResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgUpdateParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgUpdateParamsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgUpdateParamsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgTimeout({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgTimeout({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgTimeout:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgTimeout:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryPacketAcknowledgementsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketAcknowledgementsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketAcknowledgementsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryPacketAcknowledgementsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgChannelOpenTry({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgChannelOpenTry({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelOpenTry:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgChannelOpenTry:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryChannelResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryChannelResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryChannelResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryChannelClientStateRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryChannelClientStateRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryChannelClientStateRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryChannelClientStateRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryPacketCommitmentRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketCommitmentRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketCommitmentRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryPacketCommitmentRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryUnreceivedPacketsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryUnreceivedPacketsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUnreceivedPacketsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryUnreceivedPacketsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryUpgradeErrorRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryUpgradeErrorRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUpgradeErrorRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryUpgradeErrorRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendTimeout({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendTimeout({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Timeout:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Timeout:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgPruneAcknowledgements({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendMsgPruneAcknowledgements({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgPruneAcknowledgements:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgPruneAcknowledgements:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryPacketAcknowledgementsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryPacketAcknowledgementsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketAcknowledgementsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryPacketAcknowledgementsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryNextSequenceSendResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcCoreChannelV1.tx.sendQueryNextSequenceSendResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryNextSequenceSendResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryNextSequenceSendResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
 		
-		async MsgChannelOpenConfirm({ rootGetters }, { value }) {
+		async PacketState({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenConfirm({value})
+				const msg = await client.IbcCoreChannelV1.tx.packetState({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenConfirm:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:PacketState:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgChannelOpenConfirm:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryConnectionChannelsRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryConnectionChannelsRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryConnectionChannelsRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryConnectionChannelsRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryPacketReceiptRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryPacketReceiptRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketReceiptRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryPacketReceiptRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryPacketAcknowledgementRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryPacketAcknowledgementRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketAcknowledgementRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryPacketAcknowledgementRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgChannelOpenTryResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenTryResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenTryResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgChannelOpenTryResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Upgrade({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.upgrade({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Upgrade:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Upgrade:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Counterparty({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.counterparty({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Counterparty:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Counterparty:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:PacketState:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -1915,29 +1837,16 @@ export default {
 				}
 			}
 		},
-		async Acknowledgement({ rootGetters }, { value }) {
+		async MsgTimeoutOnClose({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.acknowledgement({value})
+				const msg = await client.IbcCoreChannelV1.tx.msgTimeoutOnClose({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:Acknowledgement:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgTimeoutOnClose:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:Acknowledgement:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryNextSequenceSendResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryNextSequenceSendResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryNextSequenceSendResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryNextSequenceSendResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgTimeoutOnClose:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -1954,523 +1863,42 @@ export default {
 				}
 			}
 		},
-		async MsgChannelUpgradeAck({ rootGetters }, { value }) {
+		async MsgChannelUpgradeTry({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeAck({value})
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeTry({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeAck:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelUpgradeTry:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgChannelUpgradeAck:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgChannelUpgradeTry:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async PacketSequence({ rootGetters }, { value }) {
+		async MsgChannelOpenTryResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.packetSequence({value})
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenTryResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:PacketSequence:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelOpenTryResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:PacketSequence:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgChannelOpenTryResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async QueryChannelsRequest({ rootGetters }, { value }) {
+		async MsgChannelUpgradeCancel({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryChannelsRequest({value})
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeCancel({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelsRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelUpgradeCancel:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryChannelsRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryPacketCommitmentsRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryPacketCommitmentsRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketCommitmentsRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryPacketCommitmentsRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryUnreceivedPacketsRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryUnreceivedPacketsRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUnreceivedPacketsRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryUnreceivedPacketsRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryNextSequenceSendRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryNextSequenceSendRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryNextSequenceSendRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryNextSequenceSendRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryUpgradeRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryUpgradeRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUpgradeRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryUpgradeRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryChannelParamsRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryChannelParamsRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelParamsRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryChannelParamsRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async PacketId({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.packetId({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:PacketId:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:PacketId:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgChannelUpgradeInitResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeInitResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeInitResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgChannelUpgradeInitResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryChannelRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryChannelRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryChannelRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryConnectionChannelsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryConnectionChannelsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryConnectionChannelsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryConnectionChannelsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryPacketCommitmentResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryPacketCommitmentResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketCommitmentResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryPacketCommitmentResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryUnreceivedAcksRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryUnreceivedAcksRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUnreceivedAcksRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryUnreceivedAcksRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgChannelCloseInitResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelCloseInitResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelCloseInitResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgChannelCloseInitResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgChannelUpgradeTryResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeTryResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeTryResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgChannelUpgradeTryResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgChannelOpenAck({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenAck({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenAck:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgChannelOpenAck:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgChannelUpgradeTimeout({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeTimeout({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeTimeout:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgChannelUpgradeTimeout:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryPacketAcknowledgementResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryPacketAcknowledgementResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketAcknowledgementResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryPacketAcknowledgementResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryPacketAcknowledgementsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryPacketAcknowledgementsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketAcknowledgementsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryPacketAcknowledgementsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryChannelParamsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryChannelParamsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelParamsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryChannelParamsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryChannelConsensusStateResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryChannelConsensusStateResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelConsensusStateResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryChannelConsensusStateResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryNextSequenceReceiveResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryNextSequenceReceiveResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryNextSequenceReceiveResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryNextSequenceReceiveResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryUpgradeErrorRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryUpgradeErrorRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUpgradeErrorRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryUpgradeErrorRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgRecvPacketResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgRecvPacketResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRecvPacketResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgRecvPacketResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgChannelUpgradeOpen({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeOpen({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeOpen:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgChannelUpgradeOpen:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgTimeoutResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgTimeoutResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgTimeoutResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgTimeoutResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgTimeout({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgTimeout({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgTimeout:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgTimeout:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryChannelsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryChannelsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryChannelsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgTimeoutOnCloseResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgTimeoutOnCloseResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgTimeoutOnCloseResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgTimeoutOnCloseResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryPacketCommitmentRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryPacketCommitmentRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketCommitmentRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryPacketCommitmentRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Timeout({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.timeout({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Timeout:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Timeout:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgChannelOpenTry({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenTry({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenTry:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgChannelOpenTry:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgUpdateParams({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgUpdateParams({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgUpdateParams:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryChannelResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryChannelResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryChannelResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryPacketCommitmentsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryPacketCommitmentsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketCommitmentsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryPacketCommitmentsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryNextSequenceReceiveRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryNextSequenceReceiveRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryNextSequenceReceiveRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryNextSequenceReceiveRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryUpgradeErrorResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryUpgradeErrorResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUpgradeErrorResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryUpgradeErrorResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgChannelUpgradeTimeoutResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeTimeoutResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeTimeoutResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgChannelUpgradeTimeoutResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgTimeoutOnClose({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgTimeoutOnClose({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgTimeoutOnClose:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgTimeoutOnClose:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgChannelUpgradeCancel:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -2487,55 +1915,68 @@ export default {
 				}
 			}
 		},
-		async QueryPacketReceiptResponse({ rootGetters }, { value }) {
+		async QueryChannelsResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryPacketReceiptResponse({value})
+				const msg = await client.IbcCoreChannelV1.tx.queryChannelsResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketReceiptResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryChannelsResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryPacketReceiptResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryChannelsResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async MsgChannelOpenInitResponse({ rootGetters }, { value }) {
+		async MsgChannelOpenConfirmResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenInitResponse({value})
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenConfirmResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenInitResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelOpenConfirmResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgChannelOpenInitResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgChannelOpenConfirmResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async MsgChannelOpenInit({ rootGetters }, { value }) {
+		async MsgRecvPacketResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenInit({value})
+				const msg = await client.IbcCoreChannelV1.tx.msgRecvPacketResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenInit:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgRecvPacketResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgChannelOpenInit:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgRecvPacketResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async MsgChannelCloseConfirm({ rootGetters }, { value }) {
+		async MsgChannelOpenConfirm({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelCloseConfirm({value})
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenConfirm({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelCloseConfirm:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelOpenConfirm:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgChannelCloseConfirm:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgChannelOpenConfirm:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgChannelUpgradeAck({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeAck({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelUpgradeAck:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgChannelUpgradeAck:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -2552,16 +1993,16 @@ export default {
 				}
 			}
 		},
-		async QueryUnreceivedPacketsResponse({ rootGetters }, { value }) {
+		async MsgChannelUpgradeInitResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryUnreceivedPacketsResponse({value})
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeInitResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUnreceivedPacketsResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelUpgradeInitResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryUnreceivedPacketsResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgChannelUpgradeInitResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -2591,81 +2032,16 @@ export default {
 				}
 			}
 		},
-		async Packet({ rootGetters }, { value }) {
+		async MsgPruneAcknowledgementsResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.packet({value})
+				const msg = await client.IbcCoreChannelV1.tx.msgPruneAcknowledgementsResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:Packet:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgPruneAcknowledgementsResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:Packet:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async UpgradeFields({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.upgradeFields({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:UpgradeFields:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:UpgradeFields:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgChannelCloseInit({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelCloseInit({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelCloseInit:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgChannelCloseInit:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgPruneAcknowledgements({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgPruneAcknowledgements({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPruneAcknowledgements:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgPruneAcknowledgements:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryChannelClientStateRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryChannelClientStateRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryChannelClientStateRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryChannelClientStateRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryUpgradeResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryUpgradeResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUpgradeResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryUpgradeResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgPruneAcknowledgementsResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -2682,42 +2058,55 @@ export default {
 				}
 			}
 		},
-		async MsgChannelOpenAckResponse({ rootGetters }, { value }) {
+		async MsgChannelOpenInit({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenAckResponse({value})
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenInit({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenAckResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelOpenInit:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgChannelOpenAckResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgChannelOpenInit:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async MsgUpdateParamsResponse({ rootGetters }, { value }) {
+		async QueryConnectionChannelsResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgUpdateParamsResponse({value})
+				const msg = await client.IbcCoreChannelV1.tx.queryConnectionChannelsResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryConnectionChannelsResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgUpdateParamsResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryConnectionChannelsResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async MsgPruneAcknowledgementsResponse({ rootGetters }, { value }) {
+		async QueryUnreceivedAcksRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgPruneAcknowledgementsResponse({value})
+				const msg = await client.IbcCoreChannelV1.tx.queryUnreceivedAcksRequest({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPruneAcknowledgementsResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryUnreceivedAcksRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgPruneAcknowledgementsResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryUnreceivedAcksRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryUpgradeRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryUpgradeRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUpgradeRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryUpgradeRequest:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -2734,68 +2123,16 @@ export default {
 				}
 			}
 		},
-		async IdentifiedChannel({ rootGetters }, { value }) {
+		async MsgChannelUpgradeConfirmResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.identifiedChannel({value})
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeConfirmResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:IdentifiedChannel:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelUpgradeConfirmResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:IdentifiedChannel:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgAcknowledgement({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgAcknowledgement({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgAcknowledgement:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgAcknowledgement:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgChannelUpgradeConfirm({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeConfirm({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeConfirm:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgChannelUpgradeConfirm:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgChannelOpenConfirmResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenConfirmResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelOpenConfirmResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgChannelOpenConfirmResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgChannelCloseConfirmResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelCloseConfirmResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelCloseConfirmResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgChannelCloseConfirmResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgChannelUpgradeConfirmResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -2825,6 +2162,474 @@ export default {
 				}
 			}
 		},
+		async MsgChannelUpgradeConfirm({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeConfirm({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelUpgradeConfirm:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgChannelUpgradeConfirm:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryChannelConsensusStateResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryChannelConsensusStateResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryChannelConsensusStateResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryChannelConsensusStateResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryChannelParamsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryChannelParamsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryChannelParamsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryChannelParamsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async PacketId({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.packetId({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:PacketId:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:PacketId:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgChannelCloseConfirmResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelCloseConfirmResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelCloseConfirmResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgChannelCloseConfirmResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgChannelUpgradeTryResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeTryResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelUpgradeTryResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgChannelUpgradeTryResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryPacketReceiptResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryPacketReceiptResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketReceiptResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryPacketReceiptResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgAcknowledgement({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgAcknowledgement({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgAcknowledgement:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgAcknowledgement:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryPacketAcknowledgementResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryPacketAcknowledgementResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketAcknowledgementResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryPacketAcknowledgementResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryNextSequenceSendRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryNextSequenceSendRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryNextSequenceSendRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryNextSequenceSendRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryUpgradeErrorResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryUpgradeErrorResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUpgradeErrorResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryUpgradeErrorResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Acknowledgement({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.acknowledgement({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Acknowledgement:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Acknowledgement:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgChannelOpenAckResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenAckResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelOpenAckResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgChannelOpenAckResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgChannelUpgradeTimeoutResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeTimeoutResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelUpgradeTimeoutResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgChannelUpgradeTimeoutResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async PacketSequence({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.packetSequence({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:PacketSequence:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:PacketSequence:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgChannelUpgradeTimeout({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeTimeout({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelUpgradeTimeout:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgChannelUpgradeTimeout:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryNextSequenceReceiveRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryNextSequenceReceiveRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryNextSequenceReceiveRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryNextSequenceReceiveRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryNextSequenceReceiveResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryNextSequenceReceiveResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryNextSequenceReceiveResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryNextSequenceReceiveResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async IdentifiedChannel({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.identifiedChannel({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:IdentifiedChannel:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:IdentifiedChannel:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Packet({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.packet({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Packet:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Packet:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgTimeoutResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgTimeoutResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgTimeoutResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgTimeoutResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async UpgradeFields({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.upgradeFields({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:UpgradeFields:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:UpgradeFields:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgUpdateParams({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgUpdateParams({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgUpdateParams:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryPacketCommitmentResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryPacketCommitmentResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketCommitmentResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryPacketCommitmentResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryPacketCommitmentsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryPacketCommitmentsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketCommitmentsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryPacketCommitmentsResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryPacketAcknowledgementRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryPacketAcknowledgementRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketAcknowledgementRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryPacketAcknowledgementRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgTimeoutOnCloseResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgTimeoutOnCloseResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgTimeoutOnCloseResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgTimeoutOnCloseResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Upgrade({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.upgrade({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Upgrade:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Upgrade:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgChannelOpenAck({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenAck({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelOpenAck:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgChannelOpenAck:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryChannelsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryChannelsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryChannelsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryChannelsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryChannelParamsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryChannelParamsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryChannelParamsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryChannelParamsResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgChannelCloseInitResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelCloseInitResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelCloseInitResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgChannelCloseInitResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryChannelRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryChannelRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryChannelRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryChannelRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryConnectionChannelsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryConnectionChannelsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryConnectionChannelsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryConnectionChannelsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryPacketCommitmentsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryPacketCommitmentsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketCommitmentsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryPacketCommitmentsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Counterparty({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.counterparty({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Counterparty:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Counterparty:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		async Params({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -2838,55 +2643,42 @@ export default {
 				}
 			}
 		},
-		async QueryPacketAcknowledgementsRequest({ rootGetters }, { value }) {
+		async MsgChannelOpenInitResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.queryPacketAcknowledgementsRequest({value})
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenInitResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPacketAcknowledgementsRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelOpenInitResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryPacketAcknowledgementsRequest:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgChannelOpenInitResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async MsgAcknowledgementResponse({ rootGetters }, { value }) {
+		async MsgChannelUpgradeOpen({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgAcknowledgementResponse({value})
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeOpen({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgAcknowledgementResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelUpgradeOpen:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgAcknowledgementResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgChannelUpgradeOpen:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async MsgChannelUpgradeTry({ rootGetters }, { value }) {
+		async QueryPacketReceiptRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeTry({value})
+				const msg = await client.IbcCoreChannelV1.tx.queryPacketReceiptRequest({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeTry:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryPacketReceiptRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgChannelUpgradeTry:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgChannelUpgradeCancel({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeCancel({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeCancel:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgChannelUpgradeCancel:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryPacketReceiptRequest:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -2903,29 +2695,237 @@ export default {
 				}
 			}
 		},
-		async PacketState({ rootGetters }, { value }) {
+		async MsgAcknowledgementResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.packetState({value})
+				const msg = await client.IbcCoreChannelV1.tx.msgAcknowledgementResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:PacketState:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgAcknowledgementResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:PacketState:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgAcknowledgementResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async MsgChannelUpgradeConfirmResponse({ rootGetters }, { value }) {
+		async MsgChannelCloseInit({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcCoreChannelV1.tx.msgChannelUpgradeConfirmResponse({value})
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelCloseInit({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgChannelUpgradeConfirmResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgChannelCloseInit:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgChannelUpgradeConfirmResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgChannelCloseInit:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgChannelCloseConfirm({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelCloseConfirm({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelCloseConfirm:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgChannelCloseConfirm:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryUnreceivedPacketsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryUnreceivedPacketsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUnreceivedPacketsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryUnreceivedPacketsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryUpgradeResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryUpgradeResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUpgradeResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryUpgradeResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgUpdateParamsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgUpdateParamsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgUpdateParamsResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgTimeout({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgTimeout({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgTimeout:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgTimeout:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryPacketAcknowledgementsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryPacketAcknowledgementsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketAcknowledgementsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryPacketAcknowledgementsResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgChannelOpenTry({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgChannelOpenTry({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgChannelOpenTry:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgChannelOpenTry:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryChannelResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryChannelResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryChannelResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryChannelResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryChannelClientStateRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryChannelClientStateRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryChannelClientStateRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryChannelClientStateRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryPacketCommitmentRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryPacketCommitmentRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketCommitmentRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryPacketCommitmentRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryUnreceivedPacketsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryUnreceivedPacketsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUnreceivedPacketsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryUnreceivedPacketsResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryUpgradeErrorRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryUpgradeErrorRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUpgradeErrorRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryUpgradeErrorRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Timeout({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.timeout({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Timeout:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Timeout:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgPruneAcknowledgements({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.msgPruneAcknowledgements({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgPruneAcknowledgements:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgPruneAcknowledgements:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryPacketAcknowledgementsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryPacketAcknowledgementsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPacketAcknowledgementsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryPacketAcknowledgementsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryNextSequenceSendResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcCoreChannelV1.tx.queryNextSequenceSendResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryNextSequenceSendResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryNextSequenceSendResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},

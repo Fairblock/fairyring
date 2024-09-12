@@ -399,300 +399,6 @@ export default {
 		},
 		
 		
-		async sendQueryFeeEnabledChannelRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryFeeEnabledChannelRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryFeeEnabledChannelRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryFeeEnabledChannelRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendRegisteredCounterpartyPayee({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendRegisteredCounterpartyPayee({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:RegisteredCounterpartyPayee:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:RegisteredCounterpartyPayee:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgPayPacketFee({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendMsgPayPacketFee({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPayPacketFee:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgPayPacketFee:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgPayPacketFeeResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendMsgPayPacketFeeResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPayPacketFeeResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgPayPacketFeeResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgPayPacketFeeAsyncResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendMsgPayPacketFeeAsyncResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPayPacketFeeAsyncResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgPayPacketFeeAsyncResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryIncentivizedPacketsForChannelRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryIncentivizedPacketsForChannelRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryIncentivizedPacketsForChannelRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryIncentivizedPacketsForChannelRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryPayeeRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryPayeeRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPayeeRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryPayeeRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendFeeEnabledChannel({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendFeeEnabledChannel({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:FeeEnabledChannel:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:FeeEnabledChannel:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMetadata({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendMetadata({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Metadata:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Metadata:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgRegisterPayeeResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendMsgRegisterPayeeResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRegisterPayeeResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgRegisterPayeeResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgRegisterCounterpartyPayee({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendMsgRegisterCounterpartyPayee({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRegisterCounterpartyPayee:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgRegisterCounterpartyPayee:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryIncentivizedPacketsForChannelResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryIncentivizedPacketsForChannelResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryIncentivizedPacketsForChannelResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryIncentivizedPacketsForChannelResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryTotalRecvFeesResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryTotalRecvFeesResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryTotalRecvFeesResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryTotalRecvFeesResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryCounterpartyPayeeRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryCounterpartyPayeeRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryCounterpartyPayeeRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryCounterpartyPayeeRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendIncentivizedAcknowledgement({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendIncentivizedAcknowledgement({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:IncentivizedAcknowledgement:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:IncentivizedAcknowledgement:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgRegisterPayee({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendMsgRegisterPayee({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRegisterPayee:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgRegisterPayee:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryTotalTimeoutFeesRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryTotalTimeoutFeesRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryTotalTimeoutFeesRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryTotalTimeoutFeesRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryTotalTimeoutFeesResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryTotalTimeoutFeesResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryTotalTimeoutFeesResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryTotalTimeoutFeesResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryFeeEnabledChannelsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryFeeEnabledChannelsRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryFeeEnabledChannelsRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryFeeEnabledChannelsRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendPacketFee({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendPacketFee({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:PacketFee:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:PacketFee:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendRegisteredPayee({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendRegisteredPayee({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:RegisteredPayee:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:RegisteredPayee:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendQueryIncentivizedPacketsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -704,62 +410,6 @@ export default {
 					throw new Error('TxClient:QueryIncentivizedPacketsResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:QueryIncentivizedPacketsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryPayeeResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryPayeeResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPayeeResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryPayeeResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendFee({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendFee({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Fee:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Fee:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendForwardRelayerAddress({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendForwardRelayerAddress({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:ForwardRelayerAddress:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:ForwardRelayerAddress:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgPayPacketFeeAsync({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendMsgPayPacketFeeAsync({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPayPacketFeeAsync:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgPayPacketFeeAsync:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -777,101 +427,59 @@ export default {
 				}
 			}
 		},
-		async sendQueryTotalAckFeesRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryTotalRecvFeesRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryTotalAckFeesRequest({ value, fee: fullFee, memo })
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryTotalRecvFeesRequest({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryTotalAckFeesRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryTotalRecvFeesRequest:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:QueryTotalAckFeesRequest:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryTotalRecvFeesRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendIdentifiedPacketFees({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryPayeeResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendIdentifiedPacketFees({ value, fee: fullFee, memo })
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryPayeeResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:IdentifiedPacketFees:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryPayeeResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:IdentifiedPacketFees:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryPayeeResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendMsgRegisterCounterpartyPayeeResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryFeeEnabledChannelRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendMsgRegisterCounterpartyPayeeResponse({ value, fee: fullFee, memo })
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryFeeEnabledChannelRequest({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRegisterCounterpartyPayeeResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryFeeEnabledChannelRequest:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgRegisterCounterpartyPayeeResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryFeeEnabledChannelRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendQueryIncentivizedPacketsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendIncentivizedAcknowledgement({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryIncentivizedPacketsRequest({ value, fee: fullFee, memo })
+				const result = await client.IbcApplicationsFeeV1.tx.sendIncentivizedAcknowledgement({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryIncentivizedPacketsRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:IncentivizedAcknowledgement:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:QueryIncentivizedPacketsRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryIncentivizedPacketRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryIncentivizedPacketRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryIncentivizedPacketRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryIncentivizedPacketRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryFeeEnabledChannelsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryFeeEnabledChannelsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryFeeEnabledChannelsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryFeeEnabledChannelsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendPacketFees({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendPacketFees({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:PacketFees:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:PacketFees:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:IncentivizedAcknowledgement:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -889,17 +497,171 @@ export default {
 				}
 			}
 		},
-		async sendQueryTotalRecvFeesRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMetadata({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryTotalRecvFeesRequest({ value, fee: fullFee, memo })
+				const result = await client.IbcApplicationsFeeV1.tx.sendMetadata({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryTotalRecvFeesRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:Metadata:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:QueryTotalRecvFeesRequest:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:Metadata:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryIncentivizedPacketRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryIncentivizedPacketRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryIncentivizedPacketRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryIncentivizedPacketRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryIncentivizedPacketsForChannelResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryIncentivizedPacketsForChannelResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryIncentivizedPacketsForChannelResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryIncentivizedPacketsForChannelResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgPayPacketFeeAsync({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendMsgPayPacketFeeAsync({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgPayPacketFeeAsync:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgPayPacketFeeAsync:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryCounterpartyPayeeRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryCounterpartyPayeeRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryCounterpartyPayeeRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryCounterpartyPayeeRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendFeeEnabledChannel({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendFeeEnabledChannel({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:FeeEnabledChannel:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:FeeEnabledChannel:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgRegisterPayeeResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendMsgRegisterPayeeResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRegisterPayeeResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgRegisterPayeeResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendPacketFee({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendPacketFee({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:PacketFee:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:PacketFee:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgPayPacketFee({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendMsgPayPacketFee({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgPayPacketFee:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgPayPacketFee:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendRegisteredCounterpartyPayee({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendRegisteredCounterpartyPayee({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:RegisteredCounterpartyPayee:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:RegisteredCounterpartyPayee:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendForwardRelayerAddress({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendForwardRelayerAddress({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:ForwardRelayerAddress:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:ForwardRelayerAddress:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryIncentivizedPacketsForChannelRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryIncentivizedPacketsForChannelRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryIncentivizedPacketsForChannelRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryIncentivizedPacketsForChannelRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -917,17 +679,17 @@ export default {
 				}
 			}
 		},
-		async sendQueryCounterpartyPayeeResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryPayeeRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsFeeV1.tx.sendQueryCounterpartyPayeeResponse({ value, fee: fullFee, memo })
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryPayeeRequest({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryCounterpartyPayeeResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryPayeeRequest:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:QueryCounterpartyPayeeResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryPayeeRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -945,280 +707,245 @@ export default {
 				}
 			}
 		},
-		
-		async QueryFeeEnabledChannelRequest({ rootGetters }, { value }) {
+		async sendMsgPayPacketFeeAsyncResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryFeeEnabledChannelRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryFeeEnabledChannelRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryFeeEnabledChannelRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async RegisteredCounterpartyPayee({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.registeredCounterpartyPayee({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:RegisteredCounterpartyPayee:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:RegisteredCounterpartyPayee:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgPayPacketFee({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.msgPayPacketFee({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPayPacketFee:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgPayPacketFee:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgPayPacketFeeResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.msgPayPacketFeeResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPayPacketFeeResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgPayPacketFeeResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgPayPacketFeeAsyncResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.msgPayPacketFeeAsyncResponse({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendMsgPayPacketFeeAsyncResponse({ value, fee: fullFee, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgPayPacketFeeAsyncResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgPayPacketFeeAsyncResponse:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:MsgPayPacketFeeAsyncResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async QueryIncentivizedPacketsForChannelRequest({ rootGetters }, { value }) {
+		async sendMsgRegisterPayee({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryIncentivizedPacketsForChannelRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryIncentivizedPacketsForChannelRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryIncentivizedPacketsForChannelRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryPayeeRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryPayeeRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPayeeRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryPayeeRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async FeeEnabledChannel({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.feeEnabledChannel({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:FeeEnabledChannel:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:FeeEnabledChannel:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Metadata({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.metadata({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Metadata:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Metadata:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgRegisterPayeeResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.msgRegisterPayeeResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRegisterPayeeResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgRegisterPayeeResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgRegisterCounterpartyPayee({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.msgRegisterCounterpartyPayee({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRegisterCounterpartyPayee:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgRegisterCounterpartyPayee:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryIncentivizedPacketsForChannelResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryIncentivizedPacketsForChannelResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryIncentivizedPacketsForChannelResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryIncentivizedPacketsForChannelResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryTotalRecvFeesResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryTotalRecvFeesResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryTotalRecvFeesResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryTotalRecvFeesResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryCounterpartyPayeeRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryCounterpartyPayeeRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryCounterpartyPayeeRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryCounterpartyPayeeRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async IncentivizedAcknowledgement({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.incentivizedAcknowledgement({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:IncentivizedAcknowledgement:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:IncentivizedAcknowledgement:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgRegisterPayee({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.msgRegisterPayee({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendMsgRegisterPayee({ value, fee: fullFee, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgRegisterPayee:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgRegisterPayee:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:MsgRegisterPayee:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async QueryTotalTimeoutFeesRequest({ rootGetters }, { value }) {
+		async sendMsgRegisterCounterpartyPayeeResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryTotalTimeoutFeesRequest({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendMsgRegisterCounterpartyPayeeResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRegisterCounterpartyPayeeResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgRegisterCounterpartyPayeeResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryTotalAckFeesRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryTotalAckFeesRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryTotalAckFeesRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryTotalAckFeesRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryTotalTimeoutFeesRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryTotalTimeoutFeesRequest({ value, fee: fullFee, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:QueryTotalTimeoutFeesRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryTotalTimeoutFeesRequest:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:QueryTotalTimeoutFeesRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async QueryTotalTimeoutFeesResponse({ rootGetters }, { value }) {
+		async sendQueryFeeEnabledChannelsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryTotalTimeoutFeesResponse({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryFeeEnabledChannelsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryFeeEnabledChannelsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryFeeEnabledChannelsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendFee({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendFee({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Fee:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Fee:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendIdentifiedPacketFees({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendIdentifiedPacketFees({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:IdentifiedPacketFees:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:IdentifiedPacketFees:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryTotalRecvFeesResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryTotalRecvFeesResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryTotalRecvFeesResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryTotalRecvFeesResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryTotalTimeoutFeesResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryTotalTimeoutFeesResponse({ value, fee: fullFee, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:QueryTotalTimeoutFeesResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryTotalTimeoutFeesResponse:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:QueryTotalTimeoutFeesResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async QueryFeeEnabledChannelsRequest({ rootGetters }, { value }) {
+		async sendQueryCounterpartyPayeeResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryFeeEnabledChannelsRequest({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryCounterpartyPayeeResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryCounterpartyPayeeResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryCounterpartyPayeeResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryIncentivizedPacketsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryIncentivizedPacketsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryIncentivizedPacketsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryIncentivizedPacketsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryFeeEnabledChannelsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendQueryFeeEnabledChannelsRequest({ value, fee: fullFee, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:QueryFeeEnabledChannelsRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryFeeEnabledChannelsRequest:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:QueryFeeEnabledChannelsRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async PacketFee({ rootGetters }, { value }) {
+		async sendPacketFees({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.packetFee({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendPacketFees({ value, fee: fullFee, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:PacketFee:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:PacketFee:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:PacketFees:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:PacketFees:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async RegisteredPayee({ rootGetters }, { value }) {
+		async sendMsgRegisterCounterpartyPayee({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.registeredPayee({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendMsgRegisterCounterpartyPayee({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRegisterCounterpartyPayee:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgRegisterCounterpartyPayee:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendRegisteredPayee({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendRegisteredPayee({ value, fee: fullFee, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:RegisteredPayee:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:RegisteredPayee:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:RegisteredPayee:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		async sendMsgPayPacketFeeResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsFeeV1.tx.sendMsgPayPacketFeeResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgPayPacketFeeResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgPayPacketFeeResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		
 		async QueryIncentivizedPacketsResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -1229,58 +956,6 @@ export default {
 					throw new Error('TxClient:QueryIncentivizedPacketsResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:QueryIncentivizedPacketsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryPayeeResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryPayeeResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPayeeResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryPayeeResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Fee({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.fee({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Fee:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Fee:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async ForwardRelayerAddress({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.forwardRelayerAddress({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:ForwardRelayerAddress:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:ForwardRelayerAddress:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgPayPacketFeeAsync({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.msgPayPacketFeeAsync({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgPayPacketFeeAsync:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgPayPacketFeeAsync:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -1297,94 +972,55 @@ export default {
 				}
 			}
 		},
-		async QueryTotalAckFeesRequest({ rootGetters }, { value }) {
+		async QueryTotalRecvFeesRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryTotalAckFeesRequest({value})
+				const msg = await client.IbcApplicationsFeeV1.tx.queryTotalRecvFeesRequest({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryTotalAckFeesRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryTotalRecvFeesRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryTotalAckFeesRequest:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryTotalRecvFeesRequest:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async IdentifiedPacketFees({ rootGetters }, { value }) {
+		async QueryPayeeResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.identifiedPacketFees({value})
+				const msg = await client.IbcApplicationsFeeV1.tx.queryPayeeResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:IdentifiedPacketFees:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryPayeeResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:IdentifiedPacketFees:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryPayeeResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async MsgRegisterCounterpartyPayeeResponse({ rootGetters }, { value }) {
+		async QueryFeeEnabledChannelRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.msgRegisterCounterpartyPayeeResponse({value})
+				const msg = await client.IbcApplicationsFeeV1.tx.queryFeeEnabledChannelRequest({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRegisterCounterpartyPayeeResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryFeeEnabledChannelRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgRegisterCounterpartyPayeeResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryFeeEnabledChannelRequest:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async QueryIncentivizedPacketsRequest({ rootGetters }, { value }) {
+		async IncentivizedAcknowledgement({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryIncentivizedPacketsRequest({value})
+				const msg = await client.IbcApplicationsFeeV1.tx.incentivizedAcknowledgement({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryIncentivizedPacketsRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:IncentivizedAcknowledgement:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryIncentivizedPacketsRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryIncentivizedPacketRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryIncentivizedPacketRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryIncentivizedPacketRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryIncentivizedPacketRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryFeeEnabledChannelsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryFeeEnabledChannelsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryFeeEnabledChannelsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryFeeEnabledChannelsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async PacketFees({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.packetFees({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:PacketFees:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:PacketFees:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:IncentivizedAcknowledgement:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -1401,16 +1037,159 @@ export default {
 				}
 			}
 		},
-		async QueryTotalRecvFeesRequest({ rootGetters }, { value }) {
+		async Metadata({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryTotalRecvFeesRequest({value})
+				const msg = await client.IbcApplicationsFeeV1.tx.metadata({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryTotalRecvFeesRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:Metadata:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryTotalRecvFeesRequest:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:Metadata:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryIncentivizedPacketRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.queryIncentivizedPacketRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryIncentivizedPacketRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryIncentivizedPacketRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryIncentivizedPacketsForChannelResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.queryIncentivizedPacketsForChannelResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryIncentivizedPacketsForChannelResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryIncentivizedPacketsForChannelResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgPayPacketFeeAsync({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.msgPayPacketFeeAsync({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgPayPacketFeeAsync:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgPayPacketFeeAsync:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryCounterpartyPayeeRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.queryCounterpartyPayeeRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryCounterpartyPayeeRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryCounterpartyPayeeRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async FeeEnabledChannel({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.feeEnabledChannel({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:FeeEnabledChannel:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:FeeEnabledChannel:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgRegisterPayeeResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.msgRegisterPayeeResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRegisterPayeeResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgRegisterPayeeResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async PacketFee({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.packetFee({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:PacketFee:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:PacketFee:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgPayPacketFee({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.msgPayPacketFee({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgPayPacketFee:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgPayPacketFee:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async RegisteredCounterpartyPayee({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.registeredCounterpartyPayee({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:RegisteredCounterpartyPayee:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:RegisteredCounterpartyPayee:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async ForwardRelayerAddress({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.forwardRelayerAddress({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:ForwardRelayerAddress:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:ForwardRelayerAddress:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryIncentivizedPacketsForChannelRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.queryIncentivizedPacketsForChannelRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryIncentivizedPacketsForChannelRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryIncentivizedPacketsForChannelRequest:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -1427,16 +1206,16 @@ export default {
 				}
 			}
 		},
-		async QueryCounterpartyPayeeResponse({ rootGetters }, { value }) {
+		async QueryPayeeRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsFeeV1.tx.queryCounterpartyPayeeResponse({value})
+				const msg = await client.IbcApplicationsFeeV1.tx.queryPayeeRequest({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryCounterpartyPayeeResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryPayeeRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryCounterpartyPayeeResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryPayeeRequest:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -1450,6 +1229,227 @@ export default {
 					throw new Error('TxClient:QueryFeeEnabledChannelResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:QueryFeeEnabledChannelResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgPayPacketFeeAsyncResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.msgPayPacketFeeAsyncResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgPayPacketFeeAsyncResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgPayPacketFeeAsyncResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgRegisterPayee({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.msgRegisterPayee({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRegisterPayee:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgRegisterPayee:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgRegisterCounterpartyPayeeResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.msgRegisterCounterpartyPayeeResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRegisterCounterpartyPayeeResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgRegisterCounterpartyPayeeResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryTotalAckFeesRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.queryTotalAckFeesRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryTotalAckFeesRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryTotalAckFeesRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryTotalTimeoutFeesRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.queryTotalTimeoutFeesRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryTotalTimeoutFeesRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryTotalTimeoutFeesRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryFeeEnabledChannelsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.queryFeeEnabledChannelsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryFeeEnabledChannelsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryFeeEnabledChannelsResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Fee({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.fee({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Fee:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Fee:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async IdentifiedPacketFees({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.identifiedPacketFees({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:IdentifiedPacketFees:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:IdentifiedPacketFees:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryTotalRecvFeesResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.queryTotalRecvFeesResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryTotalRecvFeesResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryTotalRecvFeesResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryTotalTimeoutFeesResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.queryTotalTimeoutFeesResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryTotalTimeoutFeesResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryTotalTimeoutFeesResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryCounterpartyPayeeResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.queryCounterpartyPayeeResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryCounterpartyPayeeResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryCounterpartyPayeeResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryIncentivizedPacketsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.queryIncentivizedPacketsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryIncentivizedPacketsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryIncentivizedPacketsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryFeeEnabledChannelsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.queryFeeEnabledChannelsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryFeeEnabledChannelsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryFeeEnabledChannelsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async PacketFees({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.packetFees({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:PacketFees:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:PacketFees:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgRegisterCounterpartyPayee({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.msgRegisterCounterpartyPayee({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRegisterCounterpartyPayee:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgRegisterCounterpartyPayee:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async RegisteredPayee({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.registeredPayee({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:RegisteredPayee:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:RegisteredPayee:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgPayPacketFeeResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsFeeV1.tx.msgPayPacketFeeResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgPayPacketFeeResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgPayPacketFeeResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},

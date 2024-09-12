@@ -163,34 +163,6 @@ export default {
 		},
 		
 		
-		async sendQueryAllEvidenceResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosEvidenceV1Beta1.tx.sendQueryAllEvidenceResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryAllEvidenceResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryAllEvidenceResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendGenesisState({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosEvidenceV1Beta1.tx.sendGenesisState({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:GenesisState:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendEquivocation({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -202,6 +174,34 @@ export default {
 					throw new Error('TxClient:Equivocation:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:Equivocation:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgSubmitEvidence({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosEvidenceV1Beta1.tx.sendMsgSubmitEvidence({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSubmitEvidence:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgSubmitEvidence:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryEvidenceRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosEvidenceV1Beta1.tx.sendQueryEvidenceRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryEvidenceRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryEvidenceRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -233,17 +233,17 @@ export default {
 				}
 			}
 		},
-		async sendMsgSubmitEvidence({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryAllEvidenceResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosEvidenceV1Beta1.tx.sendMsgSubmitEvidence({ value, fee: fullFee, memo })
+				const result = await client.CosmosEvidenceV1Beta1.tx.sendQueryAllEvidenceResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSubmitEvidence:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryAllEvidenceResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgSubmitEvidence:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryAllEvidenceResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -261,47 +261,21 @@ export default {
 				}
 			}
 		},
-		async sendQueryEvidenceRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendGenesisState({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosEvidenceV1Beta1.tx.sendQueryEvidenceRequest({ value, fee: fullFee, memo })
+				const result = await client.CosmosEvidenceV1Beta1.tx.sendGenesisState({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryEvidenceRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:QueryEvidenceRequest:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:GenesisState:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
 		
-		async QueryAllEvidenceResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosEvidenceV1Beta1.tx.queryAllEvidenceResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryAllEvidenceResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryAllEvidenceResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async GenesisState({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosEvidenceV1Beta1.tx.genesisState({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:GenesisState:Create Could not create message: ' + e.message)
-				}
-			}
-		},
 		async Equivocation({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -312,6 +286,32 @@ export default {
 					throw new Error('TxClient:Equivocation:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:Equivocation:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgSubmitEvidence({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosEvidenceV1Beta1.tx.msgSubmitEvidence({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSubmitEvidence:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgSubmitEvidence:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryEvidenceRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosEvidenceV1Beta1.tx.queryEvidenceRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryEvidenceRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryEvidenceRequest:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -341,16 +341,16 @@ export default {
 				}
 			}
 		},
-		async MsgSubmitEvidence({ rootGetters }, { value }) {
+		async QueryAllEvidenceResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosEvidenceV1Beta1.tx.msgSubmitEvidence({value})
+				const msg = await client.CosmosEvidenceV1Beta1.tx.queryAllEvidenceResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSubmitEvidence:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryAllEvidenceResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgSubmitEvidence:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryAllEvidenceResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -367,16 +367,16 @@ export default {
 				}
 			}
 		},
-		async QueryEvidenceRequest({ rootGetters }, { value }) {
+		async GenesisState({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosEvidenceV1Beta1.tx.queryEvidenceRequest({value})
+				const msg = await client.CosmosEvidenceV1Beta1.tx.genesisState({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryEvidenceRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryEvidenceRequest:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:GenesisState:Create Could not create message: ' + e.message)
 				}
 			}
 		},

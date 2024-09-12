@@ -3,9 +3,9 @@ package types
 import (
 	"testing"
 
+	"github.com/Fairblock/fairyring/testutil/sample"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
-	"github.com/Fairblock/fairyring/testutil/sample"
 )
 
 func TestMsgSubmitEncryptedKeyshare_ValidateBasic(t *testing.T) {

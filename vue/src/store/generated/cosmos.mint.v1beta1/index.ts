@@ -184,73 +184,17 @@ export default {
 		},
 		
 		
-		async sendQueryParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosMintV1Beta1.tx.sendQueryParamsResponse({ value, fee: fullFee, memo })
+				const result = await client.CosmosMintV1Beta1.tx.sendParams({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryParamsResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:QueryParamsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryAnnualProvisionsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosMintV1Beta1.tx.sendQueryAnnualProvisionsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryAnnualProvisionsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryAnnualProvisionsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgUpdateParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosMintV1Beta1.tx.sendMsgUpdateParams({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgUpdateParams:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgUpdateParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosMintV1Beta1.tx.sendMsgUpdateParamsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgUpdateParamsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryInflationRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosMintV1Beta1.tx.sendQueryInflationRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryInflationRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryInflationRequest:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:Params:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -268,31 +212,31 @@ export default {
 				}
 			}
 		},
-		async sendParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgUpdateParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosMintV1Beta1.tx.sendParams({ value, fee: fullFee, memo })
+				const result = await client.CosmosMintV1Beta1.tx.sendMsgUpdateParamsResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:Params:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgUpdateParamsResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendGenesisState({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgUpdateParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosMintV1Beta1.tx.sendGenesisState({ value, fee: fullFee, memo })
+				const result = await client.CosmosMintV1Beta1.tx.sendMsgUpdateParams({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:GenesisState:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgUpdateParams:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -307,6 +251,20 @@ export default {
 					throw new Error('TxClient:QueryParamsRequest:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:QueryParamsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosMintV1Beta1.tx.sendQueryParamsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryParamsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryParamsResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -338,69 +296,59 @@ export default {
 				}
 			}
 		},
-		
-		async QueryParamsResponse({ rootGetters }, { value }) {
+		async sendGenesisState({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosMintV1Beta1.tx.queryParamsResponse({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosMintV1Beta1.tx.sendGenesisState({ value, fee: fullFee, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryParamsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryParamsResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:GenesisState:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async QueryAnnualProvisionsResponse({ rootGetters }, { value }) {
+		async sendQueryInflationRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosMintV1Beta1.tx.queryAnnualProvisionsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryAnnualProvisionsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryAnnualProvisionsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgUpdateParams({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosMintV1Beta1.tx.msgUpdateParams({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgUpdateParams:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgUpdateParamsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosMintV1Beta1.tx.msgUpdateParamsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgUpdateParamsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryInflationRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosMintV1Beta1.tx.queryInflationRequest({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosMintV1Beta1.tx.sendQueryInflationRequest({ value, fee: fullFee, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:QueryInflationRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryInflationRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryAnnualProvisionsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosMintV1Beta1.tx.sendQueryAnnualProvisionsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAnnualProvisionsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryAnnualProvisionsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		
+		async Params({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosMintV1Beta1.tx.params({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryInflationRequest:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:Params:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -417,29 +365,29 @@ export default {
 				}
 			}
 		},
-		async Params({ rootGetters }, { value }) {
+		async MsgUpdateParamsResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosMintV1Beta1.tx.params({value})
+				const msg = await client.CosmosMintV1Beta1.tx.msgUpdateParamsResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:Params:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgUpdateParamsResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async GenesisState({ rootGetters }, { value }) {
+		async MsgUpdateParams({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosMintV1Beta1.tx.genesisState({value})
+				const msg = await client.CosmosMintV1Beta1.tx.msgUpdateParams({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:GenesisState:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgUpdateParams:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -453,6 +401,19 @@ export default {
 					throw new Error('TxClient:QueryParamsRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:QueryParamsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryParamsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosMintV1Beta1.tx.queryParamsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryParamsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryParamsResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -479,6 +440,45 @@ export default {
 					throw new Error('TxClient:Minter:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:Minter:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async GenesisState({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosMintV1Beta1.tx.genesisState({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:GenesisState:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryInflationRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosMintV1Beta1.tx.queryInflationRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryInflationRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryInflationRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryAnnualProvisionsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosMintV1Beta1.tx.queryAnnualProvisionsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAnnualProvisionsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryAnnualProvisionsResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},

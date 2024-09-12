@@ -37,9 +37,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgDeRegisterValidator{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgSubmitEncryptedKeyshare{},
-)
-// this line is used by starport scaffolding # 3
+		&MsgSubmitEncryptedKeyshare{},
+	)
+	// this line is used by starport scaffolding # 3
 
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUpdateParams{},

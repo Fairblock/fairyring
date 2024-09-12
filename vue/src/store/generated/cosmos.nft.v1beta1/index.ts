@@ -308,132 +308,6 @@ export default {
 		},
 		
 		
-		async sendQueryClassRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosNftV1Beta1.tx.sendQueryClassRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryClassRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryClassRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgSendResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosNftV1Beta1.tx.sendMsgSendResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSendResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgSendResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryBalanceResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosNftV1Beta1.tx.sendQueryBalanceResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryBalanceResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryBalanceResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryNFTResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosNftV1Beta1.tx.sendQueryNFTResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryNFTResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryNFTResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryClassesRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosNftV1Beta1.tx.sendQueryClassesRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryClassesRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryClassesRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendEventSend({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosNftV1Beta1.tx.sendEventSend({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:EventSend:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:EventSend:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgSend({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosNftV1Beta1.tx.sendMsgSend({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSend:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgSend:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryNFTsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosNftV1Beta1.tx.sendQueryNFTsRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryNFTsRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryNFTsRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryNFTsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosNftV1Beta1.tx.sendQueryNFTsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryNFTsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryNFTsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendEventMint({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -459,6 +333,132 @@ export default {
 					throw new Error('TxClient:NFT:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:NFT:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryClassRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosNftV1Beta1.tx.sendQueryClassRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryClassRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryClassRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryBalanceRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosNftV1Beta1.tx.sendQueryBalanceRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryBalanceRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryBalanceRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryBalanceResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosNftV1Beta1.tx.sendQueryBalanceResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryBalanceResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryBalanceResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendGenesisState({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosNftV1Beta1.tx.sendGenesisState({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:GenesisState:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryNFTsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosNftV1Beta1.tx.sendQueryNFTsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryNFTsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryNFTsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendClass({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosNftV1Beta1.tx.sendClass({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Class:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Class:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgSend({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosNftV1Beta1.tx.sendMsgSend({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSend:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgSend:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryOwnerResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosNftV1Beta1.tx.sendQueryOwnerResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryOwnerResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryOwnerResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryClassesRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosNftV1Beta1.tx.sendQueryClassesRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryClassesRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryClassesRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -490,31 +490,17 @@ export default {
 				}
 			}
 		},
-		async sendGenesisState({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendEventSend({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosNftV1Beta1.tx.sendGenesisState({ value, fee: fullFee, memo })
+				const result = await client.CosmosNftV1Beta1.tx.sendEventSend({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:EventSend:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:GenesisState:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryOwnerResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosNftV1Beta1.tx.sendQueryOwnerResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryOwnerResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryOwnerResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:EventSend:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -532,17 +518,45 @@ export default {
 				}
 			}
 		},
-		async sendQueryClassesResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgSendResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosNftV1Beta1.tx.sendQueryClassesResponse({ value, fee: fullFee, memo })
+				const result = await client.CosmosNftV1Beta1.tx.sendMsgSendResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryClassesResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgSendResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:QueryClassesResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgSendResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryNFTsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosNftV1Beta1.tx.sendQueryNFTsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryNFTsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryNFTsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendEntry({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosNftV1Beta1.tx.sendEntry({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Entry:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Entry:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -574,48 +588,6 @@ export default {
 				}
 			}
 		},
-		async sendClass({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosNftV1Beta1.tx.sendClass({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Class:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Class:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendEntry({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosNftV1Beta1.tx.sendEntry({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Entry:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Entry:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryBalanceRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosNftV1Beta1.tx.sendQueryBalanceRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryBalanceRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryBalanceRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendQueryOwnerRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -630,124 +602,35 @@ export default {
 				}
 			}
 		},
-		
-		async QueryClassRequest({ rootGetters }, { value }) {
+		async sendQueryNFTResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosNftV1Beta1.tx.queryClassRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryClassRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryClassRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgSendResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosNftV1Beta1.tx.msgSendResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSendResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgSendResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryBalanceResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosNftV1Beta1.tx.queryBalanceResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryBalanceResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryBalanceResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryNFTResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosNftV1Beta1.tx.queryNftresponse({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosNftV1Beta1.tx.sendQueryNFTResponse({ value, fee: fullFee, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:QueryNFTResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryNFTResponse:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:QueryNFTResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async QueryClassesRequest({ rootGetters }, { value }) {
+		async sendQueryClassesResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosNftV1Beta1.tx.queryClassesRequest({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosNftV1Beta1.tx.sendQueryClassesResponse({ value, fee: fullFee, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryClassesRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryClassesRequest:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryClassesResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryClassesResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async EventSend({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosNftV1Beta1.tx.eventSend({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:EventSend:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:EventSend:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgSend({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosNftV1Beta1.tx.msgSend({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSend:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgSend:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryNFTsRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosNftV1Beta1.tx.queryNftsRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryNFTsRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryNFTsRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryNFTsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosNftV1Beta1.tx.queryNftsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryNFTsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryNFTsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
+		
 		async EventMint({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -771,6 +654,123 @@ export default {
 					throw new Error('TxClient:NFT:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:NFT:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryClassRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosNftV1Beta1.tx.queryClassRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryClassRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryClassRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryBalanceRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosNftV1Beta1.tx.queryBalanceRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryBalanceRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryBalanceRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryBalanceResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosNftV1Beta1.tx.queryBalanceResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryBalanceResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryBalanceResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async GenesisState({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosNftV1Beta1.tx.genesisState({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:GenesisState:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryNFTsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosNftV1Beta1.tx.queryNftsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryNFTsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryNFTsResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Class({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosNftV1Beta1.tx.class({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Class:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Class:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgSend({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosNftV1Beta1.tx.msgSend({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSend:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgSend:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryOwnerResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosNftV1Beta1.tx.queryOwnerResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryOwnerResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryOwnerResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryClassesRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosNftV1Beta1.tx.queryClassesRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryClassesRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryClassesRequest:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -800,29 +800,16 @@ export default {
 				}
 			}
 		},
-		async GenesisState({ rootGetters }, { value }) {
+		async EventSend({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosNftV1Beta1.tx.genesisState({value})
+				const msg = await client.CosmosNftV1Beta1.tx.eventSend({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:EventSend:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:GenesisState:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryOwnerResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosNftV1Beta1.tx.queryOwnerResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryOwnerResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryOwnerResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:EventSend:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -839,16 +826,42 @@ export default {
 				}
 			}
 		},
-		async QueryClassesResponse({ rootGetters }, { value }) {
+		async MsgSendResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosNftV1Beta1.tx.queryClassesResponse({value})
+				const msg = await client.CosmosNftV1Beta1.tx.msgSendResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryClassesResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgSendResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryClassesResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgSendResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryNFTsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosNftV1Beta1.tx.queryNftsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryNFTsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryNFTsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Entry({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosNftV1Beta1.tx.entry({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Entry:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Entry:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -878,45 +891,6 @@ export default {
 				}
 			}
 		},
-		async Class({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosNftV1Beta1.tx.class({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Class:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Class:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Entry({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosNftV1Beta1.tx.entry({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Entry:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Entry:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryBalanceRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosNftV1Beta1.tx.queryBalanceRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryBalanceRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryBalanceRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
 		async QueryOwnerRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -927,6 +901,32 @@ export default {
 					throw new Error('TxClient:QueryOwnerRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:QueryOwnerRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryNFTResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosNftV1Beta1.tx.queryNftresponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryNFTResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryNFTResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryClassesResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosNftV1Beta1.tx.queryClassesResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryClassesResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryClassesResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},

@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
+import { EncryptedKeyshare } from "../common/shared_types";
 
 export const protobufPackage = "fairyring.keyshare";
 
@@ -38,6 +39,20 @@ export interface CounterPartyIBCInfo {
   ConnectionID: string;
   ChannelID: string;
   PortID: string;
+}
+
+export interface PrivateKeyshareRequest {
+  identity: string;
+  pubkey: string;
+  /** Used only when the request is made via IBC */
+  ibcInfo:
+    | IBCInfo
+    | undefined;
+  /** Used only when the request is made via IBC */
+  counterparty: CounterPartyIBCInfo | undefined;
+  encryptedKeyshares: EncryptedKeyshare[];
+  requestId: string;
+  sent: boolean;
 }
 
 function createBaseKeyShareRequest(): KeyShareRequest {
@@ -421,6 +436,169 @@ export const CounterPartyIBCInfo = {
     message.ConnectionID = object.ConnectionID ?? "";
     message.ChannelID = object.ChannelID ?? "";
     message.PortID = object.PortID ?? "";
+    return message;
+  },
+};
+
+function createBasePrivateKeyshareRequest(): PrivateKeyshareRequest {
+  return {
+    identity: "",
+    pubkey: "",
+    ibcInfo: undefined,
+    counterparty: undefined,
+    encryptedKeyshares: [],
+    requestId: "",
+    sent: false,
+  };
+}
+
+export const PrivateKeyshareRequest = {
+  encode(message: PrivateKeyshareRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.identity !== "") {
+      writer.uint32(10).string(message.identity);
+    }
+    if (message.pubkey !== "") {
+      writer.uint32(18).string(message.pubkey);
+    }
+    if (message.ibcInfo !== undefined) {
+      IBCInfo.encode(message.ibcInfo, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.counterparty !== undefined) {
+      CounterPartyIBCInfo.encode(message.counterparty, writer.uint32(34).fork()).ldelim();
+    }
+    for (const v of message.encryptedKeyshares) {
+      EncryptedKeyshare.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.requestId !== "") {
+      writer.uint32(50).string(message.requestId);
+    }
+    if (message.sent !== false) {
+      writer.uint32(56).bool(message.sent);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): PrivateKeyshareRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePrivateKeyshareRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.identity = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.pubkey = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.ibcInfo = IBCInfo.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.counterparty = CounterPartyIBCInfo.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.encryptedKeyshares.push(EncryptedKeyshare.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.requestId = reader.string();
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.sent = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PrivateKeyshareRequest {
+    return {
+      identity: isSet(object.identity) ? globalThis.String(object.identity) : "",
+      pubkey: isSet(object.pubkey) ? globalThis.String(object.pubkey) : "",
+      ibcInfo: isSet(object.ibcInfo) ? IBCInfo.fromJSON(object.ibcInfo) : undefined,
+      counterparty: isSet(object.counterparty) ? CounterPartyIBCInfo.fromJSON(object.counterparty) : undefined,
+      encryptedKeyshares: globalThis.Array.isArray(object?.encryptedKeyshares)
+        ? object.encryptedKeyshares.map((e: any) => EncryptedKeyshare.fromJSON(e))
+        : [],
+      requestId: isSet(object.requestId) ? globalThis.String(object.requestId) : "",
+      sent: isSet(object.sent) ? globalThis.Boolean(object.sent) : false,
+    };
+  },
+
+  toJSON(message: PrivateKeyshareRequest): unknown {
+    const obj: any = {};
+    if (message.identity !== "") {
+      obj.identity = message.identity;
+    }
+    if (message.pubkey !== "") {
+      obj.pubkey = message.pubkey;
+    }
+    if (message.ibcInfo !== undefined) {
+      obj.ibcInfo = IBCInfo.toJSON(message.ibcInfo);
+    }
+    if (message.counterparty !== undefined) {
+      obj.counterparty = CounterPartyIBCInfo.toJSON(message.counterparty);
+    }
+    if (message.encryptedKeyshares?.length) {
+      obj.encryptedKeyshares = message.encryptedKeyshares.map((e) => EncryptedKeyshare.toJSON(e));
+    }
+    if (message.requestId !== "") {
+      obj.requestId = message.requestId;
+    }
+    if (message.sent !== false) {
+      obj.sent = message.sent;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PrivateKeyshareRequest>, I>>(base?: I): PrivateKeyshareRequest {
+    return PrivateKeyshareRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PrivateKeyshareRequest>, I>>(object: I): PrivateKeyshareRequest {
+    const message = createBasePrivateKeyshareRequest();
+    message.identity = object.identity ?? "";
+    message.pubkey = object.pubkey ?? "";
+    message.ibcInfo = (object.ibcInfo !== undefined && object.ibcInfo !== null)
+      ? IBCInfo.fromPartial(object.ibcInfo)
+      : undefined;
+    message.counterparty = (object.counterparty !== undefined && object.counterparty !== null)
+      ? CounterPartyIBCInfo.fromPartial(object.counterparty)
+      : undefined;
+    message.encryptedKeyshares = object.encryptedKeyshares?.map((e) => EncryptedKeyshare.fromPartial(e)) || [];
+    message.requestId = object.requestId ?? "";
+    message.sent = object.sent ?? false;
     return message;
   },
 };

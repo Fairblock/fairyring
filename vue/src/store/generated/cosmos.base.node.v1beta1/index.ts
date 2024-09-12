@@ -155,34 +155,6 @@ export default {
 		},
 		
 		
-		async sendConfigRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseNodeV1Beta1.tx.sendConfigRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:ConfigRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:ConfigRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendConfigResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseNodeV1Beta1.tx.sendConfigResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:ConfigResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:ConfigResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendStatusRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -211,33 +183,35 @@ export default {
 				}
 			}
 		},
-		
-		async ConfigRequest({ rootGetters }, { value }) {
+		async sendConfigRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseNodeV1Beta1.tx.configRequest({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosBaseNodeV1Beta1.tx.sendConfigRequest({ value, fee: fullFee, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:ConfigRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:ConfigRequest:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:ConfigRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async ConfigResponse({ rootGetters }, { value }) {
+		async sendConfigResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseNodeV1Beta1.tx.configResponse({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosBaseNodeV1Beta1.tx.sendConfigResponse({ value, fee: fullFee, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:ConfigResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:ConfigResponse:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:ConfigResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		
 		async StatusRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -261,6 +235,32 @@ export default {
 					throw new Error('TxClient:StatusResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:StatusResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async ConfigRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosBaseNodeV1Beta1.tx.configRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:ConfigRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:ConfigRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async ConfigResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosBaseNodeV1Beta1.tx.configResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:ConfigResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:ConfigResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},

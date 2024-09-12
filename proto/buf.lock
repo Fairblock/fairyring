@@ -19,8 +19,8 @@ deps:
   - remote: buf.build
     owner: cosmos
     repository: ibc
-    commit: c159402ffeef4c21a7f9f0643817ae0d
-    digest: shake256:694e3f5a1d469798bb6cb3510f6f489e10d9309d1f2e8f7a369a776947602195f13ab65972d2d586a1134978b6a6fa28a43e5d7710ef5032ba0c7fbbe6038f08
+    commit: 41fbc441e4d645119d275150719c5441
+    digest: shake256:a61d3e152909abddc91dcc1aec8ac997007bebd48a7921bc243681c708e6c9068f6484aa7ed4e6ff60101d3422c98744a4a5294bbda6aacdba07f1dfa4291020
   - remote: buf.build
     owner: cosmos
     repository: ics23
@@ -29,13 +29,13 @@ deps:
   - remote: buf.build
     owner: cosmos
     repository: interchain-security
-    commit: 30708cf9baa148158bcc1c04cc893e63
-    digest: shake256:e34f70426bb6a48a4c0d661b619bf8dfd104fd6c6ccbe2b5a39c1ed2287dda413f1fa3d77a00b352b17688bfbb97e954abdba2d31b7ed2d8c188a4d3d75aeb50
+    commit: 8fc5152665434255aab6555c3cb0a3a8
+    digest: shake256:e59aa9a929160b104dff9e79907e3b17322609161f93c89b7ffefc77befdd3bd727aaae0d77d6c2d089cf8734e07ab8d136de4dad39c484c7bf957636176760e
   - remote: buf.build
     owner: cosmwasm
     repository: wasmd
-    commit: 8ea8c35359db4f8b98683afc5ce33782
-    digest: shake256:a56b03b13076177a35756f60441bfce06f94f6177fc44221ead3b410f5d00ac454ddd86871d3fac128b879bd637b98a257e11ddb13f387303d7fc317c5ec783e
+    commit: 5af8ba5098c74f67b7e900e1c6c3dcdf
+    digest: shake256:e270738e4950538ca149674972f8f0a8243bb795c7c5d2b5807348fec5aae42ddb646827ef08dd200ed65a4be0ab450162d48f1f5d0dae9446696ccb286b90db
   - remote: buf.build
     owner: googleapis
     repository: googleapis

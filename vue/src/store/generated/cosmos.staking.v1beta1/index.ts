@@ -531,115 +531,17 @@ export default {
 		},
 		
 		
-		async sendCommission({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendDelegationResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendCommission({ value, fee: fullFee, memo })
+				const result = await client.CosmosStakingV1Beta1.tx.sendDelegationResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:Commission:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:DelegationResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:Commission:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendDVVTriplet({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendDVVTriplet({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:DVVTriplet:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:DVVTriplet:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgCreateValidator({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendMsgCreateValidator({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateValidator:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgCreateValidator:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryPoolResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryPoolResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPoolResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryPoolResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendDVVTriplets({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendDVVTriplets({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:DVVTriplets:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:DVVTriplets:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendPool({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendPool({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Pool:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Pool:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendLastValidatorPower({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendLastValidatorPower({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:LastValidatorPower:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:LastValidatorPower:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendRedelegation({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendRedelegation({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Redelegation:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Redelegation:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:DelegationResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -657,339 +559,31 @@ export default {
 				}
 			}
 		},
-		async sendQueryDelegatorDelegationsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryDelegatorValidatorResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorDelegationsResponse({ value, fee: fullFee, memo })
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorValidatorResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorDelegationsResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryDelegatorValidatorResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:QueryDelegatorDelegationsResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryDelegatorValidatorResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendQueryDelegatorValidatorRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendDescription({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorValidatorRequest({ value, fee: fullFee, memo })
+				const result = await client.CosmosStakingV1Beta1.tx.sendDescription({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorValidatorRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:Description:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:QueryDelegatorValidatorRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendDVPairs({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendDVPairs({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:DVPairs:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:DVPairs:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendRedelegationEntryResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendRedelegationEntryResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:RedelegationEntryResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:RedelegationEntryResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryValidatorRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryValidatorRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryValidatorRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryValidatorRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryRedelegationsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryRedelegationsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryRedelegationsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryRedelegationsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendDVPair({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendDVPair({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:DVPair:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:DVPair:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendValidatorUpdates({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendValidatorUpdates({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:ValidatorUpdates:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:ValidatorUpdates:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgCreateValidatorResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendMsgCreateValidatorResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateValidatorResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgCreateValidatorResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgEditValidator({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendMsgEditValidator({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgEditValidator:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgEditValidator:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgBeginRedelegate({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendMsgBeginRedelegate({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgBeginRedelegate:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgBeginRedelegate:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendHistoricalInfo({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendHistoricalInfo({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:HistoricalInfo:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:HistoricalInfo:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendDelegation({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendDelegation({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Delegation:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Delegation:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgCancelUnbondingDelegation({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendMsgCancelUnbondingDelegation({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCancelUnbondingDelegation:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgCancelUnbondingDelegation:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryValidatorsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryValidatorsRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryValidatorsRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryValidatorsRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryRedelegationsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryRedelegationsRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryRedelegationsRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryRedelegationsRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendValAddresses({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendValAddresses({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:ValAddresses:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:ValAddresses:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendDelegationResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendDelegationResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:DelegationResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:DelegationResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgDelegateResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendMsgDelegateResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgDelegateResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgDelegateResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryUnbondingDelegationRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryUnbondingDelegationRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUnbondingDelegationRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryUnbondingDelegationRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryDelegatorUnbondingDelegationsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorUnbondingDelegationsRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryDelegatorUnbondingDelegationsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorUnbondingDelegationsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendParams({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Params:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendRedelegationResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendRedelegationResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:RedelegationResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:RedelegationResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:Description:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -1007,146 +601,6 @@ export default {
 				}
 			}
 		},
-		async sendQueryValidatorsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryValidatorsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryValidatorsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryValidatorsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryValidatorResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryValidatorResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryValidatorResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryValidatorResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryUnbondingDelegationResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryUnbondingDelegationResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUnbondingDelegationResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryUnbondingDelegationResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryDelegatorDelegationsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorDelegationsRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorDelegationsRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryDelegatorDelegationsRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryDelegatorValidatorsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorValidatorsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorValidatorsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryDelegatorValidatorsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryDelegatorValidatorResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorValidatorResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorValidatorResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryDelegatorValidatorResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryPoolRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryPoolRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPoolRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryPoolRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendStakeAuthorization({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendStakeAuthorization({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:StakeAuthorization:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:StakeAuthorization:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgDelegate({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendMsgDelegate({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgDelegate:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgDelegate:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgEditValidatorResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendMsgEditValidatorResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgEditValidatorResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgEditValidatorResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendMsgUndelegateResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -1161,17 +615,31 @@ export default {
 				}
 			}
 		},
-		async sendCommissionRates({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgCancelUnbondingDelegation({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendCommissionRates({ value, fee: fullFee, memo })
+				const result = await client.CosmosStakingV1Beta1.tx.sendMsgCancelUnbondingDelegation({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:CommissionRates:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgCancelUnbondingDelegation:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:CommissionRates:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgCancelUnbondingDelegation:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendDVVTriplet({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendDVVTriplet({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:DVVTriplet:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:DVVTriplet:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -1203,199 +671,31 @@ export default {
 				}
 			}
 		},
-		async sendQueryValidatorDelegationsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryValidatorDelegationsRequest({ value, fee: fullFee, memo })
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryParamsResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryValidatorDelegationsRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryParamsResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:QueryValidatorDelegationsRequest:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryParamsResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendQueryHistoricalInfoRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendRedelegationEntryResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryHistoricalInfoRequest({ value, fee: fullFee, memo })
+				const result = await client.CosmosStakingV1Beta1.tx.sendRedelegationEntryResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryHistoricalInfoRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:RedelegationEntryResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:QueryHistoricalInfoRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendUnbondingDelegation({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendUnbondingDelegation({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:UnbondingDelegation:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:UnbondingDelegation:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryDelegationResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegationResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegationResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryDelegationResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryParamsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryParamsRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryParamsRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryParamsRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendRedelegationEntry({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendRedelegationEntry({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:RedelegationEntry:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:RedelegationEntry:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgBeginRedelegateResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendMsgBeginRedelegateResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgBeginRedelegateResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgBeginRedelegateResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgCancelUnbondingDelegationResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendMsgCancelUnbondingDelegationResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCancelUnbondingDelegationResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgCancelUnbondingDelegationResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendStakeAuthorization_Validators({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendStakeAuthorization_Validators({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:StakeAuthorization_Validators:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:StakeAuthorization_Validators:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryValidatorDelegationsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryValidatorDelegationsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryValidatorDelegationsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryValidatorDelegationsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryDelegatorValidatorsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorValidatorsRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorValidatorsRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryDelegatorValidatorsRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendGenesisState({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendGenesisState({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:GenesisState:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendDescription({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendDescription({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Description:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Description:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendValidator({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendValidator({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Validator:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Validator:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:RedelegationEntryResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -1413,6 +713,370 @@ export default {
 				}
 			}
 		},
+		async sendQueryDelegatorValidatorsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorValidatorsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegatorValidatorsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryDelegatorValidatorsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendHistoricalInfo({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendHistoricalInfo({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:HistoricalInfo:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:HistoricalInfo:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryDelegatorUnbondingDelegationsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorUnbondingDelegationsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendCommission({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendCommission({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Commission:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Commission:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgEditValidator({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendMsgEditValidator({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgEditValidator:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgEditValidator:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgDelegateResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendMsgDelegateResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgDelegateResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgDelegateResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendLastValidatorPower({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendLastValidatorPower({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:LastValidatorPower:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:LastValidatorPower:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryDelegationResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegationResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegationResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryDelegationResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryUnbondingDelegationResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryUnbondingDelegationResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUnbondingDelegationResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryUnbondingDelegationResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryDelegatorDelegationsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorDelegationsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegatorDelegationsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryDelegatorDelegationsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryDelegatorDelegationsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorDelegationsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegatorDelegationsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryDelegatorDelegationsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgCancelUnbondingDelegationResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendMsgCancelUnbondingDelegationResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCancelUnbondingDelegationResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgCancelUnbondingDelegationResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendRedelegation({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendRedelegation({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Redelegation:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Redelegation:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendGenesisState({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendGenesisState({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:GenesisState:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendValidator({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendValidator({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Validator:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Validator:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendDVPair({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendDVPair({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:DVPair:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:DVPair:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendPool({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendPool({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Pool:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Pool:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgEditValidatorResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendMsgEditValidatorResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgEditValidatorResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgEditValidatorResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryRedelegationsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryRedelegationsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryRedelegationsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryRedelegationsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendDVVTriplets({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendDVVTriplets({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:DVVTriplets:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:DVVTriplets:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgBeginRedelegate({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendMsgBeginRedelegate({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgBeginRedelegate:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgBeginRedelegate:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryValidatorResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryValidatorResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryValidatorResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryValidatorResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryValidatorDelegationsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryValidatorDelegationsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryValidatorDelegationsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryValidatorDelegationsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendParams({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Params:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryValidatorDelegationsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryValidatorDelegationsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryValidatorDelegationsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryValidatorDelegationsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendCommissionRates({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendCommissionRates({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:CommissionRates:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:CommissionRates:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendQueryValidatorUnbondingDelegationsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -1424,6 +1088,160 @@ export default {
 					throw new Error('TxClient:QueryValidatorUnbondingDelegationsRequest:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:QueryValidatorUnbondingDelegationsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendValidatorUpdates({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendValidatorUpdates({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:ValidatorUpdates:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:ValidatorUpdates:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgBeginRedelegateResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendMsgBeginRedelegateResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgBeginRedelegateResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgBeginRedelegateResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryValidatorsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryValidatorsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryValidatorsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryValidatorsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendStakeAuthorization({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendStakeAuthorization({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:StakeAuthorization:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:StakeAuthorization:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgCreateValidatorResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendMsgCreateValidatorResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateValidatorResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgCreateValidatorResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendDelegation({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendDelegation({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Delegation:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Delegation:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryDelegatorValidatorRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorValidatorRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegatorValidatorRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryDelegatorValidatorRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryValidatorsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryValidatorsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryValidatorsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryValidatorsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryDelegatorUnbondingDelegationsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorUnbondingDelegationsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryHistoricalInfoRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryHistoricalInfoRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryHistoricalInfoRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryHistoricalInfoRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgDelegate({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendMsgDelegate({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgDelegate:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgDelegate:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -1441,6 +1259,202 @@ export default {
 				}
 			}
 		},
+		async sendQueryRedelegationsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryRedelegationsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryRedelegationsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryRedelegationsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryPoolResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryPoolResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPoolResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryPoolResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendValAddresses({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendValAddresses({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:ValAddresses:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:ValAddresses:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendStakeAuthorization_Validators({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendStakeAuthorization_Validators({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:StakeAuthorization_Validators:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:StakeAuthorization_Validators:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendUnbondingDelegation({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendUnbondingDelegation({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:UnbondingDelegation:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:UnbondingDelegation:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryValidatorRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryValidatorRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryValidatorRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryValidatorRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryPoolRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryPoolRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPoolRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryPoolRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryUnbondingDelegationRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryUnbondingDelegationRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUnbondingDelegationRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryUnbondingDelegationRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendDVPairs({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendDVPairs({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:DVPairs:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:DVPairs:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendRedelegationEntry({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendRedelegationEntry({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:RedelegationEntry:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:RedelegationEntry:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendRedelegationResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendRedelegationResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:RedelegationResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:RedelegationResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryParamsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryParamsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryParamsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryParamsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgCreateValidator({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendMsgCreateValidator({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateValidator:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgCreateValidator:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryDelegatorValidatorsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosStakingV1Beta1.tx.sendQueryDelegatorValidatorsRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegatorValidatorsRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryDelegatorValidatorsRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendQueryHistoricalInfoResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -1455,122 +1469,17 @@ export default {
 				}
 			}
 		},
-		async sendQueryParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosStakingV1Beta1.tx.sendQueryParamsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryParamsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryParamsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		
-		async Commission({ rootGetters }, { value }) {
+		async DelegationResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.commission({value})
+				const msg = await client.CosmosStakingV1Beta1.tx.delegationResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:Commission:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:DelegationResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:Commission:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async DVVTriplet({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.dvvtriplet({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:DVVTriplet:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:DVVTriplet:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgCreateValidator({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.msgCreateValidator({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateValidator:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgCreateValidator:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryPoolResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryPoolResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPoolResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryPoolResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async DVVTriplets({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.dvvtriplets({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:DVVTriplets:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:DVVTriplets:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Pool({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.pool({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Pool:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Pool:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async LastValidatorPower({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.lastValidatorPower({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:LastValidatorPower:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:LastValidatorPower:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Redelegation({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.redelegation({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Redelegation:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Redelegation:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:DelegationResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -1587,315 +1496,29 @@ export default {
 				}
 			}
 		},
-		async QueryDelegatorDelegationsResponse({ rootGetters }, { value }) {
+		async QueryDelegatorValidatorResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorDelegationsResponse({value})
+				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorValidatorResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorDelegationsResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryDelegatorValidatorResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryDelegatorDelegationsResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryDelegatorValidatorResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async QueryDelegatorValidatorRequest({ rootGetters }, { value }) {
+		async Description({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorValidatorRequest({value})
+				const msg = await client.CosmosStakingV1Beta1.tx.description({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorValidatorRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:Description:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryDelegatorValidatorRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async DVPairs({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.dvpairs({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:DVPairs:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:DVPairs:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async RedelegationEntryResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.redelegationEntryResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:RedelegationEntryResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:RedelegationEntryResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryValidatorRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryValidatorRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryValidatorRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryValidatorRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryRedelegationsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryRedelegationsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryRedelegationsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryRedelegationsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async DVPair({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.dvpair({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:DVPair:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:DVPair:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async ValidatorUpdates({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.validatorUpdates({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:ValidatorUpdates:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:ValidatorUpdates:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgCreateValidatorResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.msgCreateValidatorResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateValidatorResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgCreateValidatorResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgEditValidator({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.msgEditValidator({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgEditValidator:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgEditValidator:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgBeginRedelegate({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.msgBeginRedelegate({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgBeginRedelegate:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgBeginRedelegate:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async HistoricalInfo({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.historicalInfo({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:HistoricalInfo:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:HistoricalInfo:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Delegation({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.delegation({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Delegation:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Delegation:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgCancelUnbondingDelegation({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.msgCancelUnbondingDelegation({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCancelUnbondingDelegation:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgCancelUnbondingDelegation:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryValidatorsRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryValidatorsRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryValidatorsRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryValidatorsRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryRedelegationsRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryRedelegationsRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryRedelegationsRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryRedelegationsRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async ValAddresses({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.valAddresses({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:ValAddresses:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:ValAddresses:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async DelegationResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.delegationResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:DelegationResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:DelegationResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgDelegateResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.msgDelegateResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgDelegateResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgDelegateResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryUnbondingDelegationRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryUnbondingDelegationRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUnbondingDelegationRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryUnbondingDelegationRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryDelegatorUnbondingDelegationsRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorUnbondingDelegationsRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryDelegatorUnbondingDelegationsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorUnbondingDelegationsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Params({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.params({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Params:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async RedelegationResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.redelegationResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:RedelegationResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:RedelegationResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:Description:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -1912,136 +1535,6 @@ export default {
 				}
 			}
 		},
-		async QueryValidatorsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryValidatorsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryValidatorsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryValidatorsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryValidatorResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryValidatorResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryValidatorResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryValidatorResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryUnbondingDelegationResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryUnbondingDelegationResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryUnbondingDelegationResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryUnbondingDelegationResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryDelegatorDelegationsRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorDelegationsRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorDelegationsRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryDelegatorDelegationsRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryDelegatorValidatorsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorValidatorsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorValidatorsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryDelegatorValidatorsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryDelegatorValidatorResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorValidatorResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorValidatorResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryDelegatorValidatorResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryPoolRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryPoolRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryPoolRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryPoolRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async StakeAuthorization({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.stakeAuthorization({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:StakeAuthorization:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:StakeAuthorization:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgDelegate({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.msgDelegate({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgDelegate:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgDelegate:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgEditValidatorResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.msgEditValidatorResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgEditValidatorResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgEditValidatorResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
 		async MsgUndelegateResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -2055,16 +1548,29 @@ export default {
 				}
 			}
 		},
-		async CommissionRates({ rootGetters }, { value }) {
+		async MsgCancelUnbondingDelegation({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.commissionRates({value})
+				const msg = await client.CosmosStakingV1Beta1.tx.msgCancelUnbondingDelegation({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:CommissionRates:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgCancelUnbondingDelegation:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:CommissionRates:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgCancelUnbondingDelegation:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async DVVTriplet({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.dvvtriplet({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:DVVTriplet:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:DVVTriplet:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -2094,185 +1600,29 @@ export default {
 				}
 			}
 		},
-		async QueryValidatorDelegationsRequest({ rootGetters }, { value }) {
+		async QueryParamsResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryValidatorDelegationsRequest({value})
+				const msg = await client.CosmosStakingV1Beta1.tx.queryParamsResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryValidatorDelegationsRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryParamsResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryValidatorDelegationsRequest:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryParamsResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async QueryHistoricalInfoRequest({ rootGetters }, { value }) {
+		async RedelegationEntryResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryHistoricalInfoRequest({value})
+				const msg = await client.CosmosStakingV1Beta1.tx.redelegationEntryResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryHistoricalInfoRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:RedelegationEntryResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryHistoricalInfoRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async UnbondingDelegation({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.unbondingDelegation({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:UnbondingDelegation:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:UnbondingDelegation:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryDelegationResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegationResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegationResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryDelegationResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryParamsRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryParamsRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryParamsRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryParamsRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async RedelegationEntry({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.redelegationEntry({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:RedelegationEntry:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:RedelegationEntry:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgBeginRedelegateResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.msgBeginRedelegateResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgBeginRedelegateResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgBeginRedelegateResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgCancelUnbondingDelegationResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.msgCancelUnbondingDelegationResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCancelUnbondingDelegationResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgCancelUnbondingDelegationResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async StakeAuthorization_Validators({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.stakeAuthorizationValidators({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:StakeAuthorization_Validators:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:StakeAuthorization_Validators:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryValidatorDelegationsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryValidatorDelegationsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryValidatorDelegationsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryValidatorDelegationsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryDelegatorValidatorsRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorValidatorsRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryDelegatorValidatorsRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryDelegatorValidatorsRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async GenesisState({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.genesisState({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:GenesisState:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Description({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.description({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Description:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Description:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Validator({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.validator({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Validator:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Validator:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:RedelegationEntryResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -2289,6 +1639,344 @@ export default {
 				}
 			}
 		},
+		async QueryDelegatorValidatorsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorValidatorsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegatorValidatorsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryDelegatorValidatorsResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async HistoricalInfo({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.historicalInfo({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:HistoricalInfo:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:HistoricalInfo:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryDelegatorUnbondingDelegationsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorUnbondingDelegationsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Commission({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.commission({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Commission:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Commission:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgEditValidator({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.msgEditValidator({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgEditValidator:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgEditValidator:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgDelegateResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.msgDelegateResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgDelegateResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgDelegateResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async LastValidatorPower({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.lastValidatorPower({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:LastValidatorPower:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:LastValidatorPower:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryDelegationResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegationResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegationResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryDelegationResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryUnbondingDelegationResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryUnbondingDelegationResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUnbondingDelegationResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryUnbondingDelegationResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryDelegatorDelegationsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorDelegationsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegatorDelegationsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryDelegatorDelegationsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryDelegatorDelegationsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorDelegationsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegatorDelegationsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryDelegatorDelegationsResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgCancelUnbondingDelegationResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.msgCancelUnbondingDelegationResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCancelUnbondingDelegationResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgCancelUnbondingDelegationResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Redelegation({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.redelegation({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Redelegation:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Redelegation:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async GenesisState({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.genesisState({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GenesisState:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:GenesisState:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Validator({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.validator({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Validator:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Validator:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async DVPair({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.dvpair({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:DVPair:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:DVPair:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Pool({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.pool({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Pool:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Pool:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgEditValidatorResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.msgEditValidatorResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgEditValidatorResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgEditValidatorResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryRedelegationsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryRedelegationsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryRedelegationsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryRedelegationsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async DVVTriplets({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.dvvtriplets({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:DVVTriplets:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:DVVTriplets:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgBeginRedelegate({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.msgBeginRedelegate({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgBeginRedelegate:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgBeginRedelegate:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryValidatorResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryValidatorResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryValidatorResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryValidatorResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryValidatorDelegationsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryValidatorDelegationsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryValidatorDelegationsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryValidatorDelegationsResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Params({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.params({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Params:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryValidatorDelegationsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryValidatorDelegationsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryValidatorDelegationsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryValidatorDelegationsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async CommissionRates({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.commissionRates({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:CommissionRates:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:CommissionRates:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		async QueryValidatorUnbondingDelegationsRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -2299,6 +1987,149 @@ export default {
 					throw new Error('TxClient:QueryValidatorUnbondingDelegationsRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:QueryValidatorUnbondingDelegationsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async ValidatorUpdates({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.validatorUpdates({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:ValidatorUpdates:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:ValidatorUpdates:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgBeginRedelegateResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.msgBeginRedelegateResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgBeginRedelegateResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgBeginRedelegateResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryValidatorsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryValidatorsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryValidatorsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryValidatorsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async StakeAuthorization({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.stakeAuthorization({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:StakeAuthorization:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:StakeAuthorization:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgCreateValidatorResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.msgCreateValidatorResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateValidatorResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgCreateValidatorResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Delegation({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.delegation({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Delegation:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Delegation:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryDelegatorValidatorRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorValidatorRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegatorValidatorRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryDelegatorValidatorRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryValidatorsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryValidatorsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryValidatorsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryValidatorsResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryDelegatorUnbondingDelegationsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorUnbondingDelegationsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryDelegatorUnbondingDelegationsResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryHistoricalInfoRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryHistoricalInfoRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryHistoricalInfoRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryHistoricalInfoRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgDelegate({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.msgDelegate({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgDelegate:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgDelegate:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -2315,6 +2146,188 @@ export default {
 				}
 			}
 		},
+		async QueryRedelegationsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryRedelegationsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryRedelegationsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryRedelegationsResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryPoolResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryPoolResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPoolResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryPoolResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async ValAddresses({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.valAddresses({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:ValAddresses:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:ValAddresses:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async StakeAuthorization_Validators({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.stakeAuthorizationValidators({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:StakeAuthorization_Validators:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:StakeAuthorization_Validators:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async UnbondingDelegation({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.unbondingDelegation({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:UnbondingDelegation:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:UnbondingDelegation:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryValidatorRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryValidatorRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryValidatorRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryValidatorRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryPoolRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryPoolRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPoolRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryPoolRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryUnbondingDelegationRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryUnbondingDelegationRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryUnbondingDelegationRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryUnbondingDelegationRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async DVPairs({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.dvpairs({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:DVPairs:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:DVPairs:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async RedelegationEntry({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.redelegationEntry({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:RedelegationEntry:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:RedelegationEntry:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async RedelegationResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.redelegationResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:RedelegationResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:RedelegationResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryParamsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryParamsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryParamsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryParamsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgCreateValidator({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.msgCreateValidator({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateValidator:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgCreateValidator:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryDelegatorValidatorsRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosStakingV1Beta1.tx.queryDelegatorValidatorsRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryDelegatorValidatorsRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryDelegatorValidatorsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		async QueryHistoricalInfoResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -2325,19 +2338,6 @@ export default {
 					throw new Error('TxClient:QueryHistoricalInfoResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:QueryHistoricalInfoResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryParamsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosStakingV1Beta1.tx.queryParamsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryParamsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryParamsResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},

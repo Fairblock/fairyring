@@ -155,6 +155,20 @@ export default {
 		},
 		
 		
+		async sendQueryInterchainAccountRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsInterchainAccountsControllerV1.tx.sendQueryInterchainAccountRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryInterchainAccountRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryInterchainAccountRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendMsgRegisterInterchainAccount({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -166,34 +180,6 @@ export default {
 					throw new Error('TxClient:MsgRegisterInterchainAccount:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:MsgRegisterInterchainAccount:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsInterchainAccountsControllerV1.tx.sendParams({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Params:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryInterchainAccountResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsInterchainAccountsControllerV1.tx.sendQueryInterchainAccountResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryInterchainAccountResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryInterchainAccountResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -211,34 +197,6 @@ export default {
 				}
 			}
 		},
-		async sendQueryParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsInterchainAccountsControllerV1.tx.sendQueryParamsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryParamsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryParamsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgSendTx({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsInterchainAccountsControllerV1.tx.sendMsgSendTx({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSendTx:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgSendTx:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendMsgSendTxResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -250,48 +208,6 @@ export default {
 					throw new Error('TxClient:MsgSendTxResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:MsgSendTxResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgUpdateParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsInterchainAccountsControllerV1.tx.sendMsgUpdateParams({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgUpdateParams:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgUpdateParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsInterchainAccountsControllerV1.tx.sendMsgUpdateParamsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgUpdateParamsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendQueryInterchainAccountRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.IbcApplicationsInterchainAccountsControllerV1.tx.sendQueryInterchainAccountRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryInterchainAccountRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:QueryInterchainAccountRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -309,7 +225,104 @@ export default {
 				}
 			}
 		},
+		async sendQueryParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsInterchainAccountsControllerV1.tx.sendQueryParamsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryParamsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryParamsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgUpdateParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsInterchainAccountsControllerV1.tx.sendMsgUpdateParamsResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgUpdateParamsResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryInterchainAccountResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsInterchainAccountsControllerV1.tx.sendQueryInterchainAccountResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryInterchainAccountResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryInterchainAccountResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsInterchainAccountsControllerV1.tx.sendParams({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Params:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgSendTx({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsInterchainAccountsControllerV1.tx.sendMsgSendTx({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSendTx:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgSendTx:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgUpdateParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.IbcApplicationsInterchainAccountsControllerV1.tx.sendMsgUpdateParams({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgUpdateParams:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		
+		async QueryInterchainAccountRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsInterchainAccountsControllerV1.tx.queryInterchainAccountRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryInterchainAccountRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryInterchainAccountRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		async MsgRegisterInterchainAccount({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -320,32 +333,6 @@ export default {
 					throw new Error('TxClient:MsgRegisterInterchainAccount:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgRegisterInterchainAccount:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Params({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsInterchainAccountsControllerV1.tx.params({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Params:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async QueryInterchainAccountResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsInterchainAccountsControllerV1.tx.queryInterchainAccountResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryInterchainAccountResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryInterchainAccountResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -362,32 +349,6 @@ export default {
 				}
 			}
 		},
-		async QueryParamsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsInterchainAccountsControllerV1.tx.queryParamsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryParamsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:QueryParamsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgSendTx({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsInterchainAccountsControllerV1.tx.msgSendTx({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSendTx:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgSendTx:Create Could not create message: ' + e.message)
-				}
-			}
-		},
 		async MsgSendTxResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -401,16 +362,29 @@ export default {
 				}
 			}
 		},
-		async MsgUpdateParams({ rootGetters }, { value }) {
+		async QueryParamsRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsInterchainAccountsControllerV1.tx.msgUpdateParams({value})
+				const msg = await client.IbcApplicationsInterchainAccountsControllerV1.tx.queryParamsRequest({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryParamsRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgUpdateParams:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryParamsRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryParamsResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsInterchainAccountsControllerV1.tx.queryParamsResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryParamsResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryParamsResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -427,29 +401,55 @@ export default {
 				}
 			}
 		},
-		async QueryInterchainAccountRequest({ rootGetters }, { value }) {
+		async QueryInterchainAccountResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsInterchainAccountsControllerV1.tx.queryInterchainAccountRequest({value})
+				const msg = await client.IbcApplicationsInterchainAccountsControllerV1.tx.queryInterchainAccountResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryInterchainAccountRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryInterchainAccountResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryInterchainAccountRequest:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryInterchainAccountResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async QueryParamsRequest({ rootGetters }, { value }) {
+		async Params({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.IbcApplicationsInterchainAccountsControllerV1.tx.queryParamsRequest({value})
+				const msg = await client.IbcApplicationsInterchainAccountsControllerV1.tx.params({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:QueryParamsRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:QueryParamsRequest:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:Params:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgSendTx({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsInterchainAccountsControllerV1.tx.msgSendTx({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSendTx:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgSendTx:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgUpdateParams({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.IbcApplicationsInterchainAccountsControllerV1.tx.msgUpdateParams({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgUpdateParams:Create Could not create message: ' + e.message)
 				}
 			}
 		},

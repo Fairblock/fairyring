@@ -79,6 +79,12 @@ service Query {
     option (google.api.http).get = "/Fairblock/fairyring/pep/show_private_keyshare_req/{reqId}";
   
   }
+  
+  // Queries a list of DecryptData items.
+  rpc DecryptData (QueryDecryptDataRequest) returns (QueryDecryptDataResponse) {
+    option (google.api.http).get = "/Fairblock/fairyring/pep/decrypt_data/{aggrKeyshare}/{encryptedData}";
+  
+  }
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
@@ -174,3 +180,14 @@ message QueryShowPrivateKeyshareReqResponse {
   cosmos.base.v1beta1.Coin amount  = 4 [(gogoproto.nullable) = false];
   repeated fairyring.common.EncryptedKeyshare encrypted_keyshares = 5;
 }
+
+message QueryDecryptDataRequest {
+  string pubkey = 1;
+  string aggrKeyshare  = 2;
+  string encryptedData = 3;
+}
+
+message QueryDecryptDataResponse {
+  string decrypted_data = 1;
+}
+

@@ -44,6 +44,7 @@ const getDefaultState = () => {
 				KeyshareReq: {},
 				KeyshareReqAll: {},
 				ShowPrivateKeyshareReq: {},
+				DecryptData: {},
 				
 				_Structure: {
 						
@@ -139,6 +140,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.ShowPrivateKeyshareReq[JSON.stringify(params)] ?? {}
+		},
+				getDecryptData: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.DecryptData[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -428,62 +435,28 @@ export default {
 		},
 		
 		
-		async sendGenEncTxExecutionQueue({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		
+		
+		 		
+		
+		
+		async QueryDecryptData({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendGenEncTxExecutionQueue({ value, fee: fullFee, memo })
-				return result
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.FairyringPep.query.queryDecryptData( key.aggrKeyshare,  key.encryptedData)).data
+				
+					
+				commit('QUERY', { query: 'DecryptData', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryDecryptData', payload: { options: { all }, params: {...key},query }})
+				return getters['getDecryptData']( { params: {...key}, query}) ?? {}
 			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GenEncTxExecutionQueue:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:GenEncTxExecutionQueue:Send Could not broadcast Tx: '+ e.message)
-				}
+				throw new Error('QueryClient:QueryDecryptData API Node Unavailable. Could not perform query: ' + e.message)
+				
 			}
 		},
-		async sendMsgUpdateParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendMsgUpdateParamsResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgUpdateParamsResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgRequestPrivateIdentity({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendMsgRequestPrivateIdentity({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRequestPrivateIdentity:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgRequestPrivateIdentity:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendEncryptedTxArray({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendEncryptedTxArray({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:EncryptedTxArray:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:EncryptedTxArray:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
+		
+		
 		async sendGenesisState({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -498,115 +471,31 @@ export default {
 				}
 			}
 		},
-		async sendMsgCreateAggregatedKeyShare({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendMsgCreateAggregatedKeyShare({ value, fee: fullFee, memo })
+				const result = await client.FairyringPep.tx.sendQueryParamsResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateAggregatedKeyShare:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryParamsResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgCreateAggregatedKeyShare:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryParamsResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendPepNonce({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryShowPrivateKeyshareReqRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendPepNonce({ value, fee: fullFee, memo })
+				const result = await client.FairyringPep.tx.sendQueryShowPrivateKeyshareReqRequest({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:PepNonce:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryShowPrivateKeyshareReqRequest:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:PepNonce:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgSubmitEncryptedTxResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendMsgSubmitEncryptedTxResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSubmitEncryptedTxResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgSubmitEncryptedTxResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgRequestGeneralKeyshareResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendMsgRequestGeneralKeyshareResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRequestGeneralKeyshareResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgRequestGeneralKeyshareResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendEncryptedTx({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendEncryptedTx({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:EncryptedTx:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:EncryptedTx:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgGetGeneralKeyshare({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendMsgGetGeneralKeyshare({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgGetGeneralKeyshare:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgGetGeneralKeyshare:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgUpdateParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendMsgUpdateParams({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgUpdateParams:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgSubmitGeneralEncryptedTx({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendMsgSubmitGeneralEncryptedTx({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSubmitGeneralEncryptedTx:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgSubmitGeneralEncryptedTx:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryShowPrivateKeyshareReqRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -624,115 +513,59 @@ export default {
 				}
 			}
 		},
-		async sendMsgRequestGeneralKeyshare({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendGenEncTxExecutionQueue({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendMsgRequestGeneralKeyshare({ value, fee: fullFee, memo })
+				const result = await client.FairyringPep.tx.sendGenEncTxExecutionQueue({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRequestGeneralKeyshare:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:GenEncTxExecutionQueue:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgRequestGeneralKeyshare:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:GenEncTxExecutionQueue:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendRequestId({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryGetPepNonceRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendRequestId({ value, fee: fullFee, memo })
+				const result = await client.FairyringPep.tx.sendQueryGetPepNonceRequest({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:RequestId:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryGetPepNonceRequest:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:RequestId:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryGetPepNonceRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendPrivateRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryKeyshareRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendPrivateRequest({ value, fee: fullFee, memo })
+				const result = await client.FairyringPep.tx.sendQueryKeyshareRequest({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:PrivateRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryKeyshareRequest:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:PrivateRequest:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryKeyshareRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendAggregatedKeyShare({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendMsgUpdateParamsResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendAggregatedKeyShare({ value, fee: fullFee, memo })
+				const result = await client.FairyringPep.tx.sendMsgUpdateParamsResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:AggregatedKeyShare:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:AggregatedKeyShare:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendParams({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Params:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendGeneralEncryptedTxArray({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendGeneralEncryptedTxArray({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GeneralEncryptedTxArray:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:GeneralEncryptedTxArray:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgSubmitEncryptedTx({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendMsgSubmitEncryptedTx({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSubmitEncryptedTx:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgSubmitEncryptedTx:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgGetPrivateKeyshares({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendMsgGetPrivateKeyshares({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgGetPrivateKeyshares:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgGetPrivateKeyshares:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgUpdateParamsResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -750,31 +583,31 @@ export default {
 				}
 			}
 		},
-		async sendMsgGetPrivateKeysharesResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendQueryParamsRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendMsgGetPrivateKeysharesResponse({ value, fee: fullFee, memo })
+				const result = await client.FairyringPep.tx.sendQueryParamsRequest({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgGetPrivateKeysharesResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryParamsRequest:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgGetPrivateKeysharesResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:QueryParamsRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendGeneralEncryptedTx({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendAggregatedKeyShare({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.FairyringPep.tx.sendGeneralEncryptedTx({ value, fee: fullFee, memo })
+				const result = await client.FairyringPep.tx.sendAggregatedKeyShare({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:GeneralEncryptedTx:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:AggregatedKeyShare:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:GeneralEncryptedTx:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:AggregatedKeyShare:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -792,6 +625,412 @@ export default {
 				}
 			}
 		},
+		async sendEncryptedTx({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendEncryptedTx({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:EncryptedTx:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:EncryptedTx:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryShowPrivateKeyshareReqResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryShowPrivateKeyshareReqResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryShowPrivateKeyshareReqResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryShowPrivateKeyshareReqResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgRequestPrivateIdentity({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendMsgRequestPrivateIdentity({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRequestPrivateIdentity:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgRequestPrivateIdentity:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendGeneralEncryptedTxArray({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendGeneralEncryptedTxArray({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GeneralEncryptedTxArray:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:GeneralEncryptedTxArray:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendRequestId({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendRequestId({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:RequestId:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:RequestId:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryAllEncryptedTxFromHeightResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryAllEncryptedTxFromHeightResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllEncryptedTxFromHeightResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryAllEncryptedTxFromHeightResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendGeneralEncryptedTx({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendGeneralEncryptedTx({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GeneralEncryptedTx:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:GeneralEncryptedTx:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendPepNonce({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendPepNonce({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:PepNonce:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:PepNonce:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryPubKeyRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryPubKeyRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPubKeyRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryPubKeyRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgSubmitEncryptedTxResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendMsgSubmitEncryptedTxResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSubmitEncryptedTxResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgSubmitEncryptedTxResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryAllKeyshareResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryAllKeyshareResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllKeyshareResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryAllKeyshareResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryGetPepNonceResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryGetPepNonceResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryGetPepNonceResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryGetPepNonceResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgSubmitGeneralEncryptedTx({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendMsgSubmitGeneralEncryptedTx({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSubmitGeneralEncryptedTx:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgSubmitGeneralEncryptedTx:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgGetPrivateKeyshares({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendMsgGetPrivateKeyshares({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgGetPrivateKeyshares:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgGetPrivateKeyshares:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendEncryptedTxArray({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendEncryptedTxArray({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:EncryptedTxArray:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:EncryptedTxArray:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryGetEncryptedTxRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryGetEncryptedTxRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryGetEncryptedTxRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryGetEncryptedTxRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryAllPepNonceRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryAllPepNonceRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllPepNonceRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryAllPepNonceRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryLatestHeightRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryLatestHeightRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryLatestHeightRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryLatestHeightRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgCreateAggregatedKeyShare({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendMsgCreateAggregatedKeyShare({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateAggregatedKeyShare:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgCreateAggregatedKeyShare:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendParams({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Params:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgGetGeneralKeyshare({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendMsgGetGeneralKeyshare({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgGetGeneralKeyshare:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgGetGeneralKeyshare:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryAllEncryptedTxFromHeightRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryAllEncryptedTxFromHeightRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllEncryptedTxFromHeightRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryAllEncryptedTxFromHeightRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgRequestGeneralKeyshare({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendMsgRequestGeneralKeyshare({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRequestGeneralKeyshare:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgRequestGeneralKeyshare:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgRequestGeneralKeyshareResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendMsgRequestGeneralKeyshareResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRequestGeneralKeyshareResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgRequestGeneralKeyshareResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryAllKeyshareRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryAllKeyshareRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllKeyshareRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryAllKeyshareRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryKeyshareResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryKeyshareResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryKeyshareResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryKeyshareResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryAllPepNonceResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryAllPepNonceResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllPepNonceResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryAllPepNonceResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryPubKeyResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryPubKeyResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPubKeyResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryPubKeyResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgUpdateParams({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendMsgUpdateParams({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgUpdateParams:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendMsgGetGeneralKeyshareResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -806,59 +1045,105 @@ export default {
 				}
 			}
 		},
+		async sendMsgGetPrivateKeysharesResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendMsgGetPrivateKeysharesResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgGetPrivateKeysharesResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgGetPrivateKeysharesResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendPrivateRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendPrivateRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:PrivateRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:PrivateRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgSubmitEncryptedTx({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendMsgSubmitEncryptedTx({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSubmitEncryptedTx:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgSubmitEncryptedTx:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryGetEncryptedTxResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryGetEncryptedTxResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryGetEncryptedTxResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryGetEncryptedTxResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryAllEncryptedTxRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryAllEncryptedTxRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllEncryptedTxRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryAllEncryptedTxRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryAllEncryptedTxResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryAllEncryptedTxResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllEncryptedTxResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryAllEncryptedTxResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendQueryLatestHeightResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.FairyringPep.tx.sendQueryLatestHeightResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryLatestHeightResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:QueryLatestHeightResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		
-		async GenEncTxExecutionQueue({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.genEncTxExecutionQueue({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GenEncTxExecutionQueue:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:GenEncTxExecutionQueue:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgUpdateParamsResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.msgUpdateParamsResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgUpdateParamsResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgRequestPrivateIdentity({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.msgRequestPrivateIdentity({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRequestPrivateIdentity:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgRequestPrivateIdentity:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async EncryptedTxArray({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.encryptedTxArray({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:EncryptedTxArray:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:EncryptedTxArray:Create Could not create message: ' + e.message)
-				}
-			}
-		},
 		async GenesisState({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -872,107 +1157,29 @@ export default {
 				}
 			}
 		},
-		async MsgCreateAggregatedKeyShare({ rootGetters }, { value }) {
+		async QueryParamsResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.msgCreateAggregatedKeyShare({value})
+				const msg = await client.FairyringPep.tx.queryParamsResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateAggregatedKeyShare:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryParamsResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgCreateAggregatedKeyShare:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryParamsResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async PepNonce({ rootGetters }, { value }) {
+		async QueryShowPrivateKeyshareReqRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.pepNonce({value})
+				const msg = await client.FairyringPep.tx.queryShowPrivateKeyshareReqRequest({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:PepNonce:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryShowPrivateKeyshareReqRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:PepNonce:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgSubmitEncryptedTxResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.msgSubmitEncryptedTxResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSubmitEncryptedTxResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgSubmitEncryptedTxResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgRequestGeneralKeyshareResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.msgRequestGeneralKeyshareResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRequestGeneralKeyshareResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgRequestGeneralKeyshareResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async EncryptedTx({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.encryptedTx({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:EncryptedTx:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:EncryptedTx:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgGetGeneralKeyshare({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.msgGetGeneralKeyshare({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgGetGeneralKeyshare:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgGetGeneralKeyshare:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgUpdateParams({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.msgUpdateParams({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgUpdateParams:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgSubmitGeneralEncryptedTx({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.msgSubmitGeneralEncryptedTx({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSubmitGeneralEncryptedTx:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgSubmitGeneralEncryptedTx:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryShowPrivateKeyshareReqRequest:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -989,107 +1196,55 @@ export default {
 				}
 			}
 		},
-		async MsgRequestGeneralKeyshare({ rootGetters }, { value }) {
+		async GenEncTxExecutionQueue({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.msgRequestGeneralKeyshare({value})
+				const msg = await client.FairyringPep.tx.genEncTxExecutionQueue({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRequestGeneralKeyshare:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:GenEncTxExecutionQueue:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgRequestGeneralKeyshare:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:GenEncTxExecutionQueue:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async RequestId({ rootGetters }, { value }) {
+		async QueryGetPepNonceRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.requestId({value})
+				const msg = await client.FairyringPep.tx.queryGetPepNonceRequest({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:RequestId:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryGetPepNonceRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:RequestId:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryGetPepNonceRequest:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async PrivateRequest({ rootGetters }, { value }) {
+		async QueryKeyshareRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.privateRequest({value})
+				const msg = await client.FairyringPep.tx.queryKeyshareRequest({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:PrivateRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryKeyshareRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:PrivateRequest:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryKeyshareRequest:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async AggregatedKeyShare({ rootGetters }, { value }) {
+		async MsgUpdateParamsResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.aggregatedKeyShare({value})
+				const msg = await client.FairyringPep.tx.msgUpdateParamsResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:AggregatedKeyShare:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgUpdateParamsResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:AggregatedKeyShare:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Params({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.params({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Params:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async GeneralEncryptedTxArray({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.generalEncryptedTxArray({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GeneralEncryptedTxArray:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:GeneralEncryptedTxArray:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgSubmitEncryptedTx({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.msgSubmitEncryptedTx({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgSubmitEncryptedTx:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgSubmitEncryptedTx:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async MsgGetPrivateKeyshares({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.msgGetPrivateKeyshares({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgGetPrivateKeyshares:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgGetPrivateKeyshares:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgUpdateParamsResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -1106,29 +1261,29 @@ export default {
 				}
 			}
 		},
-		async MsgGetPrivateKeysharesResponse({ rootGetters }, { value }) {
+		async QueryParamsRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.msgGetPrivateKeysharesResponse({value})
+				const msg = await client.FairyringPep.tx.queryParamsRequest({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgGetPrivateKeysharesResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:QueryParamsRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgGetPrivateKeysharesResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:QueryParamsRequest:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async GeneralEncryptedTx({ rootGetters }, { value }) {
+		async AggregatedKeyShare({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.FairyringPep.tx.generalEncryptedTx({value})
+				const msg = await client.FairyringPep.tx.aggregatedKeyShare({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:GeneralEncryptedTx:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:AggregatedKeyShare:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:GeneralEncryptedTx:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:AggregatedKeyShare:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -1145,6 +1300,383 @@ export default {
 				}
 			}
 		},
+		async EncryptedTx({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.encryptedTx({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:EncryptedTx:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:EncryptedTx:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryShowPrivateKeyshareReqResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryShowPrivateKeyshareReqResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryShowPrivateKeyshareReqResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryShowPrivateKeyshareReqResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgRequestPrivateIdentity({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.msgRequestPrivateIdentity({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRequestPrivateIdentity:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgRequestPrivateIdentity:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async GeneralEncryptedTxArray({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.generalEncryptedTxArray({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GeneralEncryptedTxArray:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:GeneralEncryptedTxArray:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async RequestId({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.requestId({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:RequestId:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:RequestId:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryAllEncryptedTxFromHeightResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryAllEncryptedTxFromHeightResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllEncryptedTxFromHeightResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryAllEncryptedTxFromHeightResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async GeneralEncryptedTx({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.generalEncryptedTx({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GeneralEncryptedTx:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:GeneralEncryptedTx:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async PepNonce({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.pepNonce({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:PepNonce:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:PepNonce:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryPubKeyRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryPubKeyRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPubKeyRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryPubKeyRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgSubmitEncryptedTxResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.msgSubmitEncryptedTxResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSubmitEncryptedTxResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgSubmitEncryptedTxResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryAllKeyshareResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryAllKeyshareResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllKeyshareResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryAllKeyshareResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryGetPepNonceResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryGetPepNonceResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryGetPepNonceResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryGetPepNonceResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgSubmitGeneralEncryptedTx({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.msgSubmitGeneralEncryptedTx({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSubmitGeneralEncryptedTx:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgSubmitGeneralEncryptedTx:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgGetPrivateKeyshares({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.msgGetPrivateKeyshares({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgGetPrivateKeyshares:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgGetPrivateKeyshares:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async EncryptedTxArray({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.encryptedTxArray({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:EncryptedTxArray:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:EncryptedTxArray:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryGetEncryptedTxRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryGetEncryptedTxRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryGetEncryptedTxRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryGetEncryptedTxRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryAllPepNonceRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryAllPepNonceRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllPepNonceRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryAllPepNonceRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryLatestHeightRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryLatestHeightRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryLatestHeightRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryLatestHeightRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgCreateAggregatedKeyShare({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.msgCreateAggregatedKeyShare({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateAggregatedKeyShare:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgCreateAggregatedKeyShare:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Params({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.params({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Params:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Params:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgGetGeneralKeyshare({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.msgGetGeneralKeyshare({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgGetGeneralKeyshare:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgGetGeneralKeyshare:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryAllEncryptedTxFromHeightRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryAllEncryptedTxFromHeightRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllEncryptedTxFromHeightRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryAllEncryptedTxFromHeightRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgRequestGeneralKeyshare({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.msgRequestGeneralKeyshare({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRequestGeneralKeyshare:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgRequestGeneralKeyshare:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgRequestGeneralKeyshareResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.msgRequestGeneralKeyshareResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRequestGeneralKeyshareResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgRequestGeneralKeyshareResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryAllKeyshareRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryAllKeyshareRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllKeyshareRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryAllKeyshareRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryKeyshareResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryKeyshareResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryKeyshareResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryKeyshareResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryAllPepNonceResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryAllPepNonceResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllPepNonceResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryAllPepNonceResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryPubKeyResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryPubKeyResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryPubKeyResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryPubKeyResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgUpdateParams({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.msgUpdateParams({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateParams:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgUpdateParams:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		async MsgGetGeneralKeyshareResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -1155,6 +1687,97 @@ export default {
 					throw new Error('TxClient:MsgGetGeneralKeyshareResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgGetGeneralKeyshareResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgGetPrivateKeysharesResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.msgGetPrivateKeysharesResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgGetPrivateKeysharesResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgGetPrivateKeysharesResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async PrivateRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.privateRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:PrivateRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:PrivateRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgSubmitEncryptedTx({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.msgSubmitEncryptedTx({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSubmitEncryptedTx:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgSubmitEncryptedTx:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryGetEncryptedTxResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryGetEncryptedTxResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryGetEncryptedTxResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryGetEncryptedTxResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryAllEncryptedTxRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryAllEncryptedTxRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllEncryptedTxRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryAllEncryptedTxRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryAllEncryptedTxResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryAllEncryptedTxResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryAllEncryptedTxResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryAllEncryptedTxResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async QueryLatestHeightResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.FairyringPep.tx.queryLatestHeightResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:QueryLatestHeightResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:QueryLatestHeightResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},

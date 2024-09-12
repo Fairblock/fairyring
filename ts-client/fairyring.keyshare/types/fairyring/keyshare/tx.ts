@@ -129,6 +129,19 @@ export interface MsgCreateGeneralKeyShareResponse {
   errorMessage: string;
 }
 
+export interface MsgSubmitEncryptedKeyshare {
+  creator: string;
+  identity: string;
+  encryptedKeyshare: string;
+  keyShareIndex: number;
+  receivedTimestamp: number;
+  receivedBlockHeight: number;
+  requester: string;
+}
+
+export interface MsgSubmitEncryptedKeyshareResponse {
+}
+
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return { authority: "", params: undefined };
 }
@@ -1783,6 +1796,210 @@ export const MsgCreateGeneralKeyShareResponse = {
   },
 };
 
+function createBaseMsgSubmitEncryptedKeyshare(): MsgSubmitEncryptedKeyshare {
+  return {
+    creator: "",
+    identity: "",
+    encryptedKeyshare: "",
+    keyShareIndex: 0,
+    receivedTimestamp: 0,
+    receivedBlockHeight: 0,
+    requester: "",
+  };
+}
+
+export const MsgSubmitEncryptedKeyshare = {
+  encode(message: MsgSubmitEncryptedKeyshare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.identity !== "") {
+      writer.uint32(18).string(message.identity);
+    }
+    if (message.encryptedKeyshare !== "") {
+      writer.uint32(26).string(message.encryptedKeyshare);
+    }
+    if (message.keyShareIndex !== 0) {
+      writer.uint32(32).uint64(message.keyShareIndex);
+    }
+    if (message.receivedTimestamp !== 0) {
+      writer.uint32(40).uint64(message.receivedTimestamp);
+    }
+    if (message.receivedBlockHeight !== 0) {
+      writer.uint32(48).uint64(message.receivedBlockHeight);
+    }
+    if (message.requester !== "") {
+      writer.uint32(58).string(message.requester);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitEncryptedKeyshare {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSubmitEncryptedKeyshare();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.creator = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.identity = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.encryptedKeyshare = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.keyShareIndex = longToNumber(reader.uint64() as Long);
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.receivedTimestamp = longToNumber(reader.uint64() as Long);
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.receivedBlockHeight = longToNumber(reader.uint64() as Long);
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.requester = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSubmitEncryptedKeyshare {
+    return {
+      creator: isSet(object.creator) ? globalThis.String(object.creator) : "",
+      identity: isSet(object.identity) ? globalThis.String(object.identity) : "",
+      encryptedKeyshare: isSet(object.encryptedKeyshare) ? globalThis.String(object.encryptedKeyshare) : "",
+      keyShareIndex: isSet(object.keyShareIndex) ? globalThis.Number(object.keyShareIndex) : 0,
+      receivedTimestamp: isSet(object.receivedTimestamp) ? globalThis.Number(object.receivedTimestamp) : 0,
+      receivedBlockHeight: isSet(object.receivedBlockHeight) ? globalThis.Number(object.receivedBlockHeight) : 0,
+      requester: isSet(object.requester) ? globalThis.String(object.requester) : "",
+    };
+  },
+
+  toJSON(message: MsgSubmitEncryptedKeyshare): unknown {
+    const obj: any = {};
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.identity !== "") {
+      obj.identity = message.identity;
+    }
+    if (message.encryptedKeyshare !== "") {
+      obj.encryptedKeyshare = message.encryptedKeyshare;
+    }
+    if (message.keyShareIndex !== 0) {
+      obj.keyShareIndex = Math.round(message.keyShareIndex);
+    }
+    if (message.receivedTimestamp !== 0) {
+      obj.receivedTimestamp = Math.round(message.receivedTimestamp);
+    }
+    if (message.receivedBlockHeight !== 0) {
+      obj.receivedBlockHeight = Math.round(message.receivedBlockHeight);
+    }
+    if (message.requester !== "") {
+      obj.requester = message.requester;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgSubmitEncryptedKeyshare>, I>>(base?: I): MsgSubmitEncryptedKeyshare {
+    return MsgSubmitEncryptedKeyshare.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgSubmitEncryptedKeyshare>, I>>(object: I): MsgSubmitEncryptedKeyshare {
+    const message = createBaseMsgSubmitEncryptedKeyshare();
+    message.creator = object.creator ?? "";
+    message.identity = object.identity ?? "";
+    message.encryptedKeyshare = object.encryptedKeyshare ?? "";
+    message.keyShareIndex = object.keyShareIndex ?? 0;
+    message.receivedTimestamp = object.receivedTimestamp ?? 0;
+    message.receivedBlockHeight = object.receivedBlockHeight ?? 0;
+    message.requester = object.requester ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgSubmitEncryptedKeyshareResponse(): MsgSubmitEncryptedKeyshareResponse {
+  return {};
+}
+
+export const MsgSubmitEncryptedKeyshareResponse = {
+  encode(_: MsgSubmitEncryptedKeyshareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitEncryptedKeyshareResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSubmitEncryptedKeyshareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgSubmitEncryptedKeyshareResponse {
+    return {};
+  },
+
+  toJSON(_: MsgSubmitEncryptedKeyshareResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgSubmitEncryptedKeyshareResponse>, I>>(
+    base?: I,
+  ): MsgSubmitEncryptedKeyshareResponse {
+    return MsgSubmitEncryptedKeyshareResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgSubmitEncryptedKeyshareResponse>, I>>(
+    _: I,
+  ): MsgSubmitEncryptedKeyshareResponse {
+    const message = createBaseMsgSubmitEncryptedKeyshareResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -1800,6 +2017,7 @@ export interface Msg {
   UpdateAuthorizedAddress(request: MsgUpdateAuthorizedAddress): Promise<MsgUpdateAuthorizedAddressResponse>;
   DeleteAuthorizedAddress(request: MsgDeleteAuthorizedAddress): Promise<MsgDeleteAuthorizedAddressResponse>;
   CreateGeneralKeyShare(request: MsgCreateGeneralKeyShare): Promise<MsgCreateGeneralKeyShareResponse>;
+  SubmitEncryptedKeyshare(request: MsgSubmitEncryptedKeyshare): Promise<MsgSubmitEncryptedKeyshareResponse>;
 }
 
 export const MsgServiceName = "fairyring.keyshare.Msg";
@@ -1819,6 +2037,7 @@ export class MsgClientImpl implements Msg {
     this.UpdateAuthorizedAddress = this.UpdateAuthorizedAddress.bind(this);
     this.DeleteAuthorizedAddress = this.DeleteAuthorizedAddress.bind(this);
     this.CreateGeneralKeyShare = this.CreateGeneralKeyShare.bind(this);
+    this.SubmitEncryptedKeyshare = this.SubmitEncryptedKeyshare.bind(this);
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
@@ -1878,6 +2097,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgCreateGeneralKeyShare.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateGeneralKeyShare", data);
     return promise.then((data) => MsgCreateGeneralKeyShareResponse.decode(_m0.Reader.create(data)));
+  }
+
+  SubmitEncryptedKeyshare(request: MsgSubmitEncryptedKeyshare): Promise<MsgSubmitEncryptedKeyshareResponse> {
+    const data = MsgSubmitEncryptedKeyshare.encode(request).finish();
+    const promise = this.rpc.request(this.service, "SubmitEncryptedKeyshare", data);
+    return promise.then((data) => MsgSubmitEncryptedKeyshareResponse.decode(_m0.Reader.create(data)));
   }
 }
 

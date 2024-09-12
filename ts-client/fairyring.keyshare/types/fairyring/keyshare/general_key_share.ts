@@ -20,6 +20,16 @@ export interface GeneralKeyShare {
   receivedBlockHeight: number;
 }
 
+export interface ValidatorEncryptedKeyShare {
+  validator: string;
+  requester: string;
+  keyShare: string;
+  keyShareIndex: number;
+  receivedTimestamp: number;
+  receivedBlockHeight: number;
+  identity: string;
+}
+
 function createBaseGeneralKeyShare(): GeneralKeyShare {
   return {
     validator: "",
@@ -173,6 +183,163 @@ export const GeneralKeyShare = {
     message.keyShareIndex = object.keyShareIndex ?? 0;
     message.receivedTimestamp = object.receivedTimestamp ?? 0;
     message.receivedBlockHeight = object.receivedBlockHeight ?? 0;
+    return message;
+  },
+};
+
+function createBaseValidatorEncryptedKeyShare(): ValidatorEncryptedKeyShare {
+  return {
+    validator: "",
+    requester: "",
+    keyShare: "",
+    keyShareIndex: 0,
+    receivedTimestamp: 0,
+    receivedBlockHeight: 0,
+    identity: "",
+  };
+}
+
+export const ValidatorEncryptedKeyShare = {
+  encode(message: ValidatorEncryptedKeyShare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.validator !== "") {
+      writer.uint32(10).string(message.validator);
+    }
+    if (message.requester !== "") {
+      writer.uint32(18).string(message.requester);
+    }
+    if (message.keyShare !== "") {
+      writer.uint32(26).string(message.keyShare);
+    }
+    if (message.keyShareIndex !== 0) {
+      writer.uint32(32).uint64(message.keyShareIndex);
+    }
+    if (message.receivedTimestamp !== 0) {
+      writer.uint32(40).uint64(message.receivedTimestamp);
+    }
+    if (message.receivedBlockHeight !== 0) {
+      writer.uint32(48).uint64(message.receivedBlockHeight);
+    }
+    if (message.identity !== "") {
+      writer.uint32(58).string(message.identity);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ValidatorEncryptedKeyShare {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseValidatorEncryptedKeyShare();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.validator = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.requester = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.keyShare = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.keyShareIndex = longToNumber(reader.uint64() as Long);
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.receivedTimestamp = longToNumber(reader.uint64() as Long);
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.receivedBlockHeight = longToNumber(reader.uint64() as Long);
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.identity = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ValidatorEncryptedKeyShare {
+    return {
+      validator: isSet(object.validator) ? globalThis.String(object.validator) : "",
+      requester: isSet(object.requester) ? globalThis.String(object.requester) : "",
+      keyShare: isSet(object.keyShare) ? globalThis.String(object.keyShare) : "",
+      keyShareIndex: isSet(object.keyShareIndex) ? globalThis.Number(object.keyShareIndex) : 0,
+      receivedTimestamp: isSet(object.receivedTimestamp) ? globalThis.Number(object.receivedTimestamp) : 0,
+      receivedBlockHeight: isSet(object.receivedBlockHeight) ? globalThis.Number(object.receivedBlockHeight) : 0,
+      identity: isSet(object.identity) ? globalThis.String(object.identity) : "",
+    };
+  },
+
+  toJSON(message: ValidatorEncryptedKeyShare): unknown {
+    const obj: any = {};
+    if (message.validator !== "") {
+      obj.validator = message.validator;
+    }
+    if (message.requester !== "") {
+      obj.requester = message.requester;
+    }
+    if (message.keyShare !== "") {
+      obj.keyShare = message.keyShare;
+    }
+    if (message.keyShareIndex !== 0) {
+      obj.keyShareIndex = Math.round(message.keyShareIndex);
+    }
+    if (message.receivedTimestamp !== 0) {
+      obj.receivedTimestamp = Math.round(message.receivedTimestamp);
+    }
+    if (message.receivedBlockHeight !== 0) {
+      obj.receivedBlockHeight = Math.round(message.receivedBlockHeight);
+    }
+    if (message.identity !== "") {
+      obj.identity = message.identity;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ValidatorEncryptedKeyShare>, I>>(base?: I): ValidatorEncryptedKeyShare {
+    return ValidatorEncryptedKeyShare.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ValidatorEncryptedKeyShare>, I>>(object: I): ValidatorEncryptedKeyShare {
+    const message = createBaseValidatorEncryptedKeyShare();
+    message.validator = object.validator ?? "";
+    message.requester = object.requester ?? "";
+    message.keyShare = object.keyShare ?? "";
+    message.keyShareIndex = object.keyShareIndex ?? 0;
+    message.receivedTimestamp = object.receivedTimestamp ?? 0;
+    message.receivedBlockHeight = object.receivedBlockHeight ?? 0;
+    message.identity = object.identity ?? "";
     return message;
   },
 };

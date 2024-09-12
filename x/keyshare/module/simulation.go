@@ -23,7 +23,7 @@ var (
 )
 
 const (
-opWeightMsgSubmitEncryptedKeyshare = "op_weight_msg_submit_encrypted_keyshare"
+	opWeightMsgSubmitEncryptedKeyshare = "op_weight_msg_submit_encrypted_keyshare"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgSubmitEncryptedKeyshare int = 100
 
@@ -71,13 +71,13 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.WeightedProposalMsg {
 	return []simtypes.WeightedProposalMsg{
 		simulation.NewWeightedProposalMsg(
-	opWeightMsgSubmitEncryptedKeyshare,
-	defaultWeightMsgSubmitEncryptedKeyshare,
-	func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
-		keysharesimulation.SimulateMsgSubmitEncryptedKeyshare(am.accountKeeper, am.bankKeeper, am.keeper)
-		return nil
-	},
-),
-// this line is used by starport scaffolding # simapp/module/OpMsg
+			opWeightMsgSubmitEncryptedKeyshare,
+			defaultWeightMsgSubmitEncryptedKeyshare,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				keysharesimulation.SimulateMsgSubmitEncryptedKeyshare(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		// this line is used by starport scaffolding # simapp/module/OpMsg
 	}
 }

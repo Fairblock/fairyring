@@ -30,6 +30,7 @@ const (
 	Query_KeyshareReq_FullMethodName              = "/fairyring.pep.Query/KeyshareReq"
 	Query_KeyshareReqAll_FullMethodName           = "/fairyring.pep.Query/KeyshareReqAll"
 	Query_ShowPrivateKeyshareReq_FullMethodName   = "/fairyring.pep.Query/ShowPrivateKeyshareReq"
+	Query_DecryptData_FullMethodName              = "/fairyring.pep.Query/DecryptData"
 )
 
 // QueryClient is the client API for Query service.
@@ -56,6 +57,8 @@ type QueryClient interface {
 	KeyshareReqAll(ctx context.Context, in *QueryAllKeyshareRequest, opts ...grpc.CallOption) (*QueryAllKeyshareResponse, error)
 	// Queries a list of ShowPrivateKeyshareReq items.
 	ShowPrivateKeyshareReq(ctx context.Context, in *QueryShowPrivateKeyshareReqRequest, opts ...grpc.CallOption) (*QueryShowPrivateKeyshareReqResponse, error)
+	// Queries a list of DecryptData items.
+	DecryptData(ctx context.Context, in *QueryDecryptDataRequest, opts ...grpc.CallOption) (*QueryDecryptDataResponse, error)
 }
 
 type queryClient struct {
@@ -165,6 +168,15 @@ func (c *queryClient) ShowPrivateKeyshareReq(ctx context.Context, in *QueryShowP
 	return out, nil
 }
 
+func (c *queryClient) DecryptData(ctx context.Context, in *QueryDecryptDataRequest, opts ...grpc.CallOption) (*QueryDecryptDataResponse, error) {
+	out := new(QueryDecryptDataResponse)
+	err := c.cc.Invoke(ctx, Query_DecryptData_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 // All implementations must embed UnimplementedQueryServer
 // for forward compatibility
@@ -189,6 +201,8 @@ type QueryServer interface {
 	KeyshareReqAll(context.Context, *QueryAllKeyshareRequest) (*QueryAllKeyshareResponse, error)
 	// Queries a list of ShowPrivateKeyshareReq items.
 	ShowPrivateKeyshareReq(context.Context, *QueryShowPrivateKeyshareReqRequest) (*QueryShowPrivateKeyshareReqResponse, error)
+	// Queries a list of DecryptData items.
+	DecryptData(context.Context, *QueryDecryptDataRequest) (*QueryDecryptDataResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -228,6 +242,9 @@ func (UnimplementedQueryServer) KeyshareReqAll(context.Context, *QueryAllKeyshar
 }
 func (UnimplementedQueryServer) ShowPrivateKeyshareReq(context.Context, *QueryShowPrivateKeyshareReqRequest) (*QueryShowPrivateKeyshareReqResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ShowPrivateKeyshareReq not implemented")
+}
+func (UnimplementedQueryServer) DecryptData(context.Context, *QueryDecryptDataRequest) (*QueryDecryptDataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DecryptData not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 
@@ -440,6 +457,24 @@ func _Query_ShowPrivateKeyshareReq_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_DecryptData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryDecryptDataRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).DecryptData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_DecryptData_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).DecryptData(ctx, req.(*QueryDecryptDataRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Query_ServiceDesc is the grpc.ServiceDesc for Query service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -490,6 +525,10 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ShowPrivateKeyshareReq",
 			Handler:    _Query_ShowPrivateKeyshareReq_Handler,
+		},
+		{
+			MethodName: "DecryptData",
+			Handler:    _Query_DecryptData_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

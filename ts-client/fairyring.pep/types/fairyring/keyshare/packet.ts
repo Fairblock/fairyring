@@ -7,7 +7,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { Duration } from "../../google/protobuf/duration";
-import { ActivePublicKey, KeyshareList, QueuedPublicKey } from "../common/shared_types";
+import { ActivePublicKey, EncryptedKeyshare, QueuedPublicKey } from "../common/shared_types";
 import Long = require("long");
 
 export const protobufPackage = "fairyring.keyshare";
@@ -17,8 +17,10 @@ export interface KeysharePacketData {
   requestAggrKeysharePacket?: RequestAggrKeysharePacketData | undefined;
   getAggrKeysharePacket?: GetAggrKeysharePacketData | undefined;
   aggrKeyshareDataPacket?: AggrKeyshareDataPacketData | undefined;
+  encryptedKeysharesPacketData?: EncryptedKeysharesPacketData | undefined;
   currentKeysPacket?: CurrentKeysPacketData | undefined;
   requestPrivKeysharePacket?: RequestPrivateKeysharePacketData | undefined;
+  getPrivateKeysharePacket?: GetPrivateKeysharePacketData | undefined;
 }
 
 export interface NoData {
@@ -57,6 +59,17 @@ export interface GetAggrKeysharePacketData {
 export interface GetAggrKeysharePacketAck {
 }
 
+/** GetPrivateKeysharePacketData defines a struct for the packet payload */
+export interface GetPrivateKeysharePacketData {
+  identity: string;
+  requester: string;
+  rsa64Pubkey: string;
+}
+
+/** GetPrivateKeysharePacketAck defines a struct for the packet acknowledgment */
+export interface GetPrivateKeysharePacketAck {
+}
+
 /** AggrKeyshareDataPacketData defines a struct for the packet payload */
 export interface AggrKeyshareDataPacketData {
   identity: string;
@@ -78,12 +91,7 @@ export interface EncryptedKeysharesPacketData {
   identity: string;
   pubkey: string;
   requestId: string;
-  encryptedKeyshares: { [key: string]: KeyshareList };
-}
-
-export interface EncryptedKeysharesPacketData_EncryptedKeysharesEntry {
-  key: string;
-  value: KeyshareList | undefined;
+  encryptedKeyshares: EncryptedKeyshare[];
 }
 
 export interface EncryptedKeysharesPacketAck {
@@ -105,8 +113,10 @@ function createBaseKeysharePacketData(): KeysharePacketData {
     requestAggrKeysharePacket: undefined,
     getAggrKeysharePacket: undefined,
     aggrKeyshareDataPacket: undefined,
+    encryptedKeysharesPacketData: undefined,
     currentKeysPacket: undefined,
     requestPrivKeysharePacket: undefined,
+    getPrivateKeysharePacket: undefined,
   };
 }
 
@@ -124,11 +134,17 @@ export const KeysharePacketData = {
     if (message.aggrKeyshareDataPacket !== undefined) {
       AggrKeyshareDataPacketData.encode(message.aggrKeyshareDataPacket, writer.uint32(34).fork()).ldelim();
     }
+    if (message.encryptedKeysharesPacketData !== undefined) {
+      EncryptedKeysharesPacketData.encode(message.encryptedKeysharesPacketData, writer.uint32(42).fork()).ldelim();
+    }
     if (message.currentKeysPacket !== undefined) {
-      CurrentKeysPacketData.encode(message.currentKeysPacket, writer.uint32(42).fork()).ldelim();
+      CurrentKeysPacketData.encode(message.currentKeysPacket, writer.uint32(50).fork()).ldelim();
     }
     if (message.requestPrivKeysharePacket !== undefined) {
-      RequestPrivateKeysharePacketData.encode(message.requestPrivKeysharePacket, writer.uint32(50).fork()).ldelim();
+      RequestPrivateKeysharePacketData.encode(message.requestPrivKeysharePacket, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.getPrivateKeysharePacket !== undefined) {
+      GetPrivateKeysharePacketData.encode(message.getPrivateKeysharePacket, writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
@@ -173,14 +189,28 @@ export const KeysharePacketData = {
             break;
           }
 
-          message.currentKeysPacket = CurrentKeysPacketData.decode(reader, reader.uint32());
+          message.encryptedKeysharesPacketData = EncryptedKeysharesPacketData.decode(reader, reader.uint32());
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
+          message.currentKeysPacket = CurrentKeysPacketData.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.requestPrivKeysharePacket = RequestPrivateKeysharePacketData.decode(reader, reader.uint32());
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.getPrivateKeysharePacket = GetPrivateKeysharePacketData.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -203,11 +233,17 @@ export const KeysharePacketData = {
       aggrKeyshareDataPacket: isSet(object.aggrKeyshareDataPacket)
         ? AggrKeyshareDataPacketData.fromJSON(object.aggrKeyshareDataPacket)
         : undefined,
+      encryptedKeysharesPacketData: isSet(object.encryptedKeysharesPacketData)
+        ? EncryptedKeysharesPacketData.fromJSON(object.encryptedKeysharesPacketData)
+        : undefined,
       currentKeysPacket: isSet(object.currentKeysPacket)
         ? CurrentKeysPacketData.fromJSON(object.currentKeysPacket)
         : undefined,
       requestPrivKeysharePacket: isSet(object.requestPrivKeysharePacket)
         ? RequestPrivateKeysharePacketData.fromJSON(object.requestPrivKeysharePacket)
+        : undefined,
+      getPrivateKeysharePacket: isSet(object.getPrivateKeysharePacket)
+        ? GetPrivateKeysharePacketData.fromJSON(object.getPrivateKeysharePacket)
         : undefined,
     };
   },
@@ -226,11 +262,17 @@ export const KeysharePacketData = {
     if (message.aggrKeyshareDataPacket !== undefined) {
       obj.aggrKeyshareDataPacket = AggrKeyshareDataPacketData.toJSON(message.aggrKeyshareDataPacket);
     }
+    if (message.encryptedKeysharesPacketData !== undefined) {
+      obj.encryptedKeysharesPacketData = EncryptedKeysharesPacketData.toJSON(message.encryptedKeysharesPacketData);
+    }
     if (message.currentKeysPacket !== undefined) {
       obj.currentKeysPacket = CurrentKeysPacketData.toJSON(message.currentKeysPacket);
     }
     if (message.requestPrivKeysharePacket !== undefined) {
       obj.requestPrivKeysharePacket = RequestPrivateKeysharePacketData.toJSON(message.requestPrivKeysharePacket);
+    }
+    if (message.getPrivateKeysharePacket !== undefined) {
+      obj.getPrivateKeysharePacket = GetPrivateKeysharePacketData.toJSON(message.getPrivateKeysharePacket);
     }
     return obj;
   },
@@ -255,12 +297,20 @@ export const KeysharePacketData = {
       (object.aggrKeyshareDataPacket !== undefined && object.aggrKeyshareDataPacket !== null)
         ? AggrKeyshareDataPacketData.fromPartial(object.aggrKeyshareDataPacket)
         : undefined;
+    message.encryptedKeysharesPacketData =
+      (object.encryptedKeysharesPacketData !== undefined && object.encryptedKeysharesPacketData !== null)
+        ? EncryptedKeysharesPacketData.fromPartial(object.encryptedKeysharesPacketData)
+        : undefined;
     message.currentKeysPacket = (object.currentKeysPacket !== undefined && object.currentKeysPacket !== null)
       ? CurrentKeysPacketData.fromPartial(object.currentKeysPacket)
       : undefined;
     message.requestPrivKeysharePacket =
       (object.requestPrivKeysharePacket !== undefined && object.requestPrivKeysharePacket !== null)
         ? RequestPrivateKeysharePacketData.fromPartial(object.requestPrivKeysharePacket)
+        : undefined;
+    message.getPrivateKeysharePacket =
+      (object.getPrivateKeysharePacket !== undefined && object.getPrivateKeysharePacket !== null)
+        ? GetPrivateKeysharePacketData.fromPartial(object.getPrivateKeysharePacket)
         : undefined;
     return message;
   },
@@ -745,6 +795,138 @@ export const GetAggrKeysharePacketAck = {
   },
 };
 
+function createBaseGetPrivateKeysharePacketData(): GetPrivateKeysharePacketData {
+  return { identity: "", requester: "", rsa64Pubkey: "" };
+}
+
+export const GetPrivateKeysharePacketData = {
+  encode(message: GetPrivateKeysharePacketData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.identity !== "") {
+      writer.uint32(10).string(message.identity);
+    }
+    if (message.requester !== "") {
+      writer.uint32(18).string(message.requester);
+    }
+    if (message.rsa64Pubkey !== "") {
+      writer.uint32(26).string(message.rsa64Pubkey);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetPrivateKeysharePacketData {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPrivateKeysharePacketData();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.identity = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.requester = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.rsa64Pubkey = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetPrivateKeysharePacketData {
+    return {
+      identity: isSet(object.identity) ? globalThis.String(object.identity) : "",
+      requester: isSet(object.requester) ? globalThis.String(object.requester) : "",
+      rsa64Pubkey: isSet(object.rsa64Pubkey) ? globalThis.String(object.rsa64Pubkey) : "",
+    };
+  },
+
+  toJSON(message: GetPrivateKeysharePacketData): unknown {
+    const obj: any = {};
+    if (message.identity !== "") {
+      obj.identity = message.identity;
+    }
+    if (message.requester !== "") {
+      obj.requester = message.requester;
+    }
+    if (message.rsa64Pubkey !== "") {
+      obj.rsa64Pubkey = message.rsa64Pubkey;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPrivateKeysharePacketData>, I>>(base?: I): GetPrivateKeysharePacketData {
+    return GetPrivateKeysharePacketData.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetPrivateKeysharePacketData>, I>>(object: I): GetPrivateKeysharePacketData {
+    const message = createBaseGetPrivateKeysharePacketData();
+    message.identity = object.identity ?? "";
+    message.requester = object.requester ?? "";
+    message.rsa64Pubkey = object.rsa64Pubkey ?? "";
+    return message;
+  },
+};
+
+function createBaseGetPrivateKeysharePacketAck(): GetPrivateKeysharePacketAck {
+  return {};
+}
+
+export const GetPrivateKeysharePacketAck = {
+  encode(_: GetPrivateKeysharePacketAck, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetPrivateKeysharePacketAck {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPrivateKeysharePacketAck();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): GetPrivateKeysharePacketAck {
+    return {};
+  },
+
+  toJSON(_: GetPrivateKeysharePacketAck): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPrivateKeysharePacketAck>, I>>(base?: I): GetPrivateKeysharePacketAck {
+    return GetPrivateKeysharePacketAck.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetPrivateKeysharePacketAck>, I>>(_: I): GetPrivateKeysharePacketAck {
+    const message = createBaseGetPrivateKeysharePacketAck();
+    return message;
+  },
+};
+
 function createBaseAggrKeyshareDataPacketData(): AggrKeyshareDataPacketData {
   return { identity: "", pubkey: "", aggrKeyshare: "", aggrHeight: "", proposalId: "", requestId: "", retries: 0 };
 }
@@ -938,7 +1120,7 @@ export const AggrKeyshareDataPacketAck = {
 };
 
 function createBaseEncryptedKeysharesPacketData(): EncryptedKeysharesPacketData {
-  return { identity: "", pubkey: "", requestId: "", encryptedKeyshares: {} };
+  return { identity: "", pubkey: "", requestId: "", encryptedKeyshares: [] };
 }
 
 export const EncryptedKeysharesPacketData = {
@@ -952,10 +1134,9 @@ export const EncryptedKeysharesPacketData = {
     if (message.requestId !== "") {
       writer.uint32(26).string(message.requestId);
     }
-    Object.entries(message.encryptedKeyshares).forEach(([key, value]) => {
-      EncryptedKeysharesPacketData_EncryptedKeysharesEntry.encode({ key: key as any, value }, writer.uint32(34).fork())
-        .ldelim();
-    });
+    for (const v of message.encryptedKeyshares) {
+      EncryptedKeyshare.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -992,10 +1173,7 @@ export const EncryptedKeysharesPacketData = {
             break;
           }
 
-          const entry4 = EncryptedKeysharesPacketData_EncryptedKeysharesEntry.decode(reader, reader.uint32());
-          if (entry4.value !== undefined) {
-            message.encryptedKeyshares[entry4.key] = entry4.value;
-          }
+          message.encryptedKeyshares.push(EncryptedKeyshare.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1011,12 +1189,9 @@ export const EncryptedKeysharesPacketData = {
       identity: isSet(object.identity) ? globalThis.String(object.identity) : "",
       pubkey: isSet(object.pubkey) ? globalThis.String(object.pubkey) : "",
       requestId: isSet(object.requestId) ? globalThis.String(object.requestId) : "",
-      encryptedKeyshares: isObject(object.encryptedKeyshares)
-        ? Object.entries(object.encryptedKeyshares).reduce<{ [key: string]: KeyshareList }>((acc, [key, value]) => {
-          acc[key] = KeyshareList.fromJSON(value);
-          return acc;
-        }, {})
-        : {},
+      encryptedKeyshares: globalThis.Array.isArray(object?.encryptedKeyshares)
+        ? object.encryptedKeyshares.map((e: any) => EncryptedKeyshare.fromJSON(e))
+        : [],
     };
   },
 
@@ -1031,14 +1206,8 @@ export const EncryptedKeysharesPacketData = {
     if (message.requestId !== "") {
       obj.requestId = message.requestId;
     }
-    if (message.encryptedKeyshares) {
-      const entries = Object.entries(message.encryptedKeyshares);
-      if (entries.length > 0) {
-        obj.encryptedKeyshares = {};
-        entries.forEach(([k, v]) => {
-          obj.encryptedKeyshares[k] = KeyshareList.toJSON(v);
-        });
-      }
+    if (message.encryptedKeyshares?.length) {
+      obj.encryptedKeyshares = message.encryptedKeyshares.map((e) => EncryptedKeyshare.toJSON(e));
     }
     return obj;
   },
@@ -1051,97 +1220,7 @@ export const EncryptedKeysharesPacketData = {
     message.identity = object.identity ?? "";
     message.pubkey = object.pubkey ?? "";
     message.requestId = object.requestId ?? "";
-    message.encryptedKeyshares = Object.entries(object.encryptedKeyshares ?? {}).reduce<
-      { [key: string]: KeyshareList }
-    >((acc, [key, value]) => {
-      if (value !== undefined) {
-        acc[key] = KeyshareList.fromPartial(value);
-      }
-      return acc;
-    }, {});
-    return message;
-  },
-};
-
-function createBaseEncryptedKeysharesPacketData_EncryptedKeysharesEntry(): EncryptedKeysharesPacketData_EncryptedKeysharesEntry {
-  return { key: "", value: undefined };
-}
-
-export const EncryptedKeysharesPacketData_EncryptedKeysharesEntry = {
-  encode(
-    message: EncryptedKeysharesPacketData_EncryptedKeysharesEntry,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
-    if (message.key !== "") {
-      writer.uint32(10).string(message.key);
-    }
-    if (message.value !== undefined) {
-      KeyshareList.encode(message.value, writer.uint32(18).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): EncryptedKeysharesPacketData_EncryptedKeysharesEntry {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEncryptedKeysharesPacketData_EncryptedKeysharesEntry();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.key = reader.string();
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.value = KeyshareList.decode(reader, reader.uint32());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): EncryptedKeysharesPacketData_EncryptedKeysharesEntry {
-    return {
-      key: isSet(object.key) ? globalThis.String(object.key) : "",
-      value: isSet(object.value) ? KeyshareList.fromJSON(object.value) : undefined,
-    };
-  },
-
-  toJSON(message: EncryptedKeysharesPacketData_EncryptedKeysharesEntry): unknown {
-    const obj: any = {};
-    if (message.key !== "") {
-      obj.key = message.key;
-    }
-    if (message.value !== undefined) {
-      obj.value = KeyshareList.toJSON(message.value);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<EncryptedKeysharesPacketData_EncryptedKeysharesEntry>, I>>(
-    base?: I,
-  ): EncryptedKeysharesPacketData_EncryptedKeysharesEntry {
-    return EncryptedKeysharesPacketData_EncryptedKeysharesEntry.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<EncryptedKeysharesPacketData_EncryptedKeysharesEntry>, I>>(
-    object: I,
-  ): EncryptedKeysharesPacketData_EncryptedKeysharesEntry {
-    const message = createBaseEncryptedKeysharesPacketData_EncryptedKeysharesEntry();
-    message.key = object.key ?? "";
-    message.value = (object.value !== undefined && object.value !== null)
-      ? KeyshareList.fromPartial(object.value)
-      : undefined;
+    message.encryptedKeyshares = object.encryptedKeyshares?.map((e) => EncryptedKeyshare.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1335,10 +1414,6 @@ function longToNumber(long: Long): number {
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;
   _m0.configure();
-}
-
-function isObject(value: any): boolean {
-  return typeof value === "object" && value !== null;
 }
 
 function isSet(value: any): boolean {

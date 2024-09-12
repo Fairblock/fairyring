@@ -34,6 +34,18 @@ export interface GetAggrKeyshare {
 export interface GetAggrKeyshareResponse {
 }
 
+/** GetPrivateKeyshare defines a struct for the data payload */
+export interface GetPrivateKeyshare {
+  requestId: string;
+  identity: string;
+  requester: string;
+  rsa64Pubkey: string;
+}
+
+export interface GetPrivateKeyshareResponse {
+  pubkey: string;
+}
+
 export interface ActivePublicKey {
   publicKey: string;
   creator: string;
@@ -51,8 +63,9 @@ export interface RequestPrivateKeyshare {
   requestId: string;
 }
 
-export interface KeyshareList {
-  values: string[];
+export interface EncryptedKeyshare {
+  requester: string;
+  privateKeyshares: string[];
 }
 
 function createBaseRequestAggrKeyshare(): RequestAggrKeyshare {
@@ -367,6 +380,167 @@ export const GetAggrKeyshareResponse = {
   },
 };
 
+function createBaseGetPrivateKeyshare(): GetPrivateKeyshare {
+  return { requestId: "", identity: "", requester: "", rsa64Pubkey: "" };
+}
+
+export const GetPrivateKeyshare = {
+  encode(message: GetPrivateKeyshare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.requestId !== "") {
+      writer.uint32(10).string(message.requestId);
+    }
+    if (message.identity !== "") {
+      writer.uint32(18).string(message.identity);
+    }
+    if (message.requester !== "") {
+      writer.uint32(26).string(message.requester);
+    }
+    if (message.rsa64Pubkey !== "") {
+      writer.uint32(34).string(message.rsa64Pubkey);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetPrivateKeyshare {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPrivateKeyshare();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.requestId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.identity = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.requester = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.rsa64Pubkey = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetPrivateKeyshare {
+    return {
+      requestId: isSet(object.requestId) ? globalThis.String(object.requestId) : "",
+      identity: isSet(object.identity) ? globalThis.String(object.identity) : "",
+      requester: isSet(object.requester) ? globalThis.String(object.requester) : "",
+      rsa64Pubkey: isSet(object.rsa64Pubkey) ? globalThis.String(object.rsa64Pubkey) : "",
+    };
+  },
+
+  toJSON(message: GetPrivateKeyshare): unknown {
+    const obj: any = {};
+    if (message.requestId !== "") {
+      obj.requestId = message.requestId;
+    }
+    if (message.identity !== "") {
+      obj.identity = message.identity;
+    }
+    if (message.requester !== "") {
+      obj.requester = message.requester;
+    }
+    if (message.rsa64Pubkey !== "") {
+      obj.rsa64Pubkey = message.rsa64Pubkey;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPrivateKeyshare>, I>>(base?: I): GetPrivateKeyshare {
+    return GetPrivateKeyshare.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetPrivateKeyshare>, I>>(object: I): GetPrivateKeyshare {
+    const message = createBaseGetPrivateKeyshare();
+    message.requestId = object.requestId ?? "";
+    message.identity = object.identity ?? "";
+    message.requester = object.requester ?? "";
+    message.rsa64Pubkey = object.rsa64Pubkey ?? "";
+    return message;
+  },
+};
+
+function createBaseGetPrivateKeyshareResponse(): GetPrivateKeyshareResponse {
+  return { pubkey: "" };
+}
+
+export const GetPrivateKeyshareResponse = {
+  encode(message: GetPrivateKeyshareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pubkey !== "") {
+      writer.uint32(10).string(message.pubkey);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetPrivateKeyshareResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPrivateKeyshareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.pubkey = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetPrivateKeyshareResponse {
+    return { pubkey: isSet(object.pubkey) ? globalThis.String(object.pubkey) : "" };
+  },
+
+  toJSON(message: GetPrivateKeyshareResponse): unknown {
+    const obj: any = {};
+    if (message.pubkey !== "") {
+      obj.pubkey = message.pubkey;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPrivateKeyshareResponse>, I>>(base?: I): GetPrivateKeyshareResponse {
+    return GetPrivateKeyshareResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetPrivateKeyshareResponse>, I>>(object: I): GetPrivateKeyshareResponse {
+    const message = createBaseGetPrivateKeyshareResponse();
+    message.pubkey = object.pubkey ?? "";
+    return message;
+  },
+};
+
 function createBaseActivePublicKey(): ActivePublicKey {
   return { publicKey: "", creator: "", expiry: 0 };
 }
@@ -619,22 +793,25 @@ export const RequestPrivateKeyshare = {
   },
 };
 
-function createBaseKeyshareList(): KeyshareList {
-  return { values: [] };
+function createBaseEncryptedKeyshare(): EncryptedKeyshare {
+  return { requester: "", privateKeyshares: [] };
 }
 
-export const KeyshareList = {
-  encode(message: KeyshareList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.values) {
-      writer.uint32(10).string(v!);
+export const EncryptedKeyshare = {
+  encode(message: EncryptedKeyshare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.requester !== "") {
+      writer.uint32(10).string(message.requester);
+    }
+    for (const v of message.privateKeyshares) {
+      writer.uint32(18).string(v!);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): KeyshareList {
+  decode(input: _m0.Reader | Uint8Array, length?: number): EncryptedKeyshare {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseKeyshareList();
+    const message = createBaseEncryptedKeyshare();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -643,7 +820,14 @@ export const KeyshareList = {
             break;
           }
 
-          message.values.push(reader.string());
+          message.requester = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.privateKeyshares.push(reader.string());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -654,26 +838,33 @@ export const KeyshareList = {
     return message;
   },
 
-  fromJSON(object: any): KeyshareList {
+  fromJSON(object: any): EncryptedKeyshare {
     return {
-      values: globalThis.Array.isArray(object?.values) ? object.values.map((e: any) => globalThis.String(e)) : [],
+      requester: isSet(object.requester) ? globalThis.String(object.requester) : "",
+      privateKeyshares: globalThis.Array.isArray(object?.privateKeyshares)
+        ? object.privateKeyshares.map((e: any) => globalThis.String(e))
+        : [],
     };
   },
 
-  toJSON(message: KeyshareList): unknown {
+  toJSON(message: EncryptedKeyshare): unknown {
     const obj: any = {};
-    if (message.values?.length) {
-      obj.values = message.values;
+    if (message.requester !== "") {
+      obj.requester = message.requester;
+    }
+    if (message.privateKeyshares?.length) {
+      obj.privateKeyshares = message.privateKeyshares;
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<KeyshareList>, I>>(base?: I): KeyshareList {
-    return KeyshareList.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<EncryptedKeyshare>, I>>(base?: I): EncryptedKeyshare {
+    return EncryptedKeyshare.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<KeyshareList>, I>>(object: I): KeyshareList {
-    const message = createBaseKeyshareList();
-    message.values = object.values?.map((e) => e) || [];
+  fromPartial<I extends Exact<DeepPartial<EncryptedKeyshare>, I>>(object: I): EncryptedKeyshare {
+    const message = createBaseEncryptedKeyshare();
+    message.requester = object.requester ?? "";
+    message.privateKeyshares = object.privateKeyshares?.map((e) => e) || [];
     return message;
   },
 };

@@ -84,6 +84,7 @@ export interface MsgRequestPrivateIdentityResponse {
 export interface MsgGetPrivateKeyshares {
   creator: string;
   reqId: string;
+  rsa64Pubkey: string;
 }
 
 export interface MsgGetPrivateKeysharesResponse {
@@ -987,7 +988,7 @@ export const MsgRequestPrivateIdentityResponse = {
 };
 
 function createBaseMsgGetPrivateKeyshares(): MsgGetPrivateKeyshares {
-  return { creator: "", reqId: "" };
+  return { creator: "", reqId: "", rsa64Pubkey: "" };
 }
 
 export const MsgGetPrivateKeyshares = {
@@ -997,6 +998,9 @@ export const MsgGetPrivateKeyshares = {
     }
     if (message.reqId !== "") {
       writer.uint32(18).string(message.reqId);
+    }
+    if (message.rsa64Pubkey !== "") {
+      writer.uint32(26).string(message.rsa64Pubkey);
     }
     return writer;
   },
@@ -1022,6 +1026,13 @@ export const MsgGetPrivateKeyshares = {
 
           message.reqId = reader.string();
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.rsa64Pubkey = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1035,6 +1046,7 @@ export const MsgGetPrivateKeyshares = {
     return {
       creator: isSet(object.creator) ? globalThis.String(object.creator) : "",
       reqId: isSet(object.reqId) ? globalThis.String(object.reqId) : "",
+      rsa64Pubkey: isSet(object.rsa64Pubkey) ? globalThis.String(object.rsa64Pubkey) : "",
     };
   },
 
@@ -1046,6 +1058,9 @@ export const MsgGetPrivateKeyshares = {
     if (message.reqId !== "") {
       obj.reqId = message.reqId;
     }
+    if (message.rsa64Pubkey !== "") {
+      obj.rsa64Pubkey = message.rsa64Pubkey;
+    }
     return obj;
   },
 
@@ -1056,6 +1071,7 @@ export const MsgGetPrivateKeyshares = {
     const message = createBaseMsgGetPrivateKeyshares();
     message.creator = object.creator ?? "";
     message.reqId = object.reqId ?? "";
+    message.rsa64Pubkey = object.rsa64Pubkey ?? "";
     return message;
   },
 };

@@ -7,7 +7,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { Coin } from "../../cosmos/base/v1beta1/coin";
-import { KeyshareList } from "../common/shared_types";
+import { EncryptedKeyshare } from "../common/shared_types";
 
 export const protobufPackage = "fairyring.pep";
 
@@ -21,12 +21,7 @@ export interface PrivateRequest {
   reqId: string;
   pubkey: string;
   amount: Coin | undefined;
-  encryptedKeyshares: { [key: string]: KeyshareList };
-}
-
-export interface PrivateRequest_EncryptedKeysharesEntry {
-  key: string;
-  value: KeyshareList | undefined;
+  encryptedKeyshares: EncryptedKeyshare[];
 }
 
 function createBaseRequestId(): RequestId {
@@ -104,7 +99,7 @@ export const RequestId = {
 };
 
 function createBasePrivateRequest(): PrivateRequest {
-  return { creator: "", reqId: "", pubkey: "", amount: undefined, encryptedKeyshares: {} };
+  return { creator: "", reqId: "", pubkey: "", amount: undefined, encryptedKeyshares: [] };
 }
 
 export const PrivateRequest = {
@@ -121,9 +116,9 @@ export const PrivateRequest = {
     if (message.amount !== undefined) {
       Coin.encode(message.amount, writer.uint32(34).fork()).ldelim();
     }
-    Object.entries(message.encryptedKeyshares).forEach(([key, value]) => {
-      PrivateRequest_EncryptedKeysharesEntry.encode({ key: key as any, value }, writer.uint32(42).fork()).ldelim();
-    });
+    for (const v of message.encryptedKeyshares) {
+      EncryptedKeyshare.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -167,10 +162,7 @@ export const PrivateRequest = {
             break;
           }
 
-          const entry5 = PrivateRequest_EncryptedKeysharesEntry.decode(reader, reader.uint32());
-          if (entry5.value !== undefined) {
-            message.encryptedKeyshares[entry5.key] = entry5.value;
-          }
+          message.encryptedKeyshares.push(EncryptedKeyshare.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -187,12 +179,9 @@ export const PrivateRequest = {
       reqId: isSet(object.reqId) ? globalThis.String(object.reqId) : "",
       pubkey: isSet(object.pubkey) ? globalThis.String(object.pubkey) : "",
       amount: isSet(object.amount) ? Coin.fromJSON(object.amount) : undefined,
-      encryptedKeyshares: isObject(object.encryptedKeyshares)
-        ? Object.entries(object.encryptedKeyshares).reduce<{ [key: string]: KeyshareList }>((acc, [key, value]) => {
-          acc[key] = KeyshareList.fromJSON(value);
-          return acc;
-        }, {})
-        : {},
+      encryptedKeyshares: globalThis.Array.isArray(object?.encryptedKeyshares)
+        ? object.encryptedKeyshares.map((e: any) => EncryptedKeyshare.fromJSON(e))
+        : [],
     };
   },
 
@@ -210,14 +199,8 @@ export const PrivateRequest = {
     if (message.amount !== undefined) {
       obj.amount = Coin.toJSON(message.amount);
     }
-    if (message.encryptedKeyshares) {
-      const entries = Object.entries(message.encryptedKeyshares);
-      if (entries.length > 0) {
-        obj.encryptedKeyshares = {};
-        entries.forEach(([k, v]) => {
-          obj.encryptedKeyshares[k] = KeyshareList.toJSON(v);
-        });
-      }
+    if (message.encryptedKeyshares?.length) {
+      obj.encryptedKeyshares = message.encryptedKeyshares.map((e) => EncryptedKeyshare.toJSON(e));
     }
     return obj;
   },
@@ -233,94 +216,7 @@ export const PrivateRequest = {
     message.amount = (object.amount !== undefined && object.amount !== null)
       ? Coin.fromPartial(object.amount)
       : undefined;
-    message.encryptedKeyshares = Object.entries(object.encryptedKeyshares ?? {}).reduce<
-      { [key: string]: KeyshareList }
-    >((acc, [key, value]) => {
-      if (value !== undefined) {
-        acc[key] = KeyshareList.fromPartial(value);
-      }
-      return acc;
-    }, {});
-    return message;
-  },
-};
-
-function createBasePrivateRequest_EncryptedKeysharesEntry(): PrivateRequest_EncryptedKeysharesEntry {
-  return { key: "", value: undefined };
-}
-
-export const PrivateRequest_EncryptedKeysharesEntry = {
-  encode(message: PrivateRequest_EncryptedKeysharesEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.key !== "") {
-      writer.uint32(10).string(message.key);
-    }
-    if (message.value !== undefined) {
-      KeyshareList.encode(message.value, writer.uint32(18).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): PrivateRequest_EncryptedKeysharesEntry {
-    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePrivateRequest_EncryptedKeysharesEntry();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.key = reader.string();
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.value = KeyshareList.decode(reader, reader.uint32());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skipType(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): PrivateRequest_EncryptedKeysharesEntry {
-    return {
-      key: isSet(object.key) ? globalThis.String(object.key) : "",
-      value: isSet(object.value) ? KeyshareList.fromJSON(object.value) : undefined,
-    };
-  },
-
-  toJSON(message: PrivateRequest_EncryptedKeysharesEntry): unknown {
-    const obj: any = {};
-    if (message.key !== "") {
-      obj.key = message.key;
-    }
-    if (message.value !== undefined) {
-      obj.value = KeyshareList.toJSON(message.value);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<PrivateRequest_EncryptedKeysharesEntry>, I>>(
-    base?: I,
-  ): PrivateRequest_EncryptedKeysharesEntry {
-    return PrivateRequest_EncryptedKeysharesEntry.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<PrivateRequest_EncryptedKeysharesEntry>, I>>(
-    object: I,
-  ): PrivateRequest_EncryptedKeysharesEntry {
-    const message = createBasePrivateRequest_EncryptedKeysharesEntry();
-    message.key = object.key ?? "";
-    message.value = (object.value !== undefined && object.value !== null)
-      ? KeyshareList.fromPartial(object.value)
-      : undefined;
+    message.encryptedKeyshares = object.encryptedKeyshares?.map((e) => EncryptedKeyshare.fromPartial(e)) || [];
     return message;
   },
 };
@@ -336,10 +232,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function isObject(value: any): boolean {
-  return typeof value === "object" && value !== null;
-}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

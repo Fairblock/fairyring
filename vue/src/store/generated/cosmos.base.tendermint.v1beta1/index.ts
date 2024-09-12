@@ -312,20 +312,6 @@ export default {
 		},
 		
 		
-		async sendGetNodeInfoRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetNodeInfoRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetNodeInfoRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:GetNodeInfoRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendProofOp({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -354,101 +340,17 @@ export default {
 				}
 			}
 		},
-		async sendGetSyncingRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendGetLatestValidatorSetRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetSyncingRequest({ value, fee: fullFee, memo })
+				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetLatestValidatorSetRequest({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetSyncingRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:GetLatestValidatorSetRequest:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:GetSyncingRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendGetLatestBlockRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetLatestBlockRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetLatestBlockRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:GetLatestBlockRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendGetSyncingResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetSyncingResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetSyncingResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:GetSyncingResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendABCIQueryResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendABCIQueryResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:ABCIQueryResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:ABCIQueryResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendBlock({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendBlock({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Block:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:Block:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendGetValidatorSetByHeightRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetValidatorSetByHeightRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetValidatorSetByHeightRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:GetValidatorSetByHeightRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendGetBlockByHeightRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetBlockByHeightRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetBlockByHeightRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:GetBlockByHeightRequest:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:GetLatestValidatorSetRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -466,73 +368,31 @@ export default {
 				}
 			}
 		},
-		async sendGetLatestBlockResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendGetBlockByHeightResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetLatestBlockResponse({ value, fee: fullFee, memo })
+				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetBlockByHeightResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetLatestBlockResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:GetBlockByHeightResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:GetLatestBlockResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:GetBlockByHeightResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
-		async sendGetValidatorSetByHeightResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendGetSyncingResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetValidatorSetByHeightResponse({ value, fee: fullFee, memo })
+				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetSyncingResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetValidatorSetByHeightResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:GetSyncingResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:GetValidatorSetByHeightResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendGetLatestValidatorSetRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetLatestValidatorSetRequest({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetLatestValidatorSetRequest:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:GetLatestValidatorSetRequest:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendGetNodeInfoResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetNodeInfoResponse({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetNodeInfoResponse:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:GetNodeInfoResponse:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendVersionInfo({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendVersionInfo({ value, fee: fullFee, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:VersionInfo:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:VersionInfo:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:GetSyncingResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -564,17 +424,73 @@ export default {
 				}
 			}
 		},
-		async sendHeader({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendGetLatestBlockResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendHeader({ value, fee: fullFee, memo })
+				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetLatestBlockResponse({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:Header:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:GetLatestBlockResponse:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:Header:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:GetLatestBlockResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendGetNodeInfoResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetNodeInfoResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GetNodeInfoResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:GetNodeInfoResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendVersionInfo({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendVersionInfo({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:VersionInfo:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:VersionInfo:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendBlock({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendBlock({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Block:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Block:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendGetValidatorSetByHeightResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetValidatorSetByHeightResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GetValidatorSetByHeightResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:GetValidatorSetByHeightResponse:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -592,34 +508,105 @@ export default {
 				}
 			}
 		},
-		async sendGetBlockByHeightResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+		async sendGetBlockByHeightRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
 				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
-				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetBlockByHeightResponse({ value, fee: fullFee, memo })
+				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetBlockByHeightRequest({ value, fee: fullFee, memo })
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetBlockByHeightResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:GetBlockByHeightRequest:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:GetBlockByHeightResponse:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:GetBlockByHeightRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendGetSyncingRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetSyncingRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GetSyncingRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:GetSyncingRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendGetNodeInfoRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetNodeInfoRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GetNodeInfoRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:GetNodeInfoRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendABCIQueryResponse({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendABCIQueryResponse({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:ABCIQueryResponse:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:ABCIQueryResponse:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendHeader({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendHeader({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Header:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:Header:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendGetValidatorSetByHeightRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetValidatorSetByHeightRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GetValidatorSetByHeightRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:GetValidatorSetByHeightRequest:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendGetLatestBlockRequest({ rootGetters }, { value, fee = {amount: [], gas: "200000"}, memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const fullFee = Array.isArray(fee)  ? {amount: fee, gas: "200000"} :fee;
+				const result = await client.CosmosBaseTendermintV1Beta1.tx.sendGetLatestBlockRequest({ value, fee: fullFee, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GetLatestBlockRequest:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:GetLatestBlockRequest:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
 		
-		async GetNodeInfoRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getNodeInfoRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetNodeInfoRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:GetNodeInfoRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
 		async ProofOp({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -646,94 +633,16 @@ export default {
 				}
 			}
 		},
-		async GetSyncingRequest({ rootGetters }, { value }) {
+		async GetLatestValidatorSetRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getSyncingRequest({value})
+				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getLatestValidatorSetRequest({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetSyncingRequest:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:GetLatestValidatorSetRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:GetSyncingRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async GetLatestBlockRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getLatestBlockRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetLatestBlockRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:GetLatestBlockRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async GetSyncingResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getSyncingResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetSyncingResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:GetSyncingResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async ABCIQueryResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseTendermintV1Beta1.tx.abciqueryResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:ABCIQueryResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:ABCIQueryResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async Block({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseTendermintV1Beta1.tx.block({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:Block:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:Block:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async GetValidatorSetByHeightRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getValidatorSetByHeightRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetValidatorSetByHeightRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:GetValidatorSetByHeightRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async GetBlockByHeightRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getBlockByHeightRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetBlockByHeightRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:GetBlockByHeightRequest:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:GetLatestValidatorSetRequest:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -750,68 +659,29 @@ export default {
 				}
 			}
 		},
-		async GetLatestBlockResponse({ rootGetters }, { value }) {
+		async GetBlockByHeightResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getLatestBlockResponse({value})
+				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getBlockByHeightResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetLatestBlockResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:GetBlockByHeightResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:GetLatestBlockResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:GetBlockByHeightResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
-		async GetValidatorSetByHeightResponse({ rootGetters }, { value }) {
+		async GetSyncingResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getValidatorSetByHeightResponse({value})
+				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getSyncingResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetValidatorSetByHeightResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:GetSyncingResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:GetValidatorSetByHeightResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async GetLatestValidatorSetRequest({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getLatestValidatorSetRequest({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetLatestValidatorSetRequest:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:GetLatestValidatorSetRequest:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async GetNodeInfoResponse({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getNodeInfoResponse({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetNodeInfoResponse:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:GetNodeInfoResponse:Create Could not create message: ' + e.message)
-				}
-			}
-		},
-		async VersionInfo({ rootGetters }, { value }) {
-			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseTendermintV1Beta1.tx.versionInfo({value})
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:VersionInfo:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:VersionInfo:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:GetSyncingResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -841,16 +711,68 @@ export default {
 				}
 			}
 		},
-		async Header({ rootGetters }, { value }) {
+		async GetLatestBlockResponse({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseTendermintV1Beta1.tx.header({value})
+				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getLatestBlockResponse({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:Header:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:GetLatestBlockResponse:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:Header:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:GetLatestBlockResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async GetNodeInfoResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getNodeInfoResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GetNodeInfoResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:GetNodeInfoResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async VersionInfo({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosBaseTendermintV1Beta1.tx.versionInfo({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:VersionInfo:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:VersionInfo:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Block({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosBaseTendermintV1Beta1.tx.block({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Block:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Block:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async GetValidatorSetByHeightResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getValidatorSetByHeightResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GetValidatorSetByHeightResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:GetValidatorSetByHeightResponse:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -867,16 +789,94 @@ export default {
 				}
 			}
 		},
-		async GetBlockByHeightResponse({ rootGetters }, { value }) {
+		async GetBlockByHeightRequest({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
-				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getBlockByHeightResponse({value})
+				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getBlockByHeightRequest({value})
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:GetBlockByHeightResponse:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:GetBlockByHeightRequest:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:GetBlockByHeightResponse:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:GetBlockByHeightRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async GetSyncingRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getSyncingRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GetSyncingRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:GetSyncingRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async GetNodeInfoRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getNodeInfoRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GetNodeInfoRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:GetNodeInfoRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async ABCIQueryResponse({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosBaseTendermintV1Beta1.tx.abciqueryResponse({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:ABCIQueryResponse:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:ABCIQueryResponse:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async Header({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosBaseTendermintV1Beta1.tx.header({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:Header:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:Header:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async GetValidatorSetByHeightRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getValidatorSetByHeightRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GetValidatorSetByHeightRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:GetValidatorSetByHeightRequest:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async GetLatestBlockRequest({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CosmosBaseTendermintV1Beta1.tx.getLatestBlockRequest({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:GetLatestBlockRequest:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:GetLatestBlockRequest:Create Could not create message: ' + e.message)
 				}
 			}
 		},
