@@ -79,7 +79,7 @@ func (k Keeper) GetAllGeneralKeyShare(ctx context.Context) (list []types.General
 	return
 }
 
-// SetPrivateKeyShare set a specific generalKeyShare in the store from its index
+// SetPrivateKeyShare set a specific private KeyShare in the store from its index
 func (k Keeper) SetPrivateKeyShare(ctx context.Context, encKeyShare types.ValidatorEncryptedKeyShare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedKeyShareKeyPrefix))
@@ -92,7 +92,7 @@ func (k Keeper) SetPrivateKeyShare(ctx context.Context, encKeyShare types.Valida
 	), b)
 }
 
-// GetPrivateKeyShare returns a generalKeyShare from its index
+// GetPrivateKeyShare returns a private KeyShare from its index
 func (k Keeper) GetPrivateKeyShare(
 	ctx context.Context,
 	validator string,
@@ -115,8 +115,8 @@ func (k Keeper) GetPrivateKeyShare(
 	return val, true
 }
 
-// RemoveEncryptedKeyShare removes a generalKeyShare from the store
-func (k Keeper) RemoveEncryptedKeyShare(
+// RemovePrivateKeyShare removes an private KeyShare from the store
+func (k Keeper) RemovePrivateKeyShare(
 	ctx context.Context,
 	validator string,
 	identiy string,
@@ -131,8 +131,8 @@ func (k Keeper) RemoveEncryptedKeyShare(
 	))
 }
 
-// GetAllGeneralKeyShare returns all generalKeyShare
-func (k Keeper) GetAllEncryptedKeyShare(ctx context.Context) (list []types.ValidatorEncryptedKeyShare) {
+// GetAllPrivateKeyShare returns all private KeyShares
+func (k Keeper) GetAllPrivateKeyShare(ctx context.Context) (list []types.ValidatorEncryptedKeyShare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedKeyShareKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})

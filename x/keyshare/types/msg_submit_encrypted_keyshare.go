@@ -1,6 +1,8 @@
 package types
 
 import (
+	"errors"
+
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -29,5 +31,10 @@ func (msg *MsgSubmitEncryptedKeyshare) ValidateBasic() error {
 	if err != nil {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+
+	if msg.Identity == "" || msg.EncryptedKeyshare == "" || msg.Requester == "" {
+		return errors.New("identity, encryptedKeyshares and requester cannot be blank")
+	}
+
 	return nil
 }

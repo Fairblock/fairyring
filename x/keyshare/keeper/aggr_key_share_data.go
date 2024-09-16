@@ -122,7 +122,7 @@ func (k Keeper) OnTimeoutAggrKeyshareDataPacket(ctx sdk.Context, packet channelt
 	return nil
 }
 
-// TransmitAggrKeyshareDataPacket transmits the packet over IBC with the specified source port and source channel
+// TransmitEncryptedKeyshareDataPacket transmits the packet over IBC with the specified source port and source channel
 func (k Keeper) TransmitEncryptedKeyshareDataPacket(
 	ctx sdk.Context,
 	packetData types.EncryptedKeysharesPacketData,

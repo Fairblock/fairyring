@@ -49,13 +49,13 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 		Identity:            msg.Identity,
 	}
 
-	// Save the new general key share to state
+	// Save the new private keyshare to state
 	k.SetPrivateKeyShare(ctx, valEncKeyshare)
 	k.SetLastSubmittedHeight(ctx, msg.Creator, strconv.FormatInt(ctx.BlockHeight(), 10))
 
 	validatorList := k.GetAllValidatorSet(ctx)
 
-	// Get all the general key shares for the provided id value & id type
+	// Get all the private keyshares for the provided id value & id type
 	var stateEncryptedKeyShares []types.ValidatorEncryptedKeyShare
 
 	for _, eachValidator := range validatorList {
@@ -80,7 +80,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 
 	// Emit KeyShare Submitted Event
 	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(types.SendGeneralKeyshareEventType,
+		sdk.NewEvent(types.SendEncryptedKeyshareEventType,
 			sdk.NewAttribute(types.SendGeneralKeyshareEventValidator, msg.Creator),
 			sdk.NewAttribute(types.SendGeneralKeyshareEventReceivedBlockHeight, strconv.FormatInt(ctx.BlockHeight(), 10)),
 			sdk.NewAttribute(types.SendGeneralKeyshareEventMessage, msg.EncryptedKeyshare),

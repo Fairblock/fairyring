@@ -65,7 +65,7 @@ func (k Keeper) GetAllKeyShareRequests(ctx context.Context) (list []types.KeySha
 	return
 }
 
-// SetKeyShareRequest set a specific keyShare request in the store by its index
+// SetPrivateKeyShareRequest set a specific private keyShare request in the store by its index
 func (k Keeper) SetPrivateKeyShareRequest(ctx context.Context, KeyShareRequest types.PrivateKeyshareRequest) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateKeyShareRequestKeyPrefix))
@@ -74,7 +74,7 @@ func (k Keeper) SetPrivateKeyShareRequest(ctx context.Context, KeyShareRequest t
 	store.Set(key, b)
 }
 
-// GetKeyShareRequest returns a keyShare request from its index
+// GetPrivateKeyShareRequest returns a private keyShare request from its index
 func (k Keeper) GetPrivateKeyShareRequest(
 	ctx context.Context,
 	identity string,
@@ -91,7 +91,7 @@ func (k Keeper) GetPrivateKeyShareRequest(
 	return val, true
 }
 
-// RemoveKeyShareRequest removes a keyShare request from the store
+// RemovePrivateKeyShareRequest removes a private keyShare request from the store
 func (k Keeper) RemovePrivateKeyShareRequest(
 	ctx context.Context,
 	identity string,
@@ -101,7 +101,7 @@ func (k Keeper) RemovePrivateKeyShareRequest(
 	store.Delete([]byte(identity))
 }
 
-// GetAllKeyShareRequests returns all keyShare requests
+// GetAllPrivateKeyShareRequests returns all private keyShare requests
 func (k Keeper) GetAllPrivateKeyShareRequests(ctx context.Context) (list []types.PrivateKeyshareRequest) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateKeyShareRequestKeyPrefix))

@@ -66,6 +66,7 @@ const (
 
 const (
 	SendGeneralKeyshareEventType                = "keyshare-sent"
+	SendEncryptedKeyshareEventType              = "encrypted-keyshare-sent"
 	SendGeneralKeyshareEventValidator           = "validator"
 	SendGeneralKeyshareEventReceivedBlockHeight = "received-height"
 	SendGeneralKeyshareEventMessage             = "message"
