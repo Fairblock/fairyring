@@ -17,14 +17,12 @@ import (
 	enc "github.com/FairBlock/DistributedIBE/encryption"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
-	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"
-	"github.com/drand/kyber/pairing"
 	"google.golang.org/protobuf/types/known/anypb"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -219,7 +217,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 
 	suite := bls.NewBLS12381Suite()
 
-	publicKeyPoint, err := am.getPubKeyPoint(ctx, activePubkey, suite)
+	publicKeyPoint, err := am.keeper.GetPubKeyPoint(activePubkey.PublicKey, suite)
 	if err != nil {
 		am.keeper.Logger().Error("Unabe to get Pubkey Point with suite")
 		return nil
@@ -253,7 +251,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			continue
 		}
 
-		skPoint, err := am.getSKPoint(ctx, key.Data, suite)
+		skPoint, err := am.keeper.GetSKPoint(key.Data, suite)
 		if err != nil {
 			continue
 		}
@@ -285,7 +283,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			continue
 		}
 
-		skPoint, err := am.getSKPoint(ctx, entry.AggrKeyshare, suite)
+		skPoint, err := am.keeper.GetSKPoint(entry.AggrKeyshare, suite)
 		if err != nil {
 			continue
 		}
@@ -546,59 +544,6 @@ func (am AppModule) processFailedEncryptedTx(
 	am.handleGasConsumption(ctx, creatorAddr, cosmosmath.NewIntFromUint64(actualGasConsumed), tx.ChargedGas)
 }
 
-func (am AppModule) getPubKeyPoint(
-	ctx sdk.Context,
-	ak commontypes.ActivePublicKey,
-	suite pairing.Suite,
-) (kyber.Point, error) {
-
-	publicKeyByte, err := hex.DecodeString(ak.PublicKey)
-	if err != nil {
-		am.keeper.Logger().Error("Error decoding active public key")
-		am.keeper.Logger().Error(err.Error())
-		return nil, err
-	}
-
-	publicKeyPoint := suite.G1().Point()
-	err = publicKeyPoint.UnmarshalBinary(publicKeyByte)
-	if err != nil {
-		am.keeper.Logger().Error("Error unmarshalling public key")
-		am.keeper.Logger().Error(err.Error())
-		return nil, err
-	}
-
-	am.keeper.Logger().Info("Unmarshal public key successfully")
-	am.keeper.Logger().Info(publicKeyPoint.String())
-
-	return publicKeyPoint, nil
-}
-
-func (am AppModule) getSKPoint(
-	ctx sdk.Context,
-	key string,
-	suite pairing.Suite,
-) (kyber.Point, error) {
-	keyByte, err := hex.DecodeString(key)
-	if err != nil {
-		am.keeper.Logger().Error("Error decoding aggregated key")
-		am.keeper.Logger().Error(err.Error())
-		return nil, err
-	}
-
-	skPoint := suite.G2().Point()
-	err = skPoint.UnmarshalBinary(keyByte)
-	if err != nil {
-		am.keeper.Logger().Error("Error unmarshalling aggregated key")
-		am.keeper.Logger().Error(err.Error())
-		return nil, err
-	}
-
-	am.keeper.Logger().Info("Unmarshal decryption key successfully")
-	am.keeper.Logger().Info(skPoint.String())
-
-	return skPoint, nil
-}
-
 func (am AppModule) decryptAndExecuteTx(
 	ctx sdk.Context,
 	eachTx DecryptionTx,
@@ -729,7 +674,7 @@ func (am AppModule) decryptAndExecuteTx(
 		return err
 	}
 
-	anyPk, err := codectypes.NewAnyWithValue(sigs[0].PubKey)
+	anyPk, err := cdctypes.NewAnyWithValue(sigs[0].PubKey)
 	if err != nil {
 		am.processFailedEncryptedTx(ctx, eachTx, "Unable to parse signature public key to anypb.Any", startConsumedGas)
 		return err
