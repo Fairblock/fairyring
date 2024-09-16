@@ -70,7 +70,7 @@ func (k msgServer) RequestPrivateIdentity(goCtx context.Context, msg *types.MsgR
 
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				types.EventTypeRequestKeyshare,
+				types.EventTypePrivateKeyshareRequestSent,
 				sdk.NewAttribute(types.AttributeKeyCreator, msg.Creator),
 				sdk.NewAttribute(types.AttributeKeyRequestID, requestIDStr),
 			),

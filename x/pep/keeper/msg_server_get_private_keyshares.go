@@ -74,8 +74,10 @@ func (k msgServer) GetPrivateKeyshares(goCtx context.Context, msg *types.MsgGetP
 
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				types.EventTypeRequestKeyshare,
+				types.EventTypeGetPrivateKeyshareRequest,
 				sdk.NewAttribute(types.AttributeKeyRequestID, msg.ReqId),
+				sdk.NewAttribute("requester", msg.Creator),
+				sdk.NewAttribute("scep256k1_pubkey", msg.SecpPubkey),
 			),
 		)
 	}
