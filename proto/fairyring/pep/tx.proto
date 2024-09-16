@@ -99,7 +99,6 @@ message MsgRequestPrivateIdentity {
   option (cosmos.msg.v1.signer) = "creator";
   string                   creator = 1;
   string                   reqId   = 2;
-  cosmos.base.v1beta1.Coin amount  = 3 [(gogoproto.nullable) = false];
 }
 
 message MsgRequestPrivateIdentityResponse {
@@ -110,7 +109,7 @@ message MsgGetPrivateKeyshares {
   option (cosmos.msg.v1.signer) = "creator";
   string creator       = 1;
   string reqId         = 2;
-  string rsa_64_pubkey = 3;
+  string secp_pubkey   = 3;
 }
 
 message MsgGetPrivateKeysharesResponse {}

@@ -61,7 +61,7 @@ const (
 	StartSendEncryptedKeyShareEventType      = "start-send-encrypted-keyshare"
 	StartSendGeneralKeyShareEventIdentity    = "identity"
 	StartSendEncryptedKeyShareEventRequester = "requester"
-	StartSendEncryptedKeyShareEventPubkey    = "rsa-64-pubkey"
+	StartSendEncryptedKeyShareEventPubkey    = "secp256k1-pubkey"
 )
 
 const (

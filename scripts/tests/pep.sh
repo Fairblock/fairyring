@@ -560,12 +560,17 @@ echo "#############################################"
 echo "Testing private keyshare on source chain"
 echo "#############################################"
 
-RSA_KEY=$(cat ./scripts/public_key.pem)
+# RSA_KEY=$(cat ./scripts/public_key.pem)
+SCEP_PUBKEY1="A/MdHVpitzHNSdD1Zw3kY+L5PEIPyd9l6sD5i4aIfXp9"
+SCEP_PUBKEY2="Ak9iJuH5l5/XdmS6U+ojbutXnGzBnQf++HVOfKanVEc+"
 
-echo "$RSA_KEY"
+SCEP_PRIV_KEY1="a267fb03b3e6dc381550ea0257ace31433698f16248ba111dfb75550364d31fe"
+SCEP_PRIV_KEY2="ef1450bdc18396f2254f52d8c525c0d933a8f146ec2a681eaf319f5899f2f60d"
+
+# echo "$SCEP_PUBKEY"
 
 echo "Creating new Private Request in pep module on chain fairyring_test_1"
-RESULT=$($BINARY tx pep request-private-keyshare test_req_1 10ufairy --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-private-keyshare test_req_1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 10
@@ -579,7 +584,7 @@ echo "Identity for private keyshare request 1 is: $REQ_ID"
 sleep 10
 
 echo "Requesting for private keyshares on Source chain"
-RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID "\"$RSA_KEY\"" --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID "\"$SCEP_PUBKEY1\"" --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 10
@@ -610,7 +615,7 @@ echo $SHOW_PRIVATE_REQ
 
 echo "Sending get private keyshare request without previous entry"
 REQ_ID="test_req"
-RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID "\"$RSA_KEY\"" --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID "\"$SCEP_PUBKEY1\"" --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 10
@@ -649,7 +654,7 @@ echo "Testing private keyshare on destination chain"
 echo "#############################################"
 
 echo "Creating new Private Request in pep module on chain fairyring_test_2"
-RESULT=$($BINARY tx pep request-private-keyshare test_req_2 10ufairy --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-private-keyshare test_req_2 --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 20
@@ -661,7 +666,7 @@ REQ_ID=$(echo $SHOW_PRIVATE_REQ | jq -r '.req_id')
 echo "Identity for private keyshare request 2 is: $REQ_ID"
 
 echo "Requesting for private keyshares on destination chain"
-RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID "\"$RSA_KEY\"" --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID "\"$SCEP_PUBKEY2\"" --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 20
@@ -692,7 +697,7 @@ echo $SHOW_PRIVATE_REQ
 
 echo "Sending get private keyshare request without previous entry"
 REQ_ID="test_req_2"
-RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID "\"$RSA_KEY\"" --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID "\"$SCEP_PUBKEY2\"" --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 10

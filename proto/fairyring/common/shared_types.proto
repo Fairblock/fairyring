@@ -37,7 +37,7 @@ message GetPrivateKeyshare {
   string request_id = 1;
   string identity = 2;
   string requester = 3;
-  string rsa_64_pubkey = 4;
+  string secp_pubkey = 4;
 }
 
 message GetPrivateKeyshareResponse {

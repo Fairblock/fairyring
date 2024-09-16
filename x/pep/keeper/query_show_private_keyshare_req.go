@@ -26,7 +26,6 @@ func (k Keeper) ShowPrivateKeyshareReq(goCtx context.Context, req *types.QuerySh
 		Creator:            val.Creator,
 		ReqId:              val.ReqId,
 		Pubkey:             val.Pubkey,
-		Amount:             val.Amount,
 		EncryptedKeyshares: val.EncryptedKeyshares,
 	}, nil
 }

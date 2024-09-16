@@ -62,7 +62,7 @@ message GetAggrKeysharePacketAck {}
 message GetPrivateKeysharePacketData {
     string identity = 1;
     string requester = 2;
-    string rsa_64_pubkey = 3;
+    string secp_pubkey = 3;
 }
 
 // GetPrivateKeysharePacketAck defines a struct for the packet acknowledgment

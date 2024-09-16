@@ -8,11 +8,10 @@ import (
 
 var _ sdk.Msg = &MsgRequestPrivateIdentity{}
 
-func NewMsgRequestPrivateIdentity(creator string, reqId string, amount sdk.Coin) *MsgRequestPrivateIdentity {
+func NewMsgRequestPrivateIdentity(creator string, reqId string) *MsgRequestPrivateIdentity {
 	return &MsgRequestPrivateIdentity{
 		Creator: creator,
 		ReqId:   reqId,
-		Amount:  amount,
 	}
 }
 

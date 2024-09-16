@@ -10,9 +10,9 @@ var _ sdk.Msg = &MsgGetPrivateKeyshares{}
 
 func NewMsgGetPrivateKeyshares(creator string, reqId string, pubkey string) *MsgGetPrivateKeyshares {
 	return &MsgGetPrivateKeyshares{
-		Creator:      creator,
-		ReqId:        reqId,
-		Rsa_64Pubkey: pubkey,
+		Creator:    creator,
+		ReqId:      reqId,
+		SecpPubkey: pubkey,
 	}
 }
 

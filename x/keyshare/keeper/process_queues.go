@@ -178,7 +178,7 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 					sdk.NewEvent(types.StartSendEncryptedKeyShareEventType,
 						sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, req.Identity),
 						sdk.NewAttribute(types.StartSendEncryptedKeyShareEventRequester, req.Requester),
-						sdk.NewAttribute(types.StartSendEncryptedKeyShareEventPubkey, req.Rsa_64Pubkey),
+						sdk.NewAttribute(types.StartSendEncryptedKeyShareEventPubkey, req.SecpPubkey),
 					),
 				)
 			}

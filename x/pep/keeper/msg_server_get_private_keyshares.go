@@ -6,7 +6,6 @@ import (
 	"time"
 
 	sdkerrors "cosmossdk.io/errors"
-	"cosmossdk.io/math"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
@@ -18,6 +17,7 @@ import (
 
 func (k msgServer) GetPrivateKeyshares(goCtx context.Context, msg *types.MsgGetPrivateKeyshares) (*types.MsgGetPrivateKeysharesResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	requester := sdk.MustAccAddressFromBech32(msg.Creator)
 
 	entry, found := k.GetPrivateRequest(ctx, msg.ReqId)
 	if !found {
@@ -27,39 +27,38 @@ func (k msgServer) GetPrivateKeyshares(goCtx context.Context, msg *types.MsgGetP
 		}
 
 		entry.Creator = ""
-		entry.Amount = sdk.NewCoin("ufairy", math.NewInt(0))
 		entry.EncryptedKeyshares = make([]*commontypes.EncryptedKeyshare, 0)
 		entry.Pubkey = pubkey.PublicKey
 		entry.ReqId = msg.ReqId
 
 		k.SetPrivateRequest(ctx, entry)
-	} else {
-		if !entry.Amount.IsNil() || !entry.Amount.IsZero() {
-			requester := sdk.MustAccAddressFromBech32(msg.Creator)
-			creator := sdk.MustAccAddressFromBech32(entry.Creator)
-			err := k.bankKeeper.SendCoins(ctx, requester, creator, sdk.NewCoins(entry.Amount))
-			if err != nil {
-				return &types.MsgGetPrivateKeysharesResponse{}, errors.New("failed to send fees to creator")
-			}
-		}
 	}
 
 	params := k.GetParams(ctx)
+
+	if params.PrivateKeysharePrice.IsPositive() {
+		k.bankKeeper.SendCoinsFromAccountToModule(ctx,
+			requester,
+			types.ModuleName,
+			sdk.NewCoins(*params.PrivateKeysharePrice),
+		)
+	}
+
 	if params.IsSourceChain {
 		var qentry = commontypes.GetPrivateKeyshare{
-			RequestId:    msg.ReqId,
-			Identity:     msg.ReqId,
-			Requester:    msg.Creator,
-			Rsa_64Pubkey: msg.Rsa_64Pubkey,
+			RequestId:  msg.ReqId,
+			Identity:   msg.ReqId,
+			Requester:  msg.Creator,
+			SecpPubkey: msg.SecpPubkey,
 		}
 
 		k.SetPrivateSignalQueueEntry(ctx, qentry)
 		return &types.MsgGetPrivateKeysharesResponse{}, nil
 	} else {
 		packetData := kstypes.GetPrivateKeysharePacketData{
-			Identity:     msg.ReqId,
-			Requester:    msg.Creator,
-			Rsa_64Pubkey: msg.Rsa_64Pubkey,
+			Identity:   msg.ReqId,
+			Requester:  msg.Creator,
+			SecpPubkey: msg.SecpPubkey,
 		}
 
 		sPort := k.GetPort(ctx)

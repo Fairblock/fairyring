@@ -105,7 +105,7 @@ func (k Keeper) OnRecvGetPrivateKeysharePacket(
 			sdk.NewEvent(types.StartSendEncryptedKeyShareEventType,
 				sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, data.Identity),
 				sdk.NewAttribute(types.StartSendEncryptedKeyShareEventRequester, data.Requester),
-				sdk.NewAttribute(types.StartSendEncryptedKeyShareEventPubkey, data.Rsa_64Pubkey),
+				sdk.NewAttribute(types.StartSendEncryptedKeyShareEventPubkey, data.SecpPubkey),
 			),
 		)
 	}

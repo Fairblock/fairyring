@@ -33,7 +33,6 @@ func (k msgServer) RequestPrivateIdentity(goCtx context.Context, msg *types.MsgR
 		Creator:            msg.Creator,
 		ReqId:              requestIDStr,
 		Pubkey:             "",
-		Amount:             msg.Amount,
 		EncryptedKeyshares: make([]*commontypes.EncryptedKeyshare, 0),
 	}
 
