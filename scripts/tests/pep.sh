@@ -584,7 +584,7 @@ echo "Identity for private keyshare request 1 is: $REQ_ID"
 sleep 10
 
 echo "Requesting for private keyshares on Source chain"
-RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID "\"$SCEP_PUBKEY1\"" --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID $SCEP_PUBKEY1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 10
@@ -615,7 +615,7 @@ echo $SHOW_PRIVATE_REQ
 
 echo "Sending get private keyshare request without previous entry"
 REQ_ID="test_req"
-RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID "\"$SCEP_PUBKEY1\"" --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID $SCEP_PUBKEY1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 10
@@ -666,7 +666,7 @@ REQ_ID=$(echo $SHOW_PRIVATE_REQ | jq -r '.req_id')
 echo "Identity for private keyshare request 2 is: $REQ_ID"
 
 echo "Requesting for private keyshares on destination chain"
-RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID "\"$SCEP_PUBKEY2\"" --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID $SCEP_PUBKEY2 --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 20
@@ -697,7 +697,7 @@ echo $SHOW_PRIVATE_REQ
 
 echo "Sending get private keyshare request without previous entry"
 REQ_ID="test_req_2"
-RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID "\"$SCEP_PUBKEY2\"" --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID $SCEP_PUBKEY2 --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 10

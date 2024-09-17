@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 
 func CmdGetPrivateKeyshare() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-private-keyshare [req-id] [rsa-pubkey]",
+		Use:   "get-private-keyshare [req-id] [secp-pubkey]",
 		Short: "Broadcast message get-general-keyshare",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
