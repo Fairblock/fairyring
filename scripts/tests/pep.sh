@@ -185,10 +185,10 @@ fi
 
 
 echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
-CIPHER=$($BINARY encrypt $AGG_KEY_HEIGHT $SIGNED_DATA --node $CHAIN1_NODE)
+CIPHER=$($BINARY encrypt $AGG_KEY_HEIGHT "" $SIGNED_DATA --node $CHAIN1_NODE)
 
 echo "Encrypting 2nd signed tx with Pub key: '$PUB_KEY'"
-CIPHER_2=$($BINARY encrypt $AGG_KEY_HEIGHT $SIGNED_DATA_2 --node $CHAIN1_NODE)
+CIPHER_2=$($BINARY encrypt $AGG_KEY_HEIGHT "" $SIGNED_DATA_2 --node $CHAIN1_NODE)
 
 
 rm -r unsigned.json &> /dev/null
@@ -379,8 +379,8 @@ $BINARY tx bank send $WALLET_1 $VALIDATOR_1 1$TARGET_BAL_DENOM --from $WALLET_1 
 SIGNED_DATA_2=$($BINARY tx sign unsigned2.json --from $WALLET_1 --offline --account-number 1 --sequence $PEP_NONCE_2ND --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE  --keyring-backend test -y)
 
 echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
-CIPHER=$($BINARY encrypt $IDENTITY $SIGNED_DATA --node $CHAIN1_NODE)
-CIPHER2=$($BINARY encrypt $IDENTITY $SIGNED_DATA_2 --node $CHAIN1_NODE)
+CIPHER=$($BINARY encrypt $IDENTITY "" $SIGNED_DATA --node $CHAIN1_NODE)
+CIPHER2=$($BINARY encrypt $IDENTITY "" $SIGNED_DATA_2 --node $CHAIN1_NODE)
 
 rm -r unsigned.json &> /dev/null
 rm -r unsigned2.json &> /dev/null
@@ -492,8 +492,8 @@ SIGNED_DATA_2=$($BINARY tx sign unsigned2.json --from $WALLET_2 --offline --acco
 echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
 echo $IDENTITY $SIGNED_DATA
 echo $IDENTITY $SIGNED_DATA_2
-CIPHER=$($BINARY encrypt "$IDENTITY" "$SIGNED_DATA" --node $CHAIN2_NODE)
-CIPHER2=$($BINARY encrypt "$IDENTITY" "$SIGNED_DATA_2" --node $CHAIN2_NODE)
+CIPHER=$($BINARY encrypt "$IDENTITY" "" "$SIGNED_DATA" --node $CHAIN2_NODE)
+CIPHER2=$($BINARY encrypt "$IDENTITY"  "" "$SIGNED_DATA_2" --node $CHAIN2_NODE)
 
 rm -r unsigned.json &> /dev/null
 rm -r unsigned2.json &> /dev/null
@@ -744,7 +744,7 @@ echo "Aggregated keyshare for request is: $AGGR_KEYSHARE"
 
 echo "Encrypting data with Pub key: '$PUB_KEY'"
 TEST_DATA="test_data_1"
-CIPHER=$($BINARY encrypt $IDENTITY $TEST_DATA --node $CHAIN1_NODE)
+CIPHER=$($BINARY encrypt $IDENTITY $PUB_KEY $TEST_DATA --node $CHAIN1_NODE)
 
 echo "Encrypted Data: '$CIPHER'"
 
