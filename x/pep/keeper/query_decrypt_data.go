@@ -59,7 +59,7 @@ func (k Keeper) DecryptData(goCtx context.Context, req *types.QueryDecryptDataRe
 		return &types.QueryDecryptDataResponse{}, err
 	}
 
-	decodedDataString := hex.EncodeToString(decryptedData.Bytes())
+	decodedDataString := decryptedData.String()
 	return &types.QueryDecryptDataResponse{
 		DecryptedData: decodedDataString,
 	}, nil

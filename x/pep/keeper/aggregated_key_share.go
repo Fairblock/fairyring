@@ -89,7 +89,7 @@ func (k Keeper) OnRecvAggrKeyshareDataPacket(ctx context.Context, packet channel
 	entry.AggrKeyshare = data.AggrKeyshare
 
 	k.SetExecutionQueueEntry(ctx, entry)
-	k.RemoveEntry(ctx, data.RequestId)
+	k.SetEntry(ctx, entry)
 
 	return packetAck, nil
 }

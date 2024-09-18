@@ -275,7 +275,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 
 		if keyShareReq.IbcInfo != nil {
 			if keyShareReq.IbcInfo.ChannelID != "" {
-				_, err = k.TransmitAggrKeyshareDataPacket(
+				seq, err := k.TransmitAggrKeyshareDataPacket(
 					ctx,
 					types.AggrKeyshareDataPacketData{
 						Identity:     keyShareReq.Identity,
@@ -291,6 +291,8 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 					clienttypes.ZeroHeight(),
 					uint64(timeoutTimestamp),
 				)
+
+				fmt.Println("\n\n\n\n SEQ: ", seq, "\nErr: ", err, "\n\n\n\n")
 				if err != nil {
 					return nil, err
 				}
@@ -315,7 +317,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 				val, _ := k.pepKeeper.GetEntry(ctx, keyShareReq.RequestId)
 				val.AggrKeyshare = keyShareReq.AggrKeyshare
 				k.pepKeeper.SetExecutionQueueEntry(ctx, val)
-				k.pepKeeper.RemoveEntry(ctx, val.RequestId)
+				k.pepKeeper.SetEntry(ctx, val)
 			}
 		}
 	}
