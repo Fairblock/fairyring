@@ -7,6 +7,7 @@ import (
 	"cosmossdk.io/log"
 	confixcmd "cosmossdk.io/tools/confix/cmd"
 	"github.com/CosmWasm/wasmd/x/wasm"
+	"github.com/Fairblock/fairyring/cmd/fairyringd/cmd/aggregator"
 	"github.com/Fairblock/fairyring/cmd/fairyringd/cmd/encrypter"
 	"github.com/Fairblock/fairyring/cmd/fairyringd/cmd/sharegenerator"
 	"github.com/Fairblock/fairyring/cmd/fairyringd/cmd/verifiable_randomness"
@@ -59,11 +60,15 @@ func initRootCmd(
 	encryptCmd := encrypter.EncryptCmd()
 	flags.AddQueryFlagsToCmd(encryptCmd)
 
+	aggregateCmd := aggregator.AggregateCmd()
+	flags.AddQueryFlagsToCmd(aggregateCmd)
+
 	randomness := verifiable_randomness.VerifiableRandomness()
 	randomness.Flags().String(flags.FlagNode, "http://localhost:26657", "The fairyring node endpoint")
 	randomness.Flags().StringP(flags.FlagOutput, "o", flags.OutputFormatJSON, "Output format (text|json)")
 
 	rootCmd.AddCommand(encryptCmd)
+	rootCmd.AddCommand(aggregateCmd)
 	rootCmd.AddCommand(randomness)
 	rootCmd.AddCommand(sharegenerator.RootCmd)
 }

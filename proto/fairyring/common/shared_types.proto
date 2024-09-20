@@ -63,5 +63,10 @@ message RequestPrivateKeyshare {
 
 message EncryptedKeyshare {
   string requester = 1;
-  repeated string private_keyshares = 2;
+  repeated IndexedEncryptedKeyshare private_keyshares = 2;
+}
+
+message IndexedEncryptedKeyshare {
+  string encrypted_keyshare_value = 1;
+  uint64 encrypted_keyshare_index = 2;
 }

@@ -104,8 +104,12 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 	}
 
 	var kslist commontypes.EncryptedKeyshare
+	kslist.PrivateKeyshares = make([]*commontypes.IndexedEncryptedKeyshare, 0)
 	for _, eachKeyShare := range stateEncryptedKeyShares {
-		kslist.PrivateKeyshares = append(kslist.PrivateKeyshares, eachKeyShare.KeyShare)
+		var indexedKeyshare commontypes.IndexedEncryptedKeyshare
+		indexedKeyshare.EncryptedKeyshareValue = eachKeyShare.KeyShare
+		indexedKeyshare.EncryptedKeyshareIndex = eachKeyShare.KeyShareIndex
+		kslist.PrivateKeyshares = append(kslist.PrivateKeyshares, &indexedKeyshare)
 	}
 	kslist.Requester = msg.Requester
 
