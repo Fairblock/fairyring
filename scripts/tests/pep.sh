@@ -784,6 +784,29 @@ else
   exit 1
 fi
 
+echo "#############################################"
+echo "#    Testing aggregation on source chain    #"
+echo "#############################################"
+
+TEST_DATA="test_data_2"
+RSP=$($BINARY aggregate-keyshares "" $WALLET_1/test_req_1 $WALLET_1 $SCEP_PRIV_KEY1 --node $CHAIN1_NODE)
+echo $RSP
+CIPHER=$($BINARY encrypt $WALLET_1/test_req_1 $PUB_KEY $TEST_DATA --node $CHAIN1_NODE)
+# LOCAL_AGGR_KEYSHARE=a237057f3eef909c8bcd799597046bfd02ca0020fa29153042f73df77eebdd96de0a7bf8541ca5b4bab8ad277735aa9af135ce6a0020a98b0c3e90caca5170368ad991c810be88b46134e3d070d29bcd24599d2d915d377e62b5932e44ea53e584a8a50d296b5740440b0400b083b55e69551626ef18c03d6b843b6c44099ad102ea3ef7000e98609fb0c55df7b144d85e6e082178af8d92146adaec18554c1d4cd32df88842d0f0087ce0051fb30ba4c9dbc259cc3ea9c6d7d19a6451afc3176b02de06f723ece83ce3daf0a8badf5436f909213c94dc8262b01bd310545b43fe9962223afd835687b74003d6d75f3e135e7f93abfc2b5977a42f31c1985108e8a5b2e2ab0ebb5c25a11402f50f2207029d1e38cfa67b1c3efacf6d06d0347327c0174f20a6010cdeb9114e1785b4a78535987bc8eee8e17b0c5dd96a332619bf8a2f0444ae
+RSP=$($BINARY query pep decrypt-data $PUB_KEY $RSP $CIPHER --node $CHAIN1_NODE -o json)
+
+DECRYPTED_DATA=$(echo $RSP | jq -r '.decrypted_data')
+
+if [ "$TEST_DATA" = "$DECRYPTED_DATA" ]; then
+  echo "Data successfully decrypted"
+else
+  echo "Data decryption unsuccessful. Expected: '$TEST_DATA' ; found: '$DECRYPTED_DATA'"
+  echo "Response from decryption query: '$RSP'"
+  exit 1
+fi
+
+echo $RSP
+
 echo ""
 echo "###########################################################"
 echo "#                   SUCCESSFULLY TESTED                   #"

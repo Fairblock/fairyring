@@ -21,10 +21,9 @@ import (
 
 const (
 	PrivateGovIdentity = "private-gov-identity"
-	EncryptedKeyshare  = "encrypted-keyshare"
 )
 
-var SupportedIDTypes = []string{PrivateGovIdentity, EncryptedKeyshare}
+var SupportedIDTypes = []string{PrivateGovIdentity}
 
 func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCreateGeneralKeyShare) (*types.MsgCreateGeneralKeyShareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)

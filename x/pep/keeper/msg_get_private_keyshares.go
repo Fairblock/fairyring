@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	sdkerrors "cosmossdk.io/errors"
@@ -37,11 +38,15 @@ func (k msgServer) GetPrivateKeyshares(goCtx context.Context, msg *types.MsgGetP
 	params := k.GetParams(ctx)
 
 	if params.PrivateKeysharePrice.IsPositive() {
-		k.bankKeeper.SendCoinsFromAccountToModule(ctx,
+		err := k.bankKeeper.SendCoinsFromAccountToModule(ctx,
 			requester,
 			types.ModuleName,
 			sdk.NewCoins(*params.PrivateKeysharePrice),
 		)
+		if err != nil {
+			k.Logger().Info(fmt.Sprintf("Error on sending coins: %v", err.Error()))
+			return nil, err
+		}
 	}
 
 	if params.IsSourceChain {
