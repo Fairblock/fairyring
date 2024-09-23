@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"errors"
+	"github.com/Fairblock/fairyring/cmd/fairyringd/cmd/secp_encrypter"
 	"io"
 
 	"cosmossdk.io/log"
@@ -67,6 +68,7 @@ func initRootCmd(
 	randomness.Flags().String(flags.FlagNode, "http://localhost:26657", "The fairyring node endpoint")
 	randomness.Flags().StringP(flags.FlagOutput, "o", flags.OutputFormatJSON, "Output format (text|json)")
 
+	rootCmd.AddCommand(secp_encrypter.SecpEncrypterCmd())
 	rootCmd.AddCommand(encryptCmd)
 	rootCmd.AddCommand(aggregateCmd)
 	rootCmd.AddCommand(randomness)
