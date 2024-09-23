@@ -25,6 +25,8 @@ const (
 	Msg_CreateAggregatedKeyShare_FullMethodName = "/fairyring.pep.Msg/CreateAggregatedKeyShare"
 	Msg_RequestGeneralKeyshare_FullMethodName   = "/fairyring.pep.Msg/RequestGeneralKeyshare"
 	Msg_GetGeneralKeyshare_FullMethodName       = "/fairyring.pep.Msg/GetGeneralKeyshare"
+	Msg_RequestPrivateIdentity_FullMethodName   = "/fairyring.pep.Msg/RequestPrivateIdentity"
+	Msg_GetPrivateKeyshares_FullMethodName      = "/fairyring.pep.Msg/GetPrivateKeyshares"
 )
 
 // MsgClient is the client API for Msg service.
@@ -40,6 +42,8 @@ type MsgClient interface {
 	CreateAggregatedKeyShare(ctx context.Context, in *MsgCreateAggregatedKeyShare, opts ...grpc.CallOption) (*MsgCreateAggregatedKeyShareResponse, error)
 	RequestGeneralKeyshare(ctx context.Context, in *MsgRequestGeneralKeyshare, opts ...grpc.CallOption) (*MsgRequestGeneralKeyshareResponse, error)
 	GetGeneralKeyshare(ctx context.Context, in *MsgGetGeneralKeyshare, opts ...grpc.CallOption) (*MsgGetGeneralKeyshareResponse, error)
+	RequestPrivateIdentity(ctx context.Context, in *MsgRequestPrivateIdentity, opts ...grpc.CallOption) (*MsgRequestPrivateIdentityResponse, error)
+	GetPrivateKeyshares(ctx context.Context, in *MsgGetPrivateKeyshares, opts ...grpc.CallOption) (*MsgGetPrivateKeysharesResponse, error)
 }
 
 type msgClient struct {
@@ -104,6 +108,24 @@ func (c *msgClient) GetGeneralKeyshare(ctx context.Context, in *MsgGetGeneralKey
 	return out, nil
 }
 
+func (c *msgClient) RequestPrivateIdentity(ctx context.Context, in *MsgRequestPrivateIdentity, opts ...grpc.CallOption) (*MsgRequestPrivateIdentityResponse, error) {
+	out := new(MsgRequestPrivateIdentityResponse)
+	err := c.cc.Invoke(ctx, Msg_RequestPrivateIdentity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) GetPrivateKeyshares(ctx context.Context, in *MsgGetPrivateKeyshares, opts ...grpc.CallOption) (*MsgGetPrivateKeysharesResponse, error) {
+	out := new(MsgGetPrivateKeysharesResponse)
+	err := c.cc.Invoke(ctx, Msg_GetPrivateKeyshares_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -117,6 +139,8 @@ type MsgServer interface {
 	CreateAggregatedKeyShare(context.Context, *MsgCreateAggregatedKeyShare) (*MsgCreateAggregatedKeyShareResponse, error)
 	RequestGeneralKeyshare(context.Context, *MsgRequestGeneralKeyshare) (*MsgRequestGeneralKeyshareResponse, error)
 	GetGeneralKeyshare(context.Context, *MsgGetGeneralKeyshare) (*MsgGetGeneralKeyshareResponse, error)
+	RequestPrivateIdentity(context.Context, *MsgRequestPrivateIdentity) (*MsgRequestPrivateIdentityResponse, error)
+	GetPrivateKeyshares(context.Context, *MsgGetPrivateKeyshares) (*MsgGetPrivateKeysharesResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -141,6 +165,12 @@ func (UnimplementedMsgServer) RequestGeneralKeyshare(context.Context, *MsgReques
 }
 func (UnimplementedMsgServer) GetGeneralKeyshare(context.Context, *MsgGetGeneralKeyshare) (*MsgGetGeneralKeyshareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetGeneralKeyshare not implemented")
+}
+func (UnimplementedMsgServer) RequestPrivateIdentity(context.Context, *MsgRequestPrivateIdentity) (*MsgRequestPrivateIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RequestPrivateIdentity not implemented")
+}
+func (UnimplementedMsgServer) GetPrivateKeyshares(context.Context, *MsgGetPrivateKeyshares) (*MsgGetPrivateKeysharesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPrivateKeyshares not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -263,6 +293,42 @@ func _Msg_GetGeneralKeyshare_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_RequestPrivateIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRequestPrivateIdentity)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RequestPrivateIdentity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_RequestPrivateIdentity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RequestPrivateIdentity(ctx, req.(*MsgRequestPrivateIdentity))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_GetPrivateKeyshares_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgGetPrivateKeyshares)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).GetPrivateKeyshares(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_GetPrivateKeyshares_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).GetPrivateKeyshares(ctx, req.(*MsgGetPrivateKeyshares))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -293,6 +359,14 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetGeneralKeyshare",
 			Handler:    _Msg_GetGeneralKeyshare_Handler,
+		},
+		{
+			MethodName: "RequestPrivateIdentity",
+			Handler:    _Msg_RequestPrivateIdentity_Handler,
+		},
+		{
+			MethodName: "GetPrivateKeyshares",
+			Handler:    _Msg_GetPrivateKeyshares_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

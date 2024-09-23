@@ -4,11 +4,12 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"strconv"
+
 	distIBE "github.com/FairBlock/DistributedIBE"
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"
 	"github.com/spf13/cobra"
-	"strconv"
 )
 
 var verifyCmd = &cobra.Command{

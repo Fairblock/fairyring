@@ -2,6 +2,7 @@ package types
 
 import (
 	"context"
+
 	sdkmath "cosmossdk.io/math"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	peptypes "github.com/Fairblock/fairyring/x/pep/types"
@@ -79,6 +80,17 @@ type PepKeeper interface {
 	SetReqQueueEntry(ctx context.Context, val commontypes.RequestAggrKeyshare)
 	RemoveReqQueueEntry(ctx context.Context, reqID string)
 	GetAllGenEncTxReqQueueEntry(ctx context.Context) (list []commontypes.RequestAggrKeyshare)
+	GetPrivateRequestQueueEntry(ctx context.Context, reqID string) (val commontypes.RequestPrivateKeyshare, found bool)
+	SetPrivateReqQueueEntry(ctx context.Context, val commontypes.RequestPrivateKeyshare)
+	RemovePrivateReqQueueEntry(ctx context.Context, reqID string)
+	GetAllPrivateReqQueueEntry(ctx context.Context) (list []commontypes.RequestPrivateKeyshare)
+	GetPrivateSignalQueueEntry(ctx context.Context, reqID string) (val commontypes.GetPrivateKeyshare, found bool)
+	SetPrivateSignalQueueEntry(ctx context.Context, val commontypes.GetPrivateKeyshare)
+	RemovePrivateSignalQueueEntry(ctx context.Context, reqID string)
+	GetAllPrivateSignalQueueEntry(ctx context.Context) (list []commontypes.GetPrivateKeyshare)
+	SetPrivateRequest(ctx context.Context, request peptypes.PrivateRequest)
+	GetPrivateRequest(ctx context.Context, reqID string) (val peptypes.PrivateRequest, found bool)
+	GetAllPrivateRequest(ctx context.Context) (list []peptypes.PrivateRequest)
 	GetAggregatedKeyShare(ctx context.Context, height uint64) (val peptypes.AggregatedKeyShare, found bool)
 	SetAggregatedKeyShare(ctx context.Context, aggregatedKeyShare peptypes.AggregatedKeyShare)
 	GetLatestHeight(ctx context.Context) string

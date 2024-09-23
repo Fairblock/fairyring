@@ -13,7 +13,10 @@ message KeysharePacketData {
         RequestAggrKeysharePacketData requestAggrKeysharePacket = 2;
         GetAggrKeysharePacketData     getAggrKeysharePacket     = 3;
         AggrKeyshareDataPacketData    aggrKeyshareDataPacket    = 4;
-        CurrentKeysPacketData         currentKeysPacket         = 5;
+        EncryptedKeysharesPacketData  encryptedKeysharesPacketData = 5;
+        CurrentKeysPacketData         currentKeysPacket         = 6;
+        RequestPrivateKeysharePacketData request_priv_keyshare_packet = 7;
+        GetPrivateKeysharePacketData     getPrivateKeysharePacket     = 8;
     }
 }
 
@@ -31,6 +34,16 @@ message RequestAggrKeysharePacketData {
   google.protobuf.Duration estimated_delay = 4 [(gogoproto.stdduration) = true];
 }
 
+message RequestPrivateKeysharePacketData {
+    string requester = 1;
+    string request_id = 2;
+}
+
+message RequestPrivateKeysharePacketAck {
+    string identity = 1;
+    string pubkey   = 2;
+}
+
 // RequestAggrKeysharePacketAck defines a struct for the packet acknowledgment
 message RequestAggrKeysharePacketAck {
     string identity = 1;
@@ -45,6 +58,16 @@ message GetAggrKeysharePacketData {
 // GetAggrKeysharePacketAck defines a struct for the packet acknowledgment
 message GetAggrKeysharePacketAck {}
 
+// GetPrivateKeysharePacketData defines a struct for the packet payload
+message GetPrivateKeysharePacketData {
+    string identity = 1;
+    string requester = 2;
+    string secp_pubkey = 3;
+}
+
+// GetPrivateKeysharePacketAck defines a struct for the packet acknowledgment
+message GetPrivateKeysharePacketAck {}
+
 // AggrKeyshareDataPacketData defines a struct for the packet payload
 message AggrKeyshareDataPacketData {
     string identity      = 1;
@@ -58,6 +81,16 @@ message AggrKeyshareDataPacketData {
 
 // AggrKeyshareDataPacketAck defines a struct for the packet acknowledgment
 message AggrKeyshareDataPacketAck {}
+
+
+message EncryptedKeysharesPacketData {
+    string identity      = 1;
+    string pubkey        = 2;
+    string request_id    = 3;
+    repeated fairyring.common.EncryptedKeyshare encrypted_keyshares = 4;
+}
+
+message EncryptedKeysharesPacketAck{}
 
 // CurrentKeysPacketData defines a struct for the packet payload
 message CurrentKeysPacketData {

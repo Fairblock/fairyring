@@ -57,12 +57,16 @@ const (
 )
 
 const (
-	StartSendGeneralKeyShareEventType     = "start-send-general-keyshare"
-	StartSendGeneralKeyShareEventIdentity = "identity"
+	StartSendGeneralKeyShareEventType        = "start-send-general-keyshare"
+	StartSendEncryptedKeyShareEventType      = "start-send-encrypted-keyshare"
+	StartSendGeneralKeyShareEventIdentity    = "identity"
+	StartSendEncryptedKeyShareEventRequester = "requester"
+	StartSendEncryptedKeyShareEventPubkey    = "secp256k1-pubkey"
 )
 
 const (
 	SendGeneralKeyshareEventType                = "keyshare-sent"
+	SendEncryptedKeyshareEventType              = "encrypted-keyshare-sent"
 	SendGeneralKeyshareEventValidator           = "validator"
 	SendGeneralKeyshareEventReceivedBlockHeight = "received-height"
 	SendGeneralKeyshareEventMessage             = "message"

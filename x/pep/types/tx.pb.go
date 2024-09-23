@@ -7,6 +7,7 @@ import (
 	context "context"
 	fmt "fmt"
 	_ "github.com/cosmos/cosmos-proto"
+	_ "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/cosmos-sdk/types/msgservice"
 	_ "github.com/cosmos/cosmos-sdk/types/tx/amino"
 	_ "github.com/cosmos/gogoproto/gogoproto"
@@ -573,6 +574,198 @@ func (m *MsgGetGeneralKeyshareResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgGetGeneralKeyshareResponse proto.InternalMessageInfo
 
+type MsgRequestPrivateIdentity struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	ReqId   string `protobuf:"bytes,2,opt,name=reqId,proto3" json:"reqId,omitempty"`
+}
+
+func (m *MsgRequestPrivateIdentity) Reset()         { *m = MsgRequestPrivateIdentity{} }
+func (m *MsgRequestPrivateIdentity) String() string { return proto.CompactTextString(m) }
+func (*MsgRequestPrivateIdentity) ProtoMessage()    {}
+func (*MsgRequestPrivateIdentity) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f6953e463911e1ec, []int{11}
+}
+func (m *MsgRequestPrivateIdentity) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRequestPrivateIdentity) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRequestPrivateIdentity.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRequestPrivateIdentity) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRequestPrivateIdentity.Merge(m, src)
+}
+func (m *MsgRequestPrivateIdentity) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRequestPrivateIdentity) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRequestPrivateIdentity.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRequestPrivateIdentity proto.InternalMessageInfo
+
+func (m *MsgRequestPrivateIdentity) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgRequestPrivateIdentity) GetReqId() string {
+	if m != nil {
+		return m.ReqId
+	}
+	return ""
+}
+
+type MsgRequestPrivateIdentityResponse struct {
+	ReqId string `protobuf:"bytes,1,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
+}
+
+func (m *MsgRequestPrivateIdentityResponse) Reset()         { *m = MsgRequestPrivateIdentityResponse{} }
+func (m *MsgRequestPrivateIdentityResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRequestPrivateIdentityResponse) ProtoMessage()    {}
+func (*MsgRequestPrivateIdentityResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f6953e463911e1ec, []int{12}
+}
+func (m *MsgRequestPrivateIdentityResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRequestPrivateIdentityResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRequestPrivateIdentityResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRequestPrivateIdentityResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRequestPrivateIdentityResponse.Merge(m, src)
+}
+func (m *MsgRequestPrivateIdentityResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRequestPrivateIdentityResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRequestPrivateIdentityResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRequestPrivateIdentityResponse proto.InternalMessageInfo
+
+func (m *MsgRequestPrivateIdentityResponse) GetReqId() string {
+	if m != nil {
+		return m.ReqId
+	}
+	return ""
+}
+
+type MsgGetPrivateKeyshares struct {
+	Creator    string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	ReqId      string `protobuf:"bytes,2,opt,name=reqId,proto3" json:"reqId,omitempty"`
+	SecpPubkey string `protobuf:"bytes,3,opt,name=secp_pubkey,json=secpPubkey,proto3" json:"secp_pubkey,omitempty"`
+}
+
+func (m *MsgGetPrivateKeyshares) Reset()         { *m = MsgGetPrivateKeyshares{} }
+func (m *MsgGetPrivateKeyshares) String() string { return proto.CompactTextString(m) }
+func (*MsgGetPrivateKeyshares) ProtoMessage()    {}
+func (*MsgGetPrivateKeyshares) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f6953e463911e1ec, []int{13}
+}
+func (m *MsgGetPrivateKeyshares) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgGetPrivateKeyshares) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgGetPrivateKeyshares.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgGetPrivateKeyshares) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgGetPrivateKeyshares.Merge(m, src)
+}
+func (m *MsgGetPrivateKeyshares) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgGetPrivateKeyshares) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgGetPrivateKeyshares.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgGetPrivateKeyshares proto.InternalMessageInfo
+
+func (m *MsgGetPrivateKeyshares) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgGetPrivateKeyshares) GetReqId() string {
+	if m != nil {
+		return m.ReqId
+	}
+	return ""
+}
+
+func (m *MsgGetPrivateKeyshares) GetSecpPubkey() string {
+	if m != nil {
+		return m.SecpPubkey
+	}
+	return ""
+}
+
+type MsgGetPrivateKeysharesResponse struct {
+}
+
+func (m *MsgGetPrivateKeysharesResponse) Reset()         { *m = MsgGetPrivateKeysharesResponse{} }
+func (m *MsgGetPrivateKeysharesResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgGetPrivateKeysharesResponse) ProtoMessage()    {}
+func (*MsgGetPrivateKeysharesResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f6953e463911e1ec, []int{14}
+}
+func (m *MsgGetPrivateKeysharesResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgGetPrivateKeysharesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgGetPrivateKeysharesResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgGetPrivateKeysharesResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgGetPrivateKeysharesResponse.Merge(m, src)
+}
+func (m *MsgGetPrivateKeysharesResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgGetPrivateKeysharesResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgGetPrivateKeysharesResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgGetPrivateKeysharesResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgUpdateParams)(nil), "fairyring.pep.MsgUpdateParams")
 	proto.RegisterType((*MsgUpdateParamsResponse)(nil), "fairyring.pep.MsgUpdateParamsResponse")
@@ -585,58 +778,69 @@ func init() {
 	proto.RegisterType((*MsgRequestGeneralKeyshareResponse)(nil), "fairyring.pep.MsgRequestGeneralKeyshareResponse")
 	proto.RegisterType((*MsgGetGeneralKeyshare)(nil), "fairyring.pep.MsgGetGeneralKeyshare")
 	proto.RegisterType((*MsgGetGeneralKeyshareResponse)(nil), "fairyring.pep.MsgGetGeneralKeyshareResponse")
+	proto.RegisterType((*MsgRequestPrivateIdentity)(nil), "fairyring.pep.MsgRequestPrivateIdentity")
+	proto.RegisterType((*MsgRequestPrivateIdentityResponse)(nil), "fairyring.pep.MsgRequestPrivateIdentityResponse")
+	proto.RegisterType((*MsgGetPrivateKeyshares)(nil), "fairyring.pep.MsgGetPrivateKeyshares")
+	proto.RegisterType((*MsgGetPrivateKeysharesResponse)(nil), "fairyring.pep.MsgGetPrivateKeysharesResponse")
 }
 
 func init() { proto.RegisterFile("fairyring/pep/tx.proto", fileDescriptor_f6953e463911e1ec) }
 
 var fileDescriptor_f6953e463911e1ec = []byte{
-	// 725 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x55, 0x3d, 0x6f, 0xd3, 0x50,
-	0x14, 0x8d, 0xfb, 0x11, 0x94, 0x47, 0xa1, 0xaa, 0xd5, 0x8f, 0xc4, 0x80, 0x5b, 0x52, 0x40, 0x51,
-	0x28, 0x36, 0x14, 0x84, 0x50, 0xb7, 0x86, 0x42, 0x8b, 0xaa, 0x48, 0xc8, 0x85, 0x0e, 0x2c, 0xd1,
-	0x4b, 0x7c, 0xfb, 0x62, 0x35, 0xc9, 0x73, 0xde, 0x7b, 0x41, 0x35, 0x53, 0xc5, 0xc8, 0xc4, 0xc8,
-	0xc0, 0xc8, 0xc0, 0xd8, 0x81, 0x1f, 0xd1, 0x81, 0xa1, 0x62, 0x62, 0x02, 0xd4, 0x0e, 0xfd, 0x1b,
-	0xc8, 0x9f, 0x69, 0xe2, 0xb8, 0xa4, 0x2c, 0x89, 0xaf, 0xef, 0x79, 0xe7, 0x9e, 0xf3, 0x74, 0x8f,
-	0x8c, 0x66, 0x77, 0xb0, 0xc5, 0x1c, 0x66, 0xb5, 0x88, 0x6e, 0x83, 0xad, 0x8b, 0x3d, 0xcd, 0x66,
-	0x54, 0x50, 0xf9, 0x4a, 0xf4, 0x5e, 0xb3, 0xc1, 0x56, 0xa6, 0x70, 0xd3, 0x6a, 0x51, 0xdd, 0xfb,
-	0xf5, 0x11, 0xca, 0x5c, 0x8d, 0xf2, 0x26, 0xe5, 0x7a, 0x93, 0x13, 0xfd, 0xed, 0x03, 0xf7, 0x2f,
-	0x68, 0xe4, 0xfc, 0x46, 0xc5, 0xab, 0x74, 0xbf, 0x08, 0x5a, 0x2a, 0xa1, 0x94, 0x34, 0x40, 0xf7,
-	0xaa, 0x6a, 0x67, 0x47, 0x37, 0x3b, 0x0c, 0x0b, 0x8b, 0xb6, 0x82, 0xfe, 0x34, 0xa1, 0x84, 0xfa,
-	0xe7, 0xdc, 0xa7, 0xe0, 0xad, 0xd2, 0xab, 0xd1, 0xc6, 0x0c, 0x37, 0x43, 0xc6, 0x42, 0x6f, 0x0f,
-	0x13, 0xc2, 0x80, 0x60, 0x01, 0x66, 0x65, 0x17, 0x9c, 0x0a, 0xaf, 0x63, 0x06, 0x3e, 0x32, 0xff,
-	0x5d, 0x42, 0x93, 0x65, 0x4e, 0x5e, 0xdb, 0x26, 0x16, 0xf0, 0xd2, 0xe3, 0x90, 0x1f, 0xa3, 0x0c,
-	0xee, 0x88, 0x3a, 0x65, 0x96, 0x70, 0xb2, 0xd2, 0x82, 0x54, 0xc8, 0x94, 0xb2, 0x3f, 0xbe, 0xdd,
-	0x9b, 0x0e, 0x44, 0xaf, 0x9a, 0x26, 0x03, 0xce, 0xb7, 0x84, 0xcb, 0x6f, 0x74, 0xa1, 0xf2, 0x13,
-	0x94, 0xf6, 0x55, 0x64, 0x47, 0x16, 0xa4, 0xc2, 0xe5, 0xe5, 0x19, 0xad, 0xe7, 0xba, 0x34, 0x9f,
-	0xbe, 0x94, 0x39, 0xfc, 0x35, 0x9f, 0xfa, 0x7a, 0x7a, 0x50, 0x94, 0x8c, 0x00, 0xbf, 0xb2, 0xfe,
-	0xfe, 0xf4, 0xa0, 0xd8, 0x65, 0xfa, 0x70, 0x7a, 0x50, 0x7c, 0x44, 0x2c, 0x51, 0xef, 0x54, 0xb5,
-	0x1a, 0x6d, 0xea, 0xcf, 0xb1, 0xc5, 0xaa, 0x0d, 0x5a, 0xdb, 0xd5, 0xbb, 0xbe, 0xf6, 0x3c, 0x67,
-	0x7d, 0xd2, 0xf3, 0x39, 0x34, 0xd7, 0xf7, 0xca, 0x00, 0x6e, 0xd3, 0x16, 0x87, 0xfc, 0xbe, 0x84,
-	0xa6, 0xcb, 0x9c, 0x6c, 0x75, 0xaa, 0x4d, 0x4b, 0x3c, 0x6b, 0xd5, 0x98, 0x63, 0x0b, 0x30, 0x5f,
-	0xed, 0xc9, 0x59, 0x74, 0xa9, 0xc6, 0x00, 0x0b, 0xca, 0x7c, 0xb3, 0x46, 0x58, 0xca, 0x32, 0x1a,
-	0x33, 0xb1, 0xc0, 0x9e, 0x9d, 0x8c, 0xe1, 0x3d, 0xcb, 0x4b, 0x68, 0x4a, 0x60, 0x46, 0x40, 0x94,
-	0x5c, 0x41, 0x1b, 0x60, 0x91, 0xba, 0xc8, 0x8e, 0x2e, 0x48, 0x85, 0x31, 0x23, 0xde, 0x58, 0x99,
-	0x70, 0x8d, 0x85, 0x7c, 0x79, 0x1b, 0x5d, 0x8b, 0x14, 0xac, 0x43, 0x0b, 0x18, 0x6e, 0xfc, 0xbf,
-	0x90, 0x19, 0x94, 0x66, 0xd0, 0xae, 0x58, 0xa6, 0x37, 0x3d, 0x63, 0x8c, 0x33, 0x68, 0xbf, 0x30,
-	0xfb, 0x26, 0xaa, 0xe8, 0xfa, 0x20, 0xcf, 0xd1, 0xa5, 0xb4, 0x3d, 0x45, 0x4f, 0x5d, 0x34, 0xac,
-	0x46, 0x5b, 0xb2, 0x09, 0xce, 0x96, 0xbb, 0x23, 0xe7, 0x28, 0x9a, 0x45, 0xe9, 0xba, 0xef, 0x7d,
-	0xc4, 0xf3, 0x1e, 0x54, 0x91, 0xd2, 0xd1, 0xae, 0xd2, 0x3e, 0x49, 0xb7, 0xd1, 0xe2, 0x39, 0x23,
-	0x23, 0x65, 0x5f, 0x24, 0x94, 0x2b, 0x73, 0x62, 0x40, 0xbb, 0x03, 0x3c, 0xbc, 0xad, 0x4d, 0x70,
-	0xf8, 0x3f, 0x84, 0x6d, 0xa0, 0x49, 0xe0, 0xc2, 0x6a, 0x7a, 0xdb, 0x6e, 0x42, 0x03, 0x3b, 0xc1,
-	0x36, 0xe6, 0x34, 0x3f, 0x66, 0x5a, 0x18, 0x33, 0x6d, 0x2d, 0x88, 0x59, 0x69, 0xec, 0xd3, 0xef,
-	0x79, 0xc9, 0xb8, 0x1a, 0x9d, 0x5b, 0x73, 0x8f, 0x0d, 0x77, 0xc1, 0x2b, 0xe8, 0x66, 0xa2, 0xca,
-	0xd0, 0xcb, 0x19, 0x26, 0xe9, 0x0c, 0x53, 0x7e, 0x1b, 0xcd, 0x94, 0x39, 0x59, 0x87, 0x0b, 0xb8,
-	0xeb, 0x32, 0x8d, 0x24, 0x6b, 0x9a, 0x47, 0x37, 0x06, 0xf2, 0x86, 0x7a, 0x96, 0x3f, 0x8f, 0xa3,
-	0xd1, 0x32, 0x27, 0xf2, 0x36, 0x9a, 0xe8, 0x09, 0xbe, 0xda, 0x17, 0xd8, 0xbe, 0x28, 0x29, 0x77,
-	0xce, 0xef, 0x47, 0x7e, 0x01, 0x4d, 0xc5, 0x63, 0xb6, 0x18, 0x3f, 0x1c, 0x03, 0x29, 0x77, 0x87,
-	0x00, 0x45, 0x63, 0x38, 0xca, 0x26, 0x66, 0xa9, 0x98, 0x44, 0x14, 0xc7, 0x5e, 0x6c, 0xe8, 0x3b,
-	0x94, 0x4d, 0x8c, 0xcb, 0x80, 0xa1, 0x49, 0x58, 0x65, 0x79, 0x78, 0x6c, 0x34, 0x5b, 0xa0, 0xd9,
-	0x84, 0x3c, 0x14, 0xe2, 0x6c, 0x83, 0x91, 0xca, 0xfd, 0x61, 0x91, 0xd1, 0xd4, 0x3a, 0x92, 0x07,
-	0xec, 0xe8, 0xad, 0x38, 0x4f, 0x1c, 0xa5, 0x2c, 0x0d, 0x83, 0x0a, 0x27, 0x29, 0xe3, 0xfb, 0xee,
-	0x57, 0xa1, 0xb4, 0x76, 0x78, 0xac, 0x4a, 0x47, 0xc7, 0xaa, 0xf4, 0xe7, 0x58, 0x95, 0x3e, 0x9e,
-	0xa8, 0xa9, 0xa3, 0x13, 0x35, 0xf5, 0xf3, 0x44, 0x4d, 0xbd, 0x29, 0x0e, 0xf5, 0x51, 0x10, 0x8e,
-	0x0d, 0xbc, 0x9a, 0xf6, 0x72, 0xfe, 0xf0, 0x6f, 0x00, 0x00, 0x00, 0xff, 0xff, 0xcc, 0xd6, 0xda,
-	0xef, 0xcc, 0x07, 0x00, 0x00,
+	// 848 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x56, 0xcf, 0x6f, 0x1b, 0x45,
+	0x14, 0xce, 0x26, 0xa9, 0x91, 0x5f, 0x0b, 0x55, 0x96, 0x24, 0x75, 0x16, 0xd8, 0x04, 0x97, 0x22,
+	0xcb, 0xb4, 0xbb, 0x24, 0x20, 0x84, 0x72, 0xab, 0x09, 0xa4, 0x55, 0x65, 0x29, 0xda, 0x40, 0x25,
+	0xb8, 0x58, 0xb3, 0xde, 0xd7, 0xf1, 0xca, 0x3f, 0x66, 0x3d, 0x33, 0x0e, 0x59, 0x4e, 0x15, 0x47,
+	0x4e, 0x1c, 0xf9, 0x03, 0x38, 0x70, 0xcc, 0x81, 0x3f, 0xa2, 0x07, 0x0e, 0x15, 0x27, 0x4e, 0x80,
+	0x92, 0x43, 0xfe, 0x0c, 0xd0, 0xfe, 0x74, 0xbc, 0x3f, 0x5c, 0xa7, 0x17, 0x7b, 0x67, 0xde, 0x37,
+	0xef, 0xfb, 0xbe, 0xb7, 0xf3, 0x9e, 0x16, 0x36, 0x9f, 0x11, 0x97, 0xfb, 0xdc, 0x1d, 0x51, 0xd3,
+	0x43, 0xcf, 0x94, 0xa7, 0x86, 0xc7, 0x99, 0x64, 0xea, 0x9b, 0xe9, 0xbe, 0xe1, 0xa1, 0xa7, 0xad,
+	0x91, 0xa1, 0x3b, 0x62, 0x66, 0xf8, 0x1b, 0x21, 0xb4, 0x3b, 0x5d, 0x26, 0x86, 0x4c, 0x98, 0x43,
+	0x41, 0xcd, 0x93, 0xdd, 0xe0, 0x2f, 0x0e, 0x6c, 0x45, 0x81, 0x4e, 0xb8, 0x32, 0xa3, 0x45, 0x1c,
+	0xd2, 0x29, 0x63, 0x74, 0x80, 0x66, 0xb8, 0xb2, 0x27, 0xcf, 0x4c, 0x67, 0xc2, 0x89, 0x74, 0xd9,
+	0x28, 0x8e, 0xaf, 0x53, 0x46, 0x59, 0x74, 0x2e, 0x78, 0x8a, 0x77, 0xb5, 0x59, 0x8d, 0x1e, 0xe1,
+	0x64, 0x98, 0x64, 0x6c, 0xcc, 0xc6, 0x08, 0xa5, 0x1c, 0x29, 0x91, 0xe8, 0x74, 0xfa, 0xe8, 0x77,
+	0x44, 0x8f, 0x70, 0x4c, 0xb8, 0x63, 0xbd, 0x36, 0x11, 0x68, 0x9e, 0xec, 0xda, 0x28, 0xc9, 0xae,
+	0xd9, 0x65, 0x6e, 0xcc, 0x5d, 0xff, 0x43, 0x81, 0xdb, 0x6d, 0x41, 0xbf, 0xf1, 0x1c, 0x22, 0xf1,
+	0x28, 0xe4, 0x50, 0x3f, 0x83, 0x2a, 0x99, 0xc8, 0x1e, 0xe3, 0xae, 0xf4, 0x6b, 0xca, 0x8e, 0xd2,
+	0xa8, 0xb6, 0x6a, 0x7f, 0xfe, 0xfe, 0x60, 0x3d, 0x36, 0xf5, 0xd0, 0x71, 0x38, 0x0a, 0x71, 0x2c,
+	0x03, 0x7e, 0x6b, 0x0a, 0x55, 0x3f, 0x87, 0x4a, 0xa4, 0xb2, 0xb6, 0xbc, 0xa3, 0x34, 0x6e, 0xee,
+	0x6d, 0x18, 0x33, 0xe5, 0x34, 0xa2, 0xf4, 0xad, 0xea, 0x8b, 0xbf, 0xb7, 0x97, 0x7e, 0xbb, 0x3c,
+	0x6b, 0x2a, 0x56, 0x8c, 0xdf, 0x3f, 0xfc, 0xf1, 0xf2, 0xac, 0x39, 0xcd, 0xf4, 0xd3, 0xe5, 0x59,
+	0xf3, 0x53, 0xea, 0xca, 0xde, 0xc4, 0x36, 0xba, 0x6c, 0x68, 0x7e, 0x45, 0x5c, 0x6e, 0x0f, 0x58,
+	0xb7, 0x6f, 0x4e, 0x7d, 0x9f, 0x86, 0xce, 0x33, 0xd2, 0xeb, 0x5b, 0x70, 0x27, 0xb3, 0x65, 0xa1,
+	0xf0, 0xd8, 0x48, 0x60, 0xfd, 0xb9, 0x02, 0xeb, 0x6d, 0x41, 0x8f, 0x27, 0xf6, 0xd0, 0x95, 0x5f,
+	0x8e, 0xba, 0xdc, 0xf7, 0x24, 0x3a, 0x5f, 0x9f, 0xaa, 0x35, 0x78, 0xa3, 0xcb, 0x91, 0x48, 0xc6,
+	0x23, 0xb3, 0x56, 0xb2, 0x54, 0x55, 0x58, 0x75, 0x88, 0x24, 0xa1, 0x9d, 0xaa, 0x15, 0x3e, 0xab,
+	0xf7, 0x61, 0x4d, 0x12, 0x4e, 0x51, 0xb6, 0x02, 0x41, 0x8f, 0xd0, 0xa5, 0x3d, 0x59, 0x5b, 0xd9,
+	0x51, 0x1a, 0xab, 0x56, 0x3e, 0xb0, 0x7f, 0x2b, 0x30, 0x96, 0xe4, 0xab, 0x7b, 0xf0, 0x4e, 0xaa,
+	0xe0, 0x10, 0x47, 0xc8, 0xc9, 0xe0, 0xf5, 0x85, 0x6c, 0x40, 0x85, 0xe3, 0xb8, 0xe3, 0x3a, 0x21,
+	0x7b, 0xd5, 0xba, 0xc1, 0x71, 0xfc, 0xd8, 0xc9, 0x30, 0xea, 0xf0, 0x6e, 0x91, 0xe7, 0xb4, 0x28,
+	0xe3, 0x50, 0xd1, 0x17, 0x01, 0x1a, 0x1f, 0xa6, 0xb7, 0xe8, 0x09, 0xfa, 0xc7, 0xc1, 0x1d, 0x9a,
+	0xa3, 0x68, 0x13, 0x2a, 0xbd, 0xc8, 0xfb, 0x72, 0xe8, 0x3d, 0x5e, 0xa5, 0x4a, 0x57, 0xa6, 0x4a,
+	0x33, 0x92, 0xee, 0xc1, 0xdd, 0x39, 0x94, 0xa9, 0xb2, 0x5f, 0x15, 0xd8, 0x6a, 0x0b, 0x6a, 0xe1,
+	0x78, 0x82, 0x22, 0xa9, 0xd6, 0x13, 0xf4, 0xc5, 0x2b, 0x84, 0x3d, 0x82, 0xdb, 0x28, 0xa4, 0x3b,
+	0x0c, 0xbb, 0xc1, 0xc1, 0x01, 0xf1, 0xe3, 0xdb, 0xb8, 0x65, 0x44, 0x6d, 0x68, 0x24, 0x6d, 0x68,
+	0x1c, 0xc4, 0x6d, 0xd8, 0x5a, 0xfd, 0xe5, 0x9f, 0x6d, 0xc5, 0x7a, 0x2b, 0x3d, 0x77, 0x10, 0x1c,
+	0x5b, 0xac, 0xc0, 0xfb, 0xf0, 0x7e, 0xa9, 0xca, 0xc4, 0xcb, 0x95, 0x4c, 0xca, 0x95, 0x4c, 0xf5,
+	0xa7, 0xb0, 0xd1, 0x16, 0xf4, 0x10, 0xaf, 0xe1, 0x6e, 0x9a, 0x69, 0xb9, 0x5c, 0xd3, 0x36, 0xbc,
+	0x57, 0x98, 0x37, 0xad, 0xed, 0xb7, 0x57, 0x4b, 0x7b, 0xc4, 0xdd, 0x13, 0x22, 0xf1, 0xb1, 0x83,
+	0x23, 0x19, 0x74, 0x71, 0x39, 0xf9, 0x3a, 0x44, 0x74, 0xf3, 0xb8, 0x67, 0xea, 0x91, 0x49, 0xfd,
+	0xaa, 0x7a, 0x7c, 0x0f, 0x9b, 0x91, 0xee, 0xf8, 0x5c, 0xa2, 0x5b, 0x5c, 0x57, 0x93, 0xba, 0x0d,
+	0x37, 0x05, 0x76, 0xbd, 0x8e, 0x37, 0xb1, 0xfb, 0xe8, 0xc7, 0xef, 0x0f, 0x82, 0xad, 0xa3, 0x70,
+	0x27, 0x23, 0x7a, 0x07, 0xf4, 0x62, 0xe2, 0x44, 0xf1, 0xde, 0x7f, 0x15, 0x58, 0x69, 0x0b, 0xaa,
+	0x3e, 0x85, 0x5b, 0x33, 0xa3, 0x52, 0xcf, 0x8c, 0xb8, 0xcc, 0xf0, 0xd1, 0x3e, 0x9c, 0x1f, 0x4f,
+	0x2b, 0x82, 0xb0, 0x96, 0x1f, 0x4c, 0x77, 0xf3, 0x87, 0x73, 0x20, 0xed, 0xa3, 0x05, 0x40, 0x29,
+	0x8d, 0x80, 0x5a, 0xe9, 0xf4, 0x69, 0x96, 0x25, 0xca, 0x63, 0xaf, 0x47, 0xfa, 0x03, 0xd4, 0x4a,
+	0x07, 0x4c, 0x01, 0x69, 0x19, 0x56, 0xdb, 0x5b, 0x1c, 0x9b, 0x72, 0x4b, 0xd8, 0x2c, 0x99, 0x20,
+	0x8d, 0x7c, 0xb6, 0x62, 0xa4, 0xf6, 0xf1, 0xa2, 0xc8, 0x94, 0xb5, 0x07, 0x6a, 0x41, 0x57, 0x7f,
+	0x90, 0xcf, 0x93, 0x47, 0x69, 0xf7, 0x17, 0x41, 0x15, 0xf8, 0xcb, 0xb6, 0x71, 0xb9, 0xbf, 0x0c,
+	0x72, 0x8e, 0xbf, 0xb2, 0xfe, 0xed, 0xc3, 0xdb, 0x45, 0x5d, 0x7a, 0xaf, 0x50, 0x7a, 0x16, 0xa6,
+	0x3d, 0x58, 0x08, 0x96, 0x90, 0x69, 0x37, 0x9e, 0x07, 0x9f, 0x0a, 0xad, 0x83, 0x17, 0xe7, 0xba,
+	0xf2, 0xf2, 0x5c, 0x57, 0xfe, 0x3d, 0xd7, 0x95, 0x9f, 0x2f, 0xf4, 0xa5, 0x97, 0x17, 0xfa, 0xd2,
+	0x5f, 0x17, 0xfa, 0xd2, 0x77, 0xcd, 0x85, 0xbe, 0x14, 0xa4, 0xef, 0xa1, 0xb0, 0x2b, 0xe1, 0xf0,
+	0xff, 0xe4, 0xff, 0x00, 0x00, 0x00, 0xff, 0xff, 0x57, 0x44, 0xcb, 0x00, 0x01, 0x0a, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -660,6 +864,8 @@ type MsgClient interface {
 	CreateAggregatedKeyShare(ctx context.Context, in *MsgCreateAggregatedKeyShare, opts ...grpc.CallOption) (*MsgCreateAggregatedKeyShareResponse, error)
 	RequestGeneralKeyshare(ctx context.Context, in *MsgRequestGeneralKeyshare, opts ...grpc.CallOption) (*MsgRequestGeneralKeyshareResponse, error)
 	GetGeneralKeyshare(ctx context.Context, in *MsgGetGeneralKeyshare, opts ...grpc.CallOption) (*MsgGetGeneralKeyshareResponse, error)
+	RequestPrivateIdentity(ctx context.Context, in *MsgRequestPrivateIdentity, opts ...grpc.CallOption) (*MsgRequestPrivateIdentityResponse, error)
+	GetPrivateKeyshares(ctx context.Context, in *MsgGetPrivateKeyshares, opts ...grpc.CallOption) (*MsgGetPrivateKeysharesResponse, error)
 }
 
 type msgClient struct {
@@ -724,6 +930,24 @@ func (c *msgClient) GetGeneralKeyshare(ctx context.Context, in *MsgGetGeneralKey
 	return out, nil
 }
 
+func (c *msgClient) RequestPrivateIdentity(ctx context.Context, in *MsgRequestPrivateIdentity, opts ...grpc.CallOption) (*MsgRequestPrivateIdentityResponse, error) {
+	out := new(MsgRequestPrivateIdentityResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Msg/RequestPrivateIdentity", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) GetPrivateKeyshares(ctx context.Context, in *MsgGetPrivateKeyshares, opts ...grpc.CallOption) (*MsgGetPrivateKeysharesResponse, error) {
+	out := new(MsgGetPrivateKeysharesResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Msg/GetPrivateKeyshares", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
@@ -735,6 +959,8 @@ type MsgServer interface {
 	CreateAggregatedKeyShare(context.Context, *MsgCreateAggregatedKeyShare) (*MsgCreateAggregatedKeyShareResponse, error)
 	RequestGeneralKeyshare(context.Context, *MsgRequestGeneralKeyshare) (*MsgRequestGeneralKeyshareResponse, error)
 	GetGeneralKeyshare(context.Context, *MsgGetGeneralKeyshare) (*MsgGetGeneralKeyshareResponse, error)
+	RequestPrivateIdentity(context.Context, *MsgRequestPrivateIdentity) (*MsgRequestPrivateIdentityResponse, error)
+	GetPrivateKeyshares(context.Context, *MsgGetPrivateKeyshares) (*MsgGetPrivateKeysharesResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -758,6 +984,12 @@ func (*UnimplementedMsgServer) RequestGeneralKeyshare(ctx context.Context, req *
 }
 func (*UnimplementedMsgServer) GetGeneralKeyshare(ctx context.Context, req *MsgGetGeneralKeyshare) (*MsgGetGeneralKeyshareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetGeneralKeyshare not implemented")
+}
+func (*UnimplementedMsgServer) RequestPrivateIdentity(ctx context.Context, req *MsgRequestPrivateIdentity) (*MsgRequestPrivateIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RequestPrivateIdentity not implemented")
+}
+func (*UnimplementedMsgServer) GetPrivateKeyshares(ctx context.Context, req *MsgGetPrivateKeyshares) (*MsgGetPrivateKeysharesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPrivateKeyshares not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -872,6 +1104,42 @@ func _Msg_GetGeneralKeyshare_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_RequestPrivateIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRequestPrivateIdentity)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RequestPrivateIdentity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.pep.Msg/RequestPrivateIdentity",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RequestPrivateIdentity(ctx, req.(*MsgRequestPrivateIdentity))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_GetPrivateKeyshares_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgGetPrivateKeyshares)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).GetPrivateKeyshares(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.pep.Msg/GetPrivateKeyshares",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).GetPrivateKeyshares(ctx, req.(*MsgGetPrivateKeyshares))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "fairyring.pep.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -899,6 +1167,14 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetGeneralKeyshare",
 			Handler:    _Msg_GetGeneralKeyshare_Handler,
+		},
+		{
+			MethodName: "RequestPrivateIdentity",
+			Handler:    _Msg_RequestPrivateIdentity_Handler,
+		},
+		{
+			MethodName: "GetPrivateKeyshares",
+			Handler:    _Msg_GetPrivateKeyshares_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1279,6 +1555,140 @@ func (m *MsgGetGeneralKeyshareResponse) MarshalToSizedBuffer(dAtA []byte) (int, 
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgRequestPrivateIdentity) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRequestPrivateIdentity) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRequestPrivateIdentity) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.ReqId) > 0 {
+		i -= len(m.ReqId)
+		copy(dAtA[i:], m.ReqId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ReqId)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRequestPrivateIdentityResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRequestPrivateIdentityResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRequestPrivateIdentityResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.ReqId) > 0 {
+		i -= len(m.ReqId)
+		copy(dAtA[i:], m.ReqId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ReqId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgGetPrivateKeyshares) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgGetPrivateKeyshares) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgGetPrivateKeyshares) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.SecpPubkey) > 0 {
+		i -= len(m.SecpPubkey)
+		copy(dAtA[i:], m.SecpPubkey)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.SecpPubkey)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.ReqId) > 0 {
+		i -= len(m.ReqId)
+		copy(dAtA[i:], m.ReqId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ReqId)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgGetPrivateKeysharesResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgGetPrivateKeysharesResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgGetPrivateKeysharesResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -1445,6 +1855,66 @@ func (m *MsgGetGeneralKeyshare) Size() (n int) {
 }
 
 func (m *MsgGetGeneralKeyshareResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgRequestPrivateIdentity) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.ReqId)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgRequestPrivateIdentityResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.ReqId)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgGetPrivateKeyshares) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.ReqId)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.SecpPubkey)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgGetPrivateKeysharesResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2509,6 +2979,398 @@ func (m *MsgGetGeneralKeyshareResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgGetGeneralKeyshareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRequestPrivateIdentity) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRequestPrivateIdentity: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRequestPrivateIdentity: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReqId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ReqId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRequestPrivateIdentityResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRequestPrivateIdentityResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRequestPrivateIdentityResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReqId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ReqId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgGetPrivateKeyshares) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgGetPrivateKeyshares: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgGetPrivateKeyshares: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReqId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ReqId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SecpPubkey", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.SecpPubkey = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgGetPrivateKeysharesResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgGetPrivateKeysharesResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgGetPrivateKeysharesResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

@@ -16,28 +16,34 @@ import (
 
 func EncryptCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "encrypt [target-height / id] [plaintext]",
+		Use:   "encrypt [target-height / id] [pubkey] [plaintext]",
 		Short: "Encrypt a given text with current public key",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			queryClient := types.NewQueryClient(clientCtx)
+			pubkey := args[1]
 
-			res, err := queryClient.PubKey(context.Background(), &types.QueryPubKeyRequest{})
-			if err != nil {
-				return err
-			}
+			if pubkey == "" {
+				queryClient := types.NewQueryClient(clientCtx)
 
-			if len(res.ActivePubKey.PublicKey) == 0 {
-				return errors.New("active public key not found")
+				res, err := queryClient.PubKey(context.Background(), &types.QueryPubKeyRequest{})
+				if err != nil {
+					return err
+				}
+
+				if len(res.ActivePubKey.PublicKey) == 0 {
+					return errors.New("active public key not found")
+				}
+
+				pubkey = res.ActivePubKey.PublicKey
 			}
 
 			suite := bls.NewBLS12381Suite()
-			publicKeyByte, err := hex.DecodeString(res.ActivePubKey.PublicKey)
+			publicKeyByte, err := hex.DecodeString(pubkey)
 			if err != nil {
 				panic(fmt.Sprintf("\nError decoding public key: %s\n", err.Error()))
 			}
@@ -50,7 +56,7 @@ func EncryptCmd() *cobra.Command {
 
 			var destCipherData bytes.Buffer
 			var plainTextBuffer bytes.Buffer
-			_, err = plainTextBuffer.WriteString(args[1])
+			_, err = plainTextBuffer.WriteString(args[2])
 			if err != nil {
 				panic(fmt.Sprintf("\nError writing plaintext string to buffer: %s\n", err.Error()))
 			}

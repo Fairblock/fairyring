@@ -21,6 +21,7 @@ func MigrateStore(ctx sdk.Context, storeService store.KVStoreService, cdc codec.
 		types.DefaultKeyshareChannelID,
 		&types.DefaultMinGasPrice,
 		true,
+		&types.DefaultKeysharePrice,
 	)
 
 	bz, err := cdc.Marshal(&currParams)

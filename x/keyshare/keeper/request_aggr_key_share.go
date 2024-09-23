@@ -2,8 +2,10 @@ package keeper
 
 import (
 	"errors"
-	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"math"
+
+	commontypes "github.com/Fairblock/fairyring/x/common/types"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 
 	sdkerrors "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -105,6 +107,59 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 
 // OnTimeoutRequestAggrKeysharePacket responds to the case where a packet has not been transmitted because of a timeout
 func (k Keeper) OnTimeoutRequestAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestAggrKeysharePacketData) error {
+
+	// Implement custom packet timeout logic
+	// (Not required for fairyring since this packet is never sent from fairyring)
+
+	return nil
+}
+
+// OnRecvRequestPrivateKeysharePacket processes packet reception
+func (k Keeper) OnRecvRequestPrivateKeysharePacket(
+	ctx sdk.Context,
+	packet channeltypes.Packet,
+	data types.RequestPrivateKeysharePacketData,
+) (packetAck types.RequestPrivateKeysharePacketAck, err error) {
+	// validate packet data upon receiving
+	if err := data.ValidateBasic(); err != nil {
+		return packetAck, err
+	}
+
+	activePubKey, found := k.GetActivePubKey(ctx)
+	if !found {
+		return packetAck, err
+	}
+
+	id := data.GetRequestId()
+
+	var keyshareRequest types.PrivateKeyshareRequest
+
+	keyshareRequest.Identity = id
+	keyshareRequest.Pubkey = activePubKey.PublicKey
+	keyshareRequest.IbcInfo = &types.IBCInfo{
+		ChannelID: packet.DestinationChannel,
+		PortID:    packet.DestinationPort,
+	}
+
+	keyshareRequest.Counterparty = &types.CounterPartyIBCInfo{
+		ChannelID: packet.SourceChannel,
+		PortID:    packet.SourcePort,
+	}
+
+	keyshareRequest.EncryptedKeyshares = make([]*commontypes.EncryptedKeyshare, 0)
+	keyshareRequest.RequestId = data.GetRequestId()
+	keyshareRequest.Sent = false
+
+	k.SetPrivateKeyShareRequest(ctx, keyshareRequest)
+
+	packetAck.Identity = id
+	packetAck.Pubkey = activePubKey.PublicKey
+
+	return packetAck, nil
+}
+
+// OnTimeoutRequestAggrKeysharePacket responds to the case where a packet has not been transmitted because of a timeout
+func (k Keeper) OnTimeoutRequestPrivateKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestPrivateKeysharePacketData) error {
 
 	// Implement custom packet timeout logic
 	// (Not required for fairyring since this packet is never sent from fairyring)

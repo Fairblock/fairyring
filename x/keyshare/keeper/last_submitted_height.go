@@ -2,10 +2,11 @@ package keeper
 
 import (
 	"context"
+	"strconv"
+
 	"cosmossdk.io/store/prefix"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
-	"strconv"
 )
 
 func (k Keeper) SetLastSubmittedHeight(ctx context.Context, validator, height string) {

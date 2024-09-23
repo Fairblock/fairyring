@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	"cosmossdk.io/store/prefix"
 	storetypes "cosmossdk.io/store/types"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
@@ -259,6 +260,126 @@ func (k Keeper) GetAllGenEncTxExecutionQueueEntry(ctx context.Context) (list []t
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.GenEncTxExecutionQueue
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+	return
+}
+
+// GetPrivateRequestQueueEntry returns a queue entry by its identity
+func (k Keeper) GetPrivateRequestQueueEntry(
+	ctx context.Context,
+	reqID string,
+) (val commontypes.RequestPrivateKeyshare, found bool) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateRequestQueueKeyPrefix))
+
+	b := store.Get(types.GenEncTxQueueKey(
+		reqID,
+	))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
+
+// SetPrivateReqQueueEntry sets a queue entry by its identity
+func (k Keeper) SetPrivateReqQueueEntry(
+	ctx context.Context,
+	val commontypes.RequestPrivateKeyshare,
+) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateRequestQueueKeyPrefix))
+
+	entry := k.cdc.MustMarshal(&val)
+	store.Set(
+		types.GenEncTxQueueKey(val.GetRequestId()),
+		entry,
+	)
+}
+
+// RemovePrivateReqQueueEntry removes an entry from the store
+func (k Keeper) RemovePrivateReqQueueEntry(
+	ctx context.Context,
+	reqID string,
+) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateRequestQueueKeyPrefix))
+	store.Delete(types.GenEncTxQueueKey(reqID))
+}
+
+// GetAllPrivateReqQueueEntry returns all PrivateQueue entries
+func (k Keeper) GetAllPrivateReqQueueEntry(ctx context.Context) (list []commontypes.RequestPrivateKeyshare) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateRequestQueueKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val commontypes.RequestPrivateKeyshare
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+	return
+}
+
+// GetQueueEntry returns a queue entry by its identity
+func (k Keeper) GetPrivateSignalQueueEntry(
+	ctx context.Context,
+	reqID string,
+) (val commontypes.GetPrivateKeyshare, found bool) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateSignalQueueKeyPrefix))
+
+	b := store.Get(types.GenEncTxQueueKey(
+		reqID,
+	))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
+
+// SetPrivateSignalQueueEntry sets a queue entry by its identity
+func (k Keeper) SetPrivateSignalQueueEntry(
+	ctx context.Context,
+	val commontypes.GetPrivateKeyshare,
+) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateSignalQueueKeyPrefix))
+
+	entry := k.cdc.MustMarshal(&val)
+	store.Set(
+		types.GenEncTxQueueKey(val.GetRequestId()),
+		entry,
+	)
+}
+
+// RemovePrivateSignalQueueEntry removes an entry from the store
+func (k Keeper) RemovePrivateSignalQueueEntry(
+	ctx context.Context,
+	reqID string,
+) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateSignalQueueKeyPrefix))
+	store.Delete(types.GenEncTxQueueKey(reqID))
+}
+
+// GetAllPrivateSignalQueueEntry returns all GenEncTxQueue entries
+func (k Keeper) GetAllPrivateSignalQueueEntry(ctx context.Context) (list []commontypes.GetPrivateKeyshare) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateSignalQueueKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val commontypes.GetPrivateKeyshare
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}

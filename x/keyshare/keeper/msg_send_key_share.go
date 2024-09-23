@@ -2,15 +2,16 @@ package keeper
 
 import (
 	"context"
-	"cosmossdk.io/math"
 	"encoding/hex"
 	"fmt"
+	"strconv"
+
+	"cosmossdk.io/math"
 	distIBE "github.com/FairBlock/DistributedIBE"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	"github.com/hashicorp/go-metrics"
-	"strconv"
 
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"

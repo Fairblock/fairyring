@@ -6,6 +6,7 @@ import (
 	"math"
 	"strconv"
 
+	common "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -97,6 +98,87 @@ func (k Keeper) ProcessPepSignalQueue(ctx sdk.Context) error {
 				ctx.EventManager().EmitEvent(
 					sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
 						sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, req.Identity),
+					),
+				)
+			}
+		}
+		k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
+	}
+	return nil
+}
+
+func (k Keeper) ProcessPrivateRequestQueue(ctx sdk.Context) error {
+	activePubKey, found := k.GetActivePubKey(ctx)
+	if !found {
+		return errors.New("active public key not found")
+	}
+
+	reqs := k.pepKeeper.GetAllPrivateReqQueueEntry(ctx)
+
+	for _, req := range reqs {
+		id := req.GetRequestId()
+
+		var keyshareRequest types.PrivateKeyshareRequest
+
+		keyshareRequest.Identity = id
+		keyshareRequest.Pubkey = activePubKey.PublicKey
+
+		keyshareRequest.EncryptedKeyshares = make([]*common.EncryptedKeyshare, 0)
+		keyshareRequest.RequestId = req.GetRequestId()
+
+		k.SetPrivateKeyShareRequest(ctx, keyshareRequest)
+
+		entry, found := k.pepKeeper.GetPrivateRequest(ctx, id)
+		if !found {
+			return errors.New("entry not found in pep module")
+		}
+		entry.Pubkey = activePubKey.PublicKey
+
+		k.pepKeeper.SetPrivateRequest(ctx, entry)
+		k.pepKeeper.RemovePrivateReqQueueEntry(ctx, req.GetRequestId())
+	}
+	return nil
+}
+
+func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
+	reqs := k.pepKeeper.GetAllPrivateSignalQueueEntry(ctx)
+	k.Logger().Info(fmt.Sprintf("PROCESSING PEP SIGNAL QUEUE: %v", reqs))
+
+	activePubKey, found := k.GetActivePubKey(ctx)
+	if !found {
+		return errors.New("active public key not found")
+	}
+
+	for _, req := range reqs {
+		if req.Identity != "" {
+			keyshareReq, found := k.GetPrivateKeyShareRequest(ctx, req.Identity)
+			if !found {
+				var keyshareRequest types.PrivateKeyshareRequest
+
+				keyshareRequest.Identity = req.Identity
+				keyshareRequest.Pubkey = activePubKey.PublicKey
+
+				keyshareRequest.EncryptedKeyshares = make([]*common.EncryptedKeyshare, 0)
+				keyshareRequest.RequestId = req.GetRequestId()
+
+				k.SetPrivateKeyShareRequest(ctx, keyshareRequest)
+
+				entry, found := k.pepKeeper.GetPrivateRequest(ctx, req.Identity)
+				if !found {
+					return errors.New("entry not found in pep module")
+				}
+				entry.Pubkey = activePubKey.PublicKey
+
+				k.pepKeeper.SetPrivateRequest(ctx, entry)
+
+			}
+
+			if len(keyshareReq.EncryptedKeyshares) == 0 {
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(types.StartSendEncryptedKeyShareEventType,
+						sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, req.Identity),
+						sdk.NewAttribute(types.StartSendEncryptedKeyShareEventRequester, req.Requester),
+						sdk.NewAttribute(types.StartSendEncryptedKeyShareEventPubkey, req.SecpPubkey),
 					),
 				)
 			}

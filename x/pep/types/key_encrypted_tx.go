@@ -10,6 +10,8 @@ const (
 	// EncryptedTxKeyPrefix is the prefix to retrieve all EncryptedTx
 	EncryptedTxKeyPrefix         = "EncryptedTx/value/"
 	GenEncTxKeyPrefix            = "GenEncTx/value/"
+	PrivateRequestQueueKeyPrefix = "PrivateReq/value/"
+	PrivateSignalQueueKeyPrefix  = "PrivateSignal/value/"
 	GenEncTxReqQueueKeyPrefix    = "GenEncTxReqQueue/value/"
 	GenEncTxSignalQueueKeyPrefix = "GenEncTxSignalQueue/value/"
 	GenEncTxExeQueueKeyPrefix    = "GenEncTxExeQueue/value/"

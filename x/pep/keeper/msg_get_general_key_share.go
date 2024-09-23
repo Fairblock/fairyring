@@ -20,7 +20,7 @@ func (k msgServer) GetGeneralKeyshare(goCtx context.Context, msg *types.MsgGetGe
 
 	entry, found := k.GetEntry(ctx, msg.ReqId)
 	if !found {
-		return &types.MsgGetGeneralKeyshareResponse{}, errors.New("Request not found")
+		return &types.MsgGetGeneralKeyshareResponse{}, errors.New("request not found")
 	}
 
 	if entry.Creator != msg.Creator {

@@ -9,7 +9,8 @@ var _ binary.ByteOrder
 
 const (
 	// RequestIdKeyPrefix is the prefix to retrieve all RequestId
-	RequestIdKeyPrefix = "RequestId/value/"
+	RequestIdKeyPrefix        = "RequestId/value/"
+	PrivateRequestIdKeyPrefix = "PrivateRequestId/value/"
 )
 
 // RequestIdKey returns the store key to retrieve a RequestId from the index fields

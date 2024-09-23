@@ -6,6 +6,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/runtime"
 
 	"context"
+
 	"cosmossdk.io/store/prefix"
 )
 
@@ -57,6 +58,59 @@ func (k Keeper) GetAllKeyShareRequests(ctx context.Context) (list []types.KeySha
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.KeyShareRequest
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+
+	return
+}
+
+// SetPrivateKeyShareRequest set a specific private keyShare request in the store by its index
+func (k Keeper) SetPrivateKeyShareRequest(ctx context.Context, KeyShareRequest types.PrivateKeyshareRequest) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateKeyShareRequestKeyPrefix))
+	key := []byte(KeyShareRequest.Identity)
+	b := k.cdc.MustMarshal(&KeyShareRequest)
+	store.Set(key, b)
+}
+
+// GetPrivateKeyShareRequest returns a private keyShare request from its index
+func (k Keeper) GetPrivateKeyShareRequest(
+	ctx context.Context,
+	identity string,
+) (val types.PrivateKeyshareRequest, found bool) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateKeyShareRequestKeyPrefix))
+
+	b := store.Get([]byte(identity))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
+
+// RemovePrivateKeyShareRequest removes a private keyShare request from the store
+func (k Keeper) RemovePrivateKeyShareRequest(
+	ctx context.Context,
+	identity string,
+) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateKeyShareRequestKeyPrefix))
+	store.Delete([]byte(identity))
+}
+
+// GetAllPrivateKeyShareRequests returns all private keyShare requests
+func (k Keeper) GetAllPrivateKeyShareRequests(ctx context.Context) (list []types.PrivateKeyshareRequest) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateKeyShareRequestKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.PrivateKeyshareRequest
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}

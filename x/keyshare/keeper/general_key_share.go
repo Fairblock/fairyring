@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	"cosmossdk.io/store/prefix"
 	storetypes "cosmossdk.io/store/types"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
@@ -71,6 +72,75 @@ func (k Keeper) GetAllGeneralKeyShare(ctx context.Context) (list []types.General
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.GeneralKeyShare
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+
+	return
+}
+
+// SetPrivateKeyShare set a specific private KeyShare in the store from its index
+func (k Keeper) SetPrivateKeyShare(ctx context.Context, encKeyShare types.ValidatorEncryptedKeyShare) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedKeyShareKeyPrefix))
+
+	b := k.cdc.MustMarshal(&encKeyShare)
+	store.Set(types.EncryptedlKeyShareKey(
+		encKeyShare.Validator,
+		encKeyShare.Identity,
+		encKeyShare.Requester,
+	), b)
+}
+
+// GetPrivateKeyShare returns a private KeyShare from its index
+func (k Keeper) GetPrivateKeyShare(
+	ctx context.Context,
+	validator string,
+	identity string,
+	requester string,
+) (val types.ValidatorEncryptedKeyShare, found bool) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedKeyShareKeyPrefix))
+
+	b := store.Get(types.EncryptedlKeyShareKey(
+		validator,
+		identity,
+		requester,
+	))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
+
+// RemovePrivateKeyShare removes an private KeyShare from the store
+func (k Keeper) RemovePrivateKeyShare(
+	ctx context.Context,
+	validator string,
+	identiy string,
+	requester string,
+) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedKeyShareKeyPrefix))
+	store.Delete(types.EncryptedlKeyShareKey(
+		validator,
+		identiy,
+		requester,
+	))
+}
+
+// GetAllPrivateKeyShare returns all private KeyShares
+func (k Keeper) GetAllPrivateKeyShare(ctx context.Context) (list []types.ValidatorEncryptedKeyShare) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedKeyShareKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.ValidatorEncryptedKeyShare
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}

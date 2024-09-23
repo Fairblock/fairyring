@@ -5,10 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strconv"
+
 	distIBE "github.com/FairBlock/DistributedIBE"
 	bls "github.com/drand/kyber-bls12381"
 	"github.com/spf13/cobra"
-	"strconv"
 )
 
 type DeriveResult struct {
