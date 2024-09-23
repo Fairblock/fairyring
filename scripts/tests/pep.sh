@@ -592,7 +592,7 @@ sleep 10
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
-ENC_KS=$(scepEncrypter encrypt -p "$SCEP_PUBKEY1" -k "$EXTRACTED_SHARE")
+ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY1" -k "$EXTRACTED_SHARE")
 
 # echo $ENC_KS
 
@@ -634,7 +634,7 @@ echo $SHOW_PRIVATE_REQ
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
-ENC_KS=$(scepEncrypter encrypt -p "$SCEP_PUBKEY1" -k "$EXTRACTED_SHARE")
+ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY1" -k "$EXTRACTED_SHARE")
 
 # echo $ENC_KS
 
@@ -687,7 +687,7 @@ sleep 20
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
-ENC_KS=$(scepEncrypter encrypt -p "$SCEP_PUBKEY2" -k "$EXTRACTED_SHARE")
+ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY2" -k "$EXTRACTED_SHARE")
 # echo $ENC_KS
 
 while true; do
@@ -728,7 +728,7 @@ echo $SHOW_PRIVATE_REQ
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
-ENC_KS=$(scepEncrypter encrypt -p "$SCEP_PUBKEY2" -k "$EXTRACTED_SHARE")
+ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY2" -k "$EXTRACTED_SHARE")
 # echo $ENC_KS
 
 while true; do
