@@ -277,6 +277,23 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			continue
 		}
 
+		contracts, found := am.keeper.GetContractEntriesByID(ctx, entry.Identity)
+		if found {
+			if len(contracts.Contracts) != 0 {
+				for _, contract := range contracts.Contracts {
+					am.keeper.ExecuteContract(
+						ctx,
+						contract.ContractAddress,
+						types.ExecuteContractMsg{
+							Identity:     entry.Identity,
+							Pubkey:       entry.Pubkey,
+							AggrKeyshare: entry.AggrKeyshare,
+						},
+					)
+				}
+			}
+		}
+
 		if entry.TxList == nil {
 			am.keeper.Logger().Info("No encrypted txs found for entry with req-id: ", entry.RequestId)
 			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)

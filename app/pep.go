@@ -21,6 +21,7 @@ func (app *App) registerPepModule() (porttypes.IBCModule, error) {
 	}
 
 	scopedPepKeeper := app.CapabilityKeeper.ScopeToModule(peptypes.ModuleName)
+	contractKeeper := app.WasmKeeper.NewDefaultPermissionKeeper(&app.WasmKeeper)
 
 	// The last arguments can contain custom message handlers, and custom query handlers,
 	// if we want to allow any custom callbacks
@@ -34,6 +35,7 @@ func (app *App) registerPepModule() (porttypes.IBCModule, error) {
 		scopedPepKeeper,
 		app.AccountKeeper,
 		app.BankKeeper,
+		contractKeeper,
 	)
 
 	// register IBC modules

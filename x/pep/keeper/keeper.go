@@ -36,6 +36,7 @@ type (
 
 		accountKeeper types.AccountKeeper
 		bankKeeper    types.BankKeeper
+		wasmKeeper    types.WasmKeeper
 	}
 )
 
@@ -50,6 +51,7 @@ func NewKeeper(
 
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
+	wasmKeeper types.WasmKeeper,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
@@ -65,6 +67,7 @@ func NewKeeper(
 		scopedKeeper:  scopedKeeper,
 		accountKeeper: accountKeeper,
 		bankKeeper:    bankKeeper,
+		wasmKeeper:    wasmKeeper,
 	}
 }
 
@@ -155,4 +158,8 @@ func (k Keeper) SetRequestCount(ctx sdk.Context, requestNumber uint64) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, []byte{})
 	store.Set(types.RequestsCountKey, []byte(strconv.FormatUint(requestNumber, 10)))
+}
+
+func (k Keeper) SetWasmKeeper(wk types.WasmKeeper) {
+	k.wasmKeeper = wk
 }
