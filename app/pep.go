@@ -2,6 +2,7 @@ package app
 
 import (
 	storetypes "cosmossdk.io/store/types"
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	pepmodulekeeper "github.com/Fairblock/fairyring/x/pep/keeper"
 	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
 	peptypes "github.com/Fairblock/fairyring/x/pep/types"
@@ -21,7 +22,7 @@ func (app *App) registerPepModule() (porttypes.IBCModule, error) {
 	}
 
 	scopedPepKeeper := app.CapabilityKeeper.ScopeToModule(peptypes.ModuleName)
-	contractKeeper := app.WasmKeeper.NewDefaultPermissionKeeper(&app.WasmKeeper)
+	contractKeeper := wasmkeeper.NewDefaultPermissionKeeper(&app.WasmKeeper)
 
 	// The last arguments can contain custom message handlers, and custom query handlers,
 	// if we want to allow any custom callbacks

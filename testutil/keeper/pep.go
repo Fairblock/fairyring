@@ -60,6 +60,7 @@ func PepKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 		scopedKeeper,
 		nil,
 		nil,
+		nil,
 	)
 
 	ctx := sdk.NewContext(stateStore, cmtproto.Header{}, false, log.NewNopLogger())

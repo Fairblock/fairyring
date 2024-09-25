@@ -277,6 +277,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			continue
 		}
 
+		// execute registered contracts
 		contracts, found := am.keeper.GetContractEntriesByID(ctx, entry.Identity)
 		if found {
 			if len(contracts.Contracts) != 0 {
