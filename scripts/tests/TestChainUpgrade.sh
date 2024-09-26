@@ -5,49 +5,52 @@ GIT_FAIRYRING_REPO=https://github.com/Fairblock/fairyring.git
 GO_VERSION_FROM=system
 GO_VERSION_TO=system
 GIT_TAG_UPGRADE_FROM=v0.8.3
-GIT_TAG_UPGRADE_TO=main
+GIT_TAG_UPGRADE_TO=0.9.0-release
 
 BINARY=fairyringd
 BINARY_FULL_PATH=$WORKING_DIR/$GIT_TAG_UPGRADE_FROM/build/$BINARY
+NEW_BINARY_FULL_PATH=$WORKING_DIR/$GIT_TAG_UPGRADE_TO/build/$BINARY
 UPGRADER=cosmovisor
 
+CURRENT_PATH=$(pwd)
+BLOCK_TIME=6
 ##################
 # Setup Binaries #
 ##################
-#
-#echo "This script require 'cosmovisor' and 'gvm' installed"
-#
-#echo "Cleaning up the testing environment"
-#rm -rf $WORKING_DIR &> /dev/null
-#
-#echo "Creating testing environment: $WORKING_DIR"
-#if ! mkdir -p $WORKING_DIR 2>/dev/null; then
-#    echo "Failed to create chain upgrade testing environment. Aborting..."
-#    exit 1
-#fi
-#
-#echo "Cloning $BINARY repo"
-#if ! cd "$WORKING_DIR" 2>/dev/null; then
-#  echo "Failed to change dir to $WORKING_DIR. Aborting..."
-#fi
-#
-#[[ -s "$GVM_ROOT/scripts/gvm" ]] && source "$GVM_ROOT/scripts/gvm"
-#
-#echo "Installing $GIT_TAG_UPGRADE_FROM $BINARY"
-#git clone $GIT_FAIRYRING_REPO $GIT_TAG_UPGRADE_FROM
-#cd "$WORKING_DIR/$GIT_TAG_UPGRADE_FROM"
-#git checkout $GIT_TAG_UPGRADE_FROM
-#echo "Building the 'Upgrade From' $BINARY"
-#gvm use $GO_VERSION_FROM
-#go mod tidy
-#make build
 
-#echo "Installing $GIT_TAG_UPGRADE_TO $BINARY"
-#cd "$WORKING_DIR"
-#git clone $GIT_FAIRYRING_REPO $GIT_TAG_UPGRADE_TO
+echo "This script require 'cosmovisor' and 'gvm' installed"
+
+echo "Cleaning up the testing environment"
+rm -rf $WORKING_DIR &> /dev/null
+
+echo "Creating testing environment: $WORKING_DIR"
+if ! mkdir -p $WORKING_DIR 2>/dev/null; then
+    echo "Failed to create chain upgrade testing environment. Aborting..."
+    exit 1
+fi
+
+echo "Cloning $BINARY repo"
+if ! cd "$WORKING_DIR" 2>/dev/null; then
+  echo "Failed to change dir to $WORKING_DIR. Aborting..."
+fi
+
+[[ -s "$GVM_ROOT/scripts/gvm" ]] && source "$GVM_ROOT/scripts/gvm"
+
+echo "Installing $GIT_TAG_UPGRADE_FROM $BINARY"
+git clone $GIT_FAIRYRING_REPO $GIT_TAG_UPGRADE_FROM
+cd "$WORKING_DIR/$GIT_TAG_UPGRADE_FROM"
+git checkout $GIT_TAG_UPGRADE_FROM
+echo "Building the 'Upgrade From' $BINARY"
+gvm use $GO_VERSION_FROM
+go mod tidy
+make build
+
+echo "Installing $GIT_TAG_UPGRADE_TO $BINARY"
+cd "$WORKING_DIR"
+git clone $GIT_FAIRYRING_REPO $GIT_TAG_UPGRADE_TO
 cd "$WORKING_DIR/$GIT_TAG_UPGRADE_TO"
 echo $GIT_TAG_UPGRADE_TO
-#git checkout $GIT_TAG_UPGRADE_TO
+git checkout $GIT_TAG_UPGRADE_TO
 echo "Building the 'Upgrade To' $BINARY"
 gvm use $GO_VERSION_TO
 go mod tidy
@@ -74,7 +77,9 @@ $BINARY_FULL_PATH init test --chain-id $CHAIN_ID --home $CHAIN_HOME --overwrite
 cat <<< $(jq '.app_state.gov.params.voting_period = "20s"' $CHAIN_HOME/config/genesis.json) > $CHAIN_HOME/config/genesis.json
 cat <<< $(jq '.app_state.gov.params.expedited_voting_period = "10s"' $CHAIN_HOME/config/genesis.json) > $CHAIN_HOME/config/genesis.json
 
-$BINARY_FULL_PATH keys add validator --keyring-backend test --home $CHAIN_HOME
+VAL_MNEMONIC_1="clock post desk civil pottery foster expand merit dash seminar song memory figure uniform spice circle try happy obvious trash crime hybrid hood cushion"
+
+echo $VAL_MNEMONIC_1 | $BINARY_FULL_PATH keys add validator --keyring-backend test --home $CHAIN_HOME --recover
 $BINARY_FULL_PATH keys add wallet1 --keyring-backend test --home $CHAIN_HOME
 $BINARY_FULL_PATH genesis add-genesis-account validator 100000000000ufairy,10000000000000stake --keyring-backend test --home $CHAIN_HOME
 $BINARY_FULL_PATH genesis add-genesis-account wallet1 100000000000ufairy,10000000000000stake --keyring-backend test --home $CHAIN_HOME
@@ -128,25 +133,25 @@ echo $UPGRADE_PROPOSAL > upgrade_proposal.json
 echo "Setting up the chain upgrade..."
 $UPGRADER add-upgrade $UPGRADE_NAME $WORKING_DIR/$GIT_TAG_UPGRADE_TO/build/$BINARY
 
-sleep 10
+sleep $(($BLOCK_TIME * 2))
 
 $BINARY_FULL_PATH tx gov submit-proposal upgrade_proposal.json --from validator --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME --yes
-sleep 5
+sleep $BLOCK_TIME
 $BINARY_FULL_PATH tx gov vote 1 yes --from validator --yes --keyring-backend test --chain-id $CHAIN_ID --home $CHAIN_HOME
-sleep 5
+sleep $BLOCK_TIME
 VAL_OP_ADDR=$($BINARY_FULL_PATH q staking validators -o json | jq -r '.validators[0].operator_address')
 
 OUT=$($BINARY_FULL_PATH tx staking delegate $VAL_OP_ADDR 10stake --from wallet1 --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME --yes -o json)
 echo "Sent Delegate Tx: Code: $(echo $OUT | jq -r '.code'), Logs: $(echo $OUT | jq -r '.raw_log'), Hash: $(echo $OUT | jq -r '.txhash')"
 
-sleep 5
+sleep $BLOCK_TIME
 
 VAL_ADDR=$($BINARY_FULL_PATH keys show validator --keyring-backend test --home $CHAIN_HOME -a)
 WAL1_ADDR=$($BINARY_FULL_PATH keys show wallet1 --keyring-backend test --home $CHAIN_HOME -a)
 
 OUT=$($BINARY_FULL_PATH tx bank send $WAL1_ADDR $VAL_ADDR 1stake --from wallet1 --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME --yes -o json)
 echo "Sent Bank Send Tx: Code: $(echo $OUT | jq -r '.code'), Logs: $(echo $OUT | jq -r '.raw_log'), Hash: $(echo $OUT | jq -r '.txhash')"
-sleep 6
+sleep $BLOCK_TIME
 echo "Sequence after tx: $($BINARY_FULL_PATH q auth account $WAL1_ADDR -o json | jq -r '.account.value.sequence'), Balance after tx: $($BINARY_FULL_PATH q bank balances $VAL_ADDR -o json | jq -r '.balances[0]')"
 
 echo "Waiting chain to upgrade..."
@@ -156,27 +161,25 @@ echo "Sequence after upgrade: $($BINARY_FULL_PATH q auth account $WAL1_ADDR -o j
 
 OUT=$($BINARY_FULL_PATH tx bank send $WAL1_ADDR $VAL_ADDR 1stake --from wallet1 --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME --yes -o json)
 echo "Sent Bank Send Tx After UPGRADE: Code: $(echo $OUT | jq -r '.code'), Logs: $(echo $OUT | jq -r '.raw_log'), Hash: $(echo $OUT | jq -r '.txhash')"
-sleep 6
+sleep $BLOCK_TIME
 
 echo "Sequence after tx: $($BINARY_FULL_PATH q auth account $WAL1_ADDR -o json | jq -r '.account.value.sequence'), Balance after tx: $($BINARY_FULL_PATH q bank balances $VAL_ADDR -o json | jq -r '.balances[0]')"
 
 OUT=$($BINARY_FULL_PATH tx staking delegate $VAL_OP_ADDR 10stake --from wallet1 --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME --yes -o json)
 echo "Sent Delegate Tx: Code: $(echo $OUT | jq -r '.code'), Logs: $(echo $OUT | jq -r '.raw_log'), Hash: $(echo $OUT | jq -r '.txhash')"
 
-sleep 5
+sleep $BLOCK_TIME
 
 VAL_ADDR=$($BINARY_FULL_PATH keys show validator --keyring-backend test --home $CHAIN_HOME -a)
 WAL1_ADDR=$($BINARY_FULL_PATH keys show wallet1 --keyring-backend test --home $CHAIN_HOME -a)
 
 OUT=$($BINARY_FULL_PATH tx bank send $WAL1_ADDR $VAL_ADDR 1stake --from wallet1 --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME --yes -o json)
 echo "Sent Bank Send Tx: Code: $(echo $OUT | jq -r '.code'), Logs: $(echo $OUT | jq -r '.raw_log'), Hash: $(echo $OUT | jq -r '.txhash')"
-sleep 6
+sleep $BLOCK_TIME
 echo "Sequence after tx: $($BINARY_FULL_PATH q auth account $WAL1_ADDR -o json | jq -r '.account.value.sequence'), Balance after tx: $($BINARY_FULL_PATH q bank balances $VAL_ADDR -o json | jq -r '.balances[0]')"
 
-
-BINARY=$BINARY_FULL_PATH
+BINARY=$NEW_BINARY_FULL_PATH
 CHAINID_1=$CHAIN_ID
-BLOCK_TIME=6
 
 WALLET_1=$($BINARY keys show wallet1 -a --keyring-backend test --home $CHAIN_HOME)
 VALIDATOR_1=$($BINARY keys show validator -a --keyring-backend test --home $CHAIN_HOME)
@@ -189,12 +192,25 @@ check_tx_code () {
   fi
 }
 
+check_tx_err () {
+  local TX_CODE=$(echo "$1" | jq -r '.code')
+  if [ "$TX_CODE" -eq 0 ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 wait_for_tx () {
   sleep $BLOCK_TIME
   local TXHASH=$(echo "$1" | jq -r '.txhash')
   RESULT=$($BINARY q tx --type=hash $TXHASH --home $CHAIN_HOME --chain-id $CHAINID_1 -o json)
   echo "$RESULT"
 }
+
+echo "###########################"
+echo "# Testing Keyshare Module #"
+echo "###########################"
 
 
 echo "Staked account registering as a validator on chain $CHAINID_1"
@@ -224,6 +240,8 @@ if [ "$VALIDATOR_ADDR" != "$VALIDATOR_1" ]; then
   exit 1
 fi
 
+sleep 2
+
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_HOME -o json | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+1))
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
@@ -241,8 +259,9 @@ if [ "$AGGRED_SHARE" != $EXTRACTED_SHARE ]; then
 exit 1
 fi
 
-./scripts/tests/keyshareSender.sh $BINARY $CHAIN_HOME tcp://localhost:26657 $VALIDATOR_1 $CHAINID_1 > $WORKING_DIR/keyshareSender.log 2>&1 &
-
+echo $(pwd)
+echo $CURRENT_PATH
+$CURRENT_PATH/scripts/tests/keyshareSender.sh $BINARY $CHAIN_HOME tcp://localhost:26657 $VALIDATOR_1 $CHAINID_1 > $WORKING_DIR/keyshareSender.log 2>&1 &
 
 echo "Query submitted key share on chain $CHAINID_1"
 RESULT=$($BINARY query keyshare list-key-share -o json)
@@ -268,7 +287,9 @@ exit 1
 fi
 echo "Key Share Successfully aggregated: '$RESULT_DATA'"
 
-# PEP
+echo "######################"
+echo "# Testing PEP Module #"
+echo "######################"
 
 echo "Query account pep nonce before submitting encrypted tx from pep module on chain $CHAINID_1"
 RESULT=$($BINARY query pep show-pep-nonce $VALIDATOR_1 --home $CHAIN_HOME --chain-id $CHAINID_1 -o json)
@@ -295,9 +316,9 @@ $BINARY tx bank send $VALIDATOR_1 $WALLET_1 1$TARGET_BAL_DENOM --from $VALIDATOR
 SIGNED_DATA=$($BINARY tx sign unsigned.json --from $VALIDATOR_1 --offline --account-number 0 --sequence $VALIDATOR_PEP_NONCE_BEFORE --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1  --keyring-backend test -y)
 
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_HOME  -o json | jq -r '.block.header.height')
-TARGET_BLOCK=$(($CURRENT_BLOCK+5))
+TARGET_BLOCK=$(($CURRENT_BLOCK+3))
 echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
-CIPHER=$($BINARY encrypt $TARGET_BLOCK "" $SIGNED_DATA --node $CHAIN1_NODE)
+CIPHER=$($BINARY encrypt $TARGET_BLOCK "" $SIGNED_DATA --node tcp://localhost:26657)
 
 rm -r unsigned.json &> /dev/null
 
@@ -326,13 +347,14 @@ BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
 BAL_AMT=$(echo "$RESULT" | jq -r '.balances[0].amount')
 echo "Balance after submitting first encrypted tx: $BAL_AMT$BAL_DENOM"
 
+sleep $(($BLOCK_TIME * 5))
 
 echo "Query target account token balance after encrypted tx being executed from pep module on chain $CHAINID_1"
 RESULT=$($BINARY query bank balances $WALLET_1 -o json)
 TARGET_BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
 TARGET_BAL_AFTER=$(echo "$RESULT" | jq -r '.balances[0].amount')
 echo "Target account has: $TARGET_BAL_AFTER $TARGET_BAL_DENOM after encrypted bank send tx being executed, balance increased $(($TARGET_BAL_AFTER - $TARGET_BAL)) $TARGET_BAL_DENOM"
-if [ "$TARGET_BAL_AFTER" == "$TARGET_BAL" ]; then
+if [[ "$TARGET_BAL_AFTER" -eq "$TARGET_BAL" ]]; then
   echo "ERROR: Pep module encrypted tx execution error. Expected Target Balance to be updated, got same balance: '$TARGET_BAL_AFTER $TARGET_BAL_DENOM'"
   exit 1
 fi
@@ -342,4 +364,90 @@ BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
 BAL_AMT=$(echo "$RESULT" | jq -r '.balances[0].amount')
 echo "Balance after encrypted tx execution: $BAL_AMT$BAL_DENOM"
 
-echo "Run 'pkill fairyringd' later to stop fairyring"
+
+echo "############################"
+echo "# Testing General Keyshare #"
+echo "############################"
+
+echo "Creating new General Enc Request in pep module on chain $CHAIN_ID"
+RESULT=$($BINARY tx pep request-general-keyshare 30s testing123 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+
+sleep $(($BLOCK_TIME * 2))
+
+echo "Query general keyshare request on chain $CHAIN_ID"
+LIST_KEYSHARE_REQ=$($BINARY query pep list-keyshare-req -o json)
+IDENTITY=$(echo $LIST_KEYSHARE_REQ | jq -r '.keyshares[0].identity')
+REQ_ID=$(echo $LIST_KEYSHARE_REQ | jq -r '.keyshares[0].request_id')
+echo "Identity for keyshare request 1 is: $IDENTITY"
+
+
+echo "Query account pep nonce before submitting encrypted tx from pep module on chain $CHAIN_ID"
+RESULT=$($BINARY query pep show-pep-nonce $WALLET_1 --home $CHAIN_HOME --chain-id $CHAINID_1 -o json)
+PEP_NONCE_BEFORE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
+
+echo "Query target account token balance before submitting encrypted tx from pep module on chain $CHAIN_ID"
+RESULT=$($BINARY query bank balances $VALIDATOR_1 -o json)
+TARGET_BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
+TARGET_BAL=$(echo "$RESULT" | jq -r '.balances[0].amount')
+echo "Target account has: $TARGET_BAL $TARGET_BAL_DENOM before encrypted bank send tx"
+
+
+echo "Signing bank send tx with pep nonce: '$PEP_NONCE_BEFORE'"
+echo "Sending 1 $TARGET_BAL_DENOM to target address"
+$BINARY tx bank send $WALLET_1 $VALIDATOR_1 1$TARGET_BAL_DENOM --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --keyring-backend test --generate-only -o json -y > unsigned.json
+SIGNED_DATA=$($BINARY tx sign unsigned.json --from $WALLET_1 --offline --account-number 1 --sequence $PEP_NONCE_BEFORE --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1  --keyring-backend test -y)
+
+echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
+CIPHER=$($BINARY encrypt $IDENTITY "" $SIGNED_DATA --node tcp://localhost:26657)
+
+rm -r unsigned.json &> /dev/null
+
+echo "Submit general encrypted tx to pep module on chain $CHAIN_ID"
+RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
+echo "$RESULT"
+check_tx_code $RESULT
+
+sleep $BLOCK_TIME
+
+echo "Query Keyshare request and check for encrypted tx"
+TX=$($BINARY query pep show-keyshare-req $REQ_ID -o json | jq -r '.keyshare.tx_list.encryptedTx[0].data')
+if [ "$TX" != "$CIPHER" ]; then
+  echo "Submitting general encrypted tx failed. Expected: $CIPHER, got $TX"
+  exit 1
+fi
+
+sleep $BLOCK_TIME
+
+echo "Request Generation of Aggr keyshare"
+RESULT=$($BINARY tx pep get-general-keyshare $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
+echo "$RESULT"
+check_tx_code $RESULT
+
+sleep $BLOCK_TIME
+
+EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $IDENTITY)
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+
+while true; do
+  echo "Submitting General Key Share"
+
+  RESULT=$($BINARY tx keyshare create-general-key-share "private-gov-identity" $IDENTITY $EXTRACTED_SHARE 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
+  echo "$RESULT"
+  check_tx_err $RESULT
+  if [ $? -eq 0 ]; then
+    break
+  fi
+done
+
+sleep 15
+
+echo "Query target account token balance after general encrypted tx being executed from pep module on chain $CHAIN_ID"
+RESULT=$($BINARY query bank balances $VALIDATOR_1 -o json)
+TARGET_BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
+TARGET_BAL_AFTER=$(echo "$RESULT" | jq -r '.balances[0].amount')
+echo "Target account has: $TARGET_BAL_AFTER $TARGET_BAL_DENOM after encrypted bank send tx being executed, balance increased $(($TARGET_BAL_AFTER - $TARGET_BAL)) $TARGET_BAL_DENOM"
+if [[ "$TARGET_BAL_AFTER" == "$TARGET_BAL" ]]; then
+  echo "ERROR: Pep module encrypted tx execution error. Expected Target Balance to be updated, got same balance: '$TARGET_BAL_AFTER $TARGET_BAL_DENOM'"
+  exit 1
+fi
