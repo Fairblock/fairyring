@@ -1,0 +1,15 @@
+[package]
+name = "fairyring_contract"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+cosmwasm-std = "1.0"
+cosmwasm-storage = "1.0"
+cw-storage-plus = "0.11"
+serde = { version = "1.0", features = ["derive"] }
+schemars = "0.8"
+thiserror = "1.0"
+
+[lib]
+crate-type = ["cdylib", "rlib"]

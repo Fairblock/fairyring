@@ -5,9 +5,11 @@ import (
 
 	"cosmossdk.io/store/prefix"
 	storetypes "cosmossdk.io/store/types"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 // SetContractEntry set a specific contract entry in the store by identity
@@ -93,7 +95,9 @@ func (k Keeper) ExecuteContract(ctx sdk.Context, contractAddr string, msg types.
 		k.logger.Error("error marshalling msg for contract: %s", contractAddr)
 		return
 	}
-	_, err = k.wasmKeeper.Execute(ctx, addr, addr, msgBytes, sdk.Coins{})
+
+	wasmAddr := authtypes.NewModuleAddress(wasmtypes.ModuleName)
+	_, err = k.wasmKeeper.Execute(ctx, addr, wasmAddr, msgBytes, sdk.Coins{})
 	if err != nil {
 		k.logger.Error("error executing contract: %s", contractAddr)
 	}
