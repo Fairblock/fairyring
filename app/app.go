@@ -3,6 +3,19 @@ package app
 import (
 	"context"
 	"fmt"
+	keysharemodule "github.com/Fairblock/fairyring/x/keyshare/module"
+	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
+	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
+	peptypes "github.com/Fairblock/fairyring/x/pep/types"
+	"github.com/cosmos/ibc-go/modules/capability"
+	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
+	interchainaccountsmodule "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts"
+	interchainaccountstypes "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/types"
+	ibcfeemodule "github.com/cosmos/ibc-go/v8/modules/apps/29-fee"
+	ibcfeetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
+	"github.com/cosmos/ibc-go/v8/modules/apps/transfer"
+	transfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
+	ibcmodule "github.com/cosmos/ibc-go/v8/modules/core"
 	"io"
 	"os"
 	"path/filepath"
@@ -467,8 +480,16 @@ func New(
 	app.sm.RegisterStoreDecoders()
 
 	app.UpgradeKeeper.SetUpgradeHandler(
-		"v0.8.3-to-0.9.0",
+		"v0.8.3-to-0.9.0-release",
 		func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			fromVM[capabilitytypes.ModuleName] = capability.AppModule{}.ConsensusVersion()
+			fromVM[peptypes.ModuleName] = pepmodule.AppModule{}.ConsensusVersion()
+			fromVM[keysharemoduletypes.ModuleName] = keysharemodule.AppModule{}.ConsensusVersion()
+			fromVM[ibcmodule.AppModule{}.Name()] = ibcmodule.AppModule{}.ConsensusVersion()
+			fromVM[ibcfeetypes.ModuleName] = ibcfeemodule.AppModule{}.ConsensusVersion()
+			fromVM[wasmtypes.ModuleName] = wasm.AppModule{}.ConsensusVersion()
+			fromVM[transfertypes.ModuleName] = transfer.AppModule{}.ConsensusVersion()
+			fromVM[interchainaccountstypes.ModuleName] = interchainaccountsmodule.AppModule{}.ConsensusVersion()
 			return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
 		},
 	)
@@ -478,7 +499,7 @@ func New(
 		panic(err)
 	}
 
-	if upgradeInfo.Name == "v0.8.3-to-0.9.0" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+	if upgradeInfo.Name == "v0.8.3-to-0.9.0-release" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
 		storeUpgrades := storetypes.StoreUpgrades{
 			Deleted: []string{
 				"capability",

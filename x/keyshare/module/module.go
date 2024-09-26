@@ -40,7 +40,7 @@ var (
 )
 
 // ConsensusVersion defines the current x/keyshare module consensus version.
-const ConsensusVersion = 3
+const ConsensusVersion = 2
 
 // ----------------------------------------------------------------------------
 // AppModuleBasic

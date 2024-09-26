@@ -9,18 +9,22 @@ import (
 
 // MigrateStore migrates the x/pep module state from the consensus version 1 to version 2.
 func MigrateStore(ctx sdk.Context, storeService store.KVStoreService, cdc codec.BinaryCodec) error {
+	store := storeService.OpenKVStore(ctx)
+	currentParamsBytes, err := store.Get(types.ParamsKey)
+	if err != nil {
+		return err
+	}
+	var currentParams types.Params
+	if err = cdc.Unmarshal(currentParamsBytes, &currentParams); err != nil {
+		return err
+	}
+
 	currParams := types.NewParams(
-		[]string{"fairy1yhpqdugfmfuhlvekkurnkstf2vl82063ajmfe5", "fairy1r6q07ne3deq64ezcjwkedcfe6669f0ewpwnxy9"},
-		[]*types.TrustedCounterParty{
-			{
-				ClientId:     "07-tendermint-0",
-				ConnectionId: "connection-0",
-				ChannelId:    "channel-1",
-			},
-		},
-		types.DefaultKeyshareChannelID,
-		&types.DefaultMinGasPrice,
-		true,
+		currentParams.TrustedAddresses,
+		currentParams.TrustedCounterParties,
+		currentParams.KeyshareChannelId,
+		currentParams.MinGasPrice,
+		currentParams.IsSourceChain,
 		&types.DefaultKeysharePrice,
 	)
 
@@ -29,6 +33,5 @@ func MigrateStore(ctx sdk.Context, storeService store.KVStoreService, cdc codec.
 		return err
 	}
 
-	store := storeService.OpenKVStore(ctx)
 	return store.Set(types.ParamsKey, bz)
 }
