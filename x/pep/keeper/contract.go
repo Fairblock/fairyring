@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"encoding/json"
 
 	"cosmossdk.io/store/prefix"
 	storetypes "cosmossdk.io/store/types"
@@ -90,7 +91,7 @@ func (k Keeper) GetAllContractEntries(ctx context.Context) (list []types.Registe
 
 func (k Keeper) ExecuteContract(ctx sdk.Context, contractAddr string, msg types.ExecuteContractMsg) {
 	addr := sdk.MustAccAddressFromBech32(contractAddr)
-	msgBytes, err := msg.Marshal()
+	msgBytes, err := json.Marshal(msg)
 	if err != nil {
 		k.logger.Error("error marshalling msg for contract: %s", contractAddr)
 		return
@@ -99,6 +100,6 @@ func (k Keeper) ExecuteContract(ctx sdk.Context, contractAddr string, msg types.
 	wasmAddr := authtypes.NewModuleAddress(wasmtypes.ModuleName)
 	_, err = k.wasmKeeper.Execute(ctx, addr, wasmAddr, msgBytes, sdk.Coins{})
 	if err != nil {
-		k.logger.Error("error executing contract: %s", contractAddr)
+		k.logger.Error("error executing contract: %s; error: %v", contractAddr, err)
 	}
 }
