@@ -1,7 +1,8 @@
 // contract.rs
-use cosmwasm_std::{attr, entry_point, to_json_binary, Binary, QueryRequest, Deps, DepsMut, Env, MessageInfo, Response, StdError, StdResult};
-use prost::Message;
-use crate::msg::{ExecuteContractMsg, QueryMsg, QueryResponse, InstantiateMsg, QueryDecryptDataResponse};
+use cosmwasm_std::{attr, entry_point, to_json_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdError, StdResult};
+use crate::fairyring::pep::query_client::QueryClient; // The generated gRPC client
+use crate::fairyring::pep::QueryDecryptDataRequest; // Generated message types
+use crate::msg::{ExecuteContractMsg, QueryMsg, QueryResponse, InstantiateMsg};
 use crate::state::STORED_DATA;
 
 #[entry_point]
@@ -40,8 +41,8 @@ pub fn execute(
 
 
 #[entry_point]
-pub fn query(
-    deps: Deps<QueryMsg>,
+pub async fn query<'a>(
+    deps: Deps<'a, QueryMsg>,
     _env: Env,
     msg: QueryMsg,
 ) -> StdResult<Binary> {
@@ -68,7 +69,7 @@ pub fn query(
             }
 
             // Call the function to query the `pep` module
-            let response = query_pep_decrypt(deps, pubkey, aggr_keyshare, encrypted_data)?;
+            let response = query_pep_decrypt(deps, pubkey, aggr_keyshare, encrypted_data).await?;
 
             // Return the decrypted data in binary format
             to_json_binary(&response)
@@ -101,25 +102,32 @@ pub fn instantiate(
 
 
 // Function to query the `DecryptData` RPC from your `pep` module
-pub fn query_pep_decrypt(
-    deps: Deps<QueryMsg>,
-    pubkey : String,
+pub async fn query_pep_decrypt<'a>(
+    _deps: Deps<'a, QueryMsg>, // Explicitly add lifetime `'a`
+    pubkey: String,
     aggr_keyshare: String,
     encrypted_data: String,
 ) -> StdResult<String> {
-    // Create the custom query
-    let request = QueryRequest::Custom(QueryMsg::DecryptData {
+    // Create a gRPC connection to the `pep` module
+    let mut client = QueryClient::connect("http://localhost:9090")
+        .await
+        .map_err(|err| StdError::generic_err(format!("Failed to connect to gRPC server: {}", err)))?;
+
+    // Create the request message
+    let request = QueryDecryptDataRequest {
         pubkey,
         aggr_keyshare,
         encrypted_data,
-    });
+    };
 
-    // Send the query
-    let raw_response: Binary = deps.querier.query(&request)?;
+    // Call the decrypt_data method
+    let response = client
+        .decrypt_data(request)
+        .await
+        .map_err(|err| StdError::generic_err(format!("gRPC query failed: {}", err)))?;
 
-    // Deserialize the protobuf response
-    let query_response = QueryDecryptDataResponse::decode(&*raw_response.0)
-        .map_err(|_| StdError::generic_err("Failed to decode protobuf response"))?;
+    // Extract the decrypted data from the response
+    let decrypted_data = response.into_inner().decrypted_data;
 
-    Ok(query_response.decrypted_data)
+    Ok(decrypted_data)
 }

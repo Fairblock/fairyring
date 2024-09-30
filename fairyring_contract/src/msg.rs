@@ -32,11 +32,6 @@ pub struct QueryResponse {
     pub aggr_keyshare: String,
 }
 
-#[derive(Clone, PartialEq, prost::Message)]
-pub struct QueryDecryptDataResponse {
-    #[prost(string, tag = "1")]
-    pub decrypted_data: String,
-}
 
 // Instantiate message
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]

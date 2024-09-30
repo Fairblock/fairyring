@@ -1,0 +1,11 @@
+version: v2
+plugins:
+  - remote: buf.build/community/neoeinstein-prost:v0.3.1
+    out: ../fairblock-proto/src/prost/
+    opt:
+      - extern_path=.cosmos=cosmos_sdk_proto::cosmos
+  - remote: buf.build/community/neoeinstein-tonic:v0.3.0
+    out: ../fairblock-proto/src/prost/
+    opt:
+      - no_server
+      - extern_path=.cosmos=cosmos_sdk_proto::cosmos

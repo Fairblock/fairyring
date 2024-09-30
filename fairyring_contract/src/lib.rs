@@ -2,6 +2,11 @@ pub mod contract;
 pub mod msg;
 pub mod state;
 pub mod error;
+pub mod fairyring{
+    pub mod pep {
+        include!("fairyring.pep.rs");
+    }
+}
 
 // use cosmwasm_std::{entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdError, StdResult};
 
