@@ -42,6 +42,10 @@ thiserror = "1.0"
 prost = "0.13.3"  # Protobuf support
 prost-types = "0.13"
 tonic = { version = "0.12.3", features = ["prost", "tls"] }
+fairblock-proto = { git = "https://github.com/Fairblock/fairblock-rust/", branch = "contract-callback" }
+getrandom = { version = "0.2", features = ["js"] }
+mio = "1.0.2"
+tokio = "1.40.0"
 
 [dev-dependencies]
 cw-multi-test = "2.0.0"

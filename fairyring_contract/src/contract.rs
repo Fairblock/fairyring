@@ -1,7 +1,7 @@
 // contract.rs
 use cosmwasm_std::{attr, entry_point, to_json_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdError, StdResult};
-use crate::fairyring::pep::query_client::QueryClient; // The generated gRPC client
-use crate::fairyring::pep::QueryDecryptDataRequest; // Generated message types
+use fairblock_proto::fairyring::pep::query_client::QueryClient;
+use fairblock_proto::fairyring::pep::QueryDecryptDataRequest;
 use crate::msg::{ExecuteContractMsg, QueryMsg, QueryResponse, InstantiateMsg};
 use crate::state::STORED_DATA;
 
