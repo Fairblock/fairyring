@@ -2,8 +2,12 @@ package app
 
 import (
 	"context"
-	upgradetypes "cosmossdk.io/x/upgrade/types"
 	"fmt"
+	"io"
+	"os"
+	"path/filepath"
+
+	upgradetypes "cosmossdk.io/x/upgrade/types"
 	keysharemodule "github.com/Fairblock/fairyring/x/keyshare/module"
 	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
@@ -16,9 +20,6 @@ import (
 	ibcfeetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
 	"github.com/cosmos/ibc-go/v8/modules/apps/transfer"
 	transfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
-	"io"
-	"os"
-	"path/filepath"
 
 	_ "cosmossdk.io/api/cosmos/tx/config/v1" // import for side-effects
 	"cosmossdk.io/depinject"

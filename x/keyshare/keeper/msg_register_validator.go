@@ -4,9 +4,10 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
+	"strconv"
+
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"strconv"
 )
 
 // RegisterValidator adds a new validator to the validator set

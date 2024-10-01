@@ -1,8 +1,9 @@
 package types
 
 import (
-	sdkerrors "cosmossdk.io/errors"
 	"encoding/hex"
+
+	sdkerrors "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	cosmoserror "github.com/cosmos/cosmos-sdk/types/errors"
 )

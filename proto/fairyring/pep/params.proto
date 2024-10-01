@@ -18,6 +18,7 @@ message Params {
   repeated TrustedCounterParty trusted_counter_parties = 3;
   repeated string trusted_addresses = 4 [(gogoproto.moretags) = "yaml:\"trusted_addresses\""];
   cosmos.base.v1beta1.Coin min_gas_price = 5 [(gogoproto.moretags) = "yaml:\"min_gas_price\""];
+  cosmos.base.v1beta1.Coin private_keyshare_price = 6 [(gogoproto.moretags) = "yaml:\"private_keyshare_price\""];
 }
 
 message TrustedCounterParty {

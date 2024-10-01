@@ -313,6 +313,119 @@ func (m *GetAggrKeyshareResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GetAggrKeyshareResponse proto.InternalMessageInfo
 
+// GetPrivateKeyshare defines a struct for the data payload
+type GetPrivateKeyshare struct {
+	RequestId  string `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Identity   string `protobuf:"bytes,2,opt,name=identity,proto3" json:"identity,omitempty"`
+	Requester  string `protobuf:"bytes,3,opt,name=requester,proto3" json:"requester,omitempty"`
+	SecpPubkey string `protobuf:"bytes,4,opt,name=secp_pubkey,json=secpPubkey,proto3" json:"secp_pubkey,omitempty"`
+}
+
+func (m *GetPrivateKeyshare) Reset()         { *m = GetPrivateKeyshare{} }
+func (m *GetPrivateKeyshare) String() string { return proto.CompactTextString(m) }
+func (*GetPrivateKeyshare) ProtoMessage()    {}
+func (*GetPrivateKeyshare) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b708507d1b3951ff, []int{4}
+}
+func (m *GetPrivateKeyshare) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetPrivateKeyshare) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetPrivateKeyshare.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetPrivateKeyshare) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetPrivateKeyshare.Merge(m, src)
+}
+func (m *GetPrivateKeyshare) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetPrivateKeyshare) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetPrivateKeyshare.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetPrivateKeyshare proto.InternalMessageInfo
+
+func (m *GetPrivateKeyshare) GetRequestId() string {
+	if m != nil {
+		return m.RequestId
+	}
+	return ""
+}
+
+func (m *GetPrivateKeyshare) GetIdentity() string {
+	if m != nil {
+		return m.Identity
+	}
+	return ""
+}
+
+func (m *GetPrivateKeyshare) GetRequester() string {
+	if m != nil {
+		return m.Requester
+	}
+	return ""
+}
+
+func (m *GetPrivateKeyshare) GetSecpPubkey() string {
+	if m != nil {
+		return m.SecpPubkey
+	}
+	return ""
+}
+
+type GetPrivateKeyshareResponse struct {
+	Pubkey string `protobuf:"bytes,1,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
+}
+
+func (m *GetPrivateKeyshareResponse) Reset()         { *m = GetPrivateKeyshareResponse{} }
+func (m *GetPrivateKeyshareResponse) String() string { return proto.CompactTextString(m) }
+func (*GetPrivateKeyshareResponse) ProtoMessage()    {}
+func (*GetPrivateKeyshareResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b708507d1b3951ff, []int{5}
+}
+func (m *GetPrivateKeyshareResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetPrivateKeyshareResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetPrivateKeyshareResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetPrivateKeyshareResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetPrivateKeyshareResponse.Merge(m, src)
+}
+func (m *GetPrivateKeyshareResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetPrivateKeyshareResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetPrivateKeyshareResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetPrivateKeyshareResponse proto.InternalMessageInfo
+
+func (m *GetPrivateKeyshareResponse) GetPubkey() string {
+	if m != nil {
+		return m.Pubkey
+	}
+	return ""
+}
+
 type ActivePublicKey struct {
 	PublicKey string `protobuf:"bytes,1,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
 	Creator   string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
@@ -323,7 +436,7 @@ func (m *ActivePublicKey) Reset()         { *m = ActivePublicKey{} }
 func (m *ActivePublicKey) String() string { return proto.CompactTextString(m) }
 func (*ActivePublicKey) ProtoMessage()    {}
 func (*ActivePublicKey) Descriptor() ([]byte, []int) {
-	return fileDescriptor_b708507d1b3951ff, []int{4}
+	return fileDescriptor_b708507d1b3951ff, []int{6}
 }
 func (m *ActivePublicKey) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -383,7 +496,7 @@ func (m *QueuedPublicKey) Reset()         { *m = QueuedPublicKey{} }
 func (m *QueuedPublicKey) String() string { return proto.CompactTextString(m) }
 func (*QueuedPublicKey) ProtoMessage()    {}
 func (*QueuedPublicKey) Descriptor() ([]byte, []int) {
-	return fileDescriptor_b708507d1b3951ff, []int{5}
+	return fileDescriptor_b708507d1b3951ff, []int{7}
 }
 func (m *QueuedPublicKey) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -433,13 +546,174 @@ func (m *QueuedPublicKey) GetExpiry() uint64 {
 	return 0
 }
 
+type RequestPrivateKeyshare struct {
+	Creator   string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	RequestId string `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+}
+
+func (m *RequestPrivateKeyshare) Reset()         { *m = RequestPrivateKeyshare{} }
+func (m *RequestPrivateKeyshare) String() string { return proto.CompactTextString(m) }
+func (*RequestPrivateKeyshare) ProtoMessage()    {}
+func (*RequestPrivateKeyshare) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b708507d1b3951ff, []int{8}
+}
+func (m *RequestPrivateKeyshare) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *RequestPrivateKeyshare) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_RequestPrivateKeyshare.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *RequestPrivateKeyshare) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RequestPrivateKeyshare.Merge(m, src)
+}
+func (m *RequestPrivateKeyshare) XXX_Size() int {
+	return m.Size()
+}
+func (m *RequestPrivateKeyshare) XXX_DiscardUnknown() {
+	xxx_messageInfo_RequestPrivateKeyshare.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RequestPrivateKeyshare proto.InternalMessageInfo
+
+func (m *RequestPrivateKeyshare) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *RequestPrivateKeyshare) GetRequestId() string {
+	if m != nil {
+		return m.RequestId
+	}
+	return ""
+}
+
+type EncryptedKeyshare struct {
+	Requester        string                      `protobuf:"bytes,1,opt,name=requester,proto3" json:"requester,omitempty"`
+	PrivateKeyshares []*IndexedEncryptedKeyshare `protobuf:"bytes,2,rep,name=private_keyshares,json=privateKeyshares,proto3" json:"private_keyshares,omitempty"`
+}
+
+func (m *EncryptedKeyshare) Reset()         { *m = EncryptedKeyshare{} }
+func (m *EncryptedKeyshare) String() string { return proto.CompactTextString(m) }
+func (*EncryptedKeyshare) ProtoMessage()    {}
+func (*EncryptedKeyshare) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b708507d1b3951ff, []int{9}
+}
+func (m *EncryptedKeyshare) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *EncryptedKeyshare) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_EncryptedKeyshare.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *EncryptedKeyshare) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EncryptedKeyshare.Merge(m, src)
+}
+func (m *EncryptedKeyshare) XXX_Size() int {
+	return m.Size()
+}
+func (m *EncryptedKeyshare) XXX_DiscardUnknown() {
+	xxx_messageInfo_EncryptedKeyshare.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EncryptedKeyshare proto.InternalMessageInfo
+
+func (m *EncryptedKeyshare) GetRequester() string {
+	if m != nil {
+		return m.Requester
+	}
+	return ""
+}
+
+func (m *EncryptedKeyshare) GetPrivateKeyshares() []*IndexedEncryptedKeyshare {
+	if m != nil {
+		return m.PrivateKeyshares
+	}
+	return nil
+}
+
+type IndexedEncryptedKeyshare struct {
+	EncryptedKeyshareValue string `protobuf:"bytes,1,opt,name=encrypted_keyshare_value,json=encryptedKeyshareValue,proto3" json:"encrypted_keyshare_value,omitempty"`
+	EncryptedKeyshareIndex uint64 `protobuf:"varint,2,opt,name=encrypted_keyshare_index,json=encryptedKeyshareIndex,proto3" json:"encrypted_keyshare_index,omitempty"`
+}
+
+func (m *IndexedEncryptedKeyshare) Reset()         { *m = IndexedEncryptedKeyshare{} }
+func (m *IndexedEncryptedKeyshare) String() string { return proto.CompactTextString(m) }
+func (*IndexedEncryptedKeyshare) ProtoMessage()    {}
+func (*IndexedEncryptedKeyshare) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b708507d1b3951ff, []int{10}
+}
+func (m *IndexedEncryptedKeyshare) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *IndexedEncryptedKeyshare) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_IndexedEncryptedKeyshare.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *IndexedEncryptedKeyshare) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_IndexedEncryptedKeyshare.Merge(m, src)
+}
+func (m *IndexedEncryptedKeyshare) XXX_Size() int {
+	return m.Size()
+}
+func (m *IndexedEncryptedKeyshare) XXX_DiscardUnknown() {
+	xxx_messageInfo_IndexedEncryptedKeyshare.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_IndexedEncryptedKeyshare proto.InternalMessageInfo
+
+func (m *IndexedEncryptedKeyshare) GetEncryptedKeyshareValue() string {
+	if m != nil {
+		return m.EncryptedKeyshareValue
+	}
+	return ""
+}
+
+func (m *IndexedEncryptedKeyshare) GetEncryptedKeyshareIndex() uint64 {
+	if m != nil {
+		return m.EncryptedKeyshareIndex
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*RequestAggrKeyshare)(nil), "fairyring.common.RequestAggrKeyshare")
 	proto.RegisterType((*RequestAggrKeyshareResponse)(nil), "fairyring.common.RequestAggrKeyshareResponse")
 	proto.RegisterType((*GetAggrKeyshare)(nil), "fairyring.common.GetAggrKeyshare")
 	proto.RegisterType((*GetAggrKeyshareResponse)(nil), "fairyring.common.GetAggrKeyshareResponse")
+	proto.RegisterType((*GetPrivateKeyshare)(nil), "fairyring.common.GetPrivateKeyshare")
+	proto.RegisterType((*GetPrivateKeyshareResponse)(nil), "fairyring.common.GetPrivateKeyshareResponse")
 	proto.RegisterType((*ActivePublicKey)(nil), "fairyring.common.ActivePublicKey")
 	proto.RegisterType((*QueuedPublicKey)(nil), "fairyring.common.QueuedPublicKey")
+	proto.RegisterType((*RequestPrivateKeyshare)(nil), "fairyring.common.RequestPrivateKeyshare")
+	proto.RegisterType((*EncryptedKeyshare)(nil), "fairyring.common.EncryptedKeyshare")
+	proto.RegisterType((*IndexedEncryptedKeyshare)(nil), "fairyring.common.IndexedEncryptedKeyshare")
 }
 
 func init() {
@@ -447,34 +721,45 @@ func init() {
 }
 
 var fileDescriptor_b708507d1b3951ff = []byte{
-	// 430 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x93, 0x41, 0x6f, 0xd3, 0x30,
-	0x14, 0xc7, 0xeb, 0xae, 0x2a, 0xf4, 0x4d, 0xa2, 0xc8, 0xa0, 0xd1, 0x15, 0x94, 0x8d, 0x70, 0xd9,
-	0x85, 0x44, 0x82, 0x4f, 0xb0, 0x6a, 0x62, 0x9b, 0x76, 0x61, 0x39, 0x72, 0xa9, 0x9c, 0xf8, 0xcd,
-	0xb3, 0x96, 0xc6, 0xc6, 0xb1, 0x61, 0xf9, 0x16, 0x1c, 0xf9, 0x3e, 0x5c, 0x38, 0xee, 0xc8, 0x0d,
-	0xd4, 0x7e, 0x11, 0x94, 0xc4, 0xe9, 0xd6, 0x81, 0xc4, 0x89, 0x9b, 0xff, 0xcf, 0xef, 0xe5, 0xff,
-	0x7e, 0xf1, 0x7b, 0xf0, 0xea, 0x82, 0x49, 0x53, 0x19, 0x59, 0x88, 0x38, 0x53, 0x8b, 0x85, 0x2a,
-	0xe2, 0xf2, 0x92, 0x19, 0xe4, 0x73, 0x5b, 0x69, 0x2c, 0x23, 0x6d, 0x94, 0x55, 0xf4, 0xf1, 0x3a,
-	0x29, 0x6a, 0x93, 0xa6, 0x81, 0x50, 0x4a, 0xe4, 0x18, 0x37, 0xf7, 0xa9, 0xbb, 0x88, 0xb9, 0x33,
-	0xcc, 0x4a, 0x55, 0xb4, 0x15, 0xd3, 0xa7, 0x42, 0x09, 0xd5, 0x1c, 0xe3, 0xfa, 0xd4, 0x46, 0xc3,
-	0x6f, 0x04, 0x9e, 0x24, 0xf8, 0xd1, 0x61, 0x69, 0x0f, 0x85, 0x30, 0x67, 0x58, 0x35, 0x66, 0x74,
-	0x02, 0x0f, 0x32, 0x83, 0xcc, 0x2a, 0x33, 0x21, 0xfb, 0xe4, 0x60, 0x94, 0x74, 0x92, 0xbe, 0x84,
-	0x6d, 0x6d, 0x94, 0x56, 0x25, 0xcb, 0xe7, 0x92, 0x4f, 0xfa, 0xf5, 0xed, 0x49, 0x2f, 0x81, 0x2e,
-	0x78, 0xca, 0xe9, 0x1e, 0x80, 0x69, 0xbf, 0x59, 0x67, 0x6c, 0xf9, 0x8c, 0x91, 0x8f, 0x9d, 0x72,
-	0x7a, 0x02, 0x63, 0x2c, 0xad, 0x5c, 0x30, 0x8b, 0x7c, 0xce, 0x31, 0x67, 0xd5, 0x64, 0xb0, 0x4f,
-	0x0e, 0xb6, 0xdf, 0xec, 0x46, 0x2d, 0x45, 0xd4, 0x51, 0x44, 0x47, 0x9e, 0x62, 0x36, 0xf8, 0xfa,
-	0x73, 0x8f, 0x24, 0x8f, 0xd6, 0x75, 0x47, 0x75, 0xd9, 0x6c, 0x00, 0x7d, 0xc9, 0xc3, 0x73, 0x78,
-	0xfe, 0x17, 0x88, 0x04, 0x4b, 0xad, 0x8a, 0x12, 0xe9, 0x14, 0x1e, 0x4a, 0x8e, 0x85, 0x95, 0xb6,
-	0xf2, 0x34, 0x6b, 0x4d, 0x77, 0x60, 0xa8, 0x5d, 0x7a, 0x85, 0x55, 0x4b, 0x92, 0x78, 0x15, 0x7e,
-	0x86, 0xf1, 0x31, 0x6e, 0xfe, 0x93, 0x7b, 0xe4, 0xe4, 0x9f, 0xe4, 0xfd, 0x3f, 0xc9, 0xef, 0xb6,
-	0xb2, 0xb5, 0xd9, 0x8a, 0x67, 0xd9, 0x85, 0x67, 0xf7, 0x8c, 0x3b, 0x8e, 0x90, 0xc1, 0xf8, 0x30,
-	0xb3, 0xf2, 0x13, 0xbe, 0x77, 0x69, 0x2e, 0xb3, 0x33, 0xac, 0xe8, 0x0b, 0x18, 0xe9, 0x4e, 0x78,
-	0xb6, 0xdb, 0xc0, 0xdd, 0x57, 0xec, 0x6f, 0xbe, 0xe2, 0x0e, 0x0c, 0xf1, 0x5a, 0x4b, 0xd3, 0x76,
-	0x31, 0x48, 0xbc, 0xaa, 0x2d, 0xce, 0x1d, 0x3a, 0xe4, 0xff, 0xcd, 0x62, 0x76, 0xfc, 0x7d, 0x19,
-	0x90, 0x9b, 0x65, 0x40, 0x7e, 0x2d, 0x03, 0xf2, 0x65, 0x15, 0xf4, 0x6e, 0x56, 0x41, 0xef, 0xc7,
-	0x2a, 0xe8, 0x7d, 0x78, 0x2d, 0xa4, 0xbd, 0x74, 0x69, 0x3d, 0xd1, 0xf1, 0x3b, 0x26, 0x4d, 0x9a,
-	0xab, 0xec, 0x2a, 0xbe, 0x5d, 0x87, 0xeb, 0x6e, 0x21, 0x9a, 0x4d, 0x48, 0x87, 0xcd, 0x90, 0xbc,
-	0xfd, 0x1d, 0x00, 0x00, 0xff, 0xff, 0x8f, 0xcc, 0x40, 0x91, 0x31, 0x03, 0x00, 0x00,
+	// 597 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x94, 0x41, 0x4f, 0xd5, 0x40,
+	0x10, 0xc7, 0xdf, 0x3e, 0x5e, 0x50, 0xe6, 0x25, 0x02, 0xd5, 0x3c, 0xcb, 0x53, 0x0a, 0x3e, 0x2f,
+	0xc4, 0xc4, 0x36, 0x41, 0x0f, 0x5e, 0x21, 0x28, 0x10, 0x2e, 0xd0, 0x83, 0x26, 0x5e, 0x9a, 0xb6,
+	0x3b, 0x94, 0x0d, 0xa5, 0xbb, 0x6e, 0xb7, 0x48, 0xbf, 0x82, 0x07, 0xe3, 0xd1, 0xef, 0xe3, 0xc5,
+	0x23, 0x47, 0x6f, 0x1a, 0xf8, 0x22, 0xa6, 0xed, 0xb6, 0xd0, 0x3e, 0x5e, 0x3c, 0x79, 0xeb, 0xcc,
+	0xce, 0xec, 0x7f, 0x7e, 0xb3, 0xd3, 0x81, 0xe7, 0xc7, 0x3e, 0x93, 0xb9, 0x64, 0x49, 0xe4, 0x84,
+	0xfc, 0xec, 0x8c, 0x27, 0x4e, 0x7a, 0xe2, 0x4b, 0xa4, 0x9e, 0xca, 0x05, 0xa6, 0xb6, 0x90, 0x5c,
+	0x71, 0x63, 0xa9, 0x09, 0xb2, 0xab, 0xa0, 0xb1, 0x15, 0x71, 0x1e, 0xc5, 0xe8, 0x94, 0xe7, 0x41,
+	0x76, 0xec, 0xd0, 0x4c, 0xfa, 0x8a, 0xf1, 0xa4, 0xca, 0x18, 0x3f, 0x8a, 0x78, 0xc4, 0xcb, 0x4f,
+	0xa7, 0xf8, 0xaa, 0xbc, 0x93, 0x1f, 0x04, 0x1e, 0xba, 0xf8, 0x29, 0xc3, 0x54, 0x6d, 0x45, 0x91,
+	0x3c, 0xc0, 0xbc, 0x14, 0x33, 0x4c, 0xb8, 0x17, 0x4a, 0xf4, 0x15, 0x97, 0x26, 0x59, 0x27, 0x1b,
+	0x0b, 0x6e, 0x6d, 0x1a, 0xcf, 0x60, 0x28, 0x24, 0x17, 0x3c, 0xf5, 0x63, 0x8f, 0x51, 0xb3, 0x5f,
+	0x9c, 0xee, 0xf5, 0x5c, 0xa8, 0x9d, 0xfb, 0xd4, 0x58, 0x03, 0x90, 0xd5, 0x9d, 0x45, 0xc4, 0x9c,
+	0x8e, 0x58, 0xd0, 0xbe, 0x7d, 0x6a, 0xec, 0xc1, 0x22, 0xa6, 0x8a, 0x9d, 0xf9, 0x0a, 0xa9, 0x47,
+	0x31, 0xf6, 0x73, 0x73, 0xb0, 0x4e, 0x36, 0x86, 0x9b, 0x2b, 0x76, 0x45, 0x61, 0xd7, 0x14, 0xf6,
+	0x8e, 0xa6, 0xd8, 0x1e, 0x7c, 0xff, 0xbd, 0x46, 0xdc, 0x07, 0x4d, 0xde, 0x4e, 0x91, 0xb6, 0x3d,
+	0x80, 0x3e, 0xa3, 0x93, 0x23, 0x78, 0x72, 0x07, 0x84, 0x8b, 0xa9, 0xe0, 0x49, 0x8a, 0xc6, 0x18,
+	0xee, 0x33, 0x8a, 0x89, 0x62, 0x2a, 0xd7, 0x34, 0x8d, 0x6d, 0x8c, 0x60, 0x5e, 0x64, 0xc1, 0x29,
+	0xe6, 0x15, 0x89, 0xab, 0xad, 0xc9, 0x67, 0x58, 0xdc, 0xc5, 0x76, 0x4f, 0x3a, 0xe4, 0xe4, 0x9f,
+	0xe4, 0xfd, 0x69, 0xf2, 0xdb, 0xa5, 0xcc, 0xb5, 0x4b, 0xd1, 0x2c, 0x2b, 0xf0, 0xb8, 0x23, 0x5c,
+	0x73, 0x4c, 0xbe, 0x12, 0x30, 0x76, 0x51, 0x1d, 0x4a, 0x76, 0xee, 0x2b, 0x6c, 0xea, 0x5a, 0x6d,
+	0x89, 0x56, 0x80, 0x33, 0x24, 0xfb, 0x1d, 0xfa, 0xa7, 0x50, 0x07, 0xa2, 0xd4, 0xf5, 0xdc, 0x38,
+	0x8c, 0x35, 0x18, 0xa6, 0x18, 0x0a, 0x4f, 0x37, 0x68, 0x50, 0x9e, 0x43, 0xe1, 0x3a, 0xac, 0x9a,
+	0xf4, 0x1a, 0xc6, 0xd3, 0xf5, 0x34, 0x6d, 0xbf, 0x69, 0x2d, 0x69, 0xb5, 0xd6, 0x87, 0xc5, 0xad,
+	0x50, 0xb1, 0x73, 0x3c, 0xcc, 0x82, 0x98, 0x85, 0x07, 0x58, 0xd6, 0x21, 0x6a, 0xa3, 0x26, 0x68,
+	0x1c, 0xb7, 0x87, 0xb1, 0xdf, 0x1e, 0xc6, 0x11, 0xcc, 0xe3, 0x85, 0x60, 0xb2, 0x6a, 0xe6, 0xc0,
+	0xd5, 0x56, 0x21, 0x71, 0x94, 0x61, 0x86, 0xf4, 0xff, 0x49, 0x1c, 0xc1, 0x48, 0xcf, 0x5c, 0xf7,
+	0x3d, 0x66, 0xff, 0x3b, 0xab, 0xd3, 0xe3, 0x71, 0xeb, 0xa5, 0x26, 0x5f, 0x08, 0x2c, 0xbf, 0x4d,
+	0x42, 0x99, 0x0b, 0x85, 0xb4, 0xb9, 0xae, 0xf5, 0x46, 0xa4, 0xfb, 0x46, 0x1f, 0x60, 0x59, 0x54,
+	0xfa, 0xde, 0xa9, 0xce, 0x48, 0xcd, 0xfe, 0xfa, 0xdc, 0xc6, 0x70, 0xf3, 0x85, 0xdd, 0x5d, 0x12,
+	0xf6, 0x7e, 0x42, 0xf1, 0x02, 0xe9, 0x94, 0x88, 0xbb, 0x24, 0xda, 0x10, 0x69, 0x31, 0x6c, 0xe6,
+	0xac, 0x70, 0xe3, 0x0d, 0x98, 0x58, 0x3b, 0x1b, 0x5d, 0xef, 0xdc, 0x8f, 0x33, 0xd4, 0x25, 0x8e,
+	0xb0, 0x9b, 0xf4, 0xbe, 0x38, 0x9d, 0x91, 0xc9, 0x0a, 0xa1, 0xb2, 0x21, 0x83, 0x3b, 0x32, 0xcb,
+	0x32, 0xb6, 0x77, 0x7f, 0x5e, 0x59, 0xe4, 0xf2, 0xca, 0x22, 0x7f, 0xae, 0x2c, 0xf2, 0xed, 0xda,
+	0xea, 0x5d, 0x5e, 0x5b, 0xbd, 0x5f, 0xd7, 0x56, 0xef, 0xe3, 0xcb, 0x88, 0xa9, 0x93, 0x2c, 0x28,
+	0x20, 0x9d, 0x77, 0x3e, 0x93, 0x41, 0xcc, 0xc3, 0x53, 0xe7, 0x66, 0x8d, 0x5e, 0xd4, 0x8b, 0xb4,
+	0xdc, 0xa0, 0xc1, 0x7c, 0xb9, 0x5c, 0x5e, 0xfd, 0x0d, 0x00, 0x00, 0xff, 0xff, 0xe1, 0x04, 0xb2,
+	0x48, 0x69, 0x05, 0x00, 0x00,
 }
 
 func (m *RequestAggrKeyshare) Marshal() (dAtA []byte, err error) {
@@ -681,6 +966,87 @@ func (m *GetAggrKeyshareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
+func (m *GetPrivateKeyshare) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetPrivateKeyshare) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetPrivateKeyshare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.SecpPubkey) > 0 {
+		i -= len(m.SecpPubkey)
+		copy(dAtA[i:], m.SecpPubkey)
+		i = encodeVarintSharedTypes(dAtA, i, uint64(len(m.SecpPubkey)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.Requester) > 0 {
+		i -= len(m.Requester)
+		copy(dAtA[i:], m.Requester)
+		i = encodeVarintSharedTypes(dAtA, i, uint64(len(m.Requester)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Identity) > 0 {
+		i -= len(m.Identity)
+		copy(dAtA[i:], m.Identity)
+		i = encodeVarintSharedTypes(dAtA, i, uint64(len(m.Identity)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.RequestId) > 0 {
+		i -= len(m.RequestId)
+		copy(dAtA[i:], m.RequestId)
+		i = encodeVarintSharedTypes(dAtA, i, uint64(len(m.RequestId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetPrivateKeyshareResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetPrivateKeyshareResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetPrivateKeyshareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Pubkey) > 0 {
+		i -= len(m.Pubkey)
+		copy(dAtA[i:], m.Pubkey)
+		i = encodeVarintSharedTypes(dAtA, i, uint64(len(m.Pubkey)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *ActivePublicKey) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -759,6 +1125,122 @@ func (m *QueuedPublicKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.PublicKey)
 		copy(dAtA[i:], m.PublicKey)
 		i = encodeVarintSharedTypes(dAtA, i, uint64(len(m.PublicKey)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *RequestPrivateKeyshare) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *RequestPrivateKeyshare) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *RequestPrivateKeyshare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.RequestId) > 0 {
+		i -= len(m.RequestId)
+		copy(dAtA[i:], m.RequestId)
+		i = encodeVarintSharedTypes(dAtA, i, uint64(len(m.RequestId)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintSharedTypes(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *EncryptedKeyshare) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *EncryptedKeyshare) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *EncryptedKeyshare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.PrivateKeyshares) > 0 {
+		for iNdEx := len(m.PrivateKeyshares) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.PrivateKeyshares[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintSharedTypes(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if len(m.Requester) > 0 {
+		i -= len(m.Requester)
+		copy(dAtA[i:], m.Requester)
+		i = encodeVarintSharedTypes(dAtA, i, uint64(len(m.Requester)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *IndexedEncryptedKeyshare) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *IndexedEncryptedKeyshare) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *IndexedEncryptedKeyshare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.EncryptedKeyshareIndex != 0 {
+		i = encodeVarintSharedTypes(dAtA, i, uint64(m.EncryptedKeyshareIndex))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.EncryptedKeyshareValue) > 0 {
+		i -= len(m.EncryptedKeyshareValue)
+		copy(dAtA[i:], m.EncryptedKeyshareValue)
+		i = encodeVarintSharedTypes(dAtA, i, uint64(len(m.EncryptedKeyshareValue)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -878,6 +1360,44 @@ func (m *GetAggrKeyshareResponse) Size() (n int) {
 	return n
 }
 
+func (m *GetPrivateKeyshare) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.RequestId)
+	if l > 0 {
+		n += 1 + l + sovSharedTypes(uint64(l))
+	}
+	l = len(m.Identity)
+	if l > 0 {
+		n += 1 + l + sovSharedTypes(uint64(l))
+	}
+	l = len(m.Requester)
+	if l > 0 {
+		n += 1 + l + sovSharedTypes(uint64(l))
+	}
+	l = len(m.SecpPubkey)
+	if l > 0 {
+		n += 1 + l + sovSharedTypes(uint64(l))
+	}
+	return n
+}
+
+func (m *GetPrivateKeyshareResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Pubkey)
+	if l > 0 {
+		n += 1 + l + sovSharedTypes(uint64(l))
+	}
+	return n
+}
+
 func (m *ActivePublicKey) Size() (n int) {
 	if m == nil {
 		return 0
@@ -914,6 +1434,58 @@ func (m *QueuedPublicKey) Size() (n int) {
 	}
 	if m.Expiry != 0 {
 		n += 1 + sovSharedTypes(uint64(m.Expiry))
+	}
+	return n
+}
+
+func (m *RequestPrivateKeyshare) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovSharedTypes(uint64(l))
+	}
+	l = len(m.RequestId)
+	if l > 0 {
+		n += 1 + l + sovSharedTypes(uint64(l))
+	}
+	return n
+}
+
+func (m *EncryptedKeyshare) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Requester)
+	if l > 0 {
+		n += 1 + l + sovSharedTypes(uint64(l))
+	}
+	if len(m.PrivateKeyshares) > 0 {
+		for _, e := range m.PrivateKeyshares {
+			l = e.Size()
+			n += 1 + l + sovSharedTypes(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *IndexedEncryptedKeyshare) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.EncryptedKeyshareValue)
+	if l > 0 {
+		n += 1 + l + sovSharedTypes(uint64(l))
+	}
+	if m.EncryptedKeyshareIndex != 0 {
+		n += 1 + sovSharedTypes(uint64(m.EncryptedKeyshareIndex))
 	}
 	return n
 }
@@ -1416,6 +1988,266 @@ func (m *GetAggrKeyshareResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *GetPrivateKeyshare) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowSharedTypes
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetPrivateKeyshare: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetPrivateKeyshare: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RequestId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSharedTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RequestId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Identity", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSharedTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Identity = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Requester", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSharedTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Requester = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SecpPubkey", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSharedTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.SecpPubkey = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipSharedTypes(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetPrivateKeyshareResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowSharedTypes
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetPrivateKeyshareResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetPrivateKeyshareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pubkey", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSharedTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Pubkey = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipSharedTypes(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *ActivePublicKey) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1657,6 +2489,337 @@ func (m *QueuedPublicKey) Unmarshal(dAtA []byte) error {
 				b := dAtA[iNdEx]
 				iNdEx++
 				m.Expiry |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipSharedTypes(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *RequestPrivateKeyshare) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowSharedTypes
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: RequestPrivateKeyshare: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: RequestPrivateKeyshare: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSharedTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RequestId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSharedTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RequestId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipSharedTypes(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *EncryptedKeyshare) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowSharedTypes
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: EncryptedKeyshare: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: EncryptedKeyshare: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Requester", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSharedTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Requester = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PrivateKeyshares", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSharedTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PrivateKeyshares = append(m.PrivateKeyshares, &IndexedEncryptedKeyshare{})
+			if err := m.PrivateKeyshares[len(m.PrivateKeyshares)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipSharedTypes(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *IndexedEncryptedKeyshare) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowSharedTypes
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: IndexedEncryptedKeyshare: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: IndexedEncryptedKeyshare: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field EncryptedKeyshareValue", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSharedTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthSharedTypes
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.EncryptedKeyshareValue = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field EncryptedKeyshareIndex", wireType)
+			}
+			m.EncryptedKeyshareIndex = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSharedTypes
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.EncryptedKeyshareIndex |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

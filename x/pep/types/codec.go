@@ -2,6 +2,7 @@ package types
 
 import (
 	"bytes"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -12,6 +13,12 @@ import (
 )
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRequestPrivateIdentity{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgGetPrivateKeyshares{},
+	)
 	// this line is used by starport scaffolding # 3
 
 	registry.RegisterImplementations((*sdk.Msg)(nil),

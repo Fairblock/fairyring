@@ -1,8 +1,9 @@
 package types
 
 import (
-	cosmosmath "cosmossdk.io/math"
 	"fmt"
+
+	cosmosmath "cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 )
@@ -20,8 +21,10 @@ var (
 )
 
 var (
-	KeyMinGasPrice     = []byte("MinGasPrice")
-	DefaultMinGasPrice = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
+	KeyMinGasPrice       = []byte("MinGasPrice")
+	DefaultMinGasPrice   = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
+	KeyKeysharePrice     = []byte("PrivateKeysharePrice")
+	DefaultKeysharePrice = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
 )
 
 var (
@@ -46,6 +49,7 @@ func NewParams(
 	keyshareChannelID string,
 	minGasPrice *sdk.Coin,
 	isSourceChain bool,
+	keysharePrice *sdk.Coin,
 ) Params {
 	return Params{
 		TrustedAddresses:      trAddrs,
@@ -53,12 +57,20 @@ func NewParams(
 		KeyshareChannelId:     keyshareChannelID,
 		MinGasPrice:           minGasPrice,
 		IsSourceChain:         isSourceChain,
+		PrivateKeysharePrice:  keysharePrice,
 	}
 }
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams(DefaultTrustedAddresses, DefaultTrustedCounterParties, DefaultKeyshareChannelID, &DefaultMinGasPrice, DefaultIsSourceChain)
+	return NewParams(
+		DefaultTrustedAddresses,
+		DefaultTrustedCounterParties,
+		DefaultKeyshareChannelID,
+		&DefaultMinGasPrice,
+		DefaultIsSourceChain,
+		&DefaultKeysharePrice,
+	)
 }
 
 // ParamSetPairs get the params.ParamSet
@@ -69,6 +81,7 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(KeyKeyshareChannelID, &p.KeyshareChannelId, validateKeyshareChannelId),
 		paramtypes.NewParamSetPair(KeyMinGasPrice, &p.MinGasPrice, validateMinGasPrice),
 		paramtypes.NewParamSetPair(KeyIsSourceChain, &p.IsSourceChain, validateIsSourceChain),
+		paramtypes.NewParamSetPair(KeyKeysharePrice, &p.PrivateKeysharePrice, validateMinGasPrice),
 	}
 }
 
@@ -87,6 +100,10 @@ func (p Params) Validate() error {
 	}
 
 	if err := validateMinGasPrice(p.MinGasPrice); err != nil {
+		return err
+	}
+
+	if err := validateMinGasPrice(p.PrivateKeysharePrice); err != nil {
 		return err
 	}
 

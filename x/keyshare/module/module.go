@@ -5,9 +5,10 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"strconv"
+
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/cosmos/cosmos-sdk/telemetry"
-	"strconv"
 
 	"cosmossdk.io/core/appmodule"
 	"github.com/cosmos/cosmos-sdk/client"
@@ -28,7 +29,6 @@ import (
 
 var (
 	_ module.AppModuleBasic      = (*AppModule)(nil)
-	_ module.AppModuleSimulation = (*AppModule)(nil)
 	_ module.HasGenesis          = (*AppModule)(nil)
 	_ module.HasInvariants       = (*AppModule)(nil)
 	_ module.HasConsensusVersion = (*AppModule)(nil)
@@ -193,6 +193,8 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 
 	am.keeper.ProcessPepRequestQueue(ctx)
 	am.keeper.ProcessPepSignalQueue(ctx)
+	am.keeper.ProcessPrivateRequestQueue(ctx)
+	am.keeper.ProcessPrivateSignalQueue(ctx)
 	am.keeper.ProcessGovRequestQueue(ctx)
 	am.keeper.ProcessGovSignalQueue(ctx)
 

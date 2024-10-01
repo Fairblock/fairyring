@@ -170,6 +170,41 @@ func (im IBCModule) OnRecvPacket(
 			),
 		)
 
+	case *types.KeysharePacketData_RequestPrivKeysharePacket:
+		packetAck, err := im.keeper.OnRecvRequestPrivateKeysharePacket(ctx, modulePacket, *packet.RequestPrivKeysharePacket)
+		if err != nil {
+			ack = channeltypes.NewErrorAcknowledgement(err)
+		} else {
+			// Encode packet acknowledgment
+			packetAckBytes := types.MustProtoMarshalJSON(&packetAck)
+			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+		}
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeRequestPrivateKeysharePacket,
+				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+				sdk.NewAttribute(types.AttributeKeyAckIdentity, packetAck.Identity),
+				sdk.NewAttribute(types.AttributeKeyAckPubkey, packetAck.Pubkey),
+			),
+		)
+
+	case *types.KeysharePacketData_GetPrivateKeysharePacket:
+		packetAck, err := im.keeper.OnRecvGetPrivateKeysharePacket(ctx, modulePacket, *packet.GetPrivateKeysharePacket)
+		if err != nil {
+			ack = channeltypes.NewErrorAcknowledgement(err)
+		} else {
+			// Encode packet acknowledgment
+			packetAckBytes := types.MustProtoMarshalJSON(&packetAck)
+			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+		}
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeGetEncryptedKeysharePacket,
+				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+			),
+		)
 	case *types.KeysharePacketData_GetAggrKeysharePacket:
 		packetAck, err := im.keeper.OnRecvGetAggrKeysharePacket(ctx, modulePacket, *packet.GetAggrKeysharePacket)
 		if err != nil {

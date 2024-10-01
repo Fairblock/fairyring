@@ -1,0 +1,59 @@
+version: 1
+accounts:
+  - name: alice
+    coins:
+      - 1000000000token
+      - 2000000000stake
+    mnemonic: "thought awake grace need recipe erode bullet dust salt breeze rural desk camp deal devote wisdom rotate pledge repair garbage aspect find lens afraid"
+  - name: bob
+    coins:
+      - 500000000token
+      - 200000000stake
+    mnemonic: "south arm eager adjust dish aware rocket logic winter enlist idle reflect slogan urge clump angle input mechanic setup blue distance setup retreat rain"
+  - name: chris
+    coins:
+      - 500000000token
+      - 200000000stake
+  - name: donald
+    coins:
+      - 500000000token
+      - 200000000stake
+  - name: eli
+    coins:
+      - 500000000token
+      - 200000000stake
+  - name: fred
+    coins:
+      - 500000000token
+      - 200000000stake
+validators:
+- name: alice
+  bonded: 100000000stake
+client:
+  openapi:
+    path: "docs/static/openapi.yml"
+  typescript:
+    path: "ts-client"
+  vuex:
+    path: "vue/src/store"
+faucet:
+  name: bob
+  coins:
+  - 5token
+  - 100000stake
+genesis:
+  chain_id: "fairytest-1"
+  app_state:
+    keyshare:
+      params:
+        trusted_addresses: [
+          "fairy14afvm0yfs27a00hnr85064r69lpg46zjncasuv",
+          "fairy12hxz66z2tu0lec9cqjf8q4732v8mepffqm4tyl",
+          ]
+        key_expiry: 200
+    pep:
+      params:
+        trusted_addresses: [
+          "fairy14afvm0yfs27a00hnr85064r69lpg46zjncasuv",
+          "fairy12hxz66z2tu0lec9cqjf8q4732v8mepffqm4tyl",
+          ]

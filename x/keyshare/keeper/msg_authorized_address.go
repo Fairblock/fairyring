@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

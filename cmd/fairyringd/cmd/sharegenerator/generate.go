@@ -6,9 +6,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strconv"
+
 	distIBE "github.com/FairBlock/DistributedIBE"
 	"github.com/spf13/cobra"
-	"strconv"
 )
 
 type Share struct {

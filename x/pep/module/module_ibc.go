@@ -166,6 +166,24 @@ func (im IBCModule) OnRecvPacket(
 				),
 			)
 			return ack
+
+		case *kstypes.KeysharePacketData_EncryptedKeysharesPacketData:
+			packetAck, err := im.keeper.OnRecvEncKeyshareDataPacket(ctx, modulePacket, *packet.EncryptedKeysharesPacketData)
+			if err != nil {
+				ack = channeltypes.NewErrorAcknowledgement(err)
+			} else {
+				// Encode packet acknowledgment
+				packetAckBytes := types.MustProtoMarshalJSON(&packetAck)
+				ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+			}
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(
+					kstypes.EventTypeEncKeyshareDataPacket,
+					sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+					sdk.NewAttribute(kstypes.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+				),
+			)
+			return ack
 		// this line is used by starport scaffolding # ibc/packet/module/recv
 		default:
 			err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
@@ -226,6 +244,20 @@ func (im IBCModule) OnAcknowledgementPacket(
 				return err
 			}
 			eventType = kstypes.EventTypeGetAggrKeysharePacket
+
+		case *kstypes.KeysharePacketData_RequestPrivKeysharePacket:
+			err := im.keeper.OnAcknowledgementRequestPrivateKeysharePacket(ctx, modulePacket, *packet.RequestPrivKeysharePacket, ack)
+			if err != nil {
+				return err
+			}
+			eventType = kstypes.EventTypeRequestPrivateKeysharePacket
+
+		case *kstypes.KeysharePacketData_GetPrivateKeysharePacket:
+			err := im.keeper.OnAcknowledgementGetPrivateKeysharePacket(ctx, modulePacket, *packet.GetPrivateKeysharePacket, ack)
+			if err != nil {
+				return err
+			}
+			eventType = kstypes.EventTypeGetEncryptedKeysharePacket
 
 		// this line is used by starport scaffolding # ibc/packet/module/ack
 		default:

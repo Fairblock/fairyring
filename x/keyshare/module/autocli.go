@@ -145,7 +145,13 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 		//			Short:          "Override the latest public key",
 		//			PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "publicKey"}, {ProtoField: "commitments"}, {ProtoField: "numberOfValidators"}, {ProtoField: "encryptedKeyShares"}},
 		//		},
-		//		// this line is used by ignite scaffolding # autocli/tx
+		//		{
+		// 	RpcMethod: "SubmitEncryptedKeyshare",
+		// 	Use: "submit-encrypted-keyshare [identity] [encrypted-keyshare] [keyshare-index] [received-timestamp] [received-block-height]",
+		// 	Short: "Send a submit-encrypted-keyshare tx",
+		// 	PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "identity"}, {ProtoField: "encryptedKeyshare"}, {ProtoField: "keyshareIndex"}, {ProtoField: "receivedTimestamp"}, {ProtoField: "receivedBlockHeight"},},
+		// },
+		// // this line is used by ignite scaffolding # autocli/tx
 		//	},
 		// },
 	}

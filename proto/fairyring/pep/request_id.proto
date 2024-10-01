@@ -1,6 +1,9 @@
 syntax = "proto3";
 package fairyring.pep;
 
+import "gogoproto/gogo.proto";
+import "fairyring/common/shared_types.proto";
+
 option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
 message RequestId {
@@ -8,3 +11,9 @@ message RequestId {
   string reqId = 2;
 }
 
+message PrivateRequest {
+  string creator = 1;
+  string req_id = 2;
+  string pubkey = 3;
+  repeated fairyring.common.EncryptedKeyshare encrypted_keyshares = 5;
+}

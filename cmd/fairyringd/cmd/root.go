@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"github.com/cosmos/cosmos-sdk/baseapp"
 	"os"
 	"strings"
+
+	"github.com/cosmos/cosmos-sdk/baseapp"
 
 	"cosmossdk.io/client/v2/autocli"
 	clientv2keyring "cosmossdk.io/client/v2/autocli/keyring"

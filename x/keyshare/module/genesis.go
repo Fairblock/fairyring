@@ -1,8 +1,9 @@
 package keyshare
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"strconv"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/Fairblock/fairyring/x/keyshare/keeper"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
@@ -77,7 +78,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.AuthorizedAddressList = k.GetAllAuthorizedAddress(ctx)
 	genesis.GeneralKeyShareList = k.GetAllGeneralKeyShare(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
-	
+
 	genesis.RequestCount, _ = strconv.ParseUint(k.GetRequestCount(ctx), 10, 64)
 
 	// this line is used by starport scaffolding # genesis/module/export

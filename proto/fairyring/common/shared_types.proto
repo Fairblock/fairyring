@@ -32,6 +32,18 @@ message GetAggrKeyshare {
 
 message GetAggrKeyshareResponse {}
 
+// GetPrivateKeyshare defines a struct for the data payload
+message GetPrivateKeyshare {
+  string request_id = 1;
+  string identity = 2;
+  string requester = 3;
+  string secp_pubkey = 4;
+}
+
+message GetPrivateKeyshareResponse {
+  string pubkey   = 1;
+}
+
 message ActivePublicKey {
   string publicKey = 1;
   string creator = 2;
@@ -42,4 +54,19 @@ message QueuedPublicKey {
   string publicKey = 1;
   string creator = 2;
   uint64 expiry = 3;
+}
+
+message RequestPrivateKeyshare {
+  string creator = 1;
+  string request_id = 2;
+}
+
+message EncryptedKeyshare {
+  string requester = 1;
+  repeated IndexedEncryptedKeyshare private_keyshares = 2;
+}
+
+message IndexedEncryptedKeyshare {
+  string encrypted_keyshare_value = 1;
+  uint64 encrypted_keyshare_index = 2;
 }

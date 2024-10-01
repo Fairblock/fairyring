@@ -3,6 +3,7 @@ package verifiable_randomness
 import (
 	"context"
 	"errors"
+
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/spf13/cobra"

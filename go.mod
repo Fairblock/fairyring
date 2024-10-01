@@ -31,6 +31,7 @@ require (
 	cosmossdk.io/x/upgrade v0.1.2
 	github.com/CosmWasm/wasmd v0.0.0-00010101000000-000000000000
 	github.com/FairBlock/DistributedIBE v0.0.0-20231211202607-d457df6869db
+	github.com/btcsuite/btcd v0.22.3
 	github.com/bufbuild/buf v1.30.0
 	github.com/cometbft/cometbft v0.38.9
 	github.com/cosmos/cosmos-db v1.0.2
@@ -85,7 +86,7 @@ require (
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
 	github.com/bgentry/speakeasy v0.1.1-0.20220910012023-760eaf8b6816 // indirect
 	github.com/bits-and-blooms/bitset v1.8.0 // indirect
-	github.com/btcsuite/btcd/btcec/v2 v2.3.2 // indirect
+	github.com/btcsuite/btcd/btcec/v2 v2.3.2
 	github.com/bufbuild/protocompile v0.9.0 // indirect
 	github.com/bufbuild/protovalidate-go v0.6.0 // indirect
 	github.com/bufbuild/protoyaml-go v0.1.8 // indirect
