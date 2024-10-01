@@ -1,8 +1,9 @@
 // contract.rs
-use cosmwasm_std::{attr, entry_point, to_json_binary, to_json_string, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdError, StdResult};
-use crate::msg::{ExecuteContractMsg, QueryMsg, QueryResponse, InstantiateMsg};
+use cosmwasm_std::{attr, entry_point, to_json_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdError, StdResult};
+use prost::Message;
+use crate::msg::{ExecuteContractMsg, QueryMsg, QueryResponse, InstantiateMsg, QueryDecryptDataRequest, QueryDecryptDataResponse};
 use crate::state::STORED_DATA;
-use fairblock_proto::fairyring::pep::QueryDecryptDataRequest;
+// use prost::Message;
 
 #[entry_point]
 pub fn execute(
@@ -71,7 +72,7 @@ pub fn query(
             let response = query_pep_decrypt(deps, pubkey, aggr_keyshare, encrypted_data)?;
 
             // Return the decrypted data in binary format
-            to_json_binary(&response)
+            Ok(response)
         }
     }
 }
@@ -114,8 +115,16 @@ pub fn query_pep_decrypt(
         encrypted_data,
     };
 
+    let e = request.encode_to_vec();
+    let d = Binary::new(e);
+
     // Send the query
-    let raw_response: Binary = deps.querier.query_grpc("/fairyring.pep.Query/DecryptData".to_string(), to_json_binary(&request)?)?;
+    let raw_response: Binary = deps.querier.query_grpc("/fairyring.pep.Query/DecryptData".to_string(), d)?;
     
-    Ok(raw_response)
+    let vec_res = raw_response.to_vec();
+    let x = QueryDecryptDataResponse::decode(&*vec_res)
+    .expect("Failed to decode Protobuf message");
+    
+    let json_res = to_json_binary(&x)?;
+    Ok(json_res)
 }
