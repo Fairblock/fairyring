@@ -3,7 +3,6 @@ use cosmwasm_std::{attr, entry_point, to_json_binary, Binary, Deps, DepsMut, Env
 use prost::Message;
 use crate::msg::{ExecuteContractMsg, QueryMsg, QueryResponse, InstantiateMsg, QueryDecryptDataRequest, QueryDecryptDataResponse};
 use crate::state::STORED_DATA;
-// use prost::Message;
 
 #[entry_point]
 pub fn execute(
@@ -13,7 +12,7 @@ pub fn execute(
     msg: ExecuteContractMsg,
 ) -> StdResult<Response> {
     // Store the data
-    
+
     // Check if identity is a non-empty string
     if msg.identity.trim().is_empty() {
         return Err(StdError::generic_err("Identity cannot be empty"));
@@ -23,29 +22,22 @@ pub fn execute(
     let identity = msg.identity;
 
     STORED_DATA.save(
-        deps.storage, 
-        &identity, 
-        &(msg.pubkey.clone(), msg.aggr_keyshare.clone()),  // Use `.clone()` to avoid moving the values
+        deps.storage,
+        &identity,
+        &(msg.pubkey.clone(), msg.aggr_keyshare.clone()), // Use `.clone()` to avoid moving the values
     )?;
-    
+
     // Return a response
-    Ok(Response::new()
-        .add_attributes(vec![
-            attr("action", "store_data"),
-            attr("identity", identity),
-            attr("pubkey", msg.pubkey),
-            attr("aggr_keyshare", msg.aggr_keyshare),
-        ])
-    )
+    Ok(Response::new().add_attributes(vec![
+        attr("action", "store_data"),
+        attr("identity", identity),
+        attr("pubkey", msg.pubkey),
+        attr("aggr_keyshare", msg.aggr_keyshare),
+    ]))
 }
 
-
 #[entry_point]
-pub fn query(
-    deps: Deps<QueryMsg>,
-    _env: Env,
-    msg: QueryMsg,
-) -> StdResult<Binary> {
+pub fn query(deps: Deps<QueryMsg>, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
         QueryMsg::GetStoredData { identity } => {
             if identity.trim().is_empty() {
@@ -99,7 +91,6 @@ pub fn instantiate(
 
     Ok(Response::new().add_attribute("method", "instantiate"))
 }
-
 
 // Function to query the `DecryptData` RPC from your `pep` module
 pub fn query_pep_decrypt(
