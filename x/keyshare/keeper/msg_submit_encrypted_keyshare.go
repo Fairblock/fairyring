@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -37,6 +38,16 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 	keyShareReq, found := k.GetPrivateKeyShareRequest(ctx, msg.Identity)
 	if !found {
 		return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.Identity)
+	}
+
+	commitments, found := k.GetActiveCommitments(ctx)
+	if !found {
+		return nil, types.ErrCommitmentsNotFound
+	}
+
+	commitmentsLen := uint64(len(commitments.Commitments))
+	if msg.KeyShareIndex > commitmentsLen {
+		return nil, types.ErrInvalidKeyShareIndex.Wrap(fmt.Sprintf("Expect Index within: %d, got: %d", commitmentsLen, msg.KeyShareIndex))
 	}
 
 	valEncKeyshare := types.ValidatorEncryptedKeyShare{
