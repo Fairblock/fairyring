@@ -27,7 +27,7 @@ func createNCommitments(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.C
 }
 
 func TestActiveCommitmentsGet(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	items := createNCommitments(&keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetActiveCommitments(ctx)
@@ -40,7 +40,7 @@ func TestActiveCommitmentsGet(t *testing.T) {
 }
 
 func TestQueuedCommitmentsGet(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	items := createNCommitments(&keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetQueuedCommitments(ctx)
@@ -53,7 +53,7 @@ func TestQueuedCommitmentsGet(t *testing.T) {
 }
 
 func TestActiveCommitmentsRemove(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	createNCommitments(&keeper, ctx, 10)
 	_, found := keeper.GetActiveCommitments(ctx)
 	require.True(t, found)
@@ -64,7 +64,7 @@ func TestActiveCommitmentsRemove(t *testing.T) {
 }
 
 func TestQueuedCommitmentsRemove(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	createNCommitments(&keeper, ctx, 10)
 	_, found := keeper.GetQueuedCommitments(ctx)
 	require.True(t, found)

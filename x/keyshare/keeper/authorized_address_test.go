@@ -29,7 +29,7 @@ func createNAuthorizedAddress(keeper *keeper.Keeper, ctx sdk.Context, n int) []t
 }
 
 func TestAuthorizedAddressGet(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	items := createNAuthorizedAddress(&keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetAuthorizedAddress(ctx,
@@ -43,7 +43,7 @@ func TestAuthorizedAddressGet(t *testing.T) {
 	}
 }
 func TestAuthorizedAddressRemove(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	items := createNAuthorizedAddress(&keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveAuthorizedAddress(ctx,
@@ -57,7 +57,7 @@ func TestAuthorizedAddressRemove(t *testing.T) {
 }
 
 func TestAuthorizedAddressGetAll(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	items := createNAuthorizedAddress(&keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),

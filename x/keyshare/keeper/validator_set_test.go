@@ -26,7 +26,7 @@ func createNValidatorSet(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.
 }
 
 func TestValidatorSetGet(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	items := createNValidatorSet(&keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetValidatorSet(ctx,
@@ -41,7 +41,7 @@ func TestValidatorSetGet(t *testing.T) {
 }
 
 func TestValidatorSetRemove(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	items := createNValidatorSet(&keeper, ctx, 10)
 
 	keeper.RemoveValidatorSet(ctx,
@@ -54,7 +54,7 @@ func TestValidatorSetRemove(t *testing.T) {
 }
 
 func TestValidatorSetGetAll(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	items := createNValidatorSet(&keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),

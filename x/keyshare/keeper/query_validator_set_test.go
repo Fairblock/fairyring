@@ -1,6 +1,7 @@
 package keeper_test
 
 import (
+	"github.com/Fairblock/fairyring/testutil/sample"
 	"strconv"
 	"testing"
 
@@ -18,36 +19,36 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func TestAuthorizedAddressQuerySingle(t *testing.T) {
+func TestValidatorSetQuerySingle(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
-	msgs := createNAuthorizedAddress(&keeper, ctx, 2)
+	msgs := createNValidatorSet(&keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetAuthorizedAddressRequest
-		response *types.QueryGetAuthorizedAddressResponse
+		request  *types.QueryGetValidatorSetRequest
+		response *types.QueryGetValidatorSetResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetAuthorizedAddressRequest{
-				Target: msgs[0].Target,
+			request: &types.QueryGetValidatorSetRequest{
+				Index: msgs[0].Index,
 			},
-			response: &types.QueryGetAuthorizedAddressResponse{AuthorizedAddress: msgs[0]},
+			response: &types.QueryGetValidatorSetResponse{ValidatorSet: msgs[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetAuthorizedAddressRequest{
-				Target: msgs[1].Target,
+			request: &types.QueryGetValidatorSetRequest{
+				Index: msgs[1].Index,
 			},
-			response: &types.QueryGetAuthorizedAddressResponse{AuthorizedAddress: msgs[1]},
+			response: &types.QueryGetValidatorSetResponse{ValidatorSet: msgs[1]},
 		},
 		{
-			desc: "AuthorizedAddressNotFound",
-			request: &types.QueryGetAuthorizedAddressRequest{
-				Target: strconv.Itoa(100000),
+			desc: "KeyNotFound",
+			request: &types.QueryGetValidatorSetRequest{
+				Index: sample.AccAddress(),
 			},
-			err: types.ErrAuthorizedAddrNotFound,
+			err: status.Error(codes.NotFound, "not found"),
 		},
 		{
 			desc: "InvalidRequest",
@@ -55,7 +56,7 @@ func TestAuthorizedAddressQuerySingle(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.AuthorizedAddress(wctx, tc.request)
+			response, err := keeper.ValidatorSet(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
@@ -69,19 +70,19 @@ func TestAuthorizedAddressQuerySingle(t *testing.T) {
 	}
 }
 
-func TestAuthorizedAddressQueryAllNoPagination(t *testing.T) {
+func TestValidatorSetQueryAllNoPagination(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
-	msgs := createNAuthorizedAddress(&keeper, ctx, 12)
+	msgs := createNValidatorSet(&keeper, ctx, 10)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryAllAuthorizedAddressRequest
-		response *types.QueryAllAuthorizedAddressResponse
+		request  *types.QueryAllValidatorSetRequest
+		response *types.QueryAllValidatorSetResponse
 		err      error
 	}{
 		{
-			desc: "QueryAllAuthorizedAddress",
-			request: &types.QueryAllAuthorizedAddressRequest{
+			desc: "QueryAllValidatorSet",
+			request: &types.QueryAllValidatorSetRequest{
 				Pagination: &query.PageRequest{
 					Key:        nil,
 					Offset:     0,
@@ -90,17 +91,17 @@ func TestAuthorizedAddressQueryAllNoPagination(t *testing.T) {
 					Reverse:    false,
 				},
 			},
-			response: &types.QueryAllAuthorizedAddressResponse{
-				AuthorizedAddress: msgs,
+			response: &types.QueryAllValidatorSetResponse{
+				ValidatorSet: msgs,
 				Pagination: &query.PageResponse{
 					NextKey: nil,
-					Total:   12,
+					Total:   10,
 				},
 			},
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.AuthorizedAddressAll(wctx, tc.request)
+			response, err := keeper.ValidatorSetAll(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
@@ -114,13 +115,13 @@ func TestAuthorizedAddressQueryAllNoPagination(t *testing.T) {
 	}
 }
 
-func TestAuthorizedAddressQueryPaginated(t *testing.T) {
+func TestValidatorSetQueryPaginated(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
-	msgs := createNAuthorizedAddress(&keeper, ctx, 5)
+	msgs := createNValidatorSet(&keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllAuthorizedAddressRequest {
-		return &types.QueryAllAuthorizedAddressRequest{
+	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllValidatorSetRequest {
+		return &types.QueryAllValidatorSetRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,
@@ -132,12 +133,12 @@ func TestAuthorizedAddressQueryPaginated(t *testing.T) {
 	t.Run("ByOffset", func(t *testing.T) {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.AuthorizedAddressAll(wctx, request(nil, uint64(i), uint64(step), false))
+			resp, err := keeper.ValidatorSetAll(wctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.AuthorizedAddress), step)
+			require.LessOrEqual(t, len(resp.ValidatorSet), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.AuthorizedAddress),
+				nullify.Fill(resp.ValidatorSet),
 			)
 		}
 	})
@@ -145,27 +146,27 @@ func TestAuthorizedAddressQueryPaginated(t *testing.T) {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.AuthorizedAddressAll(wctx, request(next, 0, uint64(step), false))
+			resp, err := keeper.ValidatorSetAll(wctx, request(next, 0, uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.AuthorizedAddress), step)
+			require.LessOrEqual(t, len(resp.ValidatorSet), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.AuthorizedAddress),
+				nullify.Fill(resp.ValidatorSet),
 			)
 			next = resp.Pagination.NextKey
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.AuthorizedAddressAll(wctx, request(nil, 0, 0, true))
+		resp, err := keeper.ValidatorSetAll(wctx, request(nil, 0, 0, true))
 		require.NoError(t, err)
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
 			nullify.Fill(msgs),
-			nullify.Fill(resp.AuthorizedAddress),
+			nullify.Fill(resp.ValidatorSet),
 		)
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.AuthorizedAddressAll(wctx, nil)
+		_, err := keeper.ValidatorSetAll(wctx, nil)
 		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

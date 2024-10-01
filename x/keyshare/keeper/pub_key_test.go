@@ -32,7 +32,7 @@ func createQueuedPubKeys(keeper *keeper.Keeper, ctx sdk.Context) types.QueuedPub
 }
 
 func TestActivePubKeyGet(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	item := createActivePubKeys(&keeper, ctx)
 	rst, found := keeper.GetActivePubKey(ctx)
 	require.True(t, found)
@@ -43,7 +43,7 @@ func TestActivePubKeyGet(t *testing.T) {
 }
 
 func TestQueuedPubKeyGet(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	item := createQueuedPubKeys(&keeper, ctx)
 	rst, found := keeper.GetQueuedPubKey(ctx)
 	require.True(t, found)
@@ -54,7 +54,7 @@ func TestQueuedPubKeyGet(t *testing.T) {
 }
 
 func TestActivePubKeyRemoved(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	createActivePubKeys(&keeper, ctx)
 	keeper.DeleteActivePubKey(ctx)
 	_, found := keeper.GetActivePubKey(ctx)
@@ -62,7 +62,7 @@ func TestActivePubKeyRemoved(t *testing.T) {
 }
 
 func TestQueuedPubKeyRemoved(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	createQueuedPubKeys(&keeper, ctx)
 	keeper.DeleteQueuedPubKey(ctx)
 	_, found := keeper.GetQueuedPubKey(ctx)

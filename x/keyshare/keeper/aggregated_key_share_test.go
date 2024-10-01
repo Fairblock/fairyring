@@ -27,7 +27,7 @@ func createNAggregatedKeyShare(keeper *keeper.Keeper, ctx sdk.Context, n int) []
 }
 
 func TestAggregatedKeyShareGet(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	items := createNAggregatedKeyShare(&keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetAggregatedKeyShare(ctx,
@@ -41,7 +41,7 @@ func TestAggregatedKeyShareGet(t *testing.T) {
 	}
 }
 func TestAggregatedKeyShareRemove(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	items := createNAggregatedKeyShare(&keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveAggregatedKeyShare(ctx,
@@ -55,7 +55,7 @@ func TestAggregatedKeyShareRemove(t *testing.T) {
 }
 
 func TestAggregatedKeyShareGetAll(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	items := createNAggregatedKeyShare(&keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),

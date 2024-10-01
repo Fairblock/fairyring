@@ -20,7 +20,7 @@ func createLastSubmittedHeight(keeper *keeper.Keeper, ctx sdk.Context) (string, 
 }
 
 func TestLastSubmittedHeightGet(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	val, generatedHeight := createLastSubmittedHeight(&keeper, ctx)
 	height := strconv.FormatUint(keeper.GetLastSubmittedHeight(ctx, val), 10)
 	require.Equal(t,

@@ -25,7 +25,7 @@ func createNKeyShares(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Key
 }
 
 func TestKeyShareGet(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	items := createNKeyShares(&keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetKeyShare(ctx,
@@ -41,7 +41,7 @@ func TestKeyShareGet(t *testing.T) {
 }
 
 func TestKeySharesRemove(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	items := createNKeyShares(&keeper, ctx, 10)
 
 	keeper.RemoveKeyShare(ctx,
@@ -56,7 +56,7 @@ func TestKeySharesRemove(t *testing.T) {
 }
 
 func TestKeySharesGetAll(t *testing.T) {
-	keeper, ctx := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	items := createNKeyShares(&keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),
