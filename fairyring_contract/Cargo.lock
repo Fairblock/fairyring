@@ -711,6 +711,7 @@ dependencies = [
  "cw-multi-test",
  "cw-storage-plus",
  "fairblock-proto",
+ "prost",
  "schemars",
  "serde",
  "thiserror",
