@@ -172,6 +172,7 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 
 	acceptList := map[string]proto.Message{
 		"/fairyring.keyshare.Query/VerifiableRandomness": &keysharemoduletypes.QueryVerifiableRandomnessResponse{},
+		"/fairyring.pep.Query/DecryptData":               &pepmoduletypes.QueryDecryptDataResponse{},
 	}
 
 	// Add wasmd to IBC Router

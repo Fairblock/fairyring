@@ -82,7 +82,7 @@ service Query {
   
   // Queries a list of DecryptData items.
   rpc DecryptData (QueryDecryptDataRequest) returns (QueryDecryptDataResponse) {
-    option (google.api.http).get = "/Fairblock/fairyring/pep/decrypt_data/{aggr_keyshare}/{encrypted_data}";
+    option (google.api.http).get = "/Fairblock/fairyring/pep/decrypt_data/{pubkey}/{aggr_keyshare}/{encrypted_data}";
   
   }
 }

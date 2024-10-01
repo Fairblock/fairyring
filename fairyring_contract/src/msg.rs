@@ -32,6 +32,18 @@ pub struct QueryResponse {
     pub aggr_keyshare: String,
 }
 
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+pub struct QueryDecryptDataRequest {
+    pub pubkey: String,
+    pub aggr_keyshare: String,
+    pub encrypted_data: String,
+}
+
+// #[derive(Clone, PartialEq, prost::Message)]
+// pub struct QueryDecryptDataResponse {
+//     #[prost(string, tag = "1")]
+//     pub decrypted_data: String,
+// }
 
 // Instantiate message
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]

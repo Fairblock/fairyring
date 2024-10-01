@@ -1,0 +1,1 @@
+3c3274ea81c813cd396a2536e81ca8b899eaabba8e0529cf31a5b127190ab68b  fairyring_contract.wasm

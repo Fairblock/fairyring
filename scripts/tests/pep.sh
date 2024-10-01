@@ -810,8 +810,20 @@ echo "#############################################"
 echo "# Testing contract callback on source chain #"
 echo "#############################################"
 
+cd $CONTRACT_DIR
+
+echo "Compiling contract"
+cargo build --release --target wasm32-unknown-unknown
+
+echo "Optimizing Contract"
+docker run --rm -v "$(pwd)":/code \
+  --mount type=volume,source="$(basename "$(pwd)")_cache",target=/target \
+  --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
+  cosmwasm/optimizer:0.16.0
+cd -
+
 echo "Deploying smart contract on source chain"
-RESULT=$($BINARY tx wasm store $CONTRACT_DIR/optimized_contract.wasm --from $WALLET_1 --gas 9000000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test --fees 9000000ufairy -o json -y)
+RESULT=$($BINARY tx wasm store $CONTRACT_DIR/artifacts/fairyring_contract.wasm --from $WALLET_1 --gas 9000000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test --fees 9000000ufairy -o json -y)
 check_tx_code $RESULT
 
 sleep 10

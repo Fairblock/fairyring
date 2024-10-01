@@ -4,7 +4,7 @@ go 1.22.4
 
 replace (
 	cosmossdk.io/api => github.com/Fairblock/cosmossdk-api v0.7.5
-	github.com/CosmWasm/wasmd => ../wasmd
+	github.com/CosmWasm/wasmd => github.com/Fairblock/wasmd v0.50.6-fairyring
 	github.com/cosmos/cosmos-sdk => github.com/Fairblock/cosmos-sdk v0.50.8-fairyring
 	// fix upstream GHSA-h395-qcrw-5vmq vulnerability.
 	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.7.0
@@ -60,8 +60,6 @@ require (
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.3.0
 	google.golang.org/protobuf v1.34.1
 )
-
-require github.com/regen-network/cosmos-proto v0.3.1 // indirect
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.33.0-20240221180331-f05a6f4403ce.1 // indirect

@@ -1,9 +1,8 @@
 // contract.rs
-use cosmwasm_std::{attr, entry_point, to_json_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdError, StdResult};
-use fairblock_proto::fairyring::pep::query_client::QueryClient;
-use fairblock_proto::fairyring::pep::QueryDecryptDataRequest;
+use cosmwasm_std::{attr, entry_point, to_json_binary, to_json_string, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdError, StdResult};
 use crate::msg::{ExecuteContractMsg, QueryMsg, QueryResponse, InstantiateMsg};
 use crate::state::STORED_DATA;
+use fairblock_proto::fairyring::pep::QueryDecryptDataRequest;
 
 #[entry_point]
 pub fn execute(
@@ -41,8 +40,8 @@ pub fn execute(
 
 
 #[entry_point]
-pub async fn query<'a>(
-    deps: Deps<'a, QueryMsg>,
+pub fn query(
+    deps: Deps<QueryMsg>,
     _env: Env,
     msg: QueryMsg,
 ) -> StdResult<Binary> {
@@ -69,7 +68,7 @@ pub async fn query<'a>(
             }
 
             // Call the function to query the `pep` module
-            let response = query_pep_decrypt(deps, pubkey, aggr_keyshare, encrypted_data).await?;
+            let response = query_pep_decrypt(deps, pubkey, aggr_keyshare, encrypted_data)?;
 
             // Return the decrypted data in binary format
             to_json_binary(&response)
@@ -102,17 +101,12 @@ pub fn instantiate(
 
 
 // Function to query the `DecryptData` RPC from your `pep` module
-pub async fn query_pep_decrypt<'a>(
-    _deps: Deps<'a, QueryMsg>, // Explicitly add lifetime `'a`
+pub fn query_pep_decrypt(
+    deps: Deps<QueryMsg>,
     pubkey: String,
     aggr_keyshare: String,
     encrypted_data: String,
-) -> StdResult<String> {
-    // Create a gRPC connection to the `pep` module
-    let mut client = QueryClient::connect("http://localhost:9090")
-        .await
-        .map_err(|err| StdError::generic_err(format!("Failed to connect to gRPC server: {}", err)))?;
-
+) -> StdResult<Binary> {
     // Create the request message
     let request = QueryDecryptDataRequest {
         pubkey,
@@ -120,14 +114,8 @@ pub async fn query_pep_decrypt<'a>(
         encrypted_data,
     };
 
-    // Call the decrypt_data method
-    let response = client
-        .decrypt_data(request)
-        .await
-        .map_err(|err| StdError::generic_err(format!("gRPC query failed: {}", err)))?;
-
-    // Extract the decrypted data from the response
-    let decrypted_data = response.into_inner().decrypted_data;
-
-    Ok(decrypted_data)
+    // Send the query
+    let raw_response: Binary = deps.querier.query_grpc("/fairyring.pep.Query/DecryptData".to_string(), to_json_binary(&request)?)?;
+    
+    Ok(raw_response)
 }
