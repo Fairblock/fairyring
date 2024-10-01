@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"errors"
-	"github.com/Fairblock/fairyring/cmd/fairyringd/cmd/secp_encrypter"
 	"io"
+
+	"github.com/Fairblock/fairyring/cmd/fairyringd/cmd/secp_encrypter"
 
 	"cosmossdk.io/log"
 	confixcmd "cosmossdk.io/tools/confix/cmd"
@@ -39,7 +40,8 @@ func initRootCmd(
 	basicManager module.BasicManager,
 ) {
 	rootCmd.AddCommand(
-		genutilcli.InitCmd(basicManager, app.DefaultNodeHome),
+		InitCmd(basicManager, app.DefaultNodeHome),
+		// genutilcli.InitCmd(basicManager, app.DefaultNodeHome),
 		debug.Cmd(),
 		confixcmd.ConfigCommand(),
 		pruning.Cmd(newApp, app.DefaultNodeHome),
