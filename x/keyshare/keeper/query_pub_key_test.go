@@ -11,22 +11,23 @@ import (
 	"testing"
 )
 
-func TestParamsQuery(t *testing.T) {
+func TestPubKeyQuery(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
-	params := types.DefaultParams()
-	keeper.SetParams(ctx, params)
+	activePubKey := createActivePubKeys(&keeper, wctx)
+	queuedPubKey := createQueuedPubKeys(&keeper, wctx)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryParamsRequest
-		response *types.QueryParamsResponse
+		request  *types.QueryPubKeyRequest
+		response *types.QueryPubKeyResponse
 		err      error
 	}{
 		{
-			desc:    "QueryParams",
-			request: &types.QueryParamsRequest{},
-			response: &types.QueryParamsResponse{
-				Params: params,
+			desc:    "QueryPubKey",
+			request: &types.QueryPubKeyRequest{},
+			response: &types.QueryPubKeyResponse{
+				ActivePubKey: activePubKey,
+				QueuedPubKey: queuedPubKey,
 			},
 		},
 		{
@@ -35,7 +36,7 @@ func TestParamsQuery(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.Params(wctx, tc.request)
+			response, err := keeper.PubKey(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
