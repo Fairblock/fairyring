@@ -23,7 +23,7 @@ message ContractDetails {
   string contract_address = 2;
 }
 
-message RegisterdContract {
+message RegisteredContract {
   string identity = 1;
   repeated ContractDetails contracts = 2;
 }

@@ -14,7 +14,7 @@ import (
 )
 
 // SetContractEntry set a specific contract entry in the store by identity
-func (k Keeper) SetContractEntry(ctx context.Context, contract types.RegisterdContract) {
+func (k Keeper) SetContractEntry(ctx context.Context, contract types.RegisteredContract) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ContractKeyPrefix))
 	b := k.cdc.MustMarshal(&contract)
@@ -25,7 +25,7 @@ func (k Keeper) SetContractEntry(ctx context.Context, contract types.RegisterdCo
 func (k Keeper) GetContractEntriesByID(
 	ctx context.Context,
 	identity string,
-) (val types.RegisterdContract, found bool) {
+) (val types.RegisteredContract, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ContractKeyPrefix))
 
@@ -61,7 +61,7 @@ func (k Keeper) GetContractEntry(
 // AppendContractToEntry appends a new contract detail to an already existing contract entry
 func (k Keeper) AppendContractToEntry(
 	ctx context.Context,
-	contract types.RegisterdContract,
+	contract types.RegisteredContract,
 ) {
 	c, found := k.GetContractEntriesByID(ctx, contract.Identity)
 	if !found {
@@ -73,7 +73,7 @@ func (k Keeper) AppendContractToEntry(
 }
 
 // GetAllContractEntries returns all contracts for all identities
-func (k Keeper) GetAllContractEntries(ctx context.Context) (list []types.RegisterdContract) {
+func (k Keeper) GetAllContractEntries(ctx context.Context) (list []types.RegisteredContract) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ContractKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
@@ -81,7 +81,7 @@ func (k Keeper) GetAllContractEntries(ctx context.Context) (list []types.Registe
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.RegisterdContract
+		var val types.RegisteredContract
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}

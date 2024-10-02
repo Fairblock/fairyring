@@ -15,7 +15,7 @@ echo ""
 
 BINARY=fairyringd
 CHAIN_DIR=$(pwd)/data
-CONTRACT_DIR=$(pwd)/fairyring_contract
+CONTRACT_DIR=$(pwd)/scripts/tests/fairyring_contract
 CHAINID_1=fairyring_test_1
 CHAIN1_NODE=tcp://localhost:16657
 CHAINID_2=fairyring_test_2
@@ -876,11 +876,16 @@ echo "Query Contract state"
 RSP=$($BINARY q wasm contract-state smart $CONTRACT_ADDR '{"get_stored_data":{"identity": "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/contract123"}}' --node $CHAIN1_NODE -o json)
 echo $RSP
 
-echo "#############################################"
-echo "# Testing contract callback on source chain #"
-echo "#############################################"
+echo "#########################################################"
+echo "# Testing decryption from contract request source chain #"
+echo "#########################################################"
 
+echo "Testing with pubkey provided explicitly"
 RSP=$($BINARY q wasm contract-state smart $CONTRACT_ADDR '{"decrypt_data": {"pubkey": "a2a4472488440341db3252447af1c31e06fd32d7067e300ed60052fcdd131fd702bf901e1dd0122a312bb582a9a375a3", "aggr_keyshare": "a3b49bbffd655aa37e0b71a4d90862e1f70bdd0aab48587307ef74c2b3e12fd2ea42d88fc5f592e5caf83d33d7f93454196f32137817ceb5ecb41fbe48c3734bb11510febd6988302dd2c362deb3479b4946daa399fb149e63c0a5c45b48292d", "encrypted_data": "6167652d656e6372797074696f6e2e6f72672f76310a2d3e20646973744942450a686e4a7641376d5655797679397166465230447849417464374c3152586371484542687736306a316f325a446e567453626a4759374a4d2f5a524752654e536b0a574d6f56567966674d55546f363944502f4f624a6544424e6f47694b50746a6b316a523075464276536372326d766948543238524f6e473755647835683077510a6c734767656554424336786e7834626e496d737874410a2d2d2d20793668724135506e5233563568414a35646f732b574e325932334b72742b383946306d4d743138595a59490a43129dfd9ddbb210374314a96ab1b06260b4e1abf7d3fac77029043c8bdbe0a6efd2b73f95f75be0"}}' --node $CHAIN1_NODE -o json)
+echo $RSP
+
+echo "Testing with pubkey not provided"
+RSP=$($BINARY q wasm contract-state smart $CONTRACT_ADDR '{"decrypt_data": {"pubkey": "", "aggr_keyshare": "a3b49bbffd655aa37e0b71a4d90862e1f70bdd0aab48587307ef74c2b3e12fd2ea42d88fc5f592e5caf83d33d7f93454196f32137817ceb5ecb41fbe48c3734bb11510febd6988302dd2c362deb3479b4946daa399fb149e63c0a5c45b48292d", "encrypted_data": "6167652d656e6372797074696f6e2e6f72672f76310a2d3e20646973744942450a686e4a7641376d5655797679397166465230447849417464374c3152586371484542687736306a316f325a446e567453626a4759374a4d2f5a524752654e536b0a574d6f56567966674d55546f363944502f4f624a6544424e6f47694b50746a6b316a523075464276536372326d766948543238524f6e473755647835683077510a6c734767656554424336786e7834626e496d737874410a2d2d2d20793668724135506e5233563568414a35646f732b574e325932334b72742b383946306d4d743138595a59490a43129dfd9ddbb210374314a96ab1b06260b4e1abf7d3fac77029043c8bdbe0a6efd2b73f95f75be0"}}' --node $CHAIN1_NODE -o json)
 echo $RSP
 
 echo ""

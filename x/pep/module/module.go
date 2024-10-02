@@ -279,19 +279,17 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 
 		// execute registered contracts
 		contracts, found := am.keeper.GetContractEntriesByID(ctx, entry.Identity)
-		if found {
-			if len(contracts.Contracts) != 0 {
-				for _, contract := range contracts.Contracts {
-					am.keeper.ExecuteContract(
-						ctx,
-						contract.ContractAddress,
-						types.ExecuteContractMsg{
-							Identity:     entry.Identity,
-							Pubkey:       entry.Pubkey,
-							AggrKeyshare: entry.AggrKeyshare,
-						},
-					)
-				}
+		if found && len(contracts.Contracts) != 0 {
+			for _, contract := range contracts.Contracts {
+				am.keeper.ExecuteContract(
+					ctx,
+					contract.ContractAddress,
+					types.ExecuteContractMsg{
+						Identity:     entry.Identity,
+						Pubkey:       entry.Pubkey,
+						AggrKeyshare: entry.AggrKeyshare,
+					},
+				)
 			}
 		}
 
