@@ -32,6 +32,7 @@ service Msg {
   rpc RequestPrivateIdentity   (MsgRequestPrivateIdentity  ) returns (MsgRequestPrivateIdentityResponse  );
   rpc GetPrivateKeyshares      (MsgGetPrivateKeyshares     ) returns (MsgGetPrivateKeysharesResponse     );
   rpc RegisterContract         (MsgRegisterContract        ) returns (MsgRegisterContractResponse        );
+  rpc UnregisterContract       (MsgUnregisterContract      ) returns (MsgUnregisterContractResponse      );
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
@@ -123,3 +124,12 @@ message MsgRegisterContract {
 }
 
 message MsgRegisterContractResponse {}
+
+message MsgUnregisterContract {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator          = 1;
+  string contract_address = 2;
+  string identity         = 3;
+}
+
+message MsgUnregisterContractResponse {}

@@ -28,6 +28,7 @@ const (
 	Msg_RequestPrivateIdentity_FullMethodName   = "/fairyring.pep.Msg/RequestPrivateIdentity"
 	Msg_GetPrivateKeyshares_FullMethodName      = "/fairyring.pep.Msg/GetPrivateKeyshares"
 	Msg_RegisterContract_FullMethodName         = "/fairyring.pep.Msg/RegisterContract"
+	Msg_UnregisterContract_FullMethodName       = "/fairyring.pep.Msg/UnregisterContract"
 )
 
 // MsgClient is the client API for Msg service.
@@ -46,6 +47,7 @@ type MsgClient interface {
 	RequestPrivateIdentity(ctx context.Context, in *MsgRequestPrivateIdentity, opts ...grpc.CallOption) (*MsgRequestPrivateIdentityResponse, error)
 	GetPrivateKeyshares(ctx context.Context, in *MsgGetPrivateKeyshares, opts ...grpc.CallOption) (*MsgGetPrivateKeysharesResponse, error)
 	RegisterContract(ctx context.Context, in *MsgRegisterContract, opts ...grpc.CallOption) (*MsgRegisterContractResponse, error)
+	UnregisterContract(ctx context.Context, in *MsgUnregisterContract, opts ...grpc.CallOption) (*MsgUnregisterContractResponse, error)
 }
 
 type msgClient struct {
@@ -137,6 +139,15 @@ func (c *msgClient) RegisterContract(ctx context.Context, in *MsgRegisterContrac
 	return out, nil
 }
 
+func (c *msgClient) UnregisterContract(ctx context.Context, in *MsgUnregisterContract, opts ...grpc.CallOption) (*MsgUnregisterContractResponse, error) {
+	out := new(MsgUnregisterContractResponse)
+	err := c.cc.Invoke(ctx, Msg_UnregisterContract_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -153,6 +164,7 @@ type MsgServer interface {
 	RequestPrivateIdentity(context.Context, *MsgRequestPrivateIdentity) (*MsgRequestPrivateIdentityResponse, error)
 	GetPrivateKeyshares(context.Context, *MsgGetPrivateKeyshares) (*MsgGetPrivateKeysharesResponse, error)
 	RegisterContract(context.Context, *MsgRegisterContract) (*MsgRegisterContractResponse, error)
+	UnregisterContract(context.Context, *MsgUnregisterContract) (*MsgUnregisterContractResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -186,6 +198,9 @@ func (UnimplementedMsgServer) GetPrivateKeyshares(context.Context, *MsgGetPrivat
 }
 func (UnimplementedMsgServer) RegisterContract(context.Context, *MsgRegisterContract) (*MsgRegisterContractResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterContract not implemented")
+}
+func (UnimplementedMsgServer) UnregisterContract(context.Context, *MsgUnregisterContract) (*MsgUnregisterContractResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnregisterContract not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -362,6 +377,24 @@ func _Msg_RegisterContract_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_UnregisterContract_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUnregisterContract)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UnregisterContract(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_UnregisterContract_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UnregisterContract(ctx, req.(*MsgUnregisterContract))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -404,6 +437,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RegisterContract",
 			Handler:    _Msg_RegisterContract_Handler,
+		},
+		{
+			MethodName: "UnregisterContract",
+			Handler:    _Msg_UnregisterContract_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

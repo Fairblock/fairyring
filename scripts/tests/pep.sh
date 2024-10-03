@@ -26,6 +26,7 @@ WALLET_1=$($BINARY keys show wallet1 -a --keyring-backend test --home $CHAIN_DIR
 VALIDATOR_1=$($BINARY keys show val1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
 WALLET_2=$($BINARY keys show wallet2 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_2)
 VALIDATOR_2=$($BINARY keys show val2 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_2)
+WALLET_3=$($BINARY keys show wallet3 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
 
 GENERATED_SHARE=$1
 
@@ -51,6 +52,14 @@ wait_for_tx () {
   sleep $BLOCK_TIME
   local TXHASH=$(echo "$1" | jq -r '.txhash')
   RESULT=$($BINARY q tx --type=hash $TXHASH --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
+  echo "$RESULT"
+}
+
+wait_for_tx_source () {
+  sleep $BLOCK_TIME
+  sleep $BLOCK_TIME
+  local TXHASH=$(echo "$1" | jq -r '.txhash')
+  RESULT=$($BINARY q tx --type=hash $TXHASH --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE -o json)
   echo "$RESULT"
 }
 
@@ -843,11 +852,37 @@ sleep 10
 REQ_ID="fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/contract123"
 CONTRACT_ADDR="fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v"
 
+echo "Trying to registering contract with unauthorized address"
+RESULT=$($BINARY tx pep register-contract $CONTRACT_ADDR $REQ_ID --from $WALLET_3 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx_source $RESULT)
+
+ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
+if [[ "$ERROR_MSG" != *"unautorized registration; only cretor and admin can register"* ]]; then
+  echo "ERROR: '$ERROR_MSG'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  exit 1
+fi
+
+
 echo "Registering contract with identity"
 RESULT=$($BINARY tx pep register-contract $CONTRACT_ADDR $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
+RESULT=$(wait_for_tx_source $RESULT)
 
 sleep 10
+
+echo "Trying to unregistering contract with unauthorized address"
+RESULT=$($BINARY tx pep unregister-contract $CONTRACT_ADDR $REQ_ID --from $WALLET_3 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx_source $RESULT)
+ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
+
+if [[ "$ERROR_MSG" != *"unautorized deregistration; only cretor and admin can deregister"* ]]; then
+  echo "ERROR: '$ERROR_MSG'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  exit 1
+fi
 
 echo "Request Generation of Aggr keyshare"
 RESULT=$($BINARY tx pep get-general-keyshare $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)

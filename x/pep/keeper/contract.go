@@ -21,6 +21,13 @@ func (k Keeper) SetContractEntry(ctx context.Context, contract types.RegisteredC
 	store.Set([]byte(contract.Identity), b)
 }
 
+// RemoveContractEntry removes a specific contract entry in the store by identity
+func (k Keeper) RemoveContractEntry(ctx context.Context, identity string) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.ContractKeyPrefix))
+	store.Delete([]byte(identity))
+}
+
 // GetContractEntriesByID returns a the list of contracts for an identity
 func (k Keeper) GetContractEntriesByID(
 	ctx context.Context,
