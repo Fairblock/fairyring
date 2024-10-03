@@ -32,22 +32,9 @@ pub struct QueryResponse {
     pub aggr_keyshare: String,
 }
 
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryDecryptDataRequest {
-    #[prost(string, tag="1")]
-    pub pubkey: ::prost::alloc::string::String,
-    #[prost(string, tag="2")]
-    pub aggr_keyshare: ::prost::alloc::string::String,
-    #[prost(string, tag="3")]
-    pub encrypted_data: ::prost::alloc::string::String,
-}
-
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message, Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct QueryDecryptDataResponse {
-    #[prost(string, tag="1")]
-    pub decrypted_data: ::prost::alloc::string::String,
+    pub decrypted_data: String,
 }
 
 // Instantiate message

@@ -1,8 +1,9 @@
 // contract.rs
 use cosmwasm_std::{attr, entry_point, to_json_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdError, StdResult};
 use prost::Message;
-use crate::msg::{ExecuteContractMsg, QueryMsg, QueryResponse, InstantiateMsg, QueryDecryptDataRequest, QueryDecryptDataResponse};
+use crate::msg::{ExecuteContractMsg, QueryMsg, QueryResponse, InstantiateMsg, QueryDecryptDataResponse as JsonDcryptData};
 use crate::state::STORED_DATA;
+use fairblock_proto::fairyring::pep::{QueryDecryptDataRequest, QueryDecryptDataResponse};
 
 #[entry_point]
 pub fn execute(
@@ -116,6 +117,10 @@ pub fn query_pep_decrypt(
     let x = QueryDecryptDataResponse::decode(&*vec_res)
     .expect("Failed to decode Protobuf message");
     
-    let json_res = to_json_binary(&x)?;
+    let json_data = JsonDcryptData {
+        decrypted_data : x.decrypted_data,
+    };
+
+    let json_res = to_json_binary(&json_data)?;
     Ok(json_res)
 }
