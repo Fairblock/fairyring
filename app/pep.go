@@ -37,6 +37,7 @@ func (app *App) registerPepModule() (porttypes.IBCModule, error) {
 		app.AccountKeeper,
 		app.BankKeeper,
 		contractKeeper,
+		app.WasmKeeper,
 	)
 
 	// register IBC modules

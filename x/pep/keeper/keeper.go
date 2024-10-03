@@ -34,9 +34,10 @@ type (
 		// capabilityScopedFn func(string) capabilitykeeper.ScopedKeeper
 		scopedKeeper exported.ScopedKeeper
 
-		accountKeeper types.AccountKeeper
-		bankKeeper    types.BankKeeper
-		wasmKeeper    types.WasmKeeper
+		accountKeeper  types.AccountKeeper
+		bankKeeper     types.BankKeeper
+		contractKeeper types.ContractKeeper
+		wasmKeeper     types.WasmKeeper
 	}
 )
 
@@ -51,6 +52,7 @@ func NewKeeper(
 
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
+	contractKeeper types.ContractKeeper,
 	wasmKeeper types.WasmKeeper,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
@@ -64,10 +66,11 @@ func NewKeeper(
 		logger:       logger,
 		ibcKeeperFn:  ibcKeeperFn,
 		// capabilityScopedFn: capabilityScopedFn,
-		scopedKeeper:  scopedKeeper,
-		accountKeeper: accountKeeper,
-		bankKeeper:    bankKeeper,
-		wasmKeeper:    wasmKeeper,
+		scopedKeeper:   scopedKeeper,
+		accountKeeper:  accountKeeper,
+		bankKeeper:     bankKeeper,
+		contractKeeper: contractKeeper,
+		wasmKeeper:     wasmKeeper,
 	}
 }
 
@@ -162,4 +165,8 @@ func (k Keeper) SetRequestCount(ctx sdk.Context, requestNumber uint64) {
 
 func (k Keeper) SetWasmKeeper(wk types.WasmKeeper) {
 	k.wasmKeeper = wk
+}
+
+func (k Keeper) SetContractKeeper(ck types.ContractKeeper) {
+	k.contractKeeper = ck
 }

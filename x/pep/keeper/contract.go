@@ -98,7 +98,7 @@ func (k Keeper) ExecuteContract(ctx sdk.Context, contractAddr string, msg types.
 	}
 
 	wasmAddr := authtypes.NewModuleAddress(wasmtypes.ModuleName)
-	_, err = k.wasmKeeper.Execute(ctx, addr, wasmAddr, msgBytes, sdk.Coins{})
+	_, err = k.contractKeeper.Execute(ctx, addr, wasmAddr, msgBytes, sdk.Coins{})
 	if err != nil {
 		k.logger.Error("error executing contract: %s; error: %v", contractAddr, err)
 	}

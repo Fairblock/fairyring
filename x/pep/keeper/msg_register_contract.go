@@ -14,6 +14,20 @@ func (k msgServer) RegisterContract(
 ) (*types.MsgRegisterContractResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	contracAddr, err := sdk.AccAddressFromBech32(msg.ContractAddress)
+	if err != nil {
+		return nil, errors.New("invalid contract address")
+	}
+
+	contractInfo := k.wasmKeeper.GetContractInfo(ctx, contracAddr)
+	if contractInfo == nil {
+		return nil, errors.New("contract information not found")
+	}
+
+	if msg.Creator != contractInfo.Admin && msg.Creator != contractInfo.Creator {
+		return nil, errors.New("unautorized registration; only cretor and admin can register")
+	}
+
 	var contDetails = types.ContractDetails{
 		Registrar:       msg.Creator,
 		ContractAddress: msg.ContractAddress,
