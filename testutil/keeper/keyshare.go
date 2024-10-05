@@ -15,16 +15,17 @@ import (
 	"github.com/cosmos/cosmos-sdk/runtime"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	keeper2 "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
-	stakingtestutil "github.com/cosmos/cosmos-sdk/x/staking/testutil"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
 	portkeeper "github.com/cosmos/ibc-go/v8/modules/core/05-port/keeper"
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
-	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 	"testing"
 
@@ -44,6 +45,8 @@ func KeyshareKeeper(t testing.TB) (keeper.Keeper, sdk.Context, pepkeeper.Keeper,
 	stakingStoreKey := storetypes.NewKVStoreKey(stakingtypes.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 	pepMemStoreKey := storetypes.NewMemoryStoreKey(peptypes.MemStoreKey)
+	bankStoreKey := storetypes.NewKVStoreKey(banktypes.StoreKey)
+	authStoreKey := storetypes.NewKVStoreKey(authtypes.StoreKey)
 
 	db := dbm.NewMemDB()
 	stateStore := store.NewCommitMultiStore(db, log.NewNopLogger(), metrics.NewNoOpMetrics())
@@ -52,6 +55,8 @@ func KeyshareKeeper(t testing.TB) (keeper.Keeper, sdk.Context, pepkeeper.Keeper,
 	stateStore.MountStoreWithDB(stakingStoreKey, storetypes.StoreTypeIAVL, db)
 	stateStore.MountStoreWithDB(memStoreKey, storetypes.StoreTypeMemory, nil)
 	stateStore.MountStoreWithDB(pepMemStoreKey, storetypes.StoreTypeMemory, nil)
+	stateStore.MountStoreWithDB(bankStoreKey, storetypes.StoreTypeIAVL, db)
+	stateStore.MountStoreWithDB(authStoreKey, storetypes.StoreTypeIAVL, db)
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
@@ -66,13 +71,23 @@ func KeyshareKeeper(t testing.TB) (keeper.Keeper, sdk.Context, pepkeeper.Keeper,
 	pepScopedKeeper := pepCapabilityKeeper.ScopeToModule(ibcexported.ModuleName)
 	pepPortKeeper := portkeeper.NewKeeper(pepScopedKeeper)
 
-	ctrl := gomock.NewController(t)
-	accountKeeper := stakingtestutil.NewMockAccountKeeper(ctrl)
-	accountKeeper.EXPECT().GetModuleAddress(stakingtypes.BondedPoolName).Return(bondedAcc.GetAddress())
-	accountKeeper.EXPECT().GetModuleAddress(stakingtypes.NotBondedPoolName).Return(notBondedAcc.GetAddress())
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	accountKeeper := keeper2.NewAccountKeeper(
+		appCodec,
+		runtime.NewKVStoreService(authStoreKey),
+		authtypes.ProtoBaseAccount,
+		make(map[string][]string, 0),
+		address.NewBech32Codec("cosmos"),
+		sdk.Bech32PrefixAccAddr,
+		authority.String(),
+	)
 
-	bankKeeper := stakingtestutil.NewMockBankKeeper(ctrl)
+	bankKeeper := bankkeeper.NewBaseKeeper(
+		appCodec, runtime.NewKVStoreService(bankStoreKey),
+		accountKeeper,
+		make(map[string]bool, 0),
+		authority.String(),
+		log.NewNopLogger(),
+	)
 
 	pepKeeper := pepkeeper.NewKeeper(
 		appCodec,
@@ -86,6 +101,8 @@ func KeyshareKeeper(t testing.TB) (keeper.Keeper, sdk.Context, pepkeeper.Keeper,
 		},
 		pepScopedKeeper,
 		accountKeeper,
+		bankKeeper,
+		nil,
 		nil,
 	)
 

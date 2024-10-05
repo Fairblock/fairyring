@@ -1,6 +1,10 @@
 package keeper
 
 import (
+	"github.com/cosmos/cosmos-sdk/codec/address"
+	keeper2 "github.com/cosmos/cosmos-sdk/x/auth/keeper"
+	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"testing"
 
 	"cosmossdk.io/log"
@@ -29,10 +33,15 @@ func PepKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	storeKey := storetypes.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 
+	bankStoreKey := storetypes.NewKVStoreKey(banktypes.StoreKey)
+	authStoreKey := storetypes.NewKVStoreKey(authtypes.StoreKey)
+
 	db := dbm.NewMemDB()
 	stateStore := store.NewCommitMultiStore(db, log.NewNopLogger(), metrics.NewNoOpMetrics())
 	stateStore.MountStoreWithDB(storeKey, storetypes.StoreTypeIAVL, db)
 	stateStore.MountStoreWithDB(memStoreKey, storetypes.StoreTypeMemory, nil)
+	stateStore.MountStoreWithDB(bankStoreKey, storetypes.StoreTypeIAVL, db)
+	stateStore.MountStoreWithDB(authStoreKey, storetypes.StoreTypeIAVL, db)
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
@@ -44,6 +53,24 @@ func PepKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	portKeeper := portkeeper.NewKeeper(scopedKeeper)
 	// scopeModule := capabilityKeeper.ScopeToModule(types.ModuleName)
 
+	accountKeeper := keeper2.NewAccountKeeper(
+		appCodec,
+		runtime.NewKVStoreService(authStoreKey),
+		authtypes.ProtoBaseAccount,
+		make(map[string][]string, 0),
+		address.NewBech32Codec("cosmos"),
+		sdk.Bech32PrefixAccAddr,
+		authority.String(),
+	)
+
+	bankKeeper := bankkeeper.NewBaseKeeper(
+		appCodec, runtime.NewKVStoreService(bankStoreKey),
+		accountKeeper,
+		make(map[string]bool, 0),
+		authority.String(),
+		log.NewNopLogger(),
+	)
+
 	k := keeper.NewKeeper(
 		appCodec,
 		runtime.NewKVStoreService(storeKey),
@@ -54,12 +81,9 @@ func PepKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 				PortKeeper: &portKeeper,
 			}
 		},
-		//func(string) capabilitykeeper.ScopedKeeper {
-		//	return scopeModule
-		//},
 		scopedKeeper,
-		nil,
-		nil,
+		accountKeeper,
+		bankKeeper,
 		nil,
 		nil,
 	)
