@@ -87,6 +87,8 @@ func KeyshareKeeper(t testing.TB) (keeper.Keeper, sdk.Context, pepkeeper.Keeper,
 		pepScopedKeeper,
 		accountKeeper,
 		nil,
+		nil,
+		nil,
 	)
 
 	stakingKeeper := stakingkeeper.NewKeeper(

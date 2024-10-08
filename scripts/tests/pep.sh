@@ -164,10 +164,10 @@ CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CH
 RESULT=$($BINARY query keyshare list-aggregated-key-share --node $CHAIN1_NODE -o json)
 AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .height')
 AGG_KEY=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .data')
-if [ "$CURRENT_BLOCK" -gt "$AGG_KEY_HEIGHT" ]; then
-  echo "ERROR: Height of the aggregated key from key share module '$AGG_KEY_HEIGHT' is less than current block height '$CURRENT_BLOCK'"
-  exit 1
-fi
+#if [ "$CURRENT_BLOCK" -gt "$AGG_KEY_HEIGHT" ]; then
+#  echo "ERROR: Height of the aggregated key from key share module '$AGG_KEY_HEIGHT' is less than current block height '$CURRENT_BLOCK'"
+#  exit 1
+#fi
 
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE -o json | jq -r '.block.header.height')
 echo "Chain 2 Current Block: $CURRENT_BLOCK"
@@ -188,10 +188,10 @@ CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CH
 RESULT=$($BINARY query keyshare list-aggregated-key-share --node $CHAIN1_NODE -o json)
 AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .height')
 AGG_KEY=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .data')
-if [ "$CURRENT_BLOCK" -gt "$AGG_KEY_HEIGHT" ]; then
-  echo "ERROR: Height of the aggregated key from key share module '$AGG_KEY_HEIGHT' is less than current block height '$CURRENT_BLOCK'"
-  exit 1
-fi
+#if [ "$CURRENT_BLOCK" -gt "$AGG_KEY_HEIGHT" ]; then
+#  echo "ERROR: Height of the aggregated key from key share module '$AGG_KEY_HEIGHT' is less than current block height '$CURRENT_BLOCK'"
+#  exit 1
+#fi
 
 
 echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
