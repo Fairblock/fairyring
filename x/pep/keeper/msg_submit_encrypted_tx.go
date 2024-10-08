@@ -13,12 +13,17 @@ import (
 
 func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmitEncryptedTx) (*types.MsgSubmitEncryptedTxResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	params := k.GetParams(ctx)
 
-	strHeight := k.GetLatestHeight(ctx)
-	height, err := strconv.ParseUint(strHeight, 10, 64)
+	height := uint64(ctx.BlockHeight())
 
-	if err != nil {
-		height = uint64(ctx.BlockHeight())
+	if !params.IsSourceChain {
+		strHeight := k.GetLatestHeight(ctx)
+		latestHeight, err := strconv.ParseUint(strHeight, 10, 64)
+
+		if err == nil {
+			height = latestHeight
+		}
 	}
 
 	if msg.TargetBlockHeight <= height {
