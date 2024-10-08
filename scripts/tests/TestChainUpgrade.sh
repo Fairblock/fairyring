@@ -263,6 +263,8 @@ echo $(pwd)
 echo $CURRENT_PATH
 $CURRENT_PATH/scripts/tests/keyshareSender.sh $BINARY $CHAIN_HOME tcp://localhost:26657 $VALIDATOR_1 $CHAINID_1 > $WORKING_DIR/keyshareSender.log 2>&1 &
 
+CONTRACT_DIR=$CURRENT_PATH/scripts/tests/fairyring_contract
+
 echo "Query submitted key share on chain $CHAINID_1"
 RESULT=$($BINARY query keyshare list-key-share -o json)
 RESULT_SENDER=$(echo "$RESULT" | jq -r '.keyShare[0].validator')
@@ -451,3 +453,221 @@ if [[ "$TARGET_BAL_AFTER" == "$TARGET_BAL" ]]; then
   echo "ERROR: Pep module encrypted tx execution error. Expected Target Balance to be updated, got same balance: '$TARGET_BAL_AFTER $TARGET_BAL_DENOM'"
   exit 1
 fi
+
+
+echo "############################"
+echo "# Testing Private KeyShare #"
+echo "############################"
+
+SCEP_PUBKEY1="A/MdHVpitzHNSdD1Zw3kY+L5PEIPyd9l6sD5i4aIfXp9"
+SCEP_PUBKEY2="Ak9iJuH5l5/XdmS6U+ojbutXnGzBnQf++HVOfKanVEc+"
+
+SCEP_PRIV_KEY1="a267fb03b3e6dc381550ea0257ace31433698f16248ba111dfb75550364d31fe"
+SCEP_PRIV_KEY2="ef1450bdc18396f2254f52d8c525c0d933a8f146ec2a681eaf319f5899f2f60d"
+
+echo "Creating new Private Request in pep module on chain $CHAIN_ID"
+RESULT=$($BINARY tx pep request-private-keyshare test_req_1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+
+sleep $(($BLOCK_TIME * 2))
+
+echo "Query private keyshare request on chain $CHAIN_ID"
+SHOW_PRIVATE_REQ=$($BINARY query pep show-private-keyshare-req $WALLET_1/test_req_1 --node tcp://localhost:26657 -o json)
+echo $SHOW_PRIVATE_REQ
+REQ_ID=$(echo $SHOW_PRIVATE_REQ | jq -r '.req_id')
+echo "Identity for private keyshare request 1 is: $REQ_ID"
+
+sleep $(($BLOCK_TIME * 2))
+
+echo "Requesting for private keyshares on Source chain"
+RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID $SCEP_PUBKEY1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+
+sleep $(($BLOCK_TIME * 2))
+
+EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+
+ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY1" -k "$EXTRACTED_SHARE")
+
+# echo $ENC_KS
+
+while true; do
+  echo "Submitting Private Key Share"
+
+  RESULT=$($BINARY tx keyshare submit-encrypted-keyshare $REQ_ID $WALLET_1 $ENC_KS 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+  echo "$RESULT"
+  check_tx_err $RESULT
+  if [[ $? -eq 0 ]]; then
+    break
+  fi
+done
+
+sleep $(($BLOCK_TIME * 2))
+
+echo "Query private keyshare request on chain $CHAIN_ID"
+SHOW_PRIVATE_REQ=$($BINARY query pep show-private-keyshare-req $WALLET_1/test_req_1 --node tcp://localhost:26657 -o json)
+ENC_KEYSHARES=$(echo "$SHOW_PRIVATE_REQ" | jq -r '.encrypted_keyshares')
+
+if [ "$ENC_KEYSHARES" = "[]" ]; then
+  echo "encrypted_keyshares is empty."
+  exit 1
+fi
+
+echo $SHOW_PRIVATE_REQ
+
+echo "Sending get private keyshare request without previous entry"
+REQ_ID="test_req_dummy_1"
+RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID $SCEP_PUBKEY1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+
+sleep $(($BLOCK_TIME * 2))
+
+echo "Query private keyshare request on chain $CHAIN_ID"
+SHOW_PRIVATE_REQ=$($BINARY query pep show-private-keyshare-req $REQ_ID --node tcp://localhost:26657 -o json)
+echo $SHOW_PRIVATE_REQ
+
+EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+
+ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY1" -k "$EXTRACTED_SHARE")
+
+while true; do
+  echo "Submitting Private Key Share"
+
+  RESULT=$($BINARY tx keyshare submit-encrypted-keyshare $REQ_ID $WALLET_1 $ENC_KS 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+  echo "$RESULT"
+  check_tx_err $RESULT
+  if [[ $? -eq 0 ]]; then
+    break
+  fi
+done
+
+sleep $(($BLOCK_TIME * 2))
+
+echo "Query private keyshare request on chain $CHAIN_ID"
+SHOW_PRIVATE_REQ=$($BINARY query pep show-private-keyshare-req $REQ_ID --node tcp://localhost:26657 -o json)
+ENC_KEYSHARES=$(echo "$SHOW_PRIVATE_REQ" | jq -r '.encrypted_keyshares')
+
+if [ "$ENC_KEYSHARES" = "[]" ]; then
+  echo "encrypted_keyshares is empty."
+  exit 1
+fi
+
+echo $SHOW_PRIVATE_REQ
+
+echo "############################"
+echo "# Testing Decryption Query #"
+echo "############################"
+
+echo "Query general keyshare request on chain $CHAIN_ID"
+LIST_KEYSHARE_REQ=$($BINARY query pep list-keyshare-req --node tcp://localhost:26657 -o json)
+IDENTITY=$(echo $LIST_KEYSHARE_REQ | jq -r '.keyshares[0].identity')
+AGGR_KEYSHARE=$(echo $LIST_KEYSHARE_REQ | jq -r '.keyshares[0].aggr_keyshare')
+echo "Identity for keyshare request is: $IDENTITY"
+echo "Aggregated keyshare for request is: $AGGR_KEYSHARE"
+
+echo "Encrypting data with Pub key: '$PUB_KEY'"
+TEST_DATA="test_data_1"
+CIPHER=$($BINARY encrypt $IDENTITY $PUB_KEY $TEST_DATA --node tcp://localhost:26657)
+
+echo "Encrypted Data: '$CIPHER'"
+
+echo "Attempting decryption of data via pep query"
+RSP=$($BINARY query pep decrypt-data $PUB_KEY $AGGR_KEYSHARE $CIPHER --node tcp://localhost:26657 -o json)
+DECRYPTED_DATA=$(echo $RSP | jq -r '.decrypted_data')
+
+if [[ "$TEST_DATA" == "$DECRYPTED_DATA" ]]; then
+  echo "Data successfully decrypted"
+else
+  echo "Data decryption unsuccessful. Expected: '$TEST_DATA' ; found: '$DECRYPTED_DATA'"
+  echo "Response from decryption query: '$RSP'"
+  exit 1
+fi
+
+echo "#############################################"
+echo "# Testing contract callback on source chain #"
+echo "#############################################"
+
+cd $CONTRACT_DIR
+
+echo "Compiling contract"
+cargo build --release --target wasm32-unknown-unknown
+
+echo "Optimizing Contract"
+docker run --rm -v "$(pwd)":/code \
+  --mount type=volume,source="$(basename "$(pwd)")_cache",target=/target \
+  --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
+  cosmwasm/optimizer:0.16.0
+
+echo "Deploying smart contract on source chain"
+RESULT=$($BINARY tx wasm store $CONTRACT_DIR/artifacts/fairyring_contract.wasm --from $WALLET_1 --gas 9000000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test --fees 9000000ufairy -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+echo $RESULT
+
+sleep 10
+
+echo "Instantiating the contract"
+RESULT=$($BINARY tx wasm instantiate 1 '{"identity": "init_identity", "pubkey": "init_pubkey", "aggr_keyshare": "init_keyshare"}' --admin $WALLET_1 --from $WALLET_1 --gas 9000000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test --fees 9000000ufairy --label test_contract_1 -o json -y)
+check_tx_code $RESULT
+
+sleep 10
+
+echo "Creating new General keyshare Request on chain fairyring_test_1"
+RESULT=$($BINARY tx pep request-general-keyshare 30s contract123 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+
+sleep 10
+
+REQ_ID="$WAL1_ADDR/contract123"
+CONTRACT_ADDR="fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v"
+
+
+echo "Registering contract with identity"
+RESULT=$($BINARY tx pep register-contract $CONTRACT_ADDR $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx_source $RESULT)
+
+sleep 10
+
+echo "Request Generation of Aggr keyshare"
+RESULT=$($BINARY tx pep get-general-keyshare $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+echo "$RESULT"
+check_tx_code $RESULT
+
+sleep 6
+
+EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+
+while true; do
+  echo "Submitting General Key Share"
+
+  RESULT=$($BINARY tx keyshare create-general-key-share "private-gov-identity" $REQ_ID $EXTRACTED_SHARE 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+  echo "$RESULT"
+  check_tx_err $RESULT
+  if [ $? -eq 0 ]; then
+    break
+  fi
+done
+
+sleep 15
+
+echo "Query Contract state"
+RSP=$($BINARY q wasm contract-state smart $CONTRACT_ADDR '{"get_stored_data":{"identity": "'"$REQ_ID"'"}}' --node tcp://localhost:26657 -o json)
+echo $RSP
+
+echo "#########################################################"
+echo "# Testing decryption from contract request source chain #"
+echo "#########################################################"
+
+echo "Testing with pubkey provided explicitly"
+RSP=$($BINARY q wasm contract-state smart $CONTRACT_ADDR '{"decrypt_data": {"pubkey": "a2a4472488440341db3252447af1c31e06fd32d7067e300ed60052fcdd131fd702bf901e1dd0122a312bb582a9a375a3", "aggr_keyshare": "a3b49bbffd655aa37e0b71a4d90862e1f70bdd0aab48587307ef74c2b3e12fd2ea42d88fc5f592e5caf83d33d7f93454196f32137817ceb5ecb41fbe48c3734bb11510febd6988302dd2c362deb3479b4946daa399fb149e63c0a5c45b48292d", "encrypted_data": "6167652d656e6372797074696f6e2e6f72672f76310a2d3e20646973744942450a686e4a7641376d5655797679397166465230447849417464374c3152586371484542687736306a316f325a446e567453626a4759374a4d2f5a524752654e536b0a574d6f56567966674d55546f363944502f4f624a6544424e6f47694b50746a6b316a523075464276536372326d766948543238524f6e473755647835683077510a6c734767656554424336786e7834626e496d737874410a2d2d2d20793668724135506e5233563568414a35646f732b574e325932334b72742b383946306d4d743138595a59490a43129dfd9ddbb210374314a96ab1b06260b4e1abf7d3fac77029043c8bdbe0a6efd2b73f95f75be0"}}' --node tcp://localhost:26657 -o json)
+echo $RSP
+
+echo "Testing with pubkey not provided"
+RSP=$($BINARY q wasm contract-state smart $CONTRACT_ADDR '{"decrypt_data": {"pubkey": "", "aggr_keyshare": "a3b49bbffd655aa37e0b71a4d90862e1f70bdd0aab48587307ef74c2b3e12fd2ea42d88fc5f592e5caf83d33d7f93454196f32137817ceb5ecb41fbe48c3734bb11510febd6988302dd2c362deb3479b4946daa399fb149e63c0a5c45b48292d", "encrypted_data": "6167652d656e6372797074696f6e2e6f72672f76310a2d3e20646973744942450a686e4a7641376d5655797679397166465230447849417464374c3152586371484542687736306a316f325a446e567453626a4759374a4d2f5a524752654e536b0a574d6f56567966674d55546f363944502f4f624a6544424e6f47694b50746a6b316a523075464276536372326d766948543238524f6e473755647835683077510a6c734767656554424336786e7834626e496d737874410a2d2d2d20793668724135506e5233563568414a35646f732b574e325932334b72742b383946306d4d743138595a59490a43129dfd9ddbb210374314a96ab1b06260b4e1abf7d3fac77029043c8bdbe0a6efd2b73f95f75be0"}}' --node tcp://localhost:26657 -o json)
+echo $RSP
+
+echo "Run 'pkill fairyringd' to stop fairyring"
