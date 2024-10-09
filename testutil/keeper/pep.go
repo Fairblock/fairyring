@@ -1,11 +1,12 @@
 package keeper
 
 import (
+	"testing"
+
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	keeper2 "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"testing"
 
 	"cosmossdk.io/log"
 	"cosmossdk.io/store"
@@ -44,10 +45,16 @@ func PepKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	stateStore.MountStoreWithDB(authStoreKey, storetypes.StoreTypeIAVL, db)
 	require.NoError(t, stateStore.LoadLatestVersion())
 
+	ctx := sdk.NewContext(stateStore, cmtproto.Header{}, false, log.NewNopLogger())
+
 	registry := codectypes.NewInterfaceRegistry()
 	appCodec := codec.NewProtoCodec(registry)
 	capabilityKeeper := capabilitykeeper.NewKeeper(appCodec, storeKey, memStoreKey)
 	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
+
+	// Register module account and other types
+	authtypes.RegisterInterfaces(registry)
+	types.RegisterInterfaces(registry)
 
 	scopedKeeper := capabilityKeeper.ScopeToModule(ibcexported.ModuleName)
 	portKeeper := portkeeper.NewKeeper(scopedKeeper)
@@ -62,6 +69,10 @@ func PepKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 		sdk.Bech32PrefixAccAddr,
 		authority.String(),
 	)
+
+	// Create the module account for the 'pep' module
+	moduleAcc := authtypes.NewEmptyModuleAccount(types.ModuleName, authtypes.Minter, authtypes.Burner)
+	accountKeeper.SetModuleAccount(ctx, moduleAcc)
 
 	bankKeeper := bankkeeper.NewBaseKeeper(
 		appCodec, runtime.NewKVStoreService(bankStoreKey),
@@ -87,8 +98,6 @@ func PepKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 		nil,
 		nil,
 	)
-
-	ctx := sdk.NewContext(stateStore, cmtproto.Header{}, false, log.NewNopLogger())
 
 	// Initialize params
 	if err := k.SetParams(ctx, types.DefaultParams()); err != nil {
