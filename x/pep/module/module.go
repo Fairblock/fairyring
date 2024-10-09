@@ -251,6 +251,23 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			} else {
 				am.keeper.Logger().Info(fmt.Sprintf("No encrypted tx found at block %d", h))
 			}
+
+			// execute registered contracts
+			contracts, found := am.keeper.GetContractEntriesByID(ctx, strconv.FormatUint(h, 10))
+			if found && len(contracts.Contracts) != 0 {
+				for _, contract := range contracts.Contracts {
+					am.keeper.ExecuteContract(
+						ctx,
+						contract.ContractAddress,
+						types.ExecuteContractMsg{
+							Identity:     strconv.FormatUint(h, 10),
+							Pubkey:       activePubkey.PublicKey,
+							AggrKeyshare: key.Data,
+						},
+					)
+				}
+			}
+
 			continue
 		}
 
