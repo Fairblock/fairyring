@@ -104,8 +104,6 @@ func KeyshareKeeper(t testing.TB) (keeper.Keeper, sdk.Context, pepkeeper.Keeper,
 		bankKeeper,
 		nil,
 		nil,
-		nil,
-		nil,
 	)
 
 	stakingKeeper := stakingkeeper.NewKeeper(
