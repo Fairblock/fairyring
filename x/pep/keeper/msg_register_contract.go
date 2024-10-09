@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"errors"
+	"reflect"
 
 	"github.com/Fairblock/fairyring/x/pep/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -17,6 +18,10 @@ func (k msgServer) RegisterContract(
 	contracAddr, err := sdk.AccAddressFromBech32(msg.ContractAddress)
 	if err != nil {
 		return nil, errors.New("invalid contract address")
+	}
+
+	if k.wasmKeeper == nil || reflect.ValueOf(k.wasmKeeper).IsZero() {
+		return nil, errors.New("wasm keeper has not been set")
 	}
 
 	contractInfo := k.wasmKeeper.GetContractInfo(ctx, contracAddr)

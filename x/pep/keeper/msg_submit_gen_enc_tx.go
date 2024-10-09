@@ -34,16 +34,18 @@ func (k msgServer) SubmitGeneralEncryptedTx(goCtx context.Context, msg *types.Ms
 
 	minGas := k.MinGasPrice(ctx)
 
-	err = k.bankKeeper.SendCoinsFromAccountToModule(
-		ctx,
-		senderAddr,
-		types.ModuleName,
-		sdk.NewCoins(minGas),
-	)
+	if !minGas.Amount.IsZero() {
+		err = k.bankKeeper.SendCoinsFromAccountToModule(
+			ctx,
+			senderAddr,
+			types.ModuleName,
+			sdk.NewCoins(minGas),
+		)
 
-	if err != nil {
-		k.Logger().Info(fmt.Sprintf("Error on sending coins: %v", err.Error()))
-		return nil, err
+		if err != nil {
+			k.Logger().Info(fmt.Sprintf("Error on sending coins: %v", err.Error()))
+			return nil, err
+		}
 	}
 
 	encryptedTx := types.GeneralEncryptedTx{

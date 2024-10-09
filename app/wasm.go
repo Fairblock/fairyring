@@ -97,10 +97,6 @@ func (app *App) registerWasmModules(
 		return nil, err
 	}
 
-	// if err := app.setAnteHandler(app.txConfig, wasmConfig, app.GetKey(wasmtypes.StoreKey)); err != nil {
-	// 	return nil, err
-	// }
-
 	if manager := app.SnapshotManager(); manager != nil {
 		err := manager.RegisterExtensions(
 			wasmkeeper.NewWasmSnapshotter(app.CommitMultiStore(), &app.WasmKeeper),
@@ -144,29 +140,3 @@ func (app *App) setPostHandler() error {
 	app.SetPostHandler(postHandler)
 	return nil
 }
-
-// func (app *App) setAnteHandler(txConfig client.TxConfig, wasmConfig wasmtypes.WasmConfig, txCounterStoreKey *storetypes.KVStoreKey) error {
-// 	anteHandler, err := NewAnteHandler(
-// 		HandlerOptions{
-// 			HandlerOptions: ante.HandlerOptions{
-// 				AccountKeeper:   app.AccountKeeper,
-// 				BankKeeper:      app.BankKeeper,
-// 				SignModeHandler: txConfig.SignModeHandler(),
-// 				FeegrantKeeper:  app.FeeGrantKeeper,
-// 				SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
-// 			},
-// 			IBCKeeper:             app.IBCKeeper,
-// 			WasmConfig:            &wasmConfig,
-// 			WasmKeeper:            &app.WasmKeeper,
-// 			TXCounterStoreService: runtime.NewKVStoreService(txCounterStoreKey),
-// 			CircuitKeeper:         &app.CircuitBreakerKeeper,
-// 		},
-// 	)
-// 	if err != nil {
-// 		return fmt.Errorf("failed to create AnteHandler: %s", err)
-// 	}
-
-// 	// Set the AnteHandler for the app
-// 	app.SetAnteHandler(anteHandler)
-// 	return nil
-// }
