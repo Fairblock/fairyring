@@ -77,7 +77,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "DecryptData",
 					Use:            "decrypt-data [pubkey] [aggr-keyshare] [encrypted-data]",
 					Short:          "Query decrypt-data",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "pubkey"}, {ProtoField: "aggrKeyshare"}, {ProtoField: "encryptedData"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "pubkey"}, {ProtoField: "aggr_keyshare"}, {ProtoField: "encrypted_data"}},
 				},
 
 				// this line is used by ignite scaffolding # autocli/query

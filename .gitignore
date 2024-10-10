@@ -10,3 +10,5 @@ DistributedIBE/
 data/
 devnet_data/
 github.com/
+fairyring_contract/target/
+scripts/tests/fairyring_contract/target/

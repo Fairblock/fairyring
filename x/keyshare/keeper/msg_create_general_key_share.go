@@ -67,7 +67,16 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
 		}
 		if keyShareReq.AggrKeyshare != "" {
-			return nil, types.ErrAggKeyAlreadyExists.Wrapf(", identity: %s, Aggregated key: %s", msg.IdValue, keyShareReq.AggrKeyshare)
+			return &types.MsgCreateGeneralKeyShareResponse{
+				Creator:             msg.Creator,
+				IdType:              msg.IdType,
+				IdValue:             msg.IdValue,
+				KeyShare:            msg.KeyShare,
+				KeyShareIndex:       msg.KeyShareIndex,
+				ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+				Success:             true,
+			}, nil
+			// return nil, types.ErrAggKeyAlreadyExists.Wrapf(", identity: %s, Aggregated key: %s", msg.IdValue, keyShareReq.AggrKeyshare)
 		}
 	}
 

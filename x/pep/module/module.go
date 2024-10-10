@@ -53,7 +53,7 @@ var (
 )
 
 // ConsensusVersion defines the current x/pep module consensus version.
-const ConsensusVersion = 2
+const ConsensusVersion = 3
 
 // ----------------------------------------------------------------------------
 // AppModuleBasic
@@ -156,6 +156,9 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 	if err := cfg.RegisterMigration(types.ModuleName, 1, m.Migrate1to2); err != nil {
 		panic(fmt.Errorf("failed to migrate x/%s from version 1 to 2: %w", types.ModuleName, err))
 	}
+	if err := cfg.RegisterMigration(types.ModuleName, 2, m.Migrate2to3); err != nil {
+		panic(fmt.Errorf("failed to migrate x/%s from version 2 to 3: %w", types.ModuleName, err))
+	}
 }
 
 // RegisterInvariants registers the invariants of the module. If an invariant deviates from its predicted value, the InvariantRegistry triggers appropriate logic (most often the chain will be halted)
@@ -251,6 +254,22 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			continue
 		}
 
+		// execute registered contracts
+		contracts, found := am.keeper.GetContractEntriesByID(ctx, strconv.FormatUint(h, 10))
+		if found && len(contracts.Contracts) != 0 {
+			for _, contract := range contracts.Contracts {
+				am.keeper.ExecuteContract(
+					ctx,
+					contract.ContractAddress,
+					types.ExecuteContractMsg{
+						Identity:     strconv.FormatUint(h, 10),
+						Pubkey:       activePubkey.PublicKey,
+						AggrKeyshare: key.Data,
+					},
+				)
+			}
+		}
+
 		skPoint, err := am.keeper.GetSKPoint(key.Data, suite)
 		if err != nil {
 			continue
@@ -275,6 +294,26 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			am.keeper.Logger().Error("aggregated keyshare not found in entry with req-id: ", entry.RequestId)
 			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
 			continue
+		}
+
+		// execute registered contracts
+		contracts, found := am.keeper.GetContractEntriesByID(ctx, entry.Identity)
+		if found && len(contracts.Contracts) != 0 {
+			for _, contract := range contracts.Contracts {
+				am.keeper.ExecuteContract(
+					ctx,
+					contract.ContractAddress,
+					types.ExecuteContractMsg{
+						Identity:     entry.Identity,
+						Pubkey:       entry.Pubkey,
+						AggrKeyshare: entry.AggrKeyshare,
+					},
+				)
+			}
+		}
+
+		if found {
+			am.keeper.RemoveContractEntry(ctx, entry.Identity)
 		}
 
 		if entry.TxList == nil {

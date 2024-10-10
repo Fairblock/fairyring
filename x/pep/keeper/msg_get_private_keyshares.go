@@ -7,6 +7,7 @@ import (
 	"time"
 
 	sdkerrors "cosmossdk.io/errors"
+	"cosmossdk.io/math"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/Fairblock/fairyring/x/pep/types"
@@ -37,7 +38,7 @@ func (k msgServer) GetPrivateKeyshares(goCtx context.Context, msg *types.MsgGetP
 
 	params := k.GetParams(ctx)
 
-	if params.PrivateKeysharePrice.IsPositive() {
+	if params.PrivateKeysharePrice.Amount.GT(math.ZeroInt()) {
 		err := k.bankKeeper.SendCoinsFromAccountToModule(ctx,
 			requester,
 			types.ModuleName,

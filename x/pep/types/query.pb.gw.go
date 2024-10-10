@@ -487,10 +487,6 @@ func local_request_Query_ShowPrivateKeyshareReq_0(ctx context.Context, marshaler
 
 }
 
-var (
-	filter_Query_DecryptData_0 = &utilities.DoubleArray{Encoding: map[string]int{"aggrKeyshare": 0, "encryptedData": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
-)
-
 func request_Query_DecryptData_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq QueryDecryptDataRequest
 	var metadata runtime.ServerMetadata
@@ -502,33 +498,37 @@ func request_Query_DecryptData_0(ctx context.Context, marshaler runtime.Marshale
 		_   = err
 	)
 
-	val, ok = pathParams["aggrKeyshare"]
+	val, ok = pathParams["pubkey"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "aggrKeyshare")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "pubkey")
+	}
+
+	protoReq.Pubkey, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "pubkey", err)
+	}
+
+	val, ok = pathParams["aggr_keyshare"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "aggr_keyshare")
 	}
 
 	protoReq.AggrKeyshare, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "aggrKeyshare", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "aggr_keyshare", err)
 	}
 
-	val, ok = pathParams["encryptedData"]
+	val, ok = pathParams["encrypted_data"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "encryptedData")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "encrypted_data")
 	}
 
 	protoReq.EncryptedData, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "encryptedData", err)
-	}
-
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Query_DecryptData_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "encrypted_data", err)
 	}
 
 	msg, err := client.DecryptData(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -547,33 +547,37 @@ func local_request_Query_DecryptData_0(ctx context.Context, marshaler runtime.Ma
 		_   = err
 	)
 
-	val, ok = pathParams["aggrKeyshare"]
+	val, ok = pathParams["pubkey"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "aggrKeyshare")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "pubkey")
+	}
+
+	protoReq.Pubkey, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "pubkey", err)
+	}
+
+	val, ok = pathParams["aggr_keyshare"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "aggr_keyshare")
 	}
 
 	protoReq.AggrKeyshare, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "aggrKeyshare", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "aggr_keyshare", err)
 	}
 
-	val, ok = pathParams["encryptedData"]
+	val, ok = pathParams["encrypted_data"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "encryptedData")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "encrypted_data")
 	}
 
 	protoReq.EncryptedData, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "encryptedData", err)
-	}
-
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Query_DecryptData_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "encrypted_data", err)
 	}
 
 	msg, err := server.DecryptData(ctx, &protoReq)
@@ -1170,7 +1174,7 @@ var (
 
 	pattern_Query_ShowPrivateKeyshareReq_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"Fairblock", "fairyring", "pep", "show_private_keyshare_req", "reqId"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_DecryptData_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"Fairblock", "fairyring", "pep", "decrypt_data", "aggrKeyshare", "encryptedData"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_DecryptData_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 1, 0, 4, 1, 5, 6}, []string{"Fairblock", "fairyring", "pep", "decrypt_data", "pubkey", "aggr_keyshare", "encrypted_data"}, "", runtime.AssumeColonVerbOpt(false)))
 )
 
 var (

@@ -11,6 +11,7 @@ const (
 	// RequestIdKeyPrefix is the prefix to retrieve all RequestId
 	RequestIdKeyPrefix        = "RequestId/value/"
 	PrivateRequestIdKeyPrefix = "PrivateRequestId/value/"
+	ContractKeyPrefix         = "Contract/value/"
 )
 
 // RequestIdKey returns the store key to retrieve a RequestId from the index fields

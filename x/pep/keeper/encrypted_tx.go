@@ -146,23 +146,6 @@ func (k Keeper) GetAllEncryptedArray(ctx context.Context) (arr []types.Encrypted
 	return
 }
 
-// RemoveEncryptedTx removes a encryptedTx from the store
-func (k Keeper) RemoveEncryptedTx(
-	ctx context.Context,
-	targetHeight uint64,
-	index uint64,
-) {
-	arr := k.GetEncryptedTxAllFromHeight(ctx, targetHeight)
-
-	if index >= uint64(len(arr.EncryptedTx)) {
-		return
-	}
-
-	arr.EncryptedTx = append(arr.EncryptedTx[:index], arr.EncryptedTx[index+1:]...)
-
-	k.SetEncryptedTx(ctx, targetHeight, arr)
-}
-
 // RemoveAllEncryptedTxFromHeight removes all encryptedTx from the store for a particular height
 func (k Keeper) RemoveAllEncryptedTxFromHeight(
 	ctx context.Context,
