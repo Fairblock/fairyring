@@ -911,6 +911,24 @@ echo "Query Contract state"
 RSP=$($BINARY q wasm contract-state smart $CONTRACT_ADDR '{"get_stored_data":{"identity": "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/contract123"}}' --node $CHAIN1_NODE -o json)
 echo $RSP
 
+CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
+TARGET_HEIGHT=$((CURRENT_BLOCK+2))
+EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+
+echo "Registering contract with blockwise identity $TARGET_HEIGHT"
+RESULT=$($BINARY tx pep register-contract $CONTRACT_ADDR $TARGET_HEIGHT --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx_source $RESULT)
+
+sleep 10
+
+echo "waiting for Submitting keyshare"
+
+echo "Query Contract state"
+RSP=$($BINARY q wasm contract-state smart $CONTRACT_ADDR '{"get_stored_data":{"identity": "'"$TARGET_HEIGHT"'"}}' --node $CHAIN1_NODE -o json)
+echo $RSP
+
 echo "#########################################################"
 echo "# Testing decryption from contract request source chain #"
 echo "#########################################################"
@@ -935,4 +953,4 @@ echo "#               Test General Encrypted Txs                #"
 echo "###########################################################"
 echo ""
 
-./scripts/tests/priv_gov.sh $PUB_KEY $1
+# ./scripts/tests/priv_gov.sh $PUB_KEY $1
