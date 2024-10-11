@@ -20,7 +20,7 @@ CHAINID_1=fairyring_test_1
 CHAIN1_NODE=tcp://localhost:16657
 CHAINID_2=fairyring_test_2
 CHAIN2_NODE=tcp://localhost:26657
-BLOCK_TIME=5
+BLOCK_TIME=1.5
 
 WALLET_1=$($BINARY keys show wallet1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
 VALIDATOR_1=$($BINARY keys show val1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
@@ -48,16 +48,14 @@ check_tx_err () {
 }
 
 wait_for_tx () {
-  sleep $BLOCK_TIME
-  sleep $BLOCK_TIME
+  sleep 2
   local TXHASH=$(echo "$1" | jq -r '.txhash')
   RESULT=$($BINARY q tx --type=hash $TXHASH --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
   echo "$RESULT"
 }
 
 wait_for_tx_source () {
-  sleep $BLOCK_TIME
-  sleep $BLOCK_TIME
+  sleep 2
   local TXHASH=$(echo "$1" | jq -r '.txhash')
   RESULT=$($BINARY q tx --type=hash $TXHASH --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE -o json)
   echo "$RESULT"
@@ -358,7 +356,7 @@ echo "Creating new General Enc Request in pep module on chain fairyring_test_1"
 RESULT=$($BINARY tx pep request-general-keyshare 30s testing123 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
-sleep 10
+sleep 5
 
 echo "Query general keyshare request on chain fairyring_test_1"
 LIST_KEYSHARE_REQ=$($BINARY query pep list-keyshare-req --node $CHAIN1_NODE -o json)
@@ -395,14 +393,14 @@ CIPHER2=$($BINARY encrypt $IDENTITY "" $SIGNED_DATA_2 --node $CHAIN1_NODE)
 rm -r unsigned.json &> /dev/null
 rm -r unsigned2.json &> /dev/null
 
-sleep 10
+sleep 5
 
 echo "Submit general encrypted tx to pep module on chain fairyring_test_1"
 RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
-sleep 6
+sleep 5
 
 echo "Query Keyshare request and check for encrypted tx"
 TX=$($BINARY query pep show-keyshare-req $REQ_ID --node $CHAIN1_NODE -o json | jq -r '.keyshare.tx_list.encryptedTx[0].data')
@@ -416,14 +414,14 @@ RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER2 $REQ_ID --from $WAL
 echo "$RESULT"
 check_tx_code $RESULT
 
-sleep 6
+sleep 5
 
 echo "Request Generation of Aggr keyshare"
 RESULT=$($BINARY tx pep get-general-keyshare $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
-sleep 6
+sleep 5
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $IDENTITY)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
@@ -472,7 +470,7 @@ while true; do
     echo "Found Identity & Request ID"
     break
   fi
-  sleep 10
+  sleep 5
 done
 
 echo "Query account pep nonce before submitting encrypted tx from pep module on chain $CHAINID_2"
@@ -508,14 +506,14 @@ CIPHER2=$($BINARY encrypt "$IDENTITY"  "" "$SIGNED_DATA_2" --node $CHAIN2_NODE)
 rm -r unsigned.json &> /dev/null
 rm -r unsigned2.json &> /dev/null
 
-sleep 10
+sleep 5
 
 echo "Submit general encrypted tx to pep module on chain $CHAINID_2"
 RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER $REQ_ID --from $WALLET_2 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
-sleep 6
+sleep 5
 
 echo "Query Keyshare request and check for encrypted tx"
 TX=$($BINARY query pep show-keyshare-req $REQ_ID --node $CHAIN2_NODE -o json | jq -r '.keyshare.tx_list.encryptedTx[0].data')
@@ -529,14 +527,14 @@ RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER2 $REQ_ID --from $WAL
 echo "$RESULT"
 check_tx_code $RESULT
 
-sleep 6
+sleep 5
 
 echo "Request Generation of Aggr keyshare"
 RESULT=$($BINARY tx pep get-general-keyshare $REQ_ID --from $WALLET_2 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
-sleep 6
+sleep 5
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $IDENTITY)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
@@ -583,7 +581,7 @@ echo "Creating new Private Request in pep module on chain fairyring_test_1"
 RESULT=$($BINARY tx pep request-private-keyshare test_req_1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
-sleep 10
+sleep 5
 
 echo "Query private keyshare request on chain fairyring_test_1"
 SHOW_PRIVATE_REQ=$($BINARY query pep show-private-keyshare-req $WALLET_1/test_req_1 --node $CHAIN1_NODE -o json)
@@ -591,13 +589,13 @@ echo $SHOW_PRIVATE_REQ
 REQ_ID=$(echo $SHOW_PRIVATE_REQ | jq -r '.req_id')
 echo "Identity for private keyshare request 1 is: $REQ_ID"
 
-sleep 10
+sleep 5
 
 echo "Requesting for private keyshares on Source chain"
 RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID $SCEP_PUBKEY1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
-sleep 10
+sleep 5
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
@@ -617,7 +615,7 @@ while true; do
   fi
 done
 
-sleep 10
+sleep 5
 
 echo "Query private keyshare request on chain fairyring_test_1"
 SHOW_PRIVATE_REQ=$($BINARY query pep show-private-keyshare-req $WALLET_1/test_req_1 --node $CHAIN1_NODE -o json)
@@ -635,7 +633,7 @@ REQ_ID="test_req_dummy_1"
 RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID $SCEP_PUBKEY1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
-sleep 10
+sleep 5
 
 echo "Query private keyshare request on chain fairyring_test_1"
 SHOW_PRIVATE_REQ=$($BINARY query pep show-private-keyshare-req $REQ_ID --node $CHAIN1_NODE -o json)
@@ -659,7 +657,7 @@ while true; do
   fi
 done
 
-sleep 10
+sleep 5
 
 echo "Query private keyshare request on chain fairyring_test_1"
 SHOW_PRIVATE_REQ=$($BINARY query pep show-private-keyshare-req $REQ_ID --node $CHAIN1_NODE -o json)
@@ -680,7 +678,7 @@ echo "Creating new Private Request in pep module on chain fairyring_test_2"
 RESULT=$($BINARY tx pep request-private-keyshare test_req_2 --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
-sleep 20
+sleep 8
 
 echo "Query private keyshare request on chain fairyring_test_2"
 SHOW_PRIVATE_REQ=$($BINARY query pep show-private-keyshare-req $WALLET_2/test_req_2 --node $CHAIN2_NODE -o json)
@@ -692,7 +690,7 @@ echo "Requesting for private keyshares on destination chain"
 RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID $SCEP_PUBKEY2 --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
-sleep 20
+sleep 8
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
@@ -729,7 +727,7 @@ REQ_ID="test_req_dummy_2"
 RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID $SCEP_PUBKEY2 --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
-sleep 10
+sleep 5
 
 echo "Query private keyshare request on chain fairyring_test_2"
 SHOW_PRIVATE_REQ=$($BINARY query pep show-private-keyshare-req $REQ_ID --node $CHAIN2_NODE -o json)
@@ -835,19 +833,19 @@ echo "Deploying smart contract on source chain"
 RESULT=$($BINARY tx wasm store $CONTRACT_DIR/artifacts/fairyring_contract.wasm --from $WALLET_1 --gas 9000000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test --fees 9000000ufairy -o json -y)
 check_tx_code $RESULT
 
-sleep 10
+sleep 5
 
 echo "Instantiating the contract"
 RESULT=$($BINARY tx wasm instantiate 1 '{"identity": "init_identity", "pubkey": "init_pubkey", "aggr_keyshare": "init_keyshare"}' --admin $WALLET_1 --from $WALLET_1 --gas 9000000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test --fees 9000000ufairy --label test_contract_1 -o json -y)
 check_tx_code $RESULT
 
-sleep 10
+sleep 5
 
 echo "Creating new General keyshare Request on chain fairyring_test_1"
 RESULT=$($BINARY tx pep request-general-keyshare 30s contract123 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
-sleep 10
+sleep 5
 
 REQ_ID="fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/contract123"
 CONTRACT_ADDR="fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v"
@@ -870,7 +868,7 @@ RESULT=$($BINARY tx pep register-contract $CONTRACT_ADDR $REQ_ID --from $WALLET_
 check_tx_code $RESULT
 RESULT=$(wait_for_tx_source $RESULT)
 
-sleep 10
+sleep 5
 
 echo "Trying to unregistering contract with unauthorized address"
 RESULT=$($BINARY tx pep unregister-contract $CONTRACT_ADDR $REQ_ID --from $WALLET_3 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
@@ -889,7 +887,7 @@ RESULT=$($BINARY tx pep get-general-keyshare $REQ_ID --from $WALLET_1 --gas-pric
 echo "$RESULT"
 check_tx_code $RESULT
 
-sleep 6
+sleep 5
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
@@ -905,7 +903,7 @@ while true; do
   fi
 done
 
-sleep 15
+sleep 8
 
 echo "Query Contract state"
 RSP=$($BINARY q wasm contract-state smart $CONTRACT_ADDR '{"get_stored_data":{"identity": "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/contract123"}}' --node $CHAIN1_NODE -o json)
@@ -921,7 +919,7 @@ RESULT=$($BINARY tx pep register-contract $CONTRACT_ADDR $TARGET_HEIGHT --from $
 check_tx_code $RESULT
 RESULT=$(wait_for_tx_source $RESULT)
 
-sleep 10
+sleep 5
 
 echo "waiting for Submitting keyshare"
 

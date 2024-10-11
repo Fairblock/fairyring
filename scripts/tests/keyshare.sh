@@ -15,7 +15,7 @@ echo ""
 BINARY=fairyringd
 CHAIN_DIR=$(pwd)/data
 CHAINID_1=fairyring_test_1
-BLOCK_TIME=6
+BLOCK_TIME=1.5
 
 WALLET_1=$($BINARY keys show wallet1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
 VALIDATOR_1=$($BINARY keys show val1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
@@ -232,7 +232,7 @@ fi
 
 
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
-TARGET_HEIGHT=$((CURRENT_BLOCK+1))
+TARGET_HEIGHT=$((CURRENT_BLOCK+2))
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
@@ -248,6 +248,15 @@ if [ "$AGGRED_SHARE" != $EXTRACTED_SHARE ]; then
   echo $RESULT | jq
 exit 1
 fi
+
+#if [ ! -f "$HOME/.fairyringclient/config.yml" ]; then
+#    fairyringclient config init
+#fi
+#
+#cp "$HOME/.fairyringclient/config.yml" "$HOME/.fairyringclient/config.yml.backup"
+#cp ./scripts/tests/fairyringclient_config.yml "$HOME/.fairyringclient/config.yml"
+#
+#fairyringclient start > $CHAIN_DIR/fairyringclient.log 2>&1 &
 
 ./scripts/tests/keyshareSender.sh $BINARY $CHAIN_DIR/$CHAINID_1 tcp://localhost:16657 $VALIDATOR_1 $CHAINID_1 > $CHAIN_DIR/keyshareSender.log 2>&1 &
 
