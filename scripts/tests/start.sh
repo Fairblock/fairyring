@@ -30,7 +30,7 @@ GRPCPORT_2=9092
 GRPCWEB_1=9091
 GRPCWEB_2=9093
 
-BLOCK_TIME=5
+BLOCK_TIME=1.5
 
 # Stop if it is already running
 if pgrep -x "$BINARY" >/dev/null; then
@@ -57,6 +57,12 @@ if ! mkdir -p $CHAIN_DIR/$CHAINID_2 2>/dev/null; then
     echo "Failed to create chain folder. Aborting..."
     exit 1
 fi
+#
+#if ! command -v fairyringclient 2>&1 >/dev/null
+#then
+#    echo "fairyringclient could not be found. Aborting..."
+#    exit 1
+#fi
 
 echo "Initializing $CHAINID_1 & $CHAINID_2..."
 $BINARY init test --home $CHAIN_DIR/$CHAINID_1 --chain-id=$CHAINID_1 &> /dev/null
@@ -153,11 +159,11 @@ echo "$modifiedJson2" | jq '.' > "$CHAIN_DIR/$CHAINID_2/config/genesis.json"
 
 echo "Starting $CHAINID_1 in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID_1.log"
-$BINARY start --log_level info --home $CHAIN_DIR/$CHAINID_1 --pruning=nothing --grpc.address="0.0.0.0:$GRPCPORT_1" > $CHAIN_DIR/$CHAINID_1.log 2>&1 &
+$BINARY start --log_format json --log_level info --home $CHAIN_DIR/$CHAINID_1 --pruning=nothing --grpc.address="0.0.0.0:$GRPCPORT_1" > $CHAIN_DIR/$CHAINID_1.log 2>&1 &
 
 echo "Starting $CHAINID_2 in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID_2.log"
-$BINARY start --log_level info --home $CHAIN_DIR/$CHAINID_2 --pruning=nothing --grpc.address="0.0.0.0:$GRPCPORT_2" > $CHAIN_DIR/$CHAINID_2.log 2>&1 &
+$BINARY start --log_format json --log_level info --home $CHAIN_DIR/$CHAINID_2 --pruning=nothing --grpc.address="0.0.0.0:$GRPCPORT_2" > $CHAIN_DIR/$CHAINID_2.log 2>&1 &
 
 echo "Checking if there is an existing keys for Hermes Relayer..."
 HKEY_1=$(hermes --config hermes_config.toml keys list --chain fairyring_test_1 | sed -n '/SUCCESS/d; s/.*(\([^)]*\)).*/\1/p')

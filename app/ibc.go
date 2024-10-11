@@ -170,6 +170,21 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 		AddRoute(icacontrollertypes.SubModuleName, icaControllerIBCModule).
 		AddRoute(icahosttypes.SubModuleName, icaHostIBCModule)
 
+	acceptList := map[string]proto.Message{
+		"/fairyring.keyshare.Query/VerifiableRandomness": &keysharemoduletypes.QueryVerifiableRandomnessResponse{},
+		"/fairyring.pep.Query/DecryptData":               &pepmoduletypes.QueryDecryptDataResponse{},
+	}
+
+	// Add wasmd to IBC Router
+	wasmStack, err := app.registerWasmModules(appOpts, wasmkeeper.WithQueryPlugins(
+		&wasmkeeper.QueryPlugins{
+			Grpc: wasmkeeper.AcceptListGrpcQuerier(acceptList, app.GRPCQueryRouter(), app.appCodec),
+		}))
+	if err != nil {
+		return err
+	}
+	ibcRouter.AddRoute(wasmtypes.ModuleName, wasmStack)
+
 	pepStack, err := app.registerPepModule()
 	if err != nil {
 		return err
@@ -186,19 +201,6 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	govIBCModule := ibcfee.NewIBCMiddleware(gov.NewIBCModule(app.GovKeeper), app.IBCFeeKeeper)
 	ibcRouter.AddRoute(govtypes.ModuleName, govIBCModule)
 
-	acceptList := map[string]proto.Message{
-		"/fairyring.keyshare.Query/VerifiableRandomness": &keysharemoduletypes.QueryVerifiableRandomnessResponse{},
-	}
-
-	// Add wasmd to IBC Router
-	wasmStack, err := app.registerWasmModules(appOpts, wasmkeeper.WithQueryPlugins(
-		&wasmkeeper.QueryPlugins{
-			Grpc: wasmkeeper.AcceptListGrpcQuerier(acceptList, app.GRPCQueryRouter(), app.appCodec),
-		}))
-	if err != nil {
-		return err
-	}
-	ibcRouter.AddRoute(wasmtypes.ModuleName, wasmStack)
 	// this line is used by starport scaffolding # ibc/app/module
 
 	app.IBCKeeper.SetRouter(ibcRouter)

@@ -17,7 +17,7 @@ GENERATOR=ShareGenerator
 CHAIN_DIR=$(pwd)/data
 CHAINID_1=fairyring_test_1
 CHAINID_2=fairyring_test_2
-BLOCK_TIME=5
+BLOCK_TIME=1.5
 
 WALLET_3=$($BINARY keys show wallet3 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
 VAL1=$($BINARY keys show val1 -a --keyring-backend test --home $CHAIN_DIR/$CHAINID_1)
@@ -58,7 +58,7 @@ GENERATED_SHARE=$2
 
 echo "Creating a new proposal on source chain"
 RESULT=$($BINARY tx gov submit-proposal $(pwd)/scripts/tests/draft_proposal.json --from $WALLET_3 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
-sleep 5
+sleep $BLOCK_TIME
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT "source")
 
@@ -129,7 +129,7 @@ RESULT=$(wait_for_tx $RESULT "source")
 sleep 25
 
 echo "Checking Status of proposal on Source chain"
-sleep 5
+sleep $BLOCK_TIME
 PROPOSAL=$(fairyringd q gov proposals --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq '.proposals[0]')
 STATUS=$(echo "$PROPOSAL" | jq -r '.status')
 

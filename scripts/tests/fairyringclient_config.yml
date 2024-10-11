@@ -1,0 +1,11 @@
+fairyringnode:
+  chainid: fairyring_test_1
+  denom: ufairy
+  grpcport: 9090
+  ip: 127.0.0.1
+  port: 16657
+  protocol: http
+invalidsharepausethreshold: 5
+metricsport: 2222
+# Private Key is from start script, Account "val1"
+privatekey: 823ad58093b111e3c41369ca67103cba89e136995bdbd8a86c6b7eef9ca38b00
