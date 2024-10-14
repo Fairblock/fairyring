@@ -1,10 +1,11 @@
 package keeper_test
 
 import (
-	"github.com/Fairblock/fairyring/testutil/random"
-	"github.com/Fairblock/fairyring/testutil/sample"
 	"strconv"
 	"testing"
+
+	"github.com/Fairblock/fairyring/testutil/random"
+	"github.com/Fairblock/fairyring/testutil/sample"
 
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
@@ -18,9 +19,13 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func createNGeneralEncryptedTxEntry(keeper *keeper.Keeper, ctx sdk.Context, n int) (queue []types.GenEncTxExecutionQueue) {
+func createNGeneralEncryptedTxEntry(
+	keeper *keeper.Keeper,
+	ctx sdk.Context,
+	n int,
+) (queue []types.IdentityExecutionQueue) {
 	items := make([]types.GeneralEncryptedTxArray, n)
-	queue = make([]types.GenEncTxExecutionQueue, n)
+	queue = make([]types.IdentityExecutionQueue, n)
 	for i := range items { // i is block height
 
 		items[i].EncryptedTx = make([]types.GeneralEncryptedTx, n)
@@ -31,7 +36,7 @@ func createNGeneralEncryptedTxEntry(keeper *keeper.Keeper, ctx sdk.Context, n in
 			items[i].EncryptedTx[j].Identity = identity
 			items[i].EncryptedTx[j].Index = uint64(j)
 		}
-		queue[i] = types.GenEncTxExecutionQueue{
+		queue[i] = types.IdentityExecutionQueue{
 			Creator:      sample.AccAddress(),
 			RequestId:    identity,
 			Identity:     identity,

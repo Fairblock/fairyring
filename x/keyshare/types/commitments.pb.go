@@ -22,6 +22,8 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// Commitments defines the list of commitments to verify the
+// keyshares submitted by validators
 type Commitments struct {
 	Commitments []string `protobuf:"bytes,1,rep,name=commitments,proto3" json:"commitments,omitempty"`
 }

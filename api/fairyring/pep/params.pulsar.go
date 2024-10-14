@@ -1476,6 +1476,7 @@ type Params struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// option (gogoproto.equal) = true;
 	KeyshareChannelId     string                 `protobuf:"bytes,1,opt,name=keyshare_channel_id,json=keyshareChannelId,proto3" json:"keyshare_channel_id,omitempty"`
 	IsSourceChain         bool                   `protobuf:"varint,2,opt,name=is_source_chain,json=isSourceChain,proto3" json:"is_source_chain,omitempty"`
 	TrustedCounterParties []*TrustedCounterParty `protobuf:"bytes,3,rep,name=trusted_counter_parties,json=trustedCounterParties,proto3" json:"trusted_counter_parties,omitempty"`
@@ -1546,6 +1547,9 @@ func (x *Params) GetPrivateKeysharePrice() *v1beta1.Coin {
 	return nil
 }
 
+// TrustedCounterParty defines the structure to store the ibc info
+// of the source chain (fairyring) to reliably fetch active keys and
+// aggregated/encrypted keyshares
 type TrustedCounterParty struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

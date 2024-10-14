@@ -52,7 +52,7 @@ func local_request_Query_Params_0(ctx context.Context, marshaler runtime.Marshal
 }
 
 func request_Query_EncryptedTx_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryGetEncryptedTxRequest
+	var protoReq QueryEncryptedTxRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -62,15 +62,15 @@ func request_Query_EncryptedTx_0(ctx context.Context, marshaler runtime.Marshale
 		_   = err
 	)
 
-	val, ok = pathParams["targetHeight"]
+	val, ok = pathParams["target_height"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "targetHeight")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "target_height")
 	}
 
 	protoReq.TargetHeight, err = runtime.Uint64(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "targetHeight", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "target_height", err)
 	}
 
 	val, ok = pathParams["index"]
@@ -90,7 +90,7 @@ func request_Query_EncryptedTx_0(ctx context.Context, marshaler runtime.Marshale
 }
 
 func local_request_Query_EncryptedTx_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryGetEncryptedTxRequest
+	var protoReq QueryEncryptedTxRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -100,15 +100,15 @@ func local_request_Query_EncryptedTx_0(ctx context.Context, marshaler runtime.Ma
 		_   = err
 	)
 
-	val, ok = pathParams["targetHeight"]
+	val, ok = pathParams["target_height"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "targetHeight")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "target_height")
 	}
 
 	protoReq.TargetHeight, err = runtime.Uint64(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "targetHeight", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "target_height", err)
 	}
 
 	val, ok = pathParams["index"]
@@ -132,7 +132,7 @@ var (
 )
 
 func request_Query_EncryptedTxAll_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryAllEncryptedTxRequest
+	var protoReq QueryEncryptedTxAllRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -148,7 +148,7 @@ func request_Query_EncryptedTxAll_0(ctx context.Context, marshaler runtime.Marsh
 }
 
 func local_request_Query_EncryptedTxAll_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryAllEncryptedTxRequest
+	var protoReq QueryEncryptedTxAllRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -164,7 +164,7 @@ func local_request_Query_EncryptedTxAll_0(ctx context.Context, marshaler runtime
 }
 
 func request_Query_EncryptedTxAllFromHeight_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryAllEncryptedTxFromHeightRequest
+	var protoReq QueryEncryptedTxAllFromHeightRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -174,15 +174,15 @@ func request_Query_EncryptedTxAllFromHeight_0(ctx context.Context, marshaler run
 		_   = err
 	)
 
-	val, ok = pathParams["targetHeight"]
+	val, ok = pathParams["target_height"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "targetHeight")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "target_height")
 	}
 
 	protoReq.TargetHeight, err = runtime.Uint64(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "targetHeight", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "target_height", err)
 	}
 
 	msg, err := client.EncryptedTxAllFromHeight(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -191,7 +191,7 @@ func request_Query_EncryptedTxAllFromHeight_0(ctx context.Context, marshaler run
 }
 
 func local_request_Query_EncryptedTxAllFromHeight_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryAllEncryptedTxFromHeightRequest
+	var protoReq QueryEncryptedTxAllFromHeightRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -201,15 +201,15 @@ func local_request_Query_EncryptedTxAllFromHeight_0(ctx context.Context, marshal
 		_   = err
 	)
 
-	val, ok = pathParams["targetHeight"]
+	val, ok = pathParams["target_height"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "targetHeight")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "target_height")
 	}
 
 	protoReq.TargetHeight, err = runtime.Uint64(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "targetHeight", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "target_height", err)
 	}
 
 	msg, err := server.EncryptedTxAllFromHeight(ctx, &protoReq)
@@ -236,7 +236,7 @@ func local_request_Query_LatestHeight_0(ctx context.Context, marshaler runtime.M
 }
 
 func request_Query_PepNonce_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryGetPepNonceRequest
+	var protoReq QueryPepNonceRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -263,7 +263,7 @@ func request_Query_PepNonce_0(ctx context.Context, marshaler runtime.Marshaler, 
 }
 
 func local_request_Query_PepNonce_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryGetPepNonceRequest
+	var protoReq QueryPepNonceRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -294,7 +294,7 @@ var (
 )
 
 func request_Query_PepNonceAll_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryAllPepNonceRequest
+	var protoReq QueryPepNonceAllRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -310,7 +310,7 @@ func request_Query_PepNonceAll_0(ctx context.Context, marshaler runtime.Marshale
 }
 
 func local_request_Query_PepNonceAll_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryAllPepNonceRequest
+	var protoReq QueryPepNonceAllRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -344,7 +344,7 @@ func local_request_Query_PubKey_0(ctx context.Context, marshaler runtime.Marshal
 }
 
 func request_Query_KeyshareReq_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryKeyshareRequest
+	var protoReq QueryKeyshareReqRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -371,7 +371,7 @@ func request_Query_KeyshareReq_0(ctx context.Context, marshaler runtime.Marshale
 }
 
 func local_request_Query_KeyshareReq_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryKeyshareRequest
+	var protoReq QueryKeyshareReqRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -402,7 +402,7 @@ var (
 )
 
 func request_Query_KeyshareReqAll_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryAllKeyshareRequest
+	var protoReq QueryKeyshareReqAllRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -418,7 +418,7 @@ func request_Query_KeyshareReqAll_0(ctx context.Context, marshaler runtime.Marsh
 }
 
 func local_request_Query_KeyshareReqAll_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryAllKeyshareRequest
+	var protoReq QueryKeyshareReqAllRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -433,8 +433,8 @@ func local_request_Query_KeyshareReqAll_0(ctx context.Context, marshaler runtime
 
 }
 
-func request_Query_ShowPrivateKeyshareReq_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryShowPrivateKeyshareReqRequest
+func request_Query_PrivateKeyshareReq_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryPrivateKeyshareReqRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -444,24 +444,24 @@ func request_Query_ShowPrivateKeyshareReq_0(ctx context.Context, marshaler runti
 		_   = err
 	)
 
-	val, ok = pathParams["reqId"]
+	val, ok = pathParams["req_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "reqId")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "req_id")
 	}
 
 	protoReq.ReqId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "reqId", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "req_id", err)
 	}
 
-	msg, err := client.ShowPrivateKeyshareReq(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.PrivateKeyshareReq(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Query_ShowPrivateKeyshareReq_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryShowPrivateKeyshareReqRequest
+func local_request_Query_PrivateKeyshareReq_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryPrivateKeyshareReqRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -471,18 +471,18 @@ func local_request_Query_ShowPrivateKeyshareReq_0(ctx context.Context, marshaler
 		_   = err
 	)
 
-	val, ok = pathParams["reqId"]
+	val, ok = pathParams["req_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "reqId")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "req_id")
 	}
 
 	protoReq.ReqId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "reqId", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "req_id", err)
 	}
 
-	msg, err := server.ShowPrivateKeyshareReq(ctx, &protoReq)
+	msg, err := server.PrivateKeyshareReq(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -821,7 +821,7 @@ func RegisterQueryHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 
 	})
 
-	mux.Handle("GET", pattern_Query_ShowPrivateKeyshareReq_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Query_PrivateKeyshareReq_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -832,7 +832,7 @@ func RegisterQueryHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_ShowPrivateKeyshareReq_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_PrivateKeyshareReq_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -840,7 +840,7 @@ func RegisterQueryHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 			return
 		}
 
-		forward_Query_ShowPrivateKeyshareReq_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Query_PrivateKeyshareReq_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -1108,7 +1108,7 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 
 	})
 
-	mux.Handle("GET", pattern_Query_ShowPrivateKeyshareReq_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Query_PrivateKeyshareReq_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -1117,14 +1117,14 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_ShowPrivateKeyshareReq_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Query_PrivateKeyshareReq_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Query_ShowPrivateKeyshareReq_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Query_PrivateKeyshareReq_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -1154,11 +1154,11 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 var (
 	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "params"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_EncryptedTx_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"fairyring", "pep", "encrypted_tx", "targetHeight", "index"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_EncryptedTx_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"fairyring", "pep", "encrypted_tx", "target_height", "index"}, "", runtime.AssumeColonVerbOpt(false)))
 
 	pattern_Query_EncryptedTxAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "encrypted_tx"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_EncryptedTxAllFromHeight_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "pep", "encrypted_tx", "targetHeight"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_EncryptedTxAllFromHeight_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "pep", "encrypted_tx", "target_height"}, "", runtime.AssumeColonVerbOpt(false)))
 
 	pattern_Query_LatestHeight_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "latest_height"}, "", runtime.AssumeColonVerbOpt(false)))
 
@@ -1172,7 +1172,7 @@ var (
 
 	pattern_Query_KeyshareReqAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "keyshare"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_ShowPrivateKeyshareReq_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"Fairblock", "fairyring", "pep", "show_private_keyshare_req", "reqId"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_PrivateKeyshareReq_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"Fairblock", "fairyring", "pep", "show_private_keyshare_req", "req_id"}, "", runtime.AssumeColonVerbOpt(false)))
 
 	pattern_Query_DecryptData_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 1, 0, 4, 1, 5, 6}, []string{"Fairblock", "fairyring", "pep", "decrypt_data", "pubkey", "aggr_keyshare", "encrypted_data"}, "", runtime.AssumeColonVerbOpt(false)))
 )
@@ -1198,7 +1198,7 @@ var (
 
 	forward_Query_KeyshareReqAll_0 = runtime.ForwardResponseMessage
 
-	forward_Query_ShowPrivateKeyshareReq_0 = runtime.ForwardResponseMessage
+	forward_Query_PrivateKeyshareReq_0 = runtime.ForwardResponseMessage
 
 	forward_Query_DecryptData_0 = runtime.ForwardResponseMessage
 )

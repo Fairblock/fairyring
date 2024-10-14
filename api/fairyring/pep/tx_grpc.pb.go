@@ -38,15 +38,36 @@ type MsgClient interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
+	// SubmitEncryptedTx defines an operation to submit an
+	// encrypted transaction for a particular target block height
 	SubmitEncryptedTx(ctx context.Context, in *MsgSubmitEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error)
-	SubmitGeneralEncryptedTx(ctx context.Context, in *MsgSubmitGeneralEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error)
-	// this line is used by starport scaffolding # proto/tx/rpc
+	// SubmitGeneralEncryptedTx defines an operation to submit an
+	// encrypted transaction for a particular identity
+	SubmitGeneralEncryptedTx(ctx context.Context, in *MsgSubmitGeneralEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitGeneralEncryptedTxResponse, error)
+	// CreateAggregatedKeyShare defines an operation to submit an
+	// aggregated keyshare to a destination chain
 	CreateAggregatedKeyShare(ctx context.Context, in *MsgCreateAggregatedKeyShare, opts ...grpc.CallOption) (*MsgCreateAggregatedKeyShareResponse, error)
+	// RequestGeneralKeyshare defines an operation to request the
+	// creation of a new identity to which validators will be required
+	// to submit keyshares
 	RequestGeneralKeyshare(ctx context.Context, in *MsgRequestGeneralKeyshare, opts ...grpc.CallOption) (*MsgRequestGeneralKeyshareResponse, error)
+	// GetGeneralKeyshare defines an operation to signal validators to start
+	// submitting keyshares for a particular identity
 	GetGeneralKeyshare(ctx context.Context, in *MsgGetGeneralKeyshare, opts ...grpc.CallOption) (*MsgGetGeneralKeyshareResponse, error)
+	// RequestPrivateIdentity defines an operation to request the
+	// creation of a new identity to which validators will be required
+	// to submit encrypted keyshares
 	RequestPrivateIdentity(ctx context.Context, in *MsgRequestPrivateIdentity, opts ...grpc.CallOption) (*MsgRequestPrivateIdentityResponse, error)
+	// GetPrivateKeyshares defines an operation to signal validators to start
+	// submitting encrypted keyshares for a particular identity
 	GetPrivateKeyshares(ctx context.Context, in *MsgGetPrivateKeyshares, opts ...grpc.CallOption) (*MsgGetPrivateKeysharesResponse, error)
+	// RegisterContract defines an operation to make an instantiated
+	// contract eligible to be automatically executed when a particular
+	// identity has aggregated keyshares available for it
 	RegisterContract(ctx context.Context, in *MsgRegisterContract, opts ...grpc.CallOption) (*MsgRegisterContractResponse, error)
+	// UnregisterContract defines an operation to remove a registered contract
+	// from the list of contracts set to be automatically executed when
+	// aggreagted keyshare is available for a particular identity
 	UnregisterContract(ctx context.Context, in *MsgUnregisterContract, opts ...grpc.CallOption) (*MsgUnregisterContractResponse, error)
 }
 
@@ -76,8 +97,8 @@ func (c *msgClient) SubmitEncryptedTx(ctx context.Context, in *MsgSubmitEncrypte
 	return out, nil
 }
 
-func (c *msgClient) SubmitGeneralEncryptedTx(ctx context.Context, in *MsgSubmitGeneralEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error) {
-	out := new(MsgSubmitEncryptedTxResponse)
+func (c *msgClient) SubmitGeneralEncryptedTx(ctx context.Context, in *MsgSubmitGeneralEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitGeneralEncryptedTxResponse, error) {
+	out := new(MsgSubmitGeneralEncryptedTxResponse)
 	err := c.cc.Invoke(ctx, Msg_SubmitGeneralEncryptedTx_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -155,15 +176,36 @@ type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
+	// SubmitEncryptedTx defines an operation to submit an
+	// encrypted transaction for a particular target block height
 	SubmitEncryptedTx(context.Context, *MsgSubmitEncryptedTx) (*MsgSubmitEncryptedTxResponse, error)
-	SubmitGeneralEncryptedTx(context.Context, *MsgSubmitGeneralEncryptedTx) (*MsgSubmitEncryptedTxResponse, error)
-	// this line is used by starport scaffolding # proto/tx/rpc
+	// SubmitGeneralEncryptedTx defines an operation to submit an
+	// encrypted transaction for a particular identity
+	SubmitGeneralEncryptedTx(context.Context, *MsgSubmitGeneralEncryptedTx) (*MsgSubmitGeneralEncryptedTxResponse, error)
+	// CreateAggregatedKeyShare defines an operation to submit an
+	// aggregated keyshare to a destination chain
 	CreateAggregatedKeyShare(context.Context, *MsgCreateAggregatedKeyShare) (*MsgCreateAggregatedKeyShareResponse, error)
+	// RequestGeneralKeyshare defines an operation to request the
+	// creation of a new identity to which validators will be required
+	// to submit keyshares
 	RequestGeneralKeyshare(context.Context, *MsgRequestGeneralKeyshare) (*MsgRequestGeneralKeyshareResponse, error)
+	// GetGeneralKeyshare defines an operation to signal validators to start
+	// submitting keyshares for a particular identity
 	GetGeneralKeyshare(context.Context, *MsgGetGeneralKeyshare) (*MsgGetGeneralKeyshareResponse, error)
+	// RequestPrivateIdentity defines an operation to request the
+	// creation of a new identity to which validators will be required
+	// to submit encrypted keyshares
 	RequestPrivateIdentity(context.Context, *MsgRequestPrivateIdentity) (*MsgRequestPrivateIdentityResponse, error)
+	// GetPrivateKeyshares defines an operation to signal validators to start
+	// submitting encrypted keyshares for a particular identity
 	GetPrivateKeyshares(context.Context, *MsgGetPrivateKeyshares) (*MsgGetPrivateKeysharesResponse, error)
+	// RegisterContract defines an operation to make an instantiated
+	// contract eligible to be automatically executed when a particular
+	// identity has aggregated keyshares available for it
 	RegisterContract(context.Context, *MsgRegisterContract) (*MsgRegisterContractResponse, error)
+	// UnregisterContract defines an operation to remove a registered contract
+	// from the list of contracts set to be automatically executed when
+	// aggreagted keyshare is available for a particular identity
 	UnregisterContract(context.Context, *MsgUnregisterContract) (*MsgUnregisterContractResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
@@ -178,7 +220,7 @@ func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*
 func (UnimplementedMsgServer) SubmitEncryptedTx(context.Context, *MsgSubmitEncryptedTx) (*MsgSubmitEncryptedTxResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitEncryptedTx not implemented")
 }
-func (UnimplementedMsgServer) SubmitGeneralEncryptedTx(context.Context, *MsgSubmitGeneralEncryptedTx) (*MsgSubmitEncryptedTxResponse, error) {
+func (UnimplementedMsgServer) SubmitGeneralEncryptedTx(context.Context, *MsgSubmitGeneralEncryptedTx) (*MsgSubmitGeneralEncryptedTxResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitGeneralEncryptedTx not implemented")
 }
 func (UnimplementedMsgServer) CreateAggregatedKeyShare(context.Context, *MsgCreateAggregatedKeyShare) (*MsgCreateAggregatedKeyShareResponse, error) {

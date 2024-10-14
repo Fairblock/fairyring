@@ -28,11 +28,10 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 // GenesisState defines the pep module's genesis state.
 type GenesisState struct {
 	// params defines all the parameters of the module.
-	Params           Params             `protobuf:"bytes,1,opt,name=params,proto3" json:"params"`
-	PortId           string             `protobuf:"bytes,2,opt,name=port_id,json=portId,proto3" json:"port_id,omitempty"`
-	EncryptedTxArray []EncryptedTxArray `protobuf:"bytes,3,rep,name=encryptedTxArray,proto3" json:"encryptedTxArray"`
-	PepNonceList     []PepNonce         `protobuf:"bytes,4,rep,name=pepNonceList,proto3" json:"pepNonceList"`
-	// this line is used by starport scaffolding # genesis/proto/state
+	Params                 Params                `protobuf:"bytes,1,opt,name=params,proto3" json:"params"`
+	PortId                 string                `protobuf:"bytes,2,opt,name=port_id,json=portId,proto3" json:"port_id,omitempty"`
+	EncryptedTxArray       []EncryptedTxArray    `protobuf:"bytes,3,rep,name=encryptedTxArray,proto3" json:"encryptedTxArray"`
+	PepNonceList           []PepNonce            `protobuf:"bytes,4,rep,name=pepNonceList,proto3" json:"pepNonceList"`
 	AggregatedKeyShareList []AggregatedKeyShare  `protobuf:"bytes,6,rep,name=aggregatedKeyShareList,proto3" json:"aggregatedKeyShareList"`
 	ActivePubKey           types.ActivePublicKey `protobuf:"bytes,7,opt,name=activePubKey,proto3" json:"activePubKey"`
 	QueuedPubKey           types.QueuedPublicKey `protobuf:"bytes,8,opt,name=queuedPubKey,proto3" json:"queuedPubKey"`

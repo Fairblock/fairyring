@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	"cosmossdk.io/store/prefix"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -12,7 +13,10 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) KeyshareReq(c context.Context, req *types.QueryKeyshareRequest) (*types.QueryKeyshareResponse, error) {
+func (k Keeper) KeyshareReq(
+	c context.Context,
+	req *types.QueryKeyshareReqRequest,
+) (*types.QueryKeyshareReqResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -24,10 +28,13 @@ func (k Keeper) KeyshareReq(c context.Context, req *types.QueryKeyshareRequest) 
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	return &types.QueryKeyshareResponse{Keyshare: &entry}, nil
+	return &types.QueryKeyshareReqResponse{Keyshare: &entry}, nil
 }
 
-func (k Keeper) KeyshareReqAll(c context.Context, req *types.QueryAllKeyshareRequest) (*types.QueryAllKeyshareResponse, error) {
+func (k Keeper) KeyshareReqAll(
+	c context.Context,
+	req *types.QueryKeyshareReqAllRequest,
+) (*types.QueryKeyshareReqAllResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -37,10 +44,10 @@ func (k Keeper) KeyshareReqAll(c context.Context, req *types.QueryAllKeyshareReq
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxKeyPrefix))
 
-	var keyshares []*types.GenEncTxExecutionQueue
+	var keyshares []*types.IdentityExecutionQueue
 
 	pageRes, err := query.Paginate(store, req.Pagination, func(key []byte, value []byte) error {
-		var keyshare types.GenEncTxExecutionQueue
+		var keyshare types.IdentityExecutionQueue
 		if err := k.cdc.Unmarshal(value, &keyshare); err != nil {
 			return err
 		}
@@ -53,5 +60,8 @@ func (k Keeper) KeyshareReqAll(c context.Context, req *types.QueryAllKeyshareReq
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllKeyshareResponse{Keyshares: keyshares, Pagination: pageRes}, nil
+	return &types.QueryKeyshareReqAllResponse{
+		Keyshares:  keyshares,
+		Pagination: pageRes,
+	}, nil
 }

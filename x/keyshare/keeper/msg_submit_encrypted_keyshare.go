@@ -130,7 +130,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 	timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 
 	if keyShareReq.IbcInfo != nil {
-		if keyShareReq.IbcInfo.ChannelID != "" {
+		if keyShareReq.IbcInfo.ChannelId != "" {
 			_, err := k.TransmitEncryptedKeyshareDataPacket(
 				ctx,
 				types.EncryptedKeysharesPacketData{
@@ -139,8 +139,8 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 					RequestId:          keyShareReq.RequestId,
 					EncryptedKeyshares: keyShareReq.EncryptedKeyshares,
 				},
-				keyShareReq.IbcInfo.PortID,
-				keyShareReq.IbcInfo.ChannelID,
+				keyShareReq.IbcInfo.PortId,
+				keyShareReq.IbcInfo.ChannelId,
 				clienttypes.ZeroHeight(),
 				uint64(timeoutTimestamp),
 			)

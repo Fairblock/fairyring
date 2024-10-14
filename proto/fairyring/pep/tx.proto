@@ -10,8 +10,6 @@ import "google/protobuf/duration.proto";
 // this line is used by starport scaffolding # proto/tx/import
 import "gogoproto/gogo.proto";
 import "fairyring/pep/params.proto";
-import "fairyring/pep/aggregated_key_share.proto";
-import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
@@ -22,16 +20,45 @@ service Msg {
   // UpdateParams defines a (governance) operation for updating the module
   // parameters. The authority defaults to the x/gov module account.
   rpc UpdateParams             (MsgUpdateParams            ) returns (MsgUpdateParamsResponse     );
-  rpc SubmitEncryptedTx        (MsgSubmitEncryptedTx       ) returns (MsgSubmitEncryptedTxResponse);
-  rpc SubmitGeneralEncryptedTx (MsgSubmitGeneralEncryptedTx) returns (MsgSubmitEncryptedTxResponse);
   
-  // this line is used by starport scaffolding # proto/tx/rpc
+  // SubmitEncryptedTx defines an operation to submit an
+  // encrypted transaction for a particular target block height
+  rpc SubmitEncryptedTx        (MsgSubmitEncryptedTx       ) returns (MsgSubmitEncryptedTxResponse);
+  
+  // SubmitGeneralEncryptedTx defines an operation to submit an
+  // encrypted transaction for a particular identity
+  rpc SubmitGeneralEncryptedTx (MsgSubmitGeneralEncryptedTx) returns (MsgSubmitGeneralEncryptedTxResponse);
+  
+  // CreateAggregatedKeyShare defines an operation to submit an
+  // aggregated keyshare to a destination chain
   rpc CreateAggregatedKeyShare (MsgCreateAggregatedKeyShare) returns (MsgCreateAggregatedKeyShareResponse);
+  
+  // RequestGeneralKeyshare defines an operation to request the
+  // creation of a new identity to which validators will be required
+  // to submit keyshares
   rpc RequestGeneralKeyshare   (MsgRequestGeneralKeyshare  ) returns (MsgRequestGeneralKeyshareResponse  );
+  
+  // GetGeneralKeyshare defines an operation to signal validators to start
+  // submitting keyshares for a particular identity
   rpc GetGeneralKeyshare       (MsgGetGeneralKeyshare      ) returns (MsgGetGeneralKeyshareResponse      );
+  
+  // RequestPrivateIdentity defines an operation to request the
+  // creation of a new identity to which validators will be required
+  // to submit encrypted keyshares
   rpc RequestPrivateIdentity   (MsgRequestPrivateIdentity  ) returns (MsgRequestPrivateIdentityResponse  );
+  
+  // GetPrivateKeyshares defines an operation to signal validators to start
+  // submitting encrypted keyshares for a particular identity
   rpc GetPrivateKeyshares      (MsgGetPrivateKeyshares     ) returns (MsgGetPrivateKeysharesResponse     );
+  
+  // RegisterContract defines an operation to make an instantiated
+  // contract eligible to be automatically executed when a particular
+  // identity has aggregated keyshares available for it
   rpc RegisterContract         (MsgRegisterContract        ) returns (MsgRegisterContractResponse        );
+  
+  // UnregisterContract defines an operation to remove a registered contract
+  // from the list of contracts set to be automatically executed when
+  // aggreagted keyshare is available for a particular identity
   rpc UnregisterContract       (MsgUnregisterContract      ) returns (MsgUnregisterContractResponse      );
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -52,13 +79,19 @@ message MsgUpdateParams {
 // MsgUpdateParams message.
 message MsgUpdateParamsResponse {}
 
+// MsgSubmitEncryptedTx is the Msg/SubmitEncryptedTx request type.
 message MsgSubmitEncryptedTx {
   option (cosmos.msg.v1.signer) = "creator";
   string creator           = 1;
   string data              = 2;
-  uint64 targetBlockHeight = 3;
+  uint64 target_block_height = 3;
 }
 
+// MsgSubmitEncryptedTxResponse defines the response structure for executing a
+// MsgSubmitEncryptedTx message.
+message MsgSubmitEncryptedTxResponse {}
+
+// MsgSubmitGeneralEncryptedTx is the Msg/SubmitGeneralEncryptedTx request type.
 message MsgSubmitGeneralEncryptedTx {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
@@ -66,9 +99,11 @@ message MsgSubmitGeneralEncryptedTx {
   string req_id  = 3;
 }
 
-message MsgSubmitEncryptedTxResponse {}
+// MsgSubmitGeneralEncryptedTxResponse defines the response structure for executing a
+// MsgSubmitGeneralEncryptedTx message.
+message MsgSubmitGeneralEncryptedTxResponse {}
 
-// this line is used by starport scaffolding # proto/tx/message
+// MsgCreateAggregatedKeyShare is the Msg/CreateAggregatedKeyShare request type.
 message MsgCreateAggregatedKeyShare {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
@@ -76,8 +111,11 @@ message MsgCreateAggregatedKeyShare {
   string data    = 3;
 }
 
+// MsgCreateAggregatedKeyShareResponse defines the response structure for executing a
+// MsgCreateAggregatedKeyShare message.
 message MsgCreateAggregatedKeyShareResponse {}
 
+// MsgRequestGeneralKeyshare is the Msg/RequestGeneralKeyshare request type.
 message MsgRequestGeneralKeyshare {
   option (cosmos.msg.v1.signer) = "creator";
   string                   creator         = 1;
@@ -85,37 +123,49 @@ message MsgRequestGeneralKeyshare {
   string                   req_id          = 3;
 }
 
+// MsgRequestGeneralKeyshareResponse defines the response structure for executing a
+// MsgRequestGeneralKeyshare message.
 message MsgRequestGeneralKeyshareResponse {
   string req_id = 1;
 }
 
+// MsgGetGeneralKeyshare is the Msg/GetGeneralKeyshare request type.
 message MsgGetGeneralKeyshare {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   string req_id  = 2;
 }
 
+// MsgGetGeneralKeyshareResponse defines the response structure for executing a
+// MsgGetGeneralKeyshare message.
 message MsgGetGeneralKeyshareResponse {}
 
+// MsgRequestPrivateIdentity is the Msg/RequestPrivateIdentity request type.
 message MsgRequestPrivateIdentity {
   option (cosmos.msg.v1.signer) = "creator";
   string                   creator = 1;
-  string                   reqId   = 2;
+  string                   req_id   = 2;
 }
 
+// MsgRequestPrivateIdentityResponse defines the response structure for executing a
+// MsgRequestPrivateIdentity message.
 message MsgRequestPrivateIdentityResponse {
   string req_id = 1;
 }
 
+// MsgGetPrivateKeyshares is the Msg/GetPrivateKeyshares request type.
 message MsgGetPrivateKeyshares {
   option (cosmos.msg.v1.signer) = "creator";
   string creator       = 1;
-  string reqId         = 2;
+  string req_id         = 2;
   string secp_pubkey   = 3;
 }
 
+// MsgGetPrivateKeysharesResponse defines the response structure for executing a
+// MsgGetPrivateKeyshares message.
 message MsgGetPrivateKeysharesResponse {}
 
+// MsgRegisterContract is the Msg/RegisterContract request type.
 message MsgRegisterContract {
   option (cosmos.msg.v1.signer) = "creator";
   string creator          = 1;
@@ -123,8 +173,11 @@ message MsgRegisterContract {
   string identity         = 3;
 }
 
+// MsgRegisterContractResponse defines the response structure for executing a
+// MsgRegisterContract message.
 message MsgRegisterContractResponse {}
 
+// MsgUnregisterContract is the Msg/UnregisterContract request type.
 message MsgUnregisterContract {
   option (cosmos.msg.v1.signer) = "creator";
   string creator          = 1;
@@ -132,4 +185,6 @@ message MsgUnregisterContract {
   string identity         = 3;
 }
 
+// MsgUnregisterContractResponse defines the response structure for executing a
+// MsgUnregisterContract message.
 message MsgUnregisterContractResponse {}

@@ -6,33 +6,42 @@ import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
+// EncryptedTx defines the structure to store an encrypted transaction
+// by execution height
 message EncryptedTx {
-  uint64 targetHeight = 1;
+  uint64 target_height = 1;
   uint64 index = 2;
   string data = 3;
   string creator = 4;
-  cosmos.base.v1beta1.Coin chargedGas = 5;
-  uint64 processedAtChainHeight = 6;
+  cosmos.base.v1beta1.Coin charged_gas = 5;
+  uint64 processed_at_chain_height = 6;
   bool   expired = 7;
 }
 
+// EncryptedTxArray defines a list of EncryptedTx
 message EncryptedTxArray {
-  repeated EncryptedTx encryptedTx = 1 [(gogoproto.nullable) = false];
+  repeated EncryptedTx encrypted_tx = 1 [(gogoproto.nullable) = false];
 }
 
+// GeneralEncryptedTx defines the structure to store a
+// general encrypted transaction by identity
 message GeneralEncryptedTx {
   string identity = 1;
   uint64 index = 2;
   string data = 3;
   string creator = 4;
-  cosmos.base.v1beta1.Coin chargedGas = 5;
+  cosmos.base.v1beta1.Coin charged_gas = 5;
 }
 
+// GeneralEncryptedTxArray defines a list of GeneralEncryptedTx
 message GeneralEncryptedTxArray {
-  repeated GeneralEncryptedTx encryptedTx = 1 [(gogoproto.nullable) = false];
+  repeated GeneralEncryptedTx encrypted_tx = 1 [(gogoproto.nullable) = false];
 }
 
-message GenEncTxExecutionQueue {
+// IdentityExecutionQueue defines the structure to queue up
+// identities that have aggregated keyshares available and
+// are ready to execute any associated contracts or encrypted transactions
+message IdentityExecutionQueue {
   string creator = 1;
   string request_id = 2;
   string identity = 3;

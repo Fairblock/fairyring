@@ -21,7 +21,10 @@ func VerifiableRandomness() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			res, err := queryClient.VerifiableRandomness(context.Background(), &types.QueryVerifiableRandomnessQuery{})
+			res, err := queryClient.VerifiableRandomness(
+				context.Background(),
+				&types.QueryVerifiableRandomnessRequest{},
+			)
 			if err != nil {
 				return err
 			}

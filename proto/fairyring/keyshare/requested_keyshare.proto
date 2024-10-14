@@ -5,6 +5,7 @@ import "fairyring/common/shared_types.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
+// KeyShareRequest defines the storage structure for general keyshare requests
 message KeyShareRequest {
   string identity                  = 1;
   string pubkey                    = 2;
@@ -16,20 +17,26 @@ message KeyShareRequest {
   bool sent                        = 8;
 }
 
+// IBCInfo defines the structure to verify request for
+// aggregated and encrypted keyshares in case the request was made over IBC
 message IBCInfo {
-  string ClientID = 1;
-  string ConnectionID = 2;
-  string ChannelID = 3;
-  string PortID = 4;
+  string client_id = 1;
+  string connection_id = 2;
+  string channel_id = 3;
+  string port_id = 4;
 }
 
+// CounterPartyIBCInfo defines the structure to send aggregated
+// and encrypted keyshares if the request was made over IBC
 message CounterPartyIBCInfo {
-  string ClientID = 1;
-  string ConnectionID = 2;
-  string ChannelID = 3;
-  string PortID = 4;
+  string client_id = 1;
+  string connection_id = 2;
+  string channel_id = 3;
+  string port_id = 4;
 }
 
+// PrivateKeyshareRequest defines the stroage structure for private
+// encrypted and unaggregated keyshare requests
 message PrivateKeyshareRequest {
   string identity = 1;
   string pubkey                    = 2;

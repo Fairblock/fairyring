@@ -6,11 +6,15 @@ import "fairyring/common/shared_types.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
+// RequestId defines the structure for storing request ids
+// that have already been registered to prevent overlap
 message RequestId {
   string creator = 1; 
-  string reqId = 2;
+  string req_id = 2;
 }
 
+// PrivateRequest defines the structure for storing private
+// keyshare requests along with the unaggregated encrypted keyshares
 message PrivateRequest {
   string creator = 1;
   string req_id = 2;
@@ -18,16 +22,22 @@ message PrivateRequest {
   repeated fairyring.common.EncryptedKeyshare encrypted_keyshares = 5;
 }
 
+// ContractDetails defines the structure to store the details of a
+// contract that has been registered to execute automatically when
+// the identity associated with it has an aggregate keyshare available
 message ContractDetails {
   string registrar = 1;
   string contract_address = 2;
 }
 
+// RegisteredContract defines the structure to store the list of
+// contracts that have been registered with a particular identity
 message RegisteredContract {
   string identity = 1;
   repeated ContractDetails contracts = 2;
 }
 
+// ExecuteContractMsg defines the structure to callback registered contracts
 message ExecuteContractMsg {
   string identity      = 1;
   string pubkey        = 2;

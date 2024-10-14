@@ -282,7 +282,7 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 		timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 
 		if keyShareReq.IbcInfo != nil {
-			if keyShareReq.IbcInfo.ChannelID != "" {
+			if keyShareReq.IbcInfo.ChannelId != "" {
 				_, err := k.TransmitAggrKeyshareDataPacket(
 					ctx,
 					types.AggrKeyshareDataPacketData{
@@ -294,8 +294,8 @@ func (k msgServer) CreateGeneralKeyShare(goCtx context.Context, msg *types.MsgCr
 						RequestId:    keyShareReq.RequestId,
 						Retries:      0,
 					},
-					keyShareReq.IbcInfo.PortID,
-					keyShareReq.IbcInfo.ChannelID,
+					keyShareReq.IbcInfo.PortId,
+					keyShareReq.IbcInfo.ChannelId,
 					clienttypes.ZeroHeight(),
 					uint64(timeoutTimestamp),
 				)

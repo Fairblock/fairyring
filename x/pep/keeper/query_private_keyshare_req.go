@@ -10,7 +10,10 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) ShowPrivateKeyshareReq(goCtx context.Context, req *types.QueryShowPrivateKeyshareReqRequest) (*types.QueryShowPrivateKeyshareReqResponse, error) {
+func (k Keeper) PrivateKeyshareReq(
+	goCtx context.Context,
+	req *types.QueryPrivateKeyshareReqRequest,
+) (*types.QueryPrivateKeyshareReqResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -22,7 +25,7 @@ func (k Keeper) ShowPrivateKeyshareReq(goCtx context.Context, req *types.QuerySh
 		return nil, errors.New("entry not found")
 	}
 
-	return &types.QueryShowPrivateKeyshareReqResponse{
+	return &types.QueryPrivateKeyshareReqResponse{
 		Creator:            val.Creator,
 		ReqId:              val.ReqId,
 		Pubkey:             val.Pubkey,

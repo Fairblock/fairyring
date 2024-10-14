@@ -3,8 +3,8 @@ package fairyring.keyshare;
 
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
+// AggregatedKeyShare defines the structure and height for an aggregated keyshare
 message AggregatedKeyShare {
   uint64 height = 1; 
   string data = 2;
 }
-

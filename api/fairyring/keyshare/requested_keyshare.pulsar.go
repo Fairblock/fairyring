@@ -902,20 +902,20 @@ func (x *fastReflection_KeyShareRequest) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_IBCInfo              protoreflect.MessageDescriptor
-	fd_IBCInfo_ClientID     protoreflect.FieldDescriptor
-	fd_IBCInfo_ConnectionID protoreflect.FieldDescriptor
-	fd_IBCInfo_ChannelID    protoreflect.FieldDescriptor
-	fd_IBCInfo_PortID       protoreflect.FieldDescriptor
+	md_IBCInfo               protoreflect.MessageDescriptor
+	fd_IBCInfo_client_id     protoreflect.FieldDescriptor
+	fd_IBCInfo_connection_id protoreflect.FieldDescriptor
+	fd_IBCInfo_channel_id    protoreflect.FieldDescriptor
+	fd_IBCInfo_port_id       protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_keyshare_requested_keyshare_proto_init()
 	md_IBCInfo = File_fairyring_keyshare_requested_keyshare_proto.Messages().ByName("IBCInfo")
-	fd_IBCInfo_ClientID = md_IBCInfo.Fields().ByName("ClientID")
-	fd_IBCInfo_ConnectionID = md_IBCInfo.Fields().ByName("ConnectionID")
-	fd_IBCInfo_ChannelID = md_IBCInfo.Fields().ByName("ChannelID")
-	fd_IBCInfo_PortID = md_IBCInfo.Fields().ByName("PortID")
+	fd_IBCInfo_client_id = md_IBCInfo.Fields().ByName("client_id")
+	fd_IBCInfo_connection_id = md_IBCInfo.Fields().ByName("connection_id")
+	fd_IBCInfo_channel_id = md_IBCInfo.Fields().ByName("channel_id")
+	fd_IBCInfo_port_id = md_IBCInfo.Fields().ByName("port_id")
 }
 
 var _ protoreflect.Message = (*fastReflection_IBCInfo)(nil)
@@ -983,27 +983,27 @@ func (x *fastReflection_IBCInfo) Interface() protoreflect.ProtoMessage {
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
 func (x *fastReflection_IBCInfo) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.ClientID != "" {
-		value := protoreflect.ValueOfString(x.ClientID)
-		if !f(fd_IBCInfo_ClientID, value) {
+	if x.ClientId != "" {
+		value := protoreflect.ValueOfString(x.ClientId)
+		if !f(fd_IBCInfo_client_id, value) {
 			return
 		}
 	}
-	if x.ConnectionID != "" {
-		value := protoreflect.ValueOfString(x.ConnectionID)
-		if !f(fd_IBCInfo_ConnectionID, value) {
+	if x.ConnectionId != "" {
+		value := protoreflect.ValueOfString(x.ConnectionId)
+		if !f(fd_IBCInfo_connection_id, value) {
 			return
 		}
 	}
-	if x.ChannelID != "" {
-		value := protoreflect.ValueOfString(x.ChannelID)
-		if !f(fd_IBCInfo_ChannelID, value) {
+	if x.ChannelId != "" {
+		value := protoreflect.ValueOfString(x.ChannelId)
+		if !f(fd_IBCInfo_channel_id, value) {
 			return
 		}
 	}
-	if x.PortID != "" {
-		value := protoreflect.ValueOfString(x.PortID)
-		if !f(fd_IBCInfo_PortID, value) {
+	if x.PortId != "" {
+		value := protoreflect.ValueOfString(x.PortId)
+		if !f(fd_IBCInfo_port_id, value) {
 			return
 		}
 	}
@@ -1022,14 +1022,14 @@ func (x *fastReflection_IBCInfo) Range(f func(protoreflect.FieldDescriptor, prot
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_IBCInfo) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.keyshare.IBCInfo.ClientID":
-		return x.ClientID != ""
-	case "fairyring.keyshare.IBCInfo.ConnectionID":
-		return x.ConnectionID != ""
-	case "fairyring.keyshare.IBCInfo.ChannelID":
-		return x.ChannelID != ""
-	case "fairyring.keyshare.IBCInfo.PortID":
-		return x.PortID != ""
+	case "fairyring.keyshare.IBCInfo.client_id":
+		return x.ClientId != ""
+	case "fairyring.keyshare.IBCInfo.connection_id":
+		return x.ConnectionId != ""
+	case "fairyring.keyshare.IBCInfo.channel_id":
+		return x.ChannelId != ""
+	case "fairyring.keyshare.IBCInfo.port_id":
+		return x.PortId != ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.IBCInfo"))
@@ -1046,14 +1046,14 @@ func (x *fastReflection_IBCInfo) Has(fd protoreflect.FieldDescriptor) bool {
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_IBCInfo) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.IBCInfo.ClientID":
-		x.ClientID = ""
-	case "fairyring.keyshare.IBCInfo.ConnectionID":
-		x.ConnectionID = ""
-	case "fairyring.keyshare.IBCInfo.ChannelID":
-		x.ChannelID = ""
-	case "fairyring.keyshare.IBCInfo.PortID":
-		x.PortID = ""
+	case "fairyring.keyshare.IBCInfo.client_id":
+		x.ClientId = ""
+	case "fairyring.keyshare.IBCInfo.connection_id":
+		x.ConnectionId = ""
+	case "fairyring.keyshare.IBCInfo.channel_id":
+		x.ChannelId = ""
+	case "fairyring.keyshare.IBCInfo.port_id":
+		x.PortId = ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.IBCInfo"))
@@ -1070,17 +1070,17 @@ func (x *fastReflection_IBCInfo) Clear(fd protoreflect.FieldDescriptor) {
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_IBCInfo) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.keyshare.IBCInfo.ClientID":
-		value := x.ClientID
+	case "fairyring.keyshare.IBCInfo.client_id":
+		value := x.ClientId
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.IBCInfo.ConnectionID":
-		value := x.ConnectionID
+	case "fairyring.keyshare.IBCInfo.connection_id":
+		value := x.ConnectionId
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.IBCInfo.ChannelID":
-		value := x.ChannelID
+	case "fairyring.keyshare.IBCInfo.channel_id":
+		value := x.ChannelId
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.IBCInfo.PortID":
-		value := x.PortID
+	case "fairyring.keyshare.IBCInfo.port_id":
+		value := x.PortId
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
@@ -1102,14 +1102,14 @@ func (x *fastReflection_IBCInfo) Get(descriptor protoreflect.FieldDescriptor) pr
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_IBCInfo) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.IBCInfo.ClientID":
-		x.ClientID = value.Interface().(string)
-	case "fairyring.keyshare.IBCInfo.ConnectionID":
-		x.ConnectionID = value.Interface().(string)
-	case "fairyring.keyshare.IBCInfo.ChannelID":
-		x.ChannelID = value.Interface().(string)
-	case "fairyring.keyshare.IBCInfo.PortID":
-		x.PortID = value.Interface().(string)
+	case "fairyring.keyshare.IBCInfo.client_id":
+		x.ClientId = value.Interface().(string)
+	case "fairyring.keyshare.IBCInfo.connection_id":
+		x.ConnectionId = value.Interface().(string)
+	case "fairyring.keyshare.IBCInfo.channel_id":
+		x.ChannelId = value.Interface().(string)
+	case "fairyring.keyshare.IBCInfo.port_id":
+		x.PortId = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.IBCInfo"))
@@ -1130,14 +1130,14 @@ func (x *fastReflection_IBCInfo) Set(fd protoreflect.FieldDescriptor, value prot
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_IBCInfo) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.IBCInfo.ClientID":
-		panic(fmt.Errorf("field ClientID of message fairyring.keyshare.IBCInfo is not mutable"))
-	case "fairyring.keyshare.IBCInfo.ConnectionID":
-		panic(fmt.Errorf("field ConnectionID of message fairyring.keyshare.IBCInfo is not mutable"))
-	case "fairyring.keyshare.IBCInfo.ChannelID":
-		panic(fmt.Errorf("field ChannelID of message fairyring.keyshare.IBCInfo is not mutable"))
-	case "fairyring.keyshare.IBCInfo.PortID":
-		panic(fmt.Errorf("field PortID of message fairyring.keyshare.IBCInfo is not mutable"))
+	case "fairyring.keyshare.IBCInfo.client_id":
+		panic(fmt.Errorf("field client_id of message fairyring.keyshare.IBCInfo is not mutable"))
+	case "fairyring.keyshare.IBCInfo.connection_id":
+		panic(fmt.Errorf("field connection_id of message fairyring.keyshare.IBCInfo is not mutable"))
+	case "fairyring.keyshare.IBCInfo.channel_id":
+		panic(fmt.Errorf("field channel_id of message fairyring.keyshare.IBCInfo is not mutable"))
+	case "fairyring.keyshare.IBCInfo.port_id":
+		panic(fmt.Errorf("field port_id of message fairyring.keyshare.IBCInfo is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.IBCInfo"))
@@ -1151,13 +1151,13 @@ func (x *fastReflection_IBCInfo) Mutable(fd protoreflect.FieldDescriptor) protor
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_IBCInfo) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.IBCInfo.ClientID":
+	case "fairyring.keyshare.IBCInfo.client_id":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.IBCInfo.ConnectionID":
+	case "fairyring.keyshare.IBCInfo.connection_id":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.IBCInfo.ChannelID":
+	case "fairyring.keyshare.IBCInfo.channel_id":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.IBCInfo.PortID":
+	case "fairyring.keyshare.IBCInfo.port_id":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
@@ -1228,19 +1228,19 @@ func (x *fastReflection_IBCInfo) ProtoMethods() *protoiface.Methods {
 		var n int
 		var l int
 		_ = l
-		l = len(x.ClientID)
+		l = len(x.ClientId)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.ConnectionID)
+		l = len(x.ConnectionId)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.ChannelID)
+		l = len(x.ChannelId)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.PortID)
+		l = len(x.PortId)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
@@ -1273,31 +1273,31 @@ func (x *fastReflection_IBCInfo) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if len(x.PortID) > 0 {
-			i -= len(x.PortID)
-			copy(dAtA[i:], x.PortID)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.PortID)))
+		if len(x.PortId) > 0 {
+			i -= len(x.PortId)
+			copy(dAtA[i:], x.PortId)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.PortId)))
 			i--
 			dAtA[i] = 0x22
 		}
-		if len(x.ChannelID) > 0 {
-			i -= len(x.ChannelID)
-			copy(dAtA[i:], x.ChannelID)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ChannelID)))
+		if len(x.ChannelId) > 0 {
+			i -= len(x.ChannelId)
+			copy(dAtA[i:], x.ChannelId)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ChannelId)))
 			i--
 			dAtA[i] = 0x1a
 		}
-		if len(x.ConnectionID) > 0 {
-			i -= len(x.ConnectionID)
-			copy(dAtA[i:], x.ConnectionID)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ConnectionID)))
+		if len(x.ConnectionId) > 0 {
+			i -= len(x.ConnectionId)
+			copy(dAtA[i:], x.ConnectionId)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ConnectionId)))
 			i--
 			dAtA[i] = 0x12
 		}
-		if len(x.ClientID) > 0 {
-			i -= len(x.ClientID)
-			copy(dAtA[i:], x.ClientID)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ClientID)))
+		if len(x.ClientId) > 0 {
+			i -= len(x.ClientId)
+			copy(dAtA[i:], x.ClientId)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ClientId)))
 			i--
 			dAtA[i] = 0xa
 		}
@@ -1352,7 +1352,7 @@ func (x *fastReflection_IBCInfo) ProtoMethods() *protoiface.Methods {
 			switch fieldNum {
 			case 1:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ClientID", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ClientId", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -1380,11 +1380,11 @@ func (x *fastReflection_IBCInfo) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.ClientID = string(dAtA[iNdEx:postIndex])
+				x.ClientId = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 2:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ConnectionID", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ConnectionId", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -1412,11 +1412,11 @@ func (x *fastReflection_IBCInfo) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.ConnectionID = string(dAtA[iNdEx:postIndex])
+				x.ConnectionId = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ChannelID", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ChannelId", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -1444,11 +1444,11 @@ func (x *fastReflection_IBCInfo) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.ChannelID = string(dAtA[iNdEx:postIndex])
+				x.ChannelId = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 4:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field PortID", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field PortId", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -1476,7 +1476,7 @@ func (x *fastReflection_IBCInfo) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.PortID = string(dAtA[iNdEx:postIndex])
+				x.PortId = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -1514,20 +1514,20 @@ func (x *fastReflection_IBCInfo) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_CounterPartyIBCInfo              protoreflect.MessageDescriptor
-	fd_CounterPartyIBCInfo_ClientID     protoreflect.FieldDescriptor
-	fd_CounterPartyIBCInfo_ConnectionID protoreflect.FieldDescriptor
-	fd_CounterPartyIBCInfo_ChannelID    protoreflect.FieldDescriptor
-	fd_CounterPartyIBCInfo_PortID       protoreflect.FieldDescriptor
+	md_CounterPartyIBCInfo               protoreflect.MessageDescriptor
+	fd_CounterPartyIBCInfo_client_id     protoreflect.FieldDescriptor
+	fd_CounterPartyIBCInfo_connection_id protoreflect.FieldDescriptor
+	fd_CounterPartyIBCInfo_channel_id    protoreflect.FieldDescriptor
+	fd_CounterPartyIBCInfo_port_id       protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_keyshare_requested_keyshare_proto_init()
 	md_CounterPartyIBCInfo = File_fairyring_keyshare_requested_keyshare_proto.Messages().ByName("CounterPartyIBCInfo")
-	fd_CounterPartyIBCInfo_ClientID = md_CounterPartyIBCInfo.Fields().ByName("ClientID")
-	fd_CounterPartyIBCInfo_ConnectionID = md_CounterPartyIBCInfo.Fields().ByName("ConnectionID")
-	fd_CounterPartyIBCInfo_ChannelID = md_CounterPartyIBCInfo.Fields().ByName("ChannelID")
-	fd_CounterPartyIBCInfo_PortID = md_CounterPartyIBCInfo.Fields().ByName("PortID")
+	fd_CounterPartyIBCInfo_client_id = md_CounterPartyIBCInfo.Fields().ByName("client_id")
+	fd_CounterPartyIBCInfo_connection_id = md_CounterPartyIBCInfo.Fields().ByName("connection_id")
+	fd_CounterPartyIBCInfo_channel_id = md_CounterPartyIBCInfo.Fields().ByName("channel_id")
+	fd_CounterPartyIBCInfo_port_id = md_CounterPartyIBCInfo.Fields().ByName("port_id")
 }
 
 var _ protoreflect.Message = (*fastReflection_CounterPartyIBCInfo)(nil)
@@ -1595,27 +1595,27 @@ func (x *fastReflection_CounterPartyIBCInfo) Interface() protoreflect.ProtoMessa
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
 func (x *fastReflection_CounterPartyIBCInfo) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.ClientID != "" {
-		value := protoreflect.ValueOfString(x.ClientID)
-		if !f(fd_CounterPartyIBCInfo_ClientID, value) {
+	if x.ClientId != "" {
+		value := protoreflect.ValueOfString(x.ClientId)
+		if !f(fd_CounterPartyIBCInfo_client_id, value) {
 			return
 		}
 	}
-	if x.ConnectionID != "" {
-		value := protoreflect.ValueOfString(x.ConnectionID)
-		if !f(fd_CounterPartyIBCInfo_ConnectionID, value) {
+	if x.ConnectionId != "" {
+		value := protoreflect.ValueOfString(x.ConnectionId)
+		if !f(fd_CounterPartyIBCInfo_connection_id, value) {
 			return
 		}
 	}
-	if x.ChannelID != "" {
-		value := protoreflect.ValueOfString(x.ChannelID)
-		if !f(fd_CounterPartyIBCInfo_ChannelID, value) {
+	if x.ChannelId != "" {
+		value := protoreflect.ValueOfString(x.ChannelId)
+		if !f(fd_CounterPartyIBCInfo_channel_id, value) {
 			return
 		}
 	}
-	if x.PortID != "" {
-		value := protoreflect.ValueOfString(x.PortID)
-		if !f(fd_CounterPartyIBCInfo_PortID, value) {
+	if x.PortId != "" {
+		value := protoreflect.ValueOfString(x.PortId)
+		if !f(fd_CounterPartyIBCInfo_port_id, value) {
 			return
 		}
 	}
@@ -1634,14 +1634,14 @@ func (x *fastReflection_CounterPartyIBCInfo) Range(f func(protoreflect.FieldDesc
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_CounterPartyIBCInfo) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.keyshare.CounterPartyIBCInfo.ClientID":
-		return x.ClientID != ""
-	case "fairyring.keyshare.CounterPartyIBCInfo.ConnectionID":
-		return x.ConnectionID != ""
-	case "fairyring.keyshare.CounterPartyIBCInfo.ChannelID":
-		return x.ChannelID != ""
-	case "fairyring.keyshare.CounterPartyIBCInfo.PortID":
-		return x.PortID != ""
+	case "fairyring.keyshare.CounterPartyIBCInfo.client_id":
+		return x.ClientId != ""
+	case "fairyring.keyshare.CounterPartyIBCInfo.connection_id":
+		return x.ConnectionId != ""
+	case "fairyring.keyshare.CounterPartyIBCInfo.channel_id":
+		return x.ChannelId != ""
+	case "fairyring.keyshare.CounterPartyIBCInfo.port_id":
+		return x.PortId != ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.CounterPartyIBCInfo"))
@@ -1658,14 +1658,14 @@ func (x *fastReflection_CounterPartyIBCInfo) Has(fd protoreflect.FieldDescriptor
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_CounterPartyIBCInfo) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.CounterPartyIBCInfo.ClientID":
-		x.ClientID = ""
-	case "fairyring.keyshare.CounterPartyIBCInfo.ConnectionID":
-		x.ConnectionID = ""
-	case "fairyring.keyshare.CounterPartyIBCInfo.ChannelID":
-		x.ChannelID = ""
-	case "fairyring.keyshare.CounterPartyIBCInfo.PortID":
-		x.PortID = ""
+	case "fairyring.keyshare.CounterPartyIBCInfo.client_id":
+		x.ClientId = ""
+	case "fairyring.keyshare.CounterPartyIBCInfo.connection_id":
+		x.ConnectionId = ""
+	case "fairyring.keyshare.CounterPartyIBCInfo.channel_id":
+		x.ChannelId = ""
+	case "fairyring.keyshare.CounterPartyIBCInfo.port_id":
+		x.PortId = ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.CounterPartyIBCInfo"))
@@ -1682,17 +1682,17 @@ func (x *fastReflection_CounterPartyIBCInfo) Clear(fd protoreflect.FieldDescript
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_CounterPartyIBCInfo) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.keyshare.CounterPartyIBCInfo.ClientID":
-		value := x.ClientID
+	case "fairyring.keyshare.CounterPartyIBCInfo.client_id":
+		value := x.ClientId
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.CounterPartyIBCInfo.ConnectionID":
-		value := x.ConnectionID
+	case "fairyring.keyshare.CounterPartyIBCInfo.connection_id":
+		value := x.ConnectionId
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.CounterPartyIBCInfo.ChannelID":
-		value := x.ChannelID
+	case "fairyring.keyshare.CounterPartyIBCInfo.channel_id":
+		value := x.ChannelId
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.CounterPartyIBCInfo.PortID":
-		value := x.PortID
+	case "fairyring.keyshare.CounterPartyIBCInfo.port_id":
+		value := x.PortId
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
@@ -1714,14 +1714,14 @@ func (x *fastReflection_CounterPartyIBCInfo) Get(descriptor protoreflect.FieldDe
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_CounterPartyIBCInfo) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.CounterPartyIBCInfo.ClientID":
-		x.ClientID = value.Interface().(string)
-	case "fairyring.keyshare.CounterPartyIBCInfo.ConnectionID":
-		x.ConnectionID = value.Interface().(string)
-	case "fairyring.keyshare.CounterPartyIBCInfo.ChannelID":
-		x.ChannelID = value.Interface().(string)
-	case "fairyring.keyshare.CounterPartyIBCInfo.PortID":
-		x.PortID = value.Interface().(string)
+	case "fairyring.keyshare.CounterPartyIBCInfo.client_id":
+		x.ClientId = value.Interface().(string)
+	case "fairyring.keyshare.CounterPartyIBCInfo.connection_id":
+		x.ConnectionId = value.Interface().(string)
+	case "fairyring.keyshare.CounterPartyIBCInfo.channel_id":
+		x.ChannelId = value.Interface().(string)
+	case "fairyring.keyshare.CounterPartyIBCInfo.port_id":
+		x.PortId = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.CounterPartyIBCInfo"))
@@ -1742,14 +1742,14 @@ func (x *fastReflection_CounterPartyIBCInfo) Set(fd protoreflect.FieldDescriptor
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_CounterPartyIBCInfo) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.CounterPartyIBCInfo.ClientID":
-		panic(fmt.Errorf("field ClientID of message fairyring.keyshare.CounterPartyIBCInfo is not mutable"))
-	case "fairyring.keyshare.CounterPartyIBCInfo.ConnectionID":
-		panic(fmt.Errorf("field ConnectionID of message fairyring.keyshare.CounterPartyIBCInfo is not mutable"))
-	case "fairyring.keyshare.CounterPartyIBCInfo.ChannelID":
-		panic(fmt.Errorf("field ChannelID of message fairyring.keyshare.CounterPartyIBCInfo is not mutable"))
-	case "fairyring.keyshare.CounterPartyIBCInfo.PortID":
-		panic(fmt.Errorf("field PortID of message fairyring.keyshare.CounterPartyIBCInfo is not mutable"))
+	case "fairyring.keyshare.CounterPartyIBCInfo.client_id":
+		panic(fmt.Errorf("field client_id of message fairyring.keyshare.CounterPartyIBCInfo is not mutable"))
+	case "fairyring.keyshare.CounterPartyIBCInfo.connection_id":
+		panic(fmt.Errorf("field connection_id of message fairyring.keyshare.CounterPartyIBCInfo is not mutable"))
+	case "fairyring.keyshare.CounterPartyIBCInfo.channel_id":
+		panic(fmt.Errorf("field channel_id of message fairyring.keyshare.CounterPartyIBCInfo is not mutable"))
+	case "fairyring.keyshare.CounterPartyIBCInfo.port_id":
+		panic(fmt.Errorf("field port_id of message fairyring.keyshare.CounterPartyIBCInfo is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.CounterPartyIBCInfo"))
@@ -1763,13 +1763,13 @@ func (x *fastReflection_CounterPartyIBCInfo) Mutable(fd protoreflect.FieldDescri
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_CounterPartyIBCInfo) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.CounterPartyIBCInfo.ClientID":
+	case "fairyring.keyshare.CounterPartyIBCInfo.client_id":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.CounterPartyIBCInfo.ConnectionID":
+	case "fairyring.keyshare.CounterPartyIBCInfo.connection_id":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.CounterPartyIBCInfo.ChannelID":
+	case "fairyring.keyshare.CounterPartyIBCInfo.channel_id":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.CounterPartyIBCInfo.PortID":
+	case "fairyring.keyshare.CounterPartyIBCInfo.port_id":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
@@ -1840,19 +1840,19 @@ func (x *fastReflection_CounterPartyIBCInfo) ProtoMethods() *protoiface.Methods 
 		var n int
 		var l int
 		_ = l
-		l = len(x.ClientID)
+		l = len(x.ClientId)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.ConnectionID)
+		l = len(x.ConnectionId)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.ChannelID)
+		l = len(x.ChannelId)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.PortID)
+		l = len(x.PortId)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
@@ -1885,31 +1885,31 @@ func (x *fastReflection_CounterPartyIBCInfo) ProtoMethods() *protoiface.Methods 
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if len(x.PortID) > 0 {
-			i -= len(x.PortID)
-			copy(dAtA[i:], x.PortID)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.PortID)))
+		if len(x.PortId) > 0 {
+			i -= len(x.PortId)
+			copy(dAtA[i:], x.PortId)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.PortId)))
 			i--
 			dAtA[i] = 0x22
 		}
-		if len(x.ChannelID) > 0 {
-			i -= len(x.ChannelID)
-			copy(dAtA[i:], x.ChannelID)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ChannelID)))
+		if len(x.ChannelId) > 0 {
+			i -= len(x.ChannelId)
+			copy(dAtA[i:], x.ChannelId)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ChannelId)))
 			i--
 			dAtA[i] = 0x1a
 		}
-		if len(x.ConnectionID) > 0 {
-			i -= len(x.ConnectionID)
-			copy(dAtA[i:], x.ConnectionID)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ConnectionID)))
+		if len(x.ConnectionId) > 0 {
+			i -= len(x.ConnectionId)
+			copy(dAtA[i:], x.ConnectionId)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ConnectionId)))
 			i--
 			dAtA[i] = 0x12
 		}
-		if len(x.ClientID) > 0 {
-			i -= len(x.ClientID)
-			copy(dAtA[i:], x.ClientID)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ClientID)))
+		if len(x.ClientId) > 0 {
+			i -= len(x.ClientId)
+			copy(dAtA[i:], x.ClientId)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ClientId)))
 			i--
 			dAtA[i] = 0xa
 		}
@@ -1964,7 +1964,7 @@ func (x *fastReflection_CounterPartyIBCInfo) ProtoMethods() *protoiface.Methods 
 			switch fieldNum {
 			case 1:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ClientID", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ClientId", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -1992,11 +1992,11 @@ func (x *fastReflection_CounterPartyIBCInfo) ProtoMethods() *protoiface.Methods 
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.ClientID = string(dAtA[iNdEx:postIndex])
+				x.ClientId = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 2:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ConnectionID", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ConnectionId", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -2024,11 +2024,11 @@ func (x *fastReflection_CounterPartyIBCInfo) ProtoMethods() *protoiface.Methods 
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.ConnectionID = string(dAtA[iNdEx:postIndex])
+				x.ConnectionId = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ChannelID", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ChannelId", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -2056,11 +2056,11 @@ func (x *fastReflection_CounterPartyIBCInfo) ProtoMethods() *protoiface.Methods 
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.ChannelID = string(dAtA[iNdEx:postIndex])
+				x.ChannelId = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 4:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field PortID", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field PortId", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -2088,7 +2088,7 @@ func (x *fastReflection_CounterPartyIBCInfo) ProtoMethods() *protoiface.Methods 
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.PortID = string(dAtA[iNdEx:postIndex])
+				x.PortId = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -3036,6 +3036,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// KeyShareRequest defines the storage structure for general keyshare requests
 type KeyShareRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -3127,15 +3128,17 @@ func (x *KeyShareRequest) GetSent() bool {
 	return false
 }
 
+// IBCInfo defines the structure to verify request for
+// aggregated and encrypted keyshares in case the request was made over IBC
 type IBCInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ClientID     string `protobuf:"bytes,1,opt,name=ClientID,proto3" json:"ClientID,omitempty"`
-	ConnectionID string `protobuf:"bytes,2,opt,name=ConnectionID,proto3" json:"ConnectionID,omitempty"`
-	ChannelID    string `protobuf:"bytes,3,opt,name=ChannelID,proto3" json:"ChannelID,omitempty"`
-	PortID       string `protobuf:"bytes,4,opt,name=PortID,proto3" json:"PortID,omitempty"`
+	ClientId     string `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	ConnectionId string `protobuf:"bytes,2,opt,name=connection_id,json=connectionId,proto3" json:"connection_id,omitempty"`
+	ChannelId    string `protobuf:"bytes,3,opt,name=channel_id,json=channelId,proto3" json:"channel_id,omitempty"`
+	PortId       string `protobuf:"bytes,4,opt,name=port_id,json=portId,proto3" json:"port_id,omitempty"`
 }
 
 func (x *IBCInfo) Reset() {
@@ -3158,43 +3161,45 @@ func (*IBCInfo) Descriptor() ([]byte, []int) {
 	return file_fairyring_keyshare_requested_keyshare_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *IBCInfo) GetClientID() string {
+func (x *IBCInfo) GetClientId() string {
 	if x != nil {
-		return x.ClientID
+		return x.ClientId
 	}
 	return ""
 }
 
-func (x *IBCInfo) GetConnectionID() string {
+func (x *IBCInfo) GetConnectionId() string {
 	if x != nil {
-		return x.ConnectionID
+		return x.ConnectionId
 	}
 	return ""
 }
 
-func (x *IBCInfo) GetChannelID() string {
+func (x *IBCInfo) GetChannelId() string {
 	if x != nil {
-		return x.ChannelID
+		return x.ChannelId
 	}
 	return ""
 }
 
-func (x *IBCInfo) GetPortID() string {
+func (x *IBCInfo) GetPortId() string {
 	if x != nil {
-		return x.PortID
+		return x.PortId
 	}
 	return ""
 }
 
+// CounterPartyIBCInfo defines the structure to send aggregated
+// and encrypted keyshares if the request was made over IBC
 type CounterPartyIBCInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ClientID     string `protobuf:"bytes,1,opt,name=ClientID,proto3" json:"ClientID,omitempty"`
-	ConnectionID string `protobuf:"bytes,2,opt,name=ConnectionID,proto3" json:"ConnectionID,omitempty"`
-	ChannelID    string `protobuf:"bytes,3,opt,name=ChannelID,proto3" json:"ChannelID,omitempty"`
-	PortID       string `protobuf:"bytes,4,opt,name=PortID,proto3" json:"PortID,omitempty"`
+	ClientId     string `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	ConnectionId string `protobuf:"bytes,2,opt,name=connection_id,json=connectionId,proto3" json:"connection_id,omitempty"`
+	ChannelId    string `protobuf:"bytes,3,opt,name=channel_id,json=channelId,proto3" json:"channel_id,omitempty"`
+	PortId       string `protobuf:"bytes,4,opt,name=port_id,json=portId,proto3" json:"port_id,omitempty"`
 }
 
 func (x *CounterPartyIBCInfo) Reset() {
@@ -3217,34 +3222,36 @@ func (*CounterPartyIBCInfo) Descriptor() ([]byte, []int) {
 	return file_fairyring_keyshare_requested_keyshare_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CounterPartyIBCInfo) GetClientID() string {
+func (x *CounterPartyIBCInfo) GetClientId() string {
 	if x != nil {
-		return x.ClientID
+		return x.ClientId
 	}
 	return ""
 }
 
-func (x *CounterPartyIBCInfo) GetConnectionID() string {
+func (x *CounterPartyIBCInfo) GetConnectionId() string {
 	if x != nil {
-		return x.ConnectionID
+		return x.ConnectionId
 	}
 	return ""
 }
 
-func (x *CounterPartyIBCInfo) GetChannelID() string {
+func (x *CounterPartyIBCInfo) GetChannelId() string {
 	if x != nil {
-		return x.ChannelID
+		return x.ChannelId
 	}
 	return ""
 }
 
-func (x *CounterPartyIBCInfo) GetPortID() string {
+func (x *CounterPartyIBCInfo) GetPortId() string {
 	if x != nil {
-		return x.PortID
+		return x.PortId
 	}
 	return ""
 }
 
+// PrivateKeyshareRequest defines the stroage structure for private
+// encrypted and unaggregated keyshare requests
 type PrivateKeyshareRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -3357,59 +3364,59 @@ var file_fairyring_keyshare_requested_keyshare_proto_rawDesc = []byte{
 	0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71,
 	0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72,
 	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x73, 0x65, 0x6e, 0x74,
-	0x18, 0x08, 0x20, 0x01, 0x28, 0x08, 0x52, 0x04, 0x73, 0x65, 0x6e, 0x74, 0x22, 0x7f, 0x0a, 0x07,
-	0x49, 0x42, 0x43, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x1a, 0x0a, 0x08, 0x43, 0x6c, 0x69, 0x65, 0x6e,
-	0x74, 0x49, 0x44, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x43, 0x6c, 0x69, 0x65, 0x6e,
-	0x74, 0x49, 0x44, 0x12, 0x22, 0x0a, 0x0c, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x49, 0x44, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x43, 0x6f, 0x6e, 0x6e, 0x65,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x44, 0x12, 0x1c, 0x0a, 0x09, 0x43, 0x68, 0x61, 0x6e, 0x6e,
-	0x65, 0x6c, 0x49, 0x44, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x43, 0x68, 0x61, 0x6e,
-	0x6e, 0x65, 0x6c, 0x49, 0x44, 0x12, 0x16, 0x0a, 0x06, 0x50, 0x6f, 0x72, 0x74, 0x49, 0x44, 0x18,
-	0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x50, 0x6f, 0x72, 0x74, 0x49, 0x44, 0x22, 0x8b, 0x01,
-	0x0a, 0x13, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x65, 0x72, 0x50, 0x61, 0x72, 0x74, 0x79, 0x49, 0x42,
-	0x43, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x1a, 0x0a, 0x08, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49,
-	0x44, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49,
-	0x44, 0x12, 0x22, 0x0a, 0x0c, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x49,
-	0x44, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74,
-	0x69, 0x6f, 0x6e, 0x49, 0x44, 0x12, 0x1c, 0x0a, 0x09, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c,
-	0x49, 0x44, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65,
-	0x6c, 0x49, 0x44, 0x12, 0x16, 0x0a, 0x06, 0x50, 0x6f, 0x72, 0x74, 0x49, 0x44, 0x18, 0x04, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x06, 0x50, 0x6f, 0x72, 0x74, 0x49, 0x44, 0x22, 0xda, 0x02, 0x0a, 0x16,
-	0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69,
-	0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69,
-	0x74, 0x79, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x36, 0x0a, 0x08, 0x69, 0x62,
-	0x63, 0x5f, 0x69, 0x6e, 0x66, 0x6f, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x66,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
-	0x65, 0x2e, 0x49, 0x42, 0x43, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x07, 0x69, 0x62, 0x63, 0x49, 0x6e,
-	0x66, 0x6f, 0x12, 0x4b, 0x0a, 0x0c, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x65, 0x72, 0x70, 0x61, 0x72,
-	0x74, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
-	0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x43, 0x6f,
-	0x75, 0x6e, 0x74, 0x65, 0x72, 0x50, 0x61, 0x72, 0x74, 0x79, 0x49, 0x42, 0x43, 0x49, 0x6e, 0x66,
-	0x6f, 0x52, 0x0c, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x65, 0x72, 0x70, 0x61, 0x72, 0x74, 0x79, 0x12,
-	0x54, 0x0a, 0x13, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x5f, 0x6b, 0x65, 0x79,
-	0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x66,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e,
-	0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
-	0x65, 0x52, 0x12, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73,
-	0x68, 0x61, 0x72, 0x65, 0x73, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x5f, 0x69, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x49, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x73, 0x65, 0x6e, 0x74, 0x18, 0x07, 0x20, 0x01,
-	0x28, 0x08, 0x52, 0x04, 0x73, 0x65, 0x6e, 0x74, 0x42, 0xbe, 0x01, 0x0a, 0x16, 0x63, 0x6f, 0x6d,
-	0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68,
-	0x61, 0x72, 0x65, 0x42, 0x16, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x65, 0x64, 0x4b, 0x65,
-	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x23, 0x63,
-	0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f,
-	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61,
-	0x72, 0x65, 0xa2, 0x02, 0x03, 0x46, 0x4b, 0x58, 0xaa, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79,
-	0x72, 0x69, 0x6e, 0x67, 0x2e, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xca, 0x02, 0x12,
-	0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61,
-	0x72, 0x65, 0xe2, 0x02, 0x1e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b,
-	0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64,
-	0x61, 0x74, 0x61, 0xea, 0x02, 0x13, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a,
-	0x3a, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x18, 0x08, 0x20, 0x01, 0x28, 0x08, 0x52, 0x04, 0x73, 0x65, 0x6e, 0x74, 0x22, 0x83, 0x01, 0x0a,
+	0x07, 0x49, 0x42, 0x43, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x1b, 0x0a, 0x09, 0x63, 0x6c, 0x69, 0x65,
+	0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x63, 0x6c, 0x69,
+	0x65, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x23, 0x0a, 0x0d, 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x63, 0x6f,
+	0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x68,
+	0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
+	0x63, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x49, 0x64, 0x12, 0x17, 0x0a, 0x07, 0x70, 0x6f, 0x72,
+	0x74, 0x5f, 0x69, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x6f, 0x72, 0x74,
+	0x49, 0x64, 0x22, 0x8f, 0x01, 0x0a, 0x13, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x65, 0x72, 0x50, 0x61,
+	0x72, 0x74, 0x79, 0x49, 0x42, 0x43, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x1b, 0x0a, 0x09, 0x63, 0x6c,
+	0x69, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x63,
+	0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x23, 0x0a, 0x0d, 0x63, 0x6f, 0x6e, 0x6e, 0x65,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c,
+	0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a,
+	0x63, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x09, 0x63, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x49, 0x64, 0x12, 0x17, 0x0a, 0x07, 0x70,
+	0x6f, 0x72, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x6f,
+	0x72, 0x74, 0x49, 0x64, 0x22, 0xda, 0x02, 0x0a, 0x16, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65,
+	0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
+	0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x16, 0x0a, 0x06, 0x70,
+	0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x75, 0x62,
+	0x6b, 0x65, 0x79, 0x12, 0x36, 0x0a, 0x08, 0x69, 0x62, 0x63, 0x5f, 0x69, 0x6e, 0x66, 0x6f, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
+	0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x49, 0x42, 0x43, 0x49, 0x6e,
+	0x66, 0x6f, 0x52, 0x07, 0x69, 0x62, 0x63, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x4b, 0x0a, 0x0c, 0x63,
+	0x6f, 0x75, 0x6e, 0x74, 0x65, 0x72, 0x70, 0x61, 0x72, 0x74, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x27, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65,
+	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x65, 0x72, 0x50, 0x61,
+	0x72, 0x74, 0x79, 0x49, 0x42, 0x43, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x0c, 0x63, 0x6f, 0x75, 0x6e,
+	0x74, 0x65, 0x72, 0x70, 0x61, 0x72, 0x74, 0x79, 0x12, 0x54, 0x0a, 0x13, 0x65, 0x6e, 0x63, 0x72,
+	0x79, 0x70, 0x74, 0x65, 0x64, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18,
+	0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
+	0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74,
+	0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x52, 0x12, 0x65, 0x6e, 0x63, 0x72,
+	0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x12, 0x1d,
+	0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x06, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x12, 0x0a,
+	0x04, 0x73, 0x65, 0x6e, 0x74, 0x18, 0x07, 0x20, 0x01, 0x28, 0x08, 0x52, 0x04, 0x73, 0x65, 0x6e,
+	0x74, 0x42, 0xbe, 0x01, 0x0a, 0x16, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
+	0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x42, 0x16, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x50,
+	0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x23, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64,
+	0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x2f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xa2, 0x02, 0x03, 0x46, 0x4b,
+	0x58, 0xaa, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x4b, 0x65,
+	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xca, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xe2, 0x02, 0x1e, 0x46, 0x61,
+	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65,
+	0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x13, 0x46,
+	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61,
+	0x72, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (

@@ -22,13 +22,15 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// KeyShare defines the structure for submitting
+// blockwise keyshares by validators
 type KeyShare struct {
 	Validator           string `protobuf:"bytes,1,opt,name=validator,proto3" json:"validator,omitempty"`
-	BlockHeight         uint64 `protobuf:"varint,2,opt,name=blockHeight,proto3" json:"blockHeight,omitempty"`
-	KeyShare            string `protobuf:"bytes,3,opt,name=keyShare,proto3" json:"keyShare,omitempty"`
-	KeyShareIndex       uint64 `protobuf:"varint,4,opt,name=keyShareIndex,proto3" json:"keyShareIndex,omitempty"`
-	ReceivedTimestamp   uint64 `protobuf:"varint,5,opt,name=receivedTimestamp,proto3" json:"receivedTimestamp,omitempty"`
-	ReceivedBlockHeight uint64 `protobuf:"varint,6,opt,name=receivedBlockHeight,proto3" json:"receivedBlockHeight,omitempty"`
+	BlockHeight         uint64 `protobuf:"varint,2,opt,name=block_height,json=blockHeight,proto3" json:"block_height,omitempty"`
+	KeyShare            string `protobuf:"bytes,3,opt,name=key_share,json=keyShare,proto3" json:"key_share,omitempty"`
+	KeyShareIndex       uint64 `protobuf:"varint,4,opt,name=key_share_index,json=keyShareIndex,proto3" json:"key_share_index,omitempty"`
+	ReceivedTimestamp   uint64 `protobuf:"varint,5,opt,name=received_timestamp,json=receivedTimestamp,proto3" json:"received_timestamp,omitempty"`
+	ReceivedBlockHeight uint64 `protobuf:"varint,6,opt,name=received_block_height,json=receivedBlockHeight,proto3" json:"received_block_height,omitempty"`
 }
 
 func (m *KeyShare) Reset()         { *m = KeyShare{} }
@@ -106,8 +108,198 @@ func (m *KeyShare) GetReceivedBlockHeight() uint64 {
 	return 0
 }
 
+// GeneralKeyShare defines the structure for submitting
+// general keyshares by validators
+type GeneralKeyShare struct {
+	Validator           string `protobuf:"bytes,1,opt,name=validator,proto3" json:"validator,omitempty"`
+	IdType              string `protobuf:"bytes,2,opt,name=id_type,json=idType,proto3" json:"id_type,omitempty"`
+	IdValue             string `protobuf:"bytes,3,opt,name=id_value,json=idValue,proto3" json:"id_value,omitempty"`
+	KeyShare            string `protobuf:"bytes,4,opt,name=key_share,json=keyShare,proto3" json:"key_share,omitempty"`
+	KeyShareIndex       uint64 `protobuf:"varint,5,opt,name=key_share_index,json=keyShareIndex,proto3" json:"key_share_index,omitempty"`
+	ReceivedTimestamp   uint64 `protobuf:"varint,6,opt,name=received_timestamp,json=receivedTimestamp,proto3" json:"received_timestamp,omitempty"`
+	ReceivedBlockHeight uint64 `protobuf:"varint,7,opt,name=received_block_height,json=receivedBlockHeight,proto3" json:"received_block_height,omitempty"`
+}
+
+func (m *GeneralKeyShare) Reset()         { *m = GeneralKeyShare{} }
+func (m *GeneralKeyShare) String() string { return proto.CompactTextString(m) }
+func (*GeneralKeyShare) ProtoMessage()    {}
+func (*GeneralKeyShare) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cb45212b5123dd29, []int{1}
+}
+func (m *GeneralKeyShare) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GeneralKeyShare) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GeneralKeyShare.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GeneralKeyShare) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GeneralKeyShare.Merge(m, src)
+}
+func (m *GeneralKeyShare) XXX_Size() int {
+	return m.Size()
+}
+func (m *GeneralKeyShare) XXX_DiscardUnknown() {
+	xxx_messageInfo_GeneralKeyShare.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GeneralKeyShare proto.InternalMessageInfo
+
+func (m *GeneralKeyShare) GetValidator() string {
+	if m != nil {
+		return m.Validator
+	}
+	return ""
+}
+
+func (m *GeneralKeyShare) GetIdType() string {
+	if m != nil {
+		return m.IdType
+	}
+	return ""
+}
+
+func (m *GeneralKeyShare) GetIdValue() string {
+	if m != nil {
+		return m.IdValue
+	}
+	return ""
+}
+
+func (m *GeneralKeyShare) GetKeyShare() string {
+	if m != nil {
+		return m.KeyShare
+	}
+	return ""
+}
+
+func (m *GeneralKeyShare) GetKeyShareIndex() uint64 {
+	if m != nil {
+		return m.KeyShareIndex
+	}
+	return 0
+}
+
+func (m *GeneralKeyShare) GetReceivedTimestamp() uint64 {
+	if m != nil {
+		return m.ReceivedTimestamp
+	}
+	return 0
+}
+
+func (m *GeneralKeyShare) GetReceivedBlockHeight() uint64 {
+	if m != nil {
+		return m.ReceivedBlockHeight
+	}
+	return 0
+}
+
+// ValidatorEncryptedKeyShare defines the structure for
+// submitting encrypted keyshares by validators
+type ValidatorEncryptedKeyShare struct {
+	Validator           string `protobuf:"bytes,1,opt,name=validator,proto3" json:"validator,omitempty"`
+	Requester           string `protobuf:"bytes,2,opt,name=requester,proto3" json:"requester,omitempty"`
+	KeyShare            string `protobuf:"bytes,3,opt,name=key_share,json=keyShare,proto3" json:"key_share,omitempty"`
+	KeyShareIndex       uint64 `protobuf:"varint,4,opt,name=key_share_index,json=keyShareIndex,proto3" json:"key_share_index,omitempty"`
+	ReceivedTimestamp   uint64 `protobuf:"varint,5,opt,name=received_timestamp,json=receivedTimestamp,proto3" json:"received_timestamp,omitempty"`
+	ReceivedBlockHeight uint64 `protobuf:"varint,6,opt,name=received_block_height,json=receivedBlockHeight,proto3" json:"received_block_height,omitempty"`
+	Identity            string `protobuf:"bytes,7,opt,name=identity,proto3" json:"identity,omitempty"`
+}
+
+func (m *ValidatorEncryptedKeyShare) Reset()         { *m = ValidatorEncryptedKeyShare{} }
+func (m *ValidatorEncryptedKeyShare) String() string { return proto.CompactTextString(m) }
+func (*ValidatorEncryptedKeyShare) ProtoMessage()    {}
+func (*ValidatorEncryptedKeyShare) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cb45212b5123dd29, []int{2}
+}
+func (m *ValidatorEncryptedKeyShare) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ValidatorEncryptedKeyShare) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ValidatorEncryptedKeyShare.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ValidatorEncryptedKeyShare) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ValidatorEncryptedKeyShare.Merge(m, src)
+}
+func (m *ValidatorEncryptedKeyShare) XXX_Size() int {
+	return m.Size()
+}
+func (m *ValidatorEncryptedKeyShare) XXX_DiscardUnknown() {
+	xxx_messageInfo_ValidatorEncryptedKeyShare.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ValidatorEncryptedKeyShare proto.InternalMessageInfo
+
+func (m *ValidatorEncryptedKeyShare) GetValidator() string {
+	if m != nil {
+		return m.Validator
+	}
+	return ""
+}
+
+func (m *ValidatorEncryptedKeyShare) GetRequester() string {
+	if m != nil {
+		return m.Requester
+	}
+	return ""
+}
+
+func (m *ValidatorEncryptedKeyShare) GetKeyShare() string {
+	if m != nil {
+		return m.KeyShare
+	}
+	return ""
+}
+
+func (m *ValidatorEncryptedKeyShare) GetKeyShareIndex() uint64 {
+	if m != nil {
+		return m.KeyShareIndex
+	}
+	return 0
+}
+
+func (m *ValidatorEncryptedKeyShare) GetReceivedTimestamp() uint64 {
+	if m != nil {
+		return m.ReceivedTimestamp
+	}
+	return 0
+}
+
+func (m *ValidatorEncryptedKeyShare) GetReceivedBlockHeight() uint64 {
+	if m != nil {
+		return m.ReceivedBlockHeight
+	}
+	return 0
+}
+
+func (m *ValidatorEncryptedKeyShare) GetIdentity() string {
+	if m != nil {
+		return m.Identity
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*KeyShare)(nil), "fairyring.keyshare.KeyShare")
+	proto.RegisterType((*GeneralKeyShare)(nil), "fairyring.keyshare.GeneralKeyShare")
+	proto.RegisterType((*ValidatorEncryptedKeyShare)(nil), "fairyring.keyshare.ValidatorEncryptedKeyShare")
 }
 
 func init() {
@@ -115,23 +307,32 @@ func init() {
 }
 
 var fileDescriptor_cb45212b5123dd29 = []byte{
-	// 253 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x52, 0x4a, 0x4b, 0xcc, 0x2c,
-	0xaa, 0x2c, 0xca, 0xcc, 0x4b, 0xd7, 0xcf, 0x4e, 0xad, 0x2c, 0xce, 0x48, 0x2c, 0x4a, 0x05, 0x31,
-	0xe2, 0xc1, 0x2c, 0xbd, 0x82, 0xa2, 0xfc, 0x92, 0x7c, 0x21, 0x21, 0xb8, 0x1a, 0x3d, 0x98, 0x1a,
-	0xa5, 0x37, 0x8c, 0x5c, 0x1c, 0xde, 0xa9, 0x95, 0xc1, 0x20, 0x8e, 0x90, 0x0c, 0x17, 0x67, 0x59,
-	0x62, 0x4e, 0x66, 0x4a, 0x62, 0x49, 0x7e, 0x91, 0x04, 0xa3, 0x02, 0xa3, 0x06, 0x67, 0x10, 0x42,
-	0x40, 0x48, 0x81, 0x8b, 0x3b, 0x29, 0x27, 0x3f, 0x39, 0xdb, 0x23, 0x35, 0x33, 0x3d, 0xa3, 0x44,
-	0x82, 0x49, 0x81, 0x51, 0x83, 0x25, 0x08, 0x59, 0x48, 0x48, 0x8a, 0x8b, 0x23, 0x1b, 0x6a, 0x96,
-	0x04, 0x33, 0x58, 0x3b, 0x9c, 0x2f, 0xa4, 0xc2, 0xc5, 0x0b, 0x63, 0x7b, 0xe6, 0xa5, 0xa4, 0x56,
-	0x48, 0xb0, 0x80, 0xf5, 0xa3, 0x0a, 0x0a, 0xe9, 0x70, 0x09, 0x16, 0xa5, 0x26, 0xa7, 0x66, 0x96,
-	0xa5, 0xa6, 0x84, 0x64, 0xe6, 0xa6, 0x16, 0x97, 0x24, 0xe6, 0x16, 0x48, 0xb0, 0x82, 0x55, 0x62,
-	0x4a, 0x08, 0x19, 0x70, 0x09, 0xc3, 0x04, 0x9d, 0x90, 0x5c, 0xc6, 0x06, 0x56, 0x8f, 0x4d, 0xca,
-	0xc9, 0xf3, 0xc4, 0x23, 0x39, 0xc6, 0x0b, 0x8f, 0xe4, 0x18, 0x1f, 0x3c, 0x92, 0x63, 0x9c, 0xf0,
-	0x58, 0x8e, 0xe1, 0xc2, 0x63, 0x39, 0x86, 0x1b, 0x8f, 0xe5, 0x18, 0xa2, 0xf4, 0xd3, 0x33, 0x4b,
-	0x32, 0x4a, 0x93, 0xf4, 0x92, 0xf3, 0x73, 0xf5, 0xdd, 0x12, 0x33, 0x8b, 0xc0, 0xfe, 0xd2, 0x47,
-	0x84, 0x6a, 0x05, 0x22, 0x5c, 0x4b, 0x2a, 0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0, 0x81, 0x6a, 0x0c,
-	0x08, 0x00, 0x00, 0xff, 0xff, 0x1e, 0xf4, 0xc1, 0xf3, 0x7a, 0x01, 0x00, 0x00,
+	// 392 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xd4, 0x93, 0xcf, 0x4e, 0xea, 0x40,
+	0x14, 0xc6, 0x29, 0x17, 0x0a, 0x9d, 0x7b, 0x6f, 0xc8, 0x9d, 0x1b, 0x63, 0x45, 0xd2, 0x20, 0x0b,
+	0xc3, 0x46, 0x9a, 0xe8, 0x1b, 0x90, 0xf8, 0x87, 0xb8, 0xab, 0x84, 0x85, 0x9b, 0x66, 0xe8, 0x1c,
+	0xe9, 0x84, 0xd2, 0xd6, 0xe9, 0x40, 0xe8, 0x33, 0xb8, 0xf1, 0x01, 0x7c, 0x20, 0x97, 0x2c, 0x5d,
+	0x1a, 0x78, 0x04, 0x5f, 0xc0, 0x74, 0xe2, 0xb4, 0x61, 0x61, 0xc4, 0xa5, 0xbb, 0x39, 0xdf, 0xf9,
+	0x7a, 0x66, 0xce, 0xaf, 0xe7, 0xa0, 0xce, 0x1d, 0x61, 0x3c, 0xe5, 0x2c, 0x9c, 0xd8, 0x53, 0x48,
+	0x13, 0x9f, 0x70, 0xc8, 0x0e, 0xae, 0x3c, 0xf5, 0x62, 0x1e, 0x89, 0x08, 0xe3, 0xdc, 0xd3, 0x53,
+	0x9e, 0xce, 0x9b, 0x86, 0xea, 0xd7, 0x90, 0xde, 0x64, 0x01, 0x6e, 0x21, 0x63, 0x41, 0x02, 0x46,
+	0x89, 0x88, 0xb8, 0xa9, 0xb5, 0xb5, 0xae, 0xe1, 0x14, 0x02, 0x3e, 0x42, 0x7f, 0xc6, 0x41, 0xe4,
+	0x4d, 0x5d, 0x1f, 0xd8, 0xc4, 0x17, 0x66, 0xb9, 0xad, 0x75, 0x2b, 0xce, 0x6f, 0xa9, 0x5d, 0x49,
+	0x09, 0x1f, 0x22, 0x23, 0xbf, 0xd4, 0xfc, 0x25, 0x0b, 0xd4, 0xa7, 0xaa, 0xfa, 0x31, 0x6a, 0xe4,
+	0x49, 0x97, 0x85, 0x14, 0x96, 0x66, 0x45, 0x96, 0xf8, 0xab, 0x2c, 0x83, 0x4c, 0xc4, 0x27, 0x08,
+	0x73, 0xf0, 0x80, 0x2d, 0x80, 0xba, 0x82, 0xcd, 0x20, 0x11, 0x64, 0x16, 0x9b, 0x55, 0x69, 0xfd,
+	0xa7, 0x32, 0x43, 0x95, 0xc0, 0xa7, 0x68, 0x2f, 0xb7, 0x6f, 0xbd, 0x4f, 0x97, 0x5f, 0xfc, 0x57,
+	0xc9, 0x7e, 0xf1, 0xce, 0xce, 0x43, 0x19, 0x35, 0x2e, 0x21, 0x04, 0x4e, 0x82, 0x1d, 0x9b, 0xdf,
+	0x47, 0x35, 0x46, 0x5d, 0x91, 0xc6, 0x20, 0xfb, 0x36, 0x1c, 0x9d, 0xd1, 0x61, 0x1a, 0x03, 0x3e,
+	0x40, 0x75, 0x46, 0xdd, 0x05, 0x09, 0xe6, 0xaa, 0xe3, 0x1a, 0xa3, 0xa3, 0x2c, 0xdc, 0xa6, 0x51,
+	0xf9, 0x9a, 0x46, 0x75, 0x77, 0x1a, 0xfa, 0xb7, 0x69, 0xd4, 0x3e, 0xa7, 0xf1, 0x54, 0x46, 0xcd,
+	0x91, 0xea, 0xf4, 0x3c, 0xf4, 0x78, 0x1a, 0x0b, 0xa0, 0x3b, 0x82, 0x69, 0x21, 0x83, 0xc3, 0xfd,
+	0x1c, 0x12, 0x01, 0xfc, 0x03, 0x4d, 0x21, 0xfc, 0x94, 0x81, 0xc0, 0xcd, 0xec, 0x2f, 0x42, 0x28,
+	0x98, 0x48, 0x25, 0x29, 0xc3, 0xc9, 0xe3, 0xfe, 0xe0, 0x79, 0x6d, 0x69, 0xab, 0xb5, 0xa5, 0xbd,
+	0xae, 0x2d, 0xed, 0x71, 0x63, 0x95, 0x56, 0x1b, 0xab, 0xf4, 0xb2, 0xb1, 0x4a, 0xb7, 0xf6, 0x84,
+	0x09, 0x7f, 0x3e, 0xee, 0x79, 0xd1, 0xcc, 0xbe, 0x20, 0x8c, 0xcb, 0xdb, 0xec, 0x62, 0x13, 0x97,
+	0xc5, 0x2e, 0x66, 0x93, 0x93, 0x8c, 0x75, 0xb9, 0x88, 0x67, 0xef, 0x01, 0x00, 0x00, 0xff, 0xff,
+	0xe9, 0x20, 0xe4, 0xae, 0xae, 0x03, 0x00, 0x00,
 }
 
 func (m *KeyShare) Marshal() (dAtA []byte, err error) {
@@ -191,6 +392,138 @@ func (m *KeyShare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *GeneralKeyShare) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GeneralKeyShare) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GeneralKeyShare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.ReceivedBlockHeight != 0 {
+		i = encodeVarintKeyShare(dAtA, i, uint64(m.ReceivedBlockHeight))
+		i--
+		dAtA[i] = 0x38
+	}
+	if m.ReceivedTimestamp != 0 {
+		i = encodeVarintKeyShare(dAtA, i, uint64(m.ReceivedTimestamp))
+		i--
+		dAtA[i] = 0x30
+	}
+	if m.KeyShareIndex != 0 {
+		i = encodeVarintKeyShare(dAtA, i, uint64(m.KeyShareIndex))
+		i--
+		dAtA[i] = 0x28
+	}
+	if len(m.KeyShare) > 0 {
+		i -= len(m.KeyShare)
+		copy(dAtA[i:], m.KeyShare)
+		i = encodeVarintKeyShare(dAtA, i, uint64(len(m.KeyShare)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.IdValue) > 0 {
+		i -= len(m.IdValue)
+		copy(dAtA[i:], m.IdValue)
+		i = encodeVarintKeyShare(dAtA, i, uint64(len(m.IdValue)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.IdType) > 0 {
+		i -= len(m.IdType)
+		copy(dAtA[i:], m.IdType)
+		i = encodeVarintKeyShare(dAtA, i, uint64(len(m.IdType)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Validator) > 0 {
+		i -= len(m.Validator)
+		copy(dAtA[i:], m.Validator)
+		i = encodeVarintKeyShare(dAtA, i, uint64(len(m.Validator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ValidatorEncryptedKeyShare) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ValidatorEncryptedKeyShare) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ValidatorEncryptedKeyShare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Identity) > 0 {
+		i -= len(m.Identity)
+		copy(dAtA[i:], m.Identity)
+		i = encodeVarintKeyShare(dAtA, i, uint64(len(m.Identity)))
+		i--
+		dAtA[i] = 0x3a
+	}
+	if m.ReceivedBlockHeight != 0 {
+		i = encodeVarintKeyShare(dAtA, i, uint64(m.ReceivedBlockHeight))
+		i--
+		dAtA[i] = 0x30
+	}
+	if m.ReceivedTimestamp != 0 {
+		i = encodeVarintKeyShare(dAtA, i, uint64(m.ReceivedTimestamp))
+		i--
+		dAtA[i] = 0x28
+	}
+	if m.KeyShareIndex != 0 {
+		i = encodeVarintKeyShare(dAtA, i, uint64(m.KeyShareIndex))
+		i--
+		dAtA[i] = 0x20
+	}
+	if len(m.KeyShare) > 0 {
+		i -= len(m.KeyShare)
+		copy(dAtA[i:], m.KeyShare)
+		i = encodeVarintKeyShare(dAtA, i, uint64(len(m.KeyShare)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Requester) > 0 {
+		i -= len(m.Requester)
+		copy(dAtA[i:], m.Requester)
+		i = encodeVarintKeyShare(dAtA, i, uint64(len(m.Requester)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Validator) > 0 {
+		i -= len(m.Validator)
+		copy(dAtA[i:], m.Validator)
+		i = encodeVarintKeyShare(dAtA, i, uint64(len(m.Validator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintKeyShare(dAtA []byte, offset int, v uint64) int {
 	offset -= sovKeyShare(v)
 	base := offset
@@ -227,6 +560,74 @@ func (m *KeyShare) Size() (n int) {
 	}
 	if m.ReceivedBlockHeight != 0 {
 		n += 1 + sovKeyShare(uint64(m.ReceivedBlockHeight))
+	}
+	return n
+}
+
+func (m *GeneralKeyShare) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Validator)
+	if l > 0 {
+		n += 1 + l + sovKeyShare(uint64(l))
+	}
+	l = len(m.IdType)
+	if l > 0 {
+		n += 1 + l + sovKeyShare(uint64(l))
+	}
+	l = len(m.IdValue)
+	if l > 0 {
+		n += 1 + l + sovKeyShare(uint64(l))
+	}
+	l = len(m.KeyShare)
+	if l > 0 {
+		n += 1 + l + sovKeyShare(uint64(l))
+	}
+	if m.KeyShareIndex != 0 {
+		n += 1 + sovKeyShare(uint64(m.KeyShareIndex))
+	}
+	if m.ReceivedTimestamp != 0 {
+		n += 1 + sovKeyShare(uint64(m.ReceivedTimestamp))
+	}
+	if m.ReceivedBlockHeight != 0 {
+		n += 1 + sovKeyShare(uint64(m.ReceivedBlockHeight))
+	}
+	return n
+}
+
+func (m *ValidatorEncryptedKeyShare) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Validator)
+	if l > 0 {
+		n += 1 + l + sovKeyShare(uint64(l))
+	}
+	l = len(m.Requester)
+	if l > 0 {
+		n += 1 + l + sovKeyShare(uint64(l))
+	}
+	l = len(m.KeyShare)
+	if l > 0 {
+		n += 1 + l + sovKeyShare(uint64(l))
+	}
+	if m.KeyShareIndex != 0 {
+		n += 1 + sovKeyShare(uint64(m.KeyShareIndex))
+	}
+	if m.ReceivedTimestamp != 0 {
+		n += 1 + sovKeyShare(uint64(m.ReceivedTimestamp))
+	}
+	if m.ReceivedBlockHeight != 0 {
+		n += 1 + sovKeyShare(uint64(m.ReceivedBlockHeight))
+	}
+	l = len(m.Identity)
+	if l > 0 {
+		n += 1 + l + sovKeyShare(uint64(l))
 	}
 	return n
 }
@@ -406,6 +807,476 @@ func (m *KeyShare) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipKeyShare(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GeneralKeyShare) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowKeyShare
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GeneralKeyShare: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GeneralKeyShare: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Validator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Validator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IdType", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.IdType = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IdValue", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.IdValue = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field KeyShare", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.KeyShare = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field KeyShareIndex", wireType)
+			}
+			m.KeyShareIndex = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.KeyShareIndex |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReceivedTimestamp", wireType)
+			}
+			m.ReceivedTimestamp = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ReceivedTimestamp |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 7:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReceivedBlockHeight", wireType)
+			}
+			m.ReceivedBlockHeight = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ReceivedBlockHeight |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipKeyShare(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ValidatorEncryptedKeyShare) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowKeyShare
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ValidatorEncryptedKeyShare: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ValidatorEncryptedKeyShare: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Validator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Validator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Requester", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Requester = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field KeyShare", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.KeyShare = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field KeyShareIndex", wireType)
+			}
+			m.KeyShareIndex = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.KeyShareIndex |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReceivedTimestamp", wireType)
+			}
+			m.ReceivedTimestamp = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ReceivedTimestamp |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReceivedBlockHeight", wireType)
+			}
+			m.ReceivedBlockHeight = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ReceivedBlockHeight |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Identity", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowKeyShare
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthKeyShare
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Identity = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipKeyShare(dAtA[iNdEx:])

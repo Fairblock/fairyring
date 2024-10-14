@@ -22,6 +22,8 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// AggregatedKeyShare defines the structure to store
+// the aggregated keyshare of a particular identity
 type AggregatedKeyShare struct {
 	Height  uint64 `protobuf:"varint,1,opt,name=height,proto3" json:"height,omitempty"`
 	Data    string `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`

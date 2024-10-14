@@ -27,6 +27,7 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // Params defines the parameters for the module.
 type Params struct {
+	// option (gogoproto.equal) = true;
 	KeyshareChannelId     string                 `protobuf:"bytes,1,opt,name=keyshare_channel_id,json=keyshareChannelId,proto3" json:"keyshare_channel_id,omitempty" yaml:"keyshare_channel_id"`
 	IsSourceChain         bool                   `protobuf:"varint,2,opt,name=is_source_chain,json=isSourceChain,proto3" json:"is_source_chain,omitempty" yaml:"is_source_chain"`
 	TrustedCounterParties []*TrustedCounterParty `protobuf:"bytes,3,rep,name=trusted_counter_parties,json=trustedCounterParties,proto3" json:"trusted_counter_parties,omitempty"`
@@ -110,6 +111,9 @@ func (m *Params) GetPrivateKeysharePrice() *types.Coin {
 	return nil
 }
 
+// TrustedCounterParty defines the structure to store the ibc info
+// of the source chain (fairyring) to reliably fetch active keys and
+// aggregated/encrypted keyshares
 type TrustedCounterParty struct {
 	ClientId     string `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
 	ConnectionId string `protobuf:"bytes,2,opt,name=connection_id,json=connectionId,proto3" json:"connection_id,omitempty"`

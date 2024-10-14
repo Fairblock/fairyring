@@ -11,8 +11,6 @@ option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 message Params {
   option (amino.name) = "fairyring/x/pep/Params";
   // option (gogoproto.equal) = true;
-
-  
   string keyshare_channel_id = 1 [(gogoproto.moretags) = "yaml:\"keyshare_channel_id\""];
   bool is_source_chain = 2 [(gogoproto.moretags) = "yaml:\"is_source_chain\""];
   repeated TrustedCounterParty trusted_counter_parties = 3;
@@ -21,6 +19,9 @@ message Params {
   cosmos.base.v1beta1.Coin private_keyshare_price = 6 [(gogoproto.moretags) = "yaml:\"private_keyshare_price\""];
 }
 
+// TrustedCounterParty defines the structure to store the ibc info
+// of the source chain (fairyring) to reliably fetch active keys and
+// aggregated/encrypted keyshares
 message TrustedCounterParty {
   string client_id = 1;
   string connection_id = 2;

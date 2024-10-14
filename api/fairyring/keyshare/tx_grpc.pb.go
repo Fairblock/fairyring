@@ -39,16 +39,34 @@ type MsgClient interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
+	// RegisterValidator defines a operation to register validator which
+	// is then eligible to participate in sending keyshares
 	RegisterValidator(ctx context.Context, in *MsgRegisterValidator, opts ...grpc.CallOption) (*MsgRegisterValidatorResponse, error)
+	// DeRegisterValidator defines an operation to de-register
+	// a registered validator
 	DeRegisterValidator(ctx context.Context, in *MsgDeRegisterValidator, opts ...grpc.CallOption) (*MsgDeRegisterValidatorResponse, error)
+	// SendKeyshare defines an operation to submit keyshares
+	// every block from registered validators
 	SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts ...grpc.CallOption) (*MsgSendKeyshareResponse, error)
-	// this line is used by starport scaffolding # proto/tx/rpc
+	// CreateLatestPubKey defines an operation to add a
+	// public key to the chain (can only be done by an authorized address)
 	CreateLatestPubKey(ctx context.Context, in *MsgCreateLatestPubKey, opts ...grpc.CallOption) (*MsgCreateLatestPubKeyResponse, error)
+	// OverrideLatestPubKey defines an operation to override the current active pubkey
 	OverrideLatestPubKey(ctx context.Context, in *MsgOverrideLatestPubKey, opts ...grpc.CallOption) (*MsgOverrideLatestPubKeyResponse, error)
+	// CreateAuthorizedAddress defines an operation to mark an address
+	// as authorized to create and/or update pubkeys on the chain
 	CreateAuthorizedAddress(ctx context.Context, in *MsgCreateAuthorizedAddress, opts ...grpc.CallOption) (*MsgCreateAuthorizedAddressResponse, error)
+	// UpdateAuthorizedAddress defines an operation to update the
+	// list of authorized addresses
 	UpdateAuthorizedAddress(ctx context.Context, in *MsgUpdateAuthorizedAddress, opts ...grpc.CallOption) (*MsgUpdateAuthorizedAddressResponse, error)
+	// DeleteAuthorizedAddress defines an operation to revoke the
+	// authorization of a previously authorized address
 	DeleteAuthorizedAddress(ctx context.Context, in *MsgDeleteAuthorizedAddress, opts ...grpc.CallOption) (*MsgDeleteAuthorizedAddressResponse, error)
+	// CreateGeneralKeyShare defines an operation to submit a
+	// general keyshare from a registered validator
 	CreateGeneralKeyShare(ctx context.Context, in *MsgCreateGeneralKeyShare, opts ...grpc.CallOption) (*MsgCreateGeneralKeyShareResponse, error)
+	// SubmitEncryptedKeyshare defines an operation to submit
+	// an encrypted keyshare from a registered validator
 	SubmitEncryptedKeyshare(ctx context.Context, in *MsgSubmitEncryptedKeyshare, opts ...grpc.CallOption) (*MsgSubmitEncryptedKeyshareResponse, error)
 }
 
@@ -166,16 +184,34 @@ type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
+	// RegisterValidator defines a operation to register validator which
+	// is then eligible to participate in sending keyshares
 	RegisterValidator(context.Context, *MsgRegisterValidator) (*MsgRegisterValidatorResponse, error)
+	// DeRegisterValidator defines an operation to de-register
+	// a registered validator
 	DeRegisterValidator(context.Context, *MsgDeRegisterValidator) (*MsgDeRegisterValidatorResponse, error)
+	// SendKeyshare defines an operation to submit keyshares
+	// every block from registered validators
 	SendKeyshare(context.Context, *MsgSendKeyshare) (*MsgSendKeyshareResponse, error)
-	// this line is used by starport scaffolding # proto/tx/rpc
+	// CreateLatestPubKey defines an operation to add a
+	// public key to the chain (can only be done by an authorized address)
 	CreateLatestPubKey(context.Context, *MsgCreateLatestPubKey) (*MsgCreateLatestPubKeyResponse, error)
+	// OverrideLatestPubKey defines an operation to override the current active pubkey
 	OverrideLatestPubKey(context.Context, *MsgOverrideLatestPubKey) (*MsgOverrideLatestPubKeyResponse, error)
+	// CreateAuthorizedAddress defines an operation to mark an address
+	// as authorized to create and/or update pubkeys on the chain
 	CreateAuthorizedAddress(context.Context, *MsgCreateAuthorizedAddress) (*MsgCreateAuthorizedAddressResponse, error)
+	// UpdateAuthorizedAddress defines an operation to update the
+	// list of authorized addresses
 	UpdateAuthorizedAddress(context.Context, *MsgUpdateAuthorizedAddress) (*MsgUpdateAuthorizedAddressResponse, error)
+	// DeleteAuthorizedAddress defines an operation to revoke the
+	// authorization of a previously authorized address
 	DeleteAuthorizedAddress(context.Context, *MsgDeleteAuthorizedAddress) (*MsgDeleteAuthorizedAddressResponse, error)
+	// CreateGeneralKeyShare defines an operation to submit a
+	// general keyshare from a registered validator
 	CreateGeneralKeyShare(context.Context, *MsgCreateGeneralKeyShare) (*MsgCreateGeneralKeyShareResponse, error)
+	// SubmitEncryptedKeyshare defines an operation to submit
+	// an encrypted keyshare from a registered validator
 	SubmitEncryptedKeyshare(context.Context, *MsgSubmitEncryptedKeyshare) (*MsgSubmitEncryptedKeyshareResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }

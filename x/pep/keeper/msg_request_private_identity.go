@@ -41,7 +41,7 @@ func (k msgServer) RequestPrivateIdentity(goCtx context.Context, msg *types.MsgR
 	params := k.GetParams(ctx)
 
 	if params.IsSourceChain {
-		entry := commontypes.RequestPrivateKeyshare{
+		entry := commontypes.RequestEncryptedKeyshare{
 			Creator:   msg.Creator,
 			RequestId: msg.ReqId,
 		}

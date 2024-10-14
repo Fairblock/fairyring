@@ -23,6 +23,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// KeyShareRequest defines the storage structure for general keyshare requests
 type KeyShareRequest struct {
 	Identity     string               `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
 	Pubkey       string               `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
@@ -123,11 +124,13 @@ func (m *KeyShareRequest) GetSent() bool {
 	return false
 }
 
+// IBCInfo defines the structure to verify request for
+// aggregated and encrypted keyshares in case the request was made over IBC
 type IBCInfo struct {
-	ClientID     string `protobuf:"bytes,1,opt,name=ClientID,proto3" json:"ClientID,omitempty"`
-	ConnectionID string `protobuf:"bytes,2,opt,name=ConnectionID,proto3" json:"ConnectionID,omitempty"`
-	ChannelID    string `protobuf:"bytes,3,opt,name=ChannelID,proto3" json:"ChannelID,omitempty"`
-	PortID       string `protobuf:"bytes,4,opt,name=PortID,proto3" json:"PortID,omitempty"`
+	ClientId     string `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	ConnectionId string `protobuf:"bytes,2,opt,name=connection_id,json=connectionId,proto3" json:"connection_id,omitempty"`
+	ChannelId    string `protobuf:"bytes,3,opt,name=channel_id,json=channelId,proto3" json:"channel_id,omitempty"`
+	PortId       string `protobuf:"bytes,4,opt,name=port_id,json=portId,proto3" json:"port_id,omitempty"`
 }
 
 func (m *IBCInfo) Reset()         { *m = IBCInfo{} }
@@ -163,39 +166,41 @@ func (m *IBCInfo) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_IBCInfo proto.InternalMessageInfo
 
-func (m *IBCInfo) GetClientID() string {
+func (m *IBCInfo) GetClientId() string {
 	if m != nil {
-		return m.ClientID
+		return m.ClientId
 	}
 	return ""
 }
 
-func (m *IBCInfo) GetConnectionID() string {
+func (m *IBCInfo) GetConnectionId() string {
 	if m != nil {
-		return m.ConnectionID
+		return m.ConnectionId
 	}
 	return ""
 }
 
-func (m *IBCInfo) GetChannelID() string {
+func (m *IBCInfo) GetChannelId() string {
 	if m != nil {
-		return m.ChannelID
+		return m.ChannelId
 	}
 	return ""
 }
 
-func (m *IBCInfo) GetPortID() string {
+func (m *IBCInfo) GetPortId() string {
 	if m != nil {
-		return m.PortID
+		return m.PortId
 	}
 	return ""
 }
 
+// CounterPartyIBCInfo defines the structure to send aggregated
+// and encrypted keyshares if the request was made over IBC
 type CounterPartyIBCInfo struct {
-	ClientID     string `protobuf:"bytes,1,opt,name=ClientID,proto3" json:"ClientID,omitempty"`
-	ConnectionID string `protobuf:"bytes,2,opt,name=ConnectionID,proto3" json:"ConnectionID,omitempty"`
-	ChannelID    string `protobuf:"bytes,3,opt,name=ChannelID,proto3" json:"ChannelID,omitempty"`
-	PortID       string `protobuf:"bytes,4,opt,name=PortID,proto3" json:"PortID,omitempty"`
+	ClientId     string `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	ConnectionId string `protobuf:"bytes,2,opt,name=connection_id,json=connectionId,proto3" json:"connection_id,omitempty"`
+	ChannelId    string `protobuf:"bytes,3,opt,name=channel_id,json=channelId,proto3" json:"channel_id,omitempty"`
+	PortId       string `protobuf:"bytes,4,opt,name=port_id,json=portId,proto3" json:"port_id,omitempty"`
 }
 
 func (m *CounterPartyIBCInfo) Reset()         { *m = CounterPartyIBCInfo{} }
@@ -231,34 +236,36 @@ func (m *CounterPartyIBCInfo) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CounterPartyIBCInfo proto.InternalMessageInfo
 
-func (m *CounterPartyIBCInfo) GetClientID() string {
+func (m *CounterPartyIBCInfo) GetClientId() string {
 	if m != nil {
-		return m.ClientID
+		return m.ClientId
 	}
 	return ""
 }
 
-func (m *CounterPartyIBCInfo) GetConnectionID() string {
+func (m *CounterPartyIBCInfo) GetConnectionId() string {
 	if m != nil {
-		return m.ConnectionID
+		return m.ConnectionId
 	}
 	return ""
 }
 
-func (m *CounterPartyIBCInfo) GetChannelID() string {
+func (m *CounterPartyIBCInfo) GetChannelId() string {
 	if m != nil {
-		return m.ChannelID
+		return m.ChannelId
 	}
 	return ""
 }
 
-func (m *CounterPartyIBCInfo) GetPortID() string {
+func (m *CounterPartyIBCInfo) GetPortId() string {
 	if m != nil {
-		return m.PortID
+		return m.PortId
 	}
 	return ""
 }
 
+// PrivateKeyshareRequest defines the stroage structure for private
+// encrypted and unaggregated keyshare requests
 type PrivateKeyshareRequest struct {
 	Identity           string                     `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
 	Pubkey             string                     `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
@@ -363,37 +370,37 @@ func init() {
 }
 
 var fileDescriptor_e8ed024b19ae59bd = []byte{
-	// 477 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xd4, 0x94, 0xcb, 0x8a, 0x13, 0x41,
-	0x14, 0x86, 0xd3, 0x99, 0x4c, 0x2e, 0x27, 0x11, 0xa1, 0x06, 0x86, 0x66, 0xd4, 0x36, 0x24, 0x0b,
-	0x03, 0x42, 0x37, 0x8c, 0xe0, 0x03, 0x4c, 0x47, 0xa1, 0xc9, 0x26, 0xb4, 0xae, 0xdc, 0x84, 0xbe,
-	0x9c, 0x24, 0x45, 0x32, 0x55, 0x6d, 0x75, 0x45, 0xec, 0x95, 0x0f, 0xe0, 0xc6, 0x77, 0x72, 0xe3,
-	0x72, 0x96, 0xe2, 0x4a, 0x92, 0x17, 0x91, 0xaa, 0xbe, 0xcd, 0x8c, 0x71, 0x2d, 0xb3, 0xab, 0xf3,
-	0x9f, 0x0b, 0x3f, 0x1f, 0xa7, 0x0e, 0xbc, 0x5c, 0x06, 0x54, 0x64, 0x82, 0xb2, 0x95, 0xb3, 0xc1,
-	0x2c, 0x5d, 0x07, 0x02, 0x1d, 0x81, 0x1f, 0x77, 0x98, 0x4a, 0x8c, 0x17, 0xa5, 0x64, 0x27, 0x82,
-	0x4b, 0x4e, 0x48, 0x55, 0x6c, 0x97, 0x99, 0x8b, 0x71, 0x3d, 0x20, 0xe2, 0xd7, 0xd7, 0x9c, 0x39,
-	0x5a, 0x8f, 0x17, 0x32, 0x4b, 0x30, 0xcd, 0x1b, 0x47, 0xdf, 0x9b, 0xf0, 0x78, 0x86, 0xd9, 0x3b,
-	0x95, 0xf1, 0xf3, 0xe9, 0xe4, 0x02, 0xba, 0x34, 0x46, 0x26, 0xa9, 0xcc, 0x4c, 0x63, 0x68, 0x4c,
-	0x7a, 0x7e, 0x15, 0x93, 0x73, 0x68, 0x27, 0xbb, 0x70, 0x83, 0x99, 0xd9, 0xd4, 0x99, 0x22, 0x22,
-	0xaf, 0xa1, 0x4b, 0xc3, 0x68, 0x41, 0xd9, 0x92, 0x9b, 0x27, 0x43, 0x63, 0xd2, 0xbf, 0x7c, 0x62,
-	0xff, 0xed, 0xc9, 0xf6, 0xae, 0x5c, 0x8f, 0x2d, 0xb9, 0xdf, 0xa1, 0x61, 0xa4, 0x1e, 0x64, 0x06,
-	0x83, 0x88, 0xef, 0x98, 0x44, 0x91, 0x04, 0x42, 0x66, 0x66, 0x4b, 0xf7, 0xbe, 0x38, 0xd6, 0xeb,
-	0xe6, 0x75, 0x73, 0x55, 0x57, 0xce, 0xb9, 0xd3, 0x4c, 0xc6, 0xf0, 0x28, 0x58, 0xad, 0x44, 0x05,
-	0xc7, 0x3c, 0xd5, 0x1e, 0x07, 0x4a, 0x9c, 0x15, 0x1a, 0x79, 0x0e, 0xfd, 0x44, 0xf0, 0x84, 0xa7,
-	0xc1, 0x76, 0x41, 0x63, 0xb3, 0xad, 0x4b, 0xa0, 0x94, 0xbc, 0x98, 0x3c, 0x03, 0x28, 0x38, 0xab,
-	0x7c, 0x47, 0xe7, 0x7b, 0x85, 0xe2, 0xc5, 0x84, 0x40, 0x2b, 0x45, 0x26, 0xcd, 0xee, 0xd0, 0x98,
-	0x74, 0x7d, 0xfd, 0x1e, 0x7d, 0x81, 0x4e, 0xe1, 0x48, 0xc1, 0x73, 0xb7, 0x14, 0x99, 0xf4, 0xa6,
-	0x25, 0xbc, 0x32, 0x26, 0x23, 0x18, 0xb8, 0x9c, 0x31, 0x8c, 0x24, 0xe5, 0xcc, 0x9b, 0x16, 0x08,
-	0xef, 0x68, 0xe4, 0x29, 0xf4, 0xdc, 0x75, 0xc0, 0x18, 0x6e, 0xbd, 0xa9, 0x26, 0xd9, 0xf3, 0x6b,
-	0x41, 0xe1, 0x9f, 0x73, 0xa1, 0x66, 0xb7, 0x72, 0xfc, 0x79, 0x34, 0xfa, 0x6a, 0xc0, 0xd9, 0x11,
-	0x3e, 0xff, 0xc9, 0xcd, 0xaf, 0x26, 0x9c, 0xcf, 0x05, 0xfd, 0x14, 0x48, 0x2c, 0xb1, 0x3f, 0xf8,
-	0xdd, 0x7a, 0x0f, 0x67, 0xc8, 0x22, 0x91, 0x25, 0xb7, 0x7f, 0x5f, 0x6a, 0x9e, 0x0e, 0x4f, 0x26,
-	0xfd, 0xcb, 0xf1, 0xad, 0x99, 0xf9, 0x5f, 0xb3, 0xdf, 0x94, 0xc5, 0x15, 0x01, 0x82, 0xf7, 0xa5,
-	0xf4, 0xde, 0xae, 0xb5, 0xff, 0xb5, 0x6b, 0x9d, 0x7a, 0xd7, 0xae, 0xbc, 0x1f, 0x7b, 0xcb, 0xb8,
-	0xd9, 0x5b, 0xc6, 0xef, 0xbd, 0x65, 0x7c, 0x3b, 0x58, 0x8d, 0x9b, 0x83, 0xd5, 0xf8, 0x79, 0xb0,
-	0x1a, 0x1f, 0x9c, 0x15, 0x95, 0xeb, 0x5d, 0xa8, 0x1c, 0x38, 0x6f, 0x03, 0x2a, 0xc2, 0x2d, 0x8f,
-	0x36, 0x4e, 0x7d, 0x05, 0x3e, 0xd7, 0x87, 0x44, 0x9f, 0x80, 0xb0, 0xad, 0x6f, 0xc0, 0xab, 0x3f,
-	0x01, 0x00, 0x00, 0xff, 0xff, 0xb3, 0x16, 0xed, 0xc7, 0x6b, 0x04, 0x00, 0x00,
+	// 480 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xd4, 0x54, 0x41, 0x8b, 0xd3, 0x40,
+	0x14, 0xee, 0xb4, 0xdd, 0xa6, 0x7d, 0xad, 0x08, 0xb3, 0xb0, 0x86, 0x5d, 0x8c, 0xa5, 0x3d, 0x58,
+	0x10, 0x12, 0x58, 0xc1, 0x1f, 0xb0, 0x8b, 0x42, 0xe8, 0x65, 0xa9, 0x9e, 0xbc, 0x94, 0x64, 0xe6,
+	0xb5, 0x1d, 0xda, 0x9d, 0x89, 0x93, 0xa9, 0x98, 0xb3, 0x3f, 0x40, 0xff, 0x93, 0x17, 0x8f, 0x7b,
+	0x14, 0x4f, 0xd2, 0xfe, 0x11, 0xc9, 0x24, 0x69, 0xd6, 0x75, 0x3d, 0xcb, 0xde, 0x66, 0xbe, 0xf7,
+	0xbd, 0x8f, 0x8f, 0x6f, 0xde, 0x3c, 0x78, 0xb1, 0x88, 0x84, 0xce, 0xb4, 0x90, 0xcb, 0x60, 0x8d,
+	0x59, 0xba, 0x8a, 0x34, 0x06, 0x1a, 0x3f, 0x6c, 0x31, 0x35, 0xc8, 0xe7, 0x15, 0xe4, 0x27, 0x5a,
+	0x19, 0x45, 0xe9, 0x81, 0xec, 0x57, 0x95, 0xd3, 0x71, 0x2d, 0xc0, 0xd4, 0xf5, 0xb5, 0x92, 0x81,
+	0xc5, 0xf9, 0xdc, 0x64, 0x09, 0xa6, 0x45, 0xe3, 0xe8, 0x5b, 0x13, 0x1e, 0x4f, 0x31, 0x7b, 0x9b,
+	0x57, 0x66, 0x85, 0x3a, 0x3d, 0x85, 0xae, 0xe0, 0x28, 0x8d, 0x30, 0x99, 0x4b, 0x86, 0x64, 0xd2,
+	0x9b, 0x1d, 0xee, 0xf4, 0x04, 0x3a, 0xc9, 0x36, 0x5e, 0x63, 0xe6, 0x36, 0x6d, 0xa5, 0xbc, 0xd1,
+	0x57, 0xd0, 0x15, 0x31, 0x9b, 0x0b, 0xb9, 0x50, 0x6e, 0x6b, 0x48, 0x26, 0xfd, 0xf3, 0x33, 0xff,
+	0x6f, 0x4f, 0x7e, 0x78, 0x71, 0x19, 0xca, 0x85, 0x9a, 0x39, 0x22, 0x66, 0xf9, 0x81, 0x4e, 0x61,
+	0xc0, 0xd4, 0x56, 0x1a, 0xd4, 0x49, 0xa4, 0x4d, 0xe6, 0xb6, 0x6d, 0xef, 0xf3, 0xfb, 0x7a, 0x2f,
+	0x0b, 0xde, 0x55, 0xce, 0xab, 0x74, 0xfe, 0x68, 0xa6, 0x63, 0x78, 0x14, 0x2d, 0x97, 0xfa, 0x10,
+	0x8e, 0x7b, 0x64, 0x3d, 0x0e, 0x72, 0x70, 0x5a, 0x62, 0xf4, 0x19, 0xf4, 0x13, 0xad, 0x12, 0x95,
+	0x46, 0x9b, 0xb9, 0xe0, 0x6e, 0xc7, 0x52, 0xa0, 0x82, 0x42, 0x4e, 0x9f, 0x02, 0x94, 0x39, 0xe7,
+	0x75, 0xc7, 0xd6, 0x7b, 0x25, 0x12, 0x72, 0x4a, 0xa1, 0x9d, 0xa2, 0x34, 0x6e, 0x77, 0x48, 0x26,
+	0xdd, 0x99, 0x3d, 0x8f, 0x3e, 0x13, 0x70, 0x4a, 0x4b, 0xf4, 0x0c, 0x7a, 0x6c, 0x23, 0x50, 0xda,
+	0xee, 0x32, 0xbe, 0x02, 0x08, 0x79, 0xee, 0x90, 0x29, 0x29, 0x91, 0x19, 0xa1, 0x64, 0x4e, 0x28,
+	0x52, 0x1c, 0xd4, 0x60, 0x61, 0x80, 0xad, 0x22, 0x29, 0xd1, 0x1a, 0x6c, 0x15, 0x06, 0x4a, 0x24,
+	0xe4, 0xf4, 0x09, 0x38, 0x89, 0xd2, 0x56, 0xbe, 0x5d, 0xbe, 0x81, 0xd2, 0x26, 0xe4, 0xa3, 0x2f,
+	0x04, 0x8e, 0xef, 0x09, 0xe9, 0x3f, 0x3a, 0xfa, 0xd9, 0x84, 0x93, 0x2b, 0x2d, 0x3e, 0x46, 0x06,
+	0xab, 0xfc, 0x1f, 0xfc, 0x90, 0xbd, 0x83, 0x63, 0x94, 0x4c, 0x67, 0xc9, 0xed, 0x6f, 0x98, 0xba,
+	0x47, 0xc3, 0xd6, 0xa4, 0x7f, 0x3e, 0xbe, 0xa5, 0x59, 0x7c, 0x3a, 0xff, 0x75, 0x45, 0x3e, 0x24,
+	0x40, 0xf1, 0x2e, 0x94, 0xde, 0x19, 0xba, 0xce, 0xbf, 0x86, 0xce, 0xa9, 0x87, 0xee, 0x22, 0xfc,
+	0xbe, 0xf3, 0xc8, 0xcd, 0xce, 0x23, 0xbf, 0x76, 0x1e, 0xf9, 0xba, 0xf7, 0x1a, 0x37, 0x7b, 0xaf,
+	0xf1, 0x63, 0xef, 0x35, 0xde, 0x07, 0x4b, 0x61, 0x56, 0xdb, 0x38, 0x77, 0x10, 0xbc, 0x89, 0x84,
+	0x8e, 0x37, 0x8a, 0xad, 0x83, 0x7a, 0x1d, 0x7c, 0xaa, 0x37, 0x8a, 0xdd, 0x05, 0x71, 0xc7, 0x2e,
+	0x83, 0x97, 0xbf, 0x03, 0x00, 0x00, 0xff, 0xff, 0xf5, 0xfd, 0xd4, 0x29, 0x74, 0x04, 0x00, 0x00,
 }
 
 func (m *KeyShareRequest) Marshal() (dAtA []byte, err error) {
@@ -508,31 +515,31 @@ func (m *IBCInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.PortID) > 0 {
-		i -= len(m.PortID)
-		copy(dAtA[i:], m.PortID)
-		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.PortID)))
+	if len(m.PortId) > 0 {
+		i -= len(m.PortId)
+		copy(dAtA[i:], m.PortId)
+		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.PortId)))
 		i--
 		dAtA[i] = 0x22
 	}
-	if len(m.ChannelID) > 0 {
-		i -= len(m.ChannelID)
-		copy(dAtA[i:], m.ChannelID)
-		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.ChannelID)))
+	if len(m.ChannelId) > 0 {
+		i -= len(m.ChannelId)
+		copy(dAtA[i:], m.ChannelId)
+		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.ChannelId)))
 		i--
 		dAtA[i] = 0x1a
 	}
-	if len(m.ConnectionID) > 0 {
-		i -= len(m.ConnectionID)
-		copy(dAtA[i:], m.ConnectionID)
-		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.ConnectionID)))
+	if len(m.ConnectionId) > 0 {
+		i -= len(m.ConnectionId)
+		copy(dAtA[i:], m.ConnectionId)
+		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.ConnectionId)))
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(m.ClientID) > 0 {
-		i -= len(m.ClientID)
-		copy(dAtA[i:], m.ClientID)
-		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.ClientID)))
+	if len(m.ClientId) > 0 {
+		i -= len(m.ClientId)
+		copy(dAtA[i:], m.ClientId)
+		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.ClientId)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -559,31 +566,31 @@ func (m *CounterPartyIBCInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.PortID) > 0 {
-		i -= len(m.PortID)
-		copy(dAtA[i:], m.PortID)
-		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.PortID)))
+	if len(m.PortId) > 0 {
+		i -= len(m.PortId)
+		copy(dAtA[i:], m.PortId)
+		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.PortId)))
 		i--
 		dAtA[i] = 0x22
 	}
-	if len(m.ChannelID) > 0 {
-		i -= len(m.ChannelID)
-		copy(dAtA[i:], m.ChannelID)
-		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.ChannelID)))
+	if len(m.ChannelId) > 0 {
+		i -= len(m.ChannelId)
+		copy(dAtA[i:], m.ChannelId)
+		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.ChannelId)))
 		i--
 		dAtA[i] = 0x1a
 	}
-	if len(m.ConnectionID) > 0 {
-		i -= len(m.ConnectionID)
-		copy(dAtA[i:], m.ConnectionID)
-		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.ConnectionID)))
+	if len(m.ConnectionId) > 0 {
+		i -= len(m.ConnectionId)
+		copy(dAtA[i:], m.ConnectionId)
+		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.ConnectionId)))
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(m.ClientID) > 0 {
-		i -= len(m.ClientID)
-		copy(dAtA[i:], m.ClientID)
-		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.ClientID)))
+	if len(m.ClientId) > 0 {
+		i -= len(m.ClientId)
+		copy(dAtA[i:], m.ClientId)
+		i = encodeVarintRequestedKeyshare(dAtA, i, uint64(len(m.ClientId)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -739,19 +746,19 @@ func (m *IBCInfo) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.ClientID)
+	l = len(m.ClientId)
 	if l > 0 {
 		n += 1 + l + sovRequestedKeyshare(uint64(l))
 	}
-	l = len(m.ConnectionID)
+	l = len(m.ConnectionId)
 	if l > 0 {
 		n += 1 + l + sovRequestedKeyshare(uint64(l))
 	}
-	l = len(m.ChannelID)
+	l = len(m.ChannelId)
 	if l > 0 {
 		n += 1 + l + sovRequestedKeyshare(uint64(l))
 	}
-	l = len(m.PortID)
+	l = len(m.PortId)
 	if l > 0 {
 		n += 1 + l + sovRequestedKeyshare(uint64(l))
 	}
@@ -764,19 +771,19 @@ func (m *CounterPartyIBCInfo) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.ClientID)
+	l = len(m.ClientId)
 	if l > 0 {
 		n += 1 + l + sovRequestedKeyshare(uint64(l))
 	}
-	l = len(m.ConnectionID)
+	l = len(m.ConnectionId)
 	if l > 0 {
 		n += 1 + l + sovRequestedKeyshare(uint64(l))
 	}
-	l = len(m.ChannelID)
+	l = len(m.ChannelId)
 	if l > 0 {
 		n += 1 + l + sovRequestedKeyshare(uint64(l))
 	}
-	l = len(m.PortID)
+	l = len(m.PortId)
 	if l > 0 {
 		n += 1 + l + sovRequestedKeyshare(uint64(l))
 	}
@@ -1160,7 +1167,7 @@ func (m *IBCInfo) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ClientID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ClientId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1188,11 +1195,11 @@ func (m *IBCInfo) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ClientID = string(dAtA[iNdEx:postIndex])
+			m.ClientId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ConnectionID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ConnectionId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1220,11 +1227,11 @@ func (m *IBCInfo) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ConnectionID = string(dAtA[iNdEx:postIndex])
+			m.ConnectionId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ChannelID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChannelId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1252,11 +1259,11 @@ func (m *IBCInfo) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ChannelID = string(dAtA[iNdEx:postIndex])
+			m.ChannelId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field PortID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PortId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1284,7 +1291,7 @@ func (m *IBCInfo) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.PortID = string(dAtA[iNdEx:postIndex])
+			m.PortId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1338,7 +1345,7 @@ func (m *CounterPartyIBCInfo) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ClientID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ClientId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1366,11 +1373,11 @@ func (m *CounterPartyIBCInfo) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ClientID = string(dAtA[iNdEx:postIndex])
+			m.ClientId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ConnectionID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ConnectionId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1398,11 +1405,11 @@ func (m *CounterPartyIBCInfo) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ConnectionID = string(dAtA[iNdEx:postIndex])
+			m.ConnectionId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ChannelID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChannelId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1430,11 +1437,11 @@ func (m *CounterPartyIBCInfo) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ChannelID = string(dAtA[iNdEx:postIndex])
+			m.ChannelId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field PortID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PortId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1462,7 +1469,7 @@ func (m *CounterPartyIBCInfo) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.PortID = string(dAtA[iNdEx:postIndex])
+			m.PortId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

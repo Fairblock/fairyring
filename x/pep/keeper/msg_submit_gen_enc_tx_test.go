@@ -1,12 +1,13 @@
 package keeper_test
 
 import (
+	"strconv"
+	"testing"
+
 	"cosmossdk.io/math"
 	"github.com/Fairblock/fairyring/testutil/nullify"
 	"github.com/Fairblock/fairyring/testutil/random"
 	"github.com/Fairblock/fairyring/testutil/sample"
-	"strconv"
-	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
@@ -88,7 +89,7 @@ func TestSubmitGeneralEncryptedTx(t *testing.T) {
 			}
 
 			if tc.desc == "InvalidIdentity" {
-				k.SetEntry(wctx, types.GenEncTxExecutionQueue{
+				k.SetEntry(wctx, types.IdentityExecutionQueue{
 					Creator:      sample.AccAddress(),
 					RequestId:    validIdentity,
 					Identity:     validIdentity,

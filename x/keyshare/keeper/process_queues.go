@@ -57,7 +57,7 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 
 		k.SetKeyShareRequest(ctx, keyshareRequest)
 
-		entry := peptypes.GenEncTxExecutionQueue{
+		entry := peptypes.IdentityExecutionQueue{
 			Creator:   req.Creator,
 			RequestId: req.GetRequestId(),
 			Identity:  keyshareRequest.Identity,

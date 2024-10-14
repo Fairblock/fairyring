@@ -15,25 +15,25 @@ import (
 )
 
 var (
-	md_EncryptedTx                        protoreflect.MessageDescriptor
-	fd_EncryptedTx_targetHeight           protoreflect.FieldDescriptor
-	fd_EncryptedTx_index                  protoreflect.FieldDescriptor
-	fd_EncryptedTx_data                   protoreflect.FieldDescriptor
-	fd_EncryptedTx_creator                protoreflect.FieldDescriptor
-	fd_EncryptedTx_chargedGas             protoreflect.FieldDescriptor
-	fd_EncryptedTx_processedAtChainHeight protoreflect.FieldDescriptor
-	fd_EncryptedTx_expired                protoreflect.FieldDescriptor
+	md_EncryptedTx                           protoreflect.MessageDescriptor
+	fd_EncryptedTx_target_height             protoreflect.FieldDescriptor
+	fd_EncryptedTx_index                     protoreflect.FieldDescriptor
+	fd_EncryptedTx_data                      protoreflect.FieldDescriptor
+	fd_EncryptedTx_creator                   protoreflect.FieldDescriptor
+	fd_EncryptedTx_charged_gas               protoreflect.FieldDescriptor
+	fd_EncryptedTx_processed_at_chain_height protoreflect.FieldDescriptor
+	fd_EncryptedTx_expired                   protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_pep_encrypted_tx_proto_init()
 	md_EncryptedTx = File_fairyring_pep_encrypted_tx_proto.Messages().ByName("EncryptedTx")
-	fd_EncryptedTx_targetHeight = md_EncryptedTx.Fields().ByName("targetHeight")
+	fd_EncryptedTx_target_height = md_EncryptedTx.Fields().ByName("target_height")
 	fd_EncryptedTx_index = md_EncryptedTx.Fields().ByName("index")
 	fd_EncryptedTx_data = md_EncryptedTx.Fields().ByName("data")
 	fd_EncryptedTx_creator = md_EncryptedTx.Fields().ByName("creator")
-	fd_EncryptedTx_chargedGas = md_EncryptedTx.Fields().ByName("chargedGas")
-	fd_EncryptedTx_processedAtChainHeight = md_EncryptedTx.Fields().ByName("processedAtChainHeight")
+	fd_EncryptedTx_charged_gas = md_EncryptedTx.Fields().ByName("charged_gas")
+	fd_EncryptedTx_processed_at_chain_height = md_EncryptedTx.Fields().ByName("processed_at_chain_height")
 	fd_EncryptedTx_expired = md_EncryptedTx.Fields().ByName("expired")
 }
 
@@ -104,7 +104,7 @@ func (x *fastReflection_EncryptedTx) Interface() protoreflect.ProtoMessage {
 func (x *fastReflection_EncryptedTx) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.TargetHeight != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.TargetHeight)
-		if !f(fd_EncryptedTx_targetHeight, value) {
+		if !f(fd_EncryptedTx_target_height, value) {
 			return
 		}
 	}
@@ -128,13 +128,13 @@ func (x *fastReflection_EncryptedTx) Range(f func(protoreflect.FieldDescriptor, 
 	}
 	if x.ChargedGas != nil {
 		value := protoreflect.ValueOfMessage(x.ChargedGas.ProtoReflect())
-		if !f(fd_EncryptedTx_chargedGas, value) {
+		if !f(fd_EncryptedTx_charged_gas, value) {
 			return
 		}
 	}
 	if x.ProcessedAtChainHeight != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.ProcessedAtChainHeight)
-		if !f(fd_EncryptedTx_processedAtChainHeight, value) {
+		if !f(fd_EncryptedTx_processed_at_chain_height, value) {
 			return
 		}
 	}
@@ -159,7 +159,7 @@ func (x *fastReflection_EncryptedTx) Range(f func(protoreflect.FieldDescriptor, 
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_EncryptedTx) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.pep.EncryptedTx.targetHeight":
+	case "fairyring.pep.EncryptedTx.target_height":
 		return x.TargetHeight != uint64(0)
 	case "fairyring.pep.EncryptedTx.index":
 		return x.Index != uint64(0)
@@ -167,9 +167,9 @@ func (x *fastReflection_EncryptedTx) Has(fd protoreflect.FieldDescriptor) bool {
 		return x.Data != ""
 	case "fairyring.pep.EncryptedTx.creator":
 		return x.Creator != ""
-	case "fairyring.pep.EncryptedTx.chargedGas":
+	case "fairyring.pep.EncryptedTx.charged_gas":
 		return x.ChargedGas != nil
-	case "fairyring.pep.EncryptedTx.processedAtChainHeight":
+	case "fairyring.pep.EncryptedTx.processed_at_chain_height":
 		return x.ProcessedAtChainHeight != uint64(0)
 	case "fairyring.pep.EncryptedTx.expired":
 		return x.Expired != false
@@ -189,7 +189,7 @@ func (x *fastReflection_EncryptedTx) Has(fd protoreflect.FieldDescriptor) bool {
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_EncryptedTx) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.pep.EncryptedTx.targetHeight":
+	case "fairyring.pep.EncryptedTx.target_height":
 		x.TargetHeight = uint64(0)
 	case "fairyring.pep.EncryptedTx.index":
 		x.Index = uint64(0)
@@ -197,9 +197,9 @@ func (x *fastReflection_EncryptedTx) Clear(fd protoreflect.FieldDescriptor) {
 		x.Data = ""
 	case "fairyring.pep.EncryptedTx.creator":
 		x.Creator = ""
-	case "fairyring.pep.EncryptedTx.chargedGas":
+	case "fairyring.pep.EncryptedTx.charged_gas":
 		x.ChargedGas = nil
-	case "fairyring.pep.EncryptedTx.processedAtChainHeight":
+	case "fairyring.pep.EncryptedTx.processed_at_chain_height":
 		x.ProcessedAtChainHeight = uint64(0)
 	case "fairyring.pep.EncryptedTx.expired":
 		x.Expired = false
@@ -219,7 +219,7 @@ func (x *fastReflection_EncryptedTx) Clear(fd protoreflect.FieldDescriptor) {
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_EncryptedTx) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.pep.EncryptedTx.targetHeight":
+	case "fairyring.pep.EncryptedTx.target_height":
 		value := x.TargetHeight
 		return protoreflect.ValueOfUint64(value)
 	case "fairyring.pep.EncryptedTx.index":
@@ -231,10 +231,10 @@ func (x *fastReflection_EncryptedTx) Get(descriptor protoreflect.FieldDescriptor
 	case "fairyring.pep.EncryptedTx.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "fairyring.pep.EncryptedTx.chargedGas":
+	case "fairyring.pep.EncryptedTx.charged_gas":
 		value := x.ChargedGas
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	case "fairyring.pep.EncryptedTx.processedAtChainHeight":
+	case "fairyring.pep.EncryptedTx.processed_at_chain_height":
 		value := x.ProcessedAtChainHeight
 		return protoreflect.ValueOfUint64(value)
 	case "fairyring.pep.EncryptedTx.expired":
@@ -260,7 +260,7 @@ func (x *fastReflection_EncryptedTx) Get(descriptor protoreflect.FieldDescriptor
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_EncryptedTx) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.pep.EncryptedTx.targetHeight":
+	case "fairyring.pep.EncryptedTx.target_height":
 		x.TargetHeight = value.Uint()
 	case "fairyring.pep.EncryptedTx.index":
 		x.Index = value.Uint()
@@ -268,9 +268,9 @@ func (x *fastReflection_EncryptedTx) Set(fd protoreflect.FieldDescriptor, value 
 		x.Data = value.Interface().(string)
 	case "fairyring.pep.EncryptedTx.creator":
 		x.Creator = value.Interface().(string)
-	case "fairyring.pep.EncryptedTx.chargedGas":
+	case "fairyring.pep.EncryptedTx.charged_gas":
 		x.ChargedGas = value.Message().Interface().(*v1beta1.Coin)
-	case "fairyring.pep.EncryptedTx.processedAtChainHeight":
+	case "fairyring.pep.EncryptedTx.processed_at_chain_height":
 		x.ProcessedAtChainHeight = value.Uint()
 	case "fairyring.pep.EncryptedTx.expired":
 		x.Expired = value.Bool()
@@ -294,21 +294,21 @@ func (x *fastReflection_EncryptedTx) Set(fd protoreflect.FieldDescriptor, value 
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_EncryptedTx) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.pep.EncryptedTx.chargedGas":
+	case "fairyring.pep.EncryptedTx.charged_gas":
 		if x.ChargedGas == nil {
 			x.ChargedGas = new(v1beta1.Coin)
 		}
 		return protoreflect.ValueOfMessage(x.ChargedGas.ProtoReflect())
-	case "fairyring.pep.EncryptedTx.targetHeight":
-		panic(fmt.Errorf("field targetHeight of message fairyring.pep.EncryptedTx is not mutable"))
+	case "fairyring.pep.EncryptedTx.target_height":
+		panic(fmt.Errorf("field target_height of message fairyring.pep.EncryptedTx is not mutable"))
 	case "fairyring.pep.EncryptedTx.index":
 		panic(fmt.Errorf("field index of message fairyring.pep.EncryptedTx is not mutable"))
 	case "fairyring.pep.EncryptedTx.data":
 		panic(fmt.Errorf("field data of message fairyring.pep.EncryptedTx is not mutable"))
 	case "fairyring.pep.EncryptedTx.creator":
 		panic(fmt.Errorf("field creator of message fairyring.pep.EncryptedTx is not mutable"))
-	case "fairyring.pep.EncryptedTx.processedAtChainHeight":
-		panic(fmt.Errorf("field processedAtChainHeight of message fairyring.pep.EncryptedTx is not mutable"))
+	case "fairyring.pep.EncryptedTx.processed_at_chain_height":
+		panic(fmt.Errorf("field processed_at_chain_height of message fairyring.pep.EncryptedTx is not mutable"))
 	case "fairyring.pep.EncryptedTx.expired":
 		panic(fmt.Errorf("field expired of message fairyring.pep.EncryptedTx is not mutable"))
 	default:
@@ -324,7 +324,7 @@ func (x *fastReflection_EncryptedTx) Mutable(fd protoreflect.FieldDescriptor) pr
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_EncryptedTx) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.pep.EncryptedTx.targetHeight":
+	case "fairyring.pep.EncryptedTx.target_height":
 		return protoreflect.ValueOfUint64(uint64(0))
 	case "fairyring.pep.EncryptedTx.index":
 		return protoreflect.ValueOfUint64(uint64(0))
@@ -332,10 +332,10 @@ func (x *fastReflection_EncryptedTx) NewField(fd protoreflect.FieldDescriptor) p
 		return protoreflect.ValueOfString("")
 	case "fairyring.pep.EncryptedTx.creator":
 		return protoreflect.ValueOfString("")
-	case "fairyring.pep.EncryptedTx.chargedGas":
+	case "fairyring.pep.EncryptedTx.charged_gas":
 		m := new(v1beta1.Coin)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	case "fairyring.pep.EncryptedTx.processedAtChainHeight":
+	case "fairyring.pep.EncryptedTx.processed_at_chain_height":
 		return protoreflect.ValueOfUint64(uint64(0))
 	case "fairyring.pep.EncryptedTx.expired":
 		return protoreflect.ValueOfBool(false)
@@ -827,14 +827,14 @@ func (x *_EncryptedTxArray_1_list) IsValid() bool {
 }
 
 var (
-	md_EncryptedTxArray             protoreflect.MessageDescriptor
-	fd_EncryptedTxArray_encryptedTx protoreflect.FieldDescriptor
+	md_EncryptedTxArray              protoreflect.MessageDescriptor
+	fd_EncryptedTxArray_encrypted_tx protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_pep_encrypted_tx_proto_init()
 	md_EncryptedTxArray = File_fairyring_pep_encrypted_tx_proto.Messages().ByName("EncryptedTxArray")
-	fd_EncryptedTxArray_encryptedTx = md_EncryptedTxArray.Fields().ByName("encryptedTx")
+	fd_EncryptedTxArray_encrypted_tx = md_EncryptedTxArray.Fields().ByName("encrypted_tx")
 }
 
 var _ protoreflect.Message = (*fastReflection_EncryptedTxArray)(nil)
@@ -904,7 +904,7 @@ func (x *fastReflection_EncryptedTxArray) Interface() protoreflect.ProtoMessage 
 func (x *fastReflection_EncryptedTxArray) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if len(x.EncryptedTx) != 0 {
 		value := protoreflect.ValueOfList(&_EncryptedTxArray_1_list{list: &x.EncryptedTx})
-		if !f(fd_EncryptedTxArray_encryptedTx, value) {
+		if !f(fd_EncryptedTxArray_encrypted_tx, value) {
 			return
 		}
 	}
@@ -923,7 +923,7 @@ func (x *fastReflection_EncryptedTxArray) Range(f func(protoreflect.FieldDescrip
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_EncryptedTxArray) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.pep.EncryptedTxArray.encryptedTx":
+	case "fairyring.pep.EncryptedTxArray.encrypted_tx":
 		return len(x.EncryptedTx) != 0
 	default:
 		if fd.IsExtension() {
@@ -941,7 +941,7 @@ func (x *fastReflection_EncryptedTxArray) Has(fd protoreflect.FieldDescriptor) b
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_EncryptedTxArray) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.pep.EncryptedTxArray.encryptedTx":
+	case "fairyring.pep.EncryptedTxArray.encrypted_tx":
 		x.EncryptedTx = nil
 	default:
 		if fd.IsExtension() {
@@ -959,7 +959,7 @@ func (x *fastReflection_EncryptedTxArray) Clear(fd protoreflect.FieldDescriptor)
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_EncryptedTxArray) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.pep.EncryptedTxArray.encryptedTx":
+	case "fairyring.pep.EncryptedTxArray.encrypted_tx":
 		if len(x.EncryptedTx) == 0 {
 			return protoreflect.ValueOfList(&_EncryptedTxArray_1_list{})
 		}
@@ -985,7 +985,7 @@ func (x *fastReflection_EncryptedTxArray) Get(descriptor protoreflect.FieldDescr
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_EncryptedTxArray) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.pep.EncryptedTxArray.encryptedTx":
+	case "fairyring.pep.EncryptedTxArray.encrypted_tx":
 		lv := value.List()
 		clv := lv.(*_EncryptedTxArray_1_list)
 		x.EncryptedTx = *clv.list
@@ -1009,7 +1009,7 @@ func (x *fastReflection_EncryptedTxArray) Set(fd protoreflect.FieldDescriptor, v
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_EncryptedTxArray) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.pep.EncryptedTxArray.encryptedTx":
+	case "fairyring.pep.EncryptedTxArray.encrypted_tx":
 		if x.EncryptedTx == nil {
 			x.EncryptedTx = []*EncryptedTx{}
 		}
@@ -1028,7 +1028,7 @@ func (x *fastReflection_EncryptedTxArray) Mutable(fd protoreflect.FieldDescripto
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_EncryptedTxArray) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.pep.EncryptedTxArray.encryptedTx":
+	case "fairyring.pep.EncryptedTxArray.encrypted_tx":
 		list := []*EncryptedTx{}
 		return protoreflect.ValueOfList(&_EncryptedTxArray_1_list{list: &list})
 	default:
@@ -1270,12 +1270,12 @@ func (x *fastReflection_EncryptedTxArray) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_GeneralEncryptedTx            protoreflect.MessageDescriptor
-	fd_GeneralEncryptedTx_identity   protoreflect.FieldDescriptor
-	fd_GeneralEncryptedTx_index      protoreflect.FieldDescriptor
-	fd_GeneralEncryptedTx_data       protoreflect.FieldDescriptor
-	fd_GeneralEncryptedTx_creator    protoreflect.FieldDescriptor
-	fd_GeneralEncryptedTx_chargedGas protoreflect.FieldDescriptor
+	md_GeneralEncryptedTx             protoreflect.MessageDescriptor
+	fd_GeneralEncryptedTx_identity    protoreflect.FieldDescriptor
+	fd_GeneralEncryptedTx_index       protoreflect.FieldDescriptor
+	fd_GeneralEncryptedTx_data        protoreflect.FieldDescriptor
+	fd_GeneralEncryptedTx_creator     protoreflect.FieldDescriptor
+	fd_GeneralEncryptedTx_charged_gas protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -1285,7 +1285,7 @@ func init() {
 	fd_GeneralEncryptedTx_index = md_GeneralEncryptedTx.Fields().ByName("index")
 	fd_GeneralEncryptedTx_data = md_GeneralEncryptedTx.Fields().ByName("data")
 	fd_GeneralEncryptedTx_creator = md_GeneralEncryptedTx.Fields().ByName("creator")
-	fd_GeneralEncryptedTx_chargedGas = md_GeneralEncryptedTx.Fields().ByName("chargedGas")
+	fd_GeneralEncryptedTx_charged_gas = md_GeneralEncryptedTx.Fields().ByName("charged_gas")
 }
 
 var _ protoreflect.Message = (*fastReflection_GeneralEncryptedTx)(nil)
@@ -1379,7 +1379,7 @@ func (x *fastReflection_GeneralEncryptedTx) Range(f func(protoreflect.FieldDescr
 	}
 	if x.ChargedGas != nil {
 		value := protoreflect.ValueOfMessage(x.ChargedGas.ProtoReflect())
-		if !f(fd_GeneralEncryptedTx_chargedGas, value) {
+		if !f(fd_GeneralEncryptedTx_charged_gas, value) {
 			return
 		}
 	}
@@ -1406,7 +1406,7 @@ func (x *fastReflection_GeneralEncryptedTx) Has(fd protoreflect.FieldDescriptor)
 		return x.Data != ""
 	case "fairyring.pep.GeneralEncryptedTx.creator":
 		return x.Creator != ""
-	case "fairyring.pep.GeneralEncryptedTx.chargedGas":
+	case "fairyring.pep.GeneralEncryptedTx.charged_gas":
 		return x.ChargedGas != nil
 	default:
 		if fd.IsExtension() {
@@ -1432,7 +1432,7 @@ func (x *fastReflection_GeneralEncryptedTx) Clear(fd protoreflect.FieldDescripto
 		x.Data = ""
 	case "fairyring.pep.GeneralEncryptedTx.creator":
 		x.Creator = ""
-	case "fairyring.pep.GeneralEncryptedTx.chargedGas":
+	case "fairyring.pep.GeneralEncryptedTx.charged_gas":
 		x.ChargedGas = nil
 	default:
 		if fd.IsExtension() {
@@ -1462,7 +1462,7 @@ func (x *fastReflection_GeneralEncryptedTx) Get(descriptor protoreflect.FieldDes
 	case "fairyring.pep.GeneralEncryptedTx.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "fairyring.pep.GeneralEncryptedTx.chargedGas":
+	case "fairyring.pep.GeneralEncryptedTx.charged_gas":
 		value := x.ChargedGas
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
@@ -1493,7 +1493,7 @@ func (x *fastReflection_GeneralEncryptedTx) Set(fd protoreflect.FieldDescriptor,
 		x.Data = value.Interface().(string)
 	case "fairyring.pep.GeneralEncryptedTx.creator":
 		x.Creator = value.Interface().(string)
-	case "fairyring.pep.GeneralEncryptedTx.chargedGas":
+	case "fairyring.pep.GeneralEncryptedTx.charged_gas":
 		x.ChargedGas = value.Message().Interface().(*v1beta1.Coin)
 	default:
 		if fd.IsExtension() {
@@ -1515,7 +1515,7 @@ func (x *fastReflection_GeneralEncryptedTx) Set(fd protoreflect.FieldDescriptor,
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_GeneralEncryptedTx) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.pep.GeneralEncryptedTx.chargedGas":
+	case "fairyring.pep.GeneralEncryptedTx.charged_gas":
 		if x.ChargedGas == nil {
 			x.ChargedGas = new(v1beta1.Coin)
 		}
@@ -1549,7 +1549,7 @@ func (x *fastReflection_GeneralEncryptedTx) NewField(fd protoreflect.FieldDescri
 		return protoreflect.ValueOfString("")
 	case "fairyring.pep.GeneralEncryptedTx.creator":
 		return protoreflect.ValueOfString("")
-	case "fairyring.pep.GeneralEncryptedTx.chargedGas":
+	case "fairyring.pep.GeneralEncryptedTx.charged_gas":
 		m := new(v1beta1.Coin)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
@@ -1996,14 +1996,14 @@ func (x *_GeneralEncryptedTxArray_1_list) IsValid() bool {
 }
 
 var (
-	md_GeneralEncryptedTxArray             protoreflect.MessageDescriptor
-	fd_GeneralEncryptedTxArray_encryptedTx protoreflect.FieldDescriptor
+	md_GeneralEncryptedTxArray              protoreflect.MessageDescriptor
+	fd_GeneralEncryptedTxArray_encrypted_tx protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_pep_encrypted_tx_proto_init()
 	md_GeneralEncryptedTxArray = File_fairyring_pep_encrypted_tx_proto.Messages().ByName("GeneralEncryptedTxArray")
-	fd_GeneralEncryptedTxArray_encryptedTx = md_GeneralEncryptedTxArray.Fields().ByName("encryptedTx")
+	fd_GeneralEncryptedTxArray_encrypted_tx = md_GeneralEncryptedTxArray.Fields().ByName("encrypted_tx")
 }
 
 var _ protoreflect.Message = (*fastReflection_GeneralEncryptedTxArray)(nil)
@@ -2073,7 +2073,7 @@ func (x *fastReflection_GeneralEncryptedTxArray) Interface() protoreflect.ProtoM
 func (x *fastReflection_GeneralEncryptedTxArray) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if len(x.EncryptedTx) != 0 {
 		value := protoreflect.ValueOfList(&_GeneralEncryptedTxArray_1_list{list: &x.EncryptedTx})
-		if !f(fd_GeneralEncryptedTxArray_encryptedTx, value) {
+		if !f(fd_GeneralEncryptedTxArray_encrypted_tx, value) {
 			return
 		}
 	}
@@ -2092,7 +2092,7 @@ func (x *fastReflection_GeneralEncryptedTxArray) Range(f func(protoreflect.Field
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_GeneralEncryptedTxArray) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.pep.GeneralEncryptedTxArray.encryptedTx":
+	case "fairyring.pep.GeneralEncryptedTxArray.encrypted_tx":
 		return len(x.EncryptedTx) != 0
 	default:
 		if fd.IsExtension() {
@@ -2110,7 +2110,7 @@ func (x *fastReflection_GeneralEncryptedTxArray) Has(fd protoreflect.FieldDescri
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_GeneralEncryptedTxArray) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.pep.GeneralEncryptedTxArray.encryptedTx":
+	case "fairyring.pep.GeneralEncryptedTxArray.encrypted_tx":
 		x.EncryptedTx = nil
 	default:
 		if fd.IsExtension() {
@@ -2128,7 +2128,7 @@ func (x *fastReflection_GeneralEncryptedTxArray) Clear(fd protoreflect.FieldDesc
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_GeneralEncryptedTxArray) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.pep.GeneralEncryptedTxArray.encryptedTx":
+	case "fairyring.pep.GeneralEncryptedTxArray.encrypted_tx":
 		if len(x.EncryptedTx) == 0 {
 			return protoreflect.ValueOfList(&_GeneralEncryptedTxArray_1_list{})
 		}
@@ -2154,7 +2154,7 @@ func (x *fastReflection_GeneralEncryptedTxArray) Get(descriptor protoreflect.Fie
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_GeneralEncryptedTxArray) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.pep.GeneralEncryptedTxArray.encryptedTx":
+	case "fairyring.pep.GeneralEncryptedTxArray.encrypted_tx":
 		lv := value.List()
 		clv := lv.(*_GeneralEncryptedTxArray_1_list)
 		x.EncryptedTx = *clv.list
@@ -2178,7 +2178,7 @@ func (x *fastReflection_GeneralEncryptedTxArray) Set(fd protoreflect.FieldDescri
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_GeneralEncryptedTxArray) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.pep.GeneralEncryptedTxArray.encryptedTx":
+	case "fairyring.pep.GeneralEncryptedTxArray.encrypted_tx":
 		if x.EncryptedTx == nil {
 			x.EncryptedTx = []*GeneralEncryptedTx{}
 		}
@@ -2197,7 +2197,7 @@ func (x *fastReflection_GeneralEncryptedTxArray) Mutable(fd protoreflect.FieldDe
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_GeneralEncryptedTxArray) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.pep.GeneralEncryptedTxArray.encryptedTx":
+	case "fairyring.pep.GeneralEncryptedTxArray.encrypted_tx":
 		list := []*GeneralEncryptedTx{}
 		return protoreflect.ValueOfList(&_GeneralEncryptedTxArray_1_list{list: &list})
 	default:
@@ -2439,35 +2439,35 @@ func (x *fastReflection_GeneralEncryptedTxArray) ProtoMethods() *protoiface.Meth
 }
 
 var (
-	md_GenEncTxExecutionQueue               protoreflect.MessageDescriptor
-	fd_GenEncTxExecutionQueue_creator       protoreflect.FieldDescriptor
-	fd_GenEncTxExecutionQueue_request_id    protoreflect.FieldDescriptor
-	fd_GenEncTxExecutionQueue_identity      protoreflect.FieldDescriptor
-	fd_GenEncTxExecutionQueue_pubkey        protoreflect.FieldDescriptor
-	fd_GenEncTxExecutionQueue_tx_list       protoreflect.FieldDescriptor
-	fd_GenEncTxExecutionQueue_aggr_keyshare protoreflect.FieldDescriptor
+	md_IdentityExecutionQueue               protoreflect.MessageDescriptor
+	fd_IdentityExecutionQueue_creator       protoreflect.FieldDescriptor
+	fd_IdentityExecutionQueue_request_id    protoreflect.FieldDescriptor
+	fd_IdentityExecutionQueue_identity      protoreflect.FieldDescriptor
+	fd_IdentityExecutionQueue_pubkey        protoreflect.FieldDescriptor
+	fd_IdentityExecutionQueue_tx_list       protoreflect.FieldDescriptor
+	fd_IdentityExecutionQueue_aggr_keyshare protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_pep_encrypted_tx_proto_init()
-	md_GenEncTxExecutionQueue = File_fairyring_pep_encrypted_tx_proto.Messages().ByName("GenEncTxExecutionQueue")
-	fd_GenEncTxExecutionQueue_creator = md_GenEncTxExecutionQueue.Fields().ByName("creator")
-	fd_GenEncTxExecutionQueue_request_id = md_GenEncTxExecutionQueue.Fields().ByName("request_id")
-	fd_GenEncTxExecutionQueue_identity = md_GenEncTxExecutionQueue.Fields().ByName("identity")
-	fd_GenEncTxExecutionQueue_pubkey = md_GenEncTxExecutionQueue.Fields().ByName("pubkey")
-	fd_GenEncTxExecutionQueue_tx_list = md_GenEncTxExecutionQueue.Fields().ByName("tx_list")
-	fd_GenEncTxExecutionQueue_aggr_keyshare = md_GenEncTxExecutionQueue.Fields().ByName("aggr_keyshare")
+	md_IdentityExecutionQueue = File_fairyring_pep_encrypted_tx_proto.Messages().ByName("IdentityExecutionQueue")
+	fd_IdentityExecutionQueue_creator = md_IdentityExecutionQueue.Fields().ByName("creator")
+	fd_IdentityExecutionQueue_request_id = md_IdentityExecutionQueue.Fields().ByName("request_id")
+	fd_IdentityExecutionQueue_identity = md_IdentityExecutionQueue.Fields().ByName("identity")
+	fd_IdentityExecutionQueue_pubkey = md_IdentityExecutionQueue.Fields().ByName("pubkey")
+	fd_IdentityExecutionQueue_tx_list = md_IdentityExecutionQueue.Fields().ByName("tx_list")
+	fd_IdentityExecutionQueue_aggr_keyshare = md_IdentityExecutionQueue.Fields().ByName("aggr_keyshare")
 }
 
-var _ protoreflect.Message = (*fastReflection_GenEncTxExecutionQueue)(nil)
+var _ protoreflect.Message = (*fastReflection_IdentityExecutionQueue)(nil)
 
-type fastReflection_GenEncTxExecutionQueue GenEncTxExecutionQueue
+type fastReflection_IdentityExecutionQueue IdentityExecutionQueue
 
-func (x *GenEncTxExecutionQueue) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_GenEncTxExecutionQueue)(x)
+func (x *IdentityExecutionQueue) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_IdentityExecutionQueue)(x)
 }
 
-func (x *GenEncTxExecutionQueue) slowProtoReflect() protoreflect.Message {
+func (x *IdentityExecutionQueue) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_pep_encrypted_tx_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2479,43 +2479,43 @@ func (x *GenEncTxExecutionQueue) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_GenEncTxExecutionQueue_messageType fastReflection_GenEncTxExecutionQueue_messageType
-var _ protoreflect.MessageType = fastReflection_GenEncTxExecutionQueue_messageType{}
+var _fastReflection_IdentityExecutionQueue_messageType fastReflection_IdentityExecutionQueue_messageType
+var _ protoreflect.MessageType = fastReflection_IdentityExecutionQueue_messageType{}
 
-type fastReflection_GenEncTxExecutionQueue_messageType struct{}
+type fastReflection_IdentityExecutionQueue_messageType struct{}
 
-func (x fastReflection_GenEncTxExecutionQueue_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_GenEncTxExecutionQueue)(nil)
+func (x fastReflection_IdentityExecutionQueue_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_IdentityExecutionQueue)(nil)
 }
-func (x fastReflection_GenEncTxExecutionQueue_messageType) New() protoreflect.Message {
-	return new(fastReflection_GenEncTxExecutionQueue)
+func (x fastReflection_IdentityExecutionQueue_messageType) New() protoreflect.Message {
+	return new(fastReflection_IdentityExecutionQueue)
 }
-func (x fastReflection_GenEncTxExecutionQueue_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_GenEncTxExecutionQueue
+func (x fastReflection_IdentityExecutionQueue_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_IdentityExecutionQueue
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_GenEncTxExecutionQueue) Descriptor() protoreflect.MessageDescriptor {
-	return md_GenEncTxExecutionQueue
+func (x *fastReflection_IdentityExecutionQueue) Descriptor() protoreflect.MessageDescriptor {
+	return md_IdentityExecutionQueue
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_GenEncTxExecutionQueue) Type() protoreflect.MessageType {
-	return _fastReflection_GenEncTxExecutionQueue_messageType
+func (x *fastReflection_IdentityExecutionQueue) Type() protoreflect.MessageType {
+	return _fastReflection_IdentityExecutionQueue_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_GenEncTxExecutionQueue) New() protoreflect.Message {
-	return new(fastReflection_GenEncTxExecutionQueue)
+func (x *fastReflection_IdentityExecutionQueue) New() protoreflect.Message {
+	return new(fastReflection_IdentityExecutionQueue)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_GenEncTxExecutionQueue) Interface() protoreflect.ProtoMessage {
-	return (*GenEncTxExecutionQueue)(x)
+func (x *fastReflection_IdentityExecutionQueue) Interface() protoreflect.ProtoMessage {
+	return (*IdentityExecutionQueue)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -2523,40 +2523,40 @@ func (x *fastReflection_GenEncTxExecutionQueue) Interface() protoreflect.ProtoMe
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_GenEncTxExecutionQueue) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_IdentityExecutionQueue) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_GenEncTxExecutionQueue_creator, value) {
+		if !f(fd_IdentityExecutionQueue_creator, value) {
 			return
 		}
 	}
 	if x.RequestId != "" {
 		value := protoreflect.ValueOfString(x.RequestId)
-		if !f(fd_GenEncTxExecutionQueue_request_id, value) {
+		if !f(fd_IdentityExecutionQueue_request_id, value) {
 			return
 		}
 	}
 	if x.Identity != "" {
 		value := protoreflect.ValueOfString(x.Identity)
-		if !f(fd_GenEncTxExecutionQueue_identity, value) {
+		if !f(fd_IdentityExecutionQueue_identity, value) {
 			return
 		}
 	}
 	if x.Pubkey != "" {
 		value := protoreflect.ValueOfString(x.Pubkey)
-		if !f(fd_GenEncTxExecutionQueue_pubkey, value) {
+		if !f(fd_IdentityExecutionQueue_pubkey, value) {
 			return
 		}
 	}
 	if x.TxList != nil {
 		value := protoreflect.ValueOfMessage(x.TxList.ProtoReflect())
-		if !f(fd_GenEncTxExecutionQueue_tx_list, value) {
+		if !f(fd_IdentityExecutionQueue_tx_list, value) {
 			return
 		}
 	}
 	if x.AggrKeyshare != "" {
 		value := protoreflect.ValueOfString(x.AggrKeyshare)
-		if !f(fd_GenEncTxExecutionQueue_aggr_keyshare, value) {
+		if !f(fd_IdentityExecutionQueue_aggr_keyshare, value) {
 			return
 		}
 	}
@@ -2573,25 +2573,25 @@ func (x *fastReflection_GenEncTxExecutionQueue) Range(f func(protoreflect.FieldD
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_GenEncTxExecutionQueue) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_IdentityExecutionQueue) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.pep.GenEncTxExecutionQueue.creator":
+	case "fairyring.pep.IdentityExecutionQueue.creator":
 		return x.Creator != ""
-	case "fairyring.pep.GenEncTxExecutionQueue.request_id":
+	case "fairyring.pep.IdentityExecutionQueue.request_id":
 		return x.RequestId != ""
-	case "fairyring.pep.GenEncTxExecutionQueue.identity":
+	case "fairyring.pep.IdentityExecutionQueue.identity":
 		return x.Identity != ""
-	case "fairyring.pep.GenEncTxExecutionQueue.pubkey":
+	case "fairyring.pep.IdentityExecutionQueue.pubkey":
 		return x.Pubkey != ""
-	case "fairyring.pep.GenEncTxExecutionQueue.tx_list":
+	case "fairyring.pep.IdentityExecutionQueue.tx_list":
 		return x.TxList != nil
-	case "fairyring.pep.GenEncTxExecutionQueue.aggr_keyshare":
+	case "fairyring.pep.IdentityExecutionQueue.aggr_keyshare":
 		return x.AggrKeyshare != ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.GenEncTxExecutionQueue"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.IdentityExecutionQueue"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.GenEncTxExecutionQueue does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.IdentityExecutionQueue does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2601,25 +2601,25 @@ func (x *fastReflection_GenEncTxExecutionQueue) Has(fd protoreflect.FieldDescrip
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GenEncTxExecutionQueue) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_IdentityExecutionQueue) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.pep.GenEncTxExecutionQueue.creator":
+	case "fairyring.pep.IdentityExecutionQueue.creator":
 		x.Creator = ""
-	case "fairyring.pep.GenEncTxExecutionQueue.request_id":
+	case "fairyring.pep.IdentityExecutionQueue.request_id":
 		x.RequestId = ""
-	case "fairyring.pep.GenEncTxExecutionQueue.identity":
+	case "fairyring.pep.IdentityExecutionQueue.identity":
 		x.Identity = ""
-	case "fairyring.pep.GenEncTxExecutionQueue.pubkey":
+	case "fairyring.pep.IdentityExecutionQueue.pubkey":
 		x.Pubkey = ""
-	case "fairyring.pep.GenEncTxExecutionQueue.tx_list":
+	case "fairyring.pep.IdentityExecutionQueue.tx_list":
 		x.TxList = nil
-	case "fairyring.pep.GenEncTxExecutionQueue.aggr_keyshare":
+	case "fairyring.pep.IdentityExecutionQueue.aggr_keyshare":
 		x.AggrKeyshare = ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.GenEncTxExecutionQueue"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.IdentityExecutionQueue"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.GenEncTxExecutionQueue does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.IdentityExecutionQueue does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2629,31 +2629,31 @@ func (x *fastReflection_GenEncTxExecutionQueue) Clear(fd protoreflect.FieldDescr
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_GenEncTxExecutionQueue) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_IdentityExecutionQueue) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.pep.GenEncTxExecutionQueue.creator":
+	case "fairyring.pep.IdentityExecutionQueue.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "fairyring.pep.GenEncTxExecutionQueue.request_id":
+	case "fairyring.pep.IdentityExecutionQueue.request_id":
 		value := x.RequestId
 		return protoreflect.ValueOfString(value)
-	case "fairyring.pep.GenEncTxExecutionQueue.identity":
+	case "fairyring.pep.IdentityExecutionQueue.identity":
 		value := x.Identity
 		return protoreflect.ValueOfString(value)
-	case "fairyring.pep.GenEncTxExecutionQueue.pubkey":
+	case "fairyring.pep.IdentityExecutionQueue.pubkey":
 		value := x.Pubkey
 		return protoreflect.ValueOfString(value)
-	case "fairyring.pep.GenEncTxExecutionQueue.tx_list":
+	case "fairyring.pep.IdentityExecutionQueue.tx_list":
 		value := x.TxList
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	case "fairyring.pep.GenEncTxExecutionQueue.aggr_keyshare":
+	case "fairyring.pep.IdentityExecutionQueue.aggr_keyshare":
 		value := x.AggrKeyshare
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.GenEncTxExecutionQueue"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.IdentityExecutionQueue"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.GenEncTxExecutionQueue does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.IdentityExecutionQueue does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -2667,25 +2667,25 @@ func (x *fastReflection_GenEncTxExecutionQueue) Get(descriptor protoreflect.Fiel
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GenEncTxExecutionQueue) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_IdentityExecutionQueue) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.pep.GenEncTxExecutionQueue.creator":
+	case "fairyring.pep.IdentityExecutionQueue.creator":
 		x.Creator = value.Interface().(string)
-	case "fairyring.pep.GenEncTxExecutionQueue.request_id":
+	case "fairyring.pep.IdentityExecutionQueue.request_id":
 		x.RequestId = value.Interface().(string)
-	case "fairyring.pep.GenEncTxExecutionQueue.identity":
+	case "fairyring.pep.IdentityExecutionQueue.identity":
 		x.Identity = value.Interface().(string)
-	case "fairyring.pep.GenEncTxExecutionQueue.pubkey":
+	case "fairyring.pep.IdentityExecutionQueue.pubkey":
 		x.Pubkey = value.Interface().(string)
-	case "fairyring.pep.GenEncTxExecutionQueue.tx_list":
+	case "fairyring.pep.IdentityExecutionQueue.tx_list":
 		x.TxList = value.Message().Interface().(*GeneralEncryptedTxArray)
-	case "fairyring.pep.GenEncTxExecutionQueue.aggr_keyshare":
+	case "fairyring.pep.IdentityExecutionQueue.aggr_keyshare":
 		x.AggrKeyshare = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.GenEncTxExecutionQueue"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.IdentityExecutionQueue"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.GenEncTxExecutionQueue does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.IdentityExecutionQueue does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2699,64 +2699,64 @@ func (x *fastReflection_GenEncTxExecutionQueue) Set(fd protoreflect.FieldDescrip
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GenEncTxExecutionQueue) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_IdentityExecutionQueue) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.pep.GenEncTxExecutionQueue.tx_list":
+	case "fairyring.pep.IdentityExecutionQueue.tx_list":
 		if x.TxList == nil {
 			x.TxList = new(GeneralEncryptedTxArray)
 		}
 		return protoreflect.ValueOfMessage(x.TxList.ProtoReflect())
-	case "fairyring.pep.GenEncTxExecutionQueue.creator":
-		panic(fmt.Errorf("field creator of message fairyring.pep.GenEncTxExecutionQueue is not mutable"))
-	case "fairyring.pep.GenEncTxExecutionQueue.request_id":
-		panic(fmt.Errorf("field request_id of message fairyring.pep.GenEncTxExecutionQueue is not mutable"))
-	case "fairyring.pep.GenEncTxExecutionQueue.identity":
-		panic(fmt.Errorf("field identity of message fairyring.pep.GenEncTxExecutionQueue is not mutable"))
-	case "fairyring.pep.GenEncTxExecutionQueue.pubkey":
-		panic(fmt.Errorf("field pubkey of message fairyring.pep.GenEncTxExecutionQueue is not mutable"))
-	case "fairyring.pep.GenEncTxExecutionQueue.aggr_keyshare":
-		panic(fmt.Errorf("field aggr_keyshare of message fairyring.pep.GenEncTxExecutionQueue is not mutable"))
+	case "fairyring.pep.IdentityExecutionQueue.creator":
+		panic(fmt.Errorf("field creator of message fairyring.pep.IdentityExecutionQueue is not mutable"))
+	case "fairyring.pep.IdentityExecutionQueue.request_id":
+		panic(fmt.Errorf("field request_id of message fairyring.pep.IdentityExecutionQueue is not mutable"))
+	case "fairyring.pep.IdentityExecutionQueue.identity":
+		panic(fmt.Errorf("field identity of message fairyring.pep.IdentityExecutionQueue is not mutable"))
+	case "fairyring.pep.IdentityExecutionQueue.pubkey":
+		panic(fmt.Errorf("field pubkey of message fairyring.pep.IdentityExecutionQueue is not mutable"))
+	case "fairyring.pep.IdentityExecutionQueue.aggr_keyshare":
+		panic(fmt.Errorf("field aggr_keyshare of message fairyring.pep.IdentityExecutionQueue is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.GenEncTxExecutionQueue"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.IdentityExecutionQueue"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.GenEncTxExecutionQueue does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.IdentityExecutionQueue does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_GenEncTxExecutionQueue) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_IdentityExecutionQueue) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.pep.GenEncTxExecutionQueue.creator":
+	case "fairyring.pep.IdentityExecutionQueue.creator":
 		return protoreflect.ValueOfString("")
-	case "fairyring.pep.GenEncTxExecutionQueue.request_id":
+	case "fairyring.pep.IdentityExecutionQueue.request_id":
 		return protoreflect.ValueOfString("")
-	case "fairyring.pep.GenEncTxExecutionQueue.identity":
+	case "fairyring.pep.IdentityExecutionQueue.identity":
 		return protoreflect.ValueOfString("")
-	case "fairyring.pep.GenEncTxExecutionQueue.pubkey":
+	case "fairyring.pep.IdentityExecutionQueue.pubkey":
 		return protoreflect.ValueOfString("")
-	case "fairyring.pep.GenEncTxExecutionQueue.tx_list":
+	case "fairyring.pep.IdentityExecutionQueue.tx_list":
 		m := new(GeneralEncryptedTxArray)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	case "fairyring.pep.GenEncTxExecutionQueue.aggr_keyshare":
+	case "fairyring.pep.IdentityExecutionQueue.aggr_keyshare":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.GenEncTxExecutionQueue"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.IdentityExecutionQueue"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.GenEncTxExecutionQueue does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.IdentityExecutionQueue does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_GenEncTxExecutionQueue) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_IdentityExecutionQueue) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.pep.GenEncTxExecutionQueue", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.pep.IdentityExecutionQueue", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -2764,7 +2764,7 @@ func (x *fastReflection_GenEncTxExecutionQueue) WhichOneof(d protoreflect.OneofD
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_GenEncTxExecutionQueue) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_IdentityExecutionQueue) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -2775,7 +2775,7 @@ func (x *fastReflection_GenEncTxExecutionQueue) GetUnknown() protoreflect.RawFie
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GenEncTxExecutionQueue) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_IdentityExecutionQueue) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -2787,7 +2787,7 @@ func (x *fastReflection_GenEncTxExecutionQueue) SetUnknown(fields protoreflect.R
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_GenEncTxExecutionQueue) IsValid() bool {
+func (x *fastReflection_IdentityExecutionQueue) IsValid() bool {
 	return x != nil
 }
 
@@ -2797,9 +2797,9 @@ func (x *fastReflection_GenEncTxExecutionQueue) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_GenEncTxExecutionQueue) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_IdentityExecutionQueue) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*GenEncTxExecutionQueue)
+		x := input.Message.Interface().(*IdentityExecutionQueue)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2845,7 +2845,7 @@ func (x *fastReflection_GenEncTxExecutionQueue) ProtoMethods() *protoiface.Metho
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*GenEncTxExecutionQueue)
+		x := input.Message.Interface().(*IdentityExecutionQueue)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2924,7 +2924,7 @@ func (x *fastReflection_GenEncTxExecutionQueue) ProtoMethods() *protoiface.Metho
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*GenEncTxExecutionQueue)
+		x := input.Message.Interface().(*IdentityExecutionQueue)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2956,10 +2956,10 @@ func (x *fastReflection_GenEncTxExecutionQueue) ProtoMethods() *protoiface.Metho
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GenEncTxExecutionQueue: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: IdentityExecutionQueue: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GenEncTxExecutionQueue: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: IdentityExecutionQueue: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -3206,17 +3206,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// EncryptedTx defines the structure to store an encrypted transaction
+// by execution height
 type EncryptedTx struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	TargetHeight           uint64        `protobuf:"varint,1,opt,name=targetHeight,proto3" json:"targetHeight,omitempty"`
+	TargetHeight           uint64        `protobuf:"varint,1,opt,name=target_height,json=targetHeight,proto3" json:"target_height,omitempty"`
 	Index                  uint64        `protobuf:"varint,2,opt,name=index,proto3" json:"index,omitempty"`
 	Data                   string        `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	Creator                string        `protobuf:"bytes,4,opt,name=creator,proto3" json:"creator,omitempty"`
-	ChargedGas             *v1beta1.Coin `protobuf:"bytes,5,opt,name=chargedGas,proto3" json:"chargedGas,omitempty"`
-	ProcessedAtChainHeight uint64        `protobuf:"varint,6,opt,name=processedAtChainHeight,proto3" json:"processedAtChainHeight,omitempty"`
+	ChargedGas             *v1beta1.Coin `protobuf:"bytes,5,opt,name=charged_gas,json=chargedGas,proto3" json:"charged_gas,omitempty"`
+	ProcessedAtChainHeight uint64        `protobuf:"varint,6,opt,name=processed_at_chain_height,json=processedAtChainHeight,proto3" json:"processed_at_chain_height,omitempty"`
 	Expired                bool          `protobuf:"varint,7,opt,name=expired,proto3" json:"expired,omitempty"`
 }
 
@@ -3289,12 +3291,13 @@ func (x *EncryptedTx) GetExpired() bool {
 	return false
 }
 
+// EncryptedTxArray defines a list of EncryptedTx
 type EncryptedTxArray struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	EncryptedTx []*EncryptedTx `protobuf:"bytes,1,rep,name=encryptedTx,proto3" json:"encryptedTx,omitempty"`
+	EncryptedTx []*EncryptedTx `protobuf:"bytes,1,rep,name=encrypted_tx,json=encryptedTx,proto3" json:"encrypted_tx,omitempty"`
 }
 
 func (x *EncryptedTxArray) Reset() {
@@ -3324,6 +3327,8 @@ func (x *EncryptedTxArray) GetEncryptedTx() []*EncryptedTx {
 	return nil
 }
 
+// GeneralEncryptedTx defines the structure to store a
+// general encrypted transaction by identity
 type GeneralEncryptedTx struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -3333,7 +3338,7 @@ type GeneralEncryptedTx struct {
 	Index      uint64        `protobuf:"varint,2,opt,name=index,proto3" json:"index,omitempty"`
 	Data       string        `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	Creator    string        `protobuf:"bytes,4,opt,name=creator,proto3" json:"creator,omitempty"`
-	ChargedGas *v1beta1.Coin `protobuf:"bytes,5,opt,name=chargedGas,proto3" json:"chargedGas,omitempty"`
+	ChargedGas *v1beta1.Coin `protobuf:"bytes,5,opt,name=charged_gas,json=chargedGas,proto3" json:"charged_gas,omitempty"`
 }
 
 func (x *GeneralEncryptedTx) Reset() {
@@ -3391,12 +3396,13 @@ func (x *GeneralEncryptedTx) GetChargedGas() *v1beta1.Coin {
 	return nil
 }
 
+// GeneralEncryptedTxArray defines a list of GeneralEncryptedTx
 type GeneralEncryptedTxArray struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	EncryptedTx []*GeneralEncryptedTx `protobuf:"bytes,1,rep,name=encryptedTx,proto3" json:"encryptedTx,omitempty"`
+	EncryptedTx []*GeneralEncryptedTx `protobuf:"bytes,1,rep,name=encrypted_tx,json=encryptedTx,proto3" json:"encrypted_tx,omitempty"`
 }
 
 func (x *GeneralEncryptedTxArray) Reset() {
@@ -3426,7 +3432,10 @@ func (x *GeneralEncryptedTxArray) GetEncryptedTx() []*GeneralEncryptedTx {
 	return nil
 }
 
-type GenEncTxExecutionQueue struct {
+// IdentityExecutionQueue defines the structure to queue up
+// identities that have aggregated keyshares available and
+// are ready to execute any associated contracts or encrypted transactions
+type IdentityExecutionQueue struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -3439,8 +3448,8 @@ type GenEncTxExecutionQueue struct {
 	AggrKeyshare string                   `protobuf:"bytes,6,opt,name=aggr_keyshare,json=aggrKeyshare,proto3" json:"aggr_keyshare,omitempty"`
 }
 
-func (x *GenEncTxExecutionQueue) Reset() {
-	*x = GenEncTxExecutionQueue{}
+func (x *IdentityExecutionQueue) Reset() {
+	*x = IdentityExecutionQueue{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_pep_encrypted_tx_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3448,53 +3457,53 @@ func (x *GenEncTxExecutionQueue) Reset() {
 	}
 }
 
-func (x *GenEncTxExecutionQueue) String() string {
+func (x *IdentityExecutionQueue) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GenEncTxExecutionQueue) ProtoMessage() {}
+func (*IdentityExecutionQueue) ProtoMessage() {}
 
-// Deprecated: Use GenEncTxExecutionQueue.ProtoReflect.Descriptor instead.
-func (*GenEncTxExecutionQueue) Descriptor() ([]byte, []int) {
+// Deprecated: Use IdentityExecutionQueue.ProtoReflect.Descriptor instead.
+func (*IdentityExecutionQueue) Descriptor() ([]byte, []int) {
 	return file_fairyring_pep_encrypted_tx_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GenEncTxExecutionQueue) GetCreator() string {
+func (x *IdentityExecutionQueue) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
 	return ""
 }
 
-func (x *GenEncTxExecutionQueue) GetRequestId() string {
+func (x *IdentityExecutionQueue) GetRequestId() string {
 	if x != nil {
 		return x.RequestId
 	}
 	return ""
 }
 
-func (x *GenEncTxExecutionQueue) GetIdentity() string {
+func (x *IdentityExecutionQueue) GetIdentity() string {
 	if x != nil {
 		return x.Identity
 	}
 	return ""
 }
 
-func (x *GenEncTxExecutionQueue) GetPubkey() string {
+func (x *IdentityExecutionQueue) GetPubkey() string {
 	if x != nil {
 		return x.Pubkey
 	}
 	return ""
 }
 
-func (x *GenEncTxExecutionQueue) GetTxList() *GeneralEncryptedTxArray {
+func (x *IdentityExecutionQueue) GetTxList() *GeneralEncryptedTxArray {
 	if x != nil {
 		return x.TxList
 	}
 	return nil
 }
 
-func (x *GenEncTxExecutionQueue) GetAggrKeyshare() string {
+func (x *IdentityExecutionQueue) GetAggrKeyshare() string {
 	if x != nil {
 		return x.AggrKeyshare
 	}
@@ -3510,71 +3519,72 @@ var file_fairyring_pep_encrypted_tx_proto_rawDesc = []byte{
 	0x70, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67,
 	0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f,
 	0x62, 0x61, 0x73, 0x65, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x63, 0x6f, 0x69,
-	0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x82, 0x02, 0x0a, 0x0b, 0x45, 0x6e, 0x63, 0x72,
-	0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x12, 0x22, 0x0a, 0x0c, 0x74, 0x61, 0x72, 0x67, 0x65,
-	0x74, 0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0c, 0x74,
-	0x61, 0x72, 0x67, 0x65, 0x74, 0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x69,
-	0x6e, 0x64, 0x65, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x69, 0x6e, 0x64, 0x65,
-	0x78, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x04, 0x64, 0x61, 0x74, 0x61, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
-	0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12,
-	0x39, 0x0a, 0x0a, 0x63, 0x68, 0x61, 0x72, 0x67, 0x65, 0x64, 0x47, 0x61, 0x73, 0x18, 0x05, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73,
-	0x65, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x52, 0x0a,
-	0x63, 0x68, 0x61, 0x72, 0x67, 0x65, 0x64, 0x47, 0x61, 0x73, 0x12, 0x36, 0x0a, 0x16, 0x70, 0x72,
-	0x6f, 0x63, 0x65, 0x73, 0x73, 0x65, 0x64, 0x41, 0x74, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x48, 0x65,
-	0x69, 0x67, 0x68, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x16, 0x70, 0x72, 0x6f, 0x63,
-	0x65, 0x73, 0x73, 0x65, 0x64, 0x41, 0x74, 0x43, 0x68, 0x61, 0x69, 0x6e, 0x48, 0x65, 0x69, 0x67,
-	0x68, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x65, 0x78, 0x70, 0x69, 0x72, 0x65, 0x64, 0x18, 0x07, 0x20,
-	0x01, 0x28, 0x08, 0x52, 0x07, 0x65, 0x78, 0x70, 0x69, 0x72, 0x65, 0x64, 0x22, 0x56, 0x0a, 0x10,
-	0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x41, 0x72, 0x72, 0x61, 0x79,
-	0x12, 0x42, 0x0a, 0x0b, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x18,
-	0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
-	0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54,
+	0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x87, 0x02, 0x0a, 0x0b, 0x45, 0x6e, 0x63, 0x72,
+	0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x12, 0x23, 0x0a, 0x0d, 0x74, 0x61, 0x72, 0x67, 0x65,
+	0x74, 0x5f, 0x68, 0x65, 0x69, 0x67, 0x68, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0c,
+	0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x12, 0x14, 0x0a, 0x05,
+	0x69, 0x6e, 0x64, 0x65, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x69, 0x6e, 0x64,
+	0x65, 0x78, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
+	0x72, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
+	0x12, 0x3a, 0x0a, 0x0b, 0x63, 0x68, 0x61, 0x72, 0x67, 0x65, 0x64, 0x5f, 0x67, 0x61, 0x73, 0x18,
+	0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62,
+	0x61, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e,
+	0x52, 0x0a, 0x63, 0x68, 0x61, 0x72, 0x67, 0x65, 0x64, 0x47, 0x61, 0x73, 0x12, 0x39, 0x0a, 0x19,
+	0x70, 0x72, 0x6f, 0x63, 0x65, 0x73, 0x73, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x5f, 0x63, 0x68, 0x61,
+	0x69, 0x6e, 0x5f, 0x68, 0x65, 0x69, 0x67, 0x68, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52,
+	0x16, 0x70, 0x72, 0x6f, 0x63, 0x65, 0x73, 0x73, 0x65, 0x64, 0x41, 0x74, 0x43, 0x68, 0x61, 0x69,
+	0x6e, 0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x65, 0x78, 0x70, 0x69, 0x72,
+	0x65, 0x64, 0x18, 0x07, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x65, 0x78, 0x70, 0x69, 0x72, 0x65,
+	0x64, 0x22, 0x57, 0x0a, 0x10, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78,
+	0x41, 0x72, 0x72, 0x61, 0x79, 0x12, 0x43, 0x0a, 0x0c, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74,
+	0x65, 0x64, 0x5f, 0x74, 0x78, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x66, 0x61,
+	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x45, 0x6e, 0x63, 0x72,
+	0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0b, 0x65,
+	0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x22, 0xb0, 0x01, 0x0a, 0x12, 0x47,
+	0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54,
+	0x78, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x14, 0x0a,
+	0x05, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x69, 0x6e,
+	0x64, 0x65, 0x78, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74,
+	0x6f, 0x72, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
+	0x72, 0x12, 0x3a, 0x0a, 0x0b, 0x63, 0x68, 0x61, 0x72, 0x67, 0x65, 0x64, 0x5f, 0x67, 0x61, 0x73,
+	0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e,
+	0x62, 0x61, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69,
+	0x6e, 0x52, 0x0a, 0x63, 0x68, 0x61, 0x72, 0x67, 0x65, 0x64, 0x47, 0x61, 0x73, 0x22, 0x65, 0x0a,
+	0x17, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65,
+	0x64, 0x54, 0x78, 0x41, 0x72, 0x72, 0x61, 0x79, 0x12, 0x4a, 0x0a, 0x0c, 0x65, 0x6e, 0x63, 0x72,
+	0x79, 0x70, 0x74, 0x65, 0x64, 0x5f, 0x74, 0x78, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x21,
+	0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x47,
+	0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54,
 	0x78, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0b, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74,
-	0x65, 0x64, 0x54, 0x78, 0x22, 0xaf, 0x01, 0x0a, 0x12, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c,
-	0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x12, 0x1a, 0x0a, 0x08, 0x69,
-	0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69,
-	0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x12, 0x0a,
-	0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x64, 0x61, 0x74,
-	0x61, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x04, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x39, 0x0a, 0x0a, 0x63,
-	0x68, 0x61, 0x72, 0x67, 0x65, 0x64, 0x47, 0x61, 0x73, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x76, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x52, 0x0a, 0x63, 0x68, 0x61, 0x72,
-	0x67, 0x65, 0x64, 0x47, 0x61, 0x73, 0x22, 0x64, 0x0a, 0x17, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61,
-	0x6c, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x41, 0x72, 0x72, 0x61,
-	0x79, 0x12, 0x49, 0x0a, 0x0b, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78,
-	0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
-	0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x45, 0x6e,
-	0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52,
-	0x0b, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x22, 0xeb, 0x01, 0x0a,
-	0x16, 0x47, 0x65, 0x6e, 0x45, 0x6e, 0x63, 0x54, 0x78, 0x45, 0x78, 0x65, 0x63, 0x75, 0x74, 0x69,
-	0x6f, 0x6e, 0x51, 0x75, 0x65, 0x75, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74,
-	0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
-	0x72, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64,
-	0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x03, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x16, 0x0a, 0x06,
-	0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x75,
-	0x62, 0x6b, 0x65, 0x79, 0x12, 0x3f, 0x0a, 0x07, 0x74, 0x78, 0x5f, 0x6c, 0x69, 0x73, 0x74, 0x18,
-	0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
-	0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x45, 0x6e, 0x63,
-	0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x41, 0x72, 0x72, 0x61, 0x79, 0x52, 0x06, 0x74,
-	0x78, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x23, 0x0a, 0x0d, 0x61, 0x67, 0x67, 0x72, 0x5f, 0x6b, 0x65,
-	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x61, 0x67,
-	0x67, 0x72, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x42, 0x9a, 0x01, 0x0a, 0x11, 0x63,
-	0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70,
-	0x42, 0x10, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x50, 0x72, 0x6f,
-	0x74, 0x6f, 0x50, 0x01, 0x5a, 0x1e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e,
-	0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
-	0x2f, 0x70, 0x65, 0x70, 0xa2, 0x02, 0x03, 0x46, 0x50, 0x58, 0xaa, 0x02, 0x0d, 0x46, 0x61, 0x69,
-	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x50, 0x65, 0x70, 0xca, 0x02, 0x0d, 0x46, 0x61, 0x69,
-	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50, 0x65, 0x70, 0xe2, 0x02, 0x19, 0x46, 0x61, 0x69,
-	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50, 0x65, 0x70, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65,
-	0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
-	0x6e, 0x67, 0x3a, 0x3a, 0x50, 0x65, 0x70, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x64, 0x54, 0x78, 0x22, 0xeb, 0x01, 0x0a, 0x16, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74,
+	0x79, 0x45, 0x78, 0x65, 0x63, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x51, 0x75, 0x65, 0x75, 0x65, 0x12,
+	0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e,
+	0x74, 0x69, 0x74, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e,
+	0x74, 0x69, 0x74, 0x79, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x04,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x3f, 0x0a, 0x07,
+	0x74, 0x78, 0x5f, 0x6c, 0x69, 0x73, 0x74, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e,
+	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x47, 0x65,
+	0x6e, 0x65, 0x72, 0x61, 0x6c, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78,
+	0x41, 0x72, 0x72, 0x61, 0x79, 0x52, 0x06, 0x74, 0x78, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x23, 0x0a,
+	0x0d, 0x61, 0x67, 0x67, 0x72, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x18, 0x06,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x61, 0x67, 0x67, 0x72, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61,
+	0x72, 0x65, 0x42, 0x9a, 0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
+	0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x42, 0x10, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70,
+	0x74, 0x65, 0x64, 0x54, 0x78, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x1e, 0x63, 0x6f,
+	0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66,
+	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0xa2, 0x02, 0x03, 0x46,
+	0x50, 0x58, 0xaa, 0x02, 0x0d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x50,
+	0x65, 0x70, 0xca, 0x02, 0x0d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50,
+	0x65, 0x70, 0xe2, 0x02, 0x19, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50,
+	0x65, 0x70, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02,
+	0x0e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x50, 0x65, 0x70, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -3595,15 +3605,15 @@ var file_fairyring_pep_encrypted_tx_proto_goTypes = []interface{}{
 	(*EncryptedTxArray)(nil),        // 1: fairyring.pep.EncryptedTxArray
 	(*GeneralEncryptedTx)(nil),      // 2: fairyring.pep.GeneralEncryptedTx
 	(*GeneralEncryptedTxArray)(nil), // 3: fairyring.pep.GeneralEncryptedTxArray
-	(*GenEncTxExecutionQueue)(nil),  // 4: fairyring.pep.GenEncTxExecutionQueue
+	(*IdentityExecutionQueue)(nil),  // 4: fairyring.pep.IdentityExecutionQueue
 	(*v1beta1.Coin)(nil),            // 5: cosmos.base.v1beta1.Coin
 }
 var file_fairyring_pep_encrypted_tx_proto_depIdxs = []int32{
-	5, // 0: fairyring.pep.EncryptedTx.chargedGas:type_name -> cosmos.base.v1beta1.Coin
-	0, // 1: fairyring.pep.EncryptedTxArray.encryptedTx:type_name -> fairyring.pep.EncryptedTx
-	5, // 2: fairyring.pep.GeneralEncryptedTx.chargedGas:type_name -> cosmos.base.v1beta1.Coin
-	2, // 3: fairyring.pep.GeneralEncryptedTxArray.encryptedTx:type_name -> fairyring.pep.GeneralEncryptedTx
-	3, // 4: fairyring.pep.GenEncTxExecutionQueue.tx_list:type_name -> fairyring.pep.GeneralEncryptedTxArray
+	5, // 0: fairyring.pep.EncryptedTx.charged_gas:type_name -> cosmos.base.v1beta1.Coin
+	0, // 1: fairyring.pep.EncryptedTxArray.encrypted_tx:type_name -> fairyring.pep.EncryptedTx
+	5, // 2: fairyring.pep.GeneralEncryptedTx.charged_gas:type_name -> cosmos.base.v1beta1.Coin
+	2, // 3: fairyring.pep.GeneralEncryptedTxArray.encrypted_tx:type_name -> fairyring.pep.GeneralEncryptedTx
+	3, // 4: fairyring.pep.IdentityExecutionQueue.tx_list:type_name -> fairyring.pep.GeneralEncryptedTxArray
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name
@@ -3666,7 +3676,7 @@ func file_fairyring_pep_encrypted_tx_proto_init() {
 			}
 		}
 		file_fairyring_pep_encrypted_tx_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GenEncTxExecutionQueue); i {
+			switch v := v.(*IdentityExecutionQueue); i {
 			case 0:
 				return &v.state
 			case 1:

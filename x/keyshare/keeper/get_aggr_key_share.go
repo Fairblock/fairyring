@@ -82,13 +82,13 @@ func (k Keeper) OnRecvGetPrivateKeysharePacket(
 		keyshareReq.Identity = data.Identity
 		keyshareReq.Pubkey = activePubKey.PublicKey
 		keyshareReq.IbcInfo = &types.IBCInfo{
-			ChannelID: packet.DestinationChannel,
-			PortID:    packet.DestinationPort,
+			ChannelId: packet.DestinationChannel,
+			PortId:    packet.DestinationPort,
 		}
 
 		keyshareReq.Counterparty = &types.CounterPartyIBCInfo{
-			ChannelID: packet.SourceChannel,
-			PortID:    packet.SourcePort,
+			ChannelId: packet.SourceChannel,
+			PortId:    packet.SourcePort,
 		}
 
 		keyshareReq.EncryptedKeyshares = make([]*commontypes.EncryptedKeyshare, 0)
@@ -123,10 +123,10 @@ func (k Keeper) OnTimeoutGetPrivateKeysharePacket(ctx sdk.Context, packet channe
 }
 
 func verifyIBCInfo(packet channeltypes.Packet, keyshareReq types.KeyShareRequest) error {
-	if keyshareReq.Counterparty.ChannelID != packet.SourceChannel ||
-		keyshareReq.Counterparty.PortID != packet.SourcePort ||
-		keyshareReq.IbcInfo.ChannelID != packet.DestinationChannel ||
-		keyshareReq.IbcInfo.PortID != packet.DestinationPort {
+	if keyshareReq.Counterparty.ChannelId != packet.SourceChannel ||
+		keyshareReq.Counterparty.PortId != packet.SourcePort ||
+		keyshareReq.IbcInfo.ChannelId != packet.DestinationChannel ||
+		keyshareReq.IbcInfo.PortId != packet.DestinationPort {
 		return errors.New("unauthorized request")
 	}
 	return nil

@@ -548,22 +548,22 @@ func (x *_ActivePubKey_5_list) IsValid() bool {
 }
 
 var (
-	md_ActivePubKey                    protoreflect.MessageDescriptor
-	fd_ActivePubKey_publicKey          protoreflect.FieldDescriptor
-	fd_ActivePubKey_creator            protoreflect.FieldDescriptor
-	fd_ActivePubKey_expiry             protoreflect.FieldDescriptor
-	fd_ActivePubKey_numberOfValidators protoreflect.FieldDescriptor
-	fd_ActivePubKey_encryptedKeyShares protoreflect.FieldDescriptor
+	md_ActivePubKey                      protoreflect.MessageDescriptor
+	fd_ActivePubKey_public_key           protoreflect.FieldDescriptor
+	fd_ActivePubKey_creator              protoreflect.FieldDescriptor
+	fd_ActivePubKey_expiry               protoreflect.FieldDescriptor
+	fd_ActivePubKey_number_of_validators protoreflect.FieldDescriptor
+	fd_ActivePubKey_encrypted_key_shares protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_keyshare_pub_key_proto_init()
 	md_ActivePubKey = File_fairyring_keyshare_pub_key_proto.Messages().ByName("ActivePubKey")
-	fd_ActivePubKey_publicKey = md_ActivePubKey.Fields().ByName("publicKey")
+	fd_ActivePubKey_public_key = md_ActivePubKey.Fields().ByName("public_key")
 	fd_ActivePubKey_creator = md_ActivePubKey.Fields().ByName("creator")
 	fd_ActivePubKey_expiry = md_ActivePubKey.Fields().ByName("expiry")
-	fd_ActivePubKey_numberOfValidators = md_ActivePubKey.Fields().ByName("numberOfValidators")
-	fd_ActivePubKey_encryptedKeyShares = md_ActivePubKey.Fields().ByName("encryptedKeyShares")
+	fd_ActivePubKey_number_of_validators = md_ActivePubKey.Fields().ByName("number_of_validators")
+	fd_ActivePubKey_encrypted_key_shares = md_ActivePubKey.Fields().ByName("encrypted_key_shares")
 }
 
 var _ protoreflect.Message = (*fastReflection_ActivePubKey)(nil)
@@ -633,7 +633,7 @@ func (x *fastReflection_ActivePubKey) Interface() protoreflect.ProtoMessage {
 func (x *fastReflection_ActivePubKey) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.PublicKey != "" {
 		value := protoreflect.ValueOfString(x.PublicKey)
-		if !f(fd_ActivePubKey_publicKey, value) {
+		if !f(fd_ActivePubKey_public_key, value) {
 			return
 		}
 	}
@@ -651,13 +651,13 @@ func (x *fastReflection_ActivePubKey) Range(f func(protoreflect.FieldDescriptor,
 	}
 	if x.NumberOfValidators != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.NumberOfValidators)
-		if !f(fd_ActivePubKey_numberOfValidators, value) {
+		if !f(fd_ActivePubKey_number_of_validators, value) {
 			return
 		}
 	}
 	if len(x.EncryptedKeyShares) != 0 {
 		value := protoreflect.ValueOfList(&_ActivePubKey_5_list{list: &x.EncryptedKeyShares})
-		if !f(fd_ActivePubKey_encryptedKeyShares, value) {
+		if !f(fd_ActivePubKey_encrypted_key_shares, value) {
 			return
 		}
 	}
@@ -676,15 +676,15 @@ func (x *fastReflection_ActivePubKey) Range(f func(protoreflect.FieldDescriptor,
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_ActivePubKey) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.keyshare.ActivePubKey.publicKey":
+	case "fairyring.keyshare.ActivePubKey.public_key":
 		return x.PublicKey != ""
 	case "fairyring.keyshare.ActivePubKey.creator":
 		return x.Creator != ""
 	case "fairyring.keyshare.ActivePubKey.expiry":
 		return x.Expiry != uint64(0)
-	case "fairyring.keyshare.ActivePubKey.numberOfValidators":
+	case "fairyring.keyshare.ActivePubKey.number_of_validators":
 		return x.NumberOfValidators != uint64(0)
-	case "fairyring.keyshare.ActivePubKey.encryptedKeyShares":
+	case "fairyring.keyshare.ActivePubKey.encrypted_key_shares":
 		return len(x.EncryptedKeyShares) != 0
 	default:
 		if fd.IsExtension() {
@@ -702,15 +702,15 @@ func (x *fastReflection_ActivePubKey) Has(fd protoreflect.FieldDescriptor) bool 
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_ActivePubKey) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.ActivePubKey.publicKey":
+	case "fairyring.keyshare.ActivePubKey.public_key":
 		x.PublicKey = ""
 	case "fairyring.keyshare.ActivePubKey.creator":
 		x.Creator = ""
 	case "fairyring.keyshare.ActivePubKey.expiry":
 		x.Expiry = uint64(0)
-	case "fairyring.keyshare.ActivePubKey.numberOfValidators":
+	case "fairyring.keyshare.ActivePubKey.number_of_validators":
 		x.NumberOfValidators = uint64(0)
-	case "fairyring.keyshare.ActivePubKey.encryptedKeyShares":
+	case "fairyring.keyshare.ActivePubKey.encrypted_key_shares":
 		x.EncryptedKeyShares = nil
 	default:
 		if fd.IsExtension() {
@@ -728,7 +728,7 @@ func (x *fastReflection_ActivePubKey) Clear(fd protoreflect.FieldDescriptor) {
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_ActivePubKey) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.keyshare.ActivePubKey.publicKey":
+	case "fairyring.keyshare.ActivePubKey.public_key":
 		value := x.PublicKey
 		return protoreflect.ValueOfString(value)
 	case "fairyring.keyshare.ActivePubKey.creator":
@@ -737,10 +737,10 @@ func (x *fastReflection_ActivePubKey) Get(descriptor protoreflect.FieldDescripto
 	case "fairyring.keyshare.ActivePubKey.expiry":
 		value := x.Expiry
 		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.ActivePubKey.numberOfValidators":
+	case "fairyring.keyshare.ActivePubKey.number_of_validators":
 		value := x.NumberOfValidators
 		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.ActivePubKey.encryptedKeyShares":
+	case "fairyring.keyshare.ActivePubKey.encrypted_key_shares":
 		if len(x.EncryptedKeyShares) == 0 {
 			return protoreflect.ValueOfList(&_ActivePubKey_5_list{})
 		}
@@ -766,15 +766,15 @@ func (x *fastReflection_ActivePubKey) Get(descriptor protoreflect.FieldDescripto
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_ActivePubKey) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.ActivePubKey.publicKey":
+	case "fairyring.keyshare.ActivePubKey.public_key":
 		x.PublicKey = value.Interface().(string)
 	case "fairyring.keyshare.ActivePubKey.creator":
 		x.Creator = value.Interface().(string)
 	case "fairyring.keyshare.ActivePubKey.expiry":
 		x.Expiry = value.Uint()
-	case "fairyring.keyshare.ActivePubKey.numberOfValidators":
+	case "fairyring.keyshare.ActivePubKey.number_of_validators":
 		x.NumberOfValidators = value.Uint()
-	case "fairyring.keyshare.ActivePubKey.encryptedKeyShares":
+	case "fairyring.keyshare.ActivePubKey.encrypted_key_shares":
 		lv := value.List()
 		clv := lv.(*_ActivePubKey_5_list)
 		x.EncryptedKeyShares = *clv.list
@@ -798,20 +798,20 @@ func (x *fastReflection_ActivePubKey) Set(fd protoreflect.FieldDescriptor, value
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_ActivePubKey) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.ActivePubKey.encryptedKeyShares":
+	case "fairyring.keyshare.ActivePubKey.encrypted_key_shares":
 		if x.EncryptedKeyShares == nil {
 			x.EncryptedKeyShares = []*EncryptedKeyShare{}
 		}
 		value := &_ActivePubKey_5_list{list: &x.EncryptedKeyShares}
 		return protoreflect.ValueOfList(value)
-	case "fairyring.keyshare.ActivePubKey.publicKey":
-		panic(fmt.Errorf("field publicKey of message fairyring.keyshare.ActivePubKey is not mutable"))
+	case "fairyring.keyshare.ActivePubKey.public_key":
+		panic(fmt.Errorf("field public_key of message fairyring.keyshare.ActivePubKey is not mutable"))
 	case "fairyring.keyshare.ActivePubKey.creator":
 		panic(fmt.Errorf("field creator of message fairyring.keyshare.ActivePubKey is not mutable"))
 	case "fairyring.keyshare.ActivePubKey.expiry":
 		panic(fmt.Errorf("field expiry of message fairyring.keyshare.ActivePubKey is not mutable"))
-	case "fairyring.keyshare.ActivePubKey.numberOfValidators":
-		panic(fmt.Errorf("field numberOfValidators of message fairyring.keyshare.ActivePubKey is not mutable"))
+	case "fairyring.keyshare.ActivePubKey.number_of_validators":
+		panic(fmt.Errorf("field number_of_validators of message fairyring.keyshare.ActivePubKey is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.ActivePubKey"))
@@ -825,15 +825,15 @@ func (x *fastReflection_ActivePubKey) Mutable(fd protoreflect.FieldDescriptor) p
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_ActivePubKey) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.ActivePubKey.publicKey":
+	case "fairyring.keyshare.ActivePubKey.public_key":
 		return protoreflect.ValueOfString("")
 	case "fairyring.keyshare.ActivePubKey.creator":
 		return protoreflect.ValueOfString("")
 	case "fairyring.keyshare.ActivePubKey.expiry":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.ActivePubKey.numberOfValidators":
+	case "fairyring.keyshare.ActivePubKey.number_of_validators":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.ActivePubKey.encryptedKeyShares":
+	case "fairyring.keyshare.ActivePubKey.encrypted_key_shares":
 		list := []*EncryptedKeyShare{}
 		return protoreflect.ValueOfList(&_ActivePubKey_5_list{list: &list})
 	default:
@@ -1266,22 +1266,22 @@ func (x *_QueuedPubKey_5_list) IsValid() bool {
 }
 
 var (
-	md_QueuedPubKey                    protoreflect.MessageDescriptor
-	fd_QueuedPubKey_publicKey          protoreflect.FieldDescriptor
-	fd_QueuedPubKey_creator            protoreflect.FieldDescriptor
-	fd_QueuedPubKey_expiry             protoreflect.FieldDescriptor
-	fd_QueuedPubKey_numberOfValidators protoreflect.FieldDescriptor
-	fd_QueuedPubKey_encryptedKeyShares protoreflect.FieldDescriptor
+	md_QueuedPubKey                      protoreflect.MessageDescriptor
+	fd_QueuedPubKey_public_key           protoreflect.FieldDescriptor
+	fd_QueuedPubKey_creator              protoreflect.FieldDescriptor
+	fd_QueuedPubKey_expiry               protoreflect.FieldDescriptor
+	fd_QueuedPubKey_number_of_validators protoreflect.FieldDescriptor
+	fd_QueuedPubKey_encrypted_key_shares protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_keyshare_pub_key_proto_init()
 	md_QueuedPubKey = File_fairyring_keyshare_pub_key_proto.Messages().ByName("QueuedPubKey")
-	fd_QueuedPubKey_publicKey = md_QueuedPubKey.Fields().ByName("publicKey")
+	fd_QueuedPubKey_public_key = md_QueuedPubKey.Fields().ByName("public_key")
 	fd_QueuedPubKey_creator = md_QueuedPubKey.Fields().ByName("creator")
 	fd_QueuedPubKey_expiry = md_QueuedPubKey.Fields().ByName("expiry")
-	fd_QueuedPubKey_numberOfValidators = md_QueuedPubKey.Fields().ByName("numberOfValidators")
-	fd_QueuedPubKey_encryptedKeyShares = md_QueuedPubKey.Fields().ByName("encryptedKeyShares")
+	fd_QueuedPubKey_number_of_validators = md_QueuedPubKey.Fields().ByName("number_of_validators")
+	fd_QueuedPubKey_encrypted_key_shares = md_QueuedPubKey.Fields().ByName("encrypted_key_shares")
 }
 
 var _ protoreflect.Message = (*fastReflection_QueuedPubKey)(nil)
@@ -1351,7 +1351,7 @@ func (x *fastReflection_QueuedPubKey) Interface() protoreflect.ProtoMessage {
 func (x *fastReflection_QueuedPubKey) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.PublicKey != "" {
 		value := protoreflect.ValueOfString(x.PublicKey)
-		if !f(fd_QueuedPubKey_publicKey, value) {
+		if !f(fd_QueuedPubKey_public_key, value) {
 			return
 		}
 	}
@@ -1369,13 +1369,13 @@ func (x *fastReflection_QueuedPubKey) Range(f func(protoreflect.FieldDescriptor,
 	}
 	if x.NumberOfValidators != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.NumberOfValidators)
-		if !f(fd_QueuedPubKey_numberOfValidators, value) {
+		if !f(fd_QueuedPubKey_number_of_validators, value) {
 			return
 		}
 	}
 	if len(x.EncryptedKeyShares) != 0 {
 		value := protoreflect.ValueOfList(&_QueuedPubKey_5_list{list: &x.EncryptedKeyShares})
-		if !f(fd_QueuedPubKey_encryptedKeyShares, value) {
+		if !f(fd_QueuedPubKey_encrypted_key_shares, value) {
 			return
 		}
 	}
@@ -1394,15 +1394,15 @@ func (x *fastReflection_QueuedPubKey) Range(f func(protoreflect.FieldDescriptor,
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_QueuedPubKey) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.keyshare.QueuedPubKey.publicKey":
+	case "fairyring.keyshare.QueuedPubKey.public_key":
 		return x.PublicKey != ""
 	case "fairyring.keyshare.QueuedPubKey.creator":
 		return x.Creator != ""
 	case "fairyring.keyshare.QueuedPubKey.expiry":
 		return x.Expiry != uint64(0)
-	case "fairyring.keyshare.QueuedPubKey.numberOfValidators":
+	case "fairyring.keyshare.QueuedPubKey.number_of_validators":
 		return x.NumberOfValidators != uint64(0)
-	case "fairyring.keyshare.QueuedPubKey.encryptedKeyShares":
+	case "fairyring.keyshare.QueuedPubKey.encrypted_key_shares":
 		return len(x.EncryptedKeyShares) != 0
 	default:
 		if fd.IsExtension() {
@@ -1420,15 +1420,15 @@ func (x *fastReflection_QueuedPubKey) Has(fd protoreflect.FieldDescriptor) bool 
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueuedPubKey) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.QueuedPubKey.publicKey":
+	case "fairyring.keyshare.QueuedPubKey.public_key":
 		x.PublicKey = ""
 	case "fairyring.keyshare.QueuedPubKey.creator":
 		x.Creator = ""
 	case "fairyring.keyshare.QueuedPubKey.expiry":
 		x.Expiry = uint64(0)
-	case "fairyring.keyshare.QueuedPubKey.numberOfValidators":
+	case "fairyring.keyshare.QueuedPubKey.number_of_validators":
 		x.NumberOfValidators = uint64(0)
-	case "fairyring.keyshare.QueuedPubKey.encryptedKeyShares":
+	case "fairyring.keyshare.QueuedPubKey.encrypted_key_shares":
 		x.EncryptedKeyShares = nil
 	default:
 		if fd.IsExtension() {
@@ -1446,7 +1446,7 @@ func (x *fastReflection_QueuedPubKey) Clear(fd protoreflect.FieldDescriptor) {
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_QueuedPubKey) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.keyshare.QueuedPubKey.publicKey":
+	case "fairyring.keyshare.QueuedPubKey.public_key":
 		value := x.PublicKey
 		return protoreflect.ValueOfString(value)
 	case "fairyring.keyshare.QueuedPubKey.creator":
@@ -1455,10 +1455,10 @@ func (x *fastReflection_QueuedPubKey) Get(descriptor protoreflect.FieldDescripto
 	case "fairyring.keyshare.QueuedPubKey.expiry":
 		value := x.Expiry
 		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.QueuedPubKey.numberOfValidators":
+	case "fairyring.keyshare.QueuedPubKey.number_of_validators":
 		value := x.NumberOfValidators
 		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.QueuedPubKey.encryptedKeyShares":
+	case "fairyring.keyshare.QueuedPubKey.encrypted_key_shares":
 		if len(x.EncryptedKeyShares) == 0 {
 			return protoreflect.ValueOfList(&_QueuedPubKey_5_list{})
 		}
@@ -1484,15 +1484,15 @@ func (x *fastReflection_QueuedPubKey) Get(descriptor protoreflect.FieldDescripto
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueuedPubKey) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.QueuedPubKey.publicKey":
+	case "fairyring.keyshare.QueuedPubKey.public_key":
 		x.PublicKey = value.Interface().(string)
 	case "fairyring.keyshare.QueuedPubKey.creator":
 		x.Creator = value.Interface().(string)
 	case "fairyring.keyshare.QueuedPubKey.expiry":
 		x.Expiry = value.Uint()
-	case "fairyring.keyshare.QueuedPubKey.numberOfValidators":
+	case "fairyring.keyshare.QueuedPubKey.number_of_validators":
 		x.NumberOfValidators = value.Uint()
-	case "fairyring.keyshare.QueuedPubKey.encryptedKeyShares":
+	case "fairyring.keyshare.QueuedPubKey.encrypted_key_shares":
 		lv := value.List()
 		clv := lv.(*_QueuedPubKey_5_list)
 		x.EncryptedKeyShares = *clv.list
@@ -1516,20 +1516,20 @@ func (x *fastReflection_QueuedPubKey) Set(fd protoreflect.FieldDescriptor, value
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_QueuedPubKey) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.QueuedPubKey.encryptedKeyShares":
+	case "fairyring.keyshare.QueuedPubKey.encrypted_key_shares":
 		if x.EncryptedKeyShares == nil {
 			x.EncryptedKeyShares = []*EncryptedKeyShare{}
 		}
 		value := &_QueuedPubKey_5_list{list: &x.EncryptedKeyShares}
 		return protoreflect.ValueOfList(value)
-	case "fairyring.keyshare.QueuedPubKey.publicKey":
-		panic(fmt.Errorf("field publicKey of message fairyring.keyshare.QueuedPubKey is not mutable"))
+	case "fairyring.keyshare.QueuedPubKey.public_key":
+		panic(fmt.Errorf("field public_key of message fairyring.keyshare.QueuedPubKey is not mutable"))
 	case "fairyring.keyshare.QueuedPubKey.creator":
 		panic(fmt.Errorf("field creator of message fairyring.keyshare.QueuedPubKey is not mutable"))
 	case "fairyring.keyshare.QueuedPubKey.expiry":
 		panic(fmt.Errorf("field expiry of message fairyring.keyshare.QueuedPubKey is not mutable"))
-	case "fairyring.keyshare.QueuedPubKey.numberOfValidators":
-		panic(fmt.Errorf("field numberOfValidators of message fairyring.keyshare.QueuedPubKey is not mutable"))
+	case "fairyring.keyshare.QueuedPubKey.number_of_validators":
+		panic(fmt.Errorf("field number_of_validators of message fairyring.keyshare.QueuedPubKey is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.QueuedPubKey"))
@@ -1543,15 +1543,15 @@ func (x *fastReflection_QueuedPubKey) Mutable(fd protoreflect.FieldDescriptor) p
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_QueuedPubKey) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.QueuedPubKey.publicKey":
+	case "fairyring.keyshare.QueuedPubKey.public_key":
 		return protoreflect.ValueOfString("")
 	case "fairyring.keyshare.QueuedPubKey.creator":
 		return protoreflect.ValueOfString("")
 	case "fairyring.keyshare.QueuedPubKey.expiry":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.QueuedPubKey.numberOfValidators":
+	case "fairyring.keyshare.QueuedPubKey.number_of_validators":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.QueuedPubKey.encryptedKeyShares":
+	case "fairyring.keyshare.QueuedPubKey.encrypted_key_shares":
 		list := []*EncryptedKeyShare{}
 		return protoreflect.ValueOfList(&_QueuedPubKey_5_list{list: &list})
 	default:
@@ -1945,6 +1945,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// EncryptedKeyShare defines the structure for storing
+// blockwise keyshares submitted by validators
 type EncryptedKeyShare struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1988,16 +1990,17 @@ func (x *EncryptedKeyShare) GetValidator() string {
 	return ""
 }
 
+// ActivePubKey defines the structure of the active public key
 type ActivePubKey struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	PublicKey          string               `protobuf:"bytes,1,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	PublicKey          string               `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
 	Creator            string               `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
 	Expiry             uint64               `protobuf:"varint,3,opt,name=expiry,proto3" json:"expiry,omitempty"`
-	NumberOfValidators uint64               `protobuf:"varint,4,opt,name=numberOfValidators,proto3" json:"numberOfValidators,omitempty"`
-	EncryptedKeyShares []*EncryptedKeyShare `protobuf:"bytes,5,rep,name=encryptedKeyShares,proto3" json:"encryptedKeyShares,omitempty"`
+	NumberOfValidators uint64               `protobuf:"varint,4,opt,name=number_of_validators,json=numberOfValidators,proto3" json:"number_of_validators,omitempty"`
+	EncryptedKeyShares []*EncryptedKeyShare `protobuf:"bytes,5,rep,name=encrypted_key_shares,json=encryptedKeyShares,proto3" json:"encrypted_key_shares,omitempty"`
 }
 
 func (x *ActivePubKey) Reset() {
@@ -2055,16 +2058,17 @@ func (x *ActivePubKey) GetEncryptedKeyShares() []*EncryptedKeyShare {
 	return nil
 }
 
+// QueuedPubKey defines the structure of the queued public key
 type QueuedPubKey struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	PublicKey          string               `protobuf:"bytes,1,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	PublicKey          string               `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
 	Creator            string               `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
 	Expiry             uint64               `protobuf:"varint,3,opt,name=expiry,proto3" json:"expiry,omitempty"`
-	NumberOfValidators uint64               `protobuf:"varint,4,opt,name=numberOfValidators,proto3" json:"numberOfValidators,omitempty"`
-	EncryptedKeyShares []*EncryptedKeyShare `protobuf:"bytes,5,rep,name=encryptedKeyShares,proto3" json:"encryptedKeyShares,omitempty"`
+	NumberOfValidators uint64               `protobuf:"varint,4,opt,name=number_of_validators,json=numberOfValidators,proto3" json:"number_of_validators,omitempty"`
+	EncryptedKeyShares []*EncryptedKeyShare `protobuf:"bytes,5,rep,name=encrypted_key_shares,json=encryptedKeyShares,proto3" json:"encrypted_key_shares,omitempty"`
 }
 
 func (x *QueuedPubKey) Reset() {
@@ -2132,48 +2136,49 @@ var file_fairyring_keyshare_pub_key_proto_rawDesc = []byte{
 	0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x64,
 	0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x12,
 	0x1c, 0x0a, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x22, 0xe5, 0x01,
-	0x0a, 0x0c, 0x41, 0x63, 0x74, 0x69, 0x76, 0x65, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x12, 0x1c,
-	0x0a, 0x09, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x09, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x12, 0x18, 0x0a, 0x07,
-	0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63,
-	0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79,
-	0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x06, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x12, 0x2e,
-	0x0a, 0x12, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x4f, 0x66, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61,
+	0x28, 0x09, 0x52, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x22, 0xea, 0x01,
+	0x0a, 0x0c, 0x41, 0x63, 0x74, 0x69, 0x76, 0x65, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x12, 0x1d,
+	0x0a, 0x0a, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x09, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x12, 0x18, 0x0a,
+	0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
+	0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x65, 0x78, 0x70, 0x69, 0x72,
+	0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x06, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x12,
+	0x30, 0x0a, 0x14, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x5f, 0x6f, 0x66, 0x5f, 0x76, 0x61, 0x6c,
+	0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x73, 0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52, 0x12, 0x6e,
+	0x75, 0x6d, 0x62, 0x65, 0x72, 0x4f, 0x66, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72,
+	0x73, 0x12, 0x57, 0x0a, 0x14, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x5f, 0x6b,
+	0x65, 0x79, 0x5f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32,
+	0x25, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73,
+	0x68, 0x61, 0x72, 0x65, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65,
+	0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x52, 0x12, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65,
+	0x64, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x73, 0x22, 0xea, 0x01, 0x0a, 0x0c, 0x51,
+	0x75, 0x65, 0x75, 0x65, 0x64, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x12, 0x1d, 0x0a, 0x0a, 0x70,
+	0x75, 0x62, 0x6c, 0x69, 0x63, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x09, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72,
+	0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65,
+	0x61, 0x74, 0x6f, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x04, 0x52, 0x06, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x12, 0x30, 0x0a, 0x14,
+	0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x5f, 0x6f, 0x66, 0x5f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61,
 	0x74, 0x6f, 0x72, 0x73, 0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52, 0x12, 0x6e, 0x75, 0x6d, 0x62,
-	0x65, 0x72, 0x4f, 0x66, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x73, 0x12, 0x55,
-	0x0a, 0x12, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x53, 0x68,
-	0x61, 0x72, 0x65, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x25, 0x2e, 0x66, 0x61, 0x69,
-	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e,
-	0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72,
-	0x65, 0x52, 0x12, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x53,
-	0x68, 0x61, 0x72, 0x65, 0x73, 0x22, 0xe5, 0x01, 0x0a, 0x0c, 0x51, 0x75, 0x65, 0x75, 0x65, 0x64,
-	0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x12, 0x1c, 0x0a, 0x09, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63,
-	0x4b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x70, 0x75, 0x62, 0x6c, 0x69,
-	0x63, 0x4b, 0x65, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16,
-	0x0a, 0x06, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x06,
-	0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x12, 0x2e, 0x0a, 0x12, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72,
-	0x4f, 0x66, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x73, 0x18, 0x04, 0x20, 0x01,
-	0x28, 0x04, 0x52, 0x12, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x4f, 0x66, 0x56, 0x61, 0x6c, 0x69,
-	0x64, 0x61, 0x74, 0x6f, 0x72, 0x73, 0x12, 0x55, 0x0a, 0x12, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70,
-	0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18, 0x05, 0x20, 0x03,
-	0x28, 0x0b, 0x32, 0x25, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b,
-	0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65,
-	0x64, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x52, 0x12, 0x65, 0x6e, 0x63, 0x72, 0x79,
-	0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x73, 0x42, 0xb3, 0x01,
-	0x0a, 0x16, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
-	0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x42, 0x0b, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79,
-	0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x23, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73,
-	0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
-	0x69, 0x6e, 0x67, 0x2f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xa2, 0x02, 0x03, 0x46,
-	0x4b, 0x58, 0xaa, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x4b,
-	0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xca, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72,
-	0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xe2, 0x02, 0x1e, 0x46,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
-	0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x13,
-	0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x4b, 0x65, 0x79, 0x73, 0x68,
-	0x61, 0x72, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x72, 0x4f, 0x66, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x73, 0x12, 0x57,
+	0x0a, 0x14, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x5f, 0x6b, 0x65, 0x79, 0x5f,
+	0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x25, 0x2e, 0x66,
+	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
+	0x65, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x53, 0x68,
+	0x61, 0x72, 0x65, 0x52, 0x12, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65,
+	0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x73, 0x42, 0xb3, 0x01, 0x0a, 0x16, 0x63, 0x6f, 0x6d, 0x2e,
+	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61,
+	0x72, 0x65, 0x42, 0x0b, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50,
+	0x01, 0x5a, 0x23, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f,
+	0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x6b, 0x65,
+	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xa2, 0x02, 0x03, 0x46, 0x4b, 0x58, 0xaa, 0x02, 0x12, 0x46,
+	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
+	0x65, 0xca, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65,
+	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xe2, 0x02, 0x1e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d,
+	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x13, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72,
+	0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2195,8 +2200,8 @@ var file_fairyring_keyshare_pub_key_proto_goTypes = []interface{}{
 	(*QueuedPubKey)(nil),      // 2: fairyring.keyshare.QueuedPubKey
 }
 var file_fairyring_keyshare_pub_key_proto_depIdxs = []int32{
-	0, // 0: fairyring.keyshare.ActivePubKey.encryptedKeyShares:type_name -> fairyring.keyshare.EncryptedKeyShare
-	0, // 1: fairyring.keyshare.QueuedPubKey.encryptedKeyShares:type_name -> fairyring.keyshare.EncryptedKeyShare
+	0, // 0: fairyring.keyshare.ActivePubKey.encrypted_key_shares:type_name -> fairyring.keyshare.EncryptedKeyShare
+	0, // 1: fairyring.keyshare.QueuedPubKey.encrypted_key_shares:type_name -> fairyring.keyshare.EncryptedKeyShare
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

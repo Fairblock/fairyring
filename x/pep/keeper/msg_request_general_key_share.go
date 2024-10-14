@@ -120,7 +120,7 @@ func (k Keeper) OnAcknowledgementRequestAggrKeysharePacket(ctx sdk.Context, pack
 			return errors.New("cannot unmarshal acknowledgment")
 		}
 
-		entry := types.GenEncTxExecutionQueue{
+		entry := types.IdentityExecutionQueue{
 			Creator:   data.Requester,
 			RequestId: data.GetRequestId(),
 			Identity:  packetAck.GetIdentity(),

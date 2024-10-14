@@ -3,6 +3,9 @@ package keeper_test
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"math/rand"
+	"testing"
+
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
 	"github.com/Fairblock/fairyring/testutil/random"
@@ -11,8 +14,6 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"math/rand"
-	"testing"
 )
 
 func TestVerifiableRandomnessQuery(t *testing.T) {
@@ -21,7 +22,7 @@ func TestVerifiableRandomnessQuery(t *testing.T) {
 
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryVerifiableRandomnessQuery
+		request  *types.QueryVerifiableRandomnessRequest
 		response *types.QueryVerifiableRandomnessResponse
 		err      error
 	}{
@@ -31,7 +32,7 @@ func TestVerifiableRandomnessQuery(t *testing.T) {
 		},
 		{
 			desc:    "AggregatedKeyNotFound",
-			request: &types.QueryVerifiableRandomnessQuery{},
+			request: &types.QueryVerifiableRandomnessRequest{},
 			err:     status.Error(codes.Internal, "aggregated key not found"),
 		},
 	} {
@@ -65,18 +66,18 @@ func TestVerifiableRandomnessQuery(t *testing.T) {
 
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryVerifiableRandomnessQuery
+		request  *types.QueryVerifiableRandomnessRequest
 		response *types.QueryVerifiableRandomnessResponse
 		err      error
 	}{
 		{
 			desc:    "UnableDecodeAggregatedKey",
-			request: &types.QueryVerifiableRandomnessQuery{},
+			request: &types.QueryVerifiableRandomnessRequest{},
 			err:     status.Error(codes.Internal, "unable to decode aggregated key"),
 		},
 		{
 			desc:    "QueryVerifiableRandomness",
-			request: &types.QueryVerifiableRandomnessQuery{},
+			request: &types.QueryVerifiableRandomnessRequest{},
 			response: &types.QueryVerifiableRandomnessResponse{
 				Randomness: hex.EncodeToString(hashedAggrKey),
 				Round:      randomHeight + 1,

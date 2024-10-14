@@ -7,7 +7,6 @@ import "cosmos/msg/v1/msg.proto";
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "fairyring/keyshare/params.proto";
-import "fairyring/keyshare/general_key_share.proto";
 import "fairyring/keyshare/pub_key.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
@@ -19,17 +18,44 @@ service Msg {
   // UpdateParams defines a (governance) operation for updating the module
   // parameters. The authority defaults to the x/gov module account.
   rpc UpdateParams        (MsgUpdateParams       ) returns (MsgUpdateParamsResponse       );
+  
+  // RegisterValidator defines a operation to register validator which
+  // is then eligible to participate in sending keyshares
   rpc RegisterValidator   (MsgRegisterValidator  ) returns (MsgRegisterValidatorResponse  );
+  
+  // DeRegisterValidator defines an operation to de-register
+  // a registered validator
   rpc DeRegisterValidator (MsgDeRegisterValidator) returns (MsgDeRegisterValidatorResponse);
+  
+  // SendKeyshare defines an operation to submit keyshares
+  // every block from registered validators
   rpc SendKeyshare        (MsgSendKeyshare       ) returns (MsgSendKeyshareResponse       );
   
-  // this line is used by starport scaffolding # proto/tx/rpc
+  // CreateLatestPubKey defines an operation to add a
+  // public key to the chain (can only be done by an authorized address)
   rpc CreateLatestPubKey      (MsgCreateLatestPubKey     ) returns (MsgCreateLatestPubKeyResponse     );
+  
+  // OverrideLatestPubKey defines an operation to override the current active pubkey
   rpc OverrideLatestPubKey    (MsgOverrideLatestPubKey   ) returns (MsgOverrideLatestPubKeyResponse   );
+  
+  // CreateAuthorizedAddress defines an operation to mark an address
+  // as authorized to create and/or update pubkeys on the chain
   rpc CreateAuthorizedAddress (MsgCreateAuthorizedAddress) returns (MsgCreateAuthorizedAddressResponse);
+  
+  // UpdateAuthorizedAddress defines an operation to update the
+  // list of authorized addresses
   rpc UpdateAuthorizedAddress (MsgUpdateAuthorizedAddress) returns (MsgUpdateAuthorizedAddressResponse);
+  
+  // DeleteAuthorizedAddress defines an operation to revoke the
+  // authorization of a previously authorized address
   rpc DeleteAuthorizedAddress (MsgDeleteAuthorizedAddress) returns (MsgDeleteAuthorizedAddressResponse);
+  
+  // CreateGeneralKeyShare defines an operation to submit a
+  // general keyshare from a registered validator
   rpc CreateGeneralKeyShare   (MsgCreateGeneralKeyShare  ) returns (MsgCreateGeneralKeyShareResponse  );
+  
+  // SubmitEncryptedKeyshare defines an operation to submit
+  // an encrypted keyshare from a registered validator
   rpc SubmitEncryptedKeyshare (MsgSubmitEncryptedKeyshare) returns (MsgSubmitEncryptedKeyshareResponse);
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -46,126 +72,153 @@ message MsgUpdateParams {
   Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }
 
-// MsgUpdateParamsResponse defines the response structure for executing a
-// MsgUpdateParams message.
+// MsgUpdateParamsResponse defines the response structure for executing a MsgUpdateParams message.
 message MsgUpdateParamsResponse {}
 
+// MsgRegisterValidator is the Msg/RegisterValidator request type.
 message MsgRegisterValidator {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
 }
 
+// MsgRegisterValidatorResponse defines the response structure for
+// executing a MsgRegisterValidator message.
 message MsgRegisterValidatorResponse {
   string creator = 1;
 }
 
+// MsgDeRegisterValidator is the Msg/DeRegisterValidator request type.
 message MsgDeRegisterValidator {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
 }
 
+// MsgDeRegisterValidatorResponse defines the response structure for
+// executing a MsgDeRegisterValidator message.
 message MsgDeRegisterValidatorResponse {
   string creator = 1;
 }
 
+// MsgSendKeyshare is the Msg/SendKeyshare request type.
 message MsgSendKeyshare {
   option (cosmos.msg.v1.signer) = "creator";
   string creator       = 1;
   string message       = 2;
-  uint64 keyShareIndex = 3;
-  uint64 blockHeight   = 4;
+  uint64 key_share_index = 3;
+  uint64 block_height   = 4;
 }
 
+// MsgSendKeyshareResponse defines the response structure for
+// executing a MsgSendKeyshare message.
 message MsgSendKeyshareResponse {
   string creator             = 1;
   string keyshare            = 2;
-  uint64 keyshareIndex       = 3;
-  uint64 blockHeight         = 4;
-  uint64 receivedBlockHeight = 5;
+  uint64 keyshare_index       = 3;
+  uint64 block_height         = 4;
+  uint64 received_block_height = 5;
   bool   success             = 6;
-  string errorMessage        = 7;
+  string error_message        = 7;
 }
 
-// this line is used by starport scaffolding # proto/tx/message
+// MsgCreateLatestPubKey is the Msg/CreateLatestPubKey request type.
 message MsgCreateLatestPubKey {
   option (cosmos.msg.v1.signer) = "creator";
-           string            creator            = 1;
-           string            publicKey          = 2;
-  repeated string            commitments        = 3;
-           uint64            numberOfValidators = 4;
-  repeated EncryptedKeyShare encryptedKeyShares = 5;
+  string            creator = 1;
+  string            public_key = 2;
+  repeated string   commitments = 3;
+  uint64            number_of_validators = 4;
+  repeated EncryptedKeyShare encrypted_key_shares = 5;
 }
 
+// MsgCreateLatestPubKeyResponse defines the response structure for
+// executing a MsgCreateLatestPubKey message.
 message MsgCreateLatestPubKeyResponse {}
 
+// MsgOverrideLatestPubKey is the Msg/OverrideLatestPubKey request type.
 message MsgOverrideLatestPubKey {
   option (cosmos.msg.v1.signer) = "creator";
-           string            creator            = 1;
-           string            publicKey          = 2;
-  repeated string            commitments        = 3;
-           uint64            numberOfValidators = 4;
-  repeated EncryptedKeyShare encryptedKeyShares = 5;
+  string            creator = 1;
+  string            public_key = 2;
+  repeated string   commitments = 3;
+  uint64            number_of_validators = 4;
+  repeated EncryptedKeyShare encrypted_key_shares = 5;
 }
 
+// MsgOverrideLatestPubKeyResponse defines the response structure for
+// executing a MsgOverrideLatestPubKey message.
 message MsgOverrideLatestPubKeyResponse {}
 
+// MsgCreateAuthorizedAddress is the Msg/CreateAuthorizedAddress request type.
 message MsgCreateAuthorizedAddress {
   option (cosmos.msg.v1.signer) = "creator";
   string target  = 1;
   string creator = 2;
 }
 
+// MsgCreateAuthorizedAddressResponse defines the response structure for
+// executing a MsgCreateAuthorizedAddress message.
 message MsgCreateAuthorizedAddressResponse {}
 
+// MsgUpdateAuthorizedAddress is the Msg/UpdateAuthorizedAddress request type.
 message MsgUpdateAuthorizedAddress {
   option (cosmos.msg.v1.signer) = "creator";
   string target       = 1;
-  bool   isAuthorized = 2;
+  bool   is_authorized = 2;
   string creator      = 3;
 }
 
+// MsgUpdateAuthorizedAddressResponse defines the response structure for
+// executing a MsgUpdateAuthorizedAddress message.
 message MsgUpdateAuthorizedAddressResponse {}
 
+// MsgDeleteAuthorizedAddress is the Msg/DeleteAuthorizedAddress request type.
 message MsgDeleteAuthorizedAddress {
   option (cosmos.msg.v1.signer) = "creator";
   string target  = 1;
   string creator = 2;
 }
 
+// MsgDeleteAuthorizedAddressResponse defines the response structure for
+// executing a MsgDeleteAuthorizedAddress message.
 message MsgDeleteAuthorizedAddressResponse {}
 
+// MsgCreateGeneralKeyShare is the Msg/CreateGeneralKeyShare request type.
 message MsgCreateGeneralKeyShare {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator             = 1;
-  string idType              = 2;
-  string idValue             = 3;
-  string keyShare            = 4;
-  uint64 keyShareIndex       = 5;
-  uint64 receivedTimestamp   = 6;
-  uint64 receivedBlockHeight = 7;
+  string creator               = 1;
+  string id_type               = 2;
+  string id_value              = 3;
+  string key_share             = 4;
+  uint64 key_share_index       = 5;
+  uint64 received_timestamp    = 6;
+  uint64 received_block_height = 7;
 }
 
+// MsgCreateGeneralKeyShareResponse defines the response structure for
+// executing a MsgCreateGeneralKeyShare message.
 message MsgCreateGeneralKeyShareResponse {
-  string creator             = 1;
-  string idType              = 2;
-  string idValue             = 3;
-  string keyShare            = 4;
-  uint64 keyShareIndex       = 5;
-  uint64 receivedBlockHeight = 6;
-  bool   success             = 7;
-  string errorMessage        = 8;
+  string creator               = 1;
+  string id_type               = 2;
+  string id_value              = 3;
+  string key_share             = 4;
+  uint64 key_share_index       = 5;
+  uint64 received_block_height = 6;
+  bool   success               = 7;
+  string error_message         = 8;
 }
 
+// MsgSubmitEncryptedKeyshare is the Msg/SubmitEncryptedKeyshare request type.
 message MsgSubmitEncryptedKeyshare {
   option (cosmos.msg.v1.signer) = "creator";
   string creator             = 1;
   string identity            = 2;
-  string encryptedKeyshare   = 3;
-  uint64 keyShareIndex       = 4;
-  uint64 receivedTimestamp   = 5;
-  uint64 receivedBlockHeight = 6;
+  string encrypted_keyshare   = 3;
+  uint64 key_share_index       = 4;
+  uint64 received_timestamp   = 5;
+  uint64 received_block_height = 6;
   string requester           = 7;
 }
 
+// MsgSubmitEncryptedKeyshareResponse defines the response structure for
+// executing a MsgSubmitEncryptedKeyshare message.
 message MsgSubmitEncryptedKeyshareResponse {}
-

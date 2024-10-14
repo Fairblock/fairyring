@@ -557,6 +557,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// AggregatedKeyShare defines the structure to store
+// the aggregated keyshare of a particular identity
 type AggregatedKeyShare struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

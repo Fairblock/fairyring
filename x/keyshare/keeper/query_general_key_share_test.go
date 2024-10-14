@@ -24,31 +24,31 @@ func TestGeneralKeyShareQuerySingle(t *testing.T) {
 	msgs := createNGeneralKeyShares(&keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetGeneralKeyShareRequest
-		response *types.QueryGetGeneralKeyShareResponse
+		request  *types.QueryGeneralKeyShareRequest
+		response *types.QueryGeneralKeyShareResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetGeneralKeyShareRequest{
+			request: &types.QueryGeneralKeyShareRequest{
 				Validator: msgs[0].Validator,
 				IdType:    msgs[0].IdType,
 				IdValue:   msgs[0].IdValue,
 			},
-			response: &types.QueryGetGeneralKeyShareResponse{GeneralKeyShare: msgs[0]},
+			response: &types.QueryGeneralKeyShareResponse{GeneralKeyShare: msgs[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetGeneralKeyShareRequest{
+			request: &types.QueryGeneralKeyShareRequest{
 				Validator: msgs[1].Validator,
 				IdType:    msgs[1].IdType,
 				IdValue:   msgs[1].IdValue,
 			},
-			response: &types.QueryGetGeneralKeyShareResponse{GeneralKeyShare: msgs[1]},
+			response: &types.QueryGeneralKeyShareResponse{GeneralKeyShare: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.QueryGetGeneralKeyShareRequest{
+			request: &types.QueryGeneralKeyShareRequest{
 				Validator: strconv.Itoa(100000),
 				IdType:    strconv.Itoa(100000),
 				IdValue:   strconv.Itoa(100000),
@@ -81,13 +81,13 @@ func TestGeneralKeyShareQueryAllNoPagination(t *testing.T) {
 	msgs := createNGeneralKeyShares(&keeper, ctx, 10)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryAllGeneralKeyShareRequest
-		response *types.QueryAllGeneralKeyShareResponse
+		request  *types.QueryGeneralKeyShareAllRequest
+		response *types.QueryGeneralKeyShareAllResponse
 		err      error
 	}{
 		{
 			desc: "QueryAllGeneralKeyShare",
-			request: &types.QueryAllGeneralKeyShareRequest{
+			request: &types.QueryGeneralKeyShareAllRequest{
 				Pagination: &query.PageRequest{
 					Key:        nil,
 					Offset:     0,
@@ -96,7 +96,7 @@ func TestGeneralKeyShareQueryAllNoPagination(t *testing.T) {
 					Reverse:    false,
 				},
 			},
-			response: &types.QueryAllGeneralKeyShareResponse{
+			response: &types.QueryGeneralKeyShareAllResponse{
 				GeneralKeyShare: msgs,
 				Pagination: &query.PageResponse{
 					NextKey: nil,
@@ -125,8 +125,13 @@ func TestGeneralKeyShareQueryPaginated(t *testing.T) {
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNGeneralKeyShares(&keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllGeneralKeyShareRequest {
-		return &types.QueryAllGeneralKeyShareRequest{
+	request := func(
+		next []byte,
+		offset,
+		limit uint64,
+		total bool,
+	) *types.QueryGeneralKeyShareAllRequest {
+		return &types.QueryGeneralKeyShareAllRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,

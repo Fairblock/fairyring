@@ -1292,11 +1292,10 @@ type GenesisState struct {
 	unknownFields protoimpl.UnknownFields
 
 	// params defines all the parameters of the module.
-	Params           *Params             `protobuf:"bytes,1,opt,name=params,proto3" json:"params,omitempty"`
-	PortId           string              `protobuf:"bytes,2,opt,name=port_id,json=portId,proto3" json:"port_id,omitempty"`
-	EncryptedTxArray []*EncryptedTxArray `protobuf:"bytes,3,rep,name=encryptedTxArray,proto3" json:"encryptedTxArray,omitempty"`
-	PepNonceList     []*PepNonce         `protobuf:"bytes,4,rep,name=pepNonceList,proto3" json:"pepNonceList,omitempty"`
-	// this line is used by starport scaffolding # genesis/proto/state
+	Params                 *Params                 `protobuf:"bytes,1,opt,name=params,proto3" json:"params,omitempty"`
+	PortId                 string                  `protobuf:"bytes,2,opt,name=port_id,json=portId,proto3" json:"port_id,omitempty"`
+	EncryptedTxArray       []*EncryptedTxArray     `protobuf:"bytes,3,rep,name=encryptedTxArray,proto3" json:"encryptedTxArray,omitempty"`
+	PepNonceList           []*PepNonce             `protobuf:"bytes,4,rep,name=pepNonceList,proto3" json:"pepNonceList,omitempty"`
 	AggregatedKeyShareList []*AggregatedKeyShare   `protobuf:"bytes,6,rep,name=aggregatedKeyShareList,proto3" json:"aggregatedKeyShareList,omitempty"`
 	ActivePubKey           *common.ActivePublicKey `protobuf:"bytes,7,opt,name=activePubKey,proto3" json:"activePubKey,omitempty"`
 	QueuedPubKey           *common.QueuedPublicKey `protobuf:"bytes,8,opt,name=queuedPubKey,proto3" json:"queuedPubKey,omitempty"`

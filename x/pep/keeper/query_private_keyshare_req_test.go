@@ -1,13 +1,14 @@
 package keeper_test
 
 import (
+	"strconv"
+	"testing"
+
 	"github.com/Fairblock/fairyring/testutil/random"
 	"github.com/Fairblock/fairyring/testutil/sample"
 	types2 "github.com/Fairblock/fairyring/x/common/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"strconv"
-	"testing"
 
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
@@ -19,7 +20,7 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func TestShowPrivateKeyshareReq(t *testing.T) {
+func TestPrivateKeyshareReq(t *testing.T) {
 	keeper, ctx := keepertest.PepKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
@@ -34,16 +35,16 @@ func TestShowPrivateKeyshareReq(t *testing.T) {
 
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryShowPrivateKeyshareReqRequest
-		response *types.QueryShowPrivateKeyshareReqResponse
+		request  *types.QueryPrivateKeyshareReqRequest
+		response *types.QueryPrivateKeyshareReqResponse
 		err      error
 	}{
 		{
 			desc: "ValidRequest",
-			request: &types.QueryShowPrivateKeyshareReqRequest{
+			request: &types.QueryPrivateKeyshareReqRequest{
 				ReqId: req.ReqId,
 			},
-			response: &types.QueryShowPrivateKeyshareReqResponse{
+			response: &types.QueryPrivateKeyshareReqResponse{
 				Creator:            req.Creator,
 				ReqId:              req.ReqId,
 				Pubkey:             req.Pubkey,
@@ -57,7 +58,7 @@ func TestShowPrivateKeyshareReq(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.ShowPrivateKeyshareReq(wctx, tc.request)
+			response, err := keeper.PrivateKeyshareReq(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {

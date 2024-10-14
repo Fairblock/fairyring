@@ -31,7 +31,7 @@ func TestGetGeneralKeyshare(t *testing.T) {
 	require.Equal(t, "request not found", err.Error())
 
 	// Test case when creator is unauthorized
-	entry := types.GenEncTxExecutionQueue{
+	entry := types.IdentityExecutionQueue{
 		Creator:   "authorized_creator",
 		RequestId: "test_req_id",
 		Identity:  "test_identity",

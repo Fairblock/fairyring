@@ -29,7 +29,7 @@ const (
 	Query_PubKey_FullMethodName                   = "/fairyring.pep.Query/PubKey"
 	Query_KeyshareReq_FullMethodName              = "/fairyring.pep.Query/KeyshareReq"
 	Query_KeyshareReqAll_FullMethodName           = "/fairyring.pep.Query/KeyshareReqAll"
-	Query_ShowPrivateKeyshareReq_FullMethodName   = "/fairyring.pep.Query/ShowPrivateKeyshareReq"
+	Query_PrivateKeyshareReq_FullMethodName       = "/fairyring.pep.Query/PrivateKeyshareReq"
 	Query_DecryptData_FullMethodName              = "/fairyring.pep.Query/DecryptData"
 )
 
@@ -40,23 +40,25 @@ type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
 	// Queries a EncryptedTx by index.
-	EncryptedTx(ctx context.Context, in *QueryGetEncryptedTxRequest, opts ...grpc.CallOption) (*QueryGetEncryptedTxResponse, error)
+	EncryptedTx(ctx context.Context, in *QueryEncryptedTxRequest, opts ...grpc.CallOption) (*QueryEncryptedTxResponse, error)
 	// Queries a list of EncryptedTx items.
-	EncryptedTxAll(ctx context.Context, in *QueryAllEncryptedTxRequest, opts ...grpc.CallOption) (*QueryAllEncryptedTxResponse, error)
+	EncryptedTxAll(ctx context.Context, in *QueryEncryptedTxAllRequest, opts ...grpc.CallOption) (*QueryEncryptedTxAllResponse, error)
 	// Queries a list of EncryptedTx items.
-	EncryptedTxAllFromHeight(ctx context.Context, in *QueryAllEncryptedTxFromHeightRequest, opts ...grpc.CallOption) (*QueryAllEncryptedTxFromHeightResponse, error)
+	EncryptedTxAllFromHeight(ctx context.Context, in *QueryEncryptedTxAllFromHeightRequest, opts ...grpc.CallOption) (*QueryEncryptedTxAllFromHeightResponse, error)
 	// Queries a list of LatestHeight items.
 	LatestHeight(ctx context.Context, in *QueryLatestHeightRequest, opts ...grpc.CallOption) (*QueryLatestHeightResponse, error)
 	// Queries a PepNonce by index.
-	PepNonce(ctx context.Context, in *QueryGetPepNonceRequest, opts ...grpc.CallOption) (*QueryGetPepNonceResponse, error)
+	PepNonce(ctx context.Context, in *QueryPepNonceRequest, opts ...grpc.CallOption) (*QueryPepNonceResponse, error)
 	// Queries a list of PepNonce items.
-	PepNonceAll(ctx context.Context, in *QueryAllPepNonceRequest, opts ...grpc.CallOption) (*QueryAllPepNonceResponse, error)
+	PepNonceAll(ctx context.Context, in *QueryPepNonceAllRequest, opts ...grpc.CallOption) (*QueryPepNonceAllResponse, error)
 	// Queries the public keys
 	PubKey(ctx context.Context, in *QueryPubKeyRequest, opts ...grpc.CallOption) (*QueryPubKeyResponse, error)
-	KeyshareReq(ctx context.Context, in *QueryKeyshareRequest, opts ...grpc.CallOption) (*QueryKeyshareResponse, error)
-	KeyshareReqAll(ctx context.Context, in *QueryAllKeyshareRequest, opts ...grpc.CallOption) (*QueryAllKeyshareResponse, error)
+	// Queries a Keyshare request by identity
+	KeyshareReq(ctx context.Context, in *QueryKeyshareReqRequest, opts ...grpc.CallOption) (*QueryKeyshareReqResponse, error)
+	// queries a list of keyshare requests
+	KeyshareReqAll(ctx context.Context, in *QueryKeyshareReqAllRequest, opts ...grpc.CallOption) (*QueryKeyshareReqAllResponse, error)
 	// Queries a list of ShowPrivateKeyshareReq items.
-	ShowPrivateKeyshareReq(ctx context.Context, in *QueryShowPrivateKeyshareReqRequest, opts ...grpc.CallOption) (*QueryShowPrivateKeyshareReqResponse, error)
+	PrivateKeyshareReq(ctx context.Context, in *QueryPrivateKeyshareReqRequest, opts ...grpc.CallOption) (*QueryPrivateKeyshareReqResponse, error)
 	// Queries a list of DecryptData items.
 	DecryptData(ctx context.Context, in *QueryDecryptDataRequest, opts ...grpc.CallOption) (*QueryDecryptDataResponse, error)
 }
@@ -78,8 +80,8 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 	return out, nil
 }
 
-func (c *queryClient) EncryptedTx(ctx context.Context, in *QueryGetEncryptedTxRequest, opts ...grpc.CallOption) (*QueryGetEncryptedTxResponse, error) {
-	out := new(QueryGetEncryptedTxResponse)
+func (c *queryClient) EncryptedTx(ctx context.Context, in *QueryEncryptedTxRequest, opts ...grpc.CallOption) (*QueryEncryptedTxResponse, error) {
+	out := new(QueryEncryptedTxResponse)
 	err := c.cc.Invoke(ctx, Query_EncryptedTx_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -87,8 +89,8 @@ func (c *queryClient) EncryptedTx(ctx context.Context, in *QueryGetEncryptedTxRe
 	return out, nil
 }
 
-func (c *queryClient) EncryptedTxAll(ctx context.Context, in *QueryAllEncryptedTxRequest, opts ...grpc.CallOption) (*QueryAllEncryptedTxResponse, error) {
-	out := new(QueryAllEncryptedTxResponse)
+func (c *queryClient) EncryptedTxAll(ctx context.Context, in *QueryEncryptedTxAllRequest, opts ...grpc.CallOption) (*QueryEncryptedTxAllResponse, error) {
+	out := new(QueryEncryptedTxAllResponse)
 	err := c.cc.Invoke(ctx, Query_EncryptedTxAll_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -96,8 +98,8 @@ func (c *queryClient) EncryptedTxAll(ctx context.Context, in *QueryAllEncryptedT
 	return out, nil
 }
 
-func (c *queryClient) EncryptedTxAllFromHeight(ctx context.Context, in *QueryAllEncryptedTxFromHeightRequest, opts ...grpc.CallOption) (*QueryAllEncryptedTxFromHeightResponse, error) {
-	out := new(QueryAllEncryptedTxFromHeightResponse)
+func (c *queryClient) EncryptedTxAllFromHeight(ctx context.Context, in *QueryEncryptedTxAllFromHeightRequest, opts ...grpc.CallOption) (*QueryEncryptedTxAllFromHeightResponse, error) {
+	out := new(QueryEncryptedTxAllFromHeightResponse)
 	err := c.cc.Invoke(ctx, Query_EncryptedTxAllFromHeight_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -114,8 +116,8 @@ func (c *queryClient) LatestHeight(ctx context.Context, in *QueryLatestHeightReq
 	return out, nil
 }
 
-func (c *queryClient) PepNonce(ctx context.Context, in *QueryGetPepNonceRequest, opts ...grpc.CallOption) (*QueryGetPepNonceResponse, error) {
-	out := new(QueryGetPepNonceResponse)
+func (c *queryClient) PepNonce(ctx context.Context, in *QueryPepNonceRequest, opts ...grpc.CallOption) (*QueryPepNonceResponse, error) {
+	out := new(QueryPepNonceResponse)
 	err := c.cc.Invoke(ctx, Query_PepNonce_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -123,8 +125,8 @@ func (c *queryClient) PepNonce(ctx context.Context, in *QueryGetPepNonceRequest,
 	return out, nil
 }
 
-func (c *queryClient) PepNonceAll(ctx context.Context, in *QueryAllPepNonceRequest, opts ...grpc.CallOption) (*QueryAllPepNonceResponse, error) {
-	out := new(QueryAllPepNonceResponse)
+func (c *queryClient) PepNonceAll(ctx context.Context, in *QueryPepNonceAllRequest, opts ...grpc.CallOption) (*QueryPepNonceAllResponse, error) {
+	out := new(QueryPepNonceAllResponse)
 	err := c.cc.Invoke(ctx, Query_PepNonceAll_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -141,8 +143,8 @@ func (c *queryClient) PubKey(ctx context.Context, in *QueryPubKeyRequest, opts .
 	return out, nil
 }
 
-func (c *queryClient) KeyshareReq(ctx context.Context, in *QueryKeyshareRequest, opts ...grpc.CallOption) (*QueryKeyshareResponse, error) {
-	out := new(QueryKeyshareResponse)
+func (c *queryClient) KeyshareReq(ctx context.Context, in *QueryKeyshareReqRequest, opts ...grpc.CallOption) (*QueryKeyshareReqResponse, error) {
+	out := new(QueryKeyshareReqResponse)
 	err := c.cc.Invoke(ctx, Query_KeyshareReq_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -150,8 +152,8 @@ func (c *queryClient) KeyshareReq(ctx context.Context, in *QueryKeyshareRequest,
 	return out, nil
 }
 
-func (c *queryClient) KeyshareReqAll(ctx context.Context, in *QueryAllKeyshareRequest, opts ...grpc.CallOption) (*QueryAllKeyshareResponse, error) {
-	out := new(QueryAllKeyshareResponse)
+func (c *queryClient) KeyshareReqAll(ctx context.Context, in *QueryKeyshareReqAllRequest, opts ...grpc.CallOption) (*QueryKeyshareReqAllResponse, error) {
+	out := new(QueryKeyshareReqAllResponse)
 	err := c.cc.Invoke(ctx, Query_KeyshareReqAll_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -159,9 +161,9 @@ func (c *queryClient) KeyshareReqAll(ctx context.Context, in *QueryAllKeyshareRe
 	return out, nil
 }
 
-func (c *queryClient) ShowPrivateKeyshareReq(ctx context.Context, in *QueryShowPrivateKeyshareReqRequest, opts ...grpc.CallOption) (*QueryShowPrivateKeyshareReqResponse, error) {
-	out := new(QueryShowPrivateKeyshareReqResponse)
-	err := c.cc.Invoke(ctx, Query_ShowPrivateKeyshareReq_FullMethodName, in, out, opts...)
+func (c *queryClient) PrivateKeyshareReq(ctx context.Context, in *QueryPrivateKeyshareReqRequest, opts ...grpc.CallOption) (*QueryPrivateKeyshareReqResponse, error) {
+	out := new(QueryPrivateKeyshareReqResponse)
+	err := c.cc.Invoke(ctx, Query_PrivateKeyshareReq_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -184,23 +186,25 @@ type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
 	// Queries a EncryptedTx by index.
-	EncryptedTx(context.Context, *QueryGetEncryptedTxRequest) (*QueryGetEncryptedTxResponse, error)
+	EncryptedTx(context.Context, *QueryEncryptedTxRequest) (*QueryEncryptedTxResponse, error)
 	// Queries a list of EncryptedTx items.
-	EncryptedTxAll(context.Context, *QueryAllEncryptedTxRequest) (*QueryAllEncryptedTxResponse, error)
+	EncryptedTxAll(context.Context, *QueryEncryptedTxAllRequest) (*QueryEncryptedTxAllResponse, error)
 	// Queries a list of EncryptedTx items.
-	EncryptedTxAllFromHeight(context.Context, *QueryAllEncryptedTxFromHeightRequest) (*QueryAllEncryptedTxFromHeightResponse, error)
+	EncryptedTxAllFromHeight(context.Context, *QueryEncryptedTxAllFromHeightRequest) (*QueryEncryptedTxAllFromHeightResponse, error)
 	// Queries a list of LatestHeight items.
 	LatestHeight(context.Context, *QueryLatestHeightRequest) (*QueryLatestHeightResponse, error)
 	// Queries a PepNonce by index.
-	PepNonce(context.Context, *QueryGetPepNonceRequest) (*QueryGetPepNonceResponse, error)
+	PepNonce(context.Context, *QueryPepNonceRequest) (*QueryPepNonceResponse, error)
 	// Queries a list of PepNonce items.
-	PepNonceAll(context.Context, *QueryAllPepNonceRequest) (*QueryAllPepNonceResponse, error)
+	PepNonceAll(context.Context, *QueryPepNonceAllRequest) (*QueryPepNonceAllResponse, error)
 	// Queries the public keys
 	PubKey(context.Context, *QueryPubKeyRequest) (*QueryPubKeyResponse, error)
-	KeyshareReq(context.Context, *QueryKeyshareRequest) (*QueryKeyshareResponse, error)
-	KeyshareReqAll(context.Context, *QueryAllKeyshareRequest) (*QueryAllKeyshareResponse, error)
+	// Queries a Keyshare request by identity
+	KeyshareReq(context.Context, *QueryKeyshareReqRequest) (*QueryKeyshareReqResponse, error)
+	// queries a list of keyshare requests
+	KeyshareReqAll(context.Context, *QueryKeyshareReqAllRequest) (*QueryKeyshareReqAllResponse, error)
 	// Queries a list of ShowPrivateKeyshareReq items.
-	ShowPrivateKeyshareReq(context.Context, *QueryShowPrivateKeyshareReqRequest) (*QueryShowPrivateKeyshareReqResponse, error)
+	PrivateKeyshareReq(context.Context, *QueryPrivateKeyshareReqRequest) (*QueryPrivateKeyshareReqResponse, error)
 	// Queries a list of DecryptData items.
 	DecryptData(context.Context, *QueryDecryptDataRequest) (*QueryDecryptDataResponse, error)
 	mustEmbedUnimplementedQueryServer()
@@ -213,35 +217,35 @@ type UnimplementedQueryServer struct {
 func (UnimplementedQueryServer) Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
 }
-func (UnimplementedQueryServer) EncryptedTx(context.Context, *QueryGetEncryptedTxRequest) (*QueryGetEncryptedTxResponse, error) {
+func (UnimplementedQueryServer) EncryptedTx(context.Context, *QueryEncryptedTxRequest) (*QueryEncryptedTxResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EncryptedTx not implemented")
 }
-func (UnimplementedQueryServer) EncryptedTxAll(context.Context, *QueryAllEncryptedTxRequest) (*QueryAllEncryptedTxResponse, error) {
+func (UnimplementedQueryServer) EncryptedTxAll(context.Context, *QueryEncryptedTxAllRequest) (*QueryEncryptedTxAllResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EncryptedTxAll not implemented")
 }
-func (UnimplementedQueryServer) EncryptedTxAllFromHeight(context.Context, *QueryAllEncryptedTxFromHeightRequest) (*QueryAllEncryptedTxFromHeightResponse, error) {
+func (UnimplementedQueryServer) EncryptedTxAllFromHeight(context.Context, *QueryEncryptedTxAllFromHeightRequest) (*QueryEncryptedTxAllFromHeightResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EncryptedTxAllFromHeight not implemented")
 }
 func (UnimplementedQueryServer) LatestHeight(context.Context, *QueryLatestHeightRequest) (*QueryLatestHeightResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LatestHeight not implemented")
 }
-func (UnimplementedQueryServer) PepNonce(context.Context, *QueryGetPepNonceRequest) (*QueryGetPepNonceResponse, error) {
+func (UnimplementedQueryServer) PepNonce(context.Context, *QueryPepNonceRequest) (*QueryPepNonceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PepNonce not implemented")
 }
-func (UnimplementedQueryServer) PepNonceAll(context.Context, *QueryAllPepNonceRequest) (*QueryAllPepNonceResponse, error) {
+func (UnimplementedQueryServer) PepNonceAll(context.Context, *QueryPepNonceAllRequest) (*QueryPepNonceAllResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PepNonceAll not implemented")
 }
 func (UnimplementedQueryServer) PubKey(context.Context, *QueryPubKeyRequest) (*QueryPubKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PubKey not implemented")
 }
-func (UnimplementedQueryServer) KeyshareReq(context.Context, *QueryKeyshareRequest) (*QueryKeyshareResponse, error) {
+func (UnimplementedQueryServer) KeyshareReq(context.Context, *QueryKeyshareReqRequest) (*QueryKeyshareReqResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KeyshareReq not implemented")
 }
-func (UnimplementedQueryServer) KeyshareReqAll(context.Context, *QueryAllKeyshareRequest) (*QueryAllKeyshareResponse, error) {
+func (UnimplementedQueryServer) KeyshareReqAll(context.Context, *QueryKeyshareReqAllRequest) (*QueryKeyshareReqAllResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KeyshareReqAll not implemented")
 }
-func (UnimplementedQueryServer) ShowPrivateKeyshareReq(context.Context, *QueryShowPrivateKeyshareReqRequest) (*QueryShowPrivateKeyshareReqResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ShowPrivateKeyshareReq not implemented")
+func (UnimplementedQueryServer) PrivateKeyshareReq(context.Context, *QueryPrivateKeyshareReqRequest) (*QueryPrivateKeyshareReqResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PrivateKeyshareReq not implemented")
 }
 func (UnimplementedQueryServer) DecryptData(context.Context, *QueryDecryptDataRequest) (*QueryDecryptDataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DecryptData not implemented")
@@ -278,7 +282,7 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 }
 
 func _Query_EncryptedTx_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetEncryptedTxRequest)
+	in := new(QueryEncryptedTxRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -290,13 +294,13 @@ func _Query_EncryptedTx_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: Query_EncryptedTx_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).EncryptedTx(ctx, req.(*QueryGetEncryptedTxRequest))
+		return srv.(QueryServer).EncryptedTx(ctx, req.(*QueryEncryptedTxRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Query_EncryptedTxAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllEncryptedTxRequest)
+	in := new(QueryEncryptedTxAllRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -308,13 +312,13 @@ func _Query_EncryptedTxAll_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: Query_EncryptedTxAll_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).EncryptedTxAll(ctx, req.(*QueryAllEncryptedTxRequest))
+		return srv.(QueryServer).EncryptedTxAll(ctx, req.(*QueryEncryptedTxAllRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Query_EncryptedTxAllFromHeight_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllEncryptedTxFromHeightRequest)
+	in := new(QueryEncryptedTxAllFromHeightRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -326,7 +330,7 @@ func _Query_EncryptedTxAllFromHeight_Handler(srv interface{}, ctx context.Contex
 		FullMethod: Query_EncryptedTxAllFromHeight_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).EncryptedTxAllFromHeight(ctx, req.(*QueryAllEncryptedTxFromHeightRequest))
+		return srv.(QueryServer).EncryptedTxAllFromHeight(ctx, req.(*QueryEncryptedTxAllFromHeightRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -350,7 +354,7 @@ func _Query_LatestHeight_Handler(srv interface{}, ctx context.Context, dec func(
 }
 
 func _Query_PepNonce_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetPepNonceRequest)
+	in := new(QueryPepNonceRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -362,13 +366,13 @@ func _Query_PepNonce_Handler(srv interface{}, ctx context.Context, dec func(inte
 		FullMethod: Query_PepNonce_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).PepNonce(ctx, req.(*QueryGetPepNonceRequest))
+		return srv.(QueryServer).PepNonce(ctx, req.(*QueryPepNonceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Query_PepNonceAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllPepNonceRequest)
+	in := new(QueryPepNonceAllRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -380,7 +384,7 @@ func _Query_PepNonceAll_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: Query_PepNonceAll_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).PepNonceAll(ctx, req.(*QueryAllPepNonceRequest))
+		return srv.(QueryServer).PepNonceAll(ctx, req.(*QueryPepNonceAllRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -404,7 +408,7 @@ func _Query_PubKey_Handler(srv interface{}, ctx context.Context, dec func(interf
 }
 
 func _Query_KeyshareReq_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryKeyshareRequest)
+	in := new(QueryKeyshareReqRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -416,13 +420,13 @@ func _Query_KeyshareReq_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: Query_KeyshareReq_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).KeyshareReq(ctx, req.(*QueryKeyshareRequest))
+		return srv.(QueryServer).KeyshareReq(ctx, req.(*QueryKeyshareReqRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Query_KeyshareReqAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllKeyshareRequest)
+	in := new(QueryKeyshareReqAllRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -434,25 +438,25 @@ func _Query_KeyshareReqAll_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: Query_KeyshareReqAll_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).KeyshareReqAll(ctx, req.(*QueryAllKeyshareRequest))
+		return srv.(QueryServer).KeyshareReqAll(ctx, req.(*QueryKeyshareReqAllRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_ShowPrivateKeyshareReq_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryShowPrivateKeyshareReqRequest)
+func _Query_PrivateKeyshareReq_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryPrivateKeyshareReqRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).ShowPrivateKeyshareReq(ctx, in)
+		return srv.(QueryServer).PrivateKeyshareReq(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_ShowPrivateKeyshareReq_FullMethodName,
+		FullMethod: Query_PrivateKeyshareReq_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).ShowPrivateKeyshareReq(ctx, req.(*QueryShowPrivateKeyshareReqRequest))
+		return srv.(QueryServer).PrivateKeyshareReq(ctx, req.(*QueryPrivateKeyshareReqRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -523,8 +527,8 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Query_KeyshareReqAll_Handler,
 		},
 		{
-			MethodName: "ShowPrivateKeyshareReq",
-			Handler:    _Query_ShowPrivateKeyshareReq_Handler,
+			MethodName: "PrivateKeyshareReq",
+			Handler:    _Query_PrivateKeyshareReq_Handler,
 		},
 		{
 			MethodName: "DecryptData",

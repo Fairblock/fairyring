@@ -26,7 +26,7 @@ func TestGenesis(t *testing.T) {
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
-	k, ctx := keepertest.KeyshareKeeper(t)
+	k, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	keyshare.InitGenesis(ctx, k, genesisState)
 	got := keyshare.ExportGenesis(ctx, k)
 	require.NotNil(t, got)

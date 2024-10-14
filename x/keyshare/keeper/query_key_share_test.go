@@ -1,10 +1,11 @@
 package keeper_test
 
 import (
-	"github.com/Fairblock/fairyring/testutil/sample"
 	"math/rand"
 	"strconv"
 	"testing"
+
+	"github.com/Fairblock/fairyring/testutil/sample"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -26,29 +27,29 @@ func TestKeyShareQuerySingle(t *testing.T) {
 	msgs := createNKeyShares(&keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetKeyShareRequest
-		response *types.QueryGetKeyShareResponse
+		request  *types.QueryKeyShareRequest
+		response *types.QueryKeyShareResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetKeyShareRequest{
+			request: &types.QueryKeyShareRequest{
 				Validator:   msgs[0].Validator,
 				BlockHeight: msgs[0].BlockHeight,
 			},
-			response: &types.QueryGetKeyShareResponse{KeyShare: msgs[0]},
+			response: &types.QueryKeyShareResponse{KeyShare: msgs[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetKeyShareRequest{
+			request: &types.QueryKeyShareRequest{
 				Validator:   msgs[1].Validator,
 				BlockHeight: msgs[1].BlockHeight,
 			},
-			response: &types.QueryGetKeyShareResponse{KeyShare: msgs[1]},
+			response: &types.QueryKeyShareResponse{KeyShare: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.QueryGetKeyShareRequest{
+			request: &types.QueryKeyShareRequest{
 				Validator:   sample.AccAddress(),
 				BlockHeight: rand.Uint64(),
 			},
@@ -80,13 +81,13 @@ func TestKeyShareQueryAllNoPagination(t *testing.T) {
 	msgs := createNKeyShares(&keeper, ctx, 10)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryAllKeyShareRequest
-		response *types.QueryAllKeyShareResponse
+		request  *types.QueryKeyShareAllRequest
+		response *types.QueryKeyShareAllResponse
 		err      error
 	}{
 		{
 			desc: "QueryAllKeyShare",
-			request: &types.QueryAllKeyShareRequest{
+			request: &types.QueryKeyShareAllRequest{
 				Pagination: &query.PageRequest{
 					Key:        nil,
 					Offset:     0,
@@ -95,7 +96,7 @@ func TestKeyShareQueryAllNoPagination(t *testing.T) {
 					Reverse:    false,
 				},
 			},
-			response: &types.QueryAllKeyShareResponse{
+			response: &types.QueryKeyShareAllResponse{
 				KeyShare: msgs,
 				Pagination: &query.PageResponse{
 					NextKey: nil,
@@ -124,8 +125,13 @@ func TestKeyShareQueryPaginated(t *testing.T) {
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNKeyShares(&keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllKeyShareRequest {
-		return &types.QueryAllKeyShareRequest{
+	request := func(
+		next []byte,
+		offset,
+		limit uint64,
+		total bool,
+	) *types.QueryKeyShareAllRequest {
+		return &types.QueryKeyShareAllRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,

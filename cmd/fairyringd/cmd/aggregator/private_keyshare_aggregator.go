@@ -62,9 +62,9 @@ func AggregateCmd() *cobra.Command {
 
 				queryClient := types.NewQueryClient(clientCtx)
 
-				res, err := queryClient.ShowPrivateKeyshareReq(
+				res, err := queryClient.PrivateKeyshareReq(
 					context.Background(),
-					&types.QueryShowPrivateKeyshareReqRequest{
+					&types.QueryPrivateKeyshareReqRequest{
 						ReqId: identity,
 					},
 				)

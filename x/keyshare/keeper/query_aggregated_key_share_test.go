@@ -24,27 +24,27 @@ func TestAggregatedKeyShareQuerySingle(t *testing.T) {
 	msgs := createNAggregatedKeyShare(&keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetAggregatedKeyShareRequest
-		response *types.QueryGetAggregatedKeyShareResponse
+		request  *types.QueryAggregatedKeyShareRequest
+		response *types.QueryAggregatedKeyShareResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetAggregatedKeyShareRequest{
+			request: &types.QueryAggregatedKeyShareRequest{
 				Height: msgs[0].Height,
 			},
-			response: &types.QueryGetAggregatedKeyShareResponse{AggregatedKeyShare: msgs[0]},
+			response: &types.QueryAggregatedKeyShareResponse{AggregatedKeyShare: msgs[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetAggregatedKeyShareRequest{
+			request: &types.QueryAggregatedKeyShareRequest{
 				Height: msgs[1].Height,
 			},
-			response: &types.QueryGetAggregatedKeyShareResponse{AggregatedKeyShare: msgs[1]},
+			response: &types.QueryAggregatedKeyShareResponse{AggregatedKeyShare: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.QueryGetAggregatedKeyShareRequest{
+			request: &types.QueryAggregatedKeyShareRequest{
 				Height: msgs[1].Height * 2,
 			},
 			err: status.Error(codes.NotFound, "not found"),
@@ -75,13 +75,13 @@ func TestAggregatedKeyShareQueryAllNoPagination(t *testing.T) {
 	msgs := createNAggregatedKeyShare(&keeper, ctx, 10)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryAllAggregatedKeyShareRequest
-		response *types.QueryAllAggregatedKeyShareResponse
+		request  *types.QueryAggregatedKeyShareAllRequest
+		response *types.QueryAggregatedKeyShareAllResponse
 		err      error
 	}{
 		{
 			desc: "QueryAll",
-			request: &types.QueryAllAggregatedKeyShareRequest{
+			request: &types.QueryAggregatedKeyShareAllRequest{
 				Pagination: &query.PageRequest{
 					Key:        nil,
 					Offset:     0,
@@ -90,7 +90,7 @@ func TestAggregatedKeyShareQueryAllNoPagination(t *testing.T) {
 					Reverse:    false,
 				},
 			},
-			response: &types.QueryAllAggregatedKeyShareResponse{
+			response: &types.QueryAggregatedKeyShareAllResponse{
 				AggregatedKeyShare: msgs,
 				Pagination: &query.PageResponse{
 					NextKey: nil,
@@ -119,8 +119,13 @@ func TestAggregatedKeyShareQueryPaginated(t *testing.T) {
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNAggregatedKeyShare(&keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllAggregatedKeyShareRequest {
-		return &types.QueryAllAggregatedKeyShareRequest{
+	request := func(
+		next []byte,
+		offset,
+		limit uint64,
+		total bool,
+	) *types.QueryAggregatedKeyShareAllRequest {
+		return &types.QueryAggregatedKeyShareAllRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,

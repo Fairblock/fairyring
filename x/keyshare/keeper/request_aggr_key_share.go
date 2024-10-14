@@ -79,13 +79,13 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 	keyshareRequest.Identity = id
 	keyshareRequest.Pubkey = activePubKey.PublicKey
 	keyshareRequest.IbcInfo = &types.IBCInfo{
-		ChannelID: packet.DestinationChannel,
-		PortID:    packet.DestinationPort,
+		ChannelId: packet.DestinationChannel,
+		PortId:    packet.DestinationPort,
 	}
 
 	keyshareRequest.Counterparty = &types.CounterPartyIBCInfo{
-		ChannelID: packet.SourceChannel,
-		PortID:    packet.SourcePort,
+		ChannelId: packet.SourceChannel,
+		PortId:    packet.SourcePort,
 	}
 
 	keyshareRequest.AggrKeyshare = ""
@@ -137,13 +137,13 @@ func (k Keeper) OnRecvRequestPrivateKeysharePacket(
 	keyshareRequest.Identity = id
 	keyshareRequest.Pubkey = activePubKey.PublicKey
 	keyshareRequest.IbcInfo = &types.IBCInfo{
-		ChannelID: packet.DestinationChannel,
-		PortID:    packet.DestinationPort,
+		ChannelId: packet.DestinationChannel,
+		PortId:    packet.DestinationPort,
 	}
 
 	keyshareRequest.Counterparty = &types.CounterPartyIBCInfo{
-		ChannelID: packet.SourceChannel,
-		PortID:    packet.SourcePort,
+		ChannelId: packet.SourceChannel,
+		PortId:    packet.SourcePort,
 	}
 
 	keyshareRequest.EncryptedKeyshares = make([]*commontypes.EncryptedKeyshare, 0)

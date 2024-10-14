@@ -13,24 +13,24 @@ import (
 )
 
 var (
-	md_KeyShare                     protoreflect.MessageDescriptor
-	fd_KeyShare_validator           protoreflect.FieldDescriptor
-	fd_KeyShare_blockHeight         protoreflect.FieldDescriptor
-	fd_KeyShare_keyShare            protoreflect.FieldDescriptor
-	fd_KeyShare_keyShareIndex       protoreflect.FieldDescriptor
-	fd_KeyShare_receivedTimestamp   protoreflect.FieldDescriptor
-	fd_KeyShare_receivedBlockHeight protoreflect.FieldDescriptor
+	md_KeyShare                       protoreflect.MessageDescriptor
+	fd_KeyShare_validator             protoreflect.FieldDescriptor
+	fd_KeyShare_block_height          protoreflect.FieldDescriptor
+	fd_KeyShare_key_share             protoreflect.FieldDescriptor
+	fd_KeyShare_key_share_index       protoreflect.FieldDescriptor
+	fd_KeyShare_received_timestamp    protoreflect.FieldDescriptor
+	fd_KeyShare_received_block_height protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_keyshare_key_share_proto_init()
 	md_KeyShare = File_fairyring_keyshare_key_share_proto.Messages().ByName("KeyShare")
 	fd_KeyShare_validator = md_KeyShare.Fields().ByName("validator")
-	fd_KeyShare_blockHeight = md_KeyShare.Fields().ByName("blockHeight")
-	fd_KeyShare_keyShare = md_KeyShare.Fields().ByName("keyShare")
-	fd_KeyShare_keyShareIndex = md_KeyShare.Fields().ByName("keyShareIndex")
-	fd_KeyShare_receivedTimestamp = md_KeyShare.Fields().ByName("receivedTimestamp")
-	fd_KeyShare_receivedBlockHeight = md_KeyShare.Fields().ByName("receivedBlockHeight")
+	fd_KeyShare_block_height = md_KeyShare.Fields().ByName("block_height")
+	fd_KeyShare_key_share = md_KeyShare.Fields().ByName("key_share")
+	fd_KeyShare_key_share_index = md_KeyShare.Fields().ByName("key_share_index")
+	fd_KeyShare_received_timestamp = md_KeyShare.Fields().ByName("received_timestamp")
+	fd_KeyShare_received_block_height = md_KeyShare.Fields().ByName("received_block_height")
 }
 
 var _ protoreflect.Message = (*fastReflection_KeyShare)(nil)
@@ -106,31 +106,31 @@ func (x *fastReflection_KeyShare) Range(f func(protoreflect.FieldDescriptor, pro
 	}
 	if x.BlockHeight != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.BlockHeight)
-		if !f(fd_KeyShare_blockHeight, value) {
+		if !f(fd_KeyShare_block_height, value) {
 			return
 		}
 	}
 	if x.KeyShare != "" {
 		value := protoreflect.ValueOfString(x.KeyShare)
-		if !f(fd_KeyShare_keyShare, value) {
+		if !f(fd_KeyShare_key_share, value) {
 			return
 		}
 	}
 	if x.KeyShareIndex != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.KeyShareIndex)
-		if !f(fd_KeyShare_keyShareIndex, value) {
+		if !f(fd_KeyShare_key_share_index, value) {
 			return
 		}
 	}
 	if x.ReceivedTimestamp != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.ReceivedTimestamp)
-		if !f(fd_KeyShare_receivedTimestamp, value) {
+		if !f(fd_KeyShare_received_timestamp, value) {
 			return
 		}
 	}
 	if x.ReceivedBlockHeight != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.ReceivedBlockHeight)
-		if !f(fd_KeyShare_receivedBlockHeight, value) {
+		if !f(fd_KeyShare_received_block_height, value) {
 			return
 		}
 	}
@@ -151,15 +151,15 @@ func (x *fastReflection_KeyShare) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
 	case "fairyring.keyshare.KeyShare.validator":
 		return x.Validator != ""
-	case "fairyring.keyshare.KeyShare.blockHeight":
+	case "fairyring.keyshare.KeyShare.block_height":
 		return x.BlockHeight != uint64(0)
-	case "fairyring.keyshare.KeyShare.keyShare":
+	case "fairyring.keyshare.KeyShare.key_share":
 		return x.KeyShare != ""
-	case "fairyring.keyshare.KeyShare.keyShareIndex":
+	case "fairyring.keyshare.KeyShare.key_share_index":
 		return x.KeyShareIndex != uint64(0)
-	case "fairyring.keyshare.KeyShare.receivedTimestamp":
+	case "fairyring.keyshare.KeyShare.received_timestamp":
 		return x.ReceivedTimestamp != uint64(0)
-	case "fairyring.keyshare.KeyShare.receivedBlockHeight":
+	case "fairyring.keyshare.KeyShare.received_block_height":
 		return x.ReceivedBlockHeight != uint64(0)
 	default:
 		if fd.IsExtension() {
@@ -179,15 +179,15 @@ func (x *fastReflection_KeyShare) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
 	case "fairyring.keyshare.KeyShare.validator":
 		x.Validator = ""
-	case "fairyring.keyshare.KeyShare.blockHeight":
+	case "fairyring.keyshare.KeyShare.block_height":
 		x.BlockHeight = uint64(0)
-	case "fairyring.keyshare.KeyShare.keyShare":
+	case "fairyring.keyshare.KeyShare.key_share":
 		x.KeyShare = ""
-	case "fairyring.keyshare.KeyShare.keyShareIndex":
+	case "fairyring.keyshare.KeyShare.key_share_index":
 		x.KeyShareIndex = uint64(0)
-	case "fairyring.keyshare.KeyShare.receivedTimestamp":
+	case "fairyring.keyshare.KeyShare.received_timestamp":
 		x.ReceivedTimestamp = uint64(0)
-	case "fairyring.keyshare.KeyShare.receivedBlockHeight":
+	case "fairyring.keyshare.KeyShare.received_block_height":
 		x.ReceivedBlockHeight = uint64(0)
 	default:
 		if fd.IsExtension() {
@@ -208,19 +208,19 @@ func (x *fastReflection_KeyShare) Get(descriptor protoreflect.FieldDescriptor) p
 	case "fairyring.keyshare.KeyShare.validator":
 		value := x.Validator
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.KeyShare.blockHeight":
+	case "fairyring.keyshare.KeyShare.block_height":
 		value := x.BlockHeight
 		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.KeyShare.keyShare":
+	case "fairyring.keyshare.KeyShare.key_share":
 		value := x.KeyShare
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.KeyShare.keyShareIndex":
+	case "fairyring.keyshare.KeyShare.key_share_index":
 		value := x.KeyShareIndex
 		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.KeyShare.receivedTimestamp":
+	case "fairyring.keyshare.KeyShare.received_timestamp":
 		value := x.ReceivedTimestamp
 		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.KeyShare.receivedBlockHeight":
+	case "fairyring.keyshare.KeyShare.received_block_height":
 		value := x.ReceivedBlockHeight
 		return protoreflect.ValueOfUint64(value)
 	default:
@@ -245,15 +245,15 @@ func (x *fastReflection_KeyShare) Set(fd protoreflect.FieldDescriptor, value pro
 	switch fd.FullName() {
 	case "fairyring.keyshare.KeyShare.validator":
 		x.Validator = value.Interface().(string)
-	case "fairyring.keyshare.KeyShare.blockHeight":
+	case "fairyring.keyshare.KeyShare.block_height":
 		x.BlockHeight = value.Uint()
-	case "fairyring.keyshare.KeyShare.keyShare":
+	case "fairyring.keyshare.KeyShare.key_share":
 		x.KeyShare = value.Interface().(string)
-	case "fairyring.keyshare.KeyShare.keyShareIndex":
+	case "fairyring.keyshare.KeyShare.key_share_index":
 		x.KeyShareIndex = value.Uint()
-	case "fairyring.keyshare.KeyShare.receivedTimestamp":
+	case "fairyring.keyshare.KeyShare.received_timestamp":
 		x.ReceivedTimestamp = value.Uint()
-	case "fairyring.keyshare.KeyShare.receivedBlockHeight":
+	case "fairyring.keyshare.KeyShare.received_block_height":
 		x.ReceivedBlockHeight = value.Uint()
 	default:
 		if fd.IsExtension() {
@@ -277,16 +277,16 @@ func (x *fastReflection_KeyShare) Mutable(fd protoreflect.FieldDescriptor) proto
 	switch fd.FullName() {
 	case "fairyring.keyshare.KeyShare.validator":
 		panic(fmt.Errorf("field validator of message fairyring.keyshare.KeyShare is not mutable"))
-	case "fairyring.keyshare.KeyShare.blockHeight":
-		panic(fmt.Errorf("field blockHeight of message fairyring.keyshare.KeyShare is not mutable"))
-	case "fairyring.keyshare.KeyShare.keyShare":
-		panic(fmt.Errorf("field keyShare of message fairyring.keyshare.KeyShare is not mutable"))
-	case "fairyring.keyshare.KeyShare.keyShareIndex":
-		panic(fmt.Errorf("field keyShareIndex of message fairyring.keyshare.KeyShare is not mutable"))
-	case "fairyring.keyshare.KeyShare.receivedTimestamp":
-		panic(fmt.Errorf("field receivedTimestamp of message fairyring.keyshare.KeyShare is not mutable"))
-	case "fairyring.keyshare.KeyShare.receivedBlockHeight":
-		panic(fmt.Errorf("field receivedBlockHeight of message fairyring.keyshare.KeyShare is not mutable"))
+	case "fairyring.keyshare.KeyShare.block_height":
+		panic(fmt.Errorf("field block_height of message fairyring.keyshare.KeyShare is not mutable"))
+	case "fairyring.keyshare.KeyShare.key_share":
+		panic(fmt.Errorf("field key_share of message fairyring.keyshare.KeyShare is not mutable"))
+	case "fairyring.keyshare.KeyShare.key_share_index":
+		panic(fmt.Errorf("field key_share_index of message fairyring.keyshare.KeyShare is not mutable"))
+	case "fairyring.keyshare.KeyShare.received_timestamp":
+		panic(fmt.Errorf("field received_timestamp of message fairyring.keyshare.KeyShare is not mutable"))
+	case "fairyring.keyshare.KeyShare.received_block_height":
+		panic(fmt.Errorf("field received_block_height of message fairyring.keyshare.KeyShare is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.KeyShare"))
@@ -302,15 +302,15 @@ func (x *fastReflection_KeyShare) NewField(fd protoreflect.FieldDescriptor) prot
 	switch fd.FullName() {
 	case "fairyring.keyshare.KeyShare.validator":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.KeyShare.blockHeight":
+	case "fairyring.keyshare.KeyShare.block_height":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.KeyShare.keyShare":
+	case "fairyring.keyshare.KeyShare.key_share":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.KeyShare.keyShareIndex":
+	case "fairyring.keyshare.KeyShare.key_share_index":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.KeyShare.receivedTimestamp":
+	case "fairyring.keyshare.KeyShare.received_timestamp":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.KeyShare.receivedBlockHeight":
+	case "fairyring.keyshare.KeyShare.received_block_height":
 		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
@@ -688,6 +688,1518 @@ func (x *fastReflection_KeyShare) ProtoMethods() *protoiface.Methods {
 	}
 }
 
+var (
+	md_GeneralKeyShare                       protoreflect.MessageDescriptor
+	fd_GeneralKeyShare_validator             protoreflect.FieldDescriptor
+	fd_GeneralKeyShare_id_type               protoreflect.FieldDescriptor
+	fd_GeneralKeyShare_id_value              protoreflect.FieldDescriptor
+	fd_GeneralKeyShare_key_share             protoreflect.FieldDescriptor
+	fd_GeneralKeyShare_key_share_index       protoreflect.FieldDescriptor
+	fd_GeneralKeyShare_received_timestamp    protoreflect.FieldDescriptor
+	fd_GeneralKeyShare_received_block_height protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_fairyring_keyshare_key_share_proto_init()
+	md_GeneralKeyShare = File_fairyring_keyshare_key_share_proto.Messages().ByName("GeneralKeyShare")
+	fd_GeneralKeyShare_validator = md_GeneralKeyShare.Fields().ByName("validator")
+	fd_GeneralKeyShare_id_type = md_GeneralKeyShare.Fields().ByName("id_type")
+	fd_GeneralKeyShare_id_value = md_GeneralKeyShare.Fields().ByName("id_value")
+	fd_GeneralKeyShare_key_share = md_GeneralKeyShare.Fields().ByName("key_share")
+	fd_GeneralKeyShare_key_share_index = md_GeneralKeyShare.Fields().ByName("key_share_index")
+	fd_GeneralKeyShare_received_timestamp = md_GeneralKeyShare.Fields().ByName("received_timestamp")
+	fd_GeneralKeyShare_received_block_height = md_GeneralKeyShare.Fields().ByName("received_block_height")
+}
+
+var _ protoreflect.Message = (*fastReflection_GeneralKeyShare)(nil)
+
+type fastReflection_GeneralKeyShare GeneralKeyShare
+
+func (x *GeneralKeyShare) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_GeneralKeyShare)(x)
+}
+
+func (x *GeneralKeyShare) slowProtoReflect() protoreflect.Message {
+	mi := &file_fairyring_keyshare_key_share_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_GeneralKeyShare_messageType fastReflection_GeneralKeyShare_messageType
+var _ protoreflect.MessageType = fastReflection_GeneralKeyShare_messageType{}
+
+type fastReflection_GeneralKeyShare_messageType struct{}
+
+func (x fastReflection_GeneralKeyShare_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_GeneralKeyShare)(nil)
+}
+func (x fastReflection_GeneralKeyShare_messageType) New() protoreflect.Message {
+	return new(fastReflection_GeneralKeyShare)
+}
+func (x fastReflection_GeneralKeyShare_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_GeneralKeyShare
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_GeneralKeyShare) Descriptor() protoreflect.MessageDescriptor {
+	return md_GeneralKeyShare
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_GeneralKeyShare) Type() protoreflect.MessageType {
+	return _fastReflection_GeneralKeyShare_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_GeneralKeyShare) New() protoreflect.Message {
+	return new(fastReflection_GeneralKeyShare)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_GeneralKeyShare) Interface() protoreflect.ProtoMessage {
+	return (*GeneralKeyShare)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_GeneralKeyShare) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.Validator != "" {
+		value := protoreflect.ValueOfString(x.Validator)
+		if !f(fd_GeneralKeyShare_validator, value) {
+			return
+		}
+	}
+	if x.IdType != "" {
+		value := protoreflect.ValueOfString(x.IdType)
+		if !f(fd_GeneralKeyShare_id_type, value) {
+			return
+		}
+	}
+	if x.IdValue != "" {
+		value := protoreflect.ValueOfString(x.IdValue)
+		if !f(fd_GeneralKeyShare_id_value, value) {
+			return
+		}
+	}
+	if x.KeyShare != "" {
+		value := protoreflect.ValueOfString(x.KeyShare)
+		if !f(fd_GeneralKeyShare_key_share, value) {
+			return
+		}
+	}
+	if x.KeyShareIndex != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.KeyShareIndex)
+		if !f(fd_GeneralKeyShare_key_share_index, value) {
+			return
+		}
+	}
+	if x.ReceivedTimestamp != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.ReceivedTimestamp)
+		if !f(fd_GeneralKeyShare_received_timestamp, value) {
+			return
+		}
+	}
+	if x.ReceivedBlockHeight != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.ReceivedBlockHeight)
+		if !f(fd_GeneralKeyShare_received_block_height, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_GeneralKeyShare) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "fairyring.keyshare.GeneralKeyShare.validator":
+		return x.Validator != ""
+	case "fairyring.keyshare.GeneralKeyShare.id_type":
+		return x.IdType != ""
+	case "fairyring.keyshare.GeneralKeyShare.id_value":
+		return x.IdValue != ""
+	case "fairyring.keyshare.GeneralKeyShare.key_share":
+		return x.KeyShare != ""
+	case "fairyring.keyshare.GeneralKeyShare.key_share_index":
+		return x.KeyShareIndex != uint64(0)
+	case "fairyring.keyshare.GeneralKeyShare.received_timestamp":
+		return x.ReceivedTimestamp != uint64(0)
+	case "fairyring.keyshare.GeneralKeyShare.received_block_height":
+		return x.ReceivedBlockHeight != uint64(0)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.GeneralKeyShare"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.GeneralKeyShare does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_GeneralKeyShare) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "fairyring.keyshare.GeneralKeyShare.validator":
+		x.Validator = ""
+	case "fairyring.keyshare.GeneralKeyShare.id_type":
+		x.IdType = ""
+	case "fairyring.keyshare.GeneralKeyShare.id_value":
+		x.IdValue = ""
+	case "fairyring.keyshare.GeneralKeyShare.key_share":
+		x.KeyShare = ""
+	case "fairyring.keyshare.GeneralKeyShare.key_share_index":
+		x.KeyShareIndex = uint64(0)
+	case "fairyring.keyshare.GeneralKeyShare.received_timestamp":
+		x.ReceivedTimestamp = uint64(0)
+	case "fairyring.keyshare.GeneralKeyShare.received_block_height":
+		x.ReceivedBlockHeight = uint64(0)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.GeneralKeyShare"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.GeneralKeyShare does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_GeneralKeyShare) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "fairyring.keyshare.GeneralKeyShare.validator":
+		value := x.Validator
+		return protoreflect.ValueOfString(value)
+	case "fairyring.keyshare.GeneralKeyShare.id_type":
+		value := x.IdType
+		return protoreflect.ValueOfString(value)
+	case "fairyring.keyshare.GeneralKeyShare.id_value":
+		value := x.IdValue
+		return protoreflect.ValueOfString(value)
+	case "fairyring.keyshare.GeneralKeyShare.key_share":
+		value := x.KeyShare
+		return protoreflect.ValueOfString(value)
+	case "fairyring.keyshare.GeneralKeyShare.key_share_index":
+		value := x.KeyShareIndex
+		return protoreflect.ValueOfUint64(value)
+	case "fairyring.keyshare.GeneralKeyShare.received_timestamp":
+		value := x.ReceivedTimestamp
+		return protoreflect.ValueOfUint64(value)
+	case "fairyring.keyshare.GeneralKeyShare.received_block_height":
+		value := x.ReceivedBlockHeight
+		return protoreflect.ValueOfUint64(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.GeneralKeyShare"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.GeneralKeyShare does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_GeneralKeyShare) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "fairyring.keyshare.GeneralKeyShare.validator":
+		x.Validator = value.Interface().(string)
+	case "fairyring.keyshare.GeneralKeyShare.id_type":
+		x.IdType = value.Interface().(string)
+	case "fairyring.keyshare.GeneralKeyShare.id_value":
+		x.IdValue = value.Interface().(string)
+	case "fairyring.keyshare.GeneralKeyShare.key_share":
+		x.KeyShare = value.Interface().(string)
+	case "fairyring.keyshare.GeneralKeyShare.key_share_index":
+		x.KeyShareIndex = value.Uint()
+	case "fairyring.keyshare.GeneralKeyShare.received_timestamp":
+		x.ReceivedTimestamp = value.Uint()
+	case "fairyring.keyshare.GeneralKeyShare.received_block_height":
+		x.ReceivedBlockHeight = value.Uint()
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.GeneralKeyShare"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.GeneralKeyShare does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_GeneralKeyShare) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "fairyring.keyshare.GeneralKeyShare.validator":
+		panic(fmt.Errorf("field validator of message fairyring.keyshare.GeneralKeyShare is not mutable"))
+	case "fairyring.keyshare.GeneralKeyShare.id_type":
+		panic(fmt.Errorf("field id_type of message fairyring.keyshare.GeneralKeyShare is not mutable"))
+	case "fairyring.keyshare.GeneralKeyShare.id_value":
+		panic(fmt.Errorf("field id_value of message fairyring.keyshare.GeneralKeyShare is not mutable"))
+	case "fairyring.keyshare.GeneralKeyShare.key_share":
+		panic(fmt.Errorf("field key_share of message fairyring.keyshare.GeneralKeyShare is not mutable"))
+	case "fairyring.keyshare.GeneralKeyShare.key_share_index":
+		panic(fmt.Errorf("field key_share_index of message fairyring.keyshare.GeneralKeyShare is not mutable"))
+	case "fairyring.keyshare.GeneralKeyShare.received_timestamp":
+		panic(fmt.Errorf("field received_timestamp of message fairyring.keyshare.GeneralKeyShare is not mutable"))
+	case "fairyring.keyshare.GeneralKeyShare.received_block_height":
+		panic(fmt.Errorf("field received_block_height of message fairyring.keyshare.GeneralKeyShare is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.GeneralKeyShare"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.GeneralKeyShare does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_GeneralKeyShare) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "fairyring.keyshare.GeneralKeyShare.validator":
+		return protoreflect.ValueOfString("")
+	case "fairyring.keyshare.GeneralKeyShare.id_type":
+		return protoreflect.ValueOfString("")
+	case "fairyring.keyshare.GeneralKeyShare.id_value":
+		return protoreflect.ValueOfString("")
+	case "fairyring.keyshare.GeneralKeyShare.key_share":
+		return protoreflect.ValueOfString("")
+	case "fairyring.keyshare.GeneralKeyShare.key_share_index":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "fairyring.keyshare.GeneralKeyShare.received_timestamp":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "fairyring.keyshare.GeneralKeyShare.received_block_height":
+		return protoreflect.ValueOfUint64(uint64(0))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.GeneralKeyShare"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.GeneralKeyShare does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_GeneralKeyShare) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.keyshare.GeneralKeyShare", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_GeneralKeyShare) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_GeneralKeyShare) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_GeneralKeyShare) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_GeneralKeyShare) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*GeneralKeyShare)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		l = len(x.Validator)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.IdType)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.IdValue)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.KeyShare)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.KeyShareIndex != 0 {
+			n += 1 + runtime.Sov(uint64(x.KeyShareIndex))
+		}
+		if x.ReceivedTimestamp != 0 {
+			n += 1 + runtime.Sov(uint64(x.ReceivedTimestamp))
+		}
+		if x.ReceivedBlockHeight != 0 {
+			n += 1 + runtime.Sov(uint64(x.ReceivedBlockHeight))
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*GeneralKeyShare)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.ReceivedBlockHeight != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.ReceivedBlockHeight))
+			i--
+			dAtA[i] = 0x38
+		}
+		if x.ReceivedTimestamp != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.ReceivedTimestamp))
+			i--
+			dAtA[i] = 0x30
+		}
+		if x.KeyShareIndex != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.KeyShareIndex))
+			i--
+			dAtA[i] = 0x28
+		}
+		if len(x.KeyShare) > 0 {
+			i -= len(x.KeyShare)
+			copy(dAtA[i:], x.KeyShare)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.KeyShare)))
+			i--
+			dAtA[i] = 0x22
+		}
+		if len(x.IdValue) > 0 {
+			i -= len(x.IdValue)
+			copy(dAtA[i:], x.IdValue)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.IdValue)))
+			i--
+			dAtA[i] = 0x1a
+		}
+		if len(x.IdType) > 0 {
+			i -= len(x.IdType)
+			copy(dAtA[i:], x.IdType)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.IdType)))
+			i--
+			dAtA[i] = 0x12
+		}
+		if len(x.Validator) > 0 {
+			i -= len(x.Validator)
+			copy(dAtA[i:], x.Validator)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Validator)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*GeneralKeyShare)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GeneralKeyShare: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GeneralKeyShare: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Validator", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Validator = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 2:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field IdType", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.IdType = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 3:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field IdValue", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.IdValue = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 4:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeyShare", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.KeyShare = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 5:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeyShareIndex", wireType)
+				}
+				x.KeyShareIndex = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.KeyShareIndex |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 6:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ReceivedTimestamp", wireType)
+				}
+				x.ReceivedTimestamp = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.ReceivedTimestamp |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 7:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ReceivedBlockHeight", wireType)
+				}
+				x.ReceivedBlockHeight = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.ReceivedBlockHeight |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var (
+	md_ValidatorEncryptedKeyShare                       protoreflect.MessageDescriptor
+	fd_ValidatorEncryptedKeyShare_validator             protoreflect.FieldDescriptor
+	fd_ValidatorEncryptedKeyShare_requester             protoreflect.FieldDescriptor
+	fd_ValidatorEncryptedKeyShare_key_share             protoreflect.FieldDescriptor
+	fd_ValidatorEncryptedKeyShare_key_share_index       protoreflect.FieldDescriptor
+	fd_ValidatorEncryptedKeyShare_received_timestamp    protoreflect.FieldDescriptor
+	fd_ValidatorEncryptedKeyShare_received_block_height protoreflect.FieldDescriptor
+	fd_ValidatorEncryptedKeyShare_identity              protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_fairyring_keyshare_key_share_proto_init()
+	md_ValidatorEncryptedKeyShare = File_fairyring_keyshare_key_share_proto.Messages().ByName("ValidatorEncryptedKeyShare")
+	fd_ValidatorEncryptedKeyShare_validator = md_ValidatorEncryptedKeyShare.Fields().ByName("validator")
+	fd_ValidatorEncryptedKeyShare_requester = md_ValidatorEncryptedKeyShare.Fields().ByName("requester")
+	fd_ValidatorEncryptedKeyShare_key_share = md_ValidatorEncryptedKeyShare.Fields().ByName("key_share")
+	fd_ValidatorEncryptedKeyShare_key_share_index = md_ValidatorEncryptedKeyShare.Fields().ByName("key_share_index")
+	fd_ValidatorEncryptedKeyShare_received_timestamp = md_ValidatorEncryptedKeyShare.Fields().ByName("received_timestamp")
+	fd_ValidatorEncryptedKeyShare_received_block_height = md_ValidatorEncryptedKeyShare.Fields().ByName("received_block_height")
+	fd_ValidatorEncryptedKeyShare_identity = md_ValidatorEncryptedKeyShare.Fields().ByName("identity")
+}
+
+var _ protoreflect.Message = (*fastReflection_ValidatorEncryptedKeyShare)(nil)
+
+type fastReflection_ValidatorEncryptedKeyShare ValidatorEncryptedKeyShare
+
+func (x *ValidatorEncryptedKeyShare) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_ValidatorEncryptedKeyShare)(x)
+}
+
+func (x *ValidatorEncryptedKeyShare) slowProtoReflect() protoreflect.Message {
+	mi := &file_fairyring_keyshare_key_share_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_ValidatorEncryptedKeyShare_messageType fastReflection_ValidatorEncryptedKeyShare_messageType
+var _ protoreflect.MessageType = fastReflection_ValidatorEncryptedKeyShare_messageType{}
+
+type fastReflection_ValidatorEncryptedKeyShare_messageType struct{}
+
+func (x fastReflection_ValidatorEncryptedKeyShare_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_ValidatorEncryptedKeyShare)(nil)
+}
+func (x fastReflection_ValidatorEncryptedKeyShare_messageType) New() protoreflect.Message {
+	return new(fastReflection_ValidatorEncryptedKeyShare)
+}
+func (x fastReflection_ValidatorEncryptedKeyShare_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_ValidatorEncryptedKeyShare
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_ValidatorEncryptedKeyShare) Descriptor() protoreflect.MessageDescriptor {
+	return md_ValidatorEncryptedKeyShare
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_ValidatorEncryptedKeyShare) Type() protoreflect.MessageType {
+	return _fastReflection_ValidatorEncryptedKeyShare_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_ValidatorEncryptedKeyShare) New() protoreflect.Message {
+	return new(fastReflection_ValidatorEncryptedKeyShare)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_ValidatorEncryptedKeyShare) Interface() protoreflect.ProtoMessage {
+	return (*ValidatorEncryptedKeyShare)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_ValidatorEncryptedKeyShare) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.Validator != "" {
+		value := protoreflect.ValueOfString(x.Validator)
+		if !f(fd_ValidatorEncryptedKeyShare_validator, value) {
+			return
+		}
+	}
+	if x.Requester != "" {
+		value := protoreflect.ValueOfString(x.Requester)
+		if !f(fd_ValidatorEncryptedKeyShare_requester, value) {
+			return
+		}
+	}
+	if x.KeyShare != "" {
+		value := protoreflect.ValueOfString(x.KeyShare)
+		if !f(fd_ValidatorEncryptedKeyShare_key_share, value) {
+			return
+		}
+	}
+	if x.KeyShareIndex != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.KeyShareIndex)
+		if !f(fd_ValidatorEncryptedKeyShare_key_share_index, value) {
+			return
+		}
+	}
+	if x.ReceivedTimestamp != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.ReceivedTimestamp)
+		if !f(fd_ValidatorEncryptedKeyShare_received_timestamp, value) {
+			return
+		}
+	}
+	if x.ReceivedBlockHeight != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.ReceivedBlockHeight)
+		if !f(fd_ValidatorEncryptedKeyShare_received_block_height, value) {
+			return
+		}
+	}
+	if x.Identity != "" {
+		value := protoreflect.ValueOfString(x.Identity)
+		if !f(fd_ValidatorEncryptedKeyShare_identity, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_ValidatorEncryptedKeyShare) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.validator":
+		return x.Validator != ""
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.requester":
+		return x.Requester != ""
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.key_share":
+		return x.KeyShare != ""
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.key_share_index":
+		return x.KeyShareIndex != uint64(0)
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.received_timestamp":
+		return x.ReceivedTimestamp != uint64(0)
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.received_block_height":
+		return x.ReceivedBlockHeight != uint64(0)
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.identity":
+		return x.Identity != ""
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.ValidatorEncryptedKeyShare"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.ValidatorEncryptedKeyShare does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_ValidatorEncryptedKeyShare) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.validator":
+		x.Validator = ""
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.requester":
+		x.Requester = ""
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.key_share":
+		x.KeyShare = ""
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.key_share_index":
+		x.KeyShareIndex = uint64(0)
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.received_timestamp":
+		x.ReceivedTimestamp = uint64(0)
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.received_block_height":
+		x.ReceivedBlockHeight = uint64(0)
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.identity":
+		x.Identity = ""
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.ValidatorEncryptedKeyShare"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.ValidatorEncryptedKeyShare does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_ValidatorEncryptedKeyShare) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.validator":
+		value := x.Validator
+		return protoreflect.ValueOfString(value)
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.requester":
+		value := x.Requester
+		return protoreflect.ValueOfString(value)
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.key_share":
+		value := x.KeyShare
+		return protoreflect.ValueOfString(value)
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.key_share_index":
+		value := x.KeyShareIndex
+		return protoreflect.ValueOfUint64(value)
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.received_timestamp":
+		value := x.ReceivedTimestamp
+		return protoreflect.ValueOfUint64(value)
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.received_block_height":
+		value := x.ReceivedBlockHeight
+		return protoreflect.ValueOfUint64(value)
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.identity":
+		value := x.Identity
+		return protoreflect.ValueOfString(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.ValidatorEncryptedKeyShare"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.ValidatorEncryptedKeyShare does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_ValidatorEncryptedKeyShare) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.validator":
+		x.Validator = value.Interface().(string)
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.requester":
+		x.Requester = value.Interface().(string)
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.key_share":
+		x.KeyShare = value.Interface().(string)
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.key_share_index":
+		x.KeyShareIndex = value.Uint()
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.received_timestamp":
+		x.ReceivedTimestamp = value.Uint()
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.received_block_height":
+		x.ReceivedBlockHeight = value.Uint()
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.identity":
+		x.Identity = value.Interface().(string)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.ValidatorEncryptedKeyShare"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.ValidatorEncryptedKeyShare does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_ValidatorEncryptedKeyShare) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.validator":
+		panic(fmt.Errorf("field validator of message fairyring.keyshare.ValidatorEncryptedKeyShare is not mutable"))
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.requester":
+		panic(fmt.Errorf("field requester of message fairyring.keyshare.ValidatorEncryptedKeyShare is not mutable"))
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.key_share":
+		panic(fmt.Errorf("field key_share of message fairyring.keyshare.ValidatorEncryptedKeyShare is not mutable"))
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.key_share_index":
+		panic(fmt.Errorf("field key_share_index of message fairyring.keyshare.ValidatorEncryptedKeyShare is not mutable"))
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.received_timestamp":
+		panic(fmt.Errorf("field received_timestamp of message fairyring.keyshare.ValidatorEncryptedKeyShare is not mutable"))
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.received_block_height":
+		panic(fmt.Errorf("field received_block_height of message fairyring.keyshare.ValidatorEncryptedKeyShare is not mutable"))
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.identity":
+		panic(fmt.Errorf("field identity of message fairyring.keyshare.ValidatorEncryptedKeyShare is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.ValidatorEncryptedKeyShare"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.ValidatorEncryptedKeyShare does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_ValidatorEncryptedKeyShare) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.validator":
+		return protoreflect.ValueOfString("")
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.requester":
+		return protoreflect.ValueOfString("")
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.key_share":
+		return protoreflect.ValueOfString("")
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.key_share_index":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.received_timestamp":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.received_block_height":
+		return protoreflect.ValueOfUint64(uint64(0))
+	case "fairyring.keyshare.ValidatorEncryptedKeyShare.identity":
+		return protoreflect.ValueOfString("")
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.ValidatorEncryptedKeyShare"))
+		}
+		panic(fmt.Errorf("message fairyring.keyshare.ValidatorEncryptedKeyShare does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_ValidatorEncryptedKeyShare) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.keyshare.ValidatorEncryptedKeyShare", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_ValidatorEncryptedKeyShare) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_ValidatorEncryptedKeyShare) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_ValidatorEncryptedKeyShare) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_ValidatorEncryptedKeyShare) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*ValidatorEncryptedKeyShare)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		l = len(x.Validator)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.Requester)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.KeyShare)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.KeyShareIndex != 0 {
+			n += 1 + runtime.Sov(uint64(x.KeyShareIndex))
+		}
+		if x.ReceivedTimestamp != 0 {
+			n += 1 + runtime.Sov(uint64(x.ReceivedTimestamp))
+		}
+		if x.ReceivedBlockHeight != 0 {
+			n += 1 + runtime.Sov(uint64(x.ReceivedBlockHeight))
+		}
+		l = len(x.Identity)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*ValidatorEncryptedKeyShare)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.Identity) > 0 {
+			i -= len(x.Identity)
+			copy(dAtA[i:], x.Identity)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Identity)))
+			i--
+			dAtA[i] = 0x3a
+		}
+		if x.ReceivedBlockHeight != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.ReceivedBlockHeight))
+			i--
+			dAtA[i] = 0x30
+		}
+		if x.ReceivedTimestamp != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.ReceivedTimestamp))
+			i--
+			dAtA[i] = 0x28
+		}
+		if x.KeyShareIndex != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.KeyShareIndex))
+			i--
+			dAtA[i] = 0x20
+		}
+		if len(x.KeyShare) > 0 {
+			i -= len(x.KeyShare)
+			copy(dAtA[i:], x.KeyShare)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.KeyShare)))
+			i--
+			dAtA[i] = 0x1a
+		}
+		if len(x.Requester) > 0 {
+			i -= len(x.Requester)
+			copy(dAtA[i:], x.Requester)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Requester)))
+			i--
+			dAtA[i] = 0x12
+		}
+		if len(x.Validator) > 0 {
+			i -= len(x.Validator)
+			copy(dAtA[i:], x.Validator)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Validator)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*ValidatorEncryptedKeyShare)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: ValidatorEncryptedKeyShare: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: ValidatorEncryptedKeyShare: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Validator", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Validator = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 2:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Requester", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Requester = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 3:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeyShare", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.KeyShare = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 4:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field KeyShareIndex", wireType)
+				}
+				x.KeyShareIndex = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.KeyShareIndex |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 5:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ReceivedTimestamp", wireType)
+				}
+				x.ReceivedTimestamp = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.ReceivedTimestamp |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 6:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ReceivedBlockHeight", wireType)
+				}
+				x.ReceivedBlockHeight = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.ReceivedBlockHeight |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+			case 7:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Identity", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Identity = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
 // Code generated by protoc-gen-go. DO NOT EDIT.
 // versions:
 // 	protoc-gen-go v1.27.0
@@ -701,17 +2213,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// KeyShare defines the structure for submitting
+// blockwise keyshares by validators
 type KeyShare struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
 	Validator           string `protobuf:"bytes,1,opt,name=validator,proto3" json:"validator,omitempty"`
-	BlockHeight         uint64 `protobuf:"varint,2,opt,name=blockHeight,proto3" json:"blockHeight,omitempty"`
-	KeyShare            string `protobuf:"bytes,3,opt,name=keyShare,proto3" json:"keyShare,omitempty"`
-	KeyShareIndex       uint64 `protobuf:"varint,4,opt,name=keyShareIndex,proto3" json:"keyShareIndex,omitempty"`
-	ReceivedTimestamp   uint64 `protobuf:"varint,5,opt,name=receivedTimestamp,proto3" json:"receivedTimestamp,omitempty"`
-	ReceivedBlockHeight uint64 `protobuf:"varint,6,opt,name=receivedBlockHeight,proto3" json:"receivedBlockHeight,omitempty"`
+	BlockHeight         uint64 `protobuf:"varint,2,opt,name=block_height,json=blockHeight,proto3" json:"block_height,omitempty"`
+	KeyShare            string `protobuf:"bytes,3,opt,name=key_share,json=keyShare,proto3" json:"key_share,omitempty"`
+	KeyShareIndex       uint64 `protobuf:"varint,4,opt,name=key_share_index,json=keyShareIndex,proto3" json:"key_share_index,omitempty"`
+	ReceivedTimestamp   uint64 `protobuf:"varint,5,opt,name=received_timestamp,json=receivedTimestamp,proto3" json:"received_timestamp,omitempty"`
+	ReceivedBlockHeight uint64 `protobuf:"varint,6,opt,name=received_block_height,json=receivedBlockHeight,proto3" json:"received_block_height,omitempty"`
 }
 
 func (x *KeyShare) Reset() {
@@ -776,40 +2290,245 @@ func (x *KeyShare) GetReceivedBlockHeight() uint64 {
 	return 0
 }
 
+// GeneralKeyShare defines the structure for submitting
+// general keyshares by validators
+type GeneralKeyShare struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Validator           string `protobuf:"bytes,1,opt,name=validator,proto3" json:"validator,omitempty"`
+	IdType              string `protobuf:"bytes,2,opt,name=id_type,json=idType,proto3" json:"id_type,omitempty"`
+	IdValue             string `protobuf:"bytes,3,opt,name=id_value,json=idValue,proto3" json:"id_value,omitempty"`
+	KeyShare            string `protobuf:"bytes,4,opt,name=key_share,json=keyShare,proto3" json:"key_share,omitempty"`
+	KeyShareIndex       uint64 `protobuf:"varint,5,opt,name=key_share_index,json=keyShareIndex,proto3" json:"key_share_index,omitempty"`
+	ReceivedTimestamp   uint64 `protobuf:"varint,6,opt,name=received_timestamp,json=receivedTimestamp,proto3" json:"received_timestamp,omitempty"`
+	ReceivedBlockHeight uint64 `protobuf:"varint,7,opt,name=received_block_height,json=receivedBlockHeight,proto3" json:"received_block_height,omitempty"`
+}
+
+func (x *GeneralKeyShare) Reset() {
+	*x = GeneralKeyShare{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_fairyring_keyshare_key_share_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GeneralKeyShare) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GeneralKeyShare) ProtoMessage() {}
+
+// Deprecated: Use GeneralKeyShare.ProtoReflect.Descriptor instead.
+func (*GeneralKeyShare) Descriptor() ([]byte, []int) {
+	return file_fairyring_keyshare_key_share_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *GeneralKeyShare) GetValidator() string {
+	if x != nil {
+		return x.Validator
+	}
+	return ""
+}
+
+func (x *GeneralKeyShare) GetIdType() string {
+	if x != nil {
+		return x.IdType
+	}
+	return ""
+}
+
+func (x *GeneralKeyShare) GetIdValue() string {
+	if x != nil {
+		return x.IdValue
+	}
+	return ""
+}
+
+func (x *GeneralKeyShare) GetKeyShare() string {
+	if x != nil {
+		return x.KeyShare
+	}
+	return ""
+}
+
+func (x *GeneralKeyShare) GetKeyShareIndex() uint64 {
+	if x != nil {
+		return x.KeyShareIndex
+	}
+	return 0
+}
+
+func (x *GeneralKeyShare) GetReceivedTimestamp() uint64 {
+	if x != nil {
+		return x.ReceivedTimestamp
+	}
+	return 0
+}
+
+func (x *GeneralKeyShare) GetReceivedBlockHeight() uint64 {
+	if x != nil {
+		return x.ReceivedBlockHeight
+	}
+	return 0
+}
+
+// ValidatorEncryptedKeyShare defines the structure for
+// submitting encrypted keyshares by validators
+type ValidatorEncryptedKeyShare struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Validator           string `protobuf:"bytes,1,opt,name=validator,proto3" json:"validator,omitempty"`
+	Requester           string `protobuf:"bytes,2,opt,name=requester,proto3" json:"requester,omitempty"`
+	KeyShare            string `protobuf:"bytes,3,opt,name=key_share,json=keyShare,proto3" json:"key_share,omitempty"`
+	KeyShareIndex       uint64 `protobuf:"varint,4,opt,name=key_share_index,json=keyShareIndex,proto3" json:"key_share_index,omitempty"`
+	ReceivedTimestamp   uint64 `protobuf:"varint,5,opt,name=received_timestamp,json=receivedTimestamp,proto3" json:"received_timestamp,omitempty"`
+	ReceivedBlockHeight uint64 `protobuf:"varint,6,opt,name=received_block_height,json=receivedBlockHeight,proto3" json:"received_block_height,omitempty"`
+	Identity            string `protobuf:"bytes,7,opt,name=identity,proto3" json:"identity,omitempty"`
+}
+
+func (x *ValidatorEncryptedKeyShare) Reset() {
+	*x = ValidatorEncryptedKeyShare{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_fairyring_keyshare_key_share_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ValidatorEncryptedKeyShare) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ValidatorEncryptedKeyShare) ProtoMessage() {}
+
+// Deprecated: Use ValidatorEncryptedKeyShare.ProtoReflect.Descriptor instead.
+func (*ValidatorEncryptedKeyShare) Descriptor() ([]byte, []int) {
+	return file_fairyring_keyshare_key_share_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *ValidatorEncryptedKeyShare) GetValidator() string {
+	if x != nil {
+		return x.Validator
+	}
+	return ""
+}
+
+func (x *ValidatorEncryptedKeyShare) GetRequester() string {
+	if x != nil {
+		return x.Requester
+	}
+	return ""
+}
+
+func (x *ValidatorEncryptedKeyShare) GetKeyShare() string {
+	if x != nil {
+		return x.KeyShare
+	}
+	return ""
+}
+
+func (x *ValidatorEncryptedKeyShare) GetKeyShareIndex() uint64 {
+	if x != nil {
+		return x.KeyShareIndex
+	}
+	return 0
+}
+
+func (x *ValidatorEncryptedKeyShare) GetReceivedTimestamp() uint64 {
+	if x != nil {
+		return x.ReceivedTimestamp
+	}
+	return 0
+}
+
+func (x *ValidatorEncryptedKeyShare) GetReceivedBlockHeight() uint64 {
+	if x != nil {
+		return x.ReceivedBlockHeight
+	}
+	return 0
+}
+
+func (x *ValidatorEncryptedKeyShare) GetIdentity() string {
+	if x != nil {
+		return x.Identity
+	}
+	return ""
+}
+
 var File_fairyring_keyshare_key_share_proto protoreflect.FileDescriptor
 
 var file_fairyring_keyshare_key_share_proto_rawDesc = []byte{
 	0x0a, 0x22, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x6b, 0x65, 0x79, 0x73,
 	0x68, 0x61, 0x72, 0x65, 0x2f, 0x6b, 0x65, 0x79, 0x5f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x70,
 	0x72, 0x6f, 0x74, 0x6f, 0x12, 0x12, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
-	0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x22, 0xec, 0x01, 0x0a, 0x08, 0x4b, 0x65, 0x79,
+	0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x22, 0xf3, 0x01, 0x0a, 0x08, 0x4b, 0x65, 0x79,
 	0x53, 0x68, 0x61, 0x72, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74,
 	0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61,
-	0x74, 0x6f, 0x72, 0x12, 0x20, 0x0a, 0x0b, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x48, 0x65, 0x69, 0x67,
-	0x68, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0b, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x48,
-	0x65, 0x69, 0x67, 0x68, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x6b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72,
-	0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x6b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72,
-	0x65, 0x12, 0x24, 0x0a, 0x0d, 0x6b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x49, 0x6e, 0x64,
-	0x65, 0x78, 0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0d, 0x6b, 0x65, 0x79, 0x53, 0x68, 0x61,
-	0x72, 0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x2c, 0x0a, 0x11, 0x72, 0x65, 0x63, 0x65, 0x69,
-	0x76, 0x65, 0x64, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x18, 0x05, 0x20, 0x01,
-	0x28, 0x04, 0x52, 0x11, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64, 0x54, 0x69, 0x6d, 0x65,
-	0x73, 0x74, 0x61, 0x6d, 0x70, 0x12, 0x30, 0x0a, 0x13, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65,
-	0x64, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x18, 0x06, 0x20, 0x01,
-	0x28, 0x04, 0x52, 0x13, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64, 0x42, 0x6c, 0x6f, 0x63,
-	0x6b, 0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x42, 0xb5, 0x01, 0x0a, 0x16, 0x63, 0x6f, 0x6d, 0x2e,
-	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61,
-	0x72, 0x65, 0x42, 0x0d, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x50, 0x72, 0x6f, 0x74,
-	0x6f, 0x50, 0x01, 0x5a, 0x23, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69,
-	0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f,
-	0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xa2, 0x02, 0x03, 0x46, 0x4b, 0x58, 0xaa, 0x02,
-	0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x4b, 0x65, 0x79, 0x73, 0x68,
-	0x61, 0x72, 0x65, 0xca, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c,
-	0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xe2, 0x02, 0x1e, 0x46, 0x61, 0x69, 0x72, 0x79,
-	0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x5c, 0x47, 0x50,
-	0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x13, 0x46, 0x61, 0x69, 0x72,
-	0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x74, 0x6f, 0x72, 0x12, 0x21, 0x0a, 0x0c, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x5f, 0x68, 0x65, 0x69,
+	0x67, 0x68, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0b, 0x62, 0x6c, 0x6f, 0x63, 0x6b,
+	0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x12, 0x1b, 0x0a, 0x09, 0x6b, 0x65, 0x79, 0x5f, 0x73, 0x68,
+	0x61, 0x72, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x6b, 0x65, 0x79, 0x53, 0x68,
+	0x61, 0x72, 0x65, 0x12, 0x26, 0x0a, 0x0f, 0x6b, 0x65, 0x79, 0x5f, 0x73, 0x68, 0x61, 0x72, 0x65,
+	0x5f, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0d, 0x6b, 0x65,
+	0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x2d, 0x0a, 0x12, 0x72,
+	0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d,
+	0x70, 0x18, 0x05, 0x20, 0x01, 0x28, 0x04, 0x52, 0x11, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65,
+	0x64, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x12, 0x32, 0x0a, 0x15, 0x72, 0x65,
+	0x63, 0x65, 0x69, 0x76, 0x65, 0x64, 0x5f, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x5f, 0x68, 0x65, 0x69,
+	0x67, 0x68, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x13, 0x72, 0x65, 0x63, 0x65, 0x69,
+	0x76, 0x65, 0x64, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x22, 0x8b,
+	0x02, 0x0a, 0x0f, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61,
+	0x72, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72,
+	0x12, 0x17, 0x0a, 0x07, 0x69, 0x64, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x06, 0x69, 0x64, 0x54, 0x79, 0x70, 0x65, 0x12, 0x19, 0x0a, 0x08, 0x69, 0x64, 0x5f,
+	0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x69, 0x64, 0x56,
+	0x61, 0x6c, 0x75, 0x65, 0x12, 0x1b, 0x0a, 0x09, 0x6b, 0x65, 0x79, 0x5f, 0x73, 0x68, 0x61, 0x72,
+	0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x6b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72,
+	0x65, 0x12, 0x26, 0x0a, 0x0f, 0x6b, 0x65, 0x79, 0x5f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x5f, 0x69,
+	0x6e, 0x64, 0x65, 0x78, 0x18, 0x05, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0d, 0x6b, 0x65, 0x79, 0x53,
+	0x68, 0x61, 0x72, 0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x2d, 0x0a, 0x12, 0x72, 0x65, 0x63,
+	0x65, 0x69, 0x76, 0x65, 0x64, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x18,
+	0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x11, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64, 0x54,
+	0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x12, 0x32, 0x0a, 0x15, 0x72, 0x65, 0x63, 0x65,
+	0x69, 0x76, 0x65, 0x64, 0x5f, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x5f, 0x68, 0x65, 0x69, 0x67, 0x68,
+	0x74, 0x18, 0x07, 0x20, 0x01, 0x28, 0x04, 0x52, 0x13, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65,
+	0x64, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x22, 0x9c, 0x02, 0x0a,
+	0x1a, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70,
+	0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x76,
+	0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
+	0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x1c, 0x0a, 0x09, 0x72, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x65, 0x72, 0x12, 0x1b, 0x0a, 0x09, 0x6b, 0x65, 0x79, 0x5f, 0x73,
+	0x68, 0x61, 0x72, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x6b, 0x65, 0x79, 0x53,
+	0x68, 0x61, 0x72, 0x65, 0x12, 0x26, 0x0a, 0x0f, 0x6b, 0x65, 0x79, 0x5f, 0x73, 0x68, 0x61, 0x72,
+	0x65, 0x5f, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0d, 0x6b,
+	0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x2d, 0x0a, 0x12,
+	0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61,
+	0x6d, 0x70, 0x18, 0x05, 0x20, 0x01, 0x28, 0x04, 0x52, 0x11, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76,
+	0x65, 0x64, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x12, 0x32, 0x0a, 0x15, 0x72,
+	0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64, 0x5f, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x5f, 0x68, 0x65,
+	0x69, 0x67, 0x68, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x04, 0x52, 0x13, 0x72, 0x65, 0x63, 0x65,
+	0x69, 0x76, 0x65, 0x64, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x12,
+	0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x07, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x42, 0xb5, 0x01, 0x0a, 0x16,
+	0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65,
+	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x42, 0x0d, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65,
+	0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x23, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73,
+	0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
+	0x69, 0x6e, 0x67, 0x2f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xa2, 0x02, 0x03, 0x46,
+	0x4b, 0x58, 0xaa, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x4b,
+	0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xca, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72,
+	0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0xe2, 0x02, 0x1e, 0x46,
+	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
+	0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x13,
+	0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x4b, 0x65, 0x79, 0x73, 0x68,
+	0x61, 0x72, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -824,9 +2543,11 @@ func file_fairyring_keyshare_key_share_proto_rawDescGZIP() []byte {
 	return file_fairyring_keyshare_key_share_proto_rawDescData
 }
 
-var file_fairyring_keyshare_key_share_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_fairyring_keyshare_key_share_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_fairyring_keyshare_key_share_proto_goTypes = []interface{}{
-	(*KeyShare)(nil), // 0: fairyring.keyshare.KeyShare
+	(*KeyShare)(nil),                   // 0: fairyring.keyshare.KeyShare
+	(*GeneralKeyShare)(nil),            // 1: fairyring.keyshare.GeneralKeyShare
+	(*ValidatorEncryptedKeyShare)(nil), // 2: fairyring.keyshare.ValidatorEncryptedKeyShare
 }
 var file_fairyring_keyshare_key_share_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -854,6 +2575,30 @@ func file_fairyring_keyshare_key_share_proto_init() {
 				return nil
 			}
 		}
+		file_fairyring_keyshare_key_share_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GeneralKeyShare); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_fairyring_keyshare_key_share_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ValidatorEncryptedKeyShare); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -861,7 +2606,7 @@ func file_fairyring_keyshare_key_share_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_fairyring_keyshare_key_share_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

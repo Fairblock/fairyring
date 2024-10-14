@@ -15,7 +15,10 @@ import (
 )
 
 // AggregatedKeyShareAll returns the paginated list of all aggregated keyshares
-func (k Keeper) AggregatedKeyShareAll(goCtx context.Context, req *types.QueryAllAggregatedKeyShareRequest) (*types.QueryAllAggregatedKeyShareResponse, error) {
+func (k Keeper) AggregatedKeyShareAll(
+	goCtx context.Context,
+	req *types.QueryAggregatedKeyShareAllRequest,
+) (*types.QueryAggregatedKeyShareAllResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -41,11 +44,17 @@ func (k Keeper) AggregatedKeyShareAll(goCtx context.Context, req *types.QueryAll
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllAggregatedKeyShareResponse{AggregatedKeyShare: aggregatedKeyShares, Pagination: pageRes}, nil
+	return &types.QueryAggregatedKeyShareAllResponse{
+		AggregatedKeyShare: aggregatedKeyShares,
+		Pagination:         pageRes,
+	}, nil
 }
 
 // AggregatedKeyShare returns the aggregated key share for a particular height
-func (k Keeper) AggregatedKeyShare(goCtx context.Context, req *types.QueryGetAggregatedKeyShareRequest) (*types.QueryGetAggregatedKeyShareResponse, error) {
+func (k Keeper) AggregatedKeyShare(
+	goCtx context.Context,
+	req *types.QueryAggregatedKeyShareRequest,
+) (*types.QueryAggregatedKeyShareResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -59,5 +68,5 @@ func (k Keeper) AggregatedKeyShare(goCtx context.Context, req *types.QueryGetAgg
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	return &types.QueryGetAggregatedKeyShareResponse{AggregatedKeyShare: val}, nil
+	return &types.QueryAggregatedKeyShareResponse{AggregatedKeyShare: val}, nil
 }

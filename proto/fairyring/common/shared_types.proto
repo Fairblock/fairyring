@@ -9,6 +9,7 @@ option go_package = "github.com/Fairblock/fairyring/x/common/types";
 // RequestAggrKeyshare defines a struct for the data payload
 message RequestAggrKeyshare {
   string creator = 1;
+  // id can either be a rwquest id or a proposal id
   oneof id {
     string proposal_id = 2;
     string request_id = 3;
@@ -16,6 +17,7 @@ message RequestAggrKeyshare {
     google.protobuf.Duration estimated_delay = 4 [(gogoproto.stdduration) = true];
 }
 
+// RequestAggrKeyshareResponse defines the response to the RequestAggrKeyshare message
 message RequestAggrKeyshareResponse {
   string identity = 1;
   string pubkey   = 2;
@@ -23,6 +25,7 @@ message RequestAggrKeyshareResponse {
 
 // GetAggrKeyshare defines a struct for the data payload
 message GetAggrKeyshare {
+  // id can either be a rwquest id or a proposal id
   oneof id {
     string proposal_id = 1;
     string request_id = 2;
@@ -30,6 +33,7 @@ message GetAggrKeyshare {
   string identity = 3;
 }
 
+// GetAggrKeyshareResponse defines the response to the GetAggrKeyshare message
 message GetAggrKeyshareResponse {}
 
 // GetPrivateKeyshare defines a struct for the data payload
@@ -40,32 +44,42 @@ message GetPrivateKeyshare {
   string secp_pubkey = 4;
 }
 
+// GetPrivateKeyshareResponse defines the response to the GetPrivateKeyshare message
 message GetPrivateKeyshareResponse {
   string pubkey   = 1;
 }
 
+// ActivePublicKey defines the pubkey currently in use
 message ActivePublicKey {
-  string publicKey = 1;
+  string public_key = 1;
   string creator = 2;
   uint64 expiry = 3;
 }
 
+// QueuedPublicKey defines the pubkey that (when set) will replace the acive pubkey
+// when it expires
 message QueuedPublicKey {
-  string publicKey = 1;
+  string public_key = 1;
   string creator = 2;
   uint64 expiry = 3;
 }
 
-message RequestPrivateKeyshare {
+// RequestEncryptedKeyshare defines the structure to request for
+// encrypted and unaggregated keyshares
+message RequestEncryptedKeyshare {
   string creator = 1;
   string request_id = 2;
 }
 
+// EncryptedKeyshare defines the storage structure for
+// the list of encrypted keyshares (unaggregated)
 message EncryptedKeyshare {
   string requester = 1;
   repeated IndexedEncryptedKeyshare private_keyshares = 2;
 }
 
+// IndexedEncryptedKeyshare defines the storage of submitted encrypted
+// keyshares along with their indices (can be decrypted and aggregated)
 message IndexedEncryptedKeyshare {
   string encrypted_keyshare_value = 1;
   uint64 encrypted_keyshare_index = 2;
