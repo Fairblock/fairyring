@@ -76,7 +76,7 @@ service Query {
   
   }
   
-  // Queries a list of ShowPrivateKeyshareReq items.
+  // Queries a PrivateKeyshareReq item by req id.
   rpc PrivateKeyshareReq (QueryPrivateKeyshareReqRequest) returns (QueryPrivateKeyshareReqResponse) {
     option (google.api.http).get = "/Fairblock/fairyring/pep/show_private_keyshare_req/{req_id}";
   

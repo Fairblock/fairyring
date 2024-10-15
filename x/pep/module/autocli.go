@@ -26,13 +26,13 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "EncryptedTxAllFromHeight",
 					Use:            "list-encrypted-tx-from-block [target-height]",
 					Short:          "list all encrypted transactions for a particular target height",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "targetHeight"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "target_height"}},
 				},
 				{
 					RpcMethod:      "EncryptedTx",
 					Use:            "show-encrypted-tx [target-height] [index]",
 					Short:          "shows a particular encrypted transaction at a given target height and index",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "targetHeight"}, {ProtoField: "index"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "target_height"}, {ProtoField: "index"}},
 				},
 				{
 					RpcMethod: "LatestHeight",
@@ -67,10 +67,10 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Short:     "list all pending keyshare requests",
 				},
 				{
-					RpcMethod:      "ShowPrivateKeyshareReq",
+					RpcMethod:      "PrivateKeyshareReq",
 					Use:            "show-private-keyshare-req [req-id]",
 					Short:          "Query show-private-keyshare-req",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "reqId"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "req_id"}},
 				},
 
 				{
