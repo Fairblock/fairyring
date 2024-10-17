@@ -522,16 +522,16 @@ func New(
 		},
 	)
 
-	if upgradeInfo.Name == "0.9.0-release-to-fix-capability-store-error" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
-		storeUpgrades := storetypes.StoreUpgrades{
-			Added: []string{
-				"capability",
-			},
-		}
-
-		// configure store loader that checks if version == upgradeHeight and applies store upgrades
-		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
-	}
+	//if upgradeInfo.Name == "0.9.0-release-to-fix-capability-store-error" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+	//	storeUpgrades := storetypes.StoreUpgrades{
+	//		Added: []string{
+	//			"capability",
+	//		},
+	//	}
+	//
+	//	// configure store loader that checks if version == upgradeHeight and applies store upgrades
+	//	app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
+	//}
 
 	// A custom InitChainer can be set if extra pre-init-genesis logic is required.
 	// By default, when using app wiring enabled module, this is not required.
