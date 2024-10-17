@@ -150,7 +150,7 @@ message QueryKeyshareRequest {
 
 // QueryKeyShareResponse is response type for the Query/KeyShare RPC method.
 message QueryKeyshareResponse {
-  KeyShare key_share = 1 [(gogoproto.nullable) = false];
+  Keyshare keyshare = 1 [(gogoproto.nullable) = false];
 }
 
 // QueryKeyShareAllRequest is request type for the Query/KeyShareAll RPC method.
@@ -171,7 +171,7 @@ message QueryDecryptionKeyRequest {
 
 // QueryDecryptionKeyResponse is response type for the Query/DecryptionKey RPC method.
 message QueryDecryptionKeyResponse {
-  AggregatedKeyShare decryption_key = 1 [(gogoproto.nullable) = false];
+  DecryptionKey decryption_key = 1 [(gogoproto.nullable) = false];
 }
 
 // QueryDecryptionKeyAllRequest is request type for the Query/DecryptionKeyAll RPC method.
@@ -224,7 +224,7 @@ message QueryGeneralKeyshareRequest {
 
 // QueryGeneralKeyShareResponse is response type for the Query/GeneralKeyShare RPC method.
 message QueryGeneralKeyshareResponse {
-  GeneralKeyShare general_keyshare = 1 [(gogoproto.nullable) = false];
+  GeneralKeyshare general_keyshare = 1 [(gogoproto.nullable) = false];
 }
 
 // QueryGeneralKeyShareAllRequest is request type for the Query/GeneralKeyShareAll RPC method.

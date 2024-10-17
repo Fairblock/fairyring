@@ -5,9 +5,9 @@ package fairyring.keyshare;
 import "amino/amino.proto";
 import "fairyring/keyshare/authorized_address.proto";
 import "fairyring/keyshare/decryption_key.proto";
-import "fairyring/keyshare/key_share.proto";
+import "fairyring/keyshare/keyshare.proto";
 import "fairyring/keyshare/params.proto";
-import "fairyring/keyshare/pub_key.proto";
+import "fairyring/keyshare/pubkey.proto";
 import "fairyring/keyshare/validator_set.proto";
 import "gogoproto/gogo.proto";
 

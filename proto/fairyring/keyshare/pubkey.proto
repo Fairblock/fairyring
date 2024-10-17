@@ -25,5 +25,5 @@ message QueuedPubKey {
   string creator = 2;
   uint64 expiry = 3;
   uint64 number_of_validators = 4;
-  repeated EncryptedKeyShare encrypted_keyshares = 5;
+  repeated EncryptedKeyshare encrypted_keyshares = 5;
 }
