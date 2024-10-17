@@ -24,27 +24,27 @@ func TestAggregatedKeyShareQuerySingle(t *testing.T) {
 	msgs := createNAggregatedKeyShare(&keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetAggregatedKeyShareRequest
-		response *types.QueryGetAggregatedKeyShareResponse
+		request  *types.QueryDecryptionKeyRequest
+		response *types.QueryDecryptionKeyResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetAggregatedKeyShareRequest{
+			request: &types.QueryDecryptionKeyRequest{
 				Height: msgs[0].Height,
 			},
-			response: &types.QueryGetAggregatedKeyShareResponse{AggregatedKeyShare: msgs[0]},
+			response: &types.QueryDecryptionKeyResponse{DecryptionKey: msgs[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetAggregatedKeyShareRequest{
+			request: &types.QueryDecryptionKeyRequest{
 				Height: msgs[1].Height,
 			},
-			response: &types.QueryGetAggregatedKeyShareResponse{AggregatedKeyShare: msgs[1]},
+			response: &types.QueryDecryptionKeyResponse{DecryptionKey: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.QueryGetAggregatedKeyShareRequest{
+			request: &types.QueryDecryptionKeyRequest{
 				Height: msgs[1].Height * 2,
 			},
 			err: status.Error(codes.NotFound, "not found"),
@@ -55,7 +55,7 @@ func TestAggregatedKeyShareQuerySingle(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.AggregatedKeyShare(wctx, tc.request)
+			response, err := keeper.DecryptionKey(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
@@ -75,13 +75,13 @@ func TestAggregatedKeyShareQueryAllNoPagination(t *testing.T) {
 	msgs := createNAggregatedKeyShare(&keeper, ctx, 10)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryAllAggregatedKeyShareRequest
-		response *types.QueryAllAggregatedKeyShareResponse
+		request  *types.QueryDecryptionKeyAllRequest
+		response *types.QueryDecryptionKeyAllResponse
 		err      error
 	}{
 		{
 			desc: "QueryAll",
-			request: &types.QueryAllAggregatedKeyShareRequest{
+			request: &types.QueryDecryptionKeyAllRequest{
 				Pagination: &query.PageRequest{
 					Key:        nil,
 					Offset:     0,
@@ -90,8 +90,8 @@ func TestAggregatedKeyShareQueryAllNoPagination(t *testing.T) {
 					Reverse:    false,
 				},
 			},
-			response: &types.QueryAllAggregatedKeyShareResponse{
-				AggregatedKeyShare: msgs,
+			response: &types.QueryDecryptionKeyAllResponse{
+				DecryptionKeys: msgs,
 				Pagination: &query.PageResponse{
 					NextKey: nil,
 					Total:   10,
@@ -100,7 +100,7 @@ func TestAggregatedKeyShareQueryAllNoPagination(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.AggregatedKeyShareAll(wctx, tc.request)
+			response, err := keeper.DecryptionKeyAll(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
@@ -119,8 +119,13 @@ func TestAggregatedKeyShareQueryPaginated(t *testing.T) {
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNAggregatedKeyShare(&keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllAggregatedKeyShareRequest {
-		return &types.QueryAllAggregatedKeyShareRequest{
+	request := func(
+		next []byte,
+		offset,
+		limit uint64,
+		total bool,
+	) *types.QueryDecryptionKeyAllRequest {
+		return &types.QueryDecryptionKeyAllRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,
@@ -132,12 +137,12 @@ func TestAggregatedKeyShareQueryPaginated(t *testing.T) {
 	t.Run("ByOffset", func(t *testing.T) {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.AggregatedKeyShareAll(wctx, request(nil, uint64(i), uint64(step), false))
+			resp, err := keeper.DecryptionKeyAll(wctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.AggregatedKeyShare), step)
+			require.LessOrEqual(t, len(resp.DecryptionKeys), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.AggregatedKeyShare),
+				nullify.Fill(resp.DecryptionKeys),
 			)
 		}
 	})
@@ -145,27 +150,27 @@ func TestAggregatedKeyShareQueryPaginated(t *testing.T) {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.AggregatedKeyShareAll(wctx, request(next, 0, uint64(step), false))
+			resp, err := keeper.DecryptionKeyAll(wctx, request(next, 0, uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.AggregatedKeyShare), step)
+			require.LessOrEqual(t, len(resp.DecryptionKeys), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.AggregatedKeyShare),
+				nullify.Fill(resp.DecryptionKeys),
 			)
 			next = resp.Pagination.NextKey
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.AggregatedKeyShareAll(wctx, request(nil, 0, 0, true))
+		resp, err := keeper.DecryptionKeyAll(wctx, request(nil, 0, 0, true))
 		require.NoError(t, err)
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
 			nullify.Fill(msgs),
-			nullify.Fill(resp.AggregatedKeyShare),
+			nullify.Fill(resp.DecryptionKeys),
 		)
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.AggregatedKeyShareAll(wctx, nil)
+		_, err := keeper.DecryptionKeyAll(wctx, nil)
 		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

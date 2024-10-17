@@ -1,9 +1,10 @@
 package keeper_test
 
 import (
-	"github.com/Fairblock/fairyring/testutil/sample"
 	"strconv"
 	"testing"
+
+	"github.com/Fairblock/fairyring/testutil/sample"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -25,27 +26,27 @@ func TestValidatorSetQuerySingle(t *testing.T) {
 	msgs := createNValidatorSet(&keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetValidatorSetRequest
-		response *types.QueryGetValidatorSetResponse
+		request  *types.QueryValidatorSetRequest
+		response *types.QueryValidatorSetResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetValidatorSetRequest{
+			request: &types.QueryValidatorSetRequest{
 				Index: msgs[0].Index,
 			},
-			response: &types.QueryGetValidatorSetResponse{ValidatorSet: msgs[0]},
+			response: &types.QueryValidatorSetResponse{ValidatorSet: msgs[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetValidatorSetRequest{
+			request: &types.QueryValidatorSetRequest{
 				Index: msgs[1].Index,
 			},
-			response: &types.QueryGetValidatorSetResponse{ValidatorSet: msgs[1]},
+			response: &types.QueryValidatorSetResponse{ValidatorSet: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.QueryGetValidatorSetRequest{
+			request: &types.QueryValidatorSetRequest{
 				Index: sample.AccAddress(),
 			},
 			err: status.Error(codes.NotFound, "not found"),
@@ -76,13 +77,13 @@ func TestValidatorSetQueryAllNoPagination(t *testing.T) {
 	msgs := createNValidatorSet(&keeper, ctx, 10)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryAllValidatorSetRequest
-		response *types.QueryAllValidatorSetResponse
+		request  *types.QueryValidatorSetAllRequest
+		response *types.QueryValidatorSetAllResponse
 		err      error
 	}{
 		{
 			desc: "QueryAllValidatorSet",
-			request: &types.QueryAllValidatorSetRequest{
+			request: &types.QueryValidatorSetAllRequest{
 				Pagination: &query.PageRequest{
 					Key:        nil,
 					Offset:     0,
@@ -91,7 +92,7 @@ func TestValidatorSetQueryAllNoPagination(t *testing.T) {
 					Reverse:    false,
 				},
 			},
-			response: &types.QueryAllValidatorSetResponse{
+			response: &types.QueryValidatorSetAllResponse{
 				ValidatorSet: msgs,
 				Pagination: &query.PageResponse{
 					NextKey: nil,
@@ -120,8 +121,13 @@ func TestValidatorSetQueryPaginated(t *testing.T) {
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNValidatorSet(&keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllValidatorSetRequest {
-		return &types.QueryAllValidatorSetRequest{
+	request := func(
+		next []byte,
+		offset,
+		limit uint64,
+		total bool,
+	) *types.QueryValidatorSetAllRequest {
+		return &types.QueryValidatorSetAllRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,

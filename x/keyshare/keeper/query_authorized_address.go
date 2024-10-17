@@ -13,7 +13,10 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) AuthorizedAddressAll(goCtx context.Context, req *types.QueryAllAuthorizedAddressRequest) (*types.QueryAllAuthorizedAddressResponse, error) {
+func (k Keeper) AuthorizedAddressAll(
+	goCtx context.Context,
+	req *types.QueryAuthorizedAddressAllRequest,
+) (*types.QueryAuthorizedAddressAllResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -39,10 +42,16 @@ func (k Keeper) AuthorizedAddressAll(goCtx context.Context, req *types.QueryAllA
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllAuthorizedAddressResponse{AuthorizedAddress: authorizedAddresss, Pagination: pageRes}, nil
+	return &types.QueryAuthorizedAddressAllResponse{
+		AuthorizedAddress: authorizedAddresss,
+		Pagination:        pageRes,
+	}, nil
 }
 
-func (k Keeper) AuthorizedAddress(goCtx context.Context, req *types.QueryGetAuthorizedAddressRequest) (*types.QueryGetAuthorizedAddressResponse, error) {
+func (k Keeper) AuthorizedAddress(
+	goCtx context.Context,
+	req *types.QueryAuthorizedAddressRequest,
+) (*types.QueryAuthorizedAddressResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -56,5 +65,5 @@ func (k Keeper) AuthorizedAddress(goCtx context.Context, req *types.QueryGetAuth
 		return nil, types.ErrAuthorizedAddrNotFound
 	}
 
-	return &types.QueryGetAuthorizedAddressResponse{AuthorizedAddress: val}, nil
+	return &types.QueryAuthorizedAddressResponse{AuthorizedAddress: val}, nil
 }

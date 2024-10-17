@@ -15,7 +15,10 @@ import (
 )
 
 // KeyShareAll returns the list of all keyshares submitted
-func (k Keeper) KeyShareAll(c context.Context, req *types.QueryAllKeyShareRequest) (*types.QueryAllKeyShareResponse, error) {
+func (k Keeper) KeyShareAll(
+	c context.Context,
+	req *types.QueryKeyShareAllRequest,
+) (*types.QueryKeyShareAllResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -41,11 +44,14 @@ func (k Keeper) KeyShareAll(c context.Context, req *types.QueryAllKeyShareReques
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllKeyShareResponse{KeyShare: keyShares, Pagination: pageRes}, nil
+	return &types.QueryKeyShareAllResponse{KeyShare: keyShares, Pagination: pageRes}, nil
 }
 
 // KeyShare returns a single keyshare submitted by a particular validator for a particular block height
-func (k Keeper) KeyShare(c context.Context, req *types.QueryGetKeyShareRequest) (*types.QueryGetKeyShareResponse, error) {
+func (k Keeper) KeyShare(
+	c context.Context,
+	req *types.QueryKeyShareRequest,
+) (*types.QueryKeyShareResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -60,5 +66,5 @@ func (k Keeper) KeyShare(c context.Context, req *types.QueryGetKeyShareRequest) 
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	return &types.QueryGetKeyShareResponse{KeyShare: val}, nil
+	return &types.QueryKeyShareResponse{KeyShare: val}, nil
 }

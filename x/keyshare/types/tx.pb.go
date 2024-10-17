@@ -86,8 +86,7 @@ func (m *MsgUpdateParams) GetParams() Params {
 	return Params{}
 }
 
-// MsgUpdateParamsResponse defines the response structure for executing a
-// MsgUpdateParams message.
+// MsgUpdateParamsResponse defines the response structure for executing a MsgUpdateParams message.
 type MsgUpdateParamsResponse struct {
 }
 
@@ -124,6 +123,7 @@ func (m *MsgUpdateParamsResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgUpdateParamsResponse proto.InternalMessageInfo
 
+// MsgRegisterValidator is the Msg/RegisterValidator request type.
 type MsgRegisterValidator struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 }
@@ -168,6 +168,8 @@ func (m *MsgRegisterValidator) GetCreator() string {
 	return ""
 }
 
+// MsgRegisterValidatorResponse defines the response structure for
+// executing a MsgRegisterValidator message.
 type MsgRegisterValidatorResponse struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 }
@@ -212,6 +214,7 @@ func (m *MsgRegisterValidatorResponse) GetCreator() string {
 	return ""
 }
 
+// MsgDeRegisterValidator is the Msg/DeRegisterValidator request type.
 type MsgDeRegisterValidator struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 }
@@ -256,6 +259,8 @@ func (m *MsgDeRegisterValidator) GetCreator() string {
 	return ""
 }
 
+// MsgDeRegisterValidatorResponse defines the response structure for
+// executing a MsgDeRegisterValidator message.
 type MsgDeRegisterValidatorResponse struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 }
@@ -300,11 +305,12 @@ func (m *MsgDeRegisterValidatorResponse) GetCreator() string {
 	return ""
 }
 
+// MsgSendKeyshare is the Msg/SendKeyshare request type.
 type MsgSendKeyshare struct {
 	Creator       string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Message       string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	KeyShareIndex uint64 `protobuf:"varint,3,opt,name=keyShareIndex,proto3" json:"keyShareIndex,omitempty"`
-	BlockHeight   uint64 `protobuf:"varint,4,opt,name=blockHeight,proto3" json:"blockHeight,omitempty"`
+	KeyShareIndex uint64 `protobuf:"varint,3,opt,name=key_share_index,json=keyShareIndex,proto3" json:"key_share_index,omitempty"`
+	BlockHeight   uint64 `protobuf:"varint,4,opt,name=block_height,json=blockHeight,proto3" json:"block_height,omitempty"`
 }
 
 func (m *MsgSendKeyshare) Reset()         { *m = MsgSendKeyshare{} }
@@ -368,14 +374,16 @@ func (m *MsgSendKeyshare) GetBlockHeight() uint64 {
 	return 0
 }
 
+// MsgSendKeyshareResponse defines the response structure for
+// executing a MsgSendKeyshare message.
 type MsgSendKeyshareResponse struct {
 	Creator             string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Keyshare            string `protobuf:"bytes,2,opt,name=keyshare,proto3" json:"keyshare,omitempty"`
-	KeyshareIndex       uint64 `protobuf:"varint,3,opt,name=keyshareIndex,proto3" json:"keyshareIndex,omitempty"`
-	BlockHeight         uint64 `protobuf:"varint,4,opt,name=blockHeight,proto3" json:"blockHeight,omitempty"`
-	ReceivedBlockHeight uint64 `protobuf:"varint,5,opt,name=receivedBlockHeight,proto3" json:"receivedBlockHeight,omitempty"`
+	KeyshareIndex       uint64 `protobuf:"varint,3,opt,name=keyshare_index,json=keyshareIndex,proto3" json:"keyshare_index,omitempty"`
+	BlockHeight         uint64 `protobuf:"varint,4,opt,name=block_height,json=blockHeight,proto3" json:"block_height,omitempty"`
+	ReceivedBlockHeight uint64 `protobuf:"varint,5,opt,name=received_block_height,json=receivedBlockHeight,proto3" json:"received_block_height,omitempty"`
 	Success             bool   `protobuf:"varint,6,opt,name=success,proto3" json:"success,omitempty"`
-	ErrorMessage        string `protobuf:"bytes,7,opt,name=errorMessage,proto3" json:"errorMessage,omitempty"`
+	ErrorMessage        string `protobuf:"bytes,7,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
 }
 
 func (m *MsgSendKeyshareResponse) Reset()         { *m = MsgSendKeyshareResponse{} }
@@ -460,13 +468,13 @@ func (m *MsgSendKeyshareResponse) GetErrorMessage() string {
 	return ""
 }
 
-// this line is used by starport scaffolding # proto/tx/message
+// MsgCreateLatestPubKey is the Msg/CreateLatestPubKey request type.
 type MsgCreateLatestPubKey struct {
 	Creator            string               `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	PublicKey          string               `protobuf:"bytes,2,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	PublicKey          string               `protobuf:"bytes,2,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
 	Commitments        []string             `protobuf:"bytes,3,rep,name=commitments,proto3" json:"commitments,omitempty"`
-	NumberOfValidators uint64               `protobuf:"varint,4,opt,name=numberOfValidators,proto3" json:"numberOfValidators,omitempty"`
-	EncryptedKeyShares []*EncryptedKeyShare `protobuf:"bytes,5,rep,name=encryptedKeyShares,proto3" json:"encryptedKeyShares,omitempty"`
+	NumberOfValidators uint64               `protobuf:"varint,4,opt,name=number_of_validators,json=numberOfValidators,proto3" json:"number_of_validators,omitempty"`
+	EncryptedKeyShares []*EncryptedKeyShare `protobuf:"bytes,5,rep,name=encrypted_key_shares,json=encryptedKeyShares,proto3" json:"encrypted_key_shares,omitempty"`
 }
 
 func (m *MsgCreateLatestPubKey) Reset()         { *m = MsgCreateLatestPubKey{} }
@@ -537,6 +545,8 @@ func (m *MsgCreateLatestPubKey) GetEncryptedKeyShares() []*EncryptedKeyShare {
 	return nil
 }
 
+// MsgCreateLatestPubKeyResponse defines the response structure for
+// executing a MsgCreateLatestPubKey message.
 type MsgCreateLatestPubKeyResponse struct {
 }
 
@@ -573,12 +583,13 @@ func (m *MsgCreateLatestPubKeyResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCreateLatestPubKeyResponse proto.InternalMessageInfo
 
+// MsgOverrideLatestPubKey is the Msg/OverrideLatestPubKey request type.
 type MsgOverrideLatestPubKey struct {
 	Creator            string               `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	PublicKey          string               `protobuf:"bytes,2,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+	PublicKey          string               `protobuf:"bytes,2,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
 	Commitments        []string             `protobuf:"bytes,3,rep,name=commitments,proto3" json:"commitments,omitempty"`
-	NumberOfValidators uint64               `protobuf:"varint,4,opt,name=numberOfValidators,proto3" json:"numberOfValidators,omitempty"`
-	EncryptedKeyShares []*EncryptedKeyShare `protobuf:"bytes,5,rep,name=encryptedKeyShares,proto3" json:"encryptedKeyShares,omitempty"`
+	NumberOfValidators uint64               `protobuf:"varint,4,opt,name=number_of_validators,json=numberOfValidators,proto3" json:"number_of_validators,omitempty"`
+	EncryptedKeyShares []*EncryptedKeyShare `protobuf:"bytes,5,rep,name=encrypted_key_shares,json=encryptedKeyShares,proto3" json:"encrypted_key_shares,omitempty"`
 }
 
 func (m *MsgOverrideLatestPubKey) Reset()         { *m = MsgOverrideLatestPubKey{} }
@@ -649,6 +660,8 @@ func (m *MsgOverrideLatestPubKey) GetEncryptedKeyShares() []*EncryptedKeyShare {
 	return nil
 }
 
+// MsgOverrideLatestPubKeyResponse defines the response structure for
+// executing a MsgOverrideLatestPubKey message.
 type MsgOverrideLatestPubKeyResponse struct {
 }
 
@@ -685,6 +698,7 @@ func (m *MsgOverrideLatestPubKeyResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgOverrideLatestPubKeyResponse proto.InternalMessageInfo
 
+// MsgCreateAuthorizedAddress is the Msg/CreateAuthorizedAddress request type.
 type MsgCreateAuthorizedAddress struct {
 	Target  string `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
@@ -737,6 +751,8 @@ func (m *MsgCreateAuthorizedAddress) GetCreator() string {
 	return ""
 }
 
+// MsgCreateAuthorizedAddressResponse defines the response structure for
+// executing a MsgCreateAuthorizedAddress message.
 type MsgCreateAuthorizedAddressResponse struct {
 }
 
@@ -773,9 +789,10 @@ func (m *MsgCreateAuthorizedAddressResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCreateAuthorizedAddressResponse proto.InternalMessageInfo
 
+// MsgUpdateAuthorizedAddress is the Msg/UpdateAuthorizedAddress request type.
 type MsgUpdateAuthorizedAddress struct {
 	Target       string `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	IsAuthorized bool   `protobuf:"varint,2,opt,name=isAuthorized,proto3" json:"isAuthorized,omitempty"`
+	IsAuthorized bool   `protobuf:"varint,2,opt,name=is_authorized,json=isAuthorized,proto3" json:"is_authorized,omitempty"`
 	Creator      string `protobuf:"bytes,3,opt,name=creator,proto3" json:"creator,omitempty"`
 }
 
@@ -833,6 +850,8 @@ func (m *MsgUpdateAuthorizedAddress) GetCreator() string {
 	return ""
 }
 
+// MsgUpdateAuthorizedAddressResponse defines the response structure for
+// executing a MsgUpdateAuthorizedAddress message.
 type MsgUpdateAuthorizedAddressResponse struct {
 }
 
@@ -869,6 +888,7 @@ func (m *MsgUpdateAuthorizedAddressResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgUpdateAuthorizedAddressResponse proto.InternalMessageInfo
 
+// MsgDeleteAuthorizedAddress is the Msg/DeleteAuthorizedAddress request type.
 type MsgDeleteAuthorizedAddress struct {
 	Target  string `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	Creator string `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
@@ -921,6 +941,8 @@ func (m *MsgDeleteAuthorizedAddress) GetCreator() string {
 	return ""
 }
 
+// MsgDeleteAuthorizedAddressResponse defines the response structure for
+// executing a MsgDeleteAuthorizedAddress message.
 type MsgDeleteAuthorizedAddressResponse struct {
 }
 
@@ -957,28 +979,29 @@ func (m *MsgDeleteAuthorizedAddressResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgDeleteAuthorizedAddressResponse proto.InternalMessageInfo
 
-type MsgCreateGeneralKeyShare struct {
+// MsgSubmitGeneralKeyShare is the Msg/CreateGeneralKeyShare request type.
+type MsgSubmitGeneralKeyShare struct {
 	Creator             string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	IdType              string `protobuf:"bytes,2,opt,name=idType,proto3" json:"idType,omitempty"`
-	IdValue             string `protobuf:"bytes,3,opt,name=idValue,proto3" json:"idValue,omitempty"`
-	KeyShare            string `protobuf:"bytes,4,opt,name=keyShare,proto3" json:"keyShare,omitempty"`
-	KeyShareIndex       uint64 `protobuf:"varint,5,opt,name=keyShareIndex,proto3" json:"keyShareIndex,omitempty"`
-	ReceivedTimestamp   uint64 `protobuf:"varint,6,opt,name=receivedTimestamp,proto3" json:"receivedTimestamp,omitempty"`
-	ReceivedBlockHeight uint64 `protobuf:"varint,7,opt,name=receivedBlockHeight,proto3" json:"receivedBlockHeight,omitempty"`
+	IdType              string `protobuf:"bytes,2,opt,name=id_type,json=idType,proto3" json:"id_type,omitempty"`
+	IdValue             string `protobuf:"bytes,3,opt,name=id_value,json=idValue,proto3" json:"id_value,omitempty"`
+	KeyShare            string `protobuf:"bytes,4,opt,name=key_share,json=keyShare,proto3" json:"key_share,omitempty"`
+	KeyShareIndex       uint64 `protobuf:"varint,5,opt,name=key_share_index,json=keyShareIndex,proto3" json:"key_share_index,omitempty"`
+	ReceivedTimestamp   uint64 `protobuf:"varint,6,opt,name=received_timestamp,json=receivedTimestamp,proto3" json:"received_timestamp,omitempty"`
+	ReceivedBlockHeight uint64 `protobuf:"varint,7,opt,name=received_block_height,json=receivedBlockHeight,proto3" json:"received_block_height,omitempty"`
 }
 
-func (m *MsgCreateGeneralKeyShare) Reset()         { *m = MsgCreateGeneralKeyShare{} }
-func (m *MsgCreateGeneralKeyShare) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateGeneralKeyShare) ProtoMessage()    {}
-func (*MsgCreateGeneralKeyShare) Descriptor() ([]byte, []int) {
+func (m *MsgSubmitGeneralKeyShare) Reset()         { *m = MsgSubmitGeneralKeyShare{} }
+func (m *MsgSubmitGeneralKeyShare) String() string { return proto.CompactTextString(m) }
+func (*MsgSubmitGeneralKeyShare) ProtoMessage()    {}
+func (*MsgSubmitGeneralKeyShare) Descriptor() ([]byte, []int) {
 	return fileDescriptor_1f96ac6a55f1845c, []int{18}
 }
-func (m *MsgCreateGeneralKeyShare) XXX_Unmarshal(b []byte) error {
+func (m *MsgSubmitGeneralKeyShare) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateGeneralKeyShare) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgSubmitGeneralKeyShare) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateGeneralKeyShare.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgSubmitGeneralKeyShare.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -988,90 +1011,92 @@ func (m *MsgCreateGeneralKeyShare) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateGeneralKeyShare) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateGeneralKeyShare.Merge(m, src)
+func (m *MsgSubmitGeneralKeyShare) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSubmitGeneralKeyShare.Merge(m, src)
 }
-func (m *MsgCreateGeneralKeyShare) XXX_Size() int {
+func (m *MsgSubmitGeneralKeyShare) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateGeneralKeyShare) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateGeneralKeyShare.DiscardUnknown(m)
+func (m *MsgSubmitGeneralKeyShare) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSubmitGeneralKeyShare.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateGeneralKeyShare proto.InternalMessageInfo
+var xxx_messageInfo_MsgSubmitGeneralKeyShare proto.InternalMessageInfo
 
-func (m *MsgCreateGeneralKeyShare) GetCreator() string {
+func (m *MsgSubmitGeneralKeyShare) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgCreateGeneralKeyShare) GetIdType() string {
+func (m *MsgSubmitGeneralKeyShare) GetIdType() string {
 	if m != nil {
 		return m.IdType
 	}
 	return ""
 }
 
-func (m *MsgCreateGeneralKeyShare) GetIdValue() string {
+func (m *MsgSubmitGeneralKeyShare) GetIdValue() string {
 	if m != nil {
 		return m.IdValue
 	}
 	return ""
 }
 
-func (m *MsgCreateGeneralKeyShare) GetKeyShare() string {
+func (m *MsgSubmitGeneralKeyShare) GetKeyShare() string {
 	if m != nil {
 		return m.KeyShare
 	}
 	return ""
 }
 
-func (m *MsgCreateGeneralKeyShare) GetKeyShareIndex() uint64 {
+func (m *MsgSubmitGeneralKeyShare) GetKeyShareIndex() uint64 {
 	if m != nil {
 		return m.KeyShareIndex
 	}
 	return 0
 }
 
-func (m *MsgCreateGeneralKeyShare) GetReceivedTimestamp() uint64 {
+func (m *MsgSubmitGeneralKeyShare) GetReceivedTimestamp() uint64 {
 	if m != nil {
 		return m.ReceivedTimestamp
 	}
 	return 0
 }
 
-func (m *MsgCreateGeneralKeyShare) GetReceivedBlockHeight() uint64 {
+func (m *MsgSubmitGeneralKeyShare) GetReceivedBlockHeight() uint64 {
 	if m != nil {
 		return m.ReceivedBlockHeight
 	}
 	return 0
 }
 
-type MsgCreateGeneralKeyShareResponse struct {
+// MsgSubmitGeneralKeyShareResponse defines the response structure for
+// executing a MsgSubmitGeneralKeyShare message.
+type MsgSubmitGeneralKeyShareResponse struct {
 	Creator             string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	IdType              string `protobuf:"bytes,2,opt,name=idType,proto3" json:"idType,omitempty"`
-	IdValue             string `protobuf:"bytes,3,opt,name=idValue,proto3" json:"idValue,omitempty"`
-	KeyShare            string `protobuf:"bytes,4,opt,name=keyShare,proto3" json:"keyShare,omitempty"`
-	KeyShareIndex       uint64 `protobuf:"varint,5,opt,name=keyShareIndex,proto3" json:"keyShareIndex,omitempty"`
-	ReceivedBlockHeight uint64 `protobuf:"varint,6,opt,name=receivedBlockHeight,proto3" json:"receivedBlockHeight,omitempty"`
+	IdType              string `protobuf:"bytes,2,opt,name=id_type,json=idType,proto3" json:"id_type,omitempty"`
+	IdValue             string `protobuf:"bytes,3,opt,name=id_value,json=idValue,proto3" json:"id_value,omitempty"`
+	KeyShare            string `protobuf:"bytes,4,opt,name=key_share,json=keyShare,proto3" json:"key_share,omitempty"`
+	KeyShareIndex       uint64 `protobuf:"varint,5,opt,name=key_share_index,json=keyShareIndex,proto3" json:"key_share_index,omitempty"`
+	ReceivedBlockHeight uint64 `protobuf:"varint,6,opt,name=received_block_height,json=receivedBlockHeight,proto3" json:"received_block_height,omitempty"`
 	Success             bool   `protobuf:"varint,7,opt,name=success,proto3" json:"success,omitempty"`
-	ErrorMessage        string `protobuf:"bytes,8,opt,name=errorMessage,proto3" json:"errorMessage,omitempty"`
+	ErrorMessage        string `protobuf:"bytes,8,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
 }
 
-func (m *MsgCreateGeneralKeyShareResponse) Reset()         { *m = MsgCreateGeneralKeyShareResponse{} }
-func (m *MsgCreateGeneralKeyShareResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateGeneralKeyShareResponse) ProtoMessage()    {}
-func (*MsgCreateGeneralKeyShareResponse) Descriptor() ([]byte, []int) {
+func (m *MsgSubmitGeneralKeyShareResponse) Reset()         { *m = MsgSubmitGeneralKeyShareResponse{} }
+func (m *MsgSubmitGeneralKeyShareResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgSubmitGeneralKeyShareResponse) ProtoMessage()    {}
+func (*MsgSubmitGeneralKeyShareResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_1f96ac6a55f1845c, []int{19}
 }
-func (m *MsgCreateGeneralKeyShareResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgSubmitGeneralKeyShareResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateGeneralKeyShareResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgSubmitGeneralKeyShareResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateGeneralKeyShareResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgSubmitGeneralKeyShareResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1081,81 +1106,82 @@ func (m *MsgCreateGeneralKeyShareResponse) XXX_Marshal(b []byte, deterministic b
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateGeneralKeyShareResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateGeneralKeyShareResponse.Merge(m, src)
+func (m *MsgSubmitGeneralKeyShareResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSubmitGeneralKeyShareResponse.Merge(m, src)
 }
-func (m *MsgCreateGeneralKeyShareResponse) XXX_Size() int {
+func (m *MsgSubmitGeneralKeyShareResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateGeneralKeyShareResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateGeneralKeyShareResponse.DiscardUnknown(m)
+func (m *MsgSubmitGeneralKeyShareResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSubmitGeneralKeyShareResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateGeneralKeyShareResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgSubmitGeneralKeyShareResponse proto.InternalMessageInfo
 
-func (m *MsgCreateGeneralKeyShareResponse) GetCreator() string {
+func (m *MsgSubmitGeneralKeyShareResponse) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgCreateGeneralKeyShareResponse) GetIdType() string {
+func (m *MsgSubmitGeneralKeyShareResponse) GetIdType() string {
 	if m != nil {
 		return m.IdType
 	}
 	return ""
 }
 
-func (m *MsgCreateGeneralKeyShareResponse) GetIdValue() string {
+func (m *MsgSubmitGeneralKeyShareResponse) GetIdValue() string {
 	if m != nil {
 		return m.IdValue
 	}
 	return ""
 }
 
-func (m *MsgCreateGeneralKeyShareResponse) GetKeyShare() string {
+func (m *MsgSubmitGeneralKeyShareResponse) GetKeyShare() string {
 	if m != nil {
 		return m.KeyShare
 	}
 	return ""
 }
 
-func (m *MsgCreateGeneralKeyShareResponse) GetKeyShareIndex() uint64 {
+func (m *MsgSubmitGeneralKeyShareResponse) GetKeyShareIndex() uint64 {
 	if m != nil {
 		return m.KeyShareIndex
 	}
 	return 0
 }
 
-func (m *MsgCreateGeneralKeyShareResponse) GetReceivedBlockHeight() uint64 {
+func (m *MsgSubmitGeneralKeyShareResponse) GetReceivedBlockHeight() uint64 {
 	if m != nil {
 		return m.ReceivedBlockHeight
 	}
 	return 0
 }
 
-func (m *MsgCreateGeneralKeyShareResponse) GetSuccess() bool {
+func (m *MsgSubmitGeneralKeyShareResponse) GetSuccess() bool {
 	if m != nil {
 		return m.Success
 	}
 	return false
 }
 
-func (m *MsgCreateGeneralKeyShareResponse) GetErrorMessage() string {
+func (m *MsgSubmitGeneralKeyShareResponse) GetErrorMessage() string {
 	if m != nil {
 		return m.ErrorMessage
 	}
 	return ""
 }
 
+// MsgSubmitEncryptedKeyshare is the Msg/SubmitEncryptedKeyshare request type.
 type MsgSubmitEncryptedKeyshare struct {
 	Creator             string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Identity            string `protobuf:"bytes,2,opt,name=identity,proto3" json:"identity,omitempty"`
-	EncryptedKeyshare   string `protobuf:"bytes,3,opt,name=encryptedKeyshare,proto3" json:"encryptedKeyshare,omitempty"`
-	KeyShareIndex       uint64 `protobuf:"varint,4,opt,name=keyShareIndex,proto3" json:"keyShareIndex,omitempty"`
-	ReceivedTimestamp   uint64 `protobuf:"varint,5,opt,name=receivedTimestamp,proto3" json:"receivedTimestamp,omitempty"`
-	ReceivedBlockHeight uint64 `protobuf:"varint,6,opt,name=receivedBlockHeight,proto3" json:"receivedBlockHeight,omitempty"`
+	EncryptedKeyshare   string `protobuf:"bytes,3,opt,name=encrypted_keyshare,json=encryptedKeyshare,proto3" json:"encrypted_keyshare,omitempty"`
+	KeyShareIndex       uint64 `protobuf:"varint,4,opt,name=key_share_index,json=keyShareIndex,proto3" json:"key_share_index,omitempty"`
+	ReceivedTimestamp   uint64 `protobuf:"varint,5,opt,name=received_timestamp,json=receivedTimestamp,proto3" json:"received_timestamp,omitempty"`
+	ReceivedBlockHeight uint64 `protobuf:"varint,6,opt,name=received_block_height,json=receivedBlockHeight,proto3" json:"received_block_height,omitempty"`
 	Requester           string `protobuf:"bytes,7,opt,name=requester,proto3" json:"requester,omitempty"`
 }
 
@@ -1241,6 +1267,8 @@ func (m *MsgSubmitEncryptedKeyshare) GetRequester() string {
 	return ""
 }
 
+// MsgSubmitEncryptedKeyshareResponse defines the response structure for
+// executing a MsgSubmitEncryptedKeyshare message.
 type MsgSubmitEncryptedKeyshareResponse struct {
 }
 
@@ -1296,8 +1324,8 @@ func init() {
 	proto.RegisterType((*MsgUpdateAuthorizedAddressResponse)(nil), "fairyring.keyshare.MsgUpdateAuthorizedAddressResponse")
 	proto.RegisterType((*MsgDeleteAuthorizedAddress)(nil), "fairyring.keyshare.MsgDeleteAuthorizedAddress")
 	proto.RegisterType((*MsgDeleteAuthorizedAddressResponse)(nil), "fairyring.keyshare.MsgDeleteAuthorizedAddressResponse")
-	proto.RegisterType((*MsgCreateGeneralKeyShare)(nil), "fairyring.keyshare.MsgCreateGeneralKeyShare")
-	proto.RegisterType((*MsgCreateGeneralKeyShareResponse)(nil), "fairyring.keyshare.MsgCreateGeneralKeyShareResponse")
+	proto.RegisterType((*MsgSubmitGeneralKeyShare)(nil), "fairyring.keyshare.MsgSubmitGeneralKeyShare")
+	proto.RegisterType((*MsgSubmitGeneralKeyShareResponse)(nil), "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse")
 	proto.RegisterType((*MsgSubmitEncryptedKeyshare)(nil), "fairyring.keyshare.MsgSubmitEncryptedKeyshare")
 	proto.RegisterType((*MsgSubmitEncryptedKeyshareResponse)(nil), "fairyring.keyshare.MsgSubmitEncryptedKeyshareResponse")
 }
@@ -1305,79 +1333,82 @@ func init() {
 func init() { proto.RegisterFile("fairyring/keyshare/tx.proto", fileDescriptor_1f96ac6a55f1845c) }
 
 var fileDescriptor_1f96ac6a55f1845c = []byte{
-	// 1145 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe4, 0x58, 0xcf, 0x6f, 0x1b, 0xc5,
-	0x17, 0xcf, 0xda, 0x89, 0x13, 0xbf, 0xe4, 0xab, 0xaf, 0xb2, 0x4d, 0x13, 0x77, 0x09, 0x8e, 0x31,
-	0x41, 0x32, 0xa1, 0xd8, 0x6d, 0x8a, 0x0a, 0x8a, 0x04, 0xa2, 0xa1, 0xfc, 0xa8, 0x82, 0xd5, 0x6a,
-	0xd3, 0xf6, 0x80, 0x90, 0xd2, 0xb5, 0xf7, 0x75, 0xb3, 0x8a, 0xd7, 0x6b, 0x66, 0x66, 0xa3, 0x18,
-	0x2e, 0x85, 0x03, 0x20, 0x4e, 0x9c, 0xb8, 0x70, 0xe1, 0xc8, 0x31, 0x02, 0xfe, 0x01, 0x6e, 0x3d,
-	0x56, 0x9c, 0x38, 0x21, 0x94, 0x1c, 0xf2, 0x6f, 0xa0, 0xdd, 0x9d, 0x5d, 0xaf, 0xd7, 0x33, 0xf6,
-	0x1a, 0x09, 0x71, 0xe0, 0xd2, 0xfa, 0xbd, 0xf9, 0xec, 0x9b, 0xcf, 0x7c, 0xe6, 0xed, 0x7b, 0x6f,
-	0x03, 0xcf, 0x3d, 0x36, 0x6c, 0xd2, 0x27, 0x76, 0xd7, 0x6a, 0x1c, 0x61, 0x9f, 0x1e, 0x1a, 0x04,
-	0x1b, 0xec, 0xa4, 0xde, 0x23, 0x2e, 0x73, 0x55, 0x35, 0x5e, 0xac, 0x47, 0x8b, 0xda, 0xb2, 0xe1,
-	0xd8, 0x5d, 0xb7, 0x11, 0xfc, 0x1b, 0xc2, 0xb4, 0xb5, 0xb6, 0x4b, 0x1d, 0x97, 0x36, 0x1c, 0x6a,
-	0x35, 0x8e, 0xaf, 0xfb, 0xff, 0xf1, 0x85, 0x2b, 0xe1, 0xc2, 0x41, 0x60, 0x35, 0x42, 0x83, 0x2f,
-	0xad, 0x58, 0xae, 0xe5, 0x86, 0x7e, 0xff, 0x17, 0xf7, 0x6e, 0x08, 0xd8, 0xf4, 0x0c, 0x62, 0x38,
-	0xd1, 0x63, 0x5b, 0x02, 0x80, 0x85, 0x5d, 0x24, 0x46, 0xe7, 0xe0, 0x08, 0xfb, 0x07, 0x81, 0x87,
-	0x63, 0x2b, 0xa2, 0x60, 0x5e, 0xcb, 0xc7, 0x85, 0x88, 0xea, 0xaf, 0x0a, 0xfc, 0xbf, 0x49, 0xad,
-	0x07, 0x3d, 0xd3, 0x60, 0x78, 0x2f, 0xd8, 0x47, 0xbd, 0x09, 0x45, 0xc3, 0x63, 0x87, 0x2e, 0xb1,
-	0x59, 0xbf, 0xa4, 0x54, 0x94, 0x5a, 0x71, 0xb7, 0xf4, 0xdb, 0x2f, 0xaf, 0xae, 0x70, 0xf6, 0xb7,
-	0x4c, 0x93, 0x20, 0xa5, 0xfb, 0xcc, 0x8f, 0xab, 0x0f, 0xa0, 0xea, 0x9b, 0x50, 0x08, 0x99, 0x96,
-	0x72, 0x15, 0xa5, 0xb6, 0xb8, 0xad, 0xd5, 0x47, 0xc5, 0xab, 0x87, 0x7b, 0xec, 0x16, 0x9f, 0xfe,
-	0xb1, 0x31, 0xf3, 0xe3, 0xc5, 0xe9, 0x96, 0xa2, 0xf3, 0x87, 0x76, 0x5e, 0xff, 0xe2, 0xe2, 0x74,
-	0x6b, 0x10, 0xee, 0x9b, 0x8b, 0xd3, 0xad, 0xcd, 0x01, 0xff, 0x93, 0xc1, 0x09, 0x52, 0x7c, 0xab,
-	0x57, 0x60, 0x2d, 0xe5, 0xd2, 0x91, 0xf6, 0xdc, 0x2e, 0xc5, 0xea, 0x5b, 0xb0, 0xd2, 0xa4, 0x96,
-	0x8e, 0x96, 0x4d, 0x19, 0x92, 0x87, 0x46, 0xc7, 0x36, 0x0d, 0xe6, 0x12, 0xb5, 0x04, 0xf3, 0x6d,
-	0x82, 0xfe, 0xcf, 0xf0, 0x80, 0x7a, 0x64, 0xee, 0x2c, 0xf9, 0x2c, 0x22, 0xab, 0xfa, 0x06, 0xac,
-	0x8b, 0x9e, 0x8f, 0xe2, 0xcb, 0xe3, 0x54, 0xdf, 0x86, 0xd5, 0x26, 0xb5, 0x6e, 0xe3, 0xdf, 0xdf,
-	0x7b, 0x07, 0xca, 0xe2, 0x08, 0x19, 0x76, 0xff, 0x3e, 0xbc, 0xd6, 0x7d, 0xec, 0x9a, 0x7b, 0x5c,
-	0x36, 0x39, 0xda, 0x5f, 0x71, 0x90, 0x52, 0xc3, 0xc2, 0xe0, 0xe6, 0x8a, 0x7a, 0x64, 0xaa, 0x9b,
-	0xf0, 0xbf, 0x23, 0xec, 0xef, 0xfb, 0xcf, 0xdf, 0xe9, 0x9a, 0x78, 0x52, 0xca, 0x57, 0x94, 0xda,
-	0xac, 0x3e, 0xec, 0x54, 0x2b, 0xb0, 0xd8, 0xea, 0xb8, 0xed, 0xa3, 0x0f, 0xd0, 0xb6, 0x0e, 0x59,
-	0x69, 0x36, 0xc0, 0x24, 0x5d, 0xa9, 0x93, 0x7d, 0x95, 0x0b, 0x6e, 0x2c, 0xc9, 0x6e, 0xf2, 0x99,
-	0x54, 0x0d, 0x16, 0xa2, 0x14, 0xe0, 0x34, 0x63, 0x9b, 0xf3, 0xa4, 0x22, 0x9e, 0x74, 0x0a, 0x9e,
-	0xea, 0x35, 0xb8, 0x44, 0xb0, 0x8d, 0xf6, 0x31, 0x9a, 0xbb, 0x09, 0xe4, 0x5c, 0x80, 0x14, 0x2d,
-	0xf9, 0x7c, 0xa9, 0xd7, 0x6e, 0x23, 0xa5, 0xa5, 0x42, 0x45, 0xa9, 0x2d, 0xe8, 0x91, 0xa9, 0x56,
-	0x61, 0x09, 0x09, 0x71, 0x49, 0x93, 0x4b, 0x3b, 0x1f, 0x70, 0x1e, 0xf2, 0x55, 0xbf, 0xcc, 0xc1,
-	0xe5, 0x26, 0xb5, 0xde, 0xf1, 0x8f, 0x88, 0x1f, 0x1a, 0x0c, 0x29, 0xbb, 0xe7, 0xb5, 0xf6, 0xb0,
-	0x3f, 0x46, 0x87, 0x75, 0x28, 0xf6, 0xbc, 0x56, 0xc7, 0x6e, 0xef, 0x61, 0x9f, 0x0b, 0x31, 0x70,
-	0xf8, 0x67, 0x6c, 0xbb, 0x8e, 0x63, 0x33, 0x07, 0xbb, 0x8c, 0x96, 0xf2, 0x95, 0x7c, 0xad, 0xa8,
-	0x27, 0x5d, 0x6a, 0x1d, 0xd4, 0xae, 0xe7, 0xb4, 0x90, 0xdc, 0x7d, 0x1c, 0xa7, 0x14, 0xe5, 0x62,
-	0x08, 0x56, 0xd4, 0x07, 0xa0, 0x62, 0xb7, 0x4d, 0xfa, 0x3d, 0x86, 0xfe, 0x75, 0x05, 0xf7, 0x4e,
-	0x4b, 0x73, 0x95, 0x7c, 0x6d, 0x71, 0xfb, 0x25, 0xd1, 0x2b, 0xfe, 0x6e, 0x1a, 0xad, 0x0b, 0x02,
-	0xa4, 0x52, 0x62, 0x03, 0x9e, 0x17, 0xea, 0x10, 0xbf, 0xc9, 0x5f, 0x87, 0x39, 0x73, 0xf7, 0x18,
-	0x09, 0xb1, 0xcd, 0xff, 0xb4, 0x56, 0x2f, 0xc0, 0x86, 0x44, 0x89, 0x58, 0xad, 0x8f, 0x41, 0x8b,
-	0xe5, 0xbc, 0x15, 0x56, 0xd4, 0x4f, 0xd1, 0xe4, 0x95, 0x5b, 0x5d, 0x85, 0x02, 0x33, 0x88, 0x85,
-	0x8c, 0xcb, 0xc5, 0xad, 0xa4, 0x8e, 0xb9, 0x71, 0x95, 0x69, 0x13, 0xaa, 0xf2, 0xe8, 0x31, 0x87,
-	0x27, 0x4a, 0x40, 0x22, 0xac, 0xcb, 0xd9, 0x49, 0x54, 0x61, 0xc9, 0xa6, 0x03, 0x78, 0xc0, 0x64,
-	0x41, 0x1f, 0xf2, 0x25, 0x89, 0xe6, 0x27, 0x13, 0x95, 0x30, 0x48, 0x89, 0x75, 0x1b, 0x3b, 0xf8,
-	0xcf, 0x89, 0x25, 0x89, 0x1e, 0x73, 0xf8, 0x2e, 0x07, 0xa5, 0x58, 0xd3, 0xf7, 0xc3, 0x76, 0x1e,
-	0xdd, 0xff, 0x98, 0xfc, 0x5e, 0x85, 0x82, 0x6d, 0xde, 0xef, 0xf7, 0xa2, 0x8a, 0xc8, 0x2d, 0xff,
-	0x09, 0xdb, 0x7c, 0x68, 0x74, 0x3c, 0x8c, 0x04, 0xe2, 0x26, 0xaf, 0xa2, 0x41, 0xdc, 0x20, 0x8f,
-	0xc3, 0x2a, 0xba, 0x9f, 0xa8, 0xa2, 0x89, 0x6a, 0x3f, 0x27, 0xaa, 0xf6, 0x57, 0x61, 0x39, 0x2a,
-	0x84, 0xf7, 0x6d, 0x07, 0x29, 0x33, 0x9c, 0x5e, 0x50, 0xfb, 0x66, 0xf5, 0xd1, 0x05, 0x59, 0x45,
-	0x9d, 0x97, 0x56, 0xd4, 0x94, 0x7c, 0x3f, 0xe4, 0xa0, 0x22, 0x13, 0x26, 0x43, 0xd3, 0xf8, 0x37,
-	0x04, 0x92, 0x1c, 0xb9, 0x90, 0xa9, 0x89, 0xcc, 0x8f, 0x6f, 0x22, 0x0b, 0x82, 0x26, 0xf2, 0x53,
-	0x2e, 0x48, 0xe0, 0x7d, 0xaf, 0xe5, 0xd8, 0x2c, 0x59, 0x50, 0x26, 0xf5, 0x7d, 0x0d, 0x16, 0x6c,
-	0x13, 0xbb, 0xcc, 0x9f, 0xf3, 0x78, 0x47, 0x8d, 0x6c, 0xff, 0x96, 0x31, 0x1d, 0x8a, 0x4b, 0x35,
-	0xba, 0x30, 0x2a, 0xcc, 0x6c, 0xe6, 0xcc, 0x99, 0x9b, 0x32, 0x73, 0xc6, 0xc8, 0xb8, 0x0e, 0x45,
-	0x82, 0x9f, 0x78, 0xe8, 0x4f, 0x4b, 0xbc, 0xdd, 0x0e, 0x1c, 0xc2, 0xd7, 0x52, 0xa2, 0x59, 0x94,
-	0x58, 0xdb, 0x3f, 0x03, 0xe4, 0x9b, 0xd4, 0x52, 0x1f, 0xc1, 0xd2, 0xd0, 0x88, 0xfc, 0xa2, 0xa8,
-	0x96, 0xa7, 0x86, 0x50, 0xed, 0x95, 0x0c, 0xa0, 0x38, 0x85, 0x5d, 0x58, 0x1e, 0x1d, 0x15, 0x6b,
-	0x92, 0x08, 0x23, 0x48, 0xed, 0x5a, 0x56, 0x64, 0xbc, 0xa1, 0x07, 0x97, 0x44, 0xd3, 0xe9, 0x96,
-	0x24, 0x90, 0x00, 0xab, 0x6d, 0x67, 0xc7, 0xc6, 0xdb, 0x3e, 0x82, 0xa5, 0xa1, 0xa9, 0x54, 0xa6,
-	0x64, 0x12, 0x24, 0x55, 0x52, 0x38, 0x41, 0x12, 0x50, 0x05, 0xf3, 0xd4, 0xcb, 0x92, 0x10, 0xa3,
-	0x50, 0xed, 0x7a, 0x66, 0x68, 0xbc, 0xe7, 0x09, 0xac, 0x08, 0x27, 0x13, 0x19, 0x71, 0x11, 0x58,
-	0xbb, 0x31, 0x05, 0x38, 0xde, 0xf9, 0x73, 0x05, 0xd6, 0x64, 0x7d, 0xbe, 0x3e, 0xf6, 0x20, 0x23,
-	0x78, 0xed, 0xe6, 0x74, 0xf8, 0x21, 0x0e, 0xb2, 0x36, 0x5f, 0x1f, 0xfb, 0x12, 0x64, 0xe7, 0x30,
-	0xa1, 0x89, 0x07, 0x1c, 0x64, 0x2d, 0xbc, 0x2e, 0xcd, 0x53, 0x21, 0x5e, 0xca, 0x61, 0x42, 0x13,
-	0x57, 0x3f, 0x83, 0xcb, 0xe2, 0x06, 0x7e, 0x75, 0xac, 0xb0, 0x29, 0xb4, 0xf6, 0xda, 0x34, 0xe8,
-	0x21, 0x01, 0x64, 0x2d, 0x40, 0x26, 0x80, 0x04, 0x2f, 0x15, 0x60, 0x42, 0xb9, 0xd4, 0xe6, 0x9e,
-	0xf8, 0x5f, 0xf4, 0xbb, 0x77, 0x9e, 0x9e, 0x95, 0x95, 0x67, 0x67, 0x65, 0xe5, 0xcf, 0xb3, 0xb2,
-	0xf2, 0xed, 0x79, 0x79, 0xe6, 0xd9, 0x79, 0x79, 0xe6, 0xf7, 0xf3, 0xf2, 0xcc, 0x47, 0x0d, 0xcb,
-	0x66, 0x87, 0x5e, 0xab, 0xde, 0x76, 0x9d, 0xc6, 0x7b, 0x86, 0x4d, 0x82, 0x6f, 0xaf, 0x86, 0xf0,
-	0x2b, 0x9f, 0xf5, 0x7b, 0x48, 0x5b, 0x85, 0xe0, 0xcf, 0x14, 0x37, 0xfe, 0x0a, 0x00, 0x00, 0xff,
-	0xff, 0xd6, 0x0f, 0xf3, 0x4c, 0xa5, 0x11, 0x00, 0x00,
+	// 1186 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xec, 0x58, 0xcd, 0x6f, 0x1b, 0x45,
+	0x14, 0xcf, 0xda, 0x89, 0x1d, 0xbf, 0xb8, 0x54, 0xd9, 0xba, 0x8d, 0xbb, 0x6d, 0x1d, 0xd7, 0x69,
+	0x91, 0x09, 0xd4, 0x6e, 0x53, 0x54, 0x50, 0x24, 0x10, 0x0d, 0xe5, 0xa3, 0x0a, 0x56, 0xab, 0x4d,
+	0x29, 0x12, 0x42, 0xda, 0xae, 0xbd, 0x2f, 0x9b, 0x51, 0xb2, 0x5e, 0x33, 0x33, 0x1b, 0xc5, 0x70,
+	0xa1, 0x1c, 0xf9, 0x90, 0xf8, 0x0b, 0x7a, 0xee, 0x31, 0x12, 0x1c, 0xb8, 0x72, 0xeb, 0xb1, 0xe2,
+	0xc4, 0x09, 0xa1, 0xe4, 0x90, 0x7f, 0x03, 0xed, 0xa7, 0xbf, 0x66, 0x6c, 0x07, 0x09, 0x71, 0xe1,
+	0xd2, 0xee, 0xbc, 0xf9, 0xcd, 0x7b, 0xbf, 0xf9, 0xed, 0xdb, 0xf7, 0x5e, 0x0c, 0x97, 0xb6, 0x4d,
+	0x42, 0xbb, 0x94, 0xb4, 0xed, 0xfa, 0x2e, 0x76, 0xd9, 0x8e, 0x49, 0xb1, 0xce, 0x0f, 0x6a, 0x1d,
+	0xea, 0x72, 0x57, 0x55, 0x93, 0xcd, 0x5a, 0xbc, 0xa9, 0x2d, 0x9a, 0x0e, 0x69, 0xbb, 0xf5, 0xe0,
+	0xdf, 0x10, 0xa6, 0x2d, 0xb5, 0x5c, 0xe6, 0xb8, 0xac, 0xee, 0x30, 0xbb, 0xbe, 0x7f, 0xcb, 0xff,
+	0x2f, 0xda, 0xb8, 0x18, 0x6e, 0x18, 0xc1, 0xaa, 0x1e, 0x2e, 0xa2, 0xad, 0x82, 0xed, 0xda, 0x6e,
+	0x68, 0xf7, 0x9f, 0x22, 0xeb, 0xb2, 0x80, 0x4d, 0xc7, 0xa4, 0xa6, 0x13, 0x1f, 0x2b, 0x8b, 0x00,
+	0x5e, 0xd3, 0xd8, 0xc5, 0x6e, 0x88, 0xa8, 0xfc, 0xa6, 0xc0, 0xd9, 0x06, 0xb3, 0x3f, 0xed, 0x58,
+	0x26, 0xc7, 0x87, 0xc1, 0x59, 0xf5, 0x0e, 0xe4, 0x4c, 0x8f, 0xef, 0xb8, 0x94, 0xf0, 0x6e, 0x51,
+	0x29, 0x2b, 0xd5, 0xdc, 0x46, 0xf1, 0xf7, 0x5f, 0x6e, 0x14, 0x22, 0x46, 0x77, 0x2d, 0x8b, 0x22,
+	0x63, 0x5b, 0xdc, 0xf7, 0xab, 0xf7, 0xa0, 0xea, 0x3b, 0x90, 0x09, 0xa3, 0x17, 0x53, 0x65, 0xa5,
+	0xba, 0xb0, 0xa6, 0xd5, 0x46, 0x05, 0xa9, 0x85, 0x31, 0x36, 0x72, 0x2f, 0xfe, 0x5c, 0x9e, 0x79,
+	0x7e, 0x72, 0xb8, 0xaa, 0xe8, 0xd1, 0xa1, 0xf5, 0xb7, 0xbe, 0x3d, 0x39, 0x5c, 0xed, 0xb9, 0xfb,
+	0xee, 0xe4, 0x70, 0xf5, 0x5a, 0x8f, 0xff, 0x41, 0xef, 0x06, 0x43, 0x7c, 0x2b, 0x17, 0x61, 0x69,
+	0xc8, 0xa4, 0x23, 0xeb, 0xb8, 0x6d, 0x86, 0x95, 0x77, 0xa1, 0xd0, 0x60, 0xb6, 0x8e, 0x36, 0x61,
+	0x1c, 0xe9, 0x63, 0x73, 0x8f, 0x58, 0x26, 0x77, 0xa9, 0x5a, 0x84, 0x6c, 0x8b, 0xa2, 0xff, 0x18,
+	0x5e, 0x50, 0x8f, 0x97, 0xeb, 0x79, 0x9f, 0x45, 0xbc, 0xaa, 0xbc, 0x0d, 0x97, 0x45, 0xe7, 0x63,
+	0xff, 0x72, 0x3f, 0x95, 0xf7, 0xe0, 0x42, 0x83, 0xd9, 0xf7, 0xf0, 0x9f, 0xc7, 0x5e, 0x87, 0x92,
+	0xd8, 0xc3, 0x14, 0xd1, 0x9f, 0x85, 0xaf, 0x75, 0x0b, 0xdb, 0xd6, 0x66, 0x24, 0x9b, 0x1c, 0xed,
+	0xef, 0x38, 0xc8, 0x98, 0x69, 0x63, 0xf0, 0xe6, 0x72, 0x7a, 0xbc, 0x54, 0x5f, 0x85, 0xb3, 0xbb,
+	0xd8, 0x35, 0x02, 0x07, 0x06, 0x69, 0x5b, 0x78, 0x50, 0x4c, 0x97, 0x95, 0xea, 0xac, 0x7e, 0x66,
+	0x17, 0xbb, 0x5b, 0xbe, 0xf5, 0xbe, 0x6f, 0x54, 0xaf, 0x42, 0xbe, 0xb9, 0xe7, 0xb6, 0x76, 0x8d,
+	0x1d, 0x24, 0xf6, 0x0e, 0x2f, 0xce, 0x06, 0xa0, 0x85, 0xc0, 0xf6, 0x71, 0x60, 0x1a, 0xba, 0xdc,
+	0x0f, 0xa9, 0xe0, 0xa5, 0xf5, 0x13, 0x9c, 0x7c, 0x2d, 0x55, 0x83, 0xf9, 0x38, 0x0b, 0x22, 0xa6,
+	0xc9, 0x5a, 0xbd, 0x0e, 0xaf, 0xc4, 0xcf, 0x23, 0x4c, 0xd9, 0x69, 0x98, 0xaa, 0x6b, 0x70, 0x9e,
+	0x62, 0x0b, 0xc9, 0x3e, 0x5a, 0xc6, 0x00, 0x76, 0x2e, 0xc0, 0x9e, 0x8b, 0x37, 0x37, 0xfa, 0xce,
+	0x14, 0x21, 0xcb, 0xbc, 0x56, 0x0b, 0x19, 0x2b, 0x66, 0xca, 0x4a, 0x75, 0x5e, 0x8f, 0x97, 0xea,
+	0x0a, 0x9c, 0x41, 0x4a, 0x5d, 0x6a, 0xc4, 0x12, 0x67, 0x03, 0xe2, 0xf9, 0xc0, 0xd8, 0x08, 0x6d,
+	0x95, 0xef, 0x53, 0x70, 0xbe, 0xc1, 0xec, 0xf7, 0xfd, 0x7b, 0xe2, 0x27, 0x26, 0x47, 0xc6, 0x1f,
+	0x7a, 0xcd, 0x4d, 0xec, 0x8e, 0x11, 0xe3, 0x0a, 0x40, 0xc7, 0x6b, 0xee, 0x91, 0x96, 0xff, 0x39,
+	0x47, 0x72, 0xe4, 0x42, 0x8b, 0x7f, 0xb0, 0x0c, 0x0b, 0x2d, 0xd7, 0x71, 0x08, 0x77, 0xb0, 0xcd,
+	0x59, 0x31, 0x5d, 0x4e, 0x57, 0x73, 0x7a, 0xbf, 0x49, 0xbd, 0x09, 0x85, 0xb6, 0xe7, 0x34, 0x91,
+	0x1a, 0xee, 0xb6, 0xb1, 0x1f, 0x67, 0x17, 0x8b, 0x24, 0x51, 0xc3, 0xbd, 0x07, 0xdb, 0x49, 0xde,
+	0x31, 0xf5, 0x33, 0x28, 0x60, 0xbb, 0x45, 0xbb, 0x1d, 0x8e, 0x96, 0x91, 0x24, 0x06, 0x2b, 0xce,
+	0x95, 0xd3, 0xd5, 0x85, 0xb5, 0xeb, 0xa2, 0xef, 0xfd, 0x83, 0x18, 0xbf, 0x19, 0x25, 0x8c, 0xae,
+	0xe2, 0xb0, 0x89, 0x0d, 0x25, 0xc7, 0x32, 0x5c, 0x11, 0x8a, 0x91, 0x7c, 0xd6, 0x3f, 0x86, 0xd9,
+	0xf3, 0x60, 0x1f, 0x29, 0x25, 0xd6, 0xff, 0x82, 0x5d, 0x85, 0x65, 0x89, 0x1c, 0x89, 0x64, 0x5f,
+	0x80, 0x96, 0x68, 0x7a, 0x37, 0xac, 0xb1, 0x5f, 0xa1, 0x15, 0xd5, 0x72, 0xf5, 0x02, 0x64, 0xb8,
+	0x49, 0x6d, 0xe4, 0x91, 0x66, 0xd1, 0xaa, 0x5f, 0xcc, 0xd4, 0xb8, 0x5a, 0x75, 0x0d, 0x2a, 0x72,
+	0xef, 0x09, 0x87, 0xa7, 0x4a, 0x40, 0x22, 0xac, 0xd4, 0xd3, 0x93, 0x58, 0x81, 0x33, 0x84, 0x19,
+	0x66, 0x82, 0x0f, 0xa8, 0xcc, 0xeb, 0x79, 0xc2, 0x7a, 0x3e, 0xfa, 0x99, 0xa6, 0x27, 0x33, 0x95,
+	0x50, 0x18, 0x52, 0xeb, 0x1e, 0xee, 0xe1, 0xbf, 0xa7, 0x96, 0xc4, 0x7b, 0xc2, 0xe1, 0x59, 0x0a,
+	0x8a, 0x7e, 0x89, 0xf4, 0x9a, 0x0e, 0xe1, 0x1f, 0x61, 0x1b, 0xa9, 0xb9, 0x17, 0x27, 0xc0, 0x98,
+	0x2c, 0x5f, 0x82, 0x2c, 0xb1, 0x0c, 0xde, 0xed, 0xc4, 0x25, 0x32, 0x43, 0xac, 0x47, 0xdd, 0x0e,
+	0xaa, 0x17, 0x61, 0x9e, 0x58, 0x7e, 0xda, 0x7a, 0x18, 0x4b, 0x44, 0xac, 0xc7, 0xfe, 0x52, 0xbd,
+	0x04, 0xb9, 0x24, 0x39, 0x83, 0x6c, 0x0e, 0x0b, 0x6b, 0x18, 0x4a, 0xd0, 0x03, 0xe6, 0x44, 0x3d,
+	0xe0, 0x06, 0xa8, 0x49, 0xd9, 0xe4, 0xc4, 0x41, 0xc6, 0x4d, 0xa7, 0x13, 0x54, 0xc3, 0x59, 0x7d,
+	0x31, 0xde, 0x79, 0x14, 0x6f, 0xc8, 0xab, 0x6c, 0x56, 0x5a, 0x65, 0x87, 0x64, 0x7c, 0x9e, 0x82,
+	0xb2, 0x4c, 0xa0, 0x29, 0x9a, 0xc9, 0x7f, 0x26, 0x94, 0xf4, 0xe6, 0x99, 0xa9, 0xfa, 0x4b, 0x76,
+	0x42, 0x7f, 0x99, 0x17, 0xf4, 0x97, 0x5f, 0x53, 0x41, 0x42, 0x87, 0x52, 0xf5, 0x57, 0x98, 0x49,
+	0xa3, 0x81, 0xe6, 0x6b, 0x81, 0x6d, 0xee, 0x8f, 0x82, 0x51, 0xc7, 0x8d, 0xd7, 0xfe, 0x0b, 0x1f,
+	0x28, 0x6e, 0xa1, 0x2a, 0xa1, 0x62, 0x8b, 0x38, 0x12, 0x44, 0x20, 0xcf, 0xec, 0xf4, 0x79, 0x34,
+	0x77, 0xea, 0x3c, 0x1a, 0xa3, 0xe6, 0x65, 0xc8, 0x51, 0xfc, 0xd2, 0x43, 0x7f, 0xac, 0x8a, 0xfa,
+	0x71, 0xcf, 0x20, 0xfc, 0x58, 0x25, 0xca, 0xc5, 0x69, 0xb6, 0xf6, 0x33, 0x40, 0xba, 0xc1, 0x6c,
+	0xf5, 0x09, 0xe4, 0x07, 0x66, 0xe9, 0x15, 0x51, 0x89, 0x1f, 0x9a, 0x56, 0xb5, 0xd7, 0xa7, 0x00,
+	0x25, 0x09, 0xed, 0xc2, 0xe2, 0xe8, 0x4c, 0x59, 0x95, 0x78, 0x18, 0x41, 0x6a, 0x37, 0xa7, 0x45,
+	0x26, 0x01, 0x3d, 0x38, 0x27, 0x1a, 0x63, 0x57, 0x25, 0x8e, 0x04, 0x58, 0x6d, 0x6d, 0x7a, 0x6c,
+	0x12, 0xf6, 0x09, 0xe4, 0x07, 0xc6, 0x57, 0x99, 0x92, 0xfd, 0x20, 0xa9, 0x92, 0xc2, 0x39, 0x93,
+	0x82, 0x2a, 0x18, 0xb8, 0x5e, 0x93, 0xb8, 0x18, 0x85, 0x6a, 0xb7, 0xa6, 0x86, 0x26, 0x31, 0x0f,
+	0xa0, 0x20, 0x9c, 0x5a, 0x64, 0xc4, 0x45, 0x60, 0xed, 0xf6, 0x29, 0xc0, 0x49, 0xe4, 0xa7, 0x0a,
+	0x2c, 0xc9, 0xda, 0x7f, 0x6d, 0xec, 0x45, 0x46, 0xf0, 0xda, 0x9d, 0xd3, 0xe1, 0x07, 0x38, 0xc8,
+	0xba, 0x7f, 0x6d, 0xec, 0x47, 0x30, 0x3d, 0x87, 0x09, 0xad, 0x3d, 0xe0, 0x20, 0x6b, 0xec, 0x35,
+	0x69, 0x9e, 0x0a, 0xf1, 0x52, 0x0e, 0x13, 0x5a, 0xbb, 0xfa, 0x35, 0x9c, 0x17, 0xb7, 0xf5, 0x37,
+	0x64, 0xf9, 0x2b, 0x42, 0x6b, 0x6f, 0x9e, 0x06, 0x3d, 0x20, 0x80, 0xac, 0x11, 0xd4, 0xc6, 0x7a,
+	0x1c, 0xc1, 0x4b, 0x05, 0x98, 0x50, 0x2e, 0xb5, 0xb9, 0x6f, 0xfc, 0x3f, 0xfd, 0x37, 0xee, 0xbf,
+	0x38, 0x2a, 0x29, 0x2f, 0x8f, 0x4a, 0xca, 0x5f, 0x47, 0x25, 0xe5, 0xa7, 0xe3, 0xd2, 0xcc, 0xcb,
+	0xe3, 0xd2, 0xcc, 0x1f, 0xc7, 0xa5, 0x99, 0xcf, 0xeb, 0x36, 0xe1, 0x3b, 0x5e, 0xb3, 0xd6, 0x72,
+	0x9d, 0xfa, 0x87, 0x26, 0xa1, 0x41, 0x65, 0xaf, 0x0b, 0x7f, 0x0e, 0xf0, 0x3b, 0x38, 0x6b, 0x66,
+	0x82, 0xdf, 0x33, 0x6e, 0xff, 0x1d, 0x00, 0x00, 0xff, 0xff, 0x2b, 0x7b, 0x10, 0xa0, 0xa2, 0x11,
+	0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1395,16 +1426,34 @@ type MsgClient interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
+	// RegisterValidator defines a operation to register validator which
+	// is then eligible to participate in sending keyshares
 	RegisterValidator(ctx context.Context, in *MsgRegisterValidator, opts ...grpc.CallOption) (*MsgRegisterValidatorResponse, error)
+	// DeRegisterValidator defines an operation to de-register
+	// a registered validator
 	DeRegisterValidator(ctx context.Context, in *MsgDeRegisterValidator, opts ...grpc.CallOption) (*MsgDeRegisterValidatorResponse, error)
+	// SendKeyshare defines an operation to submit keyshares
+	// every block from registered validators
 	SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts ...grpc.CallOption) (*MsgSendKeyshareResponse, error)
-	// this line is used by starport scaffolding # proto/tx/rpc
+	// CreateLatestPubKey defines an operation to add a
+	// public key to the chain (can only be done by an authorized address)
 	CreateLatestPubKey(ctx context.Context, in *MsgCreateLatestPubKey, opts ...grpc.CallOption) (*MsgCreateLatestPubKeyResponse, error)
+	// OverrideLatestPubKey defines an operation to override the current active pubkey
 	OverrideLatestPubKey(ctx context.Context, in *MsgOverrideLatestPubKey, opts ...grpc.CallOption) (*MsgOverrideLatestPubKeyResponse, error)
+	// CreateAuthorizedAddress defines an operation to mark an address
+	// as authorized to create and/or update pubkeys on the chain
 	CreateAuthorizedAddress(ctx context.Context, in *MsgCreateAuthorizedAddress, opts ...grpc.CallOption) (*MsgCreateAuthorizedAddressResponse, error)
+	// UpdateAuthorizedAddress defines an operation to update the
+	// list of authorized addresses
 	UpdateAuthorizedAddress(ctx context.Context, in *MsgUpdateAuthorizedAddress, opts ...grpc.CallOption) (*MsgUpdateAuthorizedAddressResponse, error)
+	// DeleteAuthorizedAddress defines an operation to revoke the
+	// authorization of a previously authorized address
 	DeleteAuthorizedAddress(ctx context.Context, in *MsgDeleteAuthorizedAddress, opts ...grpc.CallOption) (*MsgDeleteAuthorizedAddressResponse, error)
-	CreateGeneralKeyShare(ctx context.Context, in *MsgCreateGeneralKeyShare, opts ...grpc.CallOption) (*MsgCreateGeneralKeyShareResponse, error)
+	// SubmitGeneralKeyShare defines an operation to submit a
+	// general keyshare from a registered validator
+	SubmitGeneralKeyShare(ctx context.Context, in *MsgSubmitGeneralKeyShare, opts ...grpc.CallOption) (*MsgSubmitGeneralKeyShareResponse, error)
+	// SubmitEncryptedKeyshare defines an operation to submit
+	// an encrypted keyshare from a registered validator
 	SubmitEncryptedKeyshare(ctx context.Context, in *MsgSubmitEncryptedKeyshare, opts ...grpc.CallOption) (*MsgSubmitEncryptedKeyshareResponse, error)
 }
 
@@ -1497,9 +1546,9 @@ func (c *msgClient) DeleteAuthorizedAddress(ctx context.Context, in *MsgDeleteAu
 	return out, nil
 }
 
-func (c *msgClient) CreateGeneralKeyShare(ctx context.Context, in *MsgCreateGeneralKeyShare, opts ...grpc.CallOption) (*MsgCreateGeneralKeyShareResponse, error) {
-	out := new(MsgCreateGeneralKeyShareResponse)
-	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/CreateGeneralKeyShare", in, out, opts...)
+func (c *msgClient) SubmitGeneralKeyShare(ctx context.Context, in *MsgSubmitGeneralKeyShare, opts ...grpc.CallOption) (*MsgSubmitGeneralKeyShareResponse, error) {
+	out := new(MsgSubmitGeneralKeyShareResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.keyshare.Msg/SubmitGeneralKeyShare", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1520,16 +1569,34 @@ type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
+	// RegisterValidator defines a operation to register validator which
+	// is then eligible to participate in sending keyshares
 	RegisterValidator(context.Context, *MsgRegisterValidator) (*MsgRegisterValidatorResponse, error)
+	// DeRegisterValidator defines an operation to de-register
+	// a registered validator
 	DeRegisterValidator(context.Context, *MsgDeRegisterValidator) (*MsgDeRegisterValidatorResponse, error)
+	// SendKeyshare defines an operation to submit keyshares
+	// every block from registered validators
 	SendKeyshare(context.Context, *MsgSendKeyshare) (*MsgSendKeyshareResponse, error)
-	// this line is used by starport scaffolding # proto/tx/rpc
+	// CreateLatestPubKey defines an operation to add a
+	// public key to the chain (can only be done by an authorized address)
 	CreateLatestPubKey(context.Context, *MsgCreateLatestPubKey) (*MsgCreateLatestPubKeyResponse, error)
+	// OverrideLatestPubKey defines an operation to override the current active pubkey
 	OverrideLatestPubKey(context.Context, *MsgOverrideLatestPubKey) (*MsgOverrideLatestPubKeyResponse, error)
+	// CreateAuthorizedAddress defines an operation to mark an address
+	// as authorized to create and/or update pubkeys on the chain
 	CreateAuthorizedAddress(context.Context, *MsgCreateAuthorizedAddress) (*MsgCreateAuthorizedAddressResponse, error)
+	// UpdateAuthorizedAddress defines an operation to update the
+	// list of authorized addresses
 	UpdateAuthorizedAddress(context.Context, *MsgUpdateAuthorizedAddress) (*MsgUpdateAuthorizedAddressResponse, error)
+	// DeleteAuthorizedAddress defines an operation to revoke the
+	// authorization of a previously authorized address
 	DeleteAuthorizedAddress(context.Context, *MsgDeleteAuthorizedAddress) (*MsgDeleteAuthorizedAddressResponse, error)
-	CreateGeneralKeyShare(context.Context, *MsgCreateGeneralKeyShare) (*MsgCreateGeneralKeyShareResponse, error)
+	// SubmitGeneralKeyShare defines an operation to submit a
+	// general keyshare from a registered validator
+	SubmitGeneralKeyShare(context.Context, *MsgSubmitGeneralKeyShare) (*MsgSubmitGeneralKeyShareResponse, error)
+	// SubmitEncryptedKeyshare defines an operation to submit
+	// an encrypted keyshare from a registered validator
 	SubmitEncryptedKeyshare(context.Context, *MsgSubmitEncryptedKeyshare) (*MsgSubmitEncryptedKeyshareResponse, error)
 }
 
@@ -1564,8 +1631,8 @@ func (*UnimplementedMsgServer) UpdateAuthorizedAddress(ctx context.Context, req 
 func (*UnimplementedMsgServer) DeleteAuthorizedAddress(ctx context.Context, req *MsgDeleteAuthorizedAddress) (*MsgDeleteAuthorizedAddressResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAuthorizedAddress not implemented")
 }
-func (*UnimplementedMsgServer) CreateGeneralKeyShare(ctx context.Context, req *MsgCreateGeneralKeyShare) (*MsgCreateGeneralKeyShareResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateGeneralKeyShare not implemented")
+func (*UnimplementedMsgServer) SubmitGeneralKeyShare(ctx context.Context, req *MsgSubmitGeneralKeyShare) (*MsgSubmitGeneralKeyShareResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitGeneralKeyShare not implemented")
 }
 func (*UnimplementedMsgServer) SubmitEncryptedKeyshare(ctx context.Context, req *MsgSubmitEncryptedKeyshare) (*MsgSubmitEncryptedKeyshareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitEncryptedKeyshare not implemented")
@@ -1737,20 +1804,20 @@ func _Msg_DeleteAuthorizedAddress_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_CreateGeneralKeyShare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateGeneralKeyShare)
+func _Msg_SubmitGeneralKeyShare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSubmitGeneralKeyShare)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).CreateGeneralKeyShare(ctx, in)
+		return srv.(MsgServer).SubmitGeneralKeyShare(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fairyring.keyshare.Msg/CreateGeneralKeyShare",
+		FullMethod: "/fairyring.keyshare.Msg/SubmitGeneralKeyShare",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateGeneralKeyShare(ctx, req.(*MsgCreateGeneralKeyShare))
+		return srv.(MsgServer).SubmitGeneralKeyShare(ctx, req.(*MsgSubmitGeneralKeyShare))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1814,8 +1881,8 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_DeleteAuthorizedAddress_Handler,
 		},
 		{
-			MethodName: "CreateGeneralKeyShare",
-			Handler:    _Msg_CreateGeneralKeyShare_Handler,
+			MethodName: "SubmitGeneralKeyShare",
+			Handler:    _Msg_SubmitGeneralKeyShare_Handler,
 		},
 		{
 			MethodName: "SubmitEncryptedKeyshare",
@@ -2491,7 +2558,7 @@ func (m *MsgDeleteAuthorizedAddressResponse) MarshalToSizedBuffer(dAtA []byte) (
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateGeneralKeyShare) Marshal() (dAtA []byte, err error) {
+func (m *MsgSubmitGeneralKeyShare) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2501,12 +2568,12 @@ func (m *MsgCreateGeneralKeyShare) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateGeneralKeyShare) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgSubmitGeneralKeyShare) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateGeneralKeyShare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgSubmitGeneralKeyShare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2557,7 +2624,7 @@ func (m *MsgCreateGeneralKeyShare) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateGeneralKeyShareResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgSubmitGeneralKeyShareResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2567,12 +2634,12 @@ func (m *MsgCreateGeneralKeyShareResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateGeneralKeyShareResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgSubmitGeneralKeyShareResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateGeneralKeyShareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgSubmitGeneralKeyShareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3030,7 +3097,7 @@ func (m *MsgDeleteAuthorizedAddressResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateGeneralKeyShare) Size() (n int) {
+func (m *MsgSubmitGeneralKeyShare) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3064,7 +3131,7 @@ func (m *MsgCreateGeneralKeyShare) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateGeneralKeyShareResponse) Size() (n int) {
+func (m *MsgSubmitGeneralKeyShareResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -5029,7 +5096,7 @@ func (m *MsgDeleteAuthorizedAddressResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateGeneralKeyShare) Unmarshal(dAtA []byte) error {
+func (m *MsgSubmitGeneralKeyShare) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5052,10 +5119,10 @@ func (m *MsgCreateGeneralKeyShare) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateGeneralKeyShare: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgSubmitGeneralKeyShare: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateGeneralKeyShare: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgSubmitGeneralKeyShare: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -5264,7 +5331,7 @@ func (m *MsgCreateGeneralKeyShare) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateGeneralKeyShareResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgSubmitGeneralKeyShareResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5287,10 +5354,10 @@ func (m *MsgCreateGeneralKeyShareResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateGeneralKeyShareResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgSubmitGeneralKeyShareResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateGeneralKeyShareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgSubmitGeneralKeyShareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

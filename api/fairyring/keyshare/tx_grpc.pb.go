@@ -28,7 +28,7 @@ const (
 	Msg_CreateAuthorizedAddress_FullMethodName = "/fairyring.keyshare.Msg/CreateAuthorizedAddress"
 	Msg_UpdateAuthorizedAddress_FullMethodName = "/fairyring.keyshare.Msg/UpdateAuthorizedAddress"
 	Msg_DeleteAuthorizedAddress_FullMethodName = "/fairyring.keyshare.Msg/DeleteAuthorizedAddress"
-	Msg_CreateGeneralKeyShare_FullMethodName   = "/fairyring.keyshare.Msg/CreateGeneralKeyShare"
+	Msg_SubmitGeneralKeyShare_FullMethodName   = "/fairyring.keyshare.Msg/SubmitGeneralKeyShare"
 	Msg_SubmitEncryptedKeyshare_FullMethodName = "/fairyring.keyshare.Msg/SubmitEncryptedKeyshare"
 )
 
@@ -39,16 +39,34 @@ type MsgClient interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
+	// RegisterValidator defines a operation to register validator which
+	// is then eligible to participate in sending keyshares
 	RegisterValidator(ctx context.Context, in *MsgRegisterValidator, opts ...grpc.CallOption) (*MsgRegisterValidatorResponse, error)
+	// DeRegisterValidator defines an operation to de-register
+	// a registered validator
 	DeRegisterValidator(ctx context.Context, in *MsgDeRegisterValidator, opts ...grpc.CallOption) (*MsgDeRegisterValidatorResponse, error)
+	// SendKeyshare defines an operation to submit keyshares
+	// every block from registered validators
 	SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts ...grpc.CallOption) (*MsgSendKeyshareResponse, error)
-	// this line is used by starport scaffolding # proto/tx/rpc
+	// CreateLatestPubKey defines an operation to add a
+	// public key to the chain (can only be done by an authorized address)
 	CreateLatestPubKey(ctx context.Context, in *MsgCreateLatestPubKey, opts ...grpc.CallOption) (*MsgCreateLatestPubKeyResponse, error)
+	// OverrideLatestPubKey defines an operation to override the current active pubkey
 	OverrideLatestPubKey(ctx context.Context, in *MsgOverrideLatestPubKey, opts ...grpc.CallOption) (*MsgOverrideLatestPubKeyResponse, error)
+	// CreateAuthorizedAddress defines an operation to mark an address
+	// as authorized to create and/or update pubkeys on the chain
 	CreateAuthorizedAddress(ctx context.Context, in *MsgCreateAuthorizedAddress, opts ...grpc.CallOption) (*MsgCreateAuthorizedAddressResponse, error)
+	// UpdateAuthorizedAddress defines an operation to update the
+	// list of authorized addresses
 	UpdateAuthorizedAddress(ctx context.Context, in *MsgUpdateAuthorizedAddress, opts ...grpc.CallOption) (*MsgUpdateAuthorizedAddressResponse, error)
+	// DeleteAuthorizedAddress defines an operation to revoke the
+	// authorization of a previously authorized address
 	DeleteAuthorizedAddress(ctx context.Context, in *MsgDeleteAuthorizedAddress, opts ...grpc.CallOption) (*MsgDeleteAuthorizedAddressResponse, error)
-	CreateGeneralKeyShare(ctx context.Context, in *MsgCreateGeneralKeyShare, opts ...grpc.CallOption) (*MsgCreateGeneralKeyShareResponse, error)
+	// SubmitGeneralKeyShare defines an operation to submit a
+	// general keyshare from a registered validator
+	SubmitGeneralKeyShare(ctx context.Context, in *MsgSubmitGeneralKeyShare, opts ...grpc.CallOption) (*MsgSubmitGeneralKeyShareResponse, error)
+	// SubmitEncryptedKeyshare defines an operation to submit
+	// an encrypted keyshare from a registered validator
 	SubmitEncryptedKeyshare(ctx context.Context, in *MsgSubmitEncryptedKeyshare, opts ...grpc.CallOption) (*MsgSubmitEncryptedKeyshareResponse, error)
 }
 
@@ -141,9 +159,9 @@ func (c *msgClient) DeleteAuthorizedAddress(ctx context.Context, in *MsgDeleteAu
 	return out, nil
 }
 
-func (c *msgClient) CreateGeneralKeyShare(ctx context.Context, in *MsgCreateGeneralKeyShare, opts ...grpc.CallOption) (*MsgCreateGeneralKeyShareResponse, error) {
-	out := new(MsgCreateGeneralKeyShareResponse)
-	err := c.cc.Invoke(ctx, Msg_CreateGeneralKeyShare_FullMethodName, in, out, opts...)
+func (c *msgClient) SubmitGeneralKeyShare(ctx context.Context, in *MsgSubmitGeneralKeyShare, opts ...grpc.CallOption) (*MsgSubmitGeneralKeyShareResponse, error) {
+	out := new(MsgSubmitGeneralKeyShareResponse)
+	err := c.cc.Invoke(ctx, Msg_SubmitGeneralKeyShare_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -166,16 +184,34 @@ type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
+	// RegisterValidator defines a operation to register validator which
+	// is then eligible to participate in sending keyshares
 	RegisterValidator(context.Context, *MsgRegisterValidator) (*MsgRegisterValidatorResponse, error)
+	// DeRegisterValidator defines an operation to de-register
+	// a registered validator
 	DeRegisterValidator(context.Context, *MsgDeRegisterValidator) (*MsgDeRegisterValidatorResponse, error)
+	// SendKeyshare defines an operation to submit keyshares
+	// every block from registered validators
 	SendKeyshare(context.Context, *MsgSendKeyshare) (*MsgSendKeyshareResponse, error)
-	// this line is used by starport scaffolding # proto/tx/rpc
+	// CreateLatestPubKey defines an operation to add a
+	// public key to the chain (can only be done by an authorized address)
 	CreateLatestPubKey(context.Context, *MsgCreateLatestPubKey) (*MsgCreateLatestPubKeyResponse, error)
+	// OverrideLatestPubKey defines an operation to override the current active pubkey
 	OverrideLatestPubKey(context.Context, *MsgOverrideLatestPubKey) (*MsgOverrideLatestPubKeyResponse, error)
+	// CreateAuthorizedAddress defines an operation to mark an address
+	// as authorized to create and/or update pubkeys on the chain
 	CreateAuthorizedAddress(context.Context, *MsgCreateAuthorizedAddress) (*MsgCreateAuthorizedAddressResponse, error)
+	// UpdateAuthorizedAddress defines an operation to update the
+	// list of authorized addresses
 	UpdateAuthorizedAddress(context.Context, *MsgUpdateAuthorizedAddress) (*MsgUpdateAuthorizedAddressResponse, error)
+	// DeleteAuthorizedAddress defines an operation to revoke the
+	// authorization of a previously authorized address
 	DeleteAuthorizedAddress(context.Context, *MsgDeleteAuthorizedAddress) (*MsgDeleteAuthorizedAddressResponse, error)
-	CreateGeneralKeyShare(context.Context, *MsgCreateGeneralKeyShare) (*MsgCreateGeneralKeyShareResponse, error)
+	// SubmitGeneralKeyShare defines an operation to submit a
+	// general keyshare from a registered validator
+	SubmitGeneralKeyShare(context.Context, *MsgSubmitGeneralKeyShare) (*MsgSubmitGeneralKeyShareResponse, error)
+	// SubmitEncryptedKeyshare defines an operation to submit
+	// an encrypted keyshare from a registered validator
 	SubmitEncryptedKeyshare(context.Context, *MsgSubmitEncryptedKeyshare) (*MsgSubmitEncryptedKeyshareResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
@@ -211,8 +247,8 @@ func (UnimplementedMsgServer) UpdateAuthorizedAddress(context.Context, *MsgUpdat
 func (UnimplementedMsgServer) DeleteAuthorizedAddress(context.Context, *MsgDeleteAuthorizedAddress) (*MsgDeleteAuthorizedAddressResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAuthorizedAddress not implemented")
 }
-func (UnimplementedMsgServer) CreateGeneralKeyShare(context.Context, *MsgCreateGeneralKeyShare) (*MsgCreateGeneralKeyShareResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateGeneralKeyShare not implemented")
+func (UnimplementedMsgServer) SubmitGeneralKeyShare(context.Context, *MsgSubmitGeneralKeyShare) (*MsgSubmitGeneralKeyShareResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitGeneralKeyShare not implemented")
 }
 func (UnimplementedMsgServer) SubmitEncryptedKeyshare(context.Context, *MsgSubmitEncryptedKeyshare) (*MsgSubmitEncryptedKeyshareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitEncryptedKeyshare not implemented")
@@ -392,20 +428,20 @@ func _Msg_DeleteAuthorizedAddress_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_CreateGeneralKeyShare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateGeneralKeyShare)
+func _Msg_SubmitGeneralKeyShare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSubmitGeneralKeyShare)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).CreateGeneralKeyShare(ctx, in)
+		return srv.(MsgServer).SubmitGeneralKeyShare(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_CreateGeneralKeyShare_FullMethodName,
+		FullMethod: Msg_SubmitGeneralKeyShare_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateGeneralKeyShare(ctx, req.(*MsgCreateGeneralKeyShare))
+		return srv.(MsgServer).SubmitGeneralKeyShare(ctx, req.(*MsgSubmitGeneralKeyShare))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -472,8 +508,8 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_DeleteAuthorizedAddress_Handler,
 		},
 		{
-			MethodName: "CreateGeneralKeyShare",
-			Handler:    _Msg_CreateGeneralKeyShare_Handler,
+			MethodName: "SubmitGeneralKeyShare",
+			Handler:    _Msg_SubmitGeneralKeyShare_Handler,
 		},
 		{
 			MethodName: "SubmitEncryptedKeyshare",

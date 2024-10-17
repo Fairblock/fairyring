@@ -13,7 +13,10 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) GeneralKeyShareAll(goCtx context.Context, req *types.QueryAllGeneralKeyShareRequest) (*types.QueryAllGeneralKeyShareResponse, error) {
+func (k Keeper) GeneralKeyShareAll(
+	goCtx context.Context,
+	req *types.QueryGeneralKeyShareAllRequest,
+) (*types.QueryGeneralKeyShareAllResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -39,10 +42,16 @@ func (k Keeper) GeneralKeyShareAll(goCtx context.Context, req *types.QueryAllGen
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllGeneralKeyShareResponse{GeneralKeyShare: generalKeyShares, Pagination: pageRes}, nil
+	return &types.QueryGeneralKeyShareAllResponse{
+		GeneralKeyShare: generalKeyShares,
+		Pagination:      pageRes,
+	}, nil
 }
 
-func (k Keeper) GeneralKeyShare(goCtx context.Context, req *types.QueryGetGeneralKeyShareRequest) (*types.QueryGetGeneralKeyShareResponse, error) {
+func (k Keeper) GeneralKeyShare(
+	goCtx context.Context,
+	req *types.QueryGeneralKeyShareRequest,
+) (*types.QueryGeneralKeyShareResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -58,5 +67,5 @@ func (k Keeper) GeneralKeyShare(goCtx context.Context, req *types.QueryGetGenera
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	return &types.QueryGetGeneralKeyShareResponse{GeneralKeyShare: val}, nil
+	return &types.QueryGeneralKeyShareResponse{GeneralKeyShare: val}, nil
 }

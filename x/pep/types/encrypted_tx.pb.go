@@ -24,13 +24,15 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// EncryptedTx defines the structure to store an encrypted transaction
+// by execution height
 type EncryptedTx struct {
-	TargetHeight           uint64      `protobuf:"varint,1,opt,name=targetHeight,proto3" json:"targetHeight,omitempty"`
+	TargetHeight           uint64      `protobuf:"varint,1,opt,name=target_height,json=targetHeight,proto3" json:"target_height,omitempty"`
 	Index                  uint64      `protobuf:"varint,2,opt,name=index,proto3" json:"index,omitempty"`
 	Data                   string      `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	Creator                string      `protobuf:"bytes,4,opt,name=creator,proto3" json:"creator,omitempty"`
-	ChargedGas             *types.Coin `protobuf:"bytes,5,opt,name=chargedGas,proto3" json:"chargedGas,omitempty"`
-	ProcessedAtChainHeight uint64      `protobuf:"varint,6,opt,name=processedAtChainHeight,proto3" json:"processedAtChainHeight,omitempty"`
+	ChargedGas             *types.Coin `protobuf:"bytes,5,opt,name=charged_gas,json=chargedGas,proto3" json:"charged_gas,omitempty"`
+	ProcessedAtChainHeight uint64      `protobuf:"varint,6,opt,name=processed_at_chain_height,json=processedAtChainHeight,proto3" json:"processed_at_chain_height,omitempty"`
 	Expired                bool        `protobuf:"varint,7,opt,name=expired,proto3" json:"expired,omitempty"`
 }
 
@@ -116,8 +118,9 @@ func (m *EncryptedTx) GetExpired() bool {
 	return false
 }
 
+// EncryptedTxArray defines a list of EncryptedTx
 type EncryptedTxArray struct {
-	EncryptedTx []EncryptedTx `protobuf:"bytes,1,rep,name=encryptedTx,proto3" json:"encryptedTx"`
+	EncryptedTxs []EncryptedTx `protobuf:"bytes,1,rep,name=encrypted_txs,json=encryptedTxs,proto3" json:"encrypted_txs"`
 }
 
 func (m *EncryptedTxArray) Reset()         { *m = EncryptedTxArray{} }
@@ -153,19 +156,21 @@ func (m *EncryptedTxArray) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_EncryptedTxArray proto.InternalMessageInfo
 
-func (m *EncryptedTxArray) GetEncryptedTx() []EncryptedTx {
+func (m *EncryptedTxArray) GetEncryptedTxs() []EncryptedTx {
 	if m != nil {
-		return m.EncryptedTx
+		return m.EncryptedTxs
 	}
 	return nil
 }
 
+// GeneralEncryptedTx defines the structure to store a
+// general encrypted transaction by identity
 type GeneralEncryptedTx struct {
 	Identity   string      `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
 	Index      uint64      `protobuf:"varint,2,opt,name=index,proto3" json:"index,omitempty"`
 	Data       string      `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	Creator    string      `protobuf:"bytes,4,opt,name=creator,proto3" json:"creator,omitempty"`
-	ChargedGas *types.Coin `protobuf:"bytes,5,opt,name=chargedGas,proto3" json:"chargedGas,omitempty"`
+	ChargedGas *types.Coin `protobuf:"bytes,5,opt,name=charged_gas,json=chargedGas,proto3" json:"charged_gas,omitempty"`
 }
 
 func (m *GeneralEncryptedTx) Reset()         { *m = GeneralEncryptedTx{} }
@@ -236,8 +241,9 @@ func (m *GeneralEncryptedTx) GetChargedGas() *types.Coin {
 	return nil
 }
 
+// GeneralEncryptedTxArray defines a list of GeneralEncryptedTx
 type GeneralEncryptedTxArray struct {
-	EncryptedTx []GeneralEncryptedTx `protobuf:"bytes,1,rep,name=encryptedTx,proto3" json:"encryptedTx"`
+	EncryptedTxs []GeneralEncryptedTx `protobuf:"bytes,1,rep,name=encrypted_txs,json=encryptedTxs,proto3" json:"encrypted_txs"`
 }
 
 func (m *GeneralEncryptedTxArray) Reset()         { *m = GeneralEncryptedTxArray{} }
@@ -273,34 +279,37 @@ func (m *GeneralEncryptedTxArray) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GeneralEncryptedTxArray proto.InternalMessageInfo
 
-func (m *GeneralEncryptedTxArray) GetEncryptedTx() []GeneralEncryptedTx {
+func (m *GeneralEncryptedTxArray) GetEncryptedTxs() []GeneralEncryptedTx {
 	if m != nil {
-		return m.EncryptedTx
+		return m.EncryptedTxs
 	}
 	return nil
 }
 
-type GenEncTxExecutionQueue struct {
-	Creator      string                   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	RequestId    string                   `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	Identity     string                   `protobuf:"bytes,3,opt,name=identity,proto3" json:"identity,omitempty"`
-	Pubkey       string                   `protobuf:"bytes,4,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
-	TxList       *GeneralEncryptedTxArray `protobuf:"bytes,5,opt,name=tx_list,json=txList,proto3" json:"tx_list,omitempty"`
-	AggrKeyshare string                   `protobuf:"bytes,6,opt,name=aggr_keyshare,json=aggrKeyshare,proto3" json:"aggr_keyshare,omitempty"`
+// IdentityExecutionEntry defines the structure to queue up
+// identities that have decryption keys available and
+// are ready to execute any associated contracts or encrypted transactions
+type IdentityExecutionEntry struct {
+	Creator       string                   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	RequestId     string                   `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Identity      string                   `protobuf:"bytes,3,opt,name=identity,proto3" json:"identity,omitempty"`
+	Pubkey        string                   `protobuf:"bytes,4,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
+	TxList        *GeneralEncryptedTxArray `protobuf:"bytes,5,opt,name=tx_list,json=txList,proto3" json:"tx_list,omitempty"`
+	DecryptionKey string                   `protobuf:"bytes,6,opt,name=decryption_key,json=decryptionKey,proto3" json:"decryption_key,omitempty"`
 }
 
-func (m *GenEncTxExecutionQueue) Reset()         { *m = GenEncTxExecutionQueue{} }
-func (m *GenEncTxExecutionQueue) String() string { return proto.CompactTextString(m) }
-func (*GenEncTxExecutionQueue) ProtoMessage()    {}
-func (*GenEncTxExecutionQueue) Descriptor() ([]byte, []int) {
+func (m *IdentityExecutionEntry) Reset()         { *m = IdentityExecutionEntry{} }
+func (m *IdentityExecutionEntry) String() string { return proto.CompactTextString(m) }
+func (*IdentityExecutionEntry) ProtoMessage()    {}
+func (*IdentityExecutionEntry) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7c124d687cde8326, []int{4}
 }
-func (m *GenEncTxExecutionQueue) XXX_Unmarshal(b []byte) error {
+func (m *IdentityExecutionEntry) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *GenEncTxExecutionQueue) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *IdentityExecutionEntry) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_GenEncTxExecutionQueue.Marshal(b, m, deterministic)
+		return xxx_messageInfo_IdentityExecutionEntry.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -310,56 +319,56 @@ func (m *GenEncTxExecutionQueue) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return b[:n], nil
 	}
 }
-func (m *GenEncTxExecutionQueue) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GenEncTxExecutionQueue.Merge(m, src)
+func (m *IdentityExecutionEntry) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_IdentityExecutionEntry.Merge(m, src)
 }
-func (m *GenEncTxExecutionQueue) XXX_Size() int {
+func (m *IdentityExecutionEntry) XXX_Size() int {
 	return m.Size()
 }
-func (m *GenEncTxExecutionQueue) XXX_DiscardUnknown() {
-	xxx_messageInfo_GenEncTxExecutionQueue.DiscardUnknown(m)
+func (m *IdentityExecutionEntry) XXX_DiscardUnknown() {
+	xxx_messageInfo_IdentityExecutionEntry.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GenEncTxExecutionQueue proto.InternalMessageInfo
+var xxx_messageInfo_IdentityExecutionEntry proto.InternalMessageInfo
 
-func (m *GenEncTxExecutionQueue) GetCreator() string {
+func (m *IdentityExecutionEntry) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *GenEncTxExecutionQueue) GetRequestId() string {
+func (m *IdentityExecutionEntry) GetRequestId() string {
 	if m != nil {
 		return m.RequestId
 	}
 	return ""
 }
 
-func (m *GenEncTxExecutionQueue) GetIdentity() string {
+func (m *IdentityExecutionEntry) GetIdentity() string {
 	if m != nil {
 		return m.Identity
 	}
 	return ""
 }
 
-func (m *GenEncTxExecutionQueue) GetPubkey() string {
+func (m *IdentityExecutionEntry) GetPubkey() string {
 	if m != nil {
 		return m.Pubkey
 	}
 	return ""
 }
 
-func (m *GenEncTxExecutionQueue) GetTxList() *GeneralEncryptedTxArray {
+func (m *IdentityExecutionEntry) GetTxList() *GeneralEncryptedTxArray {
 	if m != nil {
 		return m.TxList
 	}
 	return nil
 }
 
-func (m *GenEncTxExecutionQueue) GetAggrKeyshare() string {
+func (m *IdentityExecutionEntry) GetDecryptionKey() string {
 	if m != nil {
-		return m.AggrKeyshare
+		return m.DecryptionKey
 	}
 	return ""
 }
@@ -369,46 +378,47 @@ func init() {
 	proto.RegisterType((*EncryptedTxArray)(nil), "fairyring.pep.EncryptedTxArray")
 	proto.RegisterType((*GeneralEncryptedTx)(nil), "fairyring.pep.GeneralEncryptedTx")
 	proto.RegisterType((*GeneralEncryptedTxArray)(nil), "fairyring.pep.GeneralEncryptedTxArray")
-	proto.RegisterType((*GenEncTxExecutionQueue)(nil), "fairyring.pep.GenEncTxExecutionQueue")
+	proto.RegisterType((*IdentityExecutionEntry)(nil), "fairyring.pep.IdentityExecutionEntry")
 }
 
 func init() { proto.RegisterFile("fairyring/pep/encrypted_tx.proto", fileDescriptor_7c124d687cde8326) }
 
 var fileDescriptor_7c124d687cde8326 = []byte{
-	// 526 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x93, 0xc1, 0x6e, 0xd3, 0x40,
-	0x10, 0x86, 0xb3, 0x4d, 0x9a, 0x34, 0x9b, 0x56, 0x42, 0xab, 0x2a, 0x98, 0x48, 0x18, 0x13, 0x24,
-	0x14, 0x71, 0xb0, 0xd5, 0x22, 0x21, 0x71, 0x42, 0x4d, 0x09, 0xa1, 0x82, 0x0b, 0x56, 0xc5, 0x81,
-	0x4b, 0xb4, 0xb6, 0x07, 0x67, 0x95, 0x74, 0xd7, 0xec, 0xae, 0x91, 0x7d, 0xe5, 0x09, 0x78, 0x13,
-	0x5e, 0xa3, 0xc7, 0x1e, 0x39, 0x21, 0x94, 0x1c, 0x79, 0x09, 0x94, 0xb5, 0xd3, 0x3a, 0x6d, 0x11,
-	0xc7, 0xde, 0xfc, 0xff, 0x33, 0xb3, 0xfa, 0xe7, 0x93, 0x07, 0x3b, 0x9f, 0x29, 0x93, 0xb9, 0x64,
-	0x3c, 0xf6, 0x12, 0x48, 0x3c, 0xe0, 0xa1, 0xcc, 0x13, 0x0d, 0xd1, 0x44, 0x67, 0x6e, 0x22, 0x85,
-	0x16, 0x64, 0xef, 0xb2, 0xc3, 0x4d, 0x20, 0xe9, 0xed, 0xc7, 0x22, 0x16, 0xa6, 0xe2, 0xad, 0xbe,
-	0x8a, 0xa6, 0x9e, 0x1d, 0x0a, 0x75, 0x26, 0x94, 0x17, 0x50, 0x05, 0xde, 0xd7, 0x83, 0x00, 0x34,
-	0x3d, 0xf0, 0x42, 0xc1, 0x78, 0x51, 0xef, 0x7f, 0xdb, 0xc2, 0x9d, 0xd1, 0xfa, 0xed, 0xd3, 0x8c,
-	0xf4, 0xf1, 0xae, 0xa6, 0x32, 0x06, 0xfd, 0x16, 0x58, 0x3c, 0xd5, 0x16, 0x72, 0xd0, 0xa0, 0xe1,
-	0x6f, 0x78, 0x64, 0x1f, 0x6f, 0x33, 0x1e, 0x41, 0x66, 0x6d, 0x99, 0x62, 0x21, 0x08, 0xc1, 0x8d,
-	0x88, 0x6a, 0x6a, 0xd5, 0x1d, 0x34, 0x68, 0xfb, 0xe6, 0x9b, 0x58, 0xb8, 0x15, 0x4a, 0xa0, 0x5a,
-	0x48, 0xab, 0x61, 0xec, 0xb5, 0x24, 0x2f, 0x31, 0x0e, 0xa7, 0xab, 0x47, 0xa3, 0x31, 0x55, 0xd6,
-	0xb6, 0x83, 0x06, 0x9d, 0xc3, 0x07, 0x6e, 0x11, 0xd6, 0x5d, 0x85, 0x75, 0xcb, 0xb0, 0xee, 0xb1,
-	0x60, 0xdc, 0xaf, 0x34, 0x93, 0x17, 0xb8, 0x9b, 0x48, 0x11, 0x82, 0x52, 0x10, 0x1d, 0xe9, 0xe3,
-	0x29, 0x65, 0xbc, 0x0c, 0xdb, 0x34, 0x79, 0xfe, 0x51, 0x5d, 0x85, 0x81, 0x2c, 0x61, 0x12, 0x22,
-	0xab, 0xe5, 0xa0, 0xc1, 0x8e, 0xbf, 0x96, 0xfd, 0x8f, 0xf8, 0x5e, 0x85, 0xc1, 0x91, 0x94, 0x34,
-	0x27, 0x43, 0xdc, 0x81, 0x2b, 0xcf, 0x42, 0x4e, 0x7d, 0xd0, 0x39, 0xec, 0xb9, 0x1b, 0xcc, 0xdd,
-	0xca, 0xd4, 0xb0, 0x71, 0xfe, 0xeb, 0x51, 0xcd, 0xaf, 0x0e, 0xf5, 0x7f, 0x20, 0x4c, 0xc6, 0xc0,
-	0x41, 0xd2, 0x79, 0x95, 0x71, 0x0f, 0xef, 0xb0, 0x08, 0xb8, 0x66, 0x3a, 0x37, 0x7c, 0xdb, 0xfe,
-	0xa5, 0xbe, 0x63, 0xb6, 0xfd, 0x08, 0xdf, 0xbf, 0x19, 0xb8, 0x00, 0x72, 0x72, 0x1b, 0x90, 0xc7,
-	0xd7, 0x80, 0xdc, 0x1c, 0xbe, 0x8d, 0xcb, 0x1f, 0x84, 0xbb, 0x63, 0xe0, 0x23, 0x1e, 0x9e, 0x66,
-	0xa3, 0x0c, 0xc2, 0x54, 0x33, 0xc1, 0x3f, 0xa4, 0x90, 0x42, 0x75, 0x2b, 0xb4, 0xb9, 0xd5, 0x43,
-	0x8c, 0x25, 0x7c, 0x49, 0x41, 0xe9, 0x09, 0x8b, 0x0c, 0x9e, 0xb6, 0xdf, 0x2e, 0x9d, 0x93, 0x68,
-	0x03, 0x6a, 0xfd, 0x1a, 0xd4, 0x2e, 0x6e, 0x26, 0x69, 0x30, 0x83, 0xbc, 0x24, 0x55, 0x2a, 0xf2,
-	0x0a, 0xb7, 0x74, 0x36, 0x99, 0x33, 0xa5, 0x4b, 0x4a, 0x4f, 0xff, 0xbb, 0x8e, 0x61, 0xe1, 0x37,
-	0x75, 0xf6, 0x9e, 0x29, 0x4d, 0x9e, 0xe0, 0x3d, 0x1a, 0xc7, 0x72, 0x32, 0x83, 0x5c, 0x4d, 0xa9,
-	0x04, 0xf3, 0x07, 0xb6, 0xfd, 0xdd, 0x95, 0xf9, 0xae, 0xf4, 0x86, 0xaf, 0xcf, 0x17, 0x36, 0xba,
-	0x58, 0xd8, 0xe8, 0xf7, 0xc2, 0x46, 0xdf, 0x97, 0x76, 0xed, 0x62, 0x69, 0xd7, 0x7e, 0x2e, 0xed,
-	0xda, 0xa7, 0x67, 0x31, 0xd3, 0xd3, 0x34, 0x70, 0x43, 0x71, 0xe6, 0xbd, 0xa1, 0x4c, 0x06, 0x73,
-	0x11, 0xce, 0xbc, 0xab, 0xc3, 0xcf, 0xcc, 0xe9, 0xeb, 0x3c, 0x01, 0x15, 0x34, 0xcd, 0xbd, 0x3e,
-	0xff, 0x1b, 0x00, 0x00, 0xff, 0xff, 0x64, 0xa5, 0xcd, 0xa6, 0x18, 0x04, 0x00, 0x00,
+	// 538 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x94, 0x4f, 0x6f, 0xd3, 0x30,
+	0x18, 0xc6, 0xeb, 0xad, 0x6b, 0x57, 0x77, 0x45, 0xc8, 0x9a, 0x46, 0x56, 0x89, 0x10, 0x8a, 0x40,
+	0x15, 0x87, 0x44, 0x1b, 0x27, 0xb8, 0xa0, 0x6d, 0x94, 0x31, 0xb1, 0x53, 0xc4, 0x05, 0x2e, 0x91,
+	0x93, 0xbc, 0xa4, 0xd6, 0xba, 0x38, 0xd8, 0x6f, 0x51, 0xf2, 0x09, 0xb8, 0xf2, 0x51, 0xf8, 0x18,
+	0x3b, 0xee, 0xc8, 0x09, 0xa1, 0xf6, 0xcc, 0x77, 0x40, 0x75, 0xd2, 0x7f, 0xdb, 0x24, 0x8e, 0xdc,
+	0xfc, 0x3e, 0xcf, 0x6b, 0xfb, 0x79, 0x7f, 0x92, 0x4d, 0x9d, 0xcf, 0x5c, 0xa8, 0x42, 0x89, 0x34,
+	0xf1, 0x32, 0xc8, 0x3c, 0x48, 0x23, 0x55, 0x64, 0x08, 0x71, 0x80, 0xb9, 0x9b, 0x29, 0x89, 0x92,
+	0x75, 0x16, 0x1d, 0x6e, 0x06, 0x59, 0x77, 0x37, 0x91, 0x89, 0x34, 0x8e, 0x37, 0x5b, 0x95, 0x4d,
+	0x5d, 0x3b, 0x92, 0xfa, 0x52, 0x6a, 0x2f, 0xe4, 0x1a, 0xbc, 0xaf, 0x07, 0x21, 0x20, 0x3f, 0xf0,
+	0x22, 0x29, 0xd2, 0xd2, 0xef, 0x7d, 0xdb, 0xa0, 0xed, 0xc1, 0xfc, 0xec, 0x0f, 0x39, 0x7b, 0x42,
+	0x3b, 0xc8, 0x55, 0x02, 0x18, 0x0c, 0x41, 0x24, 0x43, 0xb4, 0x88, 0x43, 0xfa, 0x75, 0x7f, 0xa7,
+	0x14, 0xdf, 0x19, 0x8d, 0xed, 0xd2, 0x2d, 0x91, 0xc6, 0x90, 0x5b, 0x1b, 0xc6, 0x2c, 0x0b, 0xc6,
+	0x68, 0x3d, 0xe6, 0xc8, 0xad, 0x4d, 0x87, 0xf4, 0x5b, 0xbe, 0x59, 0x33, 0x8b, 0x36, 0x23, 0x05,
+	0x1c, 0xa5, 0xb2, 0xea, 0x46, 0x9e, 0x97, 0xec, 0x15, 0x6d, 0x47, 0xc3, 0xd9, 0xa1, 0x71, 0x90,
+	0x70, 0x6d, 0x6d, 0x39, 0xa4, 0xdf, 0x3e, 0xdc, 0x77, 0xcb, 0xb8, 0xee, 0x2c, 0xae, 0x5b, 0xc5,
+	0x75, 0x4f, 0xa4, 0x48, 0x7d, 0x5a, 0x75, 0x9f, 0x72, 0xcd, 0x5e, 0xd2, 0xfd, 0x4c, 0xc9, 0x08,
+	0xb4, 0x86, 0x38, 0xe0, 0x18, 0x44, 0x43, 0x2e, 0xd2, 0x79, 0xe0, 0x86, 0xc9, 0xb4, 0xb7, 0x68,
+	0x38, 0xc2, 0x93, 0x99, 0x5d, 0x45, 0xb7, 0x68, 0x13, 0xf2, 0x4c, 0x28, 0x88, 0xad, 0xa6, 0x43,
+	0xfa, 0xdb, 0xfe, 0xbc, 0xec, 0x7d, 0xa4, 0xf7, 0x57, 0x40, 0x1c, 0x29, 0xc5, 0x0b, 0x36, 0xa0,
+	0x9d, 0x55, 0xf0, 0xda, 0x22, 0xce, 0x66, 0xbf, 0x7d, 0xd8, 0x75, 0xd7, 0xd0, 0xbb, 0x2b, 0xfb,
+	0x8e, 0xeb, 0x57, 0xbf, 0x1e, 0xd5, 0xfc, 0x1d, 0x58, 0x4a, 0xba, 0xf7, 0x83, 0x50, 0x76, 0x0a,
+	0x29, 0x28, 0x3e, 0x5a, 0x65, 0xdd, 0xa5, 0xdb, 0x22, 0x86, 0x14, 0x05, 0x16, 0x06, 0x73, 0xcb,
+	0x5f, 0xd4, 0xff, 0x1b, 0x71, 0x2f, 0xa1, 0x0f, 0x6e, 0x27, 0x2e, 0xa1, 0x9c, 0xdf, 0x0d, 0xe5,
+	0xf1, 0x0d, 0x28, 0xb7, 0xb7, 0xdf, 0xc9, 0xe6, 0x0f, 0xa1, 0x7b, 0x67, 0xd5, 0xd4, 0x83, 0x1c,
+	0xa2, 0x31, 0x0a, 0x99, 0x0e, 0x52, 0x54, 0xc5, 0xea, 0x64, 0x64, 0x7d, 0xb2, 0x87, 0x94, 0x2a,
+	0xf8, 0x32, 0x06, 0x8d, 0x81, 0x88, 0x0d, 0xa2, 0x96, 0xdf, 0xaa, 0x94, 0xb3, 0x78, 0x0d, 0xec,
+	0xe6, 0x0d, 0xb0, 0x7b, 0xb4, 0x91, 0x8d, 0xc3, 0x0b, 0x28, 0x2a, 0x5a, 0x55, 0xc5, 0x5e, 0xd3,
+	0x26, 0xe6, 0xc1, 0x48, 0x68, 0xac, 0x40, 0x3d, 0xfb, 0xe7, 0x3c, 0x06, 0x87, 0xdf, 0xc0, 0xfc,
+	0x5c, 0x68, 0x64, 0x4f, 0xe9, 0xbd, 0x18, 0x8c, 0x27, 0x64, 0x1a, 0xcc, 0x2e, 0x68, 0x98, 0x0b,
+	0x3a, 0x4b, 0xf5, 0x3d, 0x14, 0xc7, 0x6f, 0xae, 0x26, 0x36, 0xb9, 0x9e, 0xd8, 0xe4, 0xf7, 0xc4,
+	0x26, 0xdf, 0xa7, 0x76, 0xed, 0x7a, 0x6a, 0xd7, 0x7e, 0x4e, 0xed, 0xda, 0xa7, 0xe7, 0x89, 0xc0,
+	0xe1, 0x38, 0x74, 0x23, 0x79, 0xe9, 0xbd, 0xe5, 0x42, 0x85, 0x23, 0x19, 0x5d, 0x78, 0xcb, 0x6f,
+	0x20, 0x37, 0x1f, 0x01, 0x16, 0x19, 0xe8, 0xb0, 0x61, 0x5e, 0xef, 0x8b, 0xbf, 0x01, 0x00, 0x00,
+	0xff, 0xff, 0x70, 0xf4, 0x1e, 0x65, 0x26, 0x04, 0x00, 0x00,
 }
 
 func (m *EncryptedTx) Marshal() (dAtA []byte, err error) {
@@ -505,10 +515,10 @@ func (m *EncryptedTxArray) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.EncryptedTx) > 0 {
-		for iNdEx := len(m.EncryptedTx) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.EncryptedTxs) > 0 {
+		for iNdEx := len(m.EncryptedTxs) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.EncryptedTx[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.EncryptedTxs[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -603,10 +613,10 @@ func (m *GeneralEncryptedTxArray) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	_ = i
 	var l int
 	_ = l
-	if len(m.EncryptedTx) > 0 {
-		for iNdEx := len(m.EncryptedTx) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.EncryptedTxs) > 0 {
+		for iNdEx := len(m.EncryptedTxs) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.EncryptedTx[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.EncryptedTxs[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -620,7 +630,7 @@ func (m *GeneralEncryptedTxArray) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *GenEncTxExecutionQueue) Marshal() (dAtA []byte, err error) {
+func (m *IdentityExecutionEntry) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -630,20 +640,20 @@ func (m *GenEncTxExecutionQueue) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *GenEncTxExecutionQueue) MarshalTo(dAtA []byte) (int, error) {
+func (m *IdentityExecutionEntry) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *GenEncTxExecutionQueue) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *IdentityExecutionEntry) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.AggrKeyshare) > 0 {
-		i -= len(m.AggrKeyshare)
-		copy(dAtA[i:], m.AggrKeyshare)
-		i = encodeVarintEncryptedTx(dAtA, i, uint64(len(m.AggrKeyshare)))
+	if len(m.DecryptionKey) > 0 {
+		i -= len(m.DecryptionKey)
+		copy(dAtA[i:], m.DecryptionKey)
+		i = encodeVarintEncryptedTx(dAtA, i, uint64(len(m.DecryptionKey)))
 		i--
 		dAtA[i] = 0x32
 	}
@@ -740,8 +750,8 @@ func (m *EncryptedTxArray) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if len(m.EncryptedTx) > 0 {
-		for _, e := range m.EncryptedTx {
+	if len(m.EncryptedTxs) > 0 {
+		for _, e := range m.EncryptedTxs {
 			l = e.Size()
 			n += 1 + l + sovEncryptedTx(uint64(l))
 		}
@@ -783,8 +793,8 @@ func (m *GeneralEncryptedTxArray) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if len(m.EncryptedTx) > 0 {
-		for _, e := range m.EncryptedTx {
+	if len(m.EncryptedTxs) > 0 {
+		for _, e := range m.EncryptedTxs {
 			l = e.Size()
 			n += 1 + l + sovEncryptedTx(uint64(l))
 		}
@@ -792,7 +802,7 @@ func (m *GeneralEncryptedTxArray) Size() (n int) {
 	return n
 }
 
-func (m *GenEncTxExecutionQueue) Size() (n int) {
+func (m *IdentityExecutionEntry) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -818,7 +828,7 @@ func (m *GenEncTxExecutionQueue) Size() (n int) {
 		l = m.TxList.Size()
 		n += 1 + l + sovEncryptedTx(uint64(l))
 	}
-	l = len(m.AggrKeyshare)
+	l = len(m.DecryptionKey)
 	if l > 0 {
 		n += 1 + l + sovEncryptedTx(uint64(l))
 	}
@@ -1089,7 +1099,7 @@ func (m *EncryptedTxArray) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field EncryptedTx", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field EncryptedTxs", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -1116,8 +1126,8 @@ func (m *EncryptedTxArray) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.EncryptedTx = append(m.EncryptedTx, EncryptedTx{})
-			if err := m.EncryptedTx[len(m.EncryptedTx)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.EncryptedTxs = append(m.EncryptedTxs, EncryptedTx{})
+			if err := m.EncryptedTxs[len(m.EncryptedTxs)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1374,7 +1384,7 @@ func (m *GeneralEncryptedTxArray) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field EncryptedTx", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field EncryptedTxs", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -1401,8 +1411,8 @@ func (m *GeneralEncryptedTxArray) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.EncryptedTx = append(m.EncryptedTx, GeneralEncryptedTx{})
-			if err := m.EncryptedTx[len(m.EncryptedTx)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.EncryptedTxs = append(m.EncryptedTxs, GeneralEncryptedTx{})
+			if err := m.EncryptedTxs[len(m.EncryptedTxs)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1427,7 +1437,7 @@ func (m *GeneralEncryptedTxArray) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *GenEncTxExecutionQueue) Unmarshal(dAtA []byte) error {
+func (m *IdentityExecutionEntry) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1450,10 +1460,10 @@ func (m *GenEncTxExecutionQueue) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: GenEncTxExecutionQueue: wiretype end group for non-group")
+			return fmt.Errorf("proto: IdentityExecutionEntry: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: GenEncTxExecutionQueue: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: IdentityExecutionEntry: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1622,7 +1632,7 @@ func (m *GenEncTxExecutionQueue) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 6:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AggrKeyshare", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field DecryptionKey", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1650,7 +1660,7 @@ func (m *GenEncTxExecutionQueue) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.AggrKeyshare = string(dAtA[iNdEx:postIndex])
+			m.DecryptionKey = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

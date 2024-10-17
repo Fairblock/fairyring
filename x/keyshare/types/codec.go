@@ -28,7 +28,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgDeleteAuthorizedAddress{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateGeneralKeyShare{},
+		&MsgSubmitGeneralKeyShare{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgOverrideLatestPubKey{},

@@ -1,12 +1,13 @@
 package keeper_test
 
 import (
+	"strconv"
+	"testing"
+
 	"github.com/Fairblock/fairyring/testutil/random"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"strconv"
-	"testing"
 
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
@@ -26,23 +27,23 @@ func TestKeyShareReqSingle(t *testing.T) {
 
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryKeyshareRequest
-		response *types.QueryKeyshareResponse
+		request  *types.QueryKeyshareReqRequest
+		response *types.QueryKeyshareReqResponse
 		err      error
 		errMsg   string
 	}{
 		{
 			desc: "First item",
-			request: &types.QueryKeyshareRequest{
+			request: &types.QueryKeyshareReqRequest{
 				ReqId: out[0].RequestId,
 			},
-			response: &types.QueryKeyshareResponse{
+			response: &types.QueryKeyshareReqResponse{
 				Keyshare: &out[0],
 			},
 		},
 		{
 			desc: "Not found",
-			request: &types.QueryKeyshareRequest{
+			request: &types.QueryKeyshareReqRequest{
 				ReqId: random.RandHex(64),
 			},
 			err: status.Error(codes.NotFound, "not found"),
@@ -74,7 +75,7 @@ func TestKeyshareReqAll(t *testing.T) {
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNGeneralEncryptedTxEntry(&keeper, ctx, 5)
 
-	resp, err := keeper.KeyshareReqAll(wctx, &types.QueryAllKeyshareRequest{
+	resp, err := keeper.KeyshareReqAll(wctx, &types.QueryKeyshareReqAllRequest{
 		Pagination: &query.PageRequest{
 			Key:        nil,
 			Offset:     0,
@@ -85,7 +86,7 @@ func TestKeyshareReqAll(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, len(resp.Keyshares), len(msgs))
 
-	check := make([]types.GenEncTxExecutionQueue, len(resp.Keyshares))
+	check := make([]types.IdentityExecutionQueue, len(resp.Keyshares))
 	for i := range resp.Keyshares {
 		check[i] = *resp.Keyshares[i]
 	}
@@ -101,8 +102,13 @@ func TestKeyshareReqPaginated(t *testing.T) {
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNGeneralEncryptedTxEntry(&keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllKeyshareRequest {
-		return &types.QueryAllKeyshareRequest{
+	request := func(
+		next []byte,
+		offset,
+		limit uint64,
+		total bool,
+	) *types.QueryKeyshareReqAllRequest {
+		return &types.QueryKeyshareReqAllRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,
@@ -118,7 +124,7 @@ func TestKeyshareReqPaginated(t *testing.T) {
 			require.NoError(t, err)
 			require.LessOrEqual(t, len(resp.Keyshares), step)
 
-			check := make([]types.GenEncTxExecutionQueue, len(resp.Keyshares))
+			check := make([]types.IdentityExecutionQueue, len(resp.Keyshares))
 			for j := range resp.Keyshares {
 				check[j] = *resp.Keyshares[j]
 			}
@@ -137,7 +143,7 @@ func TestKeyshareReqPaginated(t *testing.T) {
 			require.NoError(t, err)
 			require.LessOrEqual(t, len(resp.Keyshares), step)
 
-			check := make([]types.GenEncTxExecutionQueue, len(resp.Keyshares))
+			check := make([]types.IdentityExecutionQueue, len(resp.Keyshares))
 			for j := range resp.Keyshares {
 				check[j] = *resp.Keyshares[j]
 			}
@@ -154,7 +160,7 @@ func TestKeyshareReqPaginated(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
 
-		check := make([]types.GenEncTxExecutionQueue, len(resp.Keyshares))
+		check := make([]types.IdentityExecutionQueue, len(resp.Keyshares))
 		for j := range resp.Keyshares {
 			check[j] = *resp.Keyshares[j]
 		}

@@ -15,10 +15,10 @@ import (
 
 const MAX_RETRIES = 5
 
-// TransmitAggrKeyshareDataPacket transmits the packet over IBC with the specified source port and source channel
-func (k Keeper) TransmitAggrKeyshareDataPacket(
+// TransmitDecryptionKeyDataPacket transmits the packet over IBC with the specified source port and source channel
+func (k Keeper) TransmitDecryptionKeyDataPacket(
 	ctx sdk.Context,
-	packetData types.AggrKeyshareDataPacketData,
+	packetData types.DecryptionKeyDataPacketData,
 	sourcePort,
 	sourceChannel string,
 	timeoutHeight clienttypes.Height,
@@ -48,9 +48,14 @@ func (k Keeper) TransmitAggrKeyshareDataPacket(
 	return k.ibcKeeperFn().ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes)
 }
 
-// OnAcknowledgementAggrKeyshareDataPacket responds to the the success or failure of a packet
+// OnAcknowledgementDecryptionKeyDataPacket responds to the the success or failure of a packet
 // acknowledgement written on the receiving chain.
-func (k Keeper) OnAcknowledgementAggrKeyshareDataPacket(ctx sdk.Context, packet channeltypes.Packet, data types.AggrKeyshareDataPacketData, ack channeltypes.Acknowledgement) error {
+func (k Keeper) OnAcknowledgementDecryptionKeyDataPacket(
+	ctx sdk.Context,
+	packet channeltypes.Packet,
+	data types.DecryptionKeyDataPacketData,
+	ack channeltypes.Acknowledgement,
+) error {
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
 
@@ -60,7 +65,7 @@ func (k Keeper) OnAcknowledgementAggrKeyshareDataPacket(ctx sdk.Context, packet 
 
 			data.Retries = data.Retries + 1
 
-			_, err := k.TransmitAggrKeyshareDataPacket(
+			_, err := k.TransmitDecryptionKeyDataPacket(
 				ctx,
 				data,
 				packet.SourcePort,
@@ -75,7 +80,7 @@ func (k Keeper) OnAcknowledgementAggrKeyshareDataPacket(ctx sdk.Context, packet 
 		return nil
 	case *channeltypes.Acknowledgement_Result:
 		// Decode the packet acknowledgment
-		var packetAck types.AggrKeyshareDataPacketAck
+		var packetAck types.DecryptionKeyPacketAck
 
 		if err := types.ModuleCdc.UnmarshalJSON(dispatchedAck.Result, &packetAck); err != nil {
 			// The counter-party module doesn't implement the correct acknowledgment format
@@ -97,8 +102,12 @@ func (k Keeper) OnAcknowledgementAggrKeyshareDataPacket(ctx sdk.Context, packet 
 	}
 }
 
-// OnTimeoutAggrKeyshareDataPacket responds to the case where a packet has not been transmitted because of a timeout
-func (k Keeper) OnTimeoutAggrKeyshareDataPacket(ctx sdk.Context, packet channeltypes.Packet, data types.AggrKeyshareDataPacketData) error {
+// OnTimeoutDecryptionKeyDataPacket responds to the case where a packet has not been transmitted because of a timeout
+func (k Keeper) OnTimeoutDecryptionKeyDataPacket(
+	ctx sdk.Context,
+	packet channeltypes.Packet,
+	data types.DecryptionKeyDataPacketData,
+) error {
 
 	// retry sending the packet
 	if data.Retries < MAX_RETRIES {
@@ -106,7 +115,7 @@ func (k Keeper) OnTimeoutAggrKeyshareDataPacket(ctx sdk.Context, packet channelt
 
 		data.Retries = data.Retries + 1
 
-		_, err := k.TransmitAggrKeyshareDataPacket(
+		_, err := k.TransmitDecryptionKeyDataPacket(
 			ctx,
 			data,
 			packet.SourcePort,
@@ -122,10 +131,10 @@ func (k Keeper) OnTimeoutAggrKeyshareDataPacket(ctx sdk.Context, packet channelt
 	return nil
 }
 
-// TransmitEncryptedKeyshareDataPacket transmits the packet over IBC with the specified source port and source channel
-func (k Keeper) TransmitEncryptedKeyshareDataPacket(
+// TransmitPrivateDecryptionKeyDataPacket transmits the packet over IBC with the specified source port and source channel
+func (k Keeper) TransmitPrivateDecryptionKeyDataPacket(
 	ctx sdk.Context,
-	packetData types.EncryptedKeysharesPacketData,
+	packetData types.PrivateDecryptionKeyDataPacketData,
 	sourcePort,
 	sourceChannel string,
 	timeoutHeight clienttypes.Height,
@@ -155,12 +164,12 @@ func (k Keeper) TransmitEncryptedKeyshareDataPacket(
 	return k.ibcKeeperFn().ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes)
 }
 
-// OnAcknowledgementEncryptedKeyshareDataPacket responds to the the success or failure of a packet
+// OnAcknowledgementPrivateDecryptionKeyDataPacket responds to the the success or failure of a packet
 // acknowledgement written on the receiving chain.
-func (k Keeper) OnAcknowledgementEncryptedKeyshareDataPacket(
+func (k Keeper) OnAcknowledgementPrivateDecryptionKeyDataPacket(
 	ctx sdk.Context,
 	packet channeltypes.Packet,
-	data types.EncryptedKeysharesPacketData,
+	data types.PrivateDecryptionKeyDataPacketData,
 	ack channeltypes.Acknowledgement,
 ) error {
 	switch ack.Response.(type) {
@@ -174,11 +183,11 @@ func (k Keeper) OnAcknowledgementEncryptedKeyshareDataPacket(
 	}
 }
 
-// OnTimeoutEncryptedKeyshareDataPacket responds to the case where a packet has not been transmitted because of a timeout
-func (k Keeper) OnTimeoutEncryptedKeyshareDataPacket(
+// OnTimeoutPrivateDecryptionKeyDataPacket responds to the case where a packet has not been transmitted because of a timeout
+func (k Keeper) OnTimeoutPrivateDecryptionKeyDataPacket(
 	ctx sdk.Context,
 	packet channeltypes.Packet,
-	data types.EncryptedKeysharesPacketData,
+	data types.PrivateDecryptionKeyDataPacketData,
 ) error {
 	return nil
 }

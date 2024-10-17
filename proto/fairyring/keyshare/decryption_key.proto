@@ -3,8 +3,8 @@ package fairyring.keyshare;
 
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
-message AggregatedKeyShare {
-  uint64 height = 1; 
+// Decryption key defines the structure and height for a decryption key
+message DecryptionKey {
+  uint64 height = 1;
   string data = 2;
 }
-

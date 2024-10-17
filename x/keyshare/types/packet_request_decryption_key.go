@@ -7,9 +7,9 @@ import (
 )
 
 // ValidateBasic is used for validating the packet
-func (p RequestAggrKeysharePacketData) ValidateBasic() error {
+func (p RequestDecryptionKeyPacketData) ValidateBasic() error {
 	switch p.Id.(type) {
-	case *RequestAggrKeysharePacketData_ProposalId:
+	case *RequestDecryptionKeyPacketData_ProposalId:
 		_, err := strconv.ParseUint(p.GetProposalId(), 10, 64)
 		if err != nil {
 			return err
@@ -20,24 +20,24 @@ func (p RequestAggrKeysharePacketData) ValidateBasic() error {
 }
 
 // GetBytes is a helper for serialising
-func (p RequestAggrKeysharePacketData) GetBytes() []byte {
+func (p RequestDecryptionKeyPacketData) GetBytes() []byte {
 	var modulePacket KeysharePacketData
 
-	modulePacket.Packet = &KeysharePacketData_RequestAggrKeysharePacket{&p}
+	modulePacket.Packet = &KeysharePacketData_RequestDecryptionKeyPacket{&p}
 
 	return sdk.MustSortJSON(MustProtoMarshalJSON(&modulePacket))
 }
 
 // ValidateBasic is used for validating the packet
-func (p RequestPrivateKeysharePacketData) ValidateBasic() error {
+func (p RequestPrivateDecryptionKeyPacketData) ValidateBasic() error {
 	return nil
 }
 
 // GetBytes is a helper for serialising
-func (p RequestPrivateKeysharePacketData) GetBytes() []byte {
+func (p RequestPrivateDecryptionKeyPacketData) GetBytes() []byte {
 	var modulePacket KeysharePacketData
 
-	modulePacket.Packet = &KeysharePacketData_RequestPrivKeysharePacket{&p}
+	modulePacket.Packet = &KeysharePacketData_RequestPrivateDecryptionKeyPacket{&p}
 
 	return sdk.MustSortJSON(MustProtoMarshalJSON(&modulePacket))
 }

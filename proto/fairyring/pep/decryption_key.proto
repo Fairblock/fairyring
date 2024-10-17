@@ -3,9 +3,10 @@ package fairyring.pep;
 
 option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
-message AggregatedKeyShare {
+// DecryptionKey defines the structure to store
+// the decryption key of a particular identity
+message DecryptionKey {
   uint64 height = 1;
   string data = 2;
   string creator = 3;
 }
-

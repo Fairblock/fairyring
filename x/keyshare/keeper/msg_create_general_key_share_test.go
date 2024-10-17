@@ -1,11 +1,12 @@
 package keeper_test
 
 import (
+	"strconv"
+	"testing"
+
 	"github.com/Fairblock/fairyring/testutil/random"
 	"github.com/Fairblock/fairyring/testutil/shares"
 	types2 "github.com/Fairblock/fairyring/x/pep/types"
-	"strconv"
-	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
@@ -68,7 +69,7 @@ func TestGeneralKeyShareMsgServerCreateAggregated(t *testing.T) {
 			RequestId:    idVal,
 			Sent:         false,
 		})
-		pk.SetEntry(wctx, types2.GenEncTxExecutionQueue{
+		pk.SetEntry(wctx, types2.IdentityExecutionQueue{
 			Creator:      creator,
 			RequestId:    idVal,
 			Identity:     idVal,
@@ -126,7 +127,7 @@ func TestGeneralKeyShareMsgServerCreateNotAggregated(t *testing.T) {
 			RequestId:    idVal,
 			Sent:         false,
 		})
-		pk.SetEntry(wctx, types2.GenEncTxExecutionQueue{
+		pk.SetEntry(wctx, types2.IdentityExecutionQueue{
 			Creator:      creator,
 			RequestId:    idVal,
 			Identity:     idVal,
@@ -170,7 +171,7 @@ func TestGeneralKeyShareMsgServerFailCases(t *testing.T) {
 	out, creator := SetupTestGeneralKeyShare(t, wctx, k, 1, 1)
 	onlyIdVal := random.RandHex(32)
 
-	pk.SetEntry(wctx, types2.GenEncTxExecutionQueue{
+	pk.SetEntry(wctx, types2.IdentityExecutionQueue{
 		Creator:      creator,
 		RequestId:    onlyIdVal,
 		Identity:     onlyIdVal,

@@ -8,7 +8,7 @@ import (
 )
 
 // ValidateBasic is used for validating the packet
-func (p AggrKeyshareDataPacketData) ValidateBasic() error {
+func (p DecryptionKeyDataPacketData) ValidateBasic() error {
 
 	if p.Identity == "" {
 		return errors.New("identity is blank")
@@ -25,16 +25,16 @@ func (p AggrKeyshareDataPacketData) ValidateBasic() error {
 }
 
 // GetBytes is a helper for serialising
-func (p AggrKeyshareDataPacketData) GetBytes() []byte {
+func (p DecryptionKeyDataPacketData) GetBytes() []byte {
 	var modulePacket KeysharePacketData
 
-	modulePacket.Packet = &KeysharePacketData_AggrKeyshareDataPacket{&p}
+	modulePacket.Packet = &KeysharePacketData_DecryptionKeyDataPacket{&p}
 
 	return sdk.MustSortJSON(MustProtoMarshalJSON(&modulePacket))
 }
 
 // ValidateBasic is used for validating the packet
-func (p EncryptedKeysharesPacketData) ValidateBasic() error {
+func (p PrivateDecryptionKeyDataPacketData) ValidateBasic() error {
 	if p.Identity == "" {
 		return errors.New("identity is blank")
 	}
@@ -42,10 +42,10 @@ func (p EncryptedKeysharesPacketData) ValidateBasic() error {
 }
 
 // GetBytes is a helper for serialising
-func (p EncryptedKeysharesPacketData) GetBytes() []byte {
+func (p PrivateDecryptionKeyDataPacketData) GetBytes() []byte {
 	var modulePacket KeysharePacketData
 
-	modulePacket.Packet = &KeysharePacketData_EncryptedKeysharesPacketData{&p}
+	modulePacket.Packet = &KeysharePacketData_PrivateDecryptionKeyDataPacket{&p}
 
 	return sdk.MustSortJSON(MustProtoMarshalJSON(&modulePacket))
 }

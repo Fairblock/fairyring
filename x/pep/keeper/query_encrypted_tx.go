@@ -14,7 +14,10 @@ import (
 )
 
 // EncryptedTxAll returns the paginated list of all encrypted Txs
-func (k Keeper) EncryptedTxAll(c context.Context, req *types.QueryAllEncryptedTxRequest) (*types.QueryAllEncryptedTxResponse, error) {
+func (k Keeper) EncryptedTxAll(
+	c context.Context,
+	req *types.QueryEncryptedTxAllRequest,
+) (*types.QueryEncryptedTxAllResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -40,11 +43,17 @@ func (k Keeper) EncryptedTxAll(c context.Context, req *types.QueryAllEncryptedTx
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllEncryptedTxResponse{EncryptedTxArray: encryptedTxs, Pagination: pageRes}, nil
+	return &types.QueryEncryptedTxAllResponse{
+		EncryptedTxArray: encryptedTxs,
+		Pagination:       pageRes,
+	}, nil
 }
 
 // EncryptedTxAllFromHeight returns all the encrypted TXs for a particular height
-func (k Keeper) EncryptedTxAllFromHeight(c context.Context, req *types.QueryAllEncryptedTxFromHeightRequest) (*types.QueryAllEncryptedTxFromHeightResponse, error) {
+func (k Keeper) EncryptedTxAllFromHeight(
+	c context.Context,
+	req *types.QueryEncryptedTxAllFromHeightRequest,
+) (*types.QueryEncryptedTxAllFromHeightResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -52,11 +61,16 @@ func (k Keeper) EncryptedTxAllFromHeight(c context.Context, req *types.QueryAllE
 	ctx := sdk.UnwrapSDKContext(c)
 	val := k.GetEncryptedTxAllFromHeight(ctx, req.TargetHeight)
 
-	return &types.QueryAllEncryptedTxFromHeightResponse{EncryptedTxArray: val}, nil
+	return &types.QueryEncryptedTxAllFromHeightResponse{
+		EncryptedTxArray: val,
+	}, nil
 }
 
 // EncryptedTx returns a singe encrypted Tx by index
-func (k Keeper) EncryptedTx(c context.Context, req *types.QueryGetEncryptedTxRequest) (*types.QueryGetEncryptedTxResponse, error) {
+func (k Keeper) EncryptedTx(
+	c context.Context,
+	req *types.QueryEncryptedTxRequest,
+) (*types.QueryEncryptedTxResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -71,5 +85,5 @@ func (k Keeper) EncryptedTx(c context.Context, req *types.QueryGetEncryptedTxReq
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	return &types.QueryGetEncryptedTxResponse{EncryptedTx: val}, nil
+	return &types.QueryEncryptedTxResponse{EncryptedTx: val}, nil
 }

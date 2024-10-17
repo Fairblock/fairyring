@@ -3,6 +3,8 @@ package fairyring.keyshare;
 
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
+// Commitments defines the list of commitments to verify the
+// keyshares submitted by validators
 message Commitments {
   repeated string commitments = 1;
 }

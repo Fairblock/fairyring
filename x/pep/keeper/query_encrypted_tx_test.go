@@ -25,29 +25,29 @@ func TestEncryptedTxQuerySingle(t *testing.T) {
 
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetEncryptedTxRequest
-		response *types.QueryGetEncryptedTxResponse
+		request  *types.QueryEncryptedTxRequest
+		response *types.QueryEncryptedTxResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetEncryptedTxRequest{
+			request: &types.QueryEncryptedTxRequest{
 				TargetHeight: msgs[0].EncryptedTx[0].TargetHeight,
 				Index:        msgs[0].EncryptedTx[0].Index,
 			},
-			response: &types.QueryGetEncryptedTxResponse{EncryptedTx: msgs[0].EncryptedTx[0]},
+			response: &types.QueryEncryptedTxResponse{EncryptedTx: msgs[0].EncryptedTx[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetEncryptedTxRequest{
+			request: &types.QueryEncryptedTxRequest{
 				TargetHeight: msgs[1].EncryptedTx[0].TargetHeight,
 				Index:        msgs[1].EncryptedTx[0].Index,
 			},
-			response: &types.QueryGetEncryptedTxResponse{EncryptedTx: msgs[1].EncryptedTx[0]},
+			response: &types.QueryEncryptedTxResponse{EncryptedTx: msgs[1].EncryptedTx[0]},
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.QueryGetEncryptedTxRequest{
+			request: &types.QueryEncryptedTxRequest{
 				TargetHeight: 100000,
 				Index:        100000,
 			},
@@ -78,7 +78,7 @@ func TestEncryptedTxQueryAll(t *testing.T) {
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNEncryptedTx(&keeper, ctx, 5)
 
-	resp, err := keeper.EncryptedTxAll(wctx, &types.QueryAllEncryptedTxRequest{
+	resp, err := keeper.EncryptedTxAll(wctx, &types.QueryEncryptedTxAllRequest{
 		Pagination: &query.PageRequest{
 			Key:        nil,
 			Offset:     0,
@@ -99,8 +99,13 @@ func TestEncryptedTxQueryPaginated(t *testing.T) {
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNEncryptedTx(&keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllEncryptedTxRequest {
-		return &types.QueryAllEncryptedTxRequest{
+	request := func(
+		next []byte,
+		offset,
+		limit uint64,
+		total bool,
+	) *types.QueryEncryptedTxAllRequest {
+		return &types.QueryEncryptedTxAllRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,

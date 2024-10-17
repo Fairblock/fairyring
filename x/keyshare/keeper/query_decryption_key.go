@@ -14,8 +14,11 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// AggregatedKeyShareAll returns the paginated list of all aggregated keyshares
-func (k Keeper) AggregatedKeyShareAll(goCtx context.Context, req *types.QueryAllAggregatedKeyShareRequest) (*types.QueryAllAggregatedKeyShareResponse, error) {
+// DecryptionKeyAll returns the paginated list of all aggregated keyshares
+func (k Keeper) DecryptionKeyAll(
+	goCtx context.Context,
+	req *types.QueryDecryptionKeyAllRequest,
+) (*types.QueryDecryptionKeyAllResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -41,11 +44,17 @@ func (k Keeper) AggregatedKeyShareAll(goCtx context.Context, req *types.QueryAll
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllAggregatedKeyShareResponse{AggregatedKeyShare: aggregatedKeyShares, Pagination: pageRes}, nil
+	return &types.QueryDecryptionKeyAllResponse{
+		DecryptionKeys: aggregatedKeyShares,
+		Pagination:     pageRes,
+	}, nil
 }
 
 // AggregatedKeyShare returns the aggregated key share for a particular height
-func (k Keeper) AggregatedKeyShare(goCtx context.Context, req *types.QueryGetAggregatedKeyShareRequest) (*types.QueryGetAggregatedKeyShareResponse, error) {
+func (k Keeper) DecryptionKey(
+	goCtx context.Context,
+	req *types.QueryDecryptionKeyRequest,
+) (*types.QueryDecryptionKeyResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -59,5 +68,5 @@ func (k Keeper) AggregatedKeyShare(goCtx context.Context, req *types.QueryGetAgg
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	return &types.QueryGetAggregatedKeyShareResponse{AggregatedKeyShare: val}, nil
+	return &types.QueryDecryptionKeyResponse{DecryptionKey: val}, nil
 }

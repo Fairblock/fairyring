@@ -1,12 +1,13 @@
 package keeper_test
 
 import (
+	"strconv"
+	"testing"
+
 	"github.com/Fairblock/fairyring/testutil/random"
 	"github.com/Fairblock/fairyring/testutil/shares"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	types2 "github.com/Fairblock/fairyring/x/pep/types"
-	"strconv"
-	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
@@ -48,7 +49,7 @@ func TestEncryptedlKeyShareMsgServerCreate(t *testing.T) {
 			Pubkey:             out.MasterPublicKey,
 			EncryptedKeyshares: make([]*commontypes.EncryptedKeyshare, 0),
 		})
-		pk.SetPrivateReqQueueEntry(wctx, commontypes.RequestPrivateKeyshare{
+		pk.SetPrivateReqQueueEntry(wctx, commontypes.RequestEncryptedKeyshare{
 			Creator:   creator,
 			RequestId: idVal,
 		})
@@ -90,7 +91,7 @@ func TestEncryptedKeyShareMsgServerFailCases(t *testing.T) {
 	out, creator := SetupTestGeneralKeyShare(t, wctx, k, 1, 1)
 	onlyIdVal := random.RandHex(32)
 
-	pk.SetPrivateReqQueueEntry(wctx, commontypes.RequestPrivateKeyshare{
+	pk.SetPrivateReqQueueEntry(wctx, commontypes.RequestEncryptedKeyshare{
 		Creator:   creator,
 		RequestId: onlyIdVal,
 	})

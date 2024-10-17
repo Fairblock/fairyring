@@ -11,7 +11,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k msgServer) SubmitGeneralEncryptedTx(goCtx context.Context, msg *types.MsgSubmitGeneralEncryptedTx) (*types.MsgSubmitEncryptedTxResponse, error) {
+func (k msgServer) SubmitGeneralEncryptedTx(
+	goCtx context.Context,
+	msg *types.MsgSubmitGeneralEncryptedTx,
+) (*types.MsgSubmitGeneralEncryptedTxResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	entry, found := k.GetEntry(ctx, msg.ReqId)
@@ -68,5 +71,5 @@ func (k msgServer) SubmitGeneralEncryptedTx(goCtx context.Context, msg *types.Ms
 
 	defer telemetry.IncrCounter(1, types.KeyTotalEncryptedTxSubmitted)
 
-	return &types.MsgSubmitEncryptedTxResponse{}, nil
+	return &types.MsgSubmitGeneralEncryptedTxResponse{}, nil
 }

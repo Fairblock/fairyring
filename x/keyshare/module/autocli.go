@@ -37,7 +37,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "KeyShare",
 					Use:            "show-key-share [validator] [block-height]",
 					Short:          "Show the key share of a particular validator for a particular block height",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "validator"}, {ProtoField: "blockHeight"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "validator"}, {ProtoField: "block_height"}},
 				},
 				{
 					RpcMethod: "AggregatedKeyShareAll",
@@ -75,7 +75,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "GeneralKeyShare",
 					Use:            "show-general-key-share [validator] [id-type] [id-value]",
 					Short:          "Shows a General Key Share",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "validator"}, {ProtoField: "idType"}, {ProtoField: "idValue"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "validator"}, {ProtoField: "id_type"}, {ProtoField: "id_value"}},
 				},
 				{
 					RpcMethod: "Commitments",

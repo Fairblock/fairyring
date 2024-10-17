@@ -7,7 +7,6 @@ import (
 	context "context"
 	fmt "fmt"
 	_ "github.com/cosmos/cosmos-proto"
-	_ "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/cosmos-sdk/types/msgservice"
 	_ "github.com/cosmos/cosmos-sdk/types/tx/amino"
 	_ "github.com/cosmos/gogoproto/gogoproto"
@@ -129,10 +128,11 @@ func (m *MsgUpdateParamsResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgUpdateParamsResponse proto.InternalMessageInfo
 
+// MsgSubmitEncryptedTx is the Msg/SubmitEncryptedTx request type.
 type MsgSubmitEncryptedTx struct {
 	Creator           string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Data              string `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
-	TargetBlockHeight uint64 `protobuf:"varint,3,opt,name=targetBlockHeight,proto3" json:"targetBlockHeight,omitempty"`
+	TargetBlockHeight uint64 `protobuf:"varint,3,opt,name=target_block_height,json=targetBlockHeight,proto3" json:"target_block_height,omitempty"`
 }
 
 func (m *MsgSubmitEncryptedTx) Reset()         { *m = MsgSubmitEncryptedTx{} }
@@ -189,6 +189,45 @@ func (m *MsgSubmitEncryptedTx) GetTargetBlockHeight() uint64 {
 	return 0
 }
 
+// MsgSubmitEncryptedTxResponse defines the response structure for executing a
+// MsgSubmitEncryptedTx message.
+type MsgSubmitEncryptedTxResponse struct {
+}
+
+func (m *MsgSubmitEncryptedTxResponse) Reset()         { *m = MsgSubmitEncryptedTxResponse{} }
+func (m *MsgSubmitEncryptedTxResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgSubmitEncryptedTxResponse) ProtoMessage()    {}
+func (*MsgSubmitEncryptedTxResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f6953e463911e1ec, []int{3}
+}
+func (m *MsgSubmitEncryptedTxResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgSubmitEncryptedTxResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgSubmitEncryptedTxResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgSubmitEncryptedTxResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSubmitEncryptedTxResponse.Merge(m, src)
+}
+func (m *MsgSubmitEncryptedTxResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgSubmitEncryptedTxResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSubmitEncryptedTxResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgSubmitEncryptedTxResponse proto.InternalMessageInfo
+
+// MsgSubmitGeneralEncryptedTx is the Msg/SubmitGeneralEncryptedTx request type.
 type MsgSubmitGeneralEncryptedTx struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Data    string `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
@@ -199,7 +238,7 @@ func (m *MsgSubmitGeneralEncryptedTx) Reset()         { *m = MsgSubmitGeneralEnc
 func (m *MsgSubmitGeneralEncryptedTx) String() string { return proto.CompactTextString(m) }
 func (*MsgSubmitGeneralEncryptedTx) ProtoMessage()    {}
 func (*MsgSubmitGeneralEncryptedTx) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{3}
+	return fileDescriptor_f6953e463911e1ec, []int{4}
 }
 func (m *MsgSubmitGeneralEncryptedTx) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -249,21 +288,23 @@ func (m *MsgSubmitGeneralEncryptedTx) GetReqId() string {
 	return ""
 }
 
-type MsgSubmitEncryptedTxResponse struct {
+// MsgSubmitGeneralEncryptedTxResponse defines the response structure for executing a
+// MsgSubmitGeneralEncryptedTx message.
+type MsgSubmitGeneralEncryptedTxResponse struct {
 }
 
-func (m *MsgSubmitEncryptedTxResponse) Reset()         { *m = MsgSubmitEncryptedTxResponse{} }
-func (m *MsgSubmitEncryptedTxResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgSubmitEncryptedTxResponse) ProtoMessage()    {}
-func (*MsgSubmitEncryptedTxResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{4}
+func (m *MsgSubmitGeneralEncryptedTxResponse) Reset()         { *m = MsgSubmitGeneralEncryptedTxResponse{} }
+func (m *MsgSubmitGeneralEncryptedTxResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgSubmitGeneralEncryptedTxResponse) ProtoMessage()    {}
+func (*MsgSubmitGeneralEncryptedTxResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f6953e463911e1ec, []int{5}
 }
-func (m *MsgSubmitEncryptedTxResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgSubmitGeneralEncryptedTxResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgSubmitEncryptedTxResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgSubmitGeneralEncryptedTxResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgSubmitEncryptedTxResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgSubmitGeneralEncryptedTxResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -273,19 +314,19 @@ func (m *MsgSubmitEncryptedTxResponse) XXX_Marshal(b []byte, deterministic bool)
 		return b[:n], nil
 	}
 }
-func (m *MsgSubmitEncryptedTxResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgSubmitEncryptedTxResponse.Merge(m, src)
+func (m *MsgSubmitGeneralEncryptedTxResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSubmitGeneralEncryptedTxResponse.Merge(m, src)
 }
-func (m *MsgSubmitEncryptedTxResponse) XXX_Size() int {
+func (m *MsgSubmitGeneralEncryptedTxResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgSubmitEncryptedTxResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgSubmitEncryptedTxResponse.DiscardUnknown(m)
+func (m *MsgSubmitGeneralEncryptedTxResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSubmitGeneralEncryptedTxResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgSubmitEncryptedTxResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgSubmitGeneralEncryptedTxResponse proto.InternalMessageInfo
 
-// this line is used by starport scaffolding # proto/tx/message
+// MsgCreateAggregatedKeyShare is the Msg/CreateAggregatedKeyShare request type.
 type MsgCreateAggregatedKeyShare struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Height  uint64 `protobuf:"varint,2,opt,name=height,proto3" json:"height,omitempty"`
@@ -296,7 +337,7 @@ func (m *MsgCreateAggregatedKeyShare) Reset()         { *m = MsgCreateAggregated
 func (m *MsgCreateAggregatedKeyShare) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateAggregatedKeyShare) ProtoMessage()    {}
 func (*MsgCreateAggregatedKeyShare) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{5}
+	return fileDescriptor_f6953e463911e1ec, []int{6}
 }
 func (m *MsgCreateAggregatedKeyShare) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -346,6 +387,8 @@ func (m *MsgCreateAggregatedKeyShare) GetData() string {
 	return ""
 }
 
+// MsgCreateAggregatedKeyShareResponse defines the response structure for executing a
+// MsgCreateAggregatedKeyShare message.
 type MsgCreateAggregatedKeyShareResponse struct {
 }
 
@@ -353,7 +396,7 @@ func (m *MsgCreateAggregatedKeyShareResponse) Reset()         { *m = MsgCreateAg
 func (m *MsgCreateAggregatedKeyShareResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgCreateAggregatedKeyShareResponse) ProtoMessage()    {}
 func (*MsgCreateAggregatedKeyShareResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{6}
+	return fileDescriptor_f6953e463911e1ec, []int{7}
 }
 func (m *MsgCreateAggregatedKeyShareResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -382,24 +425,25 @@ func (m *MsgCreateAggregatedKeyShareResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCreateAggregatedKeyShareResponse proto.InternalMessageInfo
 
-type MsgRequestGeneralKeyshare struct {
+// MsgRequestGeneralIdentity is the Msg/RequestGeneralIdentity request type.
+type MsgRequestGeneralIdentity struct {
 	Creator        string         `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	EstimatedDelay *time.Duration `protobuf:"bytes,2,opt,name=estimated_delay,json=estimatedDelay,proto3,stdduration" json:"estimated_delay,omitempty"`
 	ReqId          string         `protobuf:"bytes,3,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
 }
 
-func (m *MsgRequestGeneralKeyshare) Reset()         { *m = MsgRequestGeneralKeyshare{} }
-func (m *MsgRequestGeneralKeyshare) String() string { return proto.CompactTextString(m) }
-func (*MsgRequestGeneralKeyshare) ProtoMessage()    {}
-func (*MsgRequestGeneralKeyshare) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{7}
+func (m *MsgRequestGeneralIdentity) Reset()         { *m = MsgRequestGeneralIdentity{} }
+func (m *MsgRequestGeneralIdentity) String() string { return proto.CompactTextString(m) }
+func (*MsgRequestGeneralIdentity) ProtoMessage()    {}
+func (*MsgRequestGeneralIdentity) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f6953e463911e1ec, []int{8}
 }
-func (m *MsgRequestGeneralKeyshare) XXX_Unmarshal(b []byte) error {
+func (m *MsgRequestGeneralIdentity) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRequestGeneralKeyshare) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRequestGeneralIdentity) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRequestGeneralKeyshare.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRequestGeneralIdentity.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -409,55 +453,57 @@ func (m *MsgRequestGeneralKeyshare) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *MsgRequestGeneralKeyshare) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRequestGeneralKeyshare.Merge(m, src)
+func (m *MsgRequestGeneralIdentity) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRequestGeneralIdentity.Merge(m, src)
 }
-func (m *MsgRequestGeneralKeyshare) XXX_Size() int {
+func (m *MsgRequestGeneralIdentity) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRequestGeneralKeyshare) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRequestGeneralKeyshare.DiscardUnknown(m)
+func (m *MsgRequestGeneralIdentity) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRequestGeneralIdentity.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRequestGeneralKeyshare proto.InternalMessageInfo
+var xxx_messageInfo_MsgRequestGeneralIdentity proto.InternalMessageInfo
 
-func (m *MsgRequestGeneralKeyshare) GetCreator() string {
+func (m *MsgRequestGeneralIdentity) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgRequestGeneralKeyshare) GetEstimatedDelay() *time.Duration {
+func (m *MsgRequestGeneralIdentity) GetEstimatedDelay() *time.Duration {
 	if m != nil {
 		return m.EstimatedDelay
 	}
 	return nil
 }
 
-func (m *MsgRequestGeneralKeyshare) GetReqId() string {
+func (m *MsgRequestGeneralIdentity) GetReqId() string {
 	if m != nil {
 		return m.ReqId
 	}
 	return ""
 }
 
-type MsgRequestGeneralKeyshareResponse struct {
+// MsgRequestGeneralIdentityResponse defines the response structure for executing a
+// MsgRequestGeneralIdentity message.
+type MsgRequestGeneralIdentityResponse struct {
 	ReqId string `protobuf:"bytes,1,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
 }
 
-func (m *MsgRequestGeneralKeyshareResponse) Reset()         { *m = MsgRequestGeneralKeyshareResponse{} }
-func (m *MsgRequestGeneralKeyshareResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgRequestGeneralKeyshareResponse) ProtoMessage()    {}
-func (*MsgRequestGeneralKeyshareResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{8}
+func (m *MsgRequestGeneralIdentityResponse) Reset()         { *m = MsgRequestGeneralIdentityResponse{} }
+func (m *MsgRequestGeneralIdentityResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRequestGeneralIdentityResponse) ProtoMessage()    {}
+func (*MsgRequestGeneralIdentityResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f6953e463911e1ec, []int{9}
 }
-func (m *MsgRequestGeneralKeyshareResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgRequestGeneralIdentityResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRequestGeneralKeyshareResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRequestGeneralIdentityResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRequestGeneralKeyshareResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRequestGeneralIdentityResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -467,42 +513,43 @@ func (m *MsgRequestGeneralKeyshareResponse) XXX_Marshal(b []byte, deterministic 
 		return b[:n], nil
 	}
 }
-func (m *MsgRequestGeneralKeyshareResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRequestGeneralKeyshareResponse.Merge(m, src)
+func (m *MsgRequestGeneralIdentityResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRequestGeneralIdentityResponse.Merge(m, src)
 }
-func (m *MsgRequestGeneralKeyshareResponse) XXX_Size() int {
+func (m *MsgRequestGeneralIdentityResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRequestGeneralKeyshareResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRequestGeneralKeyshareResponse.DiscardUnknown(m)
+func (m *MsgRequestGeneralIdentityResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRequestGeneralIdentityResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRequestGeneralKeyshareResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgRequestGeneralIdentityResponse proto.InternalMessageInfo
 
-func (m *MsgRequestGeneralKeyshareResponse) GetReqId() string {
+func (m *MsgRequestGeneralIdentityResponse) GetReqId() string {
 	if m != nil {
 		return m.ReqId
 	}
 	return ""
 }
 
-type MsgGetGeneralKeyshare struct {
+// MsgRequestGeneralDecryptionKey is the Msg/RequestGeneralDecryptionKey request type.
+type MsgRequestGeneralDecryptionKey struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	ReqId   string `protobuf:"bytes,2,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
 }
 
-func (m *MsgGetGeneralKeyshare) Reset()         { *m = MsgGetGeneralKeyshare{} }
-func (m *MsgGetGeneralKeyshare) String() string { return proto.CompactTextString(m) }
-func (*MsgGetGeneralKeyshare) ProtoMessage()    {}
-func (*MsgGetGeneralKeyshare) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{9}
+func (m *MsgRequestGeneralDecryptionKey) Reset()         { *m = MsgRequestGeneralDecryptionKey{} }
+func (m *MsgRequestGeneralDecryptionKey) String() string { return proto.CompactTextString(m) }
+func (*MsgRequestGeneralDecryptionKey) ProtoMessage()    {}
+func (*MsgRequestGeneralDecryptionKey) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f6953e463911e1ec, []int{10}
 }
-func (m *MsgGetGeneralKeyshare) XXX_Unmarshal(b []byte) error {
+func (m *MsgRequestGeneralDecryptionKey) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgGetGeneralKeyshare) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRequestGeneralDecryptionKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgGetGeneralKeyshare.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRequestGeneralDecryptionKey.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -512,47 +559,51 @@ func (m *MsgGetGeneralKeyshare) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return b[:n], nil
 	}
 }
-func (m *MsgGetGeneralKeyshare) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgGetGeneralKeyshare.Merge(m, src)
+func (m *MsgRequestGeneralDecryptionKey) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRequestGeneralDecryptionKey.Merge(m, src)
 }
-func (m *MsgGetGeneralKeyshare) XXX_Size() int {
+func (m *MsgRequestGeneralDecryptionKey) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgGetGeneralKeyshare) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgGetGeneralKeyshare.DiscardUnknown(m)
+func (m *MsgRequestGeneralDecryptionKey) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRequestGeneralDecryptionKey.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgGetGeneralKeyshare proto.InternalMessageInfo
+var xxx_messageInfo_MsgRequestGeneralDecryptionKey proto.InternalMessageInfo
 
-func (m *MsgGetGeneralKeyshare) GetCreator() string {
+func (m *MsgRequestGeneralDecryptionKey) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgGetGeneralKeyshare) GetReqId() string {
+func (m *MsgRequestGeneralDecryptionKey) GetReqId() string {
 	if m != nil {
 		return m.ReqId
 	}
 	return ""
 }
 
-type MsgGetGeneralKeyshareResponse struct {
+// MsgRequestGeneralDecryptionKeyResponse defines the response structure for executing a
+// MsgRequestGeneralDecryptionKey message.
+type MsgRequestGeneralDecryptionKeyResponse struct {
 }
 
-func (m *MsgGetGeneralKeyshareResponse) Reset()         { *m = MsgGetGeneralKeyshareResponse{} }
-func (m *MsgGetGeneralKeyshareResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgGetGeneralKeyshareResponse) ProtoMessage()    {}
-func (*MsgGetGeneralKeyshareResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{10}
+func (m *MsgRequestGeneralDecryptionKeyResponse) Reset() {
+	*m = MsgRequestGeneralDecryptionKeyResponse{}
 }
-func (m *MsgGetGeneralKeyshareResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgRequestGeneralDecryptionKeyResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRequestGeneralDecryptionKeyResponse) ProtoMessage()    {}
+func (*MsgRequestGeneralDecryptionKeyResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f6953e463911e1ec, []int{11}
+}
+func (m *MsgRequestGeneralDecryptionKeyResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgGetGeneralKeyshareResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRequestGeneralDecryptionKeyResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgGetGeneralKeyshareResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRequestGeneralDecryptionKeyResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -562,28 +613,29 @@ func (m *MsgGetGeneralKeyshareResponse) XXX_Marshal(b []byte, deterministic bool
 		return b[:n], nil
 	}
 }
-func (m *MsgGetGeneralKeyshareResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgGetGeneralKeyshareResponse.Merge(m, src)
+func (m *MsgRequestGeneralDecryptionKeyResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRequestGeneralDecryptionKeyResponse.Merge(m, src)
 }
-func (m *MsgGetGeneralKeyshareResponse) XXX_Size() int {
+func (m *MsgRequestGeneralDecryptionKeyResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgGetGeneralKeyshareResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgGetGeneralKeyshareResponse.DiscardUnknown(m)
+func (m *MsgRequestGeneralDecryptionKeyResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRequestGeneralDecryptionKeyResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgGetGeneralKeyshareResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgRequestGeneralDecryptionKeyResponse proto.InternalMessageInfo
 
+// MsgRequestPrivateIdentity is the Msg/RequestPrivateIdentity request type.
 type MsgRequestPrivateIdentity struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	ReqId   string `protobuf:"bytes,2,opt,name=reqId,proto3" json:"reqId,omitempty"`
+	ReqId   string `protobuf:"bytes,2,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
 }
 
 func (m *MsgRequestPrivateIdentity) Reset()         { *m = MsgRequestPrivateIdentity{} }
 func (m *MsgRequestPrivateIdentity) String() string { return proto.CompactTextString(m) }
 func (*MsgRequestPrivateIdentity) ProtoMessage()    {}
 func (*MsgRequestPrivateIdentity) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{11}
+	return fileDescriptor_f6953e463911e1ec, []int{12}
 }
 func (m *MsgRequestPrivateIdentity) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -626,6 +678,8 @@ func (m *MsgRequestPrivateIdentity) GetReqId() string {
 	return ""
 }
 
+// MsgRequestPrivateIdentityResponse defines the response structure for executing a
+// MsgRequestPrivateIdentity message.
 type MsgRequestPrivateIdentityResponse struct {
 	ReqId string `protobuf:"bytes,1,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
 }
@@ -634,7 +688,7 @@ func (m *MsgRequestPrivateIdentityResponse) Reset()         { *m = MsgRequestPri
 func (m *MsgRequestPrivateIdentityResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgRequestPrivateIdentityResponse) ProtoMessage()    {}
 func (*MsgRequestPrivateIdentityResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{12}
+	return fileDescriptor_f6953e463911e1ec, []int{13}
 }
 func (m *MsgRequestPrivateIdentityResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -670,24 +724,25 @@ func (m *MsgRequestPrivateIdentityResponse) GetReqId() string {
 	return ""
 }
 
-type MsgGetPrivateKeyshares struct {
+// MsgRequestPrivateDecryptionKey is the Msg/RequestPrivateDecryptionKey request type.
+type MsgRequestPrivateDecryptionKey struct {
 	Creator    string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	ReqId      string `protobuf:"bytes,2,opt,name=reqId,proto3" json:"reqId,omitempty"`
+	ReqId      string `protobuf:"bytes,2,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
 	SecpPubkey string `protobuf:"bytes,3,opt,name=secp_pubkey,json=secpPubkey,proto3" json:"secp_pubkey,omitempty"`
 }
 
-func (m *MsgGetPrivateKeyshares) Reset()         { *m = MsgGetPrivateKeyshares{} }
-func (m *MsgGetPrivateKeyshares) String() string { return proto.CompactTextString(m) }
-func (*MsgGetPrivateKeyshares) ProtoMessage()    {}
-func (*MsgGetPrivateKeyshares) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{13}
+func (m *MsgRequestPrivateDecryptionKey) Reset()         { *m = MsgRequestPrivateDecryptionKey{} }
+func (m *MsgRequestPrivateDecryptionKey) String() string { return proto.CompactTextString(m) }
+func (*MsgRequestPrivateDecryptionKey) ProtoMessage()    {}
+func (*MsgRequestPrivateDecryptionKey) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f6953e463911e1ec, []int{14}
 }
-func (m *MsgGetPrivateKeyshares) XXX_Unmarshal(b []byte) error {
+func (m *MsgRequestPrivateDecryptionKey) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgGetPrivateKeyshares) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRequestPrivateDecryptionKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgGetPrivateKeyshares.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRequestPrivateDecryptionKey.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -697,54 +752,58 @@ func (m *MsgGetPrivateKeyshares) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return b[:n], nil
 	}
 }
-func (m *MsgGetPrivateKeyshares) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgGetPrivateKeyshares.Merge(m, src)
+func (m *MsgRequestPrivateDecryptionKey) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRequestPrivateDecryptionKey.Merge(m, src)
 }
-func (m *MsgGetPrivateKeyshares) XXX_Size() int {
+func (m *MsgRequestPrivateDecryptionKey) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgGetPrivateKeyshares) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgGetPrivateKeyshares.DiscardUnknown(m)
+func (m *MsgRequestPrivateDecryptionKey) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRequestPrivateDecryptionKey.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgGetPrivateKeyshares proto.InternalMessageInfo
+var xxx_messageInfo_MsgRequestPrivateDecryptionKey proto.InternalMessageInfo
 
-func (m *MsgGetPrivateKeyshares) GetCreator() string {
+func (m *MsgRequestPrivateDecryptionKey) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgGetPrivateKeyshares) GetReqId() string {
+func (m *MsgRequestPrivateDecryptionKey) GetReqId() string {
 	if m != nil {
 		return m.ReqId
 	}
 	return ""
 }
 
-func (m *MsgGetPrivateKeyshares) GetSecpPubkey() string {
+func (m *MsgRequestPrivateDecryptionKey) GetSecpPubkey() string {
 	if m != nil {
 		return m.SecpPubkey
 	}
 	return ""
 }
 
-type MsgGetPrivateKeysharesResponse struct {
+// MsgRequestPrivateDecryptionKeyResponse defines the response structure for executing a
+// MsgRequestPrivateDecryptionKey message.
+type MsgRequestPrivateDecryptionKeyResponse struct {
 }
 
-func (m *MsgGetPrivateKeysharesResponse) Reset()         { *m = MsgGetPrivateKeysharesResponse{} }
-func (m *MsgGetPrivateKeysharesResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgGetPrivateKeysharesResponse) ProtoMessage()    {}
-func (*MsgGetPrivateKeysharesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{14}
+func (m *MsgRequestPrivateDecryptionKeyResponse) Reset() {
+	*m = MsgRequestPrivateDecryptionKeyResponse{}
 }
-func (m *MsgGetPrivateKeysharesResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgRequestPrivateDecryptionKeyResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRequestPrivateDecryptionKeyResponse) ProtoMessage()    {}
+func (*MsgRequestPrivateDecryptionKeyResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f6953e463911e1ec, []int{15}
+}
+func (m *MsgRequestPrivateDecryptionKeyResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgGetPrivateKeysharesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRequestPrivateDecryptionKeyResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgGetPrivateKeysharesResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRequestPrivateDecryptionKeyResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -754,18 +813,19 @@ func (m *MsgGetPrivateKeysharesResponse) XXX_Marshal(b []byte, deterministic boo
 		return b[:n], nil
 	}
 }
-func (m *MsgGetPrivateKeysharesResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgGetPrivateKeysharesResponse.Merge(m, src)
+func (m *MsgRequestPrivateDecryptionKeyResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRequestPrivateDecryptionKeyResponse.Merge(m, src)
 }
-func (m *MsgGetPrivateKeysharesResponse) XXX_Size() int {
+func (m *MsgRequestPrivateDecryptionKeyResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgGetPrivateKeysharesResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgGetPrivateKeysharesResponse.DiscardUnknown(m)
+func (m *MsgRequestPrivateDecryptionKeyResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRequestPrivateDecryptionKeyResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgGetPrivateKeysharesResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgRequestPrivateDecryptionKeyResponse proto.InternalMessageInfo
 
+// MsgRegisterContract is the Msg/RegisterContract request type.
 type MsgRegisterContract struct {
 	Creator         string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	ContractAddress string `protobuf:"bytes,2,opt,name=contract_address,json=contractAddress,proto3" json:"contract_address,omitempty"`
@@ -776,7 +836,7 @@ func (m *MsgRegisterContract) Reset()         { *m = MsgRegisterContract{} }
 func (m *MsgRegisterContract) String() string { return proto.CompactTextString(m) }
 func (*MsgRegisterContract) ProtoMessage()    {}
 func (*MsgRegisterContract) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{15}
+	return fileDescriptor_f6953e463911e1ec, []int{16}
 }
 func (m *MsgRegisterContract) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -826,6 +886,8 @@ func (m *MsgRegisterContract) GetIdentity() string {
 	return ""
 }
 
+// MsgRegisterContractResponse defines the response structure for executing a
+// MsgRegisterContract message.
 type MsgRegisterContractResponse struct {
 }
 
@@ -833,7 +895,7 @@ func (m *MsgRegisterContractResponse) Reset()         { *m = MsgRegisterContract
 func (m *MsgRegisterContractResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgRegisterContractResponse) ProtoMessage()    {}
 func (*MsgRegisterContractResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{16}
+	return fileDescriptor_f6953e463911e1ec, []int{17}
 }
 func (m *MsgRegisterContractResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -862,6 +924,7 @@ func (m *MsgRegisterContractResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgRegisterContractResponse proto.InternalMessageInfo
 
+// MsgUnregisterContract is the Msg/UnregisterContract request type.
 type MsgUnregisterContract struct {
 	Creator         string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	ContractAddress string `protobuf:"bytes,2,opt,name=contract_address,json=contractAddress,proto3" json:"contract_address,omitempty"`
@@ -872,7 +935,7 @@ func (m *MsgUnregisterContract) Reset()         { *m = MsgUnregisterContract{} }
 func (m *MsgUnregisterContract) String() string { return proto.CompactTextString(m) }
 func (*MsgUnregisterContract) ProtoMessage()    {}
 func (*MsgUnregisterContract) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{17}
+	return fileDescriptor_f6953e463911e1ec, []int{18}
 }
 func (m *MsgUnregisterContract) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -922,6 +985,8 @@ func (m *MsgUnregisterContract) GetIdentity() string {
 	return ""
 }
 
+// MsgUnregisterContractResponse defines the response structure for executing a
+// MsgUnregisterContract message.
 type MsgUnregisterContractResponse struct {
 }
 
@@ -929,7 +994,7 @@ func (m *MsgUnregisterContractResponse) Reset()         { *m = MsgUnregisterCont
 func (m *MsgUnregisterContractResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgUnregisterContractResponse) ProtoMessage()    {}
 func (*MsgUnregisterContractResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f6953e463911e1ec, []int{18}
+	return fileDescriptor_f6953e463911e1ec, []int{19}
 }
 func (m *MsgUnregisterContractResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -962,18 +1027,19 @@ func init() {
 	proto.RegisterType((*MsgUpdateParams)(nil), "fairyring.pep.MsgUpdateParams")
 	proto.RegisterType((*MsgUpdateParamsResponse)(nil), "fairyring.pep.MsgUpdateParamsResponse")
 	proto.RegisterType((*MsgSubmitEncryptedTx)(nil), "fairyring.pep.MsgSubmitEncryptedTx")
-	proto.RegisterType((*MsgSubmitGeneralEncryptedTx)(nil), "fairyring.pep.MsgSubmitGeneralEncryptedTx")
 	proto.RegisterType((*MsgSubmitEncryptedTxResponse)(nil), "fairyring.pep.MsgSubmitEncryptedTxResponse")
+	proto.RegisterType((*MsgSubmitGeneralEncryptedTx)(nil), "fairyring.pep.MsgSubmitGeneralEncryptedTx")
+	proto.RegisterType((*MsgSubmitGeneralEncryptedTxResponse)(nil), "fairyring.pep.MsgSubmitGeneralEncryptedTxResponse")
 	proto.RegisterType((*MsgCreateAggregatedKeyShare)(nil), "fairyring.pep.MsgCreateAggregatedKeyShare")
 	proto.RegisterType((*MsgCreateAggregatedKeyShareResponse)(nil), "fairyring.pep.MsgCreateAggregatedKeyShareResponse")
-	proto.RegisterType((*MsgRequestGeneralKeyshare)(nil), "fairyring.pep.MsgRequestGeneralKeyshare")
-	proto.RegisterType((*MsgRequestGeneralKeyshareResponse)(nil), "fairyring.pep.MsgRequestGeneralKeyshareResponse")
-	proto.RegisterType((*MsgGetGeneralKeyshare)(nil), "fairyring.pep.MsgGetGeneralKeyshare")
-	proto.RegisterType((*MsgGetGeneralKeyshareResponse)(nil), "fairyring.pep.MsgGetGeneralKeyshareResponse")
+	proto.RegisterType((*MsgRequestGeneralIdentity)(nil), "fairyring.pep.MsgRequestGeneralIdentity")
+	proto.RegisterType((*MsgRequestGeneralIdentityResponse)(nil), "fairyring.pep.MsgRequestGeneralIdentityResponse")
+	proto.RegisterType((*MsgRequestGeneralDecryptionKey)(nil), "fairyring.pep.MsgRequestGeneralDecryptionKey")
+	proto.RegisterType((*MsgRequestGeneralDecryptionKeyResponse)(nil), "fairyring.pep.MsgRequestGeneralDecryptionKeyResponse")
 	proto.RegisterType((*MsgRequestPrivateIdentity)(nil), "fairyring.pep.MsgRequestPrivateIdentity")
 	proto.RegisterType((*MsgRequestPrivateIdentityResponse)(nil), "fairyring.pep.MsgRequestPrivateIdentityResponse")
-	proto.RegisterType((*MsgGetPrivateKeyshares)(nil), "fairyring.pep.MsgGetPrivateKeyshares")
-	proto.RegisterType((*MsgGetPrivateKeysharesResponse)(nil), "fairyring.pep.MsgGetPrivateKeysharesResponse")
+	proto.RegisterType((*MsgRequestPrivateDecryptionKey)(nil), "fairyring.pep.MsgRequestPrivateDecryptionKey")
+	proto.RegisterType((*MsgRequestPrivateDecryptionKeyResponse)(nil), "fairyring.pep.MsgRequestPrivateDecryptionKeyResponse")
 	proto.RegisterType((*MsgRegisterContract)(nil), "fairyring.pep.MsgRegisterContract")
 	proto.RegisterType((*MsgRegisterContractResponse)(nil), "fairyring.pep.MsgRegisterContractResponse")
 	proto.RegisterType((*MsgUnregisterContract)(nil), "fairyring.pep.MsgUnregisterContract")
@@ -983,67 +1049,66 @@ func init() {
 func init() { proto.RegisterFile("fairyring/pep/tx.proto", fileDescriptor_f6953e463911e1ec) }
 
 var fileDescriptor_f6953e463911e1ec = []byte{
-	// 952 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x96, 0xcf, 0x6f, 0xdc, 0x44,
-	0x14, 0xc7, 0xe3, 0x24, 0x0d, 0xdd, 0xd7, 0x42, 0x1a, 0x37, 0x49, 0x37, 0x86, 0x3a, 0x61, 0x4b,
-	0xd1, 0xb2, 0xb4, 0x6b, 0x12, 0x10, 0x42, 0xb9, 0x75, 0x1b, 0x48, 0xab, 0x6a, 0xa5, 0x68, 0x43,
-	0x2b, 0xc1, 0x65, 0x35, 0xb6, 0x5f, 0x67, 0xad, 0x64, 0x6d, 0x67, 0x66, 0x36, 0xc4, 0x9c, 0x2a,
-	0x84, 0x38, 0x70, 0xe2, 0xc8, 0x1f, 0xc0, 0x81, 0x63, 0x0e, 0xfc, 0x11, 0x3d, 0x80, 0x54, 0x71,
-	0xe2, 0x04, 0x28, 0x39, 0xe4, 0xdf, 0x40, 0xb6, 0xc7, 0xde, 0xac, 0x7f, 0x6c, 0x36, 0x5c, 0x7a,
-	0x49, 0x76, 0x66, 0xbe, 0xf3, 0xbe, 0x9f, 0xf7, 0x3c, 0xf3, 0x6c, 0x58, 0x7e, 0x4e, 0x1c, 0x16,
-	0x30, 0xc7, 0xa5, 0x86, 0x8f, 0xbe, 0x21, 0x8e, 0x9a, 0x3e, 0xf3, 0x84, 0xa7, 0xbe, 0x99, 0xce,
-	0x37, 0x7d, 0xf4, 0xb5, 0x05, 0xd2, 0x77, 0x5c, 0xcf, 0x88, 0xfe, 0xc6, 0x0a, 0xed, 0x96, 0xe5,
-	0xf1, 0xbe, 0xc7, 0x8d, 0x3e, 0xa7, 0xc6, 0xe1, 0x7a, 0xf8, 0x4f, 0x2e, 0xac, 0xc4, 0x0b, 0xdd,
-	0x68, 0x64, 0xc4, 0x03, 0xb9, 0xa4, 0x53, 0xcf, 0xa3, 0xfb, 0x68, 0x44, 0x23, 0x73, 0xf0, 0xdc,
-	0xb0, 0x07, 0x8c, 0x08, 0xc7, 0x73, 0xe5, 0xfa, 0x22, 0xf5, 0xa8, 0x17, 0xef, 0x0b, 0x7f, 0xc9,
-	0x59, 0x6d, 0x94, 0xd1, 0x27, 0x8c, 0xf4, 0x93, 0x88, 0xf5, 0xd1, 0x35, 0x42, 0x29, 0x43, 0x4a,
-	0x04, 0xda, 0xdd, 0x3d, 0x0c, 0xba, 0xbc, 0x47, 0x18, 0x26, 0xde, 0x92, 0xd7, 0x24, 0x1c, 0x8d,
-	0xc3, 0x75, 0x13, 0x05, 0x59, 0x37, 0x2c, 0xcf, 0x91, 0xde, 0xb5, 0xdf, 0x15, 0x98, 0x6f, 0x73,
-	0xfa, 0xd4, 0xb7, 0x89, 0xc0, 0x9d, 0xc8, 0x43, 0xfd, 0x14, 0x2a, 0x64, 0x20, 0x7a, 0x1e, 0x73,
-	0x44, 0x50, 0x55, 0xd6, 0x94, 0x7a, 0xa5, 0x55, 0xfd, 0xf3, 0xb7, 0xfb, 0x8b, 0x32, 0xa9, 0x07,
-	0xb6, 0xcd, 0x90, 0xf3, 0x5d, 0x11, 0xfa, 0x77, 0x86, 0x52, 0xf5, 0x33, 0x98, 0x8b, 0x29, 0xab,
-	0xd3, 0x6b, 0x4a, 0xfd, 0xda, 0xc6, 0x52, 0x73, 0xa4, 0x9c, 0xcd, 0x38, 0x7c, 0xab, 0xf2, 0xf2,
-	0xef, 0xd5, 0xa9, 0x5f, 0xcf, 0x8e, 0x1b, 0x4a, 0x47, 0xea, 0x37, 0xb7, 0xbf, 0x3b, 0x3b, 0x6e,
-	0x0c, 0x23, 0xfd, 0x78, 0x76, 0xdc, 0xf8, 0x84, 0x3a, 0xa2, 0x37, 0x30, 0x9b, 0x96, 0xd7, 0x37,
-	0xbe, 0x20, 0x0e, 0x33, 0xf7, 0x3d, 0x6b, 0xcf, 0x18, 0xe6, 0x7d, 0x14, 0x65, 0x9e, 0x41, 0xaf,
-	0xad, 0xc0, 0xad, 0xcc, 0x54, 0x07, 0xb9, 0xef, 0xb9, 0x1c, 0x6b, 0x2f, 0x14, 0x58, 0x6c, 0x73,
-	0xba, 0x3b, 0x30, 0xfb, 0x8e, 0xf8, 0xdc, 0xb5, 0x58, 0xe0, 0x0b, 0xb4, 0xbf, 0x3c, 0x52, 0xab,
-	0xf0, 0x86, 0xc5, 0x90, 0x08, 0x8f, 0xc5, 0xc9, 0x76, 0x92, 0xa1, 0xaa, 0xc2, 0xac, 0x4d, 0x04,
-	0x89, 0xd2, 0xa9, 0x74, 0xa2, 0xdf, 0xea, 0x3d, 0x58, 0x10, 0x84, 0x51, 0x14, 0xad, 0x10, 0xe8,
-	0x11, 0x3a, 0xb4, 0x27, 0xaa, 0x33, 0x6b, 0x4a, 0x7d, 0xb6, 0x93, 0x5f, 0xd8, 0xbc, 0x1e, 0x26,
-	0x96, 0xc4, 0xab, 0xf9, 0xf0, 0x76, 0x4a, 0xb0, 0x8d, 0x2e, 0x32, 0xb2, 0xff, 0xff, 0x41, 0x96,
-	0x60, 0x8e, 0xe1, 0x41, 0xd7, 0xb1, 0x23, 0xf7, 0x4a, 0xe7, 0x0a, 0xc3, 0x83, 0xc7, 0x76, 0xc6,
-	0x51, 0x87, 0x77, 0x8a, 0x72, 0x4e, 0x8b, 0x72, 0x10, 0x11, 0x3d, 0x0c, 0xd5, 0xf8, 0x20, 0x3d,
-	0x45, 0x4f, 0x30, 0xd8, 0x0d, 0xcf, 0xd0, 0x18, 0xa2, 0x65, 0x98, 0xeb, 0xc5, 0xb9, 0x4f, 0x47,
-	0xb9, 0xcb, 0x51, 0x4a, 0x3a, 0x33, 0x24, 0xcd, 0x20, 0xdd, 0x85, 0x3b, 0x63, 0x2c, 0x53, 0xb2,
-	0x5f, 0x14, 0x58, 0x69, 0x73, 0xda, 0xc1, 0x83, 0x01, 0xf2, 0xa4, 0x5a, 0x4f, 0x30, 0xe0, 0x17,
-	0x80, 0x3d, 0x82, 0x79, 0xe4, 0xc2, 0xe9, 0x47, 0xb7, 0xc1, 0xc6, 0x7d, 0x12, 0xc8, 0xd3, 0xb8,
-	0xd2, 0x8c, 0xaf, 0x61, 0x33, 0xb9, 0x86, 0xcd, 0x2d, 0x79, 0x0d, 0x5b, 0xb3, 0x3f, 0xff, 0xb3,
-	0xaa, 0x74, 0xde, 0x4a, 0xf7, 0x6d, 0x85, 0xdb, 0x26, 0x2b, 0xf0, 0x26, 0xbc, 0x5b, 0x4a, 0x99,
-	0xe4, 0x72, 0x2e, 0x92, 0x72, 0x2e, 0x52, 0xed, 0x19, 0x2c, 0xb5, 0x39, 0xdd, 0xc6, 0x4b, 0x64,
-	0x37, 0x8c, 0x34, 0x5d, 0xce, 0xb4, 0x0a, 0xb7, 0x0b, 0xe3, 0xa6, 0xb5, 0xfd, 0xea, 0x7c, 0x69,
-	0x77, 0x98, 0x73, 0x48, 0x04, 0x3e, 0xb6, 0xd1, 0x15, 0xe1, 0x2d, 0x2e, 0x37, 0x5f, 0x84, 0xd8,
-	0x6e, 0x9c, 0xf7, 0x48, 0x3d, 0x32, 0xa1, 0x2f, 0xaa, 0xc7, 0x37, 0xb0, 0x1c, 0x73, 0xcb, 0x7d,
-	0x09, 0x37, 0xbf, 0x2c, 0x93, 0xba, 0x0a, 0xd7, 0x38, 0x5a, 0x7e, 0xd7, 0x1f, 0x98, 0x7b, 0x18,
-	0xc8, 0xe7, 0x07, 0xe1, 0xd4, 0x4e, 0x34, 0x93, 0x81, 0x5e, 0x03, 0xbd, 0xd8, 0x38, 0xad, 0xd8,
-	0xf7, 0x0a, 0xdc, 0x8c, 0xf2, 0xa2, 0x0e, 0x17, 0xc8, 0x1e, 0x7a, 0xae, 0x60, 0xc4, 0x12, 0x63,
-	0xc0, 0x3e, 0x80, 0x1b, 0x96, 0x54, 0x75, 0x49, 0xdc, 0x31, 0x25, 0xe3, 0x7c, 0x32, 0x2f, 0x1b,
-	0xa9, 0xaa, 0xc1, 0x55, 0x47, 0x96, 0x48, 0xa2, 0xa6, 0xe3, 0x0c, 0xe8, 0xed, 0xe8, 0xba, 0x66,
-	0x29, 0x52, 0xca, 0x1f, 0x94, 0xe8, 0x44, 0x3d, 0x75, 0xd9, 0x6b, 0xe6, 0x8c, 0x4f, 0x60, 0x9e,
-	0x23, 0x21, 0xdd, 0xf8, 0xe3, 0x2a, 0xcc, 0xb4, 0x39, 0x55, 0x9f, 0xc1, 0xf5, 0x91, 0x57, 0x8f,
-	0x9e, 0x79, 0x65, 0x64, 0x9a, 0xb9, 0xf6, 0xfe, 0xf8, 0xf5, 0xf4, 0x84, 0x21, 0x2c, 0xe4, 0x1b,
-	0xfd, 0x9d, 0xfc, 0xe6, 0x9c, 0x48, 0xfb, 0x70, 0x02, 0x51, 0x6a, 0xc3, 0xa1, 0x5a, 0xda, 0xcd,
-	0x1b, 0x65, 0x81, 0xf2, 0xda, 0xcb, 0x99, 0x7e, 0x0b, 0xd5, 0xd2, 0x86, 0x5d, 0x60, 0x5a, 0xa6,
-	0xd5, 0x36, 0x26, 0xd7, 0xa6, 0xde, 0x02, 0x96, 0x4b, 0x3a, 0x72, 0x3d, 0x1f, 0xad, 0x58, 0xa9,
-	0x7d, 0x34, 0xa9, 0x32, 0x75, 0xed, 0x81, 0x5a, 0xd0, 0x25, 0xdf, 0xcb, 0xc7, 0xc9, 0xab, 0xb4,
-	0x7b, 0x93, 0xa8, 0x0a, 0xf2, 0xcb, 0xb6, 0xc5, 0xf2, 0xfc, 0x32, 0xca, 0x31, 0xf9, 0x95, 0xf5,
-	0xc3, 0x3d, 0xb8, 0x59, 0xd4, 0xf5, 0xee, 0x16, 0xa2, 0x67, 0x65, 0xda, 0xfd, 0x89, 0x64, 0xa9,
-	0x99, 0x09, 0x37, 0x72, 0x6d, 0xac, 0x56, 0x84, 0x3c, 0xaa, 0xd1, 0x1a, 0x17, 0x6b, 0xce, 0x3f,
-	0xb0, 0x82, 0x26, 0x54, 0xf0, 0xc0, 0xf2, 0xaa, 0xa2, 0x07, 0x56, 0xde, 0x48, 0xb4, 0x2b, 0x2f,
-	0xc2, 0x0f, 0xc9, 0xd6, 0xd6, 0xcb, 0x13, 0x5d, 0x79, 0x75, 0xa2, 0x2b, 0xff, 0x9e, 0xe8, 0xca,
-	0x4f, 0xa7, 0xfa, 0xd4, 0xab, 0x53, 0x7d, 0xea, 0xaf, 0x53, 0x7d, 0xea, 0xeb, 0xc6, 0x44, 0xdf,
-	0x91, 0x22, 0xf0, 0x91, 0x9b, 0x73, 0xd1, 0xa7, 0xc1, 0xc7, 0xff, 0x05, 0x00, 0x00, 0xff, 0xff,
-	0xa6, 0x87, 0x12, 0xeb, 0x1f, 0x0c, 0x00, 0x00,
+	// 931 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x96, 0xcf, 0x73, 0xdb, 0x44,
+	0x14, 0xc7, 0xb3, 0x49, 0x1a, 0xf0, 0x6b, 0x21, 0x8d, 0x9a, 0xa4, 0x8e, 0x4a, 0x95, 0xe0, 0x42,
+	0xc7, 0x18, 0x22, 0x41, 0xf8, 0x31, 0x4c, 0x6e, 0x75, 0x03, 0x6d, 0xa7, 0x93, 0x99, 0x8c, 0x02,
+	0x1c, 0x7a, 0xf1, 0xac, 0xad, 0xed, 0x5a, 0xd3, 0x58, 0x2b, 0xaf, 0xd6, 0x9d, 0x98, 0x53, 0xa7,
+	0x30, 0xcc, 0xc0, 0x89, 0x23, 0x7f, 0x00, 0x07, 0x8e, 0x39, 0xf0, 0x47, 0xf4, 0xc0, 0x21, 0xc3,
+	0x89, 0x13, 0x30, 0xc9, 0x21, 0xff, 0x06, 0xa3, 0xd5, 0x5a, 0xb6, 0xf5, 0xcb, 0x02, 0x0e, 0xbd,
+	0x24, 0xde, 0x7d, 0xdf, 0xfd, 0xbe, 0xcf, 0x7b, 0xf6, 0x3e, 0x09, 0xd6, 0x1f, 0x63, 0x97, 0x0f,
+	0xb9, 0xeb, 0x51, 0xcb, 0x27, 0xbe, 0x25, 0x8e, 0x4d, 0x9f, 0x33, 0xc1, 0xb4, 0xd7, 0xe2, 0x7d,
+	0xd3, 0x27, 0xbe, 0xbe, 0x82, 0x7b, 0xae, 0xc7, 0x2c, 0xf9, 0x37, 0x52, 0xe8, 0xd7, 0x3b, 0x2c,
+	0xe8, 0xb1, 0xc0, 0xea, 0x05, 0xd4, 0x7a, 0xfa, 0x41, 0xf8, 0x4f, 0x05, 0x36, 0xa2, 0x40, 0x4b,
+	0xae, 0xac, 0x68, 0xa1, 0x42, 0x06, 0x65, 0x8c, 0x1e, 0x11, 0x4b, 0xae, 0xda, 0x83, 0xc7, 0x96,
+	0x33, 0xe0, 0x58, 0xb8, 0xcc, 0x53, 0xf1, 0x55, 0xca, 0x28, 0x8b, 0xce, 0x85, 0x9f, 0xd4, 0xae,
+	0x3e, 0xcd, 0xe8, 0x63, 0x8e, 0x7b, 0xca, 0xb1, 0xf6, 0x1b, 0x82, 0xe5, 0xfd, 0x80, 0x7e, 0xe9,
+	0x3b, 0x58, 0x90, 0x03, 0x19, 0xd1, 0x3e, 0x81, 0x0a, 0x1e, 0x88, 0x2e, 0xe3, 0xae, 0x18, 0x56,
+	0xd1, 0x16, 0xaa, 0x57, 0x9a, 0xd5, 0xdf, 0x7f, 0xdd, 0x5e, 0x55, 0x28, 0x77, 0x1c, 0x87, 0x93,
+	0x20, 0x38, 0x14, 0xa1, 0xa3, 0x3d, 0x96, 0x6a, 0x9f, 0xc2, 0x52, 0xe4, 0x5d, 0x9d, 0xdf, 0x42,
+	0xf5, 0xcb, 0x3b, 0x6b, 0xe6, 0x54, 0x13, 0xcc, 0xc8, 0xbe, 0x59, 0x79, 0xf1, 0xe7, 0xe6, 0xdc,
+	0x2f, 0x17, 0x27, 0x0d, 0x64, 0x2b, 0xfd, 0xee, 0xbd, 0xe7, 0x17, 0x27, 0x8d, 0xb1, 0xd3, 0x0f,
+	0x17, 0x27, 0x8d, 0x8f, 0xa8, 0x2b, 0xba, 0x83, 0xb6, 0xd9, 0x61, 0x3d, 0xeb, 0x73, 0xec, 0xf2,
+	0xf6, 0x11, 0xeb, 0x3c, 0xb1, 0xc6, 0x95, 0x1c, 0xcb, 0x5a, 0x12, 0xe8, 0xb5, 0x0d, 0xb8, 0x9e,
+	0xd8, 0xb2, 0x49, 0xe0, 0x33, 0x2f, 0x20, 0xb5, 0xe7, 0x08, 0x56, 0xf7, 0x03, 0x7a, 0x38, 0x68,
+	0xf7, 0x5c, 0xf1, 0x99, 0xd7, 0xe1, 0x43, 0x5f, 0x10, 0xe7, 0x8b, 0x63, 0xad, 0x0a, 0xaf, 0x74,
+	0x38, 0xc1, 0x82, 0xf1, 0xa8, 0x58, 0x7b, 0xb4, 0xd4, 0x34, 0x58, 0x74, 0xb0, 0xc0, 0xb2, 0x9c,
+	0x8a, 0x2d, 0x3f, 0x6b, 0x26, 0x5c, 0x13, 0x98, 0x53, 0x22, 0x5a, 0x92, 0xa8, 0xd5, 0x25, 0x2e,
+	0xed, 0x8a, 0xea, 0xc2, 0x16, 0xaa, 0x2f, 0xda, 0x2b, 0x51, 0xa8, 0x19, 0x46, 0xee, 0xcb, 0xc0,
+	0xee, 0x95, 0xb0, 0xb4, 0x91, 0x63, 0xcd, 0x80, 0x37, 0xb2, 0x18, 0x62, 0x48, 0x1f, 0x6e, 0xc4,
+	0xf1, 0x7b, 0xc4, 0x23, 0x1c, 0x1f, 0xfd, 0x77, 0xd4, 0x35, 0x58, 0xe2, 0xa4, 0xdf, 0x72, 0x1d,
+	0x49, 0x57, 0xb1, 0x2f, 0x71, 0xd2, 0x7f, 0xe0, 0x24, 0x88, 0xde, 0x86, 0x5b, 0x05, 0x19, 0x63,
+	0xb0, 0xbe, 0x04, 0xbb, 0x1b, 0x1e, 0x22, 0x77, 0x28, 0xe5, 0x84, 0x62, 0x41, 0x9c, 0x87, 0x64,
+	0x78, 0xd8, 0xc5, 0x9c, 0x14, 0x80, 0xad, 0xc3, 0x92, 0x6a, 0xd1, 0xbc, 0x6c, 0x91, 0x5a, 0xc5,
+	0xc0, 0x0b, 0x63, 0xe0, 0x4c, 0xb2, 0xbc, 0x94, 0x31, 0xd9, 0xcf, 0x08, 0x36, 0xf6, 0x03, 0x6a,
+	0x93, 0xfe, 0x80, 0x04, 0xa3, 0x12, 0x1e, 0x38, 0xc4, 0x13, 0xe1, 0x6f, 0x32, 0x1f, 0xec, 0x3e,
+	0x2c, 0x93, 0x40, 0xb8, 0xbd, 0xd0, 0xb4, 0xe5, 0x90, 0x23, 0x3c, 0x54, 0x3f, 0xdb, 0x0d, 0x33,
+	0xba, 0x65, 0xe6, 0xe8, 0x96, 0x99, 0x7b, 0xea, 0x96, 0x35, 0x17, 0x7f, 0xfa, 0x6b, 0x13, 0xd9,
+	0xaf, 0xc7, 0xe7, 0xf6, 0xc2, 0x63, 0xe5, 0xfa, 0xbc, 0x0b, 0x6f, 0xe6, 0x52, 0x8e, 0x6a, 0x99,
+	0x70, 0x42, 0x13, 0x4e, 0xb5, 0x16, 0x18, 0xa9, 0xb3, 0x7b, 0x44, 0x7e, 0x49, 0x2e, 0xf3, 0x1e,
+	0x92, 0xa2, 0x32, 0xc7, 0x96, 0xf3, 0xf9, 0x70, 0x75, 0xb8, 0x5d, 0x9c, 0x20, 0xee, 0xf6, 0xa3,
+	0xc9, 0x66, 0x1f, 0x70, 0xf7, 0x29, 0x16, 0xa4, 0x44, 0xb3, 0x4b, 0x51, 0x4c, 0xb5, 0x28, 0xe1,
+	0x3d, 0xab, 0x45, 0xcf, 0xd0, 0x64, 0x8f, 0xd4, 0xe1, 0xff, 0xd7, 0x23, 0x6d, 0x13, 0x2e, 0x07,
+	0xa4, 0xe3, 0xb7, 0xfc, 0x41, 0xfb, 0x09, 0x19, 0xaa, 0x2f, 0x17, 0xc2, 0xad, 0x03, 0xb9, 0x53,
+	0xd4, 0xc4, 0x2c, 0x82, 0xb8, 0x89, 0xdf, 0x22, 0xb8, 0x26, 0xa5, 0xd4, 0x0d, 0x04, 0xe1, 0x77,
+	0x99, 0x27, 0x38, 0xee, 0x88, 0x02, 0xc2, 0x77, 0xe0, 0x6a, 0x47, 0xa9, 0x5a, 0x38, 0x9a, 0xbf,
+	0x8a, 0x75, 0x79, 0xb4, 0xaf, 0xc6, 0xb2, 0xa6, 0xc3, 0xab, 0xae, 0x6a, 0x9a, 0x42, 0x8e, 0xd7,
+	0x09, 0xe0, 0x9b, 0xf2, 0x4e, 0x27, 0x29, 0x62, 0xca, 0xef, 0x10, 0xac, 0x85, 0xc3, 0xd4, 0xe3,
+	0x2f, 0x99, 0x73, 0x13, 0x6e, 0x66, 0x72, 0x8c, 0x48, 0x77, 0xbe, 0xaf, 0xc0, 0xc2, 0x7e, 0x40,
+	0xb5, 0xaf, 0xe0, 0xca, 0xd4, 0x83, 0xcc, 0x48, 0x3c, 0x80, 0x12, 0x8f, 0x06, 0xfd, 0x76, 0x71,
+	0x3c, 0xfe, 0xcd, 0x11, 0x58, 0x49, 0x3f, 0x36, 0x6e, 0xa5, 0x0f, 0xa7, 0x44, 0xfa, 0xbb, 0x25,
+	0x44, 0x71, 0x9a, 0xaf, 0xa1, 0x9a, 0x3b, 0xf9, 0x1b, 0x79, 0x46, 0x69, 0xad, 0xbe, 0x53, 0x5e,
+	0x3b, 0x99, 0x3b, 0x77, 0xb8, 0x67, 0xe4, 0xce, 0xd3, 0x66, 0xe5, 0x9e, 0x35, 0xc1, 0x35, 0x01,
+	0xeb, 0x39, 0xd3, 0xbb, 0x9e, 0x76, 0xcb, 0x56, 0xea, 0xef, 0x97, 0x55, 0xc6, 0x59, 0xbf, 0x41,
+	0x70, 0xa3, 0x68, 0xa4, 0x6e, 0xcf, 0x72, 0x9c, 0x92, 0xeb, 0x1f, 0xff, 0x2b, 0x79, 0x46, 0xed,
+	0xc9, 0x61, 0x9a, 0x5f, 0x7b, 0x42, 0x59, 0x50, 0x7b, 0xde, 0x10, 0x9d, 0xa8, 0x3d, 0x73, 0x54,
+	0x6e, 0xcf, 0x72, 0x2c, 0x5b, 0x7b, 0xd1, 0x18, 0xd4, 0xda, 0x70, 0x35, 0x35, 0x02, 0x6b, 0x59,
+	0x56, 0xd3, 0x1a, 0xbd, 0x31, 0x5b, 0x13, 0xe7, 0xe8, 0x82, 0x96, 0x31, 0xc0, 0xde, 0xca, 0xb8,
+	0xf8, 0x29, 0x95, 0xfe, 0x5e, 0x19, 0xd5, 0x28, 0x93, 0x7e, 0xe9, 0x59, 0xf8, 0x4a, 0xdb, 0xdc,
+	0x7b, 0x71, 0x66, 0xa0, 0xd3, 0x33, 0x03, 0xfd, 0x7d, 0x66, 0xa0, 0x1f, 0xcf, 0x8d, 0xb9, 0xd3,
+	0x73, 0x63, 0xee, 0x8f, 0x73, 0x63, 0xee, 0x51, 0xa3, 0xd4, 0x1b, 0xad, 0x18, 0xfa, 0x24, 0x68,
+	0x2f, 0xc9, 0x77, 0x8f, 0x0f, 0xff, 0x09, 0x00, 0x00, 0xff, 0xff, 0x3e, 0xe6, 0xc9, 0xa4, 0x5f,
+	0x0c, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1061,15 +1126,36 @@ type MsgClient interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
+	// SubmitEncryptedTx defines an operation to submit an
+	// encrypted transaction for a particular target block height
 	SubmitEncryptedTx(ctx context.Context, in *MsgSubmitEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error)
-	SubmitGeneralEncryptedTx(ctx context.Context, in *MsgSubmitGeneralEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error)
-	// this line is used by starport scaffolding # proto/tx/rpc
+	// SubmitGeneralEncryptedTx defines an operation to submit an
+	// encrypted transaction for a particular identity
+	SubmitGeneralEncryptedTx(ctx context.Context, in *MsgSubmitGeneralEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitGeneralEncryptedTxResponse, error)
+	// CreateAggregatedKeyShare defines an operation to submit an
+	// aggregated keyshare to a destination chain
 	CreateAggregatedKeyShare(ctx context.Context, in *MsgCreateAggregatedKeyShare, opts ...grpc.CallOption) (*MsgCreateAggregatedKeyShareResponse, error)
-	RequestGeneralKeyshare(ctx context.Context, in *MsgRequestGeneralKeyshare, opts ...grpc.CallOption) (*MsgRequestGeneralKeyshareResponse, error)
-	GetGeneralKeyshare(ctx context.Context, in *MsgGetGeneralKeyshare, opts ...grpc.CallOption) (*MsgGetGeneralKeyshareResponse, error)
+	// RequestGeneralIdentity defines an operation to request the
+	// creation of a new identity to which validators will be required
+	// to submit keyshares
+	RequestGeneralIdentity(ctx context.Context, in *MsgRequestGeneralIdentity, opts ...grpc.CallOption) (*MsgRequestGeneralIdentityResponse, error)
+	// RequestGeneralDecryptionKey defines an operation to signal validators to start
+	// submitting keyshares for a particular identity
+	RequestGeneralDecryptionKey(ctx context.Context, in *MsgRequestGeneralDecryptionKey, opts ...grpc.CallOption) (*MsgRequestGeneralDecryptionKeyResponse, error)
+	// RequestPrivateIdentity defines an operation to request the
+	// creation of a new identity to which validators will be required
+	// to submit encrypted keyshares
 	RequestPrivateIdentity(ctx context.Context, in *MsgRequestPrivateIdentity, opts ...grpc.CallOption) (*MsgRequestPrivateIdentityResponse, error)
-	GetPrivateKeyshares(ctx context.Context, in *MsgGetPrivateKeyshares, opts ...grpc.CallOption) (*MsgGetPrivateKeysharesResponse, error)
+	// RequestPrivateDecryptionKey defines an operation to signal validators to start
+	// submitting encrypted keyshares for a particular identity
+	RequestPrivateDecryptionKey(ctx context.Context, in *MsgRequestPrivateDecryptionKey, opts ...grpc.CallOption) (*MsgRequestPrivateDecryptionKeyResponse, error)
+	// RegisterContract defines an operation to make an instantiated
+	// contract eligible to be automatically executed when a particular
+	// identity has aggregated keyshares available for it
 	RegisterContract(ctx context.Context, in *MsgRegisterContract, opts ...grpc.CallOption) (*MsgRegisterContractResponse, error)
+	// UnregisterContract defines an operation to remove a registered contract
+	// from the list of contracts set to be automatically executed when
+	// aggreagted keyshare is available for a particular identity
 	UnregisterContract(ctx context.Context, in *MsgUnregisterContract, opts ...grpc.CallOption) (*MsgUnregisterContractResponse, error)
 }
 
@@ -1099,8 +1185,8 @@ func (c *msgClient) SubmitEncryptedTx(ctx context.Context, in *MsgSubmitEncrypte
 	return out, nil
 }
 
-func (c *msgClient) SubmitGeneralEncryptedTx(ctx context.Context, in *MsgSubmitGeneralEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitEncryptedTxResponse, error) {
-	out := new(MsgSubmitEncryptedTxResponse)
+func (c *msgClient) SubmitGeneralEncryptedTx(ctx context.Context, in *MsgSubmitGeneralEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitGeneralEncryptedTxResponse, error) {
+	out := new(MsgSubmitGeneralEncryptedTxResponse)
 	err := c.cc.Invoke(ctx, "/fairyring.pep.Msg/SubmitGeneralEncryptedTx", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1117,18 +1203,18 @@ func (c *msgClient) CreateAggregatedKeyShare(ctx context.Context, in *MsgCreateA
 	return out, nil
 }
 
-func (c *msgClient) RequestGeneralKeyshare(ctx context.Context, in *MsgRequestGeneralKeyshare, opts ...grpc.CallOption) (*MsgRequestGeneralKeyshareResponse, error) {
-	out := new(MsgRequestGeneralKeyshareResponse)
-	err := c.cc.Invoke(ctx, "/fairyring.pep.Msg/RequestGeneralKeyshare", in, out, opts...)
+func (c *msgClient) RequestGeneralIdentity(ctx context.Context, in *MsgRequestGeneralIdentity, opts ...grpc.CallOption) (*MsgRequestGeneralIdentityResponse, error) {
+	out := new(MsgRequestGeneralIdentityResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Msg/RequestGeneralIdentity", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) GetGeneralKeyshare(ctx context.Context, in *MsgGetGeneralKeyshare, opts ...grpc.CallOption) (*MsgGetGeneralKeyshareResponse, error) {
-	out := new(MsgGetGeneralKeyshareResponse)
-	err := c.cc.Invoke(ctx, "/fairyring.pep.Msg/GetGeneralKeyshare", in, out, opts...)
+func (c *msgClient) RequestGeneralDecryptionKey(ctx context.Context, in *MsgRequestGeneralDecryptionKey, opts ...grpc.CallOption) (*MsgRequestGeneralDecryptionKeyResponse, error) {
+	out := new(MsgRequestGeneralDecryptionKeyResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Msg/RequestGeneralDecryptionKey", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1144,9 +1230,9 @@ func (c *msgClient) RequestPrivateIdentity(ctx context.Context, in *MsgRequestPr
 	return out, nil
 }
 
-func (c *msgClient) GetPrivateKeyshares(ctx context.Context, in *MsgGetPrivateKeyshares, opts ...grpc.CallOption) (*MsgGetPrivateKeysharesResponse, error) {
-	out := new(MsgGetPrivateKeysharesResponse)
-	err := c.cc.Invoke(ctx, "/fairyring.pep.Msg/GetPrivateKeyshares", in, out, opts...)
+func (c *msgClient) RequestPrivateDecryptionKey(ctx context.Context, in *MsgRequestPrivateDecryptionKey, opts ...grpc.CallOption) (*MsgRequestPrivateDecryptionKeyResponse, error) {
+	out := new(MsgRequestPrivateDecryptionKeyResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Msg/RequestPrivateDecryptionKey", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1176,15 +1262,36 @@ type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
+	// SubmitEncryptedTx defines an operation to submit an
+	// encrypted transaction for a particular target block height
 	SubmitEncryptedTx(context.Context, *MsgSubmitEncryptedTx) (*MsgSubmitEncryptedTxResponse, error)
-	SubmitGeneralEncryptedTx(context.Context, *MsgSubmitGeneralEncryptedTx) (*MsgSubmitEncryptedTxResponse, error)
-	// this line is used by starport scaffolding # proto/tx/rpc
+	// SubmitGeneralEncryptedTx defines an operation to submit an
+	// encrypted transaction for a particular identity
+	SubmitGeneralEncryptedTx(context.Context, *MsgSubmitGeneralEncryptedTx) (*MsgSubmitGeneralEncryptedTxResponse, error)
+	// CreateAggregatedKeyShare defines an operation to submit an
+	// aggregated keyshare to a destination chain
 	CreateAggregatedKeyShare(context.Context, *MsgCreateAggregatedKeyShare) (*MsgCreateAggregatedKeyShareResponse, error)
-	RequestGeneralKeyshare(context.Context, *MsgRequestGeneralKeyshare) (*MsgRequestGeneralKeyshareResponse, error)
-	GetGeneralKeyshare(context.Context, *MsgGetGeneralKeyshare) (*MsgGetGeneralKeyshareResponse, error)
+	// RequestGeneralIdentity defines an operation to request the
+	// creation of a new identity to which validators will be required
+	// to submit keyshares
+	RequestGeneralIdentity(context.Context, *MsgRequestGeneralIdentity) (*MsgRequestGeneralIdentityResponse, error)
+	// RequestGeneralDecryptionKey defines an operation to signal validators to start
+	// submitting keyshares for a particular identity
+	RequestGeneralDecryptionKey(context.Context, *MsgRequestGeneralDecryptionKey) (*MsgRequestGeneralDecryptionKeyResponse, error)
+	// RequestPrivateIdentity defines an operation to request the
+	// creation of a new identity to which validators will be required
+	// to submit encrypted keyshares
 	RequestPrivateIdentity(context.Context, *MsgRequestPrivateIdentity) (*MsgRequestPrivateIdentityResponse, error)
-	GetPrivateKeyshares(context.Context, *MsgGetPrivateKeyshares) (*MsgGetPrivateKeysharesResponse, error)
+	// RequestPrivateDecryptionKey defines an operation to signal validators to start
+	// submitting encrypted keyshares for a particular identity
+	RequestPrivateDecryptionKey(context.Context, *MsgRequestPrivateDecryptionKey) (*MsgRequestPrivateDecryptionKeyResponse, error)
+	// RegisterContract defines an operation to make an instantiated
+	// contract eligible to be automatically executed when a particular
+	// identity has aggregated keyshares available for it
 	RegisterContract(context.Context, *MsgRegisterContract) (*MsgRegisterContractResponse, error)
+	// UnregisterContract defines an operation to remove a registered contract
+	// from the list of contracts set to be automatically executed when
+	// aggreagted keyshare is available for a particular identity
 	UnregisterContract(context.Context, *MsgUnregisterContract) (*MsgUnregisterContractResponse, error)
 }
 
@@ -1198,23 +1305,23 @@ func (*UnimplementedMsgServer) UpdateParams(ctx context.Context, req *MsgUpdateP
 func (*UnimplementedMsgServer) SubmitEncryptedTx(ctx context.Context, req *MsgSubmitEncryptedTx) (*MsgSubmitEncryptedTxResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitEncryptedTx not implemented")
 }
-func (*UnimplementedMsgServer) SubmitGeneralEncryptedTx(ctx context.Context, req *MsgSubmitGeneralEncryptedTx) (*MsgSubmitEncryptedTxResponse, error) {
+func (*UnimplementedMsgServer) SubmitGeneralEncryptedTx(ctx context.Context, req *MsgSubmitGeneralEncryptedTx) (*MsgSubmitGeneralEncryptedTxResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitGeneralEncryptedTx not implemented")
 }
 func (*UnimplementedMsgServer) CreateAggregatedKeyShare(ctx context.Context, req *MsgCreateAggregatedKeyShare) (*MsgCreateAggregatedKeyShareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAggregatedKeyShare not implemented")
 }
-func (*UnimplementedMsgServer) RequestGeneralKeyshare(ctx context.Context, req *MsgRequestGeneralKeyshare) (*MsgRequestGeneralKeyshareResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RequestGeneralKeyshare not implemented")
+func (*UnimplementedMsgServer) RequestGeneralIdentity(ctx context.Context, req *MsgRequestGeneralIdentity) (*MsgRequestGeneralIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RequestGeneralIdentity not implemented")
 }
-func (*UnimplementedMsgServer) GetGeneralKeyshare(ctx context.Context, req *MsgGetGeneralKeyshare) (*MsgGetGeneralKeyshareResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetGeneralKeyshare not implemented")
+func (*UnimplementedMsgServer) RequestGeneralDecryptionKey(ctx context.Context, req *MsgRequestGeneralDecryptionKey) (*MsgRequestGeneralDecryptionKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RequestGeneralDecryptionKey not implemented")
 }
 func (*UnimplementedMsgServer) RequestPrivateIdentity(ctx context.Context, req *MsgRequestPrivateIdentity) (*MsgRequestPrivateIdentityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RequestPrivateIdentity not implemented")
 }
-func (*UnimplementedMsgServer) GetPrivateKeyshares(ctx context.Context, req *MsgGetPrivateKeyshares) (*MsgGetPrivateKeysharesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetPrivateKeyshares not implemented")
+func (*UnimplementedMsgServer) RequestPrivateDecryptionKey(ctx context.Context, req *MsgRequestPrivateDecryptionKey) (*MsgRequestPrivateDecryptionKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RequestPrivateDecryptionKey not implemented")
 }
 func (*UnimplementedMsgServer) RegisterContract(ctx context.Context, req *MsgRegisterContract) (*MsgRegisterContractResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterContract not implemented")
@@ -1299,38 +1406,38 @@ func _Msg_CreateAggregatedKeyShare_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_RequestGeneralKeyshare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgRequestGeneralKeyshare)
+func _Msg_RequestGeneralIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRequestGeneralIdentity)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).RequestGeneralKeyshare(ctx, in)
+		return srv.(MsgServer).RequestGeneralIdentity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fairyring.pep.Msg/RequestGeneralKeyshare",
+		FullMethod: "/fairyring.pep.Msg/RequestGeneralIdentity",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).RequestGeneralKeyshare(ctx, req.(*MsgRequestGeneralKeyshare))
+		return srv.(MsgServer).RequestGeneralIdentity(ctx, req.(*MsgRequestGeneralIdentity))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_GetGeneralKeyshare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgGetGeneralKeyshare)
+func _Msg_RequestGeneralDecryptionKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRequestGeneralDecryptionKey)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).GetGeneralKeyshare(ctx, in)
+		return srv.(MsgServer).RequestGeneralDecryptionKey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fairyring.pep.Msg/GetGeneralKeyshare",
+		FullMethod: "/fairyring.pep.Msg/RequestGeneralDecryptionKey",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).GetGeneralKeyshare(ctx, req.(*MsgGetGeneralKeyshare))
+		return srv.(MsgServer).RequestGeneralDecryptionKey(ctx, req.(*MsgRequestGeneralDecryptionKey))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1353,20 +1460,20 @@ func _Msg_RequestPrivateIdentity_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_GetPrivateKeyshares_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgGetPrivateKeyshares)
+func _Msg_RequestPrivateDecryptionKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRequestPrivateDecryptionKey)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).GetPrivateKeyshares(ctx, in)
+		return srv.(MsgServer).RequestPrivateDecryptionKey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fairyring.pep.Msg/GetPrivateKeyshares",
+		FullMethod: "/fairyring.pep.Msg/RequestPrivateDecryptionKey",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).GetPrivateKeyshares(ctx, req.(*MsgGetPrivateKeyshares))
+		return srv.(MsgServer).RequestPrivateDecryptionKey(ctx, req.(*MsgRequestPrivateDecryptionKey))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1428,20 +1535,20 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_CreateAggregatedKeyShare_Handler,
 		},
 		{
-			MethodName: "RequestGeneralKeyshare",
-			Handler:    _Msg_RequestGeneralKeyshare_Handler,
+			MethodName: "RequestGeneralIdentity",
+			Handler:    _Msg_RequestGeneralIdentity_Handler,
 		},
 		{
-			MethodName: "GetGeneralKeyshare",
-			Handler:    _Msg_GetGeneralKeyshare_Handler,
+			MethodName: "RequestGeneralDecryptionKey",
+			Handler:    _Msg_RequestGeneralDecryptionKey_Handler,
 		},
 		{
 			MethodName: "RequestPrivateIdentity",
 			Handler:    _Msg_RequestPrivateIdentity_Handler,
 		},
 		{
-			MethodName: "GetPrivateKeyshares",
-			Handler:    _Msg_GetPrivateKeyshares_Handler,
+			MethodName: "RequestPrivateDecryptionKey",
+			Handler:    _Msg_RequestPrivateDecryptionKey_Handler,
 		},
 		{
 			MethodName: "RegisterContract",
@@ -1561,6 +1668,29 @@ func (m *MsgSubmitEncryptedTx) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgSubmitEncryptedTxResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgSubmitEncryptedTxResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgSubmitEncryptedTxResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func (m *MsgSubmitGeneralEncryptedTx) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -1605,7 +1735,7 @@ func (m *MsgSubmitGeneralEncryptedTx) MarshalToSizedBuffer(dAtA []byte) (int, er
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgSubmitEncryptedTxResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgSubmitGeneralEncryptedTxResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1615,12 +1745,12 @@ func (m *MsgSubmitEncryptedTxResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgSubmitEncryptedTxResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgSubmitGeneralEncryptedTxResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgSubmitEncryptedTxResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgSubmitGeneralEncryptedTxResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1693,7 +1823,7 @@ func (m *MsgCreateAggregatedKeyShareResponse) MarshalToSizedBuffer(dAtA []byte) 
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgRequestGeneralKeyshare) Marshal() (dAtA []byte, err error) {
+func (m *MsgRequestGeneralIdentity) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1703,12 +1833,12 @@ func (m *MsgRequestGeneralKeyshare) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgRequestGeneralKeyshare) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRequestGeneralIdentity) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgRequestGeneralKeyshare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRequestGeneralIdentity) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1740,7 +1870,7 @@ func (m *MsgRequestGeneralKeyshare) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgRequestGeneralKeyshareResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgRequestGeneralIdentityResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1750,12 +1880,12 @@ func (m *MsgRequestGeneralKeyshareResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgRequestGeneralKeyshareResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRequestGeneralIdentityResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgRequestGeneralKeyshareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRequestGeneralIdentityResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1770,7 +1900,7 @@ func (m *MsgRequestGeneralKeyshareResponse) MarshalToSizedBuffer(dAtA []byte) (i
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgGetGeneralKeyshare) Marshal() (dAtA []byte, err error) {
+func (m *MsgRequestGeneralDecryptionKey) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1780,12 +1910,12 @@ func (m *MsgGetGeneralKeyshare) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgGetGeneralKeyshare) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRequestGeneralDecryptionKey) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgGetGeneralKeyshare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRequestGeneralDecryptionKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1807,7 +1937,7 @@ func (m *MsgGetGeneralKeyshare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgGetGeneralKeyshareResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgRequestGeneralDecryptionKeyResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1817,12 +1947,12 @@ func (m *MsgGetGeneralKeyshareResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgGetGeneralKeyshareResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRequestGeneralDecryptionKeyResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgGetGeneralKeyshareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRequestGeneralDecryptionKeyResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1897,7 +2027,7 @@ func (m *MsgRequestPrivateIdentityResponse) MarshalToSizedBuffer(dAtA []byte) (i
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgGetPrivateKeyshares) Marshal() (dAtA []byte, err error) {
+func (m *MsgRequestPrivateDecryptionKey) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1907,12 +2037,12 @@ func (m *MsgGetPrivateKeyshares) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgGetPrivateKeyshares) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRequestPrivateDecryptionKey) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgGetPrivateKeyshares) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRequestPrivateDecryptionKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1941,7 +2071,7 @@ func (m *MsgGetPrivateKeyshares) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgGetPrivateKeysharesResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgRequestPrivateDecryptionKeyResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1951,12 +2081,12 @@ func (m *MsgGetPrivateKeysharesResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgGetPrivateKeysharesResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRequestPrivateDecryptionKeyResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgGetPrivateKeysharesResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRequestPrivateDecryptionKeyResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2153,6 +2283,15 @@ func (m *MsgSubmitEncryptedTx) Size() (n int) {
 	return n
 }
 
+func (m *MsgSubmitEncryptedTxResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
 func (m *MsgSubmitGeneralEncryptedTx) Size() (n int) {
 	if m == nil {
 		return 0
@@ -2174,7 +2313,7 @@ func (m *MsgSubmitGeneralEncryptedTx) Size() (n int) {
 	return n
 }
 
-func (m *MsgSubmitEncryptedTxResponse) Size() (n int) {
+func (m *MsgSubmitGeneralEncryptedTxResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2212,7 +2351,7 @@ func (m *MsgCreateAggregatedKeyShareResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgRequestGeneralKeyshare) Size() (n int) {
+func (m *MsgRequestGeneralIdentity) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2233,7 +2372,7 @@ func (m *MsgRequestGeneralKeyshare) Size() (n int) {
 	return n
 }
 
-func (m *MsgRequestGeneralKeyshareResponse) Size() (n int) {
+func (m *MsgRequestGeneralIdentityResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2246,7 +2385,7 @@ func (m *MsgRequestGeneralKeyshareResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgGetGeneralKeyshare) Size() (n int) {
+func (m *MsgRequestGeneralDecryptionKey) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2263,7 +2402,7 @@ func (m *MsgGetGeneralKeyshare) Size() (n int) {
 	return n
 }
 
-func (m *MsgGetGeneralKeyshareResponse) Size() (n int) {
+func (m *MsgRequestGeneralDecryptionKeyResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2302,7 +2441,7 @@ func (m *MsgRequestPrivateIdentityResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgGetPrivateKeyshares) Size() (n int) {
+func (m *MsgRequestPrivateDecryptionKey) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2323,7 +2462,7 @@ func (m *MsgGetPrivateKeyshares) Size() (n int) {
 	return n
 }
 
-func (m *MsgGetPrivateKeysharesResponse) Size() (n int) {
+func (m *MsgRequestPrivateDecryptionKeyResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2696,6 +2835,56 @@ func (m *MsgSubmitEncryptedTx) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *MsgSubmitEncryptedTxResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgSubmitEncryptedTxResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgSubmitEncryptedTxResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *MsgSubmitGeneralEncryptedTx) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -2842,7 +3031,7 @@ func (m *MsgSubmitGeneralEncryptedTx) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgSubmitEncryptedTxResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgSubmitGeneralEncryptedTxResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2865,10 +3054,10 @@ func (m *MsgSubmitEncryptedTxResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgSubmitEncryptedTxResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgSubmitGeneralEncryptedTxResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgSubmitEncryptedTxResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgSubmitGeneralEncryptedTxResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -3075,7 +3264,7 @@ func (m *MsgCreateAggregatedKeyShareResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgRequestGeneralKeyshare) Unmarshal(dAtA []byte) error {
+func (m *MsgRequestGeneralIdentity) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3098,10 +3287,10 @@ func (m *MsgRequestGeneralKeyshare) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRequestGeneralKeyshare: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRequestGeneralIdentity: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRequestGeneralKeyshare: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRequestGeneralIdentity: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3225,7 +3414,7 @@ func (m *MsgRequestGeneralKeyshare) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgRequestGeneralKeyshareResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgRequestGeneralIdentityResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3248,10 +3437,10 @@ func (m *MsgRequestGeneralKeyshareResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRequestGeneralKeyshareResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRequestGeneralIdentityResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRequestGeneralKeyshareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRequestGeneralIdentityResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3307,7 +3496,7 @@ func (m *MsgRequestGeneralKeyshareResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgGetGeneralKeyshare) Unmarshal(dAtA []byte) error {
+func (m *MsgRequestGeneralDecryptionKey) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3330,10 +3519,10 @@ func (m *MsgGetGeneralKeyshare) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgGetGeneralKeyshare: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRequestGeneralDecryptionKey: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgGetGeneralKeyshare: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRequestGeneralDecryptionKey: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3421,7 +3610,7 @@ func (m *MsgGetGeneralKeyshare) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgGetGeneralKeyshareResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgRequestGeneralDecryptionKeyResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3444,10 +3633,10 @@ func (m *MsgGetGeneralKeyshareResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgGetGeneralKeyshareResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRequestGeneralDecryptionKeyResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgGetGeneralKeyshareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRequestGeneralDecryptionKeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -3667,7 +3856,7 @@ func (m *MsgRequestPrivateIdentityResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgGetPrivateKeyshares) Unmarshal(dAtA []byte) error {
+func (m *MsgRequestPrivateDecryptionKey) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3690,10 +3879,10 @@ func (m *MsgGetPrivateKeyshares) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgGetPrivateKeyshares: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRequestPrivateDecryptionKey: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgGetPrivateKeyshares: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRequestPrivateDecryptionKey: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3813,7 +4002,7 @@ func (m *MsgGetPrivateKeyshares) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgGetPrivateKeysharesResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgRequestPrivateDecryptionKeyResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3836,10 +4025,10 @@ func (m *MsgGetPrivateKeysharesResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgGetPrivateKeysharesResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRequestPrivateDecryptionKeyResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgGetPrivateKeysharesResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRequestPrivateDecryptionKeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
