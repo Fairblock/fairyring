@@ -7,26 +7,30 @@ import "fairyring/common/shared_types.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
+// KeysharePacketData defines all the packet types of the keyshare module
 message KeysharePacketData {
+    // packet can be one of the following types
     oneof packet {
-        NoData noData = 1;
-        RequestAggrKeysharePacketData requestAggrKeysharePacket = 2;
-        GetAggrKeysharePacketData     getAggrKeysharePacket     = 3;
-        AggrKeyshareDataPacketData    aggrKeyshareDataPacket    = 4;
-        EncryptedKeysharesPacketData  encryptedKeysharesPacketData = 5;
-        CurrentKeysPacketData         currentKeysPacket         = 6;
-        RequestPrivateKeysharePacketData request_priv_keyshare_packet = 7;
-        GetPrivateKeysharePacketData     getPrivateKeysharePacket     = 8;
+        NoData                                no_data                               = 1;
+        RequestDecryptionKeyPacketData        request_decryption_key_packet         = 2;
+        GetDecryptionKeyPacketData            get_decryption_key_packet             = 3;
+        DecryptionKeyDataPacketData           decryption_key_data_packet            = 4;
+        PrivateDecryptionKeyDataPacketData    private_decryption_key_data_packet    = 5;
+        CurrentKeysPacketData                 current_keys_packet                   = 6;
+        RequestPrivateDecryptionKeyPacketData request_private_decryption_key_packet = 7;
+        GetPrivateDecryptionKeyPacketData     get_private_decryption_key_packet     = 8;
     }
 }
 
+// NoData defines a blank packet
 message NoData {
 }
 
 
-// RequestAggrKeysharePacketData defines a struct for the packet payload
-message RequestAggrKeysharePacketData {
+// RequestDecryptionKeyPacketData defines a struct for the packet payload
+message RequestDecryptionKeyPacketData {
   string requester = 1;
+  // id can either be a request id or a proposal id
   oneof id {
     string proposal_id = 2;
     string request_id = 3;
@@ -34,63 +38,67 @@ message RequestAggrKeysharePacketData {
   google.protobuf.Duration estimated_delay = 4 [(gogoproto.stdduration) = true];
 }
 
-message RequestPrivateKeysharePacketData {
+// RequestPrivateDecryptionKeyPacketData defines a struct for the packet payload
+message RequestPrivateDecryptionKeyPacketData {
     string requester = 1;
     string request_id = 2;
 }
 
-message RequestPrivateKeysharePacketAck {
+// RequestPrivateDecryptionKeyPacketAck defines a struct for the packet acknowledgment
+message RequestPrivateDecryptionKeyPacketAck {
     string identity = 1;
     string pubkey   = 2;
 }
 
-// RequestAggrKeysharePacketAck defines a struct for the packet acknowledgment
-message RequestAggrKeysharePacketAck {
+// RequestDecryptionKeyPacketAck defines a struct for the packet acknowledgment
+message RequestDecryptionKeyPacketAck {
     string identity = 1;
     string pubkey   = 2;
 }
 
-// GetAggrKeysharePacketData defines a struct for the packet payload
-message GetAggrKeysharePacketData {
+// GetDecryptionKeyPacketData defines a struct for the packet payload
+message GetDecryptionKeyPacketData {
     string identity = 1;
 }
 
-// GetAggrKeysharePacketAck defines a struct for the packet acknowledgment
-message GetAggrKeysharePacketAck {}
+// GetDecryptionKeyPacketAck defines a struct for the packet acknowledgment
+message GetDecryptionKeyPacketAck {}
 
-// GetPrivateKeysharePacketData defines a struct for the packet payload
-message GetPrivateKeysharePacketData {
+// GetPrivateDecryptionKeyPacketData defines a struct for the packet payload
+message GetPrivateDecryptionKeyPacketData {
     string identity = 1;
     string requester = 2;
     string secp_pubkey = 3;
 }
 
 // GetPrivateKeysharePacketAck defines a struct for the packet acknowledgment
-message GetPrivateKeysharePacketAck {}
+message GetPrivateDecryptionKeyPacketAck {}
 
-// AggrKeyshareDataPacketData defines a struct for the packet payload
-message AggrKeyshareDataPacketData {
-    string identity      = 1;
-    string pubkey        = 2;
-    string aggr_keyshare = 3;
-    string aggr_height   = 4;
-    string proposal_id   = 5; // used for private governance
-    string request_id    = 6; // might be useful to destination chains to sort out the response
-    uint64 retries       = 7;
+// DecryptionKeyDataPacketData defines a struct for the packet payload
+message DecryptionKeyDataPacketData {
+    string identity       = 1;
+    string pubkey         = 2;
+    string decryption_key = 3;
+    string aggr_height    = 4;
+    string proposal_id    = 5; // used for private governance
+    string request_id     = 6; // might be useful to destination chains to sort out the response
+    uint64 retries        = 7;
 }
 
-// AggrKeyshareDataPacketAck defines a struct for the packet acknowledgment
-message AggrKeyshareDataPacketAck {}
+// DecryptionKeyPacketAck defines a struct for the packet acknowledgment
+message DecryptionKeyPacketAck {}
 
 
-message EncryptedKeysharesPacketData {
+// PrivateDecryptionKeyDataPacketData defines a struct for the packet payload
+message PrivateDecryptionKeyDataPacketData {
     string identity      = 1;
     string pubkey        = 2;
     string request_id    = 3;
-    repeated fairyring.common.EncryptedKeyshare encrypted_keyshares = 4;
+    repeated fairyring.common.PrivateDecryptionKey private_decryption_key = 4;
 }
 
-message EncryptedKeysharesPacketAck{}
+// PrivateDecryptionKeyPacketAck defines a struct for the packet payload
+message PrivateDecryptionKeyPacketAck{}
 
 // CurrentKeysPacketData defines a struct for the packet payload
 message CurrentKeysPacketData {
@@ -98,6 +106,6 @@ message CurrentKeysPacketData {
 
 // CurrentKeysPacketAck defines a struct for the packet acknowledgment
 message CurrentKeysPacketAck {
-    fairyring.common.ActivePublicKey activeKey = 1;
-    fairyring.common.QueuedPublicKey queuedKey = 2;
+    fairyring.common.ActivePublicKey active_key = 1;
+    fairyring.common.QueuedPublicKey queued_key = 2;
 }

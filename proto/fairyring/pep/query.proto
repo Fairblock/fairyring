@@ -64,21 +64,21 @@ service Query {
   
   }
 
-  // Queries a Keyshare request by identity
-  rpc KeyshareReq (QueryKeyshareReqRequest) returns (QueryKeyshareReqResponse) {
-    option (google.api.http).get = "/fairyring/pep/keyshare/{req_id}";
+  // Queries a General Identity request by request id
+  rpc GeneralIdentity (QueryGeneralIdentityRequest) returns (QueryGeneralIdentityResponse) {
+    option (google.api.http).get = "/fairyring/pep/general_identity/{req_id}";
   
   }
 
-  // queries a list of keyshare requests
-  rpc KeyshareReqAll (QueryKeyshareReqAllRequest) returns (QueryKeyshareReqAllResponse) {
-    option (google.api.http).get = "/fairyring/pep/keyshare";
+  // Queries a list of General Identity requests
+  rpc GeneralIdentityAll (QueryGeneralIdentityAllRequest) returns (QueryGeneralIdentityAllResponse) {
+    option (google.api.http).get = "/fairyring/pep/general_identity";
   
   }
   
-  // Queries a PrivateKeyshareReq item by req id.
-  rpc PrivateKeyshareReq (QueryPrivateKeyshareReqRequest) returns (QueryPrivateKeyshareReqResponse) {
-    option (google.api.http).get = "/Fairblock/fairyring/pep/show_private_keyshare_req/{req_id}";
+  // Queries a Private Identity request item by req id.
+  rpc PrivateIdentity (QueryPrivateIdentityRequest) returns (QueryPrivateIdentityResponse) {
+    option (google.api.http).get = "/Fairblock/fairyring/pep/private_identity/{req_id}";
   
   }
   
@@ -99,25 +99,25 @@ message QueryParamsResponse {
   Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }
 
-// QueryKeyshareReqRequest is request type for the Query/KeyshareReq RPC method.
-message QueryKeyshareReqRequest {
+// QueryGeneralIdentityRequest is request type for the Query/GeneralIdentity RPC method.
+message QueryGeneralIdentityRequest {
   string req_id = 1;
 }
 
-// QueryKeyshareReqResponse is response type for the Query/KeyshareReq RPC method.
-message QueryKeyshareReqResponse {
-  IdentityExecutionQueue keyshare = 1;
+// QueryGeneralIdentityResponse is response type for the Query/GeneralIdentity RPC method.
+message QueryGeneralIdentityResponse {
+  IdentityExecutionEntry request_details = 1;
 }
 
-// QueryKeyshareReqAllRequest is request type for the Query/KeyshareReqAll RPC method.
-message QueryKeyshareReqAllRequest {
+// QueryGeneralIdentityAllRequest is request type for the Query/GeneralIdentityAll RPC method.
+message QueryGeneralIdentityAllRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-// QueryKeyshareReqAllResponse is response type for the Query/KeyshareReqAll RPC method.
-message QueryKeyshareReqAllResponse {
-  repeated IdentityExecutionQueue                 keyshares  = 1;
-  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+// QueryGeneralIdentityAllResponse is response type for the Query/GeneralIdentityAll RPC method.
+message QueryGeneralIdentityAllResponse {
+  repeated IdentityExecutionEntry        request_details_list = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination           = 2;
 }
 
 // QueryEncryptedTxRequest is request type for the Query/EncryptedTx RPC method.
@@ -190,17 +190,17 @@ message QueryPubKeyResponse {
   fairyring.common.QueuedPublicKey queued_pub_key = 2 [(gogoproto.nullable) = false];
 }
 
-// QueryPrivateKeyshareReqRequest is request type for the Query/PrivateKeyshareReq RPC method.
-message QueryPrivateKeyshareReqRequest {
+// QueryPrivateIdentityRequest is request type for the Query/PrivateIdentity RPC method.
+message QueryPrivateIdentityRequest {
   string req_id = 1;
 }
 
-// QueryPrivateKeyshareReqResponse is response type for the Query/PrivateKeyshareReq RPC method.
-message QueryPrivateKeyshareReqResponse {
+// QueryPrivateIdentityResponse is response type for the Query/PrivateIdentity RPC method.
+message QueryPrivateIdentityResponse {
   string creator = 1;
   string req_id = 2;
   string pubkey = 3;
-  repeated fairyring.common.EncryptedKeyshare encrypted_keyshares = 5;
+  repeated fairyring.common.PrivateDecryptionKey private_decryption_keys = 4;
 }
 
 // QueryDecryptDataRequest is request type for the Query/DecryptData RPC method.

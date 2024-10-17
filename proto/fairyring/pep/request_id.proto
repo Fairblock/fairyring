@@ -19,7 +19,7 @@ message PrivateRequest {
   string creator = 1;
   string req_id = 2;
   string pubkey = 3;
-  repeated fairyring.common.EncryptedKeyshare encrypted_keyshares = 5;
+  repeated fairyring.common.PrivateDecryptionKey private_decryption_keys = 4;
 }
 
 // ContractDetails defines the structure to store the details of a
@@ -39,7 +39,7 @@ message RegisteredContract {
 
 // ExecuteContractMsg defines the structure to callback registered contracts
 message ExecuteContractMsg {
-  string identity      = 1;
-  string pubkey        = 2;
-  string aggr_keyshare = 3;
+  string identity       = 1;
+  string pubkey         = 2;
+  string decryption_key = 3;
 }

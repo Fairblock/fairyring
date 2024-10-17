@@ -19,20 +19,20 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Query_Params_FullMethodName                = "/fairyring.keyshare.Query/Params"
-	Query_Commitments_FullMethodName           = "/fairyring.keyshare.Query/Commitments"
-	Query_ValidatorSet_FullMethodName          = "/fairyring.keyshare.Query/ValidatorSet"
-	Query_ValidatorSetAll_FullMethodName       = "/fairyring.keyshare.Query/ValidatorSetAll"
-	Query_KeyShare_FullMethodName              = "/fairyring.keyshare.Query/KeyShare"
-	Query_KeyShareAll_FullMethodName           = "/fairyring.keyshare.Query/KeyShareAll"
-	Query_AggregatedKeyShare_FullMethodName    = "/fairyring.keyshare.Query/AggregatedKeyShare"
-	Query_AggregatedKeyShareAll_FullMethodName = "/fairyring.keyshare.Query/AggregatedKeyShareAll"
-	Query_PubKey_FullMethodName                = "/fairyring.keyshare.Query/PubKey"
-	Query_AuthorizedAddress_FullMethodName     = "/fairyring.keyshare.Query/AuthorizedAddress"
-	Query_AuthorizedAddressAll_FullMethodName  = "/fairyring.keyshare.Query/AuthorizedAddressAll"
-	Query_GeneralKeyShare_FullMethodName       = "/fairyring.keyshare.Query/GeneralKeyShare"
-	Query_GeneralKeyShareAll_FullMethodName    = "/fairyring.keyshare.Query/GeneralKeyShareAll"
-	Query_VerifiableRandomness_FullMethodName  = "/fairyring.keyshare.Query/VerifiableRandomness"
+	Query_Params_FullMethodName               = "/fairyring.keyshare.Query/Params"
+	Query_Commitments_FullMethodName          = "/fairyring.keyshare.Query/Commitments"
+	Query_ValidatorSet_FullMethodName         = "/fairyring.keyshare.Query/ValidatorSet"
+	Query_ValidatorSetAll_FullMethodName      = "/fairyring.keyshare.Query/ValidatorSetAll"
+	Query_KeyShare_FullMethodName             = "/fairyring.keyshare.Query/KeyShare"
+	Query_KeyShareAll_FullMethodName          = "/fairyring.keyshare.Query/KeyShareAll"
+	Query_DecryptionKey_FullMethodName        = "/fairyring.keyshare.Query/DecryptionKey"
+	Query_DecryptionKeyAll_FullMethodName     = "/fairyring.keyshare.Query/DecryptionKeyAll"
+	Query_PubKey_FullMethodName               = "/fairyring.keyshare.Query/PubKey"
+	Query_AuthorizedAddress_FullMethodName    = "/fairyring.keyshare.Query/AuthorizedAddress"
+	Query_AuthorizedAddressAll_FullMethodName = "/fairyring.keyshare.Query/AuthorizedAddressAll"
+	Query_GeneralKeyShare_FullMethodName      = "/fairyring.keyshare.Query/GeneralKeyShare"
+	Query_GeneralKeyShareAll_FullMethodName   = "/fairyring.keyshare.Query/GeneralKeyShareAll"
+	Query_VerifiableRandomness_FullMethodName = "/fairyring.keyshare.Query/VerifiableRandomness"
 )
 
 // QueryClient is the client API for Query service.
@@ -51,10 +51,10 @@ type QueryClient interface {
 	KeyShare(ctx context.Context, in *QueryKeyShareRequest, opts ...grpc.CallOption) (*QueryKeyShareResponse, error)
 	// Queries a list of KeyShare items.
 	KeyShareAll(ctx context.Context, in *QueryKeyShareAllRequest, opts ...grpc.CallOption) (*QueryKeyShareAllResponse, error)
-	// AggregatedKeyShare a AggregatedKeyShare item by height.
-	AggregatedKeyShare(ctx context.Context, in *QueryAggregatedKeyShareRequest, opts ...grpc.CallOption) (*QueryAggregatedKeyShareResponse, error)
-	// AggregatedKeyShareAll Queries a list of AggregatedKeyShare items.
-	AggregatedKeyShareAll(ctx context.Context, in *QueryAggregatedKeyShareAllRequest, opts ...grpc.CallOption) (*QueryAggregatedKeyShareAllResponse, error)
+	// DecryptionKey queries a DecryptionKey item by height.
+	DecryptionKey(ctx context.Context, in *QueryDecryptionKeyRequest, opts ...grpc.CallOption) (*QueryDecryptionKeyResponse, error)
+	// DecryptionKeyAll Queries a list of DecryptionKey items.
+	DecryptionKeyAll(ctx context.Context, in *QueryDecryptionKeyAllRequest, opts ...grpc.CallOption) (*QueryDecryptionKeyAllResponse, error)
 	// Queries the public keys
 	PubKey(ctx context.Context, in *QueryPubKeyRequest, opts ...grpc.CallOption) (*QueryPubKeyResponse, error)
 	// Queries a AuthorizedAddress item by target.
@@ -131,18 +131,18 @@ func (c *queryClient) KeyShareAll(ctx context.Context, in *QueryKeyShareAllReque
 	return out, nil
 }
 
-func (c *queryClient) AggregatedKeyShare(ctx context.Context, in *QueryAggregatedKeyShareRequest, opts ...grpc.CallOption) (*QueryAggregatedKeyShareResponse, error) {
-	out := new(QueryAggregatedKeyShareResponse)
-	err := c.cc.Invoke(ctx, Query_AggregatedKeyShare_FullMethodName, in, out, opts...)
+func (c *queryClient) DecryptionKey(ctx context.Context, in *QueryDecryptionKeyRequest, opts ...grpc.CallOption) (*QueryDecryptionKeyResponse, error) {
+	out := new(QueryDecryptionKeyResponse)
+	err := c.cc.Invoke(ctx, Query_DecryptionKey_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) AggregatedKeyShareAll(ctx context.Context, in *QueryAggregatedKeyShareAllRequest, opts ...grpc.CallOption) (*QueryAggregatedKeyShareAllResponse, error) {
-	out := new(QueryAggregatedKeyShareAllResponse)
-	err := c.cc.Invoke(ctx, Query_AggregatedKeyShareAll_FullMethodName, in, out, opts...)
+func (c *queryClient) DecryptionKeyAll(ctx context.Context, in *QueryDecryptionKeyAllRequest, opts ...grpc.CallOption) (*QueryDecryptionKeyAllResponse, error) {
+	out := new(QueryDecryptionKeyAllResponse)
+	err := c.cc.Invoke(ctx, Query_DecryptionKeyAll_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -219,10 +219,10 @@ type QueryServer interface {
 	KeyShare(context.Context, *QueryKeyShareRequest) (*QueryKeyShareResponse, error)
 	// Queries a list of KeyShare items.
 	KeyShareAll(context.Context, *QueryKeyShareAllRequest) (*QueryKeyShareAllResponse, error)
-	// AggregatedKeyShare a AggregatedKeyShare item by height.
-	AggregatedKeyShare(context.Context, *QueryAggregatedKeyShareRequest) (*QueryAggregatedKeyShareResponse, error)
-	// AggregatedKeyShareAll Queries a list of AggregatedKeyShare items.
-	AggregatedKeyShareAll(context.Context, *QueryAggregatedKeyShareAllRequest) (*QueryAggregatedKeyShareAllResponse, error)
+	// DecryptionKey queries a DecryptionKey item by height.
+	DecryptionKey(context.Context, *QueryDecryptionKeyRequest) (*QueryDecryptionKeyResponse, error)
+	// DecryptionKeyAll Queries a list of DecryptionKey items.
+	DecryptionKeyAll(context.Context, *QueryDecryptionKeyAllRequest) (*QueryDecryptionKeyAllResponse, error)
 	// Queries the public keys
 	PubKey(context.Context, *QueryPubKeyRequest) (*QueryPubKeyResponse, error)
 	// Queries a AuthorizedAddress item by target.
@@ -260,11 +260,11 @@ func (UnimplementedQueryServer) KeyShare(context.Context, *QueryKeyShareRequest)
 func (UnimplementedQueryServer) KeyShareAll(context.Context, *QueryKeyShareAllRequest) (*QueryKeyShareAllResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KeyShareAll not implemented")
 }
-func (UnimplementedQueryServer) AggregatedKeyShare(context.Context, *QueryAggregatedKeyShareRequest) (*QueryAggregatedKeyShareResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AggregatedKeyShare not implemented")
+func (UnimplementedQueryServer) DecryptionKey(context.Context, *QueryDecryptionKeyRequest) (*QueryDecryptionKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DecryptionKey not implemented")
 }
-func (UnimplementedQueryServer) AggregatedKeyShareAll(context.Context, *QueryAggregatedKeyShareAllRequest) (*QueryAggregatedKeyShareAllResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AggregatedKeyShareAll not implemented")
+func (UnimplementedQueryServer) DecryptionKeyAll(context.Context, *QueryDecryptionKeyAllRequest) (*QueryDecryptionKeyAllResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DecryptionKeyAll not implemented")
 }
 func (UnimplementedQueryServer) PubKey(context.Context, *QueryPubKeyRequest) (*QueryPubKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PubKey not implemented")
@@ -405,38 +405,38 @@ func _Query_KeyShareAll_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_AggregatedKeyShare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAggregatedKeyShareRequest)
+func _Query_DecryptionKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryDecryptionKeyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).AggregatedKeyShare(ctx, in)
+		return srv.(QueryServer).DecryptionKey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_AggregatedKeyShare_FullMethodName,
+		FullMethod: Query_DecryptionKey_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).AggregatedKeyShare(ctx, req.(*QueryAggregatedKeyShareRequest))
+		return srv.(QueryServer).DecryptionKey(ctx, req.(*QueryDecryptionKeyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_AggregatedKeyShareAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAggregatedKeyShareAllRequest)
+func _Query_DecryptionKeyAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryDecryptionKeyAllRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).AggregatedKeyShareAll(ctx, in)
+		return srv.(QueryServer).DecryptionKeyAll(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_AggregatedKeyShareAll_FullMethodName,
+		FullMethod: Query_DecryptionKeyAll_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).AggregatedKeyShareAll(ctx, req.(*QueryAggregatedKeyShareAllRequest))
+		return srv.(QueryServer).DecryptionKeyAll(ctx, req.(*QueryDecryptionKeyAllRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -581,12 +581,12 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Query_KeyShareAll_Handler,
 		},
 		{
-			MethodName: "AggregatedKeyShare",
-			Handler:    _Query_AggregatedKeyShare_Handler,
+			MethodName: "DecryptionKey",
+			Handler:    _Query_DecryptionKey_Handler,
 		},
 		{
-			MethodName: "AggregatedKeyShareAll",
-			Handler:    _Query_AggregatedKeyShareAll_Handler,
+			MethodName: "DecryptionKeyAll",
+			Handler:    _Query_DecryptionKeyAll_Handler,
 		},
 		{
 			MethodName: "PubKey",

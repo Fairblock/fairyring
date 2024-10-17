@@ -15,31 +15,31 @@ import (
 )
 
 var (
-	md_RequestAggrKeyshare                 protoreflect.MessageDescriptor
-	fd_RequestAggrKeyshare_creator         protoreflect.FieldDescriptor
-	fd_RequestAggrKeyshare_proposal_id     protoreflect.FieldDescriptor
-	fd_RequestAggrKeyshare_request_id      protoreflect.FieldDescriptor
-	fd_RequestAggrKeyshare_estimated_delay protoreflect.FieldDescriptor
+	md_RequestDecryptionKey                 protoreflect.MessageDescriptor
+	fd_RequestDecryptionKey_creator         protoreflect.FieldDescriptor
+	fd_RequestDecryptionKey_proposal_id     protoreflect.FieldDescriptor
+	fd_RequestDecryptionKey_request_id      protoreflect.FieldDescriptor
+	fd_RequestDecryptionKey_estimated_delay protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_common_shared_types_proto_init()
-	md_RequestAggrKeyshare = File_fairyring_common_shared_types_proto.Messages().ByName("RequestAggrKeyshare")
-	fd_RequestAggrKeyshare_creator = md_RequestAggrKeyshare.Fields().ByName("creator")
-	fd_RequestAggrKeyshare_proposal_id = md_RequestAggrKeyshare.Fields().ByName("proposal_id")
-	fd_RequestAggrKeyshare_request_id = md_RequestAggrKeyshare.Fields().ByName("request_id")
-	fd_RequestAggrKeyshare_estimated_delay = md_RequestAggrKeyshare.Fields().ByName("estimated_delay")
+	md_RequestDecryptionKey = File_fairyring_common_shared_types_proto.Messages().ByName("RequestDecryptionKey")
+	fd_RequestDecryptionKey_creator = md_RequestDecryptionKey.Fields().ByName("creator")
+	fd_RequestDecryptionKey_proposal_id = md_RequestDecryptionKey.Fields().ByName("proposal_id")
+	fd_RequestDecryptionKey_request_id = md_RequestDecryptionKey.Fields().ByName("request_id")
+	fd_RequestDecryptionKey_estimated_delay = md_RequestDecryptionKey.Fields().ByName("estimated_delay")
 }
 
-var _ protoreflect.Message = (*fastReflection_RequestAggrKeyshare)(nil)
+var _ protoreflect.Message = (*fastReflection_RequestDecryptionKey)(nil)
 
-type fastReflection_RequestAggrKeyshare RequestAggrKeyshare
+type fastReflection_RequestDecryptionKey RequestDecryptionKey
 
-func (x *RequestAggrKeyshare) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_RequestAggrKeyshare)(x)
+func (x *RequestDecryptionKey) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_RequestDecryptionKey)(x)
 }
 
-func (x *RequestAggrKeyshare) slowProtoReflect() protoreflect.Message {
+func (x *RequestDecryptionKey) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_common_shared_types_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -51,43 +51,43 @@ func (x *RequestAggrKeyshare) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_RequestAggrKeyshare_messageType fastReflection_RequestAggrKeyshare_messageType
-var _ protoreflect.MessageType = fastReflection_RequestAggrKeyshare_messageType{}
+var _fastReflection_RequestDecryptionKey_messageType fastReflection_RequestDecryptionKey_messageType
+var _ protoreflect.MessageType = fastReflection_RequestDecryptionKey_messageType{}
 
-type fastReflection_RequestAggrKeyshare_messageType struct{}
+type fastReflection_RequestDecryptionKey_messageType struct{}
 
-func (x fastReflection_RequestAggrKeyshare_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_RequestAggrKeyshare)(nil)
+func (x fastReflection_RequestDecryptionKey_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_RequestDecryptionKey)(nil)
 }
-func (x fastReflection_RequestAggrKeyshare_messageType) New() protoreflect.Message {
-	return new(fastReflection_RequestAggrKeyshare)
+func (x fastReflection_RequestDecryptionKey_messageType) New() protoreflect.Message {
+	return new(fastReflection_RequestDecryptionKey)
 }
-func (x fastReflection_RequestAggrKeyshare_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_RequestAggrKeyshare
+func (x fastReflection_RequestDecryptionKey_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_RequestDecryptionKey
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_RequestAggrKeyshare) Descriptor() protoreflect.MessageDescriptor {
-	return md_RequestAggrKeyshare
+func (x *fastReflection_RequestDecryptionKey) Descriptor() protoreflect.MessageDescriptor {
+	return md_RequestDecryptionKey
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_RequestAggrKeyshare) Type() protoreflect.MessageType {
-	return _fastReflection_RequestAggrKeyshare_messageType
+func (x *fastReflection_RequestDecryptionKey) Type() protoreflect.MessageType {
+	return _fastReflection_RequestDecryptionKey_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_RequestAggrKeyshare) New() protoreflect.Message {
-	return new(fastReflection_RequestAggrKeyshare)
+func (x *fastReflection_RequestDecryptionKey) New() protoreflect.Message {
+	return new(fastReflection_RequestDecryptionKey)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_RequestAggrKeyshare) Interface() protoreflect.ProtoMessage {
-	return (*RequestAggrKeyshare)(x)
+func (x *fastReflection_RequestDecryptionKey) Interface() protoreflect.ProtoMessage {
+	return (*RequestDecryptionKey)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -95,32 +95,32 @@ func (x *fastReflection_RequestAggrKeyshare) Interface() protoreflect.ProtoMessa
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_RequestAggrKeyshare) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_RequestDecryptionKey) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_RequestAggrKeyshare_creator, value) {
+		if !f(fd_RequestDecryptionKey_creator, value) {
 			return
 		}
 	}
 	if x.Id != nil {
 		switch o := x.Id.(type) {
-		case *RequestAggrKeyshare_ProposalId:
+		case *RequestDecryptionKey_ProposalId:
 			v := o.ProposalId
 			value := protoreflect.ValueOfString(v)
-			if !f(fd_RequestAggrKeyshare_proposal_id, value) {
+			if !f(fd_RequestDecryptionKey_proposal_id, value) {
 				return
 			}
-		case *RequestAggrKeyshare_RequestId:
+		case *RequestDecryptionKey_RequestId:
 			v := o.RequestId
 			value := protoreflect.ValueOfString(v)
-			if !f(fd_RequestAggrKeyshare_request_id, value) {
+			if !f(fd_RequestDecryptionKey_request_id, value) {
 				return
 			}
 		}
 	}
 	if x.EstimatedDelay != nil {
 		value := protoreflect.ValueOfMessage(x.EstimatedDelay.ProtoReflect())
-		if !f(fd_RequestAggrKeyshare_estimated_delay, value) {
+		if !f(fd_RequestDecryptionKey_estimated_delay, value) {
 			return
 		}
 	}
@@ -137,33 +137,33 @@ func (x *fastReflection_RequestAggrKeyshare) Range(f func(protoreflect.FieldDesc
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_RequestAggrKeyshare) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_RequestDecryptionKey) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.common.RequestAggrKeyshare.creator":
+	case "fairyring.common.RequestDecryptionKey.creator":
 		return x.Creator != ""
-	case "fairyring.common.RequestAggrKeyshare.proposal_id":
+	case "fairyring.common.RequestDecryptionKey.proposal_id":
 		if x.Id == nil {
 			return false
-		} else if _, ok := x.Id.(*RequestAggrKeyshare_ProposalId); ok {
+		} else if _, ok := x.Id.(*RequestDecryptionKey_ProposalId); ok {
 			return true
 		} else {
 			return false
 		}
-	case "fairyring.common.RequestAggrKeyshare.request_id":
+	case "fairyring.common.RequestDecryptionKey.request_id":
 		if x.Id == nil {
 			return false
-		} else if _, ok := x.Id.(*RequestAggrKeyshare_RequestId); ok {
+		} else if _, ok := x.Id.(*RequestDecryptionKey_RequestId); ok {
 			return true
 		} else {
 			return false
 		}
-	case "fairyring.common.RequestAggrKeyshare.estimated_delay":
+	case "fairyring.common.RequestDecryptionKey.estimated_delay":
 		return x.EstimatedDelay != nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestAggrKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestAggrKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -173,21 +173,21 @@ func (x *fastReflection_RequestAggrKeyshare) Has(fd protoreflect.FieldDescriptor
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_RequestAggrKeyshare) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_RequestDecryptionKey) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.common.RequestAggrKeyshare.creator":
+	case "fairyring.common.RequestDecryptionKey.creator":
 		x.Creator = ""
-	case "fairyring.common.RequestAggrKeyshare.proposal_id":
+	case "fairyring.common.RequestDecryptionKey.proposal_id":
 		x.Id = nil
-	case "fairyring.common.RequestAggrKeyshare.request_id":
+	case "fairyring.common.RequestDecryptionKey.request_id":
 		x.Id = nil
-	case "fairyring.common.RequestAggrKeyshare.estimated_delay":
+	case "fairyring.common.RequestDecryptionKey.estimated_delay":
 		x.EstimatedDelay = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestAggrKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestAggrKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -197,35 +197,35 @@ func (x *fastReflection_RequestAggrKeyshare) Clear(fd protoreflect.FieldDescript
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_RequestAggrKeyshare) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_RequestDecryptionKey) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.common.RequestAggrKeyshare.creator":
+	case "fairyring.common.RequestDecryptionKey.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "fairyring.common.RequestAggrKeyshare.proposal_id":
+	case "fairyring.common.RequestDecryptionKey.proposal_id":
 		if x.Id == nil {
 			return protoreflect.ValueOfString("")
-		} else if v, ok := x.Id.(*RequestAggrKeyshare_ProposalId); ok {
+		} else if v, ok := x.Id.(*RequestDecryptionKey_ProposalId); ok {
 			return protoreflect.ValueOfString(v.ProposalId)
 		} else {
 			return protoreflect.ValueOfString("")
 		}
-	case "fairyring.common.RequestAggrKeyshare.request_id":
+	case "fairyring.common.RequestDecryptionKey.request_id":
 		if x.Id == nil {
 			return protoreflect.ValueOfString("")
-		} else if v, ok := x.Id.(*RequestAggrKeyshare_RequestId); ok {
+		} else if v, ok := x.Id.(*RequestDecryptionKey_RequestId); ok {
 			return protoreflect.ValueOfString(v.RequestId)
 		} else {
 			return protoreflect.ValueOfString("")
 		}
-	case "fairyring.common.RequestAggrKeyshare.estimated_delay":
+	case "fairyring.common.RequestDecryptionKey.estimated_delay":
 		value := x.EstimatedDelay
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestAggrKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestAggrKeyshare does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestDecryptionKey does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -239,23 +239,23 @@ func (x *fastReflection_RequestAggrKeyshare) Get(descriptor protoreflect.FieldDe
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_RequestAggrKeyshare) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_RequestDecryptionKey) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.common.RequestAggrKeyshare.creator":
+	case "fairyring.common.RequestDecryptionKey.creator":
 		x.Creator = value.Interface().(string)
-	case "fairyring.common.RequestAggrKeyshare.proposal_id":
+	case "fairyring.common.RequestDecryptionKey.proposal_id":
 		cv := value.Interface().(string)
-		x.Id = &RequestAggrKeyshare_ProposalId{ProposalId: cv}
-	case "fairyring.common.RequestAggrKeyshare.request_id":
+		x.Id = &RequestDecryptionKey_ProposalId{ProposalId: cv}
+	case "fairyring.common.RequestDecryptionKey.request_id":
 		cv := value.Interface().(string)
-		x.Id = &RequestAggrKeyshare_RequestId{RequestId: cv}
-	case "fairyring.common.RequestAggrKeyshare.estimated_delay":
+		x.Id = &RequestDecryptionKey_RequestId{RequestId: cv}
+	case "fairyring.common.RequestDecryptionKey.estimated_delay":
 		x.EstimatedDelay = value.Message().Interface().(*durationpb.Duration)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestAggrKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestAggrKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -269,66 +269,66 @@ func (x *fastReflection_RequestAggrKeyshare) Set(fd protoreflect.FieldDescriptor
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_RequestAggrKeyshare) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_RequestDecryptionKey) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.common.RequestAggrKeyshare.estimated_delay":
+	case "fairyring.common.RequestDecryptionKey.estimated_delay":
 		if x.EstimatedDelay == nil {
 			x.EstimatedDelay = new(durationpb.Duration)
 		}
 		return protoreflect.ValueOfMessage(x.EstimatedDelay.ProtoReflect())
-	case "fairyring.common.RequestAggrKeyshare.creator":
-		panic(fmt.Errorf("field creator of message fairyring.common.RequestAggrKeyshare is not mutable"))
-	case "fairyring.common.RequestAggrKeyshare.proposal_id":
-		panic(fmt.Errorf("field proposal_id of message fairyring.common.RequestAggrKeyshare is not mutable"))
-	case "fairyring.common.RequestAggrKeyshare.request_id":
-		panic(fmt.Errorf("field request_id of message fairyring.common.RequestAggrKeyshare is not mutable"))
+	case "fairyring.common.RequestDecryptionKey.creator":
+		panic(fmt.Errorf("field creator of message fairyring.common.RequestDecryptionKey is not mutable"))
+	case "fairyring.common.RequestDecryptionKey.proposal_id":
+		panic(fmt.Errorf("field proposal_id of message fairyring.common.RequestDecryptionKey is not mutable"))
+	case "fairyring.common.RequestDecryptionKey.request_id":
+		panic(fmt.Errorf("field request_id of message fairyring.common.RequestDecryptionKey is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestAggrKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestAggrKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_RequestAggrKeyshare) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_RequestDecryptionKey) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.common.RequestAggrKeyshare.creator":
+	case "fairyring.common.RequestDecryptionKey.creator":
 		return protoreflect.ValueOfString("")
-	case "fairyring.common.RequestAggrKeyshare.proposal_id":
+	case "fairyring.common.RequestDecryptionKey.proposal_id":
 		return protoreflect.ValueOfString("")
-	case "fairyring.common.RequestAggrKeyshare.request_id":
+	case "fairyring.common.RequestDecryptionKey.request_id":
 		return protoreflect.ValueOfString("")
-	case "fairyring.common.RequestAggrKeyshare.estimated_delay":
+	case "fairyring.common.RequestDecryptionKey.estimated_delay":
 		m := new(durationpb.Duration)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestAggrKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestAggrKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_RequestAggrKeyshare) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_RequestDecryptionKey) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
-	case "fairyring.common.RequestAggrKeyshare.id":
+	case "fairyring.common.RequestDecryptionKey.id":
 		if x.Id == nil {
 			return nil
 		}
 		switch x.Id.(type) {
-		case *RequestAggrKeyshare_ProposalId:
+		case *RequestDecryptionKey_ProposalId:
 			return x.Descriptor().Fields().ByName("proposal_id")
-		case *RequestAggrKeyshare_RequestId:
+		case *RequestDecryptionKey_RequestId:
 			return x.Descriptor().Fields().ByName("request_id")
 		}
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.RequestAggrKeyshare", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.RequestDecryptionKey", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -336,7 +336,7 @@ func (x *fastReflection_RequestAggrKeyshare) WhichOneof(d protoreflect.OneofDesc
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_RequestAggrKeyshare) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_RequestDecryptionKey) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -347,7 +347,7 @@ func (x *fastReflection_RequestAggrKeyshare) GetUnknown() protoreflect.RawFields
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_RequestAggrKeyshare) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_RequestDecryptionKey) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -359,7 +359,7 @@ func (x *fastReflection_RequestAggrKeyshare) SetUnknown(fields protoreflect.RawF
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_RequestAggrKeyshare) IsValid() bool {
+func (x *fastReflection_RequestDecryptionKey) IsValid() bool {
 	return x != nil
 }
 
@@ -369,9 +369,9 @@ func (x *fastReflection_RequestAggrKeyshare) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_RequestAggrKeyshare) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_RequestDecryptionKey) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*RequestAggrKeyshare)
+		x := input.Message.Interface().(*RequestDecryptionKey)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -388,13 +388,13 @@ func (x *fastReflection_RequestAggrKeyshare) ProtoMethods() *protoiface.Methods 
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		switch x := x.Id.(type) {
-		case *RequestAggrKeyshare_ProposalId:
+		case *RequestDecryptionKey_ProposalId:
 			if x == nil {
 				break
 			}
 			l = len(x.ProposalId)
 			n += 1 + l + runtime.Sov(uint64(l))
-		case *RequestAggrKeyshare_RequestId:
+		case *RequestDecryptionKey_RequestId:
 			if x == nil {
 				break
 			}
@@ -415,7 +415,7 @@ func (x *fastReflection_RequestAggrKeyshare) ProtoMethods() *protoiface.Methods 
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*RequestAggrKeyshare)
+		x := input.Message.Interface().(*RequestDecryptionKey)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -435,13 +435,13 @@ func (x *fastReflection_RequestAggrKeyshare) ProtoMethods() *protoiface.Methods 
 			copy(dAtA[i:], x.unknownFields)
 		}
 		switch x := x.Id.(type) {
-		case *RequestAggrKeyshare_ProposalId:
+		case *RequestDecryptionKey_ProposalId:
 			i -= len(x.ProposalId)
 			copy(dAtA[i:], x.ProposalId)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ProposalId)))
 			i--
 			dAtA[i] = 0x12
-		case *RequestAggrKeyshare_RequestId:
+		case *RequestDecryptionKey_RequestId:
 			i -= len(x.RequestId)
 			copy(dAtA[i:], x.RequestId)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.RequestId)))
@@ -480,7 +480,7 @@ func (x *fastReflection_RequestAggrKeyshare) ProtoMethods() *protoiface.Methods 
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*RequestAggrKeyshare)
+		x := input.Message.Interface().(*RequestDecryptionKey)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -512,10 +512,10 @@ func (x *fastReflection_RequestAggrKeyshare) ProtoMethods() *protoiface.Methods 
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: RequestAggrKeyshare: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: RequestDecryptionKey: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: RequestAggrKeyshare: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: RequestDecryptionKey: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -580,7 +580,7 @@ func (x *fastReflection_RequestAggrKeyshare) ProtoMethods() *protoiface.Methods 
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Id = &RequestAggrKeyshare_ProposalId{string(dAtA[iNdEx:postIndex])}
+				x.Id = &RequestDecryptionKey_ProposalId{string(dAtA[iNdEx:postIndex])}
 				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
@@ -612,7 +612,7 @@ func (x *fastReflection_RequestAggrKeyshare) ProtoMethods() *protoiface.Methods 
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Id = &RequestAggrKeyshare_RequestId{string(dAtA[iNdEx:postIndex])}
+				x.Id = &RequestDecryptionKey_RequestId{string(dAtA[iNdEx:postIndex])}
 				iNdEx = postIndex
 			case 4:
 				if wireType != 2 {
@@ -686,27 +686,27 @@ func (x *fastReflection_RequestAggrKeyshare) ProtoMethods() *protoiface.Methods 
 }
 
 var (
-	md_RequestAggrKeyshareResponse          protoreflect.MessageDescriptor
-	fd_RequestAggrKeyshareResponse_identity protoreflect.FieldDescriptor
-	fd_RequestAggrKeyshareResponse_pubkey   protoreflect.FieldDescriptor
+	md_RequestDecryptionKeyResponse          protoreflect.MessageDescriptor
+	fd_RequestDecryptionKeyResponse_identity protoreflect.FieldDescriptor
+	fd_RequestDecryptionKeyResponse_pubkey   protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_common_shared_types_proto_init()
-	md_RequestAggrKeyshareResponse = File_fairyring_common_shared_types_proto.Messages().ByName("RequestAggrKeyshareResponse")
-	fd_RequestAggrKeyshareResponse_identity = md_RequestAggrKeyshareResponse.Fields().ByName("identity")
-	fd_RequestAggrKeyshareResponse_pubkey = md_RequestAggrKeyshareResponse.Fields().ByName("pubkey")
+	md_RequestDecryptionKeyResponse = File_fairyring_common_shared_types_proto.Messages().ByName("RequestDecryptionKeyResponse")
+	fd_RequestDecryptionKeyResponse_identity = md_RequestDecryptionKeyResponse.Fields().ByName("identity")
+	fd_RequestDecryptionKeyResponse_pubkey = md_RequestDecryptionKeyResponse.Fields().ByName("pubkey")
 }
 
-var _ protoreflect.Message = (*fastReflection_RequestAggrKeyshareResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_RequestDecryptionKeyResponse)(nil)
 
-type fastReflection_RequestAggrKeyshareResponse RequestAggrKeyshareResponse
+type fastReflection_RequestDecryptionKeyResponse RequestDecryptionKeyResponse
 
-func (x *RequestAggrKeyshareResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_RequestAggrKeyshareResponse)(x)
+func (x *RequestDecryptionKeyResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_RequestDecryptionKeyResponse)(x)
 }
 
-func (x *RequestAggrKeyshareResponse) slowProtoReflect() protoreflect.Message {
+func (x *RequestDecryptionKeyResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_common_shared_types_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -718,43 +718,43 @@ func (x *RequestAggrKeyshareResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_RequestAggrKeyshareResponse_messageType fastReflection_RequestAggrKeyshareResponse_messageType
-var _ protoreflect.MessageType = fastReflection_RequestAggrKeyshareResponse_messageType{}
+var _fastReflection_RequestDecryptionKeyResponse_messageType fastReflection_RequestDecryptionKeyResponse_messageType
+var _ protoreflect.MessageType = fastReflection_RequestDecryptionKeyResponse_messageType{}
 
-type fastReflection_RequestAggrKeyshareResponse_messageType struct{}
+type fastReflection_RequestDecryptionKeyResponse_messageType struct{}
 
-func (x fastReflection_RequestAggrKeyshareResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_RequestAggrKeyshareResponse)(nil)
+func (x fastReflection_RequestDecryptionKeyResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_RequestDecryptionKeyResponse)(nil)
 }
-func (x fastReflection_RequestAggrKeyshareResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_RequestAggrKeyshareResponse)
+func (x fastReflection_RequestDecryptionKeyResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_RequestDecryptionKeyResponse)
 }
-func (x fastReflection_RequestAggrKeyshareResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_RequestAggrKeyshareResponse
+func (x fastReflection_RequestDecryptionKeyResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_RequestDecryptionKeyResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_RequestAggrKeyshareResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_RequestAggrKeyshareResponse
+func (x *fastReflection_RequestDecryptionKeyResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_RequestDecryptionKeyResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_RequestAggrKeyshareResponse) Type() protoreflect.MessageType {
-	return _fastReflection_RequestAggrKeyshareResponse_messageType
+func (x *fastReflection_RequestDecryptionKeyResponse) Type() protoreflect.MessageType {
+	return _fastReflection_RequestDecryptionKeyResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_RequestAggrKeyshareResponse) New() protoreflect.Message {
-	return new(fastReflection_RequestAggrKeyshareResponse)
+func (x *fastReflection_RequestDecryptionKeyResponse) New() protoreflect.Message {
+	return new(fastReflection_RequestDecryptionKeyResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_RequestAggrKeyshareResponse) Interface() protoreflect.ProtoMessage {
-	return (*RequestAggrKeyshareResponse)(x)
+func (x *fastReflection_RequestDecryptionKeyResponse) Interface() protoreflect.ProtoMessage {
+	return (*RequestDecryptionKeyResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -762,16 +762,16 @@ func (x *fastReflection_RequestAggrKeyshareResponse) Interface() protoreflect.Pr
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_RequestAggrKeyshareResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_RequestDecryptionKeyResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Identity != "" {
 		value := protoreflect.ValueOfString(x.Identity)
-		if !f(fd_RequestAggrKeyshareResponse_identity, value) {
+		if !f(fd_RequestDecryptionKeyResponse_identity, value) {
 			return
 		}
 	}
 	if x.Pubkey != "" {
 		value := protoreflect.ValueOfString(x.Pubkey)
-		if !f(fd_RequestAggrKeyshareResponse_pubkey, value) {
+		if !f(fd_RequestDecryptionKeyResponse_pubkey, value) {
 			return
 		}
 	}
@@ -788,17 +788,17 @@ func (x *fastReflection_RequestAggrKeyshareResponse) Range(f func(protoreflect.F
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_RequestAggrKeyshareResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_RequestDecryptionKeyResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.common.RequestAggrKeyshareResponse.identity":
+	case "fairyring.common.RequestDecryptionKeyResponse.identity":
 		return x.Identity != ""
-	case "fairyring.common.RequestAggrKeyshareResponse.pubkey":
+	case "fairyring.common.RequestDecryptionKeyResponse.pubkey":
 		return x.Pubkey != ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestAggrKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestAggrKeyshareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestDecryptionKeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -808,17 +808,17 @@ func (x *fastReflection_RequestAggrKeyshareResponse) Has(fd protoreflect.FieldDe
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_RequestAggrKeyshareResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_RequestDecryptionKeyResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.common.RequestAggrKeyshareResponse.identity":
+	case "fairyring.common.RequestDecryptionKeyResponse.identity":
 		x.Identity = ""
-	case "fairyring.common.RequestAggrKeyshareResponse.pubkey":
+	case "fairyring.common.RequestDecryptionKeyResponse.pubkey":
 		x.Pubkey = ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestAggrKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestAggrKeyshareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestDecryptionKeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -828,19 +828,19 @@ func (x *fastReflection_RequestAggrKeyshareResponse) Clear(fd protoreflect.Field
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_RequestAggrKeyshareResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_RequestDecryptionKeyResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.common.RequestAggrKeyshareResponse.identity":
+	case "fairyring.common.RequestDecryptionKeyResponse.identity":
 		value := x.Identity
 		return protoreflect.ValueOfString(value)
-	case "fairyring.common.RequestAggrKeyshareResponse.pubkey":
+	case "fairyring.common.RequestDecryptionKeyResponse.pubkey":
 		value := x.Pubkey
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestAggrKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestAggrKeyshareResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestDecryptionKeyResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -854,17 +854,17 @@ func (x *fastReflection_RequestAggrKeyshareResponse) Get(descriptor protoreflect
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_RequestAggrKeyshareResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_RequestDecryptionKeyResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.common.RequestAggrKeyshareResponse.identity":
+	case "fairyring.common.RequestDecryptionKeyResponse.identity":
 		x.Identity = value.Interface().(string)
-	case "fairyring.common.RequestAggrKeyshareResponse.pubkey":
+	case "fairyring.common.RequestDecryptionKeyResponse.pubkey":
 		x.Pubkey = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestAggrKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestAggrKeyshareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestDecryptionKeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -878,44 +878,44 @@ func (x *fastReflection_RequestAggrKeyshareResponse) Set(fd protoreflect.FieldDe
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_RequestAggrKeyshareResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_RequestDecryptionKeyResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.common.RequestAggrKeyshareResponse.identity":
-		panic(fmt.Errorf("field identity of message fairyring.common.RequestAggrKeyshareResponse is not mutable"))
-	case "fairyring.common.RequestAggrKeyshareResponse.pubkey":
-		panic(fmt.Errorf("field pubkey of message fairyring.common.RequestAggrKeyshareResponse is not mutable"))
+	case "fairyring.common.RequestDecryptionKeyResponse.identity":
+		panic(fmt.Errorf("field identity of message fairyring.common.RequestDecryptionKeyResponse is not mutable"))
+	case "fairyring.common.RequestDecryptionKeyResponse.pubkey":
+		panic(fmt.Errorf("field pubkey of message fairyring.common.RequestDecryptionKeyResponse is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestAggrKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestAggrKeyshareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestDecryptionKeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_RequestAggrKeyshareResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_RequestDecryptionKeyResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.common.RequestAggrKeyshareResponse.identity":
+	case "fairyring.common.RequestDecryptionKeyResponse.identity":
 		return protoreflect.ValueOfString("")
-	case "fairyring.common.RequestAggrKeyshareResponse.pubkey":
+	case "fairyring.common.RequestDecryptionKeyResponse.pubkey":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestAggrKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestAggrKeyshareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestDecryptionKeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_RequestAggrKeyshareResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_RequestDecryptionKeyResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.RequestAggrKeyshareResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.RequestDecryptionKeyResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -923,7 +923,7 @@ func (x *fastReflection_RequestAggrKeyshareResponse) WhichOneof(d protoreflect.O
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_RequestAggrKeyshareResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_RequestDecryptionKeyResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -934,7 +934,7 @@ func (x *fastReflection_RequestAggrKeyshareResponse) GetUnknown() protoreflect.R
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_RequestAggrKeyshareResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_RequestDecryptionKeyResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -946,7 +946,7 @@ func (x *fastReflection_RequestAggrKeyshareResponse) SetUnknown(fields protorefl
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_RequestAggrKeyshareResponse) IsValid() bool {
+func (x *fastReflection_RequestDecryptionKeyResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -956,9 +956,9 @@ func (x *fastReflection_RequestAggrKeyshareResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_RequestAggrKeyshareResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_RequestDecryptionKeyResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*RequestAggrKeyshareResponse)
+		x := input.Message.Interface().(*RequestDecryptionKeyResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -988,7 +988,7 @@ func (x *fastReflection_RequestAggrKeyshareResponse) ProtoMethods() *protoiface.
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*RequestAggrKeyshareResponse)
+		x := input.Message.Interface().(*RequestDecryptionKeyResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -1032,7 +1032,7 @@ func (x *fastReflection_RequestAggrKeyshareResponse) ProtoMethods() *protoiface.
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*RequestAggrKeyshareResponse)
+		x := input.Message.Interface().(*RequestDecryptionKeyResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -1064,10 +1064,10 @@ func (x *fastReflection_RequestAggrKeyshareResponse) ProtoMethods() *protoiface.
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: RequestAggrKeyshareResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: RequestDecryptionKeyResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: RequestAggrKeyshareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: RequestDecryptionKeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -1170,29 +1170,29 @@ func (x *fastReflection_RequestAggrKeyshareResponse) ProtoMethods() *protoiface.
 }
 
 var (
-	md_GetAggrKeyshare             protoreflect.MessageDescriptor
-	fd_GetAggrKeyshare_proposal_id protoreflect.FieldDescriptor
-	fd_GetAggrKeyshare_request_id  protoreflect.FieldDescriptor
-	fd_GetAggrKeyshare_identity    protoreflect.FieldDescriptor
+	md_GetDecryptionKey             protoreflect.MessageDescriptor
+	fd_GetDecryptionKey_proposal_id protoreflect.FieldDescriptor
+	fd_GetDecryptionKey_request_id  protoreflect.FieldDescriptor
+	fd_GetDecryptionKey_identity    protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_common_shared_types_proto_init()
-	md_GetAggrKeyshare = File_fairyring_common_shared_types_proto.Messages().ByName("GetAggrKeyshare")
-	fd_GetAggrKeyshare_proposal_id = md_GetAggrKeyshare.Fields().ByName("proposal_id")
-	fd_GetAggrKeyshare_request_id = md_GetAggrKeyshare.Fields().ByName("request_id")
-	fd_GetAggrKeyshare_identity = md_GetAggrKeyshare.Fields().ByName("identity")
+	md_GetDecryptionKey = File_fairyring_common_shared_types_proto.Messages().ByName("GetDecryptionKey")
+	fd_GetDecryptionKey_proposal_id = md_GetDecryptionKey.Fields().ByName("proposal_id")
+	fd_GetDecryptionKey_request_id = md_GetDecryptionKey.Fields().ByName("request_id")
+	fd_GetDecryptionKey_identity = md_GetDecryptionKey.Fields().ByName("identity")
 }
 
-var _ protoreflect.Message = (*fastReflection_GetAggrKeyshare)(nil)
+var _ protoreflect.Message = (*fastReflection_GetDecryptionKey)(nil)
 
-type fastReflection_GetAggrKeyshare GetAggrKeyshare
+type fastReflection_GetDecryptionKey GetDecryptionKey
 
-func (x *GetAggrKeyshare) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_GetAggrKeyshare)(x)
+func (x *GetDecryptionKey) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_GetDecryptionKey)(x)
 }
 
-func (x *GetAggrKeyshare) slowProtoReflect() protoreflect.Message {
+func (x *GetDecryptionKey) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_common_shared_types_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1204,43 +1204,43 @@ func (x *GetAggrKeyshare) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_GetAggrKeyshare_messageType fastReflection_GetAggrKeyshare_messageType
-var _ protoreflect.MessageType = fastReflection_GetAggrKeyshare_messageType{}
+var _fastReflection_GetDecryptionKey_messageType fastReflection_GetDecryptionKey_messageType
+var _ protoreflect.MessageType = fastReflection_GetDecryptionKey_messageType{}
 
-type fastReflection_GetAggrKeyshare_messageType struct{}
+type fastReflection_GetDecryptionKey_messageType struct{}
 
-func (x fastReflection_GetAggrKeyshare_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_GetAggrKeyshare)(nil)
+func (x fastReflection_GetDecryptionKey_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_GetDecryptionKey)(nil)
 }
-func (x fastReflection_GetAggrKeyshare_messageType) New() protoreflect.Message {
-	return new(fastReflection_GetAggrKeyshare)
+func (x fastReflection_GetDecryptionKey_messageType) New() protoreflect.Message {
+	return new(fastReflection_GetDecryptionKey)
 }
-func (x fastReflection_GetAggrKeyshare_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_GetAggrKeyshare
+func (x fastReflection_GetDecryptionKey_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_GetDecryptionKey
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_GetAggrKeyshare) Descriptor() protoreflect.MessageDescriptor {
-	return md_GetAggrKeyshare
+func (x *fastReflection_GetDecryptionKey) Descriptor() protoreflect.MessageDescriptor {
+	return md_GetDecryptionKey
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_GetAggrKeyshare) Type() protoreflect.MessageType {
-	return _fastReflection_GetAggrKeyshare_messageType
+func (x *fastReflection_GetDecryptionKey) Type() protoreflect.MessageType {
+	return _fastReflection_GetDecryptionKey_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_GetAggrKeyshare) New() protoreflect.Message {
-	return new(fastReflection_GetAggrKeyshare)
+func (x *fastReflection_GetDecryptionKey) New() protoreflect.Message {
+	return new(fastReflection_GetDecryptionKey)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_GetAggrKeyshare) Interface() protoreflect.ProtoMessage {
-	return (*GetAggrKeyshare)(x)
+func (x *fastReflection_GetDecryptionKey) Interface() protoreflect.ProtoMessage {
+	return (*GetDecryptionKey)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -1248,26 +1248,26 @@ func (x *fastReflection_GetAggrKeyshare) Interface() protoreflect.ProtoMessage {
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_GetAggrKeyshare) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_GetDecryptionKey) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Id != nil {
 		switch o := x.Id.(type) {
-		case *GetAggrKeyshare_ProposalId:
+		case *GetDecryptionKey_ProposalId:
 			v := o.ProposalId
 			value := protoreflect.ValueOfString(v)
-			if !f(fd_GetAggrKeyshare_proposal_id, value) {
+			if !f(fd_GetDecryptionKey_proposal_id, value) {
 				return
 			}
-		case *GetAggrKeyshare_RequestId:
+		case *GetDecryptionKey_RequestId:
 			v := o.RequestId
 			value := protoreflect.ValueOfString(v)
-			if !f(fd_GetAggrKeyshare_request_id, value) {
+			if !f(fd_GetDecryptionKey_request_id, value) {
 				return
 			}
 		}
 	}
 	if x.Identity != "" {
 		value := protoreflect.ValueOfString(x.Identity)
-		if !f(fd_GetAggrKeyshare_identity, value) {
+		if !f(fd_GetDecryptionKey_identity, value) {
 			return
 		}
 	}
@@ -1284,31 +1284,31 @@ func (x *fastReflection_GetAggrKeyshare) Range(f func(protoreflect.FieldDescript
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_GetAggrKeyshare) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_GetDecryptionKey) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.common.GetAggrKeyshare.proposal_id":
+	case "fairyring.common.GetDecryptionKey.proposal_id":
 		if x.Id == nil {
 			return false
-		} else if _, ok := x.Id.(*GetAggrKeyshare_ProposalId); ok {
+		} else if _, ok := x.Id.(*GetDecryptionKey_ProposalId); ok {
 			return true
 		} else {
 			return false
 		}
-	case "fairyring.common.GetAggrKeyshare.request_id":
+	case "fairyring.common.GetDecryptionKey.request_id":
 		if x.Id == nil {
 			return false
-		} else if _, ok := x.Id.(*GetAggrKeyshare_RequestId); ok {
+		} else if _, ok := x.Id.(*GetDecryptionKey_RequestId); ok {
 			return true
 		} else {
 			return false
 		}
-	case "fairyring.common.GetAggrKeyshare.identity":
+	case "fairyring.common.GetDecryptionKey.identity":
 		return x.Identity != ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetAggrKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetAggrKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1318,19 +1318,19 @@ func (x *fastReflection_GetAggrKeyshare) Has(fd protoreflect.FieldDescriptor) bo
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetAggrKeyshare) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_GetDecryptionKey) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.common.GetAggrKeyshare.proposal_id":
+	case "fairyring.common.GetDecryptionKey.proposal_id":
 		x.Id = nil
-	case "fairyring.common.GetAggrKeyshare.request_id":
+	case "fairyring.common.GetDecryptionKey.request_id":
 		x.Id = nil
-	case "fairyring.common.GetAggrKeyshare.identity":
+	case "fairyring.common.GetDecryptionKey.identity":
 		x.Identity = ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetAggrKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetAggrKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1340,32 +1340,32 @@ func (x *fastReflection_GetAggrKeyshare) Clear(fd protoreflect.FieldDescriptor) 
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_GetAggrKeyshare) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_GetDecryptionKey) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.common.GetAggrKeyshare.proposal_id":
+	case "fairyring.common.GetDecryptionKey.proposal_id":
 		if x.Id == nil {
 			return protoreflect.ValueOfString("")
-		} else if v, ok := x.Id.(*GetAggrKeyshare_ProposalId); ok {
+		} else if v, ok := x.Id.(*GetDecryptionKey_ProposalId); ok {
 			return protoreflect.ValueOfString(v.ProposalId)
 		} else {
 			return protoreflect.ValueOfString("")
 		}
-	case "fairyring.common.GetAggrKeyshare.request_id":
+	case "fairyring.common.GetDecryptionKey.request_id":
 		if x.Id == nil {
 			return protoreflect.ValueOfString("")
-		} else if v, ok := x.Id.(*GetAggrKeyshare_RequestId); ok {
+		} else if v, ok := x.Id.(*GetDecryptionKey_RequestId); ok {
 			return protoreflect.ValueOfString(v.RequestId)
 		} else {
 			return protoreflect.ValueOfString("")
 		}
-	case "fairyring.common.GetAggrKeyshare.identity":
+	case "fairyring.common.GetDecryptionKey.identity":
 		value := x.Identity
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetAggrKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetAggrKeyshare does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetDecryptionKey does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -1379,21 +1379,21 @@ func (x *fastReflection_GetAggrKeyshare) Get(descriptor protoreflect.FieldDescri
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetAggrKeyshare) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_GetDecryptionKey) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.common.GetAggrKeyshare.proposal_id":
+	case "fairyring.common.GetDecryptionKey.proposal_id":
 		cv := value.Interface().(string)
-		x.Id = &GetAggrKeyshare_ProposalId{ProposalId: cv}
-	case "fairyring.common.GetAggrKeyshare.request_id":
+		x.Id = &GetDecryptionKey_ProposalId{ProposalId: cv}
+	case "fairyring.common.GetDecryptionKey.request_id":
 		cv := value.Interface().(string)
-		x.Id = &GetAggrKeyshare_RequestId{RequestId: cv}
-	case "fairyring.common.GetAggrKeyshare.identity":
+		x.Id = &GetDecryptionKey_RequestId{RequestId: cv}
+	case "fairyring.common.GetDecryptionKey.identity":
 		x.Identity = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetAggrKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetAggrKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1407,58 +1407,58 @@ func (x *fastReflection_GetAggrKeyshare) Set(fd protoreflect.FieldDescriptor, va
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetAggrKeyshare) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_GetDecryptionKey) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.common.GetAggrKeyshare.proposal_id":
-		panic(fmt.Errorf("field proposal_id of message fairyring.common.GetAggrKeyshare is not mutable"))
-	case "fairyring.common.GetAggrKeyshare.request_id":
-		panic(fmt.Errorf("field request_id of message fairyring.common.GetAggrKeyshare is not mutable"))
-	case "fairyring.common.GetAggrKeyshare.identity":
-		panic(fmt.Errorf("field identity of message fairyring.common.GetAggrKeyshare is not mutable"))
+	case "fairyring.common.GetDecryptionKey.proposal_id":
+		panic(fmt.Errorf("field proposal_id of message fairyring.common.GetDecryptionKey is not mutable"))
+	case "fairyring.common.GetDecryptionKey.request_id":
+		panic(fmt.Errorf("field request_id of message fairyring.common.GetDecryptionKey is not mutable"))
+	case "fairyring.common.GetDecryptionKey.identity":
+		panic(fmt.Errorf("field identity of message fairyring.common.GetDecryptionKey is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetAggrKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetAggrKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_GetAggrKeyshare) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_GetDecryptionKey) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.common.GetAggrKeyshare.proposal_id":
+	case "fairyring.common.GetDecryptionKey.proposal_id":
 		return protoreflect.ValueOfString("")
-	case "fairyring.common.GetAggrKeyshare.request_id":
+	case "fairyring.common.GetDecryptionKey.request_id":
 		return protoreflect.ValueOfString("")
-	case "fairyring.common.GetAggrKeyshare.identity":
+	case "fairyring.common.GetDecryptionKey.identity":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetAggrKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetAggrKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_GetAggrKeyshare) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_GetDecryptionKey) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
-	case "fairyring.common.GetAggrKeyshare.id":
+	case "fairyring.common.GetDecryptionKey.id":
 		if x.Id == nil {
 			return nil
 		}
 		switch x.Id.(type) {
-		case *GetAggrKeyshare_ProposalId:
+		case *GetDecryptionKey_ProposalId:
 			return x.Descriptor().Fields().ByName("proposal_id")
-		case *GetAggrKeyshare_RequestId:
+		case *GetDecryptionKey_RequestId:
 			return x.Descriptor().Fields().ByName("request_id")
 		}
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.GetAggrKeyshare", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.GetDecryptionKey", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -1466,7 +1466,7 @@ func (x *fastReflection_GetAggrKeyshare) WhichOneof(d protoreflect.OneofDescript
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_GetAggrKeyshare) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_GetDecryptionKey) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -1477,7 +1477,7 @@ func (x *fastReflection_GetAggrKeyshare) GetUnknown() protoreflect.RawFields {
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetAggrKeyshare) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_GetDecryptionKey) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -1489,7 +1489,7 @@ func (x *fastReflection_GetAggrKeyshare) SetUnknown(fields protoreflect.RawField
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_GetAggrKeyshare) IsValid() bool {
+func (x *fastReflection_GetDecryptionKey) IsValid() bool {
 	return x != nil
 }
 
@@ -1499,9 +1499,9 @@ func (x *fastReflection_GetAggrKeyshare) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_GetAggrKeyshare) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_GetDecryptionKey) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*GetAggrKeyshare)
+		x := input.Message.Interface().(*GetDecryptionKey)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -1514,13 +1514,13 @@ func (x *fastReflection_GetAggrKeyshare) ProtoMethods() *protoiface.Methods {
 		var l int
 		_ = l
 		switch x := x.Id.(type) {
-		case *GetAggrKeyshare_ProposalId:
+		case *GetDecryptionKey_ProposalId:
 			if x == nil {
 				break
 			}
 			l = len(x.ProposalId)
 			n += 1 + l + runtime.Sov(uint64(l))
-		case *GetAggrKeyshare_RequestId:
+		case *GetDecryptionKey_RequestId:
 			if x == nil {
 				break
 			}
@@ -1541,7 +1541,7 @@ func (x *fastReflection_GetAggrKeyshare) ProtoMethods() *protoiface.Methods {
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*GetAggrKeyshare)
+		x := input.Message.Interface().(*GetDecryptionKey)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -1561,13 +1561,13 @@ func (x *fastReflection_GetAggrKeyshare) ProtoMethods() *protoiface.Methods {
 			copy(dAtA[i:], x.unknownFields)
 		}
 		switch x := x.Id.(type) {
-		case *GetAggrKeyshare_ProposalId:
+		case *GetDecryptionKey_ProposalId:
 			i -= len(x.ProposalId)
 			copy(dAtA[i:], x.ProposalId)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ProposalId)))
 			i--
 			dAtA[i] = 0xa
-		case *GetAggrKeyshare_RequestId:
+		case *GetDecryptionKey_RequestId:
 			i -= len(x.RequestId)
 			copy(dAtA[i:], x.RequestId)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.RequestId)))
@@ -1592,7 +1592,7 @@ func (x *fastReflection_GetAggrKeyshare) ProtoMethods() *protoiface.Methods {
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*GetAggrKeyshare)
+		x := input.Message.Interface().(*GetDecryptionKey)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -1624,10 +1624,10 @@ func (x *fastReflection_GetAggrKeyshare) ProtoMethods() *protoiface.Methods {
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetAggrKeyshare: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetDecryptionKey: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetAggrKeyshare: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetDecryptionKey: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -1660,7 +1660,7 @@ func (x *fastReflection_GetAggrKeyshare) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Id = &GetAggrKeyshare_ProposalId{string(dAtA[iNdEx:postIndex])}
+				x.Id = &GetDecryptionKey_ProposalId{string(dAtA[iNdEx:postIndex])}
 				iNdEx = postIndex
 			case 2:
 				if wireType != 2 {
@@ -1692,7 +1692,7 @@ func (x *fastReflection_GetAggrKeyshare) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Id = &GetAggrKeyshare_RequestId{string(dAtA[iNdEx:postIndex])}
+				x.Id = &GetDecryptionKey_RequestId{string(dAtA[iNdEx:postIndex])}
 				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
@@ -1762,23 +1762,23 @@ func (x *fastReflection_GetAggrKeyshare) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_GetAggrKeyshareResponse protoreflect.MessageDescriptor
+	md_GetDecryptionKeyResponse protoreflect.MessageDescriptor
 )
 
 func init() {
 	file_fairyring_common_shared_types_proto_init()
-	md_GetAggrKeyshareResponse = File_fairyring_common_shared_types_proto.Messages().ByName("GetAggrKeyshareResponse")
+	md_GetDecryptionKeyResponse = File_fairyring_common_shared_types_proto.Messages().ByName("GetDecryptionKeyResponse")
 }
 
-var _ protoreflect.Message = (*fastReflection_GetAggrKeyshareResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_GetDecryptionKeyResponse)(nil)
 
-type fastReflection_GetAggrKeyshareResponse GetAggrKeyshareResponse
+type fastReflection_GetDecryptionKeyResponse GetDecryptionKeyResponse
 
-func (x *GetAggrKeyshareResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_GetAggrKeyshareResponse)(x)
+func (x *GetDecryptionKeyResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_GetDecryptionKeyResponse)(x)
 }
 
-func (x *GetAggrKeyshareResponse) slowProtoReflect() protoreflect.Message {
+func (x *GetDecryptionKeyResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_common_shared_types_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1790,43 +1790,43 @@ func (x *GetAggrKeyshareResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_GetAggrKeyshareResponse_messageType fastReflection_GetAggrKeyshareResponse_messageType
-var _ protoreflect.MessageType = fastReflection_GetAggrKeyshareResponse_messageType{}
+var _fastReflection_GetDecryptionKeyResponse_messageType fastReflection_GetDecryptionKeyResponse_messageType
+var _ protoreflect.MessageType = fastReflection_GetDecryptionKeyResponse_messageType{}
 
-type fastReflection_GetAggrKeyshareResponse_messageType struct{}
+type fastReflection_GetDecryptionKeyResponse_messageType struct{}
 
-func (x fastReflection_GetAggrKeyshareResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_GetAggrKeyshareResponse)(nil)
+func (x fastReflection_GetDecryptionKeyResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_GetDecryptionKeyResponse)(nil)
 }
-func (x fastReflection_GetAggrKeyshareResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_GetAggrKeyshareResponse)
+func (x fastReflection_GetDecryptionKeyResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_GetDecryptionKeyResponse)
 }
-func (x fastReflection_GetAggrKeyshareResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_GetAggrKeyshareResponse
+func (x fastReflection_GetDecryptionKeyResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_GetDecryptionKeyResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_GetAggrKeyshareResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_GetAggrKeyshareResponse
+func (x *fastReflection_GetDecryptionKeyResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_GetDecryptionKeyResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_GetAggrKeyshareResponse) Type() protoreflect.MessageType {
-	return _fastReflection_GetAggrKeyshareResponse_messageType
+func (x *fastReflection_GetDecryptionKeyResponse) Type() protoreflect.MessageType {
+	return _fastReflection_GetDecryptionKeyResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_GetAggrKeyshareResponse) New() protoreflect.Message {
-	return new(fastReflection_GetAggrKeyshareResponse)
+func (x *fastReflection_GetDecryptionKeyResponse) New() protoreflect.Message {
+	return new(fastReflection_GetDecryptionKeyResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_GetAggrKeyshareResponse) Interface() protoreflect.ProtoMessage {
-	return (*GetAggrKeyshareResponse)(x)
+func (x *fastReflection_GetDecryptionKeyResponse) Interface() protoreflect.ProtoMessage {
+	return (*GetDecryptionKeyResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -1834,7 +1834,7 @@ func (x *fastReflection_GetAggrKeyshareResponse) Interface() protoreflect.ProtoM
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_GetAggrKeyshareResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_GetDecryptionKeyResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 }
 
 // Has reports whether a field is populated.
@@ -1848,13 +1848,13 @@ func (x *fastReflection_GetAggrKeyshareResponse) Range(f func(protoreflect.Field
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_GetAggrKeyshareResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_GetDecryptionKeyResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetAggrKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetAggrKeyshareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetDecryptionKeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1864,13 +1864,13 @@ func (x *fastReflection_GetAggrKeyshareResponse) Has(fd protoreflect.FieldDescri
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetAggrKeyshareResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_GetDecryptionKeyResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetAggrKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetAggrKeyshareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetDecryptionKeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1880,13 +1880,13 @@ func (x *fastReflection_GetAggrKeyshareResponse) Clear(fd protoreflect.FieldDesc
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_GetAggrKeyshareResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_GetDecryptionKeyResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetAggrKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetAggrKeyshareResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetDecryptionKeyResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -1900,13 +1900,13 @@ func (x *fastReflection_GetAggrKeyshareResponse) Get(descriptor protoreflect.Fie
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetAggrKeyshareResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_GetDecryptionKeyResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetAggrKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetAggrKeyshareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetDecryptionKeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -1920,36 +1920,36 @@ func (x *fastReflection_GetAggrKeyshareResponse) Set(fd protoreflect.FieldDescri
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetAggrKeyshareResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_GetDecryptionKeyResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetAggrKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetAggrKeyshareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetDecryptionKeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_GetAggrKeyshareResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_GetDecryptionKeyResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetAggrKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetAggrKeyshareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetDecryptionKeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_GetAggrKeyshareResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_GetDecryptionKeyResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.GetAggrKeyshareResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.GetDecryptionKeyResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -1957,7 +1957,7 @@ func (x *fastReflection_GetAggrKeyshareResponse) WhichOneof(d protoreflect.Oneof
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_GetAggrKeyshareResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_GetDecryptionKeyResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -1968,7 +1968,7 @@ func (x *fastReflection_GetAggrKeyshareResponse) GetUnknown() protoreflect.RawFi
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetAggrKeyshareResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_GetDecryptionKeyResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -1980,7 +1980,7 @@ func (x *fastReflection_GetAggrKeyshareResponse) SetUnknown(fields protoreflect.
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_GetAggrKeyshareResponse) IsValid() bool {
+func (x *fastReflection_GetDecryptionKeyResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -1990,9 +1990,9 @@ func (x *fastReflection_GetAggrKeyshareResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_GetAggrKeyshareResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_GetDecryptionKeyResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*GetAggrKeyshareResponse)
+		x := input.Message.Interface().(*GetDecryptionKeyResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2014,7 +2014,7 @@ func (x *fastReflection_GetAggrKeyshareResponse) ProtoMethods() *protoiface.Meth
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*GetAggrKeyshareResponse)
+		x := input.Message.Interface().(*GetDecryptionKeyResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2044,7 +2044,7 @@ func (x *fastReflection_GetAggrKeyshareResponse) ProtoMethods() *protoiface.Meth
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*GetAggrKeyshareResponse)
+		x := input.Message.Interface().(*GetDecryptionKeyResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2076,10 +2076,10 @@ func (x *fastReflection_GetAggrKeyshareResponse) ProtoMethods() *protoiface.Meth
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetAggrKeyshareResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetDecryptionKeyResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetAggrKeyshareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetDecryptionKeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			default:
@@ -2118,31 +2118,31 @@ func (x *fastReflection_GetAggrKeyshareResponse) ProtoMethods() *protoiface.Meth
 }
 
 var (
-	md_GetPrivateKeyshare             protoreflect.MessageDescriptor
-	fd_GetPrivateKeyshare_request_id  protoreflect.FieldDescriptor
-	fd_GetPrivateKeyshare_identity    protoreflect.FieldDescriptor
-	fd_GetPrivateKeyshare_requester   protoreflect.FieldDescriptor
-	fd_GetPrivateKeyshare_secp_pubkey protoreflect.FieldDescriptor
+	md_GetPrivateDecryptionKey             protoreflect.MessageDescriptor
+	fd_GetPrivateDecryptionKey_request_id  protoreflect.FieldDescriptor
+	fd_GetPrivateDecryptionKey_identity    protoreflect.FieldDescriptor
+	fd_GetPrivateDecryptionKey_requester   protoreflect.FieldDescriptor
+	fd_GetPrivateDecryptionKey_secp_pubkey protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_common_shared_types_proto_init()
-	md_GetPrivateKeyshare = File_fairyring_common_shared_types_proto.Messages().ByName("GetPrivateKeyshare")
-	fd_GetPrivateKeyshare_request_id = md_GetPrivateKeyshare.Fields().ByName("request_id")
-	fd_GetPrivateKeyshare_identity = md_GetPrivateKeyshare.Fields().ByName("identity")
-	fd_GetPrivateKeyshare_requester = md_GetPrivateKeyshare.Fields().ByName("requester")
-	fd_GetPrivateKeyshare_secp_pubkey = md_GetPrivateKeyshare.Fields().ByName("secp_pubkey")
+	md_GetPrivateDecryptionKey = File_fairyring_common_shared_types_proto.Messages().ByName("GetPrivateDecryptionKey")
+	fd_GetPrivateDecryptionKey_request_id = md_GetPrivateDecryptionKey.Fields().ByName("request_id")
+	fd_GetPrivateDecryptionKey_identity = md_GetPrivateDecryptionKey.Fields().ByName("identity")
+	fd_GetPrivateDecryptionKey_requester = md_GetPrivateDecryptionKey.Fields().ByName("requester")
+	fd_GetPrivateDecryptionKey_secp_pubkey = md_GetPrivateDecryptionKey.Fields().ByName("secp_pubkey")
 }
 
-var _ protoreflect.Message = (*fastReflection_GetPrivateKeyshare)(nil)
+var _ protoreflect.Message = (*fastReflection_GetPrivateDecryptionKey)(nil)
 
-type fastReflection_GetPrivateKeyshare GetPrivateKeyshare
+type fastReflection_GetPrivateDecryptionKey GetPrivateDecryptionKey
 
-func (x *GetPrivateKeyshare) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_GetPrivateKeyshare)(x)
+func (x *GetPrivateDecryptionKey) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_GetPrivateDecryptionKey)(x)
 }
 
-func (x *GetPrivateKeyshare) slowProtoReflect() protoreflect.Message {
+func (x *GetPrivateDecryptionKey) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_common_shared_types_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2154,43 +2154,43 @@ func (x *GetPrivateKeyshare) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_GetPrivateKeyshare_messageType fastReflection_GetPrivateKeyshare_messageType
-var _ protoreflect.MessageType = fastReflection_GetPrivateKeyshare_messageType{}
+var _fastReflection_GetPrivateDecryptionKey_messageType fastReflection_GetPrivateDecryptionKey_messageType
+var _ protoreflect.MessageType = fastReflection_GetPrivateDecryptionKey_messageType{}
 
-type fastReflection_GetPrivateKeyshare_messageType struct{}
+type fastReflection_GetPrivateDecryptionKey_messageType struct{}
 
-func (x fastReflection_GetPrivateKeyshare_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_GetPrivateKeyshare)(nil)
+func (x fastReflection_GetPrivateDecryptionKey_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_GetPrivateDecryptionKey)(nil)
 }
-func (x fastReflection_GetPrivateKeyshare_messageType) New() protoreflect.Message {
-	return new(fastReflection_GetPrivateKeyshare)
+func (x fastReflection_GetPrivateDecryptionKey_messageType) New() protoreflect.Message {
+	return new(fastReflection_GetPrivateDecryptionKey)
 }
-func (x fastReflection_GetPrivateKeyshare_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_GetPrivateKeyshare
+func (x fastReflection_GetPrivateDecryptionKey_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_GetPrivateDecryptionKey
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_GetPrivateKeyshare) Descriptor() protoreflect.MessageDescriptor {
-	return md_GetPrivateKeyshare
+func (x *fastReflection_GetPrivateDecryptionKey) Descriptor() protoreflect.MessageDescriptor {
+	return md_GetPrivateDecryptionKey
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_GetPrivateKeyshare) Type() protoreflect.MessageType {
-	return _fastReflection_GetPrivateKeyshare_messageType
+func (x *fastReflection_GetPrivateDecryptionKey) Type() protoreflect.MessageType {
+	return _fastReflection_GetPrivateDecryptionKey_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_GetPrivateKeyshare) New() protoreflect.Message {
-	return new(fastReflection_GetPrivateKeyshare)
+func (x *fastReflection_GetPrivateDecryptionKey) New() protoreflect.Message {
+	return new(fastReflection_GetPrivateDecryptionKey)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_GetPrivateKeyshare) Interface() protoreflect.ProtoMessage {
-	return (*GetPrivateKeyshare)(x)
+func (x *fastReflection_GetPrivateDecryptionKey) Interface() protoreflect.ProtoMessage {
+	return (*GetPrivateDecryptionKey)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -2198,28 +2198,28 @@ func (x *fastReflection_GetPrivateKeyshare) Interface() protoreflect.ProtoMessag
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_GetPrivateKeyshare) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_GetPrivateDecryptionKey) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.RequestId != "" {
 		value := protoreflect.ValueOfString(x.RequestId)
-		if !f(fd_GetPrivateKeyshare_request_id, value) {
+		if !f(fd_GetPrivateDecryptionKey_request_id, value) {
 			return
 		}
 	}
 	if x.Identity != "" {
 		value := protoreflect.ValueOfString(x.Identity)
-		if !f(fd_GetPrivateKeyshare_identity, value) {
+		if !f(fd_GetPrivateDecryptionKey_identity, value) {
 			return
 		}
 	}
 	if x.Requester != "" {
 		value := protoreflect.ValueOfString(x.Requester)
-		if !f(fd_GetPrivateKeyshare_requester, value) {
+		if !f(fd_GetPrivateDecryptionKey_requester, value) {
 			return
 		}
 	}
 	if x.SecpPubkey != "" {
 		value := protoreflect.ValueOfString(x.SecpPubkey)
-		if !f(fd_GetPrivateKeyshare_secp_pubkey, value) {
+		if !f(fd_GetPrivateDecryptionKey_secp_pubkey, value) {
 			return
 		}
 	}
@@ -2236,21 +2236,21 @@ func (x *fastReflection_GetPrivateKeyshare) Range(f func(protoreflect.FieldDescr
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_GetPrivateKeyshare) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_GetPrivateDecryptionKey) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.common.GetPrivateKeyshare.request_id":
+	case "fairyring.common.GetPrivateDecryptionKey.request_id":
 		return x.RequestId != ""
-	case "fairyring.common.GetPrivateKeyshare.identity":
+	case "fairyring.common.GetPrivateDecryptionKey.identity":
 		return x.Identity != ""
-	case "fairyring.common.GetPrivateKeyshare.requester":
+	case "fairyring.common.GetPrivateDecryptionKey.requester":
 		return x.Requester != ""
-	case "fairyring.common.GetPrivateKeyshare.secp_pubkey":
+	case "fairyring.common.GetPrivateDecryptionKey.secp_pubkey":
 		return x.SecpPubkey != ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetPrivateKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetPrivateDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2260,21 +2260,21 @@ func (x *fastReflection_GetPrivateKeyshare) Has(fd protoreflect.FieldDescriptor)
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetPrivateKeyshare) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_GetPrivateDecryptionKey) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.common.GetPrivateKeyshare.request_id":
+	case "fairyring.common.GetPrivateDecryptionKey.request_id":
 		x.RequestId = ""
-	case "fairyring.common.GetPrivateKeyshare.identity":
+	case "fairyring.common.GetPrivateDecryptionKey.identity":
 		x.Identity = ""
-	case "fairyring.common.GetPrivateKeyshare.requester":
+	case "fairyring.common.GetPrivateDecryptionKey.requester":
 		x.Requester = ""
-	case "fairyring.common.GetPrivateKeyshare.secp_pubkey":
+	case "fairyring.common.GetPrivateDecryptionKey.secp_pubkey":
 		x.SecpPubkey = ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetPrivateKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetPrivateDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2284,25 +2284,25 @@ func (x *fastReflection_GetPrivateKeyshare) Clear(fd protoreflect.FieldDescripto
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_GetPrivateKeyshare) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_GetPrivateDecryptionKey) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.common.GetPrivateKeyshare.request_id":
+	case "fairyring.common.GetPrivateDecryptionKey.request_id":
 		value := x.RequestId
 		return protoreflect.ValueOfString(value)
-	case "fairyring.common.GetPrivateKeyshare.identity":
+	case "fairyring.common.GetPrivateDecryptionKey.identity":
 		value := x.Identity
 		return protoreflect.ValueOfString(value)
-	case "fairyring.common.GetPrivateKeyshare.requester":
+	case "fairyring.common.GetPrivateDecryptionKey.requester":
 		value := x.Requester
 		return protoreflect.ValueOfString(value)
-	case "fairyring.common.GetPrivateKeyshare.secp_pubkey":
+	case "fairyring.common.GetPrivateDecryptionKey.secp_pubkey":
 		value := x.SecpPubkey
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetPrivateKeyshare does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetPrivateDecryptionKey does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -2316,21 +2316,21 @@ func (x *fastReflection_GetPrivateKeyshare) Get(descriptor protoreflect.FieldDes
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetPrivateKeyshare) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_GetPrivateDecryptionKey) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.common.GetPrivateKeyshare.request_id":
+	case "fairyring.common.GetPrivateDecryptionKey.request_id":
 		x.RequestId = value.Interface().(string)
-	case "fairyring.common.GetPrivateKeyshare.identity":
+	case "fairyring.common.GetPrivateDecryptionKey.identity":
 		x.Identity = value.Interface().(string)
-	case "fairyring.common.GetPrivateKeyshare.requester":
+	case "fairyring.common.GetPrivateDecryptionKey.requester":
 		x.Requester = value.Interface().(string)
-	case "fairyring.common.GetPrivateKeyshare.secp_pubkey":
+	case "fairyring.common.GetPrivateDecryptionKey.secp_pubkey":
 		x.SecpPubkey = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetPrivateKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetPrivateDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2344,52 +2344,52 @@ func (x *fastReflection_GetPrivateKeyshare) Set(fd protoreflect.FieldDescriptor,
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetPrivateKeyshare) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_GetPrivateDecryptionKey) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.common.GetPrivateKeyshare.request_id":
-		panic(fmt.Errorf("field request_id of message fairyring.common.GetPrivateKeyshare is not mutable"))
-	case "fairyring.common.GetPrivateKeyshare.identity":
-		panic(fmt.Errorf("field identity of message fairyring.common.GetPrivateKeyshare is not mutable"))
-	case "fairyring.common.GetPrivateKeyshare.requester":
-		panic(fmt.Errorf("field requester of message fairyring.common.GetPrivateKeyshare is not mutable"))
-	case "fairyring.common.GetPrivateKeyshare.secp_pubkey":
-		panic(fmt.Errorf("field secp_pubkey of message fairyring.common.GetPrivateKeyshare is not mutable"))
+	case "fairyring.common.GetPrivateDecryptionKey.request_id":
+		panic(fmt.Errorf("field request_id of message fairyring.common.GetPrivateDecryptionKey is not mutable"))
+	case "fairyring.common.GetPrivateDecryptionKey.identity":
+		panic(fmt.Errorf("field identity of message fairyring.common.GetPrivateDecryptionKey is not mutable"))
+	case "fairyring.common.GetPrivateDecryptionKey.requester":
+		panic(fmt.Errorf("field requester of message fairyring.common.GetPrivateDecryptionKey is not mutable"))
+	case "fairyring.common.GetPrivateDecryptionKey.secp_pubkey":
+		panic(fmt.Errorf("field secp_pubkey of message fairyring.common.GetPrivateDecryptionKey is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetPrivateKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetPrivateDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_GetPrivateKeyshare) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_GetPrivateDecryptionKey) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.common.GetPrivateKeyshare.request_id":
+	case "fairyring.common.GetPrivateDecryptionKey.request_id":
 		return protoreflect.ValueOfString("")
-	case "fairyring.common.GetPrivateKeyshare.identity":
+	case "fairyring.common.GetPrivateDecryptionKey.identity":
 		return protoreflect.ValueOfString("")
-	case "fairyring.common.GetPrivateKeyshare.requester":
+	case "fairyring.common.GetPrivateDecryptionKey.requester":
 		return protoreflect.ValueOfString("")
-	case "fairyring.common.GetPrivateKeyshare.secp_pubkey":
+	case "fairyring.common.GetPrivateDecryptionKey.secp_pubkey":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetPrivateKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetPrivateDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_GetPrivateKeyshare) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_GetPrivateDecryptionKey) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.GetPrivateKeyshare", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.GetPrivateDecryptionKey", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -2397,7 +2397,7 @@ func (x *fastReflection_GetPrivateKeyshare) WhichOneof(d protoreflect.OneofDescr
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_GetPrivateKeyshare) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_GetPrivateDecryptionKey) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -2408,7 +2408,7 @@ func (x *fastReflection_GetPrivateKeyshare) GetUnknown() protoreflect.RawFields 
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetPrivateKeyshare) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_GetPrivateDecryptionKey) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -2420,7 +2420,7 @@ func (x *fastReflection_GetPrivateKeyshare) SetUnknown(fields protoreflect.RawFi
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_GetPrivateKeyshare) IsValid() bool {
+func (x *fastReflection_GetPrivateDecryptionKey) IsValid() bool {
 	return x != nil
 }
 
@@ -2430,9 +2430,9 @@ func (x *fastReflection_GetPrivateKeyshare) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_GetPrivateKeyshare) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_GetPrivateDecryptionKey) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*GetPrivateKeyshare)
+		x := input.Message.Interface().(*GetPrivateDecryptionKey)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2470,7 +2470,7 @@ func (x *fastReflection_GetPrivateKeyshare) ProtoMethods() *protoiface.Methods {
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*GetPrivateKeyshare)
+		x := input.Message.Interface().(*GetPrivateDecryptionKey)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2528,7 +2528,7 @@ func (x *fastReflection_GetPrivateKeyshare) ProtoMethods() *protoiface.Methods {
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*GetPrivateKeyshare)
+		x := input.Message.Interface().(*GetPrivateDecryptionKey)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -2560,10 +2560,10 @@ func (x *fastReflection_GetPrivateKeyshare) ProtoMethods() *protoiface.Methods {
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetPrivateKeyshare: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetPrivateDecryptionKey: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetPrivateKeyshare: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetPrivateDecryptionKey: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -2730,25 +2730,25 @@ func (x *fastReflection_GetPrivateKeyshare) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_GetPrivateKeyshareResponse        protoreflect.MessageDescriptor
-	fd_GetPrivateKeyshareResponse_pubkey protoreflect.FieldDescriptor
+	md_GetPrivateDecryptionKeyResponse        protoreflect.MessageDescriptor
+	fd_GetPrivateDecryptionKeyResponse_pubkey protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_common_shared_types_proto_init()
-	md_GetPrivateKeyshareResponse = File_fairyring_common_shared_types_proto.Messages().ByName("GetPrivateKeyshareResponse")
-	fd_GetPrivateKeyshareResponse_pubkey = md_GetPrivateKeyshareResponse.Fields().ByName("pubkey")
+	md_GetPrivateDecryptionKeyResponse = File_fairyring_common_shared_types_proto.Messages().ByName("GetPrivateDecryptionKeyResponse")
+	fd_GetPrivateDecryptionKeyResponse_pubkey = md_GetPrivateDecryptionKeyResponse.Fields().ByName("pubkey")
 }
 
-var _ protoreflect.Message = (*fastReflection_GetPrivateKeyshareResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_GetPrivateDecryptionKeyResponse)(nil)
 
-type fastReflection_GetPrivateKeyshareResponse GetPrivateKeyshareResponse
+type fastReflection_GetPrivateDecryptionKeyResponse GetPrivateDecryptionKeyResponse
 
-func (x *GetPrivateKeyshareResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_GetPrivateKeyshareResponse)(x)
+func (x *GetPrivateDecryptionKeyResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_GetPrivateDecryptionKeyResponse)(x)
 }
 
-func (x *GetPrivateKeyshareResponse) slowProtoReflect() protoreflect.Message {
+func (x *GetPrivateDecryptionKeyResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_common_shared_types_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2760,43 +2760,43 @@ func (x *GetPrivateKeyshareResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_GetPrivateKeyshareResponse_messageType fastReflection_GetPrivateKeyshareResponse_messageType
-var _ protoreflect.MessageType = fastReflection_GetPrivateKeyshareResponse_messageType{}
+var _fastReflection_GetPrivateDecryptionKeyResponse_messageType fastReflection_GetPrivateDecryptionKeyResponse_messageType
+var _ protoreflect.MessageType = fastReflection_GetPrivateDecryptionKeyResponse_messageType{}
 
-type fastReflection_GetPrivateKeyshareResponse_messageType struct{}
+type fastReflection_GetPrivateDecryptionKeyResponse_messageType struct{}
 
-func (x fastReflection_GetPrivateKeyshareResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_GetPrivateKeyshareResponse)(nil)
+func (x fastReflection_GetPrivateDecryptionKeyResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_GetPrivateDecryptionKeyResponse)(nil)
 }
-func (x fastReflection_GetPrivateKeyshareResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_GetPrivateKeyshareResponse)
+func (x fastReflection_GetPrivateDecryptionKeyResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_GetPrivateDecryptionKeyResponse)
 }
-func (x fastReflection_GetPrivateKeyshareResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_GetPrivateKeyshareResponse
+func (x fastReflection_GetPrivateDecryptionKeyResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_GetPrivateDecryptionKeyResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_GetPrivateKeyshareResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_GetPrivateKeyshareResponse
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_GetPrivateDecryptionKeyResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_GetPrivateKeyshareResponse) Type() protoreflect.MessageType {
-	return _fastReflection_GetPrivateKeyshareResponse_messageType
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) Type() protoreflect.MessageType {
+	return _fastReflection_GetPrivateDecryptionKeyResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_GetPrivateKeyshareResponse) New() protoreflect.Message {
-	return new(fastReflection_GetPrivateKeyshareResponse)
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) New() protoreflect.Message {
+	return new(fastReflection_GetPrivateDecryptionKeyResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_GetPrivateKeyshareResponse) Interface() protoreflect.ProtoMessage {
-	return (*GetPrivateKeyshareResponse)(x)
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) Interface() protoreflect.ProtoMessage {
+	return (*GetPrivateDecryptionKeyResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -2804,10 +2804,10 @@ func (x *fastReflection_GetPrivateKeyshareResponse) Interface() protoreflect.Pro
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_GetPrivateKeyshareResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Pubkey != "" {
 		value := protoreflect.ValueOfString(x.Pubkey)
-		if !f(fd_GetPrivateKeyshareResponse_pubkey, value) {
+		if !f(fd_GetPrivateDecryptionKeyResponse_pubkey, value) {
 			return
 		}
 	}
@@ -2824,15 +2824,15 @@ func (x *fastReflection_GetPrivateKeyshareResponse) Range(f func(protoreflect.Fi
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_GetPrivateKeyshareResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.common.GetPrivateKeyshareResponse.pubkey":
+	case "fairyring.common.GetPrivateDecryptionKeyResponse.pubkey":
 		return x.Pubkey != ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetPrivateKeyshareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetPrivateDecryptionKeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2842,15 +2842,15 @@ func (x *fastReflection_GetPrivateKeyshareResponse) Has(fd protoreflect.FieldDes
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetPrivateKeyshareResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.common.GetPrivateKeyshareResponse.pubkey":
+	case "fairyring.common.GetPrivateDecryptionKeyResponse.pubkey":
 		x.Pubkey = ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetPrivateKeyshareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetPrivateDecryptionKeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2860,16 +2860,16 @@ func (x *fastReflection_GetPrivateKeyshareResponse) Clear(fd protoreflect.FieldD
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_GetPrivateKeyshareResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.common.GetPrivateKeyshareResponse.pubkey":
+	case "fairyring.common.GetPrivateDecryptionKeyResponse.pubkey":
 		value := x.Pubkey
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetPrivateKeyshareResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetPrivateDecryptionKeyResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -2883,15 +2883,15 @@ func (x *fastReflection_GetPrivateKeyshareResponse) Get(descriptor protoreflect.
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetPrivateKeyshareResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.common.GetPrivateKeyshareResponse.pubkey":
+	case "fairyring.common.GetPrivateDecryptionKeyResponse.pubkey":
 		x.Pubkey = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetPrivateKeyshareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetPrivateDecryptionKeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -2905,40 +2905,40 @@ func (x *fastReflection_GetPrivateKeyshareResponse) Set(fd protoreflect.FieldDes
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetPrivateKeyshareResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.common.GetPrivateKeyshareResponse.pubkey":
-		panic(fmt.Errorf("field pubkey of message fairyring.common.GetPrivateKeyshareResponse is not mutable"))
+	case "fairyring.common.GetPrivateDecryptionKeyResponse.pubkey":
+		panic(fmt.Errorf("field pubkey of message fairyring.common.GetPrivateDecryptionKeyResponse is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetPrivateKeyshareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetPrivateDecryptionKeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_GetPrivateKeyshareResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.common.GetPrivateKeyshareResponse.pubkey":
+	case "fairyring.common.GetPrivateDecryptionKeyResponse.pubkey":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateKeyshareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.GetPrivateDecryptionKeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.common.GetPrivateKeyshareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.GetPrivateDecryptionKeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_GetPrivateKeyshareResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.GetPrivateKeyshareResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.GetPrivateDecryptionKeyResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -2946,7 +2946,7 @@ func (x *fastReflection_GetPrivateKeyshareResponse) WhichOneof(d protoreflect.On
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_GetPrivateKeyshareResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -2957,7 +2957,7 @@ func (x *fastReflection_GetPrivateKeyshareResponse) GetUnknown() protoreflect.Ra
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_GetPrivateKeyshareResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -2969,7 +2969,7 @@ func (x *fastReflection_GetPrivateKeyshareResponse) SetUnknown(fields protorefle
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_GetPrivateKeyshareResponse) IsValid() bool {
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -2979,9 +2979,9 @@ func (x *fastReflection_GetPrivateKeyshareResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_GetPrivateKeyshareResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_GetPrivateDecryptionKeyResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*GetPrivateKeyshareResponse)
+		x := input.Message.Interface().(*GetPrivateDecryptionKeyResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -3007,7 +3007,7 @@ func (x *fastReflection_GetPrivateKeyshareResponse) ProtoMethods() *protoiface.M
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*GetPrivateKeyshareResponse)
+		x := input.Message.Interface().(*GetPrivateDecryptionKeyResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -3044,7 +3044,7 @@ func (x *fastReflection_GetPrivateKeyshareResponse) ProtoMethods() *protoiface.M
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*GetPrivateKeyshareResponse)
+		x := input.Message.Interface().(*GetPrivateDecryptionKeyResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -3076,10 +3076,10 @@ func (x *fastReflection_GetPrivateKeyshareResponse) ProtoMethods() *protoiface.M
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetPrivateKeyshareResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetPrivateDecryptionKeyResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetPrivateKeyshareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: GetPrivateDecryptionKeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -4214,27 +4214,27 @@ func (x *fastReflection_QueuedPublicKey) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_RequestEncryptedKeyshare            protoreflect.MessageDescriptor
-	fd_RequestEncryptedKeyshare_creator    protoreflect.FieldDescriptor
-	fd_RequestEncryptedKeyshare_request_id protoreflect.FieldDescriptor
+	md_RequestPrivateDecryptionKey            protoreflect.MessageDescriptor
+	fd_RequestPrivateDecryptionKey_creator    protoreflect.FieldDescriptor
+	fd_RequestPrivateDecryptionKey_request_id protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_common_shared_types_proto_init()
-	md_RequestEncryptedKeyshare = File_fairyring_common_shared_types_proto.Messages().ByName("RequestEncryptedKeyshare")
-	fd_RequestEncryptedKeyshare_creator = md_RequestEncryptedKeyshare.Fields().ByName("creator")
-	fd_RequestEncryptedKeyshare_request_id = md_RequestEncryptedKeyshare.Fields().ByName("request_id")
+	md_RequestPrivateDecryptionKey = File_fairyring_common_shared_types_proto.Messages().ByName("RequestPrivateDecryptionKey")
+	fd_RequestPrivateDecryptionKey_creator = md_RequestPrivateDecryptionKey.Fields().ByName("creator")
+	fd_RequestPrivateDecryptionKey_request_id = md_RequestPrivateDecryptionKey.Fields().ByName("request_id")
 }
 
-var _ protoreflect.Message = (*fastReflection_RequestEncryptedKeyshare)(nil)
+var _ protoreflect.Message = (*fastReflection_RequestPrivateDecryptionKey)(nil)
 
-type fastReflection_RequestEncryptedKeyshare RequestEncryptedKeyshare
+type fastReflection_RequestPrivateDecryptionKey RequestPrivateDecryptionKey
 
-func (x *RequestEncryptedKeyshare) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_RequestEncryptedKeyshare)(x)
+func (x *RequestPrivateDecryptionKey) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_RequestPrivateDecryptionKey)(x)
 }
 
-func (x *RequestEncryptedKeyshare) slowProtoReflect() protoreflect.Message {
+func (x *RequestPrivateDecryptionKey) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_common_shared_types_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4246,43 +4246,43 @@ func (x *RequestEncryptedKeyshare) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_RequestEncryptedKeyshare_messageType fastReflection_RequestEncryptedKeyshare_messageType
-var _ protoreflect.MessageType = fastReflection_RequestEncryptedKeyshare_messageType{}
+var _fastReflection_RequestPrivateDecryptionKey_messageType fastReflection_RequestPrivateDecryptionKey_messageType
+var _ protoreflect.MessageType = fastReflection_RequestPrivateDecryptionKey_messageType{}
 
-type fastReflection_RequestEncryptedKeyshare_messageType struct{}
+type fastReflection_RequestPrivateDecryptionKey_messageType struct{}
 
-func (x fastReflection_RequestEncryptedKeyshare_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_RequestEncryptedKeyshare)(nil)
+func (x fastReflection_RequestPrivateDecryptionKey_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_RequestPrivateDecryptionKey)(nil)
 }
-func (x fastReflection_RequestEncryptedKeyshare_messageType) New() protoreflect.Message {
-	return new(fastReflection_RequestEncryptedKeyshare)
+func (x fastReflection_RequestPrivateDecryptionKey_messageType) New() protoreflect.Message {
+	return new(fastReflection_RequestPrivateDecryptionKey)
 }
-func (x fastReflection_RequestEncryptedKeyshare_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_RequestEncryptedKeyshare
+func (x fastReflection_RequestPrivateDecryptionKey_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_RequestPrivateDecryptionKey
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_RequestEncryptedKeyshare) Descriptor() protoreflect.MessageDescriptor {
-	return md_RequestEncryptedKeyshare
+func (x *fastReflection_RequestPrivateDecryptionKey) Descriptor() protoreflect.MessageDescriptor {
+	return md_RequestPrivateDecryptionKey
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_RequestEncryptedKeyshare) Type() protoreflect.MessageType {
-	return _fastReflection_RequestEncryptedKeyshare_messageType
+func (x *fastReflection_RequestPrivateDecryptionKey) Type() protoreflect.MessageType {
+	return _fastReflection_RequestPrivateDecryptionKey_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_RequestEncryptedKeyshare) New() protoreflect.Message {
-	return new(fastReflection_RequestEncryptedKeyshare)
+func (x *fastReflection_RequestPrivateDecryptionKey) New() protoreflect.Message {
+	return new(fastReflection_RequestPrivateDecryptionKey)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_RequestEncryptedKeyshare) Interface() protoreflect.ProtoMessage {
-	return (*RequestEncryptedKeyshare)(x)
+func (x *fastReflection_RequestPrivateDecryptionKey) Interface() protoreflect.ProtoMessage {
+	return (*RequestPrivateDecryptionKey)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -4290,16 +4290,16 @@ func (x *fastReflection_RequestEncryptedKeyshare) Interface() protoreflect.Proto
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_RequestEncryptedKeyshare) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_RequestPrivateDecryptionKey) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_RequestEncryptedKeyshare_creator, value) {
+		if !f(fd_RequestPrivateDecryptionKey_creator, value) {
 			return
 		}
 	}
 	if x.RequestId != "" {
 		value := protoreflect.ValueOfString(x.RequestId)
-		if !f(fd_RequestEncryptedKeyshare_request_id, value) {
+		if !f(fd_RequestPrivateDecryptionKey_request_id, value) {
 			return
 		}
 	}
@@ -4316,17 +4316,17 @@ func (x *fastReflection_RequestEncryptedKeyshare) Range(f func(protoreflect.Fiel
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_RequestEncryptedKeyshare) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_RequestPrivateDecryptionKey) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.common.RequestEncryptedKeyshare.creator":
+	case "fairyring.common.RequestPrivateDecryptionKey.creator":
 		return x.Creator != ""
-	case "fairyring.common.RequestEncryptedKeyshare.request_id":
+	case "fairyring.common.RequestPrivateDecryptionKey.request_id":
 		return x.RequestId != ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestEncryptedKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestPrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestEncryptedKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestPrivateDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4336,17 +4336,17 @@ func (x *fastReflection_RequestEncryptedKeyshare) Has(fd protoreflect.FieldDescr
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_RequestEncryptedKeyshare) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_RequestPrivateDecryptionKey) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.common.RequestEncryptedKeyshare.creator":
+	case "fairyring.common.RequestPrivateDecryptionKey.creator":
 		x.Creator = ""
-	case "fairyring.common.RequestEncryptedKeyshare.request_id":
+	case "fairyring.common.RequestPrivateDecryptionKey.request_id":
 		x.RequestId = ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestEncryptedKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestPrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestEncryptedKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestPrivateDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4356,19 +4356,19 @@ func (x *fastReflection_RequestEncryptedKeyshare) Clear(fd protoreflect.FieldDes
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_RequestEncryptedKeyshare) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_RequestPrivateDecryptionKey) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.common.RequestEncryptedKeyshare.creator":
+	case "fairyring.common.RequestPrivateDecryptionKey.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "fairyring.common.RequestEncryptedKeyshare.request_id":
+	case "fairyring.common.RequestPrivateDecryptionKey.request_id":
 		value := x.RequestId
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestEncryptedKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestPrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestEncryptedKeyshare does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestPrivateDecryptionKey does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -4382,17 +4382,17 @@ func (x *fastReflection_RequestEncryptedKeyshare) Get(descriptor protoreflect.Fi
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_RequestEncryptedKeyshare) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_RequestPrivateDecryptionKey) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.common.RequestEncryptedKeyshare.creator":
+	case "fairyring.common.RequestPrivateDecryptionKey.creator":
 		x.Creator = value.Interface().(string)
-	case "fairyring.common.RequestEncryptedKeyshare.request_id":
+	case "fairyring.common.RequestPrivateDecryptionKey.request_id":
 		x.RequestId = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestEncryptedKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestPrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestEncryptedKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestPrivateDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4406,44 +4406,44 @@ func (x *fastReflection_RequestEncryptedKeyshare) Set(fd protoreflect.FieldDescr
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_RequestEncryptedKeyshare) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_RequestPrivateDecryptionKey) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.common.RequestEncryptedKeyshare.creator":
-		panic(fmt.Errorf("field creator of message fairyring.common.RequestEncryptedKeyshare is not mutable"))
-	case "fairyring.common.RequestEncryptedKeyshare.request_id":
-		panic(fmt.Errorf("field request_id of message fairyring.common.RequestEncryptedKeyshare is not mutable"))
+	case "fairyring.common.RequestPrivateDecryptionKey.creator":
+		panic(fmt.Errorf("field creator of message fairyring.common.RequestPrivateDecryptionKey is not mutable"))
+	case "fairyring.common.RequestPrivateDecryptionKey.request_id":
+		panic(fmt.Errorf("field request_id of message fairyring.common.RequestPrivateDecryptionKey is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestEncryptedKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestPrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestEncryptedKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestPrivateDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_RequestEncryptedKeyshare) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_RequestPrivateDecryptionKey) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.common.RequestEncryptedKeyshare.creator":
+	case "fairyring.common.RequestPrivateDecryptionKey.creator":
 		return protoreflect.ValueOfString("")
-	case "fairyring.common.RequestEncryptedKeyshare.request_id":
+	case "fairyring.common.RequestPrivateDecryptionKey.request_id":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestEncryptedKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.RequestPrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.RequestEncryptedKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.RequestPrivateDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_RequestEncryptedKeyshare) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_RequestPrivateDecryptionKey) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.RequestEncryptedKeyshare", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.RequestPrivateDecryptionKey", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -4451,7 +4451,7 @@ func (x *fastReflection_RequestEncryptedKeyshare) WhichOneof(d protoreflect.Oneo
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_RequestEncryptedKeyshare) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_RequestPrivateDecryptionKey) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -4462,7 +4462,7 @@ func (x *fastReflection_RequestEncryptedKeyshare) GetUnknown() protoreflect.RawF
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_RequestEncryptedKeyshare) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_RequestPrivateDecryptionKey) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -4474,7 +4474,7 @@ func (x *fastReflection_RequestEncryptedKeyshare) SetUnknown(fields protoreflect
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_RequestEncryptedKeyshare) IsValid() bool {
+func (x *fastReflection_RequestPrivateDecryptionKey) IsValid() bool {
 	return x != nil
 }
 
@@ -4484,9 +4484,9 @@ func (x *fastReflection_RequestEncryptedKeyshare) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_RequestEncryptedKeyshare) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_RequestPrivateDecryptionKey) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*RequestEncryptedKeyshare)
+		x := input.Message.Interface().(*RequestPrivateDecryptionKey)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4516,7 +4516,7 @@ func (x *fastReflection_RequestEncryptedKeyshare) ProtoMethods() *protoiface.Met
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*RequestEncryptedKeyshare)
+		x := input.Message.Interface().(*RequestPrivateDecryptionKey)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4560,7 +4560,7 @@ func (x *fastReflection_RequestEncryptedKeyshare) ProtoMethods() *protoiface.Met
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*RequestEncryptedKeyshare)
+		x := input.Message.Interface().(*RequestPrivateDecryptionKey)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4592,10 +4592,10 @@ func (x *fastReflection_RequestEncryptedKeyshare) ProtoMethods() *protoiface.Met
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: RequestEncryptedKeyshare: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: RequestPrivateDecryptionKey: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: RequestEncryptedKeyshare: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: RequestPrivateDecryptionKey: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -4697,79 +4697,79 @@ func (x *fastReflection_RequestEncryptedKeyshare) ProtoMethods() *protoiface.Met
 	}
 }
 
-var _ protoreflect.List = (*_EncryptedKeyshare_2_list)(nil)
+var _ protoreflect.List = (*_PrivateDecryptionKey_2_list)(nil)
 
-type _EncryptedKeyshare_2_list struct {
+type _PrivateDecryptionKey_2_list struct {
 	list *[]*IndexedEncryptedKeyshare
 }
 
-func (x *_EncryptedKeyshare_2_list) Len() int {
+func (x *_PrivateDecryptionKey_2_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_EncryptedKeyshare_2_list) Get(i int) protoreflect.Value {
+func (x *_PrivateDecryptionKey_2_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
 }
 
-func (x *_EncryptedKeyshare_2_list) Set(i int, value protoreflect.Value) {
+func (x *_PrivateDecryptionKey_2_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
 	concreteValue := valueUnwrapped.Interface().(*IndexedEncryptedKeyshare)
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_EncryptedKeyshare_2_list) Append(value protoreflect.Value) {
+func (x *_PrivateDecryptionKey_2_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.Message()
 	concreteValue := valueUnwrapped.Interface().(*IndexedEncryptedKeyshare)
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_EncryptedKeyshare_2_list) AppendMutable() protoreflect.Value {
+func (x *_PrivateDecryptionKey_2_list) AppendMutable() protoreflect.Value {
 	v := new(IndexedEncryptedKeyshare)
 	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_EncryptedKeyshare_2_list) Truncate(n int) {
+func (x *_PrivateDecryptionKey_2_list) Truncate(n int) {
 	for i := n; i < len(*x.list); i++ {
 		(*x.list)[i] = nil
 	}
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_EncryptedKeyshare_2_list) NewElement() protoreflect.Value {
+func (x *_PrivateDecryptionKey_2_list) NewElement() protoreflect.Value {
 	v := new(IndexedEncryptedKeyshare)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_EncryptedKeyshare_2_list) IsValid() bool {
+func (x *_PrivateDecryptionKey_2_list) IsValid() bool {
 	return x.list != nil
 }
 
 var (
-	md_EncryptedKeyshare                   protoreflect.MessageDescriptor
-	fd_EncryptedKeyshare_requester         protoreflect.FieldDescriptor
-	fd_EncryptedKeyshare_private_keyshares protoreflect.FieldDescriptor
+	md_PrivateDecryptionKey                   protoreflect.MessageDescriptor
+	fd_PrivateDecryptionKey_requester         protoreflect.FieldDescriptor
+	fd_PrivateDecryptionKey_private_keyshares protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_common_shared_types_proto_init()
-	md_EncryptedKeyshare = File_fairyring_common_shared_types_proto.Messages().ByName("EncryptedKeyshare")
-	fd_EncryptedKeyshare_requester = md_EncryptedKeyshare.Fields().ByName("requester")
-	fd_EncryptedKeyshare_private_keyshares = md_EncryptedKeyshare.Fields().ByName("private_keyshares")
+	md_PrivateDecryptionKey = File_fairyring_common_shared_types_proto.Messages().ByName("PrivateDecryptionKey")
+	fd_PrivateDecryptionKey_requester = md_PrivateDecryptionKey.Fields().ByName("requester")
+	fd_PrivateDecryptionKey_private_keyshares = md_PrivateDecryptionKey.Fields().ByName("private_keyshares")
 }
 
-var _ protoreflect.Message = (*fastReflection_EncryptedKeyshare)(nil)
+var _ protoreflect.Message = (*fastReflection_PrivateDecryptionKey)(nil)
 
-type fastReflection_EncryptedKeyshare EncryptedKeyshare
+type fastReflection_PrivateDecryptionKey PrivateDecryptionKey
 
-func (x *EncryptedKeyshare) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_EncryptedKeyshare)(x)
+func (x *PrivateDecryptionKey) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_PrivateDecryptionKey)(x)
 }
 
-func (x *EncryptedKeyshare) slowProtoReflect() protoreflect.Message {
+func (x *PrivateDecryptionKey) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_common_shared_types_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4781,43 +4781,43 @@ func (x *EncryptedKeyshare) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_EncryptedKeyshare_messageType fastReflection_EncryptedKeyshare_messageType
-var _ protoreflect.MessageType = fastReflection_EncryptedKeyshare_messageType{}
+var _fastReflection_PrivateDecryptionKey_messageType fastReflection_PrivateDecryptionKey_messageType
+var _ protoreflect.MessageType = fastReflection_PrivateDecryptionKey_messageType{}
 
-type fastReflection_EncryptedKeyshare_messageType struct{}
+type fastReflection_PrivateDecryptionKey_messageType struct{}
 
-func (x fastReflection_EncryptedKeyshare_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_EncryptedKeyshare)(nil)
+func (x fastReflection_PrivateDecryptionKey_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_PrivateDecryptionKey)(nil)
 }
-func (x fastReflection_EncryptedKeyshare_messageType) New() protoreflect.Message {
-	return new(fastReflection_EncryptedKeyshare)
+func (x fastReflection_PrivateDecryptionKey_messageType) New() protoreflect.Message {
+	return new(fastReflection_PrivateDecryptionKey)
 }
-func (x fastReflection_EncryptedKeyshare_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_EncryptedKeyshare
+func (x fastReflection_PrivateDecryptionKey_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_PrivateDecryptionKey
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_EncryptedKeyshare) Descriptor() protoreflect.MessageDescriptor {
-	return md_EncryptedKeyshare
+func (x *fastReflection_PrivateDecryptionKey) Descriptor() protoreflect.MessageDescriptor {
+	return md_PrivateDecryptionKey
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_EncryptedKeyshare) Type() protoreflect.MessageType {
-	return _fastReflection_EncryptedKeyshare_messageType
+func (x *fastReflection_PrivateDecryptionKey) Type() protoreflect.MessageType {
+	return _fastReflection_PrivateDecryptionKey_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_EncryptedKeyshare) New() protoreflect.Message {
-	return new(fastReflection_EncryptedKeyshare)
+func (x *fastReflection_PrivateDecryptionKey) New() protoreflect.Message {
+	return new(fastReflection_PrivateDecryptionKey)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_EncryptedKeyshare) Interface() protoreflect.ProtoMessage {
-	return (*EncryptedKeyshare)(x)
+func (x *fastReflection_PrivateDecryptionKey) Interface() protoreflect.ProtoMessage {
+	return (*PrivateDecryptionKey)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -4825,16 +4825,16 @@ func (x *fastReflection_EncryptedKeyshare) Interface() protoreflect.ProtoMessage
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_EncryptedKeyshare) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_PrivateDecryptionKey) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Requester != "" {
 		value := protoreflect.ValueOfString(x.Requester)
-		if !f(fd_EncryptedKeyshare_requester, value) {
+		if !f(fd_PrivateDecryptionKey_requester, value) {
 			return
 		}
 	}
 	if len(x.PrivateKeyshares) != 0 {
-		value := protoreflect.ValueOfList(&_EncryptedKeyshare_2_list{list: &x.PrivateKeyshares})
-		if !f(fd_EncryptedKeyshare_private_keyshares, value) {
+		value := protoreflect.ValueOfList(&_PrivateDecryptionKey_2_list{list: &x.PrivateKeyshares})
+		if !f(fd_PrivateDecryptionKey_private_keyshares, value) {
 			return
 		}
 	}
@@ -4851,17 +4851,17 @@ func (x *fastReflection_EncryptedKeyshare) Range(f func(protoreflect.FieldDescri
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_EncryptedKeyshare) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_PrivateDecryptionKey) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.common.EncryptedKeyshare.requester":
+	case "fairyring.common.PrivateDecryptionKey.requester":
 		return x.Requester != ""
-	case "fairyring.common.EncryptedKeyshare.private_keyshares":
+	case "fairyring.common.PrivateDecryptionKey.private_keyshares":
 		return len(x.PrivateKeyshares) != 0
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.EncryptedKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.PrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.EncryptedKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.PrivateDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4871,17 +4871,17 @@ func (x *fastReflection_EncryptedKeyshare) Has(fd protoreflect.FieldDescriptor) 
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EncryptedKeyshare) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_PrivateDecryptionKey) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.common.EncryptedKeyshare.requester":
+	case "fairyring.common.PrivateDecryptionKey.requester":
 		x.Requester = ""
-	case "fairyring.common.EncryptedKeyshare.private_keyshares":
+	case "fairyring.common.PrivateDecryptionKey.private_keyshares":
 		x.PrivateKeyshares = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.EncryptedKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.PrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.EncryptedKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.PrivateDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4891,22 +4891,22 @@ func (x *fastReflection_EncryptedKeyshare) Clear(fd protoreflect.FieldDescriptor
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_EncryptedKeyshare) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_PrivateDecryptionKey) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.common.EncryptedKeyshare.requester":
+	case "fairyring.common.PrivateDecryptionKey.requester":
 		value := x.Requester
 		return protoreflect.ValueOfString(value)
-	case "fairyring.common.EncryptedKeyshare.private_keyshares":
+	case "fairyring.common.PrivateDecryptionKey.private_keyshares":
 		if len(x.PrivateKeyshares) == 0 {
-			return protoreflect.ValueOfList(&_EncryptedKeyshare_2_list{})
+			return protoreflect.ValueOfList(&_PrivateDecryptionKey_2_list{})
 		}
-		listValue := &_EncryptedKeyshare_2_list{list: &x.PrivateKeyshares}
+		listValue := &_PrivateDecryptionKey_2_list{list: &x.PrivateKeyshares}
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.EncryptedKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.PrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.EncryptedKeyshare does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.common.PrivateDecryptionKey does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -4920,19 +4920,19 @@ func (x *fastReflection_EncryptedKeyshare) Get(descriptor protoreflect.FieldDesc
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EncryptedKeyshare) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_PrivateDecryptionKey) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.common.EncryptedKeyshare.requester":
+	case "fairyring.common.PrivateDecryptionKey.requester":
 		x.Requester = value.Interface().(string)
-	case "fairyring.common.EncryptedKeyshare.private_keyshares":
+	case "fairyring.common.PrivateDecryptionKey.private_keyshares":
 		lv := value.List()
-		clv := lv.(*_EncryptedKeyshare_2_list)
+		clv := lv.(*_PrivateDecryptionKey_2_list)
 		x.PrivateKeyshares = *clv.list
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.EncryptedKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.PrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.EncryptedKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.PrivateDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4946,49 +4946,49 @@ func (x *fastReflection_EncryptedKeyshare) Set(fd protoreflect.FieldDescriptor, 
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EncryptedKeyshare) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_PrivateDecryptionKey) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.common.EncryptedKeyshare.private_keyshares":
+	case "fairyring.common.PrivateDecryptionKey.private_keyshares":
 		if x.PrivateKeyshares == nil {
 			x.PrivateKeyshares = []*IndexedEncryptedKeyshare{}
 		}
-		value := &_EncryptedKeyshare_2_list{list: &x.PrivateKeyshares}
+		value := &_PrivateDecryptionKey_2_list{list: &x.PrivateKeyshares}
 		return protoreflect.ValueOfList(value)
-	case "fairyring.common.EncryptedKeyshare.requester":
-		panic(fmt.Errorf("field requester of message fairyring.common.EncryptedKeyshare is not mutable"))
+	case "fairyring.common.PrivateDecryptionKey.requester":
+		panic(fmt.Errorf("field requester of message fairyring.common.PrivateDecryptionKey is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.EncryptedKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.PrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.EncryptedKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.PrivateDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_EncryptedKeyshare) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_PrivateDecryptionKey) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.common.EncryptedKeyshare.requester":
+	case "fairyring.common.PrivateDecryptionKey.requester":
 		return protoreflect.ValueOfString("")
-	case "fairyring.common.EncryptedKeyshare.private_keyshares":
+	case "fairyring.common.PrivateDecryptionKey.private_keyshares":
 		list := []*IndexedEncryptedKeyshare{}
-		return protoreflect.ValueOfList(&_EncryptedKeyshare_2_list{list: &list})
+		return protoreflect.ValueOfList(&_PrivateDecryptionKey_2_list{list: &list})
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.EncryptedKeyshare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.common.PrivateDecryptionKey"))
 		}
-		panic(fmt.Errorf("message fairyring.common.EncryptedKeyshare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.common.PrivateDecryptionKey does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_EncryptedKeyshare) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_PrivateDecryptionKey) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.EncryptedKeyshare", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.common.PrivateDecryptionKey", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -4996,7 +4996,7 @@ func (x *fastReflection_EncryptedKeyshare) WhichOneof(d protoreflect.OneofDescri
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_EncryptedKeyshare) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_PrivateDecryptionKey) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -5007,7 +5007,7 @@ func (x *fastReflection_EncryptedKeyshare) GetUnknown() protoreflect.RawFields {
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_EncryptedKeyshare) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_PrivateDecryptionKey) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -5019,7 +5019,7 @@ func (x *fastReflection_EncryptedKeyshare) SetUnknown(fields protoreflect.RawFie
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_EncryptedKeyshare) IsValid() bool {
+func (x *fastReflection_PrivateDecryptionKey) IsValid() bool {
 	return x != nil
 }
 
@@ -5029,9 +5029,9 @@ func (x *fastReflection_EncryptedKeyshare) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_EncryptedKeyshare) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_PrivateDecryptionKey) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*EncryptedKeyshare)
+		x := input.Message.Interface().(*PrivateDecryptionKey)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5063,7 +5063,7 @@ func (x *fastReflection_EncryptedKeyshare) ProtoMethods() *protoiface.Methods {
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*EncryptedKeyshare)
+		x := input.Message.Interface().(*PrivateDecryptionKey)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5116,7 +5116,7 @@ func (x *fastReflection_EncryptedKeyshare) ProtoMethods() *protoiface.Methods {
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*EncryptedKeyshare)
+		x := input.Message.Interface().(*PrivateDecryptionKey)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5148,10 +5148,10 @@ func (x *fastReflection_EncryptedKeyshare) ProtoMethods() *protoiface.Methods {
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EncryptedKeyshare: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: PrivateDecryptionKey: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: EncryptedKeyshare: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: PrivateDecryptionKey: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -5736,25 +5736,25 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// RequestAggrKeyshare defines a struct for the data payload
-type RequestAggrKeyshare struct {
+// RequestDecryptionKey defines a struct for the data payload
+type RequestDecryptionKey struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	// id can either be a rwquest id or a proposal id
+	// id can either be a request id or a proposal id
 	//
 	// Types that are assignable to Id:
 	//
-	//	*RequestAggrKeyshare_ProposalId
-	//	*RequestAggrKeyshare_RequestId
-	Id             isRequestAggrKeyshare_Id `protobuf_oneof:"id"`
-	EstimatedDelay *durationpb.Duration     `protobuf:"bytes,4,opt,name=estimated_delay,json=estimatedDelay,proto3" json:"estimated_delay,omitempty"`
+	//	*RequestDecryptionKey_ProposalId
+	//	*RequestDecryptionKey_RequestId
+	Id             isRequestDecryptionKey_Id `protobuf_oneof:"id"`
+	EstimatedDelay *durationpb.Duration      `protobuf:"bytes,4,opt,name=estimated_delay,json=estimatedDelay,proto3" json:"estimated_delay,omitempty"`
 }
 
-func (x *RequestAggrKeyshare) Reset() {
-	*x = RequestAggrKeyshare{}
+func (x *RequestDecryptionKey) Reset() {
+	*x = RequestDecryptionKey{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_common_shared_types_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5762,70 +5762,70 @@ func (x *RequestAggrKeyshare) Reset() {
 	}
 }
 
-func (x *RequestAggrKeyshare) String() string {
+func (x *RequestDecryptionKey) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RequestAggrKeyshare) ProtoMessage() {}
+func (*RequestDecryptionKey) ProtoMessage() {}
 
-// Deprecated: Use RequestAggrKeyshare.ProtoReflect.Descriptor instead.
-func (*RequestAggrKeyshare) Descriptor() ([]byte, []int) {
+// Deprecated: Use RequestDecryptionKey.ProtoReflect.Descriptor instead.
+func (*RequestDecryptionKey) Descriptor() ([]byte, []int) {
 	return file_fairyring_common_shared_types_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *RequestAggrKeyshare) GetCreator() string {
+func (x *RequestDecryptionKey) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
 	return ""
 }
 
-func (x *RequestAggrKeyshare) GetId() isRequestAggrKeyshare_Id {
+func (x *RequestDecryptionKey) GetId() isRequestDecryptionKey_Id {
 	if x != nil {
 		return x.Id
 	}
 	return nil
 }
 
-func (x *RequestAggrKeyshare) GetProposalId() string {
-	if x, ok := x.GetId().(*RequestAggrKeyshare_ProposalId); ok {
+func (x *RequestDecryptionKey) GetProposalId() string {
+	if x, ok := x.GetId().(*RequestDecryptionKey_ProposalId); ok {
 		return x.ProposalId
 	}
 	return ""
 }
 
-func (x *RequestAggrKeyshare) GetRequestId() string {
-	if x, ok := x.GetId().(*RequestAggrKeyshare_RequestId); ok {
+func (x *RequestDecryptionKey) GetRequestId() string {
+	if x, ok := x.GetId().(*RequestDecryptionKey_RequestId); ok {
 		return x.RequestId
 	}
 	return ""
 }
 
-func (x *RequestAggrKeyshare) GetEstimatedDelay() *durationpb.Duration {
+func (x *RequestDecryptionKey) GetEstimatedDelay() *durationpb.Duration {
 	if x != nil {
 		return x.EstimatedDelay
 	}
 	return nil
 }
 
-type isRequestAggrKeyshare_Id interface {
-	isRequestAggrKeyshare_Id()
+type isRequestDecryptionKey_Id interface {
+	isRequestDecryptionKey_Id()
 }
 
-type RequestAggrKeyshare_ProposalId struct {
+type RequestDecryptionKey_ProposalId struct {
 	ProposalId string `protobuf:"bytes,2,opt,name=proposal_id,json=proposalId,proto3,oneof"`
 }
 
-type RequestAggrKeyshare_RequestId struct {
+type RequestDecryptionKey_RequestId struct {
 	RequestId string `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3,oneof"`
 }
 
-func (*RequestAggrKeyshare_ProposalId) isRequestAggrKeyshare_Id() {}
+func (*RequestDecryptionKey_ProposalId) isRequestDecryptionKey_Id() {}
 
-func (*RequestAggrKeyshare_RequestId) isRequestAggrKeyshare_Id() {}
+func (*RequestDecryptionKey_RequestId) isRequestDecryptionKey_Id() {}
 
-// RequestAggrKeyshareResponse defines the response to the RequestAggrKeyshare message
-type RequestAggrKeyshareResponse struct {
+// RequestDecryptionKeyResponse defines the response to the RequestDecryptionKey message
+type RequestDecryptionKeyResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -5834,8 +5834,8 @@ type RequestAggrKeyshareResponse struct {
 	Pubkey   string `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
 }
 
-func (x *RequestAggrKeyshareResponse) Reset() {
-	*x = RequestAggrKeyshareResponse{}
+func (x *RequestDecryptionKeyResponse) Reset() {
+	*x = RequestDecryptionKeyResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_common_shared_types_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5843,33 +5843,33 @@ func (x *RequestAggrKeyshareResponse) Reset() {
 	}
 }
 
-func (x *RequestAggrKeyshareResponse) String() string {
+func (x *RequestDecryptionKeyResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RequestAggrKeyshareResponse) ProtoMessage() {}
+func (*RequestDecryptionKeyResponse) ProtoMessage() {}
 
-// Deprecated: Use RequestAggrKeyshareResponse.ProtoReflect.Descriptor instead.
-func (*RequestAggrKeyshareResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use RequestDecryptionKeyResponse.ProtoReflect.Descriptor instead.
+func (*RequestDecryptionKeyResponse) Descriptor() ([]byte, []int) {
 	return file_fairyring_common_shared_types_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *RequestAggrKeyshareResponse) GetIdentity() string {
+func (x *RequestDecryptionKeyResponse) GetIdentity() string {
 	if x != nil {
 		return x.Identity
 	}
 	return ""
 }
 
-func (x *RequestAggrKeyshareResponse) GetPubkey() string {
+func (x *RequestDecryptionKeyResponse) GetPubkey() string {
 	if x != nil {
 		return x.Pubkey
 	}
 	return ""
 }
 
-// GetAggrKeyshare defines a struct for the data payload
-type GetAggrKeyshare struct {
+// GetDecryptionKey defines a struct for the data payload
+type GetDecryptionKey struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -5878,14 +5878,14 @@ type GetAggrKeyshare struct {
 	//
 	// Types that are assignable to Id:
 	//
-	//	*GetAggrKeyshare_ProposalId
-	//	*GetAggrKeyshare_RequestId
-	Id       isGetAggrKeyshare_Id `protobuf_oneof:"id"`
-	Identity string               `protobuf:"bytes,3,opt,name=identity,proto3" json:"identity,omitempty"`
+	//	*GetDecryptionKey_ProposalId
+	//	*GetDecryptionKey_RequestId
+	Id       isGetDecryptionKey_Id `protobuf_oneof:"id"`
+	Identity string                `protobuf:"bytes,3,opt,name=identity,proto3" json:"identity,omitempty"`
 }
 
-func (x *GetAggrKeyshare) Reset() {
-	*x = GetAggrKeyshare{}
+func (x *GetDecryptionKey) Reset() {
+	*x = GetDecryptionKey{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_common_shared_types_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5893,70 +5893,70 @@ func (x *GetAggrKeyshare) Reset() {
 	}
 }
 
-func (x *GetAggrKeyshare) String() string {
+func (x *GetDecryptionKey) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetAggrKeyshare) ProtoMessage() {}
+func (*GetDecryptionKey) ProtoMessage() {}
 
-// Deprecated: Use GetAggrKeyshare.ProtoReflect.Descriptor instead.
-func (*GetAggrKeyshare) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetDecryptionKey.ProtoReflect.Descriptor instead.
+func (*GetDecryptionKey) Descriptor() ([]byte, []int) {
 	return file_fairyring_common_shared_types_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *GetAggrKeyshare) GetId() isGetAggrKeyshare_Id {
+func (x *GetDecryptionKey) GetId() isGetDecryptionKey_Id {
 	if x != nil {
 		return x.Id
 	}
 	return nil
 }
 
-func (x *GetAggrKeyshare) GetProposalId() string {
-	if x, ok := x.GetId().(*GetAggrKeyshare_ProposalId); ok {
+func (x *GetDecryptionKey) GetProposalId() string {
+	if x, ok := x.GetId().(*GetDecryptionKey_ProposalId); ok {
 		return x.ProposalId
 	}
 	return ""
 }
 
-func (x *GetAggrKeyshare) GetRequestId() string {
-	if x, ok := x.GetId().(*GetAggrKeyshare_RequestId); ok {
+func (x *GetDecryptionKey) GetRequestId() string {
+	if x, ok := x.GetId().(*GetDecryptionKey_RequestId); ok {
 		return x.RequestId
 	}
 	return ""
 }
 
-func (x *GetAggrKeyshare) GetIdentity() string {
+func (x *GetDecryptionKey) GetIdentity() string {
 	if x != nil {
 		return x.Identity
 	}
 	return ""
 }
 
-type isGetAggrKeyshare_Id interface {
-	isGetAggrKeyshare_Id()
+type isGetDecryptionKey_Id interface {
+	isGetDecryptionKey_Id()
 }
 
-type GetAggrKeyshare_ProposalId struct {
+type GetDecryptionKey_ProposalId struct {
 	ProposalId string `protobuf:"bytes,1,opt,name=proposal_id,json=proposalId,proto3,oneof"`
 }
 
-type GetAggrKeyshare_RequestId struct {
+type GetDecryptionKey_RequestId struct {
 	RequestId string `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3,oneof"`
 }
 
-func (*GetAggrKeyshare_ProposalId) isGetAggrKeyshare_Id() {}
+func (*GetDecryptionKey_ProposalId) isGetDecryptionKey_Id() {}
 
-func (*GetAggrKeyshare_RequestId) isGetAggrKeyshare_Id() {}
+func (*GetDecryptionKey_RequestId) isGetDecryptionKey_Id() {}
 
-// GetAggrKeyshareResponse defines the response to the GetAggrKeyshare message
-type GetAggrKeyshareResponse struct {
+// GetDecryptionKeyResponse defines the response to the GetDecryptionKey message
+type GetDecryptionKeyResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *GetAggrKeyshareResponse) Reset() {
-	*x = GetAggrKeyshareResponse{}
+func (x *GetDecryptionKeyResponse) Reset() {
+	*x = GetDecryptionKeyResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_common_shared_types_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5964,19 +5964,19 @@ func (x *GetAggrKeyshareResponse) Reset() {
 	}
 }
 
-func (x *GetAggrKeyshareResponse) String() string {
+func (x *GetDecryptionKeyResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetAggrKeyshareResponse) ProtoMessage() {}
+func (*GetDecryptionKeyResponse) ProtoMessage() {}
 
-// Deprecated: Use GetAggrKeyshareResponse.ProtoReflect.Descriptor instead.
-func (*GetAggrKeyshareResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetDecryptionKeyResponse.ProtoReflect.Descriptor instead.
+func (*GetDecryptionKeyResponse) Descriptor() ([]byte, []int) {
 	return file_fairyring_common_shared_types_proto_rawDescGZIP(), []int{3}
 }
 
-// GetPrivateKeyshare defines a struct for the data payload
-type GetPrivateKeyshare struct {
+// GetPrivateDecryptionKey defines a struct for the data payload
+type GetPrivateDecryptionKey struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -5987,8 +5987,8 @@ type GetPrivateKeyshare struct {
 	SecpPubkey string `protobuf:"bytes,4,opt,name=secp_pubkey,json=secpPubkey,proto3" json:"secp_pubkey,omitempty"`
 }
 
-func (x *GetPrivateKeyshare) Reset() {
-	*x = GetPrivateKeyshare{}
+func (x *GetPrivateDecryptionKey) Reset() {
+	*x = GetPrivateDecryptionKey{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_common_shared_types_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5996,47 +5996,47 @@ func (x *GetPrivateKeyshare) Reset() {
 	}
 }
 
-func (x *GetPrivateKeyshare) String() string {
+func (x *GetPrivateDecryptionKey) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetPrivateKeyshare) ProtoMessage() {}
+func (*GetPrivateDecryptionKey) ProtoMessage() {}
 
-// Deprecated: Use GetPrivateKeyshare.ProtoReflect.Descriptor instead.
-func (*GetPrivateKeyshare) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetPrivateDecryptionKey.ProtoReflect.Descriptor instead.
+func (*GetPrivateDecryptionKey) Descriptor() ([]byte, []int) {
 	return file_fairyring_common_shared_types_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GetPrivateKeyshare) GetRequestId() string {
+func (x *GetPrivateDecryptionKey) GetRequestId() string {
 	if x != nil {
 		return x.RequestId
 	}
 	return ""
 }
 
-func (x *GetPrivateKeyshare) GetIdentity() string {
+func (x *GetPrivateDecryptionKey) GetIdentity() string {
 	if x != nil {
 		return x.Identity
 	}
 	return ""
 }
 
-func (x *GetPrivateKeyshare) GetRequester() string {
+func (x *GetPrivateDecryptionKey) GetRequester() string {
 	if x != nil {
 		return x.Requester
 	}
 	return ""
 }
 
-func (x *GetPrivateKeyshare) GetSecpPubkey() string {
+func (x *GetPrivateDecryptionKey) GetSecpPubkey() string {
 	if x != nil {
 		return x.SecpPubkey
 	}
 	return ""
 }
 
-// GetPrivateKeyshareResponse defines the response to the GetPrivateKeyshare message
-type GetPrivateKeyshareResponse struct {
+// GetPrivateDecryptionKeyResponse defines the response to the GetPrivateDecryptionKey message
+type GetPrivateDecryptionKeyResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -6044,8 +6044,8 @@ type GetPrivateKeyshareResponse struct {
 	Pubkey string `protobuf:"bytes,1,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
 }
 
-func (x *GetPrivateKeyshareResponse) Reset() {
-	*x = GetPrivateKeyshareResponse{}
+func (x *GetPrivateDecryptionKeyResponse) Reset() {
+	*x = GetPrivateDecryptionKeyResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_common_shared_types_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -6053,18 +6053,18 @@ func (x *GetPrivateKeyshareResponse) Reset() {
 	}
 }
 
-func (x *GetPrivateKeyshareResponse) String() string {
+func (x *GetPrivateDecryptionKeyResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetPrivateKeyshareResponse) ProtoMessage() {}
+func (*GetPrivateDecryptionKeyResponse) ProtoMessage() {}
 
-// Deprecated: Use GetPrivateKeyshareResponse.ProtoReflect.Descriptor instead.
-func (*GetPrivateKeyshareResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetPrivateDecryptionKeyResponse.ProtoReflect.Descriptor instead.
+func (*GetPrivateDecryptionKeyResponse) Descriptor() ([]byte, []int) {
 	return file_fairyring_common_shared_types_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *GetPrivateKeyshareResponse) GetPubkey() string {
+func (x *GetPrivateDecryptionKeyResponse) GetPubkey() string {
 	if x != nil {
 		return x.Pubkey
 	}
@@ -6176,9 +6176,9 @@ func (x *QueuedPublicKey) GetExpiry() uint64 {
 	return 0
 }
 
-// RequestEncryptedKeyshare defines the structure to request for
+// RequestPrivateDecryptionKey defines the structure to request for
 // encrypted and unaggregated keyshares
-type RequestEncryptedKeyshare struct {
+type RequestPrivateDecryptionKey struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -6187,8 +6187,8 @@ type RequestEncryptedKeyshare struct {
 	RequestId string `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 }
 
-func (x *RequestEncryptedKeyshare) Reset() {
-	*x = RequestEncryptedKeyshare{}
+func (x *RequestPrivateDecryptionKey) Reset() {
+	*x = RequestPrivateDecryptionKey{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_common_shared_types_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -6196,34 +6196,34 @@ func (x *RequestEncryptedKeyshare) Reset() {
 	}
 }
 
-func (x *RequestEncryptedKeyshare) String() string {
+func (x *RequestPrivateDecryptionKey) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RequestEncryptedKeyshare) ProtoMessage() {}
+func (*RequestPrivateDecryptionKey) ProtoMessage() {}
 
-// Deprecated: Use RequestEncryptedKeyshare.ProtoReflect.Descriptor instead.
-func (*RequestEncryptedKeyshare) Descriptor() ([]byte, []int) {
+// Deprecated: Use RequestPrivateDecryptionKey.ProtoReflect.Descriptor instead.
+func (*RequestPrivateDecryptionKey) Descriptor() ([]byte, []int) {
 	return file_fairyring_common_shared_types_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *RequestEncryptedKeyshare) GetCreator() string {
+func (x *RequestPrivateDecryptionKey) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
 	return ""
 }
 
-func (x *RequestEncryptedKeyshare) GetRequestId() string {
+func (x *RequestPrivateDecryptionKey) GetRequestId() string {
 	if x != nil {
 		return x.RequestId
 	}
 	return ""
 }
 
-// EncryptedKeyshare defines the storage structure for
+// PrivateDecryptionKey defines the storage structure for
 // the list of encrypted keyshares (unaggregated)
-type EncryptedKeyshare struct {
+type PrivateDecryptionKey struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -6232,8 +6232,8 @@ type EncryptedKeyshare struct {
 	PrivateKeyshares []*IndexedEncryptedKeyshare `protobuf:"bytes,2,rep,name=private_keyshares,json=privateKeyshares,proto3" json:"private_keyshares,omitempty"`
 }
 
-func (x *EncryptedKeyshare) Reset() {
-	*x = EncryptedKeyshare{}
+func (x *PrivateDecryptionKey) Reset() {
+	*x = PrivateDecryptionKey{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_common_shared_types_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -6241,25 +6241,25 @@ func (x *EncryptedKeyshare) Reset() {
 	}
 }
 
-func (x *EncryptedKeyshare) String() string {
+func (x *PrivateDecryptionKey) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EncryptedKeyshare) ProtoMessage() {}
+func (*PrivateDecryptionKey) ProtoMessage() {}
 
-// Deprecated: Use EncryptedKeyshare.ProtoReflect.Descriptor instead.
-func (*EncryptedKeyshare) Descriptor() ([]byte, []int) {
+// Deprecated: Use PrivateDecryptionKey.ProtoReflect.Descriptor instead.
+func (*PrivateDecryptionKey) Descriptor() ([]byte, []int) {
 	return file_fairyring_common_shared_types_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *EncryptedKeyshare) GetRequester() string {
+func (x *PrivateDecryptionKey) GetRequester() string {
 	if x != nil {
 		return x.Requester
 	}
 	return ""
 }
 
-func (x *EncryptedKeyshare) GetPrivateKeyshares() []*IndexedEncryptedKeyshare {
+func (x *PrivateDecryptionKey) GetPrivateKeyshares() []*IndexedEncryptedKeyshare {
 	if x != nil {
 		return x.PrivateKeyshares
 	}
@@ -6320,94 +6320,95 @@ var file_fairyring_common_shared_types_proto_rawDesc = []byte{
 	0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x1a, 0x1e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f,
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x64, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f,
 	0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xc3, 0x01,
-	0x0a, 0x13, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x41, 0x67, 0x67, 0x72, 0x4b, 0x65, 0x79,
-	0x73, 0x68, 0x61, 0x72, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12,
-	0x21, 0x0a, 0x0b, 0x70, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x5f, 0x69, 0x64, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x0a, 0x70, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c,
-	0x49, 0x64, 0x12, 0x1f, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64,
-	0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x49, 0x64, 0x12, 0x48, 0x0a, 0x0f, 0x65, 0x73, 0x74, 0x69, 0x6d, 0x61, 0x74, 0x65, 0x64,
-	0x5f, 0x64, 0x65, 0x6c, 0x61, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x67,
-	0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x44,
-	0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x04, 0x98, 0xdf, 0x1f, 0x01, 0x52, 0x0e, 0x65,
-	0x73, 0x74, 0x69, 0x6d, 0x61, 0x74, 0x65, 0x64, 0x44, 0x65, 0x6c, 0x61, 0x79, 0x42, 0x04, 0x0a,
-	0x02, 0x69, 0x64, 0x22, 0x51, 0x0a, 0x1b, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x41, 0x67,
-	0x67, 0x72, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x16,
-	0x0a, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06,
-	0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x22, 0x77, 0x0a, 0x0f, 0x47, 0x65, 0x74, 0x41, 0x67, 0x67,
-	0x72, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x12, 0x21, 0x0a, 0x0b, 0x70, 0x72, 0x6f,
-	0x70, 0x6f, 0x73, 0x61, 0x6c, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00,
-	0x52, 0x0a, 0x70, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x49, 0x64, 0x12, 0x1f, 0x0a, 0x0a,
-	0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
-	0x48, 0x00, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x1a, 0x0a,
-	0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x42, 0x04, 0x0a, 0x02, 0x69, 0x64, 0x22,
-	0x19, 0x0a, 0x17, 0x47, 0x65, 0x74, 0x41, 0x67, 0x67, 0x72, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61,
-	0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x8e, 0x01, 0x0a, 0x12, 0x47,
-	0x65, 0x74, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
-	0x65, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64,
-	0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x1c, 0x0a, 0x09,
-	0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x65, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x65, 0x72, 0x12, 0x1f, 0x0a, 0x0b, 0x73, 0x65,
-	0x63, 0x70, 0x5f, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x0a, 0x73, 0x65, 0x63, 0x70, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x22, 0x34, 0x0a, 0x1a, 0x47,
-	0x65, 0x74, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
-	0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x75, 0x62,
-	0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65,
-	0x79, 0x22, 0x62, 0x0a, 0x0f, 0x41, 0x63, 0x74, 0x69, 0x76, 0x65, 0x50, 0x75, 0x62, 0x6c, 0x69,
-	0x63, 0x4b, 0x65, 0x79, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x5f, 0x6b,
-	0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63,
-	0x4b, 0x65, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16, 0x0a,
-	0x06, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x06, 0x65,
-	0x78, 0x70, 0x69, 0x72, 0x79, 0x22, 0x62, 0x0a, 0x0f, 0x51, 0x75, 0x65, 0x75, 0x65, 0x64, 0x50,
-	0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x75, 0x62, 0x6c,
-	0x69, 0x63, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x70, 0x75,
-	0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74,
-	0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
-	0x72, 0x12, 0x16, 0x0a, 0x06, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28,
-	0x04, 0x52, 0x06, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x22, 0x53, 0x0a, 0x18, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79,
-	0x73, 0x68, 0x61, 0x72, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12,
-	0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x22, 0x8a,
-	0x01, 0x0a, 0x11, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73,
-	0x68, 0x61, 0x72, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x65,
-	0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x65, 0x72, 0x12, 0x57, 0x0a, 0x11, 0x70, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x5f, 0x6b, 0x65,
-	0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2a, 0x2e,
-	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e,
-	0x2e, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x65, 0x64, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65,
-	0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x52, 0x10, 0x70, 0x72, 0x69, 0x76, 0x61,
-	0x74, 0x65, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x22, 0x8e, 0x01, 0x0a, 0x18,
-	0x49, 0x6e, 0x64, 0x65, 0x78, 0x65, 0x64, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64,
-	0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x12, 0x38, 0x0a, 0x18, 0x65, 0x6e, 0x63, 0x72,
-	0x79, 0x70, 0x74, 0x65, 0x64, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x5f, 0x76,
-	0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x16, 0x65, 0x6e, 0x63, 0x72,
-	0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x56, 0x61, 0x6c,
-	0x75, 0x65, 0x12, 0x38, 0x0a, 0x18, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x5f,
-	0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x5f, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x04, 0x52, 0x16, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b,
-	0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x42, 0xac, 0x01, 0x0a,
-	0x14, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63,
-	0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x42, 0x10, 0x53, 0x68, 0x61, 0x72, 0x65, 0x64, 0x54, 0x79, 0x70,
-	0x65, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x21, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
-	0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72,
-	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0xa2, 0x02, 0x03, 0x46,
-	0x43, 0x58, 0xaa, 0x02, 0x10, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x43,
-	0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0xca, 0x02, 0x10, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
-	0x67, 0x5c, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0xe2, 0x02, 0x1c, 0x46, 0x61, 0x69, 0x72, 0x79,
-	0x72, 0x69, 0x6e, 0x67, 0x5c, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x5c, 0x47, 0x50, 0x42, 0x4d,
-	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x11, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72,
-	0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xc4, 0x01,
+	0x0a, 0x14, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74,
+	0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
+	0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
+	0x12, 0x21, 0x0a, 0x0b, 0x70, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x5f, 0x69, 0x64, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x0a, 0x70, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61,
+	0x6c, 0x49, 0x64, 0x12, 0x1f, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69,
+	0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x49, 0x64, 0x12, 0x48, 0x0a, 0x0f, 0x65, 0x73, 0x74, 0x69, 0x6d, 0x61, 0x74, 0x65,
+	0x64, 0x5f, 0x64, 0x65, 0x6c, 0x61, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e,
+	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e,
+	0x44, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x04, 0x98, 0xdf, 0x1f, 0x01, 0x52, 0x0e,
+	0x65, 0x73, 0x74, 0x69, 0x6d, 0x61, 0x74, 0x65, 0x64, 0x44, 0x65, 0x6c, 0x61, 0x79, 0x42, 0x04,
+	0x0a, 0x02, 0x69, 0x64, 0x22, 0x52, 0x0a, 0x1c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x44,
+	0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79,
+	0x12, 0x16, 0x0a, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x22, 0x78, 0x0a, 0x10, 0x47, 0x65, 0x74, 0x44,
+	0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x12, 0x21, 0x0a, 0x0b,
+	0x70, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x48, 0x00, 0x52, 0x0a, 0x70, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x49, 0x64, 0x12,
+	0x1f, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64,
+	0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x42, 0x04, 0x0a, 0x02,
+	0x69, 0x64, 0x22, 0x1a, 0x0a, 0x18, 0x47, 0x65, 0x74, 0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74,
+	0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x93,
+	0x01, 0x0a, 0x17, 0x47, 0x65, 0x74, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x44, 0x65, 0x63,
+	0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
+	0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65,
+	0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65,
+	0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x1c, 0x0a, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x65, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x65, 0x72, 0x12, 0x1f, 0x0a, 0x0b, 0x73, 0x65, 0x63, 0x70, 0x5f, 0x70, 0x75, 0x62, 0x6b,
+	0x65, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x73, 0x65, 0x63, 0x70, 0x50, 0x75,
+	0x62, 0x6b, 0x65, 0x79, 0x22, 0x39, 0x0a, 0x1f, 0x47, 0x65, 0x74, 0x50, 0x72, 0x69, 0x76, 0x61,
+	0x74, 0x65, 0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65,
+	0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x22,
+	0x62, 0x0a, 0x0f, 0x41, 0x63, 0x74, 0x69, 0x76, 0x65, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b,
+	0x65, 0x79, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x5f, 0x6b, 0x65, 0x79,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65,
+	0x79, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x65,
+	0x78, 0x70, 0x69, 0x72, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52, 0x06, 0x65, 0x78, 0x70,
+	0x69, 0x72, 0x79, 0x22, 0x62, 0x0a, 0x0f, 0x51, 0x75, 0x65, 0x75, 0x65, 0x64, 0x50, 0x75, 0x62,
+	0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63,
+	0x5f, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x70, 0x75, 0x62, 0x6c,
+	0x69, 0x63, 0x4b, 0x65, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12,
+	0x16, 0x0a, 0x06, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04, 0x52,
+	0x06, 0x65, 0x78, 0x70, 0x69, 0x72, 0x79, 0x22, 0x56, 0x0a, 0x1b, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74,
+	0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
+	0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
+	0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x22,
+	0x8d, 0x01, 0x0a, 0x14, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x44, 0x65, 0x63, 0x72, 0x79,
+	0x70, 0x74, 0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x12, 0x1c, 0x0a, 0x09, 0x72, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x65, 0x72, 0x12, 0x57, 0x0a, 0x11, 0x70, 0x72, 0x69, 0x76, 0x61, 0x74,
+	0x65, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28,
+	0x0b, 0x32, 0x2a, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f,
+	0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x65, 0x64, 0x45, 0x6e, 0x63, 0x72,
+	0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x52, 0x10, 0x70,
+	0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x22,
+	0x8e, 0x01, 0x0a, 0x18, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x65, 0x64, 0x45, 0x6e, 0x63, 0x72, 0x79,
+	0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x12, 0x38, 0x0a, 0x18,
+	0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61,
+	0x72, 0x65, 0x5f, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x16,
+	0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72,
+	0x65, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x38, 0x0a, 0x18, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70,
+	0x74, 0x65, 0x64, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x5f, 0x69, 0x6e, 0x64,
+	0x65, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x16, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70,
+	0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x49, 0x6e, 0x64, 0x65, 0x78,
+	0x42, 0xac, 0x01, 0x0a, 0x14, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x42, 0x10, 0x53, 0x68, 0x61, 0x72, 0x65,
+	0x64, 0x54, 0x79, 0x70, 0x65, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x21, 0x63,
+	0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f,
+	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e,
+	0xa2, 0x02, 0x03, 0x46, 0x43, 0x58, 0xaa, 0x02, 0x10, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x2e, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0xca, 0x02, 0x10, 0x46, 0x61, 0x69, 0x72,
+	0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0xe2, 0x02, 0x1c, 0x46,
+	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x5c,
+	0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x11, 0x46, 0x61,
+	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -6424,22 +6425,22 @@ func file_fairyring_common_shared_types_proto_rawDescGZIP() []byte {
 
 var file_fairyring_common_shared_types_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_fairyring_common_shared_types_proto_goTypes = []interface{}{
-	(*RequestAggrKeyshare)(nil),         // 0: fairyring.common.RequestAggrKeyshare
-	(*RequestAggrKeyshareResponse)(nil), // 1: fairyring.common.RequestAggrKeyshareResponse
-	(*GetAggrKeyshare)(nil),             // 2: fairyring.common.GetAggrKeyshare
-	(*GetAggrKeyshareResponse)(nil),     // 3: fairyring.common.GetAggrKeyshareResponse
-	(*GetPrivateKeyshare)(nil),          // 4: fairyring.common.GetPrivateKeyshare
-	(*GetPrivateKeyshareResponse)(nil),  // 5: fairyring.common.GetPrivateKeyshareResponse
-	(*ActivePublicKey)(nil),             // 6: fairyring.common.ActivePublicKey
-	(*QueuedPublicKey)(nil),             // 7: fairyring.common.QueuedPublicKey
-	(*RequestEncryptedKeyshare)(nil),    // 8: fairyring.common.RequestEncryptedKeyshare
-	(*EncryptedKeyshare)(nil),           // 9: fairyring.common.EncryptedKeyshare
-	(*IndexedEncryptedKeyshare)(nil),    // 10: fairyring.common.IndexedEncryptedKeyshare
-	(*durationpb.Duration)(nil),         // 11: google.protobuf.Duration
+	(*RequestDecryptionKey)(nil),            // 0: fairyring.common.RequestDecryptionKey
+	(*RequestDecryptionKeyResponse)(nil),    // 1: fairyring.common.RequestDecryptionKeyResponse
+	(*GetDecryptionKey)(nil),                // 2: fairyring.common.GetDecryptionKey
+	(*GetDecryptionKeyResponse)(nil),        // 3: fairyring.common.GetDecryptionKeyResponse
+	(*GetPrivateDecryptionKey)(nil),         // 4: fairyring.common.GetPrivateDecryptionKey
+	(*GetPrivateDecryptionKeyResponse)(nil), // 5: fairyring.common.GetPrivateDecryptionKeyResponse
+	(*ActivePublicKey)(nil),                 // 6: fairyring.common.ActivePublicKey
+	(*QueuedPublicKey)(nil),                 // 7: fairyring.common.QueuedPublicKey
+	(*RequestPrivateDecryptionKey)(nil),     // 8: fairyring.common.RequestPrivateDecryptionKey
+	(*PrivateDecryptionKey)(nil),            // 9: fairyring.common.PrivateDecryptionKey
+	(*IndexedEncryptedKeyshare)(nil),        // 10: fairyring.common.IndexedEncryptedKeyshare
+	(*durationpb.Duration)(nil),             // 11: google.protobuf.Duration
 }
 var file_fairyring_common_shared_types_proto_depIdxs = []int32{
-	11, // 0: fairyring.common.RequestAggrKeyshare.estimated_delay:type_name -> google.protobuf.Duration
-	10, // 1: fairyring.common.EncryptedKeyshare.private_keyshares:type_name -> fairyring.common.IndexedEncryptedKeyshare
+	11, // 0: fairyring.common.RequestDecryptionKey.estimated_delay:type_name -> google.protobuf.Duration
+	10, // 1: fairyring.common.PrivateDecryptionKey.private_keyshares:type_name -> fairyring.common.IndexedEncryptedKeyshare
 	2,  // [2:2] is the sub-list for method output_type
 	2,  // [2:2] is the sub-list for method input_type
 	2,  // [2:2] is the sub-list for extension type_name
@@ -6454,7 +6455,7 @@ func file_fairyring_common_shared_types_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_fairyring_common_shared_types_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RequestAggrKeyshare); i {
+			switch v := v.(*RequestDecryptionKey); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6466,7 +6467,7 @@ func file_fairyring_common_shared_types_proto_init() {
 			}
 		}
 		file_fairyring_common_shared_types_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RequestAggrKeyshareResponse); i {
+			switch v := v.(*RequestDecryptionKeyResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6478,7 +6479,7 @@ func file_fairyring_common_shared_types_proto_init() {
 			}
 		}
 		file_fairyring_common_shared_types_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetAggrKeyshare); i {
+			switch v := v.(*GetDecryptionKey); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6490,7 +6491,7 @@ func file_fairyring_common_shared_types_proto_init() {
 			}
 		}
 		file_fairyring_common_shared_types_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetAggrKeyshareResponse); i {
+			switch v := v.(*GetDecryptionKeyResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6502,7 +6503,7 @@ func file_fairyring_common_shared_types_proto_init() {
 			}
 		}
 		file_fairyring_common_shared_types_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetPrivateKeyshare); i {
+			switch v := v.(*GetPrivateDecryptionKey); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6514,7 +6515,7 @@ func file_fairyring_common_shared_types_proto_init() {
 			}
 		}
 		file_fairyring_common_shared_types_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetPrivateKeyshareResponse); i {
+			switch v := v.(*GetPrivateDecryptionKeyResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6550,7 +6551,7 @@ func file_fairyring_common_shared_types_proto_init() {
 			}
 		}
 		file_fairyring_common_shared_types_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RequestEncryptedKeyshare); i {
+			switch v := v.(*RequestPrivateDecryptionKey); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6562,7 +6563,7 @@ func file_fairyring_common_shared_types_proto_init() {
 			}
 		}
 		file_fairyring_common_shared_types_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*EncryptedKeyshare); i {
+			switch v := v.(*PrivateDecryptionKey); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6587,12 +6588,12 @@ func file_fairyring_common_shared_types_proto_init() {
 		}
 	}
 	file_fairyring_common_shared_types_proto_msgTypes[0].OneofWrappers = []interface{}{
-		(*RequestAggrKeyshare_ProposalId)(nil),
-		(*RequestAggrKeyshare_RequestId)(nil),
+		(*RequestDecryptionKey_ProposalId)(nil),
+		(*RequestDecryptionKey_RequestId)(nil),
 	}
 	file_fairyring_common_shared_types_proto_msgTypes[2].OneofWrappers = []interface{}{
-		(*GetAggrKeyshare_ProposalId)(nil),
-		(*GetAggrKeyshare_RequestId)(nil),
+		(*GetDecryptionKey_ProposalId)(nil),
+		(*GetDecryptionKey_RequestId)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

@@ -19,16 +19,16 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Msg_UpdateParams_FullMethodName             = "/fairyring.pep.Msg/UpdateParams"
-	Msg_SubmitEncryptedTx_FullMethodName        = "/fairyring.pep.Msg/SubmitEncryptedTx"
-	Msg_SubmitGeneralEncryptedTx_FullMethodName = "/fairyring.pep.Msg/SubmitGeneralEncryptedTx"
-	Msg_CreateAggregatedKeyShare_FullMethodName = "/fairyring.pep.Msg/CreateAggregatedKeyShare"
-	Msg_RequestGeneralKeyshare_FullMethodName   = "/fairyring.pep.Msg/RequestGeneralKeyshare"
-	Msg_GetGeneralKeyshare_FullMethodName       = "/fairyring.pep.Msg/GetGeneralKeyshare"
-	Msg_RequestPrivateIdentity_FullMethodName   = "/fairyring.pep.Msg/RequestPrivateIdentity"
-	Msg_GetPrivateKeyshares_FullMethodName      = "/fairyring.pep.Msg/GetPrivateKeyshares"
-	Msg_RegisterContract_FullMethodName         = "/fairyring.pep.Msg/RegisterContract"
-	Msg_UnregisterContract_FullMethodName       = "/fairyring.pep.Msg/UnregisterContract"
+	Msg_UpdateParams_FullMethodName                = "/fairyring.pep.Msg/UpdateParams"
+	Msg_SubmitEncryptedTx_FullMethodName           = "/fairyring.pep.Msg/SubmitEncryptedTx"
+	Msg_SubmitGeneralEncryptedTx_FullMethodName    = "/fairyring.pep.Msg/SubmitGeneralEncryptedTx"
+	Msg_CreateAggregatedKeyShare_FullMethodName    = "/fairyring.pep.Msg/CreateAggregatedKeyShare"
+	Msg_RequestGeneralIdentity_FullMethodName      = "/fairyring.pep.Msg/RequestGeneralIdentity"
+	Msg_RequestGeneralDecryptionKey_FullMethodName = "/fairyring.pep.Msg/RequestGeneralDecryptionKey"
+	Msg_RequestPrivateIdentity_FullMethodName      = "/fairyring.pep.Msg/RequestPrivateIdentity"
+	Msg_RequestPrivateDecryptionKey_FullMethodName = "/fairyring.pep.Msg/RequestPrivateDecryptionKey"
+	Msg_RegisterContract_FullMethodName            = "/fairyring.pep.Msg/RegisterContract"
+	Msg_UnregisterContract_FullMethodName          = "/fairyring.pep.Msg/UnregisterContract"
 )
 
 // MsgClient is the client API for Msg service.
@@ -47,20 +47,20 @@ type MsgClient interface {
 	// CreateAggregatedKeyShare defines an operation to submit an
 	// aggregated keyshare to a destination chain
 	CreateAggregatedKeyShare(ctx context.Context, in *MsgCreateAggregatedKeyShare, opts ...grpc.CallOption) (*MsgCreateAggregatedKeyShareResponse, error)
-	// RequestGeneralKeyshare defines an operation to request the
+	// RequestGeneralIdentity defines an operation to request the
 	// creation of a new identity to which validators will be required
 	// to submit keyshares
-	RequestGeneralKeyshare(ctx context.Context, in *MsgRequestGeneralKeyshare, opts ...grpc.CallOption) (*MsgRequestGeneralKeyshareResponse, error)
-	// GetGeneralKeyshare defines an operation to signal validators to start
+	RequestGeneralIdentity(ctx context.Context, in *MsgRequestGeneralIdentity, opts ...grpc.CallOption) (*MsgRequestGeneralIdentityResponse, error)
+	// RequestGeneralDecryptionKey defines an operation to signal validators to start
 	// submitting keyshares for a particular identity
-	GetGeneralKeyshare(ctx context.Context, in *MsgGetGeneralKeyshare, opts ...grpc.CallOption) (*MsgGetGeneralKeyshareResponse, error)
+	RequestGeneralDecryptionKey(ctx context.Context, in *MsgRequestGeneralDecryptionKey, opts ...grpc.CallOption) (*MsgRequestGeneralDecryptionKeyResponse, error)
 	// RequestPrivateIdentity defines an operation to request the
 	// creation of a new identity to which validators will be required
 	// to submit encrypted keyshares
 	RequestPrivateIdentity(ctx context.Context, in *MsgRequestPrivateIdentity, opts ...grpc.CallOption) (*MsgRequestPrivateIdentityResponse, error)
-	// GetPrivateKeyshares defines an operation to signal validators to start
+	// RequestPrivateDecryptionKey defines an operation to signal validators to start
 	// submitting encrypted keyshares for a particular identity
-	GetPrivateKeyshares(ctx context.Context, in *MsgGetPrivateKeyshares, opts ...grpc.CallOption) (*MsgGetPrivateKeysharesResponse, error)
+	RequestPrivateDecryptionKey(ctx context.Context, in *MsgRequestPrivateDecryptionKey, opts ...grpc.CallOption) (*MsgRequestPrivateDecryptionKeyResponse, error)
 	// RegisterContract defines an operation to make an instantiated
 	// contract eligible to be automatically executed when a particular
 	// identity has aggregated keyshares available for it
@@ -115,18 +115,18 @@ func (c *msgClient) CreateAggregatedKeyShare(ctx context.Context, in *MsgCreateA
 	return out, nil
 }
 
-func (c *msgClient) RequestGeneralKeyshare(ctx context.Context, in *MsgRequestGeneralKeyshare, opts ...grpc.CallOption) (*MsgRequestGeneralKeyshareResponse, error) {
-	out := new(MsgRequestGeneralKeyshareResponse)
-	err := c.cc.Invoke(ctx, Msg_RequestGeneralKeyshare_FullMethodName, in, out, opts...)
+func (c *msgClient) RequestGeneralIdentity(ctx context.Context, in *MsgRequestGeneralIdentity, opts ...grpc.CallOption) (*MsgRequestGeneralIdentityResponse, error) {
+	out := new(MsgRequestGeneralIdentityResponse)
+	err := c.cc.Invoke(ctx, Msg_RequestGeneralIdentity_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) GetGeneralKeyshare(ctx context.Context, in *MsgGetGeneralKeyshare, opts ...grpc.CallOption) (*MsgGetGeneralKeyshareResponse, error) {
-	out := new(MsgGetGeneralKeyshareResponse)
-	err := c.cc.Invoke(ctx, Msg_GetGeneralKeyshare_FullMethodName, in, out, opts...)
+func (c *msgClient) RequestGeneralDecryptionKey(ctx context.Context, in *MsgRequestGeneralDecryptionKey, opts ...grpc.CallOption) (*MsgRequestGeneralDecryptionKeyResponse, error) {
+	out := new(MsgRequestGeneralDecryptionKeyResponse)
+	err := c.cc.Invoke(ctx, Msg_RequestGeneralDecryptionKey_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -142,9 +142,9 @@ func (c *msgClient) RequestPrivateIdentity(ctx context.Context, in *MsgRequestPr
 	return out, nil
 }
 
-func (c *msgClient) GetPrivateKeyshares(ctx context.Context, in *MsgGetPrivateKeyshares, opts ...grpc.CallOption) (*MsgGetPrivateKeysharesResponse, error) {
-	out := new(MsgGetPrivateKeysharesResponse)
-	err := c.cc.Invoke(ctx, Msg_GetPrivateKeyshares_FullMethodName, in, out, opts...)
+func (c *msgClient) RequestPrivateDecryptionKey(ctx context.Context, in *MsgRequestPrivateDecryptionKey, opts ...grpc.CallOption) (*MsgRequestPrivateDecryptionKeyResponse, error) {
+	out := new(MsgRequestPrivateDecryptionKeyResponse)
+	err := c.cc.Invoke(ctx, Msg_RequestPrivateDecryptionKey_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -185,20 +185,20 @@ type MsgServer interface {
 	// CreateAggregatedKeyShare defines an operation to submit an
 	// aggregated keyshare to a destination chain
 	CreateAggregatedKeyShare(context.Context, *MsgCreateAggregatedKeyShare) (*MsgCreateAggregatedKeyShareResponse, error)
-	// RequestGeneralKeyshare defines an operation to request the
+	// RequestGeneralIdentity defines an operation to request the
 	// creation of a new identity to which validators will be required
 	// to submit keyshares
-	RequestGeneralKeyshare(context.Context, *MsgRequestGeneralKeyshare) (*MsgRequestGeneralKeyshareResponse, error)
-	// GetGeneralKeyshare defines an operation to signal validators to start
+	RequestGeneralIdentity(context.Context, *MsgRequestGeneralIdentity) (*MsgRequestGeneralIdentityResponse, error)
+	// RequestGeneralDecryptionKey defines an operation to signal validators to start
 	// submitting keyshares for a particular identity
-	GetGeneralKeyshare(context.Context, *MsgGetGeneralKeyshare) (*MsgGetGeneralKeyshareResponse, error)
+	RequestGeneralDecryptionKey(context.Context, *MsgRequestGeneralDecryptionKey) (*MsgRequestGeneralDecryptionKeyResponse, error)
 	// RequestPrivateIdentity defines an operation to request the
 	// creation of a new identity to which validators will be required
 	// to submit encrypted keyshares
 	RequestPrivateIdentity(context.Context, *MsgRequestPrivateIdentity) (*MsgRequestPrivateIdentityResponse, error)
-	// GetPrivateKeyshares defines an operation to signal validators to start
+	// RequestPrivateDecryptionKey defines an operation to signal validators to start
 	// submitting encrypted keyshares for a particular identity
-	GetPrivateKeyshares(context.Context, *MsgGetPrivateKeyshares) (*MsgGetPrivateKeysharesResponse, error)
+	RequestPrivateDecryptionKey(context.Context, *MsgRequestPrivateDecryptionKey) (*MsgRequestPrivateDecryptionKeyResponse, error)
 	// RegisterContract defines an operation to make an instantiated
 	// contract eligible to be automatically executed when a particular
 	// identity has aggregated keyshares available for it
@@ -226,17 +226,17 @@ func (UnimplementedMsgServer) SubmitGeneralEncryptedTx(context.Context, *MsgSubm
 func (UnimplementedMsgServer) CreateAggregatedKeyShare(context.Context, *MsgCreateAggregatedKeyShare) (*MsgCreateAggregatedKeyShareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAggregatedKeyShare not implemented")
 }
-func (UnimplementedMsgServer) RequestGeneralKeyshare(context.Context, *MsgRequestGeneralKeyshare) (*MsgRequestGeneralKeyshareResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RequestGeneralKeyshare not implemented")
+func (UnimplementedMsgServer) RequestGeneralIdentity(context.Context, *MsgRequestGeneralIdentity) (*MsgRequestGeneralIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RequestGeneralIdentity not implemented")
 }
-func (UnimplementedMsgServer) GetGeneralKeyshare(context.Context, *MsgGetGeneralKeyshare) (*MsgGetGeneralKeyshareResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetGeneralKeyshare not implemented")
+func (UnimplementedMsgServer) RequestGeneralDecryptionKey(context.Context, *MsgRequestGeneralDecryptionKey) (*MsgRequestGeneralDecryptionKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RequestGeneralDecryptionKey not implemented")
 }
 func (UnimplementedMsgServer) RequestPrivateIdentity(context.Context, *MsgRequestPrivateIdentity) (*MsgRequestPrivateIdentityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RequestPrivateIdentity not implemented")
 }
-func (UnimplementedMsgServer) GetPrivateKeyshares(context.Context, *MsgGetPrivateKeyshares) (*MsgGetPrivateKeysharesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetPrivateKeyshares not implemented")
+func (UnimplementedMsgServer) RequestPrivateDecryptionKey(context.Context, *MsgRequestPrivateDecryptionKey) (*MsgRequestPrivateDecryptionKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RequestPrivateDecryptionKey not implemented")
 }
 func (UnimplementedMsgServer) RegisterContract(context.Context, *MsgRegisterContract) (*MsgRegisterContractResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterContract not implemented")
@@ -329,38 +329,38 @@ func _Msg_CreateAggregatedKeyShare_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_RequestGeneralKeyshare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgRequestGeneralKeyshare)
+func _Msg_RequestGeneralIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRequestGeneralIdentity)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).RequestGeneralKeyshare(ctx, in)
+		return srv.(MsgServer).RequestGeneralIdentity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_RequestGeneralKeyshare_FullMethodName,
+		FullMethod: Msg_RequestGeneralIdentity_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).RequestGeneralKeyshare(ctx, req.(*MsgRequestGeneralKeyshare))
+		return srv.(MsgServer).RequestGeneralIdentity(ctx, req.(*MsgRequestGeneralIdentity))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_GetGeneralKeyshare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgGetGeneralKeyshare)
+func _Msg_RequestGeneralDecryptionKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRequestGeneralDecryptionKey)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).GetGeneralKeyshare(ctx, in)
+		return srv.(MsgServer).RequestGeneralDecryptionKey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_GetGeneralKeyshare_FullMethodName,
+		FullMethod: Msg_RequestGeneralDecryptionKey_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).GetGeneralKeyshare(ctx, req.(*MsgGetGeneralKeyshare))
+		return srv.(MsgServer).RequestGeneralDecryptionKey(ctx, req.(*MsgRequestGeneralDecryptionKey))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -383,20 +383,20 @@ func _Msg_RequestPrivateIdentity_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_GetPrivateKeyshares_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgGetPrivateKeyshares)
+func _Msg_RequestPrivateDecryptionKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRequestPrivateDecryptionKey)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).GetPrivateKeyshares(ctx, in)
+		return srv.(MsgServer).RequestPrivateDecryptionKey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_GetPrivateKeyshares_FullMethodName,
+		FullMethod: Msg_RequestPrivateDecryptionKey_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).GetPrivateKeyshares(ctx, req.(*MsgGetPrivateKeyshares))
+		return srv.(MsgServer).RequestPrivateDecryptionKey(ctx, req.(*MsgRequestPrivateDecryptionKey))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -461,20 +461,20 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_CreateAggregatedKeyShare_Handler,
 		},
 		{
-			MethodName: "RequestGeneralKeyshare",
-			Handler:    _Msg_RequestGeneralKeyshare_Handler,
+			MethodName: "RequestGeneralIdentity",
+			Handler:    _Msg_RequestGeneralIdentity_Handler,
 		},
 		{
-			MethodName: "GetGeneralKeyshare",
-			Handler:    _Msg_GetGeneralKeyshare_Handler,
+			MethodName: "RequestGeneralDecryptionKey",
+			Handler:    _Msg_RequestGeneralDecryptionKey_Handler,
 		},
 		{
 			MethodName: "RequestPrivateIdentity",
 			Handler:    _Msg_RequestPrivateIdentity_Handler,
 		},
 		{
-			MethodName: "GetPrivateKeyshares",
-			Handler:    _Msg_GetPrivateKeyshares_Handler,
+			MethodName: "RequestPrivateDecryptionKey",
+			Handler:    _Msg_RequestPrivateDecryptionKey_Handler,
 		},
 		{
 			MethodName: "RegisterContract",

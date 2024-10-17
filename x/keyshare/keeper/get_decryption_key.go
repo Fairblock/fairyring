@@ -10,8 +10,12 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v8/modules/core/04-channel/types"
 )
 
-// OnRecvGetAggrKeysharePacket processes packet reception
-func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data types.GetAggrKeysharePacketData) (packetAck types.GetAggrKeysharePacketAck, err error) {
+// OnRecvGetDecryptionKeyPacket processes packet reception
+func (k Keeper) OnRecvGetDecryptionKeyPacket(
+	ctx sdk.Context,
+	packet channeltypes.Packet,
+	data types.GetDecryptionKeyPacketData,
+) (packetAck types.GetDecryptionKeyPacketAck, err error) {
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
@@ -52,8 +56,8 @@ func (k Keeper) OnRecvGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes
 	return packetAck, nil
 }
 
-// OnTimeoutGetAggrKeysharePacket responds to the case where a packet has not been transmitted because of a timeout
-func (k Keeper) OnTimeoutGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data types.GetAggrKeysharePacketData) error {
+// OnTimeoutGetDecryptionKeyPacket responds to the case where a packet has not been transmitted because of a timeout
+func (k Keeper) OnTimeoutGetDecryptionKeyPacket(ctx sdk.Context, packet channeltypes.Packet, data types.GetDecryptionKeyPacketData) error {
 
 	// Implement custom packet timeout logic
 	// (Not required for fairyring since this packet is never sent from fairyring)
@@ -61,12 +65,12 @@ func (k Keeper) OnTimeoutGetAggrKeysharePacket(ctx sdk.Context, packet channelty
 	return nil
 }
 
-// OnRecvGetPrivateKeysharePacket processes packet reception
-func (k Keeper) OnRecvGetPrivateKeysharePacket(
+// OnRecvGetPrivateDecryptionKeyPacket processes packet reception
+func (k Keeper) OnRecvGetPrivateDecryptionKeyPacket(
 	ctx sdk.Context,
 	packet channeltypes.Packet,
-	data types.GetPrivateKeysharePacketData,
-) (packetAck types.GetPrivateKeysharePacketAck, err error) {
+	data types.GetPrivateDecryptionKeyPacketData,
+) (packetAck types.GetPrivateDecryptionKeyPacketAck, err error) {
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
@@ -91,7 +95,7 @@ func (k Keeper) OnRecvGetPrivateKeysharePacket(
 			PortId:    packet.SourcePort,
 		}
 
-		keyshareReq.EncryptedKeyshares = make([]*commontypes.EncryptedKeyshare, 0)
+		keyshareReq.EncryptedKeyshares = make([]*commontypes.GetDecryptionKey, 0)
 		keyshareReq.RequestId = data.Identity
 		keyshareReq.Sent = false
 
@@ -113,8 +117,8 @@ func (k Keeper) OnRecvGetPrivateKeysharePacket(
 	return packetAck, nil
 }
 
-// OnTimeoutGetPrivateKeysharePacket responds to the case where a packet has not been transmitted because of a timeout
-func (k Keeper) OnTimeoutGetPrivateKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data types.GetPrivateKeysharePacketData) error {
+// OnTimeoutGetPrivateDecryptionKeyPacket responds to the case where a packet has not been transmitted because of a timeout
+func (k Keeper) OnTimeoutGetPrivateDecryptionKeyPacket(ctx sdk.Context, packet channeltypes.Packet, data types.GetPrivateDecryptionKeyPacketData) error {
 
 	// Implement custom packet timeout logic
 	// (Not required for fairyring since this packet is never sent from fairyring)
@@ -122,7 +126,7 @@ func (k Keeper) OnTimeoutGetPrivateKeysharePacket(ctx sdk.Context, packet channe
 	return nil
 }
 
-func verifyIBCInfo(packet channeltypes.Packet, keyshareReq types.KeyShareRequest) error {
+func verifyIBCInfo(packet channeltypes.Packet, keyshareReq types.DecryptionKeyRequest) error {
 	if keyshareReq.Counterparty.ChannelId != packet.SourceChannel ||
 		keyshareReq.Counterparty.PortId != packet.SourcePort ||
 		keyshareReq.IbcInfo.ChannelId != packet.DestinationChannel ||

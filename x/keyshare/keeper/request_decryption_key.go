@@ -14,10 +14,11 @@ import (
 	host "github.com/cosmos/ibc-go/v8/modules/core/24-host"
 )
 
-// TransmitRequestAggrKeysharePacket transmits the packet over IBC with the specified source port and source channel
-func (k Keeper) TransmitRequestAggrKeysharePacket(
+// TransmitRequestDecryptionKeyPacket transmits the packet over IBC
+// with the specified source port and source channel
+func (k Keeper) TransmitRequestDecryptionKeyPacket(
 	ctx sdk.Context,
-	packetData types.RequestAggrKeysharePacketData,
+	packetData types.RequestDecryptionKeyPacketData,
 	sourcePort,
 	sourceChannel string,
 	timeoutHeight clienttypes.Height,
@@ -33,12 +34,12 @@ func (k Keeper) TransmitRequestAggrKeysharePacket(
 	return k.ibcKeeperFn().ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes)
 }
 
-// OnRecvRequestAggrKeysharePacket processes packet reception
-func (k Keeper) OnRecvRequestAggrKeysharePacket(
+// OnRecvRequestDecryptionKeyPacket processes packet reception
+func (k Keeper) OnRecvRequestDecryptionKeyPacket(
 	ctx sdk.Context,
 	packet channeltypes.Packet,
-	data types.RequestAggrKeysharePacketData,
-) (packetAck types.RequestAggrKeysharePacketAck, err error) {
+	data types.RequestDecryptionKeyPacketData,
+) (packetAck types.RequestDecryptionKeyPacketAck, err error) {
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
@@ -66,7 +67,7 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 
 	var isProposalID bool
 	switch data.Id.(type) {
-	case *types.RequestAggrKeysharePacketData_ProposalId:
+	case *types.RequestDecryptionKeyPacketData_ProposalId:
 		isProposalID = true
 	default:
 		isProposalID = false
@@ -74,7 +75,7 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 
 	id := data.GetRequestId()
 
-	var keyshareRequest types.KeyShareRequest
+	var keyshareRequest types.DecryptionKeyRequest
 
 	keyshareRequest.Identity = id
 	keyshareRequest.Pubkey = activePubKey.PublicKey
@@ -88,7 +89,7 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 		PortId:    packet.SourcePort,
 	}
 
-	keyshareRequest.AggrKeyshare = ""
+	keyshareRequest.DecryptionKey = ""
 
 	if isProposalID {
 		keyshareRequest.ProposalId = data.GetProposalId()
@@ -105,8 +106,9 @@ func (k Keeper) OnRecvRequestAggrKeysharePacket(
 	return packetAck, nil
 }
 
-// OnTimeoutRequestAggrKeysharePacket responds to the case where a packet has not been transmitted because of a timeout
-func (k Keeper) OnTimeoutRequestAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestAggrKeysharePacketData) error {
+// OnTimeoutRequestDecryptionKeyPacket responds to the case where a
+// packet has not been transmitted because of a timeout
+func (k Keeper) OnTimeoutRequestDecryptionKeyPacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestDecryptionKeyPacketData) error {
 
 	// Implement custom packet timeout logic
 	// (Not required for fairyring since this packet is never sent from fairyring)
@@ -115,11 +117,11 @@ func (k Keeper) OnTimeoutRequestAggrKeysharePacket(ctx sdk.Context, packet chann
 }
 
 // OnRecvRequestPrivateKeysharePacket processes packet reception
-func (k Keeper) OnRecvRequestPrivateKeysharePacket(
+func (k Keeper) OnRecvRequestPrivateDecryptionKeyPacket(
 	ctx sdk.Context,
 	packet channeltypes.Packet,
-	data types.RequestPrivateKeysharePacketData,
-) (packetAck types.RequestPrivateKeysharePacketAck, err error) {
+	data types.RequestPrivateDecryptionKeyPacketData,
+) (packetAck types.RequestPrivateDecryptionKeyPacketAck, err error) {
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
@@ -132,7 +134,7 @@ func (k Keeper) OnRecvRequestPrivateKeysharePacket(
 
 	id := data.GetRequestId()
 
-	var keyshareRequest types.PrivateKeyshareRequest
+	var keyshareRequest types.PrivateDecryptionKeyRequest
 
 	keyshareRequest.Identity = id
 	keyshareRequest.Pubkey = activePubKey.PublicKey
@@ -146,7 +148,7 @@ func (k Keeper) OnRecvRequestPrivateKeysharePacket(
 		PortId:    packet.SourcePort,
 	}
 
-	keyshareRequest.EncryptedKeyshares = make([]*commontypes.EncryptedKeyshare, 0)
+	keyshareRequest.PrivateDecryptionKeys = make([]*commontypes.PrivateDecryptionKey, 0)
 	keyshareRequest.RequestId = data.GetRequestId()
 	keyshareRequest.Sent = false
 
@@ -159,7 +161,7 @@ func (k Keeper) OnRecvRequestPrivateKeysharePacket(
 }
 
 // OnTimeoutRequestAggrKeysharePacket responds to the case where a packet has not been transmitted because of a timeout
-func (k Keeper) OnTimeoutRequestPrivateKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestPrivateKeysharePacketData) error {
+func (k Keeper) OnTimeoutRequestPrivateKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestPrivateDecryptionKeyPacketData) error {
 
 	// Implement custom packet timeout logic
 	// (Not required for fairyring since this packet is never sent from fairyring)

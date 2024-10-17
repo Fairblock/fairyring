@@ -54,17 +54,15 @@ service Query {
 
   }
 
-  // this line is used by starport scaffolding # 2
-
-  // AggregatedKeyShare a AggregatedKeyShare item by height.
-  rpc AggregatedKeyShare (QueryAggregatedKeyShareRequest) returns (QueryAggregatedKeyShareResponse) {
-    option (google.api.http).get = "/fairyring/keyshare/aggregated_key_share/{height}";
+  // DecryptionKey queries a DecryptionKey item by height.
+  rpc DecryptionKey (QueryDecryptionKeyRequest) returns (QueryDecryptionKeyResponse) {
+    option (google.api.http).get = "/fairyring/keyshare/decryption_key/{height}";
 
   }
 
-  // AggregatedKeyShareAll Queries a list of AggregatedKeyShare items.
-  rpc AggregatedKeyShareAll (QueryAggregatedKeyShareAllRequest) returns (QueryAggregatedKeyShareAllResponse) {
-    option (google.api.http).get = "/fairyring/keyshare/aggregated_key_share";
+  // DecryptionKeyAll Queries a list of DecryptionKey items.
+  rpc DecryptionKeyAll (QueryDecryptionKeyAllRequest) returns (QueryDecryptionKeyAllResponse) {
+    option (google.api.http).get = "/fairyring/keyshare/decryption_key";
 
   }
 
@@ -177,24 +175,24 @@ message QueryKeyShareAllResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-// QueryAggregatedKeyShareRequest is request type for the Query/AggregatedKeyShare RPC method.
-message QueryAggregatedKeyShareRequest {
+// QueryDecryptionKeyRequest is request type for the Query/DecryptionKey RPC method.
+message QueryDecryptionKeyRequest {
   uint64 height = 1;
 }
 
-// QueryAggregatedKeyShareResponse is response type for the Query/AggregatedKeyShare RPC method.
-message QueryAggregatedKeyShareResponse {
-  AggregatedKeyShare aggregated_key_share = 1 [(gogoproto.nullable) = false];
+// QueryDecryptionKeyResponse is response type for the Query/DecryptionKey RPC method.
+message QueryDecryptionKeyResponse {
+  AggregatedKeyShare decryption_key = 1 [(gogoproto.nullable) = false];
 }
 
-// QueryAggregatedKeyShareAllRequest is request type for the Query/AggregatedKeyShareAll RPC method.
-message QueryAggregatedKeyShareAllRequest {
+// QueryDecryptionKeyAllRequest is request type for the Query/DecryptionKeyAll RPC method.
+message QueryDecryptionKeyAllRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-// QueryAggregatedKeyShareAllResponse is response type for the Query/AggregatedKeyShareAll RPC method.
-message QueryAggregatedKeyShareAllResponse {
-  repeated AggregatedKeyShare aggregated_key_share = 1 [(gogoproto.nullable) = false];
+// QueryAggregatedKeyShareAllResponse is response type for the Query/DecryptionKeyAll RPC method.
+message QueryDecryptionKeyAllResponse {
+  repeated AggregatedKeyShare decryption_keys = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

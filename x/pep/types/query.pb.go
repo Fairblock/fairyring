@@ -115,23 +115,23 @@ func (m *QueryParamsResponse) GetParams() Params {
 	return Params{}
 }
 
-// QueryKeyshareReqRequest is request type for the Query/KeyshareReq RPC method.
-type QueryKeyshareReqRequest struct {
+// QueryGeneralIdentityRequest is request type for the Query/GeneralIdentity RPC method.
+type QueryGeneralIdentityRequest struct {
 	ReqId string `protobuf:"bytes,1,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
 }
 
-func (m *QueryKeyshareReqRequest) Reset()         { *m = QueryKeyshareReqRequest{} }
-func (m *QueryKeyshareReqRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryKeyshareReqRequest) ProtoMessage()    {}
-func (*QueryKeyshareReqRequest) Descriptor() ([]byte, []int) {
+func (m *QueryGeneralIdentityRequest) Reset()         { *m = QueryGeneralIdentityRequest{} }
+func (m *QueryGeneralIdentityRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGeneralIdentityRequest) ProtoMessage()    {}
+func (*QueryGeneralIdentityRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{2}
 }
-func (m *QueryKeyshareReqRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryGeneralIdentityRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryKeyshareReqRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGeneralIdentityRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryKeyshareReqRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGeneralIdentityRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -141,42 +141,42 @@ func (m *QueryKeyshareReqRequest) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (m *QueryKeyshareReqRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryKeyshareReqRequest.Merge(m, src)
+func (m *QueryGeneralIdentityRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGeneralIdentityRequest.Merge(m, src)
 }
-func (m *QueryKeyshareReqRequest) XXX_Size() int {
+func (m *QueryGeneralIdentityRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryKeyshareReqRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryKeyshareReqRequest.DiscardUnknown(m)
+func (m *QueryGeneralIdentityRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGeneralIdentityRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryKeyshareReqRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryGeneralIdentityRequest proto.InternalMessageInfo
 
-func (m *QueryKeyshareReqRequest) GetReqId() string {
+func (m *QueryGeneralIdentityRequest) GetReqId() string {
 	if m != nil {
 		return m.ReqId
 	}
 	return ""
 }
 
-// QueryKeyshareReqResponse is response type for the Query/KeyshareReq RPC method.
-type QueryKeyshareReqResponse struct {
-	Keyshare *IdentityExecutionQueue `protobuf:"bytes,1,opt,name=keyshare,proto3" json:"keyshare,omitempty"`
+// QueryGeneralIdentityResponse is response type for the Query/GeneralIdentity RPC method.
+type QueryGeneralIdentityResponse struct {
+	RequestDetails *IdentityExecutionEntry `protobuf:"bytes,1,opt,name=request_details,json=requestDetails,proto3" json:"request_details,omitempty"`
 }
 
-func (m *QueryKeyshareReqResponse) Reset()         { *m = QueryKeyshareReqResponse{} }
-func (m *QueryKeyshareReqResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryKeyshareReqResponse) ProtoMessage()    {}
-func (*QueryKeyshareReqResponse) Descriptor() ([]byte, []int) {
+func (m *QueryGeneralIdentityResponse) Reset()         { *m = QueryGeneralIdentityResponse{} }
+func (m *QueryGeneralIdentityResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGeneralIdentityResponse) ProtoMessage()    {}
+func (*QueryGeneralIdentityResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{3}
 }
-func (m *QueryKeyshareReqResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryGeneralIdentityResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryKeyshareReqResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGeneralIdentityResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryKeyshareReqResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGeneralIdentityResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -186,42 +186,42 @@ func (m *QueryKeyshareReqResponse) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *QueryKeyshareReqResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryKeyshareReqResponse.Merge(m, src)
+func (m *QueryGeneralIdentityResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGeneralIdentityResponse.Merge(m, src)
 }
-func (m *QueryKeyshareReqResponse) XXX_Size() int {
+func (m *QueryGeneralIdentityResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryKeyshareReqResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryKeyshareReqResponse.DiscardUnknown(m)
+func (m *QueryGeneralIdentityResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGeneralIdentityResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryKeyshareReqResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryGeneralIdentityResponse proto.InternalMessageInfo
 
-func (m *QueryKeyshareReqResponse) GetKeyshare() *IdentityExecutionQueue {
+func (m *QueryGeneralIdentityResponse) GetRequestDetails() *IdentityExecutionEntry {
 	if m != nil {
-		return m.Keyshare
+		return m.RequestDetails
 	}
 	return nil
 }
 
-// QueryKeyshareReqAllRequest is request type for the Query/KeyshareReqAll RPC method.
-type QueryKeyshareReqAllRequest struct {
+// QueryGeneralIdentityAllRequest is request type for the Query/GeneralIdentityAll RPC method.
+type QueryGeneralIdentityAllRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryKeyshareReqAllRequest) Reset()         { *m = QueryKeyshareReqAllRequest{} }
-func (m *QueryKeyshareReqAllRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryKeyshareReqAllRequest) ProtoMessage()    {}
-func (*QueryKeyshareReqAllRequest) Descriptor() ([]byte, []int) {
+func (m *QueryGeneralIdentityAllRequest) Reset()         { *m = QueryGeneralIdentityAllRequest{} }
+func (m *QueryGeneralIdentityAllRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGeneralIdentityAllRequest) ProtoMessage()    {}
+func (*QueryGeneralIdentityAllRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{4}
 }
-func (m *QueryKeyshareReqAllRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryGeneralIdentityAllRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryKeyshareReqAllRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGeneralIdentityAllRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryKeyshareReqAllRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGeneralIdentityAllRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -231,43 +231,43 @@ func (m *QueryKeyshareReqAllRequest) XXX_Marshal(b []byte, deterministic bool) (
 		return b[:n], nil
 	}
 }
-func (m *QueryKeyshareReqAllRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryKeyshareReqAllRequest.Merge(m, src)
+func (m *QueryGeneralIdentityAllRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGeneralIdentityAllRequest.Merge(m, src)
 }
-func (m *QueryKeyshareReqAllRequest) XXX_Size() int {
+func (m *QueryGeneralIdentityAllRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryKeyshareReqAllRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryKeyshareReqAllRequest.DiscardUnknown(m)
+func (m *QueryGeneralIdentityAllRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGeneralIdentityAllRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryKeyshareReqAllRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryGeneralIdentityAllRequest proto.InternalMessageInfo
 
-func (m *QueryKeyshareReqAllRequest) GetPagination() *query.PageRequest {
+func (m *QueryGeneralIdentityAllRequest) GetPagination() *query.PageRequest {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-// QueryKeyshareReqAllResponse is response type for the Query/KeyshareReqAll RPC method.
-type QueryKeyshareReqAllResponse struct {
-	Keyshares  []*IdentityExecutionQueue `protobuf:"bytes,1,rep,name=keyshares,proto3" json:"keyshares,omitempty"`
-	Pagination *query.PageResponse       `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+// QueryGeneralIdentityAllResponse is response type for the Query/GeneralIdentityAll RPC method.
+type QueryGeneralIdentityAllResponse struct {
+	RequestDetailsList []*IdentityExecutionEntry `protobuf:"bytes,1,rep,name=request_details_list,json=requestDetailsList,proto3" json:"request_details_list,omitempty"`
+	Pagination         *query.PageResponse       `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryKeyshareReqAllResponse) Reset()         { *m = QueryKeyshareReqAllResponse{} }
-func (m *QueryKeyshareReqAllResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryKeyshareReqAllResponse) ProtoMessage()    {}
-func (*QueryKeyshareReqAllResponse) Descriptor() ([]byte, []int) {
+func (m *QueryGeneralIdentityAllResponse) Reset()         { *m = QueryGeneralIdentityAllResponse{} }
+func (m *QueryGeneralIdentityAllResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGeneralIdentityAllResponse) ProtoMessage()    {}
+func (*QueryGeneralIdentityAllResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{5}
 }
-func (m *QueryKeyshareReqAllResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryGeneralIdentityAllResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryKeyshareReqAllResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGeneralIdentityAllResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryKeyshareReqAllResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGeneralIdentityAllResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -277,26 +277,26 @@ func (m *QueryKeyshareReqAllResponse) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *QueryKeyshareReqAllResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryKeyshareReqAllResponse.Merge(m, src)
+func (m *QueryGeneralIdentityAllResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGeneralIdentityAllResponse.Merge(m, src)
 }
-func (m *QueryKeyshareReqAllResponse) XXX_Size() int {
+func (m *QueryGeneralIdentityAllResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryKeyshareReqAllResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryKeyshareReqAllResponse.DiscardUnknown(m)
+func (m *QueryGeneralIdentityAllResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGeneralIdentityAllResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryKeyshareReqAllResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryGeneralIdentityAllResponse proto.InternalMessageInfo
 
-func (m *QueryKeyshareReqAllResponse) GetKeyshares() []*IdentityExecutionQueue {
+func (m *QueryGeneralIdentityAllResponse) GetRequestDetailsList() []*IdentityExecutionEntry {
 	if m != nil {
-		return m.Keyshares
+		return m.RequestDetailsList
 	}
 	return nil
 }
 
-func (m *QueryKeyshareReqAllResponse) GetPagination() *query.PageResponse {
+func (m *QueryGeneralIdentityAllResponse) GetPagination() *query.PageResponse {
 	if m != nil {
 		return m.Pagination
 	}
@@ -949,23 +949,23 @@ func (m *QueryPubKeyResponse) GetQueuedPubKey() types.QueuedPublicKey {
 	return types.QueuedPublicKey{}
 }
 
-// QueryPrivateKeyshareReqRequest is request type for the Query/PrivateKeyshareReq RPC method.
-type QueryPrivateKeyshareReqRequest struct {
+// QueryPrivateIdentityRequest is request type for the Query/PrivateIdentity RPC method.
+type QueryPrivateIdentityRequest struct {
 	ReqId string `protobuf:"bytes,1,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
 }
 
-func (m *QueryPrivateKeyshareReqRequest) Reset()         { *m = QueryPrivateKeyshareReqRequest{} }
-func (m *QueryPrivateKeyshareReqRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryPrivateKeyshareReqRequest) ProtoMessage()    {}
-func (*QueryPrivateKeyshareReqRequest) Descriptor() ([]byte, []int) {
+func (m *QueryPrivateIdentityRequest) Reset()         { *m = QueryPrivateIdentityRequest{} }
+func (m *QueryPrivateIdentityRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryPrivateIdentityRequest) ProtoMessage()    {}
+func (*QueryPrivateIdentityRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{20}
 }
-func (m *QueryPrivateKeyshareReqRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryPrivateIdentityRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryPrivateKeyshareReqRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryPrivateIdentityRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryPrivateKeyshareReqRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryPrivateIdentityRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -975,45 +975,45 @@ func (m *QueryPrivateKeyshareReqRequest) XXX_Marshal(b []byte, deterministic boo
 		return b[:n], nil
 	}
 }
-func (m *QueryPrivateKeyshareReqRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryPrivateKeyshareReqRequest.Merge(m, src)
+func (m *QueryPrivateIdentityRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryPrivateIdentityRequest.Merge(m, src)
 }
-func (m *QueryPrivateKeyshareReqRequest) XXX_Size() int {
+func (m *QueryPrivateIdentityRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryPrivateKeyshareReqRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryPrivateKeyshareReqRequest.DiscardUnknown(m)
+func (m *QueryPrivateIdentityRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryPrivateIdentityRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryPrivateKeyshareReqRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryPrivateIdentityRequest proto.InternalMessageInfo
 
-func (m *QueryPrivateKeyshareReqRequest) GetReqId() string {
+func (m *QueryPrivateIdentityRequest) GetReqId() string {
 	if m != nil {
 		return m.ReqId
 	}
 	return ""
 }
 
-// QueryPrivateKeyshareReqResponse is response type for the Query/PrivateKeyshareReq RPC method.
-type QueryPrivateKeyshareReqResponse struct {
-	Creator            string                     `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	ReqId              string                     `protobuf:"bytes,2,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
-	Pubkey             string                     `protobuf:"bytes,3,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
-	EncryptedKeyshares []*types.EncryptedKeyshare `protobuf:"bytes,5,rep,name=encrypted_keyshares,json=encryptedKeyshares,proto3" json:"encrypted_keyshares,omitempty"`
+// QueryPrivateIdentityResponse is response type for the Query/PrivateIdentity RPC method.
+type QueryPrivateIdentityResponse struct {
+	Creator               string                        `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	ReqId                 string                        `protobuf:"bytes,2,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
+	Pubkey                string                        `protobuf:"bytes,3,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
+	PrivateDecryptionKeys []*types.PrivateDecryptionKey `protobuf:"bytes,4,rep,name=private_decryption_keys,json=privateDecryptionKeys,proto3" json:"private_decryption_keys,omitempty"`
 }
 
-func (m *QueryPrivateKeyshareReqResponse) Reset()         { *m = QueryPrivateKeyshareReqResponse{} }
-func (m *QueryPrivateKeyshareReqResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryPrivateKeyshareReqResponse) ProtoMessage()    {}
-func (*QueryPrivateKeyshareReqResponse) Descriptor() ([]byte, []int) {
+func (m *QueryPrivateIdentityResponse) Reset()         { *m = QueryPrivateIdentityResponse{} }
+func (m *QueryPrivateIdentityResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryPrivateIdentityResponse) ProtoMessage()    {}
+func (*QueryPrivateIdentityResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{21}
 }
-func (m *QueryPrivateKeyshareReqResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryPrivateIdentityResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryPrivateKeyshareReqResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryPrivateIdentityResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryPrivateKeyshareReqResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryPrivateIdentityResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1023,42 +1023,42 @@ func (m *QueryPrivateKeyshareReqResponse) XXX_Marshal(b []byte, deterministic bo
 		return b[:n], nil
 	}
 }
-func (m *QueryPrivateKeyshareReqResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryPrivateKeyshareReqResponse.Merge(m, src)
+func (m *QueryPrivateIdentityResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryPrivateIdentityResponse.Merge(m, src)
 }
-func (m *QueryPrivateKeyshareReqResponse) XXX_Size() int {
+func (m *QueryPrivateIdentityResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryPrivateKeyshareReqResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryPrivateKeyshareReqResponse.DiscardUnknown(m)
+func (m *QueryPrivateIdentityResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryPrivateIdentityResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryPrivateKeyshareReqResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryPrivateIdentityResponse proto.InternalMessageInfo
 
-func (m *QueryPrivateKeyshareReqResponse) GetCreator() string {
+func (m *QueryPrivateIdentityResponse) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *QueryPrivateKeyshareReqResponse) GetReqId() string {
+func (m *QueryPrivateIdentityResponse) GetReqId() string {
 	if m != nil {
 		return m.ReqId
 	}
 	return ""
 }
 
-func (m *QueryPrivateKeyshareReqResponse) GetPubkey() string {
+func (m *QueryPrivateIdentityResponse) GetPubkey() string {
 	if m != nil {
 		return m.Pubkey
 	}
 	return ""
 }
 
-func (m *QueryPrivateKeyshareReqResponse) GetEncryptedKeyshares() []*types.EncryptedKeyshare {
+func (m *QueryPrivateIdentityResponse) GetPrivateDecryptionKeys() []*types.PrivateDecryptionKey {
 	if m != nil {
-		return m.EncryptedKeyshares
+		return m.PrivateDecryptionKeys
 	}
 	return nil
 }
@@ -1172,10 +1172,10 @@ func (m *QueryDecryptDataResponse) GetDecryptedData() string {
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "fairyring.pep.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "fairyring.pep.QueryParamsResponse")
-	proto.RegisterType((*QueryKeyshareReqRequest)(nil), "fairyring.pep.QueryKeyshareReqRequest")
-	proto.RegisterType((*QueryKeyshareReqResponse)(nil), "fairyring.pep.QueryKeyshareReqResponse")
-	proto.RegisterType((*QueryKeyshareReqAllRequest)(nil), "fairyring.pep.QueryKeyshareReqAllRequest")
-	proto.RegisterType((*QueryKeyshareReqAllResponse)(nil), "fairyring.pep.QueryKeyshareReqAllResponse")
+	proto.RegisterType((*QueryGeneralIdentityRequest)(nil), "fairyring.pep.QueryGeneralIdentityRequest")
+	proto.RegisterType((*QueryGeneralIdentityResponse)(nil), "fairyring.pep.QueryGeneralIdentityResponse")
+	proto.RegisterType((*QueryGeneralIdentityAllRequest)(nil), "fairyring.pep.QueryGeneralIdentityAllRequest")
+	proto.RegisterType((*QueryGeneralIdentityAllResponse)(nil), "fairyring.pep.QueryGeneralIdentityAllResponse")
 	proto.RegisterType((*QueryEncryptedTxRequest)(nil), "fairyring.pep.QueryEncryptedTxRequest")
 	proto.RegisterType((*QueryEncryptedTxResponse)(nil), "fairyring.pep.QueryEncryptedTxResponse")
 	proto.RegisterType((*QueryEncryptedTxAllRequest)(nil), "fairyring.pep.QueryEncryptedTxAllRequest")
@@ -1190,8 +1190,8 @@ func init() {
 	proto.RegisterType((*QueryPepNonceAllResponse)(nil), "fairyring.pep.QueryPepNonceAllResponse")
 	proto.RegisterType((*QueryPubKeyRequest)(nil), "fairyring.pep.QueryPubKeyRequest")
 	proto.RegisterType((*QueryPubKeyResponse)(nil), "fairyring.pep.QueryPubKeyResponse")
-	proto.RegisterType((*QueryPrivateKeyshareReqRequest)(nil), "fairyring.pep.QueryPrivateKeyshareReqRequest")
-	proto.RegisterType((*QueryPrivateKeyshareReqResponse)(nil), "fairyring.pep.QueryPrivateKeyshareReqResponse")
+	proto.RegisterType((*QueryPrivateIdentityRequest)(nil), "fairyring.pep.QueryPrivateIdentityRequest")
+	proto.RegisterType((*QueryPrivateIdentityResponse)(nil), "fairyring.pep.QueryPrivateIdentityResponse")
 	proto.RegisterType((*QueryDecryptDataRequest)(nil), "fairyring.pep.QueryDecryptDataRequest")
 	proto.RegisterType((*QueryDecryptDataResponse)(nil), "fairyring.pep.QueryDecryptDataResponse")
 }
@@ -1199,91 +1199,93 @@ func init() {
 func init() { proto.RegisterFile("fairyring/pep/query.proto", fileDescriptor_dd36cf23112e8be0) }
 
 var fileDescriptor_dd36cf23112e8be0 = []byte{
-	// 1337 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0xcf, 0x6f, 0xe3, 0xc4,
-	0x17, 0xaf, 0xfb, 0x23, 0xdb, 0x4e, 0x9a, 0xea, 0xfb, 0x9d, 0x6d, 0xb7, 0xa9, 0x77, 0x9b, 0x76,
-	0x27, 0xed, 0x6e, 0x29, 0xda, 0x78, 0x77, 0x0b, 0x02, 0xb1, 0xe2, 0xd0, 0x6e, 0xb7, 0xb0, 0x0a,
-	0xb0, 0x6d, 0xb6, 0x12, 0x12, 0x12, 0x8a, 0x26, 0xf1, 0xe0, 0x5a, 0x4d, 0x6c, 0xc7, 0x76, 0x4a,
-	0xa3, 0x10, 0x09, 0xb8, 0xc0, 0x81, 0x03, 0x12, 0x47, 0x0e, 0x5c, 0x91, 0xb8, 0x20, 0x71, 0x00,
-	0xc1, 0x85, 0xe3, 0x1e, 0x57, 0xe2, 0xc2, 0x09, 0xa1, 0x16, 0x89, 0x1b, 0x7f, 0x03, 0xf2, 0xf8,
-	0xd9, 0xb1, 0x9d, 0x71, 0xd3, 0x8a, 0xdd, 0x4b, 0x55, 0xbf, 0x79, 0x3f, 0x3e, 0xef, 0xc7, 0xbc,
-	0x8f, 0x1d, 0xb4, 0xf0, 0x01, 0xd5, 0xed, 0x8e, 0xad, 0x1b, 0x9a, 0x62, 0x31, 0x4b, 0x69, 0xb5,
-	0x99, 0xdd, 0x29, 0x59, 0xb6, 0xe9, 0x9a, 0x38, 0x17, 0x1e, 0x95, 0x2c, 0x66, 0xc9, 0xff, 0xa7,
-	0x4d, 0xdd, 0x30, 0x15, 0xfe, 0xd7, 0xd7, 0x90, 0x67, 0x35, 0x53, 0x33, 0xf9, 0xbf, 0x8a, 0xf7,
-	0x1f, 0x48, 0xaf, 0x69, 0xa6, 0xa9, 0x35, 0x98, 0x42, 0x2d, 0x5d, 0xa1, 0x86, 0x61, 0xba, 0xd4,
-	0xd5, 0x4d, 0xc3, 0x81, 0xd3, 0xf5, 0xba, 0xe9, 0x34, 0x4d, 0x47, 0xa9, 0x51, 0x87, 0xf9, 0xe1,
-	0x94, 0xa3, 0x3b, 0x35, 0xe6, 0xd2, 0x3b, 0x8a, 0x45, 0x35, 0xdd, 0xe0, 0xca, 0xa0, 0x2b, 0xc7,
-	0xc1, 0x59, 0xd4, 0xa6, 0xcd, 0xc0, 0xcf, 0x72, 0xfc, 0x8c, 0x19, 0x75, 0xbb, 0x63, 0xb9, 0x4c,
-	0xad, 0xba, 0xc7, 0xa0, 0xb1, 0x98, 0xb0, 0x66, 0x56, 0xd5, 0x30, 0x8d, 0x3a, 0x83, 0xe3, 0x62,
-	0xff, 0xb8, 0x6e, 0x36, 0x9b, 0xa6, 0xa1, 0x38, 0x07, 0xd4, 0xf6, 0x1c, 0x74, 0x2c, 0x06, 0x51,
-	0xc8, 0x2c, 0xc2, 0x7b, 0x1e, 0xc6, 0x5d, 0x1e, 0xba, 0xc2, 0x5a, 0x6d, 0xe6, 0xb8, 0xe4, 0x11,
-	0xba, 0x1c, 0x93, 0x3a, 0x96, 0x69, 0x38, 0x0c, 0xbf, 0x8a, 0x32, 0x3e, 0xc4, 0xbc, 0xb4, 0x2c,
-	0xad, 0x65, 0xef, 0xce, 0x95, 0x62, 0x15, 0x2c, 0xf9, 0xea, 0x5b, 0x53, 0x4f, 0xfe, 0x58, 0x1a,
-	0xf9, 0xf6, 0xef, 0xef, 0xd7, 0xa5, 0x0a, 0xe8, 0x93, 0xdb, 0x68, 0x9e, 0x3b, 0x2c, 0xb3, 0x0e,
-	0x07, 0x51, 0x61, 0x2d, 0x88, 0x85, 0xe7, 0x50, 0xc6, 0x66, 0xad, 0xaa, 0xae, 0x72, 0xa7, 0x53,
-	0x95, 0x09, 0x9b, 0xb5, 0x1e, 0xaa, 0xe4, 0x7d, 0x94, 0x1f, 0xb4, 0x00, 0x1c, 0x9b, 0x68, 0xf2,
-	0x10, 0xc4, 0x80, 0x64, 0x35, 0x81, 0xe4, 0xa1, 0xca, 0x0c, 0x57, 0x77, 0x3b, 0x0f, 0x8e, 0x59,
-	0xbd, 0xed, 0x15, 0x7c, 0xaf, 0xcd, 0xda, 0xac, 0x12, 0x9a, 0x11, 0x15, 0xc9, 0x49, 0xf7, 0x9b,
-	0x8d, 0x46, 0x80, 0x69, 0x07, 0xa1, 0x7e, 0xaf, 0x20, 0xc4, 0x8d, 0x92, 0xdf, 0xd8, 0x92, 0xd7,
-	0xd8, 0x92, 0x3f, 0x47, 0xd0, 0xd8, 0xd2, 0x2e, 0xd5, 0x18, 0xd8, 0x56, 0x22, 0x96, 0xe4, 0x3b,
-	0x09, 0x5d, 0x15, 0x86, 0x81, 0x44, 0xee, 0xa3, 0xa9, 0x00, 0x91, 0x57, 0xd3, 0xb1, 0xf3, 0x67,
-	0xd2, 0xb7, 0xc3, 0x6f, 0xc4, 0xc0, 0x8e, 0x72, 0xb0, 0x37, 0x87, 0x82, 0xf5, 0x11, 0xc4, 0xd0,
-	0xee, 0x43, 0x93, 0x1e, 0x04, 0xa3, 0xb6, 0x7f, 0x1c, 0x14, 0xa4, 0x88, 0x72, 0x2e, 0xb5, 0x35,
-	0xe6, 0x56, 0x0f, 0x98, 0xae, 0x1d, 0xb8, 0xbc, 0x26, 0xe3, 0x95, 0x69, 0x5f, 0xf8, 0x26, 0x97,
-	0xe1, 0x59, 0x34, 0xa1, 0x1b, 0x2a, 0x3b, 0xe6, 0x18, 0xc6, 0x2b, 0xfe, 0x03, 0xa9, 0x42, 0x23,
-	0x63, 0x5e, 0xc3, 0xfc, 0xa7, 0xa3, 0x73, 0x0d, 0x95, 0x96, 0x13, 0x25, 0x88, 0x58, 0x6e, 0x8d,
-	0x7b, 0xb3, 0x55, 0xc9, 0xb2, 0xbe, 0x28, 0x6c, 0x65, 0x44, 0xed, 0x39, 0xb4, 0xf2, 0x97, 0xa0,
-	0x95, 0xc9, 0x30, 0x90, 0xca, 0x63, 0x84, 0xa3, 0xa9, 0x54, 0xa9, 0x6d, 0xd3, 0x0e, 0xf4, 0x74,
-	0x29, 0x3d, 0xa1, 0x4d, 0x4f, 0x0d, 0xb2, 0xfa, 0x1f, 0x4b, 0xc8, 0x9f, 0x5d, 0x6b, 0xcb, 0x68,
-	0x45, 0x00, 0x7e, 0xc7, 0x36, 0x9b, 0x7e, 0xef, 0x2e, 0xd2, 0x67, 0xf2, 0x11, 0x5a, 0x1d, 0xe2,
-	0x6c, 0x48, 0x4d, 0xa4, 0xff, 0x50, 0x13, 0x22, 0xc3, 0x3c, 0xbd, 0x45, 0x5d, 0xe6, 0xb8, 0x31,
-	0xf8, 0x64, 0x03, 0x2d, 0x08, 0xce, 0x00, 0xcd, 0x15, 0x94, 0x89, 0x25, 0x05, 0x4f, 0xe4, 0x36,
-	0x9a, 0xf5, 0x97, 0x1d, 0xb3, 0xde, 0xf1, 0xd6, 0x67, 0x50, 0x8b, 0x3c, 0xba, 0x44, 0x55, 0xd5,
-	0x66, 0x8e, 0x03, 0x9b, 0x29, 0x78, 0x24, 0x8f, 0xd1, 0x5c, 0xc2, 0x02, 0x42, 0xbc, 0x86, 0xa6,
-	0xc2, 0x2d, 0x0c, 0x79, 0xce, 0x27, 0x77, 0x24, 0xd8, 0x40, 0x7e, 0x93, 0x16, 0x3c, 0x13, 0x0a,
-	0xb7, 0x2f, 0x50, 0x78, 0x0e, 0x33, 0xfc, 0x8d, 0x04, 0xb5, 0x8b, 0xc5, 0x10, 0x63, 0x1f, 0xbb,
-	0x00, 0xf6, 0x67, 0x37, 0xa7, 0x21, 0x1d, 0xb5, 0x6b, 0x65, 0xd6, 0x09, 0xda, 0xfa, 0x83, 0x14,
-	0xf0, 0x11, 0x88, 0x01, 0xf2, 0xdb, 0x68, 0x86, 0xd6, 0x5d, 0xfd, 0x88, 0x55, 0xad, 0x76, 0xad,
-	0x7a, 0xc8, 0x82, 0xd9, 0xba, 0x1e, 0xc1, 0xed, 0x53, 0x5f, 0x69, 0x93, 0xeb, 0xed, 0xb6, 0x6b,
-	0x0d, 0xbd, 0x5e, 0x66, 0xc1, 0x74, 0x4d, 0xd3, 0x40, 0x5c, 0x66, 0x1d, 0xcf, 0x5d, 0xcb, 0x5b,
-	0xae, 0x6a, 0xe8, 0x6e, 0x34, 0xcd, 0x1d, 0x5f, 0xc2, 0xea, 0x80, 0xbb, 0x56, 0x20, 0x2e, 0xb3,
-	0x0e, 0x79, 0x05, 0x15, 0x7c, 0xd0, 0xb6, 0x7e, 0x44, 0x5d, 0x76, 0x7e, 0xea, 0xfb, 0x55, 0x42,
-	0x4b, 0xa9, 0x96, 0x90, 0x7a, 0x1e, 0x5d, 0xaa, 0xdb, 0x8c, 0xba, 0xa6, 0x1d, 0x0c, 0x27, 0x3c,
-	0x46, 0x9c, 0x8e, 0x46, 0x9c, 0x7a, 0xd3, 0x6f, 0xb5, 0x6b, 0x5e, 0x52, 0x63, 0x5c, 0x0c, 0x4f,
-	0x78, 0x1f, 0x5d, 0xee, 0xdf, 0xd1, 0x3e, 0x19, 0x4d, 0xf0, 0x01, 0x28, 0x0e, 0x66, 0x1e, 0xde,
-	0xd3, 0x10, 0x55, 0xff, 0x8e, 0x07, 0x22, 0x87, 0xf4, 0x60, 0x98, 0xb7, 0x19, 0x3f, 0xda, 0xa6,
-	0x2e, 0x0d, 0x92, 0xee, 0x03, 0x91, 0x62, 0x40, 0x8a, 0x28, 0x47, 0x35, 0xcd, 0x0e, 0x31, 0x00,
-	0xfc, 0x69, 0x4f, 0x18, 0x38, 0xc6, 0xab, 0x68, 0xa6, 0x8f, 0x56, 0xa5, 0x2e, 0x85, 0x6c, 0x72,
-	0xa1, 0xd4, 0x0b, 0x45, 0x36, 0x61, 0xce, 0x63, 0xe1, 0xa1, 0x72, 0xab, 0x68, 0x46, 0x65, 0x31,
-	0x17, 0x3e, 0x8e, 0x5c, 0x28, 0xf5, 0xd4, 0xef, 0xfe, 0x93, 0x43, 0x13, 0xdc, 0x07, 0x36, 0x50,
-	0xc6, 0x7f, 0xb1, 0xc1, 0xd7, 0x13, 0xf7, 0x61, 0xf0, 0xcd, 0x49, 0x26, 0x67, 0xa9, 0xf8, 0x08,
-	0xc8, 0xe2, 0xa7, 0xbf, 0xfd, 0xf5, 0xd5, 0xe8, 0x3c, 0x9e, 0x53, 0x44, 0xaf, 0x7f, 0xf8, 0x6b,
-	0x09, 0x65, 0x23, 0xdb, 0x10, 0xdf, 0x10, 0xb9, 0x1c, 0xe4, 0x68, 0xf9, 0xe6, 0x50, 0x3d, 0x88,
-	0x7f, 0x8f, 0xc7, 0x7f, 0x19, 0x6f, 0x28, 0xe9, 0xaf, 0x98, 0x4a, 0x37, 0xc6, 0x03, 0x3d, 0xa5,
-	0xcb, 0xd9, 0xbc, 0x87, 0xbf, 0x90, 0xd0, 0x4c, 0x7c, 0xf1, 0xe3, 0x17, 0x86, 0x04, 0xee, 0x6f,
-	0x32, 0x79, 0xfd, 0x3c, 0xaa, 0x00, 0xb3, 0xc8, 0x61, 0x2e, 0xe2, 0xab, 0x67, 0xc0, 0xc4, 0x3f,
-	0x4b, 0x28, 0x9f, 0xc6, 0x43, 0x78, 0x63, 0x78, 0xb4, 0x01, 0x0a, 0x94, 0x5f, 0xba, 0x98, 0x11,
-	0x80, 0xdd, 0xe0, 0x60, 0x6f, 0xe1, 0x17, 0x2f, 0x50, 0x53, 0xfc, 0x99, 0x84, 0xa6, 0xa3, 0x54,
-	0x85, 0x85, 0x2d, 0x14, 0x10, 0x9d, 0xbc, 0x36, 0x5c, 0x11, 0x80, 0xad, 0x70, 0x60, 0x05, 0x7c,
-	0x2d, 0x01, 0xac, 0xc1, 0x95, 0x01, 0x0a, 0xfe, 0x44, 0x42, 0x93, 0xc1, 0x76, 0xc7, 0x45, 0xe1,
-	0x0c, 0xc7, 0xd9, 0x51, 0x5e, 0x39, 0x5b, 0x09, 0xa2, 0xaf, 0xf3, 0xe8, 0x2b, 0x98, 0x28, 0x29,
-	0xdf, 0x2a, 0x4a, 0x17, 0x48, 0xb5, 0x87, 0x3f, 0x96, 0x50, 0x36, 0x42, 0x4c, 0xe2, 0xb9, 0x1f,
-	0x64, 0x47, 0xf1, 0xdc, 0x0b, 0x18, 0x8e, 0x2c, 0x73, 0x30, 0x32, 0xce, 0xa7, 0x81, 0xc1, 0x26,
-	0xca, 0x00, 0x17, 0x88, 0xaf, 0x7a, 0x94, 0x95, 0x52, 0xae, 0x7a, 0x8c, 0xa1, 0x48, 0x81, 0x87,
-	0xcc, 0xe3, 0x2b, 0xc9, 0x90, 0x3e, 0xc1, 0xe0, 0xcf, 0x25, 0x94, 0x8d, 0xac, 0x77, 0x71, 0xce,
-	0x83, 0xcc, 0x21, 0xce, 0x59, 0xc0, 0x13, 0x64, 0x8d, 0x03, 0x20, 0x78, 0x39, 0x01, 0x20, 0xd8,
-	0xb2, 0x4a, 0xd7, 0x27, 0x8b, 0x9e, 0x07, 0x65, 0x26, 0xfe, 0x99, 0x22, 0xbe, 0xd8, 0xc2, 0x2f,
-	0x26, 0xf1, 0xc5, 0x16, 0x7f, 0xf5, 0x90, 0x25, 0x8e, 0x69, 0x01, 0xcf, 0xa7, 0x60, 0xc2, 0x3f,
-	0x49, 0x08, 0x0f, 0x72, 0x1f, 0xbe, 0x25, 0x2c, 0x78, 0x1a, 0xbb, 0xca, 0xa5, 0xf3, 0xaa, 0x03,
-	0xac, 0xfb, 0x1c, 0xd6, 0xeb, 0xf8, 0x9e, 0xb2, 0x43, 0x75, 0xbb, 0xd6, 0x30, 0xeb, 0x87, 0x09,
-	0x80, 0xce, 0x81, 0xf9, 0x61, 0xd5, 0xf2, 0x3d, 0x84, 0x3c, 0x55, 0xb5, 0x59, 0xab, 0x5f, 0xc5,
-	0x1f, 0x25, 0x94, 0x8d, 0xb0, 0x8e, 0xb8, 0xa1, 0x83, 0xac, 0x28, 0x6e, 0xa8, 0x80, 0xbe, 0xc8,
-	0xbb, 0x1c, 0xe5, 0x1e, 0x7e, 0x94, 0x8a, 0x12, 0x78, 0x8c, 0x73, 0x9b, 0xd2, 0xf5, 0xd9, 0xb5,
-	0xa7, 0x74, 0x63, 0xe4, 0xda, 0x53, 0xba, 0x71, 0x1e, 0xed, 0x6d, 0x6d, 0x3f, 0x39, 0x29, 0x48,
-	0x4f, 0x4f, 0x0a, 0xd2, 0x9f, 0x27, 0x05, 0xe9, 0xcb, 0xd3, 0xc2, 0xc8, 0xd3, 0xd3, 0xc2, 0xc8,
-	0xef, 0xa7, 0x85, 0x91, 0xf7, 0xd6, 0x35, 0xdd, 0x3d, 0x68, 0xd7, 0xbc, 0x37, 0x00, 0x61, 0xd0,
-	0x63, 0x1e, 0x96, 0xff, 0xaa, 0x50, 0xcb, 0xf0, 0x9f, 0x15, 0x36, 0xfe, 0x0d, 0x00, 0x00, 0xff,
-	0xff, 0x27, 0x9b, 0xe7, 0xea, 0x77, 0x11, 0x00, 0x00,
+	// 1364 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0xdf, 0x6f, 0xdb, 0x54,
+	0x14, 0xae, 0xbb, 0x2e, 0xdb, 0x6e, 0xdb, 0x0c, 0x2e, 0xed, 0x9a, 0x79, 0x5b, 0xda, 0xdd, 0xb6,
+	0xdb, 0xc8, 0xb4, 0x78, 0x6b, 0x8b, 0x84, 0xc6, 0x53, 0x4b, 0xdb, 0x31, 0x65, 0x6c, 0x6d, 0x36,
+	0x69, 0x12, 0x0f, 0x58, 0x37, 0xf1, 0xc5, 0xb5, 0x96, 0xd8, 0x8e, 0x7d, 0x53, 0x35, 0x0a, 0x91,
+	0x00, 0x21, 0xf1, 0xc2, 0x03, 0x12, 0x8f, 0x20, 0xf1, 0x86, 0x78, 0x44, 0xe2, 0x01, 0x09, 0x1e,
+	0x79, 0x60, 0x8f, 0x93, 0x78, 0xe1, 0x09, 0xa1, 0x16, 0x89, 0x7f, 0x03, 0xf9, 0xfa, 0x38, 0xb1,
+	0x9d, 0x9b, 0x26, 0x15, 0xdb, 0x4b, 0x55, 0x1f, 0x9f, 0x73, 0xbe, 0xef, 0xfc, 0xf0, 0xfd, 0xec,
+	0xa0, 0x8b, 0x1f, 0x51, 0xcb, 0x6b, 0x79, 0x96, 0x6d, 0x6a, 0x2e, 0x73, 0xb5, 0x46, 0x93, 0x79,
+	0xad, 0xa2, 0xeb, 0x39, 0xdc, 0xc1, 0xd3, 0xdd, 0x5b, 0x45, 0x97, 0xb9, 0xea, 0xeb, 0xb4, 0x6e,
+	0xd9, 0x8e, 0x26, 0xfe, 0x86, 0x1e, 0xea, 0x8c, 0xe9, 0x98, 0x8e, 0xf8, 0x57, 0x0b, 0xfe, 0x03,
+	0xeb, 0x65, 0xd3, 0x71, 0xcc, 0x1a, 0xd3, 0xa8, 0x6b, 0x69, 0xd4, 0xb6, 0x1d, 0x4e, 0xb9, 0xe5,
+	0xd8, 0x3e, 0xdc, 0x2d, 0x54, 0x1d, 0xbf, 0xee, 0xf8, 0x5a, 0x85, 0xfa, 0x2c, 0x84, 0xd3, 0xf6,
+	0xef, 0x54, 0x18, 0xa7, 0x77, 0x34, 0x97, 0x9a, 0x96, 0x2d, 0x9c, 0xc1, 0x57, 0x4d, 0x92, 0x73,
+	0xa9, 0x47, 0xeb, 0x51, 0x9e, 0x85, 0xe4, 0x3d, 0x66, 0x57, 0xbd, 0x96, 0xcb, 0x99, 0xa1, 0xf3,
+	0x03, 0xf0, 0xb8, 0x92, 0x8a, 0x66, 0xae, 0x6e, 0x3b, 0x76, 0x95, 0xc1, 0xed, 0xc5, 0xde, 0xed,
+	0xaa, 0x53, 0xaf, 0x3b, 0xb6, 0xe6, 0xef, 0x51, 0x2f, 0x48, 0xd0, 0x72, 0x19, 0xa0, 0x90, 0x19,
+	0x84, 0x77, 0x03, 0x8e, 0x3b, 0x02, 0xba, 0xcc, 0x1a, 0x4d, 0xe6, 0x73, 0xf2, 0x08, 0xbd, 0x91,
+	0xb0, 0xfa, 0xae, 0x63, 0xfb, 0x0c, 0xbf, 0x8d, 0x32, 0x21, 0xc5, 0x9c, 0xb2, 0xa0, 0xdc, 0x98,
+	0x5c, 0x99, 0x2d, 0x26, 0x3a, 0x58, 0x0c, 0xdd, 0x37, 0xce, 0x3d, 0xff, 0x6b, 0x7e, 0xec, 0x87,
+	0x7f, 0x7f, 0x2c, 0x28, 0x65, 0xf0, 0x27, 0x6b, 0xe8, 0x92, 0x48, 0x78, 0x8f, 0xd9, 0xcc, 0xa3,
+	0xb5, 0xfb, 0x06, 0xb3, 0xb9, 0xc5, 0x5b, 0x80, 0x87, 0x67, 0x51, 0xc6, 0x63, 0x0d, 0xdd, 0x32,
+	0x44, 0xe2, 0x73, 0xe5, 0xd3, 0x1e, 0x6b, 0xdc, 0x37, 0x88, 0x8d, 0x2e, 0xcb, 0xa3, 0x80, 0xcf,
+	0x43, 0x74, 0xde, 0x0b, 0x33, 0xe8, 0x06, 0xe3, 0xd4, 0xaa, 0x45, 0xc4, 0x96, 0x53, 0xc4, 0xa2,
+	0xc8, 0xad, 0x03, 0x56, 0x6d, 0x06, 0xfd, 0xdf, 0xb2, 0xb9, 0xd7, 0x2a, 0x67, 0x21, 0x7a, 0x33,
+	0x0c, 0x26, 0x7b, 0x28, 0x2f, 0xc3, 0x5b, 0xaf, 0xd5, 0x22, 0xa2, 0xdb, 0x08, 0xf5, 0x86, 0x08,
+	0x60, 0xd7, 0x8a, 0xe1, 0xc4, 0x8b, 0xc1, 0xc4, 0x8b, 0xe1, 0x82, 0xc1, 0xc4, 0x8b, 0x3b, 0xd4,
+	0x64, 0x10, 0x5b, 0x8e, 0x45, 0x92, 0xdf, 0x14, 0x34, 0x3f, 0x10, 0x0a, 0xaa, 0x7b, 0x8a, 0x66,
+	0x52, 0xd5, 0xe9, 0x35, 0xcb, 0xe7, 0x39, 0x65, 0xe1, 0xd4, 0xe8, 0x25, 0xe2, 0x64, 0x89, 0x0f,
+	0x2c, 0x9f, 0xe3, 0x7b, 0x89, 0x22, 0xc6, 0x45, 0x11, 0xd7, 0x87, 0x16, 0x11, 0xb2, 0x4a, 0x54,
+	0xf1, 0x04, 0xcd, 0x89, 0x22, 0xb6, 0xa2, 0xdd, 0x7c, 0x72, 0x10, 0x35, 0x6a, 0x11, 0x4d, 0x73,
+	0xea, 0x99, 0x8c, 0xeb, 0x7b, 0xcc, 0x32, 0xf7, 0xb8, 0xe8, 0xd5, 0x44, 0x79, 0x2a, 0x34, 0xbe,
+	0x27, 0x6c, 0x78, 0x06, 0x9d, 0xb6, 0x6c, 0x83, 0x1d, 0x08, 0x0e, 0x13, 0xe5, 0xf0, 0x82, 0xe8,
+	0x28, 0xd7, 0x9f, 0x15, 0x7a, 0xf2, 0x2e, 0x9a, 0x8a, 0x3f, 0x08, 0x30, 0x01, 0x35, 0xd5, 0x8b,
+	0x58, 0xe4, 0xc6, 0x44, 0xb0, 0x8c, 0xe5, 0x49, 0xd6, 0x33, 0x11, 0x03, 0xa9, 0x69, 0x80, 0x57,
+	0x30, 0xe2, 0x5f, 0x15, 0xd8, 0xf9, 0x34, 0x0c, 0x94, 0xf2, 0x18, 0xe1, 0x78, 0x29, 0x3a, 0xf5,
+	0x3c, 0xda, 0x82, 0xe1, 0xce, 0x0f, 0x2e, 0x68, 0x3d, 0x70, 0x83, 0xaa, 0x5e, 0x63, 0x29, 0xfb,
+	0xcb, 0x1b, 0x6d, 0x09, 0x2d, 0x49, 0xc8, 0x6f, 0x7b, 0x4e, 0x3d, 0x9c, 0xdd, 0x49, 0xe6, 0x4c,
+	0x3e, 0x46, 0xcb, 0x43, 0x92, 0x0d, 0xe9, 0x89, 0xf2, 0x3f, 0x7a, 0x42, 0x54, 0xd8, 0xa7, 0x07,
+	0x94, 0x33, 0x9f, 0x27, 0xe8, 0x93, 0x55, 0x74, 0x51, 0x72, 0x0f, 0xd8, 0x5c, 0x40, 0x99, 0x44,
+	0x51, 0x70, 0x45, 0x6e, 0xa3, 0x99, 0xf0, 0x74, 0x64, 0xee, 0xc3, 0xe0, 0xbc, 0x8d, 0x7a, 0x91,
+	0x43, 0x67, 0xa8, 0x61, 0x78, 0xcc, 0xf7, 0xe1, 0x18, 0x8b, 0x2e, 0xc9, 0x63, 0x34, 0x9b, 0x8a,
+	0x00, 0x88, 0xbb, 0xe8, 0x5c, 0xf7, 0xd8, 0x86, 0x3a, 0xe7, 0xd2, 0x87, 0x2a, 0xc4, 0x40, 0x7d,
+	0x67, 0x5d, 0xb8, 0x26, 0x14, 0x9e, 0xbe, 0xc8, 0xe1, 0x15, 0xec, 0xf0, 0x77, 0x0a, 0xf4, 0x2e,
+	0x81, 0x21, 0xe7, 0x7e, 0xea, 0x04, 0xdc, 0x5f, 0xde, 0x9e, 0x76, 0xf5, 0xab, 0x59, 0x29, 0xb1,
+	0x48, 0x4f, 0xc8, 0x4f, 0x4a, 0x24, 0x60, 0x60, 0x06, 0xca, 0xef, 0xa3, 0x2c, 0xad, 0x72, 0x6b,
+	0x9f, 0xe9, 0x6e, 0xb3, 0xa2, 0x3f, 0x63, 0xd1, 0x6e, 0x5d, 0x8d, 0xf1, 0x0e, 0xb5, 0xb2, 0xb8,
+	0x2e, 0xfc, 0x76, 0x9a, 0x95, 0x9a, 0x55, 0x2d, 0xb1, 0x68, 0xbb, 0xa6, 0x68, 0x64, 0x2e, 0xb1,
+	0x56, 0x90, 0xae, 0xd1, 0x64, 0x4d, 0x66, 0x74, 0xd3, 0x8d, 0x0f, 0x4a, 0xb7, 0x2b, 0xfc, 0xfa,
+	0xd2, 0x35, 0x22, 0x73, 0x89, 0xb5, 0xba, 0x22, 0xb9, 0xe3, 0x59, 0xfb, 0x94, 0xb3, 0x11, 0x45,
+	0xf2, 0x77, 0x05, 0x54, 0xb2, 0x2f, 0x0c, 0x8a, 0xce, 0xa1, 0x33, 0x55, 0x8f, 0x51, 0xee, 0x78,
+	0xd1, 0x5a, 0xc2, 0x65, 0x2c, 0xe3, 0x78, 0x2c, 0x63, 0xb0, 0xf7, 0x6e, 0xb3, 0x12, 0x94, 0x73,
+	0x4a, 0x98, 0xe1, 0x0a, 0x7f, 0x88, 0xe6, 0xdc, 0x10, 0x43, 0x37, 0x98, 0x78, 0xc8, 0x2c, 0xc7,
+	0x0e, 0xca, 0xf6, 0x73, 0x13, 0x62, 0xfc, 0xd7, 0xfa, 0xeb, 0x06, 0x52, 0x9b, 0x5d, 0xff, 0x60,
+	0x1c, 0xb3, 0xae, 0xc4, 0xea, 0x93, 0x0e, 0x2c, 0x34, 0x98, 0x37, 0x29, 0xa7, 0x51, 0xed, 0x3d,
+	0x4a, 0x4a, 0x82, 0xd2, 0x22, 0x9a, 0xa6, 0xa6, 0xe9, 0x09, 0x12, 0xc1, 0xcb, 0x0d, 0x14, 0x32,
+	0x15, 0x18, 0x4b, 0x60, 0xc3, 0xcb, 0x28, 0xdb, 0x3b, 0x55, 0x0c, 0xca, 0x29, 0xd4, 0x35, 0xdd,
+	0xb5, 0x06, 0x50, 0x64, 0x1d, 0x76, 0x3d, 0x01, 0x0f, 0x3d, 0x5c, 0x46, 0x59, 0x28, 0x39, 0x4a,
+	0x11, 0xf2, 0x98, 0xee, 0x5a, 0x03, 0xf7, 0x95, 0xcf, 0xb3, 0xe8, 0xb4, 0xc8, 0x81, 0x6d, 0x94,
+	0x09, 0xdf, 0x86, 0xf0, 0xd5, 0xd4, 0x33, 0xd1, 0xff, 0xba, 0xa5, 0x92, 0xe3, 0x5c, 0x42, 0x06,
+	0xe4, 0xca, 0x67, 0x7f, 0xfc, 0xf3, 0xf5, 0xf8, 0x1c, 0x9e, 0xd5, 0x64, 0xef, 0x8c, 0xf8, 0x1b,
+	0x05, 0x4d, 0xc6, 0x4e, 0x44, 0x7c, 0x4d, 0x96, 0xb2, 0x5f, 0xa7, 0xd5, 0xeb, 0x43, 0xfd, 0x00,
+	0xff, 0x1d, 0x81, 0xff, 0x16, 0x5e, 0xd5, 0x06, 0xbf, 0x97, 0x6a, 0xed, 0x84, 0x16, 0x74, 0xb4,
+	0xb6, 0x50, 0xf4, 0x0e, 0xfe, 0x52, 0x41, 0xd9, 0xe4, 0xe1, 0x8f, 0xdf, 0x1c, 0x02, 0xdc, 0x3b,
+	0xcd, 0xd4, 0xc2, 0x28, 0xae, 0x40, 0x73, 0x51, 0xd0, 0xbc, 0x82, 0x2f, 0x1d, 0x43, 0x13, 0xff,
+	0xa2, 0xa0, 0xdc, 0x20, 0x2d, 0xc2, 0xab, 0xc3, 0xd1, 0xfa, 0x64, 0x50, 0x5d, 0x3b, 0x59, 0x10,
+	0x90, 0x5d, 0x15, 0x64, 0x6f, 0xe1, 0x9b, 0x27, 0xe8, 0x29, 0xfe, 0x42, 0x41, 0x53, 0x71, 0xb9,
+	0xc2, 0xd2, 0x11, 0x4a, 0xc4, 0x4e, 0xbd, 0x31, 0xdc, 0x11, 0x88, 0x2d, 0x09, 0x62, 0x79, 0x7c,
+	0x39, 0x45, 0xac, 0x26, 0x9c, 0x81, 0x0a, 0xfe, 0x54, 0x41, 0x67, 0xa3, 0x13, 0x1e, 0x2f, 0x4a,
+	0x77, 0x38, 0xa9, 0x90, 0xea, 0xd2, 0xf1, 0x4e, 0x80, 0x5e, 0x10, 0xe8, 0x4b, 0x98, 0x68, 0x03,
+	0x3e, 0x70, 0xb4, 0x36, 0x08, 0x6b, 0x07, 0x7f, 0xa2, 0xa0, 0xc9, 0x98, 0x38, 0xc9, 0xf7, 0xbe,
+	0x5f, 0x21, 0xe5, 0x7b, 0x2f, 0x51, 0x39, 0xb2, 0x20, 0xc8, 0xa8, 0x38, 0x37, 0x88, 0x0c, 0x76,
+	0x50, 0x06, 0xf4, 0x40, 0xfe, 0xa8, 0xc7, 0x95, 0x69, 0xc0, 0xa3, 0x9e, 0x50, 0x29, 0x92, 0x17,
+	0x90, 0x39, 0x7c, 0x21, 0x0d, 0x19, 0x8a, 0x0c, 0xfe, 0x56, 0x41, 0xe7, 0x53, 0xdf, 0x0d, 0x58,
+	0xfa, 0x8c, 0xc8, 0xbf, 0xb6, 0xd4, 0x9b, 0x23, 0xf9, 0x02, 0x99, 0xdb, 0x82, 0x4c, 0x01, 0xdf,
+	0x48, 0x91, 0x31, 0x43, 0x7f, 0xdd, 0x82, 0x00, 0xad, 0x1d, 0x4a, 0x49, 0x27, 0xa0, 0x87, 0xfb,
+	0x3f, 0x6b, 0xf0, 0xad, 0x11, 0x50, 0x63, 0x03, 0x2a, 0x8e, 0xea, 0x0e, 0x3c, 0xaf, 0x0b, 0x9e,
+	0x57, 0xf1, 0xfc, 0x10, 0x9e, 0xf8, 0x7b, 0x05, 0x9d, 0x4f, 0x49, 0xa5, 0xbc, 0x7b, 0x72, 0x19,
+	0x96, 0x77, 0x6f, 0x80, 0xf6, 0x92, 0xbb, 0x82, 0xd5, 0x1a, 0x5e, 0xd1, 0xb6, 0xa9, 0xe5, 0x55,
+	0x6a, 0x4e, 0xf5, 0x59, 0x7a, 0xa8, 0xa0, 0xa8, 0xfd, 0x7d, 0xfc, 0x59, 0x41, 0x93, 0x31, 0x2d,
+	0x92, 0xaf, 0x76, 0xbf, 0x56, 0xca, 0x57, 0x5b, 0x22, 0x6a, 0xe4, 0xa9, 0x20, 0xb7, 0x8b, 0x1f,
+	0x0d, 0x24, 0x07, 0xea, 0x26, 0x14, 0x4f, 0x6b, 0x87, 0x9a, 0xdb, 0xd1, 0xda, 0x09, 0xc9, 0xed,
+	0x68, 0xed, 0xa4, 0xba, 0x76, 0x36, 0x36, 0x9f, 0x1f, 0xe6, 0x95, 0x17, 0x87, 0x79, 0xe5, 0xef,
+	0xc3, 0xbc, 0xf2, 0xd5, 0x51, 0x7e, 0xec, 0xc5, 0x51, 0x7e, 0xec, 0xcf, 0xa3, 0xfc, 0xd8, 0x07,
+	0x05, 0xd3, 0xe2, 0x7b, 0xcd, 0x4a, 0xf0, 0x76, 0x20, 0x05, 0x3d, 0x10, 0xb0, 0xe2, 0x07, 0x8a,
+	0x4a, 0x46, 0xfc, 0x42, 0xb1, 0xfa, 0x5f, 0x00, 0x00, 0x00, 0xff, 0xff, 0xcd, 0xd8, 0xe0, 0x49,
+	0xc2, 0x11, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1314,12 +1316,12 @@ type QueryClient interface {
 	PepNonceAll(ctx context.Context, in *QueryPepNonceAllRequest, opts ...grpc.CallOption) (*QueryPepNonceAllResponse, error)
 	// Queries the public keys
 	PubKey(ctx context.Context, in *QueryPubKeyRequest, opts ...grpc.CallOption) (*QueryPubKeyResponse, error)
-	// Queries a Keyshare request by identity
-	KeyshareReq(ctx context.Context, in *QueryKeyshareReqRequest, opts ...grpc.CallOption) (*QueryKeyshareReqResponse, error)
-	// queries a list of keyshare requests
-	KeyshareReqAll(ctx context.Context, in *QueryKeyshareReqAllRequest, opts ...grpc.CallOption) (*QueryKeyshareReqAllResponse, error)
-	// Queries a list of ShowPrivateKeyshareReq items.
-	PrivateKeyshareReq(ctx context.Context, in *QueryPrivateKeyshareReqRequest, opts ...grpc.CallOption) (*QueryPrivateKeyshareReqResponse, error)
+	// Queries a General Identity request by request id
+	GeneralIdentity(ctx context.Context, in *QueryGeneralIdentityRequest, opts ...grpc.CallOption) (*QueryGeneralIdentityResponse, error)
+	// Queries a list of General Identity requests
+	GeneralIdentityAll(ctx context.Context, in *QueryGeneralIdentityAllRequest, opts ...grpc.CallOption) (*QueryGeneralIdentityAllResponse, error)
+	// Queries a Private Identity request item by req id.
+	PrivateIdentity(ctx context.Context, in *QueryPrivateIdentityRequest, opts ...grpc.CallOption) (*QueryPrivateIdentityResponse, error)
 	// Queries a list of DecryptData items.
 	DecryptData(ctx context.Context, in *QueryDecryptDataRequest, opts ...grpc.CallOption) (*QueryDecryptDataResponse, error)
 }
@@ -1404,27 +1406,27 @@ func (c *queryClient) PubKey(ctx context.Context, in *QueryPubKeyRequest, opts .
 	return out, nil
 }
 
-func (c *queryClient) KeyshareReq(ctx context.Context, in *QueryKeyshareReqRequest, opts ...grpc.CallOption) (*QueryKeyshareReqResponse, error) {
-	out := new(QueryKeyshareReqResponse)
-	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/KeyshareReq", in, out, opts...)
+func (c *queryClient) GeneralIdentity(ctx context.Context, in *QueryGeneralIdentityRequest, opts ...grpc.CallOption) (*QueryGeneralIdentityResponse, error) {
+	out := new(QueryGeneralIdentityResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/GeneralIdentity", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) KeyshareReqAll(ctx context.Context, in *QueryKeyshareReqAllRequest, opts ...grpc.CallOption) (*QueryKeyshareReqAllResponse, error) {
-	out := new(QueryKeyshareReqAllResponse)
-	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/KeyshareReqAll", in, out, opts...)
+func (c *queryClient) GeneralIdentityAll(ctx context.Context, in *QueryGeneralIdentityAllRequest, opts ...grpc.CallOption) (*QueryGeneralIdentityAllResponse, error) {
+	out := new(QueryGeneralIdentityAllResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/GeneralIdentityAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) PrivateKeyshareReq(ctx context.Context, in *QueryPrivateKeyshareReqRequest, opts ...grpc.CallOption) (*QueryPrivateKeyshareReqResponse, error) {
-	out := new(QueryPrivateKeyshareReqResponse)
-	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/PrivateKeyshareReq", in, out, opts...)
+func (c *queryClient) PrivateIdentity(ctx context.Context, in *QueryPrivateIdentityRequest, opts ...grpc.CallOption) (*QueryPrivateIdentityResponse, error) {
+	out := new(QueryPrivateIdentityResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/PrivateIdentity", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1458,12 +1460,12 @@ type QueryServer interface {
 	PepNonceAll(context.Context, *QueryPepNonceAllRequest) (*QueryPepNonceAllResponse, error)
 	// Queries the public keys
 	PubKey(context.Context, *QueryPubKeyRequest) (*QueryPubKeyResponse, error)
-	// Queries a Keyshare request by identity
-	KeyshareReq(context.Context, *QueryKeyshareReqRequest) (*QueryKeyshareReqResponse, error)
-	// queries a list of keyshare requests
-	KeyshareReqAll(context.Context, *QueryKeyshareReqAllRequest) (*QueryKeyshareReqAllResponse, error)
-	// Queries a list of ShowPrivateKeyshareReq items.
-	PrivateKeyshareReq(context.Context, *QueryPrivateKeyshareReqRequest) (*QueryPrivateKeyshareReqResponse, error)
+	// Queries a General Identity request by request id
+	GeneralIdentity(context.Context, *QueryGeneralIdentityRequest) (*QueryGeneralIdentityResponse, error)
+	// Queries a list of General Identity requests
+	GeneralIdentityAll(context.Context, *QueryGeneralIdentityAllRequest) (*QueryGeneralIdentityAllResponse, error)
+	// Queries a Private Identity request item by req id.
+	PrivateIdentity(context.Context, *QueryPrivateIdentityRequest) (*QueryPrivateIdentityResponse, error)
 	// Queries a list of DecryptData items.
 	DecryptData(context.Context, *QueryDecryptDataRequest) (*QueryDecryptDataResponse, error)
 }
@@ -1496,14 +1498,14 @@ func (*UnimplementedQueryServer) PepNonceAll(ctx context.Context, req *QueryPepN
 func (*UnimplementedQueryServer) PubKey(ctx context.Context, req *QueryPubKeyRequest) (*QueryPubKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PubKey not implemented")
 }
-func (*UnimplementedQueryServer) KeyshareReq(ctx context.Context, req *QueryKeyshareReqRequest) (*QueryKeyshareReqResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method KeyshareReq not implemented")
+func (*UnimplementedQueryServer) GeneralIdentity(ctx context.Context, req *QueryGeneralIdentityRequest) (*QueryGeneralIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GeneralIdentity not implemented")
 }
-func (*UnimplementedQueryServer) KeyshareReqAll(ctx context.Context, req *QueryKeyshareReqAllRequest) (*QueryKeyshareReqAllResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method KeyshareReqAll not implemented")
+func (*UnimplementedQueryServer) GeneralIdentityAll(ctx context.Context, req *QueryGeneralIdentityAllRequest) (*QueryGeneralIdentityAllResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GeneralIdentityAll not implemented")
 }
-func (*UnimplementedQueryServer) PrivateKeyshareReq(ctx context.Context, req *QueryPrivateKeyshareReqRequest) (*QueryPrivateKeyshareReqResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PrivateKeyshareReq not implemented")
+func (*UnimplementedQueryServer) PrivateIdentity(ctx context.Context, req *QueryPrivateIdentityRequest) (*QueryPrivateIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PrivateIdentity not implemented")
 }
 func (*UnimplementedQueryServer) DecryptData(ctx context.Context, req *QueryDecryptDataRequest) (*QueryDecryptDataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DecryptData not implemented")
@@ -1657,56 +1659,56 @@ func _Query_PubKey_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_KeyshareReq_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryKeyshareReqRequest)
+func _Query_GeneralIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGeneralIdentityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).KeyshareReq(ctx, in)
+		return srv.(QueryServer).GeneralIdentity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fairyring.pep.Query/KeyshareReq",
+		FullMethod: "/fairyring.pep.Query/GeneralIdentity",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).KeyshareReq(ctx, req.(*QueryKeyshareReqRequest))
+		return srv.(QueryServer).GeneralIdentity(ctx, req.(*QueryGeneralIdentityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_KeyshareReqAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryKeyshareReqAllRequest)
+func _Query_GeneralIdentityAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGeneralIdentityAllRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).KeyshareReqAll(ctx, in)
+		return srv.(QueryServer).GeneralIdentityAll(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fairyring.pep.Query/KeyshareReqAll",
+		FullMethod: "/fairyring.pep.Query/GeneralIdentityAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).KeyshareReqAll(ctx, req.(*QueryKeyshareReqAllRequest))
+		return srv.(QueryServer).GeneralIdentityAll(ctx, req.(*QueryGeneralIdentityAllRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_PrivateKeyshareReq_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryPrivateKeyshareReqRequest)
+func _Query_PrivateIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryPrivateIdentityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).PrivateKeyshareReq(ctx, in)
+		return srv.(QueryServer).PrivateIdentity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fairyring.pep.Query/PrivateKeyshareReq",
+		FullMethod: "/fairyring.pep.Query/PrivateIdentity",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).PrivateKeyshareReq(ctx, req.(*QueryPrivateKeyshareReqRequest))
+		return srv.(QueryServer).PrivateIdentity(ctx, req.(*QueryPrivateIdentityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1766,16 +1768,16 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Query_PubKey_Handler,
 		},
 		{
-			MethodName: "KeyshareReq",
-			Handler:    _Query_KeyshareReq_Handler,
+			MethodName: "GeneralIdentity",
+			Handler:    _Query_GeneralIdentity_Handler,
 		},
 		{
-			MethodName: "KeyshareReqAll",
-			Handler:    _Query_KeyshareReqAll_Handler,
+			MethodName: "GeneralIdentityAll",
+			Handler:    _Query_GeneralIdentityAll_Handler,
 		},
 		{
-			MethodName: "PrivateKeyshareReq",
-			Handler:    _Query_PrivateKeyshareReq_Handler,
+			MethodName: "PrivateIdentity",
+			Handler:    _Query_PrivateIdentity_Handler,
 		},
 		{
 			MethodName: "DecryptData",
@@ -1842,7 +1844,7 @@ func (m *QueryParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryKeyshareReqRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryGeneralIdentityRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1852,12 +1854,12 @@ func (m *QueryKeyshareReqRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryKeyshareReqRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryKeyshareReqRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1872,7 +1874,7 @@ func (m *QueryKeyshareReqRequest) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryKeyshareReqResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryGeneralIdentityResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1882,19 +1884,19 @@ func (m *QueryKeyshareReqResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryKeyshareReqResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryKeyshareReqResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Keyshare != nil {
+	if m.RequestDetails != nil {
 		{
-			size, err := m.Keyshare.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.RequestDetails.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1907,7 +1909,7 @@ func (m *QueryKeyshareReqResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryKeyshareReqAllRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryGeneralIdentityAllRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1917,12 +1919,12 @@ func (m *QueryKeyshareReqAllRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryKeyshareReqAllRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityAllRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryKeyshareReqAllRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityAllRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1942,7 +1944,7 @@ func (m *QueryKeyshareReqAllRequest) MarshalToSizedBuffer(dAtA []byte) (int, err
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryKeyshareReqAllResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryGeneralIdentityAllResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1952,12 +1954,12 @@ func (m *QueryKeyshareReqAllResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryKeyshareReqAllResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityAllResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryKeyshareReqAllResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityAllResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1974,10 +1976,10 @@ func (m *QueryKeyshareReqAllResponse) MarshalToSizedBuffer(dAtA []byte) (int, er
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(m.Keyshares) > 0 {
-		for iNdEx := len(m.Keyshares) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.RequestDetailsList) > 0 {
+		for iNdEx := len(m.RequestDetailsList) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.Keyshares[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.RequestDetailsList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -2466,7 +2468,7 @@ func (m *QueryPubKeyResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryPrivateKeyshareReqRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryPrivateIdentityRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2476,12 +2478,12 @@ func (m *QueryPrivateKeyshareReqRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryPrivateKeyshareReqRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryPrivateIdentityRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryPrivateKeyshareReqRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryPrivateIdentityRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2496,7 +2498,7 @@ func (m *QueryPrivateKeyshareReqRequest) MarshalToSizedBuffer(dAtA []byte) (int,
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryPrivateKeyshareReqResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryPrivateIdentityResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2506,20 +2508,20 @@ func (m *QueryPrivateKeyshareReqResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryPrivateKeyshareReqResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryPrivateIdentityResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryPrivateKeyshareReqResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryPrivateIdentityResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.EncryptedKeyshares) > 0 {
-		for iNdEx := len(m.EncryptedKeyshares) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.PrivateDecryptionKeys) > 0 {
+		for iNdEx := len(m.PrivateDecryptionKeys) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.EncryptedKeyshares[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.PrivateDecryptionKeys[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -2527,7 +2529,7 @@ func (m *QueryPrivateKeyshareReqResponse) MarshalToSizedBuffer(dAtA []byte) (int
 				i = encodeVarintQuery(dAtA, i, uint64(size))
 			}
 			i--
-			dAtA[i] = 0x2a
+			dAtA[i] = 0x22
 		}
 	}
 	if len(m.Pubkey) > 0 {
@@ -2659,7 +2661,7 @@ func (m *QueryParamsResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryKeyshareReqRequest) Size() (n int) {
+func (m *QueryGeneralIdentityRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2672,20 +2674,20 @@ func (m *QueryKeyshareReqRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryKeyshareReqResponse) Size() (n int) {
+func (m *QueryGeneralIdentityResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Keyshare != nil {
-		l = m.Keyshare.Size()
+	if m.RequestDetails != nil {
+		l = m.RequestDetails.Size()
 		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
 }
 
-func (m *QueryKeyshareReqAllRequest) Size() (n int) {
+func (m *QueryGeneralIdentityAllRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2698,14 +2700,14 @@ func (m *QueryKeyshareReqAllRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryKeyshareReqAllResponse) Size() (n int) {
+func (m *QueryGeneralIdentityAllResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if len(m.Keyshares) > 0 {
-		for _, e := range m.Keyshares {
+	if len(m.RequestDetailsList) > 0 {
+		for _, e := range m.RequestDetailsList {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -2897,7 +2899,7 @@ func (m *QueryPubKeyResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryPrivateKeyshareReqRequest) Size() (n int) {
+func (m *QueryPrivateIdentityRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2910,7 +2912,7 @@ func (m *QueryPrivateKeyshareReqRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryPrivateKeyshareReqResponse) Size() (n int) {
+func (m *QueryPrivateIdentityResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2928,8 +2930,8 @@ func (m *QueryPrivateKeyshareReqResponse) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
-	if len(m.EncryptedKeyshares) > 0 {
-		for _, e := range m.EncryptedKeyshares {
+	if len(m.PrivateDecryptionKeys) > 0 {
+		for _, e := range m.PrivateDecryptionKeys {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -3110,7 +3112,7 @@ func (m *QueryParamsResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryKeyshareReqRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryGeneralIdentityRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3133,10 +3135,10 @@ func (m *QueryKeyshareReqRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryKeyshareReqRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGeneralIdentityRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryKeyshareReqRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGeneralIdentityRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3192,7 +3194,7 @@ func (m *QueryKeyshareReqRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryKeyshareReqResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryGeneralIdentityResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3215,15 +3217,15 @@ func (m *QueryKeyshareReqResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryKeyshareReqResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGeneralIdentityResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryKeyshareReqResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGeneralIdentityResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Keyshare", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field RequestDetails", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -3250,10 +3252,10 @@ func (m *QueryKeyshareReqResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Keyshare == nil {
-				m.Keyshare = &IdentityExecutionQueue{}
+			if m.RequestDetails == nil {
+				m.RequestDetails = &IdentityExecutionEntry{}
 			}
-			if err := m.Keyshare.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.RequestDetails.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -3278,7 +3280,7 @@ func (m *QueryKeyshareReqResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryKeyshareReqAllRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryGeneralIdentityAllRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3301,10 +3303,10 @@ func (m *QueryKeyshareReqAllRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryKeyshareReqAllRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGeneralIdentityAllRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryKeyshareReqAllRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGeneralIdentityAllRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3364,7 +3366,7 @@ func (m *QueryKeyshareReqAllRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryKeyshareReqAllResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryGeneralIdentityAllResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3387,15 +3389,15 @@ func (m *QueryKeyshareReqAllResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryKeyshareReqAllResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGeneralIdentityAllResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryKeyshareReqAllResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGeneralIdentityAllResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Keyshares", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field RequestDetailsList", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -3422,8 +3424,8 @@ func (m *QueryKeyshareReqAllResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Keyshares = append(m.Keyshares, &IdentityExecutionQueue{})
-			if err := m.Keyshares[len(m.Keyshares)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.RequestDetailsList = append(m.RequestDetailsList, &IdentityExecutionEntry{})
+			if err := m.RequestDetailsList[len(m.RequestDetailsList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -4669,7 +4671,7 @@ func (m *QueryPubKeyResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryPrivateKeyshareReqRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryPrivateIdentityRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4692,10 +4694,10 @@ func (m *QueryPrivateKeyshareReqRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryPrivateKeyshareReqRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryPrivateIdentityRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryPrivateKeyshareReqRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryPrivateIdentityRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4751,7 +4753,7 @@ func (m *QueryPrivateKeyshareReqRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryPrivateKeyshareReqResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryPrivateIdentityResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4774,10 +4776,10 @@ func (m *QueryPrivateKeyshareReqResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryPrivateKeyshareReqResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryPrivateIdentityResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryPrivateKeyshareReqResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryPrivateIdentityResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4876,9 +4878,9 @@ func (m *QueryPrivateKeyshareReqResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.Pubkey = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
+		case 4:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field EncryptedKeyshares", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PrivateDecryptionKeys", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -4905,8 +4907,8 @@ func (m *QueryPrivateKeyshareReqResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.EncryptedKeyshares = append(m.EncryptedKeyshares, &types.EncryptedKeyshare{})
-			if err := m.EncryptedKeyshares[len(m.EncryptedKeyshares)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.PrivateDecryptionKeys = append(m.PrivateDecryptionKeys, &types.PrivateDecryptionKey{})
+			if err := m.PrivateDecryptionKeys[len(m.PrivateDecryptionKeys)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

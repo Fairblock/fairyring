@@ -33,23 +33,23 @@ service Msg {
   // aggregated keyshare to a destination chain
   rpc CreateAggregatedKeyShare (MsgCreateAggregatedKeyShare) returns (MsgCreateAggregatedKeyShareResponse);
   
-  // RequestGeneralKeyshare defines an operation to request the
+  // RequestGeneralIdentity defines an operation to request the
   // creation of a new identity to which validators will be required
   // to submit keyshares
-  rpc RequestGeneralKeyshare   (MsgRequestGeneralKeyshare  ) returns (MsgRequestGeneralKeyshareResponse  );
+  rpc RequestGeneralIdentity   (MsgRequestGeneralIdentity  ) returns (MsgRequestGeneralIdentityResponse  );
   
-  // GetGeneralKeyshare defines an operation to signal validators to start
+  // RequestGeneralDecryptionKey defines an operation to signal validators to start
   // submitting keyshares for a particular identity
-  rpc GetGeneralKeyshare       (MsgGetGeneralKeyshare      ) returns (MsgGetGeneralKeyshareResponse      );
+  rpc RequestGeneralDecryptionKey (MsgRequestGeneralDecryptionKey ) returns (MsgRequestGeneralDecryptionKeyResponse );
   
   // RequestPrivateIdentity defines an operation to request the
   // creation of a new identity to which validators will be required
   // to submit encrypted keyshares
   rpc RequestPrivateIdentity   (MsgRequestPrivateIdentity  ) returns (MsgRequestPrivateIdentityResponse  );
   
-  // GetPrivateKeyshares defines an operation to signal validators to start
+  // RequestPrivateDecryptionKey defines an operation to signal validators to start
   // submitting encrypted keyshares for a particular identity
-  rpc GetPrivateKeyshares      (MsgGetPrivateKeyshares     ) returns (MsgGetPrivateKeysharesResponse     );
+  rpc RequestPrivateDecryptionKey (MsgRequestPrivateDecryptionKey ) returns (MsgRequestPrivateDecryptionKeyResponse );
   
   // RegisterContract defines an operation to make an instantiated
   // contract eligible to be automatically executed when a particular
@@ -115,30 +115,30 @@ message MsgCreateAggregatedKeyShare {
 // MsgCreateAggregatedKeyShare message.
 message MsgCreateAggregatedKeyShareResponse {}
 
-// MsgRequestGeneralKeyshare is the Msg/RequestGeneralKeyshare request type.
-message MsgRequestGeneralKeyshare {
+// MsgRequestGeneralIdentity is the Msg/RequestGeneralIdentity request type.
+message MsgRequestGeneralIdentity {
   option (cosmos.msg.v1.signer) = "creator";
   string                   creator         = 1;
   google.protobuf.Duration estimated_delay = 2 [(gogoproto.stdduration) = true];
   string                   req_id          = 3;
 }
 
-// MsgRequestGeneralKeyshareResponse defines the response structure for executing a
-// MsgRequestGeneralKeyshare message.
-message MsgRequestGeneralKeyshareResponse {
+// MsgRequestGeneralIdentityResponse defines the response structure for executing a
+// MsgRequestGeneralIdentity message.
+message MsgRequestGeneralIdentityResponse {
   string req_id = 1;
 }
 
-// MsgGetGeneralKeyshare is the Msg/GetGeneralKeyshare request type.
-message MsgGetGeneralKeyshare {
+// MsgRequestGeneralDecryptionKey is the Msg/RequestGeneralDecryptionKey request type.
+message MsgRequestGeneralDecryptionKey {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   string req_id  = 2;
 }
 
-// MsgGetGeneralKeyshareResponse defines the response structure for executing a
-// MsgGetGeneralKeyshare message.
-message MsgGetGeneralKeyshareResponse {}
+// MsgRequestGeneralDecryptionKeyResponse defines the response structure for executing a
+// MsgRequestGeneralDecryptionKey message.
+message MsgRequestGeneralDecryptionKeyResponse {}
 
 // MsgRequestPrivateIdentity is the Msg/RequestPrivateIdentity request type.
 message MsgRequestPrivateIdentity {
@@ -153,17 +153,17 @@ message MsgRequestPrivateIdentityResponse {
   string req_id = 1;
 }
 
-// MsgGetPrivateKeyshares is the Msg/GetPrivateKeyshares request type.
-message MsgGetPrivateKeyshares {
+// MsgRequestPrivateDecryptionKey is the Msg/RequestPrivateDecryptionKey request type.
+message MsgRequestPrivateDecryptionKey {
   option (cosmos.msg.v1.signer) = "creator";
   string creator       = 1;
   string req_id         = 2;
   string secp_pubkey   = 3;
 }
 
-// MsgGetPrivateKeysharesResponse defines the response structure for executing a
-// MsgGetPrivateKeyshares message.
-message MsgGetPrivateKeysharesResponse {}
+// MsgRequestPrivateDecryptionKeyResponse defines the response structure for executing a
+// MsgRequestPrivateDecryptionKey message.
+message MsgRequestPrivateDecryptionKeyResponse {}
 
 // MsgRegisterContract is the Msg/RegisterContract request type.
 message MsgRegisterContract {

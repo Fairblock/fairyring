@@ -11,4 +11,3 @@ message ValidatorSet {
   string cons_addr = 3;
   bool is_active = 4;
 }
-

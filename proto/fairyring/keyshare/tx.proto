@@ -50,9 +50,9 @@ service Msg {
   // authorization of a previously authorized address
   rpc DeleteAuthorizedAddress (MsgDeleteAuthorizedAddress) returns (MsgDeleteAuthorizedAddressResponse);
   
-  // CreateGeneralKeyShare defines an operation to submit a
+  // SubmitGeneralKeyShare defines an operation to submit a
   // general keyshare from a registered validator
-  rpc CreateGeneralKeyShare   (MsgCreateGeneralKeyShare  ) returns (MsgCreateGeneralKeyShareResponse  );
+  rpc SubmitGeneralKeyShare   (MsgSubmitGeneralKeyShare  ) returns (MsgSubmitGeneralKeyShareResponse  );
   
   // SubmitEncryptedKeyshare defines an operation to submit
   // an encrypted keyshare from a registered validator
@@ -182,8 +182,8 @@ message MsgDeleteAuthorizedAddress {
 // executing a MsgDeleteAuthorizedAddress message.
 message MsgDeleteAuthorizedAddressResponse {}
 
-// MsgCreateGeneralKeyShare is the Msg/CreateGeneralKeyShare request type.
-message MsgCreateGeneralKeyShare {
+// MsgSubmitGeneralKeyShare is the Msg/CreateGeneralKeyShare request type.
+message MsgSubmitGeneralKeyShare {
   option (cosmos.msg.v1.signer) = "creator";
   string creator               = 1;
   string id_type               = 2;
@@ -194,9 +194,9 @@ message MsgCreateGeneralKeyShare {
   uint64 received_block_height = 7;
 }
 
-// MsgCreateGeneralKeyShareResponse defines the response structure for
-// executing a MsgCreateGeneralKeyShare message.
-message MsgCreateGeneralKeyShareResponse {
+// MsgSubmitGeneralKeyShareResponse defines the response structure for
+// executing a MsgSubmitGeneralKeyShare message.
+message MsgSubmitGeneralKeyShareResponse {
   string creator               = 1;
   string id_type               = 2;
   string id_value              = 3;

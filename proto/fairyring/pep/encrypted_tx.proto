@@ -20,7 +20,7 @@ message EncryptedTx {
 
 // EncryptedTxArray defines a list of EncryptedTx
 message EncryptedTxArray {
-  repeated EncryptedTx encrypted_tx = 1 [(gogoproto.nullable) = false];
+  repeated EncryptedTx encrypted_txs = 1 [(gogoproto.nullable) = false];
 }
 
 // GeneralEncryptedTx defines the structure to store a
@@ -35,17 +35,17 @@ message GeneralEncryptedTx {
 
 // GeneralEncryptedTxArray defines a list of GeneralEncryptedTx
 message GeneralEncryptedTxArray {
-  repeated GeneralEncryptedTx encrypted_tx = 1 [(gogoproto.nullable) = false];
+  repeated GeneralEncryptedTx encrypted_txs = 1 [(gogoproto.nullable) = false];
 }
 
-// IdentityExecutionQueue defines the structure to queue up
-// identities that have aggregated keyshares available and
+// IdentityExecutionEntry defines the structure to queue up
+// identities that have decryption keys available and
 // are ready to execute any associated contracts or encrypted transactions
-message IdentityExecutionQueue {
+message IdentityExecutionEntry {
   string creator = 1;
   string request_id = 2;
   string identity = 3;
   string pubkey = 4;
   GeneralEncryptedTxArray tx_list = 5;
-  string aggr_keyshare = 6;
+  string decryption_key = 6;
 }

@@ -8752,37 +8752,37 @@ func (x *fastReflection_MsgDeleteAuthorizedAddressResponse) ProtoMethods() *prot
 }
 
 var (
-	md_MsgCreateGeneralKeyShare                       protoreflect.MessageDescriptor
-	fd_MsgCreateGeneralKeyShare_creator               protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShare_id_type               protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShare_id_value              protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShare_key_share             protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShare_key_share_index       protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShare_received_timestamp    protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShare_received_block_height protoreflect.FieldDescriptor
+	md_MsgSubmitGeneralKeyShare                       protoreflect.MessageDescriptor
+	fd_MsgSubmitGeneralKeyShare_creator               protoreflect.FieldDescriptor
+	fd_MsgSubmitGeneralKeyShare_id_type               protoreflect.FieldDescriptor
+	fd_MsgSubmitGeneralKeyShare_id_value              protoreflect.FieldDescriptor
+	fd_MsgSubmitGeneralKeyShare_key_share             protoreflect.FieldDescriptor
+	fd_MsgSubmitGeneralKeyShare_key_share_index       protoreflect.FieldDescriptor
+	fd_MsgSubmitGeneralKeyShare_received_timestamp    protoreflect.FieldDescriptor
+	fd_MsgSubmitGeneralKeyShare_received_block_height protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_keyshare_tx_proto_init()
-	md_MsgCreateGeneralKeyShare = File_fairyring_keyshare_tx_proto.Messages().ByName("MsgCreateGeneralKeyShare")
-	fd_MsgCreateGeneralKeyShare_creator = md_MsgCreateGeneralKeyShare.Fields().ByName("creator")
-	fd_MsgCreateGeneralKeyShare_id_type = md_MsgCreateGeneralKeyShare.Fields().ByName("id_type")
-	fd_MsgCreateGeneralKeyShare_id_value = md_MsgCreateGeneralKeyShare.Fields().ByName("id_value")
-	fd_MsgCreateGeneralKeyShare_key_share = md_MsgCreateGeneralKeyShare.Fields().ByName("key_share")
-	fd_MsgCreateGeneralKeyShare_key_share_index = md_MsgCreateGeneralKeyShare.Fields().ByName("key_share_index")
-	fd_MsgCreateGeneralKeyShare_received_timestamp = md_MsgCreateGeneralKeyShare.Fields().ByName("received_timestamp")
-	fd_MsgCreateGeneralKeyShare_received_block_height = md_MsgCreateGeneralKeyShare.Fields().ByName("received_block_height")
+	md_MsgSubmitGeneralKeyShare = File_fairyring_keyshare_tx_proto.Messages().ByName("MsgSubmitGeneralKeyShare")
+	fd_MsgSubmitGeneralKeyShare_creator = md_MsgSubmitGeneralKeyShare.Fields().ByName("creator")
+	fd_MsgSubmitGeneralKeyShare_id_type = md_MsgSubmitGeneralKeyShare.Fields().ByName("id_type")
+	fd_MsgSubmitGeneralKeyShare_id_value = md_MsgSubmitGeneralKeyShare.Fields().ByName("id_value")
+	fd_MsgSubmitGeneralKeyShare_key_share = md_MsgSubmitGeneralKeyShare.Fields().ByName("key_share")
+	fd_MsgSubmitGeneralKeyShare_key_share_index = md_MsgSubmitGeneralKeyShare.Fields().ByName("key_share_index")
+	fd_MsgSubmitGeneralKeyShare_received_timestamp = md_MsgSubmitGeneralKeyShare.Fields().ByName("received_timestamp")
+	fd_MsgSubmitGeneralKeyShare_received_block_height = md_MsgSubmitGeneralKeyShare.Fields().ByName("received_block_height")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgCreateGeneralKeyShare)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgSubmitGeneralKeyShare)(nil)
 
-type fastReflection_MsgCreateGeneralKeyShare MsgCreateGeneralKeyShare
+type fastReflection_MsgSubmitGeneralKeyShare MsgSubmitGeneralKeyShare
 
-func (x *MsgCreateGeneralKeyShare) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgCreateGeneralKeyShare)(x)
+func (x *MsgSubmitGeneralKeyShare) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgSubmitGeneralKeyShare)(x)
 }
 
-func (x *MsgCreateGeneralKeyShare) slowProtoReflect() protoreflect.Message {
+func (x *MsgSubmitGeneralKeyShare) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_keyshare_tx_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -8794,43 +8794,43 @@ func (x *MsgCreateGeneralKeyShare) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgCreateGeneralKeyShare_messageType fastReflection_MsgCreateGeneralKeyShare_messageType
-var _ protoreflect.MessageType = fastReflection_MsgCreateGeneralKeyShare_messageType{}
+var _fastReflection_MsgSubmitGeneralKeyShare_messageType fastReflection_MsgSubmitGeneralKeyShare_messageType
+var _ protoreflect.MessageType = fastReflection_MsgSubmitGeneralKeyShare_messageType{}
 
-type fastReflection_MsgCreateGeneralKeyShare_messageType struct{}
+type fastReflection_MsgSubmitGeneralKeyShare_messageType struct{}
 
-func (x fastReflection_MsgCreateGeneralKeyShare_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgCreateGeneralKeyShare)(nil)
+func (x fastReflection_MsgSubmitGeneralKeyShare_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgSubmitGeneralKeyShare)(nil)
 }
-func (x fastReflection_MsgCreateGeneralKeyShare_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgCreateGeneralKeyShare)
+func (x fastReflection_MsgSubmitGeneralKeyShare_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgSubmitGeneralKeyShare)
 }
-func (x fastReflection_MsgCreateGeneralKeyShare_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgCreateGeneralKeyShare
+func (x fastReflection_MsgSubmitGeneralKeyShare_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgSubmitGeneralKeyShare
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgCreateGeneralKeyShare) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgCreateGeneralKeyShare
+func (x *fastReflection_MsgSubmitGeneralKeyShare) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgSubmitGeneralKeyShare
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgCreateGeneralKeyShare) Type() protoreflect.MessageType {
-	return _fastReflection_MsgCreateGeneralKeyShare_messageType
+func (x *fastReflection_MsgSubmitGeneralKeyShare) Type() protoreflect.MessageType {
+	return _fastReflection_MsgSubmitGeneralKeyShare_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgCreateGeneralKeyShare) New() protoreflect.Message {
-	return new(fastReflection_MsgCreateGeneralKeyShare)
+func (x *fastReflection_MsgSubmitGeneralKeyShare) New() protoreflect.Message {
+	return new(fastReflection_MsgSubmitGeneralKeyShare)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgCreateGeneralKeyShare) Interface() protoreflect.ProtoMessage {
-	return (*MsgCreateGeneralKeyShare)(x)
+func (x *fastReflection_MsgSubmitGeneralKeyShare) Interface() protoreflect.ProtoMessage {
+	return (*MsgSubmitGeneralKeyShare)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -8838,46 +8838,46 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) Interface() protoreflect.Proto
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgCreateGeneralKeyShare) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgSubmitGeneralKeyShare) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_MsgCreateGeneralKeyShare_creator, value) {
+		if !f(fd_MsgSubmitGeneralKeyShare_creator, value) {
 			return
 		}
 	}
 	if x.IdType != "" {
 		value := protoreflect.ValueOfString(x.IdType)
-		if !f(fd_MsgCreateGeneralKeyShare_id_type, value) {
+		if !f(fd_MsgSubmitGeneralKeyShare_id_type, value) {
 			return
 		}
 	}
 	if x.IdValue != "" {
 		value := protoreflect.ValueOfString(x.IdValue)
-		if !f(fd_MsgCreateGeneralKeyShare_id_value, value) {
+		if !f(fd_MsgSubmitGeneralKeyShare_id_value, value) {
 			return
 		}
 	}
 	if x.KeyShare != "" {
 		value := protoreflect.ValueOfString(x.KeyShare)
-		if !f(fd_MsgCreateGeneralKeyShare_key_share, value) {
+		if !f(fd_MsgSubmitGeneralKeyShare_key_share, value) {
 			return
 		}
 	}
 	if x.KeyShareIndex != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.KeyShareIndex)
-		if !f(fd_MsgCreateGeneralKeyShare_key_share_index, value) {
+		if !f(fd_MsgSubmitGeneralKeyShare_key_share_index, value) {
 			return
 		}
 	}
 	if x.ReceivedTimestamp != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.ReceivedTimestamp)
-		if !f(fd_MsgCreateGeneralKeyShare_received_timestamp, value) {
+		if !f(fd_MsgSubmitGeneralKeyShare_received_timestamp, value) {
 			return
 		}
 	}
 	if x.ReceivedBlockHeight != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.ReceivedBlockHeight)
-		if !f(fd_MsgCreateGeneralKeyShare_received_block_height, value) {
+		if !f(fd_MsgSubmitGeneralKeyShare_received_block_height, value) {
 			return
 		}
 	}
@@ -8894,27 +8894,27 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) Range(f func(protoreflect.Fiel
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgCreateGeneralKeyShare) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgSubmitGeneralKeyShare) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.creator":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.creator":
 		return x.Creator != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.id_type":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.id_type":
 		return x.IdType != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.id_value":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.id_value":
 		return x.IdValue != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.key_share":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.key_share":
 		return x.KeyShare != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.key_share_index":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.key_share_index":
 		return x.KeyShareIndex != uint64(0)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.received_timestamp":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.received_timestamp":
 		return x.ReceivedTimestamp != uint64(0)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.received_block_height":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.received_block_height":
 		return x.ReceivedBlockHeight != uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgSubmitGeneralKeyShare"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateGeneralKeyShare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgSubmitGeneralKeyShare does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -8924,27 +8924,27 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) Has(fd protoreflect.FieldDescr
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateGeneralKeyShare) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgSubmitGeneralKeyShare) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.creator":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.creator":
 		x.Creator = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.id_type":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.id_type":
 		x.IdType = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.id_value":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.id_value":
 		x.IdValue = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.key_share":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.key_share":
 		x.KeyShare = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.key_share_index":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.key_share_index":
 		x.KeyShareIndex = uint64(0)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.received_timestamp":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.received_timestamp":
 		x.ReceivedTimestamp = uint64(0)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.received_block_height":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.received_block_height":
 		x.ReceivedBlockHeight = uint64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgSubmitGeneralKeyShare"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateGeneralKeyShare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgSubmitGeneralKeyShare does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -8954,34 +8954,34 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) Clear(fd protoreflect.FieldDes
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgCreateGeneralKeyShare) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgSubmitGeneralKeyShare) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.creator":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.id_type":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.id_type":
 		value := x.IdType
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.id_value":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.id_value":
 		value := x.IdValue
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.key_share":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.key_share":
 		value := x.KeyShare
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.key_share_index":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.key_share_index":
 		value := x.KeyShareIndex
 		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.received_timestamp":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.received_timestamp":
 		value := x.ReceivedTimestamp
 		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.received_block_height":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.received_block_height":
 		value := x.ReceivedBlockHeight
 		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgSubmitGeneralKeyShare"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateGeneralKeyShare does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgSubmitGeneralKeyShare does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -8995,27 +8995,27 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) Get(descriptor protoreflect.Fi
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateGeneralKeyShare) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgSubmitGeneralKeyShare) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.creator":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.creator":
 		x.Creator = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.id_type":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.id_type":
 		x.IdType = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.id_value":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.id_value":
 		x.IdValue = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.key_share":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.key_share":
 		x.KeyShare = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.key_share_index":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.key_share_index":
 		x.KeyShareIndex = value.Uint()
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.received_timestamp":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.received_timestamp":
 		x.ReceivedTimestamp = value.Uint()
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.received_block_height":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.received_block_height":
 		x.ReceivedBlockHeight = value.Uint()
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgSubmitGeneralKeyShare"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateGeneralKeyShare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgSubmitGeneralKeyShare does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -9029,64 +9029,64 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) Set(fd protoreflect.FieldDescr
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateGeneralKeyShare) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgSubmitGeneralKeyShare) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.creator":
-		panic(fmt.Errorf("field creator of message fairyring.keyshare.MsgCreateGeneralKeyShare is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.id_type":
-		panic(fmt.Errorf("field id_type of message fairyring.keyshare.MsgCreateGeneralKeyShare is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.id_value":
-		panic(fmt.Errorf("field id_value of message fairyring.keyshare.MsgCreateGeneralKeyShare is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.key_share":
-		panic(fmt.Errorf("field key_share of message fairyring.keyshare.MsgCreateGeneralKeyShare is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.key_share_index":
-		panic(fmt.Errorf("field key_share_index of message fairyring.keyshare.MsgCreateGeneralKeyShare is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.received_timestamp":
-		panic(fmt.Errorf("field received_timestamp of message fairyring.keyshare.MsgCreateGeneralKeyShare is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.received_block_height":
-		panic(fmt.Errorf("field received_block_height of message fairyring.keyshare.MsgCreateGeneralKeyShare is not mutable"))
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.creator":
+		panic(fmt.Errorf("field creator of message fairyring.keyshare.MsgSubmitGeneralKeyShare is not mutable"))
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.id_type":
+		panic(fmt.Errorf("field id_type of message fairyring.keyshare.MsgSubmitGeneralKeyShare is not mutable"))
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.id_value":
+		panic(fmt.Errorf("field id_value of message fairyring.keyshare.MsgSubmitGeneralKeyShare is not mutable"))
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.key_share":
+		panic(fmt.Errorf("field key_share of message fairyring.keyshare.MsgSubmitGeneralKeyShare is not mutable"))
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.key_share_index":
+		panic(fmt.Errorf("field key_share_index of message fairyring.keyshare.MsgSubmitGeneralKeyShare is not mutable"))
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.received_timestamp":
+		panic(fmt.Errorf("field received_timestamp of message fairyring.keyshare.MsgSubmitGeneralKeyShare is not mutable"))
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.received_block_height":
+		panic(fmt.Errorf("field received_block_height of message fairyring.keyshare.MsgSubmitGeneralKeyShare is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgSubmitGeneralKeyShare"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateGeneralKeyShare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgSubmitGeneralKeyShare does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgCreateGeneralKeyShare) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgSubmitGeneralKeyShare) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.creator":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.creator":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.id_type":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.id_type":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.id_value":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.id_value":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.key_share":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.key_share":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.key_share_index":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.key_share_index":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.received_timestamp":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.received_timestamp":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShare.received_block_height":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShare.received_block_height":
 		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShare"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgSubmitGeneralKeyShare"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateGeneralKeyShare does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgSubmitGeneralKeyShare does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgCreateGeneralKeyShare) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgSubmitGeneralKeyShare) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.keyshare.MsgCreateGeneralKeyShare", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.keyshare.MsgSubmitGeneralKeyShare", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -9094,7 +9094,7 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) WhichOneof(d protoreflect.Oneo
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgCreateGeneralKeyShare) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgSubmitGeneralKeyShare) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -9105,7 +9105,7 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) GetUnknown() protoreflect.RawF
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateGeneralKeyShare) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgSubmitGeneralKeyShare) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -9117,7 +9117,7 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) SetUnknown(fields protoreflect
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgCreateGeneralKeyShare) IsValid() bool {
+func (x *fastReflection_MsgSubmitGeneralKeyShare) IsValid() bool {
 	return x != nil
 }
 
@@ -9127,9 +9127,9 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgCreateGeneralKeyShare) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgSubmitGeneralKeyShare) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgCreateGeneralKeyShare)
+		x := input.Message.Interface().(*MsgSubmitGeneralKeyShare)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -9176,7 +9176,7 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) ProtoMethods() *protoiface.Met
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgCreateGeneralKeyShare)
+		x := input.Message.Interface().(*MsgSubmitGeneralKeyShare)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -9249,7 +9249,7 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) ProtoMethods() *protoiface.Met
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgCreateGeneralKeyShare)
+		x := input.Message.Interface().(*MsgSubmitGeneralKeyShare)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -9281,10 +9281,10 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) ProtoMethods() *protoiface.Met
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgCreateGeneralKeyShare: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgSubmitGeneralKeyShare: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgCreateGeneralKeyShare: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgSubmitGeneralKeyShare: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -9508,39 +9508,39 @@ func (x *fastReflection_MsgCreateGeneralKeyShare) ProtoMethods() *protoiface.Met
 }
 
 var (
-	md_MsgCreateGeneralKeyShareResponse                       protoreflect.MessageDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_creator               protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_id_type               protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_id_value              protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_key_share             protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_key_share_index       protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_received_block_height protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_success               protoreflect.FieldDescriptor
-	fd_MsgCreateGeneralKeyShareResponse_error_message         protoreflect.FieldDescriptor
+	md_MsgSubmitGeneralKeyShareResponse                       protoreflect.MessageDescriptor
+	fd_MsgSubmitGeneralKeyShareResponse_creator               protoreflect.FieldDescriptor
+	fd_MsgSubmitGeneralKeyShareResponse_id_type               protoreflect.FieldDescriptor
+	fd_MsgSubmitGeneralKeyShareResponse_id_value              protoreflect.FieldDescriptor
+	fd_MsgSubmitGeneralKeyShareResponse_key_share             protoreflect.FieldDescriptor
+	fd_MsgSubmitGeneralKeyShareResponse_key_share_index       protoreflect.FieldDescriptor
+	fd_MsgSubmitGeneralKeyShareResponse_received_block_height protoreflect.FieldDescriptor
+	fd_MsgSubmitGeneralKeyShareResponse_success               protoreflect.FieldDescriptor
+	fd_MsgSubmitGeneralKeyShareResponse_error_message         protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_keyshare_tx_proto_init()
-	md_MsgCreateGeneralKeyShareResponse = File_fairyring_keyshare_tx_proto.Messages().ByName("MsgCreateGeneralKeyShareResponse")
-	fd_MsgCreateGeneralKeyShareResponse_creator = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("creator")
-	fd_MsgCreateGeneralKeyShareResponse_id_type = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("id_type")
-	fd_MsgCreateGeneralKeyShareResponse_id_value = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("id_value")
-	fd_MsgCreateGeneralKeyShareResponse_key_share = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("key_share")
-	fd_MsgCreateGeneralKeyShareResponse_key_share_index = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("key_share_index")
-	fd_MsgCreateGeneralKeyShareResponse_received_block_height = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("received_block_height")
-	fd_MsgCreateGeneralKeyShareResponse_success = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("success")
-	fd_MsgCreateGeneralKeyShareResponse_error_message = md_MsgCreateGeneralKeyShareResponse.Fields().ByName("error_message")
+	md_MsgSubmitGeneralKeyShareResponse = File_fairyring_keyshare_tx_proto.Messages().ByName("MsgSubmitGeneralKeyShareResponse")
+	fd_MsgSubmitGeneralKeyShareResponse_creator = md_MsgSubmitGeneralKeyShareResponse.Fields().ByName("creator")
+	fd_MsgSubmitGeneralKeyShareResponse_id_type = md_MsgSubmitGeneralKeyShareResponse.Fields().ByName("id_type")
+	fd_MsgSubmitGeneralKeyShareResponse_id_value = md_MsgSubmitGeneralKeyShareResponse.Fields().ByName("id_value")
+	fd_MsgSubmitGeneralKeyShareResponse_key_share = md_MsgSubmitGeneralKeyShareResponse.Fields().ByName("key_share")
+	fd_MsgSubmitGeneralKeyShareResponse_key_share_index = md_MsgSubmitGeneralKeyShareResponse.Fields().ByName("key_share_index")
+	fd_MsgSubmitGeneralKeyShareResponse_received_block_height = md_MsgSubmitGeneralKeyShareResponse.Fields().ByName("received_block_height")
+	fd_MsgSubmitGeneralKeyShareResponse_success = md_MsgSubmitGeneralKeyShareResponse.Fields().ByName("success")
+	fd_MsgSubmitGeneralKeyShareResponse_error_message = md_MsgSubmitGeneralKeyShareResponse.Fields().ByName("error_message")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgCreateGeneralKeyShareResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgSubmitGeneralKeyShareResponse)(nil)
 
-type fastReflection_MsgCreateGeneralKeyShareResponse MsgCreateGeneralKeyShareResponse
+type fastReflection_MsgSubmitGeneralKeyShareResponse MsgSubmitGeneralKeyShareResponse
 
-func (x *MsgCreateGeneralKeyShareResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgCreateGeneralKeyShareResponse)(x)
+func (x *MsgSubmitGeneralKeyShareResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgSubmitGeneralKeyShareResponse)(x)
 }
 
-func (x *MsgCreateGeneralKeyShareResponse) slowProtoReflect() protoreflect.Message {
+func (x *MsgSubmitGeneralKeyShareResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_keyshare_tx_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -9552,43 +9552,43 @@ func (x *MsgCreateGeneralKeyShareResponse) slowProtoReflect() protoreflect.Messa
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgCreateGeneralKeyShareResponse_messageType fastReflection_MsgCreateGeneralKeyShareResponse_messageType
-var _ protoreflect.MessageType = fastReflection_MsgCreateGeneralKeyShareResponse_messageType{}
+var _fastReflection_MsgSubmitGeneralKeyShareResponse_messageType fastReflection_MsgSubmitGeneralKeyShareResponse_messageType
+var _ protoreflect.MessageType = fastReflection_MsgSubmitGeneralKeyShareResponse_messageType{}
 
-type fastReflection_MsgCreateGeneralKeyShareResponse_messageType struct{}
+type fastReflection_MsgSubmitGeneralKeyShareResponse_messageType struct{}
 
-func (x fastReflection_MsgCreateGeneralKeyShareResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgCreateGeneralKeyShareResponse)(nil)
+func (x fastReflection_MsgSubmitGeneralKeyShareResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgSubmitGeneralKeyShareResponse)(nil)
 }
-func (x fastReflection_MsgCreateGeneralKeyShareResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgCreateGeneralKeyShareResponse)
+func (x fastReflection_MsgSubmitGeneralKeyShareResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgSubmitGeneralKeyShareResponse)
 }
-func (x fastReflection_MsgCreateGeneralKeyShareResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgCreateGeneralKeyShareResponse
+func (x fastReflection_MsgSubmitGeneralKeyShareResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgSubmitGeneralKeyShareResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgCreateGeneralKeyShareResponse
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgSubmitGeneralKeyShareResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Type() protoreflect.MessageType {
-	return _fastReflection_MsgCreateGeneralKeyShareResponse_messageType
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) Type() protoreflect.MessageType {
+	return _fastReflection_MsgSubmitGeneralKeyShareResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) New() protoreflect.Message {
-	return new(fastReflection_MsgCreateGeneralKeyShareResponse)
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) New() protoreflect.Message {
+	return new(fastReflection_MsgSubmitGeneralKeyShareResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Interface() protoreflect.ProtoMessage {
-	return (*MsgCreateGeneralKeyShareResponse)(x)
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) Interface() protoreflect.ProtoMessage {
+	return (*MsgSubmitGeneralKeyShareResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -9596,52 +9596,52 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Interface() protorefle
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_MsgCreateGeneralKeyShareResponse_creator, value) {
+		if !f(fd_MsgSubmitGeneralKeyShareResponse_creator, value) {
 			return
 		}
 	}
 	if x.IdType != "" {
 		value := protoreflect.ValueOfString(x.IdType)
-		if !f(fd_MsgCreateGeneralKeyShareResponse_id_type, value) {
+		if !f(fd_MsgSubmitGeneralKeyShareResponse_id_type, value) {
 			return
 		}
 	}
 	if x.IdValue != "" {
 		value := protoreflect.ValueOfString(x.IdValue)
-		if !f(fd_MsgCreateGeneralKeyShareResponse_id_value, value) {
+		if !f(fd_MsgSubmitGeneralKeyShareResponse_id_value, value) {
 			return
 		}
 	}
 	if x.KeyShare != "" {
 		value := protoreflect.ValueOfString(x.KeyShare)
-		if !f(fd_MsgCreateGeneralKeyShareResponse_key_share, value) {
+		if !f(fd_MsgSubmitGeneralKeyShareResponse_key_share, value) {
 			return
 		}
 	}
 	if x.KeyShareIndex != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.KeyShareIndex)
-		if !f(fd_MsgCreateGeneralKeyShareResponse_key_share_index, value) {
+		if !f(fd_MsgSubmitGeneralKeyShareResponse_key_share_index, value) {
 			return
 		}
 	}
 	if x.ReceivedBlockHeight != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.ReceivedBlockHeight)
-		if !f(fd_MsgCreateGeneralKeyShareResponse_received_block_height, value) {
+		if !f(fd_MsgSubmitGeneralKeyShareResponse_received_block_height, value) {
 			return
 		}
 	}
 	if x.Success != false {
 		value := protoreflect.ValueOfBool(x.Success)
-		if !f(fd_MsgCreateGeneralKeyShareResponse_success, value) {
+		if !f(fd_MsgSubmitGeneralKeyShareResponse_success, value) {
 			return
 		}
 	}
 	if x.ErrorMessage != "" {
 		value := protoreflect.ValueOfString(x.ErrorMessage)
-		if !f(fd_MsgCreateGeneralKeyShareResponse_error_message, value) {
+		if !f(fd_MsgSubmitGeneralKeyShareResponse_error_message, value) {
 			return
 		}
 	}
@@ -9658,29 +9658,29 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Range(f func(protorefl
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.creator":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.creator":
 		return x.Creator != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.id_type":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.id_type":
 		return x.IdType != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.id_value":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.id_value":
 		return x.IdValue != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.key_share":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.key_share":
 		return x.KeyShare != ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.key_share_index":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.key_share_index":
 		return x.KeyShareIndex != uint64(0)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.received_block_height":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.received_block_height":
 		return x.ReceivedBlockHeight != uint64(0)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.success":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.success":
 		return x.Success != false
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.error_message":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.error_message":
 		return x.ErrorMessage != ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgSubmitGeneralKeyShareResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateGeneralKeyShareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgSubmitGeneralKeyShareResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -9690,29 +9690,29 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Has(fd protoreflect.Fi
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.creator":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.creator":
 		x.Creator = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.id_type":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.id_type":
 		x.IdType = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.id_value":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.id_value":
 		x.IdValue = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.key_share":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.key_share":
 		x.KeyShare = ""
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.key_share_index":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.key_share_index":
 		x.KeyShareIndex = uint64(0)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.received_block_height":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.received_block_height":
 		x.ReceivedBlockHeight = uint64(0)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.success":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.success":
 		x.Success = false
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.error_message":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.error_message":
 		x.ErrorMessage = ""
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgSubmitGeneralKeyShareResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateGeneralKeyShareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgSubmitGeneralKeyShareResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -9722,37 +9722,37 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Clear(fd protoreflect.
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.creator":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.id_type":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.id_type":
 		value := x.IdType
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.id_value":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.id_value":
 		value := x.IdValue
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.key_share":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.key_share":
 		value := x.KeyShare
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.key_share_index":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.key_share_index":
 		value := x.KeyShareIndex
 		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.received_block_height":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.received_block_height":
 		value := x.ReceivedBlockHeight
 		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.success":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.success":
 		value := x.Success
 		return protoreflect.ValueOfBool(value)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.error_message":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.error_message":
 		value := x.ErrorMessage
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgSubmitGeneralKeyShareResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateGeneralKeyShareResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgSubmitGeneralKeyShareResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -9766,29 +9766,29 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Get(descriptor protore
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.creator":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.creator":
 		x.Creator = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.id_type":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.id_type":
 		x.IdType = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.id_value":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.id_value":
 		x.IdValue = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.key_share":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.key_share":
 		x.KeyShare = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.key_share_index":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.key_share_index":
 		x.KeyShareIndex = value.Uint()
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.received_block_height":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.received_block_height":
 		x.ReceivedBlockHeight = value.Uint()
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.success":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.success":
 		x.Success = value.Bool()
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.error_message":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.error_message":
 		x.ErrorMessage = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgSubmitGeneralKeyShareResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateGeneralKeyShareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgSubmitGeneralKeyShareResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -9802,68 +9802,68 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Set(fd protoreflect.Fi
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.creator":
-		panic(fmt.Errorf("field creator of message fairyring.keyshare.MsgCreateGeneralKeyShareResponse is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.id_type":
-		panic(fmt.Errorf("field id_type of message fairyring.keyshare.MsgCreateGeneralKeyShareResponse is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.id_value":
-		panic(fmt.Errorf("field id_value of message fairyring.keyshare.MsgCreateGeneralKeyShareResponse is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.key_share":
-		panic(fmt.Errorf("field key_share of message fairyring.keyshare.MsgCreateGeneralKeyShareResponse is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.key_share_index":
-		panic(fmt.Errorf("field key_share_index of message fairyring.keyshare.MsgCreateGeneralKeyShareResponse is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.received_block_height":
-		panic(fmt.Errorf("field received_block_height of message fairyring.keyshare.MsgCreateGeneralKeyShareResponse is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.success":
-		panic(fmt.Errorf("field success of message fairyring.keyshare.MsgCreateGeneralKeyShareResponse is not mutable"))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.error_message":
-		panic(fmt.Errorf("field error_message of message fairyring.keyshare.MsgCreateGeneralKeyShareResponse is not mutable"))
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.creator":
+		panic(fmt.Errorf("field creator of message fairyring.keyshare.MsgSubmitGeneralKeyShareResponse is not mutable"))
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.id_type":
+		panic(fmt.Errorf("field id_type of message fairyring.keyshare.MsgSubmitGeneralKeyShareResponse is not mutable"))
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.id_value":
+		panic(fmt.Errorf("field id_value of message fairyring.keyshare.MsgSubmitGeneralKeyShareResponse is not mutable"))
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.key_share":
+		panic(fmt.Errorf("field key_share of message fairyring.keyshare.MsgSubmitGeneralKeyShareResponse is not mutable"))
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.key_share_index":
+		panic(fmt.Errorf("field key_share_index of message fairyring.keyshare.MsgSubmitGeneralKeyShareResponse is not mutable"))
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.received_block_height":
+		panic(fmt.Errorf("field received_block_height of message fairyring.keyshare.MsgSubmitGeneralKeyShareResponse is not mutable"))
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.success":
+		panic(fmt.Errorf("field success of message fairyring.keyshare.MsgSubmitGeneralKeyShareResponse is not mutable"))
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.error_message":
+		panic(fmt.Errorf("field error_message of message fairyring.keyshare.MsgSubmitGeneralKeyShareResponse is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgSubmitGeneralKeyShareResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateGeneralKeyShareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgSubmitGeneralKeyShareResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.creator":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.creator":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.id_type":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.id_type":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.id_value":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.id_value":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.key_share":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.key_share":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.key_share_index":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.key_share_index":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.received_block_height":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.received_block_height":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.success":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.success":
 		return protoreflect.ValueOfBool(false)
-	case "fairyring.keyshare.MsgCreateGeneralKeyShareResponse.error_message":
+	case "fairyring.keyshare.MsgSubmitGeneralKeyShareResponse.error_message":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateGeneralKeyShareResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgSubmitGeneralKeyShareResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateGeneralKeyShareResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgSubmitGeneralKeyShareResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.keyshare.MsgCreateGeneralKeyShareResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.keyshare.MsgSubmitGeneralKeyShareResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -9871,7 +9871,7 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) WhichOneof(d protorefl
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -9882,7 +9882,7 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) GetUnknown() protorefl
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -9894,7 +9894,7 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) SetUnknown(fields prot
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) IsValid() bool {
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -9904,9 +9904,9 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgCreateGeneralKeyShareResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgSubmitGeneralKeyShareResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgCreateGeneralKeyShareResponse)
+		x := input.Message.Interface().(*MsgSubmitGeneralKeyShareResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -9957,7 +9957,7 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) ProtoMethods() *protoi
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgCreateGeneralKeyShareResponse)
+		x := input.Message.Interface().(*MsgSubmitGeneralKeyShareResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -10042,7 +10042,7 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) ProtoMethods() *protoi
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgCreateGeneralKeyShareResponse)
+		x := input.Message.Interface().(*MsgSubmitGeneralKeyShareResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -10074,10 +10074,10 @@ func (x *fastReflection_MsgCreateGeneralKeyShareResponse) ProtoMethods() *protoi
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgCreateGeneralKeyShareResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgSubmitGeneralKeyShareResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgCreateGeneralKeyShareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgSubmitGeneralKeyShareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -12238,8 +12238,8 @@ func (*MsgDeleteAuthorizedAddressResponse) Descriptor() ([]byte, []int) {
 	return file_fairyring_keyshare_tx_proto_rawDescGZIP(), []int{17}
 }
 
-// MsgCreateGeneralKeyShare is the Msg/CreateGeneralKeyShare request type.
-type MsgCreateGeneralKeyShare struct {
+// MsgSubmitGeneralKeyShare is the Msg/CreateGeneralKeyShare request type.
+type MsgSubmitGeneralKeyShare struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -12253,8 +12253,8 @@ type MsgCreateGeneralKeyShare struct {
 	ReceivedBlockHeight uint64 `protobuf:"varint,7,opt,name=received_block_height,json=receivedBlockHeight,proto3" json:"received_block_height,omitempty"`
 }
 
-func (x *MsgCreateGeneralKeyShare) Reset() {
-	*x = MsgCreateGeneralKeyShare{}
+func (x *MsgSubmitGeneralKeyShare) Reset() {
+	*x = MsgSubmitGeneralKeyShare{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_keyshare_tx_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -12262,69 +12262,69 @@ func (x *MsgCreateGeneralKeyShare) Reset() {
 	}
 }
 
-func (x *MsgCreateGeneralKeyShare) String() string {
+func (x *MsgSubmitGeneralKeyShare) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgCreateGeneralKeyShare) ProtoMessage() {}
+func (*MsgSubmitGeneralKeyShare) ProtoMessage() {}
 
-// Deprecated: Use MsgCreateGeneralKeyShare.ProtoReflect.Descriptor instead.
-func (*MsgCreateGeneralKeyShare) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgSubmitGeneralKeyShare.ProtoReflect.Descriptor instead.
+func (*MsgSubmitGeneralKeyShare) Descriptor() ([]byte, []int) {
 	return file_fairyring_keyshare_tx_proto_rawDescGZIP(), []int{18}
 }
 
-func (x *MsgCreateGeneralKeyShare) GetCreator() string {
+func (x *MsgSubmitGeneralKeyShare) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
 	return ""
 }
 
-func (x *MsgCreateGeneralKeyShare) GetIdType() string {
+func (x *MsgSubmitGeneralKeyShare) GetIdType() string {
 	if x != nil {
 		return x.IdType
 	}
 	return ""
 }
 
-func (x *MsgCreateGeneralKeyShare) GetIdValue() string {
+func (x *MsgSubmitGeneralKeyShare) GetIdValue() string {
 	if x != nil {
 		return x.IdValue
 	}
 	return ""
 }
 
-func (x *MsgCreateGeneralKeyShare) GetKeyShare() string {
+func (x *MsgSubmitGeneralKeyShare) GetKeyShare() string {
 	if x != nil {
 		return x.KeyShare
 	}
 	return ""
 }
 
-func (x *MsgCreateGeneralKeyShare) GetKeyShareIndex() uint64 {
+func (x *MsgSubmitGeneralKeyShare) GetKeyShareIndex() uint64 {
 	if x != nil {
 		return x.KeyShareIndex
 	}
 	return 0
 }
 
-func (x *MsgCreateGeneralKeyShare) GetReceivedTimestamp() uint64 {
+func (x *MsgSubmitGeneralKeyShare) GetReceivedTimestamp() uint64 {
 	if x != nil {
 		return x.ReceivedTimestamp
 	}
 	return 0
 }
 
-func (x *MsgCreateGeneralKeyShare) GetReceivedBlockHeight() uint64 {
+func (x *MsgSubmitGeneralKeyShare) GetReceivedBlockHeight() uint64 {
 	if x != nil {
 		return x.ReceivedBlockHeight
 	}
 	return 0
 }
 
-// MsgCreateGeneralKeyShareResponse defines the response structure for
-// executing a MsgCreateGeneralKeyShare message.
-type MsgCreateGeneralKeyShareResponse struct {
+// MsgSubmitGeneralKeyShareResponse defines the response structure for
+// executing a MsgSubmitGeneralKeyShare message.
+type MsgSubmitGeneralKeyShareResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -12339,8 +12339,8 @@ type MsgCreateGeneralKeyShareResponse struct {
 	ErrorMessage        string `protobuf:"bytes,8,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
 }
 
-func (x *MsgCreateGeneralKeyShareResponse) Reset() {
-	*x = MsgCreateGeneralKeyShareResponse{}
+func (x *MsgSubmitGeneralKeyShareResponse) Reset() {
+	*x = MsgSubmitGeneralKeyShareResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_keyshare_tx_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -12348,67 +12348,67 @@ func (x *MsgCreateGeneralKeyShareResponse) Reset() {
 	}
 }
 
-func (x *MsgCreateGeneralKeyShareResponse) String() string {
+func (x *MsgSubmitGeneralKeyShareResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgCreateGeneralKeyShareResponse) ProtoMessage() {}
+func (*MsgSubmitGeneralKeyShareResponse) ProtoMessage() {}
 
-// Deprecated: Use MsgCreateGeneralKeyShareResponse.ProtoReflect.Descriptor instead.
-func (*MsgCreateGeneralKeyShareResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgSubmitGeneralKeyShareResponse.ProtoReflect.Descriptor instead.
+func (*MsgSubmitGeneralKeyShareResponse) Descriptor() ([]byte, []int) {
 	return file_fairyring_keyshare_tx_proto_rawDescGZIP(), []int{19}
 }
 
-func (x *MsgCreateGeneralKeyShareResponse) GetCreator() string {
+func (x *MsgSubmitGeneralKeyShareResponse) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
 	return ""
 }
 
-func (x *MsgCreateGeneralKeyShareResponse) GetIdType() string {
+func (x *MsgSubmitGeneralKeyShareResponse) GetIdType() string {
 	if x != nil {
 		return x.IdType
 	}
 	return ""
 }
 
-func (x *MsgCreateGeneralKeyShareResponse) GetIdValue() string {
+func (x *MsgSubmitGeneralKeyShareResponse) GetIdValue() string {
 	if x != nil {
 		return x.IdValue
 	}
 	return ""
 }
 
-func (x *MsgCreateGeneralKeyShareResponse) GetKeyShare() string {
+func (x *MsgSubmitGeneralKeyShareResponse) GetKeyShare() string {
 	if x != nil {
 		return x.KeyShare
 	}
 	return ""
 }
 
-func (x *MsgCreateGeneralKeyShareResponse) GetKeyShareIndex() uint64 {
+func (x *MsgSubmitGeneralKeyShareResponse) GetKeyShareIndex() uint64 {
 	if x != nil {
 		return x.KeyShareIndex
 	}
 	return 0
 }
 
-func (x *MsgCreateGeneralKeyShareResponse) GetReceivedBlockHeight() uint64 {
+func (x *MsgSubmitGeneralKeyShareResponse) GetReceivedBlockHeight() uint64 {
 	if x != nil {
 		return x.ReceivedBlockHeight
 	}
 	return 0
 }
 
-func (x *MsgCreateGeneralKeyShareResponse) GetSuccess() bool {
+func (x *MsgSubmitGeneralKeyShareResponse) GetSuccess() bool {
 	if x != nil {
 		return x.Success
 	}
 	return false
 }
 
-func (x *MsgCreateGeneralKeyShareResponse) GetErrorMessage() string {
+func (x *MsgSubmitGeneralKeyShareResponse) GetErrorMessage() string {
 	if x != nil {
 		return x.ErrorMessage
 	}
@@ -12665,7 +12665,7 @@ var file_fairyring_keyshare_tx_proto_rawDesc = []byte{
 	0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x24, 0x0a, 0x22, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c,
 	0x65, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64,
 	0x72, 0x65, 0x73, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x9e, 0x02, 0x0a,
-	0x18, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61,
+	0x18, 0x4d, 0x73, 0x67, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61,
 	0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65,
 	0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61,
 	0x74, 0x6f, 0x72, 0x12, 0x17, 0x0a, 0x07, 0x69, 0x64, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02,
@@ -12683,7 +12683,7 @@ var file_fairyring_keyshare_tx_proto_rawDesc = []byte{
 	0x69, 0x67, 0x68, 0x74, 0x18, 0x07, 0x20, 0x01, 0x28, 0x04, 0x52, 0x13, 0x72, 0x65, 0x63, 0x65,
 	0x69, 0x76, 0x65, 0x64, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x48, 0x65, 0x69, 0x67, 0x68, 0x74, 0x3a,
 	0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0xa8, 0x02,
-	0x0a, 0x20, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x47, 0x65, 0x6e, 0x65, 0x72,
+	0x0a, 0x20, 0x4d, 0x73, 0x67, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x47, 0x65, 0x6e, 0x65, 0x72,
 	0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
 	0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x17, 0x0a, 0x07,
@@ -12790,13 +12790,13 @@ var file_fairyring_keyshare_tx_proto_rawDesc = []byte{
 	0x36, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73,
 	0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x75,
 	0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x7b, 0x0a, 0x15, 0x43, 0x72, 0x65, 0x61, 0x74,
-	0x65, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x7b, 0x0a, 0x15, 0x53, 0x75, 0x62, 0x6d, 0x69,
+	0x74, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65,
 	0x12, 0x2c, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79,
-	0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x47,
+	0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x47,
 	0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x1a, 0x34,
 	0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68,
-	0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x47, 0x65, 0x6e,
+	0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x47, 0x65, 0x6e,
 	0x65, 0x72, 0x61, 0x6c, 0x4b, 0x65, 0x79, 0x53, 0x68, 0x61, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70,
 	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x81, 0x01, 0x0a, 0x17, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x45,
 	0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65,
@@ -12853,8 +12853,8 @@ var file_fairyring_keyshare_tx_proto_goTypes = []interface{}{
 	(*MsgUpdateAuthorizedAddressResponse)(nil), // 15: fairyring.keyshare.MsgUpdateAuthorizedAddressResponse
 	(*MsgDeleteAuthorizedAddress)(nil),         // 16: fairyring.keyshare.MsgDeleteAuthorizedAddress
 	(*MsgDeleteAuthorizedAddressResponse)(nil), // 17: fairyring.keyshare.MsgDeleteAuthorizedAddressResponse
-	(*MsgCreateGeneralKeyShare)(nil),           // 18: fairyring.keyshare.MsgCreateGeneralKeyShare
-	(*MsgCreateGeneralKeyShareResponse)(nil),   // 19: fairyring.keyshare.MsgCreateGeneralKeyShareResponse
+	(*MsgSubmitGeneralKeyShare)(nil),           // 18: fairyring.keyshare.MsgSubmitGeneralKeyShare
+	(*MsgSubmitGeneralKeyShareResponse)(nil),   // 19: fairyring.keyshare.MsgSubmitGeneralKeyShareResponse
 	(*MsgSubmitEncryptedKeyshare)(nil),         // 20: fairyring.keyshare.MsgSubmitEncryptedKeyshare
 	(*MsgSubmitEncryptedKeyshareResponse)(nil), // 21: fairyring.keyshare.MsgSubmitEncryptedKeyshareResponse
 	(*Params)(nil),                             // 22: fairyring.keyshare.Params
@@ -12873,7 +12873,7 @@ var file_fairyring_keyshare_tx_proto_depIdxs = []int32{
 	12, // 9: fairyring.keyshare.Msg.CreateAuthorizedAddress:input_type -> fairyring.keyshare.MsgCreateAuthorizedAddress
 	14, // 10: fairyring.keyshare.Msg.UpdateAuthorizedAddress:input_type -> fairyring.keyshare.MsgUpdateAuthorizedAddress
 	16, // 11: fairyring.keyshare.Msg.DeleteAuthorizedAddress:input_type -> fairyring.keyshare.MsgDeleteAuthorizedAddress
-	18, // 12: fairyring.keyshare.Msg.CreateGeneralKeyShare:input_type -> fairyring.keyshare.MsgCreateGeneralKeyShare
+	18, // 12: fairyring.keyshare.Msg.SubmitGeneralKeyShare:input_type -> fairyring.keyshare.MsgSubmitGeneralKeyShare
 	20, // 13: fairyring.keyshare.Msg.SubmitEncryptedKeyshare:input_type -> fairyring.keyshare.MsgSubmitEncryptedKeyshare
 	1,  // 14: fairyring.keyshare.Msg.UpdateParams:output_type -> fairyring.keyshare.MsgUpdateParamsResponse
 	3,  // 15: fairyring.keyshare.Msg.RegisterValidator:output_type -> fairyring.keyshare.MsgRegisterValidatorResponse
@@ -12884,7 +12884,7 @@ var file_fairyring_keyshare_tx_proto_depIdxs = []int32{
 	13, // 20: fairyring.keyshare.Msg.CreateAuthorizedAddress:output_type -> fairyring.keyshare.MsgCreateAuthorizedAddressResponse
 	15, // 21: fairyring.keyshare.Msg.UpdateAuthorizedAddress:output_type -> fairyring.keyshare.MsgUpdateAuthorizedAddressResponse
 	17, // 22: fairyring.keyshare.Msg.DeleteAuthorizedAddress:output_type -> fairyring.keyshare.MsgDeleteAuthorizedAddressResponse
-	19, // 23: fairyring.keyshare.Msg.CreateGeneralKeyShare:output_type -> fairyring.keyshare.MsgCreateGeneralKeyShareResponse
+	19, // 23: fairyring.keyshare.Msg.SubmitGeneralKeyShare:output_type -> fairyring.keyshare.MsgSubmitGeneralKeyShareResponse
 	21, // 24: fairyring.keyshare.Msg.SubmitEncryptedKeyshare:output_type -> fairyring.keyshare.MsgSubmitEncryptedKeyshareResponse
 	14, // [14:25] is the sub-list for method output_type
 	3,  // [3:14] is the sub-list for method input_type
@@ -13118,7 +13118,7 @@ func file_fairyring_keyshare_tx_proto_init() {
 			}
 		}
 		file_fairyring_keyshare_tx_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgCreateGeneralKeyShare); i {
+			switch v := v.(*MsgSubmitGeneralKeyShare); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13130,7 +13130,7 @@ func file_fairyring_keyshare_tx_proto_init() {
 			}
 		}
 		file_fairyring_keyshare_tx_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgCreateGeneralKeyShareResponse); i {
+			switch v := v.(*MsgSubmitGeneralKeyShareResponse); i {
 			case 0:
 				return &v.state
 			case 1:

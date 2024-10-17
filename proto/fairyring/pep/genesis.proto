@@ -7,7 +7,7 @@ import "gogoproto/gogo.proto";
 import "fairyring/pep/params.proto";
 import "fairyring/pep/encrypted_tx.proto";
 import "fairyring/pep/pep_nonce.proto";
-import "fairyring/pep/aggregated_key_share.proto";
+import "fairyring/pep/decryption_key.proto";
 import "fairyring/common/shared_types.proto";
 import "fairyring/pep/request_id.proto";
 
@@ -21,7 +21,7 @@ message GenesisState {
   string                           port_id                = 2;
   repeated EncryptedTxArray        encryptedTxArray       = 3 [(gogoproto.nullable) = false] ;
   repeated PepNonce                pepNonceList           = 4 [(gogoproto.nullable) = false] ;
-  repeated AggregatedKeyShare      aggregatedKeyShareList = 6 [(gogoproto.nullable) = false];
+  repeated DecryptionKey           decryption_key_list    = 6 [(gogoproto.nullable) = false];
   fairyring.common.ActivePublicKey activePubKey           = 7 [(gogoproto.nullable) = false];
   fairyring.common.QueuedPublicKey queuedPubKey           = 8 [(gogoproto.nullable) = false];
   uint64                           request_count          = 9;

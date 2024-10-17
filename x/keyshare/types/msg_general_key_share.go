@@ -6,16 +6,16 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgCreateGeneralKeyShare{}
+var _ sdk.Msg = &MsgSubmitGeneralKeyShare{}
 
-func NewMsgCreateGeneralKeyShare(
+func NewMsgSubmitGeneralKeyShare(
 	creator string,
 	idType string,
 	idValue string,
 	keyShare string,
 	keyShareIndex uint64,
-) *MsgCreateGeneralKeyShare {
-	return &MsgCreateGeneralKeyShare{
+) *MsgSubmitGeneralKeyShare {
+	return &MsgSubmitGeneralKeyShare{
 		Creator:       creator,
 		IdType:        idType,
 		IdValue:       idValue,
@@ -24,7 +24,7 @@ func NewMsgCreateGeneralKeyShare(
 	}
 }
 
-func (msg *MsgCreateGeneralKeyShare) ValidateBasic() error {
+func (msg *MsgSubmitGeneralKeyShare) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkioerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

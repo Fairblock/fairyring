@@ -27,9 +27,9 @@ const (
 	Query_PepNonce_FullMethodName                 = "/fairyring.pep.Query/PepNonce"
 	Query_PepNonceAll_FullMethodName              = "/fairyring.pep.Query/PepNonceAll"
 	Query_PubKey_FullMethodName                   = "/fairyring.pep.Query/PubKey"
-	Query_KeyshareReq_FullMethodName              = "/fairyring.pep.Query/KeyshareReq"
-	Query_KeyshareReqAll_FullMethodName           = "/fairyring.pep.Query/KeyshareReqAll"
-	Query_PrivateKeyshareReq_FullMethodName       = "/fairyring.pep.Query/PrivateKeyshareReq"
+	Query_GeneralIdentity_FullMethodName          = "/fairyring.pep.Query/GeneralIdentity"
+	Query_GeneralIdentityAll_FullMethodName       = "/fairyring.pep.Query/GeneralIdentityAll"
+	Query_PrivateIdentity_FullMethodName          = "/fairyring.pep.Query/PrivateIdentity"
 	Query_DecryptData_FullMethodName              = "/fairyring.pep.Query/DecryptData"
 )
 
@@ -53,12 +53,12 @@ type QueryClient interface {
 	PepNonceAll(ctx context.Context, in *QueryPepNonceAllRequest, opts ...grpc.CallOption) (*QueryPepNonceAllResponse, error)
 	// Queries the public keys
 	PubKey(ctx context.Context, in *QueryPubKeyRequest, opts ...grpc.CallOption) (*QueryPubKeyResponse, error)
-	// Queries a Keyshare request by identity
-	KeyshareReq(ctx context.Context, in *QueryKeyshareReqRequest, opts ...grpc.CallOption) (*QueryKeyshareReqResponse, error)
-	// queries a list of keyshare requests
-	KeyshareReqAll(ctx context.Context, in *QueryKeyshareReqAllRequest, opts ...grpc.CallOption) (*QueryKeyshareReqAllResponse, error)
-	// Queries a list of ShowPrivateKeyshareReq items.
-	PrivateKeyshareReq(ctx context.Context, in *QueryPrivateKeyshareReqRequest, opts ...grpc.CallOption) (*QueryPrivateKeyshareReqResponse, error)
+	// Queries a General Identity request by request id
+	GeneralIdentity(ctx context.Context, in *QueryGeneralIdentityRequest, opts ...grpc.CallOption) (*QueryGeneralIdentityResponse, error)
+	// Queries a list of General Identity requests
+	GeneralIdentityAll(ctx context.Context, in *QueryGeneralIdentityAllRequest, opts ...grpc.CallOption) (*QueryGeneralIdentityAllResponse, error)
+	// Queries a Private Identity request item by req id.
+	PrivateIdentity(ctx context.Context, in *QueryPrivateIdentityRequest, opts ...grpc.CallOption) (*QueryPrivateIdentityResponse, error)
 	// Queries a list of DecryptData items.
 	DecryptData(ctx context.Context, in *QueryDecryptDataRequest, opts ...grpc.CallOption) (*QueryDecryptDataResponse, error)
 }
@@ -143,27 +143,27 @@ func (c *queryClient) PubKey(ctx context.Context, in *QueryPubKeyRequest, opts .
 	return out, nil
 }
 
-func (c *queryClient) KeyshareReq(ctx context.Context, in *QueryKeyshareReqRequest, opts ...grpc.CallOption) (*QueryKeyshareReqResponse, error) {
-	out := new(QueryKeyshareReqResponse)
-	err := c.cc.Invoke(ctx, Query_KeyshareReq_FullMethodName, in, out, opts...)
+func (c *queryClient) GeneralIdentity(ctx context.Context, in *QueryGeneralIdentityRequest, opts ...grpc.CallOption) (*QueryGeneralIdentityResponse, error) {
+	out := new(QueryGeneralIdentityResponse)
+	err := c.cc.Invoke(ctx, Query_GeneralIdentity_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) KeyshareReqAll(ctx context.Context, in *QueryKeyshareReqAllRequest, opts ...grpc.CallOption) (*QueryKeyshareReqAllResponse, error) {
-	out := new(QueryKeyshareReqAllResponse)
-	err := c.cc.Invoke(ctx, Query_KeyshareReqAll_FullMethodName, in, out, opts...)
+func (c *queryClient) GeneralIdentityAll(ctx context.Context, in *QueryGeneralIdentityAllRequest, opts ...grpc.CallOption) (*QueryGeneralIdentityAllResponse, error) {
+	out := new(QueryGeneralIdentityAllResponse)
+	err := c.cc.Invoke(ctx, Query_GeneralIdentityAll_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) PrivateKeyshareReq(ctx context.Context, in *QueryPrivateKeyshareReqRequest, opts ...grpc.CallOption) (*QueryPrivateKeyshareReqResponse, error) {
-	out := new(QueryPrivateKeyshareReqResponse)
-	err := c.cc.Invoke(ctx, Query_PrivateKeyshareReq_FullMethodName, in, out, opts...)
+func (c *queryClient) PrivateIdentity(ctx context.Context, in *QueryPrivateIdentityRequest, opts ...grpc.CallOption) (*QueryPrivateIdentityResponse, error) {
+	out := new(QueryPrivateIdentityResponse)
+	err := c.cc.Invoke(ctx, Query_PrivateIdentity_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -199,12 +199,12 @@ type QueryServer interface {
 	PepNonceAll(context.Context, *QueryPepNonceAllRequest) (*QueryPepNonceAllResponse, error)
 	// Queries the public keys
 	PubKey(context.Context, *QueryPubKeyRequest) (*QueryPubKeyResponse, error)
-	// Queries a Keyshare request by identity
-	KeyshareReq(context.Context, *QueryKeyshareReqRequest) (*QueryKeyshareReqResponse, error)
-	// queries a list of keyshare requests
-	KeyshareReqAll(context.Context, *QueryKeyshareReqAllRequest) (*QueryKeyshareReqAllResponse, error)
-	// Queries a list of ShowPrivateKeyshareReq items.
-	PrivateKeyshareReq(context.Context, *QueryPrivateKeyshareReqRequest) (*QueryPrivateKeyshareReqResponse, error)
+	// Queries a General Identity request by request id
+	GeneralIdentity(context.Context, *QueryGeneralIdentityRequest) (*QueryGeneralIdentityResponse, error)
+	// Queries a list of General Identity requests
+	GeneralIdentityAll(context.Context, *QueryGeneralIdentityAllRequest) (*QueryGeneralIdentityAllResponse, error)
+	// Queries a Private Identity request item by req id.
+	PrivateIdentity(context.Context, *QueryPrivateIdentityRequest) (*QueryPrivateIdentityResponse, error)
 	// Queries a list of DecryptData items.
 	DecryptData(context.Context, *QueryDecryptDataRequest) (*QueryDecryptDataResponse, error)
 	mustEmbedUnimplementedQueryServer()
@@ -238,14 +238,14 @@ func (UnimplementedQueryServer) PepNonceAll(context.Context, *QueryPepNonceAllRe
 func (UnimplementedQueryServer) PubKey(context.Context, *QueryPubKeyRequest) (*QueryPubKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PubKey not implemented")
 }
-func (UnimplementedQueryServer) KeyshareReq(context.Context, *QueryKeyshareReqRequest) (*QueryKeyshareReqResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method KeyshareReq not implemented")
+func (UnimplementedQueryServer) GeneralIdentity(context.Context, *QueryGeneralIdentityRequest) (*QueryGeneralIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GeneralIdentity not implemented")
 }
-func (UnimplementedQueryServer) KeyshareReqAll(context.Context, *QueryKeyshareReqAllRequest) (*QueryKeyshareReqAllResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method KeyshareReqAll not implemented")
+func (UnimplementedQueryServer) GeneralIdentityAll(context.Context, *QueryGeneralIdentityAllRequest) (*QueryGeneralIdentityAllResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GeneralIdentityAll not implemented")
 }
-func (UnimplementedQueryServer) PrivateKeyshareReq(context.Context, *QueryPrivateKeyshareReqRequest) (*QueryPrivateKeyshareReqResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PrivateKeyshareReq not implemented")
+func (UnimplementedQueryServer) PrivateIdentity(context.Context, *QueryPrivateIdentityRequest) (*QueryPrivateIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PrivateIdentity not implemented")
 }
 func (UnimplementedQueryServer) DecryptData(context.Context, *QueryDecryptDataRequest) (*QueryDecryptDataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DecryptData not implemented")
@@ -407,56 +407,56 @@ func _Query_PubKey_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_KeyshareReq_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryKeyshareReqRequest)
+func _Query_GeneralIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGeneralIdentityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).KeyshareReq(ctx, in)
+		return srv.(QueryServer).GeneralIdentity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_KeyshareReq_FullMethodName,
+		FullMethod: Query_GeneralIdentity_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).KeyshareReq(ctx, req.(*QueryKeyshareReqRequest))
+		return srv.(QueryServer).GeneralIdentity(ctx, req.(*QueryGeneralIdentityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_KeyshareReqAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryKeyshareReqAllRequest)
+func _Query_GeneralIdentityAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGeneralIdentityAllRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).KeyshareReqAll(ctx, in)
+		return srv.(QueryServer).GeneralIdentityAll(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_KeyshareReqAll_FullMethodName,
+		FullMethod: Query_GeneralIdentityAll_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).KeyshareReqAll(ctx, req.(*QueryKeyshareReqAllRequest))
+		return srv.(QueryServer).GeneralIdentityAll(ctx, req.(*QueryGeneralIdentityAllRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_PrivateKeyshareReq_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryPrivateKeyshareReqRequest)
+func _Query_PrivateIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryPrivateIdentityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).PrivateKeyshareReq(ctx, in)
+		return srv.(QueryServer).PrivateIdentity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_PrivateKeyshareReq_FullMethodName,
+		FullMethod: Query_PrivateIdentity_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).PrivateKeyshareReq(ctx, req.(*QueryPrivateKeyshareReqRequest))
+		return srv.(QueryServer).PrivateIdentity(ctx, req.(*QueryPrivateIdentityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -519,16 +519,16 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Query_PubKey_Handler,
 		},
 		{
-			MethodName: "KeyshareReq",
-			Handler:    _Query_KeyshareReq_Handler,
+			MethodName: "GeneralIdentity",
+			Handler:    _Query_GeneralIdentity_Handler,
 		},
 		{
-			MethodName: "KeyshareReqAll",
-			Handler:    _Query_KeyshareReqAll_Handler,
+			MethodName: "GeneralIdentityAll",
+			Handler:    _Query_GeneralIdentityAll_Handler,
 		},
 		{
-			MethodName: "PrivateKeyshareReq",
-			Handler:    _Query_PrivateKeyshareReq_Handler,
+			MethodName: "PrivateIdentity",
+			Handler:    _Query_PrivateIdentity_Handler,
 		},
 		{
 			MethodName: "DecryptData",
