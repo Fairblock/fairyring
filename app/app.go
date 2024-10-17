@@ -507,6 +507,32 @@ func New(
 		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
 	}
 
+	app.UpgradeKeeper.SetUpgradeHandler(
+		"0.9.0-release-to-fix-capability-store-error",
+		func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			fromVM[capabilitytypes.ModuleName] = capability.AppModule{}.ConsensusVersion()
+			fromVM[peptypes.ModuleName] = pepmodule.AppModule{}.ConsensusVersion()
+			fromVM[keysharemoduletypes.ModuleName] = keysharemodule.AppModule{}.ConsensusVersion()
+			fromVM[ibcmodule.AppModule{}.Name()] = ibcmodule.AppModule{}.ConsensusVersion()
+			fromVM[ibcfeetypes.ModuleName] = ibcfeemodule.AppModule{}.ConsensusVersion()
+			fromVM[wasmtypes.ModuleName] = wasm.AppModule{}.ConsensusVersion()
+			fromVM[transfertypes.ModuleName] = transfer.AppModule{}.ConsensusVersion()
+			fromVM[interchainaccountstypes.ModuleName] = interchainaccountsmodule.AppModule{}.ConsensusVersion()
+			return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
+		},
+	)
+
+	if upgradeInfo.Name == "0.9.0-release-to-fix-capability-store-error" && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+		storeUpgrades := storetypes.StoreUpgrades{
+			Added: []string{
+				"capability",
+			},
+		}
+
+		// configure store loader that checks if version == upgradeHeight and applies store upgrades
+		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
+	}
+
 	// A custom InitChainer can be set if extra pre-init-genesis logic is required.
 	// By default, when using app wiring enabled module, this is not required.
 	// For instance, the upgrade module will set automatically the module version map in its init genesis thanks to app wiring.
