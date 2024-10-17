@@ -3,37 +3,38 @@ package fairyring.keyshare;
 
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
-// KeyShare defines the structure for submitting
+// Keyshare defines the structure for submitting
 // blockwise keyshares by validators
-message KeyShare {
+message Keyshare {
   string validator = 1;
   uint64 block_height = 2;
-  string key_share = 3;
-  uint64 key_share_index = 4;
+  string keyshare = 3;
+  uint64 keyshare_index = 4;
   uint64 received_timestamp = 5;
   uint64 received_block_height = 6;
 }
 
-// GeneralKeyShare defines the structure for submitting
+// GeneralKeyshare defines the structure for submitting
 // general keyshares by validators
-message GeneralKeyShare {
+message GeneralKeyshare {
   string validator = 1;
   string id_type = 2;
   string id_value = 3;
-  string key_share = 4;
-  uint64 key_share_index = 5;
+  string keyshare = 4;
+  uint64 keyshare_index = 5;
   uint64 received_timestamp = 6;
   uint64 received_block_height = 7;
 }
 
-// ValidatorEncryptedKeyShare defines the structure for
+// ValidatorEncryptedKeyshare defines the structure for
 // submitting encrypted keyshares by validators
-message ValidatorEncryptedKeyShare {
+message ValidatorEncryptedKeyshare {
   string validator = 1;
   string requester = 2;
-  string key_share = 3;
-  uint64 key_share_index = 4;
+  string keyshare = 3;
+  uint64 keyshare_index = 4;
   uint64 received_timestamp = 5;
   uint64 received_block_height = 6;
   string identity = 7;
 }
+

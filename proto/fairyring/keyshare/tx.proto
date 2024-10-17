@@ -5,71 +5,75 @@ package fairyring.keyshare;
 import "amino/amino.proto";
 import "cosmos/msg/v1/msg.proto";
 import "cosmos_proto/cosmos.proto";
-import "gogoproto/gogo.proto";
 import "fairyring/keyshare/params.proto";
-import "fairyring/keyshare/pub_key.proto";
+import "fairyring/keyshare/pubkey.proto";
+import "gogoproto/gogo.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
 // Msg defines the Msg service.
 service Msg {
   option (cosmos.msg.v1.service) = true;
-  
+
   // UpdateParams defines a (governance) operation for updating the module
   // parameters. The authority defaults to the x/gov module account.
-  rpc UpdateParams        (MsgUpdateParams       ) returns (MsgUpdateParamsResponse       );
-  
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+
   // RegisterValidator defines a operation to register validator which
   // is then eligible to participate in sending keyshares
-  rpc RegisterValidator   (MsgRegisterValidator  ) returns (MsgRegisterValidatorResponse  );
-  
+  rpc RegisterValidator(MsgRegisterValidator) returns (MsgRegisterValidatorResponse);
+
   // DeRegisterValidator defines an operation to de-register
   // a registered validator
-  rpc DeRegisterValidator (MsgDeRegisterValidator) returns (MsgDeRegisterValidatorResponse);
-  
+  rpc DeRegisterValidator(MsgDeRegisterValidator) returns (MsgDeRegisterValidatorResponse);
+
   // SendKeyshare defines an operation to submit keyshares
   // every block from registered validators
-  rpc SendKeyshare        (MsgSendKeyshare       ) returns (MsgSendKeyshareResponse       );
-  
+  rpc SendKeyshare(MsgSendKeyshare) returns (MsgSendKeyshareResponse);
+
   // CreateLatestPubKey defines an operation to add a
   // public key to the chain (can only be done by an authorized address)
-  rpc CreateLatestPubKey      (MsgCreateLatestPubKey     ) returns (MsgCreateLatestPubKeyResponse     );
-  
+  rpc CreateLatestPubKey(MsgCreateLatestPubKey) returns (MsgCreateLatestPubKeyResponse);
+
   // OverrideLatestPubKey defines an operation to override the current active pubkey
-  rpc OverrideLatestPubKey    (MsgOverrideLatestPubKey   ) returns (MsgOverrideLatestPubKeyResponse   );
-  
+  rpc OverrideLatestPubKey(MsgOverrideLatestPubKey) returns (MsgOverrideLatestPubKeyResponse);
+
   // CreateAuthorizedAddress defines an operation to mark an address
   // as authorized to create and/or update pubkeys on the chain
-  rpc CreateAuthorizedAddress (MsgCreateAuthorizedAddress) returns (MsgCreateAuthorizedAddressResponse);
-  
+  rpc CreateAuthorizedAddress(MsgCreateAuthorizedAddress) returns (MsgCreateAuthorizedAddressResponse);
+
   // UpdateAuthorizedAddress defines an operation to update the
   // list of authorized addresses
-  rpc UpdateAuthorizedAddress (MsgUpdateAuthorizedAddress) returns (MsgUpdateAuthorizedAddressResponse);
-  
+  rpc UpdateAuthorizedAddress(MsgUpdateAuthorizedAddress) returns (MsgUpdateAuthorizedAddressResponse);
+
   // DeleteAuthorizedAddress defines an operation to revoke the
   // authorization of a previously authorized address
-  rpc DeleteAuthorizedAddress (MsgDeleteAuthorizedAddress) returns (MsgDeleteAuthorizedAddressResponse);
-  
+  rpc DeleteAuthorizedAddress(MsgDeleteAuthorizedAddress) returns (MsgDeleteAuthorizedAddressResponse);
+
   // SubmitGeneralKeyShare defines an operation to submit a
   // general keyshare from a registered validator
-  rpc SubmitGeneralKeyShare   (MsgSubmitGeneralKeyShare  ) returns (MsgSubmitGeneralKeyShareResponse  );
-  
+  rpc SubmitGeneralKeyshare(MsgSubmitGeneralKeyshare) returns (MsgSubmitGeneralKeyshareResponse);
+
   // SubmitEncryptedKeyshare defines an operation to submit
   // an encrypted keyshare from a registered validator
-  rpc SubmitEncryptedKeyshare (MsgSubmitEncryptedKeyshare) returns (MsgSubmitEncryptedKeyshareResponse);
+  rpc SubmitEncryptedKeyshare(MsgSubmitEncryptedKeyshare) returns (MsgSubmitEncryptedKeyshareResponse);
 }
+
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
-  option (cosmos.msg.v1.signer) =                            "authority";
-  option           (amino.name) = "fairyring/x/keyshare/MsgUpdateParams";
-  
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "fairyring/x/keyshare/MsgUpdateParams";
+
   // authority is the address that controls the module (defaults to x/gov unless overwritten).
   string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
 
   // params defines the module parameters to update.
-  
+
   // NOTE: All parameters must be supplied.
-  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  Params params = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
 }
 
 // MsgUpdateParamsResponse defines the response structure for executing a MsgUpdateParams message.
@@ -102,32 +106,32 @@ message MsgDeRegisterValidatorResponse {
 // MsgSendKeyshare is the Msg/SendKeyshare request type.
 message MsgSendKeyshare {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator       = 1;
-  string message       = 2;
-  uint64 key_share_index = 3;
-  uint64 block_height   = 4;
+  string creator = 1;
+  string message = 2;
+  uint64 keyshare_index = 3;
+  uint64 block_height = 4;
 }
 
 // MsgSendKeyshareResponse defines the response structure for
 // executing a MsgSendKeyshare message.
 message MsgSendKeyshareResponse {
-  string creator             = 1;
-  string keyshare            = 2;
-  uint64 keyshare_index       = 3;
-  uint64 block_height         = 4;
+  string creator = 1;
+  string keyshare = 2;
+  uint64 keyshare_index = 3;
+  uint64 block_height = 4;
   uint64 received_block_height = 5;
-  bool   success             = 6;
-  string error_message        = 7;
+  bool success = 6;
+  string error_message = 7;
 }
 
 // MsgCreateLatestPubKey is the Msg/CreateLatestPubKey request type.
 message MsgCreateLatestPubKey {
   option (cosmos.msg.v1.signer) = "creator";
-  string            creator = 1;
-  string            public_key = 2;
-  repeated string   commitments = 3;
-  uint64            number_of_validators = 4;
-  repeated EncryptedKeyShare encrypted_key_shares = 5;
+  string creator = 1;
+  string public_key = 2;
+  repeated string commitments = 3;
+  uint64 number_of_validators = 4;
+  repeated EncryptedKeyshare encrypted_keyshares = 5;
 }
 
 // MsgCreateLatestPubKeyResponse defines the response structure for
@@ -137,11 +141,11 @@ message MsgCreateLatestPubKeyResponse {}
 // MsgOverrideLatestPubKey is the Msg/OverrideLatestPubKey request type.
 message MsgOverrideLatestPubKey {
   option (cosmos.msg.v1.signer) = "creator";
-  string            creator = 1;
-  string            public_key = 2;
-  repeated string   commitments = 3;
-  uint64            number_of_validators = 4;
-  repeated EncryptedKeyShare encrypted_key_shares = 5;
+  string creator = 1;
+  string public_key = 2;
+  repeated string commitments = 3;
+  uint64 number_of_validators = 4;
+  repeated EncryptedKeyshare encrypted_keyshares = 5;
 }
 
 // MsgOverrideLatestPubKeyResponse defines the response structure for
@@ -151,7 +155,7 @@ message MsgOverrideLatestPubKeyResponse {}
 // MsgCreateAuthorizedAddress is the Msg/CreateAuthorizedAddress request type.
 message MsgCreateAuthorizedAddress {
   option (cosmos.msg.v1.signer) = "creator";
-  string target  = 1;
+  string target = 1;
   string creator = 2;
 }
 
@@ -162,9 +166,9 @@ message MsgCreateAuthorizedAddressResponse {}
 // MsgUpdateAuthorizedAddress is the Msg/UpdateAuthorizedAddress request type.
 message MsgUpdateAuthorizedAddress {
   option (cosmos.msg.v1.signer) = "creator";
-  string target       = 1;
-  bool   is_authorized = 2;
-  string creator      = 3;
+  string target = 1;
+  bool is_authorized = 2;
+  string creator = 3;
 }
 
 // MsgUpdateAuthorizedAddressResponse defines the response structure for
@@ -174,7 +178,7 @@ message MsgUpdateAuthorizedAddressResponse {}
 // MsgDeleteAuthorizedAddress is the Msg/DeleteAuthorizedAddress request type.
 message MsgDeleteAuthorizedAddress {
   option (cosmos.msg.v1.signer) = "creator";
-  string target  = 1;
+  string target = 1;
   string creator = 2;
 }
 
@@ -183,40 +187,40 @@ message MsgDeleteAuthorizedAddress {
 message MsgDeleteAuthorizedAddressResponse {}
 
 // MsgSubmitGeneralKeyShare is the Msg/CreateGeneralKeyShare request type.
-message MsgSubmitGeneralKeyShare {
+message MsgSubmitGeneralKeyshare {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator               = 1;
-  string id_type               = 2;
-  string id_value              = 3;
-  string key_share             = 4;
-  uint64 key_share_index       = 5;
-  uint64 received_timestamp    = 6;
+  string creator = 1;
+  string id_type = 2;
+  string id_value = 3;
+  string keyshare = 4;
+  uint64 keyshare_index = 5;
+  uint64 received_timestamp = 6;
   uint64 received_block_height = 7;
 }
 
 // MsgSubmitGeneralKeyShareResponse defines the response structure for
 // executing a MsgSubmitGeneralKeyShare message.
-message MsgSubmitGeneralKeyShareResponse {
-  string creator               = 1;
-  string id_type               = 2;
-  string id_value              = 3;
-  string key_share             = 4;
-  uint64 key_share_index       = 5;
+message MsgSubmitGeneralKeyshareResponse {
+  string creator = 1;
+  string id_type = 2;
+  string id_value = 3;
+  string keyshare = 4;
+  uint64 keyshare_index = 5;
   uint64 received_block_height = 6;
-  bool   success               = 7;
-  string error_message         = 8;
+  bool success = 7;
+  string error_message = 8;
 }
 
 // MsgSubmitEncryptedKeyshare is the Msg/SubmitEncryptedKeyshare request type.
 message MsgSubmitEncryptedKeyshare {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator             = 1;
-  string identity            = 2;
-  string encrypted_keyshare   = 3;
-  uint64 key_share_index       = 4;
-  uint64 received_timestamp   = 5;
+  string creator = 1;
+  string identity = 2;
+  string encrypted_keyshare = 3;
+  uint64 keyshare_index = 4;
+  uint64 received_timestamp = 5;
   uint64 received_block_height = 6;
-  string requester           = 7;
+  string requester = 7;
 }
 
 // MsgSubmitEncryptedKeyshareResponse defines the response structure for

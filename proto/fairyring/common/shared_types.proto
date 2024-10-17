@@ -1,8 +1,8 @@
 syntax = "proto3";
 package fairyring.common;
 
-import "google/protobuf/duration.proto";
 import "gogoproto/gogo.proto";
+import "google/protobuf/duration.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/common/types";
 
@@ -14,18 +14,18 @@ message RequestDecryptionKey {
     string proposal_id = 2;
     string request_id = 3;
   }
-    google.protobuf.Duration estimated_delay = 4 [(gogoproto.stdduration) = true];
+  google.protobuf.Duration estimated_delay = 4 [(gogoproto.stdduration) = true];
 }
 
 // RequestDecryptionKeyResponse defines the response to the RequestDecryptionKey message
 message RequestDecryptionKeyResponse {
   string identity = 1;
-  string pubkey   = 2;
+  string pubkey = 2;
 }
 
 // GetDecryptionKey defines a struct for the data payload
 message GetDecryptionKey {
-  // id can either be a rwquest id or a proposal id
+  // id can either be a request id or a proposal id
   oneof id {
     string proposal_id = 1;
     string request_id = 2;
@@ -46,7 +46,7 @@ message GetPrivateDecryptionKey {
 
 // GetPrivateDecryptionKeyResponse defines the response to the GetPrivateDecryptionKey message
 message GetPrivateDecryptionKeyResponse {
-  string pubkey   = 1;
+  string pubkey = 1;
 }
 
 // ActivePublicKey defines the pubkey currently in use

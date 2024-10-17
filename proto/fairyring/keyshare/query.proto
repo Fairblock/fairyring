@@ -3,110 +3,97 @@ syntax = "proto3";
 package fairyring.keyshare;
 
 import "amino/amino.proto";
-import "gogoproto/gogo.proto";
-import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
-import "fairyring/keyshare/params.proto";
-import "fairyring/keyshare/validator_set.proto";
-import "fairyring/keyshare/key_share.proto";
-import "fairyring/keyshare/aggregated_key_share.proto";
-import "fairyring/keyshare/pub_key.proto";
 import "fairyring/keyshare/authorized_address.proto";
 import "fairyring/keyshare/commitments.proto";
+import "fairyring/keyshare/decryption_key.proto";
+import "fairyring/keyshare/keyshare.proto";
+import "fairyring/keyshare/params.proto";
+import "fairyring/keyshare/pubkey.proto";
+import "fairyring/keyshare/validator_set.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
 // Query defines the gRPC querier service.
 service Query {
-  
   // Parameters queries the parameters of the module.
-  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/fairyring/keyshare/params";
-  
   }
 
   // Commitments queries the lists of active and queued commitments
-  rpc Commitments (QueryCommitmentsRequest) returns (QueryCommitmentsResponse) {
+  rpc Commitments(QueryCommitmentsRequest) returns (QueryCommitmentsResponse) {
     option (google.api.http).get = "/fairyring/keyshare/commitments";
   }
 
   // Queries a ValidatorSet by index.
-  rpc ValidatorSet (QueryValidatorSetRequest) returns (QueryValidatorSetResponse) {
+  rpc ValidatorSet(QueryValidatorSetRequest) returns (QueryValidatorSetResponse) {
     option (google.api.http).get = "/fairyring/keyshare/validator_set/{index}";
-
   }
 
   // Queries a list of ValidatorSet items.
-  rpc ValidatorSetAll (QueryValidatorSetAllRequest) returns (QueryValidatorSetAllResponse) {
+  rpc ValidatorSetAll(QueryValidatorSetAllRequest) returns (QueryValidatorSetAllResponse) {
     option (google.api.http).get = "/fairyring/keyshare/validator_set";
-
   }
 
-  // Queries a KeyShare by index.
-  rpc KeyShare (QueryKeyShareRequest) returns (QueryKeyShareResponse) {
-    option (google.api.http).get = "/fairyring/keyshare/key_share/{validator}/{block_height}";
-
+  // Queries a Keyshare by index.
+  rpc Keyshare(QueryKeyshareRequest) returns (QueryKeyshareResponse) {
+    option (google.api.http).get = "/fairyring/keyshare/keyshare/{validator}/{block_height}";
   }
 
-  // Queries a list of KeyShare items.
-  rpc KeyShareAll (QueryKeyShareAllRequest) returns (QueryKeyShareAllResponse) {
-    option (google.api.http).get = "/fairyring/keyshare/key_share";
-
+  // Queries a list of Keyshare items.
+  rpc KeyshareAll(QueryKeyshareAllRequest) returns (QueryKeyshareAllResponse) {
+    option (google.api.http).get = "/fairyring/keyshare/keyshare";
   }
 
   // DecryptionKey queries a DecryptionKey item by height.
-  rpc DecryptionKey (QueryDecryptionKeyRequest) returns (QueryDecryptionKeyResponse) {
+  rpc DecryptionKey(QueryDecryptionKeyRequest) returns (QueryDecryptionKeyResponse) {
     option (google.api.http).get = "/fairyring/keyshare/decryption_key/{height}";
-
   }
 
   // DecryptionKeyAll Queries a list of DecryptionKey items.
-  rpc DecryptionKeyAll (QueryDecryptionKeyAllRequest) returns (QueryDecryptionKeyAllResponse) {
+  rpc DecryptionKeyAll(QueryDecryptionKeyAllRequest) returns (QueryDecryptionKeyAllResponse) {
     option (google.api.http).get = "/fairyring/keyshare/decryption_key";
-
   }
 
   // Queries the public keys
-  rpc PubKey (QueryPubKeyRequest) returns (QueryPubKeyResponse) {
-    option (google.api.http).get = "/fairyring/keyshare/pub_key";
-
+  rpc PubKey(QueryPubkeyRequest) returns (QueryPubkeyResponse) {
+    option (google.api.http).get = "/fairyring/keyshare/pubkey";
   }
 
   // Queries a AuthorizedAddress item by target.
-  rpc AuthorizedAddress    (QueryAuthorizedAddressRequest) returns (QueryAuthorizedAddressResponse) {
+  rpc AuthorizedAddress(QueryAuthorizedAddressRequest) returns (QueryAuthorizedAddressResponse) {
     option (google.api.http).get = "/fairyring/keyshare/authorized_address/{target}";
-
   }
 
   // Queries a list of AuthorizedAddress items
-  rpc AuthorizedAddressAll (QueryAuthorizedAddressAllRequest) returns (QueryAuthorizedAddressAllResponse) {
+  rpc AuthorizedAddressAll(QueryAuthorizedAddressAllRequest) returns (QueryAuthorizedAddressAllResponse) {
     option (google.api.http).get = "/fairyring/keyshare/authorized_address";
-
   }
 
   // Queries a GeneralKeyShare item by validator address and identity.
-  rpc GeneralKeyShare    (QueryGeneralKeyShareRequest) returns (QueryGeneralKeyShareResponse) {
-    option (google.api.http).get = "/fairyring/keyshare/general_key_share/{validator}/{id_type}/{id_value}";
-
+  rpc GeneralKeyshare(QueryGeneralKeyshareRequest) returns (QueryGeneralKeyshareResponse) {
+    option (google.api.http).get = "/fairyring/keyshare/general_keyshare/{validator}/{id_type}/{id_value}";
   }
 
   // Queries a list of GeneralKeyShare items
-  rpc GeneralKeyShareAll (QueryGeneralKeyShareAllRequest) returns (QueryGeneralKeyShareAllResponse) {
-    option (google.api.http).get = "/fairyring/keyshare/general_key_share";
-
+  rpc GeneralKeyshareAll(QueryGeneralKeyshareAllRequest) returns (QueryGeneralKeyshareAllResponse) {
+    option (google.api.http).get = "/fairyring/keyshare/general_keyshare";
   }
 
   // Queries verifiable randomness
-  rpc VerifiableRandomness (QueryVerifiableRandomnessRequest) returns (QueryVerifiableRandomnessResponse) {
+  rpc VerifiableRandomness(QueryVerifiableRandomnessRequest) returns (QueryVerifiableRandomnessResponse) {
     option (google.api.http).get = "/fairyring/keyshare/verifiable_randomness";
   }
 }
 
-// QueryVerifiableRandomnessRequest is the request type for 
+// QueryVerifiableRandomnessRequest is the request type for
 // the Query/VerifiableRandomness  method
 message QueryVerifiableRandomnessRequest {}
 
-// QueryVerifiableRandomnessResponse is the response type for 
+// QueryVerifiableRandomnessResponse is the response type for
 // the Query/VerifiableRandomness  method
 message QueryVerifiableRandomnessResponse {
   string randomness = 1;
@@ -118,9 +105,11 @@ message QueryParamsRequest {}
 
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
-  
   // params holds all the parameters of this module.
-  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
 }
 
 // QueryCommitmentsRequest is request type for the Query/Commitments RPC method.
@@ -150,28 +139,28 @@ message QueryValidatorSetAllRequest {
 // QueryValidatorSetAllResponse is response type for the Query/ValidatorSetAll RPC method.
 message QueryValidatorSetAllResponse {
   repeated ValidatorSet validator_set = 1 [(gogoproto.nullable) = false];
-  cosmos.base.query.v1beta1.PageResponse pagination   = 2;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // QueryKeyShareRequest is request type for the Query/KeyShare RPC method.
-message QueryKeyShareRequest {
-  string validator   = 1;
+message QueryKeyshareRequest {
+  string validator = 1;
   uint64 block_height = 2;
 }
 
 // QueryKeyShareResponse is response type for the Query/KeyShare RPC method.
-message QueryKeyShareResponse {
+message QueryKeyshareResponse {
   KeyShare key_share = 1 [(gogoproto.nullable) = false];
 }
 
 // QueryKeyShareAllRequest is request type for the Query/KeyShareAll RPC method.
-message QueryKeyShareAllRequest {
+message QueryKeyshareAllRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
 // QueryKeyShareAllResponse is response type for the Query/KeyShareAll RPC method.
-message QueryKeyShareAllResponse {
-  repeated KeyShare key_share   = 1 [(gogoproto.nullable) = false];
+message QueryKeyshareAllResponse {
+  repeated Keyshare keyshare = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
@@ -192,17 +181,17 @@ message QueryDecryptionKeyAllRequest {
 
 // QueryAggregatedKeyShareAllResponse is response type for the Query/DecryptionKeyAll RPC method.
 message QueryDecryptionKeyAllResponse {
-  repeated AggregatedKeyShare decryption_keys = 1 [(gogoproto.nullable) = false];
+  repeated DecryptionKey decryption_keys = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // QueryPubKeyRequest is request type for the Query/PubKey RPC method.
-message QueryPubKeyRequest {}
+message QueryPubkeyRequest {}
 
 // QueryPubKeyResponse is response type for the Query/PubKey RPC method.
-message QueryPubKeyResponse {
-  ActivePubKey active_pub_key = 1 [(gogoproto.nullable) = false];
-  QueuedPubKey queued_pub_key = 2 [(gogoproto.nullable) = false];
+message QueryPubkeyResponse {
+  ActivePubKey active_pubkey = 1 [(gogoproto.nullable) = false];
+  QueuedPubKey queued_pubkey = 2 [(gogoproto.nullable) = false];
 }
 
 // QueryAuthorizedAddressRequest is request type for the Query/AuthorizedAddress RPC method.
@@ -223,29 +212,28 @@ message QueryAuthorizedAddressAllRequest {
 // QueryAuthorizedAddressAllResponse is response type for the Query/AuthorizedAddressAll RPC method.
 message QueryAuthorizedAddressAllResponse {
   repeated AuthorizedAddress authorized_address = 1 [(gogoproto.nullable) = false];
-  cosmos.base.query.v1beta1.PageResponse pagination        = 2;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // QueryGeneralKeyShareRequest is request type for the Query/GeneralKeyShare RPC method.
-message QueryGeneralKeyShareRequest {
+message QueryGeneralKeyshareRequest {
   string validator = 1;
-  string id_type    = 2;
-  string id_value   = 3;
+  string id_type = 2;
+  string id_value = 3;
 }
 
 // QueryGeneralKeyShareResponse is response type for the Query/GeneralKeyShare RPC method.
-message QueryGeneralKeyShareResponse {
-  GeneralKeyShare general_key_share = 1 [(gogoproto.nullable) = false];
+message QueryGeneralKeyshareResponse {
+  GeneralKeyShare general_keyshare = 1 [(gogoproto.nullable) = false];
 }
 
 // QueryGeneralKeyShareAllRequest is request type for the Query/GeneralKeyShareAll RPC method.
-message QueryGeneralKeyShareAllRequest {
+message QueryGeneralKeyshareAllRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
 // QueryGeneralKeyShareAllResponse is response type for the Query/GeneralKeyShareAll RPC method.
-message QueryGeneralKeyShareAllResponse {
-  repeated GeneralKeyShare general_key_share = 1 [(gogoproto.nullable) = false];
-  cosmos.base.query.v1beta1.PageResponse pagination      = 2;
+message QueryGeneralKeyshareAllResponse {
+  repeated GeneralKeyshare general_keyshare = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
-
