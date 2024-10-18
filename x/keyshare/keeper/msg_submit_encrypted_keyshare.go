@@ -78,16 +78,16 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 	}
 
 	// Get the active public key for aggregating
-	activePubKey, found := k.GetActivePubKey(ctx)
+	activePubkey, found := k.GetActivePubkey(ctx)
 
 	if !found {
-		return nil, types.ErrPubKeyNotFound
+		return nil, types.ErrPubkeyNotFound
 	}
 
 	expectedThreshold := math.LegacyNewDecFromInt(
 		math.NewInt(types.KeyAggregationThresholdNumerator)).Quo(
 		math.LegacyNewDecFromInt(math.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
-		int64(activePubKey.NumberOfValidators)).Ceil().TruncateInt64()
+		int64(activePubkey.NumberOfValidators)).Ceil().TruncateInt64()
 
 	// Emit KeyShare Submitted Event
 	ctx.EventManager().EmitEvent(

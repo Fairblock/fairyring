@@ -9,16 +9,16 @@ import (
 	cosmoserror "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgOverrideLatestPubKey{}
+var _ sdk.Msg = &MsgOverrideLatestPubkey{}
 
-func NewMsgOverrideLatestPubKey(
+func NewMsgOverrideLatestPubkey(
 	creator string,
 	publicKey string,
 	commitments []string,
 	numberOfValidators uint64,
 	encryptedKeyshares []*EncryptedKeyshare,
-) *MsgOverrideLatestPubKey {
-	return &MsgOverrideLatestPubKey{
+) *MsgOverrideLatestPubkey {
+	return &MsgOverrideLatestPubkey{
 		Creator:            creator,
 		PublicKey:          publicKey,
 		Commitments:        commitments,
@@ -27,16 +27,16 @@ func NewMsgOverrideLatestPubKey(
 	}
 }
 
-func (msg *MsgOverrideLatestPubKey) ValidateBasic() error {
+func (msg *MsgOverrideLatestPubkey) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(cosmoserror.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if len(msg.PublicKey) != PubKeyHexLength {
-		return ErrInvalidPubKeyLength.Wrapf("expected hex encoding public key to be length: %d", CommitmentHexLength)
+	if len(msg.PublicKey) != PubkeyHexLength {
+		return ErrInvalidPubkeyLength.Wrapf("expected hex encoding public key to be length: %d", CommitmentHexLength)
 	}
 	if _, err = hex.DecodeString(msg.PublicKey); err != nil {
-		return ErrInvalidPubKey.Wrapf("expected hex encoded public key, got: %s", msg.PublicKey)
+		return ErrInvalidPubkey.Wrapf("expected hex encoded public key, got: %s", msg.PublicKey)
 	}
 	if len(msg.Commitments) == 0 {
 		return ErrEmptyCommitments

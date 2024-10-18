@@ -132,16 +132,16 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	}
 
 	// Get the active public key for aggregating
-	activePubKey, found := k.GetActivePubKey(ctx)
+	activePubkey, found := k.GetActivePubkey(ctx)
 
 	if !found {
-		return nil, types.ErrPubKeyNotFound
+		return nil, types.ErrPubkeyNotFound
 	}
 
 	expectedThreshold := math.LegacyNewDecFromInt(
 		math.NewInt(types.KeyAggregationThresholdNumerator)).Quo(
 		math.LegacyNewDecFromInt(math.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
-		int64(activePubKey.NumberOfValidators)).Ceil().TruncateInt64()
+		int64(activePubkey.NumberOfValidators)).Ceil().TruncateInt64()
 
 	// Emit KeyShare Submitted Event
 	ctx.EventManager().EmitEvent(
@@ -219,7 +219,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		sdk.NewEvent(types.KeyShareAggregatedEventType,
 			sdk.NewAttribute(types.KeyShareAggregatedEventBlockHeight, strconv.FormatUint(msg.BlockHeight, 10)),
 			sdk.NewAttribute(types.KeyShareAggregatedEventData, skHex),
-			sdk.NewAttribute(types.KeyShareAggregatedEventPubKey, activePubKey.PublicKey),
+			sdk.NewAttribute(types.KeyShareAggregatedEventPubkey, activePubkey.PublicKey),
 		),
 	)
 

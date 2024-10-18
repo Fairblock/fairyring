@@ -31,12 +31,12 @@ service Msg {
   // every block from registered validators
   rpc SendKeyshare(MsgSendKeyshare) returns (MsgSendKeyshareResponse);
 
-  // CreateLatestPubKey defines an operation to add a
+  // CreateLatestPubkey defines an operation to add a
   // public key to the chain (can only be done by an authorized address)
-  rpc CreateLatestPubKey(MsgCreateLatestPubKey) returns (MsgCreateLatestPubKeyResponse);
+  rpc CreateLatestPubkey(MsgCreateLatestPubkey) returns (MsgCreateLatestPubkeyResponse);
 
-  // OverrideLatestPubKey defines an operation to override the current active pubkey
-  rpc OverrideLatestPubKey(MsgOverrideLatestPubKey) returns (MsgOverrideLatestPubKeyResponse);
+  // OverrideLatestPubkey defines an operation to override the current active pubkey
+  rpc OverrideLatestPubkey(MsgOverrideLatestPubkey) returns (MsgOverrideLatestPubkeyResponse);
 
   // CreateAuthorizedAddress defines an operation to mark an address
   // as authorized to create and/or update pubkeys on the chain
@@ -124,8 +124,8 @@ message MsgSendKeyshareResponse {
   string error_message = 7;
 }
 
-// MsgCreateLatestPubKey is the Msg/CreateLatestPubKey request type.
-message MsgCreateLatestPubKey {
+// MsgCreateLatestPubkey is the Msg/CreateLatestPubkey request type.
+message MsgCreateLatestPubkey {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   string public_key = 2;
@@ -134,12 +134,12 @@ message MsgCreateLatestPubKey {
   repeated EncryptedKeyshare encrypted_keyshares = 5;
 }
 
-// MsgCreateLatestPubKeyResponse defines the response structure for
-// executing a MsgCreateLatestPubKey message.
-message MsgCreateLatestPubKeyResponse {}
+// MsgCreateLatestPubkeyResponse defines the response structure for
+// executing a MsgCreateLatestPubkey message.
+message MsgCreateLatestPubkeyResponse {}
 
-// MsgOverrideLatestPubKey is the Msg/OverrideLatestPubKey request type.
-message MsgOverrideLatestPubKey {
+// MsgOverrideLatestPubkey is the Msg/OverrideLatestPubkey request type.
+message MsgOverrideLatestPubkey {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   string public_key = 2;
@@ -148,9 +148,9 @@ message MsgOverrideLatestPubKey {
   repeated EncryptedKeyshare encrypted_keyshares = 5;
 }
 
-// MsgOverrideLatestPubKeyResponse defines the response structure for
-// executing a MsgOverrideLatestPubKey message.
-message MsgOverrideLatestPubKeyResponse {}
+// MsgOverrideLatestPubkeyResponse defines the response structure for
+// executing a MsgOverrideLatestPubkey message.
+message MsgOverrideLatestPubkeyResponse {}
 
 // MsgCreateAuthorizedAddress is the Msg/CreateAuthorizedAddress request type.
 message MsgCreateAuthorizedAddress {

@@ -76,8 +76,8 @@ func (m *EncryptedKeyshare) GetValidator() string {
 	return ""
 }
 
-// ActivePubKey defines the structure of the active public key
-type ActivePubKey struct {
+// ActivePubkey defines the structure of the active public key
+type ActivePubkey struct {
 	PublicKey          string               `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
 	Creator            string               `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
 	Expiry             uint64               `protobuf:"varint,3,opt,name=expiry,proto3" json:"expiry,omitempty"`
@@ -85,18 +85,18 @@ type ActivePubKey struct {
 	EncryptedKeyshares []*EncryptedKeyshare `protobuf:"bytes,5,rep,name=encrypted_keyshares,json=encryptedKeyshares,proto3" json:"encrypted_keyshares,omitempty"`
 }
 
-func (m *ActivePubKey) Reset()         { *m = ActivePubKey{} }
-func (m *ActivePubKey) String() string { return proto.CompactTextString(m) }
-func (*ActivePubKey) ProtoMessage()    {}
-func (*ActivePubKey) Descriptor() ([]byte, []int) {
+func (m *ActivePubkey) Reset()         { *m = ActivePubkey{} }
+func (m *ActivePubkey) String() string { return proto.CompactTextString(m) }
+func (*ActivePubkey) ProtoMessage()    {}
+func (*ActivePubkey) Descriptor() ([]byte, []int) {
 	return fileDescriptor_78068a78bf5008ef, []int{1}
 }
-func (m *ActivePubKey) XXX_Unmarshal(b []byte) error {
+func (m *ActivePubkey) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ActivePubKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ActivePubkey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ActivePubKey.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ActivePubkey.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -106,55 +106,55 @@ func (m *ActivePubKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return b[:n], nil
 	}
 }
-func (m *ActivePubKey) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ActivePubKey.Merge(m, src)
+func (m *ActivePubkey) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ActivePubkey.Merge(m, src)
 }
-func (m *ActivePubKey) XXX_Size() int {
+func (m *ActivePubkey) XXX_Size() int {
 	return m.Size()
 }
-func (m *ActivePubKey) XXX_DiscardUnknown() {
-	xxx_messageInfo_ActivePubKey.DiscardUnknown(m)
+func (m *ActivePubkey) XXX_DiscardUnknown() {
+	xxx_messageInfo_ActivePubkey.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ActivePubKey proto.InternalMessageInfo
+var xxx_messageInfo_ActivePubkey proto.InternalMessageInfo
 
-func (m *ActivePubKey) GetPublicKey() string {
+func (m *ActivePubkey) GetPublicKey() string {
 	if m != nil {
 		return m.PublicKey
 	}
 	return ""
 }
 
-func (m *ActivePubKey) GetCreator() string {
+func (m *ActivePubkey) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *ActivePubKey) GetExpiry() uint64 {
+func (m *ActivePubkey) GetExpiry() uint64 {
 	if m != nil {
 		return m.Expiry
 	}
 	return 0
 }
 
-func (m *ActivePubKey) GetNumberOfValidators() uint64 {
+func (m *ActivePubkey) GetNumberOfValidators() uint64 {
 	if m != nil {
 		return m.NumberOfValidators
 	}
 	return 0
 }
 
-func (m *ActivePubKey) GetEncryptedKeyshares() []*EncryptedKeyshare {
+func (m *ActivePubkey) GetEncryptedKeyshares() []*EncryptedKeyshare {
 	if m != nil {
 		return m.EncryptedKeyshares
 	}
 	return nil
 }
 
-// QueuedPubKey defines the structure of the queued public key
-type QueuedPubKey struct {
+// QueuedPubkey defines the structure of the queued public key
+type QueuedPubkey struct {
 	PublicKey          string               `protobuf:"bytes,1,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
 	Creator            string               `protobuf:"bytes,2,opt,name=creator,proto3" json:"creator,omitempty"`
 	Expiry             uint64               `protobuf:"varint,3,opt,name=expiry,proto3" json:"expiry,omitempty"`
@@ -162,18 +162,18 @@ type QueuedPubKey struct {
 	EncryptedKeyshares []*EncryptedKeyshare `protobuf:"bytes,5,rep,name=encrypted_keyshares,json=encryptedKeyshares,proto3" json:"encrypted_keyshares,omitempty"`
 }
 
-func (m *QueuedPubKey) Reset()         { *m = QueuedPubKey{} }
-func (m *QueuedPubKey) String() string { return proto.CompactTextString(m) }
-func (*QueuedPubKey) ProtoMessage()    {}
-func (*QueuedPubKey) Descriptor() ([]byte, []int) {
+func (m *QueuedPubkey) Reset()         { *m = QueuedPubkey{} }
+func (m *QueuedPubkey) String() string { return proto.CompactTextString(m) }
+func (*QueuedPubkey) ProtoMessage()    {}
+func (*QueuedPubkey) Descriptor() ([]byte, []int) {
 	return fileDescriptor_78068a78bf5008ef, []int{2}
 }
-func (m *QueuedPubKey) XXX_Unmarshal(b []byte) error {
+func (m *QueuedPubkey) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueuedPubKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueuedPubkey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueuedPubKey.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueuedPubkey.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -183,47 +183,47 @@ func (m *QueuedPubKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return b[:n], nil
 	}
 }
-func (m *QueuedPubKey) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueuedPubKey.Merge(m, src)
+func (m *QueuedPubkey) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueuedPubkey.Merge(m, src)
 }
-func (m *QueuedPubKey) XXX_Size() int {
+func (m *QueuedPubkey) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueuedPubKey) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueuedPubKey.DiscardUnknown(m)
+func (m *QueuedPubkey) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueuedPubkey.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueuedPubKey proto.InternalMessageInfo
+var xxx_messageInfo_QueuedPubkey proto.InternalMessageInfo
 
-func (m *QueuedPubKey) GetPublicKey() string {
+func (m *QueuedPubkey) GetPublicKey() string {
 	if m != nil {
 		return m.PublicKey
 	}
 	return ""
 }
 
-func (m *QueuedPubKey) GetCreator() string {
+func (m *QueuedPubkey) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *QueuedPubKey) GetExpiry() uint64 {
+func (m *QueuedPubkey) GetExpiry() uint64 {
 	if m != nil {
 		return m.Expiry
 	}
 	return 0
 }
 
-func (m *QueuedPubKey) GetNumberOfValidators() uint64 {
+func (m *QueuedPubkey) GetNumberOfValidators() uint64 {
 	if m != nil {
 		return m.NumberOfValidators
 	}
 	return 0
 }
 
-func (m *QueuedPubKey) GetEncryptedKeyshares() []*EncryptedKeyshare {
+func (m *QueuedPubkey) GetEncryptedKeyshares() []*EncryptedKeyshare {
 	if m != nil {
 		return m.EncryptedKeyshares
 	}
@@ -232,34 +232,34 @@ func (m *QueuedPubKey) GetEncryptedKeyshares() []*EncryptedKeyshare {
 
 func init() {
 	proto.RegisterType((*EncryptedKeyshare)(nil), "fairyring.keyshare.EncryptedKeyshare")
-	proto.RegisterType((*ActivePubKey)(nil), "fairyring.keyshare.ActivePubKey")
-	proto.RegisterType((*QueuedPubKey)(nil), "fairyring.keyshare.QueuedPubKey")
+	proto.RegisterType((*ActivePubkey)(nil), "fairyring.keyshare.ActivePubkey")
+	proto.RegisterType((*QueuedPubkey)(nil), "fairyring.keyshare.QueuedPubkey")
 }
 
 func init() { proto.RegisterFile("fairyring/keyshare/pubkey.proto", fileDescriptor_78068a78bf5008ef) }
 
 var fileDescriptor_78068a78bf5008ef = []byte{
 	// 317 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xdc, 0x92, 0x41, 0x4e, 0x02, 0x31,
-	0x14, 0x86, 0xa9, 0x20, 0x86, 0xea, 0xc6, 0x6a, 0xcc, 0x2c, 0xb4, 0x12, 0x12, 0x13, 0x56, 0x33,
-	0x46, 0x4f, 0xa0, 0x09, 0x26, 0x86, 0x85, 0xca, 0x82, 0x85, 0x9b, 0x49, 0xdb, 0x79, 0x40, 0x33,
-	0x40, 0x9b, 0x4e, 0x4b, 0xe8, 0x2d, 0x3c, 0x96, 0x4b, 0x96, 0x2e, 0x0d, 0xac, 0xbc, 0x85, 0x71,
-	0x60, 0x18, 0x23, 0x37, 0x70, 0xd7, 0xf7, 0xff, 0x7f, 0x5e, 0xf3, 0xbd, 0xfc, 0xf8, 0x72, 0xc0,
-	0xa4, 0xf1, 0x46, 0x4e, 0x87, 0x51, 0x0a, 0x3e, 0x1b, 0x31, 0x03, 0x91, 0x76, 0x3c, 0x05, 0x1f,
-	0x6a, 0xa3, 0xac, 0x22, 0x64, 0x1b, 0x08, 0x8b, 0x40, 0xab, 0x83, 0x8f, 0x3b, 0x53, 0x61, 0xbc,
-	0xb6, 0x90, 0x74, 0x37, 0x22, 0x21, 0xb8, 0x96, 0x30, 0xcb, 0x02, 0xd4, 0x44, 0xed, 0x46, 0x2f,
-	0x7f, 0x93, 0x73, 0xdc, 0x98, 0xb1, 0xb1, 0x4c, 0x98, 0x55, 0x26, 0xd8, 0xcb, 0x8d, 0x52, 0x68,
-	0x7d, 0x21, 0x7c, 0x74, 0x27, 0xac, 0x9c, 0xc1, 0xb3, 0xe3, 0x5d, 0xf0, 0xe4, 0x02, 0x63, 0xed,
-	0xf8, 0x58, 0x8a, 0x38, 0x05, 0xbf, 0x59, 0xd4, 0x58, 0x2b, 0x3f, 0x76, 0x80, 0x0f, 0x84, 0x81,
-	0x5f, 0xbb, 0x8a, 0x91, 0x9c, 0xe1, 0x3a, 0xcc, 0xb5, 0x34, 0x3e, 0xa8, 0x36, 0x51, 0xbb, 0xd6,
-	0xdb, 0x4c, 0xe4, 0x1a, 0x9f, 0x4e, 0xdd, 0x84, 0x83, 0x89, 0xd5, 0x20, 0xde, 0x7e, 0x9c, 0x05,
-	0xb5, 0x3c, 0x45, 0xd6, 0xde, 0xd3, 0xa0, 0xbf, 0x75, 0x48, 0x1f, 0x9f, 0x40, 0x81, 0x16, 0x17,
-	0xc0, 0x59, 0xb0, 0xdf, 0xac, 0xb6, 0x0f, 0x6f, 0xae, 0xc2, 0xdd, 0x63, 0x84, 0x3b, 0x97, 0xe8,
-	0x11, 0xf8, 0x2b, 0x65, 0x39, 0xeb, 0x8b, 0x03, 0x07, 0xc9, 0xbf, 0x67, 0xbd, 0x7f, 0x7c, 0x5f,
-	0x52, 0xb4, 0x58, 0x52, 0xf4, 0xb9, 0xa4, 0xe8, 0x6d, 0x45, 0x2b, 0x8b, 0x15, 0xad, 0x7c, 0xac,
-	0x68, 0xe5, 0x35, 0x1a, 0x4a, 0x3b, 0x72, 0x3c, 0x14, 0x6a, 0x12, 0x3d, 0x30, 0x69, 0xf8, 0x58,
-	0x89, 0x34, 0x2a, 0x2b, 0x38, 0x2f, 0x4b, 0x68, 0xbd, 0x86, 0x8c, 0xd7, 0xf3, 0x12, 0xde, 0x7e,
-	0x07, 0x00, 0x00, 0xff, 0xff, 0x28, 0xcb, 0x57, 0xbe, 0xa7, 0x02, 0x00, 0x00,
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xdc, 0x52, 0xb1, 0x4e, 0x2a, 0x41,
+	0x14, 0x65, 0x1e, 0x3c, 0x0c, 0xa3, 0x8d, 0x57, 0x63, 0xb6, 0xd0, 0x95, 0x90, 0x98, 0x50, 0xed,
+	0x1a, 0xfd, 0x02, 0x4d, 0x30, 0x31, 0x14, 0x2a, 0x05, 0x85, 0xcd, 0x66, 0x76, 0xf6, 0x02, 0x93,
+	0x05, 0x66, 0x32, 0x3b, 0x43, 0x98, 0xbf, 0xf0, 0xb3, 0x2c, 0x29, 0x2d, 0x0d, 0x54, 0xfe, 0x85,
+	0xc9, 0xc0, 0x82, 0x91, 0x3f, 0xb0, 0xbb, 0xf7, 0x9c, 0x93, 0x7b, 0x73, 0x4e, 0x0e, 0xbd, 0x1c,
+	0x30, 0xa1, 0x9d, 0x16, 0xd3, 0x61, 0x9c, 0xa3, 0x2b, 0x46, 0x4c, 0x63, 0xac, 0x6c, 0x9a, 0xa3,
+	0x8b, 0x94, 0x96, 0x46, 0x02, 0x6c, 0x05, 0x51, 0x29, 0x68, 0x75, 0xe8, 0x71, 0x67, 0xca, 0xb5,
+	0x53, 0x06, 0xb3, 0xee, 0x06, 0x04, 0xa0, 0xb5, 0x8c, 0x19, 0x16, 0x90, 0x26, 0x69, 0x37, 0x7a,
+	0x7e, 0x86, 0x73, 0xda, 0x98, 0xb1, 0xb1, 0xc8, 0x98, 0x91, 0x3a, 0xf8, 0xe7, 0x89, 0x1d, 0xd0,
+	0xfa, 0x22, 0xf4, 0xe8, 0x8e, 0x1b, 0x31, 0xc3, 0x67, 0xff, 0x11, 0x2e, 0x28, 0x55, 0x36, 0x1d,
+	0x0b, 0x9e, 0xe4, 0xe8, 0x36, 0x87, 0x1a, 0x6b, 0xa4, 0x8b, 0x0e, 0x02, 0x7a, 0xc0, 0x35, 0xfe,
+	0xb8, 0x55, 0xae, 0x70, 0x46, 0xeb, 0x38, 0x57, 0x42, 0xbb, 0xa0, 0xda, 0x24, 0xed, 0x5a, 0x6f,
+	0xb3, 0xc1, 0x35, 0x3d, 0x9d, 0xda, 0x49, 0x8a, 0x3a, 0x91, 0x83, 0x64, 0xfb, 0xb8, 0x08, 0x6a,
+	0x5e, 0x05, 0x6b, 0xee, 0x69, 0xd0, 0xdf, 0x32, 0xd0, 0xa7, 0x27, 0x58, 0x5a, 0x4b, 0x4a, 0xc3,
+	0x45, 0xf0, 0xbf, 0x59, 0x6d, 0x1f, 0xde, 0x5c, 0x45, 0xfb, 0x61, 0x44, 0x7b, 0x49, 0xf4, 0x00,
+	0x7f, 0x43, 0x85, 0xf7, 0xfa, 0x62, 0xd1, 0x62, 0xf6, 0xe7, 0xbd, 0xde, 0x3f, 0xbe, 0x2f, 0x43,
+	0xb2, 0x58, 0x86, 0xe4, 0x73, 0x19, 0x92, 0xb7, 0x55, 0x58, 0x59, 0xac, 0xc2, 0xca, 0xc7, 0x2a,
+	0xac, 0xbc, 0xc6, 0x43, 0x61, 0x46, 0x36, 0x8d, 0xb8, 0x9c, 0xc4, 0x0f, 0x4c, 0xe8, 0x74, 0x2c,
+	0x79, 0x1e, 0xef, 0x2a, 0x38, 0xdf, 0x95, 0xd0, 0x38, 0x85, 0x45, 0x5a, 0xf7, 0x25, 0xbc, 0xfd,
+	0x0e, 0x00, 0x00, 0xff, 0xff, 0xbf, 0x86, 0x4b, 0x7e, 0xa7, 0x02, 0x00, 0x00,
 }
 
 func (m *EncryptedKeyshare) Marshal() (dAtA []byte, err error) {
@@ -299,7 +299,7 @@ func (m *EncryptedKeyshare) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *ActivePubKey) Marshal() (dAtA []byte, err error) {
+func (m *ActivePubkey) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -309,12 +309,12 @@ func (m *ActivePubKey) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ActivePubKey) MarshalTo(dAtA []byte) (int, error) {
+func (m *ActivePubkey) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ActivePubKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ActivePubkey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -360,7 +360,7 @@ func (m *ActivePubKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueuedPubKey) Marshal() (dAtA []byte, err error) {
+func (m *QueuedPubkey) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -370,12 +370,12 @@ func (m *QueuedPubKey) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueuedPubKey) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueuedPubkey) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueuedPubKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueuedPubkey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -449,7 +449,7 @@ func (m *EncryptedKeyshare) Size() (n int) {
 	return n
 }
 
-func (m *ActivePubKey) Size() (n int) {
+func (m *ActivePubkey) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -478,7 +478,7 @@ func (m *ActivePubKey) Size() (n int) {
 	return n
 }
 
-func (m *QueuedPubKey) Size() (n int) {
+func (m *QueuedPubkey) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -627,7 +627,7 @@ func (m *EncryptedKeyshare) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ActivePubKey) Unmarshal(dAtA []byte) error {
+func (m *ActivePubkey) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -650,10 +650,10 @@ func (m *ActivePubKey) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ActivePubKey: wiretype end group for non-group")
+			return fmt.Errorf("proto: ActivePubkey: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ActivePubKey: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ActivePubkey: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -813,7 +813,7 @@ func (m *ActivePubKey) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueuedPubKey) Unmarshal(dAtA []byte) error {
+func (m *QueuedPubkey) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -836,10 +836,10 @@ func (m *QueuedPubKey) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueuedPubKey: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueuedPubkey: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueuedPubKey: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueuedPubkey: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

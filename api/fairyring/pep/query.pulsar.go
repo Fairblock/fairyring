@@ -11648,7 +11648,7 @@ func (x *QueryPepNonceAllResponse) GetPagination() *v1beta1.PageResponse {
 	return nil
 }
 
-// QueryPubKeyRequest is request type for the Query/PubKey RPC method.
+// QueryPubkeyRequest is request type for the Query/Pubkey RPC method.
 type QueryPubkeyRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -11675,7 +11675,7 @@ func (*QueryPubkeyRequest) Descriptor() ([]byte, []int) {
 	return file_fairyring_pep_query_proto_rawDescGZIP(), []int{18}
 }
 
-// QueryPubKeyResponse is response type for the Query/PubKey RPC method.
+// QueryPubkeyResponse is response type for the Query/Pubkey RPC method.
 type QueryPubkeyResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

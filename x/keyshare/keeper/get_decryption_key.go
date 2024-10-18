@@ -26,9 +26,9 @@ func (k Keeper) OnRecvGetDecryptionKeyPacket(
 		return packetAck, types.ErrRequestNotFound
 	}
 
-	key, _ := k.GetActivePubKey(ctx)
+	key, _ := k.GetActivePubkey(ctx)
 	if keyshareReq.Pubkey != key.PublicKey {
-		qKey, found := k.GetQueuedPubKey(ctx)
+		qKey, found := k.GetQueuedPubkey(ctx)
 		if !found {
 			return packetAck, errors.New("pubkey not found")
 		}
@@ -76,7 +76,7 @@ func (k Keeper) OnRecvGetPrivateDecryptionKeyPacket(
 		return packetAck, err
 	}
 
-	activePubKey, found := k.GetActivePubKey(ctx)
+	activePubkey, found := k.GetActivePubkey(ctx)
 	if !found {
 		return packetAck, errors.New("active public key not found")
 	}
@@ -84,7 +84,7 @@ func (k Keeper) OnRecvGetPrivateDecryptionKeyPacket(
 	keyshareReq, found := k.GetPrivateKeyShareRequest(ctx, data.Identity)
 	if !found {
 		keyshareReq.Identity = data.Identity
-		keyshareReq.Pubkey = activePubKey.PublicKey
+		keyshareReq.Pubkey = activePubkey.PublicKey
 		keyshareReq.IbcInfo = &types.IBCInfo{
 			ChannelId: packet.DestinationChannel,
 			PortId:    packet.DestinationPort,

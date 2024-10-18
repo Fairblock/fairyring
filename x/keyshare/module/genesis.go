@@ -24,9 +24,9 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetAggregatedKeyShare(ctx, elem)
 	}
 	// Set actuve public key
-	k.SetActivePubKey(ctx, genState.ActivePubKey)
+	k.SetActivePubkey(ctx, genState.ActivePubkey)
 	// Set queued public key
-	k.SetQueuedPubKey(ctx, genState.QueuedPubKey)
+	k.SetQueuedPubkey(ctx, genState.QueuedPubkey)
 
 	// Set all the authorizedAddress
 	for _, elem := range genState.AuthorizedAddressList {
@@ -66,13 +66,13 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.KeyshareList = k.GetAllKeyShare(ctx)
 	genesis.DecryptionKeyList = k.GetAllAggregatedKeyShare(ctx)
 
-	akey, found := k.GetActivePubKey(ctx)
+	akey, found := k.GetActivePubkey(ctx)
 	if found {
-		genesis.ActivePubKey = akey
+		genesis.ActivePubkey = akey
 	}
-	qkey, found := k.GetQueuedPubKey(ctx)
+	qkey, found := k.GetQueuedPubkey(ctx)
 	if found {
-		genesis.QueuedPubKey = qkey
+		genesis.QueuedPubkey = qkey
 	}
 
 	genesis.AuthorizedAddressList = k.GetAllAuthorizedAddress(ctx)

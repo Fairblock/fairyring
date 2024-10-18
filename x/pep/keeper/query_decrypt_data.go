@@ -32,7 +32,7 @@ func (k Keeper) DecryptData(goCtx context.Context, req *types.QueryDecryptDataRe
 	}
 
 	suite := bls.NewBLS12381Suite()
-	publicKeyPoint, err := k.GetPubKeyPoint(req.Pubkey, suite)
+	publicKeyPoint, err := k.GetPubkeyPoint(req.Pubkey, suite)
 	if err != nil {
 		return &types.QueryDecryptDataResponse{}, err
 	}
@@ -89,7 +89,7 @@ func (k Keeper) GetSKPoint(
 	return skPoint, nil
 }
 
-func (k Keeper) GetPubKeyPoint(
+func (k Keeper) GetPubkeyPoint(
 	pubkey string,
 	suite pairing.Suite,
 ) (kyber.Point, error) {

@@ -12,11 +12,11 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func TestPubKeyQuery(t *testing.T) {
+func TestPubkeyQuery(t *testing.T) {
 	keeper, ctx := keepertest.PepKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
-	activePubKey := createActivePubKeys(&keeper, wctx)
-	queuedPubKey := createQueuedPubKeys(&keeper, wctx)
+	activePubkey := createActivePubkeys(&keeper, wctx)
+	queuedPubkey := createQueuedPubkeys(&keeper, wctx)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryPubkeyRequest
@@ -24,11 +24,11 @@ func TestPubKeyQuery(t *testing.T) {
 		err      error
 	}{
 		{
-			desc:    "QueryPubKey",
+			desc:    "QueryPubkey",
 			request: &types.QueryPubkeyRequest{},
 			response: &types.QueryPubkeyResponse{
-				ActivePubkey: activePubKey,
-				QueuedPubkey: queuedPubKey,
+				ActivePubkey: activePubkey,
+				QueuedPubkey: queuedPubkey,
 			},
 		},
 		{

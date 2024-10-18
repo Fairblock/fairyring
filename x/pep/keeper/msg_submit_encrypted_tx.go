@@ -51,7 +51,7 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 					sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, "0"),
 				),
 			)
-			return nil, types.ErrActivePubKeyNotFound
+			return nil, types.ErrActivePubkeyNotFound
 		}
 		maxHeight = activeKey.Expiry
 	} else {

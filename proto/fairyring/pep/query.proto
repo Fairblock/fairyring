@@ -170,10 +170,10 @@ message QueryPepNonceAllResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-// QueryPubKeyRequest is request type for the Query/PubKey RPC method.
+// QueryPubkeyRequest is request type for the Query/Pubkey RPC method.
 message QueryPubkeyRequest {}
 
-// QueryPubKeyResponse is response type for the Query/PubKey RPC method.
+// QueryPubkeyResponse is response type for the Query/Pubkey RPC method.
 message QueryPubkeyResponse {
   fairyring.common.ActivePublicKey active_pubkey = 1 [(gogoproto.nullable) = false];
   fairyring.common.QueuedPublicKey queued_pubkey = 2 [(gogoproto.nullable) = false];

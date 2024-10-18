@@ -32,7 +32,7 @@ func SetupTestGeneralKeyShare(t *testing.T, ctx sdk.Context, k keeper.Keeper, nu
 		IsActive:  true,
 	})
 
-	k.SetActivePubKey(ctx, types.ActivePubKey{
+	k.SetActivePubkey(ctx, types.ActivePubkey{
 		PublicKey:          out.MasterPublicKey,
 		Creator:            creator,
 		Expiry:             123456,

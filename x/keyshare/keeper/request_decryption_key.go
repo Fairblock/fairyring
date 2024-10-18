@@ -45,7 +45,7 @@ func (k Keeper) OnRecvRequestDecryptionKeyPacket(
 		return packetAck, err
 	}
 
-	activePubKey, found := k.GetActivePubKey(ctx)
+	activePubkey, found := k.GetActivePubkey(ctx)
 	if !found {
 		return packetAck, err
 	}
@@ -54,15 +54,15 @@ func (k Keeper) OnRecvRequestDecryptionKeyPacket(
 	blockDelay := uint64(math.Ceil(delay.Seconds() / types.AvgBlockTime))
 	currentHeight := uint64(ctx.BlockHeight())
 	executionHeight := currentHeight + blockDelay
-	if executionHeight > activePubKey.Expiry {
-		queuedPubKey, found := k.GetQueuedPubKey(ctx)
+	if executionHeight > activePubkey.Expiry {
+		queuedPubkey, found := k.GetQueuedPubkey(ctx)
 		if !found {
 			return packetAck, errors.New("estimated delay too long")
 		}
-		if executionHeight > queuedPubKey.Expiry {
+		if executionHeight > queuedPubkey.Expiry {
 			return packetAck, errors.New("estimated delay too long")
 		}
-		activePubKey = types.ActivePubKey(queuedPubKey)
+		activePubkey = types.ActivePubkey(queuedPubkey)
 	}
 
 	var isProposalID bool
@@ -78,7 +78,7 @@ func (k Keeper) OnRecvRequestDecryptionKeyPacket(
 	var keyshareRequest types.DecryptionKeyRequest
 
 	keyshareRequest.Identity = id
-	keyshareRequest.Pubkey = activePubKey.PublicKey
+	keyshareRequest.Pubkey = activePubkey.PublicKey
 	keyshareRequest.IbcInfo = &types.IBCInfo{
 		ChannelId: packet.DestinationChannel,
 		PortId:    packet.DestinationPort,
@@ -101,7 +101,7 @@ func (k Keeper) OnRecvRequestDecryptionKeyPacket(
 	k.SetKeyShareRequest(ctx, keyshareRequest)
 
 	packetAck.Identity = id
-	packetAck.Pubkey = activePubKey.PublicKey
+	packetAck.Pubkey = activePubkey.PublicKey
 
 	return packetAck, nil
 }
@@ -127,7 +127,7 @@ func (k Keeper) OnRecvRequestPrivateDecryptionKeyPacket(
 		return packetAck, err
 	}
 
-	activePubKey, found := k.GetActivePubKey(ctx)
+	activePubkey, found := k.GetActivePubkey(ctx)
 	if !found {
 		return packetAck, err
 	}
@@ -137,7 +137,7 @@ func (k Keeper) OnRecvRequestPrivateDecryptionKeyPacket(
 	var keyshareRequest types.PrivateDecryptionKeyRequest
 
 	keyshareRequest.Identity = id
-	keyshareRequest.Pubkey = activePubKey.PublicKey
+	keyshareRequest.Pubkey = activePubkey.PublicKey
 	keyshareRequest.IbcInfo = &types.IBCInfo{
 		ChannelId: packet.DestinationChannel,
 		PortId:    packet.DestinationPort,
@@ -155,13 +155,13 @@ func (k Keeper) OnRecvRequestPrivateDecryptionKeyPacket(
 	k.SetPrivateKeyShareRequest(ctx, keyshareRequest)
 
 	packetAck.Identity = id
-	packetAck.Pubkey = activePubKey.PublicKey
+	packetAck.Pubkey = activePubkey.PublicKey
 
 	return packetAck, nil
 }
 
 // OnTimeoutRequestAggrKeysharePacket responds to the case where a packet has not been transmitted because of a timeout
-func (k Keeper) OnTimeoutRequestPrivateKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestPrivateDecryptionKeyPacketData) error {
+func (k Keeper) OnTimeoutRequestPrivateDecryptionKeyPacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestPrivateDecryptionKeyPacketData) error {
 
 	// Implement custom packet timeout logic
 	// (Not required for fairyring since this packet is never sent from fairyring)

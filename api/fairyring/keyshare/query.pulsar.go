@@ -8650,9 +8650,9 @@ func (x *fastReflection_QueryPubkeyResponse) Get(descriptor protoreflect.FieldDe
 func (x *fastReflection_QueryPubkeyResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
 	case "fairyring.keyshare.QueryPubkeyResponse.active_pubkey":
-		x.ActivePubkey = value.Message().Interface().(*ActivePubKey)
+		x.ActivePubkey = value.Message().Interface().(*ActivePubkey)
 	case "fairyring.keyshare.QueryPubkeyResponse.queued_pubkey":
-		x.QueuedPubkey = value.Message().Interface().(*QueuedPubKey)
+		x.QueuedPubkey = value.Message().Interface().(*QueuedPubkey)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.QueryPubkeyResponse"))
@@ -8675,12 +8675,12 @@ func (x *fastReflection_QueryPubkeyResponse) Mutable(fd protoreflect.FieldDescri
 	switch fd.FullName() {
 	case "fairyring.keyshare.QueryPubkeyResponse.active_pubkey":
 		if x.ActivePubkey == nil {
-			x.ActivePubkey = new(ActivePubKey)
+			x.ActivePubkey = new(ActivePubkey)
 		}
 		return protoreflect.ValueOfMessage(x.ActivePubkey.ProtoReflect())
 	case "fairyring.keyshare.QueryPubkeyResponse.queued_pubkey":
 		if x.QueuedPubkey == nil {
-			x.QueuedPubkey = new(QueuedPubKey)
+			x.QueuedPubkey = new(QueuedPubkey)
 		}
 		return protoreflect.ValueOfMessage(x.QueuedPubkey.ProtoReflect())
 	default:
@@ -8697,10 +8697,10 @@ func (x *fastReflection_QueryPubkeyResponse) Mutable(fd protoreflect.FieldDescri
 func (x *fastReflection_QueryPubkeyResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	case "fairyring.keyshare.QueryPubkeyResponse.active_pubkey":
-		m := new(ActivePubKey)
+		m := new(ActivePubkey)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	case "fairyring.keyshare.QueryPubkeyResponse.queued_pubkey":
-		m := new(QueuedPubKey)
+		m := new(QueuedPubkey)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
@@ -8915,7 +8915,7 @@ func (x *fastReflection_QueryPubkeyResponse) ProtoMethods() *protoiface.Methods 
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
 				if x.ActivePubkey == nil {
-					x.ActivePubkey = &ActivePubKey{}
+					x.ActivePubkey = &ActivePubkey{}
 				}
 				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.ActivePubkey); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
@@ -8951,7 +8951,7 @@ func (x *fastReflection_QueryPubkeyResponse) ProtoMethods() *protoiface.Methods 
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
 				if x.QueuedPubkey == nil {
-					x.QueuedPubkey = &QueuedPubKey{}
+					x.QueuedPubkey = &QueuedPubkey{}
 				}
 				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.QueuedPubkey); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
@@ -13531,7 +13531,7 @@ func (x *QueryDecryptionKeyAllResponse) GetPagination() *v1beta1.PageResponse {
 	return nil
 }
 
-// QueryPubKeyRequest is request type for the Query/PubKey RPC method.
+// QueryPubkeyRequest is request type for the Query/Pubkey RPC method.
 type QueryPubkeyRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -13558,14 +13558,14 @@ func (*QueryPubkeyRequest) Descriptor() ([]byte, []int) {
 	return file_fairyring_keyshare_query_proto_rawDescGZIP(), []int{18}
 }
 
-// QueryPubKeyResponse is response type for the Query/PubKey RPC method.
+// QueryPubkeyResponse is response type for the Query/Pubkey RPC method.
 type QueryPubkeyResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ActivePubkey *ActivePubKey `protobuf:"bytes,1,opt,name=active_pubkey,json=activePubkey,proto3" json:"active_pubkey,omitempty"`
-	QueuedPubkey *QueuedPubKey `protobuf:"bytes,2,opt,name=queued_pubkey,json=queuedPubkey,proto3" json:"queued_pubkey,omitempty"`
+	ActivePubkey *ActivePubkey `protobuf:"bytes,1,opt,name=active_pubkey,json=activePubkey,proto3" json:"active_pubkey,omitempty"`
+	QueuedPubkey *QueuedPubkey `protobuf:"bytes,2,opt,name=queued_pubkey,json=queuedPubkey,proto3" json:"queued_pubkey,omitempty"`
 }
 
 func (x *QueryPubkeyResponse) Reset() {
@@ -13588,14 +13588,14 @@ func (*QueryPubkeyResponse) Descriptor() ([]byte, []int) {
 	return file_fairyring_keyshare_query_proto_rawDescGZIP(), []int{19}
 }
 
-func (x *QueryPubkeyResponse) GetActivePubkey() *ActivePubKey {
+func (x *QueryPubkeyResponse) GetActivePubkey() *ActivePubkey {
 	if x != nil {
 		return x.ActivePubkey
 	}
 	return nil
 }
 
-func (x *QueryPubkeyResponse) GetQueuedPubkey() *QueuedPubKey {
+func (x *QueryPubkeyResponse) GetQueuedPubkey() *QueuedPubkey {
 	if x != nil {
 		return x.QueuedPubkey
 	}
@@ -14070,12 +14070,12 @@ var file_fairyring_keyshare_query_proto_rawDesc = []byte{
 	0x0a, 0x0d, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x5f, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18,
 	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
 	0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x76,
-	0x65, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x61,
+	0x65, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x61,
 	0x63, 0x74, 0x69, 0x76, 0x65, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x4b, 0x0a, 0x0d, 0x71,
 	0x75, 0x65, 0x75, 0x65, 0x64, 0x5f, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01,
 	0x28, 0x0b, 0x32, 0x20, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b,
 	0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x51, 0x75, 0x65, 0x75, 0x65, 0x64, 0x50, 0x75,
-	0x62, 0x4b, 0x65, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x71, 0x75, 0x65, 0x75,
+	0x62, 0x6b, 0x65, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x71, 0x75, 0x65, 0x75,
 	0x65, 0x64, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x22, 0x37, 0x0a, 0x1d, 0x51, 0x75, 0x65, 0x72,
 	0x79, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65,
 	0x73, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x74, 0x61, 0x72,
@@ -14347,8 +14347,8 @@ var file_fairyring_keyshare_query_proto_goTypes = []interface{}{
 	(*v1beta1.PageResponse)(nil),              // 32: cosmos.base.query.v1beta1.PageResponse
 	(*Keyshare)(nil),                          // 33: fairyring.keyshare.Keyshare
 	(*DecryptionKey)(nil),                     // 34: fairyring.keyshare.DecryptionKey
-	(*ActivePubKey)(nil),                      // 35: fairyring.keyshare.ActivePubKey
-	(*QueuedPubKey)(nil),                      // 36: fairyring.keyshare.QueuedPubKey
+	(*ActivePubkey)(nil),                      // 35: fairyring.keyshare.ActivePubkey
+	(*QueuedPubkey)(nil),                      // 36: fairyring.keyshare.QueuedPubkey
 	(*AuthorizedAddress)(nil),                 // 37: fairyring.keyshare.AuthorizedAddress
 	(*GeneralKeyshare)(nil),                   // 38: fairyring.keyshare.GeneralKeyshare
 }
@@ -14368,8 +14368,8 @@ var file_fairyring_keyshare_query_proto_depIdxs = []int32{
 	31, // 12: fairyring.keyshare.QueryDecryptionKeyAllRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
 	34, // 13: fairyring.keyshare.QueryDecryptionKeyAllResponse.decryption_keys:type_name -> fairyring.keyshare.DecryptionKey
 	32, // 14: fairyring.keyshare.QueryDecryptionKeyAllResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
-	35, // 15: fairyring.keyshare.QueryPubkeyResponse.active_pubkey:type_name -> fairyring.keyshare.ActivePubKey
-	36, // 16: fairyring.keyshare.QueryPubkeyResponse.queued_pubkey:type_name -> fairyring.keyshare.QueuedPubKey
+	35, // 15: fairyring.keyshare.QueryPubkeyResponse.active_pubkey:type_name -> fairyring.keyshare.ActivePubkey
+	36, // 16: fairyring.keyshare.QueryPubkeyResponse.queued_pubkey:type_name -> fairyring.keyshare.QueuedPubkey
 	37, // 17: fairyring.keyshare.QueryAuthorizedAddressResponse.authorized_address:type_name -> fairyring.keyshare.AuthorizedAddress
 	31, // 18: fairyring.keyshare.QueryAuthorizedAddressAllRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
 	37, // 19: fairyring.keyshare.QueryAuthorizedAddressAllResponse.authorized_address:type_name -> fairyring.keyshare.AuthorizedAddress

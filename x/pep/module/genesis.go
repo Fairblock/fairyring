@@ -27,9 +27,9 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetDecryptionKey(ctx, elem)
 	}
 	// Set actuve public key
-	k.SetActivePubkey(ctx, genState.ActivePubKey)
+	k.SetActivePubkey(ctx, genState.ActivePubkey)
 	// Set queued public key
-	k.SetQueuedPubkey(ctx, genState.QueuedPubKey)
+	k.SetQueuedPubkey(ctx, genState.QueuedPubkey)
 	// Set all the requestId
 	for _, elem := range genState.RequestIdList {
 		k.SetRequestId(ctx, elem)
@@ -71,11 +71,11 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	// this line is used by starport scaffolding # genesis/module/export
 	akey, found := k.GetActivePubkey(ctx)
 	if found {
-		genesis.ActivePubKey = akey
+		genesis.ActivePubkey = akey
 	}
 	qkey, found := k.GetQueuedPubkey(ctx)
 	if found {
-		genesis.QueuedPubKey = qkey
+		genesis.QueuedPubkey = qkey
 	}
 
 	genesis.RequestCount, _ = strconv.ParseUint(k.GetRequestCount(ctx), 10, 64)

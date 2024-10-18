@@ -859,7 +859,7 @@ func (m *QueryPepNonceAllResponse) GetPagination() *query.PageResponse {
 	return nil
 }
 
-// QueryPubKeyRequest is request type for the Query/PubKey RPC method.
+// QueryPubkeyRequest is request type for the Query/Pubkey RPC method.
 type QueryPubkeyRequest struct {
 }
 
@@ -896,7 +896,7 @@ func (m *QueryPubkeyRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_QueryPubkeyRequest proto.InternalMessageInfo
 
-// QueryPubKeyResponse is response type for the Query/PubKey RPC method.
+// QueryPubkeyResponse is response type for the Query/Pubkey RPC method.
 type QueryPubkeyResponse struct {
 	ActivePubkey types.ActivePublicKey `protobuf:"bytes,1,opt,name=active_pubkey,json=activePubkey,proto3" json:"active_pubkey"`
 	QueuedPubkey types.QueuedPublicKey `protobuf:"bytes,2,opt,name=queued_pubkey,json=queuedPubkey,proto3" json:"queued_pubkey"`

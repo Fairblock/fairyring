@@ -19,11 +19,11 @@ message GenesisState {
   // params defines all the parameters of the module.
   Params                           params                 = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
   string                           port_id                = 2;
-  repeated EncryptedTxArray        encryptedTxArray       = 3 [(gogoproto.nullable) = false] ;
-  repeated PepNonce                pepNonceList           = 4 [(gogoproto.nullable) = false] ;
+  repeated EncryptedTxArray        encrypted_tx_array     = 3 [(gogoproto.nullable) = false] ;
+  repeated PepNonce                pep_nonce_list         = 4 [(gogoproto.nullable) = false] ;
   repeated DecryptionKey           decryption_key_list    = 6 [(gogoproto.nullable) = false];
-  fairyring.common.ActivePublicKey activePubKey           = 7 [(gogoproto.nullable) = false];
-  fairyring.common.QueuedPublicKey queuedPubKey           = 8 [(gogoproto.nullable) = false];
+  fairyring.common.ActivePublicKey active_pubkey          = 7 [(gogoproto.nullable) = false];
+  fairyring.common.QueuedPublicKey queued_pubkey          = 8 [(gogoproto.nullable) = false];
   uint64                           request_count          = 9;
-  repeated RequestId               requestIdList          = 10 [(gogoproto.nullable) = false];
+  repeated RequestId               request_id_list        = 10 [(gogoproto.nullable) = false];
 }

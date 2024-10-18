@@ -12,8 +12,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// OverrideLatestPubKey updates the public key
-func (k msgServer) OverrideLatestPubKey(goCtx context.Context, msg *types.MsgOverrideLatestPubKey) (*types.MsgOverrideLatestPubKeyResponse, error) {
+// OverrideLatestPubkey updates the public key
+func (k msgServer) OverrideLatestPubkey(
+	goCtx context.Context,
+	msg *types.MsgOverrideLatestPubkey,
+) (*types.MsgOverrideLatestPubkeyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	params := k.GetParams(ctx)
 
@@ -28,12 +31,12 @@ func (k msgServer) OverrideLatestPubKey(goCtx context.Context, msg *types.MsgOve
 
 	expHeight := params.KeyExpiry + uint64(ctx.BlockHeight())
 
-	if _, found := k.GetActivePubKey(ctx); found {
-		k.DeleteActivePubKey(ctx)
+	if _, found := k.GetActivePubkey(ctx); found {
+		k.DeleteActivePubkey(ctx)
 	}
 
-	if _, found := k.GetQueuedPubKey(ctx); found {
-		k.DeleteQueuedPubKey(ctx)
+	if _, found := k.GetQueuedPubkey(ctx); found {
+		k.DeleteQueuedPubkey(ctx)
 	}
 
 	encryptedKeyShares, err := json.Marshal(msg.EncryptedKeyshares)
@@ -59,9 +62,9 @@ func (k msgServer) OverrideLatestPubKey(goCtx context.Context, msg *types.MsgOve
 		commitments,
 	)
 
-	k.SetActivePubKey(
+	k.SetActivePubkey(
 		ctx,
-		types.ActivePubKey{
+		types.ActivePubkey{
 			Creator:            msg.Creator,
 			PublicKey:          msg.PublicKey,
 			Expiry:             expHeight,
@@ -80,15 +83,15 @@ func (k msgServer) OverrideLatestPubKey(goCtx context.Context, msg *types.MsgOve
 	)
 
 	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(types.PubKeyOverrodeEventType,
-			sdk.NewAttribute(types.PubKeyOverrodeEventActivePubkeyExpiryHeight, strconv.FormatUint(expHeight, 10)),
-			sdk.NewAttribute(types.PubKeyOverrodeEventExpiryHeight, strconv.FormatUint(expHeight, 10)),
-			sdk.NewAttribute(types.PubKeyOverrodeEventCreator, msg.Creator),
-			sdk.NewAttribute(types.PubKeyOverrodeEventPubkey, msg.PublicKey),
-			sdk.NewAttribute(types.PubKeyOverrodeEventNumberOfValidators, strconv.FormatUint(msg.NumberOfValidators, 10)),
-			sdk.NewAttribute(types.PubKeyOverrodeEventEncryptedShares, string(encryptedKeyShares)),
+		sdk.NewEvent(types.PubkeyOverrodeEventType,
+			sdk.NewAttribute(types.PubkeyOverrodeEventActivePubkeyExpiryHeight, strconv.FormatUint(expHeight, 10)),
+			sdk.NewAttribute(types.PubkeyOverrodeEventExpiryHeight, strconv.FormatUint(expHeight, 10)),
+			sdk.NewAttribute(types.PubkeyOverrodeEventCreator, msg.Creator),
+			sdk.NewAttribute(types.PubkeyOverrodeEventPubkey, msg.PublicKey),
+			sdk.NewAttribute(types.PubkeyOverrodeEventNumberOfValidators, strconv.FormatUint(msg.NumberOfValidators, 10)),
+			sdk.NewAttribute(types.PubkeyOverrodeEventEncryptedShares, string(encryptedKeyShares)),
 		),
 	)
 
-	return &types.MsgOverrideLatestPubKeyResponse{}, nil
+	return &types.MsgOverrideLatestPubkeyResponse{}, nil
 }

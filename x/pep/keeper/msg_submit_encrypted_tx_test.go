@@ -57,16 +57,16 @@ func TestSubmitEncryptedTx(t *testing.T) {
 			err: types.ErrInvalidTargetBlockHeight,
 		},
 		{
-			desc: "ActivePubKeyNotFound",
+			desc: "ActivePubkeyNotFound",
 			request: &types.MsgSubmitEncryptedTx{
 				Creator:           sample.AccAddress(),
 				TargetBlockHeight: rand.Uint64(),
 				Data:              random.RandHex(192),
 			},
-			err: types.ErrActivePubKeyNotFound,
+			err: types.ErrActivePubkeyNotFound,
 		},
 		{
-			desc: "InvalidTargetBlockHeightHigherThanPubKey",
+			desc: "InvalidTargetBlockHeightHigherThanPukKey",
 			request: &types.MsgSubmitEncryptedTx{
 				Creator:           trustedAddr,
 				TargetBlockHeight: 325677454353,
@@ -109,7 +109,7 @@ func TestSubmitEncryptedTx(t *testing.T) {
 				)
 			}
 
-			if tc.desc == "ActivePubKeyNotFound" {
+			if tc.desc == "ActivePubkeyNotFound" {
 				k.SetActivePubkey(wctx, types2.ActivePublicKey{
 					PublicKey: out.MasterPublicKey,
 					Creator:   trustedAddr,

@@ -61,7 +61,7 @@ func TestDecryptDataQuerySingle(t *testing.T) {
 		errMsg   string
 	}{
 		{
-			desc: "WithPubKey",
+			desc: "WithPubkey",
 			request: &types.QueryDecryptDataRequest{
 				Pubkey:        out.MasterPublicKey,
 				DecryptionKey: derived,
@@ -72,7 +72,7 @@ func TestDecryptDataQuerySingle(t *testing.T) {
 			},
 		},
 		{
-			desc: "WithoutPubKeyAndNoPubKeyOnChain",
+			desc: "WithoutPubkeyAndNoPubkeyOnChain",
 			request: &types.QueryDecryptDataRequest{
 				DecryptionKey: derived,
 				EncryptedData: hex.EncodeToString(destCipherData.Bytes()),
@@ -80,7 +80,7 @@ func TestDecryptDataQuerySingle(t *testing.T) {
 			errMsg: "pubkey not found",
 		},
 		{
-			desc: "InvalidPubKey",
+			desc: "InvalidPubkey",
 			request: &types.QueryDecryptDataRequest{
 				Pubkey:        random.RandHex(8),
 				DecryptionKey: derived,
@@ -114,7 +114,7 @@ func TestDecryptDataQuerySingle(t *testing.T) {
 				)
 			}
 
-			if tc.desc == "WithoutPubKeyAndNoPubKeyOnChain" {
+			if tc.desc == "WithoutPubkeyAndNoPubkeyOnChain" {
 				keeper.SetActivePubkey(wctx, commontypes.ActivePublicKey{
 					PublicKey: out.MasterPublicKey,
 					Creator:   creator,

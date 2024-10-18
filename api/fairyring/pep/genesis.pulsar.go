@@ -223,13 +223,13 @@ var (
 	md_GenesisState                     protoreflect.MessageDescriptor
 	fd_GenesisState_params              protoreflect.FieldDescriptor
 	fd_GenesisState_port_id             protoreflect.FieldDescriptor
-	fd_GenesisState_encryptedTxArray    protoreflect.FieldDescriptor
-	fd_GenesisState_pepNonceList        protoreflect.FieldDescriptor
+	fd_GenesisState_encrypted_tx_array  protoreflect.FieldDescriptor
+	fd_GenesisState_pep_nonce_list      protoreflect.FieldDescriptor
 	fd_GenesisState_decryption_key_list protoreflect.FieldDescriptor
-	fd_GenesisState_activePubKey        protoreflect.FieldDescriptor
-	fd_GenesisState_queuedPubKey        protoreflect.FieldDescriptor
+	fd_GenesisState_active_pubkey       protoreflect.FieldDescriptor
+	fd_GenesisState_queued_pubkey       protoreflect.FieldDescriptor
 	fd_GenesisState_request_count       protoreflect.FieldDescriptor
-	fd_GenesisState_requestIdList       protoreflect.FieldDescriptor
+	fd_GenesisState_request_id_list     protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -237,13 +237,13 @@ func init() {
 	md_GenesisState = File_fairyring_pep_genesis_proto.Messages().ByName("GenesisState")
 	fd_GenesisState_params = md_GenesisState.Fields().ByName("params")
 	fd_GenesisState_port_id = md_GenesisState.Fields().ByName("port_id")
-	fd_GenesisState_encryptedTxArray = md_GenesisState.Fields().ByName("encryptedTxArray")
-	fd_GenesisState_pepNonceList = md_GenesisState.Fields().ByName("pepNonceList")
+	fd_GenesisState_encrypted_tx_array = md_GenesisState.Fields().ByName("encrypted_tx_array")
+	fd_GenesisState_pep_nonce_list = md_GenesisState.Fields().ByName("pep_nonce_list")
 	fd_GenesisState_decryption_key_list = md_GenesisState.Fields().ByName("decryption_key_list")
-	fd_GenesisState_activePubKey = md_GenesisState.Fields().ByName("activePubKey")
-	fd_GenesisState_queuedPubKey = md_GenesisState.Fields().ByName("queuedPubKey")
+	fd_GenesisState_active_pubkey = md_GenesisState.Fields().ByName("active_pubkey")
+	fd_GenesisState_queued_pubkey = md_GenesisState.Fields().ByName("queued_pubkey")
 	fd_GenesisState_request_count = md_GenesisState.Fields().ByName("request_count")
-	fd_GenesisState_requestIdList = md_GenesisState.Fields().ByName("requestIdList")
+	fd_GenesisState_request_id_list = md_GenesisState.Fields().ByName("request_id_list")
 }
 
 var _ protoreflect.Message = (*fastReflection_GenesisState)(nil)
@@ -325,13 +325,13 @@ func (x *fastReflection_GenesisState) Range(f func(protoreflect.FieldDescriptor,
 	}
 	if len(x.EncryptedTxArray) != 0 {
 		value := protoreflect.ValueOfList(&_GenesisState_3_list{list: &x.EncryptedTxArray})
-		if !f(fd_GenesisState_encryptedTxArray, value) {
+		if !f(fd_GenesisState_encrypted_tx_array, value) {
 			return
 		}
 	}
 	if len(x.PepNonceList) != 0 {
 		value := protoreflect.ValueOfList(&_GenesisState_4_list{list: &x.PepNonceList})
-		if !f(fd_GenesisState_pepNonceList, value) {
+		if !f(fd_GenesisState_pep_nonce_list, value) {
 			return
 		}
 	}
@@ -341,15 +341,15 @@ func (x *fastReflection_GenesisState) Range(f func(protoreflect.FieldDescriptor,
 			return
 		}
 	}
-	if x.ActivePubKey != nil {
-		value := protoreflect.ValueOfMessage(x.ActivePubKey.ProtoReflect())
-		if !f(fd_GenesisState_activePubKey, value) {
+	if x.ActivePubkey != nil {
+		value := protoreflect.ValueOfMessage(x.ActivePubkey.ProtoReflect())
+		if !f(fd_GenesisState_active_pubkey, value) {
 			return
 		}
 	}
-	if x.QueuedPubKey != nil {
-		value := protoreflect.ValueOfMessage(x.QueuedPubKey.ProtoReflect())
-		if !f(fd_GenesisState_queuedPubKey, value) {
+	if x.QueuedPubkey != nil {
+		value := protoreflect.ValueOfMessage(x.QueuedPubkey.ProtoReflect())
+		if !f(fd_GenesisState_queued_pubkey, value) {
 			return
 		}
 	}
@@ -361,7 +361,7 @@ func (x *fastReflection_GenesisState) Range(f func(protoreflect.FieldDescriptor,
 	}
 	if len(x.RequestIdList) != 0 {
 		value := protoreflect.ValueOfList(&_GenesisState_10_list{list: &x.RequestIdList})
-		if !f(fd_GenesisState_requestIdList, value) {
+		if !f(fd_GenesisState_request_id_list, value) {
 			return
 		}
 	}
@@ -384,19 +384,19 @@ func (x *fastReflection_GenesisState) Has(fd protoreflect.FieldDescriptor) bool 
 		return x.Params != nil
 	case "fairyring.pep.GenesisState.port_id":
 		return x.PortId != ""
-	case "fairyring.pep.GenesisState.encryptedTxArray":
+	case "fairyring.pep.GenesisState.encrypted_tx_array":
 		return len(x.EncryptedTxArray) != 0
-	case "fairyring.pep.GenesisState.pepNonceList":
+	case "fairyring.pep.GenesisState.pep_nonce_list":
 		return len(x.PepNonceList) != 0
 	case "fairyring.pep.GenesisState.decryption_key_list":
 		return len(x.DecryptionKeyList) != 0
-	case "fairyring.pep.GenesisState.activePubKey":
-		return x.ActivePubKey != nil
-	case "fairyring.pep.GenesisState.queuedPubKey":
-		return x.QueuedPubKey != nil
+	case "fairyring.pep.GenesisState.active_pubkey":
+		return x.ActivePubkey != nil
+	case "fairyring.pep.GenesisState.queued_pubkey":
+		return x.QueuedPubkey != nil
 	case "fairyring.pep.GenesisState.request_count":
 		return x.RequestCount != uint64(0)
-	case "fairyring.pep.GenesisState.requestIdList":
+	case "fairyring.pep.GenesisState.request_id_list":
 		return len(x.RequestIdList) != 0
 	default:
 		if fd.IsExtension() {
@@ -418,19 +418,19 @@ func (x *fastReflection_GenesisState) Clear(fd protoreflect.FieldDescriptor) {
 		x.Params = nil
 	case "fairyring.pep.GenesisState.port_id":
 		x.PortId = ""
-	case "fairyring.pep.GenesisState.encryptedTxArray":
+	case "fairyring.pep.GenesisState.encrypted_tx_array":
 		x.EncryptedTxArray = nil
-	case "fairyring.pep.GenesisState.pepNonceList":
+	case "fairyring.pep.GenesisState.pep_nonce_list":
 		x.PepNonceList = nil
 	case "fairyring.pep.GenesisState.decryption_key_list":
 		x.DecryptionKeyList = nil
-	case "fairyring.pep.GenesisState.activePubKey":
-		x.ActivePubKey = nil
-	case "fairyring.pep.GenesisState.queuedPubKey":
-		x.QueuedPubKey = nil
+	case "fairyring.pep.GenesisState.active_pubkey":
+		x.ActivePubkey = nil
+	case "fairyring.pep.GenesisState.queued_pubkey":
+		x.QueuedPubkey = nil
 	case "fairyring.pep.GenesisState.request_count":
 		x.RequestCount = uint64(0)
-	case "fairyring.pep.GenesisState.requestIdList":
+	case "fairyring.pep.GenesisState.request_id_list":
 		x.RequestIdList = nil
 	default:
 		if fd.IsExtension() {
@@ -454,13 +454,13 @@ func (x *fastReflection_GenesisState) Get(descriptor protoreflect.FieldDescripto
 	case "fairyring.pep.GenesisState.port_id":
 		value := x.PortId
 		return protoreflect.ValueOfString(value)
-	case "fairyring.pep.GenesisState.encryptedTxArray":
+	case "fairyring.pep.GenesisState.encrypted_tx_array":
 		if len(x.EncryptedTxArray) == 0 {
 			return protoreflect.ValueOfList(&_GenesisState_3_list{})
 		}
 		listValue := &_GenesisState_3_list{list: &x.EncryptedTxArray}
 		return protoreflect.ValueOfList(listValue)
-	case "fairyring.pep.GenesisState.pepNonceList":
+	case "fairyring.pep.GenesisState.pep_nonce_list":
 		if len(x.PepNonceList) == 0 {
 			return protoreflect.ValueOfList(&_GenesisState_4_list{})
 		}
@@ -472,16 +472,16 @@ func (x *fastReflection_GenesisState) Get(descriptor protoreflect.FieldDescripto
 		}
 		listValue := &_GenesisState_6_list{list: &x.DecryptionKeyList}
 		return protoreflect.ValueOfList(listValue)
-	case "fairyring.pep.GenesisState.activePubKey":
-		value := x.ActivePubKey
+	case "fairyring.pep.GenesisState.active_pubkey":
+		value := x.ActivePubkey
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	case "fairyring.pep.GenesisState.queuedPubKey":
-		value := x.QueuedPubKey
+	case "fairyring.pep.GenesisState.queued_pubkey":
+		value := x.QueuedPubkey
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	case "fairyring.pep.GenesisState.request_count":
 		value := x.RequestCount
 		return protoreflect.ValueOfUint64(value)
-	case "fairyring.pep.GenesisState.requestIdList":
+	case "fairyring.pep.GenesisState.request_id_list":
 		if len(x.RequestIdList) == 0 {
 			return protoreflect.ValueOfList(&_GenesisState_10_list{})
 		}
@@ -511,11 +511,11 @@ func (x *fastReflection_GenesisState) Set(fd protoreflect.FieldDescriptor, value
 		x.Params = value.Message().Interface().(*Params)
 	case "fairyring.pep.GenesisState.port_id":
 		x.PortId = value.Interface().(string)
-	case "fairyring.pep.GenesisState.encryptedTxArray":
+	case "fairyring.pep.GenesisState.encrypted_tx_array":
 		lv := value.List()
 		clv := lv.(*_GenesisState_3_list)
 		x.EncryptedTxArray = *clv.list
-	case "fairyring.pep.GenesisState.pepNonceList":
+	case "fairyring.pep.GenesisState.pep_nonce_list":
 		lv := value.List()
 		clv := lv.(*_GenesisState_4_list)
 		x.PepNonceList = *clv.list
@@ -523,13 +523,13 @@ func (x *fastReflection_GenesisState) Set(fd protoreflect.FieldDescriptor, value
 		lv := value.List()
 		clv := lv.(*_GenesisState_6_list)
 		x.DecryptionKeyList = *clv.list
-	case "fairyring.pep.GenesisState.activePubKey":
-		x.ActivePubKey = value.Message().Interface().(*common.ActivePublicKey)
-	case "fairyring.pep.GenesisState.queuedPubKey":
-		x.QueuedPubKey = value.Message().Interface().(*common.QueuedPublicKey)
+	case "fairyring.pep.GenesisState.active_pubkey":
+		x.ActivePubkey = value.Message().Interface().(*common.ActivePublicKey)
+	case "fairyring.pep.GenesisState.queued_pubkey":
+		x.QueuedPubkey = value.Message().Interface().(*common.QueuedPublicKey)
 	case "fairyring.pep.GenesisState.request_count":
 		x.RequestCount = value.Uint()
-	case "fairyring.pep.GenesisState.requestIdList":
+	case "fairyring.pep.GenesisState.request_id_list":
 		lv := value.List()
 		clv := lv.(*_GenesisState_10_list)
 		x.RequestIdList = *clv.list
@@ -558,13 +558,13 @@ func (x *fastReflection_GenesisState) Mutable(fd protoreflect.FieldDescriptor) p
 			x.Params = new(Params)
 		}
 		return protoreflect.ValueOfMessage(x.Params.ProtoReflect())
-	case "fairyring.pep.GenesisState.encryptedTxArray":
+	case "fairyring.pep.GenesisState.encrypted_tx_array":
 		if x.EncryptedTxArray == nil {
 			x.EncryptedTxArray = []*EncryptedTxArray{}
 		}
 		value := &_GenesisState_3_list{list: &x.EncryptedTxArray}
 		return protoreflect.ValueOfList(value)
-	case "fairyring.pep.GenesisState.pepNonceList":
+	case "fairyring.pep.GenesisState.pep_nonce_list":
 		if x.PepNonceList == nil {
 			x.PepNonceList = []*PepNonce{}
 		}
@@ -576,17 +576,17 @@ func (x *fastReflection_GenesisState) Mutable(fd protoreflect.FieldDescriptor) p
 		}
 		value := &_GenesisState_6_list{list: &x.DecryptionKeyList}
 		return protoreflect.ValueOfList(value)
-	case "fairyring.pep.GenesisState.activePubKey":
-		if x.ActivePubKey == nil {
-			x.ActivePubKey = new(common.ActivePublicKey)
+	case "fairyring.pep.GenesisState.active_pubkey":
+		if x.ActivePubkey == nil {
+			x.ActivePubkey = new(common.ActivePublicKey)
 		}
-		return protoreflect.ValueOfMessage(x.ActivePubKey.ProtoReflect())
-	case "fairyring.pep.GenesisState.queuedPubKey":
-		if x.QueuedPubKey == nil {
-			x.QueuedPubKey = new(common.QueuedPublicKey)
+		return protoreflect.ValueOfMessage(x.ActivePubkey.ProtoReflect())
+	case "fairyring.pep.GenesisState.queued_pubkey":
+		if x.QueuedPubkey == nil {
+			x.QueuedPubkey = new(common.QueuedPublicKey)
 		}
-		return protoreflect.ValueOfMessage(x.QueuedPubKey.ProtoReflect())
-	case "fairyring.pep.GenesisState.requestIdList":
+		return protoreflect.ValueOfMessage(x.QueuedPubkey.ProtoReflect())
+	case "fairyring.pep.GenesisState.request_id_list":
 		if x.RequestIdList == nil {
 			x.RequestIdList = []*RequestId{}
 		}
@@ -614,24 +614,24 @@ func (x *fastReflection_GenesisState) NewField(fd protoreflect.FieldDescriptor) 
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	case "fairyring.pep.GenesisState.port_id":
 		return protoreflect.ValueOfString("")
-	case "fairyring.pep.GenesisState.encryptedTxArray":
+	case "fairyring.pep.GenesisState.encrypted_tx_array":
 		list := []*EncryptedTxArray{}
 		return protoreflect.ValueOfList(&_GenesisState_3_list{list: &list})
-	case "fairyring.pep.GenesisState.pepNonceList":
+	case "fairyring.pep.GenesisState.pep_nonce_list":
 		list := []*PepNonce{}
 		return protoreflect.ValueOfList(&_GenesisState_4_list{list: &list})
 	case "fairyring.pep.GenesisState.decryption_key_list":
 		list := []*DecryptionKey{}
 		return protoreflect.ValueOfList(&_GenesisState_6_list{list: &list})
-	case "fairyring.pep.GenesisState.activePubKey":
+	case "fairyring.pep.GenesisState.active_pubkey":
 		m := new(common.ActivePublicKey)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	case "fairyring.pep.GenesisState.queuedPubKey":
+	case "fairyring.pep.GenesisState.queued_pubkey":
 		m := new(common.QueuedPublicKey)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	case "fairyring.pep.GenesisState.request_count":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.pep.GenesisState.requestIdList":
+	case "fairyring.pep.GenesisState.request_id_list":
 		list := []*RequestId{}
 		return protoreflect.ValueOfList(&_GenesisState_10_list{list: &list})
 	default:
@@ -729,12 +729,12 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
 		}
-		if x.ActivePubKey != nil {
-			l = options.Size(x.ActivePubKey)
+		if x.ActivePubkey != nil {
+			l = options.Size(x.ActivePubkey)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.QueuedPubKey != nil {
-			l = options.Size(x.QueuedPubKey)
+		if x.QueuedPubkey != nil {
+			l = options.Size(x.QueuedPubkey)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		if x.RequestCount != 0 {
@@ -796,8 +796,8 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x48
 		}
-		if x.QueuedPubKey != nil {
-			encoded, err := options.Marshal(x.QueuedPubKey)
+		if x.QueuedPubkey != nil {
+			encoded, err := options.Marshal(x.QueuedPubkey)
 			if err != nil {
 				return protoiface.MarshalOutput{
 					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -810,8 +810,8 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x42
 		}
-		if x.ActivePubKey != nil {
-			encoded, err := options.Marshal(x.ActivePubKey)
+		if x.ActivePubkey != nil {
+			encoded, err := options.Marshal(x.ActivePubkey)
 			if err != nil {
 				return protoiface.MarshalOutput{
 					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -1114,7 +1114,7 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 7:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ActivePubKey", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ActivePubkey", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -1141,16 +1141,16 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				if x.ActivePubKey == nil {
-					x.ActivePubKey = &common.ActivePublicKey{}
+				if x.ActivePubkey == nil {
+					x.ActivePubkey = &common.ActivePublicKey{}
 				}
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.ActivePubKey); err != nil {
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.ActivePubkey); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
 			case 8:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field QueuedPubKey", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field QueuedPubkey", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -1177,10 +1177,10 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				if x.QueuedPubKey == nil {
-					x.QueuedPubKey = &common.QueuedPublicKey{}
+				if x.QueuedPubkey == nil {
+					x.QueuedPubkey = &common.QueuedPublicKey{}
 				}
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.QueuedPubKey); err != nil {
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.QueuedPubkey); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
@@ -1294,13 +1294,13 @@ type GenesisState struct {
 	// params defines all the parameters of the module.
 	Params            *Params                 `protobuf:"bytes,1,opt,name=params,proto3" json:"params,omitempty"`
 	PortId            string                  `protobuf:"bytes,2,opt,name=port_id,json=portId,proto3" json:"port_id,omitempty"`
-	EncryptedTxArray  []*EncryptedTxArray     `protobuf:"bytes,3,rep,name=encryptedTxArray,proto3" json:"encryptedTxArray,omitempty"`
-	PepNonceList      []*PepNonce             `protobuf:"bytes,4,rep,name=pepNonceList,proto3" json:"pepNonceList,omitempty"`
+	EncryptedTxArray  []*EncryptedTxArray     `protobuf:"bytes,3,rep,name=encrypted_tx_array,json=encryptedTxArray,proto3" json:"encrypted_tx_array,omitempty"`
+	PepNonceList      []*PepNonce             `protobuf:"bytes,4,rep,name=pep_nonce_list,json=pepNonceList,proto3" json:"pep_nonce_list,omitempty"`
 	DecryptionKeyList []*DecryptionKey        `protobuf:"bytes,6,rep,name=decryption_key_list,json=decryptionKeyList,proto3" json:"decryption_key_list,omitempty"`
-	ActivePubKey      *common.ActivePublicKey `protobuf:"bytes,7,opt,name=activePubKey,proto3" json:"activePubKey,omitempty"`
-	QueuedPubKey      *common.QueuedPublicKey `protobuf:"bytes,8,opt,name=queuedPubKey,proto3" json:"queuedPubKey,omitempty"`
+	ActivePubkey      *common.ActivePublicKey `protobuf:"bytes,7,opt,name=active_pubkey,json=activePubkey,proto3" json:"active_pubkey,omitempty"`
+	QueuedPubkey      *common.QueuedPublicKey `protobuf:"bytes,8,opt,name=queued_pubkey,json=queuedPubkey,proto3" json:"queued_pubkey,omitempty"`
 	RequestCount      uint64                  `protobuf:"varint,9,opt,name=request_count,json=requestCount,proto3" json:"request_count,omitempty"`
-	RequestIdList     []*RequestId            `protobuf:"bytes,10,rep,name=requestIdList,proto3" json:"requestIdList,omitempty"`
+	RequestIdList     []*RequestId            `protobuf:"bytes,10,rep,name=request_id_list,json=requestIdList,proto3" json:"request_id_list,omitempty"`
 }
 
 func (x *GenesisState) Reset() {
@@ -1358,16 +1358,16 @@ func (x *GenesisState) GetDecryptionKeyList() []*DecryptionKey {
 	return nil
 }
 
-func (x *GenesisState) GetActivePubKey() *common.ActivePublicKey {
+func (x *GenesisState) GetActivePubkey() *common.ActivePublicKey {
 	if x != nil {
-		return x.ActivePubKey
+		return x.ActivePubkey
 	}
 	return nil
 }
 
-func (x *GenesisState) GetQueuedPubKey() *common.QueuedPublicKey {
+func (x *GenesisState) GetQueuedPubkey() *common.QueuedPublicKey {
 	if x != nil {
-		return x.QueuedPubKey
+		return x.QueuedPubkey
 	}
 	return nil
 }
@@ -1406,54 +1406,55 @@ var file_fairyring_pep_genesis_proto_rawDesc = []byte{
 	0x67, 0x2f, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x64, 0x5f,
 	0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1e, 0x66, 0x61, 0x69,
 	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f, 0x72, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x5f, 0x69, 0x64, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xd0, 0x04, 0x0a, 0x0c,
+	0x73, 0x74, 0x5f, 0x69, 0x64, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xd8, 0x04, 0x0a, 0x0c,
 	0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x38, 0x0a, 0x06,
 	0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x66,
 	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x50, 0x61, 0x72,
 	0x61, 0x6d, 0x73, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06,
 	0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x17, 0x0a, 0x07, 0x70, 0x6f, 0x72, 0x74, 0x5f, 0x69,
 	0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x6f, 0x72, 0x74, 0x49, 0x64, 0x12,
-	0x51, 0x0a, 0x10, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x41, 0x72,
-	0x72, 0x61, 0x79, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x66, 0x61, 0x69, 0x72,
-	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70,
-	0x74, 0x65, 0x64, 0x54, 0x78, 0x41, 0x72, 0x72, 0x61, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00,
-	0x52, 0x10, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x41, 0x72, 0x72,
-	0x61, 0x79, 0x12, 0x41, 0x0a, 0x0c, 0x70, 0x65, 0x70, 0x4e, 0x6f, 0x6e, 0x63, 0x65, 0x4c, 0x69,
-	0x73, 0x74, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
-	0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x50, 0x65, 0x70, 0x4e, 0x6f, 0x6e, 0x63,
-	0x65, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x70, 0x65, 0x70, 0x4e, 0x6f, 0x6e, 0x63,
-	0x65, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x52, 0x0a, 0x13, 0x64, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74,
-	0x69, 0x6f, 0x6e, 0x5f, 0x6b, 0x65, 0x79, 0x5f, 0x6c, 0x69, 0x73, 0x74, 0x18, 0x06, 0x20, 0x03,
-	0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70,
-	0x65, 0x70, 0x2e, 0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79,
-	0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x11, 0x64, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69,
-	0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x4b, 0x0a, 0x0c, 0x61, 0x63, 0x74,
-	0x69, 0x76, 0x65, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x18, 0x07, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x21, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d,
-	0x6f, 0x6e, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x76, 0x65, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b,
-	0x65, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65,
-	0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x12, 0x4b, 0x0a, 0x0c, 0x71, 0x75, 0x65, 0x75, 0x65, 0x64,
-	0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x66,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e,
-	0x51, 0x75, 0x65, 0x75, 0x65, 0x64, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x42,
-	0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x71, 0x75, 0x65, 0x75, 0x65, 0x64, 0x50, 0x75, 0x62,
-	0x4b, 0x65, 0x79, 0x12, 0x23, 0x0a, 0x0d, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x63,
-	0x6f, 0x75, 0x6e, 0x74, 0x18, 0x09, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0c, 0x72, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x44, 0x0a, 0x0d, 0x72, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x49, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x18, 0x0a, 0x20, 0x03, 0x28, 0x0b, 0x32,
-	0x18, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52,
-	0x0d, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x42, 0x96,
-	0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
-	0x2e, 0x70, 0x65, 0x70, 0x42, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x50, 0x72, 0x6f,
-	0x74, 0x6f, 0x50, 0x01, 0x5a, 0x1e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e,
-	0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
-	0x2f, 0x70, 0x65, 0x70, 0xa2, 0x02, 0x03, 0x46, 0x50, 0x58, 0xaa, 0x02, 0x0d, 0x46, 0x61, 0x69,
-	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x50, 0x65, 0x70, 0xca, 0x02, 0x0d, 0x46, 0x61, 0x69,
-	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50, 0x65, 0x70, 0xe2, 0x02, 0x19, 0x46, 0x61, 0x69,
-	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50, 0x65, 0x70, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65,
-	0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
-	0x6e, 0x67, 0x3a, 0x3a, 0x50, 0x65, 0x70, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x53, 0x0a, 0x12, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x5f, 0x74, 0x78, 0x5f,
+	0x61, 0x72, 0x72, 0x61, 0x79, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x66, 0x61,
+	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x45, 0x6e, 0x63, 0x72,
+	0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x41, 0x72, 0x72, 0x61, 0x79, 0x42, 0x04, 0xc8, 0xde,
+	0x1f, 0x00, 0x52, 0x10, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x54, 0x78, 0x41,
+	0x72, 0x72, 0x61, 0x79, 0x12, 0x43, 0x0a, 0x0e, 0x70, 0x65, 0x70, 0x5f, 0x6e, 0x6f, 0x6e, 0x63,
+	0x65, 0x5f, 0x6c, 0x69, 0x73, 0x74, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x66,
+	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x50, 0x65, 0x70,
+	0x4e, 0x6f, 0x6e, 0x63, 0x65, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x70, 0x65, 0x70,
+	0x4e, 0x6f, 0x6e, 0x63, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x52, 0x0a, 0x13, 0x64, 0x65, 0x63,
+	0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6b, 0x65, 0x79, 0x5f, 0x6c, 0x69, 0x73, 0x74,
+	0x18, 0x06, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f,
+	0x6e, 0x4b, 0x65, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x11, 0x64, 0x65, 0x63, 0x72,
+	0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x4c, 0x0a,
+	0x0d, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x5f, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x07,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
+	0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x76, 0x65, 0x50, 0x75,
+	0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x61,
+	0x63, 0x74, 0x69, 0x76, 0x65, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x4c, 0x0a, 0x0d, 0x71,
+	0x75, 0x65, 0x75, 0x65, 0x64, 0x5f, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x08, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x21, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63,
+	0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x75, 0x65, 0x64, 0x50, 0x75, 0x62, 0x6c,
+	0x69, 0x63, 0x4b, 0x65, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x71, 0x75, 0x65,
+	0x75, 0x65, 0x64, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x23, 0x0a, 0x0d, 0x72, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x5f, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x09, 0x20, 0x01, 0x28, 0x04,
+	0x52, 0x0c, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x46,
+	0x0a, 0x0f, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x5f, 0x6c, 0x69, 0x73,
+	0x74, 0x18, 0x0a, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
+	0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49,
+	0x64, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0d, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x49, 0x64, 0x4c, 0x69, 0x73, 0x74, 0x42, 0x96, 0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x66,
+	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x42, 0x0c, 0x47, 0x65,
+	0x6e, 0x65, 0x73, 0x69, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x1e, 0x63, 0x6f,
+	0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66,
+	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0xa2, 0x02, 0x03, 0x46,
+	0x50, 0x58, 0xaa, 0x02, 0x0d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x50,
+	0x65, 0x70, 0xca, 0x02, 0x0d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50,
+	0x65, 0x70, 0xe2, 0x02, 0x19, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50,
+	0x65, 0x70, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02,
+	0x0e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x50, 0x65, 0x70, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1481,12 +1482,12 @@ var file_fairyring_pep_genesis_proto_goTypes = []interface{}{
 }
 var file_fairyring_pep_genesis_proto_depIdxs = []int32{
 	1, // 0: fairyring.pep.GenesisState.params:type_name -> fairyring.pep.Params
-	2, // 1: fairyring.pep.GenesisState.encryptedTxArray:type_name -> fairyring.pep.EncryptedTxArray
-	3, // 2: fairyring.pep.GenesisState.pepNonceList:type_name -> fairyring.pep.PepNonce
+	2, // 1: fairyring.pep.GenesisState.encrypted_tx_array:type_name -> fairyring.pep.EncryptedTxArray
+	3, // 2: fairyring.pep.GenesisState.pep_nonce_list:type_name -> fairyring.pep.PepNonce
 	4, // 3: fairyring.pep.GenesisState.decryption_key_list:type_name -> fairyring.pep.DecryptionKey
-	5, // 4: fairyring.pep.GenesisState.activePubKey:type_name -> fairyring.common.ActivePublicKey
-	6, // 5: fairyring.pep.GenesisState.queuedPubKey:type_name -> fairyring.common.QueuedPublicKey
-	7, // 6: fairyring.pep.GenesisState.requestIdList:type_name -> fairyring.pep.RequestId
+	5, // 4: fairyring.pep.GenesisState.active_pubkey:type_name -> fairyring.common.ActivePublicKey
+	6, // 5: fairyring.pep.GenesisState.queued_pubkey:type_name -> fairyring.common.QueuedPublicKey
+	7, // 6: fairyring.pep.GenesisState.request_id_list:type_name -> fairyring.pep.RequestId
 	7, // [7:7] is the sub-list for method output_type
 	7, // [7:7] is the sub-list for method input_type
 	7, // [7:7] is the sub-list for extension type_name

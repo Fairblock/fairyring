@@ -10,8 +10,8 @@ message EncryptedKeyshare {
   string validator = 2;
 }
 
-// ActivePubKey defines the structure of the active public key
-message ActivePubKey {
+// ActivePubkey defines the structure of the active public key
+message ActivePubkey {
   string public_key = 1;
   string creator = 2;
   uint64 expiry = 3;
@@ -19,8 +19,8 @@ message ActivePubKey {
   repeated EncryptedKeyshare encrypted_keyshares = 5;
 }
 
-// QueuedPubKey defines the structure of the queued public key
-message QueuedPubKey {
+// QueuedPubkey defines the structure of the queued public key
+message QueuedPubkey {
   string public_key = 1;
   string creator = 2;
   uint64 expiry = 3;

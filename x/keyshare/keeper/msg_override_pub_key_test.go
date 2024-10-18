@@ -17,12 +17,12 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func TestOverrideLatestPubKeyMsgServer(t *testing.T) {
+func TestOverrideLatestPubkeyMsgServer(t *testing.T) {
 	k, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
-	out, err := random.GeneratePubKeyAndShares(1)
+	out, err := random.GeneratePubkeyAndShares(1)
 	require.NoError(t, err)
 
 	creator := out.GeneratedShare[0].ValidatorAddress
@@ -34,17 +34,17 @@ func TestOverrideLatestPubKeyMsgServer(t *testing.T) {
 
 	for _, tc := range []struct {
 		desc    string
-		request *types.MsgOverrideLatestPubKey
+		request *types.MsgOverrideLatestPubkey
 		err     error
 	}{
 		{
 			desc:    "Unauthorized",
-			request: &types.MsgOverrideLatestPubKey{Creator: "B"},
+			request: &types.MsgOverrideLatestPubkey{Creator: "B"},
 			err:     types.ErrAddressNotTrusted,
 		},
 		{
-			desc: "SuccessOverridePubKey",
-			request: &types.MsgOverrideLatestPubKey{
+			desc: "SuccessOverridePubkey",
+			request: &types.MsgOverrideLatestPubkey{
 				PublicKey:          out.MasterPublicKey,
 				Creator:            creator,
 				Commitments:        out.Commitments,
@@ -55,7 +55,7 @@ func TestOverrideLatestPubKeyMsgServer(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 
-			_, err := srv.OverrideLatestPubKey(wctx, tc.request)
+			_, err := srv.OverrideLatestPubkey(wctx, tc.request)
 
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
@@ -64,7 +64,7 @@ func TestOverrideLatestPubKeyMsgServer(t *testing.T) {
 			}
 
 			if tc.desc == "QueuedKeyAlreadyExists" {
-				k.DeleteQueuedPubKey(wctx)
+				k.DeleteQueuedPubkey(wctx)
 			}
 		})
 	}

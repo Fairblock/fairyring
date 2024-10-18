@@ -58,8 +58,8 @@ type GovKeeper interface {
 
 // PepKeeper defines the expected interface needed to get and set active and queued public keys
 type PepKeeper interface {
-	SetActivePubkey(ctx context.Context, activePubKey commontypes.ActivePublicKey)
-	SetQueuedPubkey(ctx context.Context, queuedPubKey commontypes.QueuedPublicKey)
+	SetActivePubkey(ctx context.Context, activePubkey commontypes.ActivePublicKey)
+	SetQueuedPubkey(ctx context.Context, queuedPubkey commontypes.QueuedPublicKey)
 	GetActivePubkey(ctx context.Context) (val commontypes.ActivePublicKey, found bool)
 	GetQueuedPubkey(ctx context.Context) (val commontypes.QueuedPublicKey, found bool)
 	DeleteActivePubkey(ctx context.Context)

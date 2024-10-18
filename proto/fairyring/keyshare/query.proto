@@ -185,13 +185,13 @@ message QueryDecryptionKeyAllResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-// QueryPubKeyRequest is request type for the Query/PubKey RPC method.
+// QueryPubkeyRequest is request type for the Query/Pubkey RPC method.
 message QueryPubkeyRequest {}
 
-// QueryPubKeyResponse is response type for the Query/PubKey RPC method.
+// QueryPubkeyResponse is response type for the Query/Pubkey RPC method.
 message QueryPubkeyResponse {
-  ActivePubKey active_pubkey = 1 [(gogoproto.nullable) = false];
-  QueuedPubKey queued_pubkey = 2 [(gogoproto.nullable) = false];
+  ActivePubkey active_pubkey = 1 [(gogoproto.nullable) = false];
+  QueuedPubkey queued_pubkey = 2 [(gogoproto.nullable) = false];
 }
 
 // QueryAuthorizedAddressRequest is request type for the Query/AuthorizedAddress RPC method.

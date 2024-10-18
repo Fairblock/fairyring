@@ -23,8 +23,8 @@ const (
 	Msg_RegisterValidator_FullMethodName       = "/fairyring.keyshare.Msg/RegisterValidator"
 	Msg_DeRegisterValidator_FullMethodName     = "/fairyring.keyshare.Msg/DeRegisterValidator"
 	Msg_SendKeyshare_FullMethodName            = "/fairyring.keyshare.Msg/SendKeyshare"
-	Msg_CreateLatestPubKey_FullMethodName      = "/fairyring.keyshare.Msg/CreateLatestPubKey"
-	Msg_OverrideLatestPubKey_FullMethodName    = "/fairyring.keyshare.Msg/OverrideLatestPubKey"
+	Msg_CreateLatestPubkey_FullMethodName      = "/fairyring.keyshare.Msg/CreateLatestPubkey"
+	Msg_OverrideLatestPubkey_FullMethodName    = "/fairyring.keyshare.Msg/OverrideLatestPubkey"
 	Msg_CreateAuthorizedAddress_FullMethodName = "/fairyring.keyshare.Msg/CreateAuthorizedAddress"
 	Msg_UpdateAuthorizedAddress_FullMethodName = "/fairyring.keyshare.Msg/UpdateAuthorizedAddress"
 	Msg_DeleteAuthorizedAddress_FullMethodName = "/fairyring.keyshare.Msg/DeleteAuthorizedAddress"
@@ -48,11 +48,11 @@ type MsgClient interface {
 	// SendKeyshare defines an operation to submit keyshares
 	// every block from registered validators
 	SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts ...grpc.CallOption) (*MsgSendKeyshareResponse, error)
-	// CreateLatestPubKey defines an operation to add a
+	// CreateLatestPubkey defines an operation to add a
 	// public key to the chain (can only be done by an authorized address)
-	CreateLatestPubKey(ctx context.Context, in *MsgCreateLatestPubKey, opts ...grpc.CallOption) (*MsgCreateLatestPubKeyResponse, error)
-	// OverrideLatestPubKey defines an operation to override the current active pubkey
-	OverrideLatestPubKey(ctx context.Context, in *MsgOverrideLatestPubKey, opts ...grpc.CallOption) (*MsgOverrideLatestPubKeyResponse, error)
+	CreateLatestPubkey(ctx context.Context, in *MsgCreateLatestPubkey, opts ...grpc.CallOption) (*MsgCreateLatestPubkeyResponse, error)
+	// OverrideLatestPubkey defines an operation to override the current active pubkey
+	OverrideLatestPubkey(ctx context.Context, in *MsgOverrideLatestPubkey, opts ...grpc.CallOption) (*MsgOverrideLatestPubkeyResponse, error)
 	// CreateAuthorizedAddress defines an operation to mark an address
 	// as authorized to create and/or update pubkeys on the chain
 	CreateAuthorizedAddress(ctx context.Context, in *MsgCreateAuthorizedAddress, opts ...grpc.CallOption) (*MsgCreateAuthorizedAddressResponse, error)
@@ -114,18 +114,18 @@ func (c *msgClient) SendKeyshare(ctx context.Context, in *MsgSendKeyshare, opts 
 	return out, nil
 }
 
-func (c *msgClient) CreateLatestPubKey(ctx context.Context, in *MsgCreateLatestPubKey, opts ...grpc.CallOption) (*MsgCreateLatestPubKeyResponse, error) {
-	out := new(MsgCreateLatestPubKeyResponse)
-	err := c.cc.Invoke(ctx, Msg_CreateLatestPubKey_FullMethodName, in, out, opts...)
+func (c *msgClient) CreateLatestPubkey(ctx context.Context, in *MsgCreateLatestPubkey, opts ...grpc.CallOption) (*MsgCreateLatestPubkeyResponse, error) {
+	out := new(MsgCreateLatestPubkeyResponse)
+	err := c.cc.Invoke(ctx, Msg_CreateLatestPubkey_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) OverrideLatestPubKey(ctx context.Context, in *MsgOverrideLatestPubKey, opts ...grpc.CallOption) (*MsgOverrideLatestPubKeyResponse, error) {
-	out := new(MsgOverrideLatestPubKeyResponse)
-	err := c.cc.Invoke(ctx, Msg_OverrideLatestPubKey_FullMethodName, in, out, opts...)
+func (c *msgClient) OverrideLatestPubkey(ctx context.Context, in *MsgOverrideLatestPubkey, opts ...grpc.CallOption) (*MsgOverrideLatestPubkeyResponse, error) {
+	out := new(MsgOverrideLatestPubkeyResponse)
+	err := c.cc.Invoke(ctx, Msg_OverrideLatestPubkey_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -193,11 +193,11 @@ type MsgServer interface {
 	// SendKeyshare defines an operation to submit keyshares
 	// every block from registered validators
 	SendKeyshare(context.Context, *MsgSendKeyshare) (*MsgSendKeyshareResponse, error)
-	// CreateLatestPubKey defines an operation to add a
+	// CreateLatestPubkey defines an operation to add a
 	// public key to the chain (can only be done by an authorized address)
-	CreateLatestPubKey(context.Context, *MsgCreateLatestPubKey) (*MsgCreateLatestPubKeyResponse, error)
-	// OverrideLatestPubKey defines an operation to override the current active pubkey
-	OverrideLatestPubKey(context.Context, *MsgOverrideLatestPubKey) (*MsgOverrideLatestPubKeyResponse, error)
+	CreateLatestPubkey(context.Context, *MsgCreateLatestPubkey) (*MsgCreateLatestPubkeyResponse, error)
+	// OverrideLatestPubkey defines an operation to override the current active pubkey
+	OverrideLatestPubkey(context.Context, *MsgOverrideLatestPubkey) (*MsgOverrideLatestPubkeyResponse, error)
 	// CreateAuthorizedAddress defines an operation to mark an address
 	// as authorized to create and/or update pubkeys on the chain
 	CreateAuthorizedAddress(context.Context, *MsgCreateAuthorizedAddress) (*MsgCreateAuthorizedAddressResponse, error)
@@ -232,11 +232,11 @@ func (UnimplementedMsgServer) DeRegisterValidator(context.Context, *MsgDeRegiste
 func (UnimplementedMsgServer) SendKeyshare(context.Context, *MsgSendKeyshare) (*MsgSendKeyshareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendKeyshare not implemented")
 }
-func (UnimplementedMsgServer) CreateLatestPubKey(context.Context, *MsgCreateLatestPubKey) (*MsgCreateLatestPubKeyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateLatestPubKey not implemented")
+func (UnimplementedMsgServer) CreateLatestPubkey(context.Context, *MsgCreateLatestPubkey) (*MsgCreateLatestPubkeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateLatestPubkey not implemented")
 }
-func (UnimplementedMsgServer) OverrideLatestPubKey(context.Context, *MsgOverrideLatestPubKey) (*MsgOverrideLatestPubKeyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method OverrideLatestPubKey not implemented")
+func (UnimplementedMsgServer) OverrideLatestPubkey(context.Context, *MsgOverrideLatestPubkey) (*MsgOverrideLatestPubkeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OverrideLatestPubkey not implemented")
 }
 func (UnimplementedMsgServer) CreateAuthorizedAddress(context.Context, *MsgCreateAuthorizedAddress) (*MsgCreateAuthorizedAddressResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAuthorizedAddress not implemented")
@@ -338,38 +338,38 @@ func _Msg_SendKeyshare_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_CreateLatestPubKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateLatestPubKey)
+func _Msg_CreateLatestPubkey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateLatestPubkey)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).CreateLatestPubKey(ctx, in)
+		return srv.(MsgServer).CreateLatestPubkey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_CreateLatestPubKey_FullMethodName,
+		FullMethod: Msg_CreateLatestPubkey_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateLatestPubKey(ctx, req.(*MsgCreateLatestPubKey))
+		return srv.(MsgServer).CreateLatestPubkey(ctx, req.(*MsgCreateLatestPubkey))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_OverrideLatestPubKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgOverrideLatestPubKey)
+func _Msg_OverrideLatestPubkey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgOverrideLatestPubkey)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).OverrideLatestPubKey(ctx, in)
+		return srv.(MsgServer).OverrideLatestPubkey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_OverrideLatestPubKey_FullMethodName,
+		FullMethod: Msg_OverrideLatestPubkey_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).OverrideLatestPubKey(ctx, req.(*MsgOverrideLatestPubKey))
+		return srv.(MsgServer).OverrideLatestPubkey(ctx, req.(*MsgOverrideLatestPubkey))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -488,12 +488,12 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_SendKeyshare_Handler,
 		},
 		{
-			MethodName: "CreateLatestPubKey",
-			Handler:    _Msg_CreateLatestPubKey_Handler,
+			MethodName: "CreateLatestPubkey",
+			Handler:    _Msg_CreateLatestPubkey_Handler,
 		},
 		{
-			MethodName: "OverrideLatestPubKey",
-			Handler:    _Msg_OverrideLatestPubKey_Handler,
+			MethodName: "OverrideLatestPubkey",
+			Handler:    _Msg_OverrideLatestPubkey_Handler,
 		},
 		{
 			MethodName: "CreateAuthorizedAddress",

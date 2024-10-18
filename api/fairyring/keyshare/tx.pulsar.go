@@ -3877,131 +3877,131 @@ func (x *fastReflection_MsgSendKeyshareResponse) ProtoMethods() *protoiface.Meth
 	}
 }
 
-var _ protoreflect.List = (*_MsgCreateLatestPubKey_3_list)(nil)
+var _ protoreflect.List = (*_MsgCreateLatestPubkey_3_list)(nil)
 
-type _MsgCreateLatestPubKey_3_list struct {
+type _MsgCreateLatestPubkey_3_list struct {
 	list *[]string
 }
 
-func (x *_MsgCreateLatestPubKey_3_list) Len() int {
+func (x *_MsgCreateLatestPubkey_3_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_MsgCreateLatestPubKey_3_list) Get(i int) protoreflect.Value {
+func (x *_MsgCreateLatestPubkey_3_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfString((*x.list)[i])
 }
 
-func (x *_MsgCreateLatestPubKey_3_list) Set(i int, value protoreflect.Value) {
+func (x *_MsgCreateLatestPubkey_3_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_MsgCreateLatestPubKey_3_list) Append(value protoreflect.Value) {
+func (x *_MsgCreateLatestPubkey_3_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_MsgCreateLatestPubKey_3_list) AppendMutable() protoreflect.Value {
-	panic(fmt.Errorf("AppendMutable can not be called on message MsgCreateLatestPubKey at list field Commitments as it is not of Message kind"))
+func (x *_MsgCreateLatestPubkey_3_list) AppendMutable() protoreflect.Value {
+	panic(fmt.Errorf("AppendMutable can not be called on message MsgCreateLatestPubkey at list field Commitments as it is not of Message kind"))
 }
 
-func (x *_MsgCreateLatestPubKey_3_list) Truncate(n int) {
+func (x *_MsgCreateLatestPubkey_3_list) Truncate(n int) {
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_MsgCreateLatestPubKey_3_list) NewElement() protoreflect.Value {
+func (x *_MsgCreateLatestPubkey_3_list) NewElement() protoreflect.Value {
 	v := ""
 	return protoreflect.ValueOfString(v)
 }
 
-func (x *_MsgCreateLatestPubKey_3_list) IsValid() bool {
+func (x *_MsgCreateLatestPubkey_3_list) IsValid() bool {
 	return x.list != nil
 }
 
-var _ protoreflect.List = (*_MsgCreateLatestPubKey_5_list)(nil)
+var _ protoreflect.List = (*_MsgCreateLatestPubkey_5_list)(nil)
 
-type _MsgCreateLatestPubKey_5_list struct {
+type _MsgCreateLatestPubkey_5_list struct {
 	list *[]*EncryptedKeyshare
 }
 
-func (x *_MsgCreateLatestPubKey_5_list) Len() int {
+func (x *_MsgCreateLatestPubkey_5_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_MsgCreateLatestPubKey_5_list) Get(i int) protoreflect.Value {
+func (x *_MsgCreateLatestPubkey_5_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
 }
 
-func (x *_MsgCreateLatestPubKey_5_list) Set(i int, value protoreflect.Value) {
+func (x *_MsgCreateLatestPubkey_5_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
 	concreteValue := valueUnwrapped.Interface().(*EncryptedKeyshare)
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_MsgCreateLatestPubKey_5_list) Append(value protoreflect.Value) {
+func (x *_MsgCreateLatestPubkey_5_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.Message()
 	concreteValue := valueUnwrapped.Interface().(*EncryptedKeyshare)
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_MsgCreateLatestPubKey_5_list) AppendMutable() protoreflect.Value {
+func (x *_MsgCreateLatestPubkey_5_list) AppendMutable() protoreflect.Value {
 	v := new(EncryptedKeyshare)
 	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_MsgCreateLatestPubKey_5_list) Truncate(n int) {
+func (x *_MsgCreateLatestPubkey_5_list) Truncate(n int) {
 	for i := n; i < len(*x.list); i++ {
 		(*x.list)[i] = nil
 	}
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_MsgCreateLatestPubKey_5_list) NewElement() protoreflect.Value {
+func (x *_MsgCreateLatestPubkey_5_list) NewElement() protoreflect.Value {
 	v := new(EncryptedKeyshare)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_MsgCreateLatestPubKey_5_list) IsValid() bool {
+func (x *_MsgCreateLatestPubkey_5_list) IsValid() bool {
 	return x.list != nil
 }
 
 var (
-	md_MsgCreateLatestPubKey                      protoreflect.MessageDescriptor
-	fd_MsgCreateLatestPubKey_creator              protoreflect.FieldDescriptor
-	fd_MsgCreateLatestPubKey_public_key           protoreflect.FieldDescriptor
-	fd_MsgCreateLatestPubKey_commitments          protoreflect.FieldDescriptor
-	fd_MsgCreateLatestPubKey_number_of_validators protoreflect.FieldDescriptor
-	fd_MsgCreateLatestPubKey_encrypted_keyshares  protoreflect.FieldDescriptor
+	md_MsgCreateLatestPubkey                      protoreflect.MessageDescriptor
+	fd_MsgCreateLatestPubkey_creator              protoreflect.FieldDescriptor
+	fd_MsgCreateLatestPubkey_public_key           protoreflect.FieldDescriptor
+	fd_MsgCreateLatestPubkey_commitments          protoreflect.FieldDescriptor
+	fd_MsgCreateLatestPubkey_number_of_validators protoreflect.FieldDescriptor
+	fd_MsgCreateLatestPubkey_encrypted_keyshares  protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_keyshare_tx_proto_init()
-	md_MsgCreateLatestPubKey = File_fairyring_keyshare_tx_proto.Messages().ByName("MsgCreateLatestPubKey")
-	fd_MsgCreateLatestPubKey_creator = md_MsgCreateLatestPubKey.Fields().ByName("creator")
-	fd_MsgCreateLatestPubKey_public_key = md_MsgCreateLatestPubKey.Fields().ByName("public_key")
-	fd_MsgCreateLatestPubKey_commitments = md_MsgCreateLatestPubKey.Fields().ByName("commitments")
-	fd_MsgCreateLatestPubKey_number_of_validators = md_MsgCreateLatestPubKey.Fields().ByName("number_of_validators")
-	fd_MsgCreateLatestPubKey_encrypted_keyshares = md_MsgCreateLatestPubKey.Fields().ByName("encrypted_keyshares")
+	md_MsgCreateLatestPubkey = File_fairyring_keyshare_tx_proto.Messages().ByName("MsgCreateLatestPubkey")
+	fd_MsgCreateLatestPubkey_creator = md_MsgCreateLatestPubkey.Fields().ByName("creator")
+	fd_MsgCreateLatestPubkey_public_key = md_MsgCreateLatestPubkey.Fields().ByName("public_key")
+	fd_MsgCreateLatestPubkey_commitments = md_MsgCreateLatestPubkey.Fields().ByName("commitments")
+	fd_MsgCreateLatestPubkey_number_of_validators = md_MsgCreateLatestPubkey.Fields().ByName("number_of_validators")
+	fd_MsgCreateLatestPubkey_encrypted_keyshares = md_MsgCreateLatestPubkey.Fields().ByName("encrypted_keyshares")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgCreateLatestPubKey)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgCreateLatestPubkey)(nil)
 
-type fastReflection_MsgCreateLatestPubKey MsgCreateLatestPubKey
+type fastReflection_MsgCreateLatestPubkey MsgCreateLatestPubkey
 
-func (x *MsgCreateLatestPubKey) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgCreateLatestPubKey)(x)
+func (x *MsgCreateLatestPubkey) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgCreateLatestPubkey)(x)
 }
 
-func (x *MsgCreateLatestPubKey) slowProtoReflect() protoreflect.Message {
+func (x *MsgCreateLatestPubkey) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_keyshare_tx_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4013,43 +4013,43 @@ func (x *MsgCreateLatestPubKey) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgCreateLatestPubKey_messageType fastReflection_MsgCreateLatestPubKey_messageType
-var _ protoreflect.MessageType = fastReflection_MsgCreateLatestPubKey_messageType{}
+var _fastReflection_MsgCreateLatestPubkey_messageType fastReflection_MsgCreateLatestPubkey_messageType
+var _ protoreflect.MessageType = fastReflection_MsgCreateLatestPubkey_messageType{}
 
-type fastReflection_MsgCreateLatestPubKey_messageType struct{}
+type fastReflection_MsgCreateLatestPubkey_messageType struct{}
 
-func (x fastReflection_MsgCreateLatestPubKey_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgCreateLatestPubKey)(nil)
+func (x fastReflection_MsgCreateLatestPubkey_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgCreateLatestPubkey)(nil)
 }
-func (x fastReflection_MsgCreateLatestPubKey_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgCreateLatestPubKey)
+func (x fastReflection_MsgCreateLatestPubkey_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgCreateLatestPubkey)
 }
-func (x fastReflection_MsgCreateLatestPubKey_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgCreateLatestPubKey
+func (x fastReflection_MsgCreateLatestPubkey_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgCreateLatestPubkey
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgCreateLatestPubKey) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgCreateLatestPubKey
+func (x *fastReflection_MsgCreateLatestPubkey) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgCreateLatestPubkey
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgCreateLatestPubKey) Type() protoreflect.MessageType {
-	return _fastReflection_MsgCreateLatestPubKey_messageType
+func (x *fastReflection_MsgCreateLatestPubkey) Type() protoreflect.MessageType {
+	return _fastReflection_MsgCreateLatestPubkey_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgCreateLatestPubKey) New() protoreflect.Message {
-	return new(fastReflection_MsgCreateLatestPubKey)
+func (x *fastReflection_MsgCreateLatestPubkey) New() protoreflect.Message {
+	return new(fastReflection_MsgCreateLatestPubkey)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgCreateLatestPubKey) Interface() protoreflect.ProtoMessage {
-	return (*MsgCreateLatestPubKey)(x)
+func (x *fastReflection_MsgCreateLatestPubkey) Interface() protoreflect.ProtoMessage {
+	return (*MsgCreateLatestPubkey)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -4057,34 +4057,34 @@ func (x *fastReflection_MsgCreateLatestPubKey) Interface() protoreflect.ProtoMes
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgCreateLatestPubKey) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgCreateLatestPubkey) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_MsgCreateLatestPubKey_creator, value) {
+		if !f(fd_MsgCreateLatestPubkey_creator, value) {
 			return
 		}
 	}
 	if x.PublicKey != "" {
 		value := protoreflect.ValueOfString(x.PublicKey)
-		if !f(fd_MsgCreateLatestPubKey_public_key, value) {
+		if !f(fd_MsgCreateLatestPubkey_public_key, value) {
 			return
 		}
 	}
 	if len(x.Commitments) != 0 {
-		value := protoreflect.ValueOfList(&_MsgCreateLatestPubKey_3_list{list: &x.Commitments})
-		if !f(fd_MsgCreateLatestPubKey_commitments, value) {
+		value := protoreflect.ValueOfList(&_MsgCreateLatestPubkey_3_list{list: &x.Commitments})
+		if !f(fd_MsgCreateLatestPubkey_commitments, value) {
 			return
 		}
 	}
 	if x.NumberOfValidators != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.NumberOfValidators)
-		if !f(fd_MsgCreateLatestPubKey_number_of_validators, value) {
+		if !f(fd_MsgCreateLatestPubkey_number_of_validators, value) {
 			return
 		}
 	}
 	if len(x.EncryptedKeyshares) != 0 {
-		value := protoreflect.ValueOfList(&_MsgCreateLatestPubKey_5_list{list: &x.EncryptedKeyshares})
-		if !f(fd_MsgCreateLatestPubKey_encrypted_keyshares, value) {
+		value := protoreflect.ValueOfList(&_MsgCreateLatestPubkey_5_list{list: &x.EncryptedKeyshares})
+		if !f(fd_MsgCreateLatestPubkey_encrypted_keyshares, value) {
 			return
 		}
 	}
@@ -4101,23 +4101,23 @@ func (x *fastReflection_MsgCreateLatestPubKey) Range(f func(protoreflect.FieldDe
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgCreateLatestPubKey) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgCreateLatestPubkey) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgCreateLatestPubKey.creator":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.creator":
 		return x.Creator != ""
-	case "fairyring.keyshare.MsgCreateLatestPubKey.public_key":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.public_key":
 		return x.PublicKey != ""
-	case "fairyring.keyshare.MsgCreateLatestPubKey.commitments":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.commitments":
 		return len(x.Commitments) != 0
-	case "fairyring.keyshare.MsgCreateLatestPubKey.number_of_validators":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.number_of_validators":
 		return x.NumberOfValidators != uint64(0)
-	case "fairyring.keyshare.MsgCreateLatestPubKey.encrypted_keyshares":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.encrypted_keyshares":
 		return len(x.EncryptedKeyshares) != 0
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubKey"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubkey"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubKey does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubkey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4127,23 +4127,23 @@ func (x *fastReflection_MsgCreateLatestPubKey) Has(fd protoreflect.FieldDescript
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateLatestPubKey) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgCreateLatestPubkey) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgCreateLatestPubKey.creator":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.creator":
 		x.Creator = ""
-	case "fairyring.keyshare.MsgCreateLatestPubKey.public_key":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.public_key":
 		x.PublicKey = ""
-	case "fairyring.keyshare.MsgCreateLatestPubKey.commitments":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.commitments":
 		x.Commitments = nil
-	case "fairyring.keyshare.MsgCreateLatestPubKey.number_of_validators":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.number_of_validators":
 		x.NumberOfValidators = uint64(0)
-	case "fairyring.keyshare.MsgCreateLatestPubKey.encrypted_keyshares":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.encrypted_keyshares":
 		x.EncryptedKeyshares = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubKey"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubkey"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubKey does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubkey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4153,34 +4153,34 @@ func (x *fastReflection_MsgCreateLatestPubKey) Clear(fd protoreflect.FieldDescri
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgCreateLatestPubKey) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgCreateLatestPubkey) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.keyshare.MsgCreateLatestPubKey.creator":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateLatestPubKey.public_key":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.public_key":
 		value := x.PublicKey
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgCreateLatestPubKey.commitments":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.commitments":
 		if len(x.Commitments) == 0 {
-			return protoreflect.ValueOfList(&_MsgCreateLatestPubKey_3_list{})
+			return protoreflect.ValueOfList(&_MsgCreateLatestPubkey_3_list{})
 		}
-		listValue := &_MsgCreateLatestPubKey_3_list{list: &x.Commitments}
+		listValue := &_MsgCreateLatestPubkey_3_list{list: &x.Commitments}
 		return protoreflect.ValueOfList(listValue)
-	case "fairyring.keyshare.MsgCreateLatestPubKey.number_of_validators":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.number_of_validators":
 		value := x.NumberOfValidators
 		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.MsgCreateLatestPubKey.encrypted_keyshares":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.encrypted_keyshares":
 		if len(x.EncryptedKeyshares) == 0 {
-			return protoreflect.ValueOfList(&_MsgCreateLatestPubKey_5_list{})
+			return protoreflect.ValueOfList(&_MsgCreateLatestPubkey_5_list{})
 		}
-		listValue := &_MsgCreateLatestPubKey_5_list{list: &x.EncryptedKeyshares}
+		listValue := &_MsgCreateLatestPubkey_5_list{list: &x.EncryptedKeyshares}
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubKey"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubkey"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubKey does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubkey does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -4194,27 +4194,27 @@ func (x *fastReflection_MsgCreateLatestPubKey) Get(descriptor protoreflect.Field
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateLatestPubKey) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgCreateLatestPubkey) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgCreateLatestPubKey.creator":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.creator":
 		x.Creator = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateLatestPubKey.public_key":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.public_key":
 		x.PublicKey = value.Interface().(string)
-	case "fairyring.keyshare.MsgCreateLatestPubKey.commitments":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.commitments":
 		lv := value.List()
-		clv := lv.(*_MsgCreateLatestPubKey_3_list)
+		clv := lv.(*_MsgCreateLatestPubkey_3_list)
 		x.Commitments = *clv.list
-	case "fairyring.keyshare.MsgCreateLatestPubKey.number_of_validators":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.number_of_validators":
 		x.NumberOfValidators = value.Uint()
-	case "fairyring.keyshare.MsgCreateLatestPubKey.encrypted_keyshares":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.encrypted_keyshares":
 		lv := value.List()
-		clv := lv.(*_MsgCreateLatestPubKey_5_list)
+		clv := lv.(*_MsgCreateLatestPubkey_5_list)
 		x.EncryptedKeyshares = *clv.list
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubKey"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubkey"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubKey does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubkey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4228,66 +4228,66 @@ func (x *fastReflection_MsgCreateLatestPubKey) Set(fd protoreflect.FieldDescript
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateLatestPubKey) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgCreateLatestPubkey) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgCreateLatestPubKey.commitments":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.commitments":
 		if x.Commitments == nil {
 			x.Commitments = []string{}
 		}
-		value := &_MsgCreateLatestPubKey_3_list{list: &x.Commitments}
+		value := &_MsgCreateLatestPubkey_3_list{list: &x.Commitments}
 		return protoreflect.ValueOfList(value)
-	case "fairyring.keyshare.MsgCreateLatestPubKey.encrypted_keyshares":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.encrypted_keyshares":
 		if x.EncryptedKeyshares == nil {
 			x.EncryptedKeyshares = []*EncryptedKeyshare{}
 		}
-		value := &_MsgCreateLatestPubKey_5_list{list: &x.EncryptedKeyshares}
+		value := &_MsgCreateLatestPubkey_5_list{list: &x.EncryptedKeyshares}
 		return protoreflect.ValueOfList(value)
-	case "fairyring.keyshare.MsgCreateLatestPubKey.creator":
-		panic(fmt.Errorf("field creator of message fairyring.keyshare.MsgCreateLatestPubKey is not mutable"))
-	case "fairyring.keyshare.MsgCreateLatestPubKey.public_key":
-		panic(fmt.Errorf("field public_key of message fairyring.keyshare.MsgCreateLatestPubKey is not mutable"))
-	case "fairyring.keyshare.MsgCreateLatestPubKey.number_of_validators":
-		panic(fmt.Errorf("field number_of_validators of message fairyring.keyshare.MsgCreateLatestPubKey is not mutable"))
+	case "fairyring.keyshare.MsgCreateLatestPubkey.creator":
+		panic(fmt.Errorf("field creator of message fairyring.keyshare.MsgCreateLatestPubkey is not mutable"))
+	case "fairyring.keyshare.MsgCreateLatestPubkey.public_key":
+		panic(fmt.Errorf("field public_key of message fairyring.keyshare.MsgCreateLatestPubkey is not mutable"))
+	case "fairyring.keyshare.MsgCreateLatestPubkey.number_of_validators":
+		panic(fmt.Errorf("field number_of_validators of message fairyring.keyshare.MsgCreateLatestPubkey is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubKey"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubkey"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubKey does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubkey does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgCreateLatestPubKey) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgCreateLatestPubkey) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgCreateLatestPubKey.creator":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.creator":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateLatestPubKey.public_key":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.public_key":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgCreateLatestPubKey.commitments":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.commitments":
 		list := []string{}
-		return protoreflect.ValueOfList(&_MsgCreateLatestPubKey_3_list{list: &list})
-	case "fairyring.keyshare.MsgCreateLatestPubKey.number_of_validators":
+		return protoreflect.ValueOfList(&_MsgCreateLatestPubkey_3_list{list: &list})
+	case "fairyring.keyshare.MsgCreateLatestPubkey.number_of_validators":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.MsgCreateLatestPubKey.encrypted_keyshares":
+	case "fairyring.keyshare.MsgCreateLatestPubkey.encrypted_keyshares":
 		list := []*EncryptedKeyshare{}
-		return protoreflect.ValueOfList(&_MsgCreateLatestPubKey_5_list{list: &list})
+		return protoreflect.ValueOfList(&_MsgCreateLatestPubkey_5_list{list: &list})
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubKey"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubkey"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubKey does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubkey does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgCreateLatestPubKey) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgCreateLatestPubkey) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.keyshare.MsgCreateLatestPubKey", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.keyshare.MsgCreateLatestPubkey", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -4295,7 +4295,7 @@ func (x *fastReflection_MsgCreateLatestPubKey) WhichOneof(d protoreflect.OneofDe
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgCreateLatestPubKey) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgCreateLatestPubkey) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -4306,7 +4306,7 @@ func (x *fastReflection_MsgCreateLatestPubKey) GetUnknown() protoreflect.RawFiel
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateLatestPubKey) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgCreateLatestPubkey) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -4318,7 +4318,7 @@ func (x *fastReflection_MsgCreateLatestPubKey) SetUnknown(fields protoreflect.Ra
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgCreateLatestPubKey) IsValid() bool {
+func (x *fastReflection_MsgCreateLatestPubkey) IsValid() bool {
 	return x != nil
 }
 
@@ -4328,9 +4328,9 @@ func (x *fastReflection_MsgCreateLatestPubKey) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgCreateLatestPubKey) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgCreateLatestPubkey) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgCreateLatestPubKey)
+		x := input.Message.Interface().(*MsgCreateLatestPubkey)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4375,7 +4375,7 @@ func (x *fastReflection_MsgCreateLatestPubKey) ProtoMethods() *protoiface.Method
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgCreateLatestPubKey)
+		x := input.Message.Interface().(*MsgCreateLatestPubkey)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4449,7 +4449,7 @@ func (x *fastReflection_MsgCreateLatestPubKey) ProtoMethods() *protoiface.Method
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgCreateLatestPubKey)
+		x := input.Message.Interface().(*MsgCreateLatestPubkey)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4481,10 +4481,10 @@ func (x *fastReflection_MsgCreateLatestPubKey) ProtoMethods() *protoiface.Method
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgCreateLatestPubKey: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgCreateLatestPubkey: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgCreateLatestPubKey: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgCreateLatestPubkey: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -4672,23 +4672,23 @@ func (x *fastReflection_MsgCreateLatestPubKey) ProtoMethods() *protoiface.Method
 }
 
 var (
-	md_MsgCreateLatestPubKeyResponse protoreflect.MessageDescriptor
+	md_MsgCreateLatestPubkeyResponse protoreflect.MessageDescriptor
 )
 
 func init() {
 	file_fairyring_keyshare_tx_proto_init()
-	md_MsgCreateLatestPubKeyResponse = File_fairyring_keyshare_tx_proto.Messages().ByName("MsgCreateLatestPubKeyResponse")
+	md_MsgCreateLatestPubkeyResponse = File_fairyring_keyshare_tx_proto.Messages().ByName("MsgCreateLatestPubkeyResponse")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgCreateLatestPubKeyResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgCreateLatestPubkeyResponse)(nil)
 
-type fastReflection_MsgCreateLatestPubKeyResponse MsgCreateLatestPubKeyResponse
+type fastReflection_MsgCreateLatestPubkeyResponse MsgCreateLatestPubkeyResponse
 
-func (x *MsgCreateLatestPubKeyResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgCreateLatestPubKeyResponse)(x)
+func (x *MsgCreateLatestPubkeyResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgCreateLatestPubkeyResponse)(x)
 }
 
-func (x *MsgCreateLatestPubKeyResponse) slowProtoReflect() protoreflect.Message {
+func (x *MsgCreateLatestPubkeyResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_keyshare_tx_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4700,43 +4700,43 @@ func (x *MsgCreateLatestPubKeyResponse) slowProtoReflect() protoreflect.Message 
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgCreateLatestPubKeyResponse_messageType fastReflection_MsgCreateLatestPubKeyResponse_messageType
-var _ protoreflect.MessageType = fastReflection_MsgCreateLatestPubKeyResponse_messageType{}
+var _fastReflection_MsgCreateLatestPubkeyResponse_messageType fastReflection_MsgCreateLatestPubkeyResponse_messageType
+var _ protoreflect.MessageType = fastReflection_MsgCreateLatestPubkeyResponse_messageType{}
 
-type fastReflection_MsgCreateLatestPubKeyResponse_messageType struct{}
+type fastReflection_MsgCreateLatestPubkeyResponse_messageType struct{}
 
-func (x fastReflection_MsgCreateLatestPubKeyResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgCreateLatestPubKeyResponse)(nil)
+func (x fastReflection_MsgCreateLatestPubkeyResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgCreateLatestPubkeyResponse)(nil)
 }
-func (x fastReflection_MsgCreateLatestPubKeyResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgCreateLatestPubKeyResponse)
+func (x fastReflection_MsgCreateLatestPubkeyResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgCreateLatestPubkeyResponse)
 }
-func (x fastReflection_MsgCreateLatestPubKeyResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgCreateLatestPubKeyResponse
+func (x fastReflection_MsgCreateLatestPubkeyResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgCreateLatestPubkeyResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgCreateLatestPubKeyResponse
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgCreateLatestPubkeyResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) Type() protoreflect.MessageType {
-	return _fastReflection_MsgCreateLatestPubKeyResponse_messageType
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) Type() protoreflect.MessageType {
+	return _fastReflection_MsgCreateLatestPubkeyResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) New() protoreflect.Message {
-	return new(fastReflection_MsgCreateLatestPubKeyResponse)
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) New() protoreflect.Message {
+	return new(fastReflection_MsgCreateLatestPubkeyResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) Interface() protoreflect.ProtoMessage {
-	return (*MsgCreateLatestPubKeyResponse)(x)
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) Interface() protoreflect.ProtoMessage {
+	return (*MsgCreateLatestPubkeyResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -4744,7 +4744,7 @@ func (x *fastReflection_MsgCreateLatestPubKeyResponse) Interface() protoreflect.
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 }
 
 // Has reports whether a field is populated.
@@ -4758,13 +4758,13 @@ func (x *fastReflection_MsgCreateLatestPubKeyResponse) Range(f func(protoreflect
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubKeyResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubkeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4774,13 +4774,13 @@ func (x *fastReflection_MsgCreateLatestPubKeyResponse) Has(fd protoreflect.Field
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubKeyResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubkeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4790,13 +4790,13 @@ func (x *fastReflection_MsgCreateLatestPubKeyResponse) Clear(fd protoreflect.Fie
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubKeyResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubkeyResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -4810,13 +4810,13 @@ func (x *fastReflection_MsgCreateLatestPubKeyResponse) Get(descriptor protorefle
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubKeyResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubkeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4830,36 +4830,36 @@ func (x *fastReflection_MsgCreateLatestPubKeyResponse) Set(fd protoreflect.Field
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubKeyResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubkeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgCreateLatestPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubKeyResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgCreateLatestPubkeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.keyshare.MsgCreateLatestPubKeyResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.keyshare.MsgCreateLatestPubkeyResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -4867,7 +4867,7 @@ func (x *fastReflection_MsgCreateLatestPubKeyResponse) WhichOneof(d protoreflect
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -4878,7 +4878,7 @@ func (x *fastReflection_MsgCreateLatestPubKeyResponse) GetUnknown() protoreflect
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -4890,7 +4890,7 @@ func (x *fastReflection_MsgCreateLatestPubKeyResponse) SetUnknown(fields protore
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) IsValid() bool {
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -4900,9 +4900,9 @@ func (x *fastReflection_MsgCreateLatestPubKeyResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgCreateLatestPubKeyResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgCreateLatestPubkeyResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgCreateLatestPubKeyResponse)
+		x := input.Message.Interface().(*MsgCreateLatestPubkeyResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4924,7 +4924,7 @@ func (x *fastReflection_MsgCreateLatestPubKeyResponse) ProtoMethods() *protoifac
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgCreateLatestPubKeyResponse)
+		x := input.Message.Interface().(*MsgCreateLatestPubkeyResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4954,7 +4954,7 @@ func (x *fastReflection_MsgCreateLatestPubKeyResponse) ProtoMethods() *protoifac
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgCreateLatestPubKeyResponse)
+		x := input.Message.Interface().(*MsgCreateLatestPubkeyResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4986,10 +4986,10 @@ func (x *fastReflection_MsgCreateLatestPubKeyResponse) ProtoMethods() *protoifac
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgCreateLatestPubKeyResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgCreateLatestPubkeyResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgCreateLatestPubKeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgCreateLatestPubkeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			default:
@@ -5027,131 +5027,131 @@ func (x *fastReflection_MsgCreateLatestPubKeyResponse) ProtoMethods() *protoifac
 	}
 }
 
-var _ protoreflect.List = (*_MsgOverrideLatestPubKey_3_list)(nil)
+var _ protoreflect.List = (*_MsgOverrideLatestPubkey_3_list)(nil)
 
-type _MsgOverrideLatestPubKey_3_list struct {
+type _MsgOverrideLatestPubkey_3_list struct {
 	list *[]string
 }
 
-func (x *_MsgOverrideLatestPubKey_3_list) Len() int {
+func (x *_MsgOverrideLatestPubkey_3_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_MsgOverrideLatestPubKey_3_list) Get(i int) protoreflect.Value {
+func (x *_MsgOverrideLatestPubkey_3_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfString((*x.list)[i])
 }
 
-func (x *_MsgOverrideLatestPubKey_3_list) Set(i int, value protoreflect.Value) {
+func (x *_MsgOverrideLatestPubkey_3_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_MsgOverrideLatestPubKey_3_list) Append(value protoreflect.Value) {
+func (x *_MsgOverrideLatestPubkey_3_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_MsgOverrideLatestPubKey_3_list) AppendMutable() protoreflect.Value {
-	panic(fmt.Errorf("AppendMutable can not be called on message MsgOverrideLatestPubKey at list field Commitments as it is not of Message kind"))
+func (x *_MsgOverrideLatestPubkey_3_list) AppendMutable() protoreflect.Value {
+	panic(fmt.Errorf("AppendMutable can not be called on message MsgOverrideLatestPubkey at list field Commitments as it is not of Message kind"))
 }
 
-func (x *_MsgOverrideLatestPubKey_3_list) Truncate(n int) {
+func (x *_MsgOverrideLatestPubkey_3_list) Truncate(n int) {
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_MsgOverrideLatestPubKey_3_list) NewElement() protoreflect.Value {
+func (x *_MsgOverrideLatestPubkey_3_list) NewElement() protoreflect.Value {
 	v := ""
 	return protoreflect.ValueOfString(v)
 }
 
-func (x *_MsgOverrideLatestPubKey_3_list) IsValid() bool {
+func (x *_MsgOverrideLatestPubkey_3_list) IsValid() bool {
 	return x.list != nil
 }
 
-var _ protoreflect.List = (*_MsgOverrideLatestPubKey_5_list)(nil)
+var _ protoreflect.List = (*_MsgOverrideLatestPubkey_5_list)(nil)
 
-type _MsgOverrideLatestPubKey_5_list struct {
+type _MsgOverrideLatestPubkey_5_list struct {
 	list *[]*EncryptedKeyshare
 }
 
-func (x *_MsgOverrideLatestPubKey_5_list) Len() int {
+func (x *_MsgOverrideLatestPubkey_5_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_MsgOverrideLatestPubKey_5_list) Get(i int) protoreflect.Value {
+func (x *_MsgOverrideLatestPubkey_5_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
 }
 
-func (x *_MsgOverrideLatestPubKey_5_list) Set(i int, value protoreflect.Value) {
+func (x *_MsgOverrideLatestPubkey_5_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
 	concreteValue := valueUnwrapped.Interface().(*EncryptedKeyshare)
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_MsgOverrideLatestPubKey_5_list) Append(value protoreflect.Value) {
+func (x *_MsgOverrideLatestPubkey_5_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.Message()
 	concreteValue := valueUnwrapped.Interface().(*EncryptedKeyshare)
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_MsgOverrideLatestPubKey_5_list) AppendMutable() protoreflect.Value {
+func (x *_MsgOverrideLatestPubkey_5_list) AppendMutable() protoreflect.Value {
 	v := new(EncryptedKeyshare)
 	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_MsgOverrideLatestPubKey_5_list) Truncate(n int) {
+func (x *_MsgOverrideLatestPubkey_5_list) Truncate(n int) {
 	for i := n; i < len(*x.list); i++ {
 		(*x.list)[i] = nil
 	}
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_MsgOverrideLatestPubKey_5_list) NewElement() protoreflect.Value {
+func (x *_MsgOverrideLatestPubkey_5_list) NewElement() protoreflect.Value {
 	v := new(EncryptedKeyshare)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_MsgOverrideLatestPubKey_5_list) IsValid() bool {
+func (x *_MsgOverrideLatestPubkey_5_list) IsValid() bool {
 	return x.list != nil
 }
 
 var (
-	md_MsgOverrideLatestPubKey                      protoreflect.MessageDescriptor
-	fd_MsgOverrideLatestPubKey_creator              protoreflect.FieldDescriptor
-	fd_MsgOverrideLatestPubKey_public_key           protoreflect.FieldDescriptor
-	fd_MsgOverrideLatestPubKey_commitments          protoreflect.FieldDescriptor
-	fd_MsgOverrideLatestPubKey_number_of_validators protoreflect.FieldDescriptor
-	fd_MsgOverrideLatestPubKey_encrypted_keyshares  protoreflect.FieldDescriptor
+	md_MsgOverrideLatestPubkey                      protoreflect.MessageDescriptor
+	fd_MsgOverrideLatestPubkey_creator              protoreflect.FieldDescriptor
+	fd_MsgOverrideLatestPubkey_public_key           protoreflect.FieldDescriptor
+	fd_MsgOverrideLatestPubkey_commitments          protoreflect.FieldDescriptor
+	fd_MsgOverrideLatestPubkey_number_of_validators protoreflect.FieldDescriptor
+	fd_MsgOverrideLatestPubkey_encrypted_keyshares  protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_keyshare_tx_proto_init()
-	md_MsgOverrideLatestPubKey = File_fairyring_keyshare_tx_proto.Messages().ByName("MsgOverrideLatestPubKey")
-	fd_MsgOverrideLatestPubKey_creator = md_MsgOverrideLatestPubKey.Fields().ByName("creator")
-	fd_MsgOverrideLatestPubKey_public_key = md_MsgOverrideLatestPubKey.Fields().ByName("public_key")
-	fd_MsgOverrideLatestPubKey_commitments = md_MsgOverrideLatestPubKey.Fields().ByName("commitments")
-	fd_MsgOverrideLatestPubKey_number_of_validators = md_MsgOverrideLatestPubKey.Fields().ByName("number_of_validators")
-	fd_MsgOverrideLatestPubKey_encrypted_keyshares = md_MsgOverrideLatestPubKey.Fields().ByName("encrypted_keyshares")
+	md_MsgOverrideLatestPubkey = File_fairyring_keyshare_tx_proto.Messages().ByName("MsgOverrideLatestPubkey")
+	fd_MsgOverrideLatestPubkey_creator = md_MsgOverrideLatestPubkey.Fields().ByName("creator")
+	fd_MsgOverrideLatestPubkey_public_key = md_MsgOverrideLatestPubkey.Fields().ByName("public_key")
+	fd_MsgOverrideLatestPubkey_commitments = md_MsgOverrideLatestPubkey.Fields().ByName("commitments")
+	fd_MsgOverrideLatestPubkey_number_of_validators = md_MsgOverrideLatestPubkey.Fields().ByName("number_of_validators")
+	fd_MsgOverrideLatestPubkey_encrypted_keyshares = md_MsgOverrideLatestPubkey.Fields().ByName("encrypted_keyshares")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgOverrideLatestPubKey)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgOverrideLatestPubkey)(nil)
 
-type fastReflection_MsgOverrideLatestPubKey MsgOverrideLatestPubKey
+type fastReflection_MsgOverrideLatestPubkey MsgOverrideLatestPubkey
 
-func (x *MsgOverrideLatestPubKey) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgOverrideLatestPubKey)(x)
+func (x *MsgOverrideLatestPubkey) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgOverrideLatestPubkey)(x)
 }
 
-func (x *MsgOverrideLatestPubKey) slowProtoReflect() protoreflect.Message {
+func (x *MsgOverrideLatestPubkey) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_keyshare_tx_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5163,43 +5163,43 @@ func (x *MsgOverrideLatestPubKey) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgOverrideLatestPubKey_messageType fastReflection_MsgOverrideLatestPubKey_messageType
-var _ protoreflect.MessageType = fastReflection_MsgOverrideLatestPubKey_messageType{}
+var _fastReflection_MsgOverrideLatestPubkey_messageType fastReflection_MsgOverrideLatestPubkey_messageType
+var _ protoreflect.MessageType = fastReflection_MsgOverrideLatestPubkey_messageType{}
 
-type fastReflection_MsgOverrideLatestPubKey_messageType struct{}
+type fastReflection_MsgOverrideLatestPubkey_messageType struct{}
 
-func (x fastReflection_MsgOverrideLatestPubKey_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgOverrideLatestPubKey)(nil)
+func (x fastReflection_MsgOverrideLatestPubkey_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgOverrideLatestPubkey)(nil)
 }
-func (x fastReflection_MsgOverrideLatestPubKey_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgOverrideLatestPubKey)
+func (x fastReflection_MsgOverrideLatestPubkey_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgOverrideLatestPubkey)
 }
-func (x fastReflection_MsgOverrideLatestPubKey_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgOverrideLatestPubKey
+func (x fastReflection_MsgOverrideLatestPubkey_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgOverrideLatestPubkey
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgOverrideLatestPubKey) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgOverrideLatestPubKey
+func (x *fastReflection_MsgOverrideLatestPubkey) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgOverrideLatestPubkey
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgOverrideLatestPubKey) Type() protoreflect.MessageType {
-	return _fastReflection_MsgOverrideLatestPubKey_messageType
+func (x *fastReflection_MsgOverrideLatestPubkey) Type() protoreflect.MessageType {
+	return _fastReflection_MsgOverrideLatestPubkey_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgOverrideLatestPubKey) New() protoreflect.Message {
-	return new(fastReflection_MsgOverrideLatestPubKey)
+func (x *fastReflection_MsgOverrideLatestPubkey) New() protoreflect.Message {
+	return new(fastReflection_MsgOverrideLatestPubkey)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgOverrideLatestPubKey) Interface() protoreflect.ProtoMessage {
-	return (*MsgOverrideLatestPubKey)(x)
+func (x *fastReflection_MsgOverrideLatestPubkey) Interface() protoreflect.ProtoMessage {
+	return (*MsgOverrideLatestPubkey)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -5207,34 +5207,34 @@ func (x *fastReflection_MsgOverrideLatestPubKey) Interface() protoreflect.ProtoM
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgOverrideLatestPubKey) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgOverrideLatestPubkey) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_MsgOverrideLatestPubKey_creator, value) {
+		if !f(fd_MsgOverrideLatestPubkey_creator, value) {
 			return
 		}
 	}
 	if x.PublicKey != "" {
 		value := protoreflect.ValueOfString(x.PublicKey)
-		if !f(fd_MsgOverrideLatestPubKey_public_key, value) {
+		if !f(fd_MsgOverrideLatestPubkey_public_key, value) {
 			return
 		}
 	}
 	if len(x.Commitments) != 0 {
-		value := protoreflect.ValueOfList(&_MsgOverrideLatestPubKey_3_list{list: &x.Commitments})
-		if !f(fd_MsgOverrideLatestPubKey_commitments, value) {
+		value := protoreflect.ValueOfList(&_MsgOverrideLatestPubkey_3_list{list: &x.Commitments})
+		if !f(fd_MsgOverrideLatestPubkey_commitments, value) {
 			return
 		}
 	}
 	if x.NumberOfValidators != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.NumberOfValidators)
-		if !f(fd_MsgOverrideLatestPubKey_number_of_validators, value) {
+		if !f(fd_MsgOverrideLatestPubkey_number_of_validators, value) {
 			return
 		}
 	}
 	if len(x.EncryptedKeyshares) != 0 {
-		value := protoreflect.ValueOfList(&_MsgOverrideLatestPubKey_5_list{list: &x.EncryptedKeyshares})
-		if !f(fd_MsgOverrideLatestPubKey_encrypted_keyshares, value) {
+		value := protoreflect.ValueOfList(&_MsgOverrideLatestPubkey_5_list{list: &x.EncryptedKeyshares})
+		if !f(fd_MsgOverrideLatestPubkey_encrypted_keyshares, value) {
 			return
 		}
 	}
@@ -5251,23 +5251,23 @@ func (x *fastReflection_MsgOverrideLatestPubKey) Range(f func(protoreflect.Field
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgOverrideLatestPubKey) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgOverrideLatestPubkey) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.creator":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.creator":
 		return x.Creator != ""
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.public_key":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.public_key":
 		return x.PublicKey != ""
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.commitments":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.commitments":
 		return len(x.Commitments) != 0
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.number_of_validators":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.number_of_validators":
 		return x.NumberOfValidators != uint64(0)
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.encrypted_keyshares":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.encrypted_keyshares":
 		return len(x.EncryptedKeyshares) != 0
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubKey"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubkey"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubKey does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubkey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5277,23 +5277,23 @@ func (x *fastReflection_MsgOverrideLatestPubKey) Has(fd protoreflect.FieldDescri
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgOverrideLatestPubKey) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgOverrideLatestPubkey) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.creator":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.creator":
 		x.Creator = ""
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.public_key":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.public_key":
 		x.PublicKey = ""
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.commitments":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.commitments":
 		x.Commitments = nil
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.number_of_validators":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.number_of_validators":
 		x.NumberOfValidators = uint64(0)
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.encrypted_keyshares":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.encrypted_keyshares":
 		x.EncryptedKeyshares = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubKey"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubkey"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubKey does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubkey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5303,34 +5303,34 @@ func (x *fastReflection_MsgOverrideLatestPubKey) Clear(fd protoreflect.FieldDesc
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgOverrideLatestPubKey) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgOverrideLatestPubkey) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.creator":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.public_key":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.public_key":
 		value := x.PublicKey
 		return protoreflect.ValueOfString(value)
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.commitments":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.commitments":
 		if len(x.Commitments) == 0 {
-			return protoreflect.ValueOfList(&_MsgOverrideLatestPubKey_3_list{})
+			return protoreflect.ValueOfList(&_MsgOverrideLatestPubkey_3_list{})
 		}
-		listValue := &_MsgOverrideLatestPubKey_3_list{list: &x.Commitments}
+		listValue := &_MsgOverrideLatestPubkey_3_list{list: &x.Commitments}
 		return protoreflect.ValueOfList(listValue)
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.number_of_validators":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.number_of_validators":
 		value := x.NumberOfValidators
 		return protoreflect.ValueOfUint64(value)
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.encrypted_keyshares":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.encrypted_keyshares":
 		if len(x.EncryptedKeyshares) == 0 {
-			return protoreflect.ValueOfList(&_MsgOverrideLatestPubKey_5_list{})
+			return protoreflect.ValueOfList(&_MsgOverrideLatestPubkey_5_list{})
 		}
-		listValue := &_MsgOverrideLatestPubKey_5_list{list: &x.EncryptedKeyshares}
+		listValue := &_MsgOverrideLatestPubkey_5_list{list: &x.EncryptedKeyshares}
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubKey"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubkey"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubKey does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubkey does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -5344,27 +5344,27 @@ func (x *fastReflection_MsgOverrideLatestPubKey) Get(descriptor protoreflect.Fie
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgOverrideLatestPubKey) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgOverrideLatestPubkey) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.creator":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.creator":
 		x.Creator = value.Interface().(string)
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.public_key":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.public_key":
 		x.PublicKey = value.Interface().(string)
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.commitments":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.commitments":
 		lv := value.List()
-		clv := lv.(*_MsgOverrideLatestPubKey_3_list)
+		clv := lv.(*_MsgOverrideLatestPubkey_3_list)
 		x.Commitments = *clv.list
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.number_of_validators":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.number_of_validators":
 		x.NumberOfValidators = value.Uint()
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.encrypted_keyshares":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.encrypted_keyshares":
 		lv := value.List()
-		clv := lv.(*_MsgOverrideLatestPubKey_5_list)
+		clv := lv.(*_MsgOverrideLatestPubkey_5_list)
 		x.EncryptedKeyshares = *clv.list
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubKey"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubkey"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubKey does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubkey does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5378,66 +5378,66 @@ func (x *fastReflection_MsgOverrideLatestPubKey) Set(fd protoreflect.FieldDescri
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgOverrideLatestPubKey) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgOverrideLatestPubkey) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.commitments":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.commitments":
 		if x.Commitments == nil {
 			x.Commitments = []string{}
 		}
-		value := &_MsgOverrideLatestPubKey_3_list{list: &x.Commitments}
+		value := &_MsgOverrideLatestPubkey_3_list{list: &x.Commitments}
 		return protoreflect.ValueOfList(value)
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.encrypted_keyshares":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.encrypted_keyshares":
 		if x.EncryptedKeyshares == nil {
 			x.EncryptedKeyshares = []*EncryptedKeyshare{}
 		}
-		value := &_MsgOverrideLatestPubKey_5_list{list: &x.EncryptedKeyshares}
+		value := &_MsgOverrideLatestPubkey_5_list{list: &x.EncryptedKeyshares}
 		return protoreflect.ValueOfList(value)
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.creator":
-		panic(fmt.Errorf("field creator of message fairyring.keyshare.MsgOverrideLatestPubKey is not mutable"))
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.public_key":
-		panic(fmt.Errorf("field public_key of message fairyring.keyshare.MsgOverrideLatestPubKey is not mutable"))
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.number_of_validators":
-		panic(fmt.Errorf("field number_of_validators of message fairyring.keyshare.MsgOverrideLatestPubKey is not mutable"))
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.creator":
+		panic(fmt.Errorf("field creator of message fairyring.keyshare.MsgOverrideLatestPubkey is not mutable"))
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.public_key":
+		panic(fmt.Errorf("field public_key of message fairyring.keyshare.MsgOverrideLatestPubkey is not mutable"))
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.number_of_validators":
+		panic(fmt.Errorf("field number_of_validators of message fairyring.keyshare.MsgOverrideLatestPubkey is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubKey"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubkey"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubKey does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubkey does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgOverrideLatestPubKey) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgOverrideLatestPubkey) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.creator":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.creator":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.public_key":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.public_key":
 		return protoreflect.ValueOfString("")
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.commitments":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.commitments":
 		list := []string{}
-		return protoreflect.ValueOfList(&_MsgOverrideLatestPubKey_3_list{list: &list})
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.number_of_validators":
+		return protoreflect.ValueOfList(&_MsgOverrideLatestPubkey_3_list{list: &list})
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.number_of_validators":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "fairyring.keyshare.MsgOverrideLatestPubKey.encrypted_keyshares":
+	case "fairyring.keyshare.MsgOverrideLatestPubkey.encrypted_keyshares":
 		list := []*EncryptedKeyshare{}
-		return protoreflect.ValueOfList(&_MsgOverrideLatestPubKey_5_list{list: &list})
+		return protoreflect.ValueOfList(&_MsgOverrideLatestPubkey_5_list{list: &list})
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubKey"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubkey"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubKey does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubkey does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgOverrideLatestPubKey) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgOverrideLatestPubkey) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.keyshare.MsgOverrideLatestPubKey", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.keyshare.MsgOverrideLatestPubkey", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -5445,7 +5445,7 @@ func (x *fastReflection_MsgOverrideLatestPubKey) WhichOneof(d protoreflect.Oneof
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgOverrideLatestPubKey) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgOverrideLatestPubkey) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -5456,7 +5456,7 @@ func (x *fastReflection_MsgOverrideLatestPubKey) GetUnknown() protoreflect.RawFi
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgOverrideLatestPubKey) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgOverrideLatestPubkey) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -5468,7 +5468,7 @@ func (x *fastReflection_MsgOverrideLatestPubKey) SetUnknown(fields protoreflect.
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgOverrideLatestPubKey) IsValid() bool {
+func (x *fastReflection_MsgOverrideLatestPubkey) IsValid() bool {
 	return x != nil
 }
 
@@ -5478,9 +5478,9 @@ func (x *fastReflection_MsgOverrideLatestPubKey) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgOverrideLatestPubKey) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgOverrideLatestPubkey) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgOverrideLatestPubKey)
+		x := input.Message.Interface().(*MsgOverrideLatestPubkey)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5525,7 +5525,7 @@ func (x *fastReflection_MsgOverrideLatestPubKey) ProtoMethods() *protoiface.Meth
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgOverrideLatestPubKey)
+		x := input.Message.Interface().(*MsgOverrideLatestPubkey)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5599,7 +5599,7 @@ func (x *fastReflection_MsgOverrideLatestPubKey) ProtoMethods() *protoiface.Meth
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgOverrideLatestPubKey)
+		x := input.Message.Interface().(*MsgOverrideLatestPubkey)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5631,10 +5631,10 @@ func (x *fastReflection_MsgOverrideLatestPubKey) ProtoMethods() *protoiface.Meth
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgOverrideLatestPubKey: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgOverrideLatestPubkey: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgOverrideLatestPubKey: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgOverrideLatestPubkey: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -5822,23 +5822,23 @@ func (x *fastReflection_MsgOverrideLatestPubKey) ProtoMethods() *protoiface.Meth
 }
 
 var (
-	md_MsgOverrideLatestPubKeyResponse protoreflect.MessageDescriptor
+	md_MsgOverrideLatestPubkeyResponse protoreflect.MessageDescriptor
 )
 
 func init() {
 	file_fairyring_keyshare_tx_proto_init()
-	md_MsgOverrideLatestPubKeyResponse = File_fairyring_keyshare_tx_proto.Messages().ByName("MsgOverrideLatestPubKeyResponse")
+	md_MsgOverrideLatestPubkeyResponse = File_fairyring_keyshare_tx_proto.Messages().ByName("MsgOverrideLatestPubkeyResponse")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgOverrideLatestPubKeyResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgOverrideLatestPubkeyResponse)(nil)
 
-type fastReflection_MsgOverrideLatestPubKeyResponse MsgOverrideLatestPubKeyResponse
+type fastReflection_MsgOverrideLatestPubkeyResponse MsgOverrideLatestPubkeyResponse
 
-func (x *MsgOverrideLatestPubKeyResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgOverrideLatestPubKeyResponse)(x)
+func (x *MsgOverrideLatestPubkeyResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgOverrideLatestPubkeyResponse)(x)
 }
 
-func (x *MsgOverrideLatestPubKeyResponse) slowProtoReflect() protoreflect.Message {
+func (x *MsgOverrideLatestPubkeyResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_keyshare_tx_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5850,43 +5850,43 @@ func (x *MsgOverrideLatestPubKeyResponse) slowProtoReflect() protoreflect.Messag
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgOverrideLatestPubKeyResponse_messageType fastReflection_MsgOverrideLatestPubKeyResponse_messageType
-var _ protoreflect.MessageType = fastReflection_MsgOverrideLatestPubKeyResponse_messageType{}
+var _fastReflection_MsgOverrideLatestPubkeyResponse_messageType fastReflection_MsgOverrideLatestPubkeyResponse_messageType
+var _ protoreflect.MessageType = fastReflection_MsgOverrideLatestPubkeyResponse_messageType{}
 
-type fastReflection_MsgOverrideLatestPubKeyResponse_messageType struct{}
+type fastReflection_MsgOverrideLatestPubkeyResponse_messageType struct{}
 
-func (x fastReflection_MsgOverrideLatestPubKeyResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgOverrideLatestPubKeyResponse)(nil)
+func (x fastReflection_MsgOverrideLatestPubkeyResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgOverrideLatestPubkeyResponse)(nil)
 }
-func (x fastReflection_MsgOverrideLatestPubKeyResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgOverrideLatestPubKeyResponse)
+func (x fastReflection_MsgOverrideLatestPubkeyResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgOverrideLatestPubkeyResponse)
 }
-func (x fastReflection_MsgOverrideLatestPubKeyResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgOverrideLatestPubKeyResponse
+func (x fastReflection_MsgOverrideLatestPubkeyResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgOverrideLatestPubkeyResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgOverrideLatestPubKeyResponse
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgOverrideLatestPubkeyResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) Type() protoreflect.MessageType {
-	return _fastReflection_MsgOverrideLatestPubKeyResponse_messageType
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) Type() protoreflect.MessageType {
+	return _fastReflection_MsgOverrideLatestPubkeyResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) New() protoreflect.Message {
-	return new(fastReflection_MsgOverrideLatestPubKeyResponse)
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) New() protoreflect.Message {
+	return new(fastReflection_MsgOverrideLatestPubkeyResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) Interface() protoreflect.ProtoMessage {
-	return (*MsgOverrideLatestPubKeyResponse)(x)
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) Interface() protoreflect.ProtoMessage {
+	return (*MsgOverrideLatestPubkeyResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -5894,7 +5894,7 @@ func (x *fastReflection_MsgOverrideLatestPubKeyResponse) Interface() protoreflec
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 }
 
 // Has reports whether a field is populated.
@@ -5908,13 +5908,13 @@ func (x *fastReflection_MsgOverrideLatestPubKeyResponse) Range(f func(protorefle
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubKeyResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubkeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5924,13 +5924,13 @@ func (x *fastReflection_MsgOverrideLatestPubKeyResponse) Has(fd protoreflect.Fie
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubKeyResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubkeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5940,13 +5940,13 @@ func (x *fastReflection_MsgOverrideLatestPubKeyResponse) Clear(fd protoreflect.F
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubKeyResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubkeyResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -5960,13 +5960,13 @@ func (x *fastReflection_MsgOverrideLatestPubKeyResponse) Get(descriptor protoref
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubKeyResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubkeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5980,36 +5980,36 @@ func (x *fastReflection_MsgOverrideLatestPubKeyResponse) Set(fd protoreflect.Fie
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubKeyResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubkeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.MsgOverrideLatestPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubKeyResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.keyshare.MsgOverrideLatestPubkeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.keyshare.MsgOverrideLatestPubKeyResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.keyshare.MsgOverrideLatestPubkeyResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -6017,7 +6017,7 @@ func (x *fastReflection_MsgOverrideLatestPubKeyResponse) WhichOneof(d protorefle
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -6028,7 +6028,7 @@ func (x *fastReflection_MsgOverrideLatestPubKeyResponse) GetUnknown() protorefle
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -6040,7 +6040,7 @@ func (x *fastReflection_MsgOverrideLatestPubKeyResponse) SetUnknown(fields proto
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) IsValid() bool {
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -6050,9 +6050,9 @@ func (x *fastReflection_MsgOverrideLatestPubKeyResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgOverrideLatestPubKeyResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgOverrideLatestPubkeyResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgOverrideLatestPubKeyResponse)
+		x := input.Message.Interface().(*MsgOverrideLatestPubkeyResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -6074,7 +6074,7 @@ func (x *fastReflection_MsgOverrideLatestPubKeyResponse) ProtoMethods() *protoif
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgOverrideLatestPubKeyResponse)
+		x := input.Message.Interface().(*MsgOverrideLatestPubkeyResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -6104,7 +6104,7 @@ func (x *fastReflection_MsgOverrideLatestPubKeyResponse) ProtoMethods() *protoif
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgOverrideLatestPubKeyResponse)
+		x := input.Message.Interface().(*MsgOverrideLatestPubkeyResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -6136,10 +6136,10 @@ func (x *fastReflection_MsgOverrideLatestPubKeyResponse) ProtoMethods() *protoif
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgOverrideLatestPubKeyResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgOverrideLatestPubkeyResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgOverrideLatestPubKeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgOverrideLatestPubkeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			default:
@@ -11822,8 +11822,8 @@ func (x *MsgSendKeyshareResponse) GetErrorMessage() string {
 	return ""
 }
 
-// MsgCreateLatestPubKey is the Msg/CreateLatestPubKey request type.
-type MsgCreateLatestPubKey struct {
+// MsgCreateLatestPubkey is the Msg/CreateLatestPubkey request type.
+type MsgCreateLatestPubkey struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -11835,8 +11835,8 @@ type MsgCreateLatestPubKey struct {
 	EncryptedKeyshares []*EncryptedKeyshare `protobuf:"bytes,5,rep,name=encrypted_keyshares,json=encryptedKeyshares,proto3" json:"encrypted_keyshares,omitempty"`
 }
 
-func (x *MsgCreateLatestPubKey) Reset() {
-	*x = MsgCreateLatestPubKey{}
+func (x *MsgCreateLatestPubkey) Reset() {
+	*x = MsgCreateLatestPubkey{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_keyshare_tx_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -11844,62 +11844,62 @@ func (x *MsgCreateLatestPubKey) Reset() {
 	}
 }
 
-func (x *MsgCreateLatestPubKey) String() string {
+func (x *MsgCreateLatestPubkey) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgCreateLatestPubKey) ProtoMessage() {}
+func (*MsgCreateLatestPubkey) ProtoMessage() {}
 
-// Deprecated: Use MsgCreateLatestPubKey.ProtoReflect.Descriptor instead.
-func (*MsgCreateLatestPubKey) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgCreateLatestPubkey.ProtoReflect.Descriptor instead.
+func (*MsgCreateLatestPubkey) Descriptor() ([]byte, []int) {
 	return file_fairyring_keyshare_tx_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *MsgCreateLatestPubKey) GetCreator() string {
+func (x *MsgCreateLatestPubkey) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
 	return ""
 }
 
-func (x *MsgCreateLatestPubKey) GetPublicKey() string {
+func (x *MsgCreateLatestPubkey) GetPublicKey() string {
 	if x != nil {
 		return x.PublicKey
 	}
 	return ""
 }
 
-func (x *MsgCreateLatestPubKey) GetCommitments() []string {
+func (x *MsgCreateLatestPubkey) GetCommitments() []string {
 	if x != nil {
 		return x.Commitments
 	}
 	return nil
 }
 
-func (x *MsgCreateLatestPubKey) GetNumberOfValidators() uint64 {
+func (x *MsgCreateLatestPubkey) GetNumberOfValidators() uint64 {
 	if x != nil {
 		return x.NumberOfValidators
 	}
 	return 0
 }
 
-func (x *MsgCreateLatestPubKey) GetEncryptedKeyshares() []*EncryptedKeyshare {
+func (x *MsgCreateLatestPubkey) GetEncryptedKeyshares() []*EncryptedKeyshare {
 	if x != nil {
 		return x.EncryptedKeyshares
 	}
 	return nil
 }
 
-// MsgCreateLatestPubKeyResponse defines the response structure for
-// executing a MsgCreateLatestPubKey message.
-type MsgCreateLatestPubKeyResponse struct {
+// MsgCreateLatestPubkeyResponse defines the response structure for
+// executing a MsgCreateLatestPubkey message.
+type MsgCreateLatestPubkeyResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *MsgCreateLatestPubKeyResponse) Reset() {
-	*x = MsgCreateLatestPubKeyResponse{}
+func (x *MsgCreateLatestPubkeyResponse) Reset() {
+	*x = MsgCreateLatestPubkeyResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_keyshare_tx_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -11907,19 +11907,19 @@ func (x *MsgCreateLatestPubKeyResponse) Reset() {
 	}
 }
 
-func (x *MsgCreateLatestPubKeyResponse) String() string {
+func (x *MsgCreateLatestPubkeyResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgCreateLatestPubKeyResponse) ProtoMessage() {}
+func (*MsgCreateLatestPubkeyResponse) ProtoMessage() {}
 
-// Deprecated: Use MsgCreateLatestPubKeyResponse.ProtoReflect.Descriptor instead.
-func (*MsgCreateLatestPubKeyResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgCreateLatestPubkeyResponse.ProtoReflect.Descriptor instead.
+func (*MsgCreateLatestPubkeyResponse) Descriptor() ([]byte, []int) {
 	return file_fairyring_keyshare_tx_proto_rawDescGZIP(), []int{9}
 }
 
-// MsgOverrideLatestPubKey is the Msg/OverrideLatestPubKey request type.
-type MsgOverrideLatestPubKey struct {
+// MsgOverrideLatestPubkey is the Msg/OverrideLatestPubkey request type.
+type MsgOverrideLatestPubkey struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -11931,8 +11931,8 @@ type MsgOverrideLatestPubKey struct {
 	EncryptedKeyshares []*EncryptedKeyshare `protobuf:"bytes,5,rep,name=encrypted_keyshares,json=encryptedKeyshares,proto3" json:"encrypted_keyshares,omitempty"`
 }
 
-func (x *MsgOverrideLatestPubKey) Reset() {
-	*x = MsgOverrideLatestPubKey{}
+func (x *MsgOverrideLatestPubkey) Reset() {
+	*x = MsgOverrideLatestPubkey{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_keyshare_tx_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -11940,62 +11940,62 @@ func (x *MsgOverrideLatestPubKey) Reset() {
 	}
 }
 
-func (x *MsgOverrideLatestPubKey) String() string {
+func (x *MsgOverrideLatestPubkey) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgOverrideLatestPubKey) ProtoMessage() {}
+func (*MsgOverrideLatestPubkey) ProtoMessage() {}
 
-// Deprecated: Use MsgOverrideLatestPubKey.ProtoReflect.Descriptor instead.
-func (*MsgOverrideLatestPubKey) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgOverrideLatestPubkey.ProtoReflect.Descriptor instead.
+func (*MsgOverrideLatestPubkey) Descriptor() ([]byte, []int) {
 	return file_fairyring_keyshare_tx_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *MsgOverrideLatestPubKey) GetCreator() string {
+func (x *MsgOverrideLatestPubkey) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
 	return ""
 }
 
-func (x *MsgOverrideLatestPubKey) GetPublicKey() string {
+func (x *MsgOverrideLatestPubkey) GetPublicKey() string {
 	if x != nil {
 		return x.PublicKey
 	}
 	return ""
 }
 
-func (x *MsgOverrideLatestPubKey) GetCommitments() []string {
+func (x *MsgOverrideLatestPubkey) GetCommitments() []string {
 	if x != nil {
 		return x.Commitments
 	}
 	return nil
 }
 
-func (x *MsgOverrideLatestPubKey) GetNumberOfValidators() uint64 {
+func (x *MsgOverrideLatestPubkey) GetNumberOfValidators() uint64 {
 	if x != nil {
 		return x.NumberOfValidators
 	}
 	return 0
 }
 
-func (x *MsgOverrideLatestPubKey) GetEncryptedKeyshares() []*EncryptedKeyshare {
+func (x *MsgOverrideLatestPubkey) GetEncryptedKeyshares() []*EncryptedKeyshare {
 	if x != nil {
 		return x.EncryptedKeyshares
 	}
 	return nil
 }
 
-// MsgOverrideLatestPubKeyResponse defines the response structure for
-// executing a MsgOverrideLatestPubKey message.
-type MsgOverrideLatestPubKeyResponse struct {
+// MsgOverrideLatestPubkeyResponse defines the response structure for
+// executing a MsgOverrideLatestPubkey message.
+type MsgOverrideLatestPubkeyResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *MsgOverrideLatestPubKeyResponse) Reset() {
-	*x = MsgOverrideLatestPubKeyResponse{}
+func (x *MsgOverrideLatestPubkeyResponse) Reset() {
+	*x = MsgOverrideLatestPubkeyResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_keyshare_tx_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -12003,14 +12003,14 @@ func (x *MsgOverrideLatestPubKeyResponse) Reset() {
 	}
 }
 
-func (x *MsgOverrideLatestPubKeyResponse) String() string {
+func (x *MsgOverrideLatestPubkeyResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgOverrideLatestPubKeyResponse) ProtoMessage() {}
+func (*MsgOverrideLatestPubkeyResponse) ProtoMessage() {}
 
-// Deprecated: Use MsgOverrideLatestPubKeyResponse.ProtoReflect.Descriptor instead.
-func (*MsgOverrideLatestPubKeyResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgOverrideLatestPubkeyResponse.ProtoReflect.Descriptor instead.
+func (*MsgOverrideLatestPubkeyResponse) Descriptor() ([]byte, []int) {
 	return file_fairyring_keyshare_tx_proto_rawDescGZIP(), []int{11}
 }
 
@@ -12600,7 +12600,7 @@ var file_fairyring_keyshare_tx_proto_rawDesc = []byte{
 	0x73, 0x12, 0x23, 0x0a, 0x0d, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x5f, 0x6d, 0x65, 0x73, 0x73, 0x61,
 	0x67, 0x65, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x4d,
 	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x8a, 0x02, 0x0a, 0x15, 0x4d, 0x73, 0x67, 0x43, 0x72,
-	0x65, 0x61, 0x74, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79,
+	0x65, 0x61, 0x74, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79,
 	0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x75,
 	0x62, 0x6c, 0x69, 0x63, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
@@ -12617,9 +12617,9 @@ var file_fairyring_keyshare_tx_proto_rawDesc = []byte{
 	0x65, 0x52, 0x12, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73,
 	0x68, 0x61, 0x72, 0x65, 0x73, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61,
 	0x74, 0x6f, 0x72, 0x22, 0x1f, 0x0a, 0x1d, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
-	0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70,
+	0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70,
 	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x8c, 0x02, 0x0a, 0x17, 0x4d, 0x73, 0x67, 0x4f, 0x76, 0x65, 0x72,
-	0x72, 0x69, 0x64, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79,
+	0x72, 0x69, 0x64, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79,
 	0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x75,
 	0x62, 0x6c, 0x69, 0x63, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
@@ -12636,7 +12636,7 @@ var file_fairyring_keyshare_tx_proto_rawDesc = []byte{
 	0x65, 0x52, 0x12, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x73,
 	0x68, 0x61, 0x72, 0x65, 0x73, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61,
 	0x74, 0x6f, 0x72, 0x22, 0x21, 0x0a, 0x1f, 0x4d, 0x73, 0x67, 0x4f, 0x76, 0x65, 0x72, 0x72, 0x69,
-	0x64, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x52, 0x65,
+	0x64, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x52, 0x65,
 	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x5c, 0x0a, 0x1a, 0x4d, 0x73, 0x67, 0x43, 0x72, 0x65,
 	0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64,
 	0x72, 0x65, 0x73, 0x73, 0x12, 0x16, 0x0a, 0x06, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x18, 0x01,
@@ -12751,20 +12751,20 @@ var file_fairyring_keyshare_tx_proto_rawDesc = []byte{
 	0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67,
 	0x53, 0x65, 0x6e, 0x64, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70,
 	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x72, 0x0a, 0x12, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4c, 0x61,
-	0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x12, 0x29, 0x2e, 0x66, 0x61, 0x69,
+	0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x29, 0x2e, 0x66, 0x61, 0x69,
 	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e,
 	0x4d, 0x73, 0x67, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50,
-	0x75, 0x62, 0x4b, 0x65, 0x79, 0x1a, 0x31, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
+	0x75, 0x62, 0x6b, 0x65, 0x79, 0x1a, 0x31, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
 	0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x43, 0x72,
-	0x65, 0x61, 0x74, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79,
+	0x65, 0x61, 0x74, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79,
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x78, 0x0a, 0x14, 0x4f, 0x76, 0x65, 0x72,
-	0x72, 0x69, 0x64, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79,
+	0x72, 0x69, 0x64, 0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79,
 	0x12, 0x2b, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79,
 	0x73, 0x68, 0x61, 0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x4f, 0x76, 0x65, 0x72, 0x72, 0x69, 0x64,
-	0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x1a, 0x33, 0x2e,
+	0x65, 0x4c, 0x61, 0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x1a, 0x33, 0x2e,
 	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61,
 	0x72, 0x65, 0x2e, 0x4d, 0x73, 0x67, 0x4f, 0x76, 0x65, 0x72, 0x72, 0x69, 0x64, 0x65, 0x4c, 0x61,
-	0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x74, 0x65, 0x73, 0x74, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
 	0x73, 0x65, 0x12, 0x81, 0x01, 0x0a, 0x17, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74,
 	0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x2e,
 	0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x6b, 0x65, 0x79, 0x73, 0x68,
@@ -12842,10 +12842,10 @@ var file_fairyring_keyshare_tx_proto_goTypes = []interface{}{
 	(*MsgDeRegisterValidatorResponse)(nil),     // 5: fairyring.keyshare.MsgDeRegisterValidatorResponse
 	(*MsgSendKeyshare)(nil),                    // 6: fairyring.keyshare.MsgSendKeyshare
 	(*MsgSendKeyshareResponse)(nil),            // 7: fairyring.keyshare.MsgSendKeyshareResponse
-	(*MsgCreateLatestPubKey)(nil),              // 8: fairyring.keyshare.MsgCreateLatestPubKey
-	(*MsgCreateLatestPubKeyResponse)(nil),      // 9: fairyring.keyshare.MsgCreateLatestPubKeyResponse
-	(*MsgOverrideLatestPubKey)(nil),            // 10: fairyring.keyshare.MsgOverrideLatestPubKey
-	(*MsgOverrideLatestPubKeyResponse)(nil),    // 11: fairyring.keyshare.MsgOverrideLatestPubKeyResponse
+	(*MsgCreateLatestPubkey)(nil),              // 8: fairyring.keyshare.MsgCreateLatestPubkey
+	(*MsgCreateLatestPubkeyResponse)(nil),      // 9: fairyring.keyshare.MsgCreateLatestPubkeyResponse
+	(*MsgOverrideLatestPubkey)(nil),            // 10: fairyring.keyshare.MsgOverrideLatestPubkey
+	(*MsgOverrideLatestPubkeyResponse)(nil),    // 11: fairyring.keyshare.MsgOverrideLatestPubkeyResponse
 	(*MsgCreateAuthorizedAddress)(nil),         // 12: fairyring.keyshare.MsgCreateAuthorizedAddress
 	(*MsgCreateAuthorizedAddressResponse)(nil), // 13: fairyring.keyshare.MsgCreateAuthorizedAddressResponse
 	(*MsgUpdateAuthorizedAddress)(nil),         // 14: fairyring.keyshare.MsgUpdateAuthorizedAddress
@@ -12861,14 +12861,14 @@ var file_fairyring_keyshare_tx_proto_goTypes = []interface{}{
 }
 var file_fairyring_keyshare_tx_proto_depIdxs = []int32{
 	22, // 0: fairyring.keyshare.MsgUpdateParams.params:type_name -> fairyring.keyshare.Params
-	23, // 1: fairyring.keyshare.MsgCreateLatestPubKey.encrypted_keyshares:type_name -> fairyring.keyshare.EncryptedKeyshare
-	23, // 2: fairyring.keyshare.MsgOverrideLatestPubKey.encrypted_keyshares:type_name -> fairyring.keyshare.EncryptedKeyshare
+	23, // 1: fairyring.keyshare.MsgCreateLatestPubkey.encrypted_keyshares:type_name -> fairyring.keyshare.EncryptedKeyshare
+	23, // 2: fairyring.keyshare.MsgOverrideLatestPubkey.encrypted_keyshares:type_name -> fairyring.keyshare.EncryptedKeyshare
 	0,  // 3: fairyring.keyshare.Msg.UpdateParams:input_type -> fairyring.keyshare.MsgUpdateParams
 	2,  // 4: fairyring.keyshare.Msg.RegisterValidator:input_type -> fairyring.keyshare.MsgRegisterValidator
 	4,  // 5: fairyring.keyshare.Msg.DeRegisterValidator:input_type -> fairyring.keyshare.MsgDeRegisterValidator
 	6,  // 6: fairyring.keyshare.Msg.SendKeyshare:input_type -> fairyring.keyshare.MsgSendKeyshare
-	8,  // 7: fairyring.keyshare.Msg.CreateLatestPubKey:input_type -> fairyring.keyshare.MsgCreateLatestPubKey
-	10, // 8: fairyring.keyshare.Msg.OverrideLatestPubKey:input_type -> fairyring.keyshare.MsgOverrideLatestPubKey
+	8,  // 7: fairyring.keyshare.Msg.CreateLatestPubkey:input_type -> fairyring.keyshare.MsgCreateLatestPubkey
+	10, // 8: fairyring.keyshare.Msg.OverrideLatestPubkey:input_type -> fairyring.keyshare.MsgOverrideLatestPubkey
 	12, // 9: fairyring.keyshare.Msg.CreateAuthorizedAddress:input_type -> fairyring.keyshare.MsgCreateAuthorizedAddress
 	14, // 10: fairyring.keyshare.Msg.UpdateAuthorizedAddress:input_type -> fairyring.keyshare.MsgUpdateAuthorizedAddress
 	16, // 11: fairyring.keyshare.Msg.DeleteAuthorizedAddress:input_type -> fairyring.keyshare.MsgDeleteAuthorizedAddress
@@ -12878,8 +12878,8 @@ var file_fairyring_keyshare_tx_proto_depIdxs = []int32{
 	3,  // 15: fairyring.keyshare.Msg.RegisterValidator:output_type -> fairyring.keyshare.MsgRegisterValidatorResponse
 	5,  // 16: fairyring.keyshare.Msg.DeRegisterValidator:output_type -> fairyring.keyshare.MsgDeRegisterValidatorResponse
 	7,  // 17: fairyring.keyshare.Msg.SendKeyshare:output_type -> fairyring.keyshare.MsgSendKeyshareResponse
-	9,  // 18: fairyring.keyshare.Msg.CreateLatestPubKey:output_type -> fairyring.keyshare.MsgCreateLatestPubKeyResponse
-	11, // 19: fairyring.keyshare.Msg.OverrideLatestPubKey:output_type -> fairyring.keyshare.MsgOverrideLatestPubKeyResponse
+	9,  // 18: fairyring.keyshare.Msg.CreateLatestPubkey:output_type -> fairyring.keyshare.MsgCreateLatestPubkeyResponse
+	11, // 19: fairyring.keyshare.Msg.OverrideLatestPubkey:output_type -> fairyring.keyshare.MsgOverrideLatestPubkeyResponse
 	13, // 20: fairyring.keyshare.Msg.CreateAuthorizedAddress:output_type -> fairyring.keyshare.MsgCreateAuthorizedAddressResponse
 	15, // 21: fairyring.keyshare.Msg.UpdateAuthorizedAddress:output_type -> fairyring.keyshare.MsgUpdateAuthorizedAddressResponse
 	17, // 22: fairyring.keyshare.Msg.DeleteAuthorizedAddress:output_type -> fairyring.keyshare.MsgDeleteAuthorizedAddressResponse
@@ -12997,7 +12997,7 @@ func file_fairyring_keyshare_tx_proto_init() {
 			}
 		}
 		file_fairyring_keyshare_tx_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgCreateLatestPubKey); i {
+			switch v := v.(*MsgCreateLatestPubkey); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13009,7 +13009,7 @@ func file_fairyring_keyshare_tx_proto_init() {
 			}
 		}
 		file_fairyring_keyshare_tx_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgCreateLatestPubKeyResponse); i {
+			switch v := v.(*MsgCreateLatestPubkeyResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13021,7 +13021,7 @@ func file_fairyring_keyshare_tx_proto_init() {
 			}
 		}
 		file_fairyring_keyshare_tx_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgOverrideLatestPubKey); i {
+			switch v := v.(*MsgOverrideLatestPubkey); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -13033,7 +13033,7 @@ func file_fairyring_keyshare_tx_proto_init() {
 			}
 		}
 		file_fairyring_keyshare_tx_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgOverrideLatestPubKeyResponse); i {
+			switch v := v.(*MsgOverrideLatestPubkeyResponse); i {
 			case 0:
 				return &v.state
 			case 1:

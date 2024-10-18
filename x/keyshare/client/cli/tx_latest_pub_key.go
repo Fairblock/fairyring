@@ -13,7 +13,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdCreateLatestPubKey() *cobra.Command {
+func CmdCreateLatestPubkey() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create-latest-pubkey [public-key] [commitments] [number-of-validators] [encrypted-keyshares]",
 		Short: "Create a latest public key",
@@ -42,7 +42,7 @@ func CmdCreateLatestPubKey() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreateLatestPubKey(
+			msg := types.NewMsgCreateLatestPubkey(
 				clientCtx.GetFromAddress().String(),
 				argPublicKey,
 				commitments,

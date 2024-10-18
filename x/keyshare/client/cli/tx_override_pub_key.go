@@ -42,7 +42,7 @@ func CmdOverrideLatestPubkey() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgOverrideLatestPubKey(
+			msg := types.NewMsgOverrideLatestPubkey(
 				clientCtx.GetFromAddress().String(),
 				argPublicKey,
 				commitments,

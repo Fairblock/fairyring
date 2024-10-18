@@ -220,7 +220,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 
 	suite := bls.NewBLS12381Suite()
 
-	publicKeyPoint, err := am.keeper.GetPubKeyPoint(activePubkey.PublicKey, suite)
+	publicKeyPoint, err := am.keeper.GetPubkeyPoint(activePubkey.PublicKey, suite)
 	if err != nil {
 		am.keeper.Logger().Error("Unabe to get Pubkey Point with suite")
 		return nil

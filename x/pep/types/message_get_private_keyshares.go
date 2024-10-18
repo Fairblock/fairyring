@@ -29,7 +29,7 @@ func (msg *MsgRequestPrivateDecryptionKey) ValidateBasic() error {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
-	err = isValidSecp256k1PubKey(msg.SecpPubkey)
+	err = isValidSecp256k1Pubkey(msg.SecpPubkey)
 	if err != nil {
 		return err
 	}
@@ -38,15 +38,15 @@ func (msg *MsgRequestPrivateDecryptionKey) ValidateBasic() error {
 }
 
 // Function to validate the secp256k1 public key
-func isValidSecp256k1PubKey(pubKeyBase64 string) error {
+func isValidSecp256k1Pubkey(pubkeyBase64 string) error {
 	// Decode the base64 public key
-	pubKeyBytes, err := base64.StdEncoding.DecodeString(pubKeyBase64)
+	pubkeyBytes, err := base64.StdEncoding.DecodeString(pubkeyBase64)
 	if err != nil {
 		return err
 	}
 
 	// Try to parse the public key
-	_, err = btcec.ParsePubKey(pubKeyBytes)
+	_, err = btcec.ParsePubKey(pubkeyBytes)
 	if err != nil {
 		return err
 	}

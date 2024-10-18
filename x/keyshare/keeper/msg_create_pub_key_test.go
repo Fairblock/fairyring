@@ -17,7 +17,7 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func TestLatestPubKeyMsgServerCreate(t *testing.T) {
+func TestLatestPubkeyMsgServerCreate(t *testing.T) {
 	k, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
@@ -32,7 +32,7 @@ func TestLatestPubKeyMsgServerCreate(t *testing.T) {
 	err = k.SetParams(wctx, params)
 	require.NoError(t, err)
 
-	k.SetQueuedPubKey(wctx, types.QueuedPubKey{
+	k.SetQueuedPubkey(wctx, types.QueuedPubkey{
 		PublicKey:          out.MasterPublicKey,
 		Creator:            creator,
 		Expiry:             123456,
@@ -42,24 +42,24 @@ func TestLatestPubKeyMsgServerCreate(t *testing.T) {
 
 	for _, tc := range []struct {
 		desc    string
-		request *types.MsgCreateLatestPubKey
+		request *types.MsgCreateLatestPubkey
 		err     error
 	}{
 		{
 			desc:    "Unauthorized",
-			request: &types.MsgCreateLatestPubKey{Creator: "B"},
+			request: &types.MsgCreateLatestPubkey{Creator: "B"},
 			err:     types.ErrAddressNotTrusted,
 		},
 		{
 			desc: "QueuedKeyAlreadyExists",
-			request: &types.MsgCreateLatestPubKey{
+			request: &types.MsgCreateLatestPubkey{
 				Creator: creator,
 			},
 			err: types.ErrQueuedKeyAlreadyExists,
 		},
 		{
-			desc: "SuccessCreatePubKey",
-			request: &types.MsgCreateLatestPubKey{
+			desc: "SuccessCreatePubkey",
+			request: &types.MsgCreateLatestPubkey{
 				PublicKey:          out.MasterPublicKey,
 				Creator:            creator,
 				NumberOfValidators: 1,
@@ -69,7 +69,7 @@ func TestLatestPubKeyMsgServerCreate(t *testing.T) {
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 
-			_, err := srv.CreateLatestPubKey(wctx, tc.request)
+			_, err := srv.CreateLatestPubkey(wctx, tc.request)
 
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
@@ -78,7 +78,7 @@ func TestLatestPubKeyMsgServerCreate(t *testing.T) {
 			}
 
 			if tc.desc == "QueuedKeyAlreadyExists" {
-				k.DeleteQueuedPubKey(wctx)
+				k.DeleteQueuedPubkey(wctx)
 			}
 		})
 	}

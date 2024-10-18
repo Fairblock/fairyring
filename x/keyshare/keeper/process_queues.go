@@ -13,7 +13,7 @@ import (
 )
 
 func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
-	activePubKey, found := k.GetActivePubKey(ctx)
+	activePubkey, found := k.GetActivePubkey(ctx)
 	if !found {
 		return errors.New("active public key not found")
 	}
@@ -30,19 +30,19 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 		blockDelay := uint64(math.Ceil(delay.Seconds() / types.AvgBlockTime))
 		currentHeight := uint64(ctx.BlockHeight())
 		executionHeight := currentHeight + blockDelay
-		if executionHeight > activePubKey.Expiry {
-			queuedPubKey, found := k.GetQueuedPubKey(ctx)
+		if executionHeight > activePubkey.Expiry {
+			queuedPubkey, found := k.GetQueuedPubkey(ctx)
 			if !found {
 				k.Logger().Info("[ProcessPepRequestQueue] Queued Pub Key not found")
 				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
 				continue
 			}
-			if executionHeight > queuedPubKey.Expiry {
+			if executionHeight > queuedPubkey.Expiry {
 				k.Logger().Info("[ProcessPepRequestQueue] Estimated delay too long")
 				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
 				continue
 			}
-			activePubKey = types.ActivePubKey(queuedPubKey)
+			activePubkey = types.ActivePubkey(queuedPubkey)
 		}
 
 		id := req.GetRequestId()
@@ -50,7 +50,7 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 		var keyshareRequest types.DecryptionKeyRequest
 
 		keyshareRequest.Identity = id
-		keyshareRequest.Pubkey = activePubKey.PublicKey
+		keyshareRequest.Pubkey = activePubkey.PublicKey
 
 		keyshareRequest.DecryptionKey = ""
 		keyshareRequest.RequestId = req.GetRequestId()
@@ -80,9 +80,9 @@ func (k Keeper) ProcessPepSignalQueue(ctx sdk.Context) error {
 				k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
 				continue
 			}
-			key, _ := k.GetActivePubKey(ctx)
+			key, _ := k.GetActivePubkey(ctx)
 			if keyshareReq.Pubkey != key.PublicKey {
-				qKey, found := k.GetQueuedPubKey(ctx)
+				qKey, found := k.GetQueuedPubkey(ctx)
 				if !found {
 					k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
 					continue
@@ -108,7 +108,7 @@ func (k Keeper) ProcessPepSignalQueue(ctx sdk.Context) error {
 }
 
 func (k Keeper) ProcessPrivateRequestQueue(ctx sdk.Context) error {
-	activePubKey, found := k.GetActivePubKey(ctx)
+	activePubkey, found := k.GetActivePubkey(ctx)
 	if !found {
 		return errors.New("active public key not found")
 	}
@@ -121,7 +121,7 @@ func (k Keeper) ProcessPrivateRequestQueue(ctx sdk.Context) error {
 		var keyshareRequest types.PrivateDecryptionKeyRequest
 
 		keyshareRequest.Identity = id
-		keyshareRequest.Pubkey = activePubKey.PublicKey
+		keyshareRequest.Pubkey = activePubkey.PublicKey
 
 		keyshareRequest.PrivateDecryptionKeys = make([]*common.PrivateDecryptionKey, 0)
 		keyshareRequest.RequestId = req.GetRequestId()
@@ -132,7 +132,7 @@ func (k Keeper) ProcessPrivateRequestQueue(ctx sdk.Context) error {
 		if !found {
 			return errors.New("entry not found in pep module")
 		}
-		entry.Pubkey = activePubKey.PublicKey
+		entry.Pubkey = activePubkey.PublicKey
 
 		k.pepKeeper.SetPrivateRequest(ctx, entry)
 		k.pepKeeper.RemovePrivateReqQueueEntry(ctx, req.GetRequestId())
@@ -144,7 +144,7 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 	reqs := k.pepKeeper.GetAllPrivateSignalQueueEntry(ctx)
 	k.Logger().Info(fmt.Sprintf("PROCESSING PEP SIGNAL QUEUE: %v", reqs))
 
-	activePubKey, found := k.GetActivePubKey(ctx)
+	activePubkey, found := k.GetActivePubkey(ctx)
 	if !found {
 		return errors.New("active public key not found")
 	}
@@ -156,7 +156,7 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 				var keyshareRequest types.PrivateDecryptionKeyRequest
 
 				keyshareRequest.Identity = req.Identity
-				keyshareRequest.Pubkey = activePubKey.PublicKey
+				keyshareRequest.Pubkey = activePubkey.PublicKey
 
 				keyshareRequest.PrivateDecryptionKeys = make([]*common.PrivateDecryptionKey, 0)
 				keyshareRequest.RequestId = req.GetRequestId()
@@ -167,7 +167,7 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 				if !found {
 					return errors.New("entry not found in pep module")
 				}
-				entry.Pubkey = activePubKey.PublicKey
+				entry.Pubkey = activePubkey.PublicKey
 
 				k.pepKeeper.SetPrivateRequest(ctx, entry)
 
@@ -189,7 +189,7 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 }
 
 func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
-	activePubKey, found := k.GetActivePubKey(ctx)
+	activePubkey, found := k.GetActivePubkey(ctx)
 	if !found {
 		return errors.New("active public key not found")
 	}
@@ -202,17 +202,17 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 		currentHeight := uint64(ctx.BlockHeight())
 		executionHeight := currentHeight + blockDelay
 
-		if executionHeight > activePubKey.Expiry {
-			queuedPubKey, found := k.GetQueuedPubKey(ctx)
+		if executionHeight > activePubkey.Expiry {
+			queuedPubkey, found := k.GetQueuedPubkey(ctx)
 			if !found {
 				k.govKeeper.RemoveReqQueueEntry(ctx, req.GetProposalId())
 				return errors.New("estimated delay too long")
 			}
-			if executionHeight > queuedPubKey.Expiry {
+			if executionHeight > queuedPubkey.Expiry {
 				k.govKeeper.RemoveReqQueueEntry(ctx, req.GetProposalId())
 				return errors.New("estimated delay too long")
 			}
-			activePubKey = types.ActivePubKey(queuedPubKey)
+			activePubkey = types.ActivePubkey(queuedPubkey)
 		}
 
 		reqCountString := k.GetRequestCount(ctx)
@@ -224,7 +224,7 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 		var keyshareRequest types.DecryptionKeyRequest
 
 		keyshareRequest.Identity = id
-		keyshareRequest.Pubkey = activePubKey.PublicKey
+		keyshareRequest.Pubkey = activePubkey.PublicKey
 
 		keyshareRequest.DecryptionKey = ""
 		keyshareRequest.ProposalId = req.GetProposalId()
@@ -259,9 +259,9 @@ func (k Keeper) ProcessGovSignalQueue(ctx sdk.Context) error {
 				continue
 			}
 
-			key, _ := k.GetActivePubKey(ctx)
+			key, _ := k.GetActivePubkey(ctx)
 			if keyshareReq.Pubkey != key.PublicKey {
-				qKey, found := k.GetQueuedPubKey(ctx)
+				qKey, found := k.GetQueuedPubkey(ctx)
 				if !found {
 					k.govKeeper.RemoveSignalQueueEntry(ctx, req.GetProposalId())
 					continue

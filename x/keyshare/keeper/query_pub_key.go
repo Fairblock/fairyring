@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// PubKey returns the lates public keys
+// Pubkey returns the lates public keys
 func (k Keeper) Pubkey(goCtx context.Context, req *types.QueryPubkeyRequest) (*types.QueryPubkeyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -20,21 +20,21 @@ func (k Keeper) Pubkey(goCtx context.Context, req *types.QueryPubkeyRequest) (*t
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var activePubKey types.ActivePubKey
-	var queuedPubKey types.QueuedPubKey
+	var activePubkey types.ActivePubkey
+	var queuedPubkey types.QueuedPubkey
 
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, []byte{})
-	b := store.Get(types.KeyPrefix(types.ActivePubKeyPrefix))
+	b := store.Get(types.KeyPrefix(types.ActivePubkeyPrefix))
 	if b == nil {
 		return nil, status.Error(codes.Internal, "Active Public Key does not exists")
 	}
-	k.cdc.MustUnmarshal(b, &activePubKey)
+	k.cdc.MustUnmarshal(b, &activePubkey)
 
-	b = store.Get(types.KeyPrefix(types.QueuedPubKeyPrefix))
+	b = store.Get(types.KeyPrefix(types.QueuedPubkeyPrefix))
 	if b != nil {
-		k.cdc.MustUnmarshal(b, &queuedPubKey)
+		k.cdc.MustUnmarshal(b, &queuedPubkey)
 	}
 
-	return &types.QueryPubkeyResponse{ActivePubkey: activePubKey, QueuedPubkey: queuedPubKey}, nil
+	return &types.QueryPubkeyResponse{ActivePubkey: activePubkey, QueuedPubkey: queuedPubkey}, nil
 }
