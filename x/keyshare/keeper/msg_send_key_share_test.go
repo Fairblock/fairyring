@@ -1,9 +1,10 @@
 package keeper_test
 
 import (
-	"github.com/Fairblock/fairyring/testutil/shares"
 	"strconv"
 	"testing"
+
+	"github.com/Fairblock/fairyring/testutil/shares"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
@@ -31,7 +32,7 @@ func TestSendKeyShareMsgServerCreateAggregated(t *testing.T) {
 
 	expected := &types.MsgSendKeyshare{Creator: creator,
 		Message:       derived,
-		KeyShareIndex: idUint,
+		KeyshareIndex: idUint,
 		BlockHeight:   idUint,
 	}
 
@@ -65,7 +66,7 @@ func TestSendKeyShareMsgServerCreateNotAggregated(t *testing.T) {
 
 	expected := &types.MsgSendKeyshare{Creator: creator,
 		Message:       derived,
-		KeyShareIndex: idUint,
+		KeyshareIndex: idUint,
 		BlockHeight:   idUint,
 	}
 
@@ -112,7 +113,7 @@ func TestSendKeyShareMsgServerFailCases(t *testing.T) {
 			desc: "InvalidKeyShareIndex",
 			request: &types.MsgSendKeyshare{
 				Creator:       creator,
-				KeyShareIndex: 999,
+				KeyshareIndex: 999,
 			},
 			err: types.ErrInvalidKeyShareIndex,
 		},

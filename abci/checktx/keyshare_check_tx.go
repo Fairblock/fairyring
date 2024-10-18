@@ -42,8 +42,8 @@ type KeyshareCheckTxHandler struct {
 // KeyShareLaneI is the interface that defines all of the dependencies that
 // are required to interact with the top of block lane.
 type KeyShareLaneI interface {
-	// GetKeyShareInfo is utilized to retrieve the Keyshare info of a transaction.
-	GetKeyShareInfo(tx sdk.Tx) (*peptypes.AggregatedKeyShare, error)
+	// GetDecryptionKeyInfo is utilized to retrieve the Keyshare info of a transaction.
+	GetDecryptionKeyInfo(tx sdk.Tx) (*peptypes.DecryptionKey, error)
 
 	// Insert is utilized to insert a transaction into the application-side mempool.
 	Insert(ctx context.Context, tx sdk.Tx) error
@@ -112,7 +112,7 @@ func (handler *KeyshareCheckTxHandler) CheckTx() CheckTx {
 		}
 
 		// Attempt to get the keyshare info of the transaction.
-		ksInfo, err := handler.keyShareLane.GetKeyShareInfo(tx)
+		ksInfo, err := handler.keyShareLane.GetDecryptionKeyInfo(tx)
 		if err != nil {
 			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("failed to get keyshare info: %w", err), 0, 0, nil, false), err
 		}
@@ -147,7 +147,11 @@ func (handler *KeyshareCheckTxHandler) CheckTx() CheckTx {
 }
 
 // ValidateKeyshareTx is utilized to verify the keyshare transaction against the latest committed state.
-func (handler *KeyshareCheckTxHandler) ValidateKeyshareTx(ctx sdk.Context, ksTx sdk.Tx, ksInfo *peptypes.AggregatedKeyShare) (sdk.GasInfo, error) {
+func (handler *KeyshareCheckTxHandler) ValidateKeyshareTx(
+	ctx sdk.Context,
+	ksTx sdk.Tx,
+	ksInfo *peptypes.DecryptionKey,
+) (sdk.GasInfo, error) {
 	// Verify the keyshare transaction.
 	ctx, err := handler.anteHandler(ctx, ksTx, false)
 	if err != nil {

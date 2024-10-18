@@ -2,7 +2,7 @@
 package keyshare
 
 import (
-	common "cosmossdk.io/api/fairyring/common"
+	common "github.com/Fairblock/fairyring/api/fairyring/common"
 	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"

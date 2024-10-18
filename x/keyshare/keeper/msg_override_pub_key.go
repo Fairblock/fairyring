@@ -36,7 +36,7 @@ func (k msgServer) OverrideLatestPubKey(goCtx context.Context, msg *types.MsgOve
 		k.DeleteQueuedPubKey(ctx)
 	}
 
-	encryptedKeyShares, err := json.Marshal(msg.EncryptedKeyShares)
+	encryptedKeyShares, err := json.Marshal(msg.EncryptedKeyshares)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ func (k msgServer) OverrideLatestPubKey(goCtx context.Context, msg *types.MsgOve
 	allValidatorSet := k.GetAllValidatorSet(ctx)
 	encSharesExistsValidators := make(map[string]bool, 0)
 
-	for _, encShare := range msg.EncryptedKeyShares {
+	for _, encShare := range msg.EncryptedKeyshares {
 		encSharesExistsValidators[encShare.Validator] = true
 	}
 
@@ -66,11 +66,11 @@ func (k msgServer) OverrideLatestPubKey(goCtx context.Context, msg *types.MsgOve
 			PublicKey:          msg.PublicKey,
 			Expiry:             expHeight,
 			NumberOfValidators: msg.NumberOfValidators,
-			EncryptedKeyShares: msg.EncryptedKeyShares,
+			EncryptedKeyshares: msg.EncryptedKeyshares,
 		},
 	)
 
-	k.pepKeeper.SetActivePubKey(
+	k.pepKeeper.SetActivePubkey(
 		ctx,
 		commontypes.ActivePublicKey{
 			Creator:   msg.Creator,

@@ -120,12 +120,12 @@ func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet chann
 			return nil
 		}
 
-		ak, found := k.GetActivePubKey(ctx)
+		ak, found := k.GetActivePubkey(ctx)
 		if !found {
-			k.SetActivePubKey(ctx, *packetAck.ActiveKey)
+			k.SetActivePubkey(ctx, *packetAck.ActiveKey)
 		} else {
 			if ak.Expiry <= packetAck.ActiveKey.Expiry {
-				k.SetActivePubKey(ctx, *packetAck.ActiveKey)
+				k.SetActivePubkey(ctx, *packetAck.ActiveKey)
 			}
 		}
 
@@ -134,12 +134,12 @@ func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet chann
 			return nil
 		}
 
-		qk, found := k.GetQueuedPubKey(ctx)
+		qk, found := k.GetQueuedPubkey(ctx)
 		if !found {
-			k.SetQueuedPubKey(ctx, *packetAck.QueuedKey)
+			k.SetQueuedPubkey(ctx, *packetAck.QueuedKey)
 		} else {
 			if qk.Expiry <= packetAck.QueuedKey.Expiry {
-				k.SetQueuedPubKey(ctx, *packetAck.QueuedKey)
+				k.SetQueuedPubkey(ctx, *packetAck.QueuedKey)
 			}
 		}
 

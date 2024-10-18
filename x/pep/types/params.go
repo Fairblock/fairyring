@@ -23,7 +23,7 @@ var (
 var (
 	KeyMinGasPrice       = []byte("MinGasPrice")
 	DefaultMinGasPrice   = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
-	KeyKeysharePrice     = []byte("PrivateKeysharePrice")
+	DecryptionKeyPrice   = []byte("PrivateKeysPrice")
 	DefaultKeysharePrice = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
 )
 
@@ -49,15 +49,15 @@ func NewParams(
 	keyshareChannelID string,
 	minGasPrice *sdk.Coin,
 	isSourceChain bool,
-	keysharePrice *sdk.Coin,
+	decryptionKeyPrice *sdk.Coin,
 ) Params {
 	return Params{
-		TrustedAddresses:      trAddrs,
-		TrustedCounterParties: trustedParties,
-		KeyshareChannelId:     keyshareChannelID,
-		MinGasPrice:           minGasPrice,
-		IsSourceChain:         isSourceChain,
-		PrivateKeysharePrice:  keysharePrice,
+		TrustedAddresses:          trAddrs,
+		TrustedCounterParties:     trustedParties,
+		KeyshareChannelId:         keyshareChannelID,
+		MinGasPrice:               minGasPrice,
+		IsSourceChain:             isSourceChain,
+		PrivateDecryptionKeyPrice: decryptionKeyPrice,
 	}
 }
 
@@ -81,7 +81,7 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(KeyKeyshareChannelID, &p.KeyshareChannelId, validateKeyshareChannelId),
 		paramtypes.NewParamSetPair(KeyMinGasPrice, &p.MinGasPrice, validateMinGasPrice),
 		paramtypes.NewParamSetPair(KeyIsSourceChain, &p.IsSourceChain, validateIsSourceChain),
-		paramtypes.NewParamSetPair(KeyKeysharePrice, &p.PrivateKeysharePrice, validateMinGasPrice),
+		paramtypes.NewParamSetPair(DecryptionKeyPrice, &p.PrivateDecryptionKeyPrice, validateMinGasPrice),
 	}
 }
 
@@ -103,7 +103,7 @@ func (p Params) Validate() error {
 		return err
 	}
 
-	if err := validateMinGasPrice(p.PrivateKeysharePrice); err != nil {
+	if err := validateMinGasPrice(p.PrivateDecryptionKeyPrice); err != nil {
 		return err
 	}
 

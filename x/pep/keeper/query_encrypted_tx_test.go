@@ -32,18 +32,18 @@ func TestEncryptedTxQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryEncryptedTxRequest{
-				TargetHeight: msgs[0].EncryptedTx[0].TargetHeight,
-				Index:        msgs[0].EncryptedTx[0].Index,
+				TargetHeight: msgs[0].EncryptedTxs[0].TargetHeight,
+				Index:        msgs[0].EncryptedTxs[0].Index,
 			},
-			response: &types.QueryEncryptedTxResponse{EncryptedTx: msgs[0].EncryptedTx[0]},
+			response: &types.QueryEncryptedTxResponse{EncryptedTx: msgs[0].EncryptedTxs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryEncryptedTxRequest{
-				TargetHeight: msgs[1].EncryptedTx[0].TargetHeight,
-				Index:        msgs[1].EncryptedTx[0].Index,
+				TargetHeight: msgs[1].EncryptedTxs[0].TargetHeight,
+				Index:        msgs[1].EncryptedTxs[0].Index,
 			},
-			response: &types.QueryEncryptedTxResponse{EncryptedTx: msgs[1].EncryptedTx[0]},
+			response: &types.QueryEncryptedTxResponse{EncryptedTx: msgs[1].EncryptedTxs[0]},
 		},
 		{
 			desc: "KeyNotFound",

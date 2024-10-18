@@ -25,28 +25,28 @@ func TestGetPrivateKeyshares(t *testing.T) {
 
 	price := sdk.NewInt64Coin("ufairy", 0)
 	params := types.Params{
-		PrivateKeysharePrice: &price,
-		IsSourceChain:        true,
+		PrivateDecryptionKeyPrice: &price,
+		IsSourceChain:             true,
 	}
 	k.SetParams(ctx, params)
 
 	// Test case when entry and pubkey are not found
-	msg := &types.MsgGetPrivateKeyshares{
+	msg := &types.MsgRequestPrivateDecryptionKey{
 		Creator:    creator,
 		ReqId:      "test_req_id_1",
 		SecpPubkey: "test_pubkey",
 	}
 
-	_, err := srv.GetPrivateKeyshares(goCtx, msg)
+	_, err := srv.RequestPrivateDecryptionKey(goCtx, msg)
 	require.Error(t, err)
 	require.Equal(t, "entry and pubkey not found", err.Error())
 
 	// Set a mock active pubkey and test the entry creation
-	k.SetActivePubKey(ctx, commontypes.ActivePublicKey{
+	k.SetActivePubkey(ctx, commontypes.ActivePublicKey{
 		PublicKey: "mock_pubkey",
 	})
 
-	_, err = srv.GetPrivateKeyshares(goCtx, msg)
+	_, err = srv.RequestPrivateDecryptionKey(goCtx, msg)
 	require.NoError(t, err)
 
 	// Ensure the private request is stored
@@ -56,10 +56,10 @@ func TestGetPrivateKeyshares(t *testing.T) {
 
 	// Mock the bank keeper for the SendCoinsFromAccountToModule call
 	mockBankKeeper := new(MockBankKeeper)
-	mockBankKeeper.On("SendCoinsFromAccountToModule", ctx, requester, types.ModuleName, sdk.NewCoins(*params.PrivateKeysharePrice)).
+	mockBankKeeper.On("SendCoinsFromAccountToModule", ctx, requester, types.ModuleName, sdk.NewCoins(*params.PrivateDecryptionKeyPrice)).
 		Return(nil).Once()
 
-	_, err = srv.GetPrivateKeyshares(goCtx, msg)
+	_, err = srv.RequestPrivateDecryptionKey(goCtx, msg)
 	require.NoError(t, err)
 }
 
@@ -68,7 +68,7 @@ func TestOnAcknowledgementGetPrivateKeysharePacket(t *testing.T) {
 	k, ctx := keepertest.PepKeeper(t)
 
 	packet := channeltypes.Packet{}
-	packetData := kstypes.GetPrivateKeysharePacketData{
+	packetData := kstypes.GetPrivateDecryptionKeyPacketData{
 		Identity:   "test_identity",
 		Requester:  "test_creator",
 		SecpPubkey: "test_pubkey",
@@ -80,7 +80,7 @@ func TestOnAcknowledgementGetPrivateKeysharePacket(t *testing.T) {
 	}
 
 	// Test success case for OnAcknowledgementGetPrivateKeysharePacket
-	err := k.OnAcknowledgementGetPrivateKeysharePacket(ctx, packet, packetData, ack)
+	err := k.OnAcknowledgementGetPrivateDecryptionKeyPacket(ctx, packet, packetData, ack)
 	require.NoError(t, err)
 
 	// Test error case for unmarshalling acknowledgment
@@ -90,7 +90,7 @@ func TestOnAcknowledgementGetPrivateKeysharePacket(t *testing.T) {
 		},
 	}
 
-	err = k.OnAcknowledgementGetPrivateKeysharePacket(ctx, packet, packetData, invalidAck)
+	err = k.OnAcknowledgementGetPrivateDecryptionKeyPacket(ctx, packet, packetData, invalidAck)
 	require.Error(t, err)
 	require.Equal(t, "cannot unmarshal acknowledgment", err.Error())
 
@@ -101,7 +101,7 @@ func TestOnAcknowledgementGetPrivateKeysharePacket(t *testing.T) {
 		},
 	}
 
-	err = k.OnAcknowledgementGetPrivateKeysharePacket(ctx, packet, packetData, errorAck)
+	err = k.OnAcknowledgementGetPrivateDecryptionKeyPacket(ctx, packet, packetData, errorAck)
 	require.NoError(t, err)
 }
 

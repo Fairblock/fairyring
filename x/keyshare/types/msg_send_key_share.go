@@ -18,7 +18,7 @@ func NewMsgSendKeyshare(creator string, message string, keyShareIndex uint64, bl
 	return &MsgSendKeyshare{
 		Creator:       creator,
 		Message:       message,
-		KeyShareIndex: keyShareIndex,
+		KeyshareIndex: keyShareIndex,
 		BlockHeight:   blockHeight,
 	}
 }
@@ -34,8 +34,8 @@ func (msg *MsgSendKeyshare) ValidateBasic() error {
 	if _, err = hex.DecodeString(msg.Message); err != nil {
 		return ErrInvalidShare.Wrapf("expected hex encoded key share, got: %s", msg.Message)
 	}
-	if msg.KeyShareIndex < 1 {
-		return ErrInvalidShare.Wrapf("expected key share index to be at least 1, got: %d", msg.KeyShareIndex)
+	if msg.KeyshareIndex < 1 {
+		return ErrInvalidShare.Wrapf("expected key share index to be at least 1, got: %d", msg.KeyshareIndex)
 	}
 	return nil
 }

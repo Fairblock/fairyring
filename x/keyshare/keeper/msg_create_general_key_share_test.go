@@ -37,7 +37,7 @@ func SetupTestGeneralKeyShare(t *testing.T, ctx sdk.Context, k keeper.Keeper, nu
 		Creator:            creator,
 		Expiry:             123456,
 		NumberOfValidators: pubkeyNumberOfValidator,
-		EncryptedKeyShares: out.KeyShareEncryptedKeyShares,
+		EncryptedKeyshares: out.KeyShareEncryptedKeyShares,
 	})
 
 	k.SetActiveCommitments(ctx, types.Commitments{
@@ -59,36 +59,36 @@ func TestGeneralKeyShareMsgServerCreateAggregated(t *testing.T) {
 
 		idVal := random.RandHex(32)
 
-		k.SetKeyShareRequest(wctx, types.KeyShareRequest{
-			Identity:     idVal,
-			Pubkey:       out.MasterPublicKey,
-			IbcInfo:      nil,
-			Counterparty: nil,
-			AggrKeyshare: "",
-			ProposalId:   "",
-			RequestId:    idVal,
-			Sent:         false,
+		k.SetKeyShareRequest(wctx, types.DecryptionKeyRequest{
+			Identity:      idVal,
+			Pubkey:        out.MasterPublicKey,
+			IbcInfo:       nil,
+			Counterparty:  nil,
+			DecryptionKey: "",
+			ProposalId:    "",
+			RequestId:     idVal,
+			Sent:          false,
 		})
-		pk.SetEntry(wctx, types2.IdentityExecutionQueue{
-			Creator:      creator,
-			RequestId:    idVal,
-			Identity:     idVal,
-			Pubkey:       out.MasterPublicKey,
-			TxList:       nil,
-			AggrKeyshare: "",
+		pk.SetEntry(wctx, types2.IdentityExecutionEntry{
+			Creator:       creator,
+			RequestId:     idVal,
+			Identity:      idVal,
+			Pubkey:        out.MasterPublicKey,
+			TxList:        nil,
+			DecryptionKey: "",
 		})
 
 		derived, err := shares.DeriveShare(out.GeneratedShare[0].Share, 1, idVal)
 		require.NoError(t, err)
 
-		expected := &types.MsgCreateGeneralKeyShare{Creator: creator,
+		expected := &types.MsgSubmitGeneralKeyshare{Creator: creator,
 			IdType:        keeper.PrivateGovIdentity,
 			IdValue:       idVal,
-			KeyShareIndex: 1,
-			KeyShare:      derived,
+			KeyshareIndex: 1,
+			Keyshare:      derived,
 		}
 
-		_, err = srv.CreateGeneralKeyShare(wctx, expected)
+		_, err = srv.SubmitGeneralKeyshare(wctx, expected)
 		require.NoError(t, err)
 
 		rst, found := k.GetGeneralKeyShare(wctx,
@@ -101,7 +101,7 @@ func TestGeneralKeyShareMsgServerCreateAggregated(t *testing.T) {
 
 		entry, found := k.GetKeyShareRequest(ctx, idVal)
 		require.True(t, found)
-		require.NotEmpty(t, entry.AggrKeyshare)
+		require.NotEmpty(t, entry.DecryptionKey)
 	}
 }
 
@@ -117,36 +117,36 @@ func TestGeneralKeyShareMsgServerCreateNotAggregated(t *testing.T) {
 
 		idVal := random.RandHex(32)
 
-		k.SetKeyShareRequest(wctx, types.KeyShareRequest{
-			Identity:     idVal,
-			Pubkey:       out.MasterPublicKey,
-			IbcInfo:      nil,
-			Counterparty: nil,
-			AggrKeyshare: "",
-			ProposalId:   "",
-			RequestId:    idVal,
-			Sent:         false,
+		k.SetKeyShareRequest(wctx, types.DecryptionKeyRequest{
+			Identity:      idVal,
+			Pubkey:        out.MasterPublicKey,
+			IbcInfo:       nil,
+			Counterparty:  nil,
+			DecryptionKey: "",
+			ProposalId:    "",
+			RequestId:     idVal,
+			Sent:          false,
 		})
-		pk.SetEntry(wctx, types2.IdentityExecutionQueue{
-			Creator:      creator,
-			RequestId:    idVal,
-			Identity:     idVal,
-			Pubkey:       out.MasterPublicKey,
-			TxList:       nil,
-			AggrKeyshare: "",
+		pk.SetEntry(wctx, types2.IdentityExecutionEntry{
+			Creator:       creator,
+			RequestId:     idVal,
+			Identity:      idVal,
+			Pubkey:        out.MasterPublicKey,
+			TxList:        nil,
+			DecryptionKey: "",
 		})
 
 		derived, err := shares.DeriveShare(out.GeneratedShare[0].Share, 1, idVal)
 		require.NoError(t, err)
 
-		expected := &types.MsgCreateGeneralKeyShare{Creator: creator,
+		expected := &types.MsgSubmitGeneralKeyshare{Creator: creator,
 			IdType:        keeper.PrivateGovIdentity,
 			IdValue:       idVal,
-			KeyShareIndex: 1,
-			KeyShare:      derived,
+			KeyshareIndex: 1,
+			Keyshare:      derived,
 		}
 
-		_, err = srv.CreateGeneralKeyShare(wctx, expected)
+		_, err = srv.SubmitGeneralKeyshare(wctx, expected)
 		require.NoError(t, err)
 
 		rst, found := k.GetGeneralKeyShare(wctx,
@@ -159,7 +159,7 @@ func TestGeneralKeyShareMsgServerCreateNotAggregated(t *testing.T) {
 
 		entry, found := k.GetKeyShareRequest(ctx, idVal)
 		require.True(t, found)
-		require.Empty(t, entry.AggrKeyshare)
+		require.Empty(t, entry.DecryptionKey)
 	}
 }
 
@@ -171,28 +171,28 @@ func TestGeneralKeyShareMsgServerFailCases(t *testing.T) {
 	out, creator := SetupTestGeneralKeyShare(t, wctx, k, 1, 1)
 	onlyIdVal := random.RandHex(32)
 
-	pk.SetEntry(wctx, types2.IdentityExecutionQueue{
-		Creator:      creator,
-		RequestId:    onlyIdVal,
-		Identity:     onlyIdVal,
-		Pubkey:       out.MasterPublicKey,
-		TxList:       nil,
-		AggrKeyshare: "",
+	pk.SetEntry(wctx, types2.IdentityExecutionEntry{
+		Creator:       creator,
+		RequestId:     onlyIdVal,
+		Identity:      onlyIdVal,
+		Pubkey:        out.MasterPublicKey,
+		TxList:        nil,
+		DecryptionKey: "",
 	})
 
 	for _, tc := range []struct {
 		desc    string
-		request *types.MsgCreateGeneralKeyShare
+		request *types.MsgSubmitGeneralKeyshare
 		err     error
 	}{
 		{
 			desc:    "Unauthorized",
-			request: &types.MsgCreateGeneralKeyShare{Creator: "B"},
+			request: &types.MsgSubmitGeneralKeyshare{Creator: "B"},
 			err:     types.ErrAddrIsNotValidatorOrAuthorized,
 		},
 		{
 			desc: "NotSupportedIDType",
-			request: &types.MsgCreateGeneralKeyShare{
+			request: &types.MsgSubmitGeneralKeyshare{
 				Creator: creator,
 				IdType:  "not_exists",
 			},
@@ -200,7 +200,7 @@ func TestGeneralKeyShareMsgServerFailCases(t *testing.T) {
 		},
 		{
 			desc: "KeyShareRequestNotFound",
-			request: &types.MsgCreateGeneralKeyShare{
+			request: &types.MsgSubmitGeneralKeyshare{
 				Creator: creator,
 				IdType:  keeper.PrivateGovIdentity,
 				IdValue: random.RandHex(32),
@@ -209,31 +209,31 @@ func TestGeneralKeyShareMsgServerFailCases(t *testing.T) {
 		},
 		{
 			desc: "InvalidKeyShareIndex",
-			request: &types.MsgCreateGeneralKeyShare{
+			request: &types.MsgSubmitGeneralKeyshare{
 				Creator:       creator,
 				IdType:        keeper.PrivateGovIdentity,
 				IdValue:       onlyIdVal,
-				KeyShareIndex: 10,
+				KeyshareIndex: 10,
 			},
 			err: types.ErrInvalidKeyShareIndex,
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
 
-			_, err := srv.CreateGeneralKeyShare(wctx, tc.request)
+			_, err := srv.SubmitGeneralKeyshare(wctx, tc.request)
 
 			require.ErrorIs(t, err, tc.err)
 
 			if tc.desc == "KeyShareRequestNotFound" {
-				k.SetKeyShareRequest(wctx, types.KeyShareRequest{
-					Identity:     onlyIdVal,
-					Pubkey:       out.MasterPublicKey,
-					IbcInfo:      nil,
-					Counterparty: nil,
-					AggrKeyshare: "",
-					ProposalId:   "",
-					RequestId:    onlyIdVal,
-					Sent:         false,
+				k.SetKeyShareRequest(wctx, types.DecryptionKeyRequest{
+					Identity:      onlyIdVal,
+					Pubkey:        out.MasterPublicKey,
+					IbcInfo:       nil,
+					Counterparty:  nil,
+					DecryptionKey: "",
+					ProposalId:    "",
+					RequestId:     onlyIdVal,
+					Sent:          false,
 				})
 			}
 		})

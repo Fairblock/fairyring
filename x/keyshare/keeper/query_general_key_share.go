@@ -13,15 +13,15 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) GeneralKeyShareAll(
+func (k Keeper) GeneralKeyshareAll(
 	goCtx context.Context,
-	req *types.QueryGeneralKeyShareAllRequest,
-) (*types.QueryGeneralKeyShareAllResponse, error) {
+	req *types.QueryGeneralKeyshareAllRequest,
+) (*types.QueryGeneralKeyshareAllResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var generalKeyShares []types.GeneralKeyShare
+	var generalKeyshares []types.GeneralKeyshare
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
@@ -29,12 +29,12 @@ func (k Keeper) GeneralKeyShareAll(
 	generalKeyShareStore := prefix.NewStore(store, types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
 
 	pageRes, err := query.Paginate(generalKeyShareStore, req.Pagination, func(key []byte, value []byte) error {
-		var generalKeyShare types.GeneralKeyShare
+		var generalKeyShare types.GeneralKeyshare
 		if err := k.cdc.Unmarshal(value, &generalKeyShare); err != nil {
 			return err
 		}
 
-		generalKeyShares = append(generalKeyShares, generalKeyShare)
+		generalKeyshares = append(generalKeyshares, generalKeyShare)
 		return nil
 	})
 
@@ -42,16 +42,16 @@ func (k Keeper) GeneralKeyShareAll(
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryGeneralKeyShareAllResponse{
-		GeneralKeyShare: generalKeyShares,
+	return &types.QueryGeneralKeyshareAllResponse{
+		GeneralKeyshare: generalKeyshares,
 		Pagination:      pageRes,
 	}, nil
 }
 
-func (k Keeper) GeneralKeyShare(
+func (k Keeper) GeneralKeyshare(
 	goCtx context.Context,
-	req *types.QueryGeneralKeyShareRequest,
-) (*types.QueryGeneralKeyShareResponse, error) {
+	req *types.QueryGeneralKeyshareRequest,
+) (*types.QueryGeneralKeyshareResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -67,5 +67,5 @@ func (k Keeper) GeneralKeyShare(
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	return &types.QueryGeneralKeyShareResponse{GeneralKeyShare: val}, nil
+	return &types.QueryGeneralKeyshareResponse{GeneralKeyshare: val}, nil
 }

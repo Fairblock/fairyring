@@ -16,8 +16,8 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func createNAggregatedKeyShare(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.AggregatedKeyShare {
-	items := make([]types.AggregatedKeyShare, n)
+func createNAggregatedKeyShare(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.DecryptionKey {
+	items := make([]types.DecryptionKey, n)
 	for i := range items {
 		items[i].Height = uint64(i)
 

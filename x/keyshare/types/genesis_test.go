@@ -23,7 +23,7 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
 				PortId: types.PortID,
-				AggregatedKeyShareList: []types.AggregatedKeyShare{
+				DecryptionKeyList: []types.DecryptionKey{
 					{
 						Height: 0,
 					},
@@ -38,7 +38,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "duplicated aggregatedKeyShare",
 			genState: &types.GenesisState{
-				AggregatedKeyShareList: []types.AggregatedKeyShare{
+				DecryptionKeyList: []types.DecryptionKey{
 					{
 						Height: 0,
 					},

@@ -1,9 +1,10 @@
 package keeper_test
 
 import (
-	"github.com/Fairblock/fairyring/testutil/random"
 	"strconv"
 	"testing"
+
+	"github.com/Fairblock/fairyring/testutil/random"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
@@ -48,7 +49,7 @@ func TestOverrideLatestPubKeyMsgServer(t *testing.T) {
 				Creator:            creator,
 				Commitments:        out.Commitments,
 				NumberOfValidators: 1,
-				EncryptedKeyShares: out.KeyShareEncryptedKeyShares,
+				EncryptedKeyshares: out.KeyShareEncryptedKeyShares,
 			},
 		},
 	} {

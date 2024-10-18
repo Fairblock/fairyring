@@ -16,7 +16,10 @@ import (
 	host "github.com/cosmos/ibc-go/v8/modules/core/24-host"
 )
 
-func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgRequestGeneralKeyshare) (*types.MsgRequestGeneralKeyshareResponse, error) {
+func (k msgServer) RequestGeneralIdentity(
+	goCtx context.Context,
+	msg *types.MsgRequestGeneralIdentity,
+) (*types.MsgRequestGeneralIdentityResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	reqID, found := k.GetRequestId(ctx, msg.Creator, msg.ReqId)
@@ -27,7 +30,7 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 	requestIDStr := types.GetReqIDStr(msg.Creator, msg.ReqId)
 
 	if msg.EstimatedDelay == nil {
-		return &types.MsgRequestGeneralKeyshareResponse{}, errors.New("could not parse estimated delay")
+		return &types.MsgRequestGeneralIdentityResponse{}, errors.New("could not parse estimated delay")
 	}
 
 	k.SetRequestId(ctx, types.RequestId{
@@ -38,21 +41,21 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 	params := k.GetParams(ctx)
 
 	if params.IsSourceChain {
-		entry := commontypes.RequestAggrKeyshare{
+		entry := commontypes.RequestDecryptionKey{
 			Creator:        msg.Creator,
-			Id:             &commontypes.RequestAggrKeyshare_RequestId{RequestId: requestIDStr},
+			Id:             &commontypes.RequestDecryptionKey_RequestId{RequestId: requestIDStr},
 			EstimatedDelay: msg.EstimatedDelay,
 		}
 
 		k.SetReqQueueEntry(ctx, entry)
 
-		return &types.MsgRequestGeneralKeyshareResponse{
+		return &types.MsgRequestGeneralIdentityResponse{
 			ReqId: requestIDStr,
 		}, nil
 	} else {
-		packetData := kstypes.RequestAggrKeysharePacketData{
+		packetData := kstypes.RequestDecryptionKeyPacketData{
 			Requester: msg.Creator,
-			Id: &kstypes.RequestAggrKeysharePacketData_RequestId{
+			Id: &kstypes.RequestDecryptionKeyPacketData_RequestId{
 				RequestId: requestIDStr,
 			},
 			EstimatedDelay: msg.EstimatedDelay,
@@ -60,7 +63,7 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 
 		sPort := k.GetPort(ctx)
 		timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
-		_, _ = k.TransmitRequestAggrKeysharePacket(
+		_, _ = k.TransmitRequestDecryptionKeyPacket(
 			ctx,
 			packetData,
 			sPort,
@@ -77,16 +80,16 @@ func (k msgServer) RequestGeneralKeyshare(goCtx context.Context, msg *types.MsgR
 			),
 		)
 
-		return &types.MsgRequestGeneralKeyshareResponse{
+		return &types.MsgRequestGeneralIdentityResponse{
 			ReqId: requestIDStr,
 		}, nil
 	}
 }
 
 // TransmitRequestAggrKeysharePacket transmits the packet over IBC with the specified source port and source channel
-func (k Keeper) TransmitRequestAggrKeysharePacket(
+func (k Keeper) TransmitRequestDecryptionKeyPacket(
 	ctx sdk.Context,
-	packetData kstypes.RequestAggrKeysharePacketData,
+	packetData kstypes.RequestDecryptionKeyPacketData,
 	sourcePort,
 	sourceChannel string,
 	timeoutHeight clienttypes.Height,
@@ -104,7 +107,12 @@ func (k Keeper) TransmitRequestAggrKeysharePacket(
 
 // OnAcknowledgementRequestAggrKeysharePacket responds to the the success or failure of a packet
 // acknowledgement written on the receiving chain.
-func (k Keeper) OnAcknowledgementRequestAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data kstypes.RequestAggrKeysharePacketData, ack channeltypes.Acknowledgement) error {
+func (k Keeper) OnAcknowledgementRequestDecryptionKeyPacket(
+	ctx sdk.Context,
+	packet channeltypes.Packet,
+	data kstypes.RequestDecryptionKeyPacketData,
+	ack channeltypes.Acknowledgement,
+) error {
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
 
@@ -113,14 +121,14 @@ func (k Keeper) OnAcknowledgementRequestAggrKeysharePacket(ctx sdk.Context, pack
 		return nil
 	case *channeltypes.Acknowledgement_Result:
 		// Decode the packet acknowledgment
-		var packetAck kstypes.RequestAggrKeysharePacketAck
+		var packetAck kstypes.RequestDecryptionKeyPacketAck
 
 		if err := kstypes.ModuleCdc.UnmarshalJSON(dispatchedAck.Result, &packetAck); err != nil {
 			// The counter-party module doesn't implement the correct acknowledgment format
 			return errors.New("cannot unmarshal acknowledgment")
 		}
 
-		entry := types.IdentityExecutionQueue{
+		entry := types.IdentityExecutionEntry{
 			Creator:   data.Requester,
 			RequestId: data.GetRequestId(),
 			Identity:  packetAck.GetIdentity(),

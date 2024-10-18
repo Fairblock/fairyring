@@ -15,7 +15,10 @@ import (
 )
 
 // PubKey returns the lates public keys
-func (k Keeper) PubKey(goCtx context.Context, req *types.QueryPubKeyRequest) (*types.QueryPubKeyResponse, error) {
+func (k Keeper) Pubkey(
+	goCtx context.Context,
+	req *types.QueryPubkeyRequest,
+) (*types.QueryPubkeyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if req == nil {
@@ -38,5 +41,5 @@ func (k Keeper) PubKey(goCtx context.Context, req *types.QueryPubKeyRequest) (*t
 		k.cdc.MustUnmarshal(b, &queuedPubKey)
 	}
 
-	return &types.QueryPubKeyResponse{ActivePubKey: activePubKey, QueuedPubKey: queuedPubKey}, nil
+	return &types.QueryPubkeyResponse{ActivePubkey: activePubKey, QueuedPubkey: queuedPubKey}, nil
 }

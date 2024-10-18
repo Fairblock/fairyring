@@ -3,14 +3,15 @@ package random
 import (
 	"encoding/base64"
 	"encoding/hex"
+	"math"
+	"math/big"
+
 	distIBE "github.com/FairBlock/DistributedIBE"
 	"github.com/Fairblock/fairyring/testutil/sample"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	dcrdSecp256k1 "github.com/decred/dcrd/dcrec/secp256k1"
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"
-	"math"
-	"math/big"
 )
 
 type GeneratedShare struct {
@@ -24,7 +25,7 @@ type GeneratedShare struct {
 
 type GenerateResult struct {
 	GeneratedShare             []*GeneratedShare
-	KeyShareEncryptedKeyShares []*types.EncryptedKeyShare
+	KeyShareEncryptedKeyShares []*types.EncryptedKeyshare
 	Commitments                []string
 	MasterPublicKey            string
 }
@@ -85,12 +86,12 @@ func GeneratePubKeyAndShares(totalNumberOfValidator uint32) (*GenerateResult, er
 
 	n := len(sharesList)
 
-	encShares := make([]*types.EncryptedKeyShare, n)
+	encShares := make([]*types.EncryptedKeyshare, n)
 
 	for _, v := range sharesList {
 		indexByte, _ := hex.DecodeString(v.Index.String())
 		indexInt := big.NewInt(0).SetBytes(indexByte).Uint64()
-		encShares[indexInt-1] = &types.EncryptedKeyShare{
+		encShares[indexInt-1] = &types.EncryptedKeyshare{
 			Data:      v.EncShare,
 			Validator: v.ValidatorAddress,
 		}

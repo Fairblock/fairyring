@@ -15,7 +15,7 @@ import (
 
 func CmdCreateLatestPubKey() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-latest-pub-key [public-key] [commitments] [number-of-validators] [encrypted-key-shares]",
+		Use:   "create-latest-pubkey [public-key] [commitments] [number-of-validators] [encrypted-keyshares]",
 		Short: "Create a latest public key",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -31,7 +31,7 @@ func CmdCreateLatestPubKey() *cobra.Command {
 				return err
 			}
 
-			encryptedShares := make([]*types.EncryptedKeyShare, numberOfValidators)
+			encryptedShares := make([]*types.EncryptedKeyshare, numberOfValidators)
 
 			if err := json.Unmarshal([]byte(args[3]), &encryptedShares); err != nil {
 				return err

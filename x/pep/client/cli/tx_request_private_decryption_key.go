@@ -12,22 +12,24 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdGetGeneralKeyshare() *cobra.Command {
+func CmdRequestPrivateDecryptionKey() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-general-keyshare [req-id]",
-		Short: "Broadcast message get-general-keyshare",
-		Args:  cobra.ExactArgs(1),
+		Use:   "request-private-decryption-key [req-id] [secp-pubkey]",
+		Short: "Broadcast message request-private-decryption-key",
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argReqId := args[0]
+			argPubkey := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgGetGeneralKeyshare(
+			msg := types.NewMsgRequestPrivateDecryptionKey(
 				clientCtx.GetFromAddress().String(),
 				argReqId,
+				argPubkey,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

@@ -21,14 +21,14 @@ func NewMsgCreateLatestPubKey(
 	publicKey string,
 	commitments []string,
 	numberOfValidators uint64,
-	encryptedKeyShares []*EncryptedKeyShare,
+	encryptedKeyshares []*EncryptedKeyshare,
 ) *MsgCreateLatestPubKey {
 	return &MsgCreateLatestPubKey{
 		Creator:            creator,
 		PublicKey:          publicKey,
 		Commitments:        commitments,
 		NumberOfValidators: numberOfValidators,
-		EncryptedKeyShares: encryptedKeyShares,
+		EncryptedKeyshares: encryptedKeyshares,
 	}
 }
 
@@ -52,8 +52,8 @@ func (msg *MsgCreateLatestPubKey) ValidateBasic() error {
 	if msg.NumberOfValidators != uint64(len(msg.Commitments)) {
 		return ErrNotMatchNumOfCommits.Wrapf("expected number of validators: %d, match number of commitments: %d", msg.NumberOfValidators, len(msg.Commitments))
 	}
-	if len(msg.EncryptedKeyShares) != len(msg.Commitments) {
-		return ErrNotMatchNumOfEncryptedKeyShares.Wrapf("expected number of encrypted key shares: %d, match number of commitments: %d", len(msg.EncryptedKeyShares), len(msg.Commitments))
+	if len(msg.EncryptedKeyshares) != len(msg.Commitments) {
+		return ErrNotMatchNumOfEncryptedKeyShares.Wrapf("expected number of encrypted key shares: %d, match number of commitments: %d", len(msg.EncryptedKeyshares), len(msg.Commitments))
 	}
 
 	for _, c := range msg.Commitments {
@@ -65,7 +65,7 @@ func (msg *MsgCreateLatestPubKey) ValidateBasic() error {
 		}
 	}
 
-	for i, v := range msg.EncryptedKeyShares {
+	for i, v := range msg.EncryptedKeyshares {
 		if v == nil {
 			return ErrEmptyEncryptedShares
 		}

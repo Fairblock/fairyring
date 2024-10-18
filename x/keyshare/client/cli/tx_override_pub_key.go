@@ -13,9 +13,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdOverrideLatestPubKey() *cobra.Command {
+func CmdOverrideLatestPubkey() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "override-latest-pub-key [public-key] [commitments] [number-of-validators] [encrypted-key-shares]",
+		Use:   "override-latest-pubkey [public-key] [commitments] [number-of-validators] [encrypted-keyshares]",
 		Short: "Override a latest public key",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -31,7 +31,7 @@ func CmdOverrideLatestPubKey() *cobra.Command {
 				return err
 			}
 
-			encryptedShares := make([]*types.EncryptedKeyShare, numberOfValidators)
+			encryptedShares := make([]*types.EncryptedKeyshare, numberOfValidators)
 
 			if err := json.Unmarshal([]byte(args[3]), &encryptedShares); err != nil {
 				return err

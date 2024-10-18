@@ -27,23 +27,23 @@ func TestKeyShareReqSingle(t *testing.T) {
 
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryKeyshareReqRequest
-		response *types.QueryKeyshareReqResponse
+		request  *types.QueryGeneralIdentityRequest
+		response *types.QueryGeneralIdentityResponse
 		err      error
 		errMsg   string
 	}{
 		{
 			desc: "First item",
-			request: &types.QueryKeyshareReqRequest{
+			request: &types.QueryGeneralIdentityRequest{
 				ReqId: out[0].RequestId,
 			},
-			response: &types.QueryKeyshareReqResponse{
-				Keyshare: &out[0],
+			response: &types.QueryGeneralIdentityResponse{
+				RequestDetails: &out[0],
 			},
 		},
 		{
 			desc: "Not found",
-			request: &types.QueryKeyshareReqRequest{
+			request: &types.QueryGeneralIdentityRequest{
 				ReqId: random.RandHex(64),
 			},
 			err: status.Error(codes.NotFound, "not found"),
@@ -55,7 +55,7 @@ func TestKeyShareReqSingle(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.KeyshareReq(wctx, tc.request)
+			response, err := keeper.GeneralIdentity(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
@@ -75,7 +75,7 @@ func TestKeyshareReqAll(t *testing.T) {
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNGeneralEncryptedTxEntry(&keeper, ctx, 5)
 
-	resp, err := keeper.KeyshareReqAll(wctx, &types.QueryKeyshareReqAllRequest{
+	resp, err := keeper.GeneralIdentityAll(wctx, &types.QueryGeneralIdentityAllRequest{
 		Pagination: &query.PageRequest{
 			Key:        nil,
 			Offset:     0,
@@ -84,11 +84,11 @@ func TestKeyshareReqAll(t *testing.T) {
 		},
 	})
 	require.NoError(t, err)
-	require.Equal(t, len(resp.Keyshares), len(msgs))
+	require.Equal(t, len(resp.RequestDetailsList), len(msgs))
 
-	check := make([]types.IdentityExecutionQueue, len(resp.Keyshares))
-	for i := range resp.Keyshares {
-		check[i] = *resp.Keyshares[i]
+	check := make([]types.IdentityExecutionEntry, len(resp.RequestDetailsList))
+	for i := range resp.RequestDetailsList {
+		check[i] = *resp.RequestDetailsList[i]
 	}
 
 	require.ElementsMatch(t,
@@ -107,8 +107,8 @@ func TestKeyshareReqPaginated(t *testing.T) {
 		offset,
 		limit uint64,
 		total bool,
-	) *types.QueryKeyshareReqAllRequest {
-		return &types.QueryKeyshareReqAllRequest{
+	) *types.QueryGeneralIdentityAllRequest {
+		return &types.QueryGeneralIdentityAllRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,
@@ -120,13 +120,13 @@ func TestKeyshareReqPaginated(t *testing.T) {
 	t.Run("ByOffset", func(t *testing.T) {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.KeyshareReqAll(wctx, request(nil, uint64(i), uint64(step), false))
+			resp, err := keeper.GeneralIdentityAll(wctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.Keyshares), step)
+			require.LessOrEqual(t, len(resp.RequestDetailsList), step)
 
-			check := make([]types.IdentityExecutionQueue, len(resp.Keyshares))
-			for j := range resp.Keyshares {
-				check[j] = *resp.Keyshares[j]
+			check := make([]types.IdentityExecutionEntry, len(resp.RequestDetailsList))
+			for j := range resp.RequestDetailsList {
+				check[j] = *resp.RequestDetailsList[j]
 			}
 
 			require.Subset(t,
@@ -139,13 +139,13 @@ func TestKeyshareReqPaginated(t *testing.T) {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.KeyshareReqAll(wctx, request(next, 0, uint64(step), false))
+			resp, err := keeper.GeneralIdentityAll(wctx, request(next, 0, uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.Keyshares), step)
+			require.LessOrEqual(t, len(resp.RequestDetailsList), step)
 
-			check := make([]types.IdentityExecutionQueue, len(resp.Keyshares))
-			for j := range resp.Keyshares {
-				check[j] = *resp.Keyshares[j]
+			check := make([]types.IdentityExecutionEntry, len(resp.RequestDetailsList))
+			for j := range resp.RequestDetailsList {
+				check[j] = *resp.RequestDetailsList[j]
 			}
 
 			require.Subset(t,
@@ -156,13 +156,13 @@ func TestKeyshareReqPaginated(t *testing.T) {
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.KeyshareReqAll(wctx, request(nil, 0, 0, true))
+		resp, err := keeper.GeneralIdentityAll(wctx, request(nil, 0, 0, true))
 		require.NoError(t, err)
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
 
-		check := make([]types.IdentityExecutionQueue, len(resp.Keyshares))
-		for j := range resp.Keyshares {
-			check[j] = *resp.Keyshares[j]
+		check := make([]types.IdentityExecutionEntry, len(resp.RequestDetailsList))
+		for j := range resp.RequestDetailsList {
+			check[j] = *resp.RequestDetailsList[j]
 		}
 
 		require.ElementsMatch(t,
@@ -171,7 +171,7 @@ func TestKeyshareReqPaginated(t *testing.T) {
 		)
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.KeyshareReqAll(wctx, nil)
+		_, err := keeper.GeneralIdentityAll(wctx, nil)
 		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

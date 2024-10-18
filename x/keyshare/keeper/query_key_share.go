@@ -15,15 +15,15 @@ import (
 )
 
 // KeyShareAll returns the list of all keyshares submitted
-func (k Keeper) KeyShareAll(
+func (k Keeper) KeyshareAll(
 	c context.Context,
-	req *types.QueryKeyShareAllRequest,
-) (*types.QueryKeyShareAllResponse, error) {
+	req *types.QueryKeyshareAllRequest,
+) (*types.QueryKeyshareAllResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var keyShares []types.KeyShare
+	var keyShares []types.Keyshare
 	ctx := sdk.UnwrapSDKContext(c)
 
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
@@ -31,7 +31,7 @@ func (k Keeper) KeyShareAll(
 	keyShareStore := prefix.NewStore(store, types.KeyPrefix(types.KeyShareKeyPrefix))
 
 	pageRes, err := query.Paginate(keyShareStore, req.Pagination, func(key []byte, value []byte) error {
-		var keyShare types.KeyShare
+		var keyShare types.Keyshare
 		if err := k.cdc.Unmarshal(value, &keyShare); err != nil {
 			return err
 		}
@@ -44,14 +44,14 @@ func (k Keeper) KeyShareAll(
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryKeyShareAllResponse{KeyShare: keyShares, Pagination: pageRes}, nil
+	return &types.QueryKeyshareAllResponse{Keyshare: keyShares, Pagination: pageRes}, nil
 }
 
 // KeyShare returns a single keyshare submitted by a particular validator for a particular block height
-func (k Keeper) KeyShare(
+func (k Keeper) Keyshare(
 	c context.Context,
-	req *types.QueryKeyShareRequest,
-) (*types.QueryKeyShareResponse, error) {
+	req *types.QueryKeyshareRequest,
+) (*types.QueryKeyshareResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -66,5 +66,5 @@ func (k Keeper) KeyShare(
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	return &types.QueryKeyShareResponse{KeyShare: val}, nil
+	return &types.QueryKeyshareResponse{Keyshare: val}, nil
 }

@@ -3,7 +3,7 @@ package pep
 
 import (
 	_ "cosmossdk.io/api/amino"
-	common "cosmossdk.io/api/fairyring/common"
+	common "github.com/Fairblock/fairyring/api/fairyring/common"
 	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"

@@ -25,30 +25,30 @@ func TestPrivateKeyshareReq(t *testing.T) {
 	wctx := sdk.UnwrapSDKContext(ctx)
 
 	req := types.PrivateRequest{
-		Creator:            sample.AccAddress(),
-		ReqId:              random.RandHex(16),
-		Pubkey:             random.RandHex(96),
-		EncryptedKeyshares: make([]*types2.EncryptedKeyshare, 0),
+		Creator:               sample.AccAddress(),
+		ReqId:                 random.RandHex(16),
+		Pubkey:                random.RandHex(96),
+		PrivateDecryptionKeys: make([]*types2.PrivateDecryptionKey, 0),
 	}
 
 	keeper.SetPrivateRequest(wctx, req)
 
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryPrivateKeyshareReqRequest
-		response *types.QueryPrivateKeyshareReqResponse
+		request  *types.QueryPrivateIdentityRequest
+		response *types.QueryPrivateIdentityResponse
 		err      error
 	}{
 		{
 			desc: "ValidRequest",
-			request: &types.QueryPrivateKeyshareReqRequest{
+			request: &types.QueryPrivateIdentityRequest{
 				ReqId: req.ReqId,
 			},
-			response: &types.QueryPrivateKeyshareReqResponse{
-				Creator:            req.Creator,
-				ReqId:              req.ReqId,
-				Pubkey:             req.Pubkey,
-				EncryptedKeyshares: req.EncryptedKeyshares,
+			response: &types.QueryPrivateIdentityResponse{
+				Creator:               req.Creator,
+				ReqId:                 req.ReqId,
+				Pubkey:                req.Pubkey,
+				PrivateDecryptionKeys: req.PrivateDecryptionKeys,
 			},
 		},
 		{
@@ -58,7 +58,7 @@ func TestPrivateKeyshareReq(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.PrivateKeyshareReq(wctx, tc.request)
+			response, err := keeper.PrivateIdentity(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {

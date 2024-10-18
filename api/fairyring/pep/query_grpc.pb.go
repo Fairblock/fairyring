@@ -26,7 +26,7 @@ const (
 	Query_LatestHeight_FullMethodName             = "/fairyring.pep.Query/LatestHeight"
 	Query_PepNonce_FullMethodName                 = "/fairyring.pep.Query/PepNonce"
 	Query_PepNonceAll_FullMethodName              = "/fairyring.pep.Query/PepNonceAll"
-	Query_PubKey_FullMethodName                   = "/fairyring.pep.Query/PubKey"
+	Query_Pubkey_FullMethodName                   = "/fairyring.pep.Query/Pubkey"
 	Query_GeneralIdentity_FullMethodName          = "/fairyring.pep.Query/GeneralIdentity"
 	Query_GeneralIdentityAll_FullMethodName       = "/fairyring.pep.Query/GeneralIdentityAll"
 	Query_PrivateIdentity_FullMethodName          = "/fairyring.pep.Query/PrivateIdentity"
@@ -52,7 +52,7 @@ type QueryClient interface {
 	// Queries a list of PepNonce items.
 	PepNonceAll(ctx context.Context, in *QueryPepNonceAllRequest, opts ...grpc.CallOption) (*QueryPepNonceAllResponse, error)
 	// Queries the public keys
-	PubKey(ctx context.Context, in *QueryPubKeyRequest, opts ...grpc.CallOption) (*QueryPubKeyResponse, error)
+	Pubkey(ctx context.Context, in *QueryPubkeyRequest, opts ...grpc.CallOption) (*QueryPubkeyResponse, error)
 	// Queries a General Identity request by request id
 	GeneralIdentity(ctx context.Context, in *QueryGeneralIdentityRequest, opts ...grpc.CallOption) (*QueryGeneralIdentityResponse, error)
 	// Queries a list of General Identity requests
@@ -134,9 +134,9 @@ func (c *queryClient) PepNonceAll(ctx context.Context, in *QueryPepNonceAllReque
 	return out, nil
 }
 
-func (c *queryClient) PubKey(ctx context.Context, in *QueryPubKeyRequest, opts ...grpc.CallOption) (*QueryPubKeyResponse, error) {
-	out := new(QueryPubKeyResponse)
-	err := c.cc.Invoke(ctx, Query_PubKey_FullMethodName, in, out, opts...)
+func (c *queryClient) Pubkey(ctx context.Context, in *QueryPubkeyRequest, opts ...grpc.CallOption) (*QueryPubkeyResponse, error) {
+	out := new(QueryPubkeyResponse)
+	err := c.cc.Invoke(ctx, Query_Pubkey_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -198,7 +198,7 @@ type QueryServer interface {
 	// Queries a list of PepNonce items.
 	PepNonceAll(context.Context, *QueryPepNonceAllRequest) (*QueryPepNonceAllResponse, error)
 	// Queries the public keys
-	PubKey(context.Context, *QueryPubKeyRequest) (*QueryPubKeyResponse, error)
+	Pubkey(context.Context, *QueryPubkeyRequest) (*QueryPubkeyResponse, error)
 	// Queries a General Identity request by request id
 	GeneralIdentity(context.Context, *QueryGeneralIdentityRequest) (*QueryGeneralIdentityResponse, error)
 	// Queries a list of General Identity requests
@@ -235,8 +235,8 @@ func (UnimplementedQueryServer) PepNonce(context.Context, *QueryPepNonceRequest)
 func (UnimplementedQueryServer) PepNonceAll(context.Context, *QueryPepNonceAllRequest) (*QueryPepNonceAllResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PepNonceAll not implemented")
 }
-func (UnimplementedQueryServer) PubKey(context.Context, *QueryPubKeyRequest) (*QueryPubKeyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PubKey not implemented")
+func (UnimplementedQueryServer) Pubkey(context.Context, *QueryPubkeyRequest) (*QueryPubkeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Pubkey not implemented")
 }
 func (UnimplementedQueryServer) GeneralIdentity(context.Context, *QueryGeneralIdentityRequest) (*QueryGeneralIdentityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GeneralIdentity not implemented")
@@ -389,20 +389,20 @@ func _Query_PepNonceAll_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_PubKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryPubKeyRequest)
+func _Query_Pubkey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryPubkeyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).PubKey(ctx, in)
+		return srv.(QueryServer).Pubkey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Query_PubKey_FullMethodName,
+		FullMethod: Query_Pubkey_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).PubKey(ctx, req.(*QueryPubKeyRequest))
+		return srv.(QueryServer).Pubkey(ctx, req.(*QueryPubkeyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -515,8 +515,8 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Query_PepNonceAll_Handler,
 		},
 		{
-			MethodName: "PubKey",
-			Handler:    _Query_PubKey_Handler,
+			MethodName: "Pubkey",
+			Handler:    _Query_Pubkey_Handler,
 		},
 		{
 			MethodName: "GeneralIdentity",

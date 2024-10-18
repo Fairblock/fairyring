@@ -152,7 +152,7 @@ func (im IBCModule) OnRecvPacket(
 	switch packet := modulePacketData.Packet.(type) {
 
 	case *types.KeysharePacketData_RequestDecryptionKeyPacket:
-		packetAck, err := im.keeper.OnRecvRequestAggrKeysharePacket(ctx, modulePacket, *packet.RequestDecryptionKeyPacket)
+		packetAck, err := im.keeper.OnRecvRequestDecryptionKeyPacket(ctx, modulePacket, *packet.RequestDecryptionKeyPacket)
 		if err != nil {
 			ack = channeltypes.NewErrorAcknowledgement(err)
 		} else {
@@ -171,7 +171,7 @@ func (im IBCModule) OnRecvPacket(
 		)
 
 	case *types.KeysharePacketData_RequestPrivateDecryptionKeyPacket:
-		packetAck, err := im.keeper.OnRecvRequestPrivateKeysharePacket(ctx, modulePacket, *packet.RequestPrivateDecryptionKeyPacket)
+		packetAck, err := im.keeper.OnRecvRequestPrivateDecryptionKeyPacket(ctx, modulePacket, *packet.RequestPrivateDecryptionKeyPacket)
 		if err != nil {
 			ack = channeltypes.NewErrorAcknowledgement(err)
 		} else {
@@ -190,7 +190,7 @@ func (im IBCModule) OnRecvPacket(
 		)
 
 	case *types.KeysharePacketData_GetPrivateDecryptionKeyPacket:
-		packetAck, err := im.keeper.OnRecvGetPrivateKeysharePacket(ctx, modulePacket, *packet.GetPrivateDecryptionKeyPacket)
+		packetAck, err := im.keeper.OnRecvGetPrivateDecryptionKeyPacket(ctx, modulePacket, *packet.GetPrivateDecryptionKeyPacket)
 		if err != nil {
 			ack = channeltypes.NewErrorAcknowledgement(err)
 		} else {
@@ -206,7 +206,7 @@ func (im IBCModule) OnRecvPacket(
 			),
 		)
 	case *types.KeysharePacketData_GetDecryptionKeyPacket:
-		packetAck, err := im.keeper.OnRecvGetAggrKeysharePacket(ctx, modulePacket, *packet.GetDecryptionKeyPacket)
+		packetAck, err := im.keeper.OnRecvGetDecryptionKeyPacket(ctx, modulePacket, *packet.GetDecryptionKeyPacket)
 		if err != nil {
 			ack = channeltypes.NewErrorAcknowledgement(err)
 		} else {
@@ -274,7 +274,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 	switch packet := modulePacketData.Packet.(type) {
 
 	case *types.KeysharePacketData_DecryptionKeyDataPacket:
-		err := im.keeper.OnAcknowledgementAggrKeyshareDataPacket(ctx, modulePacket, *packet.DecryptionKeyDataPacket, ack)
+		err := im.keeper.OnAcknowledgementDecryptionKeyDataPacket(ctx, modulePacket, *packet.DecryptionKeyDataPacket, ack)
 		if err != nil {
 			return err
 		}
@@ -328,19 +328,19 @@ func (im IBCModule) OnTimeoutPacket(
 	switch packet := modulePacketData.Packet.(type) {
 
 	case *types.KeysharePacketData_RequestDecryptionKeyPacket:
-		err := im.keeper.OnTimeoutRequestAggrKeysharePacket(ctx, modulePacket, *packet.RequestDecryptionKeyPacket)
+		err := im.keeper.OnTimeoutRequestDecryptionKeyPacket(ctx, modulePacket, *packet.RequestDecryptionKeyPacket)
 		if err != nil {
 			return err
 		}
 
 	case *types.KeysharePacketData_GetDecryptionKeyPacket:
-		err := im.keeper.OnTimeoutGetAggrKeysharePacket(ctx, modulePacket, *packet.GetDecryptionKeyPacket)
+		err := im.keeper.OnTimeoutGetDecryptionKeyPacket(ctx, modulePacket, *packet.GetDecryptionKeyPacket)
 		if err != nil {
 			return err
 		}
 
 	case *types.KeysharePacketData_DecryptionKeyDataPacket:
-		err := im.keeper.OnTimeoutAggrKeyshareDataPacket(ctx, modulePacket, *packet.DecryptionKeyDataPacket)
+		err := im.keeper.OnTimeoutDecryptionKeyDataPacket(ctx, modulePacket, *packet.DecryptionKeyDataPacket)
 		if err != nil {
 			return err
 		}

@@ -23,7 +23,7 @@ func (k Keeper) DecryptionKeyAll(
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var aggregatedKeyShares []types.AggregatedKeyShare
+	var aggregatedKeyShares []types.DecryptionKey
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
@@ -31,7 +31,7 @@ func (k Keeper) DecryptionKeyAll(
 	aggregatedKeyShareStore := prefix.NewStore(store, types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
 
 	pageRes, err := query.Paginate(aggregatedKeyShareStore, req.Pagination, func(key []byte, value []byte) error {
-		var aggregatedKeyShare types.AggregatedKeyShare
+		var aggregatedKeyShare types.DecryptionKey
 		if err := k.cdc.Unmarshal(value, &aggregatedKeyShare); err != nil {
 			return err
 		}

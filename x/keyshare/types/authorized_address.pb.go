@@ -22,7 +22,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// AuthorizedAddress defines if an address is authorized to submit pubkeys
+// AuthorizedAddress defines if an address is authorized to submit keyshares
 type AuthorizedAddress struct {
 	Target       string `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	IsAuthorized bool   `protobuf:"varint,2,opt,name=is_authorized,json=isAuthorized,proto3" json:"is_authorized,omitempty"`

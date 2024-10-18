@@ -21,17 +21,17 @@ func TestGetGeneralKeyshare(t *testing.T) {
 	creator := "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq"
 
 	// Test case when entry is not found
-	msg := &types.MsgGetGeneralKeyshare{
+	msg := &types.MsgRequestGeneralDecryptionKey{
 		Creator: creator,
 		ReqId:   "invalid_req_id",
 	}
 
-	_, err := srv.GetGeneralKeyshare(goCtx, msg)
+	_, err := srv.RequestGeneralDecryptionKey(goCtx, msg)
 	require.Error(t, err)
 	require.Equal(t, "request not found", err.Error())
 
 	// Test case when creator is unauthorized
-	entry := types.IdentityExecutionQueue{
+	entry := types.IdentityExecutionEntry{
 		Creator:   "authorized_creator",
 		RequestId: "test_req_id",
 		Identity:  "test_identity",
@@ -39,24 +39,24 @@ func TestGetGeneralKeyshare(t *testing.T) {
 
 	k.SetEntry(ctx, entry)
 
-	msg = &types.MsgGetGeneralKeyshare{
+	msg = &types.MsgRequestGeneralDecryptionKey{
 		Creator: "unauthorized_creator",
 		ReqId:   "test_req_id",
 	}
 
-	_, err = srv.GetGeneralKeyshare(goCtx, msg)
+	_, err = srv.RequestGeneralDecryptionKey(goCtx, msg)
 	require.Error(t, err)
 	require.Equal(t, "unauthorized request. only creator can make this request", err.Error())
 
 	// Test case when IsSourceChain is true
 	k.SetParams(ctx, types.Params{IsSourceChain: true})
 
-	msg = &types.MsgGetGeneralKeyshare{
+	msg = &types.MsgRequestGeneralDecryptionKey{
 		Creator: "authorized_creator",
 		ReqId:   "test_req_id",
 	}
 
-	_, err = srv.GetGeneralKeyshare(goCtx, msg)
+	_, err = srv.RequestGeneralDecryptionKey(goCtx, msg)
 	require.NoError(t, err)
 
 	// Ensure the correct request is stored
@@ -71,7 +71,7 @@ func TestOnAcknowledgementGetAggrKeysharePacket(t *testing.T) {
 	k, ctx := keepertest.PepKeeper(t)
 
 	packet := channeltypes.Packet{}
-	packetData := kstypes.GetAggrKeysharePacketData{
+	packetData := kstypes.GetDecryptionKeyPacketData{
 		Identity: "test_identity",
 	}
 	ack := channeltypes.Acknowledgement{
@@ -81,7 +81,7 @@ func TestOnAcknowledgementGetAggrKeysharePacket(t *testing.T) {
 	}
 
 	// Test success case for OnAcknowledgementGetAggrKeysharePacket
-	err := k.OnAcknowledgementGetAggrKeysharePacket(ctx, packet, packetData, ack)
+	err := k.OnAcknowledgementGetDecryptionKeyPacket(ctx, packet, packetData, ack)
 	require.NoError(t, err)
 
 	// Test error case for unmarshalling acknowledgment
@@ -91,7 +91,7 @@ func TestOnAcknowledgementGetAggrKeysharePacket(t *testing.T) {
 		},
 	}
 
-	err = k.OnAcknowledgementGetAggrKeysharePacket(ctx, packet, packetData, invalidAck)
+	err = k.OnAcknowledgementGetDecryptionKeyPacket(ctx, packet, packetData, invalidAck)
 	require.Error(t, err)
 	require.Equal(t, "cannot unmarshal acknowledgment", err.Error())
 
@@ -102,6 +102,6 @@ func TestOnAcknowledgementGetAggrKeysharePacket(t *testing.T) {
 		},
 	}
 
-	err = k.OnAcknowledgementGetAggrKeysharePacket(ctx, packet, packetData, errorAck)
+	err = k.OnAcknowledgementGetDecryptionKeyPacket(ctx, packet, packetData, errorAck)
 	require.NoError(t, err)
 }

@@ -14,7 +14,7 @@ import (
 func (k Keeper) GetEntry(
 	ctx context.Context,
 	reqID string,
-) (val types.IdentityExecutionQueue, found bool) {
+) (val types.IdentityExecutionEntry, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxKeyPrefix))
 
@@ -32,7 +32,7 @@ func (k Keeper) GetEntry(
 // SetEntry sets a queue entry by its identity
 func (k Keeper) SetEntry(
 	ctx context.Context,
-	val types.IdentityExecutionQueue,
+	val types.IdentityExecutionEntry,
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxKeyPrefix))
@@ -55,7 +55,7 @@ func (k Keeper) RemoveEntry(
 }
 
 // GetAllGenEncTxEntry returns all GenEncTxQueue entries
-func (k Keeper) GetAllGenEncTxEntry(ctx context.Context) (list []types.IdentityExecutionQueue) {
+func (k Keeper) GetAllGenEncTxEntry(ctx context.Context) (list []types.IdentityExecutionEntry) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
@@ -63,7 +63,7 @@ func (k Keeper) GetAllGenEncTxEntry(ctx context.Context) (list []types.IdentityE
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.IdentityExecutionQueue
+		var val types.IdentityExecutionEntry
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
@@ -79,11 +79,11 @@ func (k Keeper) AppendTxToEntry(
 	var index uint64 = 0
 	var list types.GeneralEncryptedTxArray
 	if val.TxList != nil {
-		index = uint64(len(val.TxList.EncryptedTx))
+		index = uint64(len(val.TxList.EncryptedTxs))
 		list = *val.TxList
 	}
 	encTx.Index = index
-	list.EncryptedTx = append(list.EncryptedTx, encTx)
+	list.EncryptedTxs = append(list.EncryptedTxs, encTx)
 
 	val.TxList = &list
 	k.SetEntry(ctx, val)
@@ -94,7 +94,7 @@ func (k Keeper) AppendTxToEntry(
 func (k Keeper) GetRequestQueueEntry(
 	ctx context.Context,
 	reqID string,
-) (val commontypes.RequestAggrKeyshare, found bool) {
+) (val commontypes.RequestDecryptionKey, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxReqQueueKeyPrefix))
 
@@ -112,7 +112,7 @@ func (k Keeper) GetRequestQueueEntry(
 // SetQueueEntry sets a queue entry by its identity
 func (k Keeper) SetReqQueueEntry(
 	ctx context.Context,
-	val commontypes.RequestAggrKeyshare,
+	val commontypes.RequestDecryptionKey,
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxReqQueueKeyPrefix))
@@ -137,7 +137,7 @@ func (k Keeper) RemoveReqQueueEntry(
 // GetAllGenEncTxQueueEntry returns all GenEncTxQueue entries
 func (k Keeper) GetAllGenEncTxReqQueueEntry(
 	ctx context.Context,
-) (list []commontypes.RequestAggrKeyshare) {
+) (list []commontypes.RequestDecryptionKey) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxReqQueueKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
@@ -145,7 +145,7 @@ func (k Keeper) GetAllGenEncTxReqQueueEntry(
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val commontypes.RequestAggrKeyshare
+		var val commontypes.RequestDecryptionKey
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
@@ -156,7 +156,7 @@ func (k Keeper) GetAllGenEncTxReqQueueEntry(
 func (k Keeper) GetSignalQueueEntry(
 	ctx context.Context,
 	reqID string,
-) (val commontypes.GetAggrKeyshare, found bool) {
+) (val commontypes.GetDecryptionKey, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxSignalQueueKeyPrefix))
 
@@ -174,7 +174,7 @@ func (k Keeper) GetSignalQueueEntry(
 // SetQueueEntry sets a queue entry by its identity
 func (k Keeper) SetSignalQueueEntry(
 	ctx context.Context,
-	val commontypes.GetAggrKeyshare,
+	val commontypes.GetDecryptionKey,
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxSignalQueueKeyPrefix))
@@ -199,7 +199,7 @@ func (k Keeper) RemoveSignalQueueEntry(
 // GetAllGenEncTxQueueEntry returns all GenEncTxQueue entries
 func (k Keeper) GetAllGenEncTxSignalQueueEntry(
 	ctx context.Context,
-) (list []commontypes.GetAggrKeyshare) {
+) (list []commontypes.GetDecryptionKey) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxSignalQueueKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
@@ -207,7 +207,7 @@ func (k Keeper) GetAllGenEncTxSignalQueueEntry(
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val commontypes.GetAggrKeyshare
+		var val commontypes.GetDecryptionKey
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
@@ -218,7 +218,7 @@ func (k Keeper) GetAllGenEncTxSignalQueueEntry(
 func (k Keeper) GetExecutionQueueEntry(
 	ctx context.Context,
 	reqID string,
-) (val types.IdentityExecutionQueue, found bool) {
+) (val types.IdentityExecutionEntry, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxExeQueueKeyPrefix))
 
@@ -236,7 +236,7 @@ func (k Keeper) GetExecutionQueueEntry(
 // SetQueueEntry sets a queue entry by its identity
 func (k Keeper) SetExecutionQueueEntry(
 	ctx context.Context,
-	val types.IdentityExecutionQueue,
+	val types.IdentityExecutionEntry,
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxExeQueueKeyPrefix))
@@ -261,7 +261,7 @@ func (k Keeper) RemoveExecutionQueueEntry(
 // GetAllGenEncTxQueueEntry returns all GenEncTxQueue entries
 func (k Keeper) GetAllGenEncTxExecutionQueueEntry(
 	ctx context.Context,
-) (list []types.IdentityExecutionQueue) {
+) (list []types.IdentityExecutionEntry) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxExeQueueKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
@@ -269,7 +269,7 @@ func (k Keeper) GetAllGenEncTxExecutionQueueEntry(
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.IdentityExecutionQueue
+		var val types.IdentityExecutionEntry
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
@@ -280,7 +280,7 @@ func (k Keeper) GetAllGenEncTxExecutionQueueEntry(
 func (k Keeper) GetPrivateRequestQueueEntry(
 	ctx context.Context,
 	reqID string,
-) (val commontypes.RequestEncryptedKeyshare, found bool) {
+) (val commontypes.RequestPrivateDecryptionKey, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateRequestQueueKeyPrefix))
 
@@ -298,7 +298,7 @@ func (k Keeper) GetPrivateRequestQueueEntry(
 // SetPrivateReqQueueEntry sets a queue entry by its identity
 func (k Keeper) SetPrivateReqQueueEntry(
 	ctx context.Context,
-	val commontypes.RequestEncryptedKeyshare,
+	val commontypes.RequestPrivateDecryptionKey,
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateRequestQueueKeyPrefix))
@@ -322,7 +322,7 @@ func (k Keeper) RemovePrivateReqQueueEntry(
 
 // GetAllPrivateReqQueueEntry returns all PrivateQueue entries
 func (k Keeper) GetAllPrivateReqQueueEntry(
-	ctx context.Context) (list []commontypes.RequestEncryptedKeyshare) {
+	ctx context.Context) (list []commontypes.RequestPrivateDecryptionKey) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateRequestQueueKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
@@ -330,7 +330,7 @@ func (k Keeper) GetAllPrivateReqQueueEntry(
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val commontypes.RequestEncryptedKeyshare
+		var val commontypes.RequestPrivateDecryptionKey
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
@@ -341,7 +341,7 @@ func (k Keeper) GetAllPrivateReqQueueEntry(
 func (k Keeper) GetPrivateSignalQueueEntry(
 	ctx context.Context,
 	reqID string,
-) (val commontypes.GetPrivateKeyshare, found bool) {
+) (val commontypes.GetPrivateDecryptionKey, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateSignalQueueKeyPrefix))
 
@@ -359,7 +359,7 @@ func (k Keeper) GetPrivateSignalQueueEntry(
 // SetPrivateSignalQueueEntry sets a queue entry by its identity
 func (k Keeper) SetPrivateSignalQueueEntry(
 	ctx context.Context,
-	val commontypes.GetPrivateKeyshare,
+	val commontypes.GetPrivateDecryptionKey,
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateSignalQueueKeyPrefix))
@@ -384,7 +384,7 @@ func (k Keeper) RemovePrivateSignalQueueEntry(
 // GetAllPrivateSignalQueueEntry returns all GenEncTxQueue entries
 func (k Keeper) GetAllPrivateSignalQueueEntry(
 	ctx context.Context,
-) (list []commontypes.GetPrivateKeyshare) {
+) (list []commontypes.GetPrivateDecryptionKey) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateSignalQueueKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
@@ -392,7 +392,7 @@ func (k Keeper) GetAllPrivateSignalQueueEntry(
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val commontypes.GetPrivateKeyshare
+		var val commontypes.GetPrivateDecryptionKey
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}

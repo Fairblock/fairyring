@@ -42,7 +42,7 @@ func (k Keeper) OnRecvGetDecryptionKeyPacket(
 		return packetAck, err
 	}
 
-	if keyshareReq.AggrKeyshare == "" {
+	if keyshareReq.DecryptionKey == "" {
 
 		k.Logger().Info("Got OnRecvGetAggrKeysharePacket")
 
@@ -95,14 +95,14 @@ func (k Keeper) OnRecvGetPrivateDecryptionKeyPacket(
 			PortId:    packet.SourcePort,
 		}
 
-		keyshareReq.EncryptedKeyshares = make([]*commontypes.GetDecryptionKey, 0)
+		keyshareReq.PrivateDecryptionKeys = make([]*commontypes.PrivateDecryptionKey, 0)
 		keyshareReq.RequestId = data.Identity
 		keyshareReq.Sent = false
 
 		k.SetPrivateKeyShareRequest(ctx, keyshareReq)
 	}
 
-	if len(keyshareReq.EncryptedKeyshares) == 0 {
+	if len(keyshareReq.PrivateDecryptionKeys) == 0 {
 		k.Logger().Info("Got OnRecvGetPrivateKeysharePacket")
 
 		ctx.EventManager().EmitEvent(

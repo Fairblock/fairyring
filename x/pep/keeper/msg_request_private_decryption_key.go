@@ -17,19 +17,22 @@ import (
 	host "github.com/cosmos/ibc-go/v8/modules/core/24-host"
 )
 
-func (k msgServer) GetPrivateKeyshares(goCtx context.Context, msg *types.MsgGetPrivateKeyshares) (*types.MsgGetPrivateKeysharesResponse, error) {
+func (k msgServer) RequestPrivateDecryptionKey(
+	goCtx context.Context,
+	msg *types.MsgRequestPrivateDecryptionKey,
+) (*types.MsgRequestPrivateDecryptionKeyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	requester := sdk.MustAccAddressFromBech32(msg.Creator)
 
 	entry, found := k.GetPrivateRequest(ctx, msg.ReqId)
 	if !found {
-		pubkey, found := k.GetActivePubKey(ctx)
+		pubkey, found := k.GetActivePubkey(ctx)
 		if !found {
-			return &types.MsgGetPrivateKeysharesResponse{}, errors.New("entry and pubkey not found")
+			return &types.MsgRequestPrivateDecryptionKeyResponse{}, errors.New("entry and pubkey not found")
 		}
 
 		entry.Creator = ""
-		entry.EncryptedKeyshares = make([]*commontypes.EncryptedKeyshare, 0)
+		entry.PrivateDecryptionKeys = make([]*commontypes.PrivateDecryptionKey, 0)
 		entry.Pubkey = pubkey.PublicKey
 		entry.ReqId = msg.ReqId
 
@@ -38,11 +41,11 @@ func (k msgServer) GetPrivateKeyshares(goCtx context.Context, msg *types.MsgGetP
 
 	params := k.GetParams(ctx)
 
-	if params.PrivateKeysharePrice.Amount.GT(math.ZeroInt()) {
+	if params.PrivateDecryptionKeyPrice.Amount.GT(math.ZeroInt()) {
 		err := k.bankKeeper.SendCoinsFromAccountToModule(ctx,
 			requester,
 			types.ModuleName,
-			sdk.NewCoins(*params.PrivateKeysharePrice),
+			sdk.NewCoins(*params.PrivateDecryptionKeyPrice),
 		)
 		if err != nil {
 			k.Logger().Info(fmt.Sprintf("Error on sending coins: %v", err.Error()))
@@ -51,7 +54,7 @@ func (k msgServer) GetPrivateKeyshares(goCtx context.Context, msg *types.MsgGetP
 	}
 
 	if params.IsSourceChain {
-		var qentry = commontypes.GetPrivateKeyshare{
+		var qentry = commontypes.GetPrivateDecryptionKey{
 			RequestId:  msg.ReqId,
 			Identity:   msg.ReqId,
 			Requester:  msg.Creator,
@@ -59,9 +62,9 @@ func (k msgServer) GetPrivateKeyshares(goCtx context.Context, msg *types.MsgGetP
 		}
 
 		k.SetPrivateSignalQueueEntry(ctx, qentry)
-		return &types.MsgGetPrivateKeysharesResponse{}, nil
+		return &types.MsgRequestPrivateDecryptionKeyResponse{}, nil
 	} else {
-		packetData := kstypes.GetPrivateKeysharePacketData{
+		packetData := kstypes.GetPrivateDecryptionKeyPacketData{
 			Identity:   msg.ReqId,
 			Requester:  msg.Creator,
 			SecpPubkey: msg.SecpPubkey,
@@ -69,7 +72,7 @@ func (k msgServer) GetPrivateKeyshares(goCtx context.Context, msg *types.MsgGetP
 
 		sPort := k.GetPort(ctx)
 		timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
-		_, _ = k.TransmitGetPrivateKeysharePacket(
+		_, _ = k.TransmitGetPrivateDecryptionKeyPacket(
 			ctx,
 			packetData,
 			sPort,
@@ -88,13 +91,13 @@ func (k msgServer) GetPrivateKeyshares(goCtx context.Context, msg *types.MsgGetP
 		)
 	}
 
-	return &types.MsgGetPrivateKeysharesResponse{}, nil
+	return &types.MsgRequestPrivateDecryptionKeyResponse{}, nil
 }
 
 // TransmitGetPrivateKeysharePacket transmits the packet over IBC with the specified source port and source channel
-func (k Keeper) TransmitGetPrivateKeysharePacket(
+func (k Keeper) TransmitGetPrivateDecryptionKeyPacket(
 	ctx sdk.Context,
-	packetData kstypes.GetPrivateKeysharePacketData,
+	packetData kstypes.GetPrivateDecryptionKeyPacketData,
 	sourcePort,
 	sourceChannel string,
 	timeoutHeight clienttypes.Height,
@@ -112,7 +115,12 @@ func (k Keeper) TransmitGetPrivateKeysharePacket(
 
 // OnAcknowledgementGetPrivateKeysharePacket responds to the the success or failure of a packet
 // acknowledgement written on the receiving chain.
-func (k Keeper) OnAcknowledgementGetPrivateKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data kstypes.GetPrivateKeysharePacketData, ack channeltypes.Acknowledgement) error {
+func (k Keeper) OnAcknowledgementGetPrivateDecryptionKeyPacket(
+	ctx sdk.Context,
+	packet channeltypes.Packet,
+	data kstypes.GetPrivateDecryptionKeyPacketData,
+	ack channeltypes.Acknowledgement,
+) error {
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
 
@@ -121,7 +129,7 @@ func (k Keeper) OnAcknowledgementGetPrivateKeysharePacket(ctx sdk.Context, packe
 		return nil
 	case *channeltypes.Acknowledgement_Result:
 		// Decode the packet acknowledgment
-		var packetAck kstypes.GetPrivateKeysharePacketAck
+		var packetAck kstypes.GetPrivateDecryptionKeyPacketAck
 
 		if err := types.ModuleCdc.UnmarshalJSON(dispatchedAck.Result, &packetAck); err != nil {
 			// The counter-party module doesn't implement the correct acknowledgment format

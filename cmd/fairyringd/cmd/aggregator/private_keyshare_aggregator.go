@@ -62,9 +62,9 @@ func AggregateCmd() *cobra.Command {
 
 				queryClient := types.NewQueryClient(clientCtx)
 
-				res, err := queryClient.PrivateKeyshareReq(
+				res, err := queryClient.PrivateIdentity(
 					context.Background(),
-					&types.QueryPrivateKeyshareReqRequest{
+					&types.QueryPrivateIdentityRequest{
 						ReqId: identity,
 					},
 				)
@@ -72,13 +72,13 @@ func AggregateCmd() *cobra.Command {
 					return err
 				}
 
-				if len(res.EncryptedKeyshares) == 0 {
+				if len(res.PrivateDecryptionKeys) == 0 {
 					return errors.New("no encrypted keyshares found for request")
 				}
 
 				found := false
 
-				for _, requester := range res.EncryptedKeyshares {
+				for _, requester := range res.PrivateDecryptionKeys {
 					if requester.Requester == reqAddr {
 						found = true
 						for _, val := range requester.PrivateKeyshares {

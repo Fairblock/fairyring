@@ -51,33 +51,33 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "address"}},
 				},
 				{
-					RpcMethod: "PubKey",
+					RpcMethod: "Pubkey",
 					Use:       "show-active-pub-key",
 					Short:     "Show the active and queued public key",
 				},
 				{
-					RpcMethod:      "KeyshareReq",
-					Use:            "show-keyshare-req [req-id]",
-					Short:          "show a particular pending keyshare request by request-id",
+					RpcMethod:      "GeneralIdentity",
+					Use:            "show-general-identity [req-id]",
+					Short:          "show a particular identity request by request-id",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "req_id"}},
 				},
 				{
-					RpcMethod: "KeyshareReqAll",
-					Use:       "list-keyshare-req",
-					Short:     "list all pending keyshare requests",
+					RpcMethod: "GeneralIdentityAll",
+					Use:       "list-general-identities",
+					Short:     "list all identity requests",
 				},
 				{
-					RpcMethod:      "PrivateKeyshareReq",
-					Use:            "show-private-keyshare-req [req-id]",
-					Short:          "Query show-private-keyshare-req",
+					RpcMethod:      "PrivateIdentity",
+					Use:            "show-private-identity [req-id]",
+					Short:          "show a particular private identity request by request-id ",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "req_id"}},
 				},
 
 				{
 					RpcMethod:      "DecryptData",
-					Use:            "decrypt-data [pubkey] [aggr-keyshare] [encrypted-data]",
+					Use:            "decrypt-data [pubkey] [decryption-key] [encrypted-data]",
 					Short:          "Query decrypt-data",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "pubkey"}, {ProtoField: "aggr_keyshare"}, {ProtoField: "encrypted_data"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "pubkey"}, {ProtoField: "decryption_key"}, {ProtoField: "encrypted_data"}},
 				},
 
 				// this line is used by ignite scaffolding # autocli/query

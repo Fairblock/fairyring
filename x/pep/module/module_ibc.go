@@ -149,8 +149,12 @@ func (im IBCModule) OnRecvPacket(
 		// Dispatch packet
 		switch packet := ksModulePacketData.Packet.(type) {
 
-		case *kstypes.KeysharePacketData_AggrKeyshareDataPacket:
-			packetAck, err := im.keeper.OnRecvAggrKeyshareDataPacket(ctx, modulePacket, *packet.AggrKeyshareDataPacket)
+		case *kstypes.KeysharePacketData_DecryptionKeyDataPacket:
+			packetAck, err := im.keeper.OnRecvDecryptionKeyDataPacket(
+				ctx,
+				modulePacket,
+				*packet.DecryptionKeyDataPacket,
+			)
 			if err != nil {
 				ack = channeltypes.NewErrorAcknowledgement(err)
 			} else {
@@ -167,8 +171,12 @@ func (im IBCModule) OnRecvPacket(
 			)
 			return ack
 
-		case *kstypes.KeysharePacketData_EncryptedKeysharesPacketData:
-			packetAck, err := im.keeper.OnRecvEncKeyshareDataPacket(ctx, modulePacket, *packet.EncryptedKeysharesPacketData)
+		case *kstypes.KeysharePacketData_PrivateDecryptionKeyDataPacket:
+			packetAck, err := im.keeper.OnRecvPrivDecryptionKeyDataPacket(
+				ctx,
+				modulePacket,
+				*packet.PrivateDecryptionKeyDataPacket,
+			)
 			if err != nil {
 				ack = channeltypes.NewErrorAcknowledgement(err)
 			} else {
@@ -232,28 +240,48 @@ func (im IBCModule) OnAcknowledgementPacket(
 				),
 			)
 
-		case *kstypes.KeysharePacketData_RequestAggrKeysharePacket:
-			err := im.keeper.OnAcknowledgementRequestAggrKeysharePacket(ctx, modulePacket, *packet.RequestAggrKeysharePacket, ack)
+		case *kstypes.KeysharePacketData_RequestDecryptionKeyPacket:
+			err := im.keeper.OnAcknowledgementRequestDecryptionKeyPacket(
+				ctx,
+				modulePacket,
+				*packet.RequestDecryptionKeyPacket,
+				ack,
+			)
 			if err != nil {
 				return err
 			}
 			eventType = kstypes.EventTypeRequestAggrKeysharePacket
-		case *kstypes.KeysharePacketData_GetAggrKeysharePacket:
-			err := im.keeper.OnAcknowledgementGetAggrKeysharePacket(ctx, modulePacket, *packet.GetAggrKeysharePacket, ack)
+		case *kstypes.KeysharePacketData_GetDecryptionKeyPacket:
+			err := im.keeper.OnAcknowledgementGetDecryptionKeyPacket(
+				ctx,
+				modulePacket,
+				*packet.GetDecryptionKeyPacket,
+				ack,
+			)
 			if err != nil {
 				return err
 			}
 			eventType = kstypes.EventTypeGetAggrKeysharePacket
 
-		case *kstypes.KeysharePacketData_RequestPrivKeysharePacket:
-			err := im.keeper.OnAcknowledgementRequestPrivateKeysharePacket(ctx, modulePacket, *packet.RequestPrivKeysharePacket, ack)
+		case *kstypes.KeysharePacketData_RequestPrivateDecryptionKeyPacket:
+			err := im.keeper.OnAcknowledgementRequestPrivateDecryptionKeyPacket(
+				ctx,
+				modulePacket,
+				*packet.RequestPrivateDecryptionKeyPacket,
+				ack,
+			)
 			if err != nil {
 				return err
 			}
 			eventType = kstypes.EventTypeRequestPrivateKeysharePacket
 
-		case *kstypes.KeysharePacketData_GetPrivateKeysharePacket:
-			err := im.keeper.OnAcknowledgementGetPrivateKeysharePacket(ctx, modulePacket, *packet.GetPrivateKeysharePacket, ack)
+		case *kstypes.KeysharePacketData_GetPrivateDecryptionKeyPacket:
+			err := im.keeper.OnAcknowledgementGetPrivateDecryptionKeyPacket(
+				ctx,
+				modulePacket,
+				*packet.GetPrivateDecryptionKeyPacket,
+				ack,
+			)
 			if err != nil {
 				return err
 			}

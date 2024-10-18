@@ -15,35 +15,38 @@ import (
 	host "github.com/cosmos/ibc-go/v8/modules/core/24-host"
 )
 
-func (k msgServer) GetGeneralKeyshare(goCtx context.Context, msg *types.MsgGetGeneralKeyshare) (*types.MsgGetGeneralKeyshareResponse, error) {
+func (k msgServer) RequestGeneralDecryptionKey(
+	goCtx context.Context,
+	msg *types.MsgRequestGeneralDecryptionKey,
+) (*types.MsgRequestGeneralDecryptionKeyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	entry, found := k.GetEntry(ctx, msg.ReqId)
 	if !found {
-		return &types.MsgGetGeneralKeyshareResponse{}, errors.New("request not found")
+		return &types.MsgRequestGeneralDecryptionKeyResponse{}, errors.New("request not found")
 	}
 
 	if entry.Creator != msg.Creator {
-		return &types.MsgGetGeneralKeyshareResponse{}, errors.New("unauthorized request. only creator can make this request")
+		return &types.MsgRequestGeneralDecryptionKeyResponse{}, errors.New("unauthorized request. only creator can make this request")
 	}
 
 	params := k.GetParams(ctx)
 	if params.IsSourceChain {
-		req := commontypes.GetAggrKeyshare{
-			Id:       &commontypes.GetAggrKeyshare_RequestId{RequestId: entry.RequestId},
+		req := commontypes.GetDecryptionKey{
+			Id:       &commontypes.GetDecryptionKey_RequestId{RequestId: entry.RequestId},
 			Identity: entry.Identity,
 		}
 
 		k.SetSignalQueueEntry(ctx, req)
-		return &types.MsgGetGeneralKeyshareResponse{}, nil
+		return &types.MsgRequestGeneralDecryptionKeyResponse{}, nil
 	} else {
-		packetData := kstypes.GetAggrKeysharePacketData{
+		packetData := kstypes.GetDecryptionKeyPacketData{
 			Identity: msg.ReqId,
 		}
 
 		sPort := k.GetPort(ctx)
 		timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
-		_, _ = k.TransmitGetAggrKeysharePacket(
+		_, _ = k.TransmitGetDecryptionKeyPacket(
 			ctx,
 			packetData,
 			sPort,
@@ -60,13 +63,13 @@ func (k msgServer) GetGeneralKeyshare(goCtx context.Context, msg *types.MsgGetGe
 		)
 	}
 
-	return &types.MsgGetGeneralKeyshareResponse{}, nil
+	return &types.MsgRequestGeneralDecryptionKeyResponse{}, nil
 }
 
 // TransmitGetAggrKeysharePacket transmits the packet over IBC with the specified source port and source channel
-func (k Keeper) TransmitGetAggrKeysharePacket(
+func (k Keeper) TransmitGetDecryptionKeyPacket(
 	ctx sdk.Context,
-	packetData kstypes.GetAggrKeysharePacketData,
+	packetData kstypes.GetDecryptionKeyPacketData,
 	sourcePort,
 	sourceChannel string,
 	timeoutHeight clienttypes.Height,
@@ -84,7 +87,12 @@ func (k Keeper) TransmitGetAggrKeysharePacket(
 
 // OnAcknowledgementGetAggrKeysharePacket responds to the the success or failure of a packet
 // acknowledgement written on the receiving chain.
-func (k Keeper) OnAcknowledgementGetAggrKeysharePacket(ctx sdk.Context, packet channeltypes.Packet, data kstypes.GetAggrKeysharePacketData, ack channeltypes.Acknowledgement) error {
+func (k Keeper) OnAcknowledgementGetDecryptionKeyPacket(
+	ctx sdk.Context,
+	packet channeltypes.Packet,
+	data kstypes.GetDecryptionKeyPacketData,
+	ack channeltypes.Acknowledgement,
+) error {
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
 
@@ -93,7 +101,7 @@ func (k Keeper) OnAcknowledgementGetAggrKeysharePacket(ctx sdk.Context, packet c
 		return nil
 	case *channeltypes.Acknowledgement_Result:
 		// Decode the packet acknowledgment
-		var packetAck kstypes.GetAggrKeysharePacketAck
+		var packetAck kstypes.RequestDecryptionKeyPacketAck
 
 		if err := types.ModuleCdc.UnmarshalJSON(dispatchedAck.Result, &packetAck); err != nil {
 			// The counter-party module doesn't implement the correct acknowledgment format

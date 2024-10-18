@@ -1,9 +1,10 @@
 package keeper_test
 
 import (
-	"github.com/Fairblock/fairyring/testutil/random"
 	"strconv"
 	"testing"
+
+	"github.com/Fairblock/fairyring/testutil/random"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
@@ -36,7 +37,7 @@ func TestLatestPubKeyMsgServerCreate(t *testing.T) {
 		Creator:            creator,
 		Expiry:             123456,
 		NumberOfValidators: 1,
-		EncryptedKeyShares: out.KeyShareEncryptedKeyShares,
+		EncryptedKeyshares: out.KeyShareEncryptedKeyShares,
 	})
 
 	for _, tc := range []struct {
@@ -62,7 +63,7 @@ func TestLatestPubKeyMsgServerCreate(t *testing.T) {
 				PublicKey:          out.MasterPublicKey,
 				Creator:            creator,
 				NumberOfValidators: 1,
-				EncryptedKeyShares: out.KeyShareEncryptedKeyShares,
+				EncryptedKeyshares: out.KeyShareEncryptedKeyShares,
 			},
 		},
 	} {

@@ -1,14 +1,15 @@
 package keeper_test
 
 import (
+	"math/rand"
+	"strconv"
+	"testing"
+
 	"github.com/Fairblock/fairyring/testutil/nullify"
 	"github.com/Fairblock/fairyring/testutil/random"
 	"github.com/Fairblock/fairyring/testutil/sample"
 	"github.com/Fairblock/fairyring/testutil/shares"
 	types2 "github.com/Fairblock/fairyring/x/common/types"
-	"math/rand"
-	"strconv"
-	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
@@ -45,14 +46,14 @@ func TestAggregatedKeyShareMsgServerCreate(t *testing.T) {
 
 	for _, tc := range []struct {
 		desc     string
-		request  *types.MsgCreateAggregatedKeyShare
-		response *types.MsgCreateAggregatedKeyShareResponse
+		request  *types.MsgSubmitDecryptionKey
+		response *types.MsgSubmitDecryptionKeyResponse
 		err      error
 		errMsg   string
 	}{
 		{
 			desc: "IsSourceChainTriesToCreateAggrKey",
-			request: &types.MsgCreateAggregatedKeyShare{
+			request: &types.MsgSubmitDecryptionKey{
 				Creator: sample.AccAddress(),
 				Height:  rand.Uint64(),
 				Data:    random.RandHex(192),
@@ -61,7 +62,7 @@ func TestAggregatedKeyShareMsgServerCreate(t *testing.T) {
 		},
 		{
 			desc: "SubmittedFromNotTrustedAddr",
-			request: &types.MsgCreateAggregatedKeyShare{
+			request: &types.MsgSubmitDecryptionKey{
 				Creator: sample.AccAddress(),
 				Height:  rand.Uint64(),
 				Data:    random.RandHex(192),
@@ -70,7 +71,7 @@ func TestAggregatedKeyShareMsgServerCreate(t *testing.T) {
 		},
 		{
 			desc: "ActiveKeyNotFound",
-			request: &types.MsgCreateAggregatedKeyShare{
+			request: &types.MsgSubmitDecryptionKey{
 				Creator: trustedAddr,
 				Height:  rand.Uint64(),
 				Data:    random.RandHex(192),
@@ -79,7 +80,7 @@ func TestAggregatedKeyShareMsgServerCreate(t *testing.T) {
 		},
 		{
 			desc: "InvalidAggregatedKeyShare",
-			request: &types.MsgCreateAggregatedKeyShare{
+			request: &types.MsgSubmitDecryptionKey{
 				Creator: trustedAddr,
 				Height:  rand.Uint64(),
 				Data:    random.RandHex(12),
@@ -88,7 +89,7 @@ func TestAggregatedKeyShareMsgServerCreate(t *testing.T) {
 		},
 		{
 			desc: "DecryptError",
-			request: &types.MsgCreateAggregatedKeyShare{
+			request: &types.MsgSubmitDecryptionKey{
 				Creator: trustedAddr,
 				Height:  999,
 				Data:    incorrectDerived,
@@ -97,16 +98,16 @@ func TestAggregatedKeyShareMsgServerCreate(t *testing.T) {
 		},
 		{
 			desc: "ValidAggregatedKeyShare",
-			request: &types.MsgCreateAggregatedKeyShare{
+			request: &types.MsgSubmitDecryptionKey{
 				Creator: trustedAddr,
 				Height:  999,
 				Data:    derived,
 			},
-			response: &types.MsgCreateAggregatedKeyShareResponse{},
+			response: &types.MsgSubmitDecryptionKeyResponse{},
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := srv.CreateAggregatedKeyShare(wctx, tc.request)
+			response, err := srv.SubmitDecryptionKey(wctx, tc.request)
 			if len(tc.errMsg) > 0 {
 				require.Equal(t,
 					nullify.Fill(err.Error()),
@@ -131,7 +132,7 @@ func TestAggregatedKeyShareMsgServerCreate(t *testing.T) {
 				err = k.SetParams(wctx, param)
 				require.NoError(t, err)
 			} else if tc.desc == "ActiveKeyNotFound" {
-				k.SetActivePubKey(wctx, types2.ActivePublicKey{
+				k.SetActivePubkey(wctx, types2.ActivePublicKey{
 					PublicKey: out.MasterPublicKey,
 					Creator:   trustedAddr,
 					Expiry:    12342423432,

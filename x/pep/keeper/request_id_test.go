@@ -2,11 +2,12 @@ package keeper_test
 
 import (
 	"context"
+	"strconv"
+	"testing"
+
 	"github.com/Fairblock/fairyring/testutil/random"
 	"github.com/Fairblock/fairyring/testutil/sample"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
-	"strconv"
-	"testing"
 
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
@@ -59,7 +60,7 @@ func createNPrivateRequestId(keeper keeper.Keeper, ctx context.Context, n int) [
 	for i := range items {
 		items[i].Creator = sample.AccAddress()
 		items[i].ReqId = random.RandHex(16)
-		items[i].EncryptedKeyshares = make([]*commontypes.EncryptedKeyshare, 0)
+		items[i].PrivateDecryptionKeys = make([]*commontypes.PrivateDecryptionKey, 0)
 
 		keeper.SetPrivateRequest(ctx, items[i])
 	}

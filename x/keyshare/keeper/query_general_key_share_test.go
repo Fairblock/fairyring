@@ -24,31 +24,31 @@ func TestGeneralKeyShareQuerySingle(t *testing.T) {
 	msgs := createNGeneralKeyShares(&keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGeneralKeyShareRequest
-		response *types.QueryGeneralKeyShareResponse
+		request  *types.QueryGeneralKeyshareRequest
+		response *types.QueryGeneralKeyshareResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGeneralKeyShareRequest{
+			request: &types.QueryGeneralKeyshareRequest{
 				Validator: msgs[0].Validator,
 				IdType:    msgs[0].IdType,
 				IdValue:   msgs[0].IdValue,
 			},
-			response: &types.QueryGeneralKeyShareResponse{GeneralKeyShare: msgs[0]},
+			response: &types.QueryGeneralKeyshareResponse{GeneralKeyshare: msgs[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGeneralKeyShareRequest{
+			request: &types.QueryGeneralKeyshareRequest{
 				Validator: msgs[1].Validator,
 				IdType:    msgs[1].IdType,
 				IdValue:   msgs[1].IdValue,
 			},
-			response: &types.QueryGeneralKeyShareResponse{GeneralKeyShare: msgs[1]},
+			response: &types.QueryGeneralKeyshareResponse{GeneralKeyshare: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.QueryGeneralKeyShareRequest{
+			request: &types.QueryGeneralKeyshareRequest{
 				Validator: strconv.Itoa(100000),
 				IdType:    strconv.Itoa(100000),
 				IdValue:   strconv.Itoa(100000),
@@ -61,7 +61,7 @@ func TestGeneralKeyShareQuerySingle(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.GeneralKeyShare(wctx, tc.request)
+			response, err := keeper.GeneralKeyshare(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
@@ -81,13 +81,13 @@ func TestGeneralKeyShareQueryAllNoPagination(t *testing.T) {
 	msgs := createNGeneralKeyShares(&keeper, ctx, 10)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGeneralKeyShareAllRequest
-		response *types.QueryGeneralKeyShareAllResponse
+		request  *types.QueryGeneralKeyshareAllRequest
+		response *types.QueryGeneralKeyshareAllResponse
 		err      error
 	}{
 		{
 			desc: "QueryAllGeneralKeyShare",
-			request: &types.QueryGeneralKeyShareAllRequest{
+			request: &types.QueryGeneralKeyshareAllRequest{
 				Pagination: &query.PageRequest{
 					Key:        nil,
 					Offset:     0,
@@ -96,8 +96,8 @@ func TestGeneralKeyShareQueryAllNoPagination(t *testing.T) {
 					Reverse:    false,
 				},
 			},
-			response: &types.QueryGeneralKeyShareAllResponse{
-				GeneralKeyShare: msgs,
+			response: &types.QueryGeneralKeyshareAllResponse{
+				GeneralKeyshare: msgs,
 				Pagination: &query.PageResponse{
 					NextKey: nil,
 					Total:   10,
@@ -106,7 +106,7 @@ func TestGeneralKeyShareQueryAllNoPagination(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.GeneralKeyShareAll(wctx, tc.request)
+			response, err := keeper.GeneralKeyshareAll(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
@@ -130,8 +130,8 @@ func TestGeneralKeyShareQueryPaginated(t *testing.T) {
 		offset,
 		limit uint64,
 		total bool,
-	) *types.QueryGeneralKeyShareAllRequest {
-		return &types.QueryGeneralKeyShareAllRequest{
+	) *types.QueryGeneralKeyshareAllRequest {
+		return &types.QueryGeneralKeyshareAllRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,
@@ -143,12 +143,12 @@ func TestGeneralKeyShareQueryPaginated(t *testing.T) {
 	t.Run("ByOffset", func(t *testing.T) {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.GeneralKeyShareAll(wctx, request(nil, uint64(i), uint64(step), false))
+			resp, err := keeper.GeneralKeyshareAll(wctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.GeneralKeyShare), step)
+			require.LessOrEqual(t, len(resp.GeneralKeyshare), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.GeneralKeyShare),
+				nullify.Fill(resp.GeneralKeyshare),
 			)
 		}
 	})
@@ -156,27 +156,27 @@ func TestGeneralKeyShareQueryPaginated(t *testing.T) {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.GeneralKeyShareAll(wctx, request(next, 0, uint64(step), false))
+			resp, err := keeper.GeneralKeyshareAll(wctx, request(next, 0, uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.GeneralKeyShare), step)
+			require.LessOrEqual(t, len(resp.GeneralKeyshare), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.GeneralKeyShare),
+				nullify.Fill(resp.GeneralKeyshare),
 			)
 			next = resp.Pagination.NextKey
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.GeneralKeyShareAll(wctx, request(nil, 0, 0, true))
+		resp, err := keeper.GeneralKeyshareAll(wctx, request(nil, 0, 0, true))
 		require.NoError(t, err)
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
 			nullify.Fill(msgs),
-			nullify.Fill(resp.GeneralKeyShare),
+			nullify.Fill(resp.GeneralKeyshare),
 		)
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.GeneralKeyShareAll(wctx, nil)
+		_, err := keeper.GeneralKeyshareAll(wctx, nil)
 		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

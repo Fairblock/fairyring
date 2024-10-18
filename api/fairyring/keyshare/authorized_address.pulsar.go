@@ -563,7 +563,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AuthorizedAddress defines if an address is authorized to submit pubkeys
+// AuthorizedAddress defines if an address is authorized to submit keyshares
 type AuthorizedAddress struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

@@ -9,17 +9,21 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgGetPrivateKeyshares{}
+var _ sdk.Msg = &MsgRequestPrivateDecryptionKey{}
 
-func NewMsgGetPrivateKeyshares(creator string, reqId string, pubkey string) *MsgGetPrivateKeyshares {
-	return &MsgGetPrivateKeyshares{
+func NewMsgRequestPrivateDecryptionKey(
+	creator string,
+	reqId string,
+	pubkey string,
+) *MsgRequestPrivateDecryptionKey {
+	return &MsgRequestPrivateDecryptionKey{
 		Creator:    creator,
 		ReqId:      reqId,
 		SecpPubkey: pubkey,
 	}
 }
 
-func (msg *MsgGetPrivateKeyshares) ValidateBasic() error {
+func (msg *MsgRequestPrivateDecryptionKey) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

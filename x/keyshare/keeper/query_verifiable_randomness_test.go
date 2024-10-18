@@ -52,7 +52,7 @@ func TestVerifiableRandomnessQuery(t *testing.T) {
 
 	randomHeight := rand.Uint64()
 
-	keeper.SetAggregatedKeyShare(ctx, types.AggregatedKeyShare{
+	keeper.SetAggregatedKeyShare(ctx, types.DecryptionKey{
 		Height: randomHeight,
 		Data:   "NotHexString",
 	})
@@ -96,7 +96,7 @@ func TestVerifiableRandomnessQuery(t *testing.T) {
 				)
 			}
 		})
-		keeper.SetAggregatedKeyShare(ctx, types.AggregatedKeyShare{
+		keeper.SetAggregatedKeyShare(ctx, types.DecryptionKey{
 			Height: randomHeight + 1,
 			Data:   randomData,
 		})

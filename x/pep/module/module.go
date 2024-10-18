@@ -207,7 +207,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 	am.keeper.Logger().Info(fmt.Sprintf("Last executed Height: %d", lastExecutedHeight))
 	am.keeper.Logger().Info(fmt.Sprintf("Latest height from fairyring: %s", strHeight))
 
-	activePubkey, found := am.keeper.GetActivePubKey(ctx)
+	activePubkey, found := am.keeper.GetActivePubkey(ctx)
 	if !found {
 		am.keeper.Logger().Error("Active public key does not exists")
 		return nil
@@ -231,15 +231,15 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 		arr := am.keeper.GetEncryptedTxAllFromHeight(ctx, h)
 		am.keeper.SetLastExecutedHeight(ctx, strconv.FormatUint(h, 10))
 
-		key, found := am.keeper.GetAggregatedKeyShare(ctx, h)
+		key, found := am.keeper.GetDecryptionKey(ctx, h)
 		if !found {
 			am.keeper.Logger().Error(fmt.Sprintf("Decryption key not found for block height: %d, Removing all the encrypted txs...", h))
 			encryptedTxs := am.keeper.GetEncryptedTxAllFromHeight(ctx, h)
-			if len(encryptedTxs.EncryptedTx) > 0 {
+			if len(encryptedTxs.EncryptedTxs) > 0 {
 				am.keeper.SetAllEncryptedTxExpired(ctx, h)
-				am.keeper.Logger().Info(fmt.Sprintf("Updated total %d encrypted txs at block %d to expired", len(encryptedTxs.EncryptedTx), h))
-				indexes := make([]string, len(encryptedTxs.EncryptedTx))
-				for _, v := range encryptedTxs.EncryptedTx {
+				am.keeper.Logger().Info(fmt.Sprintf("Updated total %d encrypted txs at block %d to expired", len(encryptedTxs.EncryptedTxs), h))
+				indexes := make([]string, len(encryptedTxs.EncryptedTxs))
+				for _, v := range encryptedTxs.EncryptedTxs {
 					indexes = append(indexes, strconv.FormatUint(v.Index, 10))
 				}
 				ctx.EventManager().EmitEvent(
@@ -262,9 +262,9 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 					ctx,
 					contract.ContractAddress,
 					types.ExecuteContractMsg{
-						Identity:     strconv.FormatUint(h, 10),
-						Pubkey:       activePubkey.PublicKey,
-						AggrKeyshare: key.Data,
+						Identity:      strconv.FormatUint(h, 10),
+						Pubkey:        activePubkey.PublicKey,
+						DecryptionKey: key.Data,
 					},
 				)
 			}
@@ -275,7 +275,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			continue
 		}
 
-		for _, eachTx := range arr.EncryptedTx {
+		for _, eachTx := range arr.EncryptedTxs {
 			startConsumedGas := ctx.GasMeter().GasConsumed()
 			am.keeper.SetEncryptedTxProcessedHeight(ctx, eachTx.TargetHeight, eachTx.Index, uint64(ctx.BlockHeight()))
 			tx := convertEncTxToDecryptionTx(eachTx)
@@ -290,7 +290,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 	// loop over all entries in the general enc tx queue
 	entries := am.keeper.GetAllGenEncTxExecutionQueueEntry(ctx)
 	for _, entry := range entries {
-		if entry.AggrKeyshare == "" {
+		if entry.DecryptionKey == "" {
 			am.keeper.Logger().Error("aggregated keyshare not found in entry with req-id: ", entry.RequestId)
 			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
 			continue
@@ -304,9 +304,9 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 					ctx,
 					contract.ContractAddress,
 					types.ExecuteContractMsg{
-						Identity:     entry.Identity,
-						Pubkey:       entry.Pubkey,
-						AggrKeyshare: entry.AggrKeyshare,
+						Identity:      entry.Identity,
+						Pubkey:        entry.Pubkey,
+						DecryptionKey: entry.DecryptionKey,
 					},
 				)
 			}
@@ -322,13 +322,13 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			continue
 		}
 
-		skPoint, err := am.keeper.GetSKPoint(entry.AggrKeyshare, suite)
+		skPoint, err := am.keeper.GetSKPoint(entry.DecryptionKey, suite)
 		if err != nil {
 			continue
 		}
 
 		// loop over all txs in the entry
-		for _, eachTx := range entry.TxList.EncryptedTx {
+		for _, eachTx := range entry.TxList.EncryptedTxs {
 			startConsumedGas := ctx.GasMeter().GasConsumed()
 
 			tx := convertGenEncTxToDecryptionTx(eachTx)
@@ -365,23 +365,23 @@ func (am AppModule) EndBlock(cctx context.Context) error {
 		return nil
 	}
 
-	ak, found := am.keeper.GetActivePubKey(ctx)
+	ak, found := am.keeper.GetActivePubkey(ctx)
 	if found {
 		if ak.Expiry <= height {
-			am.keeper.DeleteActivePubKey(ctx)
+			am.keeper.DeleteActivePubkey(ctx)
 		} else {
 			return nil
 		}
 	}
 
-	qk, found := am.keeper.GetQueuedPubKey(ctx)
+	qk, found := am.keeper.GetQueuedPubkey(ctx)
 	if found {
 		if qk.Expiry > height {
 			newActiveKey := commontypes.ActivePublicKey(qk)
 
-			am.keeper.SetActivePubKey(ctx, newActiveKey)
+			am.keeper.SetActivePubkey(ctx, newActiveKey)
 		}
-		am.keeper.DeleteQueuedPubKey(ctx)
+		am.keeper.DeleteQueuedPubkey(ctx)
 	}
 	return nil
 }

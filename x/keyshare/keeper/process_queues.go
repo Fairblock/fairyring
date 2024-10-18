@@ -47,17 +47,17 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 
 		id := req.GetRequestId()
 
-		var keyshareRequest types.KeyShareRequest
+		var keyshareRequest types.DecryptionKeyRequest
 
 		keyshareRequest.Identity = id
 		keyshareRequest.Pubkey = activePubKey.PublicKey
 
-		keyshareRequest.AggrKeyshare = ""
+		keyshareRequest.DecryptionKey = ""
 		keyshareRequest.RequestId = req.GetRequestId()
 
 		k.SetKeyShareRequest(ctx, keyshareRequest)
 
-		entry := peptypes.IdentityExecutionQueue{
+		entry := peptypes.IdentityExecutionEntry{
 			Creator:   req.Creator,
 			RequestId: req.GetRequestId(),
 			Identity:  keyshareRequest.Identity,
@@ -94,7 +94,7 @@ func (k Keeper) ProcessPepSignalQueue(ctx sdk.Context) error {
 				continue
 			}
 
-			if keyshareReq.AggrKeyshare == "" {
+			if keyshareReq.DecryptionKey == "" {
 				ctx.EventManager().EmitEvent(
 					sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
 						sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, req.Identity),
@@ -118,12 +118,12 @@ func (k Keeper) ProcessPrivateRequestQueue(ctx sdk.Context) error {
 	for _, req := range reqs {
 		id := req.GetRequestId()
 
-		var keyshareRequest types.PrivateKeyshareRequest
+		var keyshareRequest types.PrivateDecryptionKeyRequest
 
 		keyshareRequest.Identity = id
 		keyshareRequest.Pubkey = activePubKey.PublicKey
 
-		keyshareRequest.EncryptedKeyshares = make([]*common.EncryptedKeyshare, 0)
+		keyshareRequest.PrivateDecryptionKeys = make([]*common.PrivateDecryptionKey, 0)
 		keyshareRequest.RequestId = req.GetRequestId()
 
 		k.SetPrivateKeyShareRequest(ctx, keyshareRequest)
@@ -153,12 +153,12 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 		if req.Identity != "" {
 			keyshareReq, found := k.GetPrivateKeyShareRequest(ctx, req.Identity)
 			if !found {
-				var keyshareRequest types.PrivateKeyshareRequest
+				var keyshareRequest types.PrivateDecryptionKeyRequest
 
 				keyshareRequest.Identity = req.Identity
 				keyshareRequest.Pubkey = activePubKey.PublicKey
 
-				keyshareRequest.EncryptedKeyshares = make([]*common.EncryptedKeyshare, 0)
+				keyshareRequest.PrivateDecryptionKeys = make([]*common.PrivateDecryptionKey, 0)
 				keyshareRequest.RequestId = req.GetRequestId()
 
 				k.SetPrivateKeyShareRequest(ctx, keyshareRequest)
@@ -173,7 +173,7 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 
 			}
 
-			if len(keyshareReq.EncryptedKeyshares) == 0 {
+			if len(keyshareReq.PrivateDecryptionKeys) == 0 {
 				ctx.EventManager().EmitEvent(
 					sdk.NewEvent(types.StartSendEncryptedKeyShareEventType,
 						sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, req.Identity),
@@ -221,12 +221,12 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 
 		id := types.IdentityFromRequestCount(reqCount)
 
-		var keyshareRequest types.KeyShareRequest
+		var keyshareRequest types.DecryptionKeyRequest
 
 		keyshareRequest.Identity = id
 		keyshareRequest.Pubkey = activePubKey.PublicKey
 
-		keyshareRequest.AggrKeyshare = ""
+		keyshareRequest.DecryptionKey = ""
 		keyshareRequest.ProposalId = req.GetProposalId()
 
 		k.SetKeyShareRequest(ctx, keyshareRequest)
@@ -273,7 +273,7 @@ func (k Keeper) ProcessGovSignalQueue(ctx sdk.Context) error {
 				continue
 			}
 
-			if keyshareReq.AggrKeyshare == "" {
+			if keyshareReq.DecryptionKey == "" {
 				ctx.EventManager().EmitEvent(
 					sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
 						sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, req.Identity),

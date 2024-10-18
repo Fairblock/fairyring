@@ -9,10 +9,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdCreateGeneralKeyShare() *cobra.Command {
+func CmdSubmitGeneralKeyshare() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-general-key-share [id-type] [id-value] [key-share] [key-share-index]",
-		Short: "Create a new GeneralKeyShare",
+		Use:   "submit-general-keyshare [id-type] [id-value] [keyshare] [keyshare-index]",
+		Short: "submit a new GeneralKeyShare",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
@@ -31,7 +31,7 @@ func CmdCreateGeneralKeyShare() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreateGeneralKeyShare(
+			msg := types.NewMsgSubmitGeneralKeyshare(
 				clientCtx.GetFromAddress().String(),
 				indexIdType,
 				indexIdValue,

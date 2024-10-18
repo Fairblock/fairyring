@@ -42,10 +42,10 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 		PublicKey:          msg.PublicKey,
 		Expiry:             expHeight,
 		NumberOfValidators: msg.NumberOfValidators,
-		EncryptedKeyShares: msg.EncryptedKeyShares,
+		EncryptedKeyshares: msg.EncryptedKeyshares,
 	}
 
-	encryptedKeyShares, err := json.Marshal(msg.EncryptedKeyShares)
+	encryptedKeyShares, err := json.Marshal(msg.EncryptedKeyshares)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 		queuedPubKey,
 	)
 
-	k.pepKeeper.SetQueuedPubKey(
+	k.pepKeeper.SetQueuedPubkey(
 		ctx,
 		commontypes.QueuedPublicKey{
 			Creator:   msg.Creator,

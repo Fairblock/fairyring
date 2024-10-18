@@ -16,11 +16,11 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetValidatorSet(ctx, elem)
 	}
 	// Set all the keyShare
-	for _, elem := range genState.KeyShareList {
+	for _, elem := range genState.KeyshareList {
 		k.SetKeyShare(ctx, elem)
 	}
 	// Set all the aggregatedKeyShare
-	for _, elem := range genState.AggregatedKeyShareList {
+	for _, elem := range genState.DecryptionKeyList {
 		k.SetAggregatedKeyShare(ctx, elem)
 	}
 	// Set actuve public key
@@ -33,7 +33,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetAuthorizedAddress(ctx, elem)
 	}
 	// Set all the generalKeyShare
-	for _, elem := range genState.GeneralKeyShareList {
+	for _, elem := range genState.GeneralKeyshareList {
 		k.SetGeneralKeyShare(ctx, elem)
 	}
 
@@ -63,8 +63,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.PortId = k.GetPort(ctx)
 	genesis.ValidatorSetList = k.GetAllValidatorSet(ctx)
-	genesis.KeyShareList = k.GetAllKeyShare(ctx)
-	genesis.AggregatedKeyShareList = k.GetAllAggregatedKeyShare(ctx)
+	genesis.KeyshareList = k.GetAllKeyShare(ctx)
+	genesis.DecryptionKeyList = k.GetAllAggregatedKeyShare(ctx)
 
 	akey, found := k.GetActivePubKey(ctx)
 	if found {
@@ -76,7 +76,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	}
 
 	genesis.AuthorizedAddressList = k.GetAllAuthorizedAddress(ctx)
-	genesis.GeneralKeyShareList = k.GetAllGeneralKeyShare(ctx)
+	genesis.GeneralKeyshareList = k.GetAllGeneralKeyShare(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	genesis.RequestCount, _ = strconv.ParseUint(k.GetRequestCount(ctx), 10, 64)

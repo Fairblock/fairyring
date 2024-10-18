@@ -205,7 +205,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 	qc, foundQc := am.keeper.GetQueuedCommitments(ctx)
 
 	if foundAk {
-		am.pepKeeper.SetActivePubKey(ctx, commontypes.ActivePublicKey{
+		am.pepKeeper.SetActivePubkey(ctx, commontypes.ActivePublicKey{
 			PublicKey: ak.PublicKey,
 			Creator:   ak.Creator,
 			Expiry:    ak.Expiry,
@@ -213,11 +213,11 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 
 		if ak.Expiry <= height {
 			am.keeper.DeleteActivePubKey(ctx)
-			am.pepKeeper.DeleteActivePubKey(ctx)
+			am.pepKeeper.DeleteActivePubkey(ctx)
 			am.keeper.DeleteActiveCommitments(ctx)
 		} else {
 			if foundQk {
-				am.pepKeeper.SetQueuedPubKey(ctx, commontypes.QueuedPublicKey{
+				am.pepKeeper.SetQueuedPubkey(ctx, commontypes.QueuedPublicKey{
 					PublicKey: qk.PublicKey,
 					Creator:   qk.Creator,
 					Expiry:    qk.Expiry,
@@ -230,7 +230,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 	if foundQk {
 		if qk.Expiry > height {
 			am.keeper.SetActivePubKey(ctx, types.ActivePubKey(qk))
-			am.pepKeeper.SetActivePubKey(ctx, commontypes.ActivePublicKey{
+			am.pepKeeper.SetActivePubkey(ctx, commontypes.ActivePublicKey{
 				PublicKey: qk.PublicKey,
 				Creator:   qk.Creator,
 				Expiry:    qk.Expiry,
@@ -240,7 +240,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			}
 		}
 		am.keeper.DeleteQueuedPubKey(ctx)
-		am.pepKeeper.DeleteQueuedPubKey(ctx)
+		am.pepKeeper.DeleteQueuedPubkey(ctx)
 		if foundQc {
 			am.keeper.DeleteQueuedCommitments(ctx)
 		}

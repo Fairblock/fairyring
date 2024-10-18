@@ -29,13 +29,13 @@ func TestRequestGeneralKeyshare(t *testing.T) {
 	}
 	k.SetRequestId(ctx, reqID)
 
-	msg := &types.MsgRequestGeneralKeyshare{
+	msg := &types.MsgRequestGeneralIdentity{
 		Creator:        creator,
 		ReqId:          "test_req_id_1",
 		EstimatedDelay: &duration,
 	}
 
-	_, err := srv.RequestGeneralKeyshare(goCtx, msg)
+	_, err := srv.RequestGeneralIdentity(goCtx, msg)
 	require.Error(t, err)
 	require.Equal(t, types.ErrReqIDAlreadyExists, err)
 
@@ -43,7 +43,7 @@ func TestRequestGeneralKeyshare(t *testing.T) {
 	msg.EstimatedDelay = nil
 	msg.ReqId = "test_req_id_2"
 
-	_, err = srv.RequestGeneralKeyshare(goCtx, msg)
+	_, err = srv.RequestGeneralIdentity(goCtx, msg)
 	require.Error(t, err)
 	require.Equal(t, errors.New("could not parse estimated delay"), err)
 
@@ -53,7 +53,7 @@ func TestRequestGeneralKeyshare(t *testing.T) {
 	msg.EstimatedDelay = &duration
 	msg.ReqId = "test_req_id_3"
 
-	resp, err := srv.RequestGeneralKeyshare(goCtx, msg)
+	resp, err := srv.RequestGeneralIdentity(goCtx, msg)
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 	require.Equal(t, "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/test_req_id_3", resp.ReqId)
@@ -64,9 +64,9 @@ func TestOnAcknowledgementRequestAggrKeysharePacket(t *testing.T) {
 	k, ctx := keepertest.PepKeeper(t)
 
 	packet := channeltypes.Packet{}
-	packetData := kstypes.RequestAggrKeysharePacketData{
+	packetData := kstypes.RequestDecryptionKeyPacketData{
 		Requester: "test_creator",
-		Id: &kstypes.RequestAggrKeysharePacketData_RequestId{
+		Id: &kstypes.RequestDecryptionKeyPacketData_RequestId{
 			RequestId: "test_request_id",
 		},
 	}
@@ -77,7 +77,7 @@ func TestOnAcknowledgementRequestAggrKeysharePacket(t *testing.T) {
 	}
 
 	// Test success case for OnAcknowledgementRequestAggrKeysharePacket
-	err := k.OnAcknowledgementRequestAggrKeysharePacket(ctx, packet, packetData, ack)
+	err := k.OnAcknowledgementRequestDecryptionKeyPacket(ctx, packet, packetData, ack)
 	require.NoError(t, err)
 
 	// Ensure entry is created
@@ -87,7 +87,7 @@ func TestOnAcknowledgementRequestAggrKeysharePacket(t *testing.T) {
 	require.Equal(t, "test_pubkey", entry.Pubkey)
 
 	// Test when entry already exists
-	err = k.OnAcknowledgementRequestAggrKeysharePacket(ctx, packet, packetData, ack)
+	err = k.OnAcknowledgementRequestDecryptionKeyPacket(ctx, packet, packetData, ack)
 	require.Error(t, err)
 	require.Equal(t, "entry already exists", err.Error())
 
@@ -98,7 +98,7 @@ func TestOnAcknowledgementRequestAggrKeysharePacket(t *testing.T) {
 		},
 	}
 
-	err = k.OnAcknowledgementRequestAggrKeysharePacket(ctx, packet, packetData, invalidAck)
+	err = k.OnAcknowledgementRequestDecryptionKeyPacket(ctx, packet, packetData, invalidAck)
 	require.Error(t, err)
 	require.Equal(t, "cannot unmarshal acknowledgment", err.Error())
 
@@ -109,6 +109,6 @@ func TestOnAcknowledgementRequestAggrKeysharePacket(t *testing.T) {
 		},
 	}
 
-	err = k.OnAcknowledgementRequestAggrKeysharePacket(ctx, packet, packetData, errorAck)
+	err = k.OnAcknowledgementRequestDecryptionKeyPacket(ctx, packet, packetData, errorAck)
 	require.NoError(t, err)
 }

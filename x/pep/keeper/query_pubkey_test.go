@@ -1,6 +1,8 @@
 package keeper_test
 
 import (
+	"testing"
+
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
 	"github.com/Fairblock/fairyring/x/pep/types"
@@ -8,7 +10,6 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"testing"
 )
 
 func TestPubKeyQuery(t *testing.T) {
@@ -18,16 +19,16 @@ func TestPubKeyQuery(t *testing.T) {
 	queuedPubKey := createQueuedPubKeys(&keeper, wctx)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryPubKeyRequest
-		response *types.QueryPubKeyResponse
+		request  *types.QueryPubkeyRequest
+		response *types.QueryPubkeyResponse
 		err      error
 	}{
 		{
 			desc:    "QueryPubKey",
-			request: &types.QueryPubKeyRequest{},
-			response: &types.QueryPubKeyResponse{
-				ActivePubKey: activePubKey,
-				QueuedPubKey: queuedPubKey,
+			request: &types.QueryPubkeyRequest{},
+			response: &types.QueryPubkeyResponse{
+				ActivePubkey: activePubKey,
+				QueuedPubkey: queuedPubKey,
 			},
 		},
 		{
@@ -36,7 +37,7 @@ func TestPubKeyQuery(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.PubKey(wctx, tc.request)
+			response, err := keeper.Pubkey(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {

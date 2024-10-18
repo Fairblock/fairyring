@@ -13,23 +13,23 @@ import (
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 	// Set all the encryptedTx
 	for _, elem := range genState.EncryptedTxArray {
-		if len(elem.EncryptedTx) < 1 {
+		if len(elem.EncryptedTxs) < 1 {
 			continue
 		}
-		k.SetEncryptedTx(ctx, elem.EncryptedTx[0].TargetHeight, elem)
+		k.SetEncryptedTx(ctx, elem.EncryptedTxs[0].TargetHeight, elem)
 	}
 	// Set all the pepNonce
 	for _, elem := range genState.PepNonceList {
 		k.SetPepNonce(ctx, elem)
 	}
 	// Set all the aggregatedKeyShare
-	for _, elem := range genState.AggregatedKeyShareList {
-		k.SetAggregatedKeyShare(ctx, elem)
+	for _, elem := range genState.DecryptionKeyList {
+		k.SetDecryptionKey(ctx, elem)
 	}
 	// Set actuve public key
-	k.SetActivePubKey(ctx, genState.ActivePubKey)
+	k.SetActivePubkey(ctx, genState.ActivePubKey)
 	// Set queued public key
-	k.SetQueuedPubKey(ctx, genState.QueuedPubKey)
+	k.SetQueuedPubkey(ctx, genState.QueuedPubKey)
 	// Set all the requestId
 	for _, elem := range genState.RequestIdList {
 		k.SetRequestId(ctx, elem)
@@ -67,13 +67,13 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.EncryptedTxArray = k.GetAllEncryptedArray(ctx)
 	genesis.PepNonceList = k.GetAllPepNonce(ctx)
-	genesis.AggregatedKeyShareList = k.GetAllAggregatedKeyShare(ctx)
+	genesis.DecryptionKeyList = k.GetAllDecryptionKeys(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
-	akey, found := k.GetActivePubKey(ctx)
+	akey, found := k.GetActivePubkey(ctx)
 	if found {
 		genesis.ActivePubKey = akey
 	}
-	qkey, found := k.GetQueuedPubKey(ctx)
+	qkey, found := k.GetQueuedPubkey(ctx)
 	if found {
 		genesis.QueuedPubKey = qkey
 	}

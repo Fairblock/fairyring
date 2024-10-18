@@ -22,7 +22,7 @@ const (
 	Msg_UpdateParams_FullMethodName                = "/fairyring.pep.Msg/UpdateParams"
 	Msg_SubmitEncryptedTx_FullMethodName           = "/fairyring.pep.Msg/SubmitEncryptedTx"
 	Msg_SubmitGeneralEncryptedTx_FullMethodName    = "/fairyring.pep.Msg/SubmitGeneralEncryptedTx"
-	Msg_CreateAggregatedKeyShare_FullMethodName    = "/fairyring.pep.Msg/CreateAggregatedKeyShare"
+	Msg_SubmitDecryptionKey_FullMethodName         = "/fairyring.pep.Msg/SubmitDecryptionKey"
 	Msg_RequestGeneralIdentity_FullMethodName      = "/fairyring.pep.Msg/RequestGeneralIdentity"
 	Msg_RequestGeneralDecryptionKey_FullMethodName = "/fairyring.pep.Msg/RequestGeneralDecryptionKey"
 	Msg_RequestPrivateIdentity_FullMethodName      = "/fairyring.pep.Msg/RequestPrivateIdentity"
@@ -44,9 +44,9 @@ type MsgClient interface {
 	// SubmitGeneralEncryptedTx defines an operation to submit an
 	// encrypted transaction for a particular identity
 	SubmitGeneralEncryptedTx(ctx context.Context, in *MsgSubmitGeneralEncryptedTx, opts ...grpc.CallOption) (*MsgSubmitGeneralEncryptedTxResponse, error)
-	// CreateAggregatedKeyShare defines an operation to submit an
-	// aggregated keyshare to a destination chain
-	CreateAggregatedKeyShare(ctx context.Context, in *MsgCreateAggregatedKeyShare, opts ...grpc.CallOption) (*MsgCreateAggregatedKeyShareResponse, error)
+	// SubmitDecryptionKey defines an operation to submit a
+	// decryption to a destination chain
+	SubmitDecryptionKey(ctx context.Context, in *MsgSubmitDecryptionKey, opts ...grpc.CallOption) (*MsgSubmitDecryptionKeyResponse, error)
 	// RequestGeneralIdentity defines an operation to request the
 	// creation of a new identity to which validators will be required
 	// to submit keyshares
@@ -106,9 +106,9 @@ func (c *msgClient) SubmitGeneralEncryptedTx(ctx context.Context, in *MsgSubmitG
 	return out, nil
 }
 
-func (c *msgClient) CreateAggregatedKeyShare(ctx context.Context, in *MsgCreateAggregatedKeyShare, opts ...grpc.CallOption) (*MsgCreateAggregatedKeyShareResponse, error) {
-	out := new(MsgCreateAggregatedKeyShareResponse)
-	err := c.cc.Invoke(ctx, Msg_CreateAggregatedKeyShare_FullMethodName, in, out, opts...)
+func (c *msgClient) SubmitDecryptionKey(ctx context.Context, in *MsgSubmitDecryptionKey, opts ...grpc.CallOption) (*MsgSubmitDecryptionKeyResponse, error) {
+	out := new(MsgSubmitDecryptionKeyResponse)
+	err := c.cc.Invoke(ctx, Msg_SubmitDecryptionKey_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -182,9 +182,9 @@ type MsgServer interface {
 	// SubmitGeneralEncryptedTx defines an operation to submit an
 	// encrypted transaction for a particular identity
 	SubmitGeneralEncryptedTx(context.Context, *MsgSubmitGeneralEncryptedTx) (*MsgSubmitGeneralEncryptedTxResponse, error)
-	// CreateAggregatedKeyShare defines an operation to submit an
-	// aggregated keyshare to a destination chain
-	CreateAggregatedKeyShare(context.Context, *MsgCreateAggregatedKeyShare) (*MsgCreateAggregatedKeyShareResponse, error)
+	// SubmitDecryptionKey defines an operation to submit a
+	// decryption to a destination chain
+	SubmitDecryptionKey(context.Context, *MsgSubmitDecryptionKey) (*MsgSubmitDecryptionKeyResponse, error)
 	// RequestGeneralIdentity defines an operation to request the
 	// creation of a new identity to which validators will be required
 	// to submit keyshares
@@ -223,8 +223,8 @@ func (UnimplementedMsgServer) SubmitEncryptedTx(context.Context, *MsgSubmitEncry
 func (UnimplementedMsgServer) SubmitGeneralEncryptedTx(context.Context, *MsgSubmitGeneralEncryptedTx) (*MsgSubmitGeneralEncryptedTxResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitGeneralEncryptedTx not implemented")
 }
-func (UnimplementedMsgServer) CreateAggregatedKeyShare(context.Context, *MsgCreateAggregatedKeyShare) (*MsgCreateAggregatedKeyShareResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateAggregatedKeyShare not implemented")
+func (UnimplementedMsgServer) SubmitDecryptionKey(context.Context, *MsgSubmitDecryptionKey) (*MsgSubmitDecryptionKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitDecryptionKey not implemented")
 }
 func (UnimplementedMsgServer) RequestGeneralIdentity(context.Context, *MsgRequestGeneralIdentity) (*MsgRequestGeneralIdentityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RequestGeneralIdentity not implemented")
@@ -311,20 +311,20 @@ func _Msg_SubmitGeneralEncryptedTx_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_CreateAggregatedKeyShare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateAggregatedKeyShare)
+func _Msg_SubmitDecryptionKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSubmitDecryptionKey)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).CreateAggregatedKeyShare(ctx, in)
+		return srv.(MsgServer).SubmitDecryptionKey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_CreateAggregatedKeyShare_FullMethodName,
+		FullMethod: Msg_SubmitDecryptionKey_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateAggregatedKeyShare(ctx, req.(*MsgCreateAggregatedKeyShare))
+		return srv.(MsgServer).SubmitDecryptionKey(ctx, req.(*MsgSubmitDecryptionKey))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -457,8 +457,8 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_SubmitGeneralEncryptedTx_Handler,
 		},
 		{
-			MethodName: "CreateAggregatedKeyShare",
-			Handler:    _Msg_CreateAggregatedKeyShare_Handler,
+			MethodName: "SubmitDecryptionKey",
+			Handler:    _Msg_SubmitDecryptionKey_Handler,
 		},
 		{
 			MethodName: "RequestGeneralIdentity",

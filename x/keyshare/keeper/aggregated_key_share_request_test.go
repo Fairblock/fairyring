@@ -2,17 +2,18 @@ package keeper_test
 
 import (
 	"fmt"
+	"testing"
+
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
 	"github.com/Fairblock/fairyring/x/keyshare/keeper"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
-func createNKeyshareRequest(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.KeyShareRequest {
-	items := make([]types.KeyShareRequest, n)
+func createNKeyshareRequest(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.DecryptionKeyRequest {
+	items := make([]types.DecryptionKeyRequest, n)
 	for i := range items {
 		items[i].RequestId = fmt.Sprintf("%d/rq", i)
 		items[i].Identity = fmt.Sprintf("%d/rq", i)

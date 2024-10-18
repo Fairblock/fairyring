@@ -1,14 +1,15 @@
 package keeper_test
 
 import (
+	"math/rand"
+	"strconv"
+	"testing"
+
 	"cosmossdk.io/math"
 	"github.com/Fairblock/fairyring/testutil/nullify"
 	"github.com/Fairblock/fairyring/testutil/random"
 	"github.com/Fairblock/fairyring/testutil/sample"
 	types2 "github.com/Fairblock/fairyring/x/common/types"
-	"math/rand"
-	"strconv"
-	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
@@ -109,7 +110,7 @@ func TestSubmitEncryptedTx(t *testing.T) {
 			}
 
 			if tc.desc == "ActivePubKeyNotFound" {
-				k.SetActivePubKey(wctx, types2.ActivePublicKey{
+				k.SetActivePubkey(wctx, types2.ActivePublicKey{
 					PublicKey: out.MasterPublicKey,
 					Creator:   trustedAddr,
 					Expiry:    325677,

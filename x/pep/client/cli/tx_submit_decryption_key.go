@@ -1,39 +1,40 @@
 package cli
 
 import (
-	"strconv"
-
 	"github.com/Fairblock/fairyring/x/pep/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 )
 
-var _ = strconv.Itoa(0)
-
-func CmdGetPrivateKeyshare() *cobra.Command {
+func CmdSubmitDecryptionKey() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-private-keyshare [req-id] [secp-pubkey]",
-		Short: "Broadcast message get-general-keyshare",
+		Use:   "submit-decryption-key [height] [data]",
+		Short: "Submit a new aggregated keyshare into a destination chain",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argReqId := args[0]
-			argPubkey := args[1]
+			// Get indexes
+			indexHeight, err := cast.ToUint64E(args[0])
+			if err != nil {
+				return err
+			}
+
+			// Get value arguments
+			argData := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgGetPrivateKeyshares(
+			msg := types.NewMsgSubmitDecryptionKey(
 				clientCtx.GetFromAddress().String(),
-				argReqId,
-				argPubkey,
+				indexHeight,
+				argData,
 			)
-			if err := msg.ValidateBasic(); err != nil {
-				return err
-			}
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}

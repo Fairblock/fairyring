@@ -58,12 +58,12 @@ type GovKeeper interface {
 
 // PepKeeper defines the expected interface needed to get and set active and queued public keys
 type PepKeeper interface {
-	SetActivePubKey(ctx context.Context, activePubKey commontypes.ActivePublicKey)
-	SetQueuedPubKey(ctx context.Context, queuedPubKey commontypes.QueuedPublicKey)
-	GetActivePubKey(ctx context.Context) (val commontypes.ActivePublicKey, found bool)
-	GetQueuedPubKey(ctx context.Context) (val commontypes.QueuedPublicKey, found bool)
-	DeleteActivePubKey(ctx context.Context)
-	DeleteQueuedPubKey(ctx context.Context)
+	SetActivePubkey(ctx context.Context, activePubKey commontypes.ActivePublicKey)
+	SetQueuedPubkey(ctx context.Context, queuedPubKey commontypes.QueuedPublicKey)
+	GetActivePubkey(ctx context.Context) (val commontypes.ActivePublicKey, found bool)
+	GetQueuedPubkey(ctx context.Context) (val commontypes.QueuedPublicKey, found bool)
+	DeleteActivePubkey(ctx context.Context)
+	DeleteQueuedPubkey(ctx context.Context)
 	SetEntry(ctx context.Context, val peptypes.IdentityExecutionEntry)
 	GetEntry(ctx context.Context, reqID string) (val peptypes.IdentityExecutionEntry, found bool)
 	RemoveEntry(ctx context.Context, reqID string)
@@ -91,8 +91,8 @@ type PepKeeper interface {
 	SetPrivateRequest(ctx context.Context, request peptypes.PrivateRequest)
 	GetPrivateRequest(ctx context.Context, reqID string) (val peptypes.PrivateRequest, found bool)
 	GetAllPrivateRequest(ctx context.Context) (list []peptypes.PrivateRequest)
-	GetAggregatedKeyShare(ctx context.Context, height uint64) (val peptypes.DecryptionKey, found bool)
-	SetAggregatedKeyShare(ctx context.Context, aggregatedKeyShare peptypes.DecryptionKey)
+	GetDecryptionKey(ctx context.Context, height uint64) (val peptypes.DecryptionKey, found bool)
+	SetDecryptionKey(ctx context.Context, aggregatedKeyShare peptypes.DecryptionKey)
 	GetLatestHeight(ctx context.Context) string
 	SetLatestHeight(ctx context.Context, height string)
 }

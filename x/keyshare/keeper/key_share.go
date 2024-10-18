@@ -11,7 +11,7 @@ import (
 )
 
 // SetKeyShare set a specific keyShare in the store from its index
-func (k Keeper) SetKeyShare(ctx context.Context, keyShare types.KeyShare) {
+func (k Keeper) SetKeyShare(ctx context.Context, keyShare types.Keyshare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyShareKeyPrefix))
 	b := k.cdc.MustMarshal(&keyShare)
@@ -27,7 +27,7 @@ func (k Keeper) GetKeyShare(
 	validator string,
 	blockHeight uint64,
 
-) (val types.KeyShare, found bool) {
+) (val types.Keyshare, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyShareKeyPrefix))
 
@@ -59,7 +59,7 @@ func (k Keeper) RemoveKeyShare(
 }
 
 // GetAllKeyShare returns all keyShare
-func (k Keeper) GetAllKeyShare(ctx context.Context) (list []types.KeyShare) {
+func (k Keeper) GetAllKeyShare(ctx context.Context) (list []types.Keyshare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyShareKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
@@ -67,7 +67,7 @@ func (k Keeper) GetAllKeyShare(ctx context.Context) (list []types.KeyShare) {
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.KeyShare
+		var val types.Keyshare
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}

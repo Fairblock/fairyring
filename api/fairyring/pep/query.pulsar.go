@@ -4,7 +4,7 @@ package pep
 import (
 	_ "cosmossdk.io/api/amino"
 	v1beta1 "cosmossdk.io/api/cosmos/base/query/v1beta1"
-	common "cosmossdk.io/api/fairyring/common"
+	common "github.com/Fairblock/fairyring/api/fairyring/common"
 	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"
@@ -8029,23 +8029,23 @@ func (x *fastReflection_QueryPepNonceAllResponse) ProtoMethods() *protoiface.Met
 }
 
 var (
-	md_QueryPubKeyRequest protoreflect.MessageDescriptor
+	md_QueryPubkeyRequest protoreflect.MessageDescriptor
 )
 
 func init() {
 	file_fairyring_pep_query_proto_init()
-	md_QueryPubKeyRequest = File_fairyring_pep_query_proto.Messages().ByName("QueryPubKeyRequest")
+	md_QueryPubkeyRequest = File_fairyring_pep_query_proto.Messages().ByName("QueryPubkeyRequest")
 }
 
-var _ protoreflect.Message = (*fastReflection_QueryPubKeyRequest)(nil)
+var _ protoreflect.Message = (*fastReflection_QueryPubkeyRequest)(nil)
 
-type fastReflection_QueryPubKeyRequest QueryPubKeyRequest
+type fastReflection_QueryPubkeyRequest QueryPubkeyRequest
 
-func (x *QueryPubKeyRequest) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryPubKeyRequest)(x)
+func (x *QueryPubkeyRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryPubkeyRequest)(x)
 }
 
-func (x *QueryPubKeyRequest) slowProtoReflect() protoreflect.Message {
+func (x *QueryPubkeyRequest) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_pep_query_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -8057,43 +8057,43 @@ func (x *QueryPubKeyRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryPubKeyRequest_messageType fastReflection_QueryPubKeyRequest_messageType
-var _ protoreflect.MessageType = fastReflection_QueryPubKeyRequest_messageType{}
+var _fastReflection_QueryPubkeyRequest_messageType fastReflection_QueryPubkeyRequest_messageType
+var _ protoreflect.MessageType = fastReflection_QueryPubkeyRequest_messageType{}
 
-type fastReflection_QueryPubKeyRequest_messageType struct{}
+type fastReflection_QueryPubkeyRequest_messageType struct{}
 
-func (x fastReflection_QueryPubKeyRequest_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryPubKeyRequest)(nil)
+func (x fastReflection_QueryPubkeyRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryPubkeyRequest)(nil)
 }
-func (x fastReflection_QueryPubKeyRequest_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryPubKeyRequest)
+func (x fastReflection_QueryPubkeyRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryPubkeyRequest)
 }
-func (x fastReflection_QueryPubKeyRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryPubKeyRequest
+func (x fastReflection_QueryPubkeyRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPubkeyRequest
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_QueryPubKeyRequest) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryPubKeyRequest
+func (x *fastReflection_QueryPubkeyRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPubkeyRequest
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryPubKeyRequest) Type() protoreflect.MessageType {
-	return _fastReflection_QueryPubKeyRequest_messageType
+func (x *fastReflection_QueryPubkeyRequest) Type() protoreflect.MessageType {
+	return _fastReflection_QueryPubkeyRequest_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryPubKeyRequest) New() protoreflect.Message {
-	return new(fastReflection_QueryPubKeyRequest)
+func (x *fastReflection_QueryPubkeyRequest) New() protoreflect.Message {
+	return new(fastReflection_QueryPubkeyRequest)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryPubKeyRequest) Interface() protoreflect.ProtoMessage {
-	return (*QueryPubKeyRequest)(x)
+func (x *fastReflection_QueryPubkeyRequest) Interface() protoreflect.ProtoMessage {
+	return (*QueryPubkeyRequest)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -8101,7 +8101,7 @@ func (x *fastReflection_QueryPubKeyRequest) Interface() protoreflect.ProtoMessag
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_QueryPubKeyRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_QueryPubkeyRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 }
 
 // Has reports whether a field is populated.
@@ -8115,13 +8115,13 @@ func (x *fastReflection_QueryPubKeyRequest) Range(f func(protoreflect.FieldDescr
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryPubKeyRequest) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_QueryPubkeyRequest) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubKeyRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubkeyRequest"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.QueryPubKeyRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.QueryPubkeyRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -8131,13 +8131,13 @@ func (x *fastReflection_QueryPubKeyRequest) Has(fd protoreflect.FieldDescriptor)
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPubKeyRequest) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_QueryPubkeyRequest) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubKeyRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubkeyRequest"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.QueryPubKeyRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.QueryPubkeyRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -8147,13 +8147,13 @@ func (x *fastReflection_QueryPubKeyRequest) Clear(fd protoreflect.FieldDescripto
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryPubKeyRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPubkeyRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubKeyRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubkeyRequest"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.QueryPubKeyRequest does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.QueryPubkeyRequest does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -8167,13 +8167,13 @@ func (x *fastReflection_QueryPubKeyRequest) Get(descriptor protoreflect.FieldDes
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPubKeyRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_QueryPubkeyRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubKeyRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubkeyRequest"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.QueryPubKeyRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.QueryPubkeyRequest does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -8187,36 +8187,36 @@ func (x *fastReflection_QueryPubKeyRequest) Set(fd protoreflect.FieldDescriptor,
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPubKeyRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPubkeyRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubKeyRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubkeyRequest"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.QueryPubKeyRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.QueryPubkeyRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryPubKeyRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPubkeyRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubKeyRequest"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubkeyRequest"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.QueryPubKeyRequest does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.QueryPubkeyRequest does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryPubKeyRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_QueryPubkeyRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.pep.QueryPubKeyRequest", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.pep.QueryPubkeyRequest", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -8224,7 +8224,7 @@ func (x *fastReflection_QueryPubKeyRequest) WhichOneof(d protoreflect.OneofDescr
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryPubKeyRequest) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_QueryPubkeyRequest) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -8235,7 +8235,7 @@ func (x *fastReflection_QueryPubKeyRequest) GetUnknown() protoreflect.RawFields 
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPubKeyRequest) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_QueryPubkeyRequest) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -8247,7 +8247,7 @@ func (x *fastReflection_QueryPubKeyRequest) SetUnknown(fields protoreflect.RawFi
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_QueryPubKeyRequest) IsValid() bool {
+func (x *fastReflection_QueryPubkeyRequest) IsValid() bool {
 	return x != nil
 }
 
@@ -8257,9 +8257,9 @@ func (x *fastReflection_QueryPubKeyRequest) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryPubKeyRequest) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_QueryPubkeyRequest) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryPubKeyRequest)
+		x := input.Message.Interface().(*QueryPubkeyRequest)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -8281,7 +8281,7 @@ func (x *fastReflection_QueryPubKeyRequest) ProtoMethods() *protoiface.Methods {
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryPubKeyRequest)
+		x := input.Message.Interface().(*QueryPubkeyRequest)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -8311,7 +8311,7 @@ func (x *fastReflection_QueryPubKeyRequest) ProtoMethods() *protoiface.Methods {
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryPubKeyRequest)
+		x := input.Message.Interface().(*QueryPubkeyRequest)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -8343,10 +8343,10 @@ func (x *fastReflection_QueryPubKeyRequest) ProtoMethods() *protoiface.Methods {
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPubKeyRequest: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPubkeyRequest: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPubKeyRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPubkeyRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			default:
@@ -8385,27 +8385,27 @@ func (x *fastReflection_QueryPubKeyRequest) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_QueryPubKeyResponse                protoreflect.MessageDescriptor
-	fd_QueryPubKeyResponse_active_pub_key protoreflect.FieldDescriptor
-	fd_QueryPubKeyResponse_queued_pub_key protoreflect.FieldDescriptor
+	md_QueryPubkeyResponse               protoreflect.MessageDescriptor
+	fd_QueryPubkeyResponse_active_pubkey protoreflect.FieldDescriptor
+	fd_QueryPubkeyResponse_queued_pubkey protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_pep_query_proto_init()
-	md_QueryPubKeyResponse = File_fairyring_pep_query_proto.Messages().ByName("QueryPubKeyResponse")
-	fd_QueryPubKeyResponse_active_pub_key = md_QueryPubKeyResponse.Fields().ByName("active_pub_key")
-	fd_QueryPubKeyResponse_queued_pub_key = md_QueryPubKeyResponse.Fields().ByName("queued_pub_key")
+	md_QueryPubkeyResponse = File_fairyring_pep_query_proto.Messages().ByName("QueryPubkeyResponse")
+	fd_QueryPubkeyResponse_active_pubkey = md_QueryPubkeyResponse.Fields().ByName("active_pubkey")
+	fd_QueryPubkeyResponse_queued_pubkey = md_QueryPubkeyResponse.Fields().ByName("queued_pubkey")
 }
 
-var _ protoreflect.Message = (*fastReflection_QueryPubKeyResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_QueryPubkeyResponse)(nil)
 
-type fastReflection_QueryPubKeyResponse QueryPubKeyResponse
+type fastReflection_QueryPubkeyResponse QueryPubkeyResponse
 
-func (x *QueryPubKeyResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryPubKeyResponse)(x)
+func (x *QueryPubkeyResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryPubkeyResponse)(x)
 }
 
-func (x *QueryPubKeyResponse) slowProtoReflect() protoreflect.Message {
+func (x *QueryPubkeyResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_fairyring_pep_query_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -8417,43 +8417,43 @@ func (x *QueryPubKeyResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryPubKeyResponse_messageType fastReflection_QueryPubKeyResponse_messageType
-var _ protoreflect.MessageType = fastReflection_QueryPubKeyResponse_messageType{}
+var _fastReflection_QueryPubkeyResponse_messageType fastReflection_QueryPubkeyResponse_messageType
+var _ protoreflect.MessageType = fastReflection_QueryPubkeyResponse_messageType{}
 
-type fastReflection_QueryPubKeyResponse_messageType struct{}
+type fastReflection_QueryPubkeyResponse_messageType struct{}
 
-func (x fastReflection_QueryPubKeyResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryPubKeyResponse)(nil)
+func (x fastReflection_QueryPubkeyResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryPubkeyResponse)(nil)
 }
-func (x fastReflection_QueryPubKeyResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryPubKeyResponse)
+func (x fastReflection_QueryPubkeyResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryPubkeyResponse)
 }
-func (x fastReflection_QueryPubKeyResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryPubKeyResponse
+func (x fastReflection_QueryPubkeyResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPubkeyResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_QueryPubKeyResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryPubKeyResponse
+func (x *fastReflection_QueryPubkeyResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPubkeyResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryPubKeyResponse) Type() protoreflect.MessageType {
-	return _fastReflection_QueryPubKeyResponse_messageType
+func (x *fastReflection_QueryPubkeyResponse) Type() protoreflect.MessageType {
+	return _fastReflection_QueryPubkeyResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryPubKeyResponse) New() protoreflect.Message {
-	return new(fastReflection_QueryPubKeyResponse)
+func (x *fastReflection_QueryPubkeyResponse) New() protoreflect.Message {
+	return new(fastReflection_QueryPubkeyResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryPubKeyResponse) Interface() protoreflect.ProtoMessage {
-	return (*QueryPubKeyResponse)(x)
+func (x *fastReflection_QueryPubkeyResponse) Interface() protoreflect.ProtoMessage {
+	return (*QueryPubkeyResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -8461,16 +8461,16 @@ func (x *fastReflection_QueryPubKeyResponse) Interface() protoreflect.ProtoMessa
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_QueryPubKeyResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.ActivePubKey != nil {
-		value := protoreflect.ValueOfMessage(x.ActivePubKey.ProtoReflect())
-		if !f(fd_QueryPubKeyResponse_active_pub_key, value) {
+func (x *fastReflection_QueryPubkeyResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.ActivePubkey != nil {
+		value := protoreflect.ValueOfMessage(x.ActivePubkey.ProtoReflect())
+		if !f(fd_QueryPubkeyResponse_active_pubkey, value) {
 			return
 		}
 	}
-	if x.QueuedPubKey != nil {
-		value := protoreflect.ValueOfMessage(x.QueuedPubKey.ProtoReflect())
-		if !f(fd_QueryPubKeyResponse_queued_pub_key, value) {
+	if x.QueuedPubkey != nil {
+		value := protoreflect.ValueOfMessage(x.QueuedPubkey.ProtoReflect())
+		if !f(fd_QueryPubkeyResponse_queued_pubkey, value) {
 			return
 		}
 	}
@@ -8487,17 +8487,17 @@ func (x *fastReflection_QueryPubKeyResponse) Range(f func(protoreflect.FieldDesc
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryPubKeyResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_QueryPubkeyResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "fairyring.pep.QueryPubKeyResponse.active_pub_key":
-		return x.ActivePubKey != nil
-	case "fairyring.pep.QueryPubKeyResponse.queued_pub_key":
-		return x.QueuedPubKey != nil
+	case "fairyring.pep.QueryPubkeyResponse.active_pubkey":
+		return x.ActivePubkey != nil
+	case "fairyring.pep.QueryPubkeyResponse.queued_pubkey":
+		return x.QueuedPubkey != nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.QueryPubKeyResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.QueryPubkeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -8507,17 +8507,17 @@ func (x *fastReflection_QueryPubKeyResponse) Has(fd protoreflect.FieldDescriptor
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPubKeyResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_QueryPubkeyResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "fairyring.pep.QueryPubKeyResponse.active_pub_key":
-		x.ActivePubKey = nil
-	case "fairyring.pep.QueryPubKeyResponse.queued_pub_key":
-		x.QueuedPubKey = nil
+	case "fairyring.pep.QueryPubkeyResponse.active_pubkey":
+		x.ActivePubkey = nil
+	case "fairyring.pep.QueryPubkeyResponse.queued_pubkey":
+		x.QueuedPubkey = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.QueryPubKeyResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.QueryPubkeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -8527,19 +8527,19 @@ func (x *fastReflection_QueryPubKeyResponse) Clear(fd protoreflect.FieldDescript
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryPubKeyResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPubkeyResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "fairyring.pep.QueryPubKeyResponse.active_pub_key":
-		value := x.ActivePubKey
+	case "fairyring.pep.QueryPubkeyResponse.active_pubkey":
+		value := x.ActivePubkey
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	case "fairyring.pep.QueryPubKeyResponse.queued_pub_key":
-		value := x.QueuedPubKey
+	case "fairyring.pep.QueryPubkeyResponse.queued_pubkey":
+		value := x.QueuedPubkey
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.QueryPubKeyResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.QueryPubkeyResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -8553,17 +8553,17 @@ func (x *fastReflection_QueryPubKeyResponse) Get(descriptor protoreflect.FieldDe
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPubKeyResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_QueryPubkeyResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "fairyring.pep.QueryPubKeyResponse.active_pub_key":
-		x.ActivePubKey = value.Message().Interface().(*common.ActivePublicKey)
-	case "fairyring.pep.QueryPubKeyResponse.queued_pub_key":
-		x.QueuedPubKey = value.Message().Interface().(*common.QueuedPublicKey)
+	case "fairyring.pep.QueryPubkeyResponse.active_pubkey":
+		x.ActivePubkey = value.Message().Interface().(*common.ActivePublicKey)
+	case "fairyring.pep.QueryPubkeyResponse.queued_pubkey":
+		x.QueuedPubkey = value.Message().Interface().(*common.QueuedPublicKey)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.QueryPubKeyResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.QueryPubkeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -8577,52 +8577,52 @@ func (x *fastReflection_QueryPubKeyResponse) Set(fd protoreflect.FieldDescriptor
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPubKeyResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPubkeyResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.pep.QueryPubKeyResponse.active_pub_key":
-		if x.ActivePubKey == nil {
-			x.ActivePubKey = new(common.ActivePublicKey)
+	case "fairyring.pep.QueryPubkeyResponse.active_pubkey":
+		if x.ActivePubkey == nil {
+			x.ActivePubkey = new(common.ActivePublicKey)
 		}
-		return protoreflect.ValueOfMessage(x.ActivePubKey.ProtoReflect())
-	case "fairyring.pep.QueryPubKeyResponse.queued_pub_key":
-		if x.QueuedPubKey == nil {
-			x.QueuedPubKey = new(common.QueuedPublicKey)
+		return protoreflect.ValueOfMessage(x.ActivePubkey.ProtoReflect())
+	case "fairyring.pep.QueryPubkeyResponse.queued_pubkey":
+		if x.QueuedPubkey == nil {
+			x.QueuedPubkey = new(common.QueuedPublicKey)
 		}
-		return protoreflect.ValueOfMessage(x.QueuedPubKey.ProtoReflect())
+		return protoreflect.ValueOfMessage(x.QueuedPubkey.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.QueryPubKeyResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.QueryPubkeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryPubKeyResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_QueryPubkeyResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.pep.QueryPubKeyResponse.active_pub_key":
+	case "fairyring.pep.QueryPubkeyResponse.active_pubkey":
 		m := new(common.ActivePublicKey)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	case "fairyring.pep.QueryPubKeyResponse.queued_pub_key":
+	case "fairyring.pep.QueryPubkeyResponse.queued_pubkey":
 		m := new(common.QueuedPublicKey)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubKeyResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.QueryPubkeyResponse"))
 		}
-		panic(fmt.Errorf("message fairyring.pep.QueryPubKeyResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message fairyring.pep.QueryPubkeyResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryPubKeyResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_QueryPubkeyResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.pep.QueryPubKeyResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.pep.QueryPubkeyResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -8630,7 +8630,7 @@ func (x *fastReflection_QueryPubKeyResponse) WhichOneof(d protoreflect.OneofDesc
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryPubKeyResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_QueryPubkeyResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -8641,7 +8641,7 @@ func (x *fastReflection_QueryPubKeyResponse) GetUnknown() protoreflect.RawFields
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryPubKeyResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_QueryPubkeyResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -8653,7 +8653,7 @@ func (x *fastReflection_QueryPubKeyResponse) SetUnknown(fields protoreflect.RawF
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_QueryPubKeyResponse) IsValid() bool {
+func (x *fastReflection_QueryPubkeyResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -8663,9 +8663,9 @@ func (x *fastReflection_QueryPubKeyResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryPubKeyResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_QueryPubkeyResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryPubKeyResponse)
+		x := input.Message.Interface().(*QueryPubkeyResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -8677,12 +8677,12 @@ func (x *fastReflection_QueryPubKeyResponse) ProtoMethods() *protoiface.Methods 
 		var n int
 		var l int
 		_ = l
-		if x.ActivePubKey != nil {
-			l = options.Size(x.ActivePubKey)
+		if x.ActivePubkey != nil {
+			l = options.Size(x.ActivePubkey)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.QueuedPubKey != nil {
-			l = options.Size(x.QueuedPubKey)
+		if x.QueuedPubkey != nil {
+			l = options.Size(x.QueuedPubkey)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		if x.unknownFields != nil {
@@ -8695,7 +8695,7 @@ func (x *fastReflection_QueryPubKeyResponse) ProtoMethods() *protoiface.Methods 
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryPubKeyResponse)
+		x := input.Message.Interface().(*QueryPubkeyResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -8714,8 +8714,8 @@ func (x *fastReflection_QueryPubKeyResponse) ProtoMethods() *protoiface.Methods 
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.QueuedPubKey != nil {
-			encoded, err := options.Marshal(x.QueuedPubKey)
+		if x.QueuedPubkey != nil {
+			encoded, err := options.Marshal(x.QueuedPubkey)
 			if err != nil {
 				return protoiface.MarshalOutput{
 					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -8728,8 +8728,8 @@ func (x *fastReflection_QueryPubKeyResponse) ProtoMethods() *protoiface.Methods 
 			i--
 			dAtA[i] = 0x12
 		}
-		if x.ActivePubKey != nil {
-			encoded, err := options.Marshal(x.ActivePubKey)
+		if x.ActivePubkey != nil {
+			encoded, err := options.Marshal(x.ActivePubkey)
 			if err != nil {
 				return protoiface.MarshalOutput{
 					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -8753,7 +8753,7 @@ func (x *fastReflection_QueryPubKeyResponse) ProtoMethods() *protoiface.Methods 
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryPubKeyResponse)
+		x := input.Message.Interface().(*QueryPubkeyResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -8785,15 +8785,15 @@ func (x *fastReflection_QueryPubKeyResponse) ProtoMethods() *protoiface.Methods 
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPubKeyResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPubkeyResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPubKeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPubkeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ActivePubKey", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ActivePubkey", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -8820,16 +8820,16 @@ func (x *fastReflection_QueryPubKeyResponse) ProtoMethods() *protoiface.Methods 
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				if x.ActivePubKey == nil {
-					x.ActivePubKey = &common.ActivePublicKey{}
+				if x.ActivePubkey == nil {
+					x.ActivePubkey = &common.ActivePublicKey{}
 				}
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.ActivePubKey); err != nil {
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.ActivePubkey); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
 			case 2:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field QueuedPubKey", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field QueuedPubkey", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -8856,10 +8856,10 @@ func (x *fastReflection_QueryPubKeyResponse) ProtoMethods() *protoiface.Methods 
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				if x.QueuedPubKey == nil {
-					x.QueuedPubKey = &common.QueuedPublicKey{}
+				if x.QueuedPubkey == nil {
+					x.QueuedPubkey = &common.QueuedPublicKey{}
 				}
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.QueuedPubKey); err != nil {
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.QueuedPubkey); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
@@ -10007,7 +10007,7 @@ func (x *fastReflection_QueryPrivateIdentityResponse) ProtoMethods() *protoiface
 var (
 	md_QueryDecryptDataRequest                protoreflect.MessageDescriptor
 	fd_QueryDecryptDataRequest_pubkey         protoreflect.FieldDescriptor
-	fd_QueryDecryptDataRequest_aggr_keyshare  protoreflect.FieldDescriptor
+	fd_QueryDecryptDataRequest_decryption_key protoreflect.FieldDescriptor
 	fd_QueryDecryptDataRequest_encrypted_data protoreflect.FieldDescriptor
 )
 
@@ -10015,7 +10015,7 @@ func init() {
 	file_fairyring_pep_query_proto_init()
 	md_QueryDecryptDataRequest = File_fairyring_pep_query_proto.Messages().ByName("QueryDecryptDataRequest")
 	fd_QueryDecryptDataRequest_pubkey = md_QueryDecryptDataRequest.Fields().ByName("pubkey")
-	fd_QueryDecryptDataRequest_aggr_keyshare = md_QueryDecryptDataRequest.Fields().ByName("aggr_keyshare")
+	fd_QueryDecryptDataRequest_decryption_key = md_QueryDecryptDataRequest.Fields().ByName("decryption_key")
 	fd_QueryDecryptDataRequest_encrypted_data = md_QueryDecryptDataRequest.Fields().ByName("encrypted_data")
 }
 
@@ -10090,9 +10090,9 @@ func (x *fastReflection_QueryDecryptDataRequest) Range(f func(protoreflect.Field
 			return
 		}
 	}
-	if x.AggrKeyshare != "" {
-		value := protoreflect.ValueOfString(x.AggrKeyshare)
-		if !f(fd_QueryDecryptDataRequest_aggr_keyshare, value) {
+	if x.DecryptionKey != "" {
+		value := protoreflect.ValueOfString(x.DecryptionKey)
+		if !f(fd_QueryDecryptDataRequest_decryption_key, value) {
 			return
 		}
 	}
@@ -10119,8 +10119,8 @@ func (x *fastReflection_QueryDecryptDataRequest) Has(fd protoreflect.FieldDescri
 	switch fd.FullName() {
 	case "fairyring.pep.QueryDecryptDataRequest.pubkey":
 		return x.Pubkey != ""
-	case "fairyring.pep.QueryDecryptDataRequest.aggr_keyshare":
-		return x.AggrKeyshare != ""
+	case "fairyring.pep.QueryDecryptDataRequest.decryption_key":
+		return x.DecryptionKey != ""
 	case "fairyring.pep.QueryDecryptDataRequest.encrypted_data":
 		return x.EncryptedData != ""
 	default:
@@ -10141,8 +10141,8 @@ func (x *fastReflection_QueryDecryptDataRequest) Clear(fd protoreflect.FieldDesc
 	switch fd.FullName() {
 	case "fairyring.pep.QueryDecryptDataRequest.pubkey":
 		x.Pubkey = ""
-	case "fairyring.pep.QueryDecryptDataRequest.aggr_keyshare":
-		x.AggrKeyshare = ""
+	case "fairyring.pep.QueryDecryptDataRequest.decryption_key":
+		x.DecryptionKey = ""
 	case "fairyring.pep.QueryDecryptDataRequest.encrypted_data":
 		x.EncryptedData = ""
 	default:
@@ -10164,8 +10164,8 @@ func (x *fastReflection_QueryDecryptDataRequest) Get(descriptor protoreflect.Fie
 	case "fairyring.pep.QueryDecryptDataRequest.pubkey":
 		value := x.Pubkey
 		return protoreflect.ValueOfString(value)
-	case "fairyring.pep.QueryDecryptDataRequest.aggr_keyshare":
-		value := x.AggrKeyshare
+	case "fairyring.pep.QueryDecryptDataRequest.decryption_key":
+		value := x.DecryptionKey
 		return protoreflect.ValueOfString(value)
 	case "fairyring.pep.QueryDecryptDataRequest.encrypted_data":
 		value := x.EncryptedData
@@ -10192,8 +10192,8 @@ func (x *fastReflection_QueryDecryptDataRequest) Set(fd protoreflect.FieldDescri
 	switch fd.FullName() {
 	case "fairyring.pep.QueryDecryptDataRequest.pubkey":
 		x.Pubkey = value.Interface().(string)
-	case "fairyring.pep.QueryDecryptDataRequest.aggr_keyshare":
-		x.AggrKeyshare = value.Interface().(string)
+	case "fairyring.pep.QueryDecryptDataRequest.decryption_key":
+		x.DecryptionKey = value.Interface().(string)
 	case "fairyring.pep.QueryDecryptDataRequest.encrypted_data":
 		x.EncryptedData = value.Interface().(string)
 	default:
@@ -10218,8 +10218,8 @@ func (x *fastReflection_QueryDecryptDataRequest) Mutable(fd protoreflect.FieldDe
 	switch fd.FullName() {
 	case "fairyring.pep.QueryDecryptDataRequest.pubkey":
 		panic(fmt.Errorf("field pubkey of message fairyring.pep.QueryDecryptDataRequest is not mutable"))
-	case "fairyring.pep.QueryDecryptDataRequest.aggr_keyshare":
-		panic(fmt.Errorf("field aggr_keyshare of message fairyring.pep.QueryDecryptDataRequest is not mutable"))
+	case "fairyring.pep.QueryDecryptDataRequest.decryption_key":
+		panic(fmt.Errorf("field decryption_key of message fairyring.pep.QueryDecryptDataRequest is not mutable"))
 	case "fairyring.pep.QueryDecryptDataRequest.encrypted_data":
 		panic(fmt.Errorf("field encrypted_data of message fairyring.pep.QueryDecryptDataRequest is not mutable"))
 	default:
@@ -10237,7 +10237,7 @@ func (x *fastReflection_QueryDecryptDataRequest) NewField(fd protoreflect.FieldD
 	switch fd.FullName() {
 	case "fairyring.pep.QueryDecryptDataRequest.pubkey":
 		return protoreflect.ValueOfString("")
-	case "fairyring.pep.QueryDecryptDataRequest.aggr_keyshare":
+	case "fairyring.pep.QueryDecryptDataRequest.decryption_key":
 		return protoreflect.ValueOfString("")
 	case "fairyring.pep.QueryDecryptDataRequest.encrypted_data":
 		return protoreflect.ValueOfString("")
@@ -10314,7 +10314,7 @@ func (x *fastReflection_QueryDecryptDataRequest) ProtoMethods() *protoiface.Meth
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.AggrKeyshare)
+		l = len(x.DecryptionKey)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
@@ -10358,10 +10358,10 @@ func (x *fastReflection_QueryDecryptDataRequest) ProtoMethods() *protoiface.Meth
 			i--
 			dAtA[i] = 0x1a
 		}
-		if len(x.AggrKeyshare) > 0 {
-			i -= len(x.AggrKeyshare)
-			copy(dAtA[i:], x.AggrKeyshare)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.AggrKeyshare)))
+		if len(x.DecryptionKey) > 0 {
+			i -= len(x.DecryptionKey)
+			copy(dAtA[i:], x.DecryptionKey)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.DecryptionKey)))
 			i--
 			dAtA[i] = 0x12
 		}
@@ -10455,7 +10455,7 @@ func (x *fastReflection_QueryDecryptDataRequest) ProtoMethods() *protoiface.Meth
 				iNdEx = postIndex
 			case 2:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field AggrKeyshare", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field DecryptionKey", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -10483,7 +10483,7 @@ func (x *fastReflection_QueryDecryptDataRequest) ProtoMethods() *protoiface.Meth
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.AggrKeyshare = string(dAtA[iNdEx:postIndex])
+				x.DecryptionKey = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
@@ -11649,14 +11649,14 @@ func (x *QueryPepNonceAllResponse) GetPagination() *v1beta1.PageResponse {
 }
 
 // QueryPubKeyRequest is request type for the Query/PubKey RPC method.
-type QueryPubKeyRequest struct {
+type QueryPubkeyRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *QueryPubKeyRequest) Reset() {
-	*x = QueryPubKeyRequest{}
+func (x *QueryPubkeyRequest) Reset() {
+	*x = QueryPubkeyRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_pep_query_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -11664,29 +11664,29 @@ func (x *QueryPubKeyRequest) Reset() {
 	}
 }
 
-func (x *QueryPubKeyRequest) String() string {
+func (x *QueryPubkeyRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*QueryPubKeyRequest) ProtoMessage() {}
+func (*QueryPubkeyRequest) ProtoMessage() {}
 
-// Deprecated: Use QueryPubKeyRequest.ProtoReflect.Descriptor instead.
-func (*QueryPubKeyRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryPubkeyRequest.ProtoReflect.Descriptor instead.
+func (*QueryPubkeyRequest) Descriptor() ([]byte, []int) {
 	return file_fairyring_pep_query_proto_rawDescGZIP(), []int{18}
 }
 
 // QueryPubKeyResponse is response type for the Query/PubKey RPC method.
-type QueryPubKeyResponse struct {
+type QueryPubkeyResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ActivePubKey *common.ActivePublicKey `protobuf:"bytes,1,opt,name=active_pub_key,json=activePubKey,proto3" json:"active_pub_key,omitempty"`
-	QueuedPubKey *common.QueuedPublicKey `protobuf:"bytes,2,opt,name=queued_pub_key,json=queuedPubKey,proto3" json:"queued_pub_key,omitempty"`
+	ActivePubkey *common.ActivePublicKey `protobuf:"bytes,1,opt,name=active_pubkey,json=activePubkey,proto3" json:"active_pubkey,omitempty"`
+	QueuedPubkey *common.QueuedPublicKey `protobuf:"bytes,2,opt,name=queued_pubkey,json=queuedPubkey,proto3" json:"queued_pubkey,omitempty"`
 }
 
-func (x *QueryPubKeyResponse) Reset() {
-	*x = QueryPubKeyResponse{}
+func (x *QueryPubkeyResponse) Reset() {
+	*x = QueryPubkeyResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_fairyring_pep_query_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -11694,27 +11694,27 @@ func (x *QueryPubKeyResponse) Reset() {
 	}
 }
 
-func (x *QueryPubKeyResponse) String() string {
+func (x *QueryPubkeyResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*QueryPubKeyResponse) ProtoMessage() {}
+func (*QueryPubkeyResponse) ProtoMessage() {}
 
-// Deprecated: Use QueryPubKeyResponse.ProtoReflect.Descriptor instead.
-func (*QueryPubKeyResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use QueryPubkeyResponse.ProtoReflect.Descriptor instead.
+func (*QueryPubkeyResponse) Descriptor() ([]byte, []int) {
 	return file_fairyring_pep_query_proto_rawDescGZIP(), []int{19}
 }
 
-func (x *QueryPubKeyResponse) GetActivePubKey() *common.ActivePublicKey {
+func (x *QueryPubkeyResponse) GetActivePubkey() *common.ActivePublicKey {
 	if x != nil {
-		return x.ActivePubKey
+		return x.ActivePubkey
 	}
 	return nil
 }
 
-func (x *QueryPubKeyResponse) GetQueuedPubKey() *common.QueuedPublicKey {
+func (x *QueryPubkeyResponse) GetQueuedPubkey() *common.QueuedPublicKey {
 	if x != nil {
-		return x.QueuedPubKey
+		return x.QueuedPubkey
 	}
 	return nil
 }
@@ -11822,7 +11822,7 @@ type QueryDecryptDataRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	Pubkey        string `protobuf:"bytes,1,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
-	AggrKeyshare  string `protobuf:"bytes,2,opt,name=aggr_keyshare,json=aggrKeyshare,proto3" json:"aggr_keyshare,omitempty"`
+	DecryptionKey string `protobuf:"bytes,2,opt,name=decryption_key,json=decryptionKey,proto3" json:"decryption_key,omitempty"`
 	EncryptedData string `protobuf:"bytes,3,opt,name=encrypted_data,json=encryptedData,proto3" json:"encrypted_data,omitempty"`
 }
 
@@ -11853,9 +11853,9 @@ func (x *QueryDecryptDataRequest) GetPubkey() string {
 	return ""
 }
 
-func (x *QueryDecryptDataRequest) GetAggrKeyshare() string {
+func (x *QueryDecryptDataRequest) GetDecryptionKey() string {
 	if x != nil {
-		return x.AggrKeyshare
+		return x.DecryptionKey
 	}
 	return ""
 }
@@ -11909,21 +11909,21 @@ var file_fairyring_pep_query_proto_rawDesc = []byte{
 	0x0a, 0x19, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f,
 	0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0d, 0x66, 0x61, 0x69,
 	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x1a, 0x11, 0x61, 0x6d, 0x69, 0x6e,
-	0x6f, 0x2f, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67,
-	0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f,
-	0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x1a, 0x2a, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x62, 0x61, 0x73, 0x65, 0x2f, 0x71,
-	0x75, 0x65, 0x72, 0x79, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x70, 0x61, 0x67,
-	0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1a, 0x66,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f, 0x70, 0x61, 0x72,
-	0x61, 0x6d, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x20, 0x66, 0x61, 0x69, 0x72, 0x79,
-	0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74,
-	0x65, 0x64, 0x5f, 0x74, 0x78, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1d, 0x66, 0x61, 0x69,
-	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f, 0x70, 0x65, 0x70, 0x5f, 0x6e,
-	0x6f, 0x6e, 0x63, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x23, 0x66, 0x61, 0x69, 0x72,
-	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2f, 0x73, 0x68, 0x61,
-	0x72, 0x65, 0x64, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22,
+	0x6f, 0x2f, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x2a, 0x63,
+	0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x62, 0x61, 0x73, 0x65, 0x2f, 0x71, 0x75, 0x65, 0x72, 0x79,
+	0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x23, 0x66, 0x61, 0x69, 0x72, 0x79,
+	0x72, 0x69, 0x6e, 0x67, 0x2f, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2f, 0x73, 0x68, 0x61, 0x72,
+	0x65, 0x64, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x20,
+	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f, 0x65, 0x6e,
+	0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x5f, 0x74, 0x78, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x1a, 0x1a, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f,
+	0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1d, 0x66, 0x61,
+	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f, 0x70, 0x65, 0x70, 0x5f,
+	0x6e, 0x6f, 0x6e, 0x63, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67,
+	0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x6e,
+	0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22,
 	0x14, 0x0a, 0x12, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65,
 	0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x4f, 0x0a, 0x13, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61,
 	0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x38, 0x0a, 0x06,
@@ -12032,41 +12032,41 @@ var file_fairyring_pep_query_proto_rawDesc = []byte{
 	0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76,
 	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f,
 	0x6e, 0x73, 0x65, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22,
-	0x14, 0x0a, 0x12, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0xb3, 0x01, 0x0a, 0x13, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50,
-	0x75, 0x62, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4d, 0x0a,
-	0x0e, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x5f, 0x70, 0x75, 0x62, 0x5f, 0x6b, 0x65, 0x79, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
-	0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x76, 0x65, 0x50,
-	0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c,
-	0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x12, 0x4d, 0x0a, 0x0e,
-	0x71, 0x75, 0x65, 0x75, 0x65, 0x64, 0x5f, 0x70, 0x75, 0x62, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x02,
+	0x14, 0x0a, 0x12, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0xb1, 0x01, 0x0a, 0x13, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50,
+	0x75, 0x62, 0x6b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4c, 0x0a,
+	0x0d, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x5f, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x01,
 	0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
-	0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x75, 0x65, 0x64, 0x50, 0x75,
-	0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x71,
-	0x75, 0x65, 0x75, 0x65, 0x64, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x22, 0x34, 0x0a, 0x1b, 0x51,
-	0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x49, 0x64, 0x65, 0x6e, 0x74,
-	0x69, 0x74, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x15, 0x0a, 0x06, 0x72, 0x65,
-	0x71, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x72, 0x65, 0x71, 0x49,
-	0x64, 0x22, 0xc7, 0x01, 0x0a, 0x1c, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x69, 0x76, 0x61,
-	0x74, 0x65, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x15, 0x0a, 0x06,
-	0x72, 0x65, 0x71, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x72, 0x65,
-	0x71, 0x49, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x03, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x5e, 0x0a, 0x17, 0x70,
-	0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x5f, 0x64, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f,
-	0x6e, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x66,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e,
-	0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f,
-	0x6e, 0x4b, 0x65, 0x79, 0x52, 0x15, 0x70, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x44, 0x65, 0x63,
-	0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x73, 0x22, 0x7d, 0x0a, 0x17, 0x51,
-	0x75, 0x65, 0x72, 0x79, 0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x44, 0x61, 0x74, 0x61, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x23,
-	0x0a, 0x0d, 0x61, 0x67, 0x67, 0x72, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x61, 0x67, 0x67, 0x72, 0x4b, 0x65, 0x79, 0x73, 0x68,
-	0x61, 0x72, 0x65, 0x12, 0x25, 0x0a, 0x0e, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64,
+	0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x76, 0x65, 0x50, 0x75,
+	0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x61,
+	0x63, 0x74, 0x69, 0x76, 0x65, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x4c, 0x0a, 0x0d, 0x71,
+	0x75, 0x65, 0x75, 0x65, 0x64, 0x5f, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x21, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63,
+	0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x75, 0x65, 0x64, 0x50, 0x75, 0x62, 0x6c,
+	0x69, 0x63, 0x4b, 0x65, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0c, 0x71, 0x75, 0x65,
+	0x75, 0x65, 0x64, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x22, 0x34, 0x0a, 0x1b, 0x51, 0x75, 0x65,
+	0x72, 0x79, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74,
+	0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x15, 0x0a, 0x06, 0x72, 0x65, 0x71, 0x5f,
+	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x72, 0x65, 0x71, 0x49, 0x64, 0x22,
+	0xc7, 0x01, 0x0a, 0x1c, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65,
+	0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x15, 0x0a, 0x06, 0x72, 0x65,
+	0x71, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x72, 0x65, 0x71, 0x49,
+	0x64, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x5e, 0x0a, 0x17, 0x70, 0x72, 0x69,
+	0x76, 0x61, 0x74, 0x65, 0x5f, 0x64, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x5f,
+	0x6b, 0x65, 0x79, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x66, 0x61, 0x69,
+	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x50, 0x72,
+	0x69, 0x76, 0x61, 0x74, 0x65, 0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x4b,
+	0x65, 0x79, 0x52, 0x15, 0x70, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x44, 0x65, 0x63, 0x72, 0x79,
+	0x70, 0x74, 0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x73, 0x22, 0x7f, 0x0a, 0x17, 0x51, 0x75, 0x65,
+	0x72, 0x79, 0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x44, 0x61, 0x74, 0x61, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x25, 0x0a, 0x0e,
+	0x64, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x64, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e,
+	0x4b, 0x65, 0x79, 0x12, 0x25, 0x0a, 0x0e, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64,
 	0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x65, 0x6e, 0x63,
 	0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x44, 0x61, 0x74, 0x61, 0x22, 0x41, 0x0a, 0x18, 0x51, 0x75,
 	0x65, 0x72, 0x79, 0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x44, 0x61, 0x74, 0x61, 0x52, 0x65,
@@ -12136,55 +12136,55 @@ var file_fairyring_pep_query_proto_rawDesc = []byte{
 	0x4e, 0x6f, 0x6e, 0x63, 0x65, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
 	0x22, 0x20, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1a, 0x12, 0x18, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79,
 	0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f, 0x70, 0x65, 0x70, 0x5f, 0x6e, 0x6f, 0x6e,
-	0x63, 0x65, 0x12, 0x6f, 0x0a, 0x06, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x12, 0x21, 0x2e, 0x66,
+	0x63, 0x65, 0x12, 0x6e, 0x0a, 0x06, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x21, 0x2e, 0x66,
 	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x51, 0x75, 0x65,
-	0x72, 0x79, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x72, 0x79, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
 	0x22, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e,
-	0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x22, 0x1e, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x18, 0x12, 0x16, 0x2f, 0x66, 0x61,
-	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f, 0x70, 0x75, 0x62, 0x5f,
-	0x6b, 0x65, 0x79, 0x12, 0x9c, 0x01, 0x0a, 0x0f, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x49,
-	0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x2a, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
-	0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x6e,
-	0x65, 0x72, 0x61, 0x6c, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x1a, 0x2b, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
-	0x70, 0x65, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c,
-	0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x22, 0x30, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x2a, 0x12, 0x28, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79,
-	0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c,
-	0x5f, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2f, 0x7b, 0x72, 0x65, 0x71, 0x5f, 0x69,
-	0x64, 0x7d, 0x12, 0x9c, 0x01, 0x0a, 0x12, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x49, 0x64,
-	0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x41, 0x6c, 0x6c, 0x12, 0x2d, 0x2e, 0x66, 0x61, 0x69, 0x72,
-	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47,
-	0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x41, 0x6c,
-	0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2e, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x22, 0x1d, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x17, 0x12, 0x15, 0x2f, 0x66, 0x61,
+	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f, 0x70, 0x75, 0x62, 0x6b,
+	0x65, 0x79, 0x12, 0x9c, 0x01, 0x0a, 0x0f, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x49, 0x64,
+	0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x2a, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x6e, 0x65,
+	0x72, 0x61, 0x6c, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x2b, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70,
+	0x65, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x49,
+	0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x30, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x2a, 0x12, 0x28, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
+	0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x5f,
+	0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2f, 0x7b, 0x72, 0x65, 0x71, 0x5f, 0x69, 0x64,
+	0x7d, 0x12, 0x9c, 0x01, 0x0a, 0x12, 0x47, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x49, 0x64, 0x65,
+	0x6e, 0x74, 0x69, 0x74, 0x79, 0x41, 0x6c, 0x6c, 0x12, 0x2d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
 	0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65,
 	0x6e, 0x65, 0x72, 0x61, 0x6c, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x41, 0x6c, 0x6c,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x27, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x21,
-	0x12, 0x1f, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70,
-	0x2f, 0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x5f, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74,
-	0x79, 0x12, 0xa6, 0x01, 0x0a, 0x0f, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x49, 0x64, 0x65,
-	0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x2a, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
-	0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x69, 0x76, 0x61,
-	0x74, 0x65, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x1a, 0x2b, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65,
-	0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x49, 0x64,
-	0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x3a,
-	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x34, 0x12, 0x32, 0x2f, 0x46, 0x61, 0x69, 0x72, 0x62, 0x6c, 0x6f,
-	0x63, 0x6b, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70,
-	0x2f, 0x70, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x5f, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74,
-	0x79, 0x2f, 0x7b, 0x72, 0x65, 0x71, 0x5f, 0x69, 0x64, 0x7d, 0x12, 0xb7, 0x01, 0x0a, 0x0b, 0x44,
-	0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x44, 0x61, 0x74, 0x61, 0x12, 0x26, 0x2e, 0x66, 0x61, 0x69,
-	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79,
-	0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x44, 0x61, 0x74, 0x61, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x1a, 0x27, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70,
-	0x65, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x44,
-	0x61, 0x74, 0x61, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x57, 0x82, 0xd3, 0xe4,
-	0x93, 0x02, 0x51, 0x12, 0x4f, 0x2f, 0x46, 0x61, 0x69, 0x72, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x2f,
-	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f, 0x64, 0x65,
-	0x63, 0x72, 0x79, 0x70, 0x74, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x2f, 0x7b, 0x70, 0x75, 0x62, 0x6b,
-	0x65, 0x79, 0x7d, 0x2f, 0x7b, 0x61, 0x67, 0x67, 0x72, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61,
-	0x72, 0x65, 0x7d, 0x2f, 0x7b, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x5f, 0x64,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2e, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
+	0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x6e,
+	0x65, 0x72, 0x61, 0x6c, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x41, 0x6c, 0x6c, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x27, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x21, 0x12,
+	0x1f, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f,
+	0x67, 0x65, 0x6e, 0x65, 0x72, 0x61, 0x6c, 0x5f, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79,
+	0x12, 0xa6, 0x01, 0x0a, 0x0f, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x49, 0x64, 0x65, 0x6e,
+	0x74, 0x69, 0x74, 0x79, 0x12, 0x2a, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
+	0x2e, 0x70, 0x65, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74,
+	0x65, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x2b, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70,
+	0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x49, 0x64, 0x65,
+	0x6e, 0x74, 0x69, 0x74, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x3a, 0x82,
+	0xd3, 0xe4, 0x93, 0x02, 0x34, 0x12, 0x32, 0x2f, 0x46, 0x61, 0x69, 0x72, 0x62, 0x6c, 0x6f, 0x63,
+	0x6b, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f,
+	0x70, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x5f, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79,
+	0x2f, 0x7b, 0x72, 0x65, 0x71, 0x5f, 0x69, 0x64, 0x7d, 0x12, 0xb8, 0x01, 0x0a, 0x0b, 0x44, 0x65,
+	0x63, 0x72, 0x79, 0x70, 0x74, 0x44, 0x61, 0x74, 0x61, 0x12, 0x26, 0x2e, 0x66, 0x61, 0x69, 0x72,
+	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x44,
+	0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x44, 0x61, 0x74, 0x61, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x27, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65,
+	0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x44, 0x61,
+	0x74, 0x61, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x58, 0x82, 0xd3, 0xe4, 0x93,
+	0x02, 0x52, 0x12, 0x50, 0x2f, 0x46, 0x61, 0x69, 0x72, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x2f, 0x66,
+	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0x2f, 0x64, 0x65, 0x63,
+	0x72, 0x79, 0x70, 0x74, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x2f, 0x7b, 0x70, 0x75, 0x62, 0x6b, 0x65,
+	0x79, 0x7d, 0x2f, 0x7b, 0x64, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6b,
+	0x65, 0x79, 0x7d, 0x2f, 0x7b, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x5f, 0x64,
 	0x61, 0x74, 0x61, 0x7d, 0x42, 0x94, 0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69,
 	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x42, 0x0a, 0x51, 0x75, 0x65, 0x72,
 	0x79, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x1e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
@@ -12230,8 +12230,8 @@ var file_fairyring_pep_query_proto_goTypes = []interface{}{
 	(*QueryPepNonceResponse)(nil),                 // 15: fairyring.pep.QueryPepNonceResponse
 	(*QueryPepNonceAllRequest)(nil),               // 16: fairyring.pep.QueryPepNonceAllRequest
 	(*QueryPepNonceAllResponse)(nil),              // 17: fairyring.pep.QueryPepNonceAllResponse
-	(*QueryPubKeyRequest)(nil),                    // 18: fairyring.pep.QueryPubKeyRequest
-	(*QueryPubKeyResponse)(nil),                   // 19: fairyring.pep.QueryPubKeyResponse
+	(*QueryPubkeyRequest)(nil),                    // 18: fairyring.pep.QueryPubkeyRequest
+	(*QueryPubkeyResponse)(nil),                   // 19: fairyring.pep.QueryPubkeyResponse
 	(*QueryPrivateIdentityRequest)(nil),           // 20: fairyring.pep.QueryPrivateIdentityRequest
 	(*QueryPrivateIdentityResponse)(nil),          // 21: fairyring.pep.QueryPrivateIdentityResponse
 	(*QueryDecryptDataRequest)(nil),               // 22: fairyring.pep.QueryDecryptDataRequest
@@ -12262,8 +12262,8 @@ var file_fairyring_pep_query_proto_depIdxs = []int32{
 	26, // 11: fairyring.pep.QueryPepNonceAllRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
 	30, // 12: fairyring.pep.QueryPepNonceAllResponse.pep_nonce:type_name -> fairyring.pep.PepNonce
 	27, // 13: fairyring.pep.QueryPepNonceAllResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
-	31, // 14: fairyring.pep.QueryPubKeyResponse.active_pub_key:type_name -> fairyring.common.ActivePublicKey
-	32, // 15: fairyring.pep.QueryPubKeyResponse.queued_pub_key:type_name -> fairyring.common.QueuedPublicKey
+	31, // 14: fairyring.pep.QueryPubkeyResponse.active_pubkey:type_name -> fairyring.common.ActivePublicKey
+	32, // 15: fairyring.pep.QueryPubkeyResponse.queued_pubkey:type_name -> fairyring.common.QueuedPublicKey
 	33, // 16: fairyring.pep.QueryPrivateIdentityResponse.private_decryption_keys:type_name -> fairyring.common.PrivateDecryptionKey
 	0,  // 17: fairyring.pep.Query.Params:input_type -> fairyring.pep.QueryParamsRequest
 	6,  // 18: fairyring.pep.Query.EncryptedTx:input_type -> fairyring.pep.QueryEncryptedTxRequest
@@ -12272,7 +12272,7 @@ var file_fairyring_pep_query_proto_depIdxs = []int32{
 	12, // 21: fairyring.pep.Query.LatestHeight:input_type -> fairyring.pep.QueryLatestHeightRequest
 	14, // 22: fairyring.pep.Query.PepNonce:input_type -> fairyring.pep.QueryPepNonceRequest
 	16, // 23: fairyring.pep.Query.PepNonceAll:input_type -> fairyring.pep.QueryPepNonceAllRequest
-	18, // 24: fairyring.pep.Query.PubKey:input_type -> fairyring.pep.QueryPubKeyRequest
+	18, // 24: fairyring.pep.Query.Pubkey:input_type -> fairyring.pep.QueryPubkeyRequest
 	2,  // 25: fairyring.pep.Query.GeneralIdentity:input_type -> fairyring.pep.QueryGeneralIdentityRequest
 	4,  // 26: fairyring.pep.Query.GeneralIdentityAll:input_type -> fairyring.pep.QueryGeneralIdentityAllRequest
 	20, // 27: fairyring.pep.Query.PrivateIdentity:input_type -> fairyring.pep.QueryPrivateIdentityRequest
@@ -12284,7 +12284,7 @@ var file_fairyring_pep_query_proto_depIdxs = []int32{
 	13, // 33: fairyring.pep.Query.LatestHeight:output_type -> fairyring.pep.QueryLatestHeightResponse
 	15, // 34: fairyring.pep.Query.PepNonce:output_type -> fairyring.pep.QueryPepNonceResponse
 	17, // 35: fairyring.pep.Query.PepNonceAll:output_type -> fairyring.pep.QueryPepNonceAllResponse
-	19, // 36: fairyring.pep.Query.PubKey:output_type -> fairyring.pep.QueryPubKeyResponse
+	19, // 36: fairyring.pep.Query.Pubkey:output_type -> fairyring.pep.QueryPubkeyResponse
 	3,  // 37: fairyring.pep.Query.GeneralIdentity:output_type -> fairyring.pep.QueryGeneralIdentityResponse
 	5,  // 38: fairyring.pep.Query.GeneralIdentityAll:output_type -> fairyring.pep.QueryGeneralIdentityAllResponse
 	21, // 39: fairyring.pep.Query.PrivateIdentity:output_type -> fairyring.pep.QueryPrivateIdentityResponse
@@ -12301,8 +12301,8 @@ func file_fairyring_pep_query_proto_init() {
 	if File_fairyring_pep_query_proto != nil {
 		return
 	}
-	file_fairyring_pep_params_proto_init()
 	file_fairyring_pep_encrypted_tx_proto_init()
+	file_fairyring_pep_params_proto_init()
 	file_fairyring_pep_pep_nonce_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_fairyring_pep_query_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
@@ -12522,7 +12522,7 @@ func file_fairyring_pep_query_proto_init() {
 			}
 		}
 		file_fairyring_pep_query_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryPubKeyRequest); i {
+			switch v := v.(*QueryPubkeyRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -12534,7 +12534,7 @@ func file_fairyring_pep_query_proto_init() {
 			}
 		}
 		file_fairyring_pep_query_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryPubKeyResponse); i {
+			switch v := v.(*QueryPubkeyResponse); i {
 			case 0:
 				return &v.state
 			case 1:

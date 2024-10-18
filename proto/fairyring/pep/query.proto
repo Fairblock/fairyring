@@ -51,7 +51,7 @@ service Query {
   }
 
   // Queries the public keys
-  rpc PubKey(QueryPubkeyRequest) returns (QueryPubkeyResponse) {
+  rpc Pubkey(QueryPubkeyRequest) returns (QueryPubkeyResponse) {
     option (google.api.http).get = "/fairyring/pep/pubkey";
   }
 

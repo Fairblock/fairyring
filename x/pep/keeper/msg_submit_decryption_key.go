@@ -15,7 +15,10 @@ import (
 	bls "github.com/drand/kyber-bls12381"
 )
 
-func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.MsgCreateAggregatedKeyShare) (*types.MsgCreateAggregatedKeyShareResponse, error) {
+func (k msgServer) SubmitDecryptionKey(
+	goCtx context.Context,
+	msg *types.MsgSubmitDecryptionKey,
+) (*types.MsgSubmitDecryptionKeyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	params := k.GetParams(ctx)
@@ -42,7 +45,7 @@ func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.Ms
 	dummyDataBuffer.Write([]byte(dummyData))
 	var decryptedDataBytes bytes.Buffer
 
-	ak, found := k.GetActivePubKey(ctx)
+	ak, found := k.GetActivePubkey(ctx)
 	if !found {
 		k.Logger().Error("Active key not found")
 		return nil, errors.New("active key not found")
@@ -98,7 +101,7 @@ func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.Ms
 		return nil, err
 	}
 
-	k.SetAggregatedKeyShare(ctx, types.AggregatedKeyShare{
+	k.SetDecryptionKey(ctx, types.DecryptionKey{
 		Height:  msg.Height,
 		Data:    msg.Data,
 		Creator: msg.Creator,
@@ -115,5 +118,5 @@ func (k msgServer) CreateAggregatedKeyShare(goCtx context.Context, msg *types.Ms
 
 	k.Logger().Info(fmt.Sprintf("[ProcessUnconfirmedTxs] Aggregated Key Added, height: %d", msg.Height))
 
-	return &types.MsgCreateAggregatedKeyShareResponse{}, nil
+	return &types.MsgSubmitDecryptionKeyResponse{}, nil
 }

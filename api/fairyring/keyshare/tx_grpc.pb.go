@@ -28,7 +28,7 @@ const (
 	Msg_CreateAuthorizedAddress_FullMethodName = "/fairyring.keyshare.Msg/CreateAuthorizedAddress"
 	Msg_UpdateAuthorizedAddress_FullMethodName = "/fairyring.keyshare.Msg/UpdateAuthorizedAddress"
 	Msg_DeleteAuthorizedAddress_FullMethodName = "/fairyring.keyshare.Msg/DeleteAuthorizedAddress"
-	Msg_SubmitGeneralKeyShare_FullMethodName   = "/fairyring.keyshare.Msg/SubmitGeneralKeyShare"
+	Msg_SubmitGeneralKeyshare_FullMethodName   = "/fairyring.keyshare.Msg/SubmitGeneralKeyshare"
 	Msg_SubmitEncryptedKeyshare_FullMethodName = "/fairyring.keyshare.Msg/SubmitEncryptedKeyshare"
 )
 
@@ -64,7 +64,7 @@ type MsgClient interface {
 	DeleteAuthorizedAddress(ctx context.Context, in *MsgDeleteAuthorizedAddress, opts ...grpc.CallOption) (*MsgDeleteAuthorizedAddressResponse, error)
 	// SubmitGeneralKeyShare defines an operation to submit a
 	// general keyshare from a registered validator
-	SubmitGeneralKeyShare(ctx context.Context, in *MsgSubmitGeneralKeyShare, opts ...grpc.CallOption) (*MsgSubmitGeneralKeyShareResponse, error)
+	SubmitGeneralKeyshare(ctx context.Context, in *MsgSubmitGeneralKeyshare, opts ...grpc.CallOption) (*MsgSubmitGeneralKeyshareResponse, error)
 	// SubmitEncryptedKeyshare defines an operation to submit
 	// an encrypted keyshare from a registered validator
 	SubmitEncryptedKeyshare(ctx context.Context, in *MsgSubmitEncryptedKeyshare, opts ...grpc.CallOption) (*MsgSubmitEncryptedKeyshareResponse, error)
@@ -159,9 +159,9 @@ func (c *msgClient) DeleteAuthorizedAddress(ctx context.Context, in *MsgDeleteAu
 	return out, nil
 }
 
-func (c *msgClient) SubmitGeneralKeyShare(ctx context.Context, in *MsgSubmitGeneralKeyShare, opts ...grpc.CallOption) (*MsgSubmitGeneralKeyShareResponse, error) {
-	out := new(MsgSubmitGeneralKeyShareResponse)
-	err := c.cc.Invoke(ctx, Msg_SubmitGeneralKeyShare_FullMethodName, in, out, opts...)
+func (c *msgClient) SubmitGeneralKeyshare(ctx context.Context, in *MsgSubmitGeneralKeyshare, opts ...grpc.CallOption) (*MsgSubmitGeneralKeyshareResponse, error) {
+	out := new(MsgSubmitGeneralKeyshareResponse)
+	err := c.cc.Invoke(ctx, Msg_SubmitGeneralKeyshare_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -209,7 +209,7 @@ type MsgServer interface {
 	DeleteAuthorizedAddress(context.Context, *MsgDeleteAuthorizedAddress) (*MsgDeleteAuthorizedAddressResponse, error)
 	// SubmitGeneralKeyShare defines an operation to submit a
 	// general keyshare from a registered validator
-	SubmitGeneralKeyShare(context.Context, *MsgSubmitGeneralKeyShare) (*MsgSubmitGeneralKeyShareResponse, error)
+	SubmitGeneralKeyshare(context.Context, *MsgSubmitGeneralKeyshare) (*MsgSubmitGeneralKeyshareResponse, error)
 	// SubmitEncryptedKeyshare defines an operation to submit
 	// an encrypted keyshare from a registered validator
 	SubmitEncryptedKeyshare(context.Context, *MsgSubmitEncryptedKeyshare) (*MsgSubmitEncryptedKeyshareResponse, error)
@@ -247,8 +247,8 @@ func (UnimplementedMsgServer) UpdateAuthorizedAddress(context.Context, *MsgUpdat
 func (UnimplementedMsgServer) DeleteAuthorizedAddress(context.Context, *MsgDeleteAuthorizedAddress) (*MsgDeleteAuthorizedAddressResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAuthorizedAddress not implemented")
 }
-func (UnimplementedMsgServer) SubmitGeneralKeyShare(context.Context, *MsgSubmitGeneralKeyShare) (*MsgSubmitGeneralKeyShareResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SubmitGeneralKeyShare not implemented")
+func (UnimplementedMsgServer) SubmitGeneralKeyshare(context.Context, *MsgSubmitGeneralKeyshare) (*MsgSubmitGeneralKeyshareResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitGeneralKeyshare not implemented")
 }
 func (UnimplementedMsgServer) SubmitEncryptedKeyshare(context.Context, *MsgSubmitEncryptedKeyshare) (*MsgSubmitEncryptedKeyshareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitEncryptedKeyshare not implemented")
@@ -428,20 +428,20 @@ func _Msg_DeleteAuthorizedAddress_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_SubmitGeneralKeyShare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgSubmitGeneralKeyShare)
+func _Msg_SubmitGeneralKeyshare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSubmitGeneralKeyshare)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).SubmitGeneralKeyShare(ctx, in)
+		return srv.(MsgServer).SubmitGeneralKeyshare(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_SubmitGeneralKeyShare_FullMethodName,
+		FullMethod: Msg_SubmitGeneralKeyshare_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).SubmitGeneralKeyShare(ctx, req.(*MsgSubmitGeneralKeyShare))
+		return srv.(MsgServer).SubmitGeneralKeyshare(ctx, req.(*MsgSubmitGeneralKeyshare))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -508,8 +508,8 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_DeleteAuthorizedAddress_Handler,
 		},
 		{
-			MethodName: "SubmitGeneralKeyShare",
-			Handler:    _Msg_SubmitGeneralKeyShare_Handler,
+			MethodName: "SubmitGeneralKeyshare",
+			Handler:    _Msg_SubmitGeneralKeyshare_Handler,
 		},
 		{
 			MethodName: "SubmitEncryptedKeyshare",

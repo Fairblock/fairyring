@@ -13,10 +13,10 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) KeyshareReq(
+func (k Keeper) GeneralIdentity(
 	c context.Context,
-	req *types.QueryKeyshareReqRequest,
-) (*types.QueryKeyshareReqResponse, error) {
+	req *types.QueryGeneralIdentityRequest,
+) (*types.QueryGeneralIdentityResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -28,13 +28,13 @@ func (k Keeper) KeyshareReq(
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	return &types.QueryKeyshareReqResponse{Keyshare: &entry}, nil
+	return &types.QueryGeneralIdentityResponse{RequestDetails: &entry}, nil
 }
 
-func (k Keeper) KeyshareReqAll(
+func (k Keeper) GeneralIdentityAll(
 	c context.Context,
-	req *types.QueryKeyshareReqAllRequest,
-) (*types.QueryKeyshareReqAllResponse, error) {
+	req *types.QueryGeneralIdentityAllRequest,
+) (*types.QueryGeneralIdentityAllResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -44,10 +44,10 @@ func (k Keeper) KeyshareReqAll(
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxKeyPrefix))
 
-	var keyshares []*types.IdentityExecutionQueue
+	var keyshares []*types.IdentityExecutionEntry
 
 	pageRes, err := query.Paginate(store, req.Pagination, func(key []byte, value []byte) error {
-		var keyshare types.IdentityExecutionQueue
+		var keyshare types.IdentityExecutionEntry
 		if err := k.cdc.Unmarshal(value, &keyshare); err != nil {
 			return err
 		}
@@ -60,8 +60,8 @@ func (k Keeper) KeyshareReqAll(
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryKeyshareReqAllResponse{
-		Keyshares:  keyshares,
-		Pagination: pageRes,
+	return &types.QueryGeneralIdentityAllResponse{
+		RequestDetailsList: keyshares,
+		Pagination:         pageRes,
 	}, nil
 }
