@@ -477,6 +477,24 @@ func New(
 	app.sm.RegisterStoreDecoders()
 
 	app.UpgradeKeeper.SetUpgradeHandler(
+		"v0.8.2-to-0.8.3-release",
+		func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+
+			fromVM[capabilitytypes.ModuleName] = capability.AppModule{}.ConsensusVersion()
+			fromVM[peptypes.ModuleName] = pepmodule.AppModule{}.ConsensusVersion()
+			fromVM[keysharemoduletypes.ModuleName] = keysharemodule.AppModule{}.ConsensusVersion()
+			fromVM[ibcmodule.AppModule{}.Name()] = ibcmodule.AppModule{}.ConsensusVersion()
+			fromVM[ibcfeetypes.ModuleName] = ibcfeemodule.AppModule{}.ConsensusVersion()
+			fromVM[wasmtypes.ModuleName] = wasm.AppModule{}.ConsensusVersion()
+			fromVM[transfertypes.ModuleName] = transfer.AppModule{}.ConsensusVersion()
+			fromVM[interchainaccountstypes.ModuleName] = interchainaccountsmodule.AppModule{}.ConsensusVersion()
+			// 07-tendermint, 06-solomachine
+
+			return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
+		},
+	)
+
+	app.UpgradeKeeper.SetUpgradeHandler(
 		"v0.8.3-to-0.9.0-release",
 		func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
 			fromVM[capabilitytypes.ModuleName] = capability.AppModule{}.ConsensusVersion()
