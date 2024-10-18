@@ -2,14 +2,14 @@
 
 WORKING_DIR="$HOME/.chain_upgrade_test_env"
 GIT_FAIRYRING_REPO=https://github.com/Fairblock/fairyring.git
-GO_VERSION_FROM=system
-GO_VERSION_TO=system
 GIT_TAG_UPGRADE_FROM=v0.8.3
 GIT_TAG_UPGRADE_TO=0.9.0-release
+GIT_TAG_UPGRADE_TO_SECOND=fix-capability-store-error
 
 BINARY=fairyringd
 BINARY_FULL_PATH=$WORKING_DIR/$GIT_TAG_UPGRADE_FROM/build/$BINARY
 NEW_BINARY_FULL_PATH=$WORKING_DIR/$GIT_TAG_UPGRADE_TO/build/$BINARY
+NEW_2ND_BINARY_FULL_PATH=$WORKING_DIR/$GIT_TAG_UPGRADE_TO_SECOND/build/$BINARY
 UPGRADER=cosmovisor
 
 CURRENT_PATH=$(pwd)
@@ -34,14 +34,11 @@ if ! cd "$WORKING_DIR" 2>/dev/null; then
   echo "Failed to change dir to $WORKING_DIR. Aborting..."
 fi
 
-[[ -s "$GVM_ROOT/scripts/gvm" ]] && source "$GVM_ROOT/scripts/gvm"
-
 echo "Installing $GIT_TAG_UPGRADE_FROM $BINARY"
 git clone $GIT_FAIRYRING_REPO $GIT_TAG_UPGRADE_FROM
 cd "$WORKING_DIR/$GIT_TAG_UPGRADE_FROM"
 git checkout $GIT_TAG_UPGRADE_FROM
 echo "Building the 'Upgrade From' $BINARY"
-gvm use $GO_VERSION_FROM
 go mod tidy
 make build
 
@@ -52,7 +49,16 @@ cd "$WORKING_DIR/$GIT_TAG_UPGRADE_TO"
 echo $GIT_TAG_UPGRADE_TO
 git checkout $GIT_TAG_UPGRADE_TO
 echo "Building the 'Upgrade To' $BINARY"
-gvm use $GO_VERSION_TO
+go mod tidy
+make build
+
+echo "Installing $GIT_TAG_UPGRADE_TO_SECOND $BINARY"
+cd "$WORKING_DIR"
+git clone $GIT_FAIRYRING_REPO $GIT_TAG_UPGRADE_TO_SECOND
+cd "$WORKING_DIR/$GIT_TAG_UPGRADE_TO_SECOND"
+echo $GIT_TAG_UPGRADE_TO_SECOND
+git checkout $GIT_TAG_UPGRADE_TO_SECOND
+echo "Building the 'Upgrade To' $BINARY"
 go mod tidy
 make build
 
@@ -65,6 +71,7 @@ echo "Setting up the chain for testing..."
 CHAIN_ID=test_chain_upgrade
 CHAIN_HOME=$WORKING_DIR/chain_data
 UPGRADE_NAME="$GIT_TAG_UPGRADE_FROM-to-$GIT_TAG_UPGRADE_TO"
+UPGRADE_NAME_2ND="$GIT_TAG_UPGRADE_TO-to-$GIT_TAG_UPGRADE_TO_SECOND"
 
 cd "$WORKING_DIR/$GIT_TAG_UPGRADE_FROM"
 
@@ -126,12 +133,37 @@ UPGRADE_PROPOSAL=$(cat <<-EOF
 EOF
 )
 
+UPGRADE_PROPOSAL_2ND=$(cat <<-EOF
+  {
+    "messages": [
+      {
+        "@type": "/cosmos.upgrade.v1beta1.MsgSoftwareUpgrade",
+        "authority": "fairy10d07y265gmmuvt4z0w9aw880jnsr700j5c6f67",
+        "plan": {
+          "name": "$UPGRADE_NAME_2ND",
+          "time": "0001-01-01T00:00:00Z",
+          "height": "20",
+          "info": "",
+          "upgraded_client_state": null
+        }
+      }
+    ],
+    "metadata": "ipfs://CID",
+    "deposit": "10000000stake",
+    "title": "chain-upgrade",
+    "summary": "f"
+  }
+EOF
+)
+
 cd $WORKING_DIR
 
 echo $UPGRADE_PROPOSAL > upgrade_proposal.json
+echo $UPGRADE_PROPOSAL_2ND > upgrade_proposal_2.json
 
 echo "Setting up the chain upgrade..."
 $UPGRADER add-upgrade $UPGRADE_NAME $WORKING_DIR/$GIT_TAG_UPGRADE_TO/build/$BINARY
+$UPGRADER add-upgrade $UPGRADE_NAME_2ND $WORKING_DIR/$GIT_TAG_UPGRADE_TO_SECOND/build/$BINARY
 
 sleep $(($BLOCK_TIME * 2))
 
@@ -158,6 +190,16 @@ echo "Waiting chain to upgrade..."
 sleep 45
 
 echo "Sequence after upgrade: $($BINARY_FULL_PATH q auth account $WAL1_ADDR -o json | jq -r '.account.value.sequence'), Balance after upgrade: $($BINARY_FULL_PATH q bank balances $VAL_ADDR -o json | jq -r '.balances[0]')"
+
+echo "Submitting another proposal for chain upgrade"
+
+$BINARY_FULL_PATH tx gov submit-proposal upgrade_proposal_2.json --from validator --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME --yes
+sleep $BLOCK_TIME
+$BINARY_FULL_PATH tx gov vote 2 yes --from validator --yes --keyring-backend test --chain-id $CHAIN_ID --home $CHAIN_HOME
+sleep $BLOCK_TIME
+
+echo "Waiting chain to upgrade 2nd time..."
+sleep 45
 
 OUT=$($BINARY_FULL_PATH tx bank send $WAL1_ADDR $VAL_ADDR 1stake --from wallet1 --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME --yes -o json)
 echo "Sent Bank Send Tx After UPGRADE: Code: $(echo $OUT | jq -r '.code'), Logs: $(echo $OUT | jq -r '.raw_log'), Hash: $(echo $OUT | jq -r '.txhash')"
