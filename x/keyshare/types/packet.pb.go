@@ -28,16 +28,19 @@ var _ = time.Kitchen
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// KeysharePacketData defines all the packet types of the keyshare module
 type KeysharePacketData struct {
+	// packet can be one of the following types
+	//
 	// Types that are valid to be assigned to Packet:
 	//	*KeysharePacketData_NoData
-	//	*KeysharePacketData_RequestAggrKeysharePacket
-	//	*KeysharePacketData_GetAggrKeysharePacket
-	//	*KeysharePacketData_AggrKeyshareDataPacket
-	//	*KeysharePacketData_EncryptedKeysharesPacketData
+	//	*KeysharePacketData_RequestDecryptionKeyPacket
+	//	*KeysharePacketData_GetDecryptionKeyPacket
+	//	*KeysharePacketData_DecryptionKeyDataPacket
+	//	*KeysharePacketData_PrivateDecryptionKeyDataPacket
 	//	*KeysharePacketData_CurrentKeysPacket
-	//	*KeysharePacketData_RequestPrivKeysharePacket
-	//	*KeysharePacketData_GetPrivateKeysharePacket
+	//	*KeysharePacketData_RequestPrivateDecryptionKeyPacket
+	//	*KeysharePacketData_GetPrivateDecryptionKeyPacket
 	Packet isKeysharePacketData_Packet `protobuf_oneof:"packet"`
 }
 
@@ -81,38 +84,38 @@ type isKeysharePacketData_Packet interface {
 }
 
 type KeysharePacketData_NoData struct {
-	NoData *NoData `protobuf:"bytes,1,opt,name=noData,proto3,oneof" json:"noData,omitempty"`
+	NoData *NoData `protobuf:"bytes,1,opt,name=no_data,json=noData,proto3,oneof" json:"no_data,omitempty"`
 }
-type KeysharePacketData_RequestAggrKeysharePacket struct {
-	RequestAggrKeysharePacket *RequestAggrKeysharePacketData `protobuf:"bytes,2,opt,name=requestAggrKeysharePacket,proto3,oneof" json:"requestAggrKeysharePacket,omitempty"`
+type KeysharePacketData_RequestDecryptionKeyPacket struct {
+	RequestDecryptionKeyPacket *RequestDecryptionKeyPacketData `protobuf:"bytes,2,opt,name=request_decryption_key_packet,json=requestDecryptionKeyPacket,proto3,oneof" json:"request_decryption_key_packet,omitempty"`
 }
-type KeysharePacketData_GetAggrKeysharePacket struct {
-	GetAggrKeysharePacket *GetAggrKeysharePacketData `protobuf:"bytes,3,opt,name=getAggrKeysharePacket,proto3,oneof" json:"getAggrKeysharePacket,omitempty"`
+type KeysharePacketData_GetDecryptionKeyPacket struct {
+	GetDecryptionKeyPacket *GetDecryptionKeyPacketData `protobuf:"bytes,3,opt,name=get_decryption_key_packet,json=getDecryptionKeyPacket,proto3,oneof" json:"get_decryption_key_packet,omitempty"`
 }
-type KeysharePacketData_AggrKeyshareDataPacket struct {
-	AggrKeyshareDataPacket *AggrKeyshareDataPacketData `protobuf:"bytes,4,opt,name=aggrKeyshareDataPacket,proto3,oneof" json:"aggrKeyshareDataPacket,omitempty"`
+type KeysharePacketData_DecryptionKeyDataPacket struct {
+	DecryptionKeyDataPacket *DecryptionKeyDataPacketData `protobuf:"bytes,4,opt,name=decryption_key_data_packet,json=decryptionKeyDataPacket,proto3,oneof" json:"decryption_key_data_packet,omitempty"`
 }
-type KeysharePacketData_EncryptedKeysharesPacketData struct {
-	EncryptedKeysharesPacketData *EncryptedKeysharesPacketData `protobuf:"bytes,5,opt,name=encryptedKeysharesPacketData,proto3,oneof" json:"encryptedKeysharesPacketData,omitempty"`
+type KeysharePacketData_PrivateDecryptionKeyDataPacket struct {
+	PrivateDecryptionKeyDataPacket *PrivateDecryptionKeyDataPacketData `protobuf:"bytes,5,opt,name=private_decryption_key_data_packet,json=privateDecryptionKeyDataPacket,proto3,oneof" json:"private_decryption_key_data_packet,omitempty"`
 }
 type KeysharePacketData_CurrentKeysPacket struct {
-	CurrentKeysPacket *CurrentKeysPacketData `protobuf:"bytes,6,opt,name=currentKeysPacket,proto3,oneof" json:"currentKeysPacket,omitempty"`
+	CurrentKeysPacket *CurrentKeysPacketData `protobuf:"bytes,6,opt,name=current_keys_packet,json=currentKeysPacket,proto3,oneof" json:"current_keys_packet,omitempty"`
 }
-type KeysharePacketData_RequestPrivKeysharePacket struct {
-	RequestPrivKeysharePacket *RequestPrivateKeysharePacketData `protobuf:"bytes,7,opt,name=request_priv_keyshare_packet,json=requestPrivKeysharePacket,proto3,oneof" json:"request_priv_keyshare_packet,omitempty"`
+type KeysharePacketData_RequestPrivateDecryptionKeyPacket struct {
+	RequestPrivateDecryptionKeyPacket *RequestPrivateDecryptionKeyPacketData `protobuf:"bytes,7,opt,name=request_private_decryption_key_packet,json=requestPrivateDecryptionKeyPacket,proto3,oneof" json:"request_private_decryption_key_packet,omitempty"`
 }
-type KeysharePacketData_GetPrivateKeysharePacket struct {
-	GetPrivateKeysharePacket *GetPrivateKeysharePacketData `protobuf:"bytes,8,opt,name=getPrivateKeysharePacket,proto3,oneof" json:"getPrivateKeysharePacket,omitempty"`
+type KeysharePacketData_GetPrivateDecryptionKeyPacket struct {
+	GetPrivateDecryptionKeyPacket *GetPrivateDecryptionKeyPacketData `protobuf:"bytes,8,opt,name=get_private_decryption_key_packet,json=getPrivateDecryptionKeyPacket,proto3,oneof" json:"get_private_decryption_key_packet,omitempty"`
 }
 
-func (*KeysharePacketData_NoData) isKeysharePacketData_Packet()                       {}
-func (*KeysharePacketData_RequestAggrKeysharePacket) isKeysharePacketData_Packet()    {}
-func (*KeysharePacketData_GetAggrKeysharePacket) isKeysharePacketData_Packet()        {}
-func (*KeysharePacketData_AggrKeyshareDataPacket) isKeysharePacketData_Packet()       {}
-func (*KeysharePacketData_EncryptedKeysharesPacketData) isKeysharePacketData_Packet() {}
-func (*KeysharePacketData_CurrentKeysPacket) isKeysharePacketData_Packet()            {}
-func (*KeysharePacketData_RequestPrivKeysharePacket) isKeysharePacketData_Packet()    {}
-func (*KeysharePacketData_GetPrivateKeysharePacket) isKeysharePacketData_Packet()     {}
+func (*KeysharePacketData_NoData) isKeysharePacketData_Packet()                            {}
+func (*KeysharePacketData_RequestDecryptionKeyPacket) isKeysharePacketData_Packet()        {}
+func (*KeysharePacketData_GetDecryptionKeyPacket) isKeysharePacketData_Packet()            {}
+func (*KeysharePacketData_DecryptionKeyDataPacket) isKeysharePacketData_Packet()           {}
+func (*KeysharePacketData_PrivateDecryptionKeyDataPacket) isKeysharePacketData_Packet()    {}
+func (*KeysharePacketData_CurrentKeysPacket) isKeysharePacketData_Packet()                 {}
+func (*KeysharePacketData_RequestPrivateDecryptionKeyPacket) isKeysharePacketData_Packet() {}
+func (*KeysharePacketData_GetPrivateDecryptionKeyPacket) isKeysharePacketData_Packet()     {}
 
 func (m *KeysharePacketData) GetPacket() isKeysharePacketData_Packet {
 	if m != nil {
@@ -128,30 +131,30 @@ func (m *KeysharePacketData) GetNoData() *NoData {
 	return nil
 }
 
-func (m *KeysharePacketData) GetRequestAggrKeysharePacket() *RequestAggrKeysharePacketData {
-	if x, ok := m.GetPacket().(*KeysharePacketData_RequestAggrKeysharePacket); ok {
-		return x.RequestAggrKeysharePacket
+func (m *KeysharePacketData) GetRequestDecryptionKeyPacket() *RequestDecryptionKeyPacketData {
+	if x, ok := m.GetPacket().(*KeysharePacketData_RequestDecryptionKeyPacket); ok {
+		return x.RequestDecryptionKeyPacket
 	}
 	return nil
 }
 
-func (m *KeysharePacketData) GetGetAggrKeysharePacket() *GetAggrKeysharePacketData {
-	if x, ok := m.GetPacket().(*KeysharePacketData_GetAggrKeysharePacket); ok {
-		return x.GetAggrKeysharePacket
+func (m *KeysharePacketData) GetGetDecryptionKeyPacket() *GetDecryptionKeyPacketData {
+	if x, ok := m.GetPacket().(*KeysharePacketData_GetDecryptionKeyPacket); ok {
+		return x.GetDecryptionKeyPacket
 	}
 	return nil
 }
 
-func (m *KeysharePacketData) GetAggrKeyshareDataPacket() *AggrKeyshareDataPacketData {
-	if x, ok := m.GetPacket().(*KeysharePacketData_AggrKeyshareDataPacket); ok {
-		return x.AggrKeyshareDataPacket
+func (m *KeysharePacketData) GetDecryptionKeyDataPacket() *DecryptionKeyDataPacketData {
+	if x, ok := m.GetPacket().(*KeysharePacketData_DecryptionKeyDataPacket); ok {
+		return x.DecryptionKeyDataPacket
 	}
 	return nil
 }
 
-func (m *KeysharePacketData) GetEncryptedKeysharesPacketData() *EncryptedKeysharesPacketData {
-	if x, ok := m.GetPacket().(*KeysharePacketData_EncryptedKeysharesPacketData); ok {
-		return x.EncryptedKeysharesPacketData
+func (m *KeysharePacketData) GetPrivateDecryptionKeyDataPacket() *PrivateDecryptionKeyDataPacketData {
+	if x, ok := m.GetPacket().(*KeysharePacketData_PrivateDecryptionKeyDataPacket); ok {
+		return x.PrivateDecryptionKeyDataPacket
 	}
 	return nil
 }
@@ -163,16 +166,16 @@ func (m *KeysharePacketData) GetCurrentKeysPacket() *CurrentKeysPacketData {
 	return nil
 }
 
-func (m *KeysharePacketData) GetRequestPrivKeysharePacket() *RequestPrivateKeysharePacketData {
-	if x, ok := m.GetPacket().(*KeysharePacketData_RequestPrivKeysharePacket); ok {
-		return x.RequestPrivKeysharePacket
+func (m *KeysharePacketData) GetRequestPrivateDecryptionKeyPacket() *RequestPrivateDecryptionKeyPacketData {
+	if x, ok := m.GetPacket().(*KeysharePacketData_RequestPrivateDecryptionKeyPacket); ok {
+		return x.RequestPrivateDecryptionKeyPacket
 	}
 	return nil
 }
 
-func (m *KeysharePacketData) GetGetPrivateKeysharePacket() *GetPrivateKeysharePacketData {
-	if x, ok := m.GetPacket().(*KeysharePacketData_GetPrivateKeysharePacket); ok {
-		return x.GetPrivateKeysharePacket
+func (m *KeysharePacketData) GetGetPrivateDecryptionKeyPacket() *GetPrivateDecryptionKeyPacketData {
+	if x, ok := m.GetPacket().(*KeysharePacketData_GetPrivateDecryptionKeyPacket); ok {
+		return x.GetPrivateDecryptionKeyPacket
 	}
 	return nil
 }
@@ -181,16 +184,17 @@ func (m *KeysharePacketData) GetGetPrivateKeysharePacket() *GetPrivateKeysharePa
 func (*KeysharePacketData) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
 		(*KeysharePacketData_NoData)(nil),
-		(*KeysharePacketData_RequestAggrKeysharePacket)(nil),
-		(*KeysharePacketData_GetAggrKeysharePacket)(nil),
-		(*KeysharePacketData_AggrKeyshareDataPacket)(nil),
-		(*KeysharePacketData_EncryptedKeysharesPacketData)(nil),
+		(*KeysharePacketData_RequestDecryptionKeyPacket)(nil),
+		(*KeysharePacketData_GetDecryptionKeyPacket)(nil),
+		(*KeysharePacketData_DecryptionKeyDataPacket)(nil),
+		(*KeysharePacketData_PrivateDecryptionKeyDataPacket)(nil),
 		(*KeysharePacketData_CurrentKeysPacket)(nil),
-		(*KeysharePacketData_RequestPrivKeysharePacket)(nil),
-		(*KeysharePacketData_GetPrivateKeysharePacket)(nil),
+		(*KeysharePacketData_RequestPrivateDecryptionKeyPacket)(nil),
+		(*KeysharePacketData_GetPrivateDecryptionKeyPacket)(nil),
 	}
 }
 
+// NoData defines a blank packet
 type NoData struct {
 }
 
@@ -227,28 +231,30 @@ func (m *NoData) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_NoData proto.InternalMessageInfo
 
-// RequestAggrKeysharePacketData defines a struct for the packet payload
-type RequestAggrKeysharePacketData struct {
+// RequestDecryptionKeyPacketData defines a struct for the packet payload
+type RequestDecryptionKeyPacketData struct {
 	Requester string `protobuf:"bytes,1,opt,name=requester,proto3" json:"requester,omitempty"`
+	// id can either be a request id or a proposal id
+	//
 	// Types that are valid to be assigned to Id:
-	//	*RequestAggrKeysharePacketData_ProposalId
-	//	*RequestAggrKeysharePacketData_RequestId
-	Id             isRequestAggrKeysharePacketData_Id `protobuf_oneof:"id"`
-	EstimatedDelay *time.Duration                     `protobuf:"bytes,4,opt,name=estimated_delay,json=estimatedDelay,proto3,stdduration" json:"estimated_delay,omitempty"`
+	//	*RequestDecryptionKeyPacketData_ProposalId
+	//	*RequestDecryptionKeyPacketData_RequestId
+	Id             isRequestDecryptionKeyPacketData_Id `protobuf_oneof:"id"`
+	EstimatedDelay *time.Duration                      `protobuf:"bytes,4,opt,name=estimated_delay,json=estimatedDelay,proto3,stdduration" json:"estimated_delay,omitempty"`
 }
 
-func (m *RequestAggrKeysharePacketData) Reset()         { *m = RequestAggrKeysharePacketData{} }
-func (m *RequestAggrKeysharePacketData) String() string { return proto.CompactTextString(m) }
-func (*RequestAggrKeysharePacketData) ProtoMessage()    {}
-func (*RequestAggrKeysharePacketData) Descriptor() ([]byte, []int) {
+func (m *RequestDecryptionKeyPacketData) Reset()         { *m = RequestDecryptionKeyPacketData{} }
+func (m *RequestDecryptionKeyPacketData) String() string { return proto.CompactTextString(m) }
+func (*RequestDecryptionKeyPacketData) ProtoMessage()    {}
+func (*RequestDecryptionKeyPacketData) Descriptor() ([]byte, []int) {
 	return fileDescriptor_220841e1bebf3b1b, []int{2}
 }
-func (m *RequestAggrKeysharePacketData) XXX_Unmarshal(b []byte) error {
+func (m *RequestDecryptionKeyPacketData) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *RequestAggrKeysharePacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *RequestDecryptionKeyPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_RequestAggrKeysharePacketData.Marshal(b, m, deterministic)
+		return xxx_messageInfo_RequestDecryptionKeyPacketData.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -258,63 +264,63 @@ func (m *RequestAggrKeysharePacketData) XXX_Marshal(b []byte, deterministic bool
 		return b[:n], nil
 	}
 }
-func (m *RequestAggrKeysharePacketData) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RequestAggrKeysharePacketData.Merge(m, src)
+func (m *RequestDecryptionKeyPacketData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RequestDecryptionKeyPacketData.Merge(m, src)
 }
-func (m *RequestAggrKeysharePacketData) XXX_Size() int {
+func (m *RequestDecryptionKeyPacketData) XXX_Size() int {
 	return m.Size()
 }
-func (m *RequestAggrKeysharePacketData) XXX_DiscardUnknown() {
-	xxx_messageInfo_RequestAggrKeysharePacketData.DiscardUnknown(m)
+func (m *RequestDecryptionKeyPacketData) XXX_DiscardUnknown() {
+	xxx_messageInfo_RequestDecryptionKeyPacketData.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_RequestAggrKeysharePacketData proto.InternalMessageInfo
+var xxx_messageInfo_RequestDecryptionKeyPacketData proto.InternalMessageInfo
 
-type isRequestAggrKeysharePacketData_Id interface {
-	isRequestAggrKeysharePacketData_Id()
+type isRequestDecryptionKeyPacketData_Id interface {
+	isRequestDecryptionKeyPacketData_Id()
 	MarshalTo([]byte) (int, error)
 	Size() int
 }
 
-type RequestAggrKeysharePacketData_ProposalId struct {
+type RequestDecryptionKeyPacketData_ProposalId struct {
 	ProposalId string `protobuf:"bytes,2,opt,name=proposal_id,json=proposalId,proto3,oneof" json:"proposal_id,omitempty"`
 }
-type RequestAggrKeysharePacketData_RequestId struct {
+type RequestDecryptionKeyPacketData_RequestId struct {
 	RequestId string `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3,oneof" json:"request_id,omitempty"`
 }
 
-func (*RequestAggrKeysharePacketData_ProposalId) isRequestAggrKeysharePacketData_Id() {}
-func (*RequestAggrKeysharePacketData_RequestId) isRequestAggrKeysharePacketData_Id()  {}
+func (*RequestDecryptionKeyPacketData_ProposalId) isRequestDecryptionKeyPacketData_Id() {}
+func (*RequestDecryptionKeyPacketData_RequestId) isRequestDecryptionKeyPacketData_Id()  {}
 
-func (m *RequestAggrKeysharePacketData) GetId() isRequestAggrKeysharePacketData_Id {
+func (m *RequestDecryptionKeyPacketData) GetId() isRequestDecryptionKeyPacketData_Id {
 	if m != nil {
 		return m.Id
 	}
 	return nil
 }
 
-func (m *RequestAggrKeysharePacketData) GetRequester() string {
+func (m *RequestDecryptionKeyPacketData) GetRequester() string {
 	if m != nil {
 		return m.Requester
 	}
 	return ""
 }
 
-func (m *RequestAggrKeysharePacketData) GetProposalId() string {
-	if x, ok := m.GetId().(*RequestAggrKeysharePacketData_ProposalId); ok {
+func (m *RequestDecryptionKeyPacketData) GetProposalId() string {
+	if x, ok := m.GetId().(*RequestDecryptionKeyPacketData_ProposalId); ok {
 		return x.ProposalId
 	}
 	return ""
 }
 
-func (m *RequestAggrKeysharePacketData) GetRequestId() string {
-	if x, ok := m.GetId().(*RequestAggrKeysharePacketData_RequestId); ok {
+func (m *RequestDecryptionKeyPacketData) GetRequestId() string {
+	if x, ok := m.GetId().(*RequestDecryptionKeyPacketData_RequestId); ok {
 		return x.RequestId
 	}
 	return ""
 }
 
-func (m *RequestAggrKeysharePacketData) GetEstimatedDelay() *time.Duration {
+func (m *RequestDecryptionKeyPacketData) GetEstimatedDelay() *time.Duration {
 	if m != nil {
 		return m.EstimatedDelay
 	}
@@ -322,30 +328,31 @@ func (m *RequestAggrKeysharePacketData) GetEstimatedDelay() *time.Duration {
 }
 
 // XXX_OneofWrappers is for the internal use of the proto package.
-func (*RequestAggrKeysharePacketData) XXX_OneofWrappers() []interface{} {
+func (*RequestDecryptionKeyPacketData) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
-		(*RequestAggrKeysharePacketData_ProposalId)(nil),
-		(*RequestAggrKeysharePacketData_RequestId)(nil),
+		(*RequestDecryptionKeyPacketData_ProposalId)(nil),
+		(*RequestDecryptionKeyPacketData_RequestId)(nil),
 	}
 }
 
-type RequestPrivateKeysharePacketData struct {
+// RequestPrivateDecryptionKeyPacketData defines a struct for the packet payload
+type RequestPrivateDecryptionKeyPacketData struct {
 	Requester string `protobuf:"bytes,1,opt,name=requester,proto3" json:"requester,omitempty"`
 	RequestId string `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 }
 
-func (m *RequestPrivateKeysharePacketData) Reset()         { *m = RequestPrivateKeysharePacketData{} }
-func (m *RequestPrivateKeysharePacketData) String() string { return proto.CompactTextString(m) }
-func (*RequestPrivateKeysharePacketData) ProtoMessage()    {}
-func (*RequestPrivateKeysharePacketData) Descriptor() ([]byte, []int) {
+func (m *RequestPrivateDecryptionKeyPacketData) Reset()         { *m = RequestPrivateDecryptionKeyPacketData{} }
+func (m *RequestPrivateDecryptionKeyPacketData) String() string { return proto.CompactTextString(m) }
+func (*RequestPrivateDecryptionKeyPacketData) ProtoMessage()    {}
+func (*RequestPrivateDecryptionKeyPacketData) Descriptor() ([]byte, []int) {
 	return fileDescriptor_220841e1bebf3b1b, []int{3}
 }
-func (m *RequestPrivateKeysharePacketData) XXX_Unmarshal(b []byte) error {
+func (m *RequestPrivateDecryptionKeyPacketData) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *RequestPrivateKeysharePacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *RequestPrivateDecryptionKeyPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_RequestPrivateKeysharePacketData.Marshal(b, m, deterministic)
+		return xxx_messageInfo_RequestPrivateDecryptionKeyPacketData.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -355,49 +362,50 @@ func (m *RequestPrivateKeysharePacketData) XXX_Marshal(b []byte, deterministic b
 		return b[:n], nil
 	}
 }
-func (m *RequestPrivateKeysharePacketData) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RequestPrivateKeysharePacketData.Merge(m, src)
+func (m *RequestPrivateDecryptionKeyPacketData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RequestPrivateDecryptionKeyPacketData.Merge(m, src)
 }
-func (m *RequestPrivateKeysharePacketData) XXX_Size() int {
+func (m *RequestPrivateDecryptionKeyPacketData) XXX_Size() int {
 	return m.Size()
 }
-func (m *RequestPrivateKeysharePacketData) XXX_DiscardUnknown() {
-	xxx_messageInfo_RequestPrivateKeysharePacketData.DiscardUnknown(m)
+func (m *RequestPrivateDecryptionKeyPacketData) XXX_DiscardUnknown() {
+	xxx_messageInfo_RequestPrivateDecryptionKeyPacketData.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_RequestPrivateKeysharePacketData proto.InternalMessageInfo
+var xxx_messageInfo_RequestPrivateDecryptionKeyPacketData proto.InternalMessageInfo
 
-func (m *RequestPrivateKeysharePacketData) GetRequester() string {
+func (m *RequestPrivateDecryptionKeyPacketData) GetRequester() string {
 	if m != nil {
 		return m.Requester
 	}
 	return ""
 }
 
-func (m *RequestPrivateKeysharePacketData) GetRequestId() string {
+func (m *RequestPrivateDecryptionKeyPacketData) GetRequestId() string {
 	if m != nil {
 		return m.RequestId
 	}
 	return ""
 }
 
-type RequestPrivateKeysharePacketAck struct {
+// RequestPrivateDecryptionKeyPacketAck defines a struct for the packet acknowledgment
+type RequestPrivateDecryptionKeyPacketAck struct {
 	Identity string `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
 	Pubkey   string `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
 }
 
-func (m *RequestPrivateKeysharePacketAck) Reset()         { *m = RequestPrivateKeysharePacketAck{} }
-func (m *RequestPrivateKeysharePacketAck) String() string { return proto.CompactTextString(m) }
-func (*RequestPrivateKeysharePacketAck) ProtoMessage()    {}
-func (*RequestPrivateKeysharePacketAck) Descriptor() ([]byte, []int) {
+func (m *RequestPrivateDecryptionKeyPacketAck) Reset()         { *m = RequestPrivateDecryptionKeyPacketAck{} }
+func (m *RequestPrivateDecryptionKeyPacketAck) String() string { return proto.CompactTextString(m) }
+func (*RequestPrivateDecryptionKeyPacketAck) ProtoMessage()    {}
+func (*RequestPrivateDecryptionKeyPacketAck) Descriptor() ([]byte, []int) {
 	return fileDescriptor_220841e1bebf3b1b, []int{4}
 }
-func (m *RequestPrivateKeysharePacketAck) XXX_Unmarshal(b []byte) error {
+func (m *RequestPrivateDecryptionKeyPacketAck) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *RequestPrivateKeysharePacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *RequestPrivateDecryptionKeyPacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_RequestPrivateKeysharePacketAck.Marshal(b, m, deterministic)
+		return xxx_messageInfo_RequestPrivateDecryptionKeyPacketAck.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -407,50 +415,50 @@ func (m *RequestPrivateKeysharePacketAck) XXX_Marshal(b []byte, deterministic bo
 		return b[:n], nil
 	}
 }
-func (m *RequestPrivateKeysharePacketAck) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RequestPrivateKeysharePacketAck.Merge(m, src)
+func (m *RequestPrivateDecryptionKeyPacketAck) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RequestPrivateDecryptionKeyPacketAck.Merge(m, src)
 }
-func (m *RequestPrivateKeysharePacketAck) XXX_Size() int {
+func (m *RequestPrivateDecryptionKeyPacketAck) XXX_Size() int {
 	return m.Size()
 }
-func (m *RequestPrivateKeysharePacketAck) XXX_DiscardUnknown() {
-	xxx_messageInfo_RequestPrivateKeysharePacketAck.DiscardUnknown(m)
+func (m *RequestPrivateDecryptionKeyPacketAck) XXX_DiscardUnknown() {
+	xxx_messageInfo_RequestPrivateDecryptionKeyPacketAck.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_RequestPrivateKeysharePacketAck proto.InternalMessageInfo
+var xxx_messageInfo_RequestPrivateDecryptionKeyPacketAck proto.InternalMessageInfo
 
-func (m *RequestPrivateKeysharePacketAck) GetIdentity() string {
+func (m *RequestPrivateDecryptionKeyPacketAck) GetIdentity() string {
 	if m != nil {
 		return m.Identity
 	}
 	return ""
 }
 
-func (m *RequestPrivateKeysharePacketAck) GetPubkey() string {
+func (m *RequestPrivateDecryptionKeyPacketAck) GetPubkey() string {
 	if m != nil {
 		return m.Pubkey
 	}
 	return ""
 }
 
-// RequestAggrKeysharePacketAck defines a struct for the packet acknowledgment
-type RequestAggrKeysharePacketAck struct {
+// RequestDecryptionKeyPacketAck defines a struct for the packet acknowledgment
+type RequestDecryptionKeyPacketAck struct {
 	Identity string `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
 	Pubkey   string `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
 }
 
-func (m *RequestAggrKeysharePacketAck) Reset()         { *m = RequestAggrKeysharePacketAck{} }
-func (m *RequestAggrKeysharePacketAck) String() string { return proto.CompactTextString(m) }
-func (*RequestAggrKeysharePacketAck) ProtoMessage()    {}
-func (*RequestAggrKeysharePacketAck) Descriptor() ([]byte, []int) {
+func (m *RequestDecryptionKeyPacketAck) Reset()         { *m = RequestDecryptionKeyPacketAck{} }
+func (m *RequestDecryptionKeyPacketAck) String() string { return proto.CompactTextString(m) }
+func (*RequestDecryptionKeyPacketAck) ProtoMessage()    {}
+func (*RequestDecryptionKeyPacketAck) Descriptor() ([]byte, []int) {
 	return fileDescriptor_220841e1bebf3b1b, []int{5}
 }
-func (m *RequestAggrKeysharePacketAck) XXX_Unmarshal(b []byte) error {
+func (m *RequestDecryptionKeyPacketAck) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *RequestAggrKeysharePacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *RequestDecryptionKeyPacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_RequestAggrKeysharePacketAck.Marshal(b, m, deterministic)
+		return xxx_messageInfo_RequestDecryptionKeyPacketAck.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -460,49 +468,49 @@ func (m *RequestAggrKeysharePacketAck) XXX_Marshal(b []byte, deterministic bool)
 		return b[:n], nil
 	}
 }
-func (m *RequestAggrKeysharePacketAck) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RequestAggrKeysharePacketAck.Merge(m, src)
+func (m *RequestDecryptionKeyPacketAck) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RequestDecryptionKeyPacketAck.Merge(m, src)
 }
-func (m *RequestAggrKeysharePacketAck) XXX_Size() int {
+func (m *RequestDecryptionKeyPacketAck) XXX_Size() int {
 	return m.Size()
 }
-func (m *RequestAggrKeysharePacketAck) XXX_DiscardUnknown() {
-	xxx_messageInfo_RequestAggrKeysharePacketAck.DiscardUnknown(m)
+func (m *RequestDecryptionKeyPacketAck) XXX_DiscardUnknown() {
+	xxx_messageInfo_RequestDecryptionKeyPacketAck.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_RequestAggrKeysharePacketAck proto.InternalMessageInfo
+var xxx_messageInfo_RequestDecryptionKeyPacketAck proto.InternalMessageInfo
 
-func (m *RequestAggrKeysharePacketAck) GetIdentity() string {
+func (m *RequestDecryptionKeyPacketAck) GetIdentity() string {
 	if m != nil {
 		return m.Identity
 	}
 	return ""
 }
 
-func (m *RequestAggrKeysharePacketAck) GetPubkey() string {
+func (m *RequestDecryptionKeyPacketAck) GetPubkey() string {
 	if m != nil {
 		return m.Pubkey
 	}
 	return ""
 }
 
-// GetAggrKeysharePacketData defines a struct for the packet payload
-type GetAggrKeysharePacketData struct {
+// GetDecryptionKeyPacketData defines a struct for the packet payload
+type GetDecryptionKeyPacketData struct {
 	Identity string `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
 }
 
-func (m *GetAggrKeysharePacketData) Reset()         { *m = GetAggrKeysharePacketData{} }
-func (m *GetAggrKeysharePacketData) String() string { return proto.CompactTextString(m) }
-func (*GetAggrKeysharePacketData) ProtoMessage()    {}
-func (*GetAggrKeysharePacketData) Descriptor() ([]byte, []int) {
+func (m *GetDecryptionKeyPacketData) Reset()         { *m = GetDecryptionKeyPacketData{} }
+func (m *GetDecryptionKeyPacketData) String() string { return proto.CompactTextString(m) }
+func (*GetDecryptionKeyPacketData) ProtoMessage()    {}
+func (*GetDecryptionKeyPacketData) Descriptor() ([]byte, []int) {
 	return fileDescriptor_220841e1bebf3b1b, []int{6}
 }
-func (m *GetAggrKeysharePacketData) XXX_Unmarshal(b []byte) error {
+func (m *GetDecryptionKeyPacketData) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *GetAggrKeysharePacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *GetDecryptionKeyPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_GetAggrKeysharePacketData.Marshal(b, m, deterministic)
+		return xxx_messageInfo_GetDecryptionKeyPacketData.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -512,41 +520,41 @@ func (m *GetAggrKeysharePacketData) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *GetAggrKeysharePacketData) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetAggrKeysharePacketData.Merge(m, src)
+func (m *GetDecryptionKeyPacketData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetDecryptionKeyPacketData.Merge(m, src)
 }
-func (m *GetAggrKeysharePacketData) XXX_Size() int {
+func (m *GetDecryptionKeyPacketData) XXX_Size() int {
 	return m.Size()
 }
-func (m *GetAggrKeysharePacketData) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetAggrKeysharePacketData.DiscardUnknown(m)
+func (m *GetDecryptionKeyPacketData) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetDecryptionKeyPacketData.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GetAggrKeysharePacketData proto.InternalMessageInfo
+var xxx_messageInfo_GetDecryptionKeyPacketData proto.InternalMessageInfo
 
-func (m *GetAggrKeysharePacketData) GetIdentity() string {
+func (m *GetDecryptionKeyPacketData) GetIdentity() string {
 	if m != nil {
 		return m.Identity
 	}
 	return ""
 }
 
-// GetAggrKeysharePacketAck defines a struct for the packet acknowledgment
-type GetAggrKeysharePacketAck struct {
+// GetDecryptionKeyPacketAck defines a struct for the packet acknowledgment
+type GetDecryptionKeyPacketAck struct {
 }
 
-func (m *GetAggrKeysharePacketAck) Reset()         { *m = GetAggrKeysharePacketAck{} }
-func (m *GetAggrKeysharePacketAck) String() string { return proto.CompactTextString(m) }
-func (*GetAggrKeysharePacketAck) ProtoMessage()    {}
-func (*GetAggrKeysharePacketAck) Descriptor() ([]byte, []int) {
+func (m *GetDecryptionKeyPacketAck) Reset()         { *m = GetDecryptionKeyPacketAck{} }
+func (m *GetDecryptionKeyPacketAck) String() string { return proto.CompactTextString(m) }
+func (*GetDecryptionKeyPacketAck) ProtoMessage()    {}
+func (*GetDecryptionKeyPacketAck) Descriptor() ([]byte, []int) {
 	return fileDescriptor_220841e1bebf3b1b, []int{7}
 }
-func (m *GetAggrKeysharePacketAck) XXX_Unmarshal(b []byte) error {
+func (m *GetDecryptionKeyPacketAck) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *GetAggrKeysharePacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *GetDecryptionKeyPacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_GetAggrKeysharePacketAck.Marshal(b, m, deterministic)
+		return xxx_messageInfo_GetDecryptionKeyPacketAck.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -556,37 +564,37 @@ func (m *GetAggrKeysharePacketAck) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *GetAggrKeysharePacketAck) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetAggrKeysharePacketAck.Merge(m, src)
+func (m *GetDecryptionKeyPacketAck) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetDecryptionKeyPacketAck.Merge(m, src)
 }
-func (m *GetAggrKeysharePacketAck) XXX_Size() int {
+func (m *GetDecryptionKeyPacketAck) XXX_Size() int {
 	return m.Size()
 }
-func (m *GetAggrKeysharePacketAck) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetAggrKeysharePacketAck.DiscardUnknown(m)
+func (m *GetDecryptionKeyPacketAck) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetDecryptionKeyPacketAck.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GetAggrKeysharePacketAck proto.InternalMessageInfo
+var xxx_messageInfo_GetDecryptionKeyPacketAck proto.InternalMessageInfo
 
-// GetPrivateKeysharePacketData defines a struct for the packet payload
-type GetPrivateKeysharePacketData struct {
+// GetPrivateDecryptionKeyPacketData defines a struct for the packet payload
+type GetPrivateDecryptionKeyPacketData struct {
 	Identity   string `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
 	Requester  string `protobuf:"bytes,2,opt,name=requester,proto3" json:"requester,omitempty"`
 	SecpPubkey string `protobuf:"bytes,3,opt,name=secp_pubkey,json=secpPubkey,proto3" json:"secp_pubkey,omitempty"`
 }
 
-func (m *GetPrivateKeysharePacketData) Reset()         { *m = GetPrivateKeysharePacketData{} }
-func (m *GetPrivateKeysharePacketData) String() string { return proto.CompactTextString(m) }
-func (*GetPrivateKeysharePacketData) ProtoMessage()    {}
-func (*GetPrivateKeysharePacketData) Descriptor() ([]byte, []int) {
+func (m *GetPrivateDecryptionKeyPacketData) Reset()         { *m = GetPrivateDecryptionKeyPacketData{} }
+func (m *GetPrivateDecryptionKeyPacketData) String() string { return proto.CompactTextString(m) }
+func (*GetPrivateDecryptionKeyPacketData) ProtoMessage()    {}
+func (*GetPrivateDecryptionKeyPacketData) Descriptor() ([]byte, []int) {
 	return fileDescriptor_220841e1bebf3b1b, []int{8}
 }
-func (m *GetPrivateKeysharePacketData) XXX_Unmarshal(b []byte) error {
+func (m *GetPrivateDecryptionKeyPacketData) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *GetPrivateKeysharePacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *GetPrivateDecryptionKeyPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_GetPrivateKeysharePacketData.Marshal(b, m, deterministic)
+		return xxx_messageInfo_GetPrivateDecryptionKeyPacketData.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -596,33 +604,33 @@ func (m *GetPrivateKeysharePacketData) XXX_Marshal(b []byte, deterministic bool)
 		return b[:n], nil
 	}
 }
-func (m *GetPrivateKeysharePacketData) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetPrivateKeysharePacketData.Merge(m, src)
+func (m *GetPrivateDecryptionKeyPacketData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetPrivateDecryptionKeyPacketData.Merge(m, src)
 }
-func (m *GetPrivateKeysharePacketData) XXX_Size() int {
+func (m *GetPrivateDecryptionKeyPacketData) XXX_Size() int {
 	return m.Size()
 }
-func (m *GetPrivateKeysharePacketData) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetPrivateKeysharePacketData.DiscardUnknown(m)
+func (m *GetPrivateDecryptionKeyPacketData) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetPrivateDecryptionKeyPacketData.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GetPrivateKeysharePacketData proto.InternalMessageInfo
+var xxx_messageInfo_GetPrivateDecryptionKeyPacketData proto.InternalMessageInfo
 
-func (m *GetPrivateKeysharePacketData) GetIdentity() string {
+func (m *GetPrivateDecryptionKeyPacketData) GetIdentity() string {
 	if m != nil {
 		return m.Identity
 	}
 	return ""
 }
 
-func (m *GetPrivateKeysharePacketData) GetRequester() string {
+func (m *GetPrivateDecryptionKeyPacketData) GetRequester() string {
 	if m != nil {
 		return m.Requester
 	}
 	return ""
 }
 
-func (m *GetPrivateKeysharePacketData) GetSecpPubkey() string {
+func (m *GetPrivateDecryptionKeyPacketData) GetSecpPubkey() string {
 	if m != nil {
 		return m.SecpPubkey
 	}
@@ -630,21 +638,21 @@ func (m *GetPrivateKeysharePacketData) GetSecpPubkey() string {
 }
 
 // GetPrivateKeysharePacketAck defines a struct for the packet acknowledgment
-type GetPrivateKeysharePacketAck struct {
+type GetPrivateDecryptionKeyPacketAck struct {
 }
 
-func (m *GetPrivateKeysharePacketAck) Reset()         { *m = GetPrivateKeysharePacketAck{} }
-func (m *GetPrivateKeysharePacketAck) String() string { return proto.CompactTextString(m) }
-func (*GetPrivateKeysharePacketAck) ProtoMessage()    {}
-func (*GetPrivateKeysharePacketAck) Descriptor() ([]byte, []int) {
+func (m *GetPrivateDecryptionKeyPacketAck) Reset()         { *m = GetPrivateDecryptionKeyPacketAck{} }
+func (m *GetPrivateDecryptionKeyPacketAck) String() string { return proto.CompactTextString(m) }
+func (*GetPrivateDecryptionKeyPacketAck) ProtoMessage()    {}
+func (*GetPrivateDecryptionKeyPacketAck) Descriptor() ([]byte, []int) {
 	return fileDescriptor_220841e1bebf3b1b, []int{9}
 }
-func (m *GetPrivateKeysharePacketAck) XXX_Unmarshal(b []byte) error {
+func (m *GetPrivateDecryptionKeyPacketAck) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *GetPrivateKeysharePacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *GetPrivateDecryptionKeyPacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_GetPrivateKeysharePacketAck.Marshal(b, m, deterministic)
+		return xxx_messageInfo_GetPrivateDecryptionKeyPacketAck.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -654,41 +662,41 @@ func (m *GetPrivateKeysharePacketAck) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *GetPrivateKeysharePacketAck) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetPrivateKeysharePacketAck.Merge(m, src)
+func (m *GetPrivateDecryptionKeyPacketAck) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetPrivateDecryptionKeyPacketAck.Merge(m, src)
 }
-func (m *GetPrivateKeysharePacketAck) XXX_Size() int {
+func (m *GetPrivateDecryptionKeyPacketAck) XXX_Size() int {
 	return m.Size()
 }
-func (m *GetPrivateKeysharePacketAck) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetPrivateKeysharePacketAck.DiscardUnknown(m)
+func (m *GetPrivateDecryptionKeyPacketAck) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetPrivateDecryptionKeyPacketAck.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GetPrivateKeysharePacketAck proto.InternalMessageInfo
+var xxx_messageInfo_GetPrivateDecryptionKeyPacketAck proto.InternalMessageInfo
 
-// AggrKeyshareDataPacketData defines a struct for the packet payload
-type AggrKeyshareDataPacketData struct {
-	Identity     string `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
-	Pubkey       string `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
-	AggrKeyshare string `protobuf:"bytes,3,opt,name=aggr_keyshare,json=aggrKeyshare,proto3" json:"aggr_keyshare,omitempty"`
-	AggrHeight   string `protobuf:"bytes,4,opt,name=aggr_height,json=aggrHeight,proto3" json:"aggr_height,omitempty"`
-	ProposalId   string `protobuf:"bytes,5,opt,name=proposal_id,json=proposalId,proto3" json:"proposal_id,omitempty"`
-	RequestId    string `protobuf:"bytes,6,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	Retries      uint64 `protobuf:"varint,7,opt,name=retries,proto3" json:"retries,omitempty"`
+// DecryptionKeyDataPacketData defines a struct for the packet payload
+type DecryptionKeyDataPacketData struct {
+	Identity      string `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
+	Pubkey        string `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
+	DecryptionKey string `protobuf:"bytes,3,opt,name=decryption_key,json=decryptionKey,proto3" json:"decryption_key,omitempty"`
+	AggrHeight    string `protobuf:"bytes,4,opt,name=aggr_height,json=aggrHeight,proto3" json:"aggr_height,omitempty"`
+	ProposalId    string `protobuf:"bytes,5,opt,name=proposal_id,json=proposalId,proto3" json:"proposal_id,omitempty"`
+	RequestId     string `protobuf:"bytes,6,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Retries       uint64 `protobuf:"varint,7,opt,name=retries,proto3" json:"retries,omitempty"`
 }
 
-func (m *AggrKeyshareDataPacketData) Reset()         { *m = AggrKeyshareDataPacketData{} }
-func (m *AggrKeyshareDataPacketData) String() string { return proto.CompactTextString(m) }
-func (*AggrKeyshareDataPacketData) ProtoMessage()    {}
-func (*AggrKeyshareDataPacketData) Descriptor() ([]byte, []int) {
+func (m *DecryptionKeyDataPacketData) Reset()         { *m = DecryptionKeyDataPacketData{} }
+func (m *DecryptionKeyDataPacketData) String() string { return proto.CompactTextString(m) }
+func (*DecryptionKeyDataPacketData) ProtoMessage()    {}
+func (*DecryptionKeyDataPacketData) Descriptor() ([]byte, []int) {
 	return fileDescriptor_220841e1bebf3b1b, []int{10}
 }
-func (m *AggrKeyshareDataPacketData) XXX_Unmarshal(b []byte) error {
+func (m *DecryptionKeyDataPacketData) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *AggrKeyshareDataPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *DecryptionKeyDataPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_AggrKeyshareDataPacketData.Marshal(b, m, deterministic)
+		return xxx_messageInfo_DecryptionKeyDataPacketData.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -698,83 +706,83 @@ func (m *AggrKeyshareDataPacketData) XXX_Marshal(b []byte, deterministic bool) (
 		return b[:n], nil
 	}
 }
-func (m *AggrKeyshareDataPacketData) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_AggrKeyshareDataPacketData.Merge(m, src)
+func (m *DecryptionKeyDataPacketData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DecryptionKeyDataPacketData.Merge(m, src)
 }
-func (m *AggrKeyshareDataPacketData) XXX_Size() int {
+func (m *DecryptionKeyDataPacketData) XXX_Size() int {
 	return m.Size()
 }
-func (m *AggrKeyshareDataPacketData) XXX_DiscardUnknown() {
-	xxx_messageInfo_AggrKeyshareDataPacketData.DiscardUnknown(m)
+func (m *DecryptionKeyDataPacketData) XXX_DiscardUnknown() {
+	xxx_messageInfo_DecryptionKeyDataPacketData.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_AggrKeyshareDataPacketData proto.InternalMessageInfo
+var xxx_messageInfo_DecryptionKeyDataPacketData proto.InternalMessageInfo
 
-func (m *AggrKeyshareDataPacketData) GetIdentity() string {
+func (m *DecryptionKeyDataPacketData) GetIdentity() string {
 	if m != nil {
 		return m.Identity
 	}
 	return ""
 }
 
-func (m *AggrKeyshareDataPacketData) GetPubkey() string {
+func (m *DecryptionKeyDataPacketData) GetPubkey() string {
 	if m != nil {
 		return m.Pubkey
 	}
 	return ""
 }
 
-func (m *AggrKeyshareDataPacketData) GetAggrKeyshare() string {
+func (m *DecryptionKeyDataPacketData) GetDecryptionKey() string {
 	if m != nil {
-		return m.AggrKeyshare
+		return m.DecryptionKey
 	}
 	return ""
 }
 
-func (m *AggrKeyshareDataPacketData) GetAggrHeight() string {
+func (m *DecryptionKeyDataPacketData) GetAggrHeight() string {
 	if m != nil {
 		return m.AggrHeight
 	}
 	return ""
 }
 
-func (m *AggrKeyshareDataPacketData) GetProposalId() string {
+func (m *DecryptionKeyDataPacketData) GetProposalId() string {
 	if m != nil {
 		return m.ProposalId
 	}
 	return ""
 }
 
-func (m *AggrKeyshareDataPacketData) GetRequestId() string {
+func (m *DecryptionKeyDataPacketData) GetRequestId() string {
 	if m != nil {
 		return m.RequestId
 	}
 	return ""
 }
 
-func (m *AggrKeyshareDataPacketData) GetRetries() uint64 {
+func (m *DecryptionKeyDataPacketData) GetRetries() uint64 {
 	if m != nil {
 		return m.Retries
 	}
 	return 0
 }
 
-// AggrKeyshareDataPacketAck defines a struct for the packet acknowledgment
-type AggrKeyshareDataPacketAck struct {
+// DecryptionKeyPacketAck defines a struct for the packet acknowledgment
+type DecryptionKeyPacketAck struct {
 }
 
-func (m *AggrKeyshareDataPacketAck) Reset()         { *m = AggrKeyshareDataPacketAck{} }
-func (m *AggrKeyshareDataPacketAck) String() string { return proto.CompactTextString(m) }
-func (*AggrKeyshareDataPacketAck) ProtoMessage()    {}
-func (*AggrKeyshareDataPacketAck) Descriptor() ([]byte, []int) {
+func (m *DecryptionKeyPacketAck) Reset()         { *m = DecryptionKeyPacketAck{} }
+func (m *DecryptionKeyPacketAck) String() string { return proto.CompactTextString(m) }
+func (*DecryptionKeyPacketAck) ProtoMessage()    {}
+func (*DecryptionKeyPacketAck) Descriptor() ([]byte, []int) {
 	return fileDescriptor_220841e1bebf3b1b, []int{11}
 }
-func (m *AggrKeyshareDataPacketAck) XXX_Unmarshal(b []byte) error {
+func (m *DecryptionKeyPacketAck) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *AggrKeyshareDataPacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *DecryptionKeyPacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_AggrKeyshareDataPacketAck.Marshal(b, m, deterministic)
+		return xxx_messageInfo_DecryptionKeyPacketAck.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -784,37 +792,38 @@ func (m *AggrKeyshareDataPacketAck) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *AggrKeyshareDataPacketAck) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_AggrKeyshareDataPacketAck.Merge(m, src)
+func (m *DecryptionKeyPacketAck) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DecryptionKeyPacketAck.Merge(m, src)
 }
-func (m *AggrKeyshareDataPacketAck) XXX_Size() int {
+func (m *DecryptionKeyPacketAck) XXX_Size() int {
 	return m.Size()
 }
-func (m *AggrKeyshareDataPacketAck) XXX_DiscardUnknown() {
-	xxx_messageInfo_AggrKeyshareDataPacketAck.DiscardUnknown(m)
+func (m *DecryptionKeyPacketAck) XXX_DiscardUnknown() {
+	xxx_messageInfo_DecryptionKeyPacketAck.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_AggrKeyshareDataPacketAck proto.InternalMessageInfo
+var xxx_messageInfo_DecryptionKeyPacketAck proto.InternalMessageInfo
 
-type EncryptedKeysharesPacketData struct {
-	Identity           string                     `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
-	Pubkey             string                     `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
-	RequestId          string                     `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	EncryptedKeyshares []*types.EncryptedKeyshare `protobuf:"bytes,4,rep,name=encrypted_keyshares,json=encryptedKeyshares,proto3" json:"encrypted_keyshares,omitempty"`
+// PrivateDecryptionKeyDataPacketData defines a struct for the packet payload
+type PrivateDecryptionKeyDataPacketData struct {
+	Identity             string                        `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
+	Pubkey               string                        `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
+	RequestId            string                        `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	PrivateDecryptionKey []*types.PrivateDecryptionKey `protobuf:"bytes,4,rep,name=private_decryption_key,json=privateDecryptionKey,proto3" json:"private_decryption_key,omitempty"`
 }
 
-func (m *EncryptedKeysharesPacketData) Reset()         { *m = EncryptedKeysharesPacketData{} }
-func (m *EncryptedKeysharesPacketData) String() string { return proto.CompactTextString(m) }
-func (*EncryptedKeysharesPacketData) ProtoMessage()    {}
-func (*EncryptedKeysharesPacketData) Descriptor() ([]byte, []int) {
+func (m *PrivateDecryptionKeyDataPacketData) Reset()         { *m = PrivateDecryptionKeyDataPacketData{} }
+func (m *PrivateDecryptionKeyDataPacketData) String() string { return proto.CompactTextString(m) }
+func (*PrivateDecryptionKeyDataPacketData) ProtoMessage()    {}
+func (*PrivateDecryptionKeyDataPacketData) Descriptor() ([]byte, []int) {
 	return fileDescriptor_220841e1bebf3b1b, []int{12}
 }
-func (m *EncryptedKeysharesPacketData) XXX_Unmarshal(b []byte) error {
+func (m *PrivateDecryptionKeyDataPacketData) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *EncryptedKeysharesPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *PrivateDecryptionKeyDataPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_EncryptedKeysharesPacketData.Marshal(b, m, deterministic)
+		return xxx_messageInfo_PrivateDecryptionKeyDataPacketData.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -824,61 +833,62 @@ func (m *EncryptedKeysharesPacketData) XXX_Marshal(b []byte, deterministic bool)
 		return b[:n], nil
 	}
 }
-func (m *EncryptedKeysharesPacketData) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_EncryptedKeysharesPacketData.Merge(m, src)
+func (m *PrivateDecryptionKeyDataPacketData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PrivateDecryptionKeyDataPacketData.Merge(m, src)
 }
-func (m *EncryptedKeysharesPacketData) XXX_Size() int {
+func (m *PrivateDecryptionKeyDataPacketData) XXX_Size() int {
 	return m.Size()
 }
-func (m *EncryptedKeysharesPacketData) XXX_DiscardUnknown() {
-	xxx_messageInfo_EncryptedKeysharesPacketData.DiscardUnknown(m)
+func (m *PrivateDecryptionKeyDataPacketData) XXX_DiscardUnknown() {
+	xxx_messageInfo_PrivateDecryptionKeyDataPacketData.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_EncryptedKeysharesPacketData proto.InternalMessageInfo
+var xxx_messageInfo_PrivateDecryptionKeyDataPacketData proto.InternalMessageInfo
 
-func (m *EncryptedKeysharesPacketData) GetIdentity() string {
+func (m *PrivateDecryptionKeyDataPacketData) GetIdentity() string {
 	if m != nil {
 		return m.Identity
 	}
 	return ""
 }
 
-func (m *EncryptedKeysharesPacketData) GetPubkey() string {
+func (m *PrivateDecryptionKeyDataPacketData) GetPubkey() string {
 	if m != nil {
 		return m.Pubkey
 	}
 	return ""
 }
 
-func (m *EncryptedKeysharesPacketData) GetRequestId() string {
+func (m *PrivateDecryptionKeyDataPacketData) GetRequestId() string {
 	if m != nil {
 		return m.RequestId
 	}
 	return ""
 }
 
-func (m *EncryptedKeysharesPacketData) GetEncryptedKeyshares() []*types.EncryptedKeyshare {
+func (m *PrivateDecryptionKeyDataPacketData) GetPrivateDecryptionKey() []*types.PrivateDecryptionKey {
 	if m != nil {
-		return m.EncryptedKeyshares
+		return m.PrivateDecryptionKey
 	}
 	return nil
 }
 
-type EncryptedKeysharesPacketAck struct {
+// PrivateDecryptionKeyPacketAck defines a struct for the packet payload
+type PrivateDecryptionKeyPacketAck struct {
 }
 
-func (m *EncryptedKeysharesPacketAck) Reset()         { *m = EncryptedKeysharesPacketAck{} }
-func (m *EncryptedKeysharesPacketAck) String() string { return proto.CompactTextString(m) }
-func (*EncryptedKeysharesPacketAck) ProtoMessage()    {}
-func (*EncryptedKeysharesPacketAck) Descriptor() ([]byte, []int) {
+func (m *PrivateDecryptionKeyPacketAck) Reset()         { *m = PrivateDecryptionKeyPacketAck{} }
+func (m *PrivateDecryptionKeyPacketAck) String() string { return proto.CompactTextString(m) }
+func (*PrivateDecryptionKeyPacketAck) ProtoMessage()    {}
+func (*PrivateDecryptionKeyPacketAck) Descriptor() ([]byte, []int) {
 	return fileDescriptor_220841e1bebf3b1b, []int{13}
 }
-func (m *EncryptedKeysharesPacketAck) XXX_Unmarshal(b []byte) error {
+func (m *PrivateDecryptionKeyPacketAck) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *EncryptedKeysharesPacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *PrivateDecryptionKeyPacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_EncryptedKeysharesPacketAck.Marshal(b, m, deterministic)
+		return xxx_messageInfo_PrivateDecryptionKeyPacketAck.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -888,17 +898,17 @@ func (m *EncryptedKeysharesPacketAck) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *EncryptedKeysharesPacketAck) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_EncryptedKeysharesPacketAck.Merge(m, src)
+func (m *PrivateDecryptionKeyPacketAck) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PrivateDecryptionKeyPacketAck.Merge(m, src)
 }
-func (m *EncryptedKeysharesPacketAck) XXX_Size() int {
+func (m *PrivateDecryptionKeyPacketAck) XXX_Size() int {
 	return m.Size()
 }
-func (m *EncryptedKeysharesPacketAck) XXX_DiscardUnknown() {
-	xxx_messageInfo_EncryptedKeysharesPacketAck.DiscardUnknown(m)
+func (m *PrivateDecryptionKeyPacketAck) XXX_DiscardUnknown() {
+	xxx_messageInfo_PrivateDecryptionKeyPacketAck.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_EncryptedKeysharesPacketAck proto.InternalMessageInfo
+var xxx_messageInfo_PrivateDecryptionKeyPacketAck proto.InternalMessageInfo
 
 // CurrentKeysPacketData defines a struct for the packet payload
 type CurrentKeysPacketData struct {
@@ -939,8 +949,8 @@ var xxx_messageInfo_CurrentKeysPacketData proto.InternalMessageInfo
 
 // CurrentKeysPacketAck defines a struct for the packet acknowledgment
 type CurrentKeysPacketAck struct {
-	ActiveKey *types.ActivePublicKey `protobuf:"bytes,1,opt,name=activeKey,proto3" json:"activeKey,omitempty"`
-	QueuedKey *types.QueuedPublicKey `protobuf:"bytes,2,opt,name=queuedKey,proto3" json:"queuedKey,omitempty"`
+	ActiveKey *types.ActivePublicKey `protobuf:"bytes,1,opt,name=active_key,json=activeKey,proto3" json:"active_key,omitempty"`
+	QueuedKey *types.QueuedPublicKey `protobuf:"bytes,2,opt,name=queued_key,json=queuedKey,proto3" json:"queued_key,omitempty"`
 }
 
 func (m *CurrentKeysPacketAck) Reset()         { *m = CurrentKeysPacketAck{} }
@@ -993,18 +1003,18 @@ func (m *CurrentKeysPacketAck) GetQueuedKey() *types.QueuedPublicKey {
 func init() {
 	proto.RegisterType((*KeysharePacketData)(nil), "fairyring.keyshare.KeysharePacketData")
 	proto.RegisterType((*NoData)(nil), "fairyring.keyshare.NoData")
-	proto.RegisterType((*RequestAggrKeysharePacketData)(nil), "fairyring.keyshare.RequestAggrKeysharePacketData")
-	proto.RegisterType((*RequestPrivateKeysharePacketData)(nil), "fairyring.keyshare.RequestPrivateKeysharePacketData")
-	proto.RegisterType((*RequestPrivateKeysharePacketAck)(nil), "fairyring.keyshare.RequestPrivateKeysharePacketAck")
-	proto.RegisterType((*RequestAggrKeysharePacketAck)(nil), "fairyring.keyshare.RequestAggrKeysharePacketAck")
-	proto.RegisterType((*GetAggrKeysharePacketData)(nil), "fairyring.keyshare.GetAggrKeysharePacketData")
-	proto.RegisterType((*GetAggrKeysharePacketAck)(nil), "fairyring.keyshare.GetAggrKeysharePacketAck")
-	proto.RegisterType((*GetPrivateKeysharePacketData)(nil), "fairyring.keyshare.GetPrivateKeysharePacketData")
-	proto.RegisterType((*GetPrivateKeysharePacketAck)(nil), "fairyring.keyshare.GetPrivateKeysharePacketAck")
-	proto.RegisterType((*AggrKeyshareDataPacketData)(nil), "fairyring.keyshare.AggrKeyshareDataPacketData")
-	proto.RegisterType((*AggrKeyshareDataPacketAck)(nil), "fairyring.keyshare.AggrKeyshareDataPacketAck")
-	proto.RegisterType((*EncryptedKeysharesPacketData)(nil), "fairyring.keyshare.EncryptedKeysharesPacketData")
-	proto.RegisterType((*EncryptedKeysharesPacketAck)(nil), "fairyring.keyshare.EncryptedKeysharesPacketAck")
+	proto.RegisterType((*RequestDecryptionKeyPacketData)(nil), "fairyring.keyshare.RequestDecryptionKeyPacketData")
+	proto.RegisterType((*RequestPrivateDecryptionKeyPacketData)(nil), "fairyring.keyshare.RequestPrivateDecryptionKeyPacketData")
+	proto.RegisterType((*RequestPrivateDecryptionKeyPacketAck)(nil), "fairyring.keyshare.RequestPrivateDecryptionKeyPacketAck")
+	proto.RegisterType((*RequestDecryptionKeyPacketAck)(nil), "fairyring.keyshare.RequestDecryptionKeyPacketAck")
+	proto.RegisterType((*GetDecryptionKeyPacketData)(nil), "fairyring.keyshare.GetDecryptionKeyPacketData")
+	proto.RegisterType((*GetDecryptionKeyPacketAck)(nil), "fairyring.keyshare.GetDecryptionKeyPacketAck")
+	proto.RegisterType((*GetPrivateDecryptionKeyPacketData)(nil), "fairyring.keyshare.GetPrivateDecryptionKeyPacketData")
+	proto.RegisterType((*GetPrivateDecryptionKeyPacketAck)(nil), "fairyring.keyshare.GetPrivateDecryptionKeyPacketAck")
+	proto.RegisterType((*DecryptionKeyDataPacketData)(nil), "fairyring.keyshare.DecryptionKeyDataPacketData")
+	proto.RegisterType((*DecryptionKeyPacketAck)(nil), "fairyring.keyshare.DecryptionKeyPacketAck")
+	proto.RegisterType((*PrivateDecryptionKeyDataPacketData)(nil), "fairyring.keyshare.PrivateDecryptionKeyDataPacketData")
+	proto.RegisterType((*PrivateDecryptionKeyPacketAck)(nil), "fairyring.keyshare.PrivateDecryptionKeyPacketAck")
 	proto.RegisterType((*CurrentKeysPacketData)(nil), "fairyring.keyshare.CurrentKeysPacketData")
 	proto.RegisterType((*CurrentKeysPacketAck)(nil), "fairyring.keyshare.CurrentKeysPacketAck")
 }
@@ -1012,59 +1022,61 @@ func init() {
 func init() { proto.RegisterFile("fairyring/keyshare/packet.proto", fileDescriptor_220841e1bebf3b1b) }
 
 var fileDescriptor_220841e1bebf3b1b = []byte{
-	// 830 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x56, 0xcb, 0x8e, 0xe3, 0x44,
-	0x14, 0x8d, 0x33, 0x19, 0x4f, 0x72, 0xc3, 0x43, 0x14, 0x33, 0x83, 0x93, 0xc9, 0xa3, 0xc7, 0xbd,
-	0x19, 0x16, 0xd8, 0x30, 0x8c, 0xc4, 0x12, 0x25, 0x34, 0x4c, 0xa2, 0x96, 0x50, 0xb0, 0x60, 0x01,
-	0x1b, 0xcb, 0xb1, 0xab, 0x9d, 0x52, 0xd2, 0xb6, 0xbb, 0x5c, 0x0e, 0xf8, 0x2f, 0x58, 0xf6, 0x1f,
-	0xc1, 0xb2, 0x91, 0x58, 0xb0, 0x03, 0x75, 0xff, 0x00, 0x9f, 0x30, 0xaa, 0x72, 0x39, 0x4f, 0xdb,
-	0x2d, 0xf5, 0xce, 0x2e, 0x9f, 0x7b, 0xce, 0xbd, 0xb7, 0x6e, 0x1d, 0x17, 0x0c, 0x2f, 0x1c, 0x42,
-	0x53, 0x4a, 0x02, 0xdf, 0x5c, 0xe2, 0x34, 0x5e, 0x38, 0x14, 0x9b, 0x91, 0xe3, 0x2e, 0x31, 0x33,
-	0x22, 0x1a, 0xb2, 0x10, 0xa1, 0x0d, 0xc0, 0xc8, 0x01, 0xdd, 0x81, 0x1f, 0x86, 0xfe, 0x0a, 0x9b,
-	0x02, 0x31, 0x4f, 0x2e, 0x4c, 0x2f, 0xa1, 0x0e, 0x23, 0x61, 0x90, 0xc5, 0x74, 0x9f, 0xfa, 0xa1,
-	0x1f, 0x8a, 0x47, 0x93, 0x3f, 0xc9, 0xd5, 0xd3, 0xad, 0x94, 0x1b, 0x5e, 0x5e, 0x86, 0x81, 0x29,
-	0xd8, 0x3c, 0x9b, 0xa5, 0x11, 0x8e, 0x33, 0x90, 0xfe, 0xb7, 0x0a, 0xe8, 0x5c, 0xea, 0xcc, 0x44,
-	0x1e, 0x67, 0x0e, 0x73, 0xd0, 0x1b, 0x50, 0x83, 0x90, 0x3f, 0x69, 0xca, 0x89, 0xf2, 0xaa, 0xfd,
-	0xba, 0x6b, 0x1c, 0xa7, 0x65, 0x7c, 0x2f, 0x10, 0x93, 0x9a, 0x25, 0xb1, 0xe8, 0x0a, 0x3a, 0x14,
-	0x5f, 0x25, 0x38, 0x66, 0x23, 0xdf, 0xa7, 0xfb, 0xb4, 0x5a, 0x5d, 0x10, 0x7d, 0x51, 0x44, 0x64,
-	0x95, 0x05, 0x49, 0xfe, 0x72, 0x56, 0x84, 0xe1, 0x99, 0x8f, 0x8b, 0xe4, 0x1e, 0x09, 0xb9, 0xcf,
-	0x8a, 0xe4, 0xde, 0xe2, 0x72, 0xa9, 0x62, 0x36, 0xb4, 0x80, 0xe7, 0xce, 0xce, 0x2a, 0x07, 0x4b,
-	0x9d, 0x86, 0xd0, 0x31, 0x8a, 0x74, 0x46, 0x85, 0x11, 0x52, 0xa8, 0x84, 0x0f, 0xad, 0xa1, 0x87,
-	0x03, 0x97, 0xa6, 0x11, 0xc3, 0x5e, 0xfe, 0x39, 0xde, 0x46, 0x6a, 0x8f, 0x85, 0xde, 0xe7, 0x45,
-	0x7a, 0xdf, 0x56, 0xc4, 0x4d, 0x6a, 0x56, 0x25, 0x2f, 0xfa, 0x19, 0x3e, 0x72, 0x13, 0x4a, 0x71,
-	0xc0, 0xf8, 0x57, 0x59, 0x9c, 0x2a, 0xc4, 0x3e, 0x2d, 0x12, 0xfb, 0xe6, 0x10, 0x2c, 0x55, 0x8e,
-	0x59, 0xd0, 0xaf, 0xd0, 0x93, 0x1b, 0x68, 0x47, 0x94, 0xac, 0xed, 0x9c, 0xc3, 0xce, 0x06, 0x5f,
-	0x7b, 0x22, 0x54, 0xde, 0x54, 0x4c, 0xc6, 0x8c, 0x92, 0xb5, 0xc3, 0x70, 0xe5, 0x70, 0x70, 0xcc,
-	0xc1, 0xae, 0x05, 0xa0, 0xf9, 0xb8, 0x38, 0x58, 0x6b, 0x96, 0xf7, 0xf1, 0x2d, 0xae, 0x14, 0x2c,
-	0xe5, 0x1c, 0x37, 0x41, 0xcd, 0x4a, 0xd2, 0x9b, 0xa0, 0x66, 0xa7, 0x43, 0xff, 0x4b, 0x81, 0x7e,
-	0xe5, 0x7c, 0xa3, 0x1e, 0xb4, 0x64, 0x09, 0x98, 0x8a, 0xe3, 0xd6, 0xb2, 0xb6, 0x0b, 0xe8, 0x25,
-	0xb4, 0x23, 0x1a, 0x46, 0x61, 0xec, 0xac, 0x6c, 0xe2, 0x89, 0x53, 0xd4, 0x9a, 0xd4, 0x2c, 0xc8,
-	0x17, 0xa7, 0x1e, 0x1a, 0x02, 0xe4, 0xfd, 0x25, 0x9e, 0x18, 0x7c, 0x8e, 0xc8, 0x39, 0xa6, 0x1e,
-	0x9a, 0xc0, 0x87, 0x38, 0x66, 0xe4, 0xd2, 0x61, 0xd8, 0xb3, 0x3d, 0xbc, 0x72, 0x52, 0x39, 0xb6,
-	0x1d, 0x23, 0x73, 0x16, 0x23, 0x77, 0x16, 0xe3, 0x4c, 0x3a, 0xcb, 0xb8, 0x71, 0xfd, 0xef, 0x50,
-	0xb1, 0x3e, 0xd8, 0xc4, 0x9d, 0xf1, 0xb0, 0x71, 0x03, 0xea, 0xc4, 0xd3, 0x6d, 0x38, 0xb9, 0x6f,
-	0x63, 0xee, 0xa9, 0xaa, 0xbf, 0x97, 0x72, 0x7d, 0xef, 0xf3, 0xd4, 0xd3, 0x7f, 0x82, 0x61, 0x95,
-	0xc0, 0xc8, 0x5d, 0xa2, 0x2e, 0x34, 0x89, 0x87, 0x03, 0x46, 0x58, 0x2a, 0xe9, 0x37, 0xef, 0xe8,
-	0x39, 0xa8, 0x51, 0x32, 0x5f, 0xe2, 0x54, 0x32, 0xcb, 0x37, 0xdd, 0x82, 0x5e, 0xe9, 0x56, 0x3c,
-	0x94, 0xf3, 0x2b, 0xe8, 0x94, 0xfa, 0x49, 0x15, 0xa1, 0xde, 0x05, 0xad, 0x30, 0x70, 0xe4, 0x2e,
-	0xf5, 0x14, 0x7a, 0x55, 0x43, 0x58, 0x99, 0xe8, 0x5e, 0xe3, 0xeb, 0x87, 0x8d, 0x1f, 0x42, 0x3b,
-	0xc6, 0x6e, 0x64, 0xcb, 0x5a, 0xc4, 0xb0, 0x58, 0xc0, 0x97, 0x66, 0x59, 0x3d, 0x7d, 0x78, 0x51,
-	0x26, 0xcd, 0x33, 0xfb, 0x5f, 0x81, 0x6e, 0xb9, 0xaf, 0x3d, 0xa4, 0x83, 0xe8, 0x14, 0xde, 0xe7,
-	0x5e, 0xb8, 0xb1, 0x05, 0x99, 0xd4, 0x7b, 0xbb, 0x06, 0xc9, 0xf3, 0x16, 0xa0, 0x05, 0x26, 0xfe,
-	0x22, 0x73, 0xdd, 0x96, 0x05, 0x7c, 0x69, 0x22, 0x56, 0x38, 0x60, 0xf7, 0x9c, 0x3c, 0xce, 0x00,
-	0x3b, 0xa7, 0x64, 0x7f, 0xe4, 0xd4, 0x83, 0x91, 0x43, 0x1a, 0x3c, 0xa1, 0x98, 0x51, 0x82, 0x63,
-	0xe1, 0x47, 0x0d, 0x2b, 0x7f, 0xd5, 0x5f, 0x40, 0xa7, 0xb8, 0x62, 0xde, 0x8f, 0x3f, 0x14, 0xe8,
-	0x55, 0xf9, 0xee, 0x83, 0x3a, 0xd2, 0x3f, 0x3e, 0xd0, 0xbb, 0xa9, 0xfe, 0x08, 0x1f, 0x6f, 0xac,
-	0x7c, 0xd3, 0xb5, 0x58, 0x6b, 0x9c, 0x3c, 0x7a, 0xd5, 0x7e, 0x7d, 0xba, 0xe3, 0x68, 0xd9, 0x6f,
-	0xff, 0xf8, 0xbf, 0x60, 0xa1, 0xe3, 0x5f, 0x01, 0xdf, 0xf8, 0xb2, 0x42, 0x78, 0xa1, 0x9f, 0xc0,
-	0xb3, 0x42, 0xcb, 0xd7, 0xaf, 0x15, 0x78, 0x7a, 0xf4, 0x85, 0x9f, 0xa6, 0xaf, 0xa1, 0xe5, 0xb8,
-	0x8c, 0xac, 0xf9, 0x14, 0xc9, 0x6b, 0xc4, 0xcb, 0xe3, 0xe4, 0x46, 0x02, 0x32, 0x4b, 0xe6, 0x2b,
-	0xe2, 0x9e, 0xe3, 0xd4, 0xda, 0xc6, 0x70, 0x82, 0xab, 0x04, 0x27, 0x22, 0x1d, 0x79, 0x7d, 0x28,
-	0x20, 0xf8, 0x41, 0x40, 0x76, 0x08, 0x36, 0x31, 0xe3, 0xe9, 0x9f, 0xb7, 0x03, 0xe5, 0xe6, 0x76,
-	0xa0, 0xfc, 0x77, 0x3b, 0x50, 0x7e, 0xbf, 0x1b, 0xd4, 0x6e, 0xee, 0x06, 0xb5, 0x7f, 0xee, 0x06,
-	0xb5, 0x5f, 0x4c, 0x9f, 0xb0, 0x45, 0x32, 0xe7, 0x1c, 0xe6, 0x77, 0x0e, 0xa1, 0xf3, 0x55, 0xe8,
-	0x2e, 0xcd, 0xed, 0x85, 0xe9, 0xb7, 0xed, 0xed, 0x4c, 0xdc, 0x96, 0xe6, 0xaa, 0x70, 0xc8, 0x2f,
-	0xdf, 0x05, 0x00, 0x00, 0xff, 0xff, 0xc4, 0x85, 0x63, 0xfc, 0xc0, 0x09, 0x00, 0x00,
+	// 862 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x96, 0x41, 0x6f, 0xe3, 0x44,
+	0x14, 0xc7, 0xe3, 0x6e, 0x36, 0x6d, 0x5e, 0xc5, 0x22, 0x86, 0xd2, 0x4d, 0xb3, 0xc4, 0x69, 0x0c,
+	0x45, 0xcb, 0xc5, 0x96, 0x8a, 0x16, 0xc1, 0x6d, 0x5b, 0x22, 0x48, 0x54, 0x09, 0x05, 0x73, 0x5b,
+	0x90, 0x2c, 0xc7, 0x33, 0xeb, 0x8c, 0x9c, 0xda, 0xde, 0xf1, 0x78, 0xc1, 0x17, 0x24, 0x24, 0xae,
+	0x48, 0x1c, 0x11, 0x57, 0xbe, 0x0c, 0xc7, 0x15, 0x12, 0x12, 0x37, 0x50, 0xfb, 0x11, 0xf8, 0x02,
+	0x68, 0x66, 0xec, 0x24, 0x4e, 0x1c, 0x67, 0xd5, 0x9b, 0x3d, 0xf3, 0xde, 0xfb, 0xfd, 0x67, 0xe6,
+	0xbd, 0x37, 0x03, 0xfd, 0xe7, 0x2e, 0x65, 0x19, 0xa3, 0xa1, 0x6f, 0x05, 0x24, 0x4b, 0x66, 0x2e,
+	0x23, 0x56, 0xec, 0x7a, 0x01, 0xe1, 0x66, 0xcc, 0x22, 0x1e, 0x21, 0xb4, 0x30, 0x30, 0x0b, 0x83,
+	0xae, 0xee, 0x47, 0x91, 0x3f, 0x27, 0x96, 0xb4, 0x98, 0xa6, 0xcf, 0x2d, 0x9c, 0x32, 0x97, 0xd3,
+	0x28, 0x54, 0x3e, 0xdd, 0x23, 0x3f, 0xf2, 0x23, 0xf9, 0x69, 0x89, 0xaf, 0x7c, 0xf4, 0xbd, 0x25,
+	0xca, 0x8b, 0xae, 0xaf, 0xa3, 0xd0, 0x92, 0xd1, 0xb0, 0xc3, 0xb3, 0x98, 0x24, 0xca, 0xc8, 0xf8,
+	0x7d, 0x1f, 0xd0, 0x55, 0xce, 0x99, 0x48, 0x1d, 0x43, 0x97, 0xbb, 0xe8, 0x09, 0xec, 0x87, 0x91,
+	0x83, 0x5d, 0xee, 0x76, 0xb4, 0x53, 0xed, 0xf1, 0xe1, 0x79, 0xd7, 0xdc, 0xd4, 0x65, 0x7e, 0x19,
+	0x09, 0xe3, 0x51, 0xc3, 0x6e, 0x85, 0xf2, 0x0b, 0x7d, 0x07, 0x3d, 0x46, 0x5e, 0xa4, 0x24, 0xe1,
+	0x0e, 0x26, 0x1e, 0xcb, 0x62, 0x21, 0xd2, 0x09, 0x48, 0xe6, 0xa8, 0x35, 0x76, 0xf6, 0x64, 0xb0,
+	0xf3, 0xaa, 0x60, 0xb6, 0x72, 0x1c, 0x2e, 0xfc, 0xae, 0x48, 0xb6, 0x54, 0x34, 0x6a, 0xd8, 0x5d,
+	0xb6, 0xd5, 0x02, 0x05, 0x70, 0xe2, 0x93, 0x6d, 0xd0, 0x7b, 0x12, 0x6a, 0x56, 0x41, 0xbf, 0x20,
+	0x35, 0xc0, 0x63, 0xbf, 0x72, 0x16, 0x85, 0xd0, 0x5d, 0x03, 0x89, 0x8d, 0x2a, 0x68, 0x4d, 0x49,
+	0xb3, 0xaa, 0x68, 0xa5, 0x60, 0x02, 0x52, 0xc2, 0x3d, 0xc4, 0xd5, 0xd3, 0xe8, 0x27, 0x0d, 0x8c,
+	0x98, 0xd1, 0x97, 0x2e, 0x27, 0x4e, 0x0d, 0xf8, 0xbe, 0x04, 0x7f, 0x5c, 0x05, 0x9e, 0x28, 0xef,
+	0x7a, 0xbe, 0x1e, 0xd7, 0x5a, 0xa1, 0x6f, 0xe0, 0x6d, 0x2f, 0x65, 0x8c, 0x84, 0x5c, 0xa0, 0x93,
+	0x02, 0xdb, 0x92, 0xd8, 0x0f, 0xab, 0xb0, 0x9f, 0x29, 0x73, 0x91, 0x5f, 0x25, 0xd2, 0x5b, 0xde,
+	0xfa, 0x04, 0xfa, 0x59, 0x83, 0xb3, 0x22, 0x75, 0xb6, 0xac, 0x35, 0xe7, 0xed, 0x4b, 0xde, 0xa7,
+	0x35, 0x29, 0x54, 0xb5, 0xda, 0x12, 0x7f, 0xc0, 0x76, 0x19, 0xa2, 0x1f, 0x35, 0x18, 0x88, 0x8c,
+	0xaa, 0xd7, 0x72, 0x20, 0xb5, 0x3c, 0xd9, 0x92, 0x59, 0x3b, 0x75, 0xf4, 0xfc, 0x3a, 0xa3, 0xcb,
+	0x03, 0x68, 0x29, 0x8e, 0x71, 0x00, 0x2d, 0x55, 0x6b, 0xc6, 0x9f, 0x1a, 0xe8, 0xf5, 0x95, 0x82,
+	0xde, 0x85, 0x76, 0xbe, 0x3e, 0xc2, 0x64, 0xf5, 0xb6, 0xed, 0xe5, 0x00, 0x1a, 0xc0, 0x61, 0xcc,
+	0xa2, 0x38, 0x4a, 0xdc, 0xb9, 0x43, 0xb1, 0x2c, 0xc8, 0xf6, 0xa8, 0x61, 0x43, 0x31, 0x38, 0xc6,
+	0xa8, 0x0f, 0x50, 0x1c, 0x05, 0xc5, 0xb2, 0x7a, 0x84, 0x45, 0x11, 0x63, 0x8c, 0xd1, 0x08, 0xde,
+	0x24, 0x09, 0xa7, 0xd7, 0x2e, 0x27, 0xd8, 0xc1, 0x64, 0xee, 0x66, 0x79, 0xd6, 0x9f, 0x98, 0xaa,
+	0x53, 0x99, 0x45, 0xa7, 0x32, 0x87, 0x79, 0xa7, 0xba, 0x6c, 0xfe, 0xfa, 0x4f, 0x5f, 0xb3, 0x1f,
+	0x2c, 0xfc, 0x86, 0xc2, 0xed, 0xb2, 0x09, 0x7b, 0x14, 0x1b, 0x18, 0xce, 0x5e, 0xeb, 0xe8, 0x76,
+	0x2c, 0xad, 0x57, 0xd2, 0xbd, 0x57, 0x9a, 0x1e, 0x63, 0xe3, 0x19, 0xbc, 0xbf, 0x93, 0x72, 0xe1,
+	0x05, 0xa8, 0x0b, 0x07, 0x14, 0x93, 0x90, 0x53, 0x9e, 0xe5, 0x8c, 0xc5, 0x3f, 0x3a, 0x86, 0x56,
+	0x9c, 0x4e, 0x03, 0x92, 0xe5, 0xe1, 0xf3, 0x3f, 0xe3, 0x6b, 0xe8, 0x6d, 0x3f, 0x95, 0xbb, 0x06,
+	0xfd, 0x04, 0xba, 0xdb, 0xfb, 0x53, 0x5d, 0x44, 0xe3, 0x11, 0x9c, 0x54, 0x7b, 0x5e, 0x78, 0x81,
+	0xf1, 0x03, 0x0c, 0x76, 0x26, 0x67, 0xad, 0xde, 0xd2, 0x29, 0xec, 0xad, 0x9f, 0x42, 0x1f, 0x0e,
+	0x13, 0xe2, 0xc5, 0x4e, 0xbe, 0x24, 0x99, 0x3e, 0x36, 0x88, 0xa1, 0x89, 0x5a, 0x96, 0x01, 0xa7,
+	0xb5, 0x7c, 0xa1, 0xf1, 0x3f, 0x0d, 0x1e, 0xd5, 0x74, 0xab, 0xbb, 0x6c, 0x27, 0x3a, 0x83, 0x07,
+	0xe5, 0x2a, 0xce, 0xb5, 0xbd, 0x51, 0xea, 0xbb, 0x42, 0xbf, 0xeb, 0xfb, 0xcc, 0x99, 0x11, 0xea,
+	0xcf, 0x54, 0x3b, 0x6f, 0xdb, 0x20, 0x86, 0x46, 0x72, 0x44, 0x18, 0xac, 0x56, 0xd0, 0x7d, 0x65,
+	0xb0, 0x52, 0x3f, 0xe5, 0x3c, 0x6c, 0xad, 0xe5, 0x21, 0xea, 0xc0, 0x3e, 0x23, 0x9c, 0x51, 0x92,
+	0xc8, 0x5e, 0xd6, 0xb4, 0x8b, 0x5f, 0xa3, 0x03, 0xc7, 0x5b, 0xf6, 0xe3, 0x2f, 0x0d, 0x8c, 0xdd,
+	0x4d, 0xfc, 0x4e, 0xdb, 0xd2, 0xdb, 0xac, 0xf6, 0x55, 0xb5, 0xdf, 0xc2, 0x71, 0x75, 0x0f, 0xec,
+	0x34, 0x4f, 0xef, 0x3d, 0x3e, 0x3c, 0xff, 0x60, 0xa5, 0xf9, 0xa9, 0x67, 0x46, 0xe5, 0x6d, 0x63,
+	0x1f, 0x55, 0xdd, 0x2e, 0x46, 0x1f, 0x7a, 0xf5, 0x89, 0xf0, 0x10, 0xde, 0xa9, 0xbc, 0x45, 0x8c,
+	0xdf, 0x34, 0x38, 0xda, 0x98, 0x11, 0x95, 0xf6, 0x14, 0xc0, 0xf5, 0x38, 0x7d, 0x49, 0xa4, 0x48,
+	0xf5, 0x7a, 0x19, 0x6c, 0x8a, 0xbc, 0x90, 0x36, 0x93, 0x74, 0x3a, 0xa7, 0x9e, 0xd0, 0xd7, 0x56,
+	0x4e, 0x22, 0x03, 0x9e, 0x02, 0xbc, 0x48, 0x49, 0x4a, 0xb0, 0x53, 0xec, 0x56, 0x65, 0x84, 0xaf,
+	0xa4, 0xcd, 0x4a, 0x04, 0xe5, 0x74, 0x45, 0xb2, 0xcb, 0xf1, 0x1f, 0x37, 0xba, 0xf6, 0xea, 0x46,
+	0xd7, 0xfe, 0xbd, 0xd1, 0xb5, 0x5f, 0x6e, 0xf5, 0xc6, 0xab, 0x5b, 0xbd, 0xf1, 0xf7, 0xad, 0xde,
+	0x78, 0x66, 0xf9, 0x94, 0xcf, 0xd2, 0xa9, 0x88, 0x61, 0x7d, 0xee, 0x52, 0x36, 0x9d, 0x47, 0x5e,
+	0x60, 0x2d, 0x5f, 0x6a, 0xdf, 0x2f, 0x9f, 0x85, 0xf2, 0x99, 0x36, 0x6d, 0xc9, 0x56, 0xfa, 0xd1,
+	0xff, 0x01, 0x00, 0x00, 0xff, 0xff, 0x1e, 0x79, 0xaa, 0x57, 0x39, 0x0a, 0x00, 0x00,
 }
 
 func (m *KeysharePacketData) Marshal() (dAtA []byte, err error) {
@@ -1120,16 +1132,16 @@ func (m *KeysharePacketData_NoData) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	}
 	return len(dAtA) - i, nil
 }
-func (m *KeysharePacketData_RequestAggrKeysharePacket) MarshalTo(dAtA []byte) (int, error) {
+func (m *KeysharePacketData_RequestDecryptionKeyPacket) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *KeysharePacketData_RequestAggrKeysharePacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *KeysharePacketData_RequestDecryptionKeyPacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
-	if m.RequestAggrKeysharePacket != nil {
+	if m.RequestDecryptionKeyPacket != nil {
 		{
-			size, err := m.RequestAggrKeysharePacket.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.RequestDecryptionKeyPacket.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1141,16 +1153,16 @@ func (m *KeysharePacketData_RequestAggrKeysharePacket) MarshalToSizedBuffer(dAtA
 	}
 	return len(dAtA) - i, nil
 }
-func (m *KeysharePacketData_GetAggrKeysharePacket) MarshalTo(dAtA []byte) (int, error) {
+func (m *KeysharePacketData_GetDecryptionKeyPacket) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *KeysharePacketData_GetAggrKeysharePacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *KeysharePacketData_GetDecryptionKeyPacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
-	if m.GetAggrKeysharePacket != nil {
+	if m.GetDecryptionKeyPacket != nil {
 		{
-			size, err := m.GetAggrKeysharePacket.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.GetDecryptionKeyPacket.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1162,16 +1174,16 @@ func (m *KeysharePacketData_GetAggrKeysharePacket) MarshalToSizedBuffer(dAtA []b
 	}
 	return len(dAtA) - i, nil
 }
-func (m *KeysharePacketData_AggrKeyshareDataPacket) MarshalTo(dAtA []byte) (int, error) {
+func (m *KeysharePacketData_DecryptionKeyDataPacket) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *KeysharePacketData_AggrKeyshareDataPacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *KeysharePacketData_DecryptionKeyDataPacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
-	if m.AggrKeyshareDataPacket != nil {
+	if m.DecryptionKeyDataPacket != nil {
 		{
-			size, err := m.AggrKeyshareDataPacket.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.DecryptionKeyDataPacket.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1183,16 +1195,16 @@ func (m *KeysharePacketData_AggrKeyshareDataPacket) MarshalToSizedBuffer(dAtA []
 	}
 	return len(dAtA) - i, nil
 }
-func (m *KeysharePacketData_EncryptedKeysharesPacketData) MarshalTo(dAtA []byte) (int, error) {
+func (m *KeysharePacketData_PrivateDecryptionKeyDataPacket) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *KeysharePacketData_EncryptedKeysharesPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *KeysharePacketData_PrivateDecryptionKeyDataPacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
-	if m.EncryptedKeysharesPacketData != nil {
+	if m.PrivateDecryptionKeyDataPacket != nil {
 		{
-			size, err := m.EncryptedKeysharesPacketData.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.PrivateDecryptionKeyDataPacket.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1225,16 +1237,16 @@ func (m *KeysharePacketData_CurrentKeysPacket) MarshalToSizedBuffer(dAtA []byte)
 	}
 	return len(dAtA) - i, nil
 }
-func (m *KeysharePacketData_RequestPrivKeysharePacket) MarshalTo(dAtA []byte) (int, error) {
+func (m *KeysharePacketData_RequestPrivateDecryptionKeyPacket) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *KeysharePacketData_RequestPrivKeysharePacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *KeysharePacketData_RequestPrivateDecryptionKeyPacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
-	if m.RequestPrivKeysharePacket != nil {
+	if m.RequestPrivateDecryptionKeyPacket != nil {
 		{
-			size, err := m.RequestPrivKeysharePacket.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.RequestPrivateDecryptionKeyPacket.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1246,16 +1258,16 @@ func (m *KeysharePacketData_RequestPrivKeysharePacket) MarshalToSizedBuffer(dAtA
 	}
 	return len(dAtA) - i, nil
 }
-func (m *KeysharePacketData_GetPrivateKeysharePacket) MarshalTo(dAtA []byte) (int, error) {
+func (m *KeysharePacketData_GetPrivateDecryptionKeyPacket) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *KeysharePacketData_GetPrivateKeysharePacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *KeysharePacketData_GetPrivateDecryptionKeyPacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
-	if m.GetPrivateKeysharePacket != nil {
+	if m.GetPrivateDecryptionKeyPacket != nil {
 		{
-			size, err := m.GetPrivateKeysharePacket.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.GetPrivateDecryptionKeyPacket.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1290,7 +1302,7 @@ func (m *NoData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *RequestAggrKeysharePacketData) Marshal() (dAtA []byte, err error) {
+func (m *RequestDecryptionKeyPacketData) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1300,12 +1312,12 @@ func (m *RequestAggrKeysharePacketData) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *RequestAggrKeysharePacketData) MarshalTo(dAtA []byte) (int, error) {
+func (m *RequestDecryptionKeyPacketData) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *RequestAggrKeysharePacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *RequestDecryptionKeyPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1339,12 +1351,12 @@ func (m *RequestAggrKeysharePacketData) MarshalToSizedBuffer(dAtA []byte) (int, 
 	return len(dAtA) - i, nil
 }
 
-func (m *RequestAggrKeysharePacketData_ProposalId) MarshalTo(dAtA []byte) (int, error) {
+func (m *RequestDecryptionKeyPacketData_ProposalId) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *RequestAggrKeysharePacketData_ProposalId) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *RequestDecryptionKeyPacketData_ProposalId) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	i -= len(m.ProposalId)
 	copy(dAtA[i:], m.ProposalId)
@@ -1353,12 +1365,12 @@ func (m *RequestAggrKeysharePacketData_ProposalId) MarshalToSizedBuffer(dAtA []b
 	dAtA[i] = 0x12
 	return len(dAtA) - i, nil
 }
-func (m *RequestAggrKeysharePacketData_RequestId) MarshalTo(dAtA []byte) (int, error) {
+func (m *RequestDecryptionKeyPacketData_RequestId) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *RequestAggrKeysharePacketData_RequestId) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *RequestDecryptionKeyPacketData_RequestId) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	i -= len(m.RequestId)
 	copy(dAtA[i:], m.RequestId)
@@ -1367,7 +1379,7 @@ func (m *RequestAggrKeysharePacketData_RequestId) MarshalToSizedBuffer(dAtA []by
 	dAtA[i] = 0x1a
 	return len(dAtA) - i, nil
 }
-func (m *RequestPrivateKeysharePacketData) Marshal() (dAtA []byte, err error) {
+func (m *RequestPrivateDecryptionKeyPacketData) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1377,12 +1389,12 @@ func (m *RequestPrivateKeysharePacketData) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *RequestPrivateKeysharePacketData) MarshalTo(dAtA []byte) (int, error) {
+func (m *RequestPrivateDecryptionKeyPacketData) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *RequestPrivateKeysharePacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *RequestPrivateDecryptionKeyPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1404,7 +1416,7 @@ func (m *RequestPrivateKeysharePacketData) MarshalToSizedBuffer(dAtA []byte) (in
 	return len(dAtA) - i, nil
 }
 
-func (m *RequestPrivateKeysharePacketAck) Marshal() (dAtA []byte, err error) {
+func (m *RequestPrivateDecryptionKeyPacketAck) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1414,12 +1426,12 @@ func (m *RequestPrivateKeysharePacketAck) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *RequestPrivateKeysharePacketAck) MarshalTo(dAtA []byte) (int, error) {
+func (m *RequestPrivateDecryptionKeyPacketAck) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *RequestPrivateKeysharePacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *RequestPrivateDecryptionKeyPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1441,7 +1453,7 @@ func (m *RequestPrivateKeysharePacketAck) MarshalToSizedBuffer(dAtA []byte) (int
 	return len(dAtA) - i, nil
 }
 
-func (m *RequestAggrKeysharePacketAck) Marshal() (dAtA []byte, err error) {
+func (m *RequestDecryptionKeyPacketAck) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1451,12 +1463,12 @@ func (m *RequestAggrKeysharePacketAck) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *RequestAggrKeysharePacketAck) MarshalTo(dAtA []byte) (int, error) {
+func (m *RequestDecryptionKeyPacketAck) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *RequestAggrKeysharePacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *RequestDecryptionKeyPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1478,7 +1490,7 @@ func (m *RequestAggrKeysharePacketAck) MarshalToSizedBuffer(dAtA []byte) (int, e
 	return len(dAtA) - i, nil
 }
 
-func (m *GetAggrKeysharePacketData) Marshal() (dAtA []byte, err error) {
+func (m *GetDecryptionKeyPacketData) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1488,12 +1500,12 @@ func (m *GetAggrKeysharePacketData) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *GetAggrKeysharePacketData) MarshalTo(dAtA []byte) (int, error) {
+func (m *GetDecryptionKeyPacketData) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *GetAggrKeysharePacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *GetDecryptionKeyPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1508,7 +1520,7 @@ func (m *GetAggrKeysharePacketData) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
-func (m *GetAggrKeysharePacketAck) Marshal() (dAtA []byte, err error) {
+func (m *GetDecryptionKeyPacketAck) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1518,12 +1530,12 @@ func (m *GetAggrKeysharePacketAck) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *GetAggrKeysharePacketAck) MarshalTo(dAtA []byte) (int, error) {
+func (m *GetDecryptionKeyPacketAck) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *GetAggrKeysharePacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *GetDecryptionKeyPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1531,7 +1543,7 @@ func (m *GetAggrKeysharePacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *GetPrivateKeysharePacketData) Marshal() (dAtA []byte, err error) {
+func (m *GetPrivateDecryptionKeyPacketData) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1541,12 +1553,12 @@ func (m *GetPrivateKeysharePacketData) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *GetPrivateKeysharePacketData) MarshalTo(dAtA []byte) (int, error) {
+func (m *GetPrivateDecryptionKeyPacketData) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *GetPrivateKeysharePacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *GetPrivateDecryptionKeyPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1575,7 +1587,7 @@ func (m *GetPrivateKeysharePacketData) MarshalToSizedBuffer(dAtA []byte) (int, e
 	return len(dAtA) - i, nil
 }
 
-func (m *GetPrivateKeysharePacketAck) Marshal() (dAtA []byte, err error) {
+func (m *GetPrivateDecryptionKeyPacketAck) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1585,12 +1597,12 @@ func (m *GetPrivateKeysharePacketAck) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *GetPrivateKeysharePacketAck) MarshalTo(dAtA []byte) (int, error) {
+func (m *GetPrivateDecryptionKeyPacketAck) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *GetPrivateKeysharePacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *GetPrivateDecryptionKeyPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1598,7 +1610,7 @@ func (m *GetPrivateKeysharePacketAck) MarshalToSizedBuffer(dAtA []byte) (int, er
 	return len(dAtA) - i, nil
 }
 
-func (m *AggrKeyshareDataPacketData) Marshal() (dAtA []byte, err error) {
+func (m *DecryptionKeyDataPacketData) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1608,12 +1620,12 @@ func (m *AggrKeyshareDataPacketData) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *AggrKeyshareDataPacketData) MarshalTo(dAtA []byte) (int, error) {
+func (m *DecryptionKeyDataPacketData) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *AggrKeyshareDataPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *DecryptionKeyDataPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1644,10 +1656,10 @@ func (m *AggrKeyshareDataPacketData) MarshalToSizedBuffer(dAtA []byte) (int, err
 		i--
 		dAtA[i] = 0x22
 	}
-	if len(m.AggrKeyshare) > 0 {
-		i -= len(m.AggrKeyshare)
-		copy(dAtA[i:], m.AggrKeyshare)
-		i = encodeVarintPacket(dAtA, i, uint64(len(m.AggrKeyshare)))
+	if len(m.DecryptionKey) > 0 {
+		i -= len(m.DecryptionKey)
+		copy(dAtA[i:], m.DecryptionKey)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.DecryptionKey)))
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -1668,7 +1680,7 @@ func (m *AggrKeyshareDataPacketData) MarshalToSizedBuffer(dAtA []byte) (int, err
 	return len(dAtA) - i, nil
 }
 
-func (m *AggrKeyshareDataPacketAck) Marshal() (dAtA []byte, err error) {
+func (m *DecryptionKeyPacketAck) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1678,12 +1690,12 @@ func (m *AggrKeyshareDataPacketAck) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *AggrKeyshareDataPacketAck) MarshalTo(dAtA []byte) (int, error) {
+func (m *DecryptionKeyPacketAck) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *AggrKeyshareDataPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *DecryptionKeyPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1691,7 +1703,7 @@ func (m *AggrKeyshareDataPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
-func (m *EncryptedKeysharesPacketData) Marshal() (dAtA []byte, err error) {
+func (m *PrivateDecryptionKeyDataPacketData) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1701,20 +1713,20 @@ func (m *EncryptedKeysharesPacketData) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *EncryptedKeysharesPacketData) MarshalTo(dAtA []byte) (int, error) {
+func (m *PrivateDecryptionKeyDataPacketData) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *EncryptedKeysharesPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *PrivateDecryptionKeyDataPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.EncryptedKeyshares) > 0 {
-		for iNdEx := len(m.EncryptedKeyshares) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.PrivateDecryptionKey) > 0 {
+		for iNdEx := len(m.PrivateDecryptionKey) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.EncryptedKeyshares[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.PrivateDecryptionKey[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1749,7 +1761,7 @@ func (m *EncryptedKeysharesPacketData) MarshalToSizedBuffer(dAtA []byte) (int, e
 	return len(dAtA) - i, nil
 }
 
-func (m *EncryptedKeysharesPacketAck) Marshal() (dAtA []byte, err error) {
+func (m *PrivateDecryptionKeyPacketAck) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1759,12 +1771,12 @@ func (m *EncryptedKeysharesPacketAck) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *EncryptedKeysharesPacketAck) MarshalTo(dAtA []byte) (int, error) {
+func (m *PrivateDecryptionKeyPacketAck) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *EncryptedKeysharesPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *PrivateDecryptionKeyPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1877,50 +1889,50 @@ func (m *KeysharePacketData_NoData) Size() (n int) {
 	}
 	return n
 }
-func (m *KeysharePacketData_RequestAggrKeysharePacket) Size() (n int) {
+func (m *KeysharePacketData_RequestDecryptionKeyPacket) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.RequestAggrKeysharePacket != nil {
-		l = m.RequestAggrKeysharePacket.Size()
+	if m.RequestDecryptionKeyPacket != nil {
+		l = m.RequestDecryptionKeyPacket.Size()
 		n += 1 + l + sovPacket(uint64(l))
 	}
 	return n
 }
-func (m *KeysharePacketData_GetAggrKeysharePacket) Size() (n int) {
+func (m *KeysharePacketData_GetDecryptionKeyPacket) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.GetAggrKeysharePacket != nil {
-		l = m.GetAggrKeysharePacket.Size()
+	if m.GetDecryptionKeyPacket != nil {
+		l = m.GetDecryptionKeyPacket.Size()
 		n += 1 + l + sovPacket(uint64(l))
 	}
 	return n
 }
-func (m *KeysharePacketData_AggrKeyshareDataPacket) Size() (n int) {
+func (m *KeysharePacketData_DecryptionKeyDataPacket) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.AggrKeyshareDataPacket != nil {
-		l = m.AggrKeyshareDataPacket.Size()
+	if m.DecryptionKeyDataPacket != nil {
+		l = m.DecryptionKeyDataPacket.Size()
 		n += 1 + l + sovPacket(uint64(l))
 	}
 	return n
 }
-func (m *KeysharePacketData_EncryptedKeysharesPacketData) Size() (n int) {
+func (m *KeysharePacketData_PrivateDecryptionKeyDataPacket) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.EncryptedKeysharesPacketData != nil {
-		l = m.EncryptedKeysharesPacketData.Size()
+	if m.PrivateDecryptionKeyDataPacket != nil {
+		l = m.PrivateDecryptionKeyDataPacket.Size()
 		n += 1 + l + sovPacket(uint64(l))
 	}
 	return n
@@ -1937,26 +1949,26 @@ func (m *KeysharePacketData_CurrentKeysPacket) Size() (n int) {
 	}
 	return n
 }
-func (m *KeysharePacketData_RequestPrivKeysharePacket) Size() (n int) {
+func (m *KeysharePacketData_RequestPrivateDecryptionKeyPacket) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.RequestPrivKeysharePacket != nil {
-		l = m.RequestPrivKeysharePacket.Size()
+	if m.RequestPrivateDecryptionKeyPacket != nil {
+		l = m.RequestPrivateDecryptionKeyPacket.Size()
 		n += 1 + l + sovPacket(uint64(l))
 	}
 	return n
 }
-func (m *KeysharePacketData_GetPrivateKeysharePacket) Size() (n int) {
+func (m *KeysharePacketData_GetPrivateDecryptionKeyPacket) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.GetPrivateKeysharePacket != nil {
-		l = m.GetPrivateKeysharePacket.Size()
+	if m.GetPrivateDecryptionKeyPacket != nil {
+		l = m.GetPrivateDecryptionKeyPacket.Size()
 		n += 1 + l + sovPacket(uint64(l))
 	}
 	return n
@@ -1970,7 +1982,7 @@ func (m *NoData) Size() (n int) {
 	return n
 }
 
-func (m *RequestAggrKeysharePacketData) Size() (n int) {
+func (m *RequestDecryptionKeyPacketData) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1990,7 +2002,7 @@ func (m *RequestAggrKeysharePacketData) Size() (n int) {
 	return n
 }
 
-func (m *RequestAggrKeysharePacketData_ProposalId) Size() (n int) {
+func (m *RequestDecryptionKeyPacketData_ProposalId) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2000,7 +2012,7 @@ func (m *RequestAggrKeysharePacketData_ProposalId) Size() (n int) {
 	n += 1 + l + sovPacket(uint64(l))
 	return n
 }
-func (m *RequestAggrKeysharePacketData_RequestId) Size() (n int) {
+func (m *RequestDecryptionKeyPacketData_RequestId) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2010,7 +2022,7 @@ func (m *RequestAggrKeysharePacketData_RequestId) Size() (n int) {
 	n += 1 + l + sovPacket(uint64(l))
 	return n
 }
-func (m *RequestPrivateKeysharePacketData) Size() (n int) {
+func (m *RequestPrivateDecryptionKeyPacketData) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2027,7 +2039,7 @@ func (m *RequestPrivateKeysharePacketData) Size() (n int) {
 	return n
 }
 
-func (m *RequestPrivateKeysharePacketAck) Size() (n int) {
+func (m *RequestPrivateDecryptionKeyPacketAck) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2044,7 +2056,7 @@ func (m *RequestPrivateKeysharePacketAck) Size() (n int) {
 	return n
 }
 
-func (m *RequestAggrKeysharePacketAck) Size() (n int) {
+func (m *RequestDecryptionKeyPacketAck) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2061,7 +2073,7 @@ func (m *RequestAggrKeysharePacketAck) Size() (n int) {
 	return n
 }
 
-func (m *GetAggrKeysharePacketData) Size() (n int) {
+func (m *GetDecryptionKeyPacketData) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2074,7 +2086,7 @@ func (m *GetAggrKeysharePacketData) Size() (n int) {
 	return n
 }
 
-func (m *GetAggrKeysharePacketAck) Size() (n int) {
+func (m *GetDecryptionKeyPacketAck) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2083,7 +2095,7 @@ func (m *GetAggrKeysharePacketAck) Size() (n int) {
 	return n
 }
 
-func (m *GetPrivateKeysharePacketData) Size() (n int) {
+func (m *GetPrivateDecryptionKeyPacketData) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2104,7 +2116,7 @@ func (m *GetPrivateKeysharePacketData) Size() (n int) {
 	return n
 }
 
-func (m *GetPrivateKeysharePacketAck) Size() (n int) {
+func (m *GetPrivateDecryptionKeyPacketAck) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2113,7 +2125,7 @@ func (m *GetPrivateKeysharePacketAck) Size() (n int) {
 	return n
 }
 
-func (m *AggrKeyshareDataPacketData) Size() (n int) {
+func (m *DecryptionKeyDataPacketData) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2127,7 +2139,7 @@ func (m *AggrKeyshareDataPacketData) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovPacket(uint64(l))
 	}
-	l = len(m.AggrKeyshare)
+	l = len(m.DecryptionKey)
 	if l > 0 {
 		n += 1 + l + sovPacket(uint64(l))
 	}
@@ -2149,7 +2161,7 @@ func (m *AggrKeyshareDataPacketData) Size() (n int) {
 	return n
 }
 
-func (m *AggrKeyshareDataPacketAck) Size() (n int) {
+func (m *DecryptionKeyPacketAck) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2158,7 +2170,7 @@ func (m *AggrKeyshareDataPacketAck) Size() (n int) {
 	return n
 }
 
-func (m *EncryptedKeysharesPacketData) Size() (n int) {
+func (m *PrivateDecryptionKeyDataPacketData) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2176,8 +2188,8 @@ func (m *EncryptedKeysharesPacketData) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovPacket(uint64(l))
 	}
-	if len(m.EncryptedKeyshares) > 0 {
-		for _, e := range m.EncryptedKeyshares {
+	if len(m.PrivateDecryptionKey) > 0 {
+		for _, e := range m.PrivateDecryptionKey {
 			l = e.Size()
 			n += 1 + l + sovPacket(uint64(l))
 		}
@@ -2185,7 +2197,7 @@ func (m *EncryptedKeysharesPacketData) Size() (n int) {
 	return n
 }
 
-func (m *EncryptedKeysharesPacketAck) Size() (n int) {
+func (m *PrivateDecryptionKeyPacketAck) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2292,7 +2304,7 @@ func (m *KeysharePacketData) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RequestAggrKeysharePacket", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field RequestDecryptionKeyPacket", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -2319,15 +2331,15 @@ func (m *KeysharePacketData) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RequestAggrKeysharePacketData{}
+			v := &RequestDecryptionKeyPacketData{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			m.Packet = &KeysharePacketData_RequestAggrKeysharePacket{v}
+			m.Packet = &KeysharePacketData_RequestDecryptionKeyPacket{v}
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GetAggrKeysharePacket", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field GetDecryptionKeyPacket", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -2354,15 +2366,15 @@ func (m *KeysharePacketData) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &GetAggrKeysharePacketData{}
+			v := &GetDecryptionKeyPacketData{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			m.Packet = &KeysharePacketData_GetAggrKeysharePacket{v}
+			m.Packet = &KeysharePacketData_GetDecryptionKeyPacket{v}
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AggrKeyshareDataPacket", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field DecryptionKeyDataPacket", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -2389,15 +2401,15 @@ func (m *KeysharePacketData) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &AggrKeyshareDataPacketData{}
+			v := &DecryptionKeyDataPacketData{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			m.Packet = &KeysharePacketData_AggrKeyshareDataPacket{v}
+			m.Packet = &KeysharePacketData_DecryptionKeyDataPacket{v}
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field EncryptedKeysharesPacketData", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PrivateDecryptionKeyDataPacket", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -2424,11 +2436,11 @@ func (m *KeysharePacketData) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &EncryptedKeysharesPacketData{}
+			v := &PrivateDecryptionKeyDataPacketData{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			m.Packet = &KeysharePacketData_EncryptedKeysharesPacketData{v}
+			m.Packet = &KeysharePacketData_PrivateDecryptionKeyDataPacket{v}
 			iNdEx = postIndex
 		case 6:
 			if wireType != 2 {
@@ -2467,7 +2479,7 @@ func (m *KeysharePacketData) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 7:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RequestPrivKeysharePacket", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field RequestPrivateDecryptionKeyPacket", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -2494,15 +2506,15 @@ func (m *KeysharePacketData) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RequestPrivateKeysharePacketData{}
+			v := &RequestPrivateDecryptionKeyPacketData{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			m.Packet = &KeysharePacketData_RequestPrivKeysharePacket{v}
+			m.Packet = &KeysharePacketData_RequestPrivateDecryptionKeyPacket{v}
 			iNdEx = postIndex
 		case 8:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GetPrivateKeysharePacket", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field GetPrivateDecryptionKeyPacket", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -2529,11 +2541,11 @@ func (m *KeysharePacketData) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &GetPrivateKeysharePacketData{}
+			v := &GetPrivateDecryptionKeyPacketData{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			m.Packet = &KeysharePacketData_GetPrivateKeysharePacket{v}
+			m.Packet = &KeysharePacketData_GetPrivateDecryptionKeyPacket{v}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -2606,7 +2618,7 @@ func (m *NoData) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *RequestAggrKeysharePacketData) Unmarshal(dAtA []byte) error {
+func (m *RequestDecryptionKeyPacketData) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2629,10 +2641,10 @@ func (m *RequestAggrKeysharePacketData) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: RequestAggrKeysharePacketData: wiretype end group for non-group")
+			return fmt.Errorf("proto: RequestDecryptionKeyPacketData: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: RequestAggrKeysharePacketData: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: RequestDecryptionKeyPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2697,7 +2709,7 @@ func (m *RequestAggrKeysharePacketData) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Id = &RequestAggrKeysharePacketData_ProposalId{string(dAtA[iNdEx:postIndex])}
+			m.Id = &RequestDecryptionKeyPacketData_ProposalId{string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
@@ -2729,7 +2741,7 @@ func (m *RequestAggrKeysharePacketData) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Id = &RequestAggrKeysharePacketData_RequestId{string(dAtA[iNdEx:postIndex])}
+			m.Id = &RequestDecryptionKeyPacketData_RequestId{string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
@@ -2788,7 +2800,7 @@ func (m *RequestAggrKeysharePacketData) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *RequestPrivateKeysharePacketData) Unmarshal(dAtA []byte) error {
+func (m *RequestPrivateDecryptionKeyPacketData) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2811,10 +2823,10 @@ func (m *RequestPrivateKeysharePacketData) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: RequestPrivateKeysharePacketData: wiretype end group for non-group")
+			return fmt.Errorf("proto: RequestPrivateDecryptionKeyPacketData: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: RequestPrivateKeysharePacketData: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: RequestPrivateDecryptionKeyPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -2902,7 +2914,7 @@ func (m *RequestPrivateKeysharePacketData) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *RequestPrivateKeysharePacketAck) Unmarshal(dAtA []byte) error {
+func (m *RequestPrivateDecryptionKeyPacketAck) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2925,10 +2937,10 @@ func (m *RequestPrivateKeysharePacketAck) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: RequestPrivateKeysharePacketAck: wiretype end group for non-group")
+			return fmt.Errorf("proto: RequestPrivateDecryptionKeyPacketAck: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: RequestPrivateKeysharePacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: RequestPrivateDecryptionKeyPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3016,7 +3028,7 @@ func (m *RequestPrivateKeysharePacketAck) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *RequestAggrKeysharePacketAck) Unmarshal(dAtA []byte) error {
+func (m *RequestDecryptionKeyPacketAck) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3039,10 +3051,10 @@ func (m *RequestAggrKeysharePacketAck) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: RequestAggrKeysharePacketAck: wiretype end group for non-group")
+			return fmt.Errorf("proto: RequestDecryptionKeyPacketAck: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: RequestAggrKeysharePacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: RequestDecryptionKeyPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3130,7 +3142,7 @@ func (m *RequestAggrKeysharePacketAck) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *GetAggrKeysharePacketData) Unmarshal(dAtA []byte) error {
+func (m *GetDecryptionKeyPacketData) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3153,10 +3165,10 @@ func (m *GetAggrKeysharePacketData) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: GetAggrKeysharePacketData: wiretype end group for non-group")
+			return fmt.Errorf("proto: GetDecryptionKeyPacketData: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: GetAggrKeysharePacketData: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: GetDecryptionKeyPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3212,7 +3224,7 @@ func (m *GetAggrKeysharePacketData) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *GetAggrKeysharePacketAck) Unmarshal(dAtA []byte) error {
+func (m *GetDecryptionKeyPacketAck) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3235,10 +3247,10 @@ func (m *GetAggrKeysharePacketAck) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: GetAggrKeysharePacketAck: wiretype end group for non-group")
+			return fmt.Errorf("proto: GetDecryptionKeyPacketAck: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: GetAggrKeysharePacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: GetDecryptionKeyPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -3262,7 +3274,7 @@ func (m *GetAggrKeysharePacketAck) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *GetPrivateKeysharePacketData) Unmarshal(dAtA []byte) error {
+func (m *GetPrivateDecryptionKeyPacketData) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3285,10 +3297,10 @@ func (m *GetPrivateKeysharePacketData) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: GetPrivateKeysharePacketData: wiretype end group for non-group")
+			return fmt.Errorf("proto: GetPrivateDecryptionKeyPacketData: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: GetPrivateKeysharePacketData: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: GetPrivateDecryptionKeyPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3408,7 +3420,7 @@ func (m *GetPrivateKeysharePacketData) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *GetPrivateKeysharePacketAck) Unmarshal(dAtA []byte) error {
+func (m *GetPrivateDecryptionKeyPacketAck) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3431,10 +3443,10 @@ func (m *GetPrivateKeysharePacketAck) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: GetPrivateKeysharePacketAck: wiretype end group for non-group")
+			return fmt.Errorf("proto: GetPrivateDecryptionKeyPacketAck: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: GetPrivateKeysharePacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: GetPrivateDecryptionKeyPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -3458,7 +3470,7 @@ func (m *GetPrivateKeysharePacketAck) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *AggrKeyshareDataPacketData) Unmarshal(dAtA []byte) error {
+func (m *DecryptionKeyDataPacketData) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3481,10 +3493,10 @@ func (m *AggrKeyshareDataPacketData) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: AggrKeyshareDataPacketData: wiretype end group for non-group")
+			return fmt.Errorf("proto: DecryptionKeyDataPacketData: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: AggrKeyshareDataPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: DecryptionKeyDataPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3553,7 +3565,7 @@ func (m *AggrKeyshareDataPacketData) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AggrKeyshare", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field DecryptionKey", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -3581,7 +3593,7 @@ func (m *AggrKeyshareDataPacketData) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.AggrKeyshare = string(dAtA[iNdEx:postIndex])
+			m.DecryptionKey = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
@@ -3719,7 +3731,7 @@ func (m *AggrKeyshareDataPacketData) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *AggrKeyshareDataPacketAck) Unmarshal(dAtA []byte) error {
+func (m *DecryptionKeyPacketAck) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3742,10 +3754,10 @@ func (m *AggrKeyshareDataPacketAck) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: AggrKeyshareDataPacketAck: wiretype end group for non-group")
+			return fmt.Errorf("proto: DecryptionKeyPacketAck: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: AggrKeyshareDataPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: DecryptionKeyPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -3769,7 +3781,7 @@ func (m *AggrKeyshareDataPacketAck) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *EncryptedKeysharesPacketData) Unmarshal(dAtA []byte) error {
+func (m *PrivateDecryptionKeyDataPacketData) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3792,10 +3804,10 @@ func (m *EncryptedKeysharesPacketData) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: EncryptedKeysharesPacketData: wiretype end group for non-group")
+			return fmt.Errorf("proto: PrivateDecryptionKeyDataPacketData: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: EncryptedKeysharesPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: PrivateDecryptionKeyDataPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3896,7 +3908,7 @@ func (m *EncryptedKeysharesPacketData) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field EncryptedKeyshares", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PrivateDecryptionKey", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -3923,8 +3935,8 @@ func (m *EncryptedKeysharesPacketData) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.EncryptedKeyshares = append(m.EncryptedKeyshares, &types.EncryptedKeyshare{})
-			if err := m.EncryptedKeyshares[len(m.EncryptedKeyshares)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.PrivateDecryptionKey = append(m.PrivateDecryptionKey, &types.PrivateDecryptionKey{})
+			if err := m.PrivateDecryptionKey[len(m.PrivateDecryptionKey)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -3949,7 +3961,7 @@ func (m *EncryptedKeysharesPacketData) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *EncryptedKeysharesPacketAck) Unmarshal(dAtA []byte) error {
+func (m *PrivateDecryptionKeyPacketAck) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3972,10 +3984,10 @@ func (m *EncryptedKeysharesPacketAck) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: EncryptedKeysharesPacketAck: wiretype end group for non-group")
+			return fmt.Errorf("proto: PrivateDecryptionKeyPacketAck: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: EncryptedKeysharesPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: PrivateDecryptionKeyPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

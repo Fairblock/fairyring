@@ -1,11 +1,12 @@
 package keeper_test
 
 import (
-	"github.com/Fairblock/fairyring/testutil/random"
-	"github.com/Fairblock/fairyring/testutil/sample"
 	"math/rand"
 	"strconv"
 	"testing"
+
+	"github.com/Fairblock/fairyring/testutil/random"
+	"github.com/Fairblock/fairyring/testutil/sample"
 
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
@@ -22,12 +23,12 @@ var _ = strconv.IntSize
 func createNEncryptedTx(keeper *keeper.Keeper, ctx sdk.Context, n int) (items []types.EncryptedTxArray) {
 	items = make([]types.EncryptedTxArray, n)
 	for i := range items { // i is block height
-		items[i].EncryptedTx = make([]types.EncryptedTx, n)
+		items[i].EncryptedTxs = make([]types.EncryptedTx, n)
 		for j := 0; j < n; j++ { // j is encrypted tx index
-			items[i].EncryptedTx[j].Creator = sample.AccAddress()
-			items[i].EncryptedTx[j].Data = random.RandHex(32)
-			items[i].EncryptedTx[j].TargetHeight = uint64(i)
-			items[i].EncryptedTx[j].Index = uint64(j)
+			items[i].EncryptedTxs[j].Creator = sample.AccAddress()
+			items[i].EncryptedTxs[j].Data = random.RandHex(32)
+			items[i].EncryptedTxs[j].TargetHeight = uint64(i)
+			items[i].EncryptedTxs[j].Index = uint64(j)
 		}
 		keeper.SetEncryptedTx(ctx, uint64(i), items[i])
 	}
@@ -63,14 +64,14 @@ func TestEncryptedTxAppend(t *testing.T) {
 	arr := keeper.GetEncryptedTxAllFromHeight(ctx, appendTx1.TargetHeight)
 	require.Equal(t,
 		nullify.Fill(2),
-		nullify.Fill(len(arr.EncryptedTx)))
+		nullify.Fill(len(arr.EncryptedTxs)))
 }
 
 func TestEncryptedTxGet(t *testing.T) {
 	keeper, ctx := keepertest.PepKeeper(t)
 	items := createNEncryptedTx(&keeper, ctx, 10)
 	for _, encryptedTxs := range items {
-		for _, item := range encryptedTxs.EncryptedTx {
+		for _, item := range encryptedTxs.EncryptedTxs {
 			rst, found := keeper.GetEncryptedTx(ctx,
 				item.TargetHeight,
 				item.Index,
@@ -96,14 +97,14 @@ func TestEncryptedTxRemoveAllFromHeight(t *testing.T) {
 		)
 		require.Equal(t,
 			nullify.Fill(0),
-			nullify.Fill(len(arr.EncryptedTx)))
+			nullify.Fill(len(arr.EncryptedTxs)))
 	}
 }
 func TestEncryptedTxSetProcessedHeight(t *testing.T) {
 	keeper, ctx := keepertest.PepKeeper(t)
 	items := createNEncryptedTx(&keeper, ctx, 10)
 	for i, encryptedTxs := range items {
-		for _, item := range encryptedTxs.EncryptedTx {
+		for _, item := range encryptedTxs.EncryptedTxs {
 			keeper.SetEncryptedTxProcessedHeight(ctx,
 				item.TargetHeight,
 				item.Index,
@@ -125,7 +126,7 @@ func TestEncryptedTxSetAllExpired(t *testing.T) {
 	keeper, ctx := keepertest.PepKeeper(t)
 	items := createNEncryptedTx(&keeper, ctx, 10)
 	for _, encryptedTxs := range items {
-		for _, item := range encryptedTxs.EncryptedTx {
+		for _, item := range encryptedTxs.EncryptedTxs {
 			keeper.SetAllEncryptedTxExpired(ctx,
 				item.TargetHeight,
 			)

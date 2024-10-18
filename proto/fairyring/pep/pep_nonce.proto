@@ -3,9 +3,10 @@ package fairyring.pep;
 
 option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
+// PepNonce defines the nonce of an account to send encrypted transactions.
+// It is incremanted seperately from the nonce maintained by the auth module
 message PepNonce {
   string address = 1;
   uint64 nonce = 2;
-
 }
 

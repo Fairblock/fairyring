@@ -1,12 +1,13 @@
 package keeper_test
 
 import (
+	"strconv"
+	"testing"
+
 	"github.com/Fairblock/fairyring/testutil/random"
 	"github.com/Fairblock/fairyring/testutil/shares"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	types2 "github.com/Fairblock/fairyring/x/pep/types"
-	"strconv"
-	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
@@ -33,22 +34,22 @@ func TestEncryptedlKeyShareMsgServerCreate(t *testing.T) {
 
 		idVal := random.RandHex(32)
 
-		k.SetPrivateKeyShareRequest(wctx, types.PrivateKeyshareRequest{
-			Identity:           idVal,
-			Pubkey:             out.MasterPublicKey,
-			IbcInfo:            nil,
-			Counterparty:       nil,
-			RequestId:          idVal,
-			Sent:               false,
-			EncryptedKeyshares: make([]*commontypes.EncryptedKeyshare, 0),
+		k.SetPrivateKeyShareRequest(wctx, types.PrivateDecryptionKeyRequest{
+			Identity:              idVal,
+			Pubkey:                out.MasterPublicKey,
+			IbcInfo:               nil,
+			Counterparty:          nil,
+			RequestId:             idVal,
+			Sent:                  false,
+			PrivateDecryptionKeys: make([]*commontypes.PrivateDecryptionKey, 0),
 		})
 		pk.SetPrivateRequest(wctx, types2.PrivateRequest{
-			Creator:            creator,
-			ReqId:              idVal,
-			Pubkey:             out.MasterPublicKey,
-			EncryptedKeyshares: make([]*commontypes.EncryptedKeyshare, 0),
+			Creator:               creator,
+			ReqId:                 idVal,
+			Pubkey:                out.MasterPublicKey,
+			PrivateDecryptionKeys: make([]*commontypes.PrivateDecryptionKey, 0),
 		})
-		pk.SetPrivateReqQueueEntry(wctx, commontypes.RequestPrivateKeyshare{
+		pk.SetPrivateReqQueueEntry(wctx, commontypes.RequestPrivateDecryptionKey{
 			Creator:   creator,
 			RequestId: idVal,
 		})
@@ -60,7 +61,7 @@ func TestEncryptedlKeyShareMsgServerCreate(t *testing.T) {
 		require.NoError(t, err)
 
 		expected := &types.MsgSubmitEncryptedKeyshare{Creator: creator,
-			KeyShareIndex:     1,
+			KeyshareIndex:     1,
 			Identity:          idVal,
 			EncryptedKeyshare: encryptedShare,
 			Requester:         creator,
@@ -90,7 +91,7 @@ func TestEncryptedKeyShareMsgServerFailCases(t *testing.T) {
 	out, creator := SetupTestGeneralKeyShare(t, wctx, k, 1, 1)
 	onlyIdVal := random.RandHex(32)
 
-	pk.SetPrivateReqQueueEntry(wctx, commontypes.RequestPrivateKeyshare{
+	pk.SetPrivateReqQueueEntry(wctx, commontypes.RequestPrivateDecryptionKey{
 		Creator:   creator,
 		RequestId: onlyIdVal,
 	})
@@ -118,7 +119,7 @@ func TestEncryptedKeyShareMsgServerFailCases(t *testing.T) {
 			request: &types.MsgSubmitEncryptedKeyshare{
 				Creator:       creator,
 				Identity:      onlyIdVal,
-				KeyShareIndex: 10,
+				KeyshareIndex: 10,
 			},
 			err: types.ErrInvalidKeyShareIndex,
 		},
@@ -130,20 +131,20 @@ func TestEncryptedKeyShareMsgServerFailCases(t *testing.T) {
 			require.ErrorIs(t, err, tc.err)
 
 			if tc.desc == "KeyShareRequestNotFound" {
-				k.SetPrivateKeyShareRequest(wctx, types.PrivateKeyshareRequest{
-					Identity:           onlyIdVal,
-					Pubkey:             out.MasterPublicKey,
-					IbcInfo:            nil,
-					Counterparty:       nil,
-					RequestId:          onlyIdVal,
-					Sent:               false,
-					EncryptedKeyshares: make([]*commontypes.EncryptedKeyshare, 0),
+				k.SetPrivateKeyShareRequest(wctx, types.PrivateDecryptionKeyRequest{
+					Identity:              onlyIdVal,
+					Pubkey:                out.MasterPublicKey,
+					IbcInfo:               nil,
+					Counterparty:          nil,
+					RequestId:             onlyIdVal,
+					Sent:                  false,
+					PrivateDecryptionKeys: make([]*commontypes.PrivateDecryptionKey, 0),
 				})
 				pk.SetPrivateRequest(wctx, types2.PrivateRequest{
-					Creator:            creator,
-					ReqId:              onlyIdVal,
-					Pubkey:             out.MasterPublicKey,
-					EncryptedKeyshares: make([]*commontypes.EncryptedKeyshare, 0),
+					Creator:               creator,
+					ReqId:                 onlyIdVal,
+					Pubkey:                out.MasterPublicKey,
+					PrivateDecryptionKeys: make([]*commontypes.PrivateDecryptionKey, 0),
 				})
 			}
 		})

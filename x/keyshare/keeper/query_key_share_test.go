@@ -1,10 +1,11 @@
 package keeper_test
 
 import (
-	"github.com/Fairblock/fairyring/testutil/sample"
 	"math/rand"
 	"strconv"
 	"testing"
+
+	"github.com/Fairblock/fairyring/testutil/sample"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -26,29 +27,29 @@ func TestKeyShareQuerySingle(t *testing.T) {
 	msgs := createNKeyShares(&keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetKeyShareRequest
-		response *types.QueryGetKeyShareResponse
+		request  *types.QueryKeyshareRequest
+		response *types.QueryKeyshareResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetKeyShareRequest{
+			request: &types.QueryKeyshareRequest{
 				Validator:   msgs[0].Validator,
 				BlockHeight: msgs[0].BlockHeight,
 			},
-			response: &types.QueryGetKeyShareResponse{KeyShare: msgs[0]},
+			response: &types.QueryKeyshareResponse{Keyshare: msgs[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetKeyShareRequest{
+			request: &types.QueryKeyshareRequest{
 				Validator:   msgs[1].Validator,
 				BlockHeight: msgs[1].BlockHeight,
 			},
-			response: &types.QueryGetKeyShareResponse{KeyShare: msgs[1]},
+			response: &types.QueryKeyshareResponse{Keyshare: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.QueryGetKeyShareRequest{
+			request: &types.QueryKeyshareRequest{
 				Validator:   sample.AccAddress(),
 				BlockHeight: rand.Uint64(),
 			},
@@ -60,7 +61,7 @@ func TestKeyShareQuerySingle(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.KeyShare(wctx, tc.request)
+			response, err := keeper.Keyshare(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
@@ -80,13 +81,13 @@ func TestKeyShareQueryAllNoPagination(t *testing.T) {
 	msgs := createNKeyShares(&keeper, ctx, 10)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryAllKeyShareRequest
-		response *types.QueryAllKeyShareResponse
+		request  *types.QueryKeyshareAllRequest
+		response *types.QueryKeyshareAllResponse
 		err      error
 	}{
 		{
 			desc: "QueryAllKeyShare",
-			request: &types.QueryAllKeyShareRequest{
+			request: &types.QueryKeyshareAllRequest{
 				Pagination: &query.PageRequest{
 					Key:        nil,
 					Offset:     0,
@@ -95,8 +96,8 @@ func TestKeyShareQueryAllNoPagination(t *testing.T) {
 					Reverse:    false,
 				},
 			},
-			response: &types.QueryAllKeyShareResponse{
-				KeyShare: msgs,
+			response: &types.QueryKeyshareAllResponse{
+				Keyshare: msgs,
 				Pagination: &query.PageResponse{
 					NextKey: nil,
 					Total:   10,
@@ -105,7 +106,7 @@ func TestKeyShareQueryAllNoPagination(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.KeyShareAll(wctx, tc.request)
+			response, err := keeper.KeyshareAll(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
@@ -124,8 +125,13 @@ func TestKeyShareQueryPaginated(t *testing.T) {
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNKeyShares(&keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllKeyShareRequest {
-		return &types.QueryAllKeyShareRequest{
+	request := func(
+		next []byte,
+		offset,
+		limit uint64,
+		total bool,
+	) *types.QueryKeyshareAllRequest {
+		return &types.QueryKeyshareAllRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,
@@ -137,12 +143,12 @@ func TestKeyShareQueryPaginated(t *testing.T) {
 	t.Run("ByOffset", func(t *testing.T) {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.KeyShareAll(wctx, request(nil, uint64(i), uint64(step), false))
+			resp, err := keeper.KeyshareAll(wctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.KeyShare), step)
+			require.LessOrEqual(t, len(resp.Keyshare), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.KeyShare),
+				nullify.Fill(resp.Keyshare),
 			)
 		}
 	})
@@ -150,27 +156,27 @@ func TestKeyShareQueryPaginated(t *testing.T) {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.KeyShareAll(wctx, request(next, 0, uint64(step), false))
+			resp, err := keeper.KeyshareAll(wctx, request(next, 0, uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.KeyShare), step)
+			require.LessOrEqual(t, len(resp.Keyshare), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.KeyShare),
+				nullify.Fill(resp.Keyshare),
 			)
 			next = resp.Pagination.NextKey
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.KeyShareAll(wctx, request(nil, 0, 0, true))
+		resp, err := keeper.KeyshareAll(wctx, request(nil, 0, 0, true))
 		require.NoError(t, err)
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
 			nullify.Fill(msgs),
-			nullify.Fill(resp.KeyShare),
+			nullify.Fill(resp.Keyshare),
 		)
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.KeyShareAll(wctx, nil)
+		_, err := keeper.KeyshareAll(wctx, nil)
 		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

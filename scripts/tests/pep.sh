@@ -72,7 +72,7 @@ fi
 
 
 echo "Query master public key from key share module for submitting to pep module on chain fairyring_test_1"
-PUB_KEY=$($BINARY query keyshare show-active-pub-key --node $CHAIN1_NODE -o json | jq -r '.activePubKey.publicKey')
+PUB_KEY=$($BINARY query keyshare show-active-pub-key --node $CHAIN1_NODE -o json | jq -r '.activePubkey.publicKey')
 if [ "$PUB_KEY" == "" ]; then
   echo "ERROR: Query master public key from key share module error, expecting an active public key, got '$PUB_KEY'"
   exit 1
@@ -80,7 +80,7 @@ fi
 
 
 echo "Query master public key expiry height from key share module for submitting to pep module on chain fairyring_test_1"
-PUB_KEY_EXPIRY=$($BINARY query keyshare show-active-pub-key --node $CHAIN1_NODE -o json | jq -r '.activePubKey.expiry')
+PUB_KEY_EXPIRY=$($BINARY query keyshare show-active-pub-key --node $CHAIN1_NODE -o json | jq -r '.activePubkey.expiry')
 if [ "$PUB_KEY_EXPIRY" == "" ]; then
   echo "ERROR: Query master public key expiry height from key share module error, expecting an active public key, got '$PUB_KEY'"
   exit 1

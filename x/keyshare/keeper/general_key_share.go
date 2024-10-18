@@ -10,7 +10,7 @@ import (
 )
 
 // SetGeneralKeyShare set a specific generalKeyShare in the store from its index
-func (k Keeper) SetGeneralKeyShare(ctx context.Context, generalKeyShare types.GeneralKeyShare) {
+func (k Keeper) SetGeneralKeyShare(ctx context.Context, generalKeyShare types.GeneralKeyshare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
 
@@ -28,7 +28,7 @@ func (k Keeper) GetGeneralKeyShare(
 	validator string,
 	idType string,
 	idValue string,
-) (val types.GeneralKeyShare, found bool) {
+) (val types.GeneralKeyshare, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
 
@@ -63,7 +63,7 @@ func (k Keeper) RemoveGeneralKeyShare(
 }
 
 // GetAllGeneralKeyShare returns all generalKeyShare
-func (k Keeper) GetAllGeneralKeyShare(ctx context.Context) (list []types.GeneralKeyShare) {
+func (k Keeper) GetAllGeneralKeyShare(ctx context.Context) (list []types.GeneralKeyshare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
@@ -71,7 +71,7 @@ func (k Keeper) GetAllGeneralKeyShare(ctx context.Context) (list []types.General
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.GeneralKeyShare
+		var val types.GeneralKeyshare
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
@@ -80,7 +80,7 @@ func (k Keeper) GetAllGeneralKeyShare(ctx context.Context) (list []types.General
 }
 
 // SetPrivateKeyShare set a specific private KeyShare in the store from its index
-func (k Keeper) SetPrivateKeyShare(ctx context.Context, encKeyShare types.ValidatorEncryptedKeyShare) {
+func (k Keeper) SetPrivateKeyShare(ctx context.Context, encKeyShare types.ValidatorEncryptedKeyshare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedKeyShareKeyPrefix))
 
@@ -98,7 +98,7 @@ func (k Keeper) GetPrivateKeyShare(
 	validator string,
 	identity string,
 	requester string,
-) (val types.ValidatorEncryptedKeyShare, found bool) {
+) (val types.ValidatorEncryptedKeyshare, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedKeyShareKeyPrefix))
 
@@ -132,7 +132,7 @@ func (k Keeper) RemovePrivateKeyShare(
 }
 
 // GetAllPrivateKeyShare returns all private KeyShares
-func (k Keeper) GetAllPrivateKeyShare(ctx context.Context) (list []types.ValidatorEncryptedKeyShare) {
+func (k Keeper) GetAllPrivateKeyShare(ctx context.Context) (list []types.ValidatorEncryptedKeyshare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.EncryptedKeyShareKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
@@ -140,7 +140,7 @@ func (k Keeper) GetAllPrivateKeyShare(ctx context.Context) (list []types.Validat
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.ValidatorEncryptedKeyShare
+		var val types.ValidatorEncryptedKeyshare
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}

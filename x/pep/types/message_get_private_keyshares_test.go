@@ -11,18 +11,18 @@ import (
 func TestMsgGetPrivateKeyshares_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgGetPrivateKeyshares
+		msg  MsgRequestPrivateDecryptionKey
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgGetPrivateKeyshares{
+			msg: MsgRequestPrivateDecryptionKey{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgGetPrivateKeyshares{
+			msg: MsgRequestPrivateDecryptionKey{
 				Creator: sample.AccAddress(),
 			},
 		},

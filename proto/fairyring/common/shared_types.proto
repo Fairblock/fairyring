@@ -1,28 +1,31 @@
 syntax = "proto3";
 package fairyring.common;
 
-import "google/protobuf/duration.proto";
 import "gogoproto/gogo.proto";
+import "google/protobuf/duration.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/common/types";
 
-// RequestAggrKeyshare defines a struct for the data payload
-message RequestAggrKeyshare {
+// RequestDecryptionKey defines a struct for the data payload
+message RequestDecryptionKey {
   string creator = 1;
+  // id can either be a request id or a proposal id
   oneof id {
     string proposal_id = 2;
     string request_id = 3;
   }
-    google.protobuf.Duration estimated_delay = 4 [(gogoproto.stdduration) = true];
+  google.protobuf.Duration estimated_delay = 4 [(gogoproto.stdduration) = true];
 }
 
-message RequestAggrKeyshareResponse {
+// RequestDecryptionKeyResponse defines the response to the RequestDecryptionKey message
+message RequestDecryptionKeyResponse {
   string identity = 1;
-  string pubkey   = 2;
+  string pubkey = 2;
 }
 
-// GetAggrKeyshare defines a struct for the data payload
-message GetAggrKeyshare {
+// GetDecryptionKey defines a struct for the data payload
+message GetDecryptionKey {
+  // id can either be a request id or a proposal id
   oneof id {
     string proposal_id = 1;
     string request_id = 2;
@@ -30,42 +33,53 @@ message GetAggrKeyshare {
   string identity = 3;
 }
 
-message GetAggrKeyshareResponse {}
+// GetDecryptionKeyResponse defines the response to the GetDecryptionKey message
+message GetDecryptionKeyResponse {}
 
-// GetPrivateKeyshare defines a struct for the data payload
-message GetPrivateKeyshare {
+// GetPrivateDecryptionKey defines a struct for the data payload
+message GetPrivateDecryptionKey {
   string request_id = 1;
   string identity = 2;
   string requester = 3;
   string secp_pubkey = 4;
 }
 
-message GetPrivateKeyshareResponse {
-  string pubkey   = 1;
+// GetPrivateDecryptionKeyResponse defines the response to the GetPrivateDecryptionKey message
+message GetPrivateDecryptionKeyResponse {
+  string pubkey = 1;
 }
 
+// ActivePublicKey defines the pubkey currently in use
 message ActivePublicKey {
-  string publicKey = 1;
+  string public_key = 1;
   string creator = 2;
   uint64 expiry = 3;
 }
 
+// QueuedPublicKey defines the pubkey that (when set) will replace the acive pubkey
+// when it expires
 message QueuedPublicKey {
-  string publicKey = 1;
+  string public_key = 1;
   string creator = 2;
   uint64 expiry = 3;
 }
 
-message RequestPrivateKeyshare {
+// RequestPrivateDecryptionKey defines the structure to request for
+// encrypted and unaggregated keyshares
+message RequestPrivateDecryptionKey {
   string creator = 1;
   string request_id = 2;
 }
 
-message EncryptedKeyshare {
+// PrivateDecryptionKey defines the storage structure for
+// the list of encrypted keyshares (unaggregated)
+message PrivateDecryptionKey {
   string requester = 1;
   repeated IndexedEncryptedKeyshare private_keyshares = 2;
 }
 
+// IndexedEncryptedKeyshare defines the storage of submitted encrypted
+// keyshares along with their indices (can be decrypted and aggregated)
 message IndexedEncryptedKeyshare {
   string encrypted_keyshare_value = 1;
   uint64 encrypted_keyshare_index = 2;

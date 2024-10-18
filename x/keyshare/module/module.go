@@ -200,24 +200,24 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 
 	height := uint64(ctx.BlockHeight())
 
-	ak, foundAk := am.keeper.GetActivePubKey(ctx)
-	qk, foundQk := am.keeper.GetQueuedPubKey(ctx)
+	ak, foundAk := am.keeper.GetActivePubkey(ctx)
+	qk, foundQk := am.keeper.GetQueuedPubkey(ctx)
 	qc, foundQc := am.keeper.GetQueuedCommitments(ctx)
 
 	if foundAk {
-		am.pepKeeper.SetActivePubKey(ctx, commontypes.ActivePublicKey{
+		am.pepKeeper.SetActivePubkey(ctx, commontypes.ActivePublicKey{
 			PublicKey: ak.PublicKey,
 			Creator:   ak.Creator,
 			Expiry:    ak.Expiry,
 		})
 
 		if ak.Expiry <= height {
-			am.keeper.DeleteActivePubKey(ctx)
-			am.pepKeeper.DeleteActivePubKey(ctx)
+			am.keeper.DeleteActivePubkey(ctx)
+			am.pepKeeper.DeleteActivePubkey(ctx)
 			am.keeper.DeleteActiveCommitments(ctx)
 		} else {
 			if foundQk {
-				am.pepKeeper.SetQueuedPubKey(ctx, commontypes.QueuedPublicKey{
+				am.pepKeeper.SetQueuedPubkey(ctx, commontypes.QueuedPublicKey{
 					PublicKey: qk.PublicKey,
 					Creator:   qk.Creator,
 					Expiry:    qk.Expiry,
@@ -229,8 +229,8 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 
 	if foundQk {
 		if qk.Expiry > height {
-			am.keeper.SetActivePubKey(ctx, types.ActivePubKey(qk))
-			am.pepKeeper.SetActivePubKey(ctx, commontypes.ActivePublicKey{
+			am.keeper.SetActivePubkey(ctx, types.ActivePubkey(qk))
+			am.pepKeeper.SetActivePubkey(ctx, commontypes.ActivePublicKey{
 				PublicKey: qk.PublicKey,
 				Creator:   qk.Creator,
 				Expiry:    qk.Expiry,
@@ -239,8 +239,8 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 				am.keeper.SetActiveCommitments(ctx, qc)
 			}
 		}
-		am.keeper.DeleteQueuedPubKey(ctx)
-		am.pepKeeper.DeleteQueuedPubKey(ctx)
+		am.keeper.DeleteQueuedPubkey(ctx)
+		am.pepKeeper.DeleteQueuedPubkey(ctx)
 		if foundQc {
 			am.keeper.DeleteQueuedCommitments(ctx)
 		}
@@ -279,7 +279,7 @@ func (am AppModule) EndBlock(cctx context.Context) error {
 			continue
 		}
 
-		if val, found := am.keeper.GetActivePubKey(ctx); !found || len(val.PublicKey) == 0 {
+		if val, found := am.keeper.GetActivePubkey(ctx); !found || len(val.PublicKey) == 0 {
 			// Not slashing validator if there is no active public key
 			am.keeper.SetLastSubmittedHeight(ctx, eachValidator.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
 			continue

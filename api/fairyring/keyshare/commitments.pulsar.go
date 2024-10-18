@@ -505,6 +505,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Commitments defines the list of commitments to verify the
+// keyshares submitted by validators
 type Commitments struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

@@ -24,16 +24,16 @@ func TestPepNonceQuerySingle(t *testing.T) {
 	msgs := createNPepNonce(&keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetPepNonceRequest
-		response *types.QueryGetPepNonceResponse
+		request  *types.QueryPepNonceRequest
+		response *types.QueryPepNonceResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetPepNonceRequest{
+			request: &types.QueryPepNonceRequest{
 				Address: msgs[0].Address,
 			},
-			response: &types.QueryGetPepNonceResponse{PepNonce: msgs[0]},
+			response: &types.QueryPepNonceResponse{PepNonce: msgs[0]},
 		},
 		{
 			desc: "InvalidRequest",
@@ -60,7 +60,7 @@ func TestPepNonceQueryAll(t *testing.T) {
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNPepNonce(&keeper, ctx, 5)
 
-	all, err := keeper.PepNonceAll(wctx, &types.QueryAllPepNonceRequest{
+	all, err := keeper.PepNonceAll(wctx, &types.QueryPepNonceAllRequest{
 		Pagination: &query.PageRequest{
 			Key:        nil,
 			Offset:     0,
@@ -78,8 +78,13 @@ func TestPepNonceQueryPaginated(t *testing.T) {
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNPepNonce(&keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllPepNonceRequest {
-		return &types.QueryAllPepNonceRequest{
+	request := func(
+		next []byte,
+		offset,
+		limit uint64,
+		total bool,
+	) *types.QueryPepNonceAllRequest {
+		return &types.QueryPepNonceAllRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,

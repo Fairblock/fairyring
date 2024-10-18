@@ -19,8 +19,8 @@ type (
 		// IsKeyshareTx defines a function that checks if a transaction qualifies as AggregateKeyshare Tx.
 		IsKeyshareTx(tx sdk.Tx) bool
 
-		// GetKeyShareInfo defines a function that returns the Aggregated KeyShare info from the Tx
-		GetKeyShareInfo(tx sdk.Tx) (*peptypes.AggregatedKeyShare, error)
+		// GetDecryptionKeyInfo defines a function that returns the Aggregated KeyShare info from the Tx
+		GetDecryptionKeyInfo(tx sdk.Tx) (*peptypes.DecryptionKey, error)
 
 		// MatchHandler defines a function that checks if a transaction matches the keyshare lane.
 		MatchHandler() base.MatchHandler
@@ -59,38 +59,38 @@ func (config *DefaultKeyshareFactory) IsKeyshareTx(tx sdk.Tx) bool {
 	}
 
 	switch msgs[0].(type) {
-	case *peptypes.MsgCreateAggregatedKeyShare:
+	case *peptypes.MsgSubmitDecryptionKey:
 		return true
 	}
 
 	return false
 }
 
-func (config *DefaultKeyshareFactory) GetKeyShareInfo(tx sdk.Tx) (*peptypes.AggregatedKeyShare, error) {
-	msg, err := GetAggregateKeyshareMsgFromTx(tx)
+func (config *DefaultKeyshareFactory) GetDecryptionKeyInfo(tx sdk.Tx) (*peptypes.DecryptionKey, error) {
+	msg, err := GetSubmitDecryptionKeyMsgFromTx(tx)
 	if err != nil {
 		return nil, err
 	}
 
-	return &peptypes.AggregatedKeyShare{
+	return &peptypes.DecryptionKey{
 		Height:  msg.Height,
 		Data:    msg.Data,
 		Creator: msg.Creator,
 	}, nil
 }
 
-func GetAggregateKeyshareMsgFromTx(tx sdk.Tx) (*peptypes.MsgCreateAggregatedKeyShare, error) {
+func GetSubmitDecryptionKeyMsgFromTx(tx sdk.Tx) (*peptypes.MsgSubmitDecryptionKey, error) {
 	msgs := tx.GetMsgs()
 	if len(msgs) != 1 {
-		return nil, errors.New("invalid MsgCreateAggregatedKeyShare transaction")
+		return nil, errors.New("invalid MsgSubmitDecryptionKey transaction")
 	}
 
-	t, ok := msgs[0].(*peptypes.MsgCreateAggregatedKeyShare)
+	t, ok := msgs[0].(*peptypes.MsgSubmitDecryptionKey)
 	if ok {
 		return t, nil
 	}
 
-	return nil, errors.New("invalid MsgCreateAggregatedKeyShare transaction")
+	return nil, errors.New("invalid MsgSubmitDecryptionKey transaction")
 }
 
 // GetTimeoutHeight returns the timeout height of the transaction.
@@ -106,7 +106,7 @@ func (config *DefaultKeyshareFactory) GetTimeoutHeight(tx sdk.Tx) (uint64, error
 // MatchHandler defines a default function that checks if a transaction matches the keyshare lane.
 func (config *DefaultKeyshareFactory) MatchHandler() base.MatchHandler {
 	return func(ctx sdk.Context, tx sdk.Tx) bool {
-		ksInfo, err := config.GetKeyShareInfo(tx)
+		ksInfo, err := config.GetDecryptionKeyInfo(tx)
 		return ksInfo != nil && err == nil
 	}
 }

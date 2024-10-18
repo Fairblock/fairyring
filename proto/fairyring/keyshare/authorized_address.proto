@@ -3,9 +3,9 @@ package fairyring.keyshare;
 
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
+// AuthorizedAddress defines if an address is authorized to submit keyshares
 message AuthorizedAddress {
-  string  target        = 1;
-  bool    isAuthorized  = 2;
-  string  authorizedBy  = 3;
+  string target = 1;
+  bool is_authorized = 2;
+  string authorized_by = 3;
 }
-

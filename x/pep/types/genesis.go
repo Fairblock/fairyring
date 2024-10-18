@@ -16,9 +16,9 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		PortId: PortID,
 		// this line is used by starport scaffolding # genesis/types/default
-		Params:                 DefaultParams(),
-		EncryptedTxArray:       []EncryptedTxArray{},
-		AggregatedKeyShareList: []AggregatedKeyShare{},
+		Params:            DefaultParams(),
+		EncryptedTxArray:  []EncryptedTxArray{},
+		DecryptionKeyList: []DecryptionKey{},
 	}
 }
 
@@ -41,7 +41,7 @@ func (gs GenesisState) Validate() error {
 	// this line is used by starport scaffolding # genesis/types/validate
 	encryptedTxArrIndexMap := make(map[string]struct{})
 	for height, elem := range gs.EncryptedTxArray {
-		for index, item := range elem.EncryptedTx {
+		for index, item := range elem.EncryptedTxs {
 			if item.Index != uint64(index) {
 				return fmt.Errorf("encrypted tx index does not match")
 			}
@@ -60,8 +60,8 @@ func (gs GenesisState) Validate() error {
 	// Check for duplicated index in aggregatedKeyShare
 	aggregatedKeyShareIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.AggregatedKeyShareList {
-		index := string(AggregatedKeyShareKey(elem.Height))
+	for _, elem := range gs.DecryptionKeyList {
+		index := string(DecryptionKeyKey(elem.Height))
 		if _, ok := aggregatedKeyShareIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for aggregatedKeyShare")
 		}

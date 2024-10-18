@@ -21,7 +21,7 @@ func NewMsgSubmitEncryptedKeyshare(
 		Creator:           creator,
 		Identity:          identity,
 		EncryptedKeyshare: encryptedKeyshare,
-		KeyShareIndex:     keyshareIndex,
+		KeyshareIndex:     keyshareIndex,
 		Requester:         requester,
 	}
 }

@@ -7,24 +7,24 @@ import (
 )
 
 const (
-	TypeMsgCreateAggregatedKeyShare = "create_aggregated_key_share"
+	TypeMsgSubmitDecryptionKey = "submit_decryption_key"
 )
 
-var _ sdk.Msg = &MsgCreateAggregatedKeyShare{}
+var _ sdk.Msg = &MsgSubmitDecryptionKey{}
 
-func NewMsgCreateAggregatedKeyShare(
+func NewMsgSubmitDecryptionKey(
 	creator string,
 	height uint64,
 	data string,
-) *MsgCreateAggregatedKeyShare {
-	return &MsgCreateAggregatedKeyShare{
+) *MsgSubmitDecryptionKey {
+	return &MsgSubmitDecryptionKey{
 		Creator: creator,
 		Height:  height,
 		Data:    data,
 	}
 }
 
-func (msg *MsgCreateAggregatedKeyShare) ValidateBasic() error {
+func (msg *MsgSubmitDecryptionKey) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(cosmoserror.ErrInvalidAddress, "invalid creator address (%s)", err)

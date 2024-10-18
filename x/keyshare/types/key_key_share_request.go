@@ -9,8 +9,8 @@ var _ binary.ByteOrder
 
 const (
 	// KeyShareRequestKeyPrefix is the prefix to retrieve all Keyshare requests
-	KeyShareRequestKeyPrefix        = "KeyshareRequest/value/"
-	PrivateKeyShareRequestKeyPrefix = "PrivateKeyshareRequest/value/"
+	DecryptionKeyRequestKeyPrefix        = "DecryptionKeyRequest/value/"
+	PrivateDecryptionKeyRequestKeyPrefix = "PrivateDecryptionKeyRequest/value/"
 )
 
 func IdentityFromRequestCount(

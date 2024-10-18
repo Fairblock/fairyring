@@ -1,9 +1,10 @@
 package keeper_test
 
 import (
+	"testing"
+
 	"github.com/Fairblock/fairyring/testutil/random"
 	"github.com/Fairblock/fairyring/testutil/sample"
-	"testing"
 
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
@@ -13,11 +14,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func createNKeyShares(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.KeyShare {
-	items := make([]types.KeyShare, n)
+func createNKeyShares(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Keyshare {
+	items := make([]types.Keyshare, n)
 	for i := range items {
 		items[i].Validator = sample.AccAddress()
-		items[i].KeyShare = random.RandHex(10)
+		items[i].Keyshare = random.RandHex(10)
 		items[i].BlockHeight = uint64(i)
 		keeper.SetKeyShare(ctx, items[i])
 	}

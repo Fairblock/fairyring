@@ -14,7 +14,7 @@ import (
 func TxPriority(config Factory) base.TxPriority[string] {
 	return base.TxPriority[string]{
 		GetTxPriority: func(goCtx context.Context, tx sdk.Tx) string {
-			ksInfo, err := config.GetKeyShareInfo(tx)
+			ksInfo, err := config.GetDecryptionKeyInfo(tx)
 			if err != nil {
 				panic(err)
 			}

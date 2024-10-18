@@ -30,16 +30,16 @@ func EncryptCmd() *cobra.Command {
 			if pubkey == "" {
 				queryClient := types.NewQueryClient(clientCtx)
 
-				res, err := queryClient.PubKey(context.Background(), &types.QueryPubKeyRequest{})
+				res, err := queryClient.Pubkey(context.Background(), &types.QueryPubkeyRequest{})
 				if err != nil {
 					return err
 				}
 
-				if len(res.ActivePubKey.PublicKey) == 0 {
+				if len(res.ActivePubkey.PublicKey) == 0 {
 					return errors.New("active public key not found")
 				}
 
-				pubkey = res.ActivePubKey.PublicKey
+				pubkey = res.ActivePubkey.PublicKey
 			}
 
 			suite := bls.NewBLS12381Suite()

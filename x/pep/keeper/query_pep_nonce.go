@@ -15,7 +15,10 @@ import (
 )
 
 // PepNonceAll returns the list of all Nonce
-func (k Keeper) PepNonceAll(c context.Context, req *types.QueryAllPepNonceRequest) (*types.QueryAllPepNonceResponse, error) {
+func (k Keeper) PepNonceAll(
+	c context.Context,
+	req *types.QueryPepNonceAllRequest,
+) (*types.QueryPepNonceAllResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -40,11 +43,14 @@ func (k Keeper) PepNonceAll(c context.Context, req *types.QueryAllPepNonceReques
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllPepNonceResponse{PepNonce: pepNonces, Pagination: pageRes}, nil
+	return &types.QueryPepNonceAllResponse{PepNonce: pepNonces, Pagination: pageRes}, nil
 }
 
 // PepNonce returns a single Nonce by address
-func (k Keeper) PepNonce(c context.Context, req *types.QueryGetPepNonceRequest) (*types.QueryGetPepNonceResponse, error) {
+func (k Keeper) PepNonce(
+	c context.Context,
+	req *types.QueryPepNonceRequest,
+) (*types.QueryPepNonceResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -58,5 +64,5 @@ func (k Keeper) PepNonce(c context.Context, req *types.QueryGetPepNonceRequest) 
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	return &types.QueryGetPepNonceResponse{PepNonce: val}, nil
+	return &types.QueryPepNonceResponse{PepNonce: val}, nil
 }

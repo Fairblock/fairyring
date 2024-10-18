@@ -24,7 +24,7 @@ func (k Keeper) DecryptData(goCtx context.Context, req *types.QueryDecryptDataRe
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if req.Pubkey == "" {
-		pk, found := k.GetActivePubKey(ctx)
+		pk, found := k.GetActivePubkey(ctx)
 		if !found {
 			return &types.QueryDecryptDataResponse{}, errors.New("pubkey not found")
 		}
@@ -32,12 +32,12 @@ func (k Keeper) DecryptData(goCtx context.Context, req *types.QueryDecryptDataRe
 	}
 
 	suite := bls.NewBLS12381Suite()
-	publicKeyPoint, err := k.GetPubKeyPoint(req.Pubkey, suite)
+	publicKeyPoint, err := k.GetPubkeyPoint(req.Pubkey, suite)
 	if err != nil {
 		return &types.QueryDecryptDataResponse{}, err
 	}
 
-	skPoint, err := k.GetSKPoint(req.AggrKeyshare, suite)
+	skPoint, err := k.GetSKPoint(req.DecryptionKey, suite)
 	if err != nil {
 		return &types.QueryDecryptDataResponse{}, err
 	}
@@ -89,7 +89,7 @@ func (k Keeper) GetSKPoint(
 	return skPoint, nil
 }
 
-func (k Keeper) GetPubKeyPoint(
+func (k Keeper) GetPubkeyPoint(
 	pubkey string,
 	suite pairing.Suite,
 ) (kyber.Point, error) {

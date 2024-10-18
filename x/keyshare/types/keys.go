@@ -79,7 +79,7 @@ const (
 	KeyShareAggregatedEventType        = "keyshare-aggregated"
 	KeyShareAggregatedEventBlockHeight = "height"
 	KeyShareAggregatedEventData        = "data"
-	KeyShareAggregatedEventPubKey      = "pubkey"
+	KeyShareAggregatedEventPubkey      = "pubkey"
 )
 
 const (
@@ -87,27 +87,27 @@ const (
 	GeneralKeyShareAggregatedEventIDValue = "id-value"
 	GeneralKeyShareAggregatedEventIDType  = "id-type"
 	GeneralKeyShareAggregatedEventData    = "data"
-	GeneralKeyShareAggregatedEventPubKey  = "pubkey"
+	GeneralKeyShareAggregatedEventPubkey  = "pubkey"
 )
 
 const (
-	QueuedPubKeyCreatedEventType                     = "queued-pubkey-created"
-	QueuedPubKeyCreatedEventActivePubkeyExpiryHeight = "active-pubkey-expiry-height"
-	QueuedPubKeyCreatedEventExpiryHeight             = "expiry-height"
-	QueuedPubKeyCreatedEventCreator                  = "creator"
-	QueuedPubKeyCreatedEventPubkey                   = "pubkey"
-	QueuedPubKeyCreatedEventNumberOfValidators       = "number-of-validators"
-	QueuedPubKeyCreatedEventEncryptedShares          = "encrypted-shares"
+	QueuedPubkeyCreatedEventType                     = "queued-pubkey-created"
+	QueuedPubkeyCreatedEventActivePubkeyExpiryHeight = "active-pubkey-expiry-height"
+	QueuedPubkeyCreatedEventExpiryHeight             = "expiry-height"
+	QueuedPubkeyCreatedEventCreator                  = "creator"
+	QueuedPubkeyCreatedEventPubkey                   = "pubkey"
+	QueuedPubkeyCreatedEventNumberOfValidators       = "number-of-validators"
+	QueuedPubkeyCreatedEventEncryptedShares          = "encrypted-shares"
 )
 
 const (
-	PubKeyOverrodeEventType                     = "pubkey-overrode"
-	PubKeyOverrodeEventActivePubkeyExpiryHeight = "active-pubkey-expiry-height"
-	PubKeyOverrodeEventExpiryHeight             = "expiry-height"
-	PubKeyOverrodeEventCreator                  = "creator"
-	PubKeyOverrodeEventPubkey                   = "pubkey"
-	PubKeyOverrodeEventNumberOfValidators       = "number-of-validators"
-	PubKeyOverrodeEventEncryptedShares          = "encrypted-shares"
+	PubkeyOverrodeEventType                     = "pubkey-overrode"
+	PubkeyOverrodeEventActivePubkeyExpiryHeight = "active-pubkey-expiry-height"
+	PubkeyOverrodeEventExpiryHeight             = "expiry-height"
+	PubkeyOverrodeEventCreator                  = "creator"
+	PubkeyOverrodeEventPubkey                   = "pubkey"
+	PubkeyOverrodeEventNumberOfValidators       = "number-of-validators"
+	PubkeyOverrodeEventEncryptedShares          = "encrypted-shares"
 )
 
 const (

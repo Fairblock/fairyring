@@ -24,9 +24,9 @@ func (k Keeper) AppendEncryptedTx(
 
 	k.cdc.MustUnmarshal(b, &allTxsFromHeight)
 
-	encryptedTx.Index = uint64(len(allTxsFromHeight.GetEncryptedTx()))
+	encryptedTx.Index = uint64(len(allTxsFromHeight.GetEncryptedTxs()))
 
-	allTxsFromHeight.EncryptedTx = append(allTxsFromHeight.EncryptedTx, encryptedTx)
+	allTxsFromHeight.EncryptedTxs = append(allTxsFromHeight.EncryptedTxs, encryptedTx)
 
 	parsedEncryptedTxArr := k.cdc.MustMarshal(&allTxsFromHeight)
 
@@ -61,11 +61,11 @@ func (k Keeper) SetEncryptedTxProcessedHeight(
 ) {
 	arr := k.GetEncryptedTxAllFromHeight(ctx, height)
 
-	if index >= uint64(len(arr.EncryptedTx)) {
+	if index >= uint64(len(arr.EncryptedTxs)) {
 		return
 	}
 
-	arr.EncryptedTx[index].ProcessedAtChainHeight = processedHeight
+	arr.EncryptedTxs[index].ProcessedAtChainHeight = processedHeight
 
 	k.SetEncryptedTx(ctx, height, arr)
 }
@@ -76,8 +76,8 @@ func (k Keeper) SetAllEncryptedTxExpired(
 ) {
 	arr := k.GetEncryptedTxAllFromHeight(ctx, height)
 
-	for i := range arr.EncryptedTx {
-		arr.EncryptedTx[i].Expired = true
+	for i := range arr.EncryptedTxs {
+		arr.EncryptedTxs[i].Expired = true
 	}
 
 	k.SetEncryptedTx(ctx, height, arr)
@@ -103,11 +103,11 @@ func (k Keeper) GetEncryptedTx(
 	var arr types.EncryptedTxArray
 	k.cdc.MustUnmarshal(b, &arr)
 
-	if uint64(len(arr.GetEncryptedTx())) <= index {
+	if uint64(len(arr.GetEncryptedTxs())) <= index {
 		return val, false
 	}
 
-	return arr.GetEncryptedTx()[index], true
+	return arr.GetEncryptedTxs()[index], true
 }
 
 // GetEncryptedTxAllFromHeight returns all encryptedTx from the height provided

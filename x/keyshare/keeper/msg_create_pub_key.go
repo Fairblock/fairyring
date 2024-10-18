@@ -12,8 +12,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// CreateLatestPubKey updates the public key
-func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreateLatestPubKey) (*types.MsgCreateLatestPubKeyResponse, error) {
+// CreateLatestPubkey updates the public key
+func (k msgServer) CreateLatestPubkey(
+	goCtx context.Context,
+	msg *types.MsgCreateLatestPubkey,
+) (*types.MsgCreateLatestPubkeyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	params := k.GetParams(ctx)
 
@@ -22,7 +25,7 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 		return nil, types.ErrAddressNotTrusted.Wrap(msg.Creator)
 	}
 
-	_, found := k.GetQueuedPubKey(ctx)
+	_, found := k.GetQueuedPubkey(ctx)
 	if found {
 		return nil, types.ErrQueuedKeyAlreadyExists.Wrap(msg.Creator)
 	}
@@ -32,20 +35,20 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 	}
 
 	expHeight := params.KeyExpiry + uint64(ctx.BlockHeight())
-	ak, found := k.GetActivePubKey(ctx)
+	ak, found := k.GetActivePubkey(ctx)
 	if found {
 		expHeight = ak.Expiry + params.KeyExpiry
 	}
 
-	var queuedPubKey = types.QueuedPubKey{
+	var queuedPubkey = types.QueuedPubkey{
 		Creator:            msg.Creator,
 		PublicKey:          msg.PublicKey,
 		Expiry:             expHeight,
 		NumberOfValidators: msg.NumberOfValidators,
-		EncryptedKeyShares: msg.EncryptedKeyShares,
+		EncryptedKeyshares: msg.EncryptedKeyshares,
 	}
 
-	encryptedKeyShares, err := json.Marshal(msg.EncryptedKeyShares)
+	encryptedKeyShares, err := json.Marshal(msg.EncryptedKeyshares)
 	if err != nil {
 		return nil, err
 	}
@@ -55,12 +58,12 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 		commitments,
 	)
 
-	k.SetQueuedPubKey(
+	k.SetQueuedPubkey(
 		ctx,
-		queuedPubKey,
+		queuedPubkey,
 	)
 
-	k.pepKeeper.SetQueuedPubKey(
+	k.pepKeeper.SetQueuedPubkey(
 		ctx,
 		commontypes.QueuedPublicKey{
 			Creator:   msg.Creator,
@@ -70,17 +73,17 @@ func (k msgServer) CreateLatestPubKey(goCtx context.Context, msg *types.MsgCreat
 	)
 
 	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(types.QueuedPubKeyCreatedEventType,
-			sdk.NewAttribute(types.QueuedPubKeyCreatedEventActivePubkeyExpiryHeight, strconv.FormatUint(ak.Expiry, 10)),
-			sdk.NewAttribute(types.QueuedPubKeyCreatedEventExpiryHeight, strconv.FormatUint(expHeight, 10)),
-			sdk.NewAttribute(types.QueuedPubKeyCreatedEventCreator, msg.Creator),
-			sdk.NewAttribute(types.QueuedPubKeyCreatedEventPubkey, msg.PublicKey),
-			sdk.NewAttribute(types.QueuedPubKeyCreatedEventNumberOfValidators, strconv.FormatUint(msg.NumberOfValidators, 10)),
-			sdk.NewAttribute(types.QueuedPubKeyCreatedEventEncryptedShares, string(encryptedKeyShares)),
+		sdk.NewEvent(types.QueuedPubkeyCreatedEventType,
+			sdk.NewAttribute(types.QueuedPubkeyCreatedEventActivePubkeyExpiryHeight, strconv.FormatUint(ak.Expiry, 10)),
+			sdk.NewAttribute(types.QueuedPubkeyCreatedEventExpiryHeight, strconv.FormatUint(expHeight, 10)),
+			sdk.NewAttribute(types.QueuedPubkeyCreatedEventCreator, msg.Creator),
+			sdk.NewAttribute(types.QueuedPubkeyCreatedEventPubkey, msg.PublicKey),
+			sdk.NewAttribute(types.QueuedPubkeyCreatedEventNumberOfValidators, strconv.FormatUint(msg.NumberOfValidators, 10)),
+			sdk.NewAttribute(types.QueuedPubkeyCreatedEventEncryptedShares, string(encryptedKeyShares)),
 		),
 	)
 
-	return &types.MsgCreateLatestPubKeyResponse{}, nil
+	return &types.MsgCreateLatestPubkeyResponse{}, nil
 }
 
 func contains(s []string, e string) bool {

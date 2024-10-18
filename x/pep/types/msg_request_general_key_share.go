@@ -8,19 +8,23 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgRequestGeneralKeyshare = "request_general_keyshare"
+const TypeMsgRequestGeneralIdentity = "request_general_identity"
 
-var _ sdk.Msg = &MsgRequestGeneralKeyshare{}
+var _ sdk.Msg = &MsgRequestGeneralIdentity{}
 
-func NewMsgRequestGeneralKeyshare(creator string, estimatedDelay time.Duration, reqID string) *MsgRequestGeneralKeyshare {
-	return &MsgRequestGeneralKeyshare{
+func NewMsgRequestGeneralIdentity(
+	creator string,
+	estimatedDelay time.Duration,
+	reqID string,
+) *MsgRequestGeneralIdentity {
+	return &MsgRequestGeneralIdentity{
 		Creator:        creator,
 		EstimatedDelay: &estimatedDelay,
 		ReqId:          reqID,
 	}
 }
 
-func (msg *MsgRequestGeneralKeyshare) ValidateBasic() error {
+func (msg *MsgRequestGeneralIdentity) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkioerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

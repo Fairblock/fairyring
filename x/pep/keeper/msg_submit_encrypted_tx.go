@@ -39,9 +39,9 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 	}
 
 	var maxHeight uint64
-	queuedKey, found := k.GetQueuedPubKey(ctx)
+	queuedKey, found := k.GetQueuedPubkey(ctx)
 	if !found || (queuedKey.Expiry == 0 && len(queuedKey.PublicKey) == 0) {
-		activeKey, foundActiveKey := k.GetActivePubKey(ctx)
+		activeKey, foundActiveKey := k.GetActivePubkey(ctx)
 		if !foundActiveKey {
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(types.EncryptedTxRevertedEventType,
@@ -51,7 +51,7 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 					sdk.NewAttribute(types.EncryptedTxRevertedEventIndex, "0"),
 				),
 			)
-			return nil, types.ErrActivePubKeyNotFound
+			return nil, types.ErrActivePubkeyNotFound
 		}
 		maxHeight = activeKey.Expiry
 	} else {

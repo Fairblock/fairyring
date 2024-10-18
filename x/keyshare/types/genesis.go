@@ -12,12 +12,12 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		PortId:                 PortID,
-		AggregatedKeyShareList: []AggregatedKeyShare{},
-		ValidatorSetList:       []ValidatorSet{},
-		KeyShareList:           []KeyShare{},
-		AuthorizedAddressList:  []AuthorizedAddress{},
-		GeneralKeyShareList:    []GeneralKeyShare{},
+		PortId:                PortID,
+		DecryptionKeyList:     []DecryptionKey{},
+		ValidatorSetList:      []ValidatorSet{},
+		KeyshareList:          []Keyshare{},
+		AuthorizedAddressList: []AuthorizedAddress{},
+		GeneralKeyshareList:   []GeneralKeyshare{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -32,7 +32,7 @@ func (gs GenesisState) Validate() error {
 	// Check for duplicated index in aggregatedKeyShare
 	aggregatedKeyShareIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.AggregatedKeyShareList {
+	for _, elem := range gs.DecryptionKeyList {
 		index := string(AggregatedKeyShareKey(elem.Height))
 		if _, ok := aggregatedKeyShareIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for aggregatedKeyShare")
@@ -66,7 +66,7 @@ func (gs GenesisState) Validate() error {
 	// Check for duplicated index in keyShare
 	keyShareIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.KeyShareList {
+	for _, elem := range gs.KeyshareList {
 		index := string(KeyShareKey(elem.Validator, elem.BlockHeight))
 		if _, ok := keyShareIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for keyShare")
@@ -87,7 +87,7 @@ func (gs GenesisState) Validate() error {
 	// Check for duplicated index in generalKeyShare
 	generalKeyShareIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.GeneralKeyShareList {
+	for _, elem := range gs.GeneralKeyshareList {
 		index := string(GeneralKeyShareKey(elem.Validator, elem.IdType, elem.IdValue))
 		if _, ok := generalKeyShareIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for generalKeyShare")

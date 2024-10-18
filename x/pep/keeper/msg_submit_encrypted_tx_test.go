@@ -1,14 +1,15 @@
 package keeper_test
 
 import (
+	"math/rand"
+	"strconv"
+	"testing"
+
 	"cosmossdk.io/math"
 	"github.com/Fairblock/fairyring/testutil/nullify"
 	"github.com/Fairblock/fairyring/testutil/random"
 	"github.com/Fairblock/fairyring/testutil/sample"
 	types2 "github.com/Fairblock/fairyring/x/common/types"
-	"math/rand"
-	"strconv"
-	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
@@ -56,16 +57,16 @@ func TestSubmitEncryptedTx(t *testing.T) {
 			err: types.ErrInvalidTargetBlockHeight,
 		},
 		{
-			desc: "ActivePubKeyNotFound",
+			desc: "ActivePubkeyNotFound",
 			request: &types.MsgSubmitEncryptedTx{
 				Creator:           sample.AccAddress(),
 				TargetBlockHeight: rand.Uint64(),
 				Data:              random.RandHex(192),
 			},
-			err: types.ErrActivePubKeyNotFound,
+			err: types.ErrActivePubkeyNotFound,
 		},
 		{
-			desc: "InvalidTargetBlockHeightHigherThanPubKey",
+			desc: "InvalidTargetBlockHeightHigherThanPukKey",
 			request: &types.MsgSubmitEncryptedTx{
 				Creator:           trustedAddr,
 				TargetBlockHeight: 325677454353,
@@ -108,8 +109,8 @@ func TestSubmitEncryptedTx(t *testing.T) {
 				)
 			}
 
-			if tc.desc == "ActivePubKeyNotFound" {
-				k.SetActivePubKey(wctx, types2.ActivePublicKey{
+			if tc.desc == "ActivePubkeyNotFound" {
+				k.SetActivePubkey(wctx, types2.ActivePublicKey{
 					PublicKey: out.MasterPublicKey,
 					Creator:   trustedAddr,
 					Expiry:    325677,

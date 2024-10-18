@@ -12,7 +12,7 @@ import (
 )
 
 // SetAggregatedKeyShare set a specific aggregatedKeyShare in the store from its index
-func (k Keeper) SetAggregatedKeyShare(ctx sdk.Context, aggregatedKeyShare types.AggregatedKeyShare) {
+func (k Keeper) SetAggregatedKeyShare(ctx sdk.Context, aggregatedKeyShare types.DecryptionKey) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
 
@@ -27,7 +27,7 @@ func (k Keeper) GetAggregatedKeyShare(
 	ctx sdk.Context,
 	height uint64,
 
-) (val types.AggregatedKeyShare, found bool) {
+) (val types.DecryptionKey, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
 
@@ -57,7 +57,7 @@ func (k Keeper) RemoveAggregatedKeyShare(
 }
 
 // GetAllAggregatedKeyShare returns all aggregatedKeyShare
-func (k Keeper) GetAllAggregatedKeyShare(ctx sdk.Context) (list []types.AggregatedKeyShare) {
+func (k Keeper) GetAllAggregatedKeyShare(ctx sdk.Context) (list []types.DecryptionKey) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
@@ -65,7 +65,7 @@ func (k Keeper) GetAllAggregatedKeyShare(ctx sdk.Context) (list []types.Aggregat
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.AggregatedKeyShare
+		var val types.DecryptionKey
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}

@@ -3,190 +3,203 @@ syntax = "proto3";
 package fairyring.pep;
 
 import "amino/amino.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "fairyring/common/shared_types.proto";
+import "fairyring/pep/encrypted_tx.proto";
+import "fairyring/pep/params.proto";
+import "fairyring/pep/pep_nonce.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "cosmos/base/query/v1beta1/pagination.proto";
-import "fairyring/pep/params.proto";
-import "fairyring/pep/encrypted_tx.proto";
-import "fairyring/pep/pep_nonce.proto";
-import "fairyring/pep/aggregated_key_share.proto";
-import "fairyring/common/shared_types.proto";
-import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/pep/types";
 
 // Query defines the gRPC querier service.
 service Query {
-  
   // Parameters queries the parameters of the module.
-  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/fairyring/pep/params";
-  
   }
-  
+
   // Queries a EncryptedTx by index.
-  rpc EncryptedTx (QueryGetEncryptedTxRequest) returns (QueryGetEncryptedTxResponse) {
-    option (google.api.http).get = "/fairyring/pep/encrypted_tx/{targetHeight}/{index}";
-  
+  rpc EncryptedTx(QueryEncryptedTxRequest) returns (QueryEncryptedTxResponse) {
+    option (google.api.http).get = "/fairyring/pep/encrypted_tx/{target_height}/{index}";
   }
-  
+
   // Queries a list of EncryptedTx items.
-  rpc EncryptedTxAll (QueryAllEncryptedTxRequest) returns (QueryAllEncryptedTxResponse) {
+  rpc EncryptedTxAll(QueryEncryptedTxAllRequest) returns (QueryEncryptedTxAllResponse) {
     option (google.api.http).get = "/fairyring/pep/encrypted_tx";
-  
   }
-  
+
   // Queries a list of EncryptedTx items.
-  rpc EncryptedTxAllFromHeight (QueryAllEncryptedTxFromHeightRequest) returns (QueryAllEncryptedTxFromHeightResponse) {
-    option (google.api.http).get = "/fairyring/pep/encrypted_tx/{targetHeight}";
-  
+  rpc EncryptedTxAllFromHeight(QueryEncryptedTxAllFromHeightRequest) returns (QueryEncryptedTxAllFromHeightResponse) {
+    option (google.api.http).get = "/fairyring/pep/encrypted_tx/{target_height}";
   }
-  
+
   // Queries a list of LatestHeight items.
-  rpc LatestHeight (QueryLatestHeightRequest) returns (QueryLatestHeightResponse) {
+  rpc LatestHeight(QueryLatestHeightRequest) returns (QueryLatestHeightResponse) {
     option (google.api.http).get = "/fairyring/pep/latest_height";
-  
   }
-  
+
   // Queries a PepNonce by index.
-  rpc PepNonce (QueryGetPepNonceRequest) returns (QueryGetPepNonceResponse) {
+  rpc PepNonce(QueryPepNonceRequest) returns (QueryPepNonceResponse) {
     option (google.api.http).get = "/fairyring/pep/pep_nonce/{address}";
-  
   }
-  
+
   // Queries a list of PepNonce items.
-  rpc PepNonceAll (QueryAllPepNonceRequest) returns (QueryAllPepNonceResponse) {
+  rpc PepNonceAll(QueryPepNonceAllRequest) returns (QueryPepNonceAllResponse) {
     option (google.api.http).get = "/fairyring/pep/pep_nonce";
-  
   }
-  
+
   // Queries the public keys
-  rpc PubKey         (QueryPubKeyRequest     ) returns (QueryPubKeyResponse     ) {
-    option (google.api.http).get = "/fairyring/pep/pub_key";
-  
+  rpc Pubkey(QueryPubkeyRequest) returns (QueryPubkeyResponse) {
+    option (google.api.http).get = "/fairyring/pep/pubkey";
   }
-  rpc KeyshareReq    (QueryKeyshareRequest   ) returns (QueryKeyshareResponse   ) {
-    option (google.api.http).get = "/fairyring/pep/keyshare/{req_id}";
-  
+
+  // Queries a General Identity request by request id
+  rpc GeneralIdentity(QueryGeneralIdentityRequest) returns (QueryGeneralIdentityResponse) {
+    option (google.api.http).get = "/fairyring/pep/general_identity/{req_id}";
   }
-  rpc KeyshareReqAll (QueryAllKeyshareRequest) returns (QueryAllKeyshareResponse) {
-    option (google.api.http).get = "/fairyring/pep/keyshare";
-  
+
+  // Queries a list of General Identity requests
+  rpc GeneralIdentityAll(QueryGeneralIdentityAllRequest) returns (QueryGeneralIdentityAllResponse) {
+    option (google.api.http).get = "/fairyring/pep/general_identity";
   }
-  
-  // Queries a list of ShowPrivateKeyshareReq items.
-  rpc ShowPrivateKeyshareReq (QueryShowPrivateKeyshareReqRequest) returns (QueryShowPrivateKeyshareReqResponse) {
-    option (google.api.http).get = "/Fairblock/fairyring/pep/show_private_keyshare_req/{reqId}";
-  
+
+  // Queries a Private Identity request item by req id.
+  rpc PrivateIdentity(QueryPrivateIdentityRequest) returns (QueryPrivateIdentityResponse) {
+    option (google.api.http).get = "/Fairblock/fairyring/pep/private_identity/{req_id}";
   }
-  
+
   // Queries a list of DecryptData items.
-  rpc DecryptData (QueryDecryptDataRequest) returns (QueryDecryptDataResponse) {
-    option (google.api.http).get = "/Fairblock/fairyring/pep/decrypt_data/{pubkey}/{aggr_keyshare}/{encrypted_data}";
-  
+  rpc DecryptData(QueryDecryptDataRequest) returns (QueryDecryptDataResponse) {
+    option (google.api.http).get = "/Fairblock/fairyring/pep/decrypt_data/{pubkey}/{decryption_key}/{encrypted_data}";
   }
 }
+
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
-  
   // params holds all the parameters of this module.
-  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
 }
 
-message QueryKeyshareRequest {
+// QueryGeneralIdentityRequest is request type for the Query/GeneralIdentity RPC method.
+message QueryGeneralIdentityRequest {
   string req_id = 1;
 }
 
-message QueryKeyshareResponse {
-  GenEncTxExecutionQueue keyshare = 1;
+// QueryGeneralIdentityResponse is response type for the Query/GeneralIdentity RPC method.
+message QueryGeneralIdentityResponse {
+  IdentityExecutionEntry request_details = 1;
 }
 
-message QueryAllKeyshareRequest {
+// QueryGeneralIdentityAllRequest is request type for the Query/GeneralIdentityAll RPC method.
+message QueryGeneralIdentityAllRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryAllKeyshareResponse {
-  repeated GenEncTxExecutionQueue                 keyshares  = 1;
-           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+// QueryGeneralIdentityAllResponse is response type for the Query/GeneralIdentityAll RPC method.
+message QueryGeneralIdentityAllResponse {
+  repeated IdentityExecutionEntry request_details_list = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QueryGetEncryptedTxRequest {
-  uint64 targetHeight = 1;
-  uint64 index        = 2;
+// QueryEncryptedTxRequest is request type for the Query/EncryptedTx RPC method.
+message QueryEncryptedTxRequest {
+  uint64 target_height = 1;
+  uint64 index = 2;
 }
 
-message QueryGetEncryptedTxResponse {
-  EncryptedTx encryptedTx = 1 [(gogoproto.nullable) = false];
+// QueryEncryptedTxResponse is response type for the Query/EncryptedTx RPC method.
+message QueryEncryptedTxResponse {
+  EncryptedTx encrypted_tx = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryAllEncryptedTxRequest {
+// QueryEncryptedTxAllRequest is request type for the Query/EncryptedTxAll RPC method.
+message QueryEncryptedTxAllRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryAllEncryptedTxResponse {
-  repeated EncryptedTxArray                       encryptedTxArray = 1 [(gogoproto.nullable) = false];
-           cosmos.base.query.v1beta1.PageResponse pagination       = 2;
+// QueryEncryptedTxAllResponse is response type for the Query/EncryptedTxAll RPC method.
+message QueryEncryptedTxAllResponse {
+  repeated EncryptedTxArray encrypted_tx_array = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QueryAllEncryptedTxFromHeightRequest {
-  uint64 targetHeight = 1;
+// QueryEncryptedTxAllFromHeightRequest is request type for the Query/EncryptedTxAllFromHeight RPC method.
+message QueryEncryptedTxAllFromHeightRequest {
+  uint64 target_height = 1;
 }
 
-message QueryAllEncryptedTxFromHeightResponse {
-  EncryptedTxArray encryptedTxArray = 1 [(gogoproto.nullable) = false];
+// QueryEncryptedTxAllFromHeightResponse is response type for the Query/EncryptedTxAllFromHeight RPC method.
+message QueryEncryptedTxAllFromHeightResponse {
+  EncryptedTxArray encrypted_tx_array = 1 [(gogoproto.nullable) = false];
 }
 
+// QueryLatestHeightRequest is request type for the Query/LatestHeight RPC method.
 message QueryLatestHeightRequest {}
 
+// QueryLatestHeightResponse is response type for the Query/LatestHeight RPC method.
 message QueryLatestHeightResponse {
   uint64 height = 1;
 }
 
-message QueryGetPepNonceRequest {
+// QueryPepNonceRequest is request type for the Query/PepNonce RPC method.
+message QueryPepNonceRequest {
   string address = 1;
 }
 
-message QueryGetPepNonceResponse {
-  PepNonce pepNonce = 1 [(gogoproto.nullable) = false];
+// QueryPepNonceResponse is response type for the Query/PepNonce RPC method.
+message QueryPepNonceResponse {
+  PepNonce pep_nonce = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryAllPepNonceRequest {
+// QueryPepNonceAllRequest is request type for the Query/PepNonceAll RPC method.
+message QueryPepNonceAllRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryAllPepNonceResponse {
-  repeated PepNonce                               pepNonce   = 1 [(gogoproto.nullable) = false];
-           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+// QueryPepNonceAllResponse is response type for the Query/PepNonceAll RPC method.
+message QueryPepNonceAllResponse {
+  repeated PepNonce pep_nonce = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QueryPubKeyRequest {}
+// QueryPubkeyRequest is request type for the Query/Pubkey RPC method.
+message QueryPubkeyRequest {}
 
-message QueryPubKeyResponse {
-  fairyring.common.ActivePublicKey activePubKey = 1 [(gogoproto.nullable) = false];
-  fairyring.common.QueuedPublicKey queuedPubKey = 2 [(gogoproto.nullable) = false];
+// QueryPubkeyResponse is response type for the Query/Pubkey RPC method.
+message QueryPubkeyResponse {
+  fairyring.common.ActivePublicKey active_pubkey = 1 [(gogoproto.nullable) = false];
+  fairyring.common.QueuedPublicKey queued_pubkey = 2 [(gogoproto.nullable) = false];
 }
 
-message QueryShowPrivateKeyshareReqRequest {
-  string reqId = 1;
+// QueryPrivateIdentityRequest is request type for the Query/PrivateIdentity RPC method.
+message QueryPrivateIdentityRequest {
+  string req_id = 1;
 }
 
-message QueryShowPrivateKeyshareReqResponse {
+// QueryPrivateIdentityResponse is response type for the Query/PrivateIdentity RPC method.
+message QueryPrivateIdentityResponse {
   string creator = 1;
   string req_id = 2;
   string pubkey = 3;
-  repeated fairyring.common.EncryptedKeyshare encrypted_keyshares = 5;
+  repeated fairyring.common.PrivateDecryptionKey private_decryption_keys = 4;
 }
 
+// QueryDecryptDataRequest is request type for the Query/DecryptData RPC method.
 message QueryDecryptDataRequest {
   string pubkey = 1;
-  string aggr_keyshare  = 2;
+  string decryption_key = 2;
   string encrypted_data = 3;
 }
 
+// QueryDecryptDataResponse is response type for the Query/DecryptData RPC method.
 message QueryDecryptDataResponse {
   string decrypted_data = 1;
 }
-

@@ -3,10 +3,11 @@ package fairyring.keyshare;
 
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
+// ValidatorSet defines the structure for storing the list of
+// validators who will be eligible to send keyshares
 message ValidatorSet {
   string index = 1;
   string validator = 2;
-  string consAddr = 3;
-  bool isActive = 4;
+  string cons_addr = 3;
+  bool is_active = 4;
 }
-

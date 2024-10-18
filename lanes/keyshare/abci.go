@@ -67,7 +67,7 @@ func (h *ProposalHandler) PrepareLaneHandler() base.PrepareLaneHandler {
 				}
 
 				// Build the partial proposal by selecting the keyshare transaction
-				keyshareInfo, err := h.factory.GetKeyShareInfo(tmpKeyshareTx)
+				keyshareInfo, err := h.factory.GetDecryptionKeyInfo(tmpKeyshareTx)
 				if keyshareInfo == nil || err != nil {
 					txsToRemove = append(txsToRemove, tmpKeyshareTx)
 					continue
@@ -114,7 +114,7 @@ func (h *ProposalHandler) ProcessLaneHandler() base.ProcessLaneHandler {
 					}
 				}
 			} else {
-				_, err := h.factory.GetKeyShareInfo(keyshareTx)
+				_, err := h.factory.GetDecryptionKeyInfo(keyshareTx)
 				if err != nil {
 					return nil, nil, fmt.Errorf("failed to get keyshare info for lane %s: %w", h.lane.Name(), err)
 				}
@@ -134,7 +134,7 @@ func (h *ProposalHandler) ProcessLaneHandler() base.ProcessLaneHandler {
 // VerifyTx will verify that the keyshare transaction is valid.
 // It will return an error if the transaction is invalid.
 func (h *ProposalHandler) VerifyTx(ctx sdk.Context, keyshareTx sdk.Tx) error {
-	_, err := h.factory.GetKeyShareInfo(keyshareTx)
+	_, err := h.factory.GetDecryptionKeyInfo(keyshareTx)
 	if err != nil {
 		return fmt.Errorf("failed to get keyshare info: %w", err)
 	}

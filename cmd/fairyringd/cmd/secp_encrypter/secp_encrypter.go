@@ -11,31 +11,29 @@ import (
 )
 
 func SecpEncrypterCmd() *cobra.Command {
-	var pubKeyBase64 string
+	var pubkeyBase64 string
 	var keyshare string
 
 	var rootCmd = &cobra.Command{
 		Use:   "secp-encrypter",
 		Short: "A CLI tool to take two strings as input and output them",
 		Run: func(cmd *cobra.Command, args []string) {
-			// fmt.Println("Input 1:", pubKeyBase64)
-			// fmt.Println("Input 2:", keyshare)
 
 			// Decode the base64 public key
-			pubKeyBytes, err := base64.StdEncoding.DecodeString(pubKeyBase64)
+			pubkeyBytes, err := base64.StdEncoding.DecodeString(pubkeyBase64)
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
 			}
 
 			// Load the secp256k1 public key
-			pubKey, err := btcec.ParsePubKey(pubKeyBytes, btcec.S256())
+			pubkey, err := btcec.ParsePubKey(pubkeyBytes, btcec.S256())
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
 			}
 
-			ciphertext, err := btcec.Encrypt(pubKey, []byte(keyshare))
+			ciphertext, err := btcec.Encrypt(pubkey, []byte(keyshare))
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
@@ -47,7 +45,7 @@ func SecpEncrypterCmd() *cobra.Command {
 	}
 
 	// Flags for input
-	rootCmd.Flags().StringVarP(&pubKeyBase64, "pubkey64", "p", "", "pubkey to encrypt keyshare")
+	rootCmd.Flags().StringVarP(&pubkeyBase64, "pubkey64", "p", "", "pubkey to encrypt keyshare")
 	rootCmd.Flags().StringVarP(&keyshare, "keyshare", "k", "", "keyshare in hex")
 
 	// Mark the flags as required

@@ -15,7 +15,10 @@ import (
 )
 
 // ValidatorSetAll returns the complete list of registered validators
-func (k Keeper) ValidatorSetAll(c context.Context, req *types.QueryAllValidatorSetRequest) (*types.QueryAllValidatorSetResponse, error) {
+func (k Keeper) ValidatorSetAll(
+	c context.Context,
+	req *types.QueryValidatorSetAllRequest,
+) (*types.QueryValidatorSetAllResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -40,10 +43,16 @@ func (k Keeper) ValidatorSetAll(c context.Context, req *types.QueryAllValidatorS
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllValidatorSetResponse{ValidatorSet: validatorSets, Pagination: pageRes}, nil
+	return &types.QueryValidatorSetAllResponse{
+		ValidatorSet: validatorSets,
+		Pagination:   pageRes,
+	}, nil
 }
 
-func (k Keeper) ValidatorSet(c context.Context, req *types.QueryGetValidatorSetRequest) (*types.QueryGetValidatorSetResponse, error) {
+func (k Keeper) ValidatorSet(
+	c context.Context,
+	req *types.QueryValidatorSetRequest,
+) (*types.QueryValidatorSetResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -57,5 +66,5 @@ func (k Keeper) ValidatorSet(c context.Context, req *types.QueryGetValidatorSetR
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	return &types.QueryGetValidatorSetResponse{ValidatorSet: val}, nil
+	return &types.QueryValidatorSetResponse{ValidatorSet: val}, nil
 }

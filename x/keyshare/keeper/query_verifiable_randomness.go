@@ -11,7 +11,10 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) VerifiableRandomness(goCtx context.Context, req *types.QueryVerifiableRandomnessQuery) (*types.QueryVerifiableRandomnessResponse, error) {
+func (k Keeper) VerifiableRandomness(
+	goCtx context.Context,
+	req *types.QueryVerifiableRandomnessRequest,
+) (*types.QueryVerifiableRandomnessResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if req == nil {
@@ -34,5 +37,8 @@ func (k Keeper) VerifiableRandomness(goCtx context.Context, req *types.QueryVeri
 	hash.Write(aggrKeyBytes)
 	hashedAggrKey := hash.Sum(nil)
 
-	return &types.QueryVerifiableRandomnessResponse{Randomness: hex.EncodeToString(hashedAggrKey), Round: aggrKey.Height}, nil
+	return &types.QueryVerifiableRandomnessResponse{
+		Randomness: hex.EncodeToString(hashedAggrKey),
+		Round:      aggrKey.Height,
+	}, nil
 }
