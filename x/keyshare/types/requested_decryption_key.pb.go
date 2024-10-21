@@ -125,7 +125,7 @@ func (m *DecryptionKeyRequest) GetSent() bool {
 }
 
 // IBCInfo defines the structure to verify request for
-// aggregated and encrypted keyshares in case the request was made over IBC
+// general and private keyshares in case the request was made over IBC
 type IBCInfo struct {
 	ClientId     string `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
 	ConnectionId string `protobuf:"bytes,2,opt,name=connection_id,json=connectionId,proto3" json:"connection_id,omitempty"`
@@ -194,8 +194,8 @@ func (m *IBCInfo) GetPortId() string {
 	return ""
 }
 
-// CounterPartyIBCInfo defines the structure to send aggregated
-// and encrypted keyshares if the request was made over IBC
+// CounterPartyIBCInfo defines the structure to send general
+// and private keyshares if the request was made over IBC
 type CounterPartyIBCInfo struct {
 	ClientId     string `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
 	ConnectionId string `protobuf:"bytes,2,opt,name=connection_id,json=connectionId,proto3" json:"connection_id,omitempty"`
@@ -265,7 +265,7 @@ func (m *CounterPartyIBCInfo) GetPortId() string {
 }
 
 // PrivateDecryptionKeyRequest defines the stroage structure for private
-// encrypted and unaggregated keyshare requests
+// encrypted and unaggregated decryption key requests
 type PrivateDecryptionKeyRequest struct {
 	Identity              string                        `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
 	Pubkey                string                        `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`

@@ -61,9 +61,9 @@ type QueryClient interface {
 	AuthorizedAddress(ctx context.Context, in *QueryAuthorizedAddressRequest, opts ...grpc.CallOption) (*QueryAuthorizedAddressResponse, error)
 	// Queries a list of AuthorizedAddress items
 	AuthorizedAddressAll(ctx context.Context, in *QueryAuthorizedAddressAllRequest, opts ...grpc.CallOption) (*QueryAuthorizedAddressAllResponse, error)
-	// Queries a GeneralKeyShare item by validator address and identity.
+	// Queries a GeneralKeyshare item by validator address and identity.
 	GeneralKeyshare(ctx context.Context, in *QueryGeneralKeyshareRequest, opts ...grpc.CallOption) (*QueryGeneralKeyshareResponse, error)
-	// Queries a list of GeneralKeyShare items
+	// Queries a list of GeneralKeyshare items
 	GeneralKeyshareAll(ctx context.Context, in *QueryGeneralKeyshareAllRequest, opts ...grpc.CallOption) (*QueryGeneralKeyshareAllResponse, error)
 	// Queries verifiable randomness
 	VerifiableRandomness(ctx context.Context, in *QueryVerifiableRandomnessRequest, opts ...grpc.CallOption) (*QueryVerifiableRandomnessResponse, error)
@@ -229,9 +229,9 @@ type QueryServer interface {
 	AuthorizedAddress(context.Context, *QueryAuthorizedAddressRequest) (*QueryAuthorizedAddressResponse, error)
 	// Queries a list of AuthorizedAddress items
 	AuthorizedAddressAll(context.Context, *QueryAuthorizedAddressAllRequest) (*QueryAuthorizedAddressAllResponse, error)
-	// Queries a GeneralKeyShare item by validator address and identity.
+	// Queries a GeneralKeyshare item by validator address and identity.
 	GeneralKeyshare(context.Context, *QueryGeneralKeyshareRequest) (*QueryGeneralKeyshareResponse, error)
-	// Queries a list of GeneralKeyShare items
+	// Queries a list of GeneralKeyshare items
 	GeneralKeyshareAll(context.Context, *QueryGeneralKeyshareAllRequest) (*QueryGeneralKeyshareAllResponse, error)
 	// Queries verifiable randomness
 	VerifiableRandomness(context.Context, *QueryVerifiableRandomnessRequest) (*QueryVerifiableRandomnessResponse, error)

@@ -12238,7 +12238,7 @@ func (*MsgDeleteAuthorizedAddressResponse) Descriptor() ([]byte, []int) {
 	return file_fairyring_keyshare_tx_proto_rawDescGZIP(), []int{17}
 }
 
-// MsgSubmitGeneralKeyShare is the Msg/CreateGeneralKeyShare request type.
+// MsgSubmitGeneralKeyshare is the Msg/CreateGeneralKeyshare request type.
 type MsgSubmitGeneralKeyshare struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -12322,8 +12322,8 @@ func (x *MsgSubmitGeneralKeyshare) GetReceivedBlockHeight() uint64 {
 	return 0
 }
 
-// MsgSubmitGeneralKeyShareResponse defines the response structure for
-// executing a MsgSubmitGeneralKeyShare message.
+// MsgSubmitGeneralKeyshareResponse defines the response structure for
+// executing a MsgSubmitGeneralKeyshare message.
 type MsgSubmitGeneralKeyshareResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

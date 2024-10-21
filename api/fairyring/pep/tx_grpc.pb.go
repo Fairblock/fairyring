@@ -63,11 +63,11 @@ type MsgClient interface {
 	RequestPrivateDecryptionKey(ctx context.Context, in *MsgRequestPrivateDecryptionKey, opts ...grpc.CallOption) (*MsgRequestPrivateDecryptionKeyResponse, error)
 	// RegisterContract defines an operation to make an instantiated
 	// contract eligible to be automatically executed when a particular
-	// identity has aggregated keyshares available for it
+	// identity has decryption key available for it
 	RegisterContract(ctx context.Context, in *MsgRegisterContract, opts ...grpc.CallOption) (*MsgRegisterContractResponse, error)
 	// UnregisterContract defines an operation to remove a registered contract
 	// from the list of contracts set to be automatically executed when
-	// aggreagted keyshare is available for a particular identity
+	// decryption key is available for a particular identity
 	UnregisterContract(ctx context.Context, in *MsgUnregisterContract, opts ...grpc.CallOption) (*MsgUnregisterContractResponse, error)
 }
 
@@ -201,11 +201,11 @@ type MsgServer interface {
 	RequestPrivateDecryptionKey(context.Context, *MsgRequestPrivateDecryptionKey) (*MsgRequestPrivateDecryptionKeyResponse, error)
 	// RegisterContract defines an operation to make an instantiated
 	// contract eligible to be automatically executed when a particular
-	// identity has aggregated keyshares available for it
+	// identity has decryption key available for it
 	RegisterContract(context.Context, *MsgRegisterContract) (*MsgRegisterContractResponse, error)
 	// UnregisterContract defines an operation to remove a registered contract
 	// from the list of contracts set to be automatically executed when
-	// aggreagted keyshare is available for a particular identity
+	// decryption key is available for a particular identity
 	UnregisterContract(context.Context, *MsgUnregisterContract) (*MsgUnregisterContractResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }

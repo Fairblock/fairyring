@@ -1549,7 +1549,7 @@ func (x *Params) GetPrivateDecryptionKeyPrice() *v1beta1.Coin {
 
 // TrustedCounterParty defines the structure to store the ibc info
 // of the source chain (fairyring) to reliably fetch active keys and
-// aggregated/encrypted keyshares
+// general/private decryption keys
 type TrustedCounterParty struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

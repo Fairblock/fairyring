@@ -3129,7 +3129,7 @@ func (x *DecryptionKeyRequest) GetSent() bool {
 }
 
 // IBCInfo defines the structure to verify request for
-// aggregated and encrypted keyshares in case the request was made over IBC
+// general and private keyshares in case the request was made over IBC
 type IBCInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -3189,8 +3189,8 @@ func (x *IBCInfo) GetPortId() string {
 	return ""
 }
 
-// CounterPartyIBCInfo defines the structure to send aggregated
-// and encrypted keyshares if the request was made over IBC
+// CounterPartyIBCInfo defines the structure to send general
+// and private keyshares if the request was made over IBC
 type CounterPartyIBCInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -3251,7 +3251,7 @@ func (x *CounterPartyIBCInfo) GetPortId() string {
 }
 
 // PrivateDecryptionKeyRequest defines the stroage structure for private
-// encrypted and unaggregated keyshare requests
+// encrypted and unaggregated decryption key requests
 type PrivateDecryptionKeyRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

@@ -13219,7 +13219,7 @@ func (x *QueryValidatorSetAllResponse) GetPagination() *v1beta1.PageResponse {
 	return nil
 }
 
-// QueryKeyShareRequest is request type for the Query/KeyShare RPC method.
+// QueryKeyshareRequest is request type for the Query/Keyshare RPC method.
 type QueryKeyshareRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -13263,7 +13263,7 @@ func (x *QueryKeyshareRequest) GetBlockHeight() uint64 {
 	return 0
 }
 
-// QueryKeyShareResponse is response type for the Query/KeyShare RPC method.
+// QueryKeyshareResponse is response type for the Query/Keyshare RPC method.
 type QueryKeyshareResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -13299,7 +13299,7 @@ func (x *QueryKeyshareResponse) GetKeyshare() *Keyshare {
 	return nil
 }
 
-// QueryKeyShareAllRequest is request type for the Query/KeyShareAll RPC method.
+// QueryKeyshareAllRequest is request type for the Query/KeyshareAll RPC method.
 type QueryKeyshareAllRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -13335,7 +13335,7 @@ func (x *QueryKeyshareAllRequest) GetPagination() *v1beta1.PageRequest {
 	return nil
 }
 
-// QueryKeyShareAllResponse is response type for the Query/KeyShareAll RPC method.
+// QueryKeyshareAllResponse is response type for the Query/KeyshareAll RPC method.
 type QueryKeyshareAllResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -13487,7 +13487,7 @@ func (x *QueryDecryptionKeyAllRequest) GetPagination() *v1beta1.PageRequest {
 	return nil
 }
 
-// QueryAggregatedKeyShareAllResponse is response type for the Query/DecryptionKeyAll RPC method.
+// QueryDecryptionKeyAllResponse is response type for the Query/DecryptionKeyAll RPC method.
 type QueryDecryptionKeyAllResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -13754,7 +13754,7 @@ func (x *QueryAuthorizedAddressAllResponse) GetPagination() *v1beta1.PageRespons
 	return nil
 }
 
-// QueryGeneralKeyShareRequest is request type for the Query/GeneralKeyShare RPC method.
+// QueryGeneralKeyshareRequest is request type for the Query/GeneralKeyshare RPC method.
 type QueryGeneralKeyshareRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -13806,7 +13806,7 @@ func (x *QueryGeneralKeyshareRequest) GetIdValue() string {
 	return ""
 }
 
-// QueryGeneralKeyShareResponse is response type for the Query/GeneralKeyShare RPC method.
+// QueryGeneralKeyshareResponse is response type for the Query/GeneralKeyshare RPC method.
 type QueryGeneralKeyshareResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -13842,7 +13842,7 @@ func (x *QueryGeneralKeyshareResponse) GetGeneralKeyshare() *GeneralKeyshare {
 	return nil
 }
 
-// QueryGeneralKeyShareAllRequest is request type for the Query/GeneralKeyShareAll RPC method.
+// QueryGeneralKeyshareAllRequest is request type for the Query/GeneralKeyshareAll RPC method.
 type QueryGeneralKeyshareAllRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -13878,7 +13878,7 @@ func (x *QueryGeneralKeyshareAllRequest) GetPagination() *v1beta1.PageRequest {
 	return nil
 }
 
-// QueryGeneralKeyShareAllResponse is response type for the Query/GeneralKeyShareAll RPC method.
+// QueryGeneralKeyshareAllResponse is response type for the Query/GeneralKeyshareAll RPC method.
 type QueryGeneralKeyshareAllResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

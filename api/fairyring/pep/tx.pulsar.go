@@ -9238,7 +9238,7 @@ func (*MsgSubmitGeneralEncryptedTxResponse) Descriptor() ([]byte, []int) {
 	return file_fairyring_pep_tx_proto_rawDescGZIP(), []int{5}
 }
 
-// MsgCreateAggregatedKeyShare is the Msg/CreateAggregatedKeyShare request type.
+// MsgSubmitDecryptionKey is the Msg/SubmitDecryptionKey request type.
 type MsgSubmitDecryptionKey struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

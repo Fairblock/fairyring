@@ -484,7 +484,7 @@ func (m *QueryValidatorSetAllResponse) GetPagination() *query.PageResponse {
 	return nil
 }
 
-// QueryKeyShareRequest is request type for the Query/KeyShare RPC method.
+// QueryKeyshareRequest is request type for the Query/Keyshare RPC method.
 type QueryKeyshareRequest struct {
 	Validator   string `protobuf:"bytes,1,opt,name=validator,proto3" json:"validator,omitempty"`
 	BlockHeight uint64 `protobuf:"varint,2,opt,name=block_height,json=blockHeight,proto3" json:"block_height,omitempty"`
@@ -537,7 +537,7 @@ func (m *QueryKeyshareRequest) GetBlockHeight() uint64 {
 	return 0
 }
 
-// QueryKeyShareResponse is response type for the Query/KeyShare RPC method.
+// QueryKeyshareResponse is response type for the Query/Keyshare RPC method.
 type QueryKeyshareResponse struct {
 	Keyshare Keyshare `protobuf:"bytes,1,opt,name=keyshare,proto3" json:"keyshare"`
 }
@@ -582,7 +582,7 @@ func (m *QueryKeyshareResponse) GetKeyshare() Keyshare {
 	return Keyshare{}
 }
 
-// QueryKeyShareAllRequest is request type for the Query/KeyShareAll RPC method.
+// QueryKeyshareAllRequest is request type for the Query/KeyshareAll RPC method.
 type QueryKeyshareAllRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
@@ -627,7 +627,7 @@ func (m *QueryKeyshareAllRequest) GetPagination() *query.PageRequest {
 	return nil
 }
 
-// QueryKeyShareAllResponse is response type for the Query/KeyShareAll RPC method.
+// QueryKeyshareAllResponse is response type for the Query/KeyshareAll RPC method.
 type QueryKeyshareAllResponse struct {
 	Keyshare   []Keyshare          `protobuf:"bytes,1,rep,name=keyshare,proto3" json:"keyshare"`
 	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
@@ -815,7 +815,7 @@ func (m *QueryDecryptionKeyAllRequest) GetPagination() *query.PageRequest {
 	return nil
 }
 
-// QueryAggregatedKeyShareAllResponse is response type for the Query/DecryptionKeyAll RPC method.
+// QueryDecryptionKeyAllResponse is response type for the Query/DecryptionKeyAll RPC method.
 type QueryDecryptionKeyAllResponse struct {
 	DecryptionKeys []DecryptionKey     `protobuf:"bytes,1,rep,name=decryption_keys,json=decryptionKeys,proto3" json:"decryption_keys"`
 	Pagination     *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
@@ -1146,7 +1146,7 @@ func (m *QueryAuthorizedAddressAllResponse) GetPagination() *query.PageResponse 
 	return nil
 }
 
-// QueryGeneralKeyShareRequest is request type for the Query/GeneralKeyShare RPC method.
+// QueryGeneralKeyshareRequest is request type for the Query/GeneralKeyshare RPC method.
 type QueryGeneralKeyshareRequest struct {
 	Validator string `protobuf:"bytes,1,opt,name=validator,proto3" json:"validator,omitempty"`
 	IdType    string `protobuf:"bytes,2,opt,name=id_type,json=idType,proto3" json:"id_type,omitempty"`
@@ -1207,7 +1207,7 @@ func (m *QueryGeneralKeyshareRequest) GetIdValue() string {
 	return ""
 }
 
-// QueryGeneralKeyShareResponse is response type for the Query/GeneralKeyShare RPC method.
+// QueryGeneralKeyshareResponse is response type for the Query/GeneralKeyshare RPC method.
 type QueryGeneralKeyshareResponse struct {
 	GeneralKeyshare GeneralKeyshare `protobuf:"bytes,1,opt,name=general_keyshare,json=generalKeyshare,proto3" json:"general_keyshare"`
 }
@@ -1252,7 +1252,7 @@ func (m *QueryGeneralKeyshareResponse) GetGeneralKeyshare() GeneralKeyshare {
 	return GeneralKeyshare{}
 }
 
-// QueryGeneralKeyShareAllRequest is request type for the Query/GeneralKeyShareAll RPC method.
+// QueryGeneralKeyshareAllRequest is request type for the Query/GeneralKeyshareAll RPC method.
 type QueryGeneralKeyshareAllRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
@@ -1297,7 +1297,7 @@ func (m *QueryGeneralKeyshareAllRequest) GetPagination() *query.PageRequest {
 	return nil
 }
 
-// QueryGeneralKeyShareAllResponse is response type for the Query/GeneralKeyShareAll RPC method.
+// QueryGeneralKeyshareAllResponse is response type for the Query/GeneralKeyshareAll RPC method.
 type QueryGeneralKeyshareAllResponse struct {
 	GeneralKeyshare []GeneralKeyshare   `protobuf:"bytes,1,rep,name=general_keyshare,json=generalKeyshare,proto3" json:"general_keyshare"`
 	Pagination      *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
@@ -1510,9 +1510,9 @@ type QueryClient interface {
 	AuthorizedAddress(ctx context.Context, in *QueryAuthorizedAddressRequest, opts ...grpc.CallOption) (*QueryAuthorizedAddressResponse, error)
 	// Queries a list of AuthorizedAddress items
 	AuthorizedAddressAll(ctx context.Context, in *QueryAuthorizedAddressAllRequest, opts ...grpc.CallOption) (*QueryAuthorizedAddressAllResponse, error)
-	// Queries a GeneralKeyShare item by validator address and identity.
+	// Queries a GeneralKeyshare item by validator address and identity.
 	GeneralKeyshare(ctx context.Context, in *QueryGeneralKeyshareRequest, opts ...grpc.CallOption) (*QueryGeneralKeyshareResponse, error)
-	// Queries a list of GeneralKeyShare items
+	// Queries a list of GeneralKeyshare items
 	GeneralKeyshareAll(ctx context.Context, in *QueryGeneralKeyshareAllRequest, opts ...grpc.CallOption) (*QueryGeneralKeyshareAllResponse, error)
 	// Queries verifiable randomness
 	VerifiableRandomness(ctx context.Context, in *QueryVerifiableRandomnessRequest, opts ...grpc.CallOption) (*QueryVerifiableRandomnessResponse, error)
@@ -1676,9 +1676,9 @@ type QueryServer interface {
 	AuthorizedAddress(context.Context, *QueryAuthorizedAddressRequest) (*QueryAuthorizedAddressResponse, error)
 	// Queries a list of AuthorizedAddress items
 	AuthorizedAddressAll(context.Context, *QueryAuthorizedAddressAllRequest) (*QueryAuthorizedAddressAllResponse, error)
-	// Queries a GeneralKeyShare item by validator address and identity.
+	// Queries a GeneralKeyshare item by validator address and identity.
 	GeneralKeyshare(context.Context, *QueryGeneralKeyshareRequest) (*QueryGeneralKeyshareResponse, error)
-	// Queries a list of GeneralKeyShare items
+	// Queries a list of GeneralKeyshare items
 	GeneralKeyshareAll(context.Context, *QueryGeneralKeyshareAllRequest) (*QueryGeneralKeyshareAllResponse, error)
 	// Queries verifiable randomness
 	VerifiableRandomness(context.Context, *QueryVerifiableRandomnessRequest) (*QueryVerifiableRandomnessResponse, error)

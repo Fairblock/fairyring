@@ -79,7 +79,7 @@ func (m *RequestId) GetReqId() string {
 }
 
 // PrivateRequest defines the structure for storing private
-// keyshare requests along with the unaggregated encrypted keyshares
+// decryption key requests along with the unaggregated encrypted keyshares
 type PrivateRequest struct {
 	Creator               string                        `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	ReqId                 string                        `protobuf:"bytes,2,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
@@ -150,7 +150,7 @@ func (m *PrivateRequest) GetPrivateDecryptionKeys() []*types.PrivateDecryptionKe
 
 // ContractDetails defines the structure to store the details of a
 // contract that has been registered to execute automatically when
-// the identity associated with it has an aggregate keyshare available
+// the identity associated with it has a decryption key available
 type ContractDetails struct {
 	Registrar       string `protobuf:"bytes,1,opt,name=registrar,proto3" json:"registrar,omitempty"`
 	ContractAddress string `protobuf:"bytes,2,opt,name=contract_address,json=contractAddress,proto3" json:"contract_address,omitempty"`

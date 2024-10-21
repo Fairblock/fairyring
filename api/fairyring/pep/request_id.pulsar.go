@@ -2833,7 +2833,7 @@ func (x *RequestId) GetReqId() string {
 }
 
 // PrivateRequest defines the structure for storing private
-// keyshare requests along with the unaggregated encrypted keyshares
+// decryption key requests along with the unaggregated encrypted keyshares
 type PrivateRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2895,7 +2895,7 @@ func (x *PrivateRequest) GetPrivateDecryptionKeys() []*common.PrivateDecryptionK
 
 // ContractDetails defines the structure to store the details of a
 // contract that has been registered to execute automatically when
-// the identity associated with it has an aggregate keyshare available
+// the identity associated with it has a decryption key available
 type ContractDetails struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

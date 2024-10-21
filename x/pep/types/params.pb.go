@@ -113,7 +113,7 @@ func (m *Params) GetPrivateDecryptionKeyPrice() *types.Coin {
 
 // TrustedCounterParty defines the structure to store the ibc info
 // of the source chain (fairyring) to reliably fetch active keys and
-// aggregated/encrypted keyshares
+// general/private decryption keys
 type TrustedCounterParty struct {
 	ClientId     string `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
 	ConnectionId string `protobuf:"bytes,2,opt,name=connection_id,json=connectionId,proto3" json:"connection_id,omitempty"`

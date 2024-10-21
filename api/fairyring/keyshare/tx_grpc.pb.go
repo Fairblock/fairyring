@@ -62,7 +62,7 @@ type MsgClient interface {
 	// DeleteAuthorizedAddress defines an operation to revoke the
 	// authorization of a previously authorized address
 	DeleteAuthorizedAddress(ctx context.Context, in *MsgDeleteAuthorizedAddress, opts ...grpc.CallOption) (*MsgDeleteAuthorizedAddressResponse, error)
-	// SubmitGeneralKeyShare defines an operation to submit a
+	// SubmitGeneralKeyshare defines an operation to submit a
 	// general keyshare from a registered validator
 	SubmitGeneralKeyshare(ctx context.Context, in *MsgSubmitGeneralKeyshare, opts ...grpc.CallOption) (*MsgSubmitGeneralKeyshareResponse, error)
 	// SubmitEncryptedKeyshare defines an operation to submit
@@ -207,7 +207,7 @@ type MsgServer interface {
 	// DeleteAuthorizedAddress defines an operation to revoke the
 	// authorization of a previously authorized address
 	DeleteAuthorizedAddress(context.Context, *MsgDeleteAuthorizedAddress) (*MsgDeleteAuthorizedAddressResponse, error)
-	// SubmitGeneralKeyShare defines an operation to submit a
+	// SubmitGeneralKeyshare defines an operation to submit a
 	// general keyshare from a registered validator
 	SubmitGeneralKeyshare(context.Context, *MsgSubmitGeneralKeyshare) (*MsgSubmitGeneralKeyshareResponse, error)
 	// SubmitEncryptedKeyshare defines an operation to submit

@@ -979,7 +979,7 @@ func (m *MsgDeleteAuthorizedAddressResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgDeleteAuthorizedAddressResponse proto.InternalMessageInfo
 
-// MsgSubmitGeneralKeyShare is the Msg/CreateGeneralKeyShare request type.
+// MsgSubmitGeneralKeyshare is the Msg/CreateGeneralKeyshare request type.
 type MsgSubmitGeneralKeyshare struct {
 	Creator             string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	IdType              string `protobuf:"bytes,2,opt,name=id_type,json=idType,proto3" json:"id_type,omitempty"`
@@ -1072,8 +1072,8 @@ func (m *MsgSubmitGeneralKeyshare) GetReceivedBlockHeight() uint64 {
 	return 0
 }
 
-// MsgSubmitGeneralKeyShareResponse defines the response structure for
-// executing a MsgSubmitGeneralKeyShare message.
+// MsgSubmitGeneralKeyshareResponse defines the response structure for
+// executing a MsgSubmitGeneralKeyshare message.
 type MsgSubmitGeneralKeyshareResponse struct {
 	Creator             string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	IdType              string `protobuf:"bytes,2,opt,name=id_type,json=idType,proto3" json:"id_type,omitempty"`
@@ -1446,7 +1446,7 @@ type MsgClient interface {
 	// DeleteAuthorizedAddress defines an operation to revoke the
 	// authorization of a previously authorized address
 	DeleteAuthorizedAddress(ctx context.Context, in *MsgDeleteAuthorizedAddress, opts ...grpc.CallOption) (*MsgDeleteAuthorizedAddressResponse, error)
-	// SubmitGeneralKeyShare defines an operation to submit a
+	// SubmitGeneralKeyshare defines an operation to submit a
 	// general keyshare from a registered validator
 	SubmitGeneralKeyshare(ctx context.Context, in *MsgSubmitGeneralKeyshare, opts ...grpc.CallOption) (*MsgSubmitGeneralKeyshareResponse, error)
 	// SubmitEncryptedKeyshare defines an operation to submit
@@ -1589,7 +1589,7 @@ type MsgServer interface {
 	// DeleteAuthorizedAddress defines an operation to revoke the
 	// authorization of a previously authorized address
 	DeleteAuthorizedAddress(context.Context, *MsgDeleteAuthorizedAddress) (*MsgDeleteAuthorizedAddressResponse, error)
-	// SubmitGeneralKeyShare defines an operation to submit a
+	// SubmitGeneralKeyshare defines an operation to submit a
 	// general keyshare from a registered validator
 	SubmitGeneralKeyshare(context.Context, *MsgSubmitGeneralKeyshare) (*MsgSubmitGeneralKeyshareResponse, error)
 	// SubmitEncryptedKeyshare defines an operation to submit
