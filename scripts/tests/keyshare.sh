@@ -114,7 +114,7 @@ PUB_KEY=$(echo "$GENERATED_RESULT" | jq -r '.MasterPublicKey')
 COMMITS=$(echo "$GENERATED_RESULT" | jq -r '.Commitments[0]')
 
 echo "Trusted address submit pub key on chain fairyring_test_1"
-RESULT=$($BINARY tx keyshare create-latest-pub-key $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VALIDATOR_1"'"}]' --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare create-latest-pubkey $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VALIDATOR_1"'"}]' --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 VALIDATOR_ADDR=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("pubkey"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("creator"))))[]' | jq -r '.value')
@@ -126,7 +126,7 @@ fi
 
 
 echo "Not trusted address submit pub key on chain fairyring_test_1"
-RESULT=$($BINARY tx keyshare create-latest-pub-key $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VALIDATOR_1"'"}]' --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare create-latest-pubkey $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VALIDATOR_1"'"}]' --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
@@ -161,7 +161,7 @@ PUB_KEY=$(echo "$GENERATED_RESULT" | jq -r '.MasterPublicKey')
 COMMITS=$(echo "$GENERATED_RESULT" | jq -r '.Commitments[0]')
 
 echo "Trusted address override pub key on chain fairyring_test_1"
-RESULT=$($BINARY tx keyshare override-latest-pub-key $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VALIDATOR_1"'"}]' --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare override-latest-pubkey $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VALIDATOR_1"'"}]' --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 VALIDATOR_ADDR=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("pubkey"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("creator"))))[]' | jq -r '.value')
@@ -261,7 +261,7 @@ fi
 ./scripts/tests/keyshareSender.sh $BINARY $CHAIN_DIR/$CHAINID_1 tcp://localhost:16657 $VALIDATOR_1 $CHAINID_1 > $CHAIN_DIR/keyshareSender.log 2>&1 &
 
 echo "Query submitted key share on chain fairyring_test_1"
-RESULT=$($BINARY query keyshare list-key-share --node tcp://localhost:16657 -o json)
+RESULT=$($BINARY query keyshare list-keyshares --node tcp://localhost:16657 -o json)
 RESULT_SENDER=$(echo "$RESULT" | jq -r '.keyShare[0].validator')
 RESULT_KEYSHARE=$(echo "$RESULT" | jq -r '.keyShare[0].keyShare')
 RESULT_HEIGHT=$(echo "$RESULT" | jq -r '.keyShare[0].blockHeight')
@@ -274,7 +274,7 @@ echo "Key Share Successfully submitted: '$RESULT_KEYSHARE' for height '$RESULT_H
 
 
 echo "Query aggregated key share on chain fairyring_test_1"
-RESULT=$($BINARY query keyshare list-aggregated-key-share --node tcp://localhost:16657 -o json)
+RESULT=$($BINARY query keyshare list-decryption-keys --node tcp://localhost:16657 -o json)
 RESULT_HEIGHT=$(echo "$RESULT" | jq -r '.aggregatedKeyShare[0].height')
 RESULT_DATA=$(echo "$RESULT" | jq -r '.aggregatedKeyShare[0].data')
 if [ "$RESULT_HEIGHT" != "$TARGET_HEIGHT" ]; then
