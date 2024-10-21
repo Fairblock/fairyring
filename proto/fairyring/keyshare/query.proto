@@ -73,12 +73,12 @@ service Query {
     option (google.api.http).get = "/fairyring/keyshare/authorized_address";
   }
 
-  // Queries a GeneralKeyShare item by validator address and identity.
+  // Queries a GeneralKeyshare item by validator address and identity.
   rpc GeneralKeyshare(QueryGeneralKeyshareRequest) returns (QueryGeneralKeyshareResponse) {
     option (google.api.http).get = "/fairyring/keyshare/general_keyshare/{validator}/{id_type}/{id_value}";
   }
 
-  // Queries a list of GeneralKeyShare items
+  // Queries a list of GeneralKeyshare items
   rpc GeneralKeyshareAll(QueryGeneralKeyshareAllRequest) returns (QueryGeneralKeyshareAllResponse) {
     option (google.api.http).get = "/fairyring/keyshare/general_keyshare";
   }
@@ -142,23 +142,23 @@ message QueryValidatorSetAllResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-// QueryKeyShareRequest is request type for the Query/KeyShare RPC method.
+// QueryKeyshareRequest is request type for the Query/Keyshare RPC method.
 message QueryKeyshareRequest {
   string validator = 1;
   uint64 block_height = 2;
 }
 
-// QueryKeyShareResponse is response type for the Query/KeyShare RPC method.
+// QueryKeyshareResponse is response type for the Query/Keyshare RPC method.
 message QueryKeyshareResponse {
   Keyshare keyshare = 1 [(gogoproto.nullable) = false];
 }
 
-// QueryKeyShareAllRequest is request type for the Query/KeyShareAll RPC method.
+// QueryKeyshareAllRequest is request type for the Query/KeyshareAll RPC method.
 message QueryKeyshareAllRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-// QueryKeyShareAllResponse is response type for the Query/KeyShareAll RPC method.
+// QueryKeyshareAllResponse is response type for the Query/KeyshareAll RPC method.
 message QueryKeyshareAllResponse {
   repeated Keyshare keyshare = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
@@ -215,24 +215,24 @@ message QueryAuthorizedAddressAllResponse {
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-// QueryGeneralKeyShareRequest is request type for the Query/GeneralKeyShare RPC method.
+// QueryGeneralKeyshareRequest is request type for the Query/GeneralKeyshare RPC method.
 message QueryGeneralKeyshareRequest {
   string validator = 1;
   string id_type = 2;
   string id_value = 3;
 }
 
-// QueryGeneralKeyShareResponse is response type for the Query/GeneralKeyShare RPC method.
+// QueryGeneralKeyshareResponse is response type for the Query/GeneralKeyshare RPC method.
 message QueryGeneralKeyshareResponse {
   GeneralKeyshare general_keyshare = 1 [(gogoproto.nullable) = false];
 }
 
-// QueryGeneralKeyShareAllRequest is request type for the Query/GeneralKeyShareAll RPC method.
+// QueryGeneralKeyshareAllRequest is request type for the Query/GeneralKeyshareAll RPC method.
 message QueryGeneralKeyshareAllRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-// QueryGeneralKeyShareAllResponse is response type for the Query/GeneralKeyShareAll RPC method.
+// QueryGeneralKeyshareAllResponse is response type for the Query/GeneralKeyshareAll RPC method.
 message QueryGeneralKeyshareAllResponse {
   repeated GeneralKeyshare general_keyshare = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
