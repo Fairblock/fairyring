@@ -9,13 +9,13 @@ const (
 	LaneName = "keyshare"
 )
 
-// KeyShareLane defines the lane that is responsible for processing AggregateKeyShare transactions.
+// KeyShareLane defines the lane that is responsible for processing KeyShare transactions.
 type (
 	KeyShareLane struct { //nolint
 		*base.BaseLane
 
 		// Factory defines the API/functionality which is responsible for determining
-		// if a transaction is a aggregateKeyshare transaction and how to extract relevant
+		// if a transaction is a Keyshare transaction and how to extract relevant
 		// information from the transaction (creator Address).
 		Factory
 	}

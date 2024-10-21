@@ -18,10 +18,10 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func TestAggregatedKeyShareQuerySingle(t *testing.T) {
+func TestDecryptionKeyQuerySingle(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
-	msgs := createNAggregatedKeyShare(&keeper, ctx, 2)
+	msgs := createNDecryptionKeys(&keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryDecryptionKeyRequest
@@ -69,10 +69,10 @@ func TestAggregatedKeyShareQuerySingle(t *testing.T) {
 	}
 }
 
-func TestAggregatedKeyShareQueryAllNoPagination(t *testing.T) {
+func TestDecryptionKeyQueryAllNoPagination(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
-	msgs := createNAggregatedKeyShare(&keeper, ctx, 10)
+	msgs := createNDecryptionKeys(&keeper, ctx, 10)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryDecryptionKeyAllRequest
@@ -114,10 +114,10 @@ func TestAggregatedKeyShareQueryAllNoPagination(t *testing.T) {
 	}
 }
 
-func TestAggregatedKeyShareQueryPaginated(t *testing.T) {
+func TestDecryptionKeyQueryPaginated(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
-	msgs := createNAggregatedKeyShare(&keeper, ctx, 5)
+	msgs := createNDecryptionKeys(&keeper, ctx, 5)
 
 	request := func(
 		next []byte,

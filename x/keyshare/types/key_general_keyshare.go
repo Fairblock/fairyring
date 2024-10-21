@@ -5,13 +5,13 @@ import "encoding/binary"
 var _ binary.ByteOrder
 
 const (
-	// GeneralKeyShareKeyPrefix is the prefix to retrieve all GeneralKeyShare
-	GeneralKeyShareKeyPrefix   = "GeneralKeyShare/value/"
-	EncryptedKeyShareKeyPrefix = "EncryptedKeyShare/value/"
+	// GeneralKeyshareKeyPrefix is the prefix to retrieve all GeneralKeyShare
+	GeneralKeyshareKeyPrefix = "GeneralKeyshare/value/"
+	PrivateKeyshareKeyPrefix = "PrivateKeyshare/value/"
 )
 
-// GeneralKeyShareKey returns the store key to retrieve a GeneralKeyShare from the index fields
-func GeneralKeyShareKey(
+// GeneralKeyshareKey returns the store key to retrieve a GeneralKeyShare from the index fields
+func GeneralKeyshareKey(
 	validator string,
 	idType string,
 	idValue string,
@@ -33,8 +33,8 @@ func GeneralKeyShareKey(
 	return key
 }
 
-// EncryptedKeyShareKey returns the store key to retrieve a GeneralKeyShare from the index fields
-func EncryptedlKeyShareKey(
+// PrivateKeyshareKey returns the store key to retrieve a GeneralKeyShare from the index fields
+func PrivateKeyshareKey(
 	validator string,
 	identity string,
 	requester string,

@@ -21,7 +21,7 @@ message Params {
 
 // TrustedCounterParty defines the structure to store the ibc info
 // of the source chain (fairyring) to reliably fetch active keys and
-// aggregated/encrypted keyshares
+// general/private decryption keys
 message TrustedCounterParty {
   string client_id = 1;
   string connection_id = 2;

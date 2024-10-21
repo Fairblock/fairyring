@@ -89,7 +89,7 @@ func TestDecryptDataQuerySingle(t *testing.T) {
 			errMsg: "input string length must be equal to 48 bytes",
 		},
 		{
-			desc: "InvalidAggrKeyShare",
+			desc: "InvalidDecryptionKey",
 			request: &types.QueryDecryptDataRequest{
 				Pubkey:        out.MasterPublicKey,
 				DecryptionKey: random.RandHex(8),

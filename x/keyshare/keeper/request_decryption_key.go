@@ -98,7 +98,7 @@ func (k Keeper) OnRecvRequestDecryptionKeyPacket(
 	}
 	keyshareRequest.Sent = false
 
-	k.SetKeyShareRequest(ctx, keyshareRequest)
+	k.SetDecryptionKeyRequest(ctx, keyshareRequest)
 
 	packetAck.Identity = id
 	packetAck.Pubkey = activePubkey.PublicKey
@@ -152,7 +152,7 @@ func (k Keeper) OnRecvRequestPrivateDecryptionKeyPacket(
 	keyshareRequest.RequestId = data.GetRequestId()
 	keyshareRequest.Sent = false
 
-	k.SetPrivateKeyShareRequest(ctx, keyshareRequest)
+	k.SetPrivateDecryptionKeyRequest(ctx, keyshareRequest)
 
 	packetAck.Identity = id
 	packetAck.Pubkey = activePubkey.PublicKey
@@ -160,7 +160,7 @@ func (k Keeper) OnRecvRequestPrivateDecryptionKeyPacket(
 	return packetAck, nil
 }
 
-// OnTimeoutRequestAggrKeysharePacket responds to the case where a packet has not been transmitted because of a timeout
+// OnTimeoutRequestPrivateDecryptionKeyPacket responds to the case where a packet has not been transmitted because of a timeout
 func (k Keeper) OnTimeoutRequestPrivateDecryptionKeyPacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestPrivateDecryptionKeyPacketData) error {
 
 	// Implement custom packet timeout logic

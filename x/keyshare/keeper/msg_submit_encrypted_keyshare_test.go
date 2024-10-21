@@ -34,7 +34,7 @@ func TestEncryptedlKeyShareMsgServerCreate(t *testing.T) {
 
 		idVal := random.RandHex(32)
 
-		k.SetPrivateKeyShareRequest(wctx, types.PrivateDecryptionKeyRequest{
+		k.SetPrivateDecryptionKeyRequest(wctx, types.PrivateDecryptionKeyRequest{
 			Identity:              idVal,
 			Pubkey:                out.MasterPublicKey,
 			IbcInfo:               nil,
@@ -70,10 +70,10 @@ func TestEncryptedlKeyShareMsgServerCreate(t *testing.T) {
 		_, err = srv.SubmitEncryptedKeyshare(wctx, expected)
 		require.NoError(t, err)
 
-		_, found := k.GetPrivateKeyShareRequest(ctx, idVal)
+		_, found := k.GetPrivateDecryptionKeyRequest(ctx, idVal)
 		require.True(t, found)
 
-		rst, found := k.GetPrivateKeyShare(wctx,
+		rst, found := k.GetPrivateKeyshare(wctx,
 			expected.Creator,
 			expected.Identity,
 			expected.Creator,
@@ -131,7 +131,7 @@ func TestEncryptedKeyShareMsgServerFailCases(t *testing.T) {
 			require.ErrorIs(t, err, tc.err)
 
 			if tc.desc == "KeyShareRequestNotFound" {
-				k.SetPrivateKeyShareRequest(wctx, types.PrivateDecryptionKeyRequest{
+				k.SetPrivateDecryptionKeyRequest(wctx, types.PrivateDecryptionKeyRequest{
 					Identity:              onlyIdVal,
 					Pubkey:                out.MasterPublicKey,
 					IbcInfo:               nil,

@@ -29,15 +29,16 @@ func (gs GenesisState) Validate() error {
 	if err := host.PortIdentifierValidator(gs.PortId); err != nil {
 		return err
 	}
-	// Check for duplicated index in aggregatedKeyShare
-	aggregatedKeyShareIndexMap := make(map[string]struct{})
+
+	// Check for duplicated index in decrtion key
+	decryptionKeyIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.DecryptionKeyList {
-		index := string(AggregatedKeyShareKey(elem.Height))
-		if _, ok := aggregatedKeyShareIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for aggregatedKeyShare")
+		index := string(DecryptionKeyKey(elem.Height))
+		if _, ok := decryptionKeyIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for decryption key")
 		}
-		aggregatedKeyShareIndexMap[index] = struct{}{}
+		decryptionKeyIndexMap[index] = struct{}{}
 	}
 
 	validatorSetIndexMap := make(map[string]struct{})
@@ -67,7 +68,7 @@ func (gs GenesisState) Validate() error {
 	keyShareIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.KeyshareList {
-		index := string(KeyShareKey(elem.Validator, elem.BlockHeight))
+		index := string(KeyshareKey(elem.Validator, elem.BlockHeight))
 		if _, ok := keyShareIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for keyShare")
 		}
@@ -88,7 +89,7 @@ func (gs GenesisState) Validate() error {
 	generalKeyShareIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.GeneralKeyshareList {
-		index := string(GeneralKeyShareKey(elem.Validator, elem.IdType, elem.IdValue))
+		index := string(GeneralKeyshareKey(elem.Validator, elem.IdType, elem.IdValue))
 		if _, ok := generalKeyShareIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for generalKeyShare")
 		}

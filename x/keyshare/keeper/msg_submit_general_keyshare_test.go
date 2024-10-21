@@ -47,7 +47,7 @@ func SetupTestGeneralKeyShare(t *testing.T, ctx sdk.Context, k keeper.Keeper, nu
 	return out, creator
 }
 
-func TestGeneralKeyShareMsgServerCreateAggregated(t *testing.T) {
+func TestSubmitGeneralKeyshareAggregated(t *testing.T) {
 
 	k, ctx, pk, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
@@ -59,7 +59,7 @@ func TestGeneralKeyShareMsgServerCreateAggregated(t *testing.T) {
 
 		idVal := random.RandHex(32)
 
-		k.SetKeyShareRequest(wctx, types.DecryptionKeyRequest{
+		k.SetDecryptionKeyRequest(wctx, types.DecryptionKeyRequest{
 			Identity:      idVal,
 			Pubkey:        out.MasterPublicKey,
 			IbcInfo:       nil,
@@ -91,7 +91,7 @@ func TestGeneralKeyShareMsgServerCreateAggregated(t *testing.T) {
 		_, err = srv.SubmitGeneralKeyshare(wctx, expected)
 		require.NoError(t, err)
 
-		rst, found := k.GetGeneralKeyShare(wctx,
+		rst, found := k.GetGeneralKeyshare(wctx,
 			expected.Creator,
 			expected.IdType,
 			expected.IdValue,
@@ -99,13 +99,13 @@ func TestGeneralKeyShareMsgServerCreateAggregated(t *testing.T) {
 		require.True(t, found)
 		require.Equal(t, expected.Creator, rst.Validator)
 
-		entry, found := k.GetKeyShareRequest(ctx, idVal)
+		entry, found := k.GetDecryptionKeyRequest(ctx, idVal)
 		require.True(t, found)
 		require.NotEmpty(t, entry.DecryptionKey)
 	}
 }
 
-func TestGeneralKeyShareMsgServerCreateNotAggregated(t *testing.T) {
+func TestSubmitGeneralKeyshareNotAggregated(t *testing.T) {
 
 	k, ctx, pk, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
@@ -117,7 +117,7 @@ func TestGeneralKeyShareMsgServerCreateNotAggregated(t *testing.T) {
 
 		idVal := random.RandHex(32)
 
-		k.SetKeyShareRequest(wctx, types.DecryptionKeyRequest{
+		k.SetDecryptionKeyRequest(wctx, types.DecryptionKeyRequest{
 			Identity:      idVal,
 			Pubkey:        out.MasterPublicKey,
 			IbcInfo:       nil,
@@ -149,7 +149,7 @@ func TestGeneralKeyShareMsgServerCreateNotAggregated(t *testing.T) {
 		_, err = srv.SubmitGeneralKeyshare(wctx, expected)
 		require.NoError(t, err)
 
-		rst, found := k.GetGeneralKeyShare(wctx,
+		rst, found := k.GetGeneralKeyshare(wctx,
 			expected.Creator,
 			expected.IdType,
 			expected.IdValue,
@@ -157,7 +157,7 @@ func TestGeneralKeyShareMsgServerCreateNotAggregated(t *testing.T) {
 		require.True(t, found)
 		require.Equal(t, expected.Creator, rst.Validator)
 
-		entry, found := k.GetKeyShareRequest(ctx, idVal)
+		entry, found := k.GetDecryptionKeyRequest(ctx, idVal)
 		require.True(t, found)
 		require.Empty(t, entry.DecryptionKey)
 	}
@@ -225,7 +225,7 @@ func TestGeneralKeyShareMsgServerFailCases(t *testing.T) {
 			require.ErrorIs(t, err, tc.err)
 
 			if tc.desc == "KeyShareRequestNotFound" {
-				k.SetKeyShareRequest(wctx, types.DecryptionKeyRequest{
+				k.SetDecryptionKeyRequest(wctx, types.DecryptionKeyRequest{
 					Identity:      onlyIdVal,
 					Pubkey:        out.MasterPublicKey,
 					IbcInfo:       nil,

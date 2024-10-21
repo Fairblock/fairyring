@@ -36,7 +36,7 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid: true,
 		},
 		{
-			desc: "duplicated aggregatedKeyShare",
+			desc: "duplicated decryption key",
 			genState: &types.GenesisState{
 				DecryptionKeyList: []types.DecryptionKey{
 					{

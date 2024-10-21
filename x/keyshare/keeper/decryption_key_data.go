@@ -87,13 +87,13 @@ func (k Keeper) OnAcknowledgementDecryptionKeyDataPacket(
 			return errors.New("cannot unmarshal acknowledgment")
 		}
 
-		keyshareReq, found := k.GetKeyShareRequest(ctx, data.Identity)
+		keyshareReq, found := k.GetDecryptionKeyRequest(ctx, data.Identity)
 		if !found {
 			return errors.New("cannot find keyshare request")
 		}
 
 		keyshareReq.Sent = true
-		k.SetKeyShareRequest(ctx, keyshareReq)
+		k.SetDecryptionKeyRequest(ctx, keyshareReq)
 
 		return nil
 	default:

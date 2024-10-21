@@ -22,7 +22,7 @@ func TestOverrideLatestPubkeyMsgServer(t *testing.T) {
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
-	out, err := random.GeneratePubkeyAndShares(1)
+	out, err := random.GeneratePubKeyAndShares(1)
 	require.NoError(t, err)
 
 	creator := out.GeneratedShare[0].ValidatorAddress

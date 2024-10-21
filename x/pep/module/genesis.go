@@ -22,7 +22,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.PepNonceList {
 		k.SetPepNonce(ctx, elem)
 	}
-	// Set all the aggregatedKeyShare
+	// Set all the decryption keys
 	for _, elem := range genState.DecryptionKeyList {
 		k.SetDecryptionKey(ctx, elem)
 	}

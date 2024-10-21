@@ -1,7 +1,6 @@
 package keeper_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/Fairblock/fairyring/testutil/random"
@@ -15,26 +14,24 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func createNGeneralKeyShares(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.GeneralKeyshare {
-	items := make([]types.GeneralKeyshare, n)
+func createNKeyshares(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Keyshare {
+	items := make([]types.Keyshare, n)
 	for i := range items {
 		items[i].Validator = sample.AccAddress()
-		items[i].IdValue = fmt.Sprintf("testing/%d", i)
-		items[i].IdType = "testing"
 		items[i].Keyshare = random.RandHex(10)
-		keeper.SetGeneralKeyShare(ctx, items[i])
+		items[i].BlockHeight = uint64(i)
+		keeper.SetKeyshare(ctx, items[i])
 	}
 	return items
 }
 
-func TestGeneralKeyShareGet(t *testing.T) {
+func TestKeyshareGet(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
-	items := createNGeneralKeyShares(&keeper, ctx, 10)
+	items := createNKeyshares(&keeper, ctx, 10)
 	for _, item := range items {
-		rst, found := keeper.GetGeneralKeyShare(ctx,
+		rst, found := keeper.GetKeyshare(ctx,
 			item.Validator,
-			item.IdType,
-			item.IdValue,
+			item.BlockHeight,
 		)
 		require.True(t, found)
 		require.Equal(t,
@@ -44,28 +41,26 @@ func TestGeneralKeyShareGet(t *testing.T) {
 	}
 }
 
-func TestGeneralKeySharesRemove(t *testing.T) {
+func TestKeysharesRemove(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
-	items := createNGeneralKeyShares(&keeper, ctx, 10)
+	items := createNKeyshares(&keeper, ctx, 10)
 
-	keeper.RemoveGeneralKeyShare(ctx,
+	keeper.RemoveKeyshare(ctx,
 		items[0].Validator,
-		items[0].IdType,
-		items[0].IdValue,
+		items[0].BlockHeight,
 	)
-	_, found := keeper.GetGeneralKeyShare(ctx,
+	_, found := keeper.GetKeyshare(ctx,
 		items[0].Validator,
-		items[0].IdType,
-		items[0].IdValue,
+		items[0].BlockHeight,
 	)
 	require.False(t, found)
 }
 
-func TestGeneralKeySharesGetAll(t *testing.T) {
+func TestKeysharesGetAll(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
-	items := createNGeneralKeyShares(&keeper, ctx, 10)
+	items := createNKeyshares(&keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllGeneralKeyShare(ctx)),
+		nullify.Fill(keeper.GetAllKeyshare(ctx)),
 	)
 }

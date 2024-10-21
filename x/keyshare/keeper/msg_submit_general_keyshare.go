@@ -65,7 +65,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 
 	switch msg.IdType {
 	case PrivateGovIdentity:
-		keyShareReq, found := k.GetKeyShareRequest(ctx, msg.IdValue)
+		keyShareReq, found := k.GetDecryptionKeyRequest(ctx, msg.IdValue)
 		if !found {
 			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
 		}
@@ -79,7 +79,6 @@ func (k msgServer) SubmitGeneralKeyshare(
 				ReceivedBlockHeight: uint64(ctx.BlockHeight()),
 				Success:             true,
 			}, nil
-			// return nil, types.ErrAggKeyAlreadyExists.Wrapf(", identity: %s, Aggregated key: %s", msg.IdValue, keyShareReq.AggrKeyshare)
 		}
 	}
 
@@ -144,7 +143,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 	}
 
 	// Save the new general key share to state
-	k.SetGeneralKeyShare(ctx, generalKeyShare)
+	k.SetGeneralKeyshare(ctx, generalKeyShare)
 	k.SetLastSubmittedHeight(ctx, msg.Creator, strconv.FormatInt(ctx.BlockHeight(), 10))
 
 	validatorList := k.GetAllValidatorSet(ctx)
@@ -153,7 +152,12 @@ func (k msgServer) SubmitGeneralKeyshare(
 	var stateGeneralKeyShares []types.GeneralKeyshare
 
 	for _, eachValidator := range validatorList {
-		eachGeneralKeyShare, found := k.GetGeneralKeyShare(ctx, eachValidator.Validator, msg.IdType, msg.IdValue)
+		eachGeneralKeyShare, found := k.GetGeneralKeyshare(
+			ctx,
+			eachValidator.Validator,
+			msg.IdType,
+			msg.IdValue,
+		)
 		if !found {
 			continue
 		}
@@ -201,7 +205,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 	// Check if target general keyshare already aggregated a key
 	switch msg.IdType {
 	case PrivateGovIdentity:
-		keyShareReq, found := k.GetKeyShareRequest(ctx, msg.IdValue)
+		keyShareReq, found := k.GetDecryptionKeyRequest(ctx, msg.IdValue)
 		if !found {
 			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
 		}
@@ -273,32 +277,32 @@ func (k msgServer) SubmitGeneralKeyshare(
 			KeyshareIndex:       msg.KeyshareIndex,
 			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
 		}
-		keyShareReq, found := k.GetKeyShareRequest(ctx, msg.IdValue)
+		decryptionKeyReq, found := k.GetDecryptionKeyRequest(ctx, msg.IdValue)
 		if !found {
 			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
 		}
-		if keyShareReq.DecryptionKey != "" {
-			return nil, types.ErrAggKeyAlreadyExists.Wrapf(", identity: %s, Aggregated key: %s", msg.IdValue, keyShareReq.DecryptionKey)
+		if decryptionKeyReq.DecryptionKey != "" {
+			return nil, types.ErrAggKeyAlreadyExists.Wrapf(", identity: %s, Aggregated key: %s", msg.IdValue, decryptionKeyReq.DecryptionKey)
 		}
-		keyShareReq.DecryptionKey = skHex
-		k.SetKeyShareRequest(ctx, keyShareReq)
+		decryptionKeyReq.DecryptionKey = skHex
+		k.SetDecryptionKeyRequest(ctx, decryptionKeyReq)
 		timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 
-		if keyShareReq.IbcInfo != nil {
-			if keyShareReq.IbcInfo.ChannelId != "" {
+		if decryptionKeyReq.IbcInfo != nil {
+			if decryptionKeyReq.IbcInfo.ChannelId != "" {
 				_, err := k.TransmitDecryptionKeyDataPacket(
 					ctx,
 					types.DecryptionKeyDataPacketData{
-						Identity:      keyShareReq.Identity,
-						Pubkey:        keyShareReq.Pubkey,
-						DecryptionKey: keyShareReq.DecryptionKey,
+						Identity:      decryptionKeyReq.Identity,
+						Pubkey:        decryptionKeyReq.Pubkey,
+						DecryptionKey: decryptionKeyReq.DecryptionKey,
 						AggrHeight:    strconv.FormatInt(ctx.BlockHeight(), 10),
-						ProposalId:    keyShareReq.ProposalId,
-						RequestId:     keyShareReq.RequestId,
+						ProposalId:    decryptionKeyReq.ProposalId,
+						RequestId:     decryptionKeyReq.RequestId,
 						Retries:       0,
 					},
-					keyShareReq.IbcInfo.PortId,
-					keyShareReq.IbcInfo.ChannelId,
+					decryptionKeyReq.IbcInfo.PortId,
+					decryptionKeyReq.IbcInfo.ChannelId,
 					clienttypes.ZeroHeight(),
 					uint64(timeoutTimestamp),
 				)
@@ -308,8 +312,8 @@ func (k msgServer) SubmitGeneralKeyshare(
 				}
 			}
 		} else {
-			if keyShareReq.ProposalId != "" {
-				id, err := strconv.ParseUint(keyShareReq.ProposalId, 10, 64)
+			if decryptionKeyReq.ProposalId != "" {
+				id, err := strconv.ParseUint(decryptionKeyReq.ProposalId, 10, 64)
 				if err != nil {
 					val.Success = false
 					return &val, err
@@ -321,11 +325,11 @@ func (k msgServer) SubmitGeneralKeyshare(
 					return &val, errors.New("proposal not found")
 				}
 
-				proposal.DecryptionKey = keyShareReq.DecryptionKey
+				proposal.DecryptionKey = decryptionKeyReq.DecryptionKey
 				k.govKeeper.SetProposal(ctx, proposal)
 			} else {
-				val, _ := k.pepKeeper.GetEntry(ctx, keyShareReq.RequestId)
-				val.DecryptionKey = keyShareReq.DecryptionKey
+				val, _ := k.pepKeeper.GetEntry(ctx, decryptionKeyReq.RequestId)
+				val.DecryptionKey = decryptionKeyReq.DecryptionKey
 				k.pepKeeper.SetExecutionQueueEntry(ctx, val)
 				k.pepKeeper.SetEntry(ctx, val)
 			}

@@ -52,12 +52,12 @@ service Msg {
 
   // RegisterContract defines an operation to make an instantiated
   // contract eligible to be automatically executed when a particular
-  // identity has aggregated keyshares available for it
+  // identity has decryption key available for it
   rpc RegisterContract(MsgRegisterContract) returns (MsgRegisterContractResponse);
 
   // UnregisterContract defines an operation to remove a registered contract
   // from the list of contracts set to be automatically executed when
-  // aggreagted keyshare is available for a particular identity
+  // decryption key is available for a particular identity
   rpc UnregisterContract(MsgUnregisterContract) returns (MsgUnregisterContractResponse);
 }
 
@@ -106,7 +106,7 @@ message MsgSubmitGeneralEncryptedTx {
 // MsgSubmitGeneralEncryptedTx message.
 message MsgSubmitGeneralEncryptedTxResponse {}
 
-// MsgCreateAggregatedKeyShare is the Msg/CreateAggregatedKeyShare request type.
+// MsgSubmitDecryptionKey is the Msg/SubmitDecryptionKey request type.
 message MsgSubmitDecryptionKey {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;

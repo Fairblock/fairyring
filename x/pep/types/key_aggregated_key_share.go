@@ -9,7 +9,7 @@ const (
 	DecryptionKeyKeyPrefix = "DecryptionKey/value/"
 )
 
-// AggregatedKeyShareKey returns the store key to retrieve a decryption key from the index fields
+// DecryptionKeyKey returns the store key to retrieve a decryption key from the index fields
 func DecryptionKeyKey(
 	height uint64,
 ) []byte {

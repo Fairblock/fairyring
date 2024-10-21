@@ -22,7 +22,7 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func TestAggregatedKeyShareMsgServerCreate(t *testing.T) {
+func TestSubmitDecryptionKey(t *testing.T) {
 	k, ctx := keepertest.PepKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
@@ -52,13 +52,13 @@ func TestAggregatedKeyShareMsgServerCreate(t *testing.T) {
 		errMsg   string
 	}{
 		{
-			desc: "IsSourceChainTriesToCreateAggrKey",
+			desc: "SourceChainTriesToSubmitDecryptionKey",
 			request: &types.MsgSubmitDecryptionKey{
 				Creator: sample.AccAddress(),
 				Height:  rand.Uint64(),
 				Data:    random.RandHex(192),
 			},
-			errMsg: "submission of external aggregated keyshare not permitted on source chain",
+			errMsg: "submission of external decryption key not permitted on source chain",
 		},
 		{
 			desc: "SubmittedFromNotTrustedAddr",
@@ -79,7 +79,7 @@ func TestAggregatedKeyShareMsgServerCreate(t *testing.T) {
 			errMsg: "active key not found",
 		},
 		{
-			desc: "InvalidAggregatedKeyShare",
+			desc: "InvalidDecryptionKey",
 			request: &types.MsgSubmitDecryptionKey{
 				Creator: trustedAddr,
 				Height:  rand.Uint64(),
@@ -97,7 +97,7 @@ func TestAggregatedKeyShareMsgServerCreate(t *testing.T) {
 			errMsg: "age decrypt: errNoMatch",
 		},
 		{
-			desc: "ValidAggregatedKeyShare",
+			desc: "ValidDecryptionKey",
 			request: &types.MsgSubmitDecryptionKey{
 				Creator: trustedAddr,
 				Height:  999,
@@ -122,7 +122,7 @@ func TestAggregatedKeyShareMsgServerCreate(t *testing.T) {
 				)
 			}
 
-			if tc.desc == "IsSourceChainTriesToCreateAggrKey" {
+			if tc.desc == "SourceChainTriesToSubmitDecryptionKey" {
 				startParams.IsSourceChain = false
 				err = k.SetParams(wctx, startParams)
 				require.NoError(t, err)

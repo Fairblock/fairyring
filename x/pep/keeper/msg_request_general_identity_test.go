@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestRequestGeneralKeyshare(t *testing.T) {
+func TestRequestGeneralIdentity(t *testing.T) {
 	// Initialize the keeper, context, and other dependencies
 	k, ctx := keepertest.PepKeeper(t)
 	goCtx := sdk.WrapSDKContext(ctx)
@@ -59,7 +59,7 @@ func TestRequestGeneralKeyshare(t *testing.T) {
 	require.Equal(t, "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/test_req_id_3", resp.ReqId)
 }
 
-func TestOnAcknowledgementRequestAggrKeysharePacket(t *testing.T) {
+func TestOnAcknowledgementRequestDecryptionKeyPacket(t *testing.T) {
 	// Initialize the keeper, context, and other dependencies
 	k, ctx := keepertest.PepKeeper(t)
 
@@ -76,7 +76,7 @@ func TestOnAcknowledgementRequestAggrKeysharePacket(t *testing.T) {
 		},
 	}
 
-	// Test success case for OnAcknowledgementRequestAggrKeysharePacket
+	// Test success case for OnAcknowledgementRequestDecryptionKeyPacket
 	err := k.OnAcknowledgementRequestDecryptionKeyPacket(ctx, packet, packetData, ack)
 	require.NoError(t, err)
 

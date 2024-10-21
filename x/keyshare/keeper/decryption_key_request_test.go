@@ -12,21 +12,25 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func createNKeyshareRequest(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.DecryptionKeyRequest {
+func createNDecryptionKeyRequests(
+	keeper *keeper.Keeper,
+	ctx sdk.Context,
+	n int,
+) []types.DecryptionKeyRequest {
 	items := make([]types.DecryptionKeyRequest, n)
 	for i := range items {
 		items[i].RequestId = fmt.Sprintf("%d/rq", i)
 		items[i].Identity = fmt.Sprintf("%d/rq", i)
-		keeper.SetKeyShareRequest(ctx, items[i])
+		keeper.SetDecryptionKeyRequest(ctx, items[i])
 	}
 	return items
 }
 
-func TestKeyShareRequestGet(t *testing.T) {
+func TestDecryptionKeyRequestGet(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
-	items := createNKeyshareRequest(&keeper, ctx, 10)
+	items := createNDecryptionKeyRequests(&keeper, ctx, 10)
 	for _, item := range items {
-		rst, found := keeper.GetKeyShareRequest(ctx,
+		rst, found := keeper.GetDecryptionKeyRequest(ctx,
 			item.Identity,
 		)
 		require.True(t, found)
@@ -36,25 +40,25 @@ func TestKeyShareRequestGet(t *testing.T) {
 		)
 	}
 }
-func TestKeyShareRequestRemove(t *testing.T) {
+func TestDecryptionKeyRequestRemove(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
-	items := createNKeyshareRequest(&keeper, ctx, 10)
+	items := createNDecryptionKeyRequests(&keeper, ctx, 10)
 	for _, item := range items {
-		keeper.RemoveKeyShareRequest(ctx,
+		keeper.RemoveDecryptionKeyRequest(ctx,
 			item.Identity,
 		)
-		_, found := keeper.GetKeyShareRequest(ctx,
+		_, found := keeper.GetDecryptionKeyRequest(ctx,
 			item.Identity,
 		)
 		require.False(t, found)
 	}
 }
 
-func TestKeyShareRequestGetAll(t *testing.T) {
+func TestDecryptionKeyRequestGetAll(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
-	items := createNKeyshareRequest(&keeper, ctx, 10)
+	items := createNDecryptionKeyRequests(&keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllKeyShareRequests(ctx)),
+		nullify.Fill(keeper.GetAllDecryptionKeyRequests(ctx)),
 	)
 }

@@ -104,7 +104,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		}, nil
 	}
 
-	keyShare := types.Keyshare{
+	keyshare := types.Keyshare{
 		Validator:           msg.Creator,
 		BlockHeight:         msg.BlockHeight,
 		Keyshare:            msg.Message,
@@ -114,21 +114,21 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	}
 
 	// Save the new keyshare to state
-	k.SetKeyShare(ctx, keyShare)
+	k.SetKeyshare(ctx, keyshare)
 
 	k.SetLastSubmittedHeight(ctx, msg.Creator, strconv.FormatUint(msg.BlockHeight, 10))
 
 	validatorList := k.GetAllValidatorSet(ctx)
 
 	// Get all the keyshares for the provided block height in state
-	var stateKeyShares []types.Keyshare
+	var stateKeyshares []types.Keyshare
 
 	for _, eachValidator := range validatorList {
-		eachKeyShare, found := k.GetKeyShare(ctx, eachValidator.Validator, msg.BlockHeight)
+		eachKeyshare, found := k.GetKeyshare(ctx, eachValidator.Validator, msg.BlockHeight)
 		if !found {
 			continue
 		}
-		stateKeyShares = append(stateKeyShares, eachKeyShare)
+		stateKeyshares = append(stateKeyshares, eachKeyshare)
 	}
 
 	// Get the active public key for aggregating
@@ -154,13 +154,18 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		),
 	)
 
-	// Check if there is an aggregated key exists
-	aggrKeyData, found := k.GetAggregatedKeyShare(ctx, msg.BlockHeight)
+	// Check if decryption key already exists
+	decryptionKeyData, found := k.GetDecryptionKey(ctx, msg.BlockHeight)
 
-	// If there is not enough keyshares to aggregate OR there is already an aggregated key
-	// Only continue the code if there is enough keyshare to aggregate & no aggregated key for current height
-	if int64(len(stateKeyShares)) < expectedThreshold || found {
-		defer telemetry.IncrCounterWithLabels([]string{types.KeyTotalValidKeyShareSubmitted}, 1, []metrics.Label{telemetry.NewLabel("aggrkey", aggrKeyData.Data)})
+	// If there is not enough keyshares to aggregate OR there is already a decryption key
+	// Only continue the code if there is enough keyshare to aggregate &
+	// no decryption key for current height
+	if int64(len(stateKeyshares)) < expectedThreshold || found {
+		defer telemetry.IncrCounterWithLabels(
+			[]string{types.KeyTotalValidKeyShareSubmitted},
+			1,
+			[]metrics.Label{telemetry.NewLabel("aggrkey", decryptionKeyData.Data)},
+		)
 		return &types.MsgSendKeyshareResponse{
 			Creator:             msg.Creator,
 			Keyshare:            msg.Message,
@@ -175,7 +180,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	var listOfShares []distIBE.ExtractedKey
 	var listOfCommitment []distIBE.Commitment
 
-	for _, eachKeyShare := range stateKeyShares {
+	for _, eachKeyShare := range stateKeyshares {
 		if eachKeyShare.KeyshareIndex > commitmentsLen {
 			k.Logger().Error(fmt.Sprintf("KeyShareIndex: %d should not higher or equals to commitments length: %d", eachKeyShare.KeyshareIndex, commitmentsLen))
 			continue
@@ -204,12 +209,12 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	}
 	skHex := hex.EncodeToString(skByte)
 
-	k.SetAggregatedKeyShare(ctx, types.DecryptionKey{
+	k.SetDecryptionKey(ctx, types.DecryptionKey{
 		Height: msg.BlockHeight,
 		Data:   skHex,
 	})
 
-	k.SetAggregatedKeyShareLength(ctx, k.GetAggregatedKeyShareLength(ctx)+1)
+	k.SetDecryptionKeyLength(ctx, k.GetDecryptionKeyLength(ctx)+1)
 
 	k.Logger().Info(fmt.Sprintf("Aggregated Decryption Key for Block %d: %s", msg.BlockHeight, skHex))
 
@@ -240,7 +245,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		k.pepKeeper.SetLatestHeight(ctx, strconv.FormatUint(msg.BlockHeight, 10))
 	}
 
-	k.Logger().Info(fmt.Sprintf("[ProcessUnconfirmedTxs] Aggregated Key Added, height: %d", msg.BlockHeight))
+	k.Logger().Info(fmt.Sprintf("[ProcessUnconfirmedTxs] Decryption Key Added, height: %d", msg.BlockHeight))
 
 	return &types.MsgSendKeyshareResponse{
 		Creator:             msg.Creator,

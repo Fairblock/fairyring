@@ -70,7 +70,7 @@ func (k Keeper) GetSKPoint(
 	suite pairing.Suite) (kyber.Point, error) {
 	keyByte, err := hex.DecodeString(key)
 	if err != nil {
-		k.Logger().Error("Error decoding aggregated key")
+		k.Logger().Error("Error decoding decryption key")
 		k.Logger().Error(err.Error())
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func (k Keeper) GetSKPoint(
 	skPoint := suite.G2().Point()
 	err = skPoint.UnmarshalBinary(keyByte)
 	if err != nil {
-		k.Logger().Error("Error unmarshalling aggregated key")
+		k.Logger().Error("Error unmarshalling decryption key")
 		k.Logger().Error(err.Error())
 		return nil, err
 	}

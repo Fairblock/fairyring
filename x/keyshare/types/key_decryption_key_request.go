@@ -8,7 +8,7 @@ import (
 var _ binary.ByteOrder
 
 const (
-	// KeyShareRequestKeyPrefix is the prefix to retrieve all Keyshare requests
+	// DecryptionKeyRequestKeyPrefix is the prefix to retrieve all decryption key requests
 	DecryptionKeyRequestKeyPrefix        = "DecryptionKeyRequest/value/"
 	PrivateDecryptionKeyRequestKeyPrefix = "PrivateDecryptionKeyRequest/value/"
 )

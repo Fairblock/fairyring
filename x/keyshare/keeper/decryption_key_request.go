@@ -10,17 +10,17 @@ import (
 	"cosmossdk.io/store/prefix"
 )
 
-// SetKeyShareRequest set a specific keyShare request in the store by its index
-func (k Keeper) SetKeyShareRequest(ctx context.Context, KeyShareRequest types.DecryptionKeyRequest) {
+// SetDecryptionKeyRequest set a specific decryption key request in the store by its index
+func (k Keeper) SetDecryptionKeyRequest(ctx context.Context, decryptionKeyReq types.DecryptionKeyRequest) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.DecryptionKeyRequestKeyPrefix))
-	key := []byte(KeyShareRequest.Identity)
-	b := k.cdc.MustMarshal(&KeyShareRequest)
+	key := []byte(decryptionKeyReq.Identity)
+	b := k.cdc.MustMarshal(&decryptionKeyReq)
 	store.Set(key, b)
 }
 
-// GetKeyShareRequest returns a keyShare request from its index
-func (k Keeper) GetKeyShareRequest(
+// GetDecryptionKeyRequest returns a decryption key request from its index
+func (k Keeper) GetDecryptionKeyRequest(
 	ctx context.Context,
 	identity string,
 
@@ -37,8 +37,8 @@ func (k Keeper) GetKeyShareRequest(
 	return val, true
 }
 
-// RemoveKeyShareRequest removes a keyShare request from the store
-func (k Keeper) RemoveKeyShareRequest(
+// RemoveDecryptionKeyRequest removes a decryption key request from the store
+func (k Keeper) RemoveDecryptionKeyRequest(
 	ctx context.Context,
 	identity string,
 
@@ -48,8 +48,8 @@ func (k Keeper) RemoveKeyShareRequest(
 	store.Delete([]byte(identity))
 }
 
-// GetAllKeyShareRequests returns all keyShare requests
-func (k Keeper) GetAllKeyShareRequests(ctx context.Context) (list []types.DecryptionKeyRequest) {
+// GetAllDecryptionKeyRequests returns all decryption key requests
+func (k Keeper) GetAllDecryptionKeyRequests(ctx context.Context) (list []types.DecryptionKeyRequest) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.DecryptionKeyRequestKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
@@ -65,17 +65,21 @@ func (k Keeper) GetAllKeyShareRequests(ctx context.Context) (list []types.Decryp
 	return
 }
 
-// SetPrivateKeyShareRequest set a specific private keyShare request in the store by its index
-func (k Keeper) SetPrivateKeyShareRequest(ctx context.Context, KeyShareRequest types.PrivateDecryptionKeyRequest) {
+// SetPrivateDecryptionKeyRequest set a specific private
+// decryption key request in the store by its index
+func (k Keeper) SetPrivateDecryptionKeyRequest(
+	ctx context.Context,
+	privDecryptionKeyReq types.PrivateDecryptionKeyRequest,
+) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateDecryptionKeyRequestKeyPrefix))
-	key := []byte(KeyShareRequest.Identity)
-	b := k.cdc.MustMarshal(&KeyShareRequest)
+	key := []byte(privDecryptionKeyReq.Identity)
+	b := k.cdc.MustMarshal(&privDecryptionKeyReq)
 	store.Set(key, b)
 }
 
-// GetPrivateKeyShareRequest returns a private keyShare request from its index
-func (k Keeper) GetPrivateKeyShareRequest(
+// GetPrivateDecryptionKeyRequest returns a private decryption key request from its index
+func (k Keeper) GetPrivateDecryptionKeyRequest(
 	ctx context.Context,
 	identity string,
 ) (val types.PrivateDecryptionKeyRequest, found bool) {
@@ -91,8 +95,8 @@ func (k Keeper) GetPrivateKeyShareRequest(
 	return val, true
 }
 
-// RemovePrivateKeyShareRequest removes a private keyShare request from the store
-func (k Keeper) RemovePrivateKeyShareRequest(
+// RemovePrivateDecryptionKeyRequest removes a private decryption key request from the store
+func (k Keeper) RemovePrivateDecryptionKeyRequest(
 	ctx context.Context,
 	identity string,
 ) {
@@ -101,8 +105,10 @@ func (k Keeper) RemovePrivateKeyShareRequest(
 	store.Delete([]byte(identity))
 }
 
-// GetAllPrivateKeyShareRequests returns all private keyShare requests
-func (k Keeper) GetAllPrivateKeyShareRequests(ctx context.Context) (list []types.PrivateDecryptionKeyRequest) {
+// GetAllPrivateDecryptionKeyRequests returns all private keyShare requests
+func (k Keeper) GetAllPrivateDecryptionKeyRequests(
+	ctx context.Context,
+) (list []types.PrivateDecryptionKeyRequest) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateDecryptionKeyRequestKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})

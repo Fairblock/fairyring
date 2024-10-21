@@ -21,24 +21,24 @@ func (k Keeper) VerifiableRandomness(
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	aggrKeyArr := k.GetAllAggregatedKeyShare(ctx)
+	decryptionKeys := k.GetAllDecryptionKeys(ctx)
 
-	if len(aggrKeyArr) == 0 {
-		return nil, status.Error(codes.Internal, "aggregated key not found")
+	if len(decryptionKeys) == 0 {
+		return nil, status.Error(codes.Internal, "decryption key not found")
 	}
 
-	aggrKey := aggrKeyArr[len(aggrKeyArr)-1]
-	aggrKeyBytes, err := hex.DecodeString(aggrKey.Data)
+	decryptionKey := decryptionKeys[len(decryptionKeys)-1]
+	decryptionKeyBytes, err := hex.DecodeString(decryptionKey.Data)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "unable to decode aggregated key")
+		return nil, status.Error(codes.Internal, "unable to decode decryption key")
 	}
 
 	hash := sha256.New()
-	hash.Write(aggrKeyBytes)
-	hashedAggrKey := hash.Sum(nil)
+	hash.Write(decryptionKeyBytes)
+	hashedDecryptionKey := hash.Sum(nil)
 
 	return &types.QueryVerifiableRandomnessResponse{
-		Randomness: hex.EncodeToString(hashedAggrKey),
-		Round:      aggrKey.Height,
+		Randomness: hex.EncodeToString(hashedDecryptionKey),
+		Round:      decryptionKey.Height,
 	}, nil
 }

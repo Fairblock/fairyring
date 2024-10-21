@@ -71,10 +71,10 @@ const (
 )
 
 const (
-	KeyShareVerificationType    = "keyshare-verification"
-	KeyShareVerificationCreator = "creator"
-	KeyShareVerificationHeight  = "height"
-	KeyShareVerificationReason  = "reason"
+	DecryptionKeyVerificationType    = "decryption-key-verification"
+	DecryptionKeyVerificationCreator = "creator"
+	DecryptionKeyVerificationHeight  = "height"
+	DecryptionKeyVerificationReason  = "reason"
 )
 
 const (

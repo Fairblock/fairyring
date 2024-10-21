@@ -21,7 +21,7 @@ func (k Keeper) OnRecvGetDecryptionKeyPacket(
 		return packetAck, err
 	}
 
-	keyshareReq, found := k.GetKeyShareRequest(ctx, data.Identity)
+	keyshareReq, found := k.GetDecryptionKeyRequest(ctx, data.Identity)
 	if !found {
 		return packetAck, types.ErrRequestNotFound
 	}
@@ -44,7 +44,7 @@ func (k Keeper) OnRecvGetDecryptionKeyPacket(
 
 	if keyshareReq.DecryptionKey == "" {
 
-		k.Logger().Info("Got OnRecvGetAggrKeysharePacket")
+		k.Logger().Info("Got GetDecryptionKeyPacket")
 
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
@@ -81,7 +81,7 @@ func (k Keeper) OnRecvGetPrivateDecryptionKeyPacket(
 		return packetAck, errors.New("active public key not found")
 	}
 
-	keyshareReq, found := k.GetPrivateKeyShareRequest(ctx, data.Identity)
+	keyshareReq, found := k.GetPrivateDecryptionKeyRequest(ctx, data.Identity)
 	if !found {
 		keyshareReq.Identity = data.Identity
 		keyshareReq.Pubkey = activePubkey.PublicKey
@@ -99,7 +99,7 @@ func (k Keeper) OnRecvGetPrivateDecryptionKeyPacket(
 		keyshareReq.RequestId = data.Identity
 		keyshareReq.Sent = false
 
-		k.SetPrivateKeyShareRequest(ctx, keyshareReq)
+		k.SetPrivateDecryptionKeyRequest(ctx, keyshareReq)
 	}
 
 	if len(keyshareReq.PrivateDecryptionKeys) == 0 {

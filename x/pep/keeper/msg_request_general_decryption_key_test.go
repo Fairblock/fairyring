@@ -66,7 +66,7 @@ func TestGetGeneralKeyshare(t *testing.T) {
 	require.Equal(t, "test_identity", req.Identity)
 }
 
-func TestOnAcknowledgementGetAggrKeysharePacket(t *testing.T) {
+func TestOnAcknowledgementGetDecryptionKeyPacket(t *testing.T) {
 	// Initialize the keeper, context, and other dependencies
 	k, ctx := keepertest.PepKeeper(t)
 
@@ -80,7 +80,7 @@ func TestOnAcknowledgementGetAggrKeysharePacket(t *testing.T) {
 		},
 	}
 
-	// Test success case for OnAcknowledgementGetAggrKeysharePacket
+	// Test success case for OnAcknowledgementGetDecryptionKeyPacket
 	err := k.OnAcknowledgementGetDecryptionKeyPacket(ctx, packet, packetData, ack)
 	require.NoError(t, err)
 

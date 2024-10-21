@@ -86,7 +86,7 @@ func (k msgServer) RequestGeneralIdentity(
 	}
 }
 
-// TransmitRequestAggrKeysharePacket transmits the packet over IBC with the specified source port and source channel
+// TransmitRequestDecryptionKeyPacket transmits the packet over IBC with the specified source port and source channel
 func (k Keeper) TransmitRequestDecryptionKeyPacket(
 	ctx sdk.Context,
 	packetData kstypes.RequestDecryptionKeyPacketData,
@@ -105,7 +105,7 @@ func (k Keeper) TransmitRequestDecryptionKeyPacket(
 	return k.ibcKeeperFn().ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes)
 }
 
-// OnAcknowledgementRequestAggrKeysharePacket responds to the the success or failure of a packet
+// OnAcknowledgementRequestDecryptionKeyPacket responds to the the success or failure of a packet
 // acknowledgement written on the receiving chain.
 func (k Keeper) OnAcknowledgementRequestDecryptionKeyPacket(
 	ctx sdk.Context,

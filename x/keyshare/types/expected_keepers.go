@@ -92,7 +92,7 @@ type PepKeeper interface {
 	GetPrivateRequest(ctx context.Context, reqID string) (val peptypes.PrivateRequest, found bool)
 	GetAllPrivateRequest(ctx context.Context) (list []peptypes.PrivateRequest)
 	GetDecryptionKey(ctx context.Context, height uint64) (val peptypes.DecryptionKey, found bool)
-	SetDecryptionKey(ctx context.Context, aggregatedKeyShare peptypes.DecryptionKey)
+	SetDecryptionKey(ctx context.Context, decryptionKey peptypes.DecryptionKey)
 	GetLatestHeight(ctx context.Context) string
 	SetLatestHeight(ctx context.Context, height string)
 }

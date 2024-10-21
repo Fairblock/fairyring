@@ -15,7 +15,7 @@ import (
 )
 
 // CheckTxHandler is a wrapper around baseapp's CheckTx method that allows us to
-// verify aggregated keyshare transactions against the latest committed state. All other transactions
+// verify keyshare transactions against the latest committed state. All other transactions
 // are executed normally using base app's CheckTx. This defines all of the
 // dependencies that are required to verify a keyshare transaction.
 type KeyshareCheckTxHandler struct {

@@ -55,7 +55,7 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 		keyshareRequest.DecryptionKey = ""
 		keyshareRequest.RequestId = req.GetRequestId()
 
-		k.SetKeyShareRequest(ctx, keyshareRequest)
+		k.SetDecryptionKeyRequest(ctx, keyshareRequest)
 
 		entry := peptypes.IdentityExecutionEntry{
 			Creator:   req.Creator,
@@ -75,26 +75,26 @@ func (k Keeper) ProcessPepSignalQueue(ctx sdk.Context) error {
 	k.Logger().Info(fmt.Sprintf("PROCESSING PEP SIGNAL QUEUE: %v", reqs))
 	for _, req := range reqs {
 		if req.Identity != "" {
-			keyshareReq, found := k.GetKeyShareRequest(ctx, req.Identity)
+			decryptionKeyReq, found := k.GetDecryptionKeyRequest(ctx, req.Identity)
 			if !found {
 				k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
 				continue
 			}
 			key, _ := k.GetActivePubkey(ctx)
-			if keyshareReq.Pubkey != key.PublicKey {
+			if decryptionKeyReq.Pubkey != key.PublicKey {
 				qKey, found := k.GetQueuedPubkey(ctx)
 				if !found {
 					k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
 					continue
 				}
-				if qKey.PublicKey != keyshareReq.Pubkey {
+				if qKey.PublicKey != decryptionKeyReq.Pubkey {
 					k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
 					continue
 				}
 				continue
 			}
 
-			if keyshareReq.DecryptionKey == "" {
+			if decryptionKeyReq.DecryptionKey == "" {
 				ctx.EventManager().EmitEvent(
 					sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
 						sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, req.Identity),
@@ -126,7 +126,7 @@ func (k Keeper) ProcessPrivateRequestQueue(ctx sdk.Context) error {
 		keyshareRequest.PrivateDecryptionKeys = make([]*common.PrivateDecryptionKey, 0)
 		keyshareRequest.RequestId = req.GetRequestId()
 
-		k.SetPrivateKeyShareRequest(ctx, keyshareRequest)
+		k.SetPrivateDecryptionKeyRequest(ctx, keyshareRequest)
 
 		entry, found := k.pepKeeper.GetPrivateRequest(ctx, id)
 		if !found {
@@ -151,7 +151,7 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 
 	for _, req := range reqs {
 		if req.Identity != "" {
-			keyshareReq, found := k.GetPrivateKeyShareRequest(ctx, req.Identity)
+			privDecryptionKeyReq, found := k.GetPrivateDecryptionKeyRequest(ctx, req.Identity)
 			if !found {
 				var keyshareRequest types.PrivateDecryptionKeyRequest
 
@@ -161,7 +161,7 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 				keyshareRequest.PrivateDecryptionKeys = make([]*common.PrivateDecryptionKey, 0)
 				keyshareRequest.RequestId = req.GetRequestId()
 
-				k.SetPrivateKeyShareRequest(ctx, keyshareRequest)
+				k.SetPrivateDecryptionKeyRequest(ctx, keyshareRequest)
 
 				entry, found := k.pepKeeper.GetPrivateRequest(ctx, req.Identity)
 				if !found {
@@ -173,7 +173,7 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 
 			}
 
-			if len(keyshareReq.PrivateDecryptionKeys) == 0 {
+			if len(privDecryptionKeyReq.PrivateDecryptionKeys) == 0 {
 				ctx.EventManager().EmitEvent(
 					sdk.NewEvent(types.StartSendEncryptedKeyShareEventType,
 						sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, req.Identity),
@@ -229,7 +229,7 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 		keyshareRequest.DecryptionKey = ""
 		keyshareRequest.ProposalId = req.GetProposalId()
 
-		k.SetKeyShareRequest(ctx, keyshareRequest)
+		k.SetDecryptionKeyRequest(ctx, keyshareRequest)
 		k.SetRequestCount(ctx, reqCount)
 
 		pID, _ := strconv.ParseUint(req.GetProposalId(), 10, 64)
@@ -253,27 +253,27 @@ func (k Keeper) ProcessGovSignalQueue(ctx sdk.Context) error {
 	reqs := k.govKeeper.GetAllSignalQueueEntry(ctx)
 	for _, req := range reqs {
 		if req.Identity != "" {
-			keyshareReq, found := k.GetKeyShareRequest(ctx, req.Identity)
+			decryptionKeyReq, found := k.GetDecryptionKeyRequest(ctx, req.Identity)
 			if !found {
 				k.govKeeper.RemoveSignalQueueEntry(ctx, req.GetProposalId())
 				continue
 			}
 
 			key, _ := k.GetActivePubkey(ctx)
-			if keyshareReq.Pubkey != key.PublicKey {
+			if decryptionKeyReq.Pubkey != key.PublicKey {
 				qKey, found := k.GetQueuedPubkey(ctx)
 				if !found {
 					k.govKeeper.RemoveSignalQueueEntry(ctx, req.GetProposalId())
 					continue
 				}
-				if qKey.PublicKey != keyshareReq.Pubkey {
+				if qKey.PublicKey != decryptionKeyReq.Pubkey {
 					k.govKeeper.RemoveSignalQueueEntry(ctx, req.GetProposalId())
 					continue
 				}
 				continue
 			}
 
-			if keyshareReq.DecryptionKey == "" {
+			if decryptionKeyReq.DecryptionKey == "" {
 				ctx.EventManager().EmitEvent(
 					sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
 						sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, req.Identity),

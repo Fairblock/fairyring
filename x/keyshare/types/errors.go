@@ -50,5 +50,5 @@ var (
 	ErrAuthorizedAnotherAddress        = sdkerrors.Register(ModuleName, 1909, "validator authorized another address to submit key share is not allow to submit key share")
 	ErrUnsupportedIDType               = sdkerrors.Register(ModuleName, 1910, "id type provided in general key share message is not supported")
 	ErrKeyShareRequestNotFound         = sdkerrors.Register(ModuleName, 1911, "key share request for the given identity not found")
-	ErrAggKeyAlreadyExists             = sdkerrors.Register(ModuleName, 1912, "aggregated key already exists for the given identity")
+	ErrAggKeyAlreadyExists             = sdkerrors.Register(ModuleName, 1912, "decryption key already exists for the given identity")
 )

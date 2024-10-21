@@ -5,13 +5,13 @@ import "encoding/binary"
 var _ binary.ByteOrder
 
 const (
-	// AggregatedKeyShareKeyPrefix is the prefix to retrieve all AggregatedKeyShare
-	AggregatedKeyShareKeyPrefix    = "AggregatedKeyShare/value/"
-	AggregatedKeyShareLengthPrefix = "AggregatedKeyShare/length/"
+	// DecryptionKeyKeyPrefix is the prefix to retrieve all decryption keys
+	DecryptionKeyKeyPrefix    = "DecryptionKey/value/"
+	DecryptionKeyLengthPrefix = "DecryptionKey/length/"
 )
 
-// AggregatedKeyShareKey returns the store key to retrieve a AggregatedKeyShare from the index fields
-func AggregatedKeyShareKey(
+// DecryptionKeyKey returns the store key to retrieve a decryption key from the index fields
+func DecryptionKeyKey(
 	height uint64,
 ) []byte {
 	var key []byte

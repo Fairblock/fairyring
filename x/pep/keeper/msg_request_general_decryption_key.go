@@ -66,7 +66,7 @@ func (k msgServer) RequestGeneralDecryptionKey(
 	return &types.MsgRequestGeneralDecryptionKeyResponse{}, nil
 }
 
-// TransmitGetAggrKeysharePacket transmits the packet over IBC with the specified source port and source channel
+// TransmitGetDecryptionKeyPacket transmits the packet over IBC with the specified source port and source channel
 func (k Keeper) TransmitGetDecryptionKeyPacket(
 	ctx sdk.Context,
 	packetData kstypes.GetDecryptionKeyPacketData,
@@ -85,7 +85,7 @@ func (k Keeper) TransmitGetDecryptionKeyPacket(
 	return k.ibcKeeperFn().ChannelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes)
 }
 
-// OnAcknowledgementGetAggrKeysharePacket responds to the the success or failure of a packet
+// OnAcknowledgementGetDecryptionKeyPacket responds to the the success or failure of a packet
 // acknowledgement written on the receiving chain.
 func (k Keeper) OnAcknowledgementGetDecryptionKeyPacket(
 	ctx sdk.Context,

@@ -5,12 +5,12 @@ import "encoding/binary"
 var _ binary.ByteOrder
 
 const (
-	// KeyShareKeyPrefix is the prefix to retrieve all KeyShare
-	KeyShareKeyPrefix = "KeyShare/value/"
+	// KeyshareKeyPrefix is the prefix to retrieve all Keyshare
+	KeyshareKeyPrefix = "Keyshare/value/"
 )
 
-// KeyShareKey returns the store key to retrieve a KeyShare from the index fields
-func KeyShareKey(
+// KeyshareKey returns the store key to retrieve a Keyshare from the index fields
+func KeyshareKey(
 	validator string,
 	blockHeight uint64,
 ) []byte {

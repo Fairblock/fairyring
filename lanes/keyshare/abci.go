@@ -58,7 +58,7 @@ func (h *ProposalHandler) PrepareLaneHandler() base.PrepareLaneHandler {
 				// Verify the keyshare transaction
 				if err := h.VerifyTx(cacheCtx, tmpKeyshareTx); err != nil {
 					h.lane.Logger().Info(
-						"failed to verify aggregate keyshare tx",
+						"failed to verify keyshare tx",
 						"tx_hash", hash,
 						"err", err,
 					)
@@ -96,7 +96,7 @@ func (h *ProposalHandler) PrepareLaneHandler() base.PrepareLaneHandler {
 
 // ProcessLaneHandler ensures that if keyshare transactions are present in a proposal,
 //   - they are the first transaction in the partial proposal
-//   - there are no other aggregate keyshare transactions in the proposal
+//   - there are no other keyshare transactions in the proposal
 //   - block proposals that include transactions from the keyshare lane are valid
 func (h *ProposalHandler) ProcessLaneHandler() base.ProcessLaneHandler {
 	return func(ctx sdk.Context, partialProposal []sdk.Tx) ([]sdk.Tx, []sdk.Tx, error) {

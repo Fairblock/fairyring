@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// DecryptionKeyAll returns the paginated list of all aggregated keyshares
+// DecryptionKeyAll returns the paginated list of all decryption keys
 func (k Keeper) DecryptionKeyAll(
 	goCtx context.Context,
 	req *types.QueryDecryptionKeyAllRequest,
@@ -23,34 +23,38 @@ func (k Keeper) DecryptionKeyAll(
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var aggregatedKeyShares []types.DecryptionKey
+	var decryptionKeys []types.DecryptionKey
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, []byte{})
-	aggregatedKeyShareStore := prefix.NewStore(store, types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
+	decryptionKeyStore := prefix.NewStore(store, types.KeyPrefix(types.DecryptionKeyKeyPrefix))
 
-	pageRes, err := query.Paginate(aggregatedKeyShareStore, req.Pagination, func(key []byte, value []byte) error {
-		var aggregatedKeyShare types.DecryptionKey
-		if err := k.cdc.Unmarshal(value, &aggregatedKeyShare); err != nil {
-			return err
-		}
+	pageRes, err := query.Paginate(
+		decryptionKeyStore,
+		req.Pagination,
+		func(key []byte, value []byte) error {
+			var decryptionKey types.DecryptionKey
+			if err := k.cdc.Unmarshal(value, &decryptionKey); err != nil {
+				return err
+			}
 
-		aggregatedKeyShares = append(aggregatedKeyShares, aggregatedKeyShare)
-		return nil
-	})
+			decryptionKeys = append(decryptionKeys, decryptionKey)
+			return nil
+		},
+	)
 
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
 	return &types.QueryDecryptionKeyAllResponse{
-		DecryptionKeys: aggregatedKeyShares,
+		DecryptionKeys: decryptionKeys,
 		Pagination:     pageRes,
 	}, nil
 }
 
-// AggregatedKeyShare returns the aggregated key share for a particular height
+// DecryptionKey returns the decryption key for a particular height
 func (k Keeper) DecryptionKey(
 	goCtx context.Context,
 	req *types.QueryDecryptionKeyRequest,
@@ -60,7 +64,7 @@ func (k Keeper) DecryptionKey(
 	}
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	val, found := k.GetAggregatedKeyShare(
+	val, found := k.GetDecryptionKey(
 		ctx,
 		req.Height,
 	)

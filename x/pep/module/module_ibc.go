@@ -164,7 +164,7 @@ func (im IBCModule) OnRecvPacket(
 			}
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(
-					kstypes.EventTypeAggrKeyshareDataPacket,
+					kstypes.EventTypeDecryptionKeyDataPacket,
 					sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
 					sdk.NewAttribute(kstypes.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
 				),
@@ -186,7 +186,7 @@ func (im IBCModule) OnRecvPacket(
 			}
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(
-					kstypes.EventTypeEncKeyshareDataPacket,
+					kstypes.EventTypePrivateDecryptionKeyPacket,
 					sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
 					sdk.NewAttribute(kstypes.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
 				),
@@ -250,7 +250,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 			if err != nil {
 				return err
 			}
-			eventType = kstypes.EventTypeRequestAggrKeysharePacket
+			eventType = kstypes.EventTypeRequestDecryptionKeyPacket
 		case *kstypes.KeysharePacketData_GetDecryptionKeyPacket:
 			err := im.keeper.OnAcknowledgementGetDecryptionKeyPacket(
 				ctx,
@@ -261,7 +261,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 			if err != nil {
 				return err
 			}
-			eventType = kstypes.EventTypeGetAggrKeysharePacket
+			eventType = kstypes.EventTypeGetDecryptionKeyPacket
 
 		case *kstypes.KeysharePacketData_RequestPrivateDecryptionKeyPacket:
 			err := im.keeper.OnAcknowledgementRequestPrivateDecryptionKeyPacket(
@@ -273,7 +273,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 			if err != nil {
 				return err
 			}
-			eventType = kstypes.EventTypeRequestPrivateKeysharePacket
+			eventType = kstypes.EventTypeRequestPrivateDecryptionKeyPacket
 
 		case *kstypes.KeysharePacketData_GetPrivateDecryptionKeyPacket:
 			err := im.keeper.OnAcknowledgementGetPrivateDecryptionKeyPacket(
@@ -285,7 +285,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 			if err != nil {
 				return err
 			}
-			eventType = kstypes.EventTypeGetEncryptedKeysharePacket
+			eventType = kstypes.EventTypeGetPrivateDecryptionKeyPacket
 
 		// this line is used by starport scaffolding # ibc/packet/module/ack
 		default:

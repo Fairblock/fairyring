@@ -179,7 +179,7 @@ message QueryDecryptionKeyAllRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-// QueryAggregatedKeyShareAllResponse is response type for the Query/DecryptionKeyAll RPC method.
+// QueryDecryptionKeyAllResponse is response type for the Query/DecryptionKeyAll RPC method.
 message QueryDecryptionKeyAllResponse {
   repeated DecryptionKey decryption_keys = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;

@@ -10,28 +10,28 @@ import (
 	"cosmossdk.io/store/prefix"
 )
 
-// SetKeyShare set a specific keyShare in the store from its index
-func (k Keeper) SetKeyShare(ctx context.Context, keyShare types.Keyshare) {
+// SetKeyshare set a specific keyShare in the store from its index
+func (k Keeper) SetKeyshare(ctx context.Context, keyShare types.Keyshare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyShareKeyPrefix))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyshareKeyPrefix))
 	b := k.cdc.MustMarshal(&keyShare)
-	store.Set(types.KeyShareKey(
+	store.Set(types.KeyshareKey(
 		keyShare.Validator,
 		keyShare.BlockHeight,
 	), b)
 }
 
-// GetKeyShare returns a keyShare from its index
-func (k Keeper) GetKeyShare(
+// GetKeyshare returns a keyshare from its index
+func (k Keeper) GetKeyshare(
 	ctx context.Context,
 	validator string,
 	blockHeight uint64,
 
 ) (val types.Keyshare, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyShareKeyPrefix))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyshareKeyPrefix))
 
-	b := store.Get(types.KeyShareKey(
+	b := store.Get(types.KeyshareKey(
 		validator,
 		blockHeight,
 	))
@@ -43,25 +43,25 @@ func (k Keeper) GetKeyShare(
 	return val, true
 }
 
-// RemoveKeyShare removes a keyShare from the store
-func (k Keeper) RemoveKeyShare(
+// RemoveKeyshare removes a keyShare from the store
+func (k Keeper) RemoveKeyshare(
 	ctx context.Context,
 	validator string,
 	blockHeight uint64,
 
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyShareKeyPrefix))
-	store.Delete(types.KeyShareKey(
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyshareKeyPrefix))
+	store.Delete(types.KeyshareKey(
 		validator,
 		blockHeight,
 	))
 }
 
-// GetAllKeyShare returns all keyShare
-func (k Keeper) GetAllKeyShare(ctx context.Context) (list []types.Keyshare) {
+// GetAllKeyshare returns all keyshares
+func (k Keeper) GetAllKeyshare(ctx context.Context) (list []types.Keyshare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyShareKeyPrefix))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.KeyshareKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()

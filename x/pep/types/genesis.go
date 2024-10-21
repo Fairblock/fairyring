@@ -57,15 +57,15 @@ func (gs GenesisState) Validate() error {
 		encryptedTxArrIndexMap[index] = struct{}{}
 	}
 
-	// Check for duplicated index in aggregatedKeyShare
-	aggregatedKeyShareIndexMap := make(map[string]struct{})
+	// Check for duplicated index in decryption keys
+	decryptionKeyIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.DecryptionKeyList {
 		index := string(DecryptionKeyKey(elem.Height))
-		if _, ok := aggregatedKeyShareIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for aggregatedKeyShare")
+		if _, ok := decryptionKeyIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for decryption key")
 		}
-		aggregatedKeyShareIndexMap[index] = struct{}{}
+		decryptionKeyIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

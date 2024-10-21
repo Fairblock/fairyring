@@ -1,23 +1,21 @@
 package keeper
 
 import (
-	"context"
-	"errors"
+	"encoding/binary"
 
 	storetypes "cosmossdk.io/store/types"
+	"github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 
-	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
-	"github.com/Fairblock/fairyring/x/pep/types"
-
 	"cosmossdk.io/store/prefix"
-	channeltypes "github.com/cosmos/ibc-go/v8/modules/core/04-channel/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // SetDecryptionKey set a specific decryption key in the store from its index
-func (k Keeper) SetDecryptionKey(ctx context.Context, decryptionKey types.DecryptionKey) {
+func (k Keeper) SetDecryptionKey(ctx sdk.Context, decryptionKey types.DecryptionKey) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.DecryptionKeyKeyPrefix))
+
 	b := k.cdc.MustMarshal(&decryptionKey)
 	store.Set(types.DecryptionKeyKey(
 		decryptionKey.Height,
@@ -26,7 +24,7 @@ func (k Keeper) SetDecryptionKey(ctx context.Context, decryptionKey types.Decryp
 
 // GetDecryptionKey returns a decryption key from its index
 func (k Keeper) GetDecryptionKey(
-	ctx context.Context,
+	ctx sdk.Context,
 	height uint64,
 
 ) (val types.DecryptionKey, found bool) {
@@ -46,19 +44,20 @@ func (k Keeper) GetDecryptionKey(
 
 // RemoveDecryptionKey removes a decryption key from the store
 func (k Keeper) RemoveDecryptionKey(
-	ctx context.Context,
+	ctx sdk.Context,
 	height uint64,
 
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.DecryptionKeyKeyPrefix))
+
 	store.Delete(types.DecryptionKeyKey(
 		height,
 	))
 }
 
 // GetAllDecryptionKeys returns all decryption keys
-func (k Keeper) GetAllDecryptionKeys(ctx context.Context) (list []types.DecryptionKey) {
+func (k Keeper) GetAllDecryptionKeys(ctx sdk.Context) (list []types.DecryptionKey) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.DecryptionKeyKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
@@ -74,48 +73,24 @@ func (k Keeper) GetAllDecryptionKeys(ctx context.Context) (list []types.Decrypti
 	return
 }
 
-// OnRecvDecryptionKeyDataPacket processes packet reception
-func (k Keeper) OnRecvDecryptionKeyDataPacket(
-	ctx context.Context,
-	packet channeltypes.Packet,
-	data kstypes.DecryptionKeyDataPacketData,
-) (packetAck kstypes.DecryptionKeyPacketAck, err error) {
-	// validate packet data upon receiving
-	if err := data.ValidateBasic(); err != nil {
-		return packetAck, err
-	}
-
-	entry, found := k.GetEntry(ctx, data.RequestId)
-	if !found {
-		return packetAck, errors.New("request not found for this id")
-	}
-
-	entry.DecryptionKey = data.DecryptionKey
-
-	k.SetExecutionQueueEntry(ctx, entry)
-	k.SetEntry(ctx, entry)
-
-	return packetAck, nil
+// SetDecryptionKeyLength set a specific length to decryption key length
+func (k Keeper) SetDecryptionKeyLength(ctx sdk.Context, length uint64) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.DecryptionKeyLengthPrefix))
+	lengthBytes := make([]byte, 8)
+	binary.BigEndian.PutUint64(lengthBytes, length)
+	store.Set([]byte(types.DecryptionKeyLengthPrefix), lengthBytes)
 }
 
-// OnRecvEncKeyshareDataPacket processes packet reception
-func (k Keeper) OnRecvPrivDecryptionKeyDataPacket(
-	ctx context.Context,
-	packet channeltypes.Packet,
-	data kstypes.PrivateDecryptionKeyDataPacketData,
-) (packetAck kstypes.PrivateDecryptionKeyPacketAck, err error) {
-	// validate packet data upon receiving
-	if err := data.ValidateBasic(); err != nil {
-		return packetAck, err
+// GetDecryptionKeyLength returns the length of decryption key
+func (k Keeper) GetDecryptionKeyLength(
+	ctx sdk.Context,
+) uint64 {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.DecryptionKeyLengthPrefix))
+	b := store.Get([]byte(types.DecryptionKeyLengthPrefix))
+	if len(b) == 0 {
+		return 0
 	}
-
-	entry, found := k.GetPrivateRequest(ctx, data.RequestId)
-	if !found {
-		return packetAck, errors.New("request not found for this id")
-	}
-
-	entry.PrivateDecryptionKeys = data.PrivateDecryptionKey
-	k.SetPrivateRequest(ctx, entry)
-
-	return packetAck, nil
+	return binary.BigEndian.Uint64(b)
 }

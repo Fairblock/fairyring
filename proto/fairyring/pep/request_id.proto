@@ -14,7 +14,7 @@ message RequestId {
 }
 
 // PrivateRequest defines the structure for storing private
-// keyshare requests along with the unaggregated encrypted keyshares
+// decryption key requests along with the unaggregated encrypted keyshares
 message PrivateRequest {
   string creator = 1;
   string req_id = 2;
@@ -24,7 +24,7 @@ message PrivateRequest {
 
 // ContractDetails defines the structure to store the details of a
 // contract that has been registered to execute automatically when
-// the identity associated with it has an aggregate keyshare available
+// the identity associated with it has a decryption key available
 message ContractDetails {
   string registrar = 1;
   string contract_address = 2;

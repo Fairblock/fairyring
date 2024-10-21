@@ -162,7 +162,7 @@ func (im IBCModule) OnRecvPacket(
 		}
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				types.EventTypeRequestAggrKeysharePacket,
+				types.EventTypeRequestDecryptionKeyPacket,
 				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
 				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
 				sdk.NewAttribute(types.AttributeKeyAckIdentity, packetAck.Identity),
@@ -181,7 +181,7 @@ func (im IBCModule) OnRecvPacket(
 		}
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				types.EventTypeRequestPrivateKeysharePacket,
+				types.EventTypeRequestPrivateDecryptionKeyPacket,
 				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
 				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
 				sdk.NewAttribute(types.AttributeKeyAckIdentity, packetAck.Identity),
@@ -200,7 +200,7 @@ func (im IBCModule) OnRecvPacket(
 		}
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				types.EventTypeGetEncryptedKeysharePacket,
+				types.EventTypeGetPrivateDecryptionKeyPacket,
 				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
 				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
 			),
@@ -216,7 +216,7 @@ func (im IBCModule) OnRecvPacket(
 		}
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				types.EventTypeGetAggrKeysharePacket,
+				types.EventTypeGetDecryptionKeyPacket,
 				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
 				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
 			),
@@ -278,7 +278,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 		if err != nil {
 			return err
 		}
-		eventType = types.EventTypeAggrKeyshareDataPacket
+		eventType = types.EventTypeDecryptionKeyDataPacket
 		// this line is used by starport scaffolding # ibc/packet/module/ack
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)

@@ -39,19 +39,19 @@ func TestSendKeyShareMsgServerCreateAggregated(t *testing.T) {
 	_, err = srv.SendKeyshare(wctx, expected)
 	require.NoError(t, err)
 
-	rst, found := k.GetKeyShare(wctx,
+	rst, found := k.GetKeyshare(wctx,
 		expected.Creator,
 		idUint,
 	)
 	require.True(t, found)
 	require.Equal(t, expected.Creator, rst.Validator)
 
-	_, found = k.GetAggregatedKeyShare(wctx, idUint)
+	_, found = k.GetDecryptionKey(wctx, idUint)
 	require.True(t, found)
 
 }
 
-func TestSendKeyShareMsgServerCreateNotAggregated(t *testing.T) {
+func TestSendKeyshareMsgServerCreateNotAggregated(t *testing.T) {
 
 	k, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
@@ -73,14 +73,14 @@ func TestSendKeyShareMsgServerCreateNotAggregated(t *testing.T) {
 	_, err = srv.SendKeyshare(wctx, expected)
 	require.NoError(t, err)
 
-	rst, found := k.GetKeyShare(wctx,
+	rst, found := k.GetKeyshare(wctx,
 		expected.Creator,
 		idUint,
 	)
 	require.True(t, found)
 	require.Equal(t, expected.Creator, rst.Validator)
 
-	_, found = k.GetAggregatedKeyShare(wctx, idUint)
+	_, found = k.GetDecryptionKey(wctx, idUint)
 	require.False(t, found)
 }
 

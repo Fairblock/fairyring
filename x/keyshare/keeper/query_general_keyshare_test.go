@@ -21,7 +21,7 @@ var _ = strconv.IntSize
 func TestGeneralKeyShareQuerySingle(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
-	msgs := createNGeneralKeyShares(&keeper, ctx, 2)
+	msgs := createNGeneralKeyshares(&keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryGeneralKeyshareRequest
@@ -78,7 +78,7 @@ func TestGeneralKeyShareQuerySingle(t *testing.T) {
 func TestGeneralKeyShareQueryAllNoPagination(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
-	msgs := createNGeneralKeyShares(&keeper, ctx, 10)
+	msgs := createNGeneralKeyshares(&keeper, ctx, 10)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryGeneralKeyshareAllRequest
@@ -123,7 +123,7 @@ func TestGeneralKeyShareQueryAllNoPagination(t *testing.T) {
 func TestGeneralKeyShareQueryPaginated(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
-	msgs := createNGeneralKeyShares(&keeper, ctx, 5)
+	msgs := createNGeneralKeyshares(&keeper, ctx, 5)
 
 	request := func(
 		next []byte,

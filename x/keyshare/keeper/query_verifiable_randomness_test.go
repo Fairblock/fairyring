@@ -31,9 +31,9 @@ func TestVerifiableRandomnessQuery(t *testing.T) {
 			err:  status.Error(codes.InvalidArgument, "invalid request"),
 		},
 		{
-			desc:    "AggregatedKeyNotFound",
+			desc:    "DecryptionKeyNotFound",
 			request: &types.QueryVerifiableRandomnessRequest{},
-			err:     status.Error(codes.Internal, "aggregated key not found"),
+			err:     status.Error(codes.Internal, "decryption key not found"),
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -52,7 +52,7 @@ func TestVerifiableRandomnessQuery(t *testing.T) {
 
 	randomHeight := rand.Uint64()
 
-	keeper.SetAggregatedKeyShare(ctx, types.DecryptionKey{
+	keeper.SetDecryptionKey(ctx, types.DecryptionKey{
 		Height: randomHeight,
 		Data:   "NotHexString",
 	})
@@ -62,7 +62,7 @@ func TestVerifiableRandomnessQuery(t *testing.T) {
 
 	hash := sha256.New()
 	hash.Write(randomBytes)
-	hashedAggrKey := hash.Sum(nil)
+	hashedDecryptionKey := hash.Sum(nil)
 
 	for _, tc := range []struct {
 		desc     string
@@ -71,15 +71,15 @@ func TestVerifiableRandomnessQuery(t *testing.T) {
 		err      error
 	}{
 		{
-			desc:    "UnableDecodeAggregatedKey",
+			desc:    "UnableDecodeDecryptionKey",
 			request: &types.QueryVerifiableRandomnessRequest{},
-			err:     status.Error(codes.Internal, "unable to decode aggregated key"),
+			err:     status.Error(codes.Internal, "unable to decode decryption key"),
 		},
 		{
 			desc:    "QueryVerifiableRandomness",
 			request: &types.QueryVerifiableRandomnessRequest{},
 			response: &types.QueryVerifiableRandomnessResponse{
-				Randomness: hex.EncodeToString(hashedAggrKey),
+				Randomness: hex.EncodeToString(hashedDecryptionKey),
 				Round:      randomHeight + 1,
 			},
 		},
@@ -96,7 +96,7 @@ func TestVerifiableRandomnessQuery(t *testing.T) {
 				)
 			}
 		})
-		keeper.SetAggregatedKeyShare(ctx, types.DecryptionKey{
+		keeper.SetDecryptionKey(ctx, types.DecryptionKey{
 			Height: randomHeight + 1,
 			Data:   randomData,
 		})

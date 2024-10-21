@@ -26,7 +26,7 @@ func (k Keeper) GeneralKeyshareAll(
 
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, []byte{})
-	generalKeyShareStore := prefix.NewStore(store, types.KeyPrefix(types.GeneralKeyShareKeyPrefix))
+	generalKeyShareStore := prefix.NewStore(store, types.KeyPrefix(types.GeneralKeyshareKeyPrefix))
 
 	pageRes, err := query.Paginate(generalKeyShareStore, req.Pagination, func(key []byte, value []byte) error {
 		var generalKeyShare types.GeneralKeyshare
@@ -57,7 +57,7 @@ func (k Keeper) GeneralKeyshare(
 	}
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	val, found := k.GetGeneralKeyShare(
+	val, found := k.GetGeneralKeyshare(
 		ctx,
 		req.Validator,
 		req.IdType,

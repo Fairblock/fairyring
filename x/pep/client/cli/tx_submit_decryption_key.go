@@ -13,7 +13,7 @@ import (
 func CmdSubmitDecryptionKey() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "submit-decryption-key [height] [data]",
-		Short: "Submit a new aggregated keyshare into a destination chain",
+		Short: "Submit a new decryption key into a destination chain",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes

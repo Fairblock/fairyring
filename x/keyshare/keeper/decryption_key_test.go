@@ -16,21 +16,21 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func createNAggregatedKeyShare(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.DecryptionKey {
+func createNDecryptionKeys(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.DecryptionKey {
 	items := make([]types.DecryptionKey, n)
 	for i := range items {
 		items[i].Height = uint64(i)
 
-		keeper.SetAggregatedKeyShare(ctx, items[i])
+		keeper.SetDecryptionKey(ctx, items[i])
 	}
 	return items
 }
 
-func TestAggregatedKeyShareGet(t *testing.T) {
+func TestDecryptionKeyGet(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
-	items := createNAggregatedKeyShare(&keeper, ctx, 10)
+	items := createNDecryptionKeys(&keeper, ctx, 10)
 	for _, item := range items {
-		rst, found := keeper.GetAggregatedKeyShare(ctx,
+		rst, found := keeper.GetDecryptionKey(ctx,
 			item.Height,
 		)
 		require.True(t, found)
@@ -40,25 +40,25 @@ func TestAggregatedKeyShareGet(t *testing.T) {
 		)
 	}
 }
-func TestAggregatedKeyShareRemove(t *testing.T) {
+func TestDecryptionKeyRemove(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
-	items := createNAggregatedKeyShare(&keeper, ctx, 10)
+	items := createNDecryptionKeys(&keeper, ctx, 10)
 	for _, item := range items {
-		keeper.RemoveAggregatedKeyShare(ctx,
+		keeper.RemoveDecryptionKey(ctx,
 			item.Height,
 		)
-		_, found := keeper.GetAggregatedKeyShare(ctx,
+		_, found := keeper.GetDecryptionKey(ctx,
 			item.Height,
 		)
 		require.False(t, found)
 	}
 }
 
-func TestAggregatedKeyShareGetAll(t *testing.T) {
+func TestDecryptionKeyGetAll(t *testing.T) {
 	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
-	items := createNAggregatedKeyShare(&keeper, ctx, 10)
+	items := createNDecryptionKeys(&keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllAggregatedKeyShare(ctx)),
+		nullify.Fill(keeper.GetAllDecryptionKeys(ctx)),
 	)
 }

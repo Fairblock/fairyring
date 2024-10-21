@@ -35,7 +35,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 		return nil, types.ErrAuthorizedAnotherAddress
 	}
 
-	keyShareReq, found := k.GetPrivateKeyShareRequest(ctx, msg.Identity)
+	privDecryptionKeyReq, found := k.GetPrivateDecryptionKeyRequest(ctx, msg.Identity)
 	if !found {
 		return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.Identity)
 	}
@@ -61,7 +61,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 	}
 
 	// Save the new private keyshare to state
-	k.SetPrivateKeyShare(ctx, valEncKeyshare)
+	k.SetPrivateKeyshare(ctx, valEncKeyshare)
 	k.SetLastSubmittedHeight(ctx, msg.Creator, strconv.FormatInt(ctx.BlockHeight(), 10))
 
 	validatorList := k.GetAllValidatorSet(ctx)
@@ -70,11 +70,11 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 	var stateEncryptedKeyShares []types.ValidatorEncryptedKeyshare
 
 	for _, eachValidator := range validatorList {
-		eachEncKeyShare, found := k.GetPrivateKeyShare(ctx, eachValidator.Validator, msg.Identity, msg.Requester)
+		eachPrivDecryptionKeyReq, found := k.GetPrivateKeyshare(ctx, eachValidator.Validator, msg.Identity, msg.Requester)
 		if !found {
 			continue
 		}
-		stateEncryptedKeyShares = append(stateEncryptedKeyShares, eachEncKeyShare)
+		stateEncryptedKeyShares = append(stateEncryptedKeyShares, eachPrivDecryptionKeyReq)
 	}
 
 	// Get the active public key for aggregating
@@ -100,14 +100,15 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 		),
 	)
 
-	// If there is not enough keyshares to aggregate OR there is already an aggregated key
-	// Only continue the code if there is enough keyshare to aggregate & no aggregated key for current height
+	// If there is not enough keyshares to aggregate OR there is already a decryption key
+	// Only continue the code if there is enough keyshare to aggregate
+	// & no decryption key for current height
 	if int64(len(stateEncryptedKeyShares)) < expectedThreshold {
 		return &types.MsgSubmitEncryptedKeyshareResponse{}, nil
 	}
 
-	if len(keyShareReq.PrivateDecryptionKeys) != 0 {
-		for _, entry := range keyShareReq.PrivateDecryptionKeys {
+	if len(privDecryptionKeyReq.PrivateDecryptionKeys) != 0 {
+		for _, entry := range privDecryptionKeyReq.PrivateDecryptionKeys {
 			if entry.Requester == msg.Requester && len(entry.PrivateKeyshares) != 0 {
 				return &types.MsgSubmitEncryptedKeyshareResponse{}, nil
 			}
@@ -124,23 +125,23 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 	}
 	kslist.Requester = msg.Requester
 
-	keyShareReq.PrivateDecryptionKeys = append(keyShareReq.PrivateDecryptionKeys, &kslist)
-	k.SetPrivateKeyShareRequest(ctx, keyShareReq)
+	privDecryptionKeyReq.PrivateDecryptionKeys = append(privDecryptionKeyReq.PrivateDecryptionKeys, &kslist)
+	k.SetPrivateDecryptionKeyRequest(ctx, privDecryptionKeyReq)
 
 	timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 
-	if keyShareReq.IbcInfo != nil {
-		if keyShareReq.IbcInfo.ChannelId != "" {
+	if privDecryptionKeyReq.IbcInfo != nil {
+		if privDecryptionKeyReq.IbcInfo.ChannelId != "" {
 			_, err := k.TransmitPrivateDecryptionKeyDataPacket(
 				ctx,
 				types.PrivateDecryptionKeyDataPacketData{
-					Identity:             keyShareReq.Identity,
-					Pubkey:               keyShareReq.Pubkey,
-					RequestId:            keyShareReq.RequestId,
-					PrivateDecryptionKey: keyShareReq.PrivateDecryptionKeys,
+					Identity:             privDecryptionKeyReq.Identity,
+					Pubkey:               privDecryptionKeyReq.Pubkey,
+					RequestId:            privDecryptionKeyReq.RequestId,
+					PrivateDecryptionKey: privDecryptionKeyReq.PrivateDecryptionKeys,
 				},
-				keyShareReq.IbcInfo.PortId,
-				keyShareReq.IbcInfo.ChannelId,
+				privDecryptionKeyReq.IbcInfo.PortId,
+				privDecryptionKeyReq.IbcInfo.ChannelId,
 				clienttypes.ZeroHeight(),
 				uint64(timeoutTimestamp),
 			)
@@ -149,8 +150,8 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 			}
 		}
 	} else {
-		entry, _ := k.pepKeeper.GetPrivateRequest(ctx, keyShareReq.RequestId)
-		entry.PrivateDecryptionKeys = keyShareReq.PrivateDecryptionKeys
+		entry, _ := k.pepKeeper.GetPrivateRequest(ctx, privDecryptionKeyReq.RequestId)
+		entry.PrivateDecryptionKeys = privDecryptionKeyReq.PrivateDecryptionKeys
 		k.pepKeeper.SetPrivateRequest(ctx, entry)
 	}
 

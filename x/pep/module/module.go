@@ -291,7 +291,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 	entries := am.keeper.GetAllGenEncTxExecutionQueueEntry(ctx)
 	for _, entry := range entries {
 		if entry.DecryptionKey == "" {
-			am.keeper.Logger().Error("aggregated keyshare not found in entry with req-id: ", entry.RequestId)
+			am.keeper.Logger().Error("decryption key not found in entry with req-id: ", entry.RequestId)
 			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
 			continue
 		}

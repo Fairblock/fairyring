@@ -23,7 +23,7 @@ func (k msgServer) SubmitDecryptionKey(
 
 	params := k.GetParams(ctx)
 	if params.IsSourceChain {
-		return nil, errors.New("submission of external aggregated keyshare not permitted on source chain")
+		return nil, errors.New("submission of external decryption keyshare not permitted on source chain")
 	}
 
 	var trusted = false
@@ -77,13 +77,13 @@ func (k msgServer) SubmitDecryptionKey(
 
 	err := enc.Decrypt(publicKeyPoint, skPoint, &decryptedDataBytes, &encryptedDataBytes)
 	if err != nil {
-		k.Logger().Error("Decryption error when verifying aggregated keyshare")
+		k.Logger().Error("error when verifying decryption key")
 		k.Logger().Error(err.Error())
 		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(types.KeyShareVerificationType,
-				sdk.NewAttribute(types.KeyShareVerificationCreator, msg.Creator),
-				sdk.NewAttribute(types.KeyShareVerificationHeight, strconv.FormatUint(msg.Height, 10)),
-				sdk.NewAttribute(types.KeyShareVerificationReason, err.Error()),
+			sdk.NewEvent(types.DecryptionKeyVerificationType,
+				sdk.NewAttribute(types.DecryptionKeyVerificationCreator, msg.Creator),
+				sdk.NewAttribute(types.DecryptionKeyVerificationHeight, strconv.FormatUint(msg.Height, 10)),
+				sdk.NewAttribute(types.DecryptionKeyVerificationReason, err.Error()),
 			),
 		)
 		return nil, err
@@ -92,10 +92,10 @@ func (k msgServer) SubmitDecryptionKey(
 	if decryptedDataBytes.String() != dummyData {
 		k.Logger().Error("Decrypted data does not match original data")
 		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(types.KeyShareVerificationType,
-				sdk.NewAttribute(types.KeyShareVerificationCreator, msg.Creator),
-				sdk.NewAttribute(types.KeyShareVerificationHeight, strconv.FormatUint(msg.Height, 10)),
-				sdk.NewAttribute(types.KeyShareVerificationReason, "decrypted data does not match original data"),
+			sdk.NewEvent(types.DecryptionKeyVerificationType,
+				sdk.NewAttribute(types.DecryptionKeyVerificationCreator, msg.Creator),
+				sdk.NewAttribute(types.DecryptionKeyVerificationHeight, strconv.FormatUint(msg.Height, 10)),
+				sdk.NewAttribute(types.DecryptionKeyVerificationReason, "decrypted data does not match original data"),
 			),
 		)
 		return nil, err
@@ -116,7 +116,7 @@ func (k msgServer) SubmitDecryptionKey(
 		k.SetLatestHeight(ctx, strconv.FormatUint(msg.Height, 10))
 	}
 
-	k.Logger().Info(fmt.Sprintf("[ProcessUnconfirmedTxs] Aggregated Key Added, height: %d", msg.Height))
+	k.Logger().Info(fmt.Sprintf("[ProcessUnconfirmedTxs] Decryption Key Added, height: %d", msg.Height))
 
 	return &types.MsgSubmitDecryptionKeyResponse{}, nil
 }
