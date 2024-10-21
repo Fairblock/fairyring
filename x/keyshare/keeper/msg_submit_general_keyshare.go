@@ -282,7 +282,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 			return nil, types.ErrKeyshareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
 		}
 		if decryptionKeyReq.DecryptionKey != "" {
-			return nil, types.ErrAggKeyAlreadyExists.Wrapf(", identity: %s, Aggregated key: %s", msg.IdValue, decryptionKeyReq.DecryptionKey)
+			return nil, types.ErrDecryptionKeyAlreadyExists.Wrapf(", identity: %s, decryption key: %s", msg.IdValue, decryptionKeyReq.DecryptionKey)
 		}
 		decryptionKeyReq.DecryptionKey = skHex
 		k.SetDecryptionKeyRequest(ctx, decryptionKeyReq)
