@@ -25,14 +25,15 @@ var (
 	KeyTrustedAddresses     = []byte("TrustedAddresses")
 	DefaultTrustedAddresses []string
 )
+
 var (
-	KeySlashFractionNoKeyShare     = []byte("KeyNoShareSlashFraction")
-	DefaultSlashFractionNoKeyShare = math.LegacyNewDecWithPrec(5, 1) // 0.5
+	KeySlashFractionNoKeyshare     = []byte("KeyNoShareSlashFraction")
+	DefaultSlashFractionNoKeyshare = math.LegacyNewDecWithPrec(5, 1) // 0.5
 )
 
 var (
-	KeySlashFractionWrongKeyShare     = []byte("KeyWrongShareSlashFraction")
-	DefaultSlashFractionWrongKeyShare = math.LegacyNewDecWithPrec(5, 1) // 0.5
+	KeySlashFractionWrongKeyshare     = []byte("KeyWrongShareSlashFraction")
+	DefaultSlashFractionWrongKeyshare = math.LegacyNewDecWithPrec(5, 1) // 0.5
 )
 
 var (
@@ -50,15 +51,15 @@ func NewParams(
 	keyExp uint64,
 	trAddrs []string,
 	minimumBonded uint64,
-	noKeyShareFraction math.LegacyDec,
-	wrongKeyShareFraction math.LegacyDec,
+	noKeyshareFraction math.LegacyDec,
+	wrongKeyshareFraction math.LegacyDec,
 	maxIdledBlock uint64,
 ) Params {
 	return Params{
 		KeyExpiry:                  keyExp,
 		TrustedAddresses:           trAddrs,
-		SlashFractionNoKeyshare:    noKeyShareFraction,
-		SlashFractionWrongKeyshare: wrongKeyShareFraction,
+		SlashFractionNoKeyshare:    noKeyshareFraction,
+		SlashFractionWrongKeyshare: wrongKeyshareFraction,
 		MaxIdledBlock:              maxIdledBlock,
 		MinimumBonded:              minimumBonded,
 	}
@@ -70,8 +71,8 @@ func DefaultParams() Params {
 		DefaultKeyExpiry,
 		DefaultTrustedAddresses,
 		DefaultMinimumBonded,
-		DefaultSlashFractionNoKeyShare,
-		DefaultSlashFractionWrongKeyShare,
+		DefaultSlashFractionNoKeyshare,
+		DefaultSlashFractionWrongKeyshare,
 		DefaultMaxIdledBlock,
 	)
 }
@@ -82,8 +83,8 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(KeyKeyExpiry, &p.KeyExpiry, validateKeyExpiry),
 		paramtypes.NewParamSetPair(KeyTrustedAddresses, &p.TrustedAddresses, validateTrustedAddresses),
 		paramtypes.NewParamSetPair(KeyMinimumBonded, &p.MinimumBonded, validateMinimumBonded),
-		paramtypes.NewParamSetPair(KeySlashFractionNoKeyShare, &p.SlashFractionNoKeyshare, validateSlashFractionNoKeyshare),
-		paramtypes.NewParamSetPair(KeySlashFractionWrongKeyShare, &p.SlashFractionWrongKeyshare, validateSlashFractionWrongKeyshare),
+		paramtypes.NewParamSetPair(KeySlashFractionNoKeyshare, &p.SlashFractionNoKeyshare, validateSlashFractionNoKeyshare),
+		paramtypes.NewParamSetPair(KeySlashFractionWrongKeyshare, &p.SlashFractionWrongKeyshare, validateSlashFractionWrongKeyshare),
 		paramtypes.NewParamSetPair(KeyMaxIdledBlock, &p.MaxIdledBlock, validateMaxIdledBlock),
 	}
 }

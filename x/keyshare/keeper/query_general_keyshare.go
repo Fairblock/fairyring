@@ -26,18 +26,17 @@ func (k Keeper) GeneralKeyshareAll(
 
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, []byte{})
-	generalKeyShareStore := prefix.NewStore(store, types.KeyPrefix(types.GeneralKeyshareKeyPrefix))
+	generalKeyshareStore := prefix.NewStore(store, types.KeyPrefix(types.GeneralKeyshareKeyPrefix))
 
-	pageRes, err := query.Paginate(generalKeyShareStore, req.Pagination, func(key []byte, value []byte) error {
-		var generalKeyShare types.GeneralKeyshare
-		if err := k.cdc.Unmarshal(value, &generalKeyShare); err != nil {
+	pageRes, err := query.Paginate(generalKeyshareStore, req.Pagination, func(key []byte, value []byte) error {
+		var generalKeyshare types.GeneralKeyshare
+		if err := k.cdc.Unmarshal(value, &generalKeyshare); err != nil {
 			return err
 		}
 
-		generalKeyshares = append(generalKeyshares, generalKeyShare)
+		generalKeyshares = append(generalKeyshares, generalKeyshare)
 		return nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

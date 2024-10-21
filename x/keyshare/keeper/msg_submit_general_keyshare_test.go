@@ -19,7 +19,7 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func SetupTestGeneralKeyShare(t *testing.T, ctx sdk.Context, k keeper.Keeper, numberOfValidator uint32, pubkeyNumberOfValidator uint64) (*random.GenerateResult, string) {
+func SetupTestGeneralKeyshare(t *testing.T, ctx sdk.Context, k keeper.Keeper, numberOfValidator uint32, pubkeyNumberOfValidator uint64) (*random.GenerateResult, string) {
 	out, err := random.GeneratePubKeyAndShares(numberOfValidator)
 	require.NoError(t, err)
 
@@ -37,7 +37,7 @@ func SetupTestGeneralKeyShare(t *testing.T, ctx sdk.Context, k keeper.Keeper, nu
 		Creator:            creator,
 		Expiry:             123456,
 		NumberOfValidators: pubkeyNumberOfValidator,
-		EncryptedKeyshares: out.KeyShareEncryptedKeyShares,
+		EncryptedKeyshares: out.KeyShareEncryptedKeyshares,
 	})
 
 	k.SetActiveCommitments(ctx, types.Commitments{
@@ -48,7 +48,6 @@ func SetupTestGeneralKeyShare(t *testing.T, ctx sdk.Context, k keeper.Keeper, nu
 }
 
 func TestSubmitGeneralKeyshareAggregated(t *testing.T) {
-
 	k, ctx, pk, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
@@ -81,7 +80,8 @@ func TestSubmitGeneralKeyshareAggregated(t *testing.T) {
 		derived, err := shares.DeriveShare(out.GeneratedShare[0].Share, 1, idVal)
 		require.NoError(t, err)
 
-		expected := &types.MsgSubmitGeneralKeyshare{Creator: creator,
+		expected := &types.MsgSubmitGeneralKeyshare{
+			Creator:       creator,
 			IdType:        keeper.PrivateGovIdentity,
 			IdValue:       idVal,
 			KeyshareIndex: 1,
@@ -106,12 +106,11 @@ func TestSubmitGeneralKeyshareAggregated(t *testing.T) {
 }
 
 func TestSubmitGeneralKeyshareNotAggregated(t *testing.T) {
-
 	k, ctx, pk, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
-	out, creator := SetupTestGeneralKeyShare(t, wctx, k, 10, 10)
+	out, creator := SetupTestGeneralKeyshare(t, wctx, k, 10, 10)
 
 	for i := 0; i < 5; i++ {
 
@@ -139,7 +138,8 @@ func TestSubmitGeneralKeyshareNotAggregated(t *testing.T) {
 		derived, err := shares.DeriveShare(out.GeneratedShare[0].Share, 1, idVal)
 		require.NoError(t, err)
 
-		expected := &types.MsgSubmitGeneralKeyshare{Creator: creator,
+		expected := &types.MsgSubmitGeneralKeyshare{
+			Creator:       creator,
 			IdType:        keeper.PrivateGovIdentity,
 			IdValue:       idVal,
 			KeyshareIndex: 1,
@@ -163,12 +163,12 @@ func TestSubmitGeneralKeyshareNotAggregated(t *testing.T) {
 	}
 }
 
-func TestGeneralKeyShareMsgServerFailCases(t *testing.T) {
+func TestGeneralKeyshareMsgServerFailCases(t *testing.T) {
 	k, ctx, pk, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
-	out, creator := SetupTestGeneralKeyShare(t, wctx, k, 1, 1)
+	out, creator := SetupTestGeneralKeyshare(t, wctx, k, 1, 1)
 	onlyIdVal := random.RandHex(32)
 
 	pk.SetEntry(wctx, types2.IdentityExecutionEntry{
@@ -205,7 +205,7 @@ func TestGeneralKeyShareMsgServerFailCases(t *testing.T) {
 				IdType:  keeper.PrivateGovIdentity,
 				IdValue: random.RandHex(32),
 			},
-			err: types.ErrKeyShareRequestNotFound,
+			err: types.ErrKeyshareRequestNotFound,
 		},
 		{
 			desc: "InvalidKeyShareIndex",
@@ -215,16 +215,15 @@ func TestGeneralKeyShareMsgServerFailCases(t *testing.T) {
 				IdValue:       onlyIdVal,
 				KeyshareIndex: 10,
 			},
-			err: types.ErrInvalidKeyShareIndex,
+			err: types.ErrInvalidKeyshareIndex,
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-
 			_, err := srv.SubmitGeneralKeyshare(wctx, tc.request)
 
 			require.ErrorIs(t, err, tc.err)
 
-			if tc.desc == "KeyShareRequestNotFound" {
+			if tc.desc == "KeyshareRequestNotFound" {
 				k.SetDecryptionKeyRequest(wctx, types.DecryptionKeyRequest{
 					Identity:      onlyIdVal,
 					Pubkey:        out.MasterPublicKey,

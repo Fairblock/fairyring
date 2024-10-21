@@ -85,15 +85,15 @@ func (gs GenesisState) Validate() error {
 		}
 		authorizedAddressIndexMap[index] = struct{}{}
 	}
-	// Check for duplicated index in generalKeyShare
-	generalKeyShareIndexMap := make(map[string]struct{})
+	// Check for duplicated index in generalKeyshare
+	generalKeyshareIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.GeneralKeyshareList {
 		index := string(GeneralKeyshareKey(elem.Validator, elem.IdType, elem.IdValue))
-		if _, ok := generalKeyShareIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for generalKeyShare")
+		if _, ok := generalKeyshareIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for generalKeyshare")
 		}
-		generalKeyShareIndexMap[index] = struct{}{}
+		generalKeyshareIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

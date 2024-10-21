@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// KeyShareAll returns the list of all keyshares submitted
+// KeyshareAll returns the list of all keyshares submitted
 func (k Keeper) KeyshareAll(
 	c context.Context,
 	req *types.QueryKeyshareAllRequest,
@@ -39,7 +39,6 @@ func (k Keeper) KeyshareAll(
 		keyShares = append(keyShares, keyShare)
 		return nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -47,7 +46,7 @@ func (k Keeper) KeyshareAll(
 	return &types.QueryKeyshareAllResponse{Keyshare: keyShares, Pagination: pageRes}, nil
 }
 
-// KeyShare returns a single keyshare submitted by a particular validator for a particular block height
+// Keyshare returns a single keyshare submitted by a particular validator for a particular block height
 func (k Keeper) Keyshare(
 	c context.Context,
 	req *types.QueryKeyshareRequest,

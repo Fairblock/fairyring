@@ -17,20 +17,20 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func TestSendKeyShareMsgServerCreateAggregated(t *testing.T) {
-
+func TestSendKeyshareMsgServerCreateAggregated(t *testing.T) {
 	k, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
-	out, creator := SetupTestGeneralKeyShare(t, wctx, k, 1, 1)
+	out, creator := SetupTestGeneralKeyshare(t, wctx, k, 1, 1)
 
 	var idUint uint64 = 1
 
 	derived, err := shares.DeriveShare(out.GeneratedShare[0].Share, 1, "1")
 	require.NoError(t, err)
 
-	expected := &types.MsgSendKeyshare{Creator: creator,
+	expected := &types.MsgSendKeyshare{
+		Creator:       creator,
 		Message:       derived,
 		KeyshareIndex: idUint,
 		BlockHeight:   idUint,
@@ -48,23 +48,22 @@ func TestSendKeyShareMsgServerCreateAggregated(t *testing.T) {
 
 	_, found = k.GetDecryptionKey(wctx, idUint)
 	require.True(t, found)
-
 }
 
 func TestSendKeyshareMsgServerCreateNotAggregated(t *testing.T) {
-
 	k, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
-	out, creator := SetupTestGeneralKeyShare(t, wctx, k, 10, 10)
+	out, creator := SetupTestGeneralKeyshare(t, wctx, k, 10, 10)
 
 	var idUint uint64 = 1
 
 	derived, err := shares.DeriveShare(out.GeneratedShare[0].Share, 1, "1")
 	require.NoError(t, err)
 
-	expected := &types.MsgSendKeyshare{Creator: creator,
+	expected := &types.MsgSendKeyshare{
+		Creator:       creator,
 		Message:       derived,
 		KeyshareIndex: idUint,
 		BlockHeight:   idUint,
@@ -84,12 +83,12 @@ func TestSendKeyshareMsgServerCreateNotAggregated(t *testing.T) {
 	require.False(t, found)
 }
 
-func TestSendKeyShareMsgServerFailCases(t *testing.T) {
+func TestSendKeyshareMsgServerFailCases(t *testing.T) {
 	k, ctx, _, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
-	_, creator := SetupTestGeneralKeyShare(t, wctx, k, 1, 1)
+	_, creator := SetupTestGeneralKeyshare(t, wctx, k, 1, 1)
 
 	for _, tc := range []struct {
 		desc    string
@@ -110,20 +109,18 @@ func TestSendKeyShareMsgServerFailCases(t *testing.T) {
 			err: types.ErrInvalidBlockHeight,
 		},
 		{
-			desc: "InvalidKeyShareIndex",
+			desc: "InvalidKeyshareIndex",
 			request: &types.MsgSendKeyshare{
 				Creator:       creator,
 				KeyshareIndex: 999,
 			},
-			err: types.ErrInvalidKeyShareIndex,
+			err: types.ErrInvalidKeyshareIndex,
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-
 			_, err := srv.SendKeyshare(wctx, tc.request)
 
 			require.ErrorIs(t, err, tc.err)
-
 		})
 	}
 }

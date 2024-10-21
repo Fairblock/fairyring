@@ -96,8 +96,8 @@ func (k Keeper) ProcessPepSignalQueue(ctx sdk.Context) error {
 
 			if decryptionKeyReq.DecryptionKey == "" {
 				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
-						sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, req.Identity),
+					sdk.NewEvent(types.StartSendGeneralKeyshareEventType,
+						sdk.NewAttribute(types.StartSendGeneralKeyshareEventIdentity, req.Identity),
 					),
 				)
 			}
@@ -175,10 +175,10 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 
 			if len(privDecryptionKeyReq.PrivateDecryptionKeys) == 0 {
 				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.StartSendEncryptedKeyShareEventType,
-						sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, req.Identity),
-						sdk.NewAttribute(types.StartSendEncryptedKeyShareEventRequester, req.Requester),
-						sdk.NewAttribute(types.StartSendEncryptedKeyShareEventPubkey, req.SecpPubkey),
+					sdk.NewEvent(types.StartSendEncryptedKeyshareEventType,
+						sdk.NewAttribute(types.StartSendGeneralKeyshareEventIdentity, req.Identity),
+						sdk.NewAttribute(types.StartSendEncryptedKeyshareEventRequester, req.Requester),
+						sdk.NewAttribute(types.StartSendEncryptedKeyshareEventPubkey, req.SecpPubkey),
 					),
 				)
 			}
@@ -275,8 +275,8 @@ func (k Keeper) ProcessGovSignalQueue(ctx sdk.Context) error {
 
 			if decryptionKeyReq.DecryptionKey == "" {
 				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
-						sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, req.Identity),
+					sdk.NewEvent(types.StartSendGeneralKeyshareEventType,
+						sdk.NewAttribute(types.StartSendGeneralKeyshareEventIdentity, req.Identity),
 					),
 				)
 			}

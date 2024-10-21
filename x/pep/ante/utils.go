@@ -6,6 +6,6 @@ import (
 )
 
 // KeyshareLane is an interface that defines the methods required to interact with the keyshare lane.
-type KeyShareLane interface {
+type KeyshareLane interface {
 	GetDecryptionKeyInfo(tx sdk.Tx) (*peptypes.DecryptionKey, error)
 }

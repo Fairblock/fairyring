@@ -22,13 +22,12 @@ var _ = strconv.IntSize
 
 const SECP_PUBKEY_1 = "A/MdHVpitzHNSdD1Zw3kY+L5PEIPyd9l6sD5i4aIfXp9"
 
-func TestEncryptedlKeyShareMsgServerCreate(t *testing.T) {
-
+func TestEncryptedKeyshareMsgServerCreate(t *testing.T) {
 	k, ctx, pk, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
-	out, creator := SetupTestGeneralKeyShare(t, wctx, k, 1, 1)
+	out, creator := SetupTestGeneralKeyshare(t, wctx, k, 1, 1)
 
 	for i := 0; i < 5; i++ {
 
@@ -60,7 +59,8 @@ func TestEncryptedlKeyShareMsgServerCreate(t *testing.T) {
 		encryptedShare, err := shares.EncryptWithPublicKey(derived, SECP_PUBKEY_1)
 		require.NoError(t, err)
 
-		expected := &types.MsgSubmitEncryptedKeyshare{Creator: creator,
+		expected := &types.MsgSubmitEncryptedKeyshare{
+			Creator:           creator,
 			KeyshareIndex:     1,
 			Identity:          idVal,
 			EncryptedKeyshare: encryptedShare,
@@ -125,7 +125,6 @@ func TestEncryptedKeyShareMsgServerFailCases(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-
 			_, err := srv.SubmitEncryptedKeyshare(wctx, tc.request)
 
 			require.ErrorIs(t, err, tc.err)

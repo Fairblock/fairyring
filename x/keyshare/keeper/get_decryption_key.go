@@ -47,8 +47,8 @@ func (k Keeper) OnRecvGetDecryptionKeyPacket(
 		k.Logger().Info("Got GetDecryptionKeyPacket")
 
 		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
-				sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, data.Identity),
+			sdk.NewEvent(types.StartSendGeneralKeyshareEventType,
+				sdk.NewAttribute(types.StartSendGeneralKeyshareEventIdentity, data.Identity),
 			),
 		)
 	}
@@ -58,7 +58,6 @@ func (k Keeper) OnRecvGetDecryptionKeyPacket(
 
 // OnTimeoutGetDecryptionKeyPacket responds to the case where a packet has not been transmitted because of a timeout
 func (k Keeper) OnTimeoutGetDecryptionKeyPacket(ctx sdk.Context, packet channeltypes.Packet, data types.GetDecryptionKeyPacketData) error {
-
 	// Implement custom packet timeout logic
 	// (Not required for fairyring since this packet is never sent from fairyring)
 
@@ -106,10 +105,10 @@ func (k Keeper) OnRecvGetPrivateDecryptionKeyPacket(
 		k.Logger().Info("Got OnRecvGetPrivateKeysharePacket")
 
 		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(types.StartSendEncryptedKeyShareEventType,
-				sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, data.Identity),
-				sdk.NewAttribute(types.StartSendEncryptedKeyShareEventRequester, data.Requester),
-				sdk.NewAttribute(types.StartSendEncryptedKeyShareEventPubkey, data.SecpPubkey),
+			sdk.NewEvent(types.StartSendEncryptedKeyshareEventType,
+				sdk.NewAttribute(types.StartSendGeneralKeyshareEventIdentity, data.Identity),
+				sdk.NewAttribute(types.StartSendEncryptedKeyshareEventRequester, data.Requester),
+				sdk.NewAttribute(types.StartSendEncryptedKeyshareEventPubkey, data.SecpPubkey),
 			),
 		)
 	}
@@ -119,7 +118,6 @@ func (k Keeper) OnRecvGetPrivateDecryptionKeyPacket(
 
 // OnTimeoutGetPrivateDecryptionKeyPacket responds to the case where a packet has not been transmitted because of a timeout
 func (k Keeper) OnTimeoutGetPrivateDecryptionKeyPacket(ctx sdk.Context, packet channeltypes.Packet, data types.GetPrivateDecryptionKeyPacketData) error {
-
 	// Implement custom packet timeout logic
 	// (Not required for fairyring since this packet is never sent from fairyring)
 

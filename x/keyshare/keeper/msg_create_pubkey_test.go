@@ -37,7 +37,7 @@ func TestLatestPubkeyMsgServerCreate(t *testing.T) {
 		Creator:            creator,
 		Expiry:             123456,
 		NumberOfValidators: 1,
-		EncryptedKeyshares: out.KeyShareEncryptedKeyShares,
+		EncryptedKeyshares: out.KeyshareEncryptedKeyshares,
 	})
 
 	for _, tc := range []struct {
@@ -63,12 +63,11 @@ func TestLatestPubkeyMsgServerCreate(t *testing.T) {
 				PublicKey:          out.MasterPublicKey,
 				Creator:            creator,
 				NumberOfValidators: 1,
-				EncryptedKeyshares: out.KeyShareEncryptedKeyShares,
+				EncryptedKeyshares: out.KeyshareEncryptedKeyshares,
 			},
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-
 			_, err := srv.CreateLatestPubkey(wctx, tc.request)
 
 			if tc.err != nil {

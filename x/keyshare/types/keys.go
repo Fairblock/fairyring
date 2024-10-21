@@ -17,9 +17,7 @@ const (
 	PortID = "keyshare"
 )
 
-var (
-	ParamsKey = []byte("p_keyshare")
-)
+var ParamsKey = []byte("p_keyshare")
 
 var (
 	// PortKey defines the key to store the port ID in store
@@ -57,11 +55,11 @@ const (
 )
 
 const (
-	StartSendGeneralKeyShareEventType        = "start-send-general-keyshare"
-	StartSendEncryptedKeyShareEventType      = "start-send-encrypted-keyshare"
-	StartSendGeneralKeyShareEventIdentity    = "identity"
-	StartSendEncryptedKeyShareEventRequester = "requester"
-	StartSendEncryptedKeyShareEventPubkey    = "secp256k1-pubkey"
+	StartSendGeneralKeyshareEventType        = "start-send-general-keyshare"
+	StartSendEncryptedKeyshareEventType      = "start-send-encrypted-keyshare"
+	StartSendGeneralKeyshareEventIdentity    = "identity"
+	StartSendEncryptedKeyshareEventRequester = "requester"
+	StartSendEncryptedKeyshareEventPubkey    = "secp256k1-pubkey"
 )
 
 const (
@@ -76,18 +74,18 @@ const (
 )
 
 const (
-	KeyShareAggregatedEventType        = "keyshare-aggregated"
-	KeyShareAggregatedEventBlockHeight = "height"
-	KeyShareAggregatedEventData        = "data"
-	KeyShareAggregatedEventPubkey      = "pubkey"
+	KeyshareAggregatedEventType        = "keyshare-aggregated"
+	KeyshareAggregatedEventBlockHeight = "height"
+	KeyshareAggregatedEventData        = "data"
+	KeyshareAggregatedEventPubkey      = "pubkey"
 )
 
 const (
-	GeneralKeyShareAggregatedEventType    = "general-keyshare-aggregated"
-	GeneralKeyShareAggregatedEventIDValue = "id-value"
-	GeneralKeyShareAggregatedEventIDType  = "id-type"
-	GeneralKeyShareAggregatedEventData    = "data"
-	GeneralKeyShareAggregatedEventPubkey  = "pubkey"
+	GeneralKeyshareAggregatedEventType    = "general-keyshare-aggregated"
+	GeneralKeyshareAggregatedEventIDValue = "id-value"
+	GeneralKeyshareAggregatedEventIDType  = "id-type"
+	GeneralKeyshareAggregatedEventData    = "data"
+	GeneralKeyshareAggregatedEventPubkey  = "pubkey"
 )
 
 const (
@@ -112,8 +110,8 @@ const (
 
 const (
 	KeyTotalIdleValSlashed           = "total_idle_validator_slashed"
-	KeyTotalValidKeyShareSubmitted   = "total_valid_key_share"
-	KeyTotalInvalidKeyShareSubmitted = "total_invalid_key_share"
+	KeyTotalValidKeyshareSubmitted   = "total_valid_keyshare"
+	KeyTotalInvalidKeyshareSubmitted = "total_invalid_keyshare"
 )
 
 func KeyPrefix(p string) []byte {

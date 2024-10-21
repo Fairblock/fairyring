@@ -19,7 +19,7 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func TestKeyShareReqSingle(t *testing.T) {
+func TestKeyshareReqSingle(t *testing.T) {
 	keeper, ctx := keepertest.PepKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
@@ -65,7 +65,6 @@ func TestKeyShareReqSingle(t *testing.T) {
 					nullify.Fill(response),
 				)
 			}
-
 		})
 	}
 }

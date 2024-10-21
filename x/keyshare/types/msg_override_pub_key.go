@@ -48,7 +48,7 @@ func (msg *MsgOverrideLatestPubkey) ValidateBasic() error {
 		return ErrNotMatchNumOfCommits.Wrapf("expected number of validators: %d, match number of commitments: %d", msg.NumberOfValidators, len(msg.Commitments))
 	}
 	if len(msg.EncryptedKeyshares) != len(msg.Commitments) {
-		return ErrNotMatchNumOfEncryptedKeyShares.Wrapf("expected number of encrypted key shares: %d, match number of commitments: %d", len(msg.EncryptedKeyshares), len(msg.Commitments))
+		return ErrNotMatchNumOfEncryptedKeyshares.Wrapf("expected number of encrypted key shares: %d, match number of commitments: %d", len(msg.EncryptedKeyshares), len(msg.Commitments))
 	}
 
 	for _, c := range msg.Commitments {

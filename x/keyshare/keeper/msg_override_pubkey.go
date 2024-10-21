@@ -39,7 +39,7 @@ func (k msgServer) OverrideLatestPubkey(
 		k.DeleteQueuedPubkey(ctx)
 	}
 
-	encryptedKeyShares, err := json.Marshal(msg.EncryptedKeyshares)
+	encryptedKeyshares, err := json.Marshal(msg.EncryptedKeyshares)
 	if err != nil {
 		return nil, err
 	}
@@ -89,7 +89,7 @@ func (k msgServer) OverrideLatestPubkey(
 			sdk.NewAttribute(types.PubkeyOverrodeEventCreator, msg.Creator),
 			sdk.NewAttribute(types.PubkeyOverrodeEventPubkey, msg.PublicKey),
 			sdk.NewAttribute(types.PubkeyOverrodeEventNumberOfValidators, strconv.FormatUint(msg.NumberOfValidators, 10)),
-			sdk.NewAttribute(types.PubkeyOverrodeEventEncryptedShares, string(encryptedKeyShares)),
+			sdk.NewAttribute(types.PubkeyOverrodeEventEncryptedShares, string(encryptedKeyshares)),
 		),
 	)
 

@@ -37,7 +37,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 
 	privDecryptionKeyReq, found := k.GetPrivateDecryptionKeyRequest(ctx, msg.Identity)
 	if !found {
-		return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.Identity)
+		return nil, types.ErrKeyshareRequestNotFound.Wrapf(", got id value: %s", msg.Identity)
 	}
 
 	commitments, found := k.GetActiveCommitments(ctx)
@@ -47,7 +47,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 
 	commitmentsLen := uint64(len(commitments.Commitments))
 	if msg.KeyshareIndex > commitmentsLen {
-		return nil, types.ErrInvalidKeyShareIndex.Wrap(fmt.Sprintf("Expect Index within: %d, got: %d", commitmentsLen, msg.KeyshareIndex))
+		return nil, types.ErrInvalidKeyshareIndex.Wrap(fmt.Sprintf("Expect Index within: %d, got: %d", commitmentsLen, msg.KeyshareIndex))
 	}
 
 	valEncKeyshare := types.ValidatorEncryptedKeyshare{
@@ -67,14 +67,14 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 	validatorList := k.GetAllValidatorSet(ctx)
 
 	// Get all the private keyshares for the provided id value & id type
-	var stateEncryptedKeyShares []types.ValidatorEncryptedKeyshare
+	var stateEncryptedKeyshares []types.ValidatorEncryptedKeyshare
 
 	for _, eachValidator := range validatorList {
 		eachPrivDecryptionKeyReq, found := k.GetPrivateKeyshare(ctx, eachValidator.Validator, msg.Identity, msg.Requester)
 		if !found {
 			continue
 		}
-		stateEncryptedKeyShares = append(stateEncryptedKeyShares, eachPrivDecryptionKeyReq)
+		stateEncryptedKeyshares = append(stateEncryptedKeyshares, eachPrivDecryptionKeyReq)
 	}
 
 	// Get the active public key for aggregating
@@ -89,7 +89,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 		math.LegacyNewDecFromInt(math.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
 		int64(activePubkey.NumberOfValidators)).Ceil().TruncateInt64()
 
-	// Emit KeyShare Submitted Event
+	// Emit Keyshare Submitted Event
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.SendEncryptedKeyshareEventType,
 			sdk.NewAttribute(types.SendGeneralKeyshareEventValidator, msg.Creator),
@@ -103,7 +103,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 	// If there is not enough keyshares to aggregate OR there is already a decryption key
 	// Only continue the code if there is enough keyshare to aggregate
 	// & no decryption key for current height
-	if int64(len(stateEncryptedKeyShares)) < expectedThreshold {
+	if int64(len(stateEncryptedKeyshares)) < expectedThreshold {
 		return &types.MsgSubmitEncryptedKeyshareResponse{}, nil
 	}
 
@@ -117,10 +117,10 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 
 	var kslist commontypes.PrivateDecryptionKey
 	kslist.PrivateKeyshares = make([]*commontypes.IndexedEncryptedKeyshare, 0)
-	for _, eachKeyShare := range stateEncryptedKeyShares {
+	for _, eachKeyshare := range stateEncryptedKeyshares {
 		var indexedKeyshare commontypes.IndexedEncryptedKeyshare
-		indexedKeyshare.EncryptedKeyshareValue = eachKeyShare.Keyshare
-		indexedKeyshare.EncryptedKeyshareIndex = eachKeyShare.KeyshareIndex
+		indexedKeyshare.EncryptedKeyshareValue = eachKeyshare.Keyshare
+		indexedKeyshare.EncryptedKeyshareIndex = eachKeyshare.KeyshareIndex
 		kslist.PrivateKeyshares = append(kslist.PrivateKeyshares, &indexedKeyshare)
 	}
 	kslist.Requester = msg.Requester
