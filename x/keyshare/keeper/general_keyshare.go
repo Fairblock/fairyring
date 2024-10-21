@@ -9,7 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/runtime"
 )
 
-// SetGeneralKeyshare set a specific generalKeyShare in the store from its index
+// SetGeneralKeyshare set a specific generalKeyshare in the store from its index
 func (k Keeper) SetGeneralKeyshare(ctx context.Context, generalKeyshare types.GeneralKeyshare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GeneralKeyshareKeyPrefix))
@@ -22,7 +22,7 @@ func (k Keeper) SetGeneralKeyshare(ctx context.Context, generalKeyshare types.Ge
 	), b)
 }
 
-// GetGeneralKeyshare returns a generalKeyShare from its index
+// GetGeneralKeyshare returns a generalKeyshare from its index
 func (k Keeper) GetGeneralKeyshare(
 	ctx context.Context,
 	validator string,
@@ -51,7 +51,6 @@ func (k Keeper) RemoveGeneralKeyshare(
 	validator string,
 	idType string,
 	idValue string,
-
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GeneralKeyshareKeyPrefix))
@@ -80,15 +79,15 @@ func (k Keeper) GetAllGeneralKeyshare(ctx context.Context) (list []types.General
 }
 
 // SetPrivateKeyshare set a specific private Keyshare in the store from its index
-func (k Keeper) SetPrivateKeyshare(ctx context.Context, encKeyShare types.ValidatorEncryptedKeyshare) {
+func (k Keeper) SetPrivateKeyshare(ctx context.Context, encKeyshare types.ValidatorEncryptedKeyshare) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateKeyshareKeyPrefix))
 
-	b := k.cdc.MustMarshal(&encKeyShare)
+	b := k.cdc.MustMarshal(&encKeyshare)
 	store.Set(types.PrivateKeyshareKey(
-		encKeyShare.Validator,
-		encKeyShare.Identity,
-		encKeyShare.Requester,
+		encKeyshare.Validator,
+		encKeyshare.Identity,
+		encKeyshare.Requester,
 	), b)
 }
 

@@ -69,7 +69,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				{
 					RpcMethod: "GeneralKeyshareAll",
 					Use:       "list-general-keyshares",
-					Short:     "List all GeneralKeyShare",
+					Short:     "List all GeneralKeyshare",
 				},
 				{
 					RpcMethod:      "GeneralKeyshare",
@@ -85,7 +85,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				// this line is used by ignite scaffolding # autocli/query
 			},
 		},
-		//Tx: &autocliv1.ServiceCommandDescriptor{
+		// Tx: &autocliv1.ServiceCommandDescriptor{
 		//	Service:              modulev1.Msg_ServiceDesc.ServiceName,
 		//	EnhanceCustomCommand: true, // only required if you want to use the custom command
 		//	RpcCommandOptions: []*autocliv1.RpcCommandOptions{

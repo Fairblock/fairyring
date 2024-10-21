@@ -65,11 +65,11 @@ func (k msgServer) SubmitGeneralKeyshare(
 
 	switch msg.IdType {
 	case PrivateGovIdentity:
-		keyShareReq, found := k.GetDecryptionKeyRequest(ctx, msg.IdValue)
+		keyshareReq, found := k.GetDecryptionKeyRequest(ctx, msg.IdValue)
 		if !found {
 			return nil, types.ErrKeyshareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
 		}
-		if keyShareReq.DecryptionKey != "" {
+		if keyshareReq.DecryptionKey != "" {
 			return &types.MsgSubmitGeneralKeyshareResponse{
 				Creator:             msg.Creator,
 				IdType:              msg.IdType,
@@ -99,7 +99,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 	_, _, err := parseKeyshareCommitment(suite, msg.Keyshare, commitments.Commitments[msg.KeyshareIndex-1], uint32(msg.KeyshareIndex), msg.IdValue)
 	if err != nil {
 		k.Logger().Error(fmt.Sprintf("Error in parsing & verifying general keyshare & commitment: %s", err.Error()))
-		k.Logger().Error(fmt.Sprintf("General KeyShare is: %v | Commitment is: %v | Index: %d", msg.Keyshare, commitments.Commitments, msg.KeyshareIndex))
+		k.Logger().Error(fmt.Sprintf("General Keyshare is: %v | Commitment is: %v | Index: %d", msg.Keyshare, commitments.Commitments, msg.KeyshareIndex))
 		// Invalid Share, slash validator
 		var consAddr sdk.ConsAddress
 
@@ -128,11 +128,11 @@ func (k msgServer) SubmitGeneralKeyshare(
 			KeyshareIndex:       msg.KeyshareIndex,
 			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
 			Success:             false,
-			ErrorMessage:        "Invalid General KeyShare",
+			ErrorMessage:        "Invalid General Keyshare",
 		}, nil
 	}
 
-	generalKeyShare := types.GeneralKeyshare{
+	generalKeyshare := types.GeneralKeyshare{
 		Validator:           msg.Creator,
 		IdType:              msg.IdType,
 		IdValue:             msg.IdValue,
@@ -143,16 +143,16 @@ func (k msgServer) SubmitGeneralKeyshare(
 	}
 
 	// Save the new general key share to state
-	k.SetGeneralKeyshare(ctx, generalKeyShare)
+	k.SetGeneralKeyshare(ctx, generalKeyshare)
 	k.SetLastSubmittedHeight(ctx, msg.Creator, strconv.FormatInt(ctx.BlockHeight(), 10))
 
 	validatorList := k.GetAllValidatorSet(ctx)
 
 	// Get all the general key shares for the provided id value & id type
-	var stateGeneralKeyShares []types.GeneralKeyshare
+	var stateGeneralKeyshares []types.GeneralKeyshare
 
 	for _, eachValidator := range validatorList {
-		eachGeneralKeyShare, found := k.GetGeneralKeyshare(
+		eachGeneralKeyshare, found := k.GetGeneralKeyshare(
 			ctx,
 			eachValidator.Validator,
 			msg.IdType,
@@ -161,7 +161,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 		if !found {
 			continue
 		}
-		stateGeneralKeyShares = append(stateGeneralKeyShares, eachGeneralKeyShare)
+		stateGeneralKeyshares = append(stateGeneralKeyshares, eachGeneralKeyshare)
 	}
 
 	// Get the active public key for aggregating
@@ -176,7 +176,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 		math.LegacyNewDecFromInt(math.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
 		int64(activePubkey.NumberOfValidators)).Ceil().TruncateInt64()
 
-	// Emit KeyShare Submitted Event
+	// Emit Keyshare Submitted Event
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.SendGeneralKeyshareEventType,
 			sdk.NewAttribute(types.SendGeneralKeyshareEventValidator, msg.Creator),
@@ -190,7 +190,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 
 	// If there is not enough keyshares to aggregate OR there is already an aggregated key
 	// Only continue the code if there is enough keyshare to aggregate & no aggregated key for current height
-	if int64(len(stateGeneralKeyShares)) < expectedThreshold {
+	if int64(len(stateGeneralKeyshares)) < expectedThreshold {
 		return &types.MsgSubmitGeneralKeyshareResponse{
 			Creator:             msg.Creator,
 			IdType:              msg.IdType,
@@ -205,12 +205,12 @@ func (k msgServer) SubmitGeneralKeyshare(
 	// Check if target general keyshare already aggregated a key
 	switch msg.IdType {
 	case PrivateGovIdentity:
-		keyShareReq, found := k.GetDecryptionKeyRequest(ctx, msg.IdValue)
+		keyshareReq, found := k.GetDecryptionKeyRequest(ctx, msg.IdValue)
 		if !found {
 			return nil, types.ErrKeyshareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
 		}
 
-		if keyShareReq.DecryptionKey != "" {
+		if keyshareReq.DecryptionKey != "" {
 			return &types.MsgSubmitGeneralKeyshareResponse{
 				Creator:             msg.Creator,
 				IdType:              msg.IdType,
@@ -227,12 +227,12 @@ func (k msgServer) SubmitGeneralKeyshare(
 	var listOfShares []distIBE.ExtractedKey
 	var listOfCommitment []distIBE.Commitment
 
-	for _, eachKeyShare := range stateGeneralKeyShares {
-		if eachKeyShare.KeyshareIndex > commitmentsLen {
-			k.Logger().Error(fmt.Sprintf("KeyShareIndex: %d should not higher or equals to commitments length: %d", eachKeyShare.KeyshareIndex, commitmentsLen))
+	for _, eachKeyshare := range stateGeneralKeyshares {
+		if eachKeyshare.KeyshareIndex > commitmentsLen {
+			k.Logger().Error(fmt.Sprintf("KeyshareIndex: %d should not higher or equals to commitments length: %d", eachKeyshare.KeyshareIndex, commitmentsLen))
 			continue
 		}
-		keyShare, commitment, err := parseKeyshareCommitment(suite, eachKeyShare.Keyshare, commitments.Commitments[eachKeyShare.KeyshareIndex-1], uint32(eachKeyShare.KeyshareIndex), msg.IdValue)
+		keyshare, commitment, err := parseKeyshareCommitment(suite, eachKeyshare.Keyshare, commitments.Commitments[eachKeyshare.KeyshareIndex-1], uint32(eachKeyshare.KeyshareIndex), msg.IdValue)
 		if err != nil {
 			k.Logger().Error(err.Error())
 			continue
@@ -240,7 +240,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 
 		listOfShares = append(
 			listOfShares,
-			*keyShare,
+			*keyshare,
 		)
 		listOfCommitment = append(
 			listOfCommitment,
@@ -306,7 +306,6 @@ func (k msgServer) SubmitGeneralKeyshare(
 					clienttypes.ZeroHeight(),
 					uint64(timeoutTimestamp),
 				)
-
 				if err != nil {
 					return nil, err
 				}

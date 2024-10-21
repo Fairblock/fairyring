@@ -40,7 +40,7 @@ func (k msgServer) CreateLatestPubkey(
 		expHeight = ak.Expiry + params.KeyExpiry
 	}
 
-	var queuedPubkey = types.QueuedPubkey{
+	queuedPubkey := types.QueuedPubkey{
 		Creator:            msg.Creator,
 		PublicKey:          msg.PublicKey,
 		Expiry:             expHeight,
@@ -48,7 +48,7 @@ func (k msgServer) CreateLatestPubkey(
 		EncryptedKeyshares: msg.EncryptedKeyshares,
 	}
 
-	encryptedKeyShares, err := json.Marshal(msg.EncryptedKeyshares)
+	encryptedKeyshares, err := json.Marshal(msg.EncryptedKeyshares)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ func (k msgServer) CreateLatestPubkey(
 			sdk.NewAttribute(types.QueuedPubkeyCreatedEventCreator, msg.Creator),
 			sdk.NewAttribute(types.QueuedPubkeyCreatedEventPubkey, msg.PublicKey),
 			sdk.NewAttribute(types.QueuedPubkeyCreatedEventNumberOfValidators, strconv.FormatUint(msg.NumberOfValidators, 10)),
-			sdk.NewAttribute(types.QueuedPubkeyCreatedEventEncryptedShares, string(encryptedKeyShares)),
+			sdk.NewAttribute(types.QueuedPubkeyCreatedEventEncryptedShares, string(encryptedKeyshares)),
 		),
 	)
 

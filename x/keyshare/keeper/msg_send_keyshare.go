@@ -72,7 +72,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	if err != nil {
 		defer telemetry.IncrCounter(1, types.KeyTotalInvalidKeyshareSubmitted)
 		k.Logger().Error(fmt.Sprintf("Error in parsing & verifying keyshare & commitment: %s", err.Error()))
-		k.Logger().Error(fmt.Sprintf("KeyShare is: %v | Commitment is: %v | Index: %d", msg.Message, commitments.Commitments, msg.KeyshareIndex))
+		k.Logger().Error(fmt.Sprintf("Keyshare is: %v | Commitment is: %v | Index: %d", msg.Message, commitments.Commitments, msg.KeyshareIndex))
 		// Invalid Share, slash validator
 		var consAddr sdk.ConsAddress
 
@@ -100,7 +100,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
 			BlockHeight:         msg.BlockHeight,
 			Success:             false,
-			ErrorMessage:        "Invalid KeyShare",
+			ErrorMessage:        "Invalid Keyshare",
 		}, nil
 	}
 
@@ -143,7 +143,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		math.LegacyNewDecFromInt(math.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
 		int64(activePubkey.NumberOfValidators)).Ceil().TruncateInt64()
 
-	// Emit KeyShare Submitted Event
+	// Emit Keyshare Submitted Event
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.SendKeyshareEventType,
 			sdk.NewAttribute(types.SendKeyshareEventValidator, msg.Creator),

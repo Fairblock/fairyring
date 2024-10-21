@@ -49,12 +49,11 @@ func TestOverrideLatestPubkeyMsgServer(t *testing.T) {
 				Creator:            creator,
 				Commitments:        out.Commitments,
 				NumberOfValidators: 1,
-				EncryptedKeyshares: out.KeyShareEncryptedKeyShares,
+				EncryptedKeyshares: out.KeyshareEncryptedKeyshares,
 			},
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-
 			_, err := srv.OverrideLatestPubkey(wctx, tc.request)
 
 			if tc.err != nil {

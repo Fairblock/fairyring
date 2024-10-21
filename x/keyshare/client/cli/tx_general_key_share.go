@@ -12,7 +12,7 @@ import (
 func CmdSubmitGeneralKeyshare() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "submit-general-keyshare [id-type] [id-value] [keyshare] [keyshare-index]",
-		Short: "submit a new GeneralKeyShare",
+		Short: "submit a new GeneralKeyshare",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
@@ -20,8 +20,8 @@ func CmdSubmitGeneralKeyshare() *cobra.Command {
 			indexIdValue := args[1]
 
 			// Get value arguments
-			argKeyShare := args[2]
-			argKeyShareIndex, err := cast.ToUint64E(args[3])
+			argKeyshare := args[2]
+			argKeyshareIndex, err := cast.ToUint64E(args[3])
 			if err != nil {
 				return err
 			}
@@ -35,8 +35,8 @@ func CmdSubmitGeneralKeyshare() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				indexIdType,
 				indexIdValue,
-				argKeyShare,
-				argKeyShareIndex,
+				argKeyshare,
+				argKeyshareIndex,
 			)
 
 			if err := msg.ValidateBasic(); err != nil {
@@ -51,17 +51,17 @@ func CmdSubmitGeneralKeyshare() *cobra.Command {
 	return cmd
 }
 
-func CmdSubmitEncryptedKeyShare() *cobra.Command {
+func CmdSubmitEncryptedKeyshare() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "submit-encrypted-keyshare [identity] [requester] [encrypted-keyshare] [keyshare-index]",
-		Short: "Submit a new EncryptedKeyShare",
+		Short: "Submit a new EncryptedKeyshare",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			identity := args[0]
 			requester := args[1]
 			encKeyshare := args[2]
-			argKeyShareIndex, err := cast.ToUint64E(args[3])
+			argKeyshareIndex, err := cast.ToUint64E(args[3])
 			if err != nil {
 				return err
 			}
@@ -76,7 +76,7 @@ func CmdSubmitEncryptedKeyShare() *cobra.Command {
 				identity,
 				requester,
 				encKeyshare,
-				argKeyShareIndex,
+				argKeyshareIndex,
 			)
 
 			if err := msg.ValidateBasic(); err != nil {

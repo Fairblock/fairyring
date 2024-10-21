@@ -18,7 +18,7 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func TestGeneralKeyShareQuerySingle(t *testing.T) {
+func TestGeneralKeyshareQuerySingle(t *testing.T) {
 	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNGeneralKeyshares(&keeper, ctx, 2)
@@ -75,7 +75,7 @@ func TestGeneralKeyShareQuerySingle(t *testing.T) {
 	}
 }
 
-func TestGeneralKeyShareQueryAllNoPagination(t *testing.T) {
+func TestGeneralKeyshareQueryAllNoPagination(t *testing.T) {
 	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNGeneralKeyshares(&keeper, ctx, 10)
@@ -86,7 +86,7 @@ func TestGeneralKeyShareQueryAllNoPagination(t *testing.T) {
 		err      error
 	}{
 		{
-			desc: "QueryAllGeneralKeyShare",
+			desc: "QueryAllGeneralKeyshare",
 			request: &types.QueryGeneralKeyshareAllRequest{
 				Pagination: &query.PageRequest{
 					Key:        nil,
@@ -120,7 +120,7 @@ func TestGeneralKeyShareQueryAllNoPagination(t *testing.T) {
 	}
 }
 
-func TestGeneralKeyShareQueryPaginated(t *testing.T) {
+func TestGeneralKeyshareQueryPaginated(t *testing.T) {
 	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNGeneralKeyshares(&keeper, ctx, 5)

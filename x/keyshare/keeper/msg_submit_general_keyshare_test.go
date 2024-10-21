@@ -37,7 +37,7 @@ func SetupTestGeneralKeyshare(t *testing.T, ctx sdk.Context, k keeper.Keeper, nu
 		Creator:            creator,
 		Expiry:             123456,
 		NumberOfValidators: pubkeyNumberOfValidator,
-		EncryptedKeyshares: out.KeyShareEncryptedKeyShares,
+		EncryptedKeyshares: out.KeyshareEncryptedKeyshares,
 	})
 
 	k.SetActiveCommitments(ctx, types.Commitments{
