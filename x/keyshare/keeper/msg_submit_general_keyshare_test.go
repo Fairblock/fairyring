@@ -37,7 +37,7 @@ func SetupTestGeneralKeyshare(t *testing.T, ctx sdk.Context, k keeper.Keeper, nu
 		Creator:            creator,
 		Expiry:             123456,
 		NumberOfValidators: pubkeyNumberOfValidator,
-		EncryptedKeyshares: out.KeyShareEncryptedKeyshares,
+		EncryptedKeyshares: out.KeyshareEncryptedKeyshares,
 	})
 
 	k.SetActiveCommitments(ctx, types.Commitments{
@@ -52,7 +52,7 @@ func TestSubmitGeneralKeyshareAggregated(t *testing.T) {
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
-	out, creator := SetupTestGeneralKeyShare(t, wctx, k, 1, 1)
+	out, creator := SetupTestGeneralKeyshare(t, wctx, k, 1, 1)
 
 	for i := 0; i < 5; i++ {
 
@@ -199,7 +199,7 @@ func TestGeneralKeyshareMsgServerFailCases(t *testing.T) {
 			err: types.ErrUnsupportedIDType,
 		},
 		{
-			desc: "KeyShareRequestNotFound",
+			desc: "KeyshareRequestNotFound",
 			request: &types.MsgSubmitGeneralKeyshare{
 				Creator: creator,
 				IdType:  keeper.PrivateGovIdentity,
@@ -208,7 +208,7 @@ func TestGeneralKeyshareMsgServerFailCases(t *testing.T) {
 			err: types.ErrKeyshareRequestNotFound,
 		},
 		{
-			desc: "InvalidKeyShareIndex",
+			desc: "InvalidKeyshareIndex",
 			request: &types.MsgSubmitGeneralKeyshare{
 				Creator:       creator,
 				IdType:        keeper.PrivateGovIdentity,

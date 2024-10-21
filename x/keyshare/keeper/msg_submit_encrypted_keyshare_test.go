@@ -83,12 +83,12 @@ func TestEncryptedKeyshareMsgServerCreate(t *testing.T) {
 	}
 }
 
-func TestEncryptedKeyShareMsgServerFailCases(t *testing.T) {
+func TestEncryptedKeyshareMsgServerFailCases(t *testing.T) {
 	k, ctx, pk, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
-	out, creator := SetupTestGeneralKeyShare(t, wctx, k, 1, 1)
+	out, creator := SetupTestGeneralKeyshare(t, wctx, k, 1, 1)
 	onlyIdVal := random.RandHex(32)
 
 	pk.SetPrivateReqQueueEntry(wctx, commontypes.RequestPrivateDecryptionKey{
@@ -107,21 +107,21 @@ func TestEncryptedKeyShareMsgServerFailCases(t *testing.T) {
 			err:     types.ErrAddrIsNotValidatorOrAuthorized,
 		},
 		{
-			desc: "KeyShareRequestNotFound",
+			desc: "KeyshareRequestNotFound",
 			request: &types.MsgSubmitEncryptedKeyshare{
 				Creator:  creator,
 				Identity: random.RandHex(32),
 			},
-			err: types.ErrKeyShareRequestNotFound,
+			err: types.ErrKeyshareRequestNotFound,
 		},
 		{
-			desc: "InvalidKeyShareIndex",
+			desc: "InvalidKeyshareIndex",
 			request: &types.MsgSubmitEncryptedKeyshare{
 				Creator:       creator,
 				Identity:      onlyIdVal,
 				KeyshareIndex: 10,
 			},
-			err: types.ErrInvalidKeyShareIndex,
+			err: types.ErrInvalidKeyshareIndex,
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -129,7 +129,7 @@ func TestEncryptedKeyShareMsgServerFailCases(t *testing.T) {
 
 			require.ErrorIs(t, err, tc.err)
 
-			if tc.desc == "KeyShareRequestNotFound" {
+			if tc.desc == "KeyshareRequestNotFound" {
 				k.SetPrivateDecryptionKeyRequest(wctx, types.PrivateDecryptionKeyRequest{
 					Identity:              onlyIdVal,
 					Pubkey:                out.MasterPublicKey,

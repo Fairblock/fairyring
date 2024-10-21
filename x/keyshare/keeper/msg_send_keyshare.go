@@ -64,7 +64,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 
 	commitmentsLen := uint64(len(commitments.Commitments))
 	if msg.KeyshareIndex > commitmentsLen {
-		return nil, types.ErrInvalidKeyShareIndex.Wrap(fmt.Sprintf("Expect Index within: %d, got: %d", commitmentsLen, msg.KeyshareIndex))
+		return nil, types.ErrInvalidKeyshareIndex.Wrap(fmt.Sprintf("Expect Index within: %d, got: %d", commitmentsLen, msg.KeyshareIndex))
 	}
 
 	// Parse the keyshare & commitment then verify it
@@ -180,12 +180,12 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	var listOfShares []distIBE.ExtractedKey
 	var listOfCommitment []distIBE.Commitment
 
-	for _, eachKeyShare := range stateKeyshares {
-		if eachKeyShare.KeyshareIndex > commitmentsLen {
-			k.Logger().Error(fmt.Sprintf("KeyShareIndex: %d should not higher or equals to commitments length: %d", eachKeyShare.KeyshareIndex, commitmentsLen))
+	for _, eachKeyshare := range stateKeyshares {
+		if eachKeyshare.KeyshareIndex > commitmentsLen {
+			k.Logger().Error(fmt.Sprintf("KeyshareIndex: %d should not higher or equals to commitments length: %d", eachKeyshare.KeyshareIndex, commitmentsLen))
 			continue
 		}
-		keyShare, commitment, err := parseKeyShareCommitment(suite, eachKeyShare.Keyshare, commitments.Commitments[eachKeyShare.KeyshareIndex-1], uint32(eachKeyShare.KeyshareIndex), ibeID)
+		keyshare, commitment, err := parseKeyshareCommitment(suite, eachKeyshare.Keyshare, commitments.Commitments[eachKeyshare.KeyshareIndex-1], uint32(eachKeyshare.KeyshareIndex), ibeID)
 		if err != nil {
 			k.Logger().Error(err.Error())
 			continue
@@ -218,13 +218,13 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 
 	k.Logger().Info(fmt.Sprintf("Aggregated Decryption Key for Block %d: %s", msg.BlockHeight, skHex))
 
-	defer telemetry.IncrCounterWithLabels([]string{types.KeyTotalValidKeyShareSubmitted}, 1, []metrics.Label{telemetry.NewLabel("aggrkey", skHex)})
+	defer telemetry.IncrCounterWithLabels([]string{types.KeyTotalValidKeyshareSubmitted}, 1, []metrics.Label{telemetry.NewLabel("aggrkey", skHex)})
 
 	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(types.KeyShareAggregatedEventType,
-			sdk.NewAttribute(types.KeyShareAggregatedEventBlockHeight, strconv.FormatUint(msg.BlockHeight, 10)),
-			sdk.NewAttribute(types.KeyShareAggregatedEventData, skHex),
-			sdk.NewAttribute(types.KeyShareAggregatedEventPubkey, activePubkey.PublicKey),
+		sdk.NewEvent(types.KeyshareAggregatedEventType,
+			sdk.NewAttribute(types.KeyshareAggregatedEventBlockHeight, strconv.FormatUint(msg.BlockHeight, 10)),
+			sdk.NewAttribute(types.KeyshareAggregatedEventData, skHex),
+			sdk.NewAttribute(types.KeyshareAggregatedEventPubkey, activePubkey.PublicKey),
 		),
 	)
 
@@ -257,23 +257,23 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	}, nil
 }
 
-// parseKeyShareCommitment parses a keyshare and extracts the keys and commitment
-func parseKeyShareCommitment(
+// parseKeyshareCommitment parses a keyshare and extracts the keys and commitment
+func parseKeyshareCommitment(
 	suite pairing.Suite,
-	keyShareHex string,
+	keyshareHex string,
 	commitmentHex string,
 	index uint32,
 	id string,
 ) (*distIBE.ExtractedKey, *distIBE.Commitment, error) {
-	newByteKey, err := hex.DecodeString(keyShareHex)
+	newByteKey, err := hex.DecodeString(keyshareHex)
 	if err != nil {
-		return nil, nil, types.ErrDecodingKeyShare.Wrap(err.Error())
+		return nil, nil, types.ErrDecodingKeyshare.Wrap(err.Error())
 	}
 
 	newSharePoint := suite.G2().Point()
 	err = newSharePoint.UnmarshalBinary(newByteKey)
 	if err != nil {
-		return nil, nil, types.ErrUnmarshallingKeyShare.Wrap(err.Error())
+		return nil, nil, types.ErrUnmarshallingKeyshare.Wrap(err.Error())
 	}
 
 	newByteCommitment, err := hex.DecodeString(commitmentHex)
