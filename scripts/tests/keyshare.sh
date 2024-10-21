@@ -262,9 +262,9 @@ fi
 
 echo "Query submitted key share on chain fairyring_test_1"
 RESULT=$($BINARY query keyshare list-keyshares --node tcp://localhost:16657 -o json)
-RESULT_SENDER=$(echo "$RESULT" | jq -r '.keyShare[0].validator')
-RESULT_KEYSHARE=$(echo "$RESULT" | jq -r '.keyShare[0].keyShare')
-RESULT_HEIGHT=$(echo "$RESULT" | jq -r '.keyShare[0].blockHeight')
+RESULT_SENDER=$(echo "$RESULT" | jq -r '.keyshare[0].validator')
+RESULT_KEYSHARE=$(echo "$RESULT" | jq -r '.keyshare[0].keyshare')
+RESULT_HEIGHT=$(echo "$RESULT" | jq -r '.keyshare[0].blockHeight')
 if [ "$RESULT_SENDER" != "$VALIDATOR_1" ] && [ "$RESULT_KEYSHARE" != "$EXTRACTED_SHARE" ] && [ "$RESULT_HEIGHT" != "$TARGET_HEIGHT" ]; then
   echo "ERROR: KeyShare module query submitted key share error, Expected to get the submitted key share, got '$RESULT'"
   echo $RESULT | jq
@@ -275,8 +275,8 @@ echo "Key Share Successfully submitted: '$RESULT_KEYSHARE' for height '$RESULT_H
 
 echo "Query aggregated key share on chain fairyring_test_1"
 RESULT=$($BINARY query keyshare list-decryption-keys --node tcp://localhost:16657 -o json)
-RESULT_HEIGHT=$(echo "$RESULT" | jq -r '.aggregatedKeyShare[0].height')
-RESULT_DATA=$(echo "$RESULT" | jq -r '.aggregatedKeyShare[0].data')
+RESULT_HEIGHT=$(echo "$RESULT" | jq -r '.decryption_keys[0].height')
+RESULT_DATA=$(echo "$RESULT" | jq -r '.decryption_keys[0].data')
 if [ "$RESULT_HEIGHT" != "$TARGET_HEIGHT" ]; then
   echo "ERROR: KeyShare module aggregate key share error. Expected to get an aggregated key, got '$RESULT'"
   echo $RESULT | jq
