@@ -68,9 +68,9 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	}
 
 	// Parse the keyshare & commitment then verify it
-	_, _, err := parseKeyShareCommitment(suite, msg.Message, commitments.Commitments[msg.KeyshareIndex-1], uint32(msg.KeyshareIndex), ibeID)
+	_, _, err := parseKeyshareCommitment(suite, msg.Message, commitments.Commitments[msg.KeyshareIndex-1], uint32(msg.KeyshareIndex), ibeID)
 	if err != nil {
-		defer telemetry.IncrCounter(1, types.KeyTotalInvalidKeyShareSubmitted)
+		defer telemetry.IncrCounter(1, types.KeyTotalInvalidKeyshareSubmitted)
 		k.Logger().Error(fmt.Sprintf("Error in parsing & verifying keyshare & commitment: %s", err.Error()))
 		k.Logger().Error(fmt.Sprintf("KeyShare is: %v | Commitment is: %v | Index: %d", msg.Message, commitments.Commitments, msg.KeyshareIndex))
 		// Invalid Share, slash validator
@@ -162,7 +162,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	// no decryption key for current height
 	if int64(len(stateKeyshares)) < expectedThreshold || found {
 		defer telemetry.IncrCounterWithLabels(
-			[]string{types.KeyTotalValidKeyShareSubmitted},
+			[]string{types.KeyTotalValidKeyshareSubmitted},
 			1,
 			[]metrics.Label{telemetry.NewLabel("aggrkey", decryptionKeyData.Data)},
 		)
@@ -193,7 +193,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 
 		listOfShares = append(
 			listOfShares,
-			*keyShare,
+			*keyshare,
 		)
 		listOfCommitment = append(
 			listOfCommitment,

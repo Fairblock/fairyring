@@ -67,7 +67,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 	case PrivateGovIdentity:
 		keyShareReq, found := k.GetDecryptionKeyRequest(ctx, msg.IdValue)
 		if !found {
-			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
+			return nil, types.ErrKeyshareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
 		}
 		if keyShareReq.DecryptionKey != "" {
 			return &types.MsgSubmitGeneralKeyshareResponse{
@@ -92,11 +92,11 @@ func (k msgServer) SubmitGeneralKeyshare(
 
 	commitmentsLen := uint64(len(commitments.Commitments))
 	if msg.KeyshareIndex > commitmentsLen {
-		return nil, types.ErrInvalidKeyShareIndex.Wrap(fmt.Sprintf("Expect Index within: %d, got: %d", commitmentsLen, msg.KeyshareIndex))
+		return nil, types.ErrInvalidKeyshareIndex.Wrap(fmt.Sprintf("Expect Index within: %d, got: %d", commitmentsLen, msg.KeyshareIndex))
 	}
 
 	// Parse the keyshare & commitment then verify it
-	_, _, err := parseKeyShareCommitment(suite, msg.Keyshare, commitments.Commitments[msg.KeyshareIndex-1], uint32(msg.KeyshareIndex), msg.IdValue)
+	_, _, err := parseKeyshareCommitment(suite, msg.Keyshare, commitments.Commitments[msg.KeyshareIndex-1], uint32(msg.KeyshareIndex), msg.IdValue)
 	if err != nil {
 		k.Logger().Error(fmt.Sprintf("Error in parsing & verifying general keyshare & commitment: %s", err.Error()))
 		k.Logger().Error(fmt.Sprintf("General KeyShare is: %v | Commitment is: %v | Index: %d", msg.Keyshare, commitments.Commitments, msg.KeyshareIndex))
@@ -207,7 +207,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 	case PrivateGovIdentity:
 		keyShareReq, found := k.GetDecryptionKeyRequest(ctx, msg.IdValue)
 		if !found {
-			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
+			return nil, types.ErrKeyshareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
 		}
 
 		if keyShareReq.DecryptionKey != "" {
@@ -232,7 +232,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 			k.Logger().Error(fmt.Sprintf("KeyShareIndex: %d should not higher or equals to commitments length: %d", eachKeyShare.KeyshareIndex, commitmentsLen))
 			continue
 		}
-		keyShare, commitment, err := parseKeyShareCommitment(suite, eachKeyShare.Keyshare, commitments.Commitments[eachKeyShare.KeyshareIndex-1], uint32(eachKeyShare.KeyshareIndex), msg.IdValue)
+		keyShare, commitment, err := parseKeyshareCommitment(suite, eachKeyShare.Keyshare, commitments.Commitments[eachKeyShare.KeyshareIndex-1], uint32(eachKeyShare.KeyshareIndex), msg.IdValue)
 		if err != nil {
 			k.Logger().Error(err.Error())
 			continue
@@ -259,11 +259,11 @@ func (k msgServer) SubmitGeneralKeyshare(
 	k.Logger().Info(fmt.Sprintf("Aggregated General Decryption Key for ID Type %s, ID: %s | %s", msg.IdType, msg.IdValue, skHex))
 
 	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(types.GeneralKeyShareAggregatedEventType,
-			sdk.NewAttribute(types.GeneralKeyShareAggregatedEventIDType, msg.IdType),
-			sdk.NewAttribute(types.GeneralKeyShareAggregatedEventIDValue, msg.IdValue),
-			sdk.NewAttribute(types.GeneralKeyShareAggregatedEventData, skHex),
-			sdk.NewAttribute(types.GeneralKeyShareAggregatedEventPubkey, activePubkey.PublicKey),
+		sdk.NewEvent(types.GeneralKeyshareAggregatedEventType,
+			sdk.NewAttribute(types.GeneralKeyshareAggregatedEventIDType, msg.IdType),
+			sdk.NewAttribute(types.GeneralKeyshareAggregatedEventIDValue, msg.IdValue),
+			sdk.NewAttribute(types.GeneralKeyshareAggregatedEventData, skHex),
+			sdk.NewAttribute(types.GeneralKeyshareAggregatedEventPubkey, activePubkey.PublicKey),
 		),
 	)
 
@@ -279,7 +279,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 		}
 		decryptionKeyReq, found := k.GetDecryptionKeyRequest(ctx, msg.IdValue)
 		if !found {
-			return nil, types.ErrKeyShareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
+			return nil, types.ErrKeyshareRequestNotFound.Wrapf(", got id value: %s", msg.IdValue)
 		}
 		if decryptionKeyReq.DecryptionKey != "" {
 			return nil, types.ErrAggKeyAlreadyExists.Wrapf(", identity: %s, Aggregated key: %s", msg.IdValue, decryptionKeyReq.DecryptionKey)

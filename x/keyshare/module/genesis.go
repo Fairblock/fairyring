@@ -33,7 +33,6 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetAuthorizedAddress(ctx, elem)
 	}
 	// Set all the generalKeys
-	hare
 	for _, elem := range genState.GeneralKeyshareList {
 		k.SetGeneralKeyshare(ctx, elem)
 	}

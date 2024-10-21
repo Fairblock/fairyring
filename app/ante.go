@@ -16,7 +16,7 @@ import (
 type FairyringHandlerOptions struct {
 	// FreeLane              block.Lane
 	BaseOptions           ante.HandlerOptions
-	KeyShareLane          pepante.KeyShareLane
+	KeyShareLane          pepante.KeyshareLane
 	TxDecoder             sdk.TxDecoder
 	TxEncoder             sdk.TxEncoder
 	PepKeeper             pepkeeper.Keeper
