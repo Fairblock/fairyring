@@ -58,7 +58,7 @@ func TestSubmitDecryptionKey(t *testing.T) {
 				Height:  rand.Uint64(),
 				Data:    random.RandHex(192),
 			},
-			errMsg: "submission of external decryption key not permitted on source chain",
+			errMsg: "submission of external decryption keyshare not permitted on source chain",
 		},
 		{
 			desc: "SubmittedFromNotTrustedAddr",

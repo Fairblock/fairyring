@@ -40,7 +40,7 @@ func TestSubmitGeneralEncryptedTx(t *testing.T) {
 	for _, tc := range []struct {
 		desc     string
 		request  *types.MsgSubmitGeneralEncryptedTx
-		response *types.MsgSubmitEncryptedTxResponse
+		response *types.MsgSubmitGeneralEncryptedTxResponse
 		err      error
 		errMsg   string
 	}{
@@ -69,7 +69,7 @@ func TestSubmitGeneralEncryptedTx(t *testing.T) {
 				ReqId:   validIdentity,
 				Data:    random.RandHex(192),
 			},
-			response: &types.MsgSubmitEncryptedTxResponse{},
+			response: &types.MsgSubmitGeneralEncryptedTxResponse{},
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
