@@ -12,7 +12,7 @@ import (
 )
 
 func setupMsgServer(t testing.TB) (keeper.Keeper, types.MsgServer, context.Context) {
-	k, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	k, ctx, _ := keepertest.KeyshareKeeper(t)
 	return k, keeper.NewMsgServerImpl(k), ctx
 }
 

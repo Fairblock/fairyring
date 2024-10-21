@@ -19,7 +19,7 @@ import (
 var _ = strconv.IntSize
 
 func TestDecryptionKeyQuerySingle(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNDecryptionKeys(&keeper, ctx, 2)
 	for _, tc := range []struct {
@@ -70,7 +70,7 @@ func TestDecryptionKeyQuerySingle(t *testing.T) {
 }
 
 func TestDecryptionKeyQueryAllNoPagination(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNDecryptionKeys(&keeper, ctx, 10)
 	for _, tc := range []struct {
@@ -115,7 +115,7 @@ func TestDecryptionKeyQueryAllNoPagination(t *testing.T) {
 }
 
 func TestDecryptionKeyQueryPaginated(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNDecryptionKeys(&keeper, ctx, 5)
 

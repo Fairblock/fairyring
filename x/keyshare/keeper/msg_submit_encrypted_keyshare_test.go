@@ -23,7 +23,7 @@ var _ = strconv.IntSize
 const SECP_PUBKEY_1 = "A/MdHVpitzHNSdD1Zw3kY+L5PEIPyd9l6sD5i4aIfXp9"
 
 func TestEncryptedKeyshareMsgServerCreate(t *testing.T) {
-	k, ctx, pk, _ := keepertest.KeyshareKeeper(t)
+	k, ctx, pk := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
@@ -84,7 +84,7 @@ func TestEncryptedKeyshareMsgServerCreate(t *testing.T) {
 }
 
 func TestEncryptedKeyshareMsgServerFailCases(t *testing.T) {
-	k, ctx, pk, _ := keepertest.KeyshareKeeper(t)
+	k, ctx, pk := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 

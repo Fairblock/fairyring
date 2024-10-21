@@ -21,7 +21,7 @@ import (
 var _ = strconv.IntSize
 
 func TestValidatorSetQuerySingle(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNValidatorSet(&keeper, ctx, 2)
 	for _, tc := range []struct {
@@ -72,7 +72,7 @@ func TestValidatorSetQuerySingle(t *testing.T) {
 }
 
 func TestValidatorSetQueryAllNoPagination(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNValidatorSet(&keeper, ctx, 10)
 	for _, tc := range []struct {
@@ -117,7 +117,7 @@ func TestValidatorSetQueryAllNoPagination(t *testing.T) {
 }
 
 func TestValidatorSetQueryPaginated(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNValidatorSet(&keeper, ctx, 5)
 

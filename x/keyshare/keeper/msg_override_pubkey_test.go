@@ -18,7 +18,7 @@ import (
 var _ = strconv.IntSize
 
 func TestOverrideLatestPubkeyMsgServer(t *testing.T) {
-	k, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	k, ctx, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 

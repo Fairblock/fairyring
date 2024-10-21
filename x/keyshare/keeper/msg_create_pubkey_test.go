@@ -18,7 +18,7 @@ import (
 var _ = strconv.IntSize
 
 func TestLatestPubkeyMsgServerCreate(t *testing.T) {
-	k, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	k, ctx, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
@@ -37,7 +37,7 @@ func TestLatestPubkeyMsgServerCreate(t *testing.T) {
 		Creator:            creator,
 		Expiry:             123456,
 		NumberOfValidators: 1,
-		EncryptedKeyshares: out.KeyshareEncryptedKeyshares,
+		EncryptedKeyshares: out.KeyShareEncryptedKeyShares,
 	})
 
 	for _, tc := range []struct {
@@ -63,7 +63,7 @@ func TestLatestPubkeyMsgServerCreate(t *testing.T) {
 				PublicKey:          out.MasterPublicKey,
 				Creator:            creator,
 				NumberOfValidators: 1,
-				EncryptedKeyshares: out.KeyshareEncryptedKeyshares,
+				EncryptedKeyshares: out.KeyShareEncryptedKeyShares,
 			},
 		},
 	} {

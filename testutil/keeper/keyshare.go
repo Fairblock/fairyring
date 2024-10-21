@@ -20,7 +20,6 @@ import (
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
 	portkeeper "github.com/cosmos/ibc-go/v8/modules/core/05-port/keeper"
@@ -39,7 +38,7 @@ var (
 	PKs          = simtestutil.CreateTestPubKeys(500)
 )
 
-func KeyshareKeeper(t testing.TB) (keeper.Keeper, sdk.Context, pepkeeper.Keeper, *stakingkeeper.Keeper) {
+func KeyshareKeeper(t testing.TB) (keeper.Keeper, sdk.Context, pepkeeper.Keeper) {
 	storeKey := storetypes.NewKVStoreKey(types.StoreKey)
 	pepStoreKey := storetypes.NewKVStoreKey(peptypes.StoreKey)
 	stakingStoreKey := storetypes.NewKVStoreKey(stakingtypes.StoreKey)
@@ -106,16 +105,6 @@ func KeyshareKeeper(t testing.TB) (keeper.Keeper, sdk.Context, pepkeeper.Keeper,
 		nil,
 	)
 
-	stakingKeeper := stakingkeeper.NewKeeper(
-		appCodec,
-		runtime.NewKVStoreService(stakingStoreKey),
-		accountKeeper,
-		bankKeeper,
-		authority.String(),
-		address.NewBech32Codec("cosmosvaloper"),
-		address.NewBech32Codec("cosmosvalcons"),
-	)
-
 	k := keeper.NewKeeper(
 		appCodec,
 		runtime.NewKVStoreService(storeKey),
@@ -134,7 +123,7 @@ func KeyshareKeeper(t testing.TB) (keeper.Keeper, sdk.Context, pepkeeper.Keeper,
 		nil,
 		pepKeeper,
 		nil,
-		stakingKeeper,
+		nil,
 		nil,
 	)
 
@@ -148,9 +137,6 @@ func KeyshareKeeper(t testing.TB) (keeper.Keeper, sdk.Context, pepkeeper.Keeper,
 	if err := pepKeeper.SetParams(ctx, peptypes.DefaultParams()); err != nil {
 		panic(err)
 	}
-	if err := stakingKeeper.SetParams(ctx, stakingtypes.DefaultParams()); err != nil {
-		panic(err)
-	}
 
-	return k, ctx, pepKeeper, stakingKeeper
+	return k, ctx, pepKeeper
 }

@@ -19,7 +19,7 @@ import (
 var _ = strconv.IntSize
 
 func TestAuthorizedAddressQuerySingle(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNAuthorizedAddress(&keeper, ctx, 2)
 	for _, tc := range []struct {
@@ -70,7 +70,7 @@ func TestAuthorizedAddressQuerySingle(t *testing.T) {
 }
 
 func TestAuthorizedAddressQueryAllNoPagination(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNAuthorizedAddress(&keeper, ctx, 12)
 	for _, tc := range []struct {
@@ -115,7 +115,7 @@ func TestAuthorizedAddressQueryAllNoPagination(t *testing.T) {
 }
 
 func TestAuthorizedAddressQueryPaginated(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNAuthorizedAddress(&keeper, ctx, 5)
 

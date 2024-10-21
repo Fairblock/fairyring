@@ -27,7 +27,7 @@ func createNDecryptionKeys(keeper *keeper.Keeper, ctx sdk.Context, n int) []type
 }
 
 func TestDecryptionKeyGet(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	items := createNDecryptionKeys(&keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetDecryptionKey(ctx,
@@ -41,7 +41,7 @@ func TestDecryptionKeyGet(t *testing.T) {
 	}
 }
 func TestDecryptionKeyRemove(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	items := createNDecryptionKeys(&keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveDecryptionKey(ctx,
@@ -55,7 +55,7 @@ func TestDecryptionKeyRemove(t *testing.T) {
 }
 
 func TestDecryptionKeyGetAll(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	items := createNDecryptionKeys(&keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),

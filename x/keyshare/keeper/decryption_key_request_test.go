@@ -27,7 +27,7 @@ func createNDecryptionKeyRequests(
 }
 
 func TestDecryptionKeyRequestGet(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	items := createNDecryptionKeyRequests(&keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetDecryptionKeyRequest(ctx,
@@ -41,7 +41,7 @@ func TestDecryptionKeyRequestGet(t *testing.T) {
 	}
 }
 func TestDecryptionKeyRequestRemove(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	items := createNDecryptionKeyRequests(&keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveDecryptionKeyRequest(ctx,
@@ -55,7 +55,7 @@ func TestDecryptionKeyRequestRemove(t *testing.T) {
 }
 
 func TestDecryptionKeyRequestGetAll(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	items := createNDecryptionKeyRequests(&keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),

@@ -37,7 +37,7 @@ func SetupTestGeneralKeyshare(t *testing.T, ctx sdk.Context, k keeper.Keeper, nu
 		Creator:            creator,
 		Expiry:             123456,
 		NumberOfValidators: pubkeyNumberOfValidator,
-		EncryptedKeyshares: out.KeyshareEncryptedKeyshares,
+		EncryptedKeyshares: out.KeyShareEncryptedKeyShares,
 	})
 
 	k.SetActiveCommitments(ctx, types.Commitments{
@@ -48,7 +48,7 @@ func SetupTestGeneralKeyshare(t *testing.T, ctx sdk.Context, k keeper.Keeper, nu
 }
 
 func TestSubmitGeneralKeyshareAggregated(t *testing.T) {
-	k, ctx, pk, _ := keepertest.KeyshareKeeper(t)
+	k, ctx, pk := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
@@ -106,7 +106,7 @@ func TestSubmitGeneralKeyshareAggregated(t *testing.T) {
 }
 
 func TestSubmitGeneralKeyshareNotAggregated(t *testing.T) {
-	k, ctx, pk, _ := keepertest.KeyshareKeeper(t)
+	k, ctx, pk := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
@@ -164,7 +164,7 @@ func TestSubmitGeneralKeyshareNotAggregated(t *testing.T) {
 }
 
 func TestGeneralKeyshareMsgServerFailCases(t *testing.T) {
-	k, ctx, pk, _ := keepertest.KeyshareKeeper(t)
+	k, ctx, pk := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 

@@ -15,7 +15,7 @@ import (
 var _ = strconv.IntSize
 
 func TestCommitmentsQuery(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNCommitments(&keeper, ctx, 1)
 	for _, tc := range []struct {

@@ -22,7 +22,7 @@ import (
 var _ = strconv.IntSize
 
 func TestKeyShareQuerySingle(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNKeyshares(&keeper, ctx, 2)
 	for _, tc := range []struct {
@@ -76,7 +76,7 @@ func TestKeyShareQuerySingle(t *testing.T) {
 }
 
 func TestKeyShareQueryAllNoPagination(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNKeyshares(&keeper, ctx, 10)
 	for _, tc := range []struct {
@@ -121,7 +121,7 @@ func TestKeyShareQueryAllNoPagination(t *testing.T) {
 }
 
 func TestKeyShareQueryPaginated(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNKeyshares(&keeper, ctx, 5)
 

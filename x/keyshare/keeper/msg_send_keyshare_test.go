@@ -18,7 +18,7 @@ import (
 var _ = strconv.IntSize
 
 func TestSendKeyshareMsgServerCreateAggregated(t *testing.T) {
-	k, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	k, ctx, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
@@ -51,7 +51,7 @@ func TestSendKeyshareMsgServerCreateAggregated(t *testing.T) {
 }
 
 func TestSendKeyshareMsgServerCreateNotAggregated(t *testing.T) {
-	k, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	k, ctx, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
@@ -84,7 +84,7 @@ func TestSendKeyshareMsgServerCreateNotAggregated(t *testing.T) {
 }
 
 func TestSendKeyshareMsgServerFailCases(t *testing.T) {
-	k, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	k, ctx, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 

@@ -13,7 +13,7 @@ import (
 )
 
 func TestPubkeyQuery(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	activePubkey := createActivePubkeys(&keeper, wctx)
 	queuedPubkey := createQueuedPubkeys(&keeper, wctx)

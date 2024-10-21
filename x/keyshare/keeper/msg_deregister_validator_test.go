@@ -11,7 +11,7 @@ import (
 )
 
 func TestDeRegisterValidatorMsgServer(t *testing.T) {
-	k, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	k, ctx, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	creator := sample.AccAddress()
