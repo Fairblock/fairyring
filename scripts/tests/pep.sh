@@ -174,8 +174,8 @@ RESULT=$($BINARY tx pep submit-decryption-key $AGG_KEY_HEIGHT $AGG_KEY --from $V
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 ACTION=$(echo "$RESULT" | jq -r | jq '.events' | jq 'map(select(any(.type; contains("message"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("action"))))[]' | jq -r '.value')
-if [ "$ACTION" != "/fairyring.pep.MsgCreateAggregatedKeyShare" ]; then
-  echo "ERROR: Pep module submit aggregated key error. Expected tx action to be MsgCreateAggregatedKeyShare,  got '$ACTION'"
+if [ "$ACTION" != "/fairyring.pep.MsgSubmitDecryptionKey" ]; then
+  echo "ERROR: Pep module submit decryption key error. Expected tx action to be MsgSubmitDecryptionKey,  got '$ACTION'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   exit 1
 fi
@@ -183,7 +183,7 @@ fi
 
 echo "Query aggregated key share from key share module for submitting to pep module on chain fairyring_test_1"
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE -o json | jq -r '.block.header.height')
-RESULT=$($BINARY query keyshare list-aggregated-key-share --node $CHAIN1_NODE -o json)
+RESULT=$($BINARY query keyshare list-decryption-keys --node $CHAIN1_NODE -o json)
 AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.decryption_keys | last | .height')
 AGG_KEY=$(echo "$RESULT" | jq -r '.decryption_keys | last | .data')
 if [ "$AGG_KEY_HEIGHT" -gt "$CURRENT_BLOCK" ]; then
@@ -266,8 +266,8 @@ RESULT=$($BINARY tx pep submit-decryption-key $AGG_KEY_HEIGHT $AGG_KEY --from $V
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 ACTION=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("message"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("action"))))[]' | jq -r '.value')
-if [ "$ACTION" != "/fairyring.pep.MsgCreateAggregatedKeyShare" ]; then
-  echo "ERROR: Pep module submit aggregated key error. Expected tx action to be MsgCreateAggregatedKeyShare,  got '$ACTION'"
+if [ "$ACTION" != "/fairyring.pep.MsgSubmitDecryptionKey" ]; then
+  echo "ERROR: Pep module submit aggregated key error. Expected tx action to be MsgSubmitDecryptionKey,  got '$ACTION'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   echo $RESULT | jq
   exit 1

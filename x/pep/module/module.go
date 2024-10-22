@@ -352,10 +352,8 @@ func (am AppModule) EndBlock(cctx context.Context) error {
 	ctx := sdk.UnwrapSDKContext(cctx)
 	params := am.keeper.GetParams(ctx)
 	if !params.IsSourceChain {
-		fmt.Println("\n\n\n QueryFairyringCurrentKeys \n\n\n")
 		err := am.keeper.QueryFairyringCurrentKeys(ctx)
 		if err != nil {
-			fmt.Println("ERR", err, "\n\n\n")
 			am.keeper.Logger().Error("Endblocker get keys err", err)
 			am.keeper.Logger().Error(err.Error())
 		}

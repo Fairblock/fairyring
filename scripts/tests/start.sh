@@ -186,6 +186,8 @@ rm rly2.json &> /dev/null
 echo "Waiting both chain to run..."
 sleep $((BLOCK_TIME*2))
 
+sleep 10
+
 echo "Starting Hermes Relayer..."
 echo "Creating log file at $CHAIN_DIR/relayer.log"
 hermes --config hermes_config.toml start > $CHAIN_DIR/relayer.log 2>&1 &
