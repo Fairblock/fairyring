@@ -142,6 +142,13 @@
           "pub_key": null,
           "account_number": "17",
           "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "fairy1kh0frv8ck73ycgjerwu4rvep68zqza9x3hmqax",
+          "pub_key": null,
+          "account_number": "18",
+          "sequence": "0"
         }
       ]
     },
@@ -290,6 +297,15 @@
           ]
         },
         {
+          "address": "fairy1kh0frv8ck73ycgjerwu4rvep68zqza9x3hmqax",
+          "coins": [
+            {
+              "denom": "ufairy",
+              "amount": "150000000000"
+            }
+          ]
+        },
+        {
           "address": "fairy1mjeqzj4kvt7whl8zvcm52jqjjnuwn2qjvwuz52",
           "coins": [
             {
@@ -320,7 +336,7 @@
       "supply": [
         {
           "denom": "ufairy",
-          "amount": "200240000000000"
+          "amount": "200390000000000"
         }
       ],
       "denom_metadata": [],
@@ -692,4 +708,3 @@
       }
     }
   }
-}
