@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	kstypes "github.com/Fairblock/fairyring/x/keyshare/types"
@@ -74,6 +75,8 @@ func (k Keeper) TransmitCurrentKeysPacket(
 // OnAcknowledgementCurrentKeysPacket responds to the success or failure of a packet
 // acknowledgement written on the receiving chain.
 func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Packet, data kstypes.CurrentKeysPacketData, ack channeltypes.Acknowledgement) error {
+	fmt.Println("\n\n\nReceived Current Keys ACK:")
+
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
 		k.Logger().Error("Ack Error")
@@ -119,6 +122,8 @@ func (k Keeper) OnAcknowledgementCurrentKeysPacket(ctx sdk.Context, packet chann
 			k.Logger().Info("active key is nil in packet ack")
 			return nil
 		}
+
+		fmt.Println("\n\n\n", packetAck, "\n\n\n")
 
 		ak, found := k.GetActivePubkey(ctx)
 		if !found {

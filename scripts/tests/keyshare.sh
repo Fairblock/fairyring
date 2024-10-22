@@ -69,9 +69,9 @@ if [ "$VALIDATOR_ADDR" != "$VALIDATOR_1" ]; then
 fi
 
 RESULT=$($BINARY q keyshare list-validator-set --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 -o json)
-CURRENT_SET_LEN=$(echo $RESULT | jq '.validatorSet | length')
+CURRENT_SET_LEN=$(echo $RESULT | jq '.validator_set | length')
 if [ "$CURRENT_SET_LEN" != "0" ]; then
-  echo "ERROR: KeyShare module deregister validator error, Expected total validator set to be empty, got '$(echo $RESULT | jq '.validatorSet')'"
+  echo "ERROR: KeyShare module deregister validator error, Expected total validator set to be empty, got '$(echo $RESULT | jq '.validator_set')'"
   exit 1
 fi
 
@@ -140,7 +140,7 @@ fi
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+1))
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 0 $TARGET_HEIGHT)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 
 echo "Not registered account submit key share on chain fairyring_test_1"
@@ -186,7 +186,7 @@ fi
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+2))
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 
 echo "Authorized account submit key share on chain fairyring_test_1"
@@ -216,7 +216,7 @@ fi
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+1))
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 
 echo "Removed Authorized account tries submit key share on chain fairyring_test_1"
@@ -234,7 +234,7 @@ fi
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+2))
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 
 echo "Registered validator submit valid key share on chain fairyring_test_1"

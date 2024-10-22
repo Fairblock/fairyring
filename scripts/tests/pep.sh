@@ -63,7 +63,7 @@ wait_for_tx_source () {
 
 echo "Query new account pep nonce from pep module on chain fairyring_test_2"
 RESULT=$($BINARY query pep show-pep-nonce $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
-VALIDATOR_PEP_NONCE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
+VALIDATOR_PEP_NONCE=$(echo "$RESULT" | jq -r '.pep_nonce.nonce')
 if [ "$VALIDATOR_PEP_NONCE" != "1" ]; then
   echo "ERROR: Pep module query Pep Nonce error. Expected Pep Nonce to be 1, got '$VALIDATOR_PEP_NONCE'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
@@ -72,7 +72,7 @@ fi
 
 
 echo "Query master public key from key share module for submitting to pep module on chain fairyring_test_1"
-PUB_KEY=$($BINARY query keyshare show-active-pub-key --node $CHAIN1_NODE -o json | jq -r '.activePubkey.publicKey')
+PUB_KEY=$($BINARY query keyshare show-active-pub-key --node $CHAIN1_NODE -o json | jq -r '.active_pubkey.public_key')
 if [ "$PUB_KEY" == "" ]; then
   echo "ERROR: Query master public key from key share module error, expecting an active public key, got '$PUB_KEY'"
   exit 1
@@ -80,7 +80,7 @@ fi
 
 
 echo "Query master public key expiry height from key share module for submitting to pep module on chain fairyring_test_1"
-PUB_KEY_EXPIRY=$($BINARY query keyshare show-active-pub-key --node $CHAIN1_NODE -o json | jq -r '.activePubkey.expiry')
+PUB_KEY_EXPIRY=$($BINARY query keyshare show-active-pub-key --node $CHAIN1_NODE -o json | jq -r '.active_pubkey.expiry')
 if [ "$PUB_KEY_EXPIRY" == "" ]; then
   echo "ERROR: Query master public key expiry height from key share module error, expecting an active public key, got '$PUB_KEY'"
   exit 1
@@ -127,7 +127,7 @@ fi
 
 echo "Query account pep nonce before submitting encrypted tx from pep module on chain fairyring_test_2"
 RESULT=$($BINARY query pep show-pep-nonce $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
-VALIDATOR_PEP_NONCE_BEFORE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
+VALIDATOR_PEP_NONCE_BEFORE=$(echo "$RESULT" | jq -r '.pep_nonce.nonce')
 if [ "$VALIDATOR_PEP_NONCE_BEFORE" != "1" ]; then
   echo "ERROR: Pep module query Pep Nonce error. Expected Pep Nonce to be 1, got '$VALIDATOR_PEP_NONCE'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
@@ -160,8 +160,8 @@ SIGNED_DATA_2=$($BINARY tx sign unsigned2.json --from $VALIDATOR_2 --offline --a
 echo "Query aggregated key share from key share module for submitting to pep module on chain fairyring_test_1"
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE -o json | jq -r '.block.header.height')
 RESULT=$($BINARY query keyshare list-decryption-keys --node $CHAIN1_NODE -o json)
-AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .height')
-AGG_KEY=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .data')
+AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.decryption_keys | last | .height')
+AGG_KEY=$(echo "$RESULT" | jq -r '.decryption_keys | last | .data')
 if [ "$AGG_KEY_HEIGHT" -gt "$CURRENT_BLOCK" ]; then
   echo "ERROR: Height of the aggregated key from key share module '$AGG_KEY_HEIGHT' is greater than current block height '$CURRENT_BLOCK'"
   exit 1
@@ -184,8 +184,8 @@ fi
 echo "Query aggregated key share from key share module for submitting to pep module on chain fairyring_test_1"
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE -o json | jq -r '.block.header.height')
 RESULT=$($BINARY query keyshare list-aggregated-key-share --node $CHAIN1_NODE -o json)
-AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .height')
-AGG_KEY=$(echo "$RESULT" | jq -r '.aggregatedKeyShare | last | .data')
+AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.decryption_keys | last | .height')
+AGG_KEY=$(echo "$RESULT" | jq -r '.decryption_keys | last | .data')
 if [ "$AGG_KEY_HEIGHT" -gt "$CURRENT_BLOCK" ]; then
   echo "ERROR: Height of the aggregated key from key share module '$AGG_KEY_HEIGHT' is greater than current block height '$CURRENT_BLOCK'"
   exit 1
@@ -251,7 +251,7 @@ echo "Balance after submitting second encrypted tx: $BAL_AMT$BAL_DENOM"
 
 echo "Query account pep nonce after submitting encrypted tx from pep module on chain fairyring_test_2"
 RESULT=$($BINARY query pep show-pep-nonce $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
-VALIDATOR_PEP_NONCE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
+VALIDATOR_PEP_NONCE=$(echo "$RESULT" | jq -r '.pep_nonce.nonce')
 if [ "$VALIDATOR_PEP_NONCE" != "1" ]; then
   echo "ERROR: Pep module query Pep Nonce error. Expected Pep Nonce to be 1, got '$VALIDATOR_PEP_NONCE'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
@@ -287,7 +287,7 @@ fi
 
 echo "Query account pep nonce after encrypted tx being processed from pep module on chain fairyring_test_2"
 RESULT=$($BINARY query pep show-pep-nonce $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
-VALIDATOR_PEP_NONCE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
+VALIDATOR_PEP_NONCE=$(echo "$RESULT" | jq -r '.pep_nonce.nonce')
 if [ "$VALIDATOR_PEP_NONCE" != "3" ]; then
   echo "ERROR: Pep module query Pep Nonce error. Expected Pep Nonce to be 3, got '$VALIDATOR_PEP_NONCE'"
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
@@ -329,8 +329,8 @@ if [ "$RESULT" != "$AGG_KEY_HEIGHT" ]; then
   exit 1
 fi
 
-FIRST_ENCRYPTED_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq -r '.encryptedTxArray[0].encryptedTx[0].processedAtChainHeight')
-SECOND_ENCRYPTED_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq -r '.encryptedTxArray[0].encryptedTx[1].processedAtChainHeight')
+FIRST_ENCRYPTED_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq -r '.encrypted_tx_array[0].encrypted_txs[0].processed_at_chain_height')
+SECOND_ENCRYPTED_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq -r '.encrypted_tx_array[0].encrypted_txs[1].processed_at_chain_height')
 
 echo "First Encrypted tx processed at height: $FIRST_ENCRYPTED_TX_HEIGHT, 2nd one processed at: $SECOND_ENCRYPTED_TX_HEIGHT"
 
@@ -359,14 +359,14 @@ check_tx_code $RESULT
 sleep 5
 
 echo "Query general keyshare request on chain fairyring_test_1"
-LIST_KEYSHARE_REQ=$($BINARY query pep list-keyshare-req --node $CHAIN1_NODE -o json)
-IDENTITY=$(echo $LIST_KEYSHARE_REQ | jq -r '.keyshares[0].identity')
-REQ_ID=$(echo $LIST_KEYSHARE_REQ | jq -r '.keyshares[0].request_id')
+LIST_KEYSHARE_REQ=$($BINARY query pep list-general-identities --node $CHAIN1_NODE -o json)
+IDENTITY=$(echo $LIST_KEYSHARE_REQ | jq -r '.request_details_list[0].identity')
+REQ_ID=$(echo $LIST_KEYSHARE_REQ | jq -r '.request_details_list[0].request_id')
 echo "Identity for keyshare request 1 is: $IDENTITY"
 
 echo "Query account pep nonce before submitting encrypted tx from pep module on chain fairyring_test_1"
 RESULT=$($BINARY query pep show-pep-nonce $WALLET_1 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE -o json)
-PEP_NONCE_BEFORE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
+PEP_NONCE_BEFORE=$(echo "$RESULT" | jq -r '.pep_nonce.nonce')
 
 echo "Query target account token balance before submitting encrypted tx from pep module on chain fairyring_test_1"
 RESULT=$($BINARY query bank balances $VALIDATOR_1 --node $CHAIN1_NODE -o json)
@@ -403,7 +403,7 @@ check_tx_code $RESULT
 sleep 5
 
 echo "Query Keyshare request and check for encrypted tx"
-TX=$($BINARY query pep show-general-identity $REQ_ID --node $CHAIN1_NODE -o json | jq -r '.keyshare.tx_list.encryptedTx[0].data')
+TX=$($BINARY query pep show-general-identity $REQ_ID --node $CHAIN1_NODE -o json | jq -r '.request_details.tx_list.encrypted_txs[0].data')
 if [ "$TX" != "$CIPHER" ]; then
   echo "Submitting general encrypted tx failed. Expected: $CIPHER, got $TX"
   exit 1
@@ -424,7 +424,7 @@ check_tx_code $RESULT
 sleep 5
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $IDENTITY)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 while true; do
   echo "Submitting General Key Share"
@@ -460,10 +460,10 @@ check_tx_code $RESULT
 
 while true; do
   echo "Query general keyshare request on chain $CHAINID_2"
-  LIST_KEYSHARE_REQ=$($BINARY query pep list-keyshare-req --node $CHAIN2_NODE -o json)
+  LIST_KEYSHARE_REQ=$($BINARY query pep list-general-identities --node $CHAIN2_NODE -o json)
   echo $LIST_KEYSHARE_REQ | jq
-  IDENTITY=$(echo $LIST_KEYSHARE_REQ | jq -r '.keyshares[0].identity')
-  REQ_ID=$(echo $LIST_KEYSHARE_REQ | jq -r '.keyshares[0].request_id')
+  IDENTITY=$(echo $LIST_KEYSHARE_REQ | jq -r '.request_details_list[0].identity')
+  REQ_ID=$(echo $LIST_KEYSHARE_REQ | jq -r '.request_details_list[0].request_id')
   echo "Identity for keyshare request 1 is: $IDENTITY"
   echo "Request ID for keyshare request 1 is: $REQ_ID"
   if [[ "$IDENTITY" != "null" ]]; then
@@ -475,7 +475,7 @@ done
 
 echo "Query account pep nonce before submitting encrypted tx from pep module on chain $CHAINID_2"
 RESULT=$($BINARY query pep show-pep-nonce $WALLET_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
-PEP_NONCE_BEFORE=$(echo "$RESULT" | jq -r '.pepNonce.nonce')
+PEP_NONCE_BEFORE=$(echo "$RESULT" | jq -r '.pep_nonce.nonce')
 
 echo "Query target account token balance before submitting encrypted tx from pep module on chain $CHAINID_2"
 RESULT=$($BINARY query bank balances $VALIDATOR_2 --node $CHAIN2_NODE -o json)
@@ -516,7 +516,7 @@ check_tx_code $RESULT
 sleep 5
 
 echo "Query Keyshare request and check for encrypted tx"
-TX=$($BINARY query pep show-general-identity $REQ_ID --node $CHAIN2_NODE -o json | jq -r '.keyshare.tx_list.encryptedTx[0].data')
+TX=$($BINARY query pep show-general-identity $REQ_ID --node $CHAIN2_NODE -o json | jq -r '.request_details.tx_list.encrypted_txs[0].data')
 if [ "$TX" != "$CIPHER" ]; then
   echo "Submitting general encrypted tx failed. Expected: $CIPHER, got $TX"
   exit 1
@@ -537,7 +537,7 @@ check_tx_code $RESULT
 sleep 5
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $IDENTITY)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 while true; do
   echo "Submitting General Key Share"
@@ -598,7 +598,7 @@ check_tx_code $RESULT
 sleep 5
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY1" -k "$EXTRACTED_SHARE")
 
@@ -619,7 +619,7 @@ sleep 5
 
 echo "Query private keyshare request on chain fairyring_test_1"
 SHOW_PRIVATE_REQ=$($BINARY query pep show-private-identity $WALLET_1/test_req_1 --node $CHAIN1_NODE -o json)
-ENC_KEYSHARES=$(echo "$SHOW_PRIVATE_REQ" | jq -r '.encrypted_keyshares')
+ENC_KEYSHARES=$(echo "$SHOW_PRIVATE_REQ" | jq -r '.private_decryption_keys')
 
 if [ "$ENC_KEYSHARES" = "[]" ]; then
   echo "encrypted_keyshares is empty."
@@ -640,7 +640,7 @@ SHOW_PRIVATE_REQ=$($BINARY query pep show-private-identity $REQ_ID --node $CHAIN
 echo $SHOW_PRIVATE_REQ
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY1" -k "$EXTRACTED_SHARE")
 
@@ -661,7 +661,7 @@ sleep 5
 
 echo "Query private keyshare request on chain fairyring_test_1"
 SHOW_PRIVATE_REQ=$($BINARY query pep show-private-identity $REQ_ID --node $CHAIN1_NODE -o json)
-ENC_KEYSHARES=$(echo "$SHOW_PRIVATE_REQ" | jq -r '.encrypted_keyshares')
+ENC_KEYSHARES=$(echo "$SHOW_PRIVATE_REQ" | jq -r '.private_decryption_keys')
 
 if [ "$ENC_KEYSHARES" = "[]" ]; then
   echo "encrypted_keyshares is empty."
@@ -693,7 +693,7 @@ check_tx_code $RESULT
 sleep 8
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY2" -k "$EXTRACTED_SHARE")
 # echo $ENC_KS
@@ -713,7 +713,7 @@ sleep 20
 
 echo "Query private keyshare request on chain fairyring_test_2"
 SHOW_PRIVATE_REQ=$($BINARY query pep show-private-identity $REQ_ID --node $CHAIN2_NODE -o json)
-ENC_KEYSHARES=$(echo "$SHOW_PRIVATE_REQ" | jq -r '.encrypted_keyshares')
+ENC_KEYSHARES=$(echo "$SHOW_PRIVATE_REQ" | jq -r '.private_decryption_keys')
 
 if [ "$ENC_KEYSHARES" = "[]" ]; then
   echo "encrypted_keyshares is empty."
@@ -734,7 +734,7 @@ SHOW_PRIVATE_REQ=$($BINARY query pep show-private-identity $REQ_ID --node $CHAIN
 echo $SHOW_PRIVATE_REQ
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY2" -k "$EXTRACTED_SHARE")
 # echo $ENC_KS
@@ -754,7 +754,7 @@ sleep 20
 
 echo "Query private keyshare request on chain fairyring_test_2"
 SHOW_PRIVATE_REQ=$($BINARY query pep show-private-identity $REQ_ID --node $CHAIN2_NODE -o json)
-ENC_KEYSHARES=$(echo "$SHOW_PRIVATE_REQ" | jq -r '.encrypted_keyshares')
+ENC_KEYSHARES=$(echo "$SHOW_PRIVATE_REQ" | jq -r '.private_decryption_keys')
 
 if [ "$ENC_KEYSHARES" = "[]" ]; then
   echo "encrypted_keyshares is empty."
@@ -768,9 +768,9 @@ echo "Testing decryption query on source chain     "
 echo "#############################################"
 
 echo "Query general keyshare request on chain fairyring_test_1"
-LIST_KEYSHARE_REQ=$($BINARY query pep list-keyshare-req --node $CHAIN1_NODE -o json)
-IDENTITY=$(echo $LIST_KEYSHARE_REQ | jq -r '.keyshares[0].identity')
-AGGR_KEYSHARE=$(echo $LIST_KEYSHARE_REQ | jq -r '.keyshares[0].aggr_keyshare')
+LIST_KEYSHARE_REQ=$($BINARY query pep list-general-identities --node $CHAIN1_NODE -o json)
+IDENTITY=$(echo $LIST_KEYSHARE_REQ | jq -r '.request_details_list[0].identity')
+AGGR_KEYSHARE=$(echo $LIST_KEYSHARE_REQ | jq -r '.request_details_list[0].decryption_key')
 echo "Identity for keyshare request is: $IDENTITY"
 echo "Aggregated keyshare for request is: $AGGR_KEYSHARE"
 
@@ -890,7 +890,7 @@ check_tx_code $RESULT
 sleep 5
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 while true; do
   echo "Submitting General Key Share"
@@ -912,7 +912,7 @@ echo $RSP
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+2))
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 echo "Registering contract with blockwise identity $TARGET_HEIGHT"
 RESULT=$($BINARY tx pep register-contract $CONTRACT_ADDR $TARGET_HEIGHT --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)

@@ -112,7 +112,7 @@ func (handler *KeyshareCheckTxHandler) CheckTx() CheckTx {
 		}
 
 		// Attempt to get the keyshare info of the transaction.
-		ksInfo, err := handler.keyShareLane.GetDecryptionKeyInfo(tx)
+		ksInfo, err := handler.keyshareLane.GetDecryptionKeyInfo(tx)
 		if err != nil {
 			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("failed to get keyshare info: %w", err), 0, 0, nil, false), err
 		}
@@ -134,7 +134,7 @@ func (handler *KeyshareCheckTxHandler) CheckTx() CheckTx {
 		}
 
 		// If the keyshare transaction is valid, we know we can insert it into the mempool for consideration in the next block.
-		if err := handler.keyShareLane.Insert(ctx, tx); err != nil {
+		if err := handler.keyshareLane.Insert(ctx, tx); err != nil {
 			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("invalid keyshare tx; failed to insert keyshare transaction into mempool: %w", err), gasInfo.GasWanted, gasInfo.GasUsed, nil, false), err
 		}
 

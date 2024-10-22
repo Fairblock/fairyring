@@ -1,6 +1,8 @@
 package keeper
 
 import (
+	"fmt"
+
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -9,6 +11,8 @@ import (
 
 // OnRecvCurrentKeysPacket processes packet reception
 func (k Keeper) OnRecvCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CurrentKeysPacketData) (packetAck types.CurrentKeysPacketAck, err error) {
+	fmt.Println("\n\n\n OnRecvCurrentKeysPacket \n\n\n")
+
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err

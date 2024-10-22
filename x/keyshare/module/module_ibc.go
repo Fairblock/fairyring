@@ -143,6 +143,7 @@ func (im IBCModule) OnRecvPacket(
 ) ibcexported.Acknowledgement {
 	var ack channeltypes.Acknowledgement
 
+	fmt.Println("\n\n\n Received IBC packet \n\n\n")
 	var modulePacketData types.KeysharePacketData
 	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &modulePacketData); err != nil {
 		return channeltypes.NewErrorAcknowledgement(errorsmod.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
@@ -150,7 +151,6 @@ func (im IBCModule) OnRecvPacket(
 
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
-
 	case *types.KeysharePacketData_RequestDecryptionKeyPacket:
 		packetAck, err := im.keeper.OnRecvRequestDecryptionKeyPacket(ctx, modulePacket, *packet.RequestDecryptionKeyPacket)
 		if err != nil {
@@ -223,14 +223,19 @@ func (im IBCModule) OnRecvPacket(
 		)
 
 	case *types.KeysharePacketData_CurrentKeysPacket:
+		fmt.Println("\n\nPacket type KeysharePacketData_CurrentKeysPacket\n\n")
 		packetAck, err := im.keeper.OnRecvCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket)
 		if err != nil {
+			fmt.Println("\n\n\n OnRecvCurrentKeysPacket, ERR:", err, "\n\n\n")
+
 			ack = channeltypes.NewErrorAcknowledgement(err)
 		} else {
 			// Encode packet acknowledgment
 			packetAckBytes := types.MustProtoMarshalJSON(&packetAck)
 			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
 		}
+		fmt.Println("\n\n\n OnRecvCurrentKeysPacket :", packetAck, "\n\n\n")
+
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeCurrentKeysPacket,
