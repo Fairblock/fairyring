@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the target directory
-directory="networks/testnets/fairyring-testnet-2/peers/"
+directory="networks/testnets/fairyring-testnet-3/peers/"
 
 # Check if the target is not a directory
 if [ ! -d "$directory" ]; then
