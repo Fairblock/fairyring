@@ -9,8 +9,8 @@ import (
 	"github.com/skip-mev/block-sdk/v2/block/base"
 )
 
-// TxPriority returns a TxPriority over KeyShare transactions only. It
-// is to be used in the KeyShare index only.
+// TxPriority returns a TxPriority over Keyshare transactions only. It
+// is to be used in the Keyshare index only.
 func TxPriority(config Factory) base.TxPriority[string] {
 	return base.TxPriority[string]{
 		GetTxPriority: func(goCtx context.Context, tx sdk.Tx) string {

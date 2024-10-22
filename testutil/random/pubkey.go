@@ -25,13 +25,12 @@ type GeneratedShare struct {
 
 type GenerateResult struct {
 	GeneratedShare             []*GeneratedShare
-	KeyShareEncryptedKeyShares []*types.EncryptedKeyshare
+	KeyshareEncryptedKeyshares []*types.EncryptedKeyshare
 	Commitments                []string
 	MasterPublicKey            string
 }
 
 func GeneratePubKeyAndShares(totalNumberOfValidator uint32) (*GenerateResult, error) {
-
 	t := int(math.Ceil(float64(totalNumberOfValidator) * (2.0 / 3.0)))
 
 	shares, mpk, _, err := distIBE.GenerateShares(totalNumberOfValidator, uint32(t))
@@ -98,7 +97,7 @@ func GeneratePubKeyAndShares(totalNumberOfValidator uint32) (*GenerateResult, er
 	}
 
 	result.GeneratedShare = sharesList
-	result.KeyShareEncryptedKeyShares = encShares
+	result.KeyshareEncryptedKeyshares = encShares
 	result.Commitments = keyShareCommitments
 
 	return &result, nil

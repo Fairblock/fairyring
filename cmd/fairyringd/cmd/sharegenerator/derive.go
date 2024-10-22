@@ -13,7 +13,7 @@ import (
 )
 
 type DeriveResult struct {
-	KeyShare   string
+	Keyshare   string
 	Commitment string
 }
 
@@ -70,7 +70,7 @@ var deriveCmd = &cobra.Command{
 		commitmentHex := hex.EncodeToString(commitmentBinary)
 
 		result, err := json.Marshal(DeriveResult{
-			KeyShare:   extractedKeyHex,
+			Keyshare:   extractedKeyHex,
 			Commitment: commitmentHex,
 		})
 		if err != nil {

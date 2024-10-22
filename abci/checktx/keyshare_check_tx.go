@@ -27,9 +27,9 @@ type KeyshareCheckTxHandler struct {
 	// bid transactions.
 	txDecoder sdk.TxDecoder
 
-	// KeyShareLane is utilized to retrieve the keyshare info of a transaction and to
+	// KeyshareLane is utilized to retrieve the keyshare info of a transaction and to
 	// insert a Keyshare transaction into the application-side mempool.
-	keyShareLane KeyShareLaneI
+	keyshareLane KeyshareLaneI
 
 	// anteHandler is utilized to verify the bid transaction against the latest
 	// committed state.
@@ -39,9 +39,9 @@ type KeyshareCheckTxHandler struct {
 	checkTxHandler CheckTx
 }
 
-// KeyShareLaneI is the interface that defines all of the dependencies that
+// KeyshareLaneI is the interface that defines all of the dependencies that
 // are required to interact with the top of block lane.
-type KeyShareLaneI interface {
+type KeyshareLaneI interface {
 	// GetDecryptionKeyInfo is utilized to retrieve the Keyshare info of a transaction.
 	GetDecryptionKeyInfo(tx sdk.Tx) (*peptypes.DecryptionKey, error)
 
@@ -80,14 +80,14 @@ type BaseApp interface {
 func NewKeyshareCheckTxHandler(
 	baseApp BaseApp,
 	txDecoder sdk.TxDecoder,
-	keyshareLane KeyShareLaneI,
+	keyshareLane KeyshareLaneI,
 	anteHandler sdk.AnteHandler,
 	checkTxHandler CheckTx,
 ) *KeyshareCheckTxHandler {
 	return &KeyshareCheckTxHandler{
 		baseApp:        baseApp,
 		txDecoder:      txDecoder,
-		keyShareLane:   keyshareLane,
+		keyshareLane:   keyshareLane,
 		anteHandler:    anteHandler,
 		checkTxHandler: checkTxHandler,
 	}

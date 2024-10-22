@@ -12,14 +12,14 @@ import (
 )
 
 type (
-	// Factory defines the interface for processing KeyShare transactions. It is
+	// Factory defines the interface for processing Keyshare transactions. It is
 	// a wrapper around all of the functionality that each application chain must implement
 	// in order for keyshare processing to work.
 	Factory interface {
 		// IsKeyshareTx defines a function that checks if a transaction qualifies as Keyshare Tx.
 		IsKeyshareTx(tx sdk.Tx) bool
 
-		// GetDecryptionKeyInfo defines a function that returns the KeyShare info from the Tx
+		// GetDecryptionKeyInfo defines a function that returns the Keyshare info from the Tx
 		GetDecryptionKeyInfo(tx sdk.Tx) (*peptypes.DecryptionKey, error)
 
 		// MatchHandler defines a function that checks if a transaction matches the keyshare lane.
