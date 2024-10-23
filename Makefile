@@ -222,7 +222,7 @@ init-test-block-limit-framework: clean-testing-data install
 	./scripts/tests/start_test_block_tx_limit.sh
 	@sleep 3
 
-init-test-framework: clean-testing-data install
+init-test-framework: clean-testing-data stop-fairyring-keyshare-sender install
 	@echo "Initializing fairyring..."
 	./scripts/tests/start.sh
 	@sleep 3

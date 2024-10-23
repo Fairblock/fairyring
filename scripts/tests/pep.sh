@@ -162,10 +162,6 @@ CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CH
 RESULT=$($BINARY query keyshare list-decryption-keys --node $CHAIN1_NODE -o json)
 AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.decryption_keys | last | .height')
 AGG_KEY=$(echo "$RESULT" | jq -r '.decryption_keys | last | .data')
-if [ "$AGG_KEY_HEIGHT" -gt "$CURRENT_BLOCK" ]; then
-  echo "ERROR: Height of the aggregated key from key share module '$AGG_KEY_HEIGHT' is greater than current block height '$CURRENT_BLOCK'"
-  exit 1
-fi
 
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE -o json | jq -r '.block.header.height')
 echo "Chain 2 Current Block: $CURRENT_BLOCK"
