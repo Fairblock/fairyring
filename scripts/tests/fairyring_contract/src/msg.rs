@@ -8,7 +8,7 @@ use cosmwasm_std::CustomQuery;
 pub struct ExecuteContractMsg {
     pub identity: String,
     pub pubkey: String,
-    pub aggr_keyshare: String,
+    pub decryption_key: String,
 }
 
 // Query message
