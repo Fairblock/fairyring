@@ -43,6 +43,8 @@ if pgrep -x "hermes" >/dev/null; then
     killall hermes
 fi
 
+./scripts/tests/stop.sh
+
 echo "Removing previous data..."
 rm -rf $CHAIN_DIR/$CHAINID_1 &> /dev/null
 rm -rf $CHAIN_DIR/$CHAINID_2 &> /dev/null

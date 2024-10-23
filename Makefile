@@ -222,7 +222,7 @@ init-test-block-limit-framework: clean-testing-data install
 	./scripts/tests/start_test_block_tx_limit.sh
 	@sleep 3
 
-init-test-framework: clean-testing-data stop-fairyring-keyshare-sender install
+init-test-framework: clean-testing-data install
 	@echo "Initializing fairyring..."
 	./scripts/tests/start.sh
 	@sleep 3
@@ -239,10 +239,6 @@ clean-devnet-data:
 	-@killall fairyport 2>/dev/null
 	-@killall fairyringclient 2>/dev/null
 	-@killall ShareGenerationClient 2>/dev/null
-
-stop-fairyring-keyshare-sender:
-	@echo "Killing fairyringd and keyshare sender"
-	./scripts/tests/stop.sh
 
 clean-testing-data:
 	@echo "Killing fairyringd and removing previous data"
