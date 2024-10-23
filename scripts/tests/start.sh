@@ -184,7 +184,6 @@ rm rly1.json &> /dev/null
 rm rly2.json &> /dev/null
 
 echo "Waiting both chain to run..."
-sleep $((BLOCK_TIME*2))
 
 sleep 10
 

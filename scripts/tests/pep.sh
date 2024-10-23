@@ -180,6 +180,7 @@ if [ "$ACTION" != "/fairyring.pep.MsgSubmitDecryptionKey" ]; then
   exit 1
 fi
 
+sleep 3
 
 echo "Query aggregated key share from key share module for submitting to pep module on chain fairyring_test_1"
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE -o json | jq -r '.block.header.height')
@@ -578,7 +579,7 @@ SCEP_PRIV_KEY2="ef1450bdc18396f2254f52d8c525c0d933a8f146ec2a681eaf319f5899f2f60d
 # echo "$SCEP_PUBKEY"
 
 echo "Creating new Private Request in pep module on chain fairyring_test_1"
-RESULT=$($BINARY tx pep request-private-keyshare test_req_1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-private-identity test_req_1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 5
@@ -675,7 +676,7 @@ echo "Testing private keyshare on destination chain"
 echo "#############################################"
 
 echo "Creating new Private Request in pep module on chain fairyring_test_2"
-RESULT=$($BINARY tx pep request-private-keyshare test_req_2 --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-private-identity test_req_2 --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 8
@@ -951,4 +952,4 @@ echo "#               Test General Encrypted Txs                #"
 echo "###########################################################"
 echo ""
 
-# ./scripts/tests/priv_gov.sh $PUB_KEY $1
+./scripts/tests/priv_gov.sh $PUB_KEY $1

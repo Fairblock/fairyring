@@ -36,7 +36,7 @@ wait_for_tx () {
 
 sleep 3
 RESULT=$(fairyringd q keyshare show-active-pub-key --node $NODE -o json | jq)
-GENERATED_SHARE=$(echo $RESULT | jq -r '.activePubkey.encrypted_keyshares[0].data')
+GENERATED_SHARE=$(echo $RESULT | jq -r '.active_pubkey.encrypted_keyshares[0].data')
 
 while true
 do

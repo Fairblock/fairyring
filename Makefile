@@ -183,8 +183,8 @@ test-block-tx-limit: init-test-block-limit-framework \
 integration-test-all: init-test-framework \
 	init-relayer \
 	test-keyshare-module
-	# -@rm -rf ./data
-	# -@killall fairyringd 2>/dev/null
+	-@rm -rf ./data
+	./scripts/tests/stop.sh
 
 devnet-up: init-devnet
 	@echo "Fairyring Devnet is now running in the background, run 'make devnet-down' to stop devnet."
@@ -239,6 +239,10 @@ clean-devnet-data:
 	-@killall fairyport 2>/dev/null
 	-@killall fairyringclient 2>/dev/null
 	-@killall ShareGenerationClient 2>/dev/null
+
+stop-fairyring-keyshare-sender:
+	@echo "Killing fairyringd and keyshare sender"
+	./scripts/tests/stop.sh
 
 clean-testing-data:
 	@echo "Killing fairyringd and removing previous data"
