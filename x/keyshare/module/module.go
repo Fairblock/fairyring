@@ -244,6 +244,9 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			for _, v := range qk.EncryptedKeyshares {
 				am.keeper.SetLastSubmittedHeight(ctx, v.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
 			}
+
+			// We don't need to remove the validators that not in the new round from the set
+			// They won't be slashed because of the new slashing idle validators logic
 		}
 		am.keeper.DeleteQueuedPubkey(ctx)
 		am.pepKeeper.DeleteQueuedPubkey(ctx)
