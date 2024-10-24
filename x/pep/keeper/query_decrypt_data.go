@@ -24,7 +24,7 @@ func (k Keeper) DecryptData(goCtx context.Context, req *types.QueryDecryptDataRe
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if req.Pubkey == "" {
-		pk, found := k.GetActivePubKey(ctx)
+		pk, found := k.GetActivePubkey(ctx)
 		if !found {
 			return &types.QueryDecryptDataResponse{}, errors.New("pubkey not found")
 		}
@@ -32,12 +32,12 @@ func (k Keeper) DecryptData(goCtx context.Context, req *types.QueryDecryptDataRe
 	}
 
 	suite := bls.NewBLS12381Suite()
-	publicKeyPoint, err := k.GetPubKeyPoint(req.Pubkey, suite)
+	publicKeyPoint, err := k.GetPubkeyPoint(req.Pubkey, suite)
 	if err != nil {
 		return &types.QueryDecryptDataResponse{}, err
 	}
 
-	skPoint, err := k.GetSKPoint(req.AggrKeyshare, suite)
+	skPoint, err := k.GetSKPoint(req.DecryptionKey, suite)
 	if err != nil {
 		return &types.QueryDecryptDataResponse{}, err
 	}
@@ -70,7 +70,7 @@ func (k Keeper) GetSKPoint(
 	suite pairing.Suite) (kyber.Point, error) {
 	keyByte, err := hex.DecodeString(key)
 	if err != nil {
-		k.Logger().Error("Error decoding aggregated key")
+		k.Logger().Error("Error decoding decryption key")
 		k.Logger().Error(err.Error())
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func (k Keeper) GetSKPoint(
 	skPoint := suite.G2().Point()
 	err = skPoint.UnmarshalBinary(keyByte)
 	if err != nil {
-		k.Logger().Error("Error unmarshalling aggregated key")
+		k.Logger().Error("Error unmarshalling decryption key")
 		k.Logger().Error(err.Error())
 		return nil, err
 	}
@@ -89,7 +89,7 @@ func (k Keeper) GetSKPoint(
 	return skPoint, nil
 }
 
-func (k Keeper) GetPubKeyPoint(
+func (k Keeper) GetPubkeyPoint(
 	pubkey string,
 	suite pairing.Suite,
 ) (kyber.Point, error) {

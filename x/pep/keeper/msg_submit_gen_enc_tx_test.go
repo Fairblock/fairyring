@@ -1,12 +1,13 @@
 package keeper_test
 
 import (
+	"strconv"
+	"testing"
+
 	"cosmossdk.io/math"
 	"github.com/Fairblock/fairyring/testutil/nullify"
 	"github.com/Fairblock/fairyring/testutil/random"
 	"github.com/Fairblock/fairyring/testutil/sample"
-	"strconv"
-	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
@@ -39,7 +40,7 @@ func TestSubmitGeneralEncryptedTx(t *testing.T) {
 	for _, tc := range []struct {
 		desc     string
 		request  *types.MsgSubmitGeneralEncryptedTx
-		response *types.MsgSubmitEncryptedTxResponse
+		response *types.MsgSubmitGeneralEncryptedTxResponse
 		err      error
 		errMsg   string
 	}{
@@ -68,7 +69,7 @@ func TestSubmitGeneralEncryptedTx(t *testing.T) {
 				ReqId:   validIdentity,
 				Data:    random.RandHex(192),
 			},
-			response: &types.MsgSubmitEncryptedTxResponse{},
+			response: &types.MsgSubmitGeneralEncryptedTxResponse{},
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -88,13 +89,13 @@ func TestSubmitGeneralEncryptedTx(t *testing.T) {
 			}
 
 			if tc.desc == "InvalidIdentity" {
-				k.SetEntry(wctx, types.GenEncTxExecutionQueue{
-					Creator:      sample.AccAddress(),
-					RequestId:    validIdentity,
-					Identity:     validIdentity,
-					Pubkey:       random.RandHex(96),
-					TxList:       nil,
-					AggrKeyshare: random.RandHex(96),
+				k.SetEntry(wctx, types.IdentityExecutionEntry{
+					Creator:       sample.AccAddress(),
+					RequestId:     validIdentity,
+					Identity:      validIdentity,
+					Pubkey:        random.RandHex(96),
+					TxList:        nil,
+					DecryptionKey: random.RandHex(96),
 				})
 			}
 		})

@@ -7,7 +7,6 @@ import (
 	context "context"
 	fmt "fmt"
 	types "github.com/Fairblock/fairyring/x/common/types"
-	_ "github.com/cosmos/cosmos-sdk/types"
 	query "github.com/cosmos/cosmos-sdk/types/query"
 	_ "github.com/cosmos/cosmos-sdk/types/tx/amino"
 	_ "github.com/cosmos/gogoproto/gogoproto"
@@ -116,22 +115,23 @@ func (m *QueryParamsResponse) GetParams() Params {
 	return Params{}
 }
 
-type QueryKeyshareRequest struct {
+// QueryGeneralIdentityRequest is request type for the Query/GeneralIdentity RPC method.
+type QueryGeneralIdentityRequest struct {
 	ReqId string `protobuf:"bytes,1,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
 }
 
-func (m *QueryKeyshareRequest) Reset()         { *m = QueryKeyshareRequest{} }
-func (m *QueryKeyshareRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryKeyshareRequest) ProtoMessage()    {}
-func (*QueryKeyshareRequest) Descriptor() ([]byte, []int) {
+func (m *QueryGeneralIdentityRequest) Reset()         { *m = QueryGeneralIdentityRequest{} }
+func (m *QueryGeneralIdentityRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGeneralIdentityRequest) ProtoMessage()    {}
+func (*QueryGeneralIdentityRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{2}
 }
-func (m *QueryKeyshareRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryGeneralIdentityRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryKeyshareRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGeneralIdentityRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryKeyshareRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGeneralIdentityRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -141,41 +141,42 @@ func (m *QueryKeyshareRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *QueryKeyshareRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryKeyshareRequest.Merge(m, src)
+func (m *QueryGeneralIdentityRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGeneralIdentityRequest.Merge(m, src)
 }
-func (m *QueryKeyshareRequest) XXX_Size() int {
+func (m *QueryGeneralIdentityRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryKeyshareRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryKeyshareRequest.DiscardUnknown(m)
+func (m *QueryGeneralIdentityRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGeneralIdentityRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryKeyshareRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryGeneralIdentityRequest proto.InternalMessageInfo
 
-func (m *QueryKeyshareRequest) GetReqId() string {
+func (m *QueryGeneralIdentityRequest) GetReqId() string {
 	if m != nil {
 		return m.ReqId
 	}
 	return ""
 }
 
-type QueryKeyshareResponse struct {
-	Keyshare *GenEncTxExecutionQueue `protobuf:"bytes,1,opt,name=keyshare,proto3" json:"keyshare,omitempty"`
+// QueryGeneralIdentityResponse is response type for the Query/GeneralIdentity RPC method.
+type QueryGeneralIdentityResponse struct {
+	RequestDetails *IdentityExecutionEntry `protobuf:"bytes,1,opt,name=request_details,json=requestDetails,proto3" json:"request_details,omitempty"`
 }
 
-func (m *QueryKeyshareResponse) Reset()         { *m = QueryKeyshareResponse{} }
-func (m *QueryKeyshareResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryKeyshareResponse) ProtoMessage()    {}
-func (*QueryKeyshareResponse) Descriptor() ([]byte, []int) {
+func (m *QueryGeneralIdentityResponse) Reset()         { *m = QueryGeneralIdentityResponse{} }
+func (m *QueryGeneralIdentityResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGeneralIdentityResponse) ProtoMessage()    {}
+func (*QueryGeneralIdentityResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{3}
 }
-func (m *QueryKeyshareResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryGeneralIdentityResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryKeyshareResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGeneralIdentityResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryKeyshareResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGeneralIdentityResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -185,41 +186,42 @@ func (m *QueryKeyshareResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return b[:n], nil
 	}
 }
-func (m *QueryKeyshareResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryKeyshareResponse.Merge(m, src)
+func (m *QueryGeneralIdentityResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGeneralIdentityResponse.Merge(m, src)
 }
-func (m *QueryKeyshareResponse) XXX_Size() int {
+func (m *QueryGeneralIdentityResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryKeyshareResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryKeyshareResponse.DiscardUnknown(m)
+func (m *QueryGeneralIdentityResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGeneralIdentityResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryKeyshareResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryGeneralIdentityResponse proto.InternalMessageInfo
 
-func (m *QueryKeyshareResponse) GetKeyshare() *GenEncTxExecutionQueue {
+func (m *QueryGeneralIdentityResponse) GetRequestDetails() *IdentityExecutionEntry {
 	if m != nil {
-		return m.Keyshare
+		return m.RequestDetails
 	}
 	return nil
 }
 
-type QueryAllKeyshareRequest struct {
+// QueryGeneralIdentityAllRequest is request type for the Query/GeneralIdentityAll RPC method.
+type QueryGeneralIdentityAllRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryAllKeyshareRequest) Reset()         { *m = QueryAllKeyshareRequest{} }
-func (m *QueryAllKeyshareRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryAllKeyshareRequest) ProtoMessage()    {}
-func (*QueryAllKeyshareRequest) Descriptor() ([]byte, []int) {
+func (m *QueryGeneralIdentityAllRequest) Reset()         { *m = QueryGeneralIdentityAllRequest{} }
+func (m *QueryGeneralIdentityAllRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGeneralIdentityAllRequest) ProtoMessage()    {}
+func (*QueryGeneralIdentityAllRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{4}
 }
-func (m *QueryAllKeyshareRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryGeneralIdentityAllRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllKeyshareRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGeneralIdentityAllRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllKeyshareRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGeneralIdentityAllRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -229,42 +231,43 @@ func (m *QueryAllKeyshareRequest) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (m *QueryAllKeyshareRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllKeyshareRequest.Merge(m, src)
+func (m *QueryGeneralIdentityAllRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGeneralIdentityAllRequest.Merge(m, src)
 }
-func (m *QueryAllKeyshareRequest) XXX_Size() int {
+func (m *QueryGeneralIdentityAllRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllKeyshareRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllKeyshareRequest.DiscardUnknown(m)
+func (m *QueryGeneralIdentityAllRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGeneralIdentityAllRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllKeyshareRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryGeneralIdentityAllRequest proto.InternalMessageInfo
 
-func (m *QueryAllKeyshareRequest) GetPagination() *query.PageRequest {
+func (m *QueryGeneralIdentityAllRequest) GetPagination() *query.PageRequest {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-type QueryAllKeyshareResponse struct {
-	Keyshares  []*GenEncTxExecutionQueue `protobuf:"bytes,1,rep,name=keyshares,proto3" json:"keyshares,omitempty"`
-	Pagination *query.PageResponse       `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+// QueryGeneralIdentityAllResponse is response type for the Query/GeneralIdentityAll RPC method.
+type QueryGeneralIdentityAllResponse struct {
+	RequestDetailsList []*IdentityExecutionEntry `protobuf:"bytes,1,rep,name=request_details_list,json=requestDetailsList,proto3" json:"request_details_list,omitempty"`
+	Pagination         *query.PageResponse       `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryAllKeyshareResponse) Reset()         { *m = QueryAllKeyshareResponse{} }
-func (m *QueryAllKeyshareResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryAllKeyshareResponse) ProtoMessage()    {}
-func (*QueryAllKeyshareResponse) Descriptor() ([]byte, []int) {
+func (m *QueryGeneralIdentityAllResponse) Reset()         { *m = QueryGeneralIdentityAllResponse{} }
+func (m *QueryGeneralIdentityAllResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGeneralIdentityAllResponse) ProtoMessage()    {}
+func (*QueryGeneralIdentityAllResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{5}
 }
-func (m *QueryAllKeyshareResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryGeneralIdentityAllResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllKeyshareResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGeneralIdentityAllResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllKeyshareResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGeneralIdentityAllResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -274,49 +277,50 @@ func (m *QueryAllKeyshareResponse) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *QueryAllKeyshareResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllKeyshareResponse.Merge(m, src)
+func (m *QueryGeneralIdentityAllResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGeneralIdentityAllResponse.Merge(m, src)
 }
-func (m *QueryAllKeyshareResponse) XXX_Size() int {
+func (m *QueryGeneralIdentityAllResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllKeyshareResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllKeyshareResponse.DiscardUnknown(m)
+func (m *QueryGeneralIdentityAllResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGeneralIdentityAllResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllKeyshareResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryGeneralIdentityAllResponse proto.InternalMessageInfo
 
-func (m *QueryAllKeyshareResponse) GetKeyshares() []*GenEncTxExecutionQueue {
+func (m *QueryGeneralIdentityAllResponse) GetRequestDetailsList() []*IdentityExecutionEntry {
 	if m != nil {
-		return m.Keyshares
+		return m.RequestDetailsList
 	}
 	return nil
 }
 
-func (m *QueryAllKeyshareResponse) GetPagination() *query.PageResponse {
+func (m *QueryGeneralIdentityAllResponse) GetPagination() *query.PageResponse {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-type QueryGetEncryptedTxRequest struct {
-	TargetHeight uint64 `protobuf:"varint,1,opt,name=targetHeight,proto3" json:"targetHeight,omitempty"`
+// QueryEncryptedTxRequest is request type for the Query/EncryptedTx RPC method.
+type QueryEncryptedTxRequest struct {
+	TargetHeight uint64 `protobuf:"varint,1,opt,name=target_height,json=targetHeight,proto3" json:"target_height,omitempty"`
 	Index        uint64 `protobuf:"varint,2,opt,name=index,proto3" json:"index,omitempty"`
 }
 
-func (m *QueryGetEncryptedTxRequest) Reset()         { *m = QueryGetEncryptedTxRequest{} }
-func (m *QueryGetEncryptedTxRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryGetEncryptedTxRequest) ProtoMessage()    {}
-func (*QueryGetEncryptedTxRequest) Descriptor() ([]byte, []int) {
+func (m *QueryEncryptedTxRequest) Reset()         { *m = QueryEncryptedTxRequest{} }
+func (m *QueryEncryptedTxRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryEncryptedTxRequest) ProtoMessage()    {}
+func (*QueryEncryptedTxRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{6}
 }
-func (m *QueryGetEncryptedTxRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryEncryptedTxRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetEncryptedTxRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryEncryptedTxRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetEncryptedTxRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryEncryptedTxRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -326,48 +330,49 @@ func (m *QueryGetEncryptedTxRequest) XXX_Marshal(b []byte, deterministic bool) (
 		return b[:n], nil
 	}
 }
-func (m *QueryGetEncryptedTxRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetEncryptedTxRequest.Merge(m, src)
+func (m *QueryEncryptedTxRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryEncryptedTxRequest.Merge(m, src)
 }
-func (m *QueryGetEncryptedTxRequest) XXX_Size() int {
+func (m *QueryEncryptedTxRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetEncryptedTxRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetEncryptedTxRequest.DiscardUnknown(m)
+func (m *QueryEncryptedTxRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryEncryptedTxRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetEncryptedTxRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryEncryptedTxRequest proto.InternalMessageInfo
 
-func (m *QueryGetEncryptedTxRequest) GetTargetHeight() uint64 {
+func (m *QueryEncryptedTxRequest) GetTargetHeight() uint64 {
 	if m != nil {
 		return m.TargetHeight
 	}
 	return 0
 }
 
-func (m *QueryGetEncryptedTxRequest) GetIndex() uint64 {
+func (m *QueryEncryptedTxRequest) GetIndex() uint64 {
 	if m != nil {
 		return m.Index
 	}
 	return 0
 }
 
-type QueryGetEncryptedTxResponse struct {
-	EncryptedTx EncryptedTx `protobuf:"bytes,1,opt,name=encryptedTx,proto3" json:"encryptedTx"`
+// QueryEncryptedTxResponse is response type for the Query/EncryptedTx RPC method.
+type QueryEncryptedTxResponse struct {
+	EncryptedTx EncryptedTx `protobuf:"bytes,1,opt,name=encrypted_tx,json=encryptedTx,proto3" json:"encrypted_tx"`
 }
 
-func (m *QueryGetEncryptedTxResponse) Reset()         { *m = QueryGetEncryptedTxResponse{} }
-func (m *QueryGetEncryptedTxResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryGetEncryptedTxResponse) ProtoMessage()    {}
-func (*QueryGetEncryptedTxResponse) Descriptor() ([]byte, []int) {
+func (m *QueryEncryptedTxResponse) Reset()         { *m = QueryEncryptedTxResponse{} }
+func (m *QueryEncryptedTxResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryEncryptedTxResponse) ProtoMessage()    {}
+func (*QueryEncryptedTxResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{7}
 }
-func (m *QueryGetEncryptedTxResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryEncryptedTxResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetEncryptedTxResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryEncryptedTxResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetEncryptedTxResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryEncryptedTxResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -377,41 +382,42 @@ func (m *QueryGetEncryptedTxResponse) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *QueryGetEncryptedTxResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetEncryptedTxResponse.Merge(m, src)
+func (m *QueryEncryptedTxResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryEncryptedTxResponse.Merge(m, src)
 }
-func (m *QueryGetEncryptedTxResponse) XXX_Size() int {
+func (m *QueryEncryptedTxResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetEncryptedTxResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetEncryptedTxResponse.DiscardUnknown(m)
+func (m *QueryEncryptedTxResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryEncryptedTxResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetEncryptedTxResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryEncryptedTxResponse proto.InternalMessageInfo
 
-func (m *QueryGetEncryptedTxResponse) GetEncryptedTx() EncryptedTx {
+func (m *QueryEncryptedTxResponse) GetEncryptedTx() EncryptedTx {
 	if m != nil {
 		return m.EncryptedTx
 	}
 	return EncryptedTx{}
 }
 
-type QueryAllEncryptedTxRequest struct {
+// QueryEncryptedTxAllRequest is request type for the Query/EncryptedTxAll RPC method.
+type QueryEncryptedTxAllRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryAllEncryptedTxRequest) Reset()         { *m = QueryAllEncryptedTxRequest{} }
-func (m *QueryAllEncryptedTxRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryAllEncryptedTxRequest) ProtoMessage()    {}
-func (*QueryAllEncryptedTxRequest) Descriptor() ([]byte, []int) {
+func (m *QueryEncryptedTxAllRequest) Reset()         { *m = QueryEncryptedTxAllRequest{} }
+func (m *QueryEncryptedTxAllRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryEncryptedTxAllRequest) ProtoMessage()    {}
+func (*QueryEncryptedTxAllRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{8}
 }
-func (m *QueryAllEncryptedTxRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryEncryptedTxAllRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllEncryptedTxRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryEncryptedTxAllRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllEncryptedTxRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryEncryptedTxAllRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -421,42 +427,43 @@ func (m *QueryAllEncryptedTxRequest) XXX_Marshal(b []byte, deterministic bool) (
 		return b[:n], nil
 	}
 }
-func (m *QueryAllEncryptedTxRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllEncryptedTxRequest.Merge(m, src)
+func (m *QueryEncryptedTxAllRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryEncryptedTxAllRequest.Merge(m, src)
 }
-func (m *QueryAllEncryptedTxRequest) XXX_Size() int {
+func (m *QueryEncryptedTxAllRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllEncryptedTxRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllEncryptedTxRequest.DiscardUnknown(m)
+func (m *QueryEncryptedTxAllRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryEncryptedTxAllRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllEncryptedTxRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryEncryptedTxAllRequest proto.InternalMessageInfo
 
-func (m *QueryAllEncryptedTxRequest) GetPagination() *query.PageRequest {
+func (m *QueryEncryptedTxAllRequest) GetPagination() *query.PageRequest {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-type QueryAllEncryptedTxResponse struct {
-	EncryptedTxArray []EncryptedTxArray  `protobuf:"bytes,1,rep,name=encryptedTxArray,proto3" json:"encryptedTxArray"`
+// QueryEncryptedTxAllResponse is response type for the Query/EncryptedTxAll RPC method.
+type QueryEncryptedTxAllResponse struct {
+	EncryptedTxArray []EncryptedTxArray  `protobuf:"bytes,1,rep,name=encrypted_tx_array,json=encryptedTxArray,proto3" json:"encrypted_tx_array"`
 	Pagination       *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryAllEncryptedTxResponse) Reset()         { *m = QueryAllEncryptedTxResponse{} }
-func (m *QueryAllEncryptedTxResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryAllEncryptedTxResponse) ProtoMessage()    {}
-func (*QueryAllEncryptedTxResponse) Descriptor() ([]byte, []int) {
+func (m *QueryEncryptedTxAllResponse) Reset()         { *m = QueryEncryptedTxAllResponse{} }
+func (m *QueryEncryptedTxAllResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryEncryptedTxAllResponse) ProtoMessage()    {}
+func (*QueryEncryptedTxAllResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{9}
 }
-func (m *QueryAllEncryptedTxResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryEncryptedTxAllResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllEncryptedTxResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryEncryptedTxAllResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllEncryptedTxResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryEncryptedTxAllResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -466,48 +473,49 @@ func (m *QueryAllEncryptedTxResponse) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *QueryAllEncryptedTxResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllEncryptedTxResponse.Merge(m, src)
+func (m *QueryEncryptedTxAllResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryEncryptedTxAllResponse.Merge(m, src)
 }
-func (m *QueryAllEncryptedTxResponse) XXX_Size() int {
+func (m *QueryEncryptedTxAllResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllEncryptedTxResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllEncryptedTxResponse.DiscardUnknown(m)
+func (m *QueryEncryptedTxAllResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryEncryptedTxAllResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllEncryptedTxResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryEncryptedTxAllResponse proto.InternalMessageInfo
 
-func (m *QueryAllEncryptedTxResponse) GetEncryptedTxArray() []EncryptedTxArray {
+func (m *QueryEncryptedTxAllResponse) GetEncryptedTxArray() []EncryptedTxArray {
 	if m != nil {
 		return m.EncryptedTxArray
 	}
 	return nil
 }
 
-func (m *QueryAllEncryptedTxResponse) GetPagination() *query.PageResponse {
+func (m *QueryEncryptedTxAllResponse) GetPagination() *query.PageResponse {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-type QueryAllEncryptedTxFromHeightRequest struct {
-	TargetHeight uint64 `protobuf:"varint,1,opt,name=targetHeight,proto3" json:"targetHeight,omitempty"`
+// QueryEncryptedTxAllFromHeightRequest is request type for the Query/EncryptedTxAllFromHeight RPC method.
+type QueryEncryptedTxAllFromHeightRequest struct {
+	TargetHeight uint64 `protobuf:"varint,1,opt,name=target_height,json=targetHeight,proto3" json:"target_height,omitempty"`
 }
 
-func (m *QueryAllEncryptedTxFromHeightRequest) Reset()         { *m = QueryAllEncryptedTxFromHeightRequest{} }
-func (m *QueryAllEncryptedTxFromHeightRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryAllEncryptedTxFromHeightRequest) ProtoMessage()    {}
-func (*QueryAllEncryptedTxFromHeightRequest) Descriptor() ([]byte, []int) {
+func (m *QueryEncryptedTxAllFromHeightRequest) Reset()         { *m = QueryEncryptedTxAllFromHeightRequest{} }
+func (m *QueryEncryptedTxAllFromHeightRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryEncryptedTxAllFromHeightRequest) ProtoMessage()    {}
+func (*QueryEncryptedTxAllFromHeightRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{10}
 }
-func (m *QueryAllEncryptedTxFromHeightRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryEncryptedTxAllFromHeightRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllEncryptedTxFromHeightRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryEncryptedTxAllFromHeightRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllEncryptedTxFromHeightRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryEncryptedTxAllFromHeightRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -517,41 +525,42 @@ func (m *QueryAllEncryptedTxFromHeightRequest) XXX_Marshal(b []byte, determinist
 		return b[:n], nil
 	}
 }
-func (m *QueryAllEncryptedTxFromHeightRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllEncryptedTxFromHeightRequest.Merge(m, src)
+func (m *QueryEncryptedTxAllFromHeightRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryEncryptedTxAllFromHeightRequest.Merge(m, src)
 }
-func (m *QueryAllEncryptedTxFromHeightRequest) XXX_Size() int {
+func (m *QueryEncryptedTxAllFromHeightRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllEncryptedTxFromHeightRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllEncryptedTxFromHeightRequest.DiscardUnknown(m)
+func (m *QueryEncryptedTxAllFromHeightRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryEncryptedTxAllFromHeightRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllEncryptedTxFromHeightRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryEncryptedTxAllFromHeightRequest proto.InternalMessageInfo
 
-func (m *QueryAllEncryptedTxFromHeightRequest) GetTargetHeight() uint64 {
+func (m *QueryEncryptedTxAllFromHeightRequest) GetTargetHeight() uint64 {
 	if m != nil {
 		return m.TargetHeight
 	}
 	return 0
 }
 
-type QueryAllEncryptedTxFromHeightResponse struct {
-	EncryptedTxArray EncryptedTxArray `protobuf:"bytes,1,opt,name=encryptedTxArray,proto3" json:"encryptedTxArray"`
+// QueryEncryptedTxAllFromHeightResponse is response type for the Query/EncryptedTxAllFromHeight RPC method.
+type QueryEncryptedTxAllFromHeightResponse struct {
+	EncryptedTxArray EncryptedTxArray `protobuf:"bytes,1,opt,name=encrypted_tx_array,json=encryptedTxArray,proto3" json:"encrypted_tx_array"`
 }
 
-func (m *QueryAllEncryptedTxFromHeightResponse) Reset()         { *m = QueryAllEncryptedTxFromHeightResponse{} }
-func (m *QueryAllEncryptedTxFromHeightResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryAllEncryptedTxFromHeightResponse) ProtoMessage()    {}
-func (*QueryAllEncryptedTxFromHeightResponse) Descriptor() ([]byte, []int) {
+func (m *QueryEncryptedTxAllFromHeightResponse) Reset()         { *m = QueryEncryptedTxAllFromHeightResponse{} }
+func (m *QueryEncryptedTxAllFromHeightResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryEncryptedTxAllFromHeightResponse) ProtoMessage()    {}
+func (*QueryEncryptedTxAllFromHeightResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{11}
 }
-func (m *QueryAllEncryptedTxFromHeightResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryEncryptedTxAllFromHeightResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllEncryptedTxFromHeightResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryEncryptedTxAllFromHeightResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllEncryptedTxFromHeightResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryEncryptedTxAllFromHeightResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -561,25 +570,26 @@ func (m *QueryAllEncryptedTxFromHeightResponse) XXX_Marshal(b []byte, determinis
 		return b[:n], nil
 	}
 }
-func (m *QueryAllEncryptedTxFromHeightResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllEncryptedTxFromHeightResponse.Merge(m, src)
+func (m *QueryEncryptedTxAllFromHeightResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryEncryptedTxAllFromHeightResponse.Merge(m, src)
 }
-func (m *QueryAllEncryptedTxFromHeightResponse) XXX_Size() int {
+func (m *QueryEncryptedTxAllFromHeightResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllEncryptedTxFromHeightResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllEncryptedTxFromHeightResponse.DiscardUnknown(m)
+func (m *QueryEncryptedTxAllFromHeightResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryEncryptedTxAllFromHeightResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllEncryptedTxFromHeightResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryEncryptedTxAllFromHeightResponse proto.InternalMessageInfo
 
-func (m *QueryAllEncryptedTxFromHeightResponse) GetEncryptedTxArray() EncryptedTxArray {
+func (m *QueryEncryptedTxAllFromHeightResponse) GetEncryptedTxArray() EncryptedTxArray {
 	if m != nil {
 		return m.EncryptedTxArray
 	}
 	return EncryptedTxArray{}
 }
 
+// QueryLatestHeightRequest is request type for the Query/LatestHeight RPC method.
 type QueryLatestHeightRequest struct {
 }
 
@@ -616,6 +626,7 @@ func (m *QueryLatestHeightRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_QueryLatestHeightRequest proto.InternalMessageInfo
 
+// QueryLatestHeightResponse is response type for the Query/LatestHeight RPC method.
 type QueryLatestHeightResponse struct {
 	Height uint64 `protobuf:"varint,1,opt,name=height,proto3" json:"height,omitempty"`
 }
@@ -660,22 +671,23 @@ func (m *QueryLatestHeightResponse) GetHeight() uint64 {
 	return 0
 }
 
-type QueryGetPepNonceRequest struct {
+// QueryPepNonceRequest is request type for the Query/PepNonce RPC method.
+type QueryPepNonceRequest struct {
 	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
 }
 
-func (m *QueryGetPepNonceRequest) Reset()         { *m = QueryGetPepNonceRequest{} }
-func (m *QueryGetPepNonceRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryGetPepNonceRequest) ProtoMessage()    {}
-func (*QueryGetPepNonceRequest) Descriptor() ([]byte, []int) {
+func (m *QueryPepNonceRequest) Reset()         { *m = QueryPepNonceRequest{} }
+func (m *QueryPepNonceRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryPepNonceRequest) ProtoMessage()    {}
+func (*QueryPepNonceRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{14}
 }
-func (m *QueryGetPepNonceRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryPepNonceRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetPepNonceRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryPepNonceRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetPepNonceRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryPepNonceRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -685,41 +697,42 @@ func (m *QueryGetPepNonceRequest) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (m *QueryGetPepNonceRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetPepNonceRequest.Merge(m, src)
+func (m *QueryPepNonceRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryPepNonceRequest.Merge(m, src)
 }
-func (m *QueryGetPepNonceRequest) XXX_Size() int {
+func (m *QueryPepNonceRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetPepNonceRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetPepNonceRequest.DiscardUnknown(m)
+func (m *QueryPepNonceRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryPepNonceRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetPepNonceRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryPepNonceRequest proto.InternalMessageInfo
 
-func (m *QueryGetPepNonceRequest) GetAddress() string {
+func (m *QueryPepNonceRequest) GetAddress() string {
 	if m != nil {
 		return m.Address
 	}
 	return ""
 }
 
-type QueryGetPepNonceResponse struct {
-	PepNonce PepNonce `protobuf:"bytes,1,opt,name=pepNonce,proto3" json:"pepNonce"`
+// QueryPepNonceResponse is response type for the Query/PepNonce RPC method.
+type QueryPepNonceResponse struct {
+	PepNonce PepNonce `protobuf:"bytes,1,opt,name=pep_nonce,json=pepNonce,proto3" json:"pep_nonce"`
 }
 
-func (m *QueryGetPepNonceResponse) Reset()         { *m = QueryGetPepNonceResponse{} }
-func (m *QueryGetPepNonceResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryGetPepNonceResponse) ProtoMessage()    {}
-func (*QueryGetPepNonceResponse) Descriptor() ([]byte, []int) {
+func (m *QueryPepNonceResponse) Reset()         { *m = QueryPepNonceResponse{} }
+func (m *QueryPepNonceResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryPepNonceResponse) ProtoMessage()    {}
+func (*QueryPepNonceResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{15}
 }
-func (m *QueryGetPepNonceResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryPepNonceResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetPepNonceResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryPepNonceResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetPepNonceResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryPepNonceResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -729,41 +742,42 @@ func (m *QueryGetPepNonceResponse) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *QueryGetPepNonceResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetPepNonceResponse.Merge(m, src)
+func (m *QueryPepNonceResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryPepNonceResponse.Merge(m, src)
 }
-func (m *QueryGetPepNonceResponse) XXX_Size() int {
+func (m *QueryPepNonceResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetPepNonceResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetPepNonceResponse.DiscardUnknown(m)
+func (m *QueryPepNonceResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryPepNonceResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetPepNonceResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryPepNonceResponse proto.InternalMessageInfo
 
-func (m *QueryGetPepNonceResponse) GetPepNonce() PepNonce {
+func (m *QueryPepNonceResponse) GetPepNonce() PepNonce {
 	if m != nil {
 		return m.PepNonce
 	}
 	return PepNonce{}
 }
 
-type QueryAllPepNonceRequest struct {
+// QueryPepNonceAllRequest is request type for the Query/PepNonceAll RPC method.
+type QueryPepNonceAllRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryAllPepNonceRequest) Reset()         { *m = QueryAllPepNonceRequest{} }
-func (m *QueryAllPepNonceRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryAllPepNonceRequest) ProtoMessage()    {}
-func (*QueryAllPepNonceRequest) Descriptor() ([]byte, []int) {
+func (m *QueryPepNonceAllRequest) Reset()         { *m = QueryPepNonceAllRequest{} }
+func (m *QueryPepNonceAllRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryPepNonceAllRequest) ProtoMessage()    {}
+func (*QueryPepNonceAllRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{16}
 }
-func (m *QueryAllPepNonceRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryPepNonceAllRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllPepNonceRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryPepNonceAllRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllPepNonceRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryPepNonceAllRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -773,42 +787,43 @@ func (m *QueryAllPepNonceRequest) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (m *QueryAllPepNonceRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllPepNonceRequest.Merge(m, src)
+func (m *QueryPepNonceAllRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryPepNonceAllRequest.Merge(m, src)
 }
-func (m *QueryAllPepNonceRequest) XXX_Size() int {
+func (m *QueryPepNonceAllRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllPepNonceRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllPepNonceRequest.DiscardUnknown(m)
+func (m *QueryPepNonceAllRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryPepNonceAllRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllPepNonceRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryPepNonceAllRequest proto.InternalMessageInfo
 
-func (m *QueryAllPepNonceRequest) GetPagination() *query.PageRequest {
+func (m *QueryPepNonceAllRequest) GetPagination() *query.PageRequest {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-type QueryAllPepNonceResponse struct {
-	PepNonce   []PepNonce          `protobuf:"bytes,1,rep,name=pepNonce,proto3" json:"pepNonce"`
+// QueryPepNonceAllResponse is response type for the Query/PepNonceAll RPC method.
+type QueryPepNonceAllResponse struct {
+	PepNonce   []PepNonce          `protobuf:"bytes,1,rep,name=pep_nonce,json=pepNonce,proto3" json:"pep_nonce"`
 	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryAllPepNonceResponse) Reset()         { *m = QueryAllPepNonceResponse{} }
-func (m *QueryAllPepNonceResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryAllPepNonceResponse) ProtoMessage()    {}
-func (*QueryAllPepNonceResponse) Descriptor() ([]byte, []int) {
+func (m *QueryPepNonceAllResponse) Reset()         { *m = QueryPepNonceAllResponse{} }
+func (m *QueryPepNonceAllResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryPepNonceAllResponse) ProtoMessage()    {}
+func (*QueryPepNonceAllResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{17}
 }
-func (m *QueryAllPepNonceResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryPepNonceAllResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllPepNonceResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryPepNonceAllResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllPepNonceResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryPepNonceAllResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -818,47 +833,48 @@ func (m *QueryAllPepNonceResponse) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *QueryAllPepNonceResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllPepNonceResponse.Merge(m, src)
+func (m *QueryPepNonceAllResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryPepNonceAllResponse.Merge(m, src)
 }
-func (m *QueryAllPepNonceResponse) XXX_Size() int {
+func (m *QueryPepNonceAllResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllPepNonceResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllPepNonceResponse.DiscardUnknown(m)
+func (m *QueryPepNonceAllResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryPepNonceAllResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllPepNonceResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryPepNonceAllResponse proto.InternalMessageInfo
 
-func (m *QueryAllPepNonceResponse) GetPepNonce() []PepNonce {
+func (m *QueryPepNonceAllResponse) GetPepNonce() []PepNonce {
 	if m != nil {
 		return m.PepNonce
 	}
 	return nil
 }
 
-func (m *QueryAllPepNonceResponse) GetPagination() *query.PageResponse {
+func (m *QueryPepNonceAllResponse) GetPagination() *query.PageResponse {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-type QueryPubKeyRequest struct {
+// QueryPubkeyRequest is request type for the Query/Pubkey RPC method.
+type QueryPubkeyRequest struct {
 }
 
-func (m *QueryPubKeyRequest) Reset()         { *m = QueryPubKeyRequest{} }
-func (m *QueryPubKeyRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryPubKeyRequest) ProtoMessage()    {}
-func (*QueryPubKeyRequest) Descriptor() ([]byte, []int) {
+func (m *QueryPubkeyRequest) Reset()         { *m = QueryPubkeyRequest{} }
+func (m *QueryPubkeyRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryPubkeyRequest) ProtoMessage()    {}
+func (*QueryPubkeyRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{18}
 }
-func (m *QueryPubKeyRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryPubkeyRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryPubKeyRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryPubkeyRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryPubKeyRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryPubkeyRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -868,35 +884,36 @@ func (m *QueryPubKeyRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *QueryPubKeyRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryPubKeyRequest.Merge(m, src)
+func (m *QueryPubkeyRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryPubkeyRequest.Merge(m, src)
 }
-func (m *QueryPubKeyRequest) XXX_Size() int {
+func (m *QueryPubkeyRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryPubKeyRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryPubKeyRequest.DiscardUnknown(m)
+func (m *QueryPubkeyRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryPubkeyRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryPubKeyRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryPubkeyRequest proto.InternalMessageInfo
 
-type QueryPubKeyResponse struct {
-	ActivePubKey types.ActivePublicKey `protobuf:"bytes,1,opt,name=activePubKey,proto3" json:"activePubKey"`
-	QueuedPubKey types.QueuedPublicKey `protobuf:"bytes,2,opt,name=queuedPubKey,proto3" json:"queuedPubKey"`
+// QueryPubkeyResponse is response type for the Query/Pubkey RPC method.
+type QueryPubkeyResponse struct {
+	ActivePubkey types.ActivePublicKey `protobuf:"bytes,1,opt,name=active_pubkey,json=activePubkey,proto3" json:"active_pubkey"`
+	QueuedPubkey types.QueuedPublicKey `protobuf:"bytes,2,opt,name=queued_pubkey,json=queuedPubkey,proto3" json:"queued_pubkey"`
 }
 
-func (m *QueryPubKeyResponse) Reset()         { *m = QueryPubKeyResponse{} }
-func (m *QueryPubKeyResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryPubKeyResponse) ProtoMessage()    {}
-func (*QueryPubKeyResponse) Descriptor() ([]byte, []int) {
+func (m *QueryPubkeyResponse) Reset()         { *m = QueryPubkeyResponse{} }
+func (m *QueryPubkeyResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryPubkeyResponse) ProtoMessage()    {}
+func (*QueryPubkeyResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{19}
 }
-func (m *QueryPubKeyResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryPubkeyResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryPubKeyResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryPubkeyResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryPubKeyResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryPubkeyResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -906,48 +923,49 @@ func (m *QueryPubKeyResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
-func (m *QueryPubKeyResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryPubKeyResponse.Merge(m, src)
+func (m *QueryPubkeyResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryPubkeyResponse.Merge(m, src)
 }
-func (m *QueryPubKeyResponse) XXX_Size() int {
+func (m *QueryPubkeyResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryPubKeyResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryPubKeyResponse.DiscardUnknown(m)
+func (m *QueryPubkeyResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryPubkeyResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryPubKeyResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryPubkeyResponse proto.InternalMessageInfo
 
-func (m *QueryPubKeyResponse) GetActivePubKey() types.ActivePublicKey {
+func (m *QueryPubkeyResponse) GetActivePubkey() types.ActivePublicKey {
 	if m != nil {
-		return m.ActivePubKey
+		return m.ActivePubkey
 	}
 	return types.ActivePublicKey{}
 }
 
-func (m *QueryPubKeyResponse) GetQueuedPubKey() types.QueuedPublicKey {
+func (m *QueryPubkeyResponse) GetQueuedPubkey() types.QueuedPublicKey {
 	if m != nil {
-		return m.QueuedPubKey
+		return m.QueuedPubkey
 	}
 	return types.QueuedPublicKey{}
 }
 
-type QueryShowPrivateKeyshareReqRequest struct {
-	ReqId string `protobuf:"bytes,1,opt,name=reqId,proto3" json:"reqId,omitempty"`
+// QueryPrivateIdentityRequest is request type for the Query/PrivateIdentity RPC method.
+type QueryPrivateIdentityRequest struct {
+	ReqId string `protobuf:"bytes,1,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
 }
 
-func (m *QueryShowPrivateKeyshareReqRequest) Reset()         { *m = QueryShowPrivateKeyshareReqRequest{} }
-func (m *QueryShowPrivateKeyshareReqRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryShowPrivateKeyshareReqRequest) ProtoMessage()    {}
-func (*QueryShowPrivateKeyshareReqRequest) Descriptor() ([]byte, []int) {
+func (m *QueryPrivateIdentityRequest) Reset()         { *m = QueryPrivateIdentityRequest{} }
+func (m *QueryPrivateIdentityRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryPrivateIdentityRequest) ProtoMessage()    {}
+func (*QueryPrivateIdentityRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{20}
 }
-func (m *QueryShowPrivateKeyshareReqRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryPrivateIdentityRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryShowPrivateKeyshareReqRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryPrivateIdentityRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryShowPrivateKeyshareReqRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryPrivateIdentityRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -957,44 +975,45 @@ func (m *QueryShowPrivateKeyshareReqRequest) XXX_Marshal(b []byte, deterministic
 		return b[:n], nil
 	}
 }
-func (m *QueryShowPrivateKeyshareReqRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryShowPrivateKeyshareReqRequest.Merge(m, src)
+func (m *QueryPrivateIdentityRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryPrivateIdentityRequest.Merge(m, src)
 }
-func (m *QueryShowPrivateKeyshareReqRequest) XXX_Size() int {
+func (m *QueryPrivateIdentityRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryShowPrivateKeyshareReqRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryShowPrivateKeyshareReqRequest.DiscardUnknown(m)
+func (m *QueryPrivateIdentityRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryPrivateIdentityRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryShowPrivateKeyshareReqRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryPrivateIdentityRequest proto.InternalMessageInfo
 
-func (m *QueryShowPrivateKeyshareReqRequest) GetReqId() string {
+func (m *QueryPrivateIdentityRequest) GetReqId() string {
 	if m != nil {
 		return m.ReqId
 	}
 	return ""
 }
 
-type QueryShowPrivateKeyshareReqResponse struct {
-	Creator            string                     `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	ReqId              string                     `protobuf:"bytes,2,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
-	Pubkey             string                     `protobuf:"bytes,3,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
-	EncryptedKeyshares []*types.EncryptedKeyshare `protobuf:"bytes,5,rep,name=encrypted_keyshares,json=encryptedKeyshares,proto3" json:"encrypted_keyshares,omitempty"`
+// QueryPrivateIdentityResponse is response type for the Query/PrivateIdentity RPC method.
+type QueryPrivateIdentityResponse struct {
+	Creator               string                        `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	ReqId                 string                        `protobuf:"bytes,2,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
+	Pubkey                string                        `protobuf:"bytes,3,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
+	PrivateDecryptionKeys []*types.PrivateDecryptionKey `protobuf:"bytes,4,rep,name=private_decryption_keys,json=privateDecryptionKeys,proto3" json:"private_decryption_keys,omitempty"`
 }
 
-func (m *QueryShowPrivateKeyshareReqResponse) Reset()         { *m = QueryShowPrivateKeyshareReqResponse{} }
-func (m *QueryShowPrivateKeyshareReqResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryShowPrivateKeyshareReqResponse) ProtoMessage()    {}
-func (*QueryShowPrivateKeyshareReqResponse) Descriptor() ([]byte, []int) {
+func (m *QueryPrivateIdentityResponse) Reset()         { *m = QueryPrivateIdentityResponse{} }
+func (m *QueryPrivateIdentityResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryPrivateIdentityResponse) ProtoMessage()    {}
+func (*QueryPrivateIdentityResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_dd36cf23112e8be0, []int{21}
 }
-func (m *QueryShowPrivateKeyshareReqResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryPrivateIdentityResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryShowPrivateKeyshareReqResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryPrivateIdentityResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryShowPrivateKeyshareReqResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryPrivateIdentityResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1004,49 +1023,50 @@ func (m *QueryShowPrivateKeyshareReqResponse) XXX_Marshal(b []byte, deterministi
 		return b[:n], nil
 	}
 }
-func (m *QueryShowPrivateKeyshareReqResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryShowPrivateKeyshareReqResponse.Merge(m, src)
+func (m *QueryPrivateIdentityResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryPrivateIdentityResponse.Merge(m, src)
 }
-func (m *QueryShowPrivateKeyshareReqResponse) XXX_Size() int {
+func (m *QueryPrivateIdentityResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryShowPrivateKeyshareReqResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryShowPrivateKeyshareReqResponse.DiscardUnknown(m)
+func (m *QueryPrivateIdentityResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryPrivateIdentityResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryShowPrivateKeyshareReqResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryPrivateIdentityResponse proto.InternalMessageInfo
 
-func (m *QueryShowPrivateKeyshareReqResponse) GetCreator() string {
+func (m *QueryPrivateIdentityResponse) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *QueryShowPrivateKeyshareReqResponse) GetReqId() string {
+func (m *QueryPrivateIdentityResponse) GetReqId() string {
 	if m != nil {
 		return m.ReqId
 	}
 	return ""
 }
 
-func (m *QueryShowPrivateKeyshareReqResponse) GetPubkey() string {
+func (m *QueryPrivateIdentityResponse) GetPubkey() string {
 	if m != nil {
 		return m.Pubkey
 	}
 	return ""
 }
 
-func (m *QueryShowPrivateKeyshareReqResponse) GetEncryptedKeyshares() []*types.EncryptedKeyshare {
+func (m *QueryPrivateIdentityResponse) GetPrivateDecryptionKeys() []*types.PrivateDecryptionKey {
 	if m != nil {
-		return m.EncryptedKeyshares
+		return m.PrivateDecryptionKeys
 	}
 	return nil
 }
 
+// QueryDecryptDataRequest is request type for the Query/DecryptData RPC method.
 type QueryDecryptDataRequest struct {
 	Pubkey        string `protobuf:"bytes,1,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
-	AggrKeyshare  string `protobuf:"bytes,2,opt,name=aggr_keyshare,json=aggrKeyshare,proto3" json:"aggr_keyshare,omitempty"`
+	DecryptionKey string `protobuf:"bytes,2,opt,name=decryption_key,json=decryptionKey,proto3" json:"decryption_key,omitempty"`
 	EncryptedData string `protobuf:"bytes,3,opt,name=encrypted_data,json=encryptedData,proto3" json:"encrypted_data,omitempty"`
 }
 
@@ -1090,9 +1110,9 @@ func (m *QueryDecryptDataRequest) GetPubkey() string {
 	return ""
 }
 
-func (m *QueryDecryptDataRequest) GetAggrKeyshare() string {
+func (m *QueryDecryptDataRequest) GetDecryptionKey() string {
 	if m != nil {
-		return m.AggrKeyshare
+		return m.DecryptionKey
 	}
 	return ""
 }
@@ -1104,6 +1124,7 @@ func (m *QueryDecryptDataRequest) GetEncryptedData() string {
 	return ""
 }
 
+// QueryDecryptDataResponse is response type for the Query/DecryptData RPC method.
 type QueryDecryptDataResponse struct {
 	DecryptedData string `protobuf:"bytes,1,opt,name=decrypted_data,json=decryptedData,proto3" json:"decrypted_data,omitempty"`
 }
@@ -1151,26 +1172,26 @@ func (m *QueryDecryptDataResponse) GetDecryptedData() string {
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "fairyring.pep.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "fairyring.pep.QueryParamsResponse")
-	proto.RegisterType((*QueryKeyshareRequest)(nil), "fairyring.pep.QueryKeyshareRequest")
-	proto.RegisterType((*QueryKeyshareResponse)(nil), "fairyring.pep.QueryKeyshareResponse")
-	proto.RegisterType((*QueryAllKeyshareRequest)(nil), "fairyring.pep.QueryAllKeyshareRequest")
-	proto.RegisterType((*QueryAllKeyshareResponse)(nil), "fairyring.pep.QueryAllKeyshareResponse")
-	proto.RegisterType((*QueryGetEncryptedTxRequest)(nil), "fairyring.pep.QueryGetEncryptedTxRequest")
-	proto.RegisterType((*QueryGetEncryptedTxResponse)(nil), "fairyring.pep.QueryGetEncryptedTxResponse")
-	proto.RegisterType((*QueryAllEncryptedTxRequest)(nil), "fairyring.pep.QueryAllEncryptedTxRequest")
-	proto.RegisterType((*QueryAllEncryptedTxResponse)(nil), "fairyring.pep.QueryAllEncryptedTxResponse")
-	proto.RegisterType((*QueryAllEncryptedTxFromHeightRequest)(nil), "fairyring.pep.QueryAllEncryptedTxFromHeightRequest")
-	proto.RegisterType((*QueryAllEncryptedTxFromHeightResponse)(nil), "fairyring.pep.QueryAllEncryptedTxFromHeightResponse")
+	proto.RegisterType((*QueryGeneralIdentityRequest)(nil), "fairyring.pep.QueryGeneralIdentityRequest")
+	proto.RegisterType((*QueryGeneralIdentityResponse)(nil), "fairyring.pep.QueryGeneralIdentityResponse")
+	proto.RegisterType((*QueryGeneralIdentityAllRequest)(nil), "fairyring.pep.QueryGeneralIdentityAllRequest")
+	proto.RegisterType((*QueryGeneralIdentityAllResponse)(nil), "fairyring.pep.QueryGeneralIdentityAllResponse")
+	proto.RegisterType((*QueryEncryptedTxRequest)(nil), "fairyring.pep.QueryEncryptedTxRequest")
+	proto.RegisterType((*QueryEncryptedTxResponse)(nil), "fairyring.pep.QueryEncryptedTxResponse")
+	proto.RegisterType((*QueryEncryptedTxAllRequest)(nil), "fairyring.pep.QueryEncryptedTxAllRequest")
+	proto.RegisterType((*QueryEncryptedTxAllResponse)(nil), "fairyring.pep.QueryEncryptedTxAllResponse")
+	proto.RegisterType((*QueryEncryptedTxAllFromHeightRequest)(nil), "fairyring.pep.QueryEncryptedTxAllFromHeightRequest")
+	proto.RegisterType((*QueryEncryptedTxAllFromHeightResponse)(nil), "fairyring.pep.QueryEncryptedTxAllFromHeightResponse")
 	proto.RegisterType((*QueryLatestHeightRequest)(nil), "fairyring.pep.QueryLatestHeightRequest")
 	proto.RegisterType((*QueryLatestHeightResponse)(nil), "fairyring.pep.QueryLatestHeightResponse")
-	proto.RegisterType((*QueryGetPepNonceRequest)(nil), "fairyring.pep.QueryGetPepNonceRequest")
-	proto.RegisterType((*QueryGetPepNonceResponse)(nil), "fairyring.pep.QueryGetPepNonceResponse")
-	proto.RegisterType((*QueryAllPepNonceRequest)(nil), "fairyring.pep.QueryAllPepNonceRequest")
-	proto.RegisterType((*QueryAllPepNonceResponse)(nil), "fairyring.pep.QueryAllPepNonceResponse")
-	proto.RegisterType((*QueryPubKeyRequest)(nil), "fairyring.pep.QueryPubKeyRequest")
-	proto.RegisterType((*QueryPubKeyResponse)(nil), "fairyring.pep.QueryPubKeyResponse")
-	proto.RegisterType((*QueryShowPrivateKeyshareReqRequest)(nil), "fairyring.pep.QueryShowPrivateKeyshareReqRequest")
-	proto.RegisterType((*QueryShowPrivateKeyshareReqResponse)(nil), "fairyring.pep.QueryShowPrivateKeyshareReqResponse")
+	proto.RegisterType((*QueryPepNonceRequest)(nil), "fairyring.pep.QueryPepNonceRequest")
+	proto.RegisterType((*QueryPepNonceResponse)(nil), "fairyring.pep.QueryPepNonceResponse")
+	proto.RegisterType((*QueryPepNonceAllRequest)(nil), "fairyring.pep.QueryPepNonceAllRequest")
+	proto.RegisterType((*QueryPepNonceAllResponse)(nil), "fairyring.pep.QueryPepNonceAllResponse")
+	proto.RegisterType((*QueryPubkeyRequest)(nil), "fairyring.pep.QueryPubkeyRequest")
+	proto.RegisterType((*QueryPubkeyResponse)(nil), "fairyring.pep.QueryPubkeyResponse")
+	proto.RegisterType((*QueryPrivateIdentityRequest)(nil), "fairyring.pep.QueryPrivateIdentityRequest")
+	proto.RegisterType((*QueryPrivateIdentityResponse)(nil), "fairyring.pep.QueryPrivateIdentityResponse")
 	proto.RegisterType((*QueryDecryptDataRequest)(nil), "fairyring.pep.QueryDecryptDataRequest")
 	proto.RegisterType((*QueryDecryptDataResponse)(nil), "fairyring.pep.QueryDecryptDataResponse")
 }
@@ -1178,92 +1199,91 @@ func init() {
 func init() { proto.RegisterFile("fairyring/pep/query.proto", fileDescriptor_dd36cf23112e8be0) }
 
 var fileDescriptor_dd36cf23112e8be0 = []byte{
-	// 1357 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x98, 0xcf, 0x6f, 0xe3, 0x44,
-	0x14, 0xc7, 0xeb, 0x6e, 0x9b, 0x6d, 0x27, 0x6d, 0x05, 0xb3, 0xfd, 0x91, 0x7a, 0xb7, 0x69, 0x77,
-	0xd2, 0x5f, 0x44, 0x10, 0xab, 0xed, 0x1e, 0xa0, 0xe2, 0x92, 0xd2, 0x1f, 0x2c, 0x45, 0x6c, 0x1b,
-	0x0a, 0x48, 0x7b, 0x89, 0x26, 0xf6, 0xe0, 0x58, 0x4d, 0x6c, 0xc7, 0x76, 0xba, 0x09, 0x51, 0x24,
-	0xb4, 0x17, 0x2e, 0x1c, 0x90, 0xb8, 0x23, 0x8e, 0x7b, 0x83, 0x1b, 0xda, 0x33, 0x1c, 0xf6, 0xb8,
-	0x12, 0x17, 0x4e, 0x08, 0xb5, 0x48, 0xfc, 0x09, 0x5c, 0x91, 0xc7, 0xcf, 0x89, 0xed, 0x38, 0x49,
-	0x2b, 0x7a, 0xa9, 0xea, 0x99, 0xf7, 0xe3, 0xf3, 0xde, 0x8c, 0xdf, 0xd7, 0x2d, 0x5a, 0xfc, 0x92,
-	0x6a, 0x56, 0xd3, 0xd2, 0x74, 0x55, 0x32, 0x99, 0x29, 0xd5, 0xea, 0xcc, 0x6a, 0xe6, 0x4c, 0xcb,
-	0x70, 0x0c, 0x3c, 0xdd, 0xd9, 0xca, 0x99, 0xcc, 0x14, 0xdf, 0xa4, 0x55, 0x4d, 0x37, 0x24, 0xfe,
-	0xd3, 0xb3, 0x10, 0x67, 0x55, 0x43, 0x35, 0xf8, 0xaf, 0x92, 0xfb, 0x1b, 0xac, 0x3e, 0x50, 0x0d,
-	0x43, 0xad, 0x30, 0x89, 0x9a, 0x9a, 0x44, 0x75, 0xdd, 0x70, 0xa8, 0xa3, 0x19, 0xba, 0x0d, 0xbb,
-	0x59, 0xd9, 0xb0, 0xab, 0x86, 0x2d, 0x95, 0xa8, 0xcd, 0xbc, 0x74, 0xd2, 0xc5, 0x56, 0x89, 0x39,
-	0x74, 0x4b, 0x32, 0xa9, 0xaa, 0xe9, 0xdc, 0x18, 0x6c, 0xc5, 0x30, 0x9c, 0x49, 0x2d, 0x5a, 0xf5,
-	0xe3, 0xac, 0x84, 0xf7, 0x98, 0x2e, 0x5b, 0x4d, 0xd3, 0x61, 0x4a, 0xd1, 0x69, 0x80, 0xc5, 0x52,
-	0xc4, 0x9b, 0x99, 0x45, 0xdd, 0xd0, 0x65, 0x06, 0xdb, 0x9b, 0xe1, 0x6d, 0xaa, 0xaa, 0x16, 0x53,
-	0xa9, 0x1b, 0xe1, 0x9c, 0x35, 0x8b, 0x76, 0x99, 0x5a, 0xbe, 0x65, 0xa6, 0x6b, 0x29, 0x1b, 0xd5,
-	0xaa, 0xa1, 0x4b, 0x7c, 0x57, 0x29, 0x3a, 0x4d, 0x93, 0xf9, 0x3c, 0xe9, 0x60, 0x5d, 0x7e, 0x45,
-	0xb2, 0xa1, 0x41, 0x2d, 0x64, 0x16, 0xe1, 0x53, 0xb7, 0xda, 0x13, 0x5e, 0x44, 0x81, 0xd5, 0xea,
-	0xcc, 0x76, 0xc8, 0x13, 0x74, 0x2f, 0xb4, 0x6a, 0x9b, 0x86, 0x6e, 0x33, 0xfc, 0x2e, 0x4a, 0x78,
-	0xc5, 0xa6, 0x84, 0x15, 0x61, 0x33, 0xb9, 0x3d, 0x97, 0x0b, 0x9d, 0x45, 0xce, 0x33, 0xdf, 0x9b,
-	0x7c, 0xf5, 0xe7, 0xf2, 0xc8, 0x8b, 0x7f, 0x7e, 0xce, 0x0a, 0x05, 0xb0, 0x27, 0xef, 0xa0, 0x59,
-	0x1e, 0xf0, 0x98, 0x35, 0x39, 0x24, 0x24, 0xc2, 0x73, 0x28, 0x61, 0xb1, 0x5a, 0x51, 0x53, 0x78,
-	0xc4, 0xc9, 0xc2, 0xb8, 0xc5, 0x6a, 0x8f, 0x15, 0xf2, 0x14, 0xcd, 0x45, 0xcc, 0x81, 0x20, 0x8f,
-	0x26, 0xce, 0x61, 0x0d, 0x18, 0xd6, 0x22, 0x0c, 0x47, 0x4c, 0x3f, 0xd0, 0xe5, 0xb3, 0xc6, 0x41,
-	0x83, 0xc9, 0x75, 0xf7, 0xd0, 0x4e, 0xeb, 0xac, 0xce, 0x0a, 0x1d, 0x37, 0x42, 0xd1, 0x02, 0x8f,
-	0x9d, 0xaf, 0x54, 0xa2, 0x34, 0x87, 0x08, 0x75, 0x0f, 0x1b, 0xe2, 0xaf, 0xe7, 0xbc, 0x0e, 0xe6,
-	0xdc, 0x0e, 0xe6, 0xbc, 0x8b, 0x08, 0x7d, 0xcc, 0x9d, 0x50, 0xd5, 0xf7, 0x2d, 0x04, 0x3c, 0xc9,
-	0x0b, 0x01, 0xa5, 0x7a, 0x73, 0x40, 0x09, 0x1f, 0xa0, 0x49, 0x9f, 0xc5, 0xed, 0xe3, 0x9d, 0xeb,
-	0xd7, 0xd0, 0xf5, 0xc3, 0x47, 0x21, 0xd2, 0x51, 0x4e, 0xba, 0x31, 0x94, 0xd4, 0x23, 0x08, 0xa1,
-	0x7e, 0x8e, 0x44, 0x4e, 0x7a, 0xc4, 0x9c, 0x03, 0xff, 0xae, 0x9e, 0x35, 0xfc, 0x86, 0x10, 0x34,
-	0xe5, 0x50, 0x4b, 0x65, 0xce, 0x87, 0x4c, 0x53, 0xcb, 0x0e, 0x6f, 0xc9, 0x58, 0x21, 0xb4, 0x86,
-	0x67, 0xd1, 0xb8, 0xa6, 0x2b, 0xac, 0xc1, 0x29, 0xc6, 0x0a, 0xde, 0x03, 0xa1, 0xe8, 0x7e, 0x6c,
-	0x5c, 0x68, 0xc2, 0x1e, 0x4a, 0xb2, 0xee, 0x32, 0xb4, 0x5a, 0x8c, 0xb4, 0x21, 0xe0, 0xb8, 0x37,
-	0xe6, 0xde, 0xa9, 0x42, 0xd0, 0x89, 0x28, 0x80, 0x9e, 0xaf, 0x54, 0x62, 0xd0, 0x6f, 0xeb, 0x2c,
-	0x5f, 0x0a, 0x50, 0x49, 0x34, 0x0d, 0x54, 0x72, 0x8a, 0xde, 0x08, 0x40, 0xe5, 0x2d, 0x8b, 0x36,
-	0xe1, 0x54, 0x97, 0xfb, 0x97, 0xc3, 0xcd, 0xa0, 0xa6, 0x1e, 0xf7, 0xdb, 0x3b, 0xdc, 0x8f, 0xd0,
-	0x6a, 0x0c, 0xfa, 0xa1, 0x65, 0x54, 0xbd, 0xb3, 0xbb, 0xc1, 0x31, 0x93, 0xaf, 0xd0, 0xda, 0x90,
-	0x58, 0x03, 0x1b, 0x22, 0xfc, 0x8f, 0x86, 0x10, 0x11, 0x5e, 0xa7, 0x8f, 0xa9, 0xc3, 0x6c, 0x27,
-	0xc4, 0x4e, 0x76, 0xd0, 0x62, 0xcc, 0x1e, 0xb0, 0xcc, 0xa3, 0x44, 0x39, 0x58, 0x12, 0x3c, 0x91,
-	0x1d, 0x98, 0x01, 0x47, 0xcc, 0x39, 0x61, 0xe6, 0x27, 0xee, 0xf8, 0xf5, 0x7b, 0x91, 0x42, 0x77,
-	0xa9, 0xa2, 0x58, 0xcc, 0xb6, 0x61, 0x24, 0xf9, 0x8f, 0xe4, 0x33, 0xa0, 0x08, 0x39, 0x41, 0xa2,
-	0xf7, 0xd0, 0x84, 0x09, 0x6b, 0x50, 0xec, 0x42, 0x74, 0x36, 0xc2, 0x36, 0x14, 0xd9, 0x31, 0x0f,
-	0xce, 0xa3, 0x28, 0xcb, 0x6d, 0xdd, 0xe1, 0x1f, 0x02, 0xf3, 0x68, 0x08, 0xfa, 0x9d, 0x1b, 0xa0,
-	0xdf, 0xde, 0x45, 0xed, 0xa8, 0x50, 0xbd, 0x74, 0xcc, 0x9a, 0xfe, 0xd1, 0xfe, 0x24, 0xf8, 0x32,
-	0x04, 0xcb, 0x40, 0x7c, 0x8c, 0xa6, 0xa8, 0xec, 0x68, 0x17, 0xcc, 0x5b, 0x87, 0xc6, 0x3c, 0x0c,
-	0x50, 0x7b, 0x7a, 0x98, 0xcb, 0xfb, 0x56, 0x15, 0x4d, 0x3e, 0x66, 0xfe, 0xfd, 0x0a, 0x39, 0xbb,
-	0xc1, 0x6a, 0xee, 0x74, 0x55, 0x20, 0xd8, 0x68, 0xbf, 0x60, 0xa7, 0xbe, 0x55, 0x38, 0x58, 0xd0,
-	0x99, 0xec, 0x22, 0xc2, 0x81, 0x3f, 0x2d, 0x1b, 0xcf, 0x4e, 0x2c, 0xed, 0x82, 0x3a, 0x2c, 0xa0,
-	0x31, 0xfe, 0xb1, 0xce, 0x22, 0x4f, 0xe6, 0xc2, 0x9a, 0xf7, 0x9b, 0x80, 0x32, 0x03, 0x9d, 0xa1,
-	0xfa, 0x14, 0xba, 0x2b, 0x5b, 0x8c, 0x3a, 0x86, 0xe5, 0x5f, 0x50, 0x78, 0x0c, 0x88, 0xe9, 0x68,
-	0x20, 0xb0, 0xfb, 0x12, 0x98, 0xf5, 0xd2, 0x39, 0x6b, 0xa6, 0xee, 0xf0, 0x65, 0x78, 0xc2, 0x67,
-	0xe8, 0x5e, 0xf7, 0xf3, 0xa4, 0x2b, 0x49, 0xe3, 0xfc, 0x0e, 0x64, 0x7a, 0x1b, 0xd0, 0x79, 0x5d,
-	0x3b, 0x54, 0x98, 0x45, 0x97, 0x6c, 0xd2, 0x86, 0xeb, 0xbc, 0xcf, 0xf8, 0xd6, 0x3e, 0x75, 0xa8,
-	0x5f, 0x77, 0x17, 0x44, 0x08, 0x81, 0x64, 0xd0, 0xb4, 0xfb, 0x99, 0xd3, 0x61, 0x00, 0xfc, 0x29,
-	0x77, 0xd1, 0x0f, 0x8c, 0xd7, 0xd0, 0x4c, 0x97, 0x56, 0xa1, 0x0e, 0x85, 0x6a, 0xa6, 0x3b, 0xab,
-	0x6e, 0x2a, 0x92, 0x87, 0x9b, 0x1e, 0x4a, 0x0f, 0x9d, 0x5b, 0x43, 0x33, 0x0a, 0x0b, 0x85, 0xf0,
-	0x38, 0xa6, 0x3b, 0xab, 0xae, 0xf9, 0xf6, 0xbf, 0xd3, 0x68, 0x9c, 0xc7, 0xc0, 0x3a, 0x4a, 0x78,
-	0x9f, 0x34, 0xf8, 0x61, 0xe4, 0x95, 0xe8, 0xfd, 0x66, 0x12, 0xc9, 0x20, 0x13, 0x8f, 0x80, 0x2c,
-	0x3d, 0xff, 0xfd, 0xef, 0xef, 0x47, 0x17, 0xf0, 0x9c, 0x14, 0xf7, 0x09, 0x89, 0x7f, 0x14, 0x50,
-	0x32, 0x30, 0x14, 0xf1, 0x5b, 0x71, 0x21, 0x63, 0x95, 0x5a, 0xcc, 0x5e, 0xc7, 0x14, 0x28, 0x76,
-	0x39, 0xc5, 0x23, 0xbc, 0x2d, 0xf5, 0xff, 0x58, 0x95, 0x5a, 0xc1, 0xe9, 0xdf, 0x96, 0x5a, 0x5c,
-	0xd6, 0xdb, 0xf8, 0x5b, 0x01, 0xcd, 0x04, 0xe7, 0x76, 0xa5, 0x12, 0x4f, 0x19, 0x2b, 0xca, 0xf1,
-	0x94, 0xf1, 0xc2, 0x4a, 0x32, 0x9c, 0x72, 0x09, 0xdf, 0x1f, 0x40, 0x89, 0x5f, 0x0a, 0x28, 0x15,
-	0xc6, 0xe9, 0x2a, 0x12, 0xde, 0x19, 0x9e, 0xad, 0x47, 0x0b, 0xc5, 0x47, 0x37, 0x73, 0x02, 0xd8,
-	0x6d, 0x0e, 0xfb, 0x36, 0xce, 0x5e, 0xbf, 0xa5, 0xf8, 0x1b, 0x01, 0x4d, 0x05, 0x55, 0x0b, 0x6f,
-	0xc4, 0xa5, 0x8e, 0xd1, 0x3c, 0x71, 0x73, 0xb8, 0x21, 0x70, 0xad, 0x72, 0xae, 0x34, 0x7e, 0x10,
-	0xe1, 0xaa, 0x70, 0xe3, 0xa2, 0x27, 0x87, 0x2e, 0xc9, 0x84, 0x3f, 0xe4, 0xf1, 0x7a, 0x9f, 0x9b,
-	0x14, 0x11, 0x27, 0x71, 0x63, 0xa8, 0x1d, 0x30, 0x64, 0x39, 0xc3, 0x2a, 0x26, 0x52, 0x9f, 0xbf,
-	0x7c, 0xa4, 0x16, 0x48, 0x6c, 0x1b, 0x7f, 0x2d, 0xa0, 0xa4, 0x1f, 0xc0, 0xbd, 0x5b, 0xeb, 0x7d,
-	0x4e, 0xe3, 0x5a, 0x30, 0x31, 0x6a, 0x47, 0x56, 0x38, 0x8c, 0x88, 0x53, 0xfd, 0x60, 0xb0, 0x81,
-	0x12, 0x20, 0x0d, 0xf1, 0x2f, 0x7d, 0x50, 0xa2, 0xfa, 0xbc, 0xf4, 0x21, 0xb9, 0x22, 0x69, 0x9e,
-	0x32, 0x85, 0xe7, 0xa3, 0x29, 0xeb, 0x25, 0x77, 0xe4, 0xe1, 0xe7, 0x02, 0x4a, 0x06, 0x06, 0x3d,
-	0xce, 0xc4, 0xc5, 0x8c, 0xfc, 0xa9, 0x22, 0xae, 0x0e, 0x36, 0x82, 0xd4, 0x9b, 0x3c, 0x35, 0xc1,
-	0x2b, 0x91, 0xd4, 0xfe, 0xa4, 0x95, 0x5a, 0x9e, 0x60, 0xb4, 0x5d, 0x88, 0x99, 0x40, 0x8e, 0x41,
-	0xbd, 0x8f, 0xa2, 0x6c, 0x0c, 0xb5, 0x03, 0x9a, 0x65, 0x4e, 0xb3, 0x88, 0x17, 0xfa, 0xd0, 0xe0,
-	0x5f, 0x05, 0x34, 0x1f, 0xaf, 0x7e, 0x78, 0x2b, 0x2e, 0xc9, 0x40, 0x99, 0x15, 0xb7, 0x6f, 0xe2,
-	0x02, 0x88, 0x7b, 0x1c, 0xf1, 0x7d, 0xbc, 0x2b, 0x1d, 0x52, 0xcd, 0x2a, 0x55, 0x0c, 0xf9, 0x3c,
-	0x02, 0x6b, 0x97, 0x8d, 0x67, 0x45, 0xd3, 0x8b, 0xd0, 0x51, 0xac, 0xa2, 0xc5, 0x6a, 0xbc, 0x97,
-	0x8f, 0x95, 0x36, 0xfe, 0x45, 0x40, 0xc9, 0x80, 0xfc, 0xc4, 0xf7, 0xb1, 0x57, 0x1e, 0xe3, 0xfb,
-	0x18, 0xa3, 0x63, 0xe4, 0x0b, 0x0e, 0x79, 0x8a, 0x9f, 0xf4, 0x85, 0x04, 0x41, 0xe3, 0x22, 0x27,
-	0xb5, 0x3c, 0x99, 0x6d, 0x4b, 0xad, 0x90, 0xca, 0xb6, 0xa5, 0x56, 0x58, 0x50, 0xdb, 0x7b, 0xfb,
-	0xaf, 0x2e, 0xd3, 0xc2, 0xeb, 0xcb, 0xb4, 0xf0, 0xd7, 0x65, 0x5a, 0xf8, 0xee, 0x2a, 0x3d, 0xf2,
-	0xfa, 0x2a, 0x3d, 0xf2, 0xc7, 0x55, 0x7a, 0xe4, 0x69, 0x56, 0xd5, 0x9c, 0x72, 0xbd, 0xe4, 0x7e,
-	0x0a, 0xc4, 0x26, 0x6d, 0xf0, 0xb4, 0xfc, 0x1f, 0x0f, 0xa5, 0x04, 0xff, 0xcf, 0xc2, 0xce, 0x7f,
-	0x01, 0x00, 0x00, 0xff, 0xff, 0xe4, 0x33, 0xe3, 0x9f, 0xc4, 0x11, 0x00, 0x00,
+	// 1338 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0xcb, 0x6f, 0xe3, 0x44,
+	0x18, 0xef, 0xf4, 0xb5, 0xdb, 0xe9, 0x0b, 0x86, 0x96, 0x66, 0xbd, 0x6d, 0xda, 0xba, 0x4f, 0xb2,
+	0xda, 0x78, 0xb7, 0x2d, 0x12, 0x5a, 0x4e, 0x2d, 0x6d, 0x97, 0x55, 0xab, 0xa5, 0x9b, 0x5d, 0x09,
+	0xc4, 0x01, 0x6b, 0x12, 0x0f, 0xa9, 0xd5, 0xc4, 0x76, 0xec, 0x49, 0xd5, 0x28, 0x44, 0x3c, 0x84,
+	0xc4, 0x85, 0x03, 0x12, 0x47, 0x90, 0xb8, 0x21, 0x8e, 0x70, 0x43, 0x70, 0xe4, 0xc0, 0x1e, 0x57,
+	0xe2, 0xc2, 0x09, 0xa1, 0x16, 0x89, 0x7f, 0x03, 0x79, 0xfc, 0x39, 0xb1, 0x9d, 0x49, 0x93, 0x8a,
+	0xdd, 0x4b, 0xd5, 0xf9, 0xfc, 0x3d, 0x7e, 0xbf, 0x6f, 0xbe, 0x99, 0x9f, 0x1d, 0x7c, 0xe3, 0x43,
+	0x6a, 0xba, 0x35, 0xd7, 0xb4, 0x8a, 0x9a, 0xc3, 0x1c, 0xad, 0x52, 0x65, 0x6e, 0x2d, 0xeb, 0xb8,
+	0x36, 0xb7, 0xc9, 0x78, 0xf3, 0x51, 0xd6, 0x61, 0x8e, 0xf2, 0x32, 0x2d, 0x9b, 0x96, 0xad, 0x89,
+	0xbf, 0x81, 0x87, 0x92, 0x29, 0xd8, 0x5e, 0xd9, 0xf6, 0xb4, 0x3c, 0xf5, 0x58, 0x10, 0xaa, 0x9d,
+	0xde, 0xcd, 0x33, 0x4e, 0xef, 0x6a, 0x0e, 0x2d, 0x9a, 0x16, 0xe5, 0xa6, 0x6d, 0x81, 0xef, 0x52,
+	0xab, 0x50, 0xc1, 0x2e, 0x97, 0x6d, 0x4b, 0xf3, 0x8e, 0xa9, 0xcb, 0x0c, 0x9d, 0xd7, 0x1c, 0xe6,
+	0x81, 0xd3, 0x42, 0x1c, 0x0d, 0xb3, 0x0a, 0x6e, 0xcd, 0xe1, 0xbe, 0xd3, 0x19, 0x78, 0x28, 0x71,
+	0x0f, 0x87, 0xba, 0xb4, 0x1c, 0x46, 0xcf, 0x25, 0x9e, 0x31, 0x47, 0xb7, 0x6c, 0xab, 0xc0, 0xe0,
+	0xf1, 0x54, 0xd1, 0x2e, 0xda, 0xe2, 0x5f, 0xcd, 0xff, 0x0f, 0xac, 0xb3, 0x45, 0xdb, 0x2e, 0x96,
+	0x98, 0x46, 0x1d, 0x53, 0xa3, 0x96, 0x65, 0x73, 0x01, 0x1a, 0x52, 0xaa, 0x53, 0x98, 0x3c, 0xf2,
+	0x79, 0x1d, 0x89, 0x3a, 0x39, 0x56, 0xa9, 0x32, 0x8f, 0xab, 0xef, 0xe0, 0x57, 0x62, 0x56, 0xcf,
+	0xb1, 0x2d, 0x8f, 0x91, 0x37, 0xf0, 0x70, 0x80, 0x27, 0x85, 0x16, 0xd0, 0xfa, 0xe8, 0xc6, 0x74,
+	0x36, 0xd6, 0xc1, 0x6c, 0xe0, 0xbe, 0x33, 0xf2, 0xf4, 0xaf, 0xf9, 0xbe, 0x1f, 0xfe, 0xfd, 0x31,
+	0x83, 0x72, 0xe0, 0xaf, 0x6e, 0xe1, 0x9b, 0x22, 0xe1, 0x7d, 0x66, 0x31, 0x97, 0x96, 0x1e, 0x18,
+	0xcc, 0xe2, 0x26, 0xaf, 0x41, 0x3d, 0x32, 0x8d, 0x87, 0x5d, 0x56, 0xd1, 0x4d, 0x43, 0x24, 0x1e,
+	0xc9, 0x0d, 0xb9, 0xac, 0xf2, 0xc0, 0x50, 0x2d, 0x3c, 0x2b, 0x8f, 0x02, 0x3c, 0x0f, 0xf1, 0xa4,
+	0x1b, 0x64, 0xd0, 0x0d, 0xc6, 0xa9, 0x59, 0x0a, 0x81, 0xad, 0x24, 0x80, 0x85, 0x91, 0x7b, 0x67,
+	0xac, 0x50, 0xf5, 0xe9, 0xef, 0x59, 0xdc, 0xad, 0xe5, 0x26, 0x20, 0x7a, 0x37, 0x08, 0x56, 0x8f,
+	0x71, 0x5a, 0x56, 0x6f, 0xbb, 0x54, 0x0a, 0x81, 0xee, 0x63, 0xdc, 0xda, 0x78, 0x28, 0xb6, 0x9a,
+	0x0d, 0xa6, 0x24, 0xeb, 0x4f, 0x49, 0x36, 0x18, 0x30, 0x98, 0x92, 0xec, 0x11, 0x2d, 0x32, 0x88,
+	0xcd, 0x45, 0x22, 0xd5, 0xdf, 0x10, 0x9e, 0xef, 0x58, 0x0a, 0xd8, 0xbd, 0x8b, 0xa7, 0x12, 0xec,
+	0xf4, 0x92, 0xe9, 0xf1, 0x14, 0x5a, 0x18, 0xe8, 0x9d, 0x22, 0x89, 0x53, 0x3c, 0x34, 0x3d, 0x4e,
+	0xee, 0xc7, 0x48, 0xf4, 0x0b, 0x12, 0x6b, 0x5d, 0x49, 0x04, 0xa8, 0x62, 0x2c, 0x9e, 0xe0, 0x19,
+	0x41, 0x62, 0x2f, 0x1c, 0xe3, 0x27, 0x67, 0x61, 0xa3, 0x96, 0xf0, 0x38, 0xa7, 0x6e, 0x91, 0x71,
+	0xfd, 0x98, 0x99, 0xc5, 0x63, 0x2e, 0x7a, 0x35, 0x98, 0x1b, 0x0b, 0x8c, 0x6f, 0x0b, 0x1b, 0x99,
+	0xc2, 0x43, 0xa6, 0x65, 0xb0, 0x33, 0x81, 0x61, 0x30, 0x17, 0x2c, 0x54, 0x1d, 0xa7, 0xda, 0xb3,
+	0x42, 0x4f, 0xde, 0xc2, 0x63, 0xd1, 0x33, 0x03, 0x3b, 0xa0, 0x24, 0x7a, 0x11, 0x89, 0xdc, 0x19,
+	0xf4, 0x87, 0x31, 0x37, 0xca, 0x5a, 0x26, 0xd5, 0xc0, 0x4a, 0xb2, 0xc0, 0x0b, 0xd8, 0xe2, 0x5f,
+	0x11, 0xcc, 0x7c, 0xb2, 0x0c, 0x50, 0x79, 0x8c, 0x49, 0x94, 0x8a, 0x4e, 0x5d, 0x97, 0xd6, 0x60,
+	0x73, 0xe7, 0x3b, 0x13, 0xda, 0xf6, 0xdd, 0x80, 0xd5, 0x4b, 0x2c, 0x61, 0x7f, 0x7e, 0x5b, 0x7b,
+	0x80, 0x97, 0x25, 0xe0, 0xf7, 0x5d, 0xbb, 0x1c, 0xec, 0xdd, 0x55, 0xf6, 0x59, 0xfd, 0x08, 0xaf,
+	0x74, 0x49, 0xd6, 0xa5, 0x27, 0xe8, 0x7f, 0xf4, 0x44, 0x55, 0x60, 0x9e, 0x0e, 0x29, 0x67, 0x1e,
+	0x8f, 0xc1, 0x57, 0x37, 0xf1, 0x0d, 0xc9, 0x33, 0x40, 0xf3, 0x2a, 0x1e, 0x8e, 0x91, 0x82, 0x95,
+	0x7a, 0x07, 0x4f, 0x05, 0xb7, 0x23, 0x73, 0x1e, 0xfa, 0xd7, 0x6f, 0xd8, 0x8b, 0x14, 0xbe, 0x46,
+	0x0d, 0xc3, 0x65, 0x9e, 0x07, 0xd7, 0x58, 0xb8, 0x54, 0x1f, 0xe3, 0xe9, 0x44, 0x04, 0x94, 0xb8,
+	0x87, 0x47, 0x9a, 0xb7, 0x38, 0xf0, 0x9c, 0x49, 0x5e, 0xaa, 0x10, 0x03, 0xfc, 0xae, 0x3b, 0xb0,
+	0x56, 0x29, 0x9c, 0xbe, 0xd0, 0xe1, 0x05, 0xcc, 0xf0, 0x77, 0x08, 0x7a, 0x17, 0xab, 0x21, 0xc7,
+	0x3e, 0x70, 0x05, 0xec, 0xcf, 0x6f, 0x4e, 0x9b, 0xfa, 0x55, 0xcd, 0x9f, 0xb0, 0x50, 0x4f, 0xd4,
+	0x9f, 0x50, 0x28, 0x60, 0x60, 0x06, 0xc8, 0x87, 0x78, 0x9c, 0x16, 0xb8, 0x79, 0xca, 0x74, 0x47,
+	0x3c, 0x80, 0xd6, 0x2c, 0x46, 0x60, 0x07, 0xda, 0x9d, 0xdd, 0x16, 0x6e, 0x47, 0xd5, 0x7c, 0xc9,
+	0x2c, 0x1c, 0xb0, 0x70, 0xb8, 0xc6, 0x68, 0x68, 0x3e, 0x61, 0x35, 0x3f, 0x5b, 0xa5, 0xca, 0xaa,
+	0xcc, 0x08, 0xb3, 0xf5, 0x77, 0xca, 0xf6, 0x48, 0xb8, 0xb5, 0x65, 0xab, 0x84, 0xe6, 0x13, 0x56,
+	0x6b, 0x4a, 0xe4, 0x91, 0x6b, 0x9e, 0x52, 0xce, 0x7a, 0x94, 0xc8, 0xdf, 0x11, 0x68, 0x64, 0x5b,
+	0x18, 0x50, 0x4e, 0xe1, 0x6b, 0x05, 0x97, 0x51, 0x6e, 0xbb, 0xe1, 0x50, 0xc2, 0x32, 0x92, 0xb1,
+	0x3f, 0x92, 0xd1, 0x9f, 0x7a, 0xa0, 0x33, 0x20, 0xcc, 0xb0, 0x22, 0x1f, 0xe0, 0x19, 0x27, 0xa8,
+	0xa1, 0x1b, 0x4c, 0x1c, 0x31, 0xd3, 0xb6, 0xf4, 0x13, 0x56, 0xf3, 0x52, 0x83, 0x62, 0xf3, 0x57,
+	0xdb, 0x79, 0x03, 0xa8, 0xdd, 0xa6, 0xff, 0x01, 0xab, 0xe5, 0xa6, 0x1d, 0x89, 0xd5, 0x53, 0x3f,
+	0x86, 0x71, 0x06, 0xf3, 0x2e, 0xe5, 0x34, 0xe4, 0xde, 0x82, 0x84, 0x62, 0x90, 0x56, 0xf0, 0x44,
+	0x1c, 0x0a, 0x30, 0x19, 0x37, 0xa2, 0xa9, 0x7d, 0xb7, 0xd6, 0xad, 0x62, 0x50, 0x4e, 0x81, 0xd9,
+	0x78, 0xd3, 0xea, 0x17, 0x53, 0xb7, 0x61, 0xd6, 0x63, 0x00, 0xa0, 0x8b, 0xad, 0x4a, 0x61, 0x0a,
+	0x14, 0xab, 0x14, 0xa4, 0xd8, 0xf8, 0x7c, 0x02, 0x0f, 0x89, 0x1c, 0xc4, 0xc2, 0xc3, 0xc1, 0xdb,
+	0x10, 0x59, 0x4c, 0x9c, 0x89, 0xf6, 0xd7, 0x2d, 0x45, 0xbd, 0xcc, 0x25, 0x40, 0xa0, 0xce, 0x7d,
+	0xf6, 0xc7, 0x3f, 0x5f, 0xf7, 0xcf, 0x90, 0x69, 0x4d, 0xf6, 0x82, 0x48, 0xbe, 0x41, 0x78, 0x34,
+	0x72, 0x23, 0x92, 0x55, 0x59, 0xca, 0x76, 0x9d, 0x56, 0xd6, 0xba, 0xfa, 0x41, 0xfd, 0x37, 0x45,
+	0xfd, 0xd7, 0xc9, 0xa6, 0xd6, 0xf9, 0x15, 0x56, 0xab, 0xc7, 0xb4, 0xa0, 0xa1, 0xd5, 0x85, 0xa2,
+	0x37, 0xc8, 0x97, 0x08, 0x4f, 0xc4, 0x2f, 0x7f, 0xf2, 0x5a, 0x97, 0xc2, 0xad, 0xdb, 0x4c, 0xc9,
+	0xf4, 0xe2, 0x0a, 0x30, 0x97, 0x04, 0xcc, 0x39, 0x72, 0xf3, 0x12, 0x98, 0xe4, 0x17, 0x84, 0x53,
+	0x9d, 0xb4, 0x88, 0x6c, 0x76, 0xaf, 0xd6, 0x26, 0x83, 0xca, 0xd6, 0xd5, 0x82, 0x00, 0xec, 0xa6,
+	0x00, 0x7b, 0x9b, 0xdc, 0xba, 0x42, 0x4f, 0xc9, 0x17, 0x08, 0x8f, 0x45, 0xe5, 0x8a, 0x48, 0xb7,
+	0x50, 0x22, 0x76, 0xca, 0x7a, 0x77, 0x47, 0x00, 0xb6, 0x2c, 0x80, 0xa5, 0xc9, 0x6c, 0x02, 0x58,
+	0x49, 0x38, 0x03, 0x14, 0xf2, 0x29, 0xc2, 0xd7, 0xc3, 0x1b, 0x9e, 0x2c, 0x49, 0x67, 0x38, 0xae,
+	0x90, 0xca, 0xf2, 0xe5, 0x4e, 0x50, 0x3d, 0x23, 0xaa, 0x2f, 0x13, 0x55, 0xeb, 0xf0, 0xbd, 0xa3,
+	0xd5, 0x41, 0x58, 0x1b, 0xe4, 0x13, 0x84, 0x47, 0x23, 0xe2, 0x24, 0x9f, 0xfb, 0x76, 0x85, 0x94,
+	0xcf, 0xbd, 0x44, 0xe5, 0xd4, 0x05, 0x01, 0x46, 0x21, 0xa9, 0x4e, 0x60, 0xc4, 0x51, 0x0f, 0xee,
+	0x23, 0xf9, 0x51, 0x8f, 0x2a, 0x53, 0x87, 0xa3, 0x1e, 0x53, 0xa9, 0xce, 0x47, 0x3d, 0xa8, 0xf2,
+	0x2d, 0xc2, 0x93, 0x89, 0xcf, 0x06, 0x22, 0x3d, 0x22, 0xf2, 0x8f, 0x2d, 0xe5, 0x56, 0x4f, 0xbe,
+	0x80, 0xe5, 0x8e, 0xc0, 0x92, 0x21, 0xeb, 0x09, 0x2c, 0xc5, 0xc0, 0x5f, 0x37, 0x21, 0x40, 0xab,
+	0x07, 0x5a, 0xd2, 0xf0, 0xe1, 0x91, 0xf6, 0xaf, 0x1a, 0x72, 0xbb, 0x87, 0xaa, 0x91, 0xfd, 0xc9,
+	0xf6, 0xea, 0x0e, 0x38, 0xd7, 0x04, 0xce, 0x45, 0x32, 0xdf, 0x05, 0x27, 0xf9, 0x1e, 0xe1, 0xc9,
+	0x84, 0x56, 0xca, 0xbb, 0x27, 0xd7, 0x61, 0x79, 0xf7, 0x3a, 0x88, 0xaf, 0x7a, 0x4f, 0xa0, 0xda,
+	0x22, 0x1b, 0xda, 0x3e, 0x35, 0xdd, 0x7c, 0xc9, 0x2e, 0x9c, 0x24, 0xf7, 0x14, 0x24, 0xb5, 0xbd,
+	0x8f, 0x3f, 0x23, 0x3c, 0x1a, 0x91, 0x22, 0xf9, 0x64, 0xb7, 0x8b, 0xa5, 0x7c, 0xb2, 0x25, 0x9a,
+	0xa6, 0xbe, 0x27, 0xc0, 0xe5, 0xc8, 0x51, 0x47, 0x70, 0x20, 0x6e, 0x42, 0xf0, 0xb4, 0x7a, 0x30,
+	0x7e, 0x0d, 0xad, 0x1e, 0xd7, 0xdc, 0x86, 0x56, 0x8f, 0xab, 0x6b, 0x63, 0x67, 0xf7, 0xe9, 0x79,
+	0x1a, 0x3d, 0x3b, 0x4f, 0xa3, 0xbf, 0xcf, 0xd3, 0xe8, 0xab, 0x8b, 0x74, 0xdf, 0xb3, 0x8b, 0x74,
+	0xdf, 0x9f, 0x17, 0xe9, 0xbe, 0xf7, 0x33, 0x45, 0x93, 0x1f, 0x57, 0xf3, 0xfe, 0xfb, 0x81, 0xb4,
+	0xea, 0x99, 0xa8, 0x2b, 0x7e, 0x31, 0xc9, 0x0f, 0x8b, 0x5f, 0x28, 0x36, 0xff, 0x0b, 0x00, 0x00,
+	0xff, 0xff, 0x1c, 0x4f, 0x1c, 0x03, 0xc2, 0x11, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1281,23 +1301,25 @@ type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
 	// Queries a EncryptedTx by index.
-	EncryptedTx(ctx context.Context, in *QueryGetEncryptedTxRequest, opts ...grpc.CallOption) (*QueryGetEncryptedTxResponse, error)
+	EncryptedTx(ctx context.Context, in *QueryEncryptedTxRequest, opts ...grpc.CallOption) (*QueryEncryptedTxResponse, error)
 	// Queries a list of EncryptedTx items.
-	EncryptedTxAll(ctx context.Context, in *QueryAllEncryptedTxRequest, opts ...grpc.CallOption) (*QueryAllEncryptedTxResponse, error)
+	EncryptedTxAll(ctx context.Context, in *QueryEncryptedTxAllRequest, opts ...grpc.CallOption) (*QueryEncryptedTxAllResponse, error)
 	// Queries a list of EncryptedTx items.
-	EncryptedTxAllFromHeight(ctx context.Context, in *QueryAllEncryptedTxFromHeightRequest, opts ...grpc.CallOption) (*QueryAllEncryptedTxFromHeightResponse, error)
+	EncryptedTxAllFromHeight(ctx context.Context, in *QueryEncryptedTxAllFromHeightRequest, opts ...grpc.CallOption) (*QueryEncryptedTxAllFromHeightResponse, error)
 	// Queries a list of LatestHeight items.
 	LatestHeight(ctx context.Context, in *QueryLatestHeightRequest, opts ...grpc.CallOption) (*QueryLatestHeightResponse, error)
 	// Queries a PepNonce by index.
-	PepNonce(ctx context.Context, in *QueryGetPepNonceRequest, opts ...grpc.CallOption) (*QueryGetPepNonceResponse, error)
+	PepNonce(ctx context.Context, in *QueryPepNonceRequest, opts ...grpc.CallOption) (*QueryPepNonceResponse, error)
 	// Queries a list of PepNonce items.
-	PepNonceAll(ctx context.Context, in *QueryAllPepNonceRequest, opts ...grpc.CallOption) (*QueryAllPepNonceResponse, error)
+	PepNonceAll(ctx context.Context, in *QueryPepNonceAllRequest, opts ...grpc.CallOption) (*QueryPepNonceAllResponse, error)
 	// Queries the public keys
-	PubKey(ctx context.Context, in *QueryPubKeyRequest, opts ...grpc.CallOption) (*QueryPubKeyResponse, error)
-	KeyshareReq(ctx context.Context, in *QueryKeyshareRequest, opts ...grpc.CallOption) (*QueryKeyshareResponse, error)
-	KeyshareReqAll(ctx context.Context, in *QueryAllKeyshareRequest, opts ...grpc.CallOption) (*QueryAllKeyshareResponse, error)
-	// Queries a list of ShowPrivateKeyshareReq items.
-	ShowPrivateKeyshareReq(ctx context.Context, in *QueryShowPrivateKeyshareReqRequest, opts ...grpc.CallOption) (*QueryShowPrivateKeyshareReqResponse, error)
+	Pubkey(ctx context.Context, in *QueryPubkeyRequest, opts ...grpc.CallOption) (*QueryPubkeyResponse, error)
+	// Queries a General Identity request by request id
+	GeneralIdentity(ctx context.Context, in *QueryGeneralIdentityRequest, opts ...grpc.CallOption) (*QueryGeneralIdentityResponse, error)
+	// Queries a list of General Identity requests
+	GeneralIdentityAll(ctx context.Context, in *QueryGeneralIdentityAllRequest, opts ...grpc.CallOption) (*QueryGeneralIdentityAllResponse, error)
+	// Queries a Private Identity request item by req id.
+	PrivateIdentity(ctx context.Context, in *QueryPrivateIdentityRequest, opts ...grpc.CallOption) (*QueryPrivateIdentityResponse, error)
 	// Queries a list of DecryptData items.
 	DecryptData(ctx context.Context, in *QueryDecryptDataRequest, opts ...grpc.CallOption) (*QueryDecryptDataResponse, error)
 }
@@ -1319,8 +1341,8 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 	return out, nil
 }
 
-func (c *queryClient) EncryptedTx(ctx context.Context, in *QueryGetEncryptedTxRequest, opts ...grpc.CallOption) (*QueryGetEncryptedTxResponse, error) {
-	out := new(QueryGetEncryptedTxResponse)
+func (c *queryClient) EncryptedTx(ctx context.Context, in *QueryEncryptedTxRequest, opts ...grpc.CallOption) (*QueryEncryptedTxResponse, error) {
+	out := new(QueryEncryptedTxResponse)
 	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/EncryptedTx", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1328,8 +1350,8 @@ func (c *queryClient) EncryptedTx(ctx context.Context, in *QueryGetEncryptedTxRe
 	return out, nil
 }
 
-func (c *queryClient) EncryptedTxAll(ctx context.Context, in *QueryAllEncryptedTxRequest, opts ...grpc.CallOption) (*QueryAllEncryptedTxResponse, error) {
-	out := new(QueryAllEncryptedTxResponse)
+func (c *queryClient) EncryptedTxAll(ctx context.Context, in *QueryEncryptedTxAllRequest, opts ...grpc.CallOption) (*QueryEncryptedTxAllResponse, error) {
+	out := new(QueryEncryptedTxAllResponse)
 	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/EncryptedTxAll", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1337,8 +1359,8 @@ func (c *queryClient) EncryptedTxAll(ctx context.Context, in *QueryAllEncryptedT
 	return out, nil
 }
 
-func (c *queryClient) EncryptedTxAllFromHeight(ctx context.Context, in *QueryAllEncryptedTxFromHeightRequest, opts ...grpc.CallOption) (*QueryAllEncryptedTxFromHeightResponse, error) {
-	out := new(QueryAllEncryptedTxFromHeightResponse)
+func (c *queryClient) EncryptedTxAllFromHeight(ctx context.Context, in *QueryEncryptedTxAllFromHeightRequest, opts ...grpc.CallOption) (*QueryEncryptedTxAllFromHeightResponse, error) {
+	out := new(QueryEncryptedTxAllFromHeightResponse)
 	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/EncryptedTxAllFromHeight", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1355,8 +1377,8 @@ func (c *queryClient) LatestHeight(ctx context.Context, in *QueryLatestHeightReq
 	return out, nil
 }
 
-func (c *queryClient) PepNonce(ctx context.Context, in *QueryGetPepNonceRequest, opts ...grpc.CallOption) (*QueryGetPepNonceResponse, error) {
-	out := new(QueryGetPepNonceResponse)
+func (c *queryClient) PepNonce(ctx context.Context, in *QueryPepNonceRequest, opts ...grpc.CallOption) (*QueryPepNonceResponse, error) {
+	out := new(QueryPepNonceResponse)
 	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/PepNonce", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1364,8 +1386,8 @@ func (c *queryClient) PepNonce(ctx context.Context, in *QueryGetPepNonceRequest,
 	return out, nil
 }
 
-func (c *queryClient) PepNonceAll(ctx context.Context, in *QueryAllPepNonceRequest, opts ...grpc.CallOption) (*QueryAllPepNonceResponse, error) {
-	out := new(QueryAllPepNonceResponse)
+func (c *queryClient) PepNonceAll(ctx context.Context, in *QueryPepNonceAllRequest, opts ...grpc.CallOption) (*QueryPepNonceAllResponse, error) {
+	out := new(QueryPepNonceAllResponse)
 	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/PepNonceAll", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1373,36 +1395,36 @@ func (c *queryClient) PepNonceAll(ctx context.Context, in *QueryAllPepNonceReque
 	return out, nil
 }
 
-func (c *queryClient) PubKey(ctx context.Context, in *QueryPubKeyRequest, opts ...grpc.CallOption) (*QueryPubKeyResponse, error) {
-	out := new(QueryPubKeyResponse)
-	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/PubKey", in, out, opts...)
+func (c *queryClient) Pubkey(ctx context.Context, in *QueryPubkeyRequest, opts ...grpc.CallOption) (*QueryPubkeyResponse, error) {
+	out := new(QueryPubkeyResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/Pubkey", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) KeyshareReq(ctx context.Context, in *QueryKeyshareRequest, opts ...grpc.CallOption) (*QueryKeyshareResponse, error) {
-	out := new(QueryKeyshareResponse)
-	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/KeyshareReq", in, out, opts...)
+func (c *queryClient) GeneralIdentity(ctx context.Context, in *QueryGeneralIdentityRequest, opts ...grpc.CallOption) (*QueryGeneralIdentityResponse, error) {
+	out := new(QueryGeneralIdentityResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/GeneralIdentity", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) KeyshareReqAll(ctx context.Context, in *QueryAllKeyshareRequest, opts ...grpc.CallOption) (*QueryAllKeyshareResponse, error) {
-	out := new(QueryAllKeyshareResponse)
-	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/KeyshareReqAll", in, out, opts...)
+func (c *queryClient) GeneralIdentityAll(ctx context.Context, in *QueryGeneralIdentityAllRequest, opts ...grpc.CallOption) (*QueryGeneralIdentityAllResponse, error) {
+	out := new(QueryGeneralIdentityAllResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/GeneralIdentityAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) ShowPrivateKeyshareReq(ctx context.Context, in *QueryShowPrivateKeyshareReqRequest, opts ...grpc.CallOption) (*QueryShowPrivateKeyshareReqResponse, error) {
-	out := new(QueryShowPrivateKeyshareReqResponse)
-	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/ShowPrivateKeyshareReq", in, out, opts...)
+func (c *queryClient) PrivateIdentity(ctx context.Context, in *QueryPrivateIdentityRequest, opts ...grpc.CallOption) (*QueryPrivateIdentityResponse, error) {
+	out := new(QueryPrivateIdentityResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.pep.Query/PrivateIdentity", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1423,23 +1445,25 @@ type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
 	// Queries a EncryptedTx by index.
-	EncryptedTx(context.Context, *QueryGetEncryptedTxRequest) (*QueryGetEncryptedTxResponse, error)
+	EncryptedTx(context.Context, *QueryEncryptedTxRequest) (*QueryEncryptedTxResponse, error)
 	// Queries a list of EncryptedTx items.
-	EncryptedTxAll(context.Context, *QueryAllEncryptedTxRequest) (*QueryAllEncryptedTxResponse, error)
+	EncryptedTxAll(context.Context, *QueryEncryptedTxAllRequest) (*QueryEncryptedTxAllResponse, error)
 	// Queries a list of EncryptedTx items.
-	EncryptedTxAllFromHeight(context.Context, *QueryAllEncryptedTxFromHeightRequest) (*QueryAllEncryptedTxFromHeightResponse, error)
+	EncryptedTxAllFromHeight(context.Context, *QueryEncryptedTxAllFromHeightRequest) (*QueryEncryptedTxAllFromHeightResponse, error)
 	// Queries a list of LatestHeight items.
 	LatestHeight(context.Context, *QueryLatestHeightRequest) (*QueryLatestHeightResponse, error)
 	// Queries a PepNonce by index.
-	PepNonce(context.Context, *QueryGetPepNonceRequest) (*QueryGetPepNonceResponse, error)
+	PepNonce(context.Context, *QueryPepNonceRequest) (*QueryPepNonceResponse, error)
 	// Queries a list of PepNonce items.
-	PepNonceAll(context.Context, *QueryAllPepNonceRequest) (*QueryAllPepNonceResponse, error)
+	PepNonceAll(context.Context, *QueryPepNonceAllRequest) (*QueryPepNonceAllResponse, error)
 	// Queries the public keys
-	PubKey(context.Context, *QueryPubKeyRequest) (*QueryPubKeyResponse, error)
-	KeyshareReq(context.Context, *QueryKeyshareRequest) (*QueryKeyshareResponse, error)
-	KeyshareReqAll(context.Context, *QueryAllKeyshareRequest) (*QueryAllKeyshareResponse, error)
-	// Queries a list of ShowPrivateKeyshareReq items.
-	ShowPrivateKeyshareReq(context.Context, *QueryShowPrivateKeyshareReqRequest) (*QueryShowPrivateKeyshareReqResponse, error)
+	Pubkey(context.Context, *QueryPubkeyRequest) (*QueryPubkeyResponse, error)
+	// Queries a General Identity request by request id
+	GeneralIdentity(context.Context, *QueryGeneralIdentityRequest) (*QueryGeneralIdentityResponse, error)
+	// Queries a list of General Identity requests
+	GeneralIdentityAll(context.Context, *QueryGeneralIdentityAllRequest) (*QueryGeneralIdentityAllResponse, error)
+	// Queries a Private Identity request item by req id.
+	PrivateIdentity(context.Context, *QueryPrivateIdentityRequest) (*QueryPrivateIdentityResponse, error)
 	// Queries a list of DecryptData items.
 	DecryptData(context.Context, *QueryDecryptDataRequest) (*QueryDecryptDataResponse, error)
 }
@@ -1451,35 +1475,35 @@ type UnimplementedQueryServer struct {
 func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
 }
-func (*UnimplementedQueryServer) EncryptedTx(ctx context.Context, req *QueryGetEncryptedTxRequest) (*QueryGetEncryptedTxResponse, error) {
+func (*UnimplementedQueryServer) EncryptedTx(ctx context.Context, req *QueryEncryptedTxRequest) (*QueryEncryptedTxResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EncryptedTx not implemented")
 }
-func (*UnimplementedQueryServer) EncryptedTxAll(ctx context.Context, req *QueryAllEncryptedTxRequest) (*QueryAllEncryptedTxResponse, error) {
+func (*UnimplementedQueryServer) EncryptedTxAll(ctx context.Context, req *QueryEncryptedTxAllRequest) (*QueryEncryptedTxAllResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EncryptedTxAll not implemented")
 }
-func (*UnimplementedQueryServer) EncryptedTxAllFromHeight(ctx context.Context, req *QueryAllEncryptedTxFromHeightRequest) (*QueryAllEncryptedTxFromHeightResponse, error) {
+func (*UnimplementedQueryServer) EncryptedTxAllFromHeight(ctx context.Context, req *QueryEncryptedTxAllFromHeightRequest) (*QueryEncryptedTxAllFromHeightResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EncryptedTxAllFromHeight not implemented")
 }
 func (*UnimplementedQueryServer) LatestHeight(ctx context.Context, req *QueryLatestHeightRequest) (*QueryLatestHeightResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LatestHeight not implemented")
 }
-func (*UnimplementedQueryServer) PepNonce(ctx context.Context, req *QueryGetPepNonceRequest) (*QueryGetPepNonceResponse, error) {
+func (*UnimplementedQueryServer) PepNonce(ctx context.Context, req *QueryPepNonceRequest) (*QueryPepNonceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PepNonce not implemented")
 }
-func (*UnimplementedQueryServer) PepNonceAll(ctx context.Context, req *QueryAllPepNonceRequest) (*QueryAllPepNonceResponse, error) {
+func (*UnimplementedQueryServer) PepNonceAll(ctx context.Context, req *QueryPepNonceAllRequest) (*QueryPepNonceAllResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PepNonceAll not implemented")
 }
-func (*UnimplementedQueryServer) PubKey(ctx context.Context, req *QueryPubKeyRequest) (*QueryPubKeyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PubKey not implemented")
+func (*UnimplementedQueryServer) Pubkey(ctx context.Context, req *QueryPubkeyRequest) (*QueryPubkeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Pubkey not implemented")
 }
-func (*UnimplementedQueryServer) KeyshareReq(ctx context.Context, req *QueryKeyshareRequest) (*QueryKeyshareResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method KeyshareReq not implemented")
+func (*UnimplementedQueryServer) GeneralIdentity(ctx context.Context, req *QueryGeneralIdentityRequest) (*QueryGeneralIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GeneralIdentity not implemented")
 }
-func (*UnimplementedQueryServer) KeyshareReqAll(ctx context.Context, req *QueryAllKeyshareRequest) (*QueryAllKeyshareResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method KeyshareReqAll not implemented")
+func (*UnimplementedQueryServer) GeneralIdentityAll(ctx context.Context, req *QueryGeneralIdentityAllRequest) (*QueryGeneralIdentityAllResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GeneralIdentityAll not implemented")
 }
-func (*UnimplementedQueryServer) ShowPrivateKeyshareReq(ctx context.Context, req *QueryShowPrivateKeyshareReqRequest) (*QueryShowPrivateKeyshareReqResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ShowPrivateKeyshareReq not implemented")
+func (*UnimplementedQueryServer) PrivateIdentity(ctx context.Context, req *QueryPrivateIdentityRequest) (*QueryPrivateIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PrivateIdentity not implemented")
 }
 func (*UnimplementedQueryServer) DecryptData(ctx context.Context, req *QueryDecryptDataRequest) (*QueryDecryptDataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DecryptData not implemented")
@@ -1508,7 +1532,7 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 }
 
 func _Query_EncryptedTx_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetEncryptedTxRequest)
+	in := new(QueryEncryptedTxRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1520,13 +1544,13 @@ func _Query_EncryptedTx_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: "/fairyring.pep.Query/EncryptedTx",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).EncryptedTx(ctx, req.(*QueryGetEncryptedTxRequest))
+		return srv.(QueryServer).EncryptedTx(ctx, req.(*QueryEncryptedTxRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Query_EncryptedTxAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllEncryptedTxRequest)
+	in := new(QueryEncryptedTxAllRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1538,13 +1562,13 @@ func _Query_EncryptedTxAll_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/fairyring.pep.Query/EncryptedTxAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).EncryptedTxAll(ctx, req.(*QueryAllEncryptedTxRequest))
+		return srv.(QueryServer).EncryptedTxAll(ctx, req.(*QueryEncryptedTxAllRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Query_EncryptedTxAllFromHeight_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllEncryptedTxFromHeightRequest)
+	in := new(QueryEncryptedTxAllFromHeightRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1556,7 +1580,7 @@ func _Query_EncryptedTxAllFromHeight_Handler(srv interface{}, ctx context.Contex
 		FullMethod: "/fairyring.pep.Query/EncryptedTxAllFromHeight",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).EncryptedTxAllFromHeight(ctx, req.(*QueryAllEncryptedTxFromHeightRequest))
+		return srv.(QueryServer).EncryptedTxAllFromHeight(ctx, req.(*QueryEncryptedTxAllFromHeightRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1580,7 +1604,7 @@ func _Query_LatestHeight_Handler(srv interface{}, ctx context.Context, dec func(
 }
 
 func _Query_PepNonce_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetPepNonceRequest)
+	in := new(QueryPepNonceRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1592,13 +1616,13 @@ func _Query_PepNonce_Handler(srv interface{}, ctx context.Context, dec func(inte
 		FullMethod: "/fairyring.pep.Query/PepNonce",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).PepNonce(ctx, req.(*QueryGetPepNonceRequest))
+		return srv.(QueryServer).PepNonce(ctx, req.(*QueryPepNonceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Query_PepNonceAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllPepNonceRequest)
+	in := new(QueryPepNonceAllRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1610,79 +1634,79 @@ func _Query_PepNonceAll_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: "/fairyring.pep.Query/PepNonceAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).PepNonceAll(ctx, req.(*QueryAllPepNonceRequest))
+		return srv.(QueryServer).PepNonceAll(ctx, req.(*QueryPepNonceAllRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_PubKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryPubKeyRequest)
+func _Query_Pubkey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryPubkeyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).PubKey(ctx, in)
+		return srv.(QueryServer).Pubkey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fairyring.pep.Query/PubKey",
+		FullMethod: "/fairyring.pep.Query/Pubkey",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).PubKey(ctx, req.(*QueryPubKeyRequest))
+		return srv.(QueryServer).Pubkey(ctx, req.(*QueryPubkeyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_KeyshareReq_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryKeyshareRequest)
+func _Query_GeneralIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGeneralIdentityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).KeyshareReq(ctx, in)
+		return srv.(QueryServer).GeneralIdentity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fairyring.pep.Query/KeyshareReq",
+		FullMethod: "/fairyring.pep.Query/GeneralIdentity",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).KeyshareReq(ctx, req.(*QueryKeyshareRequest))
+		return srv.(QueryServer).GeneralIdentity(ctx, req.(*QueryGeneralIdentityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_KeyshareReqAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllKeyshareRequest)
+func _Query_GeneralIdentityAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGeneralIdentityAllRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).KeyshareReqAll(ctx, in)
+		return srv.(QueryServer).GeneralIdentityAll(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fairyring.pep.Query/KeyshareReqAll",
+		FullMethod: "/fairyring.pep.Query/GeneralIdentityAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).KeyshareReqAll(ctx, req.(*QueryAllKeyshareRequest))
+		return srv.(QueryServer).GeneralIdentityAll(ctx, req.(*QueryGeneralIdentityAllRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_ShowPrivateKeyshareReq_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryShowPrivateKeyshareReqRequest)
+func _Query_PrivateIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryPrivateIdentityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).ShowPrivateKeyshareReq(ctx, in)
+		return srv.(QueryServer).PrivateIdentity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/fairyring.pep.Query/ShowPrivateKeyshareReq",
+		FullMethod: "/fairyring.pep.Query/PrivateIdentity",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).ShowPrivateKeyshareReq(ctx, req.(*QueryShowPrivateKeyshareReqRequest))
+		return srv.(QueryServer).PrivateIdentity(ctx, req.(*QueryPrivateIdentityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1738,20 +1762,20 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Query_PepNonceAll_Handler,
 		},
 		{
-			MethodName: "PubKey",
-			Handler:    _Query_PubKey_Handler,
+			MethodName: "Pubkey",
+			Handler:    _Query_Pubkey_Handler,
 		},
 		{
-			MethodName: "KeyshareReq",
-			Handler:    _Query_KeyshareReq_Handler,
+			MethodName: "GeneralIdentity",
+			Handler:    _Query_GeneralIdentity_Handler,
 		},
 		{
-			MethodName: "KeyshareReqAll",
-			Handler:    _Query_KeyshareReqAll_Handler,
+			MethodName: "GeneralIdentityAll",
+			Handler:    _Query_GeneralIdentityAll_Handler,
 		},
 		{
-			MethodName: "ShowPrivateKeyshareReq",
-			Handler:    _Query_ShowPrivateKeyshareReq_Handler,
+			MethodName: "PrivateIdentity",
+			Handler:    _Query_PrivateIdentity_Handler,
 		},
 		{
 			MethodName: "DecryptData",
@@ -1818,7 +1842,7 @@ func (m *QueryParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryKeyshareRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryGeneralIdentityRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1828,12 +1852,12 @@ func (m *QueryKeyshareRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryKeyshareRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryKeyshareRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1848,7 +1872,7 @@ func (m *QueryKeyshareRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryKeyshareResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryGeneralIdentityResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1858,19 +1882,19 @@ func (m *QueryKeyshareResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryKeyshareResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryKeyshareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Keyshare != nil {
+	if m.RequestDetails != nil {
 		{
-			size, err := m.Keyshare.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.RequestDetails.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1883,7 +1907,7 @@ func (m *QueryKeyshareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllKeyshareRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryGeneralIdentityAllRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1893,12 +1917,12 @@ func (m *QueryAllKeyshareRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllKeyshareRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityAllRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllKeyshareRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityAllRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1918,7 +1942,7 @@ func (m *QueryAllKeyshareRequest) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllKeyshareResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryGeneralIdentityAllResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1928,12 +1952,12 @@ func (m *QueryAllKeyshareResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllKeyshareResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityAllResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllKeyshareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGeneralIdentityAllResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1950,10 +1974,10 @@ func (m *QueryAllKeyshareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(m.Keyshares) > 0 {
-		for iNdEx := len(m.Keyshares) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.RequestDetailsList) > 0 {
+		for iNdEx := len(m.RequestDetailsList) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.Keyshares[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.RequestDetailsList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1967,7 +1991,7 @@ func (m *QueryAllKeyshareResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetEncryptedTxRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryEncryptedTxRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1977,12 +2001,12 @@ func (m *QueryGetEncryptedTxRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetEncryptedTxRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryEncryptedTxRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetEncryptedTxRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryEncryptedTxRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2000,7 +2024,7 @@ func (m *QueryGetEncryptedTxRequest) MarshalToSizedBuffer(dAtA []byte) (int, err
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetEncryptedTxResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryEncryptedTxResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2010,12 +2034,12 @@ func (m *QueryGetEncryptedTxResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetEncryptedTxResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryEncryptedTxResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetEncryptedTxResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryEncryptedTxResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2033,7 +2057,7 @@ func (m *QueryGetEncryptedTxResponse) MarshalToSizedBuffer(dAtA []byte) (int, er
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllEncryptedTxRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryEncryptedTxAllRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2043,12 +2067,12 @@ func (m *QueryAllEncryptedTxRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllEncryptedTxRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryEncryptedTxAllRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllEncryptedTxRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryEncryptedTxAllRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2068,7 +2092,7 @@ func (m *QueryAllEncryptedTxRequest) MarshalToSizedBuffer(dAtA []byte) (int, err
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllEncryptedTxResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryEncryptedTxAllResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2078,12 +2102,12 @@ func (m *QueryAllEncryptedTxResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllEncryptedTxResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryEncryptedTxAllResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllEncryptedTxResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryEncryptedTxAllResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2117,7 +2141,7 @@ func (m *QueryAllEncryptedTxResponse) MarshalToSizedBuffer(dAtA []byte) (int, er
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllEncryptedTxFromHeightRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryEncryptedTxAllFromHeightRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2127,12 +2151,12 @@ func (m *QueryAllEncryptedTxFromHeightRequest) Marshal() (dAtA []byte, err error
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllEncryptedTxFromHeightRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryEncryptedTxAllFromHeightRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllEncryptedTxFromHeightRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryEncryptedTxAllFromHeightRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2145,7 +2169,7 @@ func (m *QueryAllEncryptedTxFromHeightRequest) MarshalToSizedBuffer(dAtA []byte)
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllEncryptedTxFromHeightResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryEncryptedTxAllFromHeightResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2155,12 +2179,12 @@ func (m *QueryAllEncryptedTxFromHeightResponse) Marshal() (dAtA []byte, err erro
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllEncryptedTxFromHeightResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryEncryptedTxAllFromHeightResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllEncryptedTxFromHeightResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryEncryptedTxAllFromHeightResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2229,7 +2253,7 @@ func (m *QueryLatestHeightResponse) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetPepNonceRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryPepNonceRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2239,12 +2263,12 @@ func (m *QueryGetPepNonceRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetPepNonceRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryPepNonceRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetPepNonceRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryPepNonceRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2259,7 +2283,7 @@ func (m *QueryGetPepNonceRequest) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetPepNonceResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryPepNonceResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2269,12 +2293,12 @@ func (m *QueryGetPepNonceResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetPepNonceResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryPepNonceResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetPepNonceResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryPepNonceResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2292,7 +2316,7 @@ func (m *QueryGetPepNonceResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllPepNonceRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryPepNonceAllRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2302,12 +2326,12 @@ func (m *QueryAllPepNonceRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllPepNonceRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryPepNonceAllRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllPepNonceRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryPepNonceAllRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2327,7 +2351,7 @@ func (m *QueryAllPepNonceRequest) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllPepNonceResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryPepNonceAllResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2337,12 +2361,12 @@ func (m *QueryAllPepNonceResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllPepNonceResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryPepNonceAllResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllPepNonceResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryPepNonceAllResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2376,7 +2400,7 @@ func (m *QueryAllPepNonceResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryPubKeyRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryPubkeyRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2386,12 +2410,12 @@ func (m *QueryPubKeyRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryPubKeyRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryPubkeyRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryPubKeyRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryPubkeyRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2399,7 +2423,7 @@ func (m *QueryPubKeyRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryPubKeyResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryPubkeyResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2409,18 +2433,18 @@ func (m *QueryPubKeyResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryPubKeyResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryPubkeyResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryPubKeyResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryPubkeyResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	{
-		size, err := m.QueuedPubKey.MarshalToSizedBuffer(dAtA[:i])
+		size, err := m.QueuedPubkey.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
@@ -2430,7 +2454,7 @@ func (m *QueryPubKeyResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i--
 	dAtA[i] = 0x12
 	{
-		size, err := m.ActivePubKey.MarshalToSizedBuffer(dAtA[:i])
+		size, err := m.ActivePubkey.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
@@ -2442,7 +2466,7 @@ func (m *QueryPubKeyResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryShowPrivateKeyshareReqRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryPrivateIdentityRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2452,12 +2476,12 @@ func (m *QueryShowPrivateKeyshareReqRequest) Marshal() (dAtA []byte, err error) 
 	return dAtA[:n], nil
 }
 
-func (m *QueryShowPrivateKeyshareReqRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryPrivateIdentityRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryShowPrivateKeyshareReqRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryPrivateIdentityRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2472,7 +2496,7 @@ func (m *QueryShowPrivateKeyshareReqRequest) MarshalToSizedBuffer(dAtA []byte) (
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryShowPrivateKeyshareReqResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryPrivateIdentityResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2482,20 +2506,20 @@ func (m *QueryShowPrivateKeyshareReqResponse) Marshal() (dAtA []byte, err error)
 	return dAtA[:n], nil
 }
 
-func (m *QueryShowPrivateKeyshareReqResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryPrivateIdentityResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryShowPrivateKeyshareReqResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryPrivateIdentityResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.EncryptedKeyshares) > 0 {
-		for iNdEx := len(m.EncryptedKeyshares) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.PrivateDecryptionKeys) > 0 {
+		for iNdEx := len(m.PrivateDecryptionKeys) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.EncryptedKeyshares[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.PrivateDecryptionKeys[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -2503,7 +2527,7 @@ func (m *QueryShowPrivateKeyshareReqResponse) MarshalToSizedBuffer(dAtA []byte) 
 				i = encodeVarintQuery(dAtA, i, uint64(size))
 			}
 			i--
-			dAtA[i] = 0x2a
+			dAtA[i] = 0x22
 		}
 	}
 	if len(m.Pubkey) > 0 {
@@ -2557,10 +2581,10 @@ func (m *QueryDecryptDataRequest) MarshalToSizedBuffer(dAtA []byte) (int, error)
 		i--
 		dAtA[i] = 0x1a
 	}
-	if len(m.AggrKeyshare) > 0 {
-		i -= len(m.AggrKeyshare)
-		copy(dAtA[i:], m.AggrKeyshare)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.AggrKeyshare)))
+	if len(m.DecryptionKey) > 0 {
+		i -= len(m.DecryptionKey)
+		copy(dAtA[i:], m.DecryptionKey)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.DecryptionKey)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -2635,7 +2659,7 @@ func (m *QueryParamsResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryKeyshareRequest) Size() (n int) {
+func (m *QueryGeneralIdentityRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2648,20 +2672,20 @@ func (m *QueryKeyshareRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryKeyshareResponse) Size() (n int) {
+func (m *QueryGeneralIdentityResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Keyshare != nil {
-		l = m.Keyshare.Size()
+	if m.RequestDetails != nil {
+		l = m.RequestDetails.Size()
 		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
 }
 
-func (m *QueryAllKeyshareRequest) Size() (n int) {
+func (m *QueryGeneralIdentityAllRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2674,14 +2698,14 @@ func (m *QueryAllKeyshareRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryAllKeyshareResponse) Size() (n int) {
+func (m *QueryGeneralIdentityAllResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if len(m.Keyshares) > 0 {
-		for _, e := range m.Keyshares {
+	if len(m.RequestDetailsList) > 0 {
+		for _, e := range m.RequestDetailsList {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -2693,7 +2717,7 @@ func (m *QueryAllKeyshareResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetEncryptedTxRequest) Size() (n int) {
+func (m *QueryEncryptedTxRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2708,7 +2732,7 @@ func (m *QueryGetEncryptedTxRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetEncryptedTxResponse) Size() (n int) {
+func (m *QueryEncryptedTxResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2719,7 +2743,7 @@ func (m *QueryGetEncryptedTxResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryAllEncryptedTxRequest) Size() (n int) {
+func (m *QueryEncryptedTxAllRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2732,7 +2756,7 @@ func (m *QueryAllEncryptedTxRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryAllEncryptedTxResponse) Size() (n int) {
+func (m *QueryEncryptedTxAllResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2751,7 +2775,7 @@ func (m *QueryAllEncryptedTxResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryAllEncryptedTxFromHeightRequest) Size() (n int) {
+func (m *QueryEncryptedTxAllFromHeightRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2763,7 +2787,7 @@ func (m *QueryAllEncryptedTxFromHeightRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryAllEncryptedTxFromHeightResponse) Size() (n int) {
+func (m *QueryEncryptedTxAllFromHeightResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2795,7 +2819,7 @@ func (m *QueryLatestHeightResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetPepNonceRequest) Size() (n int) {
+func (m *QueryPepNonceRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2808,7 +2832,7 @@ func (m *QueryGetPepNonceRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetPepNonceResponse) Size() (n int) {
+func (m *QueryPepNonceResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2819,7 +2843,7 @@ func (m *QueryGetPepNonceResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryAllPepNonceRequest) Size() (n int) {
+func (m *QueryPepNonceAllRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2832,7 +2856,7 @@ func (m *QueryAllPepNonceRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryAllPepNonceResponse) Size() (n int) {
+func (m *QueryPepNonceAllResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2851,7 +2875,7 @@ func (m *QueryAllPepNonceResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryPubKeyRequest) Size() (n int) {
+func (m *QueryPubkeyRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2860,20 +2884,20 @@ func (m *QueryPubKeyRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryPubKeyResponse) Size() (n int) {
+func (m *QueryPubkeyResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = m.ActivePubKey.Size()
+	l = m.ActivePubkey.Size()
 	n += 1 + l + sovQuery(uint64(l))
-	l = m.QueuedPubKey.Size()
+	l = m.QueuedPubkey.Size()
 	n += 1 + l + sovQuery(uint64(l))
 	return n
 }
 
-func (m *QueryShowPrivateKeyshareReqRequest) Size() (n int) {
+func (m *QueryPrivateIdentityRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2886,7 +2910,7 @@ func (m *QueryShowPrivateKeyshareReqRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryShowPrivateKeyshareReqResponse) Size() (n int) {
+func (m *QueryPrivateIdentityResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2904,8 +2928,8 @@ func (m *QueryShowPrivateKeyshareReqResponse) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
-	if len(m.EncryptedKeyshares) > 0 {
-		for _, e := range m.EncryptedKeyshares {
+	if len(m.PrivateDecryptionKeys) > 0 {
+		for _, e := range m.PrivateDecryptionKeys {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -2923,7 +2947,7 @@ func (m *QueryDecryptDataRequest) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
-	l = len(m.AggrKeyshare)
+	l = len(m.DecryptionKey)
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
@@ -3086,7 +3110,7 @@ func (m *QueryParamsResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryKeyshareRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryGeneralIdentityRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3109,10 +3133,10 @@ func (m *QueryKeyshareRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryKeyshareRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGeneralIdentityRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryKeyshareRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGeneralIdentityRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3168,7 +3192,7 @@ func (m *QueryKeyshareRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryKeyshareResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryGeneralIdentityResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3191,15 +3215,15 @@ func (m *QueryKeyshareResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryKeyshareResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGeneralIdentityResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryKeyshareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGeneralIdentityResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Keyshare", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field RequestDetails", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -3226,10 +3250,10 @@ func (m *QueryKeyshareResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Keyshare == nil {
-				m.Keyshare = &GenEncTxExecutionQueue{}
+			if m.RequestDetails == nil {
+				m.RequestDetails = &IdentityExecutionEntry{}
 			}
-			if err := m.Keyshare.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.RequestDetails.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -3254,7 +3278,7 @@ func (m *QueryKeyshareResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllKeyshareRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryGeneralIdentityAllRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3277,10 +3301,10 @@ func (m *QueryAllKeyshareRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllKeyshareRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGeneralIdentityAllRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllKeyshareRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGeneralIdentityAllRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3340,7 +3364,7 @@ func (m *QueryAllKeyshareRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllKeyshareResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryGeneralIdentityAllResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3363,15 +3387,15 @@ func (m *QueryAllKeyshareResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllKeyshareResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGeneralIdentityAllResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllKeyshareResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGeneralIdentityAllResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Keyshares", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field RequestDetailsList", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -3398,8 +3422,8 @@ func (m *QueryAllKeyshareResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Keyshares = append(m.Keyshares, &GenEncTxExecutionQueue{})
-			if err := m.Keyshares[len(m.Keyshares)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.RequestDetailsList = append(m.RequestDetailsList, &IdentityExecutionEntry{})
+			if err := m.RequestDetailsList[len(m.RequestDetailsList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -3460,7 +3484,7 @@ func (m *QueryAllKeyshareResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetEncryptedTxRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryEncryptedTxRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3483,10 +3507,10 @@ func (m *QueryGetEncryptedTxRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetEncryptedTxRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryEncryptedTxRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetEncryptedTxRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryEncryptedTxRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3548,7 +3572,7 @@ func (m *QueryGetEncryptedTxRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetEncryptedTxResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryEncryptedTxResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3571,10 +3595,10 @@ func (m *QueryGetEncryptedTxResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetEncryptedTxResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryEncryptedTxResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetEncryptedTxResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryEncryptedTxResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3631,7 +3655,7 @@ func (m *QueryGetEncryptedTxResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllEncryptedTxRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryEncryptedTxAllRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3654,10 +3678,10 @@ func (m *QueryAllEncryptedTxRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllEncryptedTxRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryEncryptedTxAllRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllEncryptedTxRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryEncryptedTxAllRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3717,7 +3741,7 @@ func (m *QueryAllEncryptedTxRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllEncryptedTxResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryEncryptedTxAllResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3740,10 +3764,10 @@ func (m *QueryAllEncryptedTxResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllEncryptedTxResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryEncryptedTxAllResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllEncryptedTxResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryEncryptedTxAllResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3837,7 +3861,7 @@ func (m *QueryAllEncryptedTxResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllEncryptedTxFromHeightRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryEncryptedTxAllFromHeightRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3860,10 +3884,10 @@ func (m *QueryAllEncryptedTxFromHeightRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllEncryptedTxFromHeightRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryEncryptedTxAllFromHeightRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllEncryptedTxFromHeightRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryEncryptedTxAllFromHeightRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3906,7 +3930,7 @@ func (m *QueryAllEncryptedTxFromHeightRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllEncryptedTxFromHeightResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryEncryptedTxAllFromHeightResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3929,10 +3953,10 @@ func (m *QueryAllEncryptedTxFromHeightResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllEncryptedTxFromHeightResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryEncryptedTxAllFromHeightResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllEncryptedTxFromHeightResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryEncryptedTxAllFromHeightResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4108,7 +4132,7 @@ func (m *QueryLatestHeightResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetPepNonceRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryPepNonceRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4131,10 +4155,10 @@ func (m *QueryGetPepNonceRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetPepNonceRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryPepNonceRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetPepNonceRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryPepNonceRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4190,7 +4214,7 @@ func (m *QueryGetPepNonceRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetPepNonceResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryPepNonceResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4213,10 +4237,10 @@ func (m *QueryGetPepNonceResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetPepNonceResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryPepNonceResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetPepNonceResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryPepNonceResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4273,7 +4297,7 @@ func (m *QueryGetPepNonceResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllPepNonceRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryPepNonceAllRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4296,10 +4320,10 @@ func (m *QueryAllPepNonceRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllPepNonceRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryPepNonceAllRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllPepNonceRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryPepNonceAllRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4359,7 +4383,7 @@ func (m *QueryAllPepNonceRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllPepNonceResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryPepNonceAllResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4382,10 +4406,10 @@ func (m *QueryAllPepNonceResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllPepNonceResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryPepNonceAllResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllPepNonceResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryPepNonceAllResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4479,7 +4503,7 @@ func (m *QueryAllPepNonceResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryPubKeyRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryPubkeyRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4502,10 +4526,10 @@ func (m *QueryPubKeyRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryPubKeyRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryPubkeyRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryPubKeyRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryPubkeyRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -4529,7 +4553,7 @@ func (m *QueryPubKeyRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryPubKeyResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryPubkeyResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4552,15 +4576,15 @@ func (m *QueryPubKeyResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryPubKeyResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryPubkeyResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryPubKeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryPubkeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ActivePubKey", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ActivePubkey", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -4587,13 +4611,13 @@ func (m *QueryPubKeyResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.ActivePubKey.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.ActivePubkey.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field QueuedPubKey", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field QueuedPubkey", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -4620,7 +4644,7 @@ func (m *QueryPubKeyResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.QueuedPubKey.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.QueuedPubkey.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -4645,7 +4669,7 @@ func (m *QueryPubKeyResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryShowPrivateKeyshareReqRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryPrivateIdentityRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4668,10 +4692,10 @@ func (m *QueryShowPrivateKeyshareReqRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryShowPrivateKeyshareReqRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryPrivateIdentityRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryShowPrivateKeyshareReqRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryPrivateIdentityRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4727,7 +4751,7 @@ func (m *QueryShowPrivateKeyshareReqRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryShowPrivateKeyshareReqResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryPrivateIdentityResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4750,10 +4774,10 @@ func (m *QueryShowPrivateKeyshareReqResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryShowPrivateKeyshareReqResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryPrivateIdentityResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryShowPrivateKeyshareReqResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryPrivateIdentityResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4852,9 +4876,9 @@ func (m *QueryShowPrivateKeyshareReqResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.Pubkey = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
+		case 4:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field EncryptedKeyshares", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PrivateDecryptionKeys", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -4881,8 +4905,8 @@ func (m *QueryShowPrivateKeyshareReqResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.EncryptedKeyshares = append(m.EncryptedKeyshares, &types.EncryptedKeyshare{})
-			if err := m.EncryptedKeyshares[len(m.EncryptedKeyshares)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.PrivateDecryptionKeys = append(m.PrivateDecryptionKeys, &types.PrivateDecryptionKey{})
+			if err := m.PrivateDecryptionKeys[len(m.PrivateDecryptionKeys)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -4970,7 +4994,7 @@ func (m *QueryDecryptDataRequest) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AggrKeyshare", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field DecryptionKey", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -4998,7 +5022,7 @@ func (m *QueryDecryptDataRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.AggrKeyshare = string(dAtA[iNdEx:postIndex])
+			m.DecryptionKey = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {

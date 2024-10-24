@@ -13,7 +13,7 @@ import (
 // we create three separate lanes - Keyshare, Free, and Default - and then return them.
 //
 // NOTE: Application Developers should closely replicate this function in their own application.
-func CreateLanes(app *App) (*keysharelane.KeyShareLane, *base.BaseLane) {
+func CreateLanes(app *App) (*keysharelane.KeyshareLane, *base.BaseLane) {
 	// 1. Create the signer extractor. This is used to extract the expected signers from
 	// a transaction. Each lane can have a different signer extractor if needed.
 	signerAdapter := signerextraction.NewDefaultAdapter()
@@ -72,7 +72,7 @@ func CreateLanes(app *App) (*keysharelane.KeyShareLane, *base.BaseLane) {
 	defaultMatchHandler := base.DefaultMatchHandler()
 
 	// 4. Create the lanes.
-	keyshareLane := keysharelane.NewKeyShareLane(
+	keyshareLane := keysharelane.NewKeyshareLane(
 		keyshareConfig,
 		factory,
 		keyshareMatchHandler,

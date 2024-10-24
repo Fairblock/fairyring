@@ -287,7 +287,7 @@ sleep 2
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_HOME -o json | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+1))
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 echo "Registered validator submit valid key share on chain $CHAINID_1"
 RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 1 $TARGET_HEIGHT --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
@@ -471,7 +471,7 @@ check_tx_code $RESULT
 sleep $BLOCK_TIME
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $IDENTITY)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 while true; do
   echo "Submitting General Key Share"
@@ -528,7 +528,7 @@ check_tx_code $RESULT
 sleep $(($BLOCK_TIME * 2))
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY1" -k "$EXTRACTED_SHARE")
 
@@ -570,7 +570,7 @@ SHOW_PRIVATE_REQ=$($BINARY query pep show-private-keyshare-req $REQ_ID --node tc
 echo $SHOW_PRIVATE_REQ
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY1" -k "$EXTRACTED_SHARE")
 
@@ -681,7 +681,7 @@ check_tx_code $RESULT
 sleep 6
 
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 while true; do
   echo "Submitting General Key Share"

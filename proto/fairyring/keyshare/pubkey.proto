@@ -1,0 +1,29 @@
+syntax = "proto3";
+package fairyring.keyshare;
+
+option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
+
+// EncryptedKeyshare defines the structure for storing
+// the keyshare of the master secret key distributed to the validators
+message EncryptedKeyshare {
+  string data = 1;
+  string validator = 2;
+}
+
+// ActivePubkey defines the structure of the active public key
+message ActivePubkey {
+  string public_key = 1;
+  string creator = 2;
+  uint64 expiry = 3;
+  uint64 number_of_validators = 4;
+  repeated EncryptedKeyshare encrypted_keyshares = 5;
+}
+
+// QueuedPubkey defines the structure of the queued public key
+message QueuedPubkey {
+  string public_key = 1;
+  string creator = 2;
+  uint64 expiry = 3;
+  uint64 number_of_validators = 4;
+  repeated EncryptedKeyshare encrypted_keyshares = 5;
+}

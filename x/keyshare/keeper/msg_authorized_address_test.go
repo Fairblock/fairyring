@@ -17,7 +17,7 @@ import (
 var _ = strconv.IntSize
 
 func TestAuthorizedAddressMsgServerCreate(t *testing.T) {
-	k, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	k, ctx, _ := keepertest.KeyshareKeeper(t)
 	srv := keeper.NewMsgServerImpl(k)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	creator := sample.AccAddress()
@@ -73,7 +73,7 @@ func TestAuthorizedAddressMsgServerUpdate(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			k, ctx, _, _ := keepertest.KeyshareKeeper(t)
+			k, ctx, _ := keepertest.KeyshareKeeper(t)
 			srv := keeper.NewMsgServerImpl(k)
 			wctx := sdk.UnwrapSDKContext(ctx)
 
@@ -135,7 +135,7 @@ func TestAuthorizedAddressMsgServerDelete(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			k, ctx, _, _ := keepertest.KeyshareKeeper(t)
+			k, ctx, _ := keepertest.KeyshareKeeper(t)
 			srv := keeper.NewMsgServerImpl(k)
 			wctx := sdk.UnwrapSDKContext(ctx)
 

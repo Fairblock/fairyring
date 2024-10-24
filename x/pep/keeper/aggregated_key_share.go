@@ -14,26 +14,26 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v8/modules/core/04-channel/types"
 )
 
-// SetAggregatedKeyShare set a specific aggregatedKeyShare in the store from its index
-func (k Keeper) SetAggregatedKeyShare(ctx context.Context, aggregatedKeyShare types.AggregatedKeyShare) {
+// SetDecryptionKey set a specific decryption key in the store from its index
+func (k Keeper) SetDecryptionKey(ctx context.Context, decryptionKey types.DecryptionKey) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
-	b := k.cdc.MustMarshal(&aggregatedKeyShare)
-	store.Set(types.AggregatedKeyShareKey(
-		aggregatedKeyShare.Height,
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.DecryptionKeyKeyPrefix))
+	b := k.cdc.MustMarshal(&decryptionKey)
+	store.Set(types.DecryptionKeyKey(
+		decryptionKey.Height,
 	), b)
 }
 
-// GetAggregatedKeyShare returns a aggregatedKeyShare from its index
-func (k Keeper) GetAggregatedKeyShare(
+// GetDecryptionKey returns a decryption key from its index
+func (k Keeper) GetDecryptionKey(
 	ctx context.Context,
 	height uint64,
 
-) (val types.AggregatedKeyShare, found bool) {
+) (val types.DecryptionKey, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.DecryptionKeyKeyPrefix))
 
-	b := store.Get(types.AggregatedKeyShareKey(
+	b := store.Get(types.DecryptionKeyKey(
 		height,
 	))
 	if b == nil {
@@ -44,29 +44,29 @@ func (k Keeper) GetAggregatedKeyShare(
 	return val, true
 }
 
-// RemoveAggregatedKeyShare removes a aggregatedKeyShare from the store
-func (k Keeper) RemoveAggregatedKeyShare(
+// RemoveDecryptionKey removes a decryption key from the store
+func (k Keeper) RemoveDecryptionKey(
 	ctx context.Context,
 	height uint64,
 
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
-	store.Delete(types.AggregatedKeyShareKey(
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.DecryptionKeyKeyPrefix))
+	store.Delete(types.DecryptionKeyKey(
 		height,
 	))
 }
 
-// GetAllAggregatedKeyShare returns all aggregatedKeyShare
-func (k Keeper) GetAllAggregatedKeyShare(ctx context.Context) (list []types.AggregatedKeyShare) {
+// GetAllDecryptionKeys returns all decryption keys
+func (k Keeper) GetAllDecryptionKeys(ctx context.Context) (list []types.DecryptionKey) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AggregatedKeyShareKeyPrefix))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.DecryptionKeyKeyPrefix))
 	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.AggregatedKeyShare
+		var val types.DecryptionKey
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
@@ -74,8 +74,12 @@ func (k Keeper) GetAllAggregatedKeyShare(ctx context.Context) (list []types.Aggr
 	return
 }
 
-// OnRecvAggrKeyshareDataPacket processes packet reception
-func (k Keeper) OnRecvAggrKeyshareDataPacket(ctx context.Context, packet channeltypes.Packet, data kstypes.AggrKeyshareDataPacketData) (packetAck kstypes.AggrKeyshareDataPacketAck, err error) {
+// OnRecvDecryptionKeyDataPacket processes packet reception
+func (k Keeper) OnRecvDecryptionKeyDataPacket(
+	ctx context.Context,
+	packet channeltypes.Packet,
+	data kstypes.DecryptionKeyDataPacketData,
+) (packetAck kstypes.DecryptionKeyPacketAck, err error) {
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
@@ -86,7 +90,7 @@ func (k Keeper) OnRecvAggrKeyshareDataPacket(ctx context.Context, packet channel
 		return packetAck, errors.New("request not found for this id")
 	}
 
-	entry.AggrKeyshare = data.AggrKeyshare
+	entry.DecryptionKey = data.DecryptionKey
 
 	k.SetExecutionQueueEntry(ctx, entry)
 	k.SetEntry(ctx, entry)
@@ -95,11 +99,11 @@ func (k Keeper) OnRecvAggrKeyshareDataPacket(ctx context.Context, packet channel
 }
 
 // OnRecvEncKeyshareDataPacket processes packet reception
-func (k Keeper) OnRecvEncKeyshareDataPacket(
+func (k Keeper) OnRecvPrivDecryptionKeyDataPacket(
 	ctx context.Context,
 	packet channeltypes.Packet,
-	data kstypes.EncryptedKeysharesPacketData,
-) (packetAck kstypes.EncryptedKeysharesPacketAck, err error) {
+	data kstypes.PrivateDecryptionKeyDataPacketData,
+) (packetAck kstypes.PrivateDecryptionKeyPacketAck, err error) {
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
@@ -110,7 +114,7 @@ func (k Keeper) OnRecvEncKeyshareDataPacket(
 		return packetAck, errors.New("request not found for this id")
 	}
 
-	entry.EncryptedKeyshares = data.EncryptedKeyshares
+	entry.PrivateDecryptionKeys = data.PrivateDecryptionKey
 	k.SetPrivateRequest(ctx, entry)
 
 	return packetAck, nil

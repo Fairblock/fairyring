@@ -20,7 +20,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgSendKeyshare{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateLatestPubKey{},
+		&MsgCreateLatestPubkey{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateAuthorizedAddress{},
@@ -28,10 +28,10 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgDeleteAuthorizedAddress{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateGeneralKeyShare{},
+		&MsgSubmitGeneralKeyshare{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgOverrideLatestPubKey{},
+		&MsgOverrideLatestPubkey{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgDeRegisterValidator{},

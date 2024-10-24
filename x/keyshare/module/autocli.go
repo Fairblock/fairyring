@@ -29,29 +29,29 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "index"}},
 				},
 				{
-					RpcMethod: "KeyShareAll",
-					Use:       "list-key-share",
+					RpcMethod: "KeyshareAll",
+					Use:       "list-keyshares",
 					Short:     "List all key shares of all validators",
 				},
 				{
-					RpcMethod:      "KeyShare",
-					Use:            "show-key-share [validator] [block-height]",
+					RpcMethod:      "Keyshare",
+					Use:            "show-keyshare [validator] [block-height]",
 					Short:          "Show the key share of a particular validator for a particular block height",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "validator"}, {ProtoField: "blockHeight"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "validator"}, {ProtoField: "block_height"}},
 				},
 				{
-					RpcMethod: "AggregatedKeyShareAll",
-					Use:       "list-aggregated-key-share",
-					Short:     "List all aggregated key shares for all blocks",
+					RpcMethod: "DecryptionKeyAll",
+					Use:       "list-decryption-keys",
+					Short:     "List all decryption keys for all blocks",
 				},
 				{
-					RpcMethod:      "AggregatedKeyShare",
-					Use:            "show-aggregated-key-share [height]",
-					Short:          "Shows a aggregated key share for a particular block",
+					RpcMethod:      "DecryptionKey",
+					Use:            "show-decryption-key [height]",
+					Short:          "Shows a decryption key for a particular block",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "height"}},
 				},
 				{
-					RpcMethod: "PubKey",
+					RpcMethod: "Pubkey",
 					Use:       "show-active-pub-key",
 					Short:     "Show the active and queued public key",
 				},
@@ -67,15 +67,15 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "target"}},
 				},
 				{
-					RpcMethod: "GeneralKeyShareAll",
-					Use:       "list-general-key-share",
-					Short:     "List all GeneralKeyShare",
+					RpcMethod: "GeneralKeyshareAll",
+					Use:       "list-general-keyshares",
+					Short:     "List all GeneralKeyshare",
 				},
 				{
-					RpcMethod:      "GeneralKeyShare",
-					Use:            "show-general-key-share [validator] [id-type] [id-value]",
+					RpcMethod:      "GeneralKeyshare",
+					Use:            "show-general-keyshare [validator] [id-type] [id-value]",
 					Short:          "Shows a General Key Share",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "validator"}, {ProtoField: "idType"}, {ProtoField: "idValue"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "validator"}, {ProtoField: "id_type"}, {ProtoField: "id_value"}},
 				},
 				{
 					RpcMethod: "Commitments",
@@ -85,7 +85,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				// this line is used by ignite scaffolding # autocli/query
 			},
 		},
-		//Tx: &autocliv1.ServiceCommandDescriptor{
+		// Tx: &autocliv1.ServiceCommandDescriptor{
 		//	Service:              modulev1.Msg_ServiceDesc.ServiceName,
 		//	EnhanceCustomCommand: true, // only required if you want to use the custom command
 		//	RpcCommandOptions: []*autocliv1.RpcCommandOptions{

@@ -3,6 +3,10 @@ package app
 import (
 	"context"
 	"fmt"
+	"io"
+	"os"
+	"path/filepath"
+
 	keysharemodule "github.com/Fairblock/fairyring/x/keyshare/module"
 	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
@@ -16,9 +20,6 @@ import (
 	"github.com/cosmos/ibc-go/v8/modules/apps/transfer"
 	transfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	ibcmodule "github.com/cosmos/ibc-go/v8/modules/core"
-	"io"
-	"os"
-	"path/filepath"
 
 	_ "cosmossdk.io/api/cosmos/tx/config/v1" // import for side-effects
 	"cosmossdk.io/depinject"
@@ -111,10 +112,8 @@ const (
 	Name                 = "fairyring"
 )
 
-var (
-	// DefaultNodeHome default home directories for the application daemon
-	DefaultNodeHome string
-)
+// DefaultNodeHome default home directories for the application daemon
+var DefaultNodeHome string
 
 var (
 	_ runtime.AppI            = (*App)(nil)
@@ -406,7 +405,7 @@ func New(
 		CircuitKeeper:         &app.CircuitBreakerKeeper,
 		TxDecoder:             app.txConfig.TxDecoder(),
 		TxEncoder:             app.txConfig.TxEncoder(),
-		KeyShareLane:          keyshareLane,
+		KeyshareLane:          keyshareLane,
 		PepKeeper:             app.PepKeeper,
 	}
 	anteHandler := NewFairyringAnteHandler(options)

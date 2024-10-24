@@ -17,9 +17,7 @@ const (
 	PortID = "keyshare"
 )
 
-var (
-	ParamsKey = []byte("p_keyshare")
-)
+var ParamsKey = []byte("p_keyshare")
 
 var (
 	// PortKey defines the key to store the port ID in store
@@ -57,11 +55,11 @@ const (
 )
 
 const (
-	StartSendGeneralKeyShareEventType        = "start-send-general-keyshare"
-	StartSendEncryptedKeyShareEventType      = "start-send-encrypted-keyshare"
-	StartSendGeneralKeyShareEventIdentity    = "identity"
-	StartSendEncryptedKeyShareEventRequester = "requester"
-	StartSendEncryptedKeyShareEventPubkey    = "secp256k1-pubkey"
+	StartSendGeneralKeyshareEventType        = "start-send-general-keyshare"
+	StartSendEncryptedKeyshareEventType      = "start-send-encrypted-keyshare"
+	StartSendGeneralKeyshareEventIdentity    = "identity"
+	StartSendEncryptedKeyshareEventRequester = "requester"
+	StartSendEncryptedKeyshareEventPubkey    = "secp256k1-pubkey"
 )
 
 const (
@@ -76,44 +74,44 @@ const (
 )
 
 const (
-	KeyShareAggregatedEventType        = "keyshare-aggregated"
-	KeyShareAggregatedEventBlockHeight = "height"
-	KeyShareAggregatedEventData        = "data"
-	KeyShareAggregatedEventPubKey      = "pubkey"
+	KeyshareAggregatedEventType        = "keyshare-aggregated"
+	KeyshareAggregatedEventBlockHeight = "height"
+	KeyshareAggregatedEventData        = "data"
+	KeyshareAggregatedEventPubkey      = "pubkey"
 )
 
 const (
-	GeneralKeyShareAggregatedEventType    = "general-keyshare-aggregated"
-	GeneralKeyShareAggregatedEventIDValue = "id-value"
-	GeneralKeyShareAggregatedEventIDType  = "id-type"
-	GeneralKeyShareAggregatedEventData    = "data"
-	GeneralKeyShareAggregatedEventPubKey  = "pubkey"
+	GeneralKeyshareAggregatedEventType    = "general-keyshare-aggregated"
+	GeneralKeyshareAggregatedEventIDValue = "id-value"
+	GeneralKeyshareAggregatedEventIDType  = "id-type"
+	GeneralKeyshareAggregatedEventData    = "data"
+	GeneralKeyshareAggregatedEventPubkey  = "pubkey"
 )
 
 const (
-	QueuedPubKeyCreatedEventType                     = "queued-pubkey-created"
-	QueuedPubKeyCreatedEventActivePubkeyExpiryHeight = "active-pubkey-expiry-height"
-	QueuedPubKeyCreatedEventExpiryHeight             = "expiry-height"
-	QueuedPubKeyCreatedEventCreator                  = "creator"
-	QueuedPubKeyCreatedEventPubkey                   = "pubkey"
-	QueuedPubKeyCreatedEventNumberOfValidators       = "number-of-validators"
-	QueuedPubKeyCreatedEventEncryptedShares          = "encrypted-shares"
+	QueuedPubkeyCreatedEventType                     = "queued-pubkey-created"
+	QueuedPubkeyCreatedEventActivePubkeyExpiryHeight = "active-pubkey-expiry-height"
+	QueuedPubkeyCreatedEventExpiryHeight             = "expiry-height"
+	QueuedPubkeyCreatedEventCreator                  = "creator"
+	QueuedPubkeyCreatedEventPubkey                   = "pubkey"
+	QueuedPubkeyCreatedEventNumberOfValidators       = "number-of-validators"
+	QueuedPubkeyCreatedEventEncryptedShares          = "encrypted-shares"
 )
 
 const (
-	PubKeyOverrodeEventType                     = "pubkey-overrode"
-	PubKeyOverrodeEventActivePubkeyExpiryHeight = "active-pubkey-expiry-height"
-	PubKeyOverrodeEventExpiryHeight             = "expiry-height"
-	PubKeyOverrodeEventCreator                  = "creator"
-	PubKeyOverrodeEventPubkey                   = "pubkey"
-	PubKeyOverrodeEventNumberOfValidators       = "number-of-validators"
-	PubKeyOverrodeEventEncryptedShares          = "encrypted-shares"
+	PubkeyOverrodeEventType                     = "pubkey-overrode"
+	PubkeyOverrodeEventActivePubkeyExpiryHeight = "active-pubkey-expiry-height"
+	PubkeyOverrodeEventExpiryHeight             = "expiry-height"
+	PubkeyOverrodeEventCreator                  = "creator"
+	PubkeyOverrodeEventPubkey                   = "pubkey"
+	PubkeyOverrodeEventNumberOfValidators       = "number-of-validators"
+	PubkeyOverrodeEventEncryptedShares          = "encrypted-shares"
 )
 
 const (
 	KeyTotalIdleValSlashed           = "total_idle_validator_slashed"
-	KeyTotalValidKeyShareSubmitted   = "total_valid_key_share"
-	KeyTotalInvalidKeyShareSubmitted = "total_invalid_key_share"
+	KeyTotalValidKeyshareSubmitted   = "total_valid_keyshare"
+	KeyTotalInvalidKeyshareSubmitted = "total_invalid_keyshare"
 )
 
 func KeyPrefix(p string) []byte {

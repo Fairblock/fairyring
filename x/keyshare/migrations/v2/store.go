@@ -13,8 +13,8 @@ func MigrateStore(ctx sdk.Context, storeService store.KVStoreService, cdc codec.
 		463000,
 		[]string{"fairy1r6q07ne3deq64ezcjwkedcfe6669f0ewpwnxy9"},
 		types.DefaultMinimumBonded,
-		types.DefaultSlashFractionNoKeyShare,
-		types.DefaultSlashFractionWrongKeyShare,
+		types.DefaultSlashFractionNoKeyshare,
+		types.DefaultSlashFractionWrongKeyshare,
 		types.DefaultMaxIdledBlock)
 
 	bz, err := cdc.Marshal(&currParams)

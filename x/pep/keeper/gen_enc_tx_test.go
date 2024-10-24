@@ -1,10 +1,11 @@
 package keeper_test
 
 import (
-	"github.com/Fairblock/fairyring/testutil/random"
-	"github.com/Fairblock/fairyring/testutil/sample"
 	"strconv"
 	"testing"
+
+	"github.com/Fairblock/fairyring/testutil/random"
+	"github.com/Fairblock/fairyring/testutil/sample"
 
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
@@ -18,26 +19,30 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func createNGeneralEncryptedTxEntry(keeper *keeper.Keeper, ctx sdk.Context, n int) (queue []types.GenEncTxExecutionQueue) {
+func createNGeneralEncryptedTxEntry(
+	keeper *keeper.Keeper,
+	ctx sdk.Context,
+	n int,
+) (queue []types.IdentityExecutionEntry) {
 	items := make([]types.GeneralEncryptedTxArray, n)
-	queue = make([]types.GenEncTxExecutionQueue, n)
+	queue = make([]types.IdentityExecutionEntry, n)
 	for i := range items { // i is block height
 
-		items[i].EncryptedTx = make([]types.GeneralEncryptedTx, n)
+		items[i].EncryptedTxs = make([]types.GeneralEncryptedTx, n)
 		identity := random.RandHex(32)
 		for j := 0; j < n; j++ { // j is encrypted tx index
-			items[i].EncryptedTx[j].Creator = sample.AccAddress()
-			items[i].EncryptedTx[j].Data = random.RandHex(32)
-			items[i].EncryptedTx[j].Identity = identity
-			items[i].EncryptedTx[j].Index = uint64(j)
+			items[i].EncryptedTxs[j].Creator = sample.AccAddress()
+			items[i].EncryptedTxs[j].Data = random.RandHex(32)
+			items[i].EncryptedTxs[j].Identity = identity
+			items[i].EncryptedTxs[j].Index = uint64(j)
 		}
-		queue[i] = types.GenEncTxExecutionQueue{
-			Creator:      sample.AccAddress(),
-			RequestId:    identity,
-			Identity:     identity,
-			Pubkey:       random.RandHex(32),
-			TxList:       &items[i],
-			AggrKeyshare: random.RandHex(32),
+		queue[i] = types.IdentityExecutionEntry{
+			Creator:       sample.AccAddress(),
+			RequestId:     identity,
+			Identity:      identity,
+			Pubkey:        random.RandHex(32),
+			TxList:        &items[i],
+			DecryptionKey: random.RandHex(32),
 		}
 		keeper.SetEntry(ctx, queue[i])
 	}

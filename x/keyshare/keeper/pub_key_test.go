@@ -1,9 +1,10 @@
 package keeper_test
 
 import (
-	"github.com/Fairblock/fairyring/testutil/random"
 	"math/rand"
 	"testing"
+
+	"github.com/Fairblock/fairyring/testutil/random"
 
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
@@ -13,28 +14,28 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func createActivePubKeys(keeper *keeper.Keeper, ctx sdk.Context) types.ActivePubKey {
-	var items types.ActivePubKey
+func createActivePubkeys(keeper *keeper.Keeper, ctx sdk.Context) types.ActivePubkey {
+	var items types.ActivePubkey
 	items.PublicKey = random.RandHex(10)
 	items.Expiry = rand.Uint64()
 	items.NumberOfValidators = rand.Uint64()
-	keeper.SetActivePubKey(ctx, items)
+	keeper.SetActivePubkey(ctx, items)
 	return items
 }
 
-func createQueuedPubKeys(keeper *keeper.Keeper, ctx sdk.Context) types.QueuedPubKey {
-	var items types.QueuedPubKey
+func createQueuedPubkeys(keeper *keeper.Keeper, ctx sdk.Context) types.QueuedPubkey {
+	var items types.QueuedPubkey
 	items.PublicKey = random.RandHex(10)
 	items.Expiry = rand.Uint64()
 	items.NumberOfValidators = rand.Uint64()
-	keeper.SetQueuedPubKey(ctx, items)
+	keeper.SetQueuedPubkey(ctx, items)
 	return items
 }
 
-func TestActivePubKeyGet(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
-	item := createActivePubKeys(&keeper, ctx)
-	rst, found := keeper.GetActivePubKey(ctx)
+func TestActivePubkeyGet(t *testing.T) {
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
+	item := createActivePubkeys(&keeper, ctx)
+	rst, found := keeper.GetActivePubkey(ctx)
 	require.True(t, found)
 	require.Equal(t,
 		nullify.Fill(&item),
@@ -42,10 +43,10 @@ func TestActivePubKeyGet(t *testing.T) {
 	)
 }
 
-func TestQueuedPubKeyGet(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
-	item := createQueuedPubKeys(&keeper, ctx)
-	rst, found := keeper.GetQueuedPubKey(ctx)
+func TestQueuedPubkeyGet(t *testing.T) {
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
+	item := createQueuedPubkeys(&keeper, ctx)
+	rst, found := keeper.GetQueuedPubkey(ctx)
 	require.True(t, found)
 	require.Equal(t,
 		nullify.Fill(&item),
@@ -53,18 +54,18 @@ func TestQueuedPubKeyGet(t *testing.T) {
 	)
 }
 
-func TestActivePubKeyRemoved(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
-	createActivePubKeys(&keeper, ctx)
-	keeper.DeleteActivePubKey(ctx)
-	_, found := keeper.GetActivePubKey(ctx)
+func TestActivePubkeyRemoved(t *testing.T) {
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
+	createActivePubkeys(&keeper, ctx)
+	keeper.DeleteActivePubkey(ctx)
+	_, found := keeper.GetActivePubkey(ctx)
 	require.False(t, found)
 }
 
-func TestQueuedPubKeyRemoved(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
-	createQueuedPubKeys(&keeper, ctx)
-	keeper.DeleteQueuedPubKey(ctx)
-	_, found := keeper.GetQueuedPubKey(ctx)
+func TestQueuedPubkeyRemoved(t *testing.T) {
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
+	createQueuedPubkeys(&keeper, ctx)
+	keeper.DeleteQueuedPubkey(ctx)
+	_, found := keeper.GetQueuedPubkey(ctx)
 	require.False(t, found)
 }

@@ -1,6 +1,8 @@
 package keeper_test
 
 import (
+	"testing"
+
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
@@ -8,26 +10,25 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"testing"
 )
 
-func TestPubKeyQuery(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+func TestPubkeyQuery(t *testing.T) {
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
-	activePubKey := createActivePubKeys(&keeper, wctx)
-	queuedPubKey := createQueuedPubKeys(&keeper, wctx)
+	activePubkey := createActivePubkeys(&keeper, wctx)
+	queuedPubkey := createQueuedPubkeys(&keeper, wctx)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryPubKeyRequest
-		response *types.QueryPubKeyResponse
+		request  *types.QueryPubkeyRequest
+		response *types.QueryPubkeyResponse
 		err      error
 	}{
 		{
-			desc:    "QueryPubKey",
-			request: &types.QueryPubKeyRequest{},
-			response: &types.QueryPubKeyResponse{
-				ActivePubKey: activePubKey,
-				QueuedPubKey: queuedPubKey,
+			desc:    "QueryPubkey",
+			request: &types.QueryPubkeyRequest{},
+			response: &types.QueryPubkeyResponse{
+				ActivePubkey: activePubkey,
+				QueuedPubkey: queuedPubkey,
 			},
 		},
 		{
@@ -36,7 +37,7 @@ func TestPubKeyQuery(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.PubKey(wctx, tc.request)
+			response, err := keeper.Pubkey(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {

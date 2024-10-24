@@ -43,6 +43,8 @@ if pgrep -x "hermes" >/dev/null; then
     killall hermes
 fi
 
+./scripts/tests/stop.sh
+
 echo "Removing previous data..."
 rm -rf $CHAIN_DIR/$CHAINID_1 &> /dev/null
 rm -rf $CHAIN_DIR/$CHAINID_2 &> /dev/null
@@ -184,7 +186,8 @@ rm rly1.json &> /dev/null
 rm rly2.json &> /dev/null
 
 echo "Waiting both chain to run..."
-sleep $((BLOCK_TIME*2))
+
+sleep 10
 
 echo "Starting Hermes Relayer..."
 echo "Creating log file at $CHAIN_DIR/relayer.log"

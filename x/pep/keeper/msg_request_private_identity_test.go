@@ -63,7 +63,7 @@ func TestOnAcknowledgementRequestPrivateKeysharePacket(t *testing.T) {
 	creator := "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq"
 
 	packet := channeltypes.Packet{}
-	packetData := kstypes.RequestPrivateKeysharePacketData{
+	packetData := kstypes.RequestPrivateDecryptionKeyPacketData{
 		Requester: creator,
 		RequestId: "test_request_id_1",
 	}
@@ -75,16 +75,16 @@ func TestOnAcknowledgementRequestPrivateKeysharePacket(t *testing.T) {
 
 	// Test case when ReqId already exists
 	privReq := types.PrivateRequest{
-		Creator:            creator,
-		ReqId:              "test_request_id_1",
-		Pubkey:             "",
-		EncryptedKeyshares: make([]*commontypes.EncryptedKeyshare, 0),
+		Creator:               creator,
+		ReqId:                 "test_request_id_1",
+		Pubkey:                "",
+		PrivateDecryptionKeys: make([]*commontypes.PrivateDecryptionKey, 0),
 	}
 
 	k.SetPrivateRequest(ctx, privReq)
 
 	// Test success case for OnAcknowledgementRequestPrivateKeysharePacket
-	err := k.OnAcknowledgementRequestPrivateKeysharePacket(ctx, packet, packetData, ack)
+	err := k.OnAcknowledgementRequestPrivateDecryptionKeyPacket(ctx, packet, packetData, ack)
 	require.NoError(t, err)
 
 	// Ensure the private request is updated
@@ -93,12 +93,12 @@ func TestOnAcknowledgementRequestPrivateKeysharePacket(t *testing.T) {
 	require.Equal(t, "test_pubkey", entry.Pubkey)
 
 	// Test case when entry does not exist
-	invalidPacketData := kstypes.RequestPrivateKeysharePacketData{
+	invalidPacketData := kstypes.RequestPrivateDecryptionKeyPacketData{
 		Requester: creator,
 		RequestId: "invalid_request_id",
 	}
 
-	err = k.OnAcknowledgementRequestPrivateKeysharePacket(ctx, packet, invalidPacketData, ack)
+	err = k.OnAcknowledgementRequestPrivateDecryptionKeyPacket(ctx, packet, invalidPacketData, ack)
 	require.Error(t, err)
 	require.Equal(t, "entry does not exists", err.Error())
 
@@ -109,7 +109,7 @@ func TestOnAcknowledgementRequestPrivateKeysharePacket(t *testing.T) {
 		},
 	}
 
-	err = k.OnAcknowledgementRequestPrivateKeysharePacket(ctx, packet, packetData, invalidAck)
+	err = k.OnAcknowledgementRequestPrivateDecryptionKeyPacket(ctx, packet, packetData, invalidAck)
 	require.Error(t, err)
 	require.Equal(t, "cannot unmarshal acknowledgment", err.Error())
 
@@ -120,6 +120,6 @@ func TestOnAcknowledgementRequestPrivateKeysharePacket(t *testing.T) {
 		},
 	}
 
-	err = k.OnAcknowledgementRequestPrivateKeysharePacket(ctx, packet, packetData, errorAck)
+	err = k.OnAcknowledgementRequestPrivateDecryptionKeyPacket(ctx, packet, packetData, errorAck)
 	require.NoError(t, err)
 }

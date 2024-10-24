@@ -3,32 +3,30 @@ syntax = "proto3";
 package fairyring.keyshare;
 
 import "amino/amino.proto";
-import "gogoproto/gogo.proto";
-import "fairyring/keyshare/params.proto";
-import "fairyring/keyshare/validator_set.proto";
-import "fairyring/keyshare/key_share.proto";
-import "fairyring/keyshare/aggregated_key_share.proto";
-import "fairyring/keyshare/pub_key.proto";
 import "fairyring/keyshare/authorized_address.proto";
-import "fairyring/keyshare/general_key_share.proto";
+import "fairyring/keyshare/decryption_key.proto";
+import "fairyring/keyshare/keyshare.proto";
+import "fairyring/keyshare/params.proto";
+import "fairyring/keyshare/pubkey.proto";
+import "fairyring/keyshare/validator_set.proto";
+import "gogoproto/gogo.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
 
 // GenesisState defines the keyshare module's genesis state.
 message GenesisState {
-  
   // params defines all the parameters of the module.
-           Params             params                 = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
-           string             port_id                = 2;
-  repeated ValidatorSet validatorSetList = 3 [(gogoproto.nullable) = false];
-  repeated KeyShare     keyShareList     = 4 [(gogoproto.nullable) = false];
-
-  // this line is used by starport scaffolding # genesis/proto/state
-  repeated AggregatedKeyShare aggregatedKeyShareList =  5 [(gogoproto.nullable) = false];
-  ActivePubKey       activePubKey           =  6 [(gogoproto.nullable) = false];
-  QueuedPubKey       queuedPubKey           =  7 [(gogoproto.nullable) = false];
-  repeated AuthorizedAddress  authorizedAddressList  =  8 [(gogoproto.nullable) = false];
-  uint64             request_count          =  9;
-  repeated GeneralKeyShare    generalKeyShareList    = 10 [(gogoproto.nullable) = false];
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+  string port_id = 2;
+  repeated ValidatorSet validator_set_list = 3 [(gogoproto.nullable) = false];
+  repeated Keyshare keyshare_list = 4 [(gogoproto.nullable) = false];
+  repeated DecryptionKey decryption_key_list = 5 [(gogoproto.nullable) = false];
+  ActivePubkey active_pubkey = 6 [(gogoproto.nullable) = false];
+  QueuedPubkey queued_pubkey = 7 [(gogoproto.nullable) = false];
+  repeated AuthorizedAddress authorized_address_list = 8 [(gogoproto.nullable) = false];
+  uint64 request_count = 9;
+  repeated GeneralKeyshare general_keyshare_list = 10 [(gogoproto.nullable) = false];
 }
-

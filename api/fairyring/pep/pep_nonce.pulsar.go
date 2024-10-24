@@ -493,6 +493,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// PepNonce defines the nonce of an account to send encrypted transactions.
+// It is incremanted seperately from the nonce maintained by the auth module
 type PepNonce struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

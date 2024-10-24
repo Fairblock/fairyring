@@ -36,14 +36,14 @@ wait_for_tx () {
 
 sleep 3
 RESULT=$(fairyringd q keyshare show-active-pub-key --node $NODE -o json | jq)
-GENERATED_SHARE=$(echo $RESULT | jq -r '.activePubKey.encryptedKeyShares[0].data')
+GENERATED_SHARE=$(echo $RESULT | jq -r '.active_pubkey.encrypted_keyshares[0].data')
 
 while true
 do
   CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $HOME --node $NODE -o json | jq -r '.block.header.height')
   TARGET_HEIGHT=$((CURRENT_BLOCK+1))
   EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
-  EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+  EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
   RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 1 $TARGET_HEIGHT --from $FROM --gas-prices 1ufairy --home $HOME --chain-id $CHAINID --node $NODE --broadcast-mode sync --keyring-backend test -o json -y)
   OUT=$(check_tx_code $RESULT)
   if [ $OUT -eq "0" ]; then

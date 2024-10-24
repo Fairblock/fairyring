@@ -69,9 +69,9 @@ if [ "$VALIDATOR_ADDR" != "$VALIDATOR_1" ]; then
 fi
 
 RESULT=$($BINARY q keyshare list-validator-set --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 -o json)
-CURRENT_SET_LEN=$(echo $RESULT | jq '.validatorSet | length')
+CURRENT_SET_LEN=$(echo $RESULT | jq '.validator_set | length')
 if [ "$CURRENT_SET_LEN" != "0" ]; then
-  echo "ERROR: KeyShare module deregister validator error, Expected total validator set to be empty, got '$(echo $RESULT | jq '.validatorSet')'"
+  echo "ERROR: KeyShare module deregister validator error, Expected total validator set to be empty, got '$(echo $RESULT | jq '.validator_set')'"
   exit 1
 fi
 
@@ -114,7 +114,7 @@ PUB_KEY=$(echo "$GENERATED_RESULT" | jq -r '.MasterPublicKey')
 COMMITS=$(echo "$GENERATED_RESULT" | jq -r '.Commitments[0]')
 
 echo "Trusted address submit pub key on chain fairyring_test_1"
-RESULT=$($BINARY tx keyshare create-latest-pub-key $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VALIDATOR_1"'"}]' --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare create-latest-pubkey $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VALIDATOR_1"'"}]' --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 VALIDATOR_ADDR=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("pubkey"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("creator"))))[]' | jq -r '.value')
@@ -126,7 +126,7 @@ fi
 
 
 echo "Not trusted address submit pub key on chain fairyring_test_1"
-RESULT=$($BINARY tx keyshare create-latest-pub-key $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VALIDATOR_1"'"}]' --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare create-latest-pubkey $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VALIDATOR_1"'"}]' --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
@@ -140,7 +140,7 @@ fi
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+1))
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 0 $TARGET_HEIGHT)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 
 echo "Not registered account submit key share on chain fairyring_test_1"
@@ -161,7 +161,7 @@ PUB_KEY=$(echo "$GENERATED_RESULT" | jq -r '.MasterPublicKey')
 COMMITS=$(echo "$GENERATED_RESULT" | jq -r '.Commitments[0]')
 
 echo "Trusted address override pub key on chain fairyring_test_1"
-RESULT=$($BINARY tx keyshare override-latest-pub-key $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VALIDATOR_1"'"}]' --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare override-latest-pubkey $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VALIDATOR_1"'"}]' --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 VALIDATOR_ADDR=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("pubkey"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("creator"))))[]' | jq -r '.value')
@@ -186,7 +186,7 @@ fi
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+2))
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 
 echo "Authorized account submit key share on chain fairyring_test_1"
@@ -216,7 +216,7 @@ fi
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+1))
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 
 echo "Removed Authorized account tries submit key share on chain fairyring_test_1"
@@ -234,7 +234,7 @@ fi
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node tcp://localhost:16657 -o json | jq -r '.block.header.height')
 TARGET_HEIGHT=$((CURRENT_BLOCK+2))
 EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HEIGHT)
-EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 
 echo "Registered validator submit valid key share on chain fairyring_test_1"
@@ -261,10 +261,10 @@ fi
 ./scripts/tests/keyshareSender.sh $BINARY $CHAIN_DIR/$CHAINID_1 tcp://localhost:16657 $VALIDATOR_1 $CHAINID_1 > $CHAIN_DIR/keyshareSender.log 2>&1 &
 
 echo "Query submitted key share on chain fairyring_test_1"
-RESULT=$($BINARY query keyshare list-key-share --node tcp://localhost:16657 -o json)
-RESULT_SENDER=$(echo "$RESULT" | jq -r '.keyShare[0].validator')
-RESULT_KEYSHARE=$(echo "$RESULT" | jq -r '.keyShare[0].keyShare')
-RESULT_HEIGHT=$(echo "$RESULT" | jq -r '.keyShare[0].blockHeight')
+RESULT=$($BINARY query keyshare list-keyshares --node tcp://localhost:16657 -o json)
+RESULT_SENDER=$(echo "$RESULT" | jq -r '.keyshare[0].validator')
+RESULT_KEYSHARE=$(echo "$RESULT" | jq -r '.keyshare[0].keyshare')
+RESULT_HEIGHT=$(echo "$RESULT" | jq -r '.keyshare[0].blockHeight')
 if [ "$RESULT_SENDER" != "$VALIDATOR_1" ] && [ "$RESULT_KEYSHARE" != "$EXTRACTED_SHARE" ] && [ "$RESULT_HEIGHT" != "$TARGET_HEIGHT" ]; then
   echo "ERROR: KeyShare module query submitted key share error, Expected to get the submitted key share, got '$RESULT'"
   echo $RESULT | jq
@@ -274,9 +274,9 @@ echo "Key Share Successfully submitted: '$RESULT_KEYSHARE' for height '$RESULT_H
 
 
 echo "Query aggregated key share on chain fairyring_test_1"
-RESULT=$($BINARY query keyshare list-aggregated-key-share --node tcp://localhost:16657 -o json)
-RESULT_HEIGHT=$(echo "$RESULT" | jq -r '.aggregatedKeyShare[0].height')
-RESULT_DATA=$(echo "$RESULT" | jq -r '.aggregatedKeyShare[0].data')
+RESULT=$($BINARY query keyshare list-decryption-keys --node tcp://localhost:16657 -o json)
+RESULT_HEIGHT=$(echo "$RESULT" | jq -r '.decryption_keys[0].height')
+RESULT_DATA=$(echo "$RESULT" | jq -r '.decryption_keys[0].data')
 if [ "$RESULT_HEIGHT" != "$TARGET_HEIGHT" ]; then
   echo "ERROR: KeyShare module aggregate key share error. Expected to get an aggregated key, got '$RESULT'"
   echo $RESULT | jq

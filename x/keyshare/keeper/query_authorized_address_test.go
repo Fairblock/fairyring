@@ -19,32 +19,32 @@ import (
 var _ = strconv.IntSize
 
 func TestAuthorizedAddressQuerySingle(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNAuthorizedAddress(&keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetAuthorizedAddressRequest
-		response *types.QueryGetAuthorizedAddressResponse
+		request  *types.QueryAuthorizedAddressRequest
+		response *types.QueryAuthorizedAddressResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetAuthorizedAddressRequest{
+			request: &types.QueryAuthorizedAddressRequest{
 				Target: msgs[0].Target,
 			},
-			response: &types.QueryGetAuthorizedAddressResponse{AuthorizedAddress: msgs[0]},
+			response: &types.QueryAuthorizedAddressResponse{AuthorizedAddress: msgs[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetAuthorizedAddressRequest{
+			request: &types.QueryAuthorizedAddressRequest{
 				Target: msgs[1].Target,
 			},
-			response: &types.QueryGetAuthorizedAddressResponse{AuthorizedAddress: msgs[1]},
+			response: &types.QueryAuthorizedAddressResponse{AuthorizedAddress: msgs[1]},
 		},
 		{
 			desc: "AuthorizedAddressNotFound",
-			request: &types.QueryGetAuthorizedAddressRequest{
+			request: &types.QueryAuthorizedAddressRequest{
 				Target: strconv.Itoa(100000),
 			},
 			err: types.ErrAuthorizedAddrNotFound,
@@ -70,18 +70,18 @@ func TestAuthorizedAddressQuerySingle(t *testing.T) {
 }
 
 func TestAuthorizedAddressQueryAllNoPagination(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNAuthorizedAddress(&keeper, ctx, 12)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryAllAuthorizedAddressRequest
-		response *types.QueryAllAuthorizedAddressResponse
+		request  *types.QueryAuthorizedAddressAllRequest
+		response *types.QueryAuthorizedAddressAllResponse
 		err      error
 	}{
 		{
 			desc: "QueryAllAuthorizedAddress",
-			request: &types.QueryAllAuthorizedAddressRequest{
+			request: &types.QueryAuthorizedAddressAllRequest{
 				Pagination: &query.PageRequest{
 					Key:        nil,
 					Offset:     0,
@@ -90,7 +90,7 @@ func TestAuthorizedAddressQueryAllNoPagination(t *testing.T) {
 					Reverse:    false,
 				},
 			},
-			response: &types.QueryAllAuthorizedAddressResponse{
+			response: &types.QueryAuthorizedAddressAllResponse{
 				AuthorizedAddress: msgs,
 				Pagination: &query.PageResponse{
 					NextKey: nil,
@@ -115,12 +115,17 @@ func TestAuthorizedAddressQueryAllNoPagination(t *testing.T) {
 }
 
 func TestAuthorizedAddressQueryPaginated(t *testing.T) {
-	keeper, ctx, _, _ := keepertest.KeyshareKeeper(t)
+	keeper, ctx, _ := keepertest.KeyshareKeeper(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 	msgs := createNAuthorizedAddress(&keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllAuthorizedAddressRequest {
-		return &types.QueryAllAuthorizedAddressRequest{
+	request := func(
+		next []byte,
+		offset,
+		limit uint64,
+		total bool,
+	) *types.QueryAuthorizedAddressAllRequest {
+		return &types.QueryAuthorizedAddressAllRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,

@@ -9,24 +9,24 @@ const (
 	LaneName = "keyshare"
 )
 
-// KeyShareLane defines the lane that is responsible for processing AggregateKeyShare transactions.
+// KeyshareLane defines the lane that is responsible for processing Keyshare transactions.
 type (
-	KeyShareLane struct { //nolint
+	KeyshareLane struct { //nolint
 		*base.BaseLane
 
 		// Factory defines the API/functionality which is responsible for determining
-		// if a transaction is a aggregateKeyshare transaction and how to extract relevant
+		// if a transaction is a Keyshare transaction and how to extract relevant
 		// information from the transaction (creator Address).
 		Factory
 	}
 )
 
-// NewKeyShareLane returns a new KeyShare lane.
-func NewKeyShareLane(
+// NewKeyshareLane returns a new Keyshare lane.
+func NewKeyshareLane(
 	cfg base.LaneConfig,
 	factory Factory,
 	matchHandler base.MatchHandler,
-) *KeyShareLane {
+) *KeyshareLane {
 	options := []base.LaneOption{
 		base.WithMatchHandler(matchHandler),
 		base.WithMempoolConfigs[string](cfg, TxPriority(factory)),
@@ -48,7 +48,7 @@ func NewKeyShareLane(
 		base.WithProcessLaneHandler(handler.ProcessLaneHandler()),
 	)
 
-	return &KeyShareLane{
+	return &KeyshareLane{
 		BaseLane: baseLane,
 		Factory:  factory,
 	}

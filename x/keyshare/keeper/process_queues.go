@@ -13,7 +13,7 @@ import (
 )
 
 func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
-	activePubKey, found := k.GetActivePubKey(ctx)
+	activePubkey, found := k.GetActivePubkey(ctx)
 	if !found {
 		return errors.New("active public key not found")
 	}
@@ -30,34 +30,34 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 		blockDelay := uint64(math.Ceil(delay.Seconds() / types.AvgBlockTime))
 		currentHeight := uint64(ctx.BlockHeight())
 		executionHeight := currentHeight + blockDelay
-		if executionHeight > activePubKey.Expiry {
-			queuedPubKey, found := k.GetQueuedPubKey(ctx)
+		if executionHeight > activePubkey.Expiry {
+			queuedPubkey, found := k.GetQueuedPubkey(ctx)
 			if !found {
 				k.Logger().Info("[ProcessPepRequestQueue] Queued Pub Key not found")
 				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
 				continue
 			}
-			if executionHeight > queuedPubKey.Expiry {
+			if executionHeight > queuedPubkey.Expiry {
 				k.Logger().Info("[ProcessPepRequestQueue] Estimated delay too long")
 				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
 				continue
 			}
-			activePubKey = types.ActivePubKey(queuedPubKey)
+			activePubkey = types.ActivePubkey(queuedPubkey)
 		}
 
 		id := req.GetRequestId()
 
-		var keyshareRequest types.KeyShareRequest
+		var keyshareRequest types.DecryptionKeyRequest
 
 		keyshareRequest.Identity = id
-		keyshareRequest.Pubkey = activePubKey.PublicKey
+		keyshareRequest.Pubkey = activePubkey.PublicKey
 
-		keyshareRequest.AggrKeyshare = ""
+		keyshareRequest.DecryptionKey = ""
 		keyshareRequest.RequestId = req.GetRequestId()
 
-		k.SetKeyShareRequest(ctx, keyshareRequest)
+		k.SetDecryptionKeyRequest(ctx, keyshareRequest)
 
-		entry := peptypes.GenEncTxExecutionQueue{
+		entry := peptypes.IdentityExecutionEntry{
 			Creator:   req.Creator,
 			RequestId: req.GetRequestId(),
 			Identity:  keyshareRequest.Identity,
@@ -75,29 +75,29 @@ func (k Keeper) ProcessPepSignalQueue(ctx sdk.Context) error {
 	k.Logger().Info(fmt.Sprintf("PROCESSING PEP SIGNAL QUEUE: %v", reqs))
 	for _, req := range reqs {
 		if req.Identity != "" {
-			keyshareReq, found := k.GetKeyShareRequest(ctx, req.Identity)
+			decryptionKeyReq, found := k.GetDecryptionKeyRequest(ctx, req.Identity)
 			if !found {
 				k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
 				continue
 			}
-			key, _ := k.GetActivePubKey(ctx)
-			if keyshareReq.Pubkey != key.PublicKey {
-				qKey, found := k.GetQueuedPubKey(ctx)
+			key, _ := k.GetActivePubkey(ctx)
+			if decryptionKeyReq.Pubkey != key.PublicKey {
+				qKey, found := k.GetQueuedPubkey(ctx)
 				if !found {
 					k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
 					continue
 				}
-				if qKey.PublicKey != keyshareReq.Pubkey {
+				if qKey.PublicKey != decryptionKeyReq.Pubkey {
 					k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
 					continue
 				}
 				continue
 			}
 
-			if keyshareReq.AggrKeyshare == "" {
+			if decryptionKeyReq.DecryptionKey == "" {
 				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
-						sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, req.Identity),
+					sdk.NewEvent(types.StartSendGeneralKeyshareEventType,
+						sdk.NewAttribute(types.StartSendGeneralKeyshareEventIdentity, req.Identity),
 					),
 				)
 			}
@@ -108,7 +108,7 @@ func (k Keeper) ProcessPepSignalQueue(ctx sdk.Context) error {
 }
 
 func (k Keeper) ProcessPrivateRequestQueue(ctx sdk.Context) error {
-	activePubKey, found := k.GetActivePubKey(ctx)
+	activePubkey, found := k.GetActivePubkey(ctx)
 	if !found {
 		return errors.New("active public key not found")
 	}
@@ -118,21 +118,21 @@ func (k Keeper) ProcessPrivateRequestQueue(ctx sdk.Context) error {
 	for _, req := range reqs {
 		id := req.GetRequestId()
 
-		var keyshareRequest types.PrivateKeyshareRequest
+		var keyshareRequest types.PrivateDecryptionKeyRequest
 
 		keyshareRequest.Identity = id
-		keyshareRequest.Pubkey = activePubKey.PublicKey
+		keyshareRequest.Pubkey = activePubkey.PublicKey
 
-		keyshareRequest.EncryptedKeyshares = make([]*common.EncryptedKeyshare, 0)
+		keyshareRequest.PrivateDecryptionKeys = make([]*common.PrivateDecryptionKey, 0)
 		keyshareRequest.RequestId = req.GetRequestId()
 
-		k.SetPrivateKeyShareRequest(ctx, keyshareRequest)
+		k.SetPrivateDecryptionKeyRequest(ctx, keyshareRequest)
 
 		entry, found := k.pepKeeper.GetPrivateRequest(ctx, id)
 		if !found {
 			return errors.New("entry not found in pep module")
 		}
-		entry.Pubkey = activePubKey.PublicKey
+		entry.Pubkey = activePubkey.PublicKey
 
 		k.pepKeeper.SetPrivateRequest(ctx, entry)
 		k.pepKeeper.RemovePrivateReqQueueEntry(ctx, req.GetRequestId())
@@ -144,41 +144,41 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 	reqs := k.pepKeeper.GetAllPrivateSignalQueueEntry(ctx)
 	k.Logger().Info(fmt.Sprintf("PROCESSING PEP SIGNAL QUEUE: %v", reqs))
 
-	activePubKey, found := k.GetActivePubKey(ctx)
+	activePubkey, found := k.GetActivePubkey(ctx)
 	if !found {
 		return errors.New("active public key not found")
 	}
 
 	for _, req := range reqs {
 		if req.Identity != "" {
-			keyshareReq, found := k.GetPrivateKeyShareRequest(ctx, req.Identity)
+			privDecryptionKeyReq, found := k.GetPrivateDecryptionKeyRequest(ctx, req.Identity)
 			if !found {
-				var keyshareRequest types.PrivateKeyshareRequest
+				var keyshareRequest types.PrivateDecryptionKeyRequest
 
 				keyshareRequest.Identity = req.Identity
-				keyshareRequest.Pubkey = activePubKey.PublicKey
+				keyshareRequest.Pubkey = activePubkey.PublicKey
 
-				keyshareRequest.EncryptedKeyshares = make([]*common.EncryptedKeyshare, 0)
+				keyshareRequest.PrivateDecryptionKeys = make([]*common.PrivateDecryptionKey, 0)
 				keyshareRequest.RequestId = req.GetRequestId()
 
-				k.SetPrivateKeyShareRequest(ctx, keyshareRequest)
+				k.SetPrivateDecryptionKeyRequest(ctx, keyshareRequest)
 
 				entry, found := k.pepKeeper.GetPrivateRequest(ctx, req.Identity)
 				if !found {
 					return errors.New("entry not found in pep module")
 				}
-				entry.Pubkey = activePubKey.PublicKey
+				entry.Pubkey = activePubkey.PublicKey
 
 				k.pepKeeper.SetPrivateRequest(ctx, entry)
 
 			}
 
-			if len(keyshareReq.EncryptedKeyshares) == 0 {
+			if len(privDecryptionKeyReq.PrivateDecryptionKeys) == 0 {
 				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.StartSendEncryptedKeyShareEventType,
-						sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, req.Identity),
-						sdk.NewAttribute(types.StartSendEncryptedKeyShareEventRequester, req.Requester),
-						sdk.NewAttribute(types.StartSendEncryptedKeyShareEventPubkey, req.SecpPubkey),
+					sdk.NewEvent(types.StartSendEncryptedKeyshareEventType,
+						sdk.NewAttribute(types.StartSendGeneralKeyshareEventIdentity, req.Identity),
+						sdk.NewAttribute(types.StartSendEncryptedKeyshareEventRequester, req.Requester),
+						sdk.NewAttribute(types.StartSendEncryptedKeyshareEventPubkey, req.SecpPubkey),
 					),
 				)
 			}
@@ -189,7 +189,7 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 }
 
 func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
-	activePubKey, found := k.GetActivePubKey(ctx)
+	activePubkey, found := k.GetActivePubkey(ctx)
 	if !found {
 		return errors.New("active public key not found")
 	}
@@ -202,17 +202,17 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 		currentHeight := uint64(ctx.BlockHeight())
 		executionHeight := currentHeight + blockDelay
 
-		if executionHeight > activePubKey.Expiry {
-			queuedPubKey, found := k.GetQueuedPubKey(ctx)
+		if executionHeight > activePubkey.Expiry {
+			queuedPubkey, found := k.GetQueuedPubkey(ctx)
 			if !found {
 				k.govKeeper.RemoveReqQueueEntry(ctx, req.GetProposalId())
 				return errors.New("estimated delay too long")
 			}
-			if executionHeight > queuedPubKey.Expiry {
+			if executionHeight > queuedPubkey.Expiry {
 				k.govKeeper.RemoveReqQueueEntry(ctx, req.GetProposalId())
 				return errors.New("estimated delay too long")
 			}
-			activePubKey = types.ActivePubKey(queuedPubKey)
+			activePubkey = types.ActivePubkey(queuedPubkey)
 		}
 
 		reqCountString := k.GetRequestCount(ctx)
@@ -221,15 +221,15 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 
 		id := types.IdentityFromRequestCount(reqCount)
 
-		var keyshareRequest types.KeyShareRequest
+		var keyshareRequest types.DecryptionKeyRequest
 
 		keyshareRequest.Identity = id
-		keyshareRequest.Pubkey = activePubKey.PublicKey
+		keyshareRequest.Pubkey = activePubkey.PublicKey
 
-		keyshareRequest.AggrKeyshare = ""
+		keyshareRequest.DecryptionKey = ""
 		keyshareRequest.ProposalId = req.GetProposalId()
 
-		k.SetKeyShareRequest(ctx, keyshareRequest)
+		k.SetDecryptionKeyRequest(ctx, keyshareRequest)
 		k.SetRequestCount(ctx, reqCount)
 
 		pID, _ := strconv.ParseUint(req.GetProposalId(), 10, 64)
@@ -253,30 +253,30 @@ func (k Keeper) ProcessGovSignalQueue(ctx sdk.Context) error {
 	reqs := k.govKeeper.GetAllSignalQueueEntry(ctx)
 	for _, req := range reqs {
 		if req.Identity != "" {
-			keyshareReq, found := k.GetKeyShareRequest(ctx, req.Identity)
+			decryptionKeyReq, found := k.GetDecryptionKeyRequest(ctx, req.Identity)
 			if !found {
 				k.govKeeper.RemoveSignalQueueEntry(ctx, req.GetProposalId())
 				continue
 			}
 
-			key, _ := k.GetActivePubKey(ctx)
-			if keyshareReq.Pubkey != key.PublicKey {
-				qKey, found := k.GetQueuedPubKey(ctx)
+			key, _ := k.GetActivePubkey(ctx)
+			if decryptionKeyReq.Pubkey != key.PublicKey {
+				qKey, found := k.GetQueuedPubkey(ctx)
 				if !found {
 					k.govKeeper.RemoveSignalQueueEntry(ctx, req.GetProposalId())
 					continue
 				}
-				if qKey.PublicKey != keyshareReq.Pubkey {
+				if qKey.PublicKey != decryptionKeyReq.Pubkey {
 					k.govKeeper.RemoveSignalQueueEntry(ctx, req.GetProposalId())
 					continue
 				}
 				continue
 			}
 
-			if keyshareReq.AggrKeyshare == "" {
+			if decryptionKeyReq.DecryptionKey == "" {
 				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.StartSendGeneralKeyShareEventType,
-						sdk.NewAttribute(types.StartSendGeneralKeyShareEventIdentity, req.Identity),
+					sdk.NewEvent(types.StartSendGeneralKeyshareEventType,
+						sdk.NewAttribute(types.StartSendGeneralKeyshareEventIdentity, req.Identity),
 					),
 				)
 			}

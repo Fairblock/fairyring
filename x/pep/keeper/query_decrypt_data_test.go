@@ -3,13 +3,14 @@ package keeper_test
 import (
 	"bytes"
 	"encoding/hex"
+	"strconv"
+	"testing"
+
 	enc "github.com/FairBlock/DistributedIBE/encryption"
 	"github.com/Fairblock/fairyring/testutil/random"
 	"github.com/Fairblock/fairyring/testutil/shares"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	bls "github.com/drand/kyber-bls12381"
-	"strconv"
-	"testing"
 
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
@@ -60,10 +61,10 @@ func TestDecryptDataQuerySingle(t *testing.T) {
 		errMsg   string
 	}{
 		{
-			desc: "WithPubKey",
+			desc: "WithPubkey",
 			request: &types.QueryDecryptDataRequest{
 				Pubkey:        out.MasterPublicKey,
-				AggrKeyshare:  derived,
+				DecryptionKey: derived,
 				EncryptedData: hex.EncodeToString(destCipherData.Bytes()),
 			},
 			response: &types.QueryDecryptDataResponse{
@@ -71,27 +72,27 @@ func TestDecryptDataQuerySingle(t *testing.T) {
 			},
 		},
 		{
-			desc: "WithoutPubKeyAndNoPubKeyOnChain",
+			desc: "WithoutPubkeyAndNoPubkeyOnChain",
 			request: &types.QueryDecryptDataRequest{
-				AggrKeyshare:  derived,
+				DecryptionKey: derived,
 				EncryptedData: hex.EncodeToString(destCipherData.Bytes()),
 			},
 			errMsg: "pubkey not found",
 		},
 		{
-			desc: "InvalidPubKey",
+			desc: "InvalidPubkey",
 			request: &types.QueryDecryptDataRequest{
 				Pubkey:        random.RandHex(8),
-				AggrKeyshare:  derived,
+				DecryptionKey: derived,
 				EncryptedData: hex.EncodeToString(destCipherData.Bytes()),
 			},
 			errMsg: "input string length must be equal to 48 bytes",
 		},
 		{
-			desc: "InvalidAggrKeyShare",
+			desc: "InvalidDecryptionKey",
 			request: &types.QueryDecryptDataRequest{
 				Pubkey:        out.MasterPublicKey,
-				AggrKeyshare:  random.RandHex(8),
+				DecryptionKey: random.RandHex(8),
 				EncryptedData: hex.EncodeToString(destCipherData.Bytes()),
 			},
 			errMsg: "input string length must be equal to 96 bytes",
@@ -113,8 +114,8 @@ func TestDecryptDataQuerySingle(t *testing.T) {
 				)
 			}
 
-			if tc.desc == "WithoutPubKeyAndNoPubKeyOnChain" {
-				keeper.SetActivePubKey(wctx, commontypes.ActivePublicKey{
+			if tc.desc == "WithoutPubkeyAndNoPubkeyOnChain" {
+				keeper.SetActivePubkey(wctx, commontypes.ActivePublicKey{
 					PublicKey: out.MasterPublicKey,
 					Creator:   creator,
 					Expiry:    12346788888,

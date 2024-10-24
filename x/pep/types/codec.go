@@ -17,7 +17,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgRequestPrivateIdentity{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgGetPrivateKeyshares{},
+		&MsgRequestPrivateDecryptionKey{},
 	)
 	// this line is used by starport scaffolding # 3
 
@@ -29,13 +29,13 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgSubmitEncryptedTx{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateAggregatedKeyShare{},
+		&MsgSubmitDecryptionKey{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgRequestGeneralKeyshare{},
+		&MsgRequestGeneralIdentity{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgGetGeneralKeyshare{},
+		&MsgRequestGeneralDecryptionKey{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSubmitGeneralEncryptedTx{},

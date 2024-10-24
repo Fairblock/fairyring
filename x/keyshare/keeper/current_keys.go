@@ -8,7 +8,10 @@ import (
 )
 
 // OnRecvCurrentKeysPacket processes packet reception
-func (k Keeper) OnRecvCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CurrentKeysPacketData) (packetAck types.CurrentKeysPacketAck, err error) {
+func (k Keeper) OnRecvCurrentKeysPacket(ctx sdk.Context,
+	packet channeltypes.Packet,
+	data types.CurrentKeysPacketData,
+) (packetAck types.CurrentKeysPacketAck, err error) {
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
@@ -16,7 +19,7 @@ func (k Keeper) OnRecvCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Pac
 
 	k.Logger().Info("Received keys packet req")
 
-	ak, found := k.GetActivePubKey(ctx)
+	ak, found := k.GetActivePubkey(ctx)
 	if found {
 		packetAck.ActiveKey = &commontypes.ActivePublicKey{
 			PublicKey: ak.PublicKey,
@@ -25,7 +28,7 @@ func (k Keeper) OnRecvCurrentKeysPacket(ctx sdk.Context, packet channeltypes.Pac
 		}
 	}
 
-	qk, found := k.GetQueuedPubKey(ctx)
+	qk, found := k.GetQueuedPubkey(ctx)
 	if found {
 		packetAck.QueuedKey = &commontypes.QueuedPublicKey{
 			PublicKey: qk.PublicKey,

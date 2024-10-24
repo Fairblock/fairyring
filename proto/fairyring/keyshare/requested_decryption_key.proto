@@ -1,0 +1,48 @@
+syntax = "proto3";
+package fairyring.keyshare;
+
+import "fairyring/common/shared_types.proto";
+
+option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
+
+// DecryptionKeyRequest defines the storage structure for general keyshare requests
+message DecryptionKeyRequest {
+  string identity                  = 1;
+  string pubkey                    = 2;
+  IBCInfo ibc_info                 = 3; // Used only when the request is made via IBC
+  CounterPartyIBCInfo counterparty = 4; // Used only when the request is made via IBC
+  string decryption_key            = 5;
+  string proposal_id               = 6; // This is only used when the request is for private governance
+  string request_id                = 7; // might be useful to destination chains to sort out the response
+  bool sent                        = 8;
+}
+
+// IBCInfo defines the structure to verify request for
+// general and private keyshares in case the request was made over IBC
+message IBCInfo {
+  string client_id = 1;
+  string connection_id = 2;
+  string channel_id = 3;
+  string port_id = 4;
+}
+
+// CounterPartyIBCInfo defines the structure to send general
+// and private keyshares if the request was made over IBC
+message CounterPartyIBCInfo {
+  string client_id = 1;
+  string connection_id = 2;
+  string channel_id = 3;
+  string port_id = 4;
+}
+
+// PrivateDecryptionKeyRequest defines the stroage structure for private
+// encrypted and unaggregated decryption key requests
+message PrivateDecryptionKeyRequest {
+  string identity = 1;
+  string pubkey                    = 2;
+  IBCInfo ibc_info                 = 3; // Used only when the request is made via IBC
+  CounterPartyIBCInfo counterparty = 4; // Used only when the request is made via IBC
+  repeated fairyring.common.PrivateDecryptionKey private_decryption_keys = 5;
+  string request_id                = 6;
+  bool sent                        = 7;
+}

@@ -10,15 +10,15 @@ import (
 var _ sdk.AnteDecorator = PEPDecorator{}
 
 type (
-	// PEPDecorator is an AnteDecorator that validates the KeyShare transactions.
+	// PEPDecorator is an AnteDecorator that validates the Keyshare transactions.
 	PEPDecorator struct {
 		pepKeeper keeper.Keeper
 		txEncoder sdk.TxEncoder
-		lane      KeyShareLane
+		lane      KeyshareLane
 	}
 )
 
-func NewPepDecorator(pk keeper.Keeper, txEncoder sdk.TxEncoder, lane KeyShareLane) PEPDecorator {
+func NewPepDecorator(pk keeper.Keeper, txEncoder sdk.TxEncoder, lane KeyshareLane) PEPDecorator {
 	return PEPDecorator{
 		pepKeeper: pk,
 		txEncoder: txEncoder,
@@ -28,7 +28,7 @@ func NewPepDecorator(pk keeper.Keeper, txEncoder sdk.TxEncoder, lane KeyShareLan
 
 // AnteHandle validates that the keyshare is valid if one exists.
 func (pd PEPDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (sdk.Context, error) {
-	ksInfo, err := pd.lane.GetKeyShareInfo(tx)
+	ksInfo, err := pd.lane.GetDecryptionKeyInfo(tx)
 	if ksInfo == nil {
 		return ctx, err
 	}

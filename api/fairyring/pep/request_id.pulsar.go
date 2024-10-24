@@ -17,14 +17,14 @@ import (
 var (
 	md_RequestId         protoreflect.MessageDescriptor
 	fd_RequestId_creator protoreflect.FieldDescriptor
-	fd_RequestId_reqId   protoreflect.FieldDescriptor
+	fd_RequestId_req_id  protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_fairyring_pep_request_id_proto_init()
 	md_RequestId = File_fairyring_pep_request_id_proto.Messages().ByName("RequestId")
 	fd_RequestId_creator = md_RequestId.Fields().ByName("creator")
-	fd_RequestId_reqId = md_RequestId.Fields().ByName("reqId")
+	fd_RequestId_req_id = md_RequestId.Fields().ByName("req_id")
 }
 
 var _ protoreflect.Message = (*fastReflection_RequestId)(nil)
@@ -100,7 +100,7 @@ func (x *fastReflection_RequestId) Range(f func(protoreflect.FieldDescriptor, pr
 	}
 	if x.ReqId != "" {
 		value := protoreflect.ValueOfString(x.ReqId)
-		if !f(fd_RequestId_reqId, value) {
+		if !f(fd_RequestId_req_id, value) {
 			return
 		}
 	}
@@ -121,7 +121,7 @@ func (x *fastReflection_RequestId) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
 	case "fairyring.pep.RequestId.creator":
 		return x.Creator != ""
-	case "fairyring.pep.RequestId.reqId":
+	case "fairyring.pep.RequestId.req_id":
 		return x.ReqId != ""
 	default:
 		if fd.IsExtension() {
@@ -141,7 +141,7 @@ func (x *fastReflection_RequestId) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
 	case "fairyring.pep.RequestId.creator":
 		x.Creator = ""
-	case "fairyring.pep.RequestId.reqId":
+	case "fairyring.pep.RequestId.req_id":
 		x.ReqId = ""
 	default:
 		if fd.IsExtension() {
@@ -162,7 +162,7 @@ func (x *fastReflection_RequestId) Get(descriptor protoreflect.FieldDescriptor) 
 	case "fairyring.pep.RequestId.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "fairyring.pep.RequestId.reqId":
+	case "fairyring.pep.RequestId.req_id":
 		value := x.ReqId
 		return protoreflect.ValueOfString(value)
 	default:
@@ -187,7 +187,7 @@ func (x *fastReflection_RequestId) Set(fd protoreflect.FieldDescriptor, value pr
 	switch fd.FullName() {
 	case "fairyring.pep.RequestId.creator":
 		x.Creator = value.Interface().(string)
-	case "fairyring.pep.RequestId.reqId":
+	case "fairyring.pep.RequestId.req_id":
 		x.ReqId = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
@@ -211,8 +211,8 @@ func (x *fastReflection_RequestId) Mutable(fd protoreflect.FieldDescriptor) prot
 	switch fd.FullName() {
 	case "fairyring.pep.RequestId.creator":
 		panic(fmt.Errorf("field creator of message fairyring.pep.RequestId is not mutable"))
-	case "fairyring.pep.RequestId.reqId":
-		panic(fmt.Errorf("field reqId of message fairyring.pep.RequestId is not mutable"))
+	case "fairyring.pep.RequestId.req_id":
+		panic(fmt.Errorf("field req_id of message fairyring.pep.RequestId is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.RequestId"))
@@ -228,7 +228,7 @@ func (x *fastReflection_RequestId) NewField(fd protoreflect.FieldDescriptor) pro
 	switch fd.FullName() {
 	case "fairyring.pep.RequestId.creator":
 		return protoreflect.ValueOfString("")
-	case "fairyring.pep.RequestId.reqId":
+	case "fairyring.pep.RequestId.req_id":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
@@ -498,63 +498,63 @@ func (x *fastReflection_RequestId) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var _ protoreflect.List = (*_PrivateRequest_5_list)(nil)
+var _ protoreflect.List = (*_PrivateRequest_4_list)(nil)
 
-type _PrivateRequest_5_list struct {
-	list *[]*common.EncryptedKeyshare
+type _PrivateRequest_4_list struct {
+	list *[]*common.PrivateDecryptionKey
 }
 
-func (x *_PrivateRequest_5_list) Len() int {
+func (x *_PrivateRequest_4_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_PrivateRequest_5_list) Get(i int) protoreflect.Value {
+func (x *_PrivateRequest_4_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
 }
 
-func (x *_PrivateRequest_5_list) Set(i int, value protoreflect.Value) {
+func (x *_PrivateRequest_4_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*common.EncryptedKeyshare)
+	concreteValue := valueUnwrapped.Interface().(*common.PrivateDecryptionKey)
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_PrivateRequest_5_list) Append(value protoreflect.Value) {
+func (x *_PrivateRequest_4_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*common.EncryptedKeyshare)
+	concreteValue := valueUnwrapped.Interface().(*common.PrivateDecryptionKey)
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_PrivateRequest_5_list) AppendMutable() protoreflect.Value {
-	v := new(common.EncryptedKeyshare)
+func (x *_PrivateRequest_4_list) AppendMutable() protoreflect.Value {
+	v := new(common.PrivateDecryptionKey)
 	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_PrivateRequest_5_list) Truncate(n int) {
+func (x *_PrivateRequest_4_list) Truncate(n int) {
 	for i := n; i < len(*x.list); i++ {
 		(*x.list)[i] = nil
 	}
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_PrivateRequest_5_list) NewElement() protoreflect.Value {
-	v := new(common.EncryptedKeyshare)
+func (x *_PrivateRequest_4_list) NewElement() protoreflect.Value {
+	v := new(common.PrivateDecryptionKey)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_PrivateRequest_5_list) IsValid() bool {
+func (x *_PrivateRequest_4_list) IsValid() bool {
 	return x.list != nil
 }
 
 var (
-	md_PrivateRequest                     protoreflect.MessageDescriptor
-	fd_PrivateRequest_creator             protoreflect.FieldDescriptor
-	fd_PrivateRequest_req_id              protoreflect.FieldDescriptor
-	fd_PrivateRequest_pubkey              protoreflect.FieldDescriptor
-	fd_PrivateRequest_encrypted_keyshares protoreflect.FieldDescriptor
+	md_PrivateRequest                         protoreflect.MessageDescriptor
+	fd_PrivateRequest_creator                 protoreflect.FieldDescriptor
+	fd_PrivateRequest_req_id                  protoreflect.FieldDescriptor
+	fd_PrivateRequest_pubkey                  protoreflect.FieldDescriptor
+	fd_PrivateRequest_private_decryption_keys protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -563,7 +563,7 @@ func init() {
 	fd_PrivateRequest_creator = md_PrivateRequest.Fields().ByName("creator")
 	fd_PrivateRequest_req_id = md_PrivateRequest.Fields().ByName("req_id")
 	fd_PrivateRequest_pubkey = md_PrivateRequest.Fields().ByName("pubkey")
-	fd_PrivateRequest_encrypted_keyshares = md_PrivateRequest.Fields().ByName("encrypted_keyshares")
+	fd_PrivateRequest_private_decryption_keys = md_PrivateRequest.Fields().ByName("private_decryption_keys")
 }
 
 var _ protoreflect.Message = (*fastReflection_PrivateRequest)(nil)
@@ -649,9 +649,9 @@ func (x *fastReflection_PrivateRequest) Range(f func(protoreflect.FieldDescripto
 			return
 		}
 	}
-	if len(x.EncryptedKeyshares) != 0 {
-		value := protoreflect.ValueOfList(&_PrivateRequest_5_list{list: &x.EncryptedKeyshares})
-		if !f(fd_PrivateRequest_encrypted_keyshares, value) {
+	if len(x.PrivateDecryptionKeys) != 0 {
+		value := protoreflect.ValueOfList(&_PrivateRequest_4_list{list: &x.PrivateDecryptionKeys})
+		if !f(fd_PrivateRequest_private_decryption_keys, value) {
 			return
 		}
 	}
@@ -676,8 +676,8 @@ func (x *fastReflection_PrivateRequest) Has(fd protoreflect.FieldDescriptor) boo
 		return x.ReqId != ""
 	case "fairyring.pep.PrivateRequest.pubkey":
 		return x.Pubkey != ""
-	case "fairyring.pep.PrivateRequest.encrypted_keyshares":
-		return len(x.EncryptedKeyshares) != 0
+	case "fairyring.pep.PrivateRequest.private_decryption_keys":
+		return len(x.PrivateDecryptionKeys) != 0
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.PrivateRequest"))
@@ -700,8 +700,8 @@ func (x *fastReflection_PrivateRequest) Clear(fd protoreflect.FieldDescriptor) {
 		x.ReqId = ""
 	case "fairyring.pep.PrivateRequest.pubkey":
 		x.Pubkey = ""
-	case "fairyring.pep.PrivateRequest.encrypted_keyshares":
-		x.EncryptedKeyshares = nil
+	case "fairyring.pep.PrivateRequest.private_decryption_keys":
+		x.PrivateDecryptionKeys = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.PrivateRequest"))
@@ -727,11 +727,11 @@ func (x *fastReflection_PrivateRequest) Get(descriptor protoreflect.FieldDescrip
 	case "fairyring.pep.PrivateRequest.pubkey":
 		value := x.Pubkey
 		return protoreflect.ValueOfString(value)
-	case "fairyring.pep.PrivateRequest.encrypted_keyshares":
-		if len(x.EncryptedKeyshares) == 0 {
-			return protoreflect.ValueOfList(&_PrivateRequest_5_list{})
+	case "fairyring.pep.PrivateRequest.private_decryption_keys":
+		if len(x.PrivateDecryptionKeys) == 0 {
+			return protoreflect.ValueOfList(&_PrivateRequest_4_list{})
 		}
-		listValue := &_PrivateRequest_5_list{list: &x.EncryptedKeyshares}
+		listValue := &_PrivateRequest_4_list{list: &x.PrivateDecryptionKeys}
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
@@ -759,10 +759,10 @@ func (x *fastReflection_PrivateRequest) Set(fd protoreflect.FieldDescriptor, val
 		x.ReqId = value.Interface().(string)
 	case "fairyring.pep.PrivateRequest.pubkey":
 		x.Pubkey = value.Interface().(string)
-	case "fairyring.pep.PrivateRequest.encrypted_keyshares":
+	case "fairyring.pep.PrivateRequest.private_decryption_keys":
 		lv := value.List()
-		clv := lv.(*_PrivateRequest_5_list)
-		x.EncryptedKeyshares = *clv.list
+		clv := lv.(*_PrivateRequest_4_list)
+		x.PrivateDecryptionKeys = *clv.list
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.PrivateRequest"))
@@ -783,11 +783,11 @@ func (x *fastReflection_PrivateRequest) Set(fd protoreflect.FieldDescriptor, val
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_PrivateRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "fairyring.pep.PrivateRequest.encrypted_keyshares":
-		if x.EncryptedKeyshares == nil {
-			x.EncryptedKeyshares = []*common.EncryptedKeyshare{}
+	case "fairyring.pep.PrivateRequest.private_decryption_keys":
+		if x.PrivateDecryptionKeys == nil {
+			x.PrivateDecryptionKeys = []*common.PrivateDecryptionKey{}
 		}
-		value := &_PrivateRequest_5_list{list: &x.EncryptedKeyshares}
+		value := &_PrivateRequest_4_list{list: &x.PrivateDecryptionKeys}
 		return protoreflect.ValueOfList(value)
 	case "fairyring.pep.PrivateRequest.creator":
 		panic(fmt.Errorf("field creator of message fairyring.pep.PrivateRequest is not mutable"))
@@ -814,9 +814,9 @@ func (x *fastReflection_PrivateRequest) NewField(fd protoreflect.FieldDescriptor
 		return protoreflect.ValueOfString("")
 	case "fairyring.pep.PrivateRequest.pubkey":
 		return protoreflect.ValueOfString("")
-	case "fairyring.pep.PrivateRequest.encrypted_keyshares":
-		list := []*common.EncryptedKeyshare{}
-		return protoreflect.ValueOfList(&_PrivateRequest_5_list{list: &list})
+	case "fairyring.pep.PrivateRequest.private_decryption_keys":
+		list := []*common.PrivateDecryptionKey{}
+		return protoreflect.ValueOfList(&_PrivateRequest_4_list{list: &list})
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.PrivateRequest"))
@@ -898,8 +898,8 @@ func (x *fastReflection_PrivateRequest) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if len(x.EncryptedKeyshares) > 0 {
-			for _, e := range x.EncryptedKeyshares {
+		if len(x.PrivateDecryptionKeys) > 0 {
+			for _, e := range x.PrivateDecryptionKeys {
 				l = options.Size(e)
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
@@ -933,9 +933,9 @@ func (x *fastReflection_PrivateRequest) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if len(x.EncryptedKeyshares) > 0 {
-			for iNdEx := len(x.EncryptedKeyshares) - 1; iNdEx >= 0; iNdEx-- {
-				encoded, err := options.Marshal(x.EncryptedKeyshares[iNdEx])
+		if len(x.PrivateDecryptionKeys) > 0 {
+			for iNdEx := len(x.PrivateDecryptionKeys) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.PrivateDecryptionKeys[iNdEx])
 				if err != nil {
 					return protoiface.MarshalOutput{
 						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -946,7 +946,7 @@ func (x *fastReflection_PrivateRequest) ProtoMethods() *protoiface.Methods {
 				copy(dAtA[i:], encoded)
 				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 				i--
-				dAtA[i] = 0x2a
+				dAtA[i] = 0x22
 			}
 		}
 		if len(x.Pubkey) > 0 {
@@ -1115,9 +1115,9 @@ func (x *fastReflection_PrivateRequest) ProtoMethods() *protoiface.Methods {
 				}
 				x.Pubkey = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
-			case 5:
+			case 4:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field EncryptedKeyshares", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field PrivateDecryptionKeys", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -1144,8 +1144,8 @@ func (x *fastReflection_PrivateRequest) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.EncryptedKeyshares = append(x.EncryptedKeyshares, &common.EncryptedKeyshare{})
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.EncryptedKeyshares[len(x.EncryptedKeyshares)-1]); err != nil {
+				x.PrivateDecryptionKeys = append(x.PrivateDecryptionKeys, &common.PrivateDecryptionKey{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.PrivateDecryptionKeys[len(x.PrivateDecryptionKeys)-1]); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
@@ -2227,10 +2227,10 @@ func (x *fastReflection_RegisteredContract) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_ExecuteContractMsg               protoreflect.MessageDescriptor
-	fd_ExecuteContractMsg_identity      protoreflect.FieldDescriptor
-	fd_ExecuteContractMsg_pubkey        protoreflect.FieldDescriptor
-	fd_ExecuteContractMsg_aggr_keyshare protoreflect.FieldDescriptor
+	md_ExecuteContractMsg                protoreflect.MessageDescriptor
+	fd_ExecuteContractMsg_identity       protoreflect.FieldDescriptor
+	fd_ExecuteContractMsg_pubkey         protoreflect.FieldDescriptor
+	fd_ExecuteContractMsg_decryption_key protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -2238,7 +2238,7 @@ func init() {
 	md_ExecuteContractMsg = File_fairyring_pep_request_id_proto.Messages().ByName("ExecuteContractMsg")
 	fd_ExecuteContractMsg_identity = md_ExecuteContractMsg.Fields().ByName("identity")
 	fd_ExecuteContractMsg_pubkey = md_ExecuteContractMsg.Fields().ByName("pubkey")
-	fd_ExecuteContractMsg_aggr_keyshare = md_ExecuteContractMsg.Fields().ByName("aggr_keyshare")
+	fd_ExecuteContractMsg_decryption_key = md_ExecuteContractMsg.Fields().ByName("decryption_key")
 }
 
 var _ protoreflect.Message = (*fastReflection_ExecuteContractMsg)(nil)
@@ -2318,9 +2318,9 @@ func (x *fastReflection_ExecuteContractMsg) Range(f func(protoreflect.FieldDescr
 			return
 		}
 	}
-	if x.AggrKeyshare != "" {
-		value := protoreflect.ValueOfString(x.AggrKeyshare)
-		if !f(fd_ExecuteContractMsg_aggr_keyshare, value) {
+	if x.DecryptionKey != "" {
+		value := protoreflect.ValueOfString(x.DecryptionKey)
+		if !f(fd_ExecuteContractMsg_decryption_key, value) {
 			return
 		}
 	}
@@ -2343,8 +2343,8 @@ func (x *fastReflection_ExecuteContractMsg) Has(fd protoreflect.FieldDescriptor)
 		return x.Identity != ""
 	case "fairyring.pep.ExecuteContractMsg.pubkey":
 		return x.Pubkey != ""
-	case "fairyring.pep.ExecuteContractMsg.aggr_keyshare":
-		return x.AggrKeyshare != ""
+	case "fairyring.pep.ExecuteContractMsg.decryption_key":
+		return x.DecryptionKey != ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.ExecuteContractMsg"))
@@ -2365,8 +2365,8 @@ func (x *fastReflection_ExecuteContractMsg) Clear(fd protoreflect.FieldDescripto
 		x.Identity = ""
 	case "fairyring.pep.ExecuteContractMsg.pubkey":
 		x.Pubkey = ""
-	case "fairyring.pep.ExecuteContractMsg.aggr_keyshare":
-		x.AggrKeyshare = ""
+	case "fairyring.pep.ExecuteContractMsg.decryption_key":
+		x.DecryptionKey = ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.ExecuteContractMsg"))
@@ -2389,8 +2389,8 @@ func (x *fastReflection_ExecuteContractMsg) Get(descriptor protoreflect.FieldDes
 	case "fairyring.pep.ExecuteContractMsg.pubkey":
 		value := x.Pubkey
 		return protoreflect.ValueOfString(value)
-	case "fairyring.pep.ExecuteContractMsg.aggr_keyshare":
-		value := x.AggrKeyshare
+	case "fairyring.pep.ExecuteContractMsg.decryption_key":
+		value := x.DecryptionKey
 		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
@@ -2416,8 +2416,8 @@ func (x *fastReflection_ExecuteContractMsg) Set(fd protoreflect.FieldDescriptor,
 		x.Identity = value.Interface().(string)
 	case "fairyring.pep.ExecuteContractMsg.pubkey":
 		x.Pubkey = value.Interface().(string)
-	case "fairyring.pep.ExecuteContractMsg.aggr_keyshare":
-		x.AggrKeyshare = value.Interface().(string)
+	case "fairyring.pep.ExecuteContractMsg.decryption_key":
+		x.DecryptionKey = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.ExecuteContractMsg"))
@@ -2442,8 +2442,8 @@ func (x *fastReflection_ExecuteContractMsg) Mutable(fd protoreflect.FieldDescrip
 		panic(fmt.Errorf("field identity of message fairyring.pep.ExecuteContractMsg is not mutable"))
 	case "fairyring.pep.ExecuteContractMsg.pubkey":
 		panic(fmt.Errorf("field pubkey of message fairyring.pep.ExecuteContractMsg is not mutable"))
-	case "fairyring.pep.ExecuteContractMsg.aggr_keyshare":
-		panic(fmt.Errorf("field aggr_keyshare of message fairyring.pep.ExecuteContractMsg is not mutable"))
+	case "fairyring.pep.ExecuteContractMsg.decryption_key":
+		panic(fmt.Errorf("field decryption_key of message fairyring.pep.ExecuteContractMsg is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.pep.ExecuteContractMsg"))
@@ -2461,7 +2461,7 @@ func (x *fastReflection_ExecuteContractMsg) NewField(fd protoreflect.FieldDescri
 		return protoreflect.ValueOfString("")
 	case "fairyring.pep.ExecuteContractMsg.pubkey":
 		return protoreflect.ValueOfString("")
-	case "fairyring.pep.ExecuteContractMsg.aggr_keyshare":
+	case "fairyring.pep.ExecuteContractMsg.decryption_key":
 		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
@@ -2540,7 +2540,7 @@ func (x *fastReflection_ExecuteContractMsg) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.AggrKeyshare)
+		l = len(x.DecryptionKey)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
@@ -2573,10 +2573,10 @@ func (x *fastReflection_ExecuteContractMsg) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if len(x.AggrKeyshare) > 0 {
-			i -= len(x.AggrKeyshare)
-			copy(dAtA[i:], x.AggrKeyshare)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.AggrKeyshare)))
+		if len(x.DecryptionKey) > 0 {
+			i -= len(x.DecryptionKey)
+			copy(dAtA[i:], x.DecryptionKey)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.DecryptionKey)))
 			i--
 			dAtA[i] = 0x1a
 		}
@@ -2709,7 +2709,7 @@ func (x *fastReflection_ExecuteContractMsg) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field AggrKeyshare", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field DecryptionKey", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -2737,7 +2737,7 @@ func (x *fastReflection_ExecuteContractMsg) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.AggrKeyshare = string(dAtA[iNdEx:postIndex])
+				x.DecryptionKey = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -2787,13 +2787,15 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// RequestId defines the structure for storing request ids
+// that have already been registered to prevent overlap
 type RequestId struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	ReqId   string `protobuf:"bytes,2,opt,name=reqId,proto3" json:"reqId,omitempty"`
+	ReqId   string `protobuf:"bytes,2,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
 }
 
 func (x *RequestId) Reset() {
@@ -2830,15 +2832,17 @@ func (x *RequestId) GetReqId() string {
 	return ""
 }
 
+// PrivateRequest defines the structure for storing private
+// decryption key requests along with the unaggregated encrypted keyshares
 type PrivateRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Creator            string                      `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	ReqId              string                      `protobuf:"bytes,2,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
-	Pubkey             string                      `protobuf:"bytes,3,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
-	EncryptedKeyshares []*common.EncryptedKeyshare `protobuf:"bytes,5,rep,name=encrypted_keyshares,json=encryptedKeyshares,proto3" json:"encrypted_keyshares,omitempty"`
+	Creator               string                         `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	ReqId                 string                         `protobuf:"bytes,2,opt,name=req_id,json=reqId,proto3" json:"req_id,omitempty"`
+	Pubkey                string                         `protobuf:"bytes,3,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
+	PrivateDecryptionKeys []*common.PrivateDecryptionKey `protobuf:"bytes,4,rep,name=private_decryption_keys,json=privateDecryptionKeys,proto3" json:"private_decryption_keys,omitempty"`
 }
 
 func (x *PrivateRequest) Reset() {
@@ -2882,13 +2886,16 @@ func (x *PrivateRequest) GetPubkey() string {
 	return ""
 }
 
-func (x *PrivateRequest) GetEncryptedKeyshares() []*common.EncryptedKeyshare {
+func (x *PrivateRequest) GetPrivateDecryptionKeys() []*common.PrivateDecryptionKey {
 	if x != nil {
-		return x.EncryptedKeyshares
+		return x.PrivateDecryptionKeys
 	}
 	return nil
 }
 
+// ContractDetails defines the structure to store the details of a
+// contract that has been registered to execute automatically when
+// the identity associated with it has a decryption key available
 type ContractDetails struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2932,6 +2939,8 @@ func (x *ContractDetails) GetContractAddress() string {
 	return ""
 }
 
+// RegisteredContract defines the structure to store the list of
+// contracts that have been registered with a particular identity
 type RegisteredContract struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2975,14 +2984,15 @@ func (x *RegisteredContract) GetContracts() []*ContractDetails {
 	return nil
 }
 
+// ExecuteContractMsg defines the structure to callback registered contracts
 type ExecuteContractMsg struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Identity     string `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
-	Pubkey       string `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
-	AggrKeyshare string `protobuf:"bytes,3,opt,name=aggr_keyshare,json=aggrKeyshare,proto3" json:"aggr_keyshare,omitempty"`
+	Identity      string `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
+	Pubkey        string `protobuf:"bytes,2,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
+	DecryptionKey string `protobuf:"bytes,3,opt,name=decryption_key,json=decryptionKey,proto3" json:"decryption_key,omitempty"`
 }
 
 func (x *ExecuteContractMsg) Reset() {
@@ -3019,9 +3029,9 @@ func (x *ExecuteContractMsg) GetPubkey() string {
 	return ""
 }
 
-func (x *ExecuteContractMsg) GetAggrKeyshare() string {
+func (x *ExecuteContractMsg) GetDecryptionKey() string {
 	if x != nil {
-		return x.AggrKeyshare
+		return x.DecryptionKey
 	}
 	return ""
 }
@@ -3035,52 +3045,53 @@ var file_fairyring_pep_request_id_proto_rawDesc = []byte{
 	0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e,
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x23, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
 	0x2f, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x64, 0x5f, 0x74,
-	0x79, 0x70, 0x65, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x3b, 0x0a, 0x09, 0x52, 0x65,
+	0x79, 0x70, 0x65, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x3c, 0x0a, 0x09, 0x52, 0x65,
 	0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74,
 	0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
-	0x72, 0x12, 0x14, 0x0a, 0x05, 0x72, 0x65, 0x71, 0x49, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x05, 0x72, 0x65, 0x71, 0x49, 0x64, 0x22, 0xaf, 0x01, 0x0a, 0x0e, 0x50, 0x72, 0x69, 0x76,
-	0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72,
-	0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65,
-	0x61, 0x74, 0x6f, 0x72, 0x12, 0x15, 0x0a, 0x06, 0x72, 0x65, 0x71, 0x5f, 0x69, 0x64, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x72, 0x65, 0x71, 0x49, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x70,
-	0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x75, 0x62,
-	0x6b, 0x65, 0x79, 0x12, 0x54, 0x0a, 0x13, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64,
-	0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b,
-	0x32, 0x23, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f, 0x6d,
-	0x6d, 0x6f, 0x6e, 0x2e, 0x45, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64, 0x4b, 0x65, 0x79,
-	0x73, 0x68, 0x61, 0x72, 0x65, 0x52, 0x12, 0x65, 0x6e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x65, 0x64,
-	0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x22, 0x5a, 0x0a, 0x0f, 0x43, 0x6f, 0x6e,
-	0x74, 0x72, 0x61, 0x63, 0x74, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x73, 0x12, 0x1c, 0x0a, 0x09,
-	0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x72, 0x61, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x09, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x72, 0x61, 0x72, 0x12, 0x29, 0x0a, 0x10, 0x63, 0x6f,
-	0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x0f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x41, 0x64,
-	0x64, 0x72, 0x65, 0x73, 0x73, 0x22, 0x6e, 0x0a, 0x12, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65,
-	0x72, 0x65, 0x64, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x69,
-	0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69,
-	0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x3c, 0x0a, 0x09, 0x63, 0x6f, 0x6e, 0x74, 0x72,
-	0x61, 0x63, 0x74, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x66, 0x61, 0x69,
-	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x43, 0x6f, 0x6e, 0x74, 0x72,
-	0x61, 0x63, 0x74, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x73, 0x52, 0x09, 0x63, 0x6f, 0x6e, 0x74,
-	0x72, 0x61, 0x63, 0x74, 0x73, 0x22, 0x6d, 0x0a, 0x12, 0x45, 0x78, 0x65, 0x63, 0x75, 0x74, 0x65,
-	0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x4d, 0x73, 0x67, 0x12, 0x1a, 0x0a, 0x08, 0x69,
-	0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69,
-	0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65,
-	0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12,
-	0x23, 0x0a, 0x0d, 0x61, 0x67, 0x67, 0x72, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65,
-	0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x61, 0x67, 0x67, 0x72, 0x4b, 0x65, 0x79, 0x73,
-	0x68, 0x61, 0x72, 0x65, 0x42, 0x98, 0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69,
-	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x42, 0x0e, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x49, 0x64, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x1e, 0x63, 0x6f,
-	0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0xa2, 0x02, 0x03, 0x46,
-	0x50, 0x58, 0xaa, 0x02, 0x0d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x50,
-	0x65, 0x70, 0xca, 0x02, 0x0d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50,
-	0x65, 0x70, 0xe2, 0x02, 0x19, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50,
-	0x65, 0x70, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02,
-	0x0e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x50, 0x65, 0x70, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x72, 0x12, 0x15, 0x0a, 0x06, 0x72, 0x65, 0x71, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x05, 0x72, 0x65, 0x71, 0x49, 0x64, 0x22, 0xb9, 0x01, 0x0a, 0x0e, 0x50, 0x72, 0x69,
+	0x76, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x63,
+	0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72,
+	0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x15, 0x0a, 0x06, 0x72, 0x65, 0x71, 0x5f, 0x69, 0x64, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x72, 0x65, 0x71, 0x49, 0x64, 0x12, 0x16, 0x0a, 0x06,
+	0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x75,
+	0x62, 0x6b, 0x65, 0x79, 0x12, 0x5e, 0x0a, 0x17, 0x70, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x5f,
+	0x64, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6b, 0x65, 0x79, 0x73, 0x18,
+	0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
+	0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65,
+	0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x4b, 0x65, 0x79, 0x52, 0x15, 0x70,
+	0x72, 0x69, 0x76, 0x61, 0x74, 0x65, 0x44, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e,
+	0x4b, 0x65, 0x79, 0x73, 0x22, 0x5a, 0x0a, 0x0f, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74,
+	0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x73, 0x12, 0x1c, 0x0a, 0x09, 0x72, 0x65, 0x67, 0x69, 0x73,
+	0x74, 0x72, 0x61, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x72, 0x65, 0x67, 0x69,
+	0x73, 0x74, 0x72, 0x61, 0x72, 0x12, 0x29, 0x0a, 0x10, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63,
+	0x74, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x0f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73,
+	0x22, 0x6e, 0x0a, 0x12, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x65, 0x64, 0x43, 0x6f,
+	0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69,
+	0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69,
+	0x74, 0x79, 0x12, 0x3c, 0x0a, 0x09, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x73, 0x18,
+	0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
+	0x67, 0x2e, 0x70, 0x65, 0x70, 0x2e, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x44, 0x65,
+	0x74, 0x61, 0x69, 0x6c, 0x73, 0x52, 0x09, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x73,
+	0x22, 0x6f, 0x0a, 0x12, 0x45, 0x78, 0x65, 0x63, 0x75, 0x74, 0x65, 0x43, 0x6f, 0x6e, 0x74, 0x72,
+	0x61, 0x63, 0x74, 0x4d, 0x73, 0x67, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69,
+	0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69,
+	0x74, 0x79, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x06, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x25, 0x0a, 0x0e, 0x64, 0x65,
+	0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x0d, 0x64, 0x65, 0x63, 0x72, 0x79, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x4b, 0x65,
+	0x79, 0x42, 0x98, 0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
+	0x69, 0x6e, 0x67, 0x2e, 0x70, 0x65, 0x70, 0x42, 0x0e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x49, 0x64, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x1e, 0x63, 0x6f, 0x73, 0x6d, 0x6f,
+	0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72,
+	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x70, 0x65, 0x70, 0xa2, 0x02, 0x03, 0x46, 0x50, 0x58, 0xaa,
+	0x02, 0x0d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x50, 0x65, 0x70, 0xca,
+	0x02, 0x0d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50, 0x65, 0x70, 0xe2,
+	0x02, 0x19, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x50, 0x65, 0x70, 0x5c,
+	0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e, 0x46, 0x61,
+	0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x50, 0x65, 0x70, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -3097,15 +3108,15 @@ func file_fairyring_pep_request_id_proto_rawDescGZIP() []byte {
 
 var file_fairyring_pep_request_id_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_fairyring_pep_request_id_proto_goTypes = []interface{}{
-	(*RequestId)(nil),                // 0: fairyring.pep.RequestId
-	(*PrivateRequest)(nil),           // 1: fairyring.pep.PrivateRequest
-	(*ContractDetails)(nil),          // 2: fairyring.pep.ContractDetails
-	(*RegisteredContract)(nil),       // 3: fairyring.pep.RegisteredContract
-	(*ExecuteContractMsg)(nil),       // 4: fairyring.pep.ExecuteContractMsg
-	(*common.EncryptedKeyshare)(nil), // 5: fairyring.common.EncryptedKeyshare
+	(*RequestId)(nil),                   // 0: fairyring.pep.RequestId
+	(*PrivateRequest)(nil),              // 1: fairyring.pep.PrivateRequest
+	(*ContractDetails)(nil),             // 2: fairyring.pep.ContractDetails
+	(*RegisteredContract)(nil),          // 3: fairyring.pep.RegisteredContract
+	(*ExecuteContractMsg)(nil),          // 4: fairyring.pep.ExecuteContractMsg
+	(*common.PrivateDecryptionKey)(nil), // 5: fairyring.common.PrivateDecryptionKey
 }
 var file_fairyring_pep_request_id_proto_depIdxs = []int32{
-	5, // 0: fairyring.pep.PrivateRequest.encrypted_keyshares:type_name -> fairyring.common.EncryptedKeyshare
+	5, // 0: fairyring.pep.PrivateRequest.private_decryption_keys:type_name -> fairyring.common.PrivateDecryptionKey
 	2, // 1: fairyring.pep.RegisteredContract.contracts:type_name -> fairyring.pep.ContractDetails
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type

@@ -150,9 +150,8 @@ func (im IBCModule) OnRecvPacket(
 
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
-
-	case *types.KeysharePacketData_RequestAggrKeysharePacket:
-		packetAck, err := im.keeper.OnRecvRequestAggrKeysharePacket(ctx, modulePacket, *packet.RequestAggrKeysharePacket)
+	case *types.KeysharePacketData_RequestDecryptionKeyPacket:
+		packetAck, err := im.keeper.OnRecvRequestDecryptionKeyPacket(ctx, modulePacket, *packet.RequestDecryptionKeyPacket)
 		if err != nil {
 			ack = channeltypes.NewErrorAcknowledgement(err)
 		} else {
@@ -162,7 +161,7 @@ func (im IBCModule) OnRecvPacket(
 		}
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				types.EventTypeRequestAggrKeysharePacket,
+				types.EventTypeRequestDecryptionKeyPacket,
 				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
 				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
 				sdk.NewAttribute(types.AttributeKeyAckIdentity, packetAck.Identity),
@@ -170,8 +169,8 @@ func (im IBCModule) OnRecvPacket(
 			),
 		)
 
-	case *types.KeysharePacketData_RequestPrivKeysharePacket:
-		packetAck, err := im.keeper.OnRecvRequestPrivateKeysharePacket(ctx, modulePacket, *packet.RequestPrivKeysharePacket)
+	case *types.KeysharePacketData_RequestPrivateDecryptionKeyPacket:
+		packetAck, err := im.keeper.OnRecvRequestPrivateDecryptionKeyPacket(ctx, modulePacket, *packet.RequestPrivateDecryptionKeyPacket)
 		if err != nil {
 			ack = channeltypes.NewErrorAcknowledgement(err)
 		} else {
@@ -181,7 +180,7 @@ func (im IBCModule) OnRecvPacket(
 		}
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				types.EventTypeRequestPrivateKeysharePacket,
+				types.EventTypeRequestPrivateDecryptionKeyPacket,
 				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
 				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
 				sdk.NewAttribute(types.AttributeKeyAckIdentity, packetAck.Identity),
@@ -189,8 +188,8 @@ func (im IBCModule) OnRecvPacket(
 			),
 		)
 
-	case *types.KeysharePacketData_GetPrivateKeysharePacket:
-		packetAck, err := im.keeper.OnRecvGetPrivateKeysharePacket(ctx, modulePacket, *packet.GetPrivateKeysharePacket)
+	case *types.KeysharePacketData_GetPrivateDecryptionKeyPacket:
+		packetAck, err := im.keeper.OnRecvGetPrivateDecryptionKeyPacket(ctx, modulePacket, *packet.GetPrivateDecryptionKeyPacket)
 		if err != nil {
 			ack = channeltypes.NewErrorAcknowledgement(err)
 		} else {
@@ -200,13 +199,13 @@ func (im IBCModule) OnRecvPacket(
 		}
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				types.EventTypeGetEncryptedKeysharePacket,
+				types.EventTypeGetPrivateDecryptionKeyPacket,
 				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
 				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
 			),
 		)
-	case *types.KeysharePacketData_GetAggrKeysharePacket:
-		packetAck, err := im.keeper.OnRecvGetAggrKeysharePacket(ctx, modulePacket, *packet.GetAggrKeysharePacket)
+	case *types.KeysharePacketData_GetDecryptionKeyPacket:
+		packetAck, err := im.keeper.OnRecvGetDecryptionKeyPacket(ctx, modulePacket, *packet.GetDecryptionKeyPacket)
 		if err != nil {
 			ack = channeltypes.NewErrorAcknowledgement(err)
 		} else {
@@ -216,7 +215,7 @@ func (im IBCModule) OnRecvPacket(
 		}
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				types.EventTypeGetAggrKeysharePacket,
+				types.EventTypeGetDecryptionKeyPacket,
 				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
 				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
 			),
@@ -225,12 +224,14 @@ func (im IBCModule) OnRecvPacket(
 	case *types.KeysharePacketData_CurrentKeysPacket:
 		packetAck, err := im.keeper.OnRecvCurrentKeysPacket(ctx, modulePacket, *packet.CurrentKeysPacket)
 		if err != nil {
+
 			ack = channeltypes.NewErrorAcknowledgement(err)
 		} else {
 			// Encode packet acknowledgment
 			packetAckBytes := types.MustProtoMarshalJSON(&packetAck)
 			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
 		}
+
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeCurrentKeysPacket,
@@ -273,12 +274,12 @@ func (im IBCModule) OnAcknowledgementPacket(
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 
-	case *types.KeysharePacketData_AggrKeyshareDataPacket:
-		err := im.keeper.OnAcknowledgementAggrKeyshareDataPacket(ctx, modulePacket, *packet.AggrKeyshareDataPacket, ack)
+	case *types.KeysharePacketData_DecryptionKeyDataPacket:
+		err := im.keeper.OnAcknowledgementDecryptionKeyDataPacket(ctx, modulePacket, *packet.DecryptionKeyDataPacket, ack)
 		if err != nil {
 			return err
 		}
-		eventType = types.EventTypeAggrKeyshareDataPacket
+		eventType = types.EventTypeDecryptionKeyDataPacket
 		// this line is used by starport scaffolding # ibc/packet/module/ack
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
@@ -327,20 +328,20 @@ func (im IBCModule) OnTimeoutPacket(
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
 
-	case *types.KeysharePacketData_RequestAggrKeysharePacket:
-		err := im.keeper.OnTimeoutRequestAggrKeysharePacket(ctx, modulePacket, *packet.RequestAggrKeysharePacket)
+	case *types.KeysharePacketData_RequestDecryptionKeyPacket:
+		err := im.keeper.OnTimeoutRequestDecryptionKeyPacket(ctx, modulePacket, *packet.RequestDecryptionKeyPacket)
 		if err != nil {
 			return err
 		}
 
-	case *types.KeysharePacketData_GetAggrKeysharePacket:
-		err := im.keeper.OnTimeoutGetAggrKeysharePacket(ctx, modulePacket, *packet.GetAggrKeysharePacket)
+	case *types.KeysharePacketData_GetDecryptionKeyPacket:
+		err := im.keeper.OnTimeoutGetDecryptionKeyPacket(ctx, modulePacket, *packet.GetDecryptionKeyPacket)
 		if err != nil {
 			return err
 		}
 
-	case *types.KeysharePacketData_AggrKeyshareDataPacket:
-		err := im.keeper.OnTimeoutAggrKeyshareDataPacket(ctx, modulePacket, *packet.AggrKeyshareDataPacket)
+	case *types.KeysharePacketData_DecryptionKeyDataPacket:
+		err := im.keeper.OnTimeoutDecryptionKeyDataPacket(ctx, modulePacket, *packet.DecryptionKeyDataPacket)
 		if err != nil {
 			return err
 		}

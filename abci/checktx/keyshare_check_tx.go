@@ -15,7 +15,7 @@ import (
 )
 
 // CheckTxHandler is a wrapper around baseapp's CheckTx method that allows us to
-// verify aggregated keyshare transactions against the latest committed state. All other transactions
+// verify keyshare transactions against the latest committed state. All other transactions
 // are executed normally using base app's CheckTx. This defines all of the
 // dependencies that are required to verify a keyshare transaction.
 type KeyshareCheckTxHandler struct {
@@ -27,9 +27,9 @@ type KeyshareCheckTxHandler struct {
 	// bid transactions.
 	txDecoder sdk.TxDecoder
 
-	// KeyShareLane is utilized to retrieve the keyshare info of a transaction and to
+	// KeyshareLane is utilized to retrieve the keyshare info of a transaction and to
 	// insert a Keyshare transaction into the application-side mempool.
-	keyShareLane KeyShareLaneI
+	keyshareLane KeyshareLaneI
 
 	// anteHandler is utilized to verify the bid transaction against the latest
 	// committed state.
@@ -39,11 +39,11 @@ type KeyshareCheckTxHandler struct {
 	checkTxHandler CheckTx
 }
 
-// KeyShareLaneI is the interface that defines all of the dependencies that
+// KeyshareLaneI is the interface that defines all of the dependencies that
 // are required to interact with the top of block lane.
-type KeyShareLaneI interface {
-	// GetKeyShareInfo is utilized to retrieve the Keyshare info of a transaction.
-	GetKeyShareInfo(tx sdk.Tx) (*peptypes.AggregatedKeyShare, error)
+type KeyshareLaneI interface {
+	// GetDecryptionKeyInfo is utilized to retrieve the Keyshare info of a transaction.
+	GetDecryptionKeyInfo(tx sdk.Tx) (*peptypes.DecryptionKey, error)
 
 	// Insert is utilized to insert a transaction into the application-side mempool.
 	Insert(ctx context.Context, tx sdk.Tx) error
@@ -80,14 +80,14 @@ type BaseApp interface {
 func NewKeyshareCheckTxHandler(
 	baseApp BaseApp,
 	txDecoder sdk.TxDecoder,
-	keyshareLane KeyShareLaneI,
+	keyshareLane KeyshareLaneI,
 	anteHandler sdk.AnteHandler,
 	checkTxHandler CheckTx,
 ) *KeyshareCheckTxHandler {
 	return &KeyshareCheckTxHandler{
 		baseApp:        baseApp,
 		txDecoder:      txDecoder,
-		keyShareLane:   keyshareLane,
+		keyshareLane:   keyshareLane,
 		anteHandler:    anteHandler,
 		checkTxHandler: checkTxHandler,
 	}
@@ -112,7 +112,7 @@ func (handler *KeyshareCheckTxHandler) CheckTx() CheckTx {
 		}
 
 		// Attempt to get the keyshare info of the transaction.
-		ksInfo, err := handler.keyShareLane.GetKeyShareInfo(tx)
+		ksInfo, err := handler.keyshareLane.GetDecryptionKeyInfo(tx)
 		if err != nil {
 			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("failed to get keyshare info: %w", err), 0, 0, nil, false), err
 		}
@@ -134,7 +134,7 @@ func (handler *KeyshareCheckTxHandler) CheckTx() CheckTx {
 		}
 
 		// If the keyshare transaction is valid, we know we can insert it into the mempool for consideration in the next block.
-		if err := handler.keyShareLane.Insert(ctx, tx); err != nil {
+		if err := handler.keyshareLane.Insert(ctx, tx); err != nil {
 			return sdkerrors.ResponseCheckTxWithEvents(fmt.Errorf("invalid keyshare tx; failed to insert keyshare transaction into mempool: %w", err), gasInfo.GasWanted, gasInfo.GasUsed, nil, false), err
 		}
 
@@ -147,7 +147,11 @@ func (handler *KeyshareCheckTxHandler) CheckTx() CheckTx {
 }
 
 // ValidateKeyshareTx is utilized to verify the keyshare transaction against the latest committed state.
-func (handler *KeyshareCheckTxHandler) ValidateKeyshareTx(ctx sdk.Context, ksTx sdk.Tx, ksInfo *peptypes.AggregatedKeyShare) (sdk.GasInfo, error) {
+func (handler *KeyshareCheckTxHandler) ValidateKeyshareTx(
+	ctx sdk.Context,
+	ksTx sdk.Tx,
+	ksInfo *peptypes.DecryptionKey,
+) (sdk.GasInfo, error) {
 	// Verify the keyshare transaction.
 	ctx, err := handler.anteHandler(ctx, ksTx, false)
 	if err != nil {

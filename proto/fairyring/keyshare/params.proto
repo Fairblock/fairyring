@@ -11,7 +11,6 @@ message Params {
   option (amino.name) = "github.com/Fairblock/fairyring/x/keyshare/Params";
   option (gogoproto.equal) = true;
 
-  
   uint64 key_expiry = 1 [(gogoproto.moretags) = "yaml:\"key_expiry\""];
   uint64 minimum_bonded = 2 [(gogoproto.moretags) = "yaml:\"minimum_bonded\""];
   uint64 max_idled_block = 3 [(gogoproto.moretags) = "yaml:\"max_idled_block\""];

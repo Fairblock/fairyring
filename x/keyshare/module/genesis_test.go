@@ -15,7 +15,7 @@ func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
 		PortId: types.PortID,
-		AggregatedKeyShareList: []types.AggregatedKeyShare{
+		DecryptionKeyList: []types.DecryptionKey{
 			{
 				Height: 0,
 			},
@@ -26,7 +26,7 @@ func TestGenesis(t *testing.T) {
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
-	k, ctx := keepertest.KeyshareKeeper(t)
+	k, ctx, _ := keepertest.KeyshareKeeper(t)
 	keyshare.InitGenesis(ctx, k, genesisState)
 	got := keyshare.ExportGenesis(ctx, k)
 	require.NotNil(t, got)
@@ -36,6 +36,6 @@ func TestGenesis(t *testing.T) {
 
 	require.Equal(t, genesisState.PortId, got.PortId)
 
-	require.ElementsMatch(t, genesisState.AggregatedKeyShareList, got.AggregatedKeyShareList)
+	require.ElementsMatch(t, genesisState.DecryptionKeyList, got.DecryptionKeyList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

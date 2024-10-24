@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	KeyShareHexLen = 192
+	KeyshareHexLen = 192
 )
 
 var _ sdk.Msg = &MsgSendKeyshare{}
@@ -18,7 +18,7 @@ func NewMsgSendKeyshare(creator string, message string, keyShareIndex uint64, bl
 	return &MsgSendKeyshare{
 		Creator:       creator,
 		Message:       message,
-		KeyShareIndex: keyShareIndex,
+		KeyshareIndex: keyShareIndex,
 		BlockHeight:   blockHeight,
 	}
 }
@@ -28,14 +28,14 @@ func (msg *MsgSendKeyshare) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(cosmoserror.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if len(msg.Message) != KeyShareHexLen {
-		return ErrInvalidKeyShareLength.Wrapf("expected hex encoded key share length to be %d", KeyShareHexLen)
+	if len(msg.Message) != KeyshareHexLen {
+		return ErrInvalidKeyshareLength.Wrapf("expected hex encoded key share length to be %d", KeyshareHexLen)
 	}
 	if _, err = hex.DecodeString(msg.Message); err != nil {
 		return ErrInvalidShare.Wrapf("expected hex encoded key share, got: %s", msg.Message)
 	}
-	if msg.KeyShareIndex < 1 {
-		return ErrInvalidShare.Wrapf("expected key share index to be at least 1, got: %d", msg.KeyShareIndex)
+	if msg.KeyshareIndex < 1 {
+		return ErrInvalidShare.Wrapf("expected key share index to be at least 1, got: %d", msg.KeyshareIndex)
 	}
 	return nil
 }

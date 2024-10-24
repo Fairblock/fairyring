@@ -25,7 +25,7 @@ pub fn execute(
     STORED_DATA.save(
         deps.storage,
         &identity,
-        &(msg.pubkey.clone(), msg.aggr_keyshare.clone()), // Use `.clone()` to avoid moving the values
+        &(msg.pubkey.clone(), msg.decryption_key.clone()),
     )?;
 
     // Return a response
@@ -33,7 +33,7 @@ pub fn execute(
         attr("action", "store_data"),
         attr("identity", identity),
         attr("pubkey", msg.pubkey),
-        attr("aggr_keyshare", msg.aggr_keyshare),
+        attr("decryption_key", msg.decryption_key),
     ]))
 }
 
@@ -97,13 +97,13 @@ pub fn instantiate(
 pub fn query_pep_decrypt(
     deps: Deps<QueryMsg>,
     pubkey: String,
-    aggr_keyshare: String,
+    decryption_key: String,
     encrypted_data: String,
 ) -> StdResult<Binary> {
     // Create the request message
     let request = QueryDecryptDataRequest {
         pubkey,
-        aggr_keyshare,
+        decryption_key,
         encrypted_data,
     };
 
