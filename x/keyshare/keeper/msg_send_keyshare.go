@@ -116,7 +116,9 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	// Save the new keyshare to state
 	k.SetKeyshare(ctx, keyshare)
 
-	k.SetLastSubmittedHeight(ctx, msg.Creator, strconv.FormatUint(msg.BlockHeight, 10))
+	// It should set the validator last submitted height instead of the `msg.creator`,
+	// which might be the authorized address
+	k.SetLastSubmittedHeight(ctx, validatorInfo.Validator, strconv.FormatUint(msg.BlockHeight, 10))
 
 	validatorList := k.GetAllValidatorSet(ctx)
 

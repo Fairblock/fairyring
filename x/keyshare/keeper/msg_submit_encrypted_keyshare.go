@@ -17,7 +17,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// check if validator is registered
-	_, found := k.GetValidatorSet(ctx, msg.Creator)
+	validatorInfo, found := k.GetValidatorSet(ctx, msg.Creator)
 
 	if !found {
 		authorizedAddrInfo, found := k.GetAuthorizedAddress(ctx, msg.Creator)
@@ -25,10 +25,11 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 			return nil, types.ErrAddrIsNotValidatorOrAuthorized.Wrap(msg.Creator)
 		}
 
-		_, found = k.GetValidatorSet(ctx, authorizedAddrInfo.AuthorizedBy)
+		authorizedByValInfo, found := k.GetValidatorSet(ctx, authorizedAddrInfo.AuthorizedBy)
 		if !found {
 			return nil, types.ErrAuthorizerIsNotValidator.Wrap(authorizedAddrInfo.AuthorizedBy)
 		}
+		validatorInfo = authorizedByValInfo
 
 		// If the sender is in the validator set & authorized another address to submit key share
 	} else if count := k.GetAuthorizedCount(ctx, msg.Creator); count != 0 {
@@ -62,7 +63,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 
 	// Save the new private keyshare to state
 	k.SetPrivateKeyshare(ctx, valEncKeyshare)
-	k.SetLastSubmittedHeight(ctx, msg.Creator, strconv.FormatInt(ctx.BlockHeight(), 10))
+	k.SetLastSubmittedHeight(ctx, validatorInfo.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
 
 	validatorList := k.GetAllValidatorSet(ctx)
 

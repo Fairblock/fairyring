@@ -144,7 +144,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 
 	// Save the new general key share to state
 	k.SetGeneralKeyshare(ctx, generalKeyshare)
-	k.SetLastSubmittedHeight(ctx, msg.Creator, strconv.FormatInt(ctx.BlockHeight(), 10))
+	k.SetLastSubmittedHeight(ctx, validatorInfo.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
 
 	validatorList := k.GetAllValidatorSet(ctx)
 

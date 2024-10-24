@@ -51,6 +51,7 @@ func (k msgServer) OverrideLatestPubkey(
 		encSharesExistsValidators[encShare.Validator] = true
 	}
 
+	// Remove all validators in the set that not in the current epoch
 	for _, v := range allValidatorSet {
 		if _, exists := encSharesExistsValidators[v.Validator]; !exists {
 			k.RemoveValidatorSet(ctx, v.Validator)
