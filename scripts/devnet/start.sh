@@ -63,6 +63,19 @@ if ! mkdir -p $CHAIN_DIR/$CHAINID 2>/dev/null; then
     exit 1
 fi
 
+if ! command -v fairyringclient 2>&1 >/dev/null
+then
+    echo "fairyringclient could not be found. Aborting..."
+    exit 1
+fi
+
+if [ ! -f "$HOME/.fairyringclient/config.yml" ]; then
+    fairyringclient config init
+fi
+
+cp "$HOME/.fairyringclient/config.yml" "$HOME/.fairyringclient/config.yml.backup"
+cp ./scripts/devnet/fairyringclient_config.yml "$HOME/.fairyringclient/config.yml"
+
 echo "Initializing $CHAINID ..."
 $BINARY init devnet --home $CHAIN_DIR/$CHAINID --default-denom ufairy --chain-id=$CHAINID &> /dev/null
 
