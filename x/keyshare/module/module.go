@@ -238,6 +238,15 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			if foundQc {
 				am.keeper.SetActiveCommitments(ctx, qc)
 			}
+			// When switching the active public key,
+			// Reset all validators last submitted height,
+			// So they won't get slashed if they miss the first block of the new active pubkey keyshare.
+			for _, v := range qk.EncryptedKeyshares {
+				am.keeper.SetLastSubmittedHeight(ctx, v.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
+			}
+
+			// We don't need to remove the validators that not in the new round from the set
+			// They won't be slashed because of the new slashing idle validators logic
 		}
 		am.keeper.DeleteQueuedPubkey(ctx)
 		am.pepKeeper.DeleteQueuedPubkey(ctx)
@@ -255,6 +264,13 @@ func (am AppModule) EndBlock(cctx context.Context) error {
 
 	validators := am.keeper.GetAllValidatorSet(ctx)
 	params := am.keeper.GetParams(ctx)
+
+	pubKey, found := am.keeper.GetActivePubkey(ctx)
+	// If no active public key / no validator in the current public key
+	// Then no Idling check needed
+	if !found || len(pubKey.PublicKey) == 0 || len(pubKey.EncryptedKeyshares) == 0 {
+		return nil
+	}
 
 	for _, eachValidator := range validators {
 		lastSubmittedHeight := am.keeper.GetLastSubmittedHeight(ctx, eachValidator.Validator)
@@ -279,10 +295,19 @@ func (am AppModule) EndBlock(cctx context.Context) error {
 			continue
 		}
 
-		if val, found := am.keeper.GetActivePubkey(ctx); !found || len(val.PublicKey) == 0 {
-			// Not slashing validator if there is no active public key
+		inCurrentEpoch := false
+
+		for _, k := range pubKey.EncryptedKeyshares {
+			if k.Validator == eachValidator.Validator {
+				inCurrentEpoch = true
+				break
+			}
+		}
+
+		if !inCurrentEpoch {
+			am.keeper.Logger().Info(fmt.Sprintf("Validator: %s not in the current epoch, updating last submitted height to current block height.", eachValidator.Validator))
 			am.keeper.SetLastSubmittedHeight(ctx, eachValidator.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
-			continue
+			return nil
 		}
 
 		am.keeper.SlashingKeeper().Slash(
