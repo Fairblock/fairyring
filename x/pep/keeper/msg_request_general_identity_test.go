@@ -56,7 +56,7 @@ func TestRequestGeneralIdentity(t *testing.T) {
 	resp, err := srv.RequestGeneralIdentity(goCtx, msg)
 	require.NoError(t, err)
 	require.NotNil(t, resp)
-	require.Equal(t, "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/test_req_id_3", resp.ReqId)
+	require.Equal(t, "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/test_req_id_3", resp.Identity)
 }
 
 func TestOnAcknowledgementRequestDecryptionKeyPacket(t *testing.T) {
@@ -66,8 +66,8 @@ func TestOnAcknowledgementRequestDecryptionKeyPacket(t *testing.T) {
 	packet := channeltypes.Packet{}
 	packetData := kstypes.RequestDecryptionKeyPacketData{
 		Requester: "test_creator",
-		Id: &kstypes.RequestDecryptionKeyPacketData_RequestId{
-			RequestId: "test_request_id",
+		Id: &kstypes.RequestDecryptionKeyPacketData_Identity{
+			Identity: "test_request_id",
 		},
 	}
 	ack := channeltypes.Acknowledgement{

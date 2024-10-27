@@ -35,7 +35,7 @@ func TestKeyshareReqSingle(t *testing.T) {
 		{
 			desc: "First item",
 			request: &types.QueryGeneralIdentityRequest{
-				ReqId: out[0].RequestId,
+				Identity: out[0].Identity,
 			},
 			response: &types.QueryGeneralIdentityResponse{
 				RequestDetails: &out[0],
@@ -44,7 +44,7 @@ func TestKeyshareReqSingle(t *testing.T) {
 		{
 			desc: "Not found",
 			request: &types.QueryGeneralIdentityRequest{
-				ReqId: random.RandHex(64),
+				Identity: random.RandHex(64),
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},

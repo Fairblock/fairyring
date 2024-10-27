@@ -38,7 +38,6 @@ func createNGeneralEncryptedTxEntry(
 		}
 		queue[i] = types.IdentityExecutionEntry{
 			Creator:       sample.AccAddress(),
-			RequestId:     identity,
 			Identity:      identity,
 			Pubkey:        random.RandHex(32),
 			TxList:        &items[i],
@@ -58,8 +57,8 @@ func TestGeneralEncryptedTxAppend(t *testing.T) {
 		Data:     random.RandHex(32),
 		Creator:  sample.AccAddress(),
 	}
-	keeper.AppendTxToEntry(ctx, out[0].RequestId, appendTx1)
-	_, found := keeper.GetEntry(ctx, out[0].RequestId)
+	keeper.AppendTxToEntry(ctx, out[0].Identity, appendTx1)
+	_, found := keeper.GetEntry(ctx, out[0].Identity)
 	require.True(t, found)
 }
 
@@ -67,7 +66,7 @@ func TestEntryGet(t *testing.T) {
 	keeper, ctx := keepertest.PepKeeper(t)
 	items := createNGeneralEncryptedTxEntry(&keeper, ctx, 10)
 	for _, item := range items {
-		out, found := keeper.GetEntry(ctx, item.RequestId)
+		out, found := keeper.GetEntry(ctx, item.Identity)
 		require.True(t, found)
 		require.Equal(t, nullify.Fill(out), nullify.Fill(item))
 	}
@@ -77,8 +76,8 @@ func TestEntryRemove(t *testing.T) {
 	keeper, ctx := keepertest.PepKeeper(t)
 	items := createNGeneralEncryptedTxEntry(&keeper, ctx, 10)
 	for _, item := range items {
-		keeper.RemoveEntry(ctx, item.RequestId)
-		_, found := keeper.GetEntry(ctx, item.RequestId)
+		keeper.RemoveEntry(ctx, item.Identity)
+		_, found := keeper.GetEntry(ctx, item.Identity)
 		require.False(t, found)
 	}
 }

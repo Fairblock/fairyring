@@ -65,12 +65,10 @@ func TestSubmitGeneralKeyshareAggregated(t *testing.T) {
 			Counterparty:  nil,
 			DecryptionKey: "",
 			ProposalId:    "",
-			RequestId:     idVal,
 			Sent:          false,
 		})
 		pk.SetEntry(wctx, types2.IdentityExecutionEntry{
 			Creator:       creator,
-			RequestId:     idVal,
 			Identity:      idVal,
 			Pubkey:        out.MasterPublicKey,
 			TxList:        nil,
@@ -123,12 +121,10 @@ func TestSubmitGeneralKeyshareNotAggregated(t *testing.T) {
 			Counterparty:  nil,
 			DecryptionKey: "",
 			ProposalId:    "",
-			RequestId:     idVal,
 			Sent:          false,
 		})
 		pk.SetEntry(wctx, types2.IdentityExecutionEntry{
 			Creator:       creator,
-			RequestId:     idVal,
 			Identity:      idVal,
 			Pubkey:        out.MasterPublicKey,
 			TxList:        nil,
@@ -173,7 +169,6 @@ func TestGeneralKeyshareMsgServerFailCases(t *testing.T) {
 
 	pk.SetEntry(wctx, types2.IdentityExecutionEntry{
 		Creator:       creator,
-		RequestId:     onlyIdVal,
 		Identity:      onlyIdVal,
 		Pubkey:        out.MasterPublicKey,
 		TxList:        nil,
@@ -231,7 +226,6 @@ func TestGeneralKeyshareMsgServerFailCases(t *testing.T) {
 					Counterparty:  nil,
 					DecryptionKey: "",
 					ProposalId:    "",
-					RequestId:     onlyIdVal,
 					Sent:          false,
 				})
 			}

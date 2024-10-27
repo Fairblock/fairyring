@@ -13,12 +13,12 @@ var _ sdk.Msg = &MsgRequestPrivateDecryptionKey{}
 
 func NewMsgRequestPrivateDecryptionKey(
 	creator string,
-	reqId string,
+	identity string,
 	pubkey string,
 ) *MsgRequestPrivateDecryptionKey {
 	return &MsgRequestPrivateDecryptionKey{
 		Creator:    creator,
-		ReqId:      reqId,
+		Identity:   identity,
 		SecpPubkey: pubkey,
 	}
 }

@@ -28,10 +28,10 @@ func (k msgServer) RequestPrivateIdentity(goCtx context.Context, msg *types.MsgR
 		ReqId:   msg.ReqId,
 	})
 
-	requestIDStr := types.GetReqIDStr(msg.Creator, msg.ReqId)
+	identity := types.GenerateIdentityFromReqID(msg.Creator, msg.ReqId)
 	req := types.PrivateRequest{
 		Creator:               msg.Creator,
-		ReqId:                 requestIDStr,
+		Identity:              identity,
 		Pubkey:                "",
 		PrivateDecryptionKeys: make([]*commontypes.PrivateDecryptionKey, 0),
 	}
@@ -42,19 +42,19 @@ func (k msgServer) RequestPrivateIdentity(goCtx context.Context, msg *types.MsgR
 
 	if params.IsSourceChain {
 		entry := commontypes.RequestPrivateDecryptionKey{
-			Creator:   msg.Creator,
-			RequestId: msg.ReqId,
+			Creator:  msg.Creator,
+			Identity: identity,
 		}
 
 		k.SetPrivateReqQueueEntry(ctx, entry)
 
 		return &types.MsgRequestPrivateIdentityResponse{
-			ReqId: requestIDStr,
+			Identity: identity,
 		}, nil
 	} else {
 		packetData := kstypes.RequestPrivateDecryptionKeyPacketData{
 			Requester: msg.Creator,
-			RequestId: msg.ReqId,
+			Identity:  identity,
 		}
 
 		sPort := k.GetPort(ctx)
@@ -72,16 +72,14 @@ func (k msgServer) RequestPrivateIdentity(goCtx context.Context, msg *types.MsgR
 			sdk.NewEvent(
 				types.EventTypePrivateKeyshareRequestSent,
 				sdk.NewAttribute(types.AttributeKeyCreator, msg.Creator),
-				sdk.NewAttribute(types.AttributeKeyRequestID, requestIDStr),
+				sdk.NewAttribute(types.AttributeKeyIdentity, identity),
 			),
 		)
 
 		return &types.MsgRequestPrivateIdentityResponse{
-			ReqId: requestIDStr,
+			Identity: identity,
 		}, nil
 	}
-
-	// return &types.MsgRequestPrivateIdentityResponse{}, nil
 }
 
 // TransmitRequestPrivateDecryptionKey transmits the packet over IBC
@@ -128,12 +126,12 @@ func (k Keeper) OnAcknowledgementRequestPrivateDecryptionKeyPacket(
 		}
 
 		entry := types.PrivateRequest{
-			Creator: data.Requester,
-			ReqId:   data.GetRequestId(),
-			Pubkey:  packetAck.GetPubkey(),
+			Creator:  data.Requester,
+			Identity: data.GetIdentity(),
+			Pubkey:   packetAck.GetPubkey(),
 		}
 
-		entry, found := k.GetPrivateRequest(ctx, data.RequestId)
+		entry, found := k.GetPrivateRequest(ctx, data.Identity)
 		if !found {
 			return errors.New("entry does not exists")
 		}
@@ -145,7 +143,7 @@ func (k Keeper) OnAcknowledgementRequestPrivateDecryptionKeyPacket(
 			sdk.NewEvent(
 				types.EventTypePrivateKeyshareRequest,
 				sdk.NewAttribute(types.AttributeKeyCreator, entry.Creator),
-				sdk.NewAttribute(types.AttributeKeyRequestID, entry.ReqId),
+				sdk.NewAttribute(types.AttributeKeyIdentity, entry.Identity),
 			),
 		)
 

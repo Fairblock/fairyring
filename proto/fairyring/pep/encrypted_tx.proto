@@ -43,7 +43,6 @@ message GeneralEncryptedTxArray {
 // are ready to execute any associated contracts or encrypted transactions
 message IdentityExecutionEntry {
   string creator = 1;
-  string request_id = 2;
   string identity = 3;
   string pubkey = 4;
   GeneralEncryptedTxArray tx_list = 5;

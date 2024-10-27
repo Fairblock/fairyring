@@ -63,7 +63,7 @@ func (k Keeper) SetPrivateRequest(ctx context.Context, request types.PrivateRequ
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateRequestIdKeyPrefix))
 	b := k.cdc.MustMarshal(&request)
-	store.Set([]byte(request.ReqId), b)
+	store.Set([]byte(request.Identity), b)
 }
 
 // GetPrivateRequest returns a requestId from its index

@@ -358,7 +358,6 @@ sleep 5
 echo "Query general keyshare request on chain fairyring_test_1"
 LIST_KEYSHARE_REQ=$($BINARY query pep list-general-identities --node $CHAIN1_NODE -o json)
 IDENTITY=$(echo $LIST_KEYSHARE_REQ | jq -r '.request_details_list[0].identity')
-REQ_ID=$(echo $LIST_KEYSHARE_REQ | jq -r '.request_details_list[0].request_id')
 echo "Identity for keyshare request 1 is: $IDENTITY"
 
 echo "Query account pep nonce before submitting encrypted tx from pep module on chain fairyring_test_1"
@@ -393,28 +392,28 @@ rm -r unsigned2.json &> /dev/null
 sleep 5
 
 echo "Submit general encrypted tx to pep module on chain fairyring_test_1"
-RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER $IDENTITY --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
 sleep 5
 
 echo "Query Keyshare request and check for encrypted tx"
-TX=$($BINARY query pep show-general-identity $REQ_ID --node $CHAIN1_NODE -o json | jq -r '.request_details.tx_list.encrypted_txs[0].data')
+TX=$($BINARY query pep show-general-identity $IDENTITY --node $CHAIN1_NODE -o json | jq -r '.request_details.tx_list.encrypted_txs[0].data')
 if [ "$TX" != "$CIPHER" ]; then
   echo "Submitting general encrypted tx failed. Expected: $CIPHER, got $TX"
   exit 1
 fi
 
 echo "Submit 2nd general encrypted tx to pep module on chain fairyring_test_1"
-RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER2 $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER2 $IDENTITY --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
 sleep 5
 
 echo "Request Generation of Aggr keyshare"
-RESULT=$($BINARY tx pep request-general-decryption-key $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-general-decryption-key $IDENTITY --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
@@ -460,9 +459,7 @@ while true; do
   LIST_KEYSHARE_REQ=$($BINARY query pep list-general-identities --node $CHAIN2_NODE -o json)
   echo $LIST_KEYSHARE_REQ | jq
   IDENTITY=$(echo $LIST_KEYSHARE_REQ | jq -r '.request_details_list[0].identity')
-  REQ_ID=$(echo $LIST_KEYSHARE_REQ | jq -r '.request_details_list[0].request_id')
   echo "Identity for keyshare request 1 is: $IDENTITY"
-  echo "Request ID for keyshare request 1 is: $REQ_ID"
   if [[ "$IDENTITY" != "null" ]]; then
     echo "Found Identity & Request ID"
     break
@@ -506,28 +503,28 @@ rm -r unsigned2.json &> /dev/null
 sleep 5
 
 echo "Submit general encrypted tx to pep module on chain $CHAINID_2"
-RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER $REQ_ID --from $WALLET_2 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER $IDENTITY --from $WALLET_2 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
 sleep 5
 
 echo "Query Keyshare request and check for encrypted tx"
-TX=$($BINARY query pep show-general-identity $REQ_ID --node $CHAIN2_NODE -o json | jq -r '.request_details.tx_list.encrypted_txs[0].data')
+TX=$($BINARY query pep show-general-identity $IDENTITY --node $CHAIN2_NODE -o json | jq -r '.request_details.tx_list.encrypted_txs[0].data')
 if [ "$TX" != "$CIPHER" ]; then
   echo "Submitting general encrypted tx failed. Expected: $CIPHER, got $TX"
   exit 1
 fi
 
 echo "Submit 2nd general encrypted tx to pep module on chain $CHAINID_2"
-RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER2 $REQ_ID --from $WALLET_2 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER2 $IDENTITY --from $WALLET_2 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
 sleep 5
 
 echo "Request Generation of Aggr keyshare"
-RESULT=$($BINARY tx pep request-general-decryption-key $REQ_ID --from $WALLET_2 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-general-decryption-key $IDENTITY --from $WALLET_2 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
@@ -583,18 +580,18 @@ sleep 5
 echo "Query private keyshare request on chain fairyring_test_1"
 SHOW_PRIVATE_REQ=$($BINARY query pep show-private-identity $WALLET_1/test_req_1 --node $CHAIN1_NODE -o json)
 echo $SHOW_PRIVATE_REQ
-REQ_ID=$(echo $SHOW_PRIVATE_REQ | jq -r '.req_id')
-echo "Identity for private keyshare request 1 is: $REQ_ID"
+IDENTITY=$(echo $SHOW_PRIVATE_REQ | jq -r '.identity')
+echo "Identity for private keyshare request 1 is: $IDENTITY"
 
 sleep 5
 
 echo "Requesting for private keyshares on Source chain"
-RESULT=$($BINARY tx pep request-private-decryption-key $REQ_ID $SCEP_PUBKEY1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-private-decryption-key $IDENTITY $SCEP_PUBKEY1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 5
 
-EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
+EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $IDENTITY)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY1" -k "$EXTRACTED_SHARE")
@@ -604,7 +601,7 @@ ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY1" -k "$EXTRACTED_SHARE")
 while true; do
   echo "Submitting Private Key Share"
 
-  RESULT=$($BINARY tx keyshare submit-encrypted-keyshare $REQ_ID $WALLET_1 $ENC_KS 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+  RESULT=$($BINARY tx keyshare submit-encrypted-keyshare $IDENTITY $WALLET_1 $ENC_KS 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
   echo "$RESULT"
   check_tx_err $RESULT
   if [ $? -eq 0 ]; then
@@ -680,16 +677,16 @@ sleep 8
 echo "Query private keyshare request on chain fairyring_test_2"
 SHOW_PRIVATE_REQ=$($BINARY query pep show-private-identity $WALLET_2/test_req_2 --node $CHAIN2_NODE -o json)
 echo $SHOW_PRIVATE_REQ
-REQ_ID=$(echo $SHOW_PRIVATE_REQ | jq -r '.req_id')
-echo "Identity for private keyshare request 2 is: $REQ_ID"
+IDENTITY=$(echo $SHOW_PRIVATE_REQ | jq -r '.identity')
+echo "Identity for private keyshare request 2 is: $IDENTITY"
 
 echo "Requesting for private keyshares on destination chain"
-RESULT=$($BINARY tx pep request-private-decryption-key $REQ_ID $SCEP_PUBKEY2 --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-private-decryption-key $IDENTITY $SCEP_PUBKEY2 --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 8
 
-EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
+EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $IDENTITY)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY2" -k "$EXTRACTED_SHARE")
@@ -698,7 +695,7 @@ ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY2" -k "$EXTRACTED_SHARE")
 while true; do
   echo "Submitting Private Key Share"
 
-  RESULT=$($BINARY tx keyshare submit-encrypted-keyshare $REQ_ID $WALLET_1 $ENC_KS 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+  RESULT=$($BINARY tx keyshare submit-encrypted-keyshare $IDENTITY $WALLET_1 $ENC_KS 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
   echo "$RESULT"
   check_tx_err $RESULT
   if [ $? -eq 0 ]; then
@@ -709,7 +706,7 @@ done
 sleep 20
 
 echo "Query private keyshare request on chain fairyring_test_2"
-SHOW_PRIVATE_REQ=$($BINARY query pep show-private-identity $REQ_ID --node $CHAIN2_NODE -o json)
+SHOW_PRIVATE_REQ=$($BINARY query pep show-private-identity $IDENTITY --node $CHAIN2_NODE -o json)
 ENC_KEYSHARES=$(echo "$SHOW_PRIVATE_REQ" | jq -r '.private_decryption_keys')
 
 if [ "$ENC_KEYSHARES" = "[]" ]; then
@@ -844,11 +841,11 @@ check_tx_code $RESULT
 
 sleep 5
 
-REQ_ID="fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/contract123"
+IDENTITY="fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/contract123"
 CONTRACT_ADDR="fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v"
 
 echo "Trying to registering contract with unauthorized address"
-RESULT=$($BINARY tx pep register-contract $CONTRACT_ADDR $REQ_ID --from $WALLET_3 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep register-contract $CONTRACT_ADDR $IDENTITY --from $WALLET_3 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx_source $RESULT)
 
@@ -861,14 +858,14 @@ fi
 
 
 echo "Registering contract with identity"
-RESULT=$($BINARY tx pep register-contract $CONTRACT_ADDR $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep register-contract $CONTRACT_ADDR $IDENTITY --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx_source $RESULT)
 
 sleep 5
 
 echo "Trying to unregistering contract with unauthorized address"
-RESULT=$($BINARY tx pep unregister-contract $CONTRACT_ADDR $REQ_ID --from $WALLET_3 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep unregister-contract $CONTRACT_ADDR $IDENTITY --from $WALLET_3 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx_source $RESULT)
 ERROR_MSG=$(echo "$RESULT" | jq -r '.raw_log')
@@ -880,19 +877,19 @@ if [[ "$ERROR_MSG" != *"unautorized deregistration; only cretor and admin can de
 fi
 
 echo "Request Generation of Aggr keyshare"
-RESULT=$($BINARY tx pep request-general-decryption-key $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-general-decryption-key $IDENTITY --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
 sleep 5
 
-EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $REQ_ID)
+EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $IDENTITY)
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 while true; do
   echo "Submitting General Key Share"
   
-  RESULT=$($BINARY tx keyshare submit-general-keyshare "private-gov-identity" $REQ_ID $EXTRACTED_SHARE 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+  RESULT=$($BINARY tx keyshare submit-general-keyshare "private-gov-identity" $IDENTITY $EXTRACTED_SHARE 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
   echo "$RESULT"
   check_tx_err $RESULT
   if [ $? -eq 0 ]; then

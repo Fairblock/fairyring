@@ -65,7 +65,7 @@ func AggregateCmd() *cobra.Command {
 				res, err := queryClient.PrivateIdentity(
 					context.Background(),
 					&types.QueryPrivateIdentityRequest{
-						ReqId: identity,
+						Identity: identity,
 					},
 				)
 				if err != nil {

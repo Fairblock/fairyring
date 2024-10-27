@@ -20,14 +20,14 @@ func (k Keeper) PrivateIdentity(
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	val, found := k.GetPrivateRequest(ctx, req.ReqId)
+	val, found := k.GetPrivateRequest(ctx, req.Identity)
 	if !found {
 		return nil, errors.New("entry not found")
 	}
 
 	return &types.QueryPrivateIdentityResponse{
 		Creator:               val.Creator,
-		ReqId:                 val.ReqId,
+		Identity:              val.Identity,
 		Pubkey:                val.Pubkey,
 		PrivateDecryptionKeys: val.PrivateDecryptionKeys,
 	}, nil

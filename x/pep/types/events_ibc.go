@@ -16,5 +16,6 @@ const (
 	EventTypeGetPrivateKeyshareRequest  = "get_private_keyshare_request_packet"
 
 	AttributeKeyRequestID = "request_id"
+	AttributeKeyIdentity  = "identity"
 	AttributeKeyCreator   = "creator"
 )

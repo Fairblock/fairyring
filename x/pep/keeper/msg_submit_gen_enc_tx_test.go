@@ -91,7 +91,6 @@ func TestSubmitGeneralEncryptedTx(t *testing.T) {
 			if tc.desc == "InvalidIdentity" {
 				k.SetEntry(wctx, types.IdentityExecutionEntry{
 					Creator:       sample.AccAddress(),
-					RequestId:     validIdentity,
 					Identity:      validIdentity,
 					Pubkey:        random.RandHex(96),
 					TxList:        nil,

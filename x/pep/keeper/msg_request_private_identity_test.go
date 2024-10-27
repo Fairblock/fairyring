@@ -48,12 +48,12 @@ func TestRequestPrivateIdentity(t *testing.T) {
 	resp, err := srv.RequestPrivateIdentity(goCtx, msg)
 	require.NoError(t, err)
 	require.NotNil(t, resp)
-	require.Equal(t, "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/test_req_id_2", resp.ReqId)
+	require.Equal(t, "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/test_req_id_2", resp.Identity)
 
 	// Ensure the private request is stored
 	req, found := k.GetPrivateRequest(ctx, "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/test_req_id_2")
 	require.True(t, found)
-	require.Equal(t, "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/test_req_id_2", req.ReqId)
+	require.Equal(t, "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/test_req_id_2", req.Identity)
 }
 
 func TestOnAcknowledgementRequestPrivateKeysharePacket(t *testing.T) {
@@ -65,7 +65,7 @@ func TestOnAcknowledgementRequestPrivateKeysharePacket(t *testing.T) {
 	packet := channeltypes.Packet{}
 	packetData := kstypes.RequestPrivateDecryptionKeyPacketData{
 		Requester: creator,
-		RequestId: "test_request_id_1",
+		Identity:  "test_request_id_1",
 	}
 	ack := channeltypes.Acknowledgement{
 		Response: &channeltypes.Acknowledgement_Result{
@@ -76,7 +76,7 @@ func TestOnAcknowledgementRequestPrivateKeysharePacket(t *testing.T) {
 	// Test case when ReqId already exists
 	privReq := types.PrivateRequest{
 		Creator:               creator,
-		ReqId:                 "test_request_id_1",
+		Identity:              "test_request_id_1",
 		Pubkey:                "",
 		PrivateDecryptionKeys: make([]*commontypes.PrivateDecryptionKey, 0),
 	}
@@ -95,7 +95,7 @@ func TestOnAcknowledgementRequestPrivateKeysharePacket(t *testing.T) {
 	// Test case when entry does not exist
 	invalidPacketData := kstypes.RequestPrivateDecryptionKeyPacketData{
 		Requester: creator,
-		RequestId: "invalid_request_id",
+		Identity:  "invalid_request_id",
 	}
 
 	err = k.OnAcknowledgementRequestPrivateDecryptionKeyPacket(ctx, packet, invalidPacketData, ack)

@@ -26,7 +26,7 @@ func TestPrivateKeyshareReq(t *testing.T) {
 
 	req := types.PrivateRequest{
 		Creator:               sample.AccAddress(),
-		ReqId:                 random.RandHex(16),
+		Identity:              random.RandHex(16),
 		Pubkey:                random.RandHex(96),
 		PrivateDecryptionKeys: make([]*types2.PrivateDecryptionKey, 0),
 	}
@@ -42,11 +42,11 @@ func TestPrivateKeyshareReq(t *testing.T) {
 		{
 			desc: "ValidRequest",
 			request: &types.QueryPrivateIdentityRequest{
-				ReqId: req.ReqId,
+				Identity: req.Identity,
 			},
 			response: &types.QueryPrivateIdentityResponse{
 				Creator:               req.Creator,
-				ReqId:                 req.ReqId,
+				Identity:              req.Identity,
 				Pubkey:                req.Pubkey,
 				PrivateDecryptionKeys: req.PrivateDecryptionKeys,
 			},

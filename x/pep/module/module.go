@@ -291,7 +291,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 	entries := am.keeper.GetAllGenEncTxExecutionQueueEntry(ctx)
 	for _, entry := range entries {
 		if entry.DecryptionKey == "" {
-			am.keeper.Logger().Error("decryption key not found in entry with req-id: ", entry.RequestId)
+			am.keeper.Logger().Error("decryption key not found in entry with req-id: ", entry.Identity)
 			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
 			continue
 		}
@@ -317,7 +317,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 		}
 
 		if entry.TxList == nil {
-			am.keeper.Logger().Info("No encrypted txs found for entry with req-id: ", entry.RequestId)
+			am.keeper.Logger().Info("No encrypted txs found for entry with req-id: ", entry.Identity)
 			am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
 			continue
 		}
@@ -340,8 +340,8 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			telemetry.IncrCounter(1, types.KeyTotalSuccessEncryptedTx)
 		}
 
-		am.keeper.Logger().Info("executed txs for entry with req-id: ", entry.RequestId)
-		am.keeper.RemoveExecutionQueueEntry(ctx, entry.RequestId)
+		am.keeper.Logger().Info("executed txs for entry with req-id: ", entry.Identity)
+		am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
 	}
 	return nil
 }

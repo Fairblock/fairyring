@@ -10,10 +10,10 @@ const TypeMsgRequestGeneralDecryptionKey = "request_general_decryption_key"
 
 var _ sdk.Msg = &MsgRequestGeneralDecryptionKey{}
 
-func NewMsgRequestGeneralDecryptionKey(creator string, reqID string) *MsgRequestGeneralDecryptionKey {
+func NewMsgRequestGeneralDecryptionKey(creator string, identity string) *MsgRequestGeneralDecryptionKey {
 	return &MsgRequestGeneralDecryptionKey{
-		Creator: creator,
-		ReqId:   reqID,
+		Creator:  creator,
+		Identity: identity,
 	}
 }
 

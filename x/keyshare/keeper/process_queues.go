@@ -22,7 +22,7 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 
 	for _, req := range reqs {
 		if req.EstimatedDelay == nil {
-			k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
+			k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetIdentity())
 			k.Logger().Info("[ProcessPepRequestQueue] Estimated delay has not been set")
 			continue
 		}
@@ -34,38 +34,34 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 			queuedPubkey, found := k.GetQueuedPubkey(ctx)
 			if !found {
 				k.Logger().Info("[ProcessPepRequestQueue] Queued Pub Key not found")
-				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
+				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetIdentity())
 				continue
 			}
 			if executionHeight > queuedPubkey.Expiry {
 				k.Logger().Info("[ProcessPepRequestQueue] Estimated delay too long")
-				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
+				k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetIdentity())
 				continue
 			}
 			activePubkey = types.ActivePubkey(queuedPubkey)
 		}
 
-		id := req.GetRequestId()
+		id := req.GetIdentity()
 
 		var keyshareRequest types.DecryptionKeyRequest
 
 		keyshareRequest.Identity = id
 		keyshareRequest.Pubkey = activePubkey.PublicKey
-
 		keyshareRequest.DecryptionKey = ""
-		keyshareRequest.RequestId = req.GetRequestId()
-
 		k.SetDecryptionKeyRequest(ctx, keyshareRequest)
 
 		entry := peptypes.IdentityExecutionEntry{
-			Creator:   req.Creator,
-			RequestId: req.GetRequestId(),
-			Identity:  keyshareRequest.Identity,
-			Pubkey:    keyshareRequest.Pubkey,
+			Creator:  req.Creator,
+			Identity: keyshareRequest.Identity,
+			Pubkey:   keyshareRequest.Pubkey,
 		}
 
 		k.pepKeeper.SetEntry(ctx, entry)
-		k.pepKeeper.RemoveReqQueueEntry(ctx, req.GetRequestId())
+		k.pepKeeper.RemoveReqQueueEntry(ctx, id)
 	}
 	return nil
 }
@@ -77,18 +73,18 @@ func (k Keeper) ProcessPepSignalQueue(ctx sdk.Context) error {
 		if req.Identity != "" {
 			decryptionKeyReq, found := k.GetDecryptionKeyRequest(ctx, req.Identity)
 			if !found {
-				k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
+				k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetIdentity())
 				continue
 			}
 			key, _ := k.GetActivePubkey(ctx)
 			if decryptionKeyReq.Pubkey != key.PublicKey {
 				qKey, found := k.GetQueuedPubkey(ctx)
 				if !found {
-					k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
+					k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetIdentity())
 					continue
 				}
 				if qKey.PublicKey != decryptionKeyReq.Pubkey {
-					k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
+					k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetIdentity())
 					continue
 				}
 				continue
@@ -102,7 +98,7 @@ func (k Keeper) ProcessPepSignalQueue(ctx sdk.Context) error {
 				)
 			}
 		}
-		k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
+		k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetIdentity())
 	}
 	return nil
 }
@@ -116,7 +112,7 @@ func (k Keeper) ProcessPrivateRequestQueue(ctx sdk.Context) error {
 	reqs := k.pepKeeper.GetAllPrivateReqQueueEntry(ctx)
 
 	for _, req := range reqs {
-		id := req.GetRequestId()
+		id := req.GetIdentity()
 
 		var keyshareRequest types.PrivateDecryptionKeyRequest
 
@@ -124,7 +120,6 @@ func (k Keeper) ProcessPrivateRequestQueue(ctx sdk.Context) error {
 		keyshareRequest.Pubkey = activePubkey.PublicKey
 
 		keyshareRequest.PrivateDecryptionKeys = make([]*common.PrivateDecryptionKey, 0)
-		keyshareRequest.RequestId = req.GetRequestId()
 
 		k.SetPrivateDecryptionKeyRequest(ctx, keyshareRequest)
 
@@ -135,7 +130,7 @@ func (k Keeper) ProcessPrivateRequestQueue(ctx sdk.Context) error {
 		entry.Pubkey = activePubkey.PublicKey
 
 		k.pepKeeper.SetPrivateRequest(ctx, entry)
-		k.pepKeeper.RemovePrivateReqQueueEntry(ctx, req.GetRequestId())
+		k.pepKeeper.RemovePrivateReqQueueEntry(ctx, id)
 	}
 	return nil
 }
@@ -157,10 +152,7 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 
 				keyshareRequest.Identity = req.Identity
 				keyshareRequest.Pubkey = activePubkey.PublicKey
-
 				keyshareRequest.PrivateDecryptionKeys = make([]*common.PrivateDecryptionKey, 0)
-				keyshareRequest.RequestId = req.GetRequestId()
-
 				k.SetPrivateDecryptionKeyRequest(ctx, keyshareRequest)
 
 				entry, found := k.pepKeeper.GetPrivateRequest(ctx, req.Identity)
@@ -183,7 +175,7 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 				)
 			}
 		}
-		k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetRequestId())
+		k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetIdentity())
 	}
 	return nil
 }

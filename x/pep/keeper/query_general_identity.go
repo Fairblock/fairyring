@@ -23,7 +23,7 @@ func (k Keeper) GeneralIdentity(
 
 	ctx := sdk.UnwrapSDKContext(c)
 
-	entry, found := k.GetEntry(ctx, req.ReqId)
+	entry, found := k.GetEntry(ctx, req.Identity)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")
 	}

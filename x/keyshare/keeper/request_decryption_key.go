@@ -73,7 +73,7 @@ func (k Keeper) OnRecvRequestDecryptionKeyPacket(
 		isProposalID = false
 	}
 
-	id := data.GetRequestId()
+	id := data.GetIdentity()
 
 	var keyshareRequest types.DecryptionKeyRequest
 
@@ -94,7 +94,7 @@ func (k Keeper) OnRecvRequestDecryptionKeyPacket(
 	if isProposalID {
 		keyshareRequest.ProposalId = data.GetProposalId()
 	} else {
-		keyshareRequest.RequestId = data.GetRequestId()
+		keyshareRequest.Identity = data.GetIdentity()
 	}
 	keyshareRequest.Sent = false
 
@@ -132,7 +132,7 @@ func (k Keeper) OnRecvRequestPrivateDecryptionKeyPacket(
 		return packetAck, err
 	}
 
-	id := data.GetRequestId()
+	id := data.GetIdentity()
 
 	var keyshareRequest types.PrivateDecryptionKeyRequest
 
@@ -149,7 +149,6 @@ func (k Keeper) OnRecvRequestPrivateDecryptionKeyPacket(
 	}
 
 	keyshareRequest.PrivateDecryptionKeys = make([]*commontypes.PrivateDecryptionKey, 0)
-	keyshareRequest.RequestId = data.GetRequestId()
 	keyshareRequest.Sent = false
 
 	k.SetPrivateDecryptionKeyRequest(ctx, keyshareRequest)
