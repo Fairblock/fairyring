@@ -13,13 +13,13 @@ import (
 // GetEntry returns a queue entry by its identity
 func (k Keeper) GetEntry(
 	ctx context.Context,
-	reqID string,
+	identity string,
 ) (val types.IdentityExecutionEntry, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxKeyPrefix))
 
 	b := store.Get(types.GenEncTxQueueKey(
-		reqID,
+		identity,
 	))
 	if b == nil {
 		return val, false
@@ -39,7 +39,7 @@ func (k Keeper) SetEntry(
 
 	entry := k.cdc.MustMarshal(&val)
 	store.Set(
-		types.GenEncTxQueueKey(val.RequestId),
+		types.GenEncTxQueueKey(val.Identity),
 		entry,
 	)
 }
@@ -47,11 +47,11 @@ func (k Keeper) SetEntry(
 // RemoveEntry removes an entry from the store
 func (k Keeper) RemoveEntry(
 	ctx context.Context,
-	reqID string,
+	identity string,
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxKeyPrefix))
-	store.Delete(types.GenEncTxQueueKey(reqID))
+	store.Delete(types.GenEncTxQueueKey(identity))
 }
 
 // GetAllGenEncTxEntry returns all GenEncTxQueue entries
@@ -72,10 +72,10 @@ func (k Keeper) GetAllGenEncTxEntry(ctx context.Context) (list []types.IdentityE
 
 func (k Keeper) AppendTxToEntry(
 	ctx context.Context,
-	reqID string,
+	identity string,
 	encTx types.GeneralEncryptedTx,
 ) uint64 {
-	val, _ := k.GetEntry(ctx, reqID)
+	val, _ := k.GetEntry(ctx, identity)
 	var index uint64 = 0
 	var list types.GeneralEncryptedTxArray
 	if val.TxList != nil {
@@ -93,13 +93,13 @@ func (k Keeper) AppendTxToEntry(
 // GetRequestQueueEntry returns a queue entry by its identity
 func (k Keeper) GetRequestQueueEntry(
 	ctx context.Context,
-	reqID string,
+	identity string,
 ) (val commontypes.RequestDecryptionKey, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxReqQueueKeyPrefix))
 
 	b := store.Get(types.GenEncTxQueueKey(
-		reqID,
+		identity,
 	))
 	if b == nil {
 		return val, false
@@ -119,7 +119,7 @@ func (k Keeper) SetReqQueueEntry(
 
 	entry := k.cdc.MustMarshal(&val)
 	store.Set(
-		types.GenEncTxQueueKey(val.GetRequestId()),
+		types.GenEncTxQueueKey(val.GetIdentity()),
 		entry,
 	)
 }
@@ -127,11 +127,11 @@ func (k Keeper) SetReqQueueEntry(
 // RemoveQueueEntry removes an entry from the store
 func (k Keeper) RemoveReqQueueEntry(
 	ctx context.Context,
-	reqID string,
+	identity string,
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxReqQueueKeyPrefix))
-	store.Delete(types.GenEncTxQueueKey(reqID))
+	store.Delete(types.GenEncTxQueueKey(identity))
 }
 
 // GetAllGenEncTxQueueEntry returns all GenEncTxQueue entries
@@ -155,13 +155,13 @@ func (k Keeper) GetAllGenEncTxReqQueueEntry(
 // GetQueueEntry returns a queue entry by its identity
 func (k Keeper) GetSignalQueueEntry(
 	ctx context.Context,
-	reqID string,
+	identity string,
 ) (val commontypes.GetDecryptionKey, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxSignalQueueKeyPrefix))
 
 	b := store.Get(types.GenEncTxQueueKey(
-		reqID,
+		identity,
 	))
 	if b == nil {
 		return val, false
@@ -181,7 +181,7 @@ func (k Keeper) SetSignalQueueEntry(
 
 	entry := k.cdc.MustMarshal(&val)
 	store.Set(
-		types.GenEncTxQueueKey(val.GetRequestId()),
+		types.GenEncTxQueueKey(val.GetIdentity()),
 		entry,
 	)
 }
@@ -189,11 +189,11 @@ func (k Keeper) SetSignalQueueEntry(
 // RemoveQueueEntry removes an entry from the store
 func (k Keeper) RemoveSignalQueueEntry(
 	ctx context.Context,
-	reqID string,
+	identity string,
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxSignalQueueKeyPrefix))
-	store.Delete(types.GenEncTxQueueKey(reqID))
+	store.Delete(types.GenEncTxQueueKey(identity))
 }
 
 // GetAllGenEncTxQueueEntry returns all GenEncTxQueue entries
@@ -217,13 +217,13 @@ func (k Keeper) GetAllGenEncTxSignalQueueEntry(
 // GetQueueEntry returns a queue entry by its identity
 func (k Keeper) GetExecutionQueueEntry(
 	ctx context.Context,
-	reqID string,
+	identity string,
 ) (val types.IdentityExecutionEntry, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxExeQueueKeyPrefix))
 
 	b := store.Get(types.GenEncTxQueueKey(
-		reqID,
+		identity,
 	))
 	if b == nil {
 		return val, false
@@ -243,7 +243,7 @@ func (k Keeper) SetExecutionQueueEntry(
 
 	entry := k.cdc.MustMarshal(&val)
 	store.Set(
-		types.GenEncTxQueueKey(val.RequestId),
+		types.GenEncTxQueueKey(val.GetIdentity()),
 		entry,
 	)
 }
@@ -251,11 +251,11 @@ func (k Keeper) SetExecutionQueueEntry(
 // RemoveQueueEntry removes an entry from the store
 func (k Keeper) RemoveExecutionQueueEntry(
 	ctx context.Context,
-	reqID string,
+	identity string,
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxExeQueueKeyPrefix))
-	store.Delete(types.GenEncTxQueueKey(reqID))
+	store.Delete(types.GenEncTxQueueKey(identity))
 }
 
 // GetAllGenEncTxQueueEntry returns all GenEncTxQueue entries
@@ -279,13 +279,13 @@ func (k Keeper) GetAllGenEncTxExecutionQueueEntry(
 // GetPrivateRequestQueueEntry returns a queue entry by its identity
 func (k Keeper) GetPrivateRequestQueueEntry(
 	ctx context.Context,
-	reqID string,
+	identity string,
 ) (val commontypes.RequestPrivateDecryptionKey, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateRequestQueueKeyPrefix))
 
 	b := store.Get(types.GenEncTxQueueKey(
-		reqID,
+		identity,
 	))
 	if b == nil {
 		return val, false
@@ -305,7 +305,7 @@ func (k Keeper) SetPrivateReqQueueEntry(
 
 	entry := k.cdc.MustMarshal(&val)
 	store.Set(
-		types.GenEncTxQueueKey(val.GetRequestId()),
+		types.GenEncTxQueueKey(val.GetIdentity()),
 		entry,
 	)
 }
@@ -313,11 +313,11 @@ func (k Keeper) SetPrivateReqQueueEntry(
 // RemovePrivateReqQueueEntry removes an entry from the store
 func (k Keeper) RemovePrivateReqQueueEntry(
 	ctx context.Context,
-	reqID string,
+	identity string,
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateRequestQueueKeyPrefix))
-	store.Delete(types.GenEncTxQueueKey(reqID))
+	store.Delete(types.GenEncTxQueueKey(identity))
 }
 
 // GetAllPrivateReqQueueEntry returns all PrivateQueue entries
@@ -340,13 +340,13 @@ func (k Keeper) GetAllPrivateReqQueueEntry(
 // GetQueueEntry returns a queue entry by its identity
 func (k Keeper) GetPrivateSignalQueueEntry(
 	ctx context.Context,
-	reqID string,
+	identity string,
 ) (val commontypes.GetPrivateDecryptionKey, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateSignalQueueKeyPrefix))
 
 	b := store.Get(types.GenEncTxQueueKey(
-		reqID,
+		identity,
 	))
 	if b == nil {
 		return val, false
@@ -366,7 +366,7 @@ func (k Keeper) SetPrivateSignalQueueEntry(
 
 	entry := k.cdc.MustMarshal(&val)
 	store.Set(
-		types.GenEncTxQueueKey(val.GetRequestId()),
+		types.GenEncTxQueueKey(val.GetIdentity()),
 		entry,
 	)
 }
@@ -374,11 +374,11 @@ func (k Keeper) SetPrivateSignalQueueEntry(
 // RemovePrivateSignalQueueEntry removes an entry from the store
 func (k Keeper) RemovePrivateSignalQueueEntry(
 	ctx context.Context,
-	reqID string,
+	identity string,
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateSignalQueueKeyPrefix))
-	store.Delete(types.GenEncTxQueueKey(reqID))
+	store.Delete(types.GenEncTxQueueKey(identity))
 }
 
 // GetAllPrivateSignalQueueEntry returns all GenEncTxQueue entries

@@ -57,9 +57,9 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				},
 				{
 					RpcMethod:      "GeneralIdentity",
-					Use:            "show-general-identity [req-id]",
-					Short:          "show a particular identity request by request-id",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "req_id"}},
+					Use:            "show-general-identity [identity]",
+					Short:          "show a particular identity request by identity",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "identity"}},
 				},
 				{
 					RpcMethod: "GeneralIdentityAll",
@@ -68,9 +68,9 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				},
 				{
 					RpcMethod:      "PrivateIdentity",
-					Use:            "show-private-identity [req-id]",
-					Short:          "show a particular private identity request by request-id ",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "req_id"}},
+					Use:            "show-private-identity [identity]",
+					Short:          "show a particular private identity request by identity ",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "identity"}},
 				},
 
 				{

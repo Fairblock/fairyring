@@ -33,7 +33,7 @@ message RequestDecryptionKeyPacketData {
   // id can either be a request id or a proposal id
   oneof id {
     string proposal_id = 2;
-    string request_id = 3;
+    string identity = 3;
   }
   google.protobuf.Duration estimated_delay = 4 [(gogoproto.stdduration) = true];
 }
@@ -41,7 +41,7 @@ message RequestDecryptionKeyPacketData {
 // RequestPrivateDecryptionKeyPacketData defines a struct for the packet payload
 message RequestPrivateDecryptionKeyPacketData {
     string requester = 1;
-    string request_id = 2;
+    string identity = 2;
 }
 
 // RequestPrivateDecryptionKeyPacketAck defines a struct for the packet acknowledgment
@@ -81,8 +81,7 @@ message DecryptionKeyDataPacketData {
     string decryption_key = 3;
     string aggr_height    = 4;
     string proposal_id    = 5; // used for private governance
-    string request_id     = 6; // might be useful to destination chains to sort out the response
-    uint64 retries        = 7;
+    uint64 retries        = 6;
 }
 
 // DecryptionKeyPacketAck defines a struct for the packet acknowledgment
@@ -93,7 +92,6 @@ message DecryptionKeyPacketAck {}
 message PrivateDecryptionKeyDataPacketData {
     string identity      = 1;
     string pubkey        = 2;
-    string request_id    = 3;
     repeated fairyring.common.PrivateDecryptionKey private_decryption_key = 4;
 }
 

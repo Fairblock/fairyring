@@ -33,7 +33,7 @@ func TestGetPrivateKeyshares(t *testing.T) {
 	// Test case when entry and pubkey are not found
 	msg := &types.MsgRequestPrivateDecryptionKey{
 		Creator:    creator,
-		ReqId:      "test_req_id_1",
+		Identity:   "test_req_id_1",
 		SecpPubkey: "test_pubkey",
 	}
 
@@ -52,7 +52,7 @@ func TestGetPrivateKeyshares(t *testing.T) {
 	// Ensure the private request is stored
 	entry, found := k.GetPrivateRequest(ctx, "test_req_id_1")
 	require.True(t, found)
-	require.Equal(t, "test_req_id_1", entry.ReqId)
+	require.Equal(t, "test_req_id_1", entry.Identity)
 
 	// Mock the bank keeper for the SendCoinsFromAccountToModule call
 	mockBankKeeper := new(MockBankKeeper)

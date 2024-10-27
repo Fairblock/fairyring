@@ -19,7 +19,6 @@ func createNDecryptionKeyRequests(
 ) []types.DecryptionKeyRequest {
 	items := make([]types.DecryptionKeyRequest, n)
 	for i := range items {
-		items[i].RequestId = fmt.Sprintf("%d/rq", i)
 		items[i].Identity = fmt.Sprintf("%d/rq", i)
 		keeper.SetDecryptionKeyRequest(ctx, items[i])
 	}

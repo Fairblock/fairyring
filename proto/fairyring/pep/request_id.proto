@@ -17,7 +17,7 @@ message RequestId {
 // decryption key requests along with the unaggregated encrypted keyshares
 message PrivateRequest {
   string creator = 1;
-  string req_id = 2;
+  string identity = 2;
   string pubkey = 3;
   repeated fairyring.common.PrivateDecryptionKey private_decryption_keys = 4;
 }

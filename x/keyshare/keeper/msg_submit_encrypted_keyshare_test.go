@@ -38,19 +38,18 @@ func TestEncryptedKeyshareMsgServerCreate(t *testing.T) {
 			Pubkey:                out.MasterPublicKey,
 			IbcInfo:               nil,
 			Counterparty:          nil,
-			RequestId:             idVal,
 			Sent:                  false,
 			PrivateDecryptionKeys: make([]*commontypes.PrivateDecryptionKey, 0),
 		})
 		pk.SetPrivateRequest(wctx, types2.PrivateRequest{
 			Creator:               creator,
-			ReqId:                 idVal,
+			Identity:              idVal,
 			Pubkey:                out.MasterPublicKey,
 			PrivateDecryptionKeys: make([]*commontypes.PrivateDecryptionKey, 0),
 		})
 		pk.SetPrivateReqQueueEntry(wctx, commontypes.RequestPrivateDecryptionKey{
-			Creator:   creator,
-			RequestId: idVal,
+			Creator:  creator,
+			Identity: idVal,
 		})
 
 		derived, err := shares.DeriveShare(out.GeneratedShare[0].Share, 1, idVal)
@@ -92,8 +91,8 @@ func TestEncryptedKeyshareMsgServerFailCases(t *testing.T) {
 	onlyIdVal := random.RandHex(32)
 
 	pk.SetPrivateReqQueueEntry(wctx, commontypes.RequestPrivateDecryptionKey{
-		Creator:   creator,
-		RequestId: onlyIdVal,
+		Creator:  creator,
+		Identity: onlyIdVal,
 	})
 
 	for _, tc := range []struct {
@@ -135,13 +134,12 @@ func TestEncryptedKeyshareMsgServerFailCases(t *testing.T) {
 					Pubkey:                out.MasterPublicKey,
 					IbcInfo:               nil,
 					Counterparty:          nil,
-					RequestId:             onlyIdVal,
 					Sent:                  false,
 					PrivateDecryptionKeys: make([]*commontypes.PrivateDecryptionKey, 0),
 				})
 				pk.SetPrivateRequest(wctx, types2.PrivateRequest{
 					Creator:               creator,
-					ReqId:                 onlyIdVal,
+					Identity:              onlyIdVal,
 					Pubkey:                out.MasterPublicKey,
 					PrivateDecryptionKeys: make([]*commontypes.PrivateDecryptionKey, 0),
 				})

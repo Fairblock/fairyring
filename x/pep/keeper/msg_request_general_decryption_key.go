@@ -21,7 +21,7 @@ func (k msgServer) RequestGeneralDecryptionKey(
 ) (*types.MsgRequestGeneralDecryptionKeyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	entry, found := k.GetEntry(ctx, msg.ReqId)
+	entry, found := k.GetEntry(ctx, msg.Identity)
 	if !found {
 		return &types.MsgRequestGeneralDecryptionKeyResponse{}, errors.New("request not found")
 	}
@@ -33,15 +33,15 @@ func (k msgServer) RequestGeneralDecryptionKey(
 	params := k.GetParams(ctx)
 	if params.IsSourceChain {
 		req := commontypes.GetDecryptionKey{
-			Id:       &commontypes.GetDecryptionKey_RequestId{RequestId: entry.RequestId},
-			Identity: entry.Identity,
+			IsGovernanceProposal: false,
+			Identity:             entry.Identity,
 		}
 
 		k.SetSignalQueueEntry(ctx, req)
 		return &types.MsgRequestGeneralDecryptionKeyResponse{}, nil
 	} else {
 		packetData := kstypes.GetDecryptionKeyPacketData{
-			Identity: msg.ReqId,
+			Identity: msg.Identity,
 		}
 
 		sPort := k.GetPort(ctx)
@@ -58,7 +58,7 @@ func (k msgServer) RequestGeneralDecryptionKey(
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeRequestKeyshare,
-				sdk.NewAttribute(types.AttributeKeyRequestID, msg.ReqId),
+				sdk.NewAttribute(types.AttributeKeyIdentity, msg.Identity),
 			),
 		)
 	}

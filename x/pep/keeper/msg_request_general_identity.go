@@ -27,7 +27,7 @@ func (k msgServer) RequestGeneralIdentity(
 		return nil, types.ErrReqIDAlreadyExists
 	}
 
-	requestIDStr := types.GetReqIDStr(msg.Creator, msg.ReqId)
+	identity := types.GenerateIdentityFromReqID(msg.Creator, msg.ReqId)
 
 	if msg.EstimatedDelay == nil {
 		return &types.MsgRequestGeneralIdentityResponse{}, errors.New("could not parse estimated delay")
@@ -43,20 +43,20 @@ func (k msgServer) RequestGeneralIdentity(
 	if params.IsSourceChain {
 		entry := commontypes.RequestDecryptionKey{
 			Creator:        msg.Creator,
-			Id:             &commontypes.RequestDecryptionKey_RequestId{RequestId: requestIDStr},
+			Id:             &commontypes.RequestDecryptionKey_Identity{Identity: identity},
 			EstimatedDelay: msg.EstimatedDelay,
 		}
 
 		k.SetReqQueueEntry(ctx, entry)
 
 		return &types.MsgRequestGeneralIdentityResponse{
-			ReqId: requestIDStr,
+			Identity: identity,
 		}, nil
 	} else {
 		packetData := kstypes.RequestDecryptionKeyPacketData{
 			Requester: msg.Creator,
-			Id: &kstypes.RequestDecryptionKeyPacketData_RequestId{
-				RequestId: requestIDStr,
+			Id: &kstypes.RequestDecryptionKeyPacketData_Identity{
+				Identity: identity,
 			},
 			EstimatedDelay: msg.EstimatedDelay,
 		}
@@ -76,12 +76,12 @@ func (k msgServer) RequestGeneralIdentity(
 			sdk.NewEvent(
 				types.EventTypeRequestKeyshare,
 				sdk.NewAttribute(types.AttributeKeyCreator, msg.Creator),
-				sdk.NewAttribute(types.AttributeKeyRequestID, requestIDStr),
+				sdk.NewAttribute(types.AttributeKeyIdentity, identity),
 			),
 		)
 
 		return &types.MsgRequestGeneralIdentityResponse{
-			ReqId: requestIDStr,
+			Identity: identity,
 		}, nil
 	}
 }
@@ -129,13 +129,12 @@ func (k Keeper) OnAcknowledgementRequestDecryptionKeyPacket(
 		}
 
 		entry := types.IdentityExecutionEntry{
-			Creator:   data.Requester,
-			RequestId: data.GetRequestId(),
-			Identity:  packetAck.GetIdentity(),
-			Pubkey:    packetAck.GetPubkey(),
+			Creator:  data.Requester,
+			Identity: packetAck.GetIdentity(),
+			Pubkey:   packetAck.GetPubkey(),
 		}
 
-		_, found := k.GetEntry(ctx, entry.RequestId)
+		_, found := k.GetEntry(ctx, entry.Identity)
 		if found {
 			return errors.New("entry already exists")
 		}
@@ -146,7 +145,7 @@ func (k Keeper) OnAcknowledgementRequestDecryptionKeyPacket(
 			sdk.NewEvent(
 				types.EventTypeRequestKeyshare,
 				sdk.NewAttribute(types.AttributeKeyCreator, entry.Creator),
-				sdk.NewAttribute(types.AttributeKeyRequestID, entry.RequestId),
+				sdk.NewAttribute(types.AttributeKeyIdentity, entry.Identity),
 			),
 		)
 

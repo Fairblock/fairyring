@@ -55,9 +55,9 @@ service Query {
     option (google.api.http).get = "/fairyring/pep/pubkey";
   }
 
-  // Queries a General Identity request by request id
+  // Queries a General Identity request by identity
   rpc GeneralIdentity(QueryGeneralIdentityRequest) returns (QueryGeneralIdentityResponse) {
-    option (google.api.http).get = "/fairyring/pep/general_identity/{req_id}";
+    option (google.api.http).get = "/fairyring/pep/general_identity/{identity}";
   }
 
   // Queries a list of General Identity requests
@@ -65,9 +65,9 @@ service Query {
     option (google.api.http).get = "/fairyring/pep/general_identity";
   }
 
-  // Queries a Private Identity request item by req id.
+  // Queries a Private Identity request item by identity
   rpc PrivateIdentity(QueryPrivateIdentityRequest) returns (QueryPrivateIdentityResponse) {
-    option (google.api.http).get = "/Fairblock/fairyring/pep/private_identity/{req_id}";
+    option (google.api.http).get = "/Fairblock/fairyring/pep/private_identity/{identity}";
   }
 
   // Queries a list of DecryptData items.
@@ -90,7 +90,7 @@ message QueryParamsResponse {
 
 // QueryGeneralIdentityRequest is request type for the Query/GeneralIdentity RPC method.
 message QueryGeneralIdentityRequest {
-  string req_id = 1;
+  string identity = 1;
 }
 
 // QueryGeneralIdentityResponse is response type for the Query/GeneralIdentity RPC method.
@@ -181,13 +181,13 @@ message QueryPubkeyResponse {
 
 // QueryPrivateIdentityRequest is request type for the Query/PrivateIdentity RPC method.
 message QueryPrivateIdentityRequest {
-  string req_id = 1;
+  string identity = 1;
 }
 
 // QueryPrivateIdentityResponse is response type for the Query/PrivateIdentity RPC method.
 message QueryPrivateIdentityResponse {
   string creator = 1;
-  string req_id = 2;
+  string identity = 2;
   string pubkey = 3;
   repeated fairyring.common.PrivateDecryptionKey private_decryption_keys = 4;
 }

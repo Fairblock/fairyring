@@ -138,7 +138,6 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 				types.PrivateDecryptionKeyDataPacketData{
 					Identity:             privDecryptionKeyReq.Identity,
 					Pubkey:               privDecryptionKeyReq.Pubkey,
-					RequestId:            privDecryptionKeyReq.RequestId,
 					PrivateDecryptionKey: privDecryptionKeyReq.PrivateDecryptionKeys,
 				},
 				privDecryptionKeyReq.IbcInfo.PortId,
@@ -151,7 +150,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 			}
 		}
 	} else {
-		entry, _ := k.pepKeeper.GetPrivateRequest(ctx, privDecryptionKeyReq.RequestId)
+		entry, _ := k.pepKeeper.GetPrivateRequest(ctx, privDecryptionKeyReq.Identity)
 		entry.PrivateDecryptionKeys = privDecryptionKeyReq.PrivateDecryptionKeys
 		k.pepKeeper.SetPrivateRequest(ctx, entry)
 	}

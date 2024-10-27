@@ -85,7 +85,7 @@ func (k Keeper) OnRecvDecryptionKeyDataPacket(
 		return packetAck, err
 	}
 
-	entry, found := k.GetEntry(ctx, data.RequestId)
+	entry, found := k.GetEntry(ctx, data.Identity)
 	if !found {
 		return packetAck, errors.New("request not found for this id")
 	}
@@ -109,7 +109,7 @@ func (k Keeper) OnRecvPrivDecryptionKeyDataPacket(
 		return packetAck, err
 	}
 
-	entry, found := k.GetPrivateRequest(ctx, data.RequestId)
+	entry, found := k.GetPrivateRequest(ctx, data.Identity)
 	if !found {
 		return packetAck, errors.New("request not found for this id")
 	}

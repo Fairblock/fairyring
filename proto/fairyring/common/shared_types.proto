@@ -9,10 +9,10 @@ option go_package = "github.com/Fairblock/fairyring/x/common/types";
 // RequestDecryptionKey defines a struct for the data payload
 message RequestDecryptionKey {
   string creator = 1;
-  // id can either be a request id or a proposal id
+  // id can either be a identity or a proposal id
   oneof id {
     string proposal_id = 2;
-    string request_id = 3;
+    string identity = 3;
   }
   google.protobuf.Duration estimated_delay = 4 [(gogoproto.stdduration) = true];
 }
@@ -25,11 +25,8 @@ message RequestDecryptionKeyResponse {
 
 // GetDecryptionKey defines a struct for the data payload
 message GetDecryptionKey {
-  // id can either be a request id or a proposal id
-  oneof id {
-    string proposal_id = 1;
-    string request_id = 2;
-  }
+  bool is_governance_proposal = 1;
+  string proposal_id = 2;
   string identity = 3;
 }
 
@@ -38,10 +35,9 @@ message GetDecryptionKeyResponse {}
 
 // GetPrivateDecryptionKey defines a struct for the data payload
 message GetPrivateDecryptionKey {
-  string request_id = 1;
-  string identity = 2;
-  string requester = 3;
-  string secp_pubkey = 4;
+  string identity = 1;
+  string requester = 2;
+  string secp_pubkey = 3;
 }
 
 // GetPrivateDecryptionKeyResponse defines the response to the GetPrivateDecryptionKey message
@@ -68,7 +64,7 @@ message QueuedPublicKey {
 // encrypted and unaggregated keyshares
 message RequestPrivateDecryptionKey {
   string creator = 1;
-  string request_id = 2;
+  string identity = 2;
 }
 
 // PrivateDecryptionKey defines the storage structure for

@@ -298,7 +298,6 @@ func (k msgServer) SubmitGeneralKeyshare(
 						DecryptionKey: decryptionKeyReq.DecryptionKey,
 						AggrHeight:    strconv.FormatInt(ctx.BlockHeight(), 10),
 						ProposalId:    decryptionKeyReq.ProposalId,
-						RequestId:     decryptionKeyReq.RequestId,
 						Retries:       0,
 					},
 					decryptionKeyReq.IbcInfo.PortId,
@@ -327,7 +326,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 				proposal.DecryptionKey = decryptionKeyReq.DecryptionKey
 				k.govKeeper.SetProposal(ctx, proposal)
 			} else {
-				val, _ := k.pepKeeper.GetEntry(ctx, decryptionKeyReq.RequestId)
+				val, _ := k.pepKeeper.GetEntry(ctx, decryptionKeyReq.Identity)
 				val.DecryptionKey = decryptionKeyReq.DecryptionKey
 				k.pepKeeper.SetExecutionQueueEntry(ctx, val)
 				k.pepKeeper.SetEntry(ctx, val)

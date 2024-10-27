@@ -129,14 +129,14 @@ message MsgRequestGeneralIdentity {
 // MsgRequestGeneralIdentityResponse defines the response structure for executing a
 // MsgRequestGeneralIdentity message.
 message MsgRequestGeneralIdentityResponse {
-  string req_id = 1;
+  string identity = 1;
 }
 
 // MsgRequestGeneralDecryptionKey is the Msg/RequestGeneralDecryptionKey request type.
 message MsgRequestGeneralDecryptionKey {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  string req_id = 2;
+  string identity = 2;
 }
 
 // MsgRequestGeneralDecryptionKeyResponse defines the response structure for executing a
@@ -153,14 +153,14 @@ message MsgRequestPrivateIdentity {
 // MsgRequestPrivateIdentityResponse defines the response structure for executing a
 // MsgRequestPrivateIdentity message.
 message MsgRequestPrivateIdentityResponse {
-  string req_id = 1;
+  string identity = 1;
 }
 
 // MsgRequestPrivateDecryptionKey is the Msg/RequestPrivateDecryptionKey request type.
 message MsgRequestPrivateDecryptionKey {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  string req_id = 2;
+  string identity = 2;
   string secp_pubkey = 3;
 }
 

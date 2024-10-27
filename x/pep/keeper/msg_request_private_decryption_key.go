@@ -24,7 +24,7 @@ func (k msgServer) RequestPrivateDecryptionKey(
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	requester := sdk.MustAccAddressFromBech32(msg.Creator)
 
-	entry, found := k.GetPrivateRequest(ctx, msg.ReqId)
+	entry, found := k.GetPrivateRequest(ctx, msg.Identity)
 	if !found {
 		pubkey, found := k.GetActivePubkey(ctx)
 		if !found {
@@ -34,7 +34,7 @@ func (k msgServer) RequestPrivateDecryptionKey(
 		entry.Creator = ""
 		entry.PrivateDecryptionKeys = make([]*commontypes.PrivateDecryptionKey, 0)
 		entry.Pubkey = pubkey.PublicKey
-		entry.ReqId = msg.ReqId
+		entry.Identity = msg.Identity
 
 		k.SetPrivateRequest(ctx, entry)
 	}
@@ -55,8 +55,7 @@ func (k msgServer) RequestPrivateDecryptionKey(
 
 	if params.IsSourceChain {
 		var qentry = commontypes.GetPrivateDecryptionKey{
-			RequestId:  msg.ReqId,
-			Identity:   msg.ReqId,
+			Identity:   msg.Identity,
 			Requester:  msg.Creator,
 			SecpPubkey: msg.SecpPubkey,
 		}
@@ -65,7 +64,7 @@ func (k msgServer) RequestPrivateDecryptionKey(
 		return &types.MsgRequestPrivateDecryptionKeyResponse{}, nil
 	} else {
 		packetData := kstypes.GetPrivateDecryptionKeyPacketData{
-			Identity:   msg.ReqId,
+			Identity:   msg.Identity,
 			Requester:  msg.Creator,
 			SecpPubkey: msg.SecpPubkey,
 		}
@@ -84,7 +83,7 @@ func (k msgServer) RequestPrivateDecryptionKey(
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeGetPrivateKeyshareRequest,
-				sdk.NewAttribute(types.AttributeKeyRequestID, msg.ReqId),
+				sdk.NewAttribute(types.AttributeKeyIdentity, msg.Identity),
 				sdk.NewAttribute("requester", msg.Creator),
 				sdk.NewAttribute("scep256k1_pubkey", msg.SecpPubkey),
 			),

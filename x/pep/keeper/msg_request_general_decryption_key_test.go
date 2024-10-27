@@ -22,8 +22,8 @@ func TestGetGeneralKeyshare(t *testing.T) {
 
 	// Test case when entry is not found
 	msg := &types.MsgRequestGeneralDecryptionKey{
-		Creator: creator,
-		ReqId:   "invalid_req_id",
+		Creator:  creator,
+		Identity: "invalid_req_id",
 	}
 
 	_, err := srv.RequestGeneralDecryptionKey(goCtx, msg)
@@ -32,16 +32,15 @@ func TestGetGeneralKeyshare(t *testing.T) {
 
 	// Test case when creator is unauthorized
 	entry := types.IdentityExecutionEntry{
-		Creator:   "authorized_creator",
-		RequestId: "test_req_id",
-		Identity:  "test_identity",
+		Creator:  "authorized_creator",
+		Identity: "test_identity",
 	}
 
 	k.SetEntry(ctx, entry)
 
 	msg = &types.MsgRequestGeneralDecryptionKey{
-		Creator: "unauthorized_creator",
-		ReqId:   "test_req_id",
+		Creator:  "unauthorized_creator",
+		Identity: "test_req_id",
 	}
 
 	_, err = srv.RequestGeneralDecryptionKey(goCtx, msg)
@@ -52,8 +51,8 @@ func TestGetGeneralKeyshare(t *testing.T) {
 	k.SetParams(ctx, types.Params{IsSourceChain: true})
 
 	msg = &types.MsgRequestGeneralDecryptionKey{
-		Creator: "authorized_creator",
-		ReqId:   "test_req_id",
+		Creator:  "authorized_creator",
+		Identity: "test_req_id",
 	}
 
 	_, err = srv.RequestGeneralDecryptionKey(goCtx, msg)

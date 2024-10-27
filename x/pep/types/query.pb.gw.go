@@ -354,15 +354,15 @@ func request_Query_GeneralIdentity_0(ctx context.Context, marshaler runtime.Mars
 		_   = err
 	)
 
-	val, ok = pathParams["req_id"]
+	val, ok = pathParams["identity"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "req_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "identity")
 	}
 
-	protoReq.ReqId, err = runtime.String(val)
+	protoReq.Identity, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "req_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "identity", err)
 	}
 
 	msg, err := client.GeneralIdentity(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -381,15 +381,15 @@ func local_request_Query_GeneralIdentity_0(ctx context.Context, marshaler runtim
 		_   = err
 	)
 
-	val, ok = pathParams["req_id"]
+	val, ok = pathParams["identity"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "req_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "identity")
 	}
 
-	protoReq.ReqId, err = runtime.String(val)
+	protoReq.Identity, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "req_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "identity", err)
 	}
 
 	msg, err := server.GeneralIdentity(ctx, &protoReq)
@@ -444,15 +444,15 @@ func request_Query_PrivateIdentity_0(ctx context.Context, marshaler runtime.Mars
 		_   = err
 	)
 
-	val, ok = pathParams["req_id"]
+	val, ok = pathParams["identity"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "req_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "identity")
 	}
 
-	protoReq.ReqId, err = runtime.String(val)
+	protoReq.Identity, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "req_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "identity", err)
 	}
 
 	msg, err := client.PrivateIdentity(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -471,15 +471,15 @@ func local_request_Query_PrivateIdentity_0(ctx context.Context, marshaler runtim
 		_   = err
 	)
 
-	val, ok = pathParams["req_id"]
+	val, ok = pathParams["identity"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "req_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "identity")
 	}
 
-	protoReq.ReqId, err = runtime.String(val)
+	protoReq.Identity, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "req_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "identity", err)
 	}
 
 	msg, err := server.PrivateIdentity(ctx, &protoReq)
@@ -1168,11 +1168,11 @@ var (
 
 	pattern_Query_Pubkey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "pubkey"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_GeneralIdentity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "pep", "general_identity", "req_id"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_GeneralIdentity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "pep", "general_identity", "identity"}, "", runtime.AssumeColonVerbOpt(false)))
 
 	pattern_Query_GeneralIdentityAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "pep", "general_identity"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_PrivateIdentity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"Fairblock", "fairyring", "pep", "private_identity", "req_id"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_PrivateIdentity_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"Fairblock", "fairyring", "pep", "private_identity", "identity"}, "", runtime.AssumeColonVerbOpt(false)))
 
 	pattern_Query_DecryptData_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 1, 0, 4, 1, 5, 6}, []string{"Fairblock", "fairyring", "pep", "decrypt_data", "pubkey", "decryption_key", "encrypted_data"}, "", runtime.AssumeColonVerbOpt(false)))
 )

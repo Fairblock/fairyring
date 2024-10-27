@@ -53,11 +53,11 @@ type QueryClient interface {
 	PepNonceAll(ctx context.Context, in *QueryPepNonceAllRequest, opts ...grpc.CallOption) (*QueryPepNonceAllResponse, error)
 	// Queries the public keys
 	Pubkey(ctx context.Context, in *QueryPubkeyRequest, opts ...grpc.CallOption) (*QueryPubkeyResponse, error)
-	// Queries a General Identity request by request id
+	// Queries a General Identity request by identity
 	GeneralIdentity(ctx context.Context, in *QueryGeneralIdentityRequest, opts ...grpc.CallOption) (*QueryGeneralIdentityResponse, error)
 	// Queries a list of General Identity requests
 	GeneralIdentityAll(ctx context.Context, in *QueryGeneralIdentityAllRequest, opts ...grpc.CallOption) (*QueryGeneralIdentityAllResponse, error)
-	// Queries a Private Identity request item by req id.
+	// Queries a Private Identity request item by identity
 	PrivateIdentity(ctx context.Context, in *QueryPrivateIdentityRequest, opts ...grpc.CallOption) (*QueryPrivateIdentityResponse, error)
 	// Queries a list of DecryptData items.
 	DecryptData(ctx context.Context, in *QueryDecryptDataRequest, opts ...grpc.CallOption) (*QueryDecryptDataResponse, error)
@@ -199,11 +199,11 @@ type QueryServer interface {
 	PepNonceAll(context.Context, *QueryPepNonceAllRequest) (*QueryPepNonceAllResponse, error)
 	// Queries the public keys
 	Pubkey(context.Context, *QueryPubkeyRequest) (*QueryPubkeyResponse, error)
-	// Queries a General Identity request by request id
+	// Queries a General Identity request by identity
 	GeneralIdentity(context.Context, *QueryGeneralIdentityRequest) (*QueryGeneralIdentityResponse, error)
 	// Queries a list of General Identity requests
 	GeneralIdentityAll(context.Context, *QueryGeneralIdentityAllRequest) (*QueryGeneralIdentityAllResponse, error)
-	// Queries a Private Identity request item by req id.
+	// Queries a Private Identity request item by identity
 	PrivateIdentity(context.Context, *QueryPrivateIdentityRequest) (*QueryPrivateIdentityResponse, error)
 	// Queries a list of DecryptData items.
 	DecryptData(context.Context, *QueryDecryptDataRequest) (*QueryDecryptDataResponse, error)

@@ -95,7 +95,6 @@ func (k Keeper) OnRecvGetPrivateDecryptionKeyPacket(
 		}
 
 		keyshareReq.PrivateDecryptionKeys = make([]*commontypes.PrivateDecryptionKey, 0)
-		keyshareReq.RequestId = data.Identity
 		keyshareReq.Sent = false
 
 		k.SetPrivateDecryptionKeyRequest(ctx, keyshareReq)

@@ -32,6 +32,6 @@ func RequestIdKey(
 	return key
 }
 
-func GetReqIDStr(creator string, requestID string) string {
+func GenerateIdentityFromReqID(creator string, requestID string) string {
 	return fmt.Sprintf("%s/%s", creator, requestID)
 }

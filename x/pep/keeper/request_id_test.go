@@ -59,7 +59,7 @@ func createNPrivateRequestId(keeper keeper.Keeper, ctx context.Context, n int) [
 	items := make([]types.PrivateRequest, n)
 	for i := range items {
 		items[i].Creator = sample.AccAddress()
-		items[i].ReqId = random.RandHex(16)
+		items[i].Identity = random.RandHex(16)
 		items[i].PrivateDecryptionKeys = make([]*commontypes.PrivateDecryptionKey, 0)
 
 		keeper.SetPrivateRequest(ctx, items[i])
@@ -72,7 +72,7 @@ func TestPrivateRequestIdGet(t *testing.T) {
 	items := createNPrivateRequestId(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetPrivateRequest(ctx,
-			item.ReqId,
+			item.Identity,
 		)
 		require.True(t, found)
 		require.Equal(t,

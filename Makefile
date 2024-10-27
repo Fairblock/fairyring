@@ -183,8 +183,8 @@ test-block-tx-limit: init-test-block-limit-framework \
 integration-test-all: init-test-framework \
 	init-relayer \
 	test-keyshare-module
-	-@rm -rf ./data
-	./scripts/tests/stop.sh
+	# -@rm -rf ./data
+	# ./scripts/tests/stop.sh
 
 devnet-up: init-devnet
 	@echo "Fairyring Devnet is now running in the background, run 'make devnet-down' to stop devnet."
