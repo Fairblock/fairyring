@@ -17,5 +17,5 @@ message Params {
   repeated string trusted_addresses = 4 [(gogoproto.moretags) = "yaml:\"trusted_addresses\""];
   bytes slash_fraction_no_keyshare = 5 [(gogoproto.customtype) = "cosmossdk.io/math.LegacyDec", (gogoproto.nullable) = false, (gogoproto.moretags) = "yaml:\"slash_fraction_no_keyshare\""];
   bytes slash_fraction_wrong_keyshare = 6 [(gogoproto.customtype) = "cosmossdk.io/math.LegacyDec", (gogoproto.nullable) = false, (gogoproto.moretags) = "yaml:\"slash_fraction_wrong_keyshare\""];
-
+  float avg_block_time = 7 [(gogoproto.moretags) = "yaml:\"avg_block_time\""];
 }
