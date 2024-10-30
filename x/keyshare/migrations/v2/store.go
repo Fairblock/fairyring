@@ -15,7 +15,9 @@ func MigrateStore(ctx sdk.Context, storeService store.KVStoreService, cdc codec.
 		types.DefaultMinimumBonded,
 		types.DefaultSlashFractionNoKeyshare,
 		types.DefaultSlashFractionWrongKeyshare,
-		types.DefaultMaxIdledBlock)
+		types.DefaultMaxIdledBlock,
+		types.DefaultAvgBlockTime,
+	)
 
 	bz, err := cdc.Marshal(&currParams)
 	if err != nil {

@@ -150,6 +150,9 @@ sed -i -e 's/"trusted_counter_parties": \[\]/"trusted_counter_parties": \['"$TRU
 sed -i -e 's/"key_expiry": "100"/"key_expiry": "10000"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 sed -i -e 's/"key_expiry": "100"/"key_expiry": "10000"/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
 
+sed -i -e 's/"avg_block_time": 5.6/"avg_block_time": 1.12/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
+sed -i -e 's/"avg_block_time": 5.6/"avg_block_time": 1.12/g' $CHAIN_DIR/$CHAINID_2/config/genesis.json
+
 sed -i -e 's/"is_source_chain": false/"is_source_chain": true/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json
 
 jsonData2=$(cat "$CHAIN_DIR/$CHAINID_2/config/genesis.json")

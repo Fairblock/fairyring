@@ -41,6 +41,11 @@ var (
 	DefaultMaxIdledBlock uint64 = 10
 )
 
+var (
+	KeyAvgBlockTime             = []byte("KeyAvgBlockTime")
+	DefaultAvgBlockTime float32 = 5.6
+)
+
 // ParamKeyTable the param key table for launch module
 func ParamKeyTable() paramtypes.KeyTable {
 	return paramtypes.NewKeyTable().RegisterParamSet(&Params{})
@@ -54,6 +59,7 @@ func NewParams(
 	noKeyshareFraction math.LegacyDec,
 	wrongKeyshareFraction math.LegacyDec,
 	maxIdledBlock uint64,
+	avgBlockTime float32,
 ) Params {
 	return Params{
 		KeyExpiry:                  keyExp,
@@ -62,6 +68,7 @@ func NewParams(
 		SlashFractionWrongKeyshare: wrongKeyshareFraction,
 		MaxIdledBlock:              maxIdledBlock,
 		MinimumBonded:              minimumBonded,
+		AvgBlockTime:               avgBlockTime,
 	}
 }
 
@@ -74,6 +81,7 @@ func DefaultParams() Params {
 		DefaultSlashFractionNoKeyshare,
 		DefaultSlashFractionWrongKeyshare,
 		DefaultMaxIdledBlock,
+		DefaultAvgBlockTime,
 	)
 }
 
@@ -86,6 +94,7 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(KeySlashFractionNoKeyshare, &p.SlashFractionNoKeyshare, validateSlashFractionNoKeyshare),
 		paramtypes.NewParamSetPair(KeySlashFractionWrongKeyshare, &p.SlashFractionWrongKeyshare, validateSlashFractionWrongKeyshare),
 		paramtypes.NewParamSetPair(KeyMaxIdledBlock, &p.MaxIdledBlock, validateMaxIdledBlock),
+		paramtypes.NewParamSetPair(KeyAvgBlockTime, &p.AvgBlockTime, validateAvgBlockTime),
 	}
 }
 
@@ -171,6 +180,16 @@ func validateSlashFractionWrongKeyshare(v interface{}) error {
 // validateMaxIdledBlock validates the MaxIdledBlock param
 func validateMaxIdledBlock(v interface{}) error {
 	_, ok := v.(uint64)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+
+	return nil
+}
+
+// validateAvgBlockTime validates the AvgBlockTime param
+func validateAvgBlockTime(v interface{}) error {
+	_, ok := v.(float32)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", v)
 	}

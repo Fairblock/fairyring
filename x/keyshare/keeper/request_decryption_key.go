@@ -51,7 +51,8 @@ func (k Keeper) OnRecvRequestDecryptionKeyPacket(
 	}
 
 	delay := data.EstimatedDelay
-	blockDelay := uint64(math.Ceil(delay.Seconds() / types.AvgBlockTime))
+	avgBlockTime := k.AvgBlockTime(ctx)
+	blockDelay := uint64(math.Ceil(delay.Seconds() / float64(avgBlockTime)))
 	currentHeight := uint64(ctx.BlockHeight())
 	executionHeight := currentHeight + blockDelay
 	if executionHeight > activePubkey.Expiry {

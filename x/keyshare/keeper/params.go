@@ -64,3 +64,8 @@ func (k Keeper) SlashFractionWrongKeyshare(ctx sdk.Context) (res math.LegacyDec)
 func (k Keeper) MaxIdledBlock(ctx sdk.Context) (res uint64) {
 	return k.GetParams(ctx).MaxIdledBlock
 }
+
+// AvgBlockTime returns the MaxIdledBlock param
+func (k Keeper) AvgBlockTime(ctx sdk.Context) (res float32) {
+	return k.GetParams(ctx).AvgBlockTime
+}

@@ -27,7 +27,8 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 			continue
 		}
 		delay := req.EstimatedDelay
-		blockDelay := uint64(math.Ceil(delay.Seconds() / types.AvgBlockTime))
+		avgBlockTime := k.AvgBlockTime(ctx)
+		blockDelay := uint64(math.Ceil(delay.Seconds() / float64(avgBlockTime)))
 		currentHeight := uint64(ctx.BlockHeight())
 		executionHeight := currentHeight + blockDelay
 		if executionHeight > activePubkey.Expiry {
@@ -189,7 +190,8 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 	reqs := k.govKeeper.GetAllReqQueueEntry(ctx)
 	for _, req := range reqs {
 		delay := req.EstimatedDelay
-		blockDelay := uint64(math.Ceil(delay.Seconds() / types.AvgBlockTime))
+		avgBlockTime := k.AvgBlockTime(ctx)
+		blockDelay := uint64(math.Ceil(delay.Seconds() / float64(avgBlockTime)))
 
 		currentHeight := uint64(ctx.BlockHeight())
 		executionHeight := currentHeight + blockDelay
