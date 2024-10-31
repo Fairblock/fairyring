@@ -774,7 +774,7 @@ func (am AppModule) decryptAndExecuteTx(
 			txFee[0].Denom,
 			// Tx Fee Amount Divide Provide Gas => provided gas price
 			// Provided Gas Price * Gas Used => Amount to deduct as gas fee
-			txFee[0].Amount.Quo(gasProvided).Mul(gasUsedInBig),
+			txFee[0].Amount.Mul(gasUsedInBig).Quo(gasProvided),
 		)
 
 		if eachTx.ChargedGas == nil {
