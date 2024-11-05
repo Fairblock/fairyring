@@ -156,12 +156,35 @@ echo "Sending 1 $TARGET_BAL_DENOM to target address"
 $BINARY tx bank send $VALIDATOR_2 $WALLET_2 1$TARGET_BAL_DENOM --from $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --keyring-backend test --generate-only -o json -y > unsigned2.json
 SIGNED_DATA_2=$($BINARY tx sign unsigned2.json --from $VALIDATOR_2 --offline --account-number 0 --sequence $PEP_NONCE_2ND --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE  --keyring-backend test -y)
 
+echo "Creating new account for testing insufficient fund for rest of the gas in encrypted tx"
+ACC_INFO=$($BINARY keys add new_temp --home $CHAIN_DIR/$CHAINID_2 --keyring-backend test --output json)
+echo $ACC_INFO
+NEW_ACC_ADDR=$(echo $ACC_INFO | jq -r '.address')
+
+echo "Send 300k ufairy to new account for testing"
+# 900,000 ufairy for submitting tx
+# the underlying tx suppossingly need 200,000ufairy gas
+# 1 ufairy for the up front gas cost when submitting encrypted tx
+$BINARY tx bank send $VALIDATOR_2 $NEW_ACC_ADDR 1100000ufairy --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --keyring-backend test --yes
+
+sleep 5
+
+NEW_ACC_INFO=$($BINARY q auth account $NEW_ACC_ADDR --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE --output json)
+echo $NEW_ACC_INFO
+
+RESULT=$($BINARY query pep show-pep-nonce $NEW_ACC_ADDR --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
+
+NEW_ACC_PEP_NONCE=$(echo "$RESULT" | jq -r '.pep_nonce.nonce')
+$BINARY tx bank send $NEW_ACC_ADDR $VALIDATOR_2 1ufairy --from new_temp --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --keyring-backend test --generate-only -o json -y > unsigned3.json
+SIGNED_DATA_3=$($BINARY tx sign unsigned3.json --from new_temp --offline --account-number 10 --sequence $NEW_ACC_PEP_NONCE --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE  --keyring-backend test -y)
 
 echo "Query aggregated key share from key share module for submitting to pep module on chain fairyring_test_1"
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE -o json | jq -r '.block.header.height')
 RESULT=$($BINARY query keyshare list-decryption-keys --node $CHAIN1_NODE -o json)
 AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.decryption_keys | last | .height')
 AGG_KEY=$(echo "$RESULT" | jq -r '.decryption_keys | last | .data')
+
+sleep 5
 
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE -o json | jq -r '.block.header.height')
 echo "Chain 2 Current Block: $CURRENT_BLOCK"
@@ -195,10 +218,12 @@ CIPHER=$($BINARY encrypt $AGG_KEY_HEIGHT "" $SIGNED_DATA --node $CHAIN1_NODE)
 echo "Encrypting 2nd signed tx with Pub key: '$PUB_KEY'"
 CIPHER_2=$($BINARY encrypt $AGG_KEY_HEIGHT "" $SIGNED_DATA_2 --node $CHAIN1_NODE)
 
+echo "Encrypting 3rd signed tx with Pub key: '$PUB_KEY'"
+CIPHER_3=$($BINARY encrypt $AGG_KEY_HEIGHT "" $SIGNED_DATA_3 --node $CHAIN1_NODE)
 
 rm -r unsigned.json &> /dev/null
 rm -r unsigned2.json &> /dev/null
-
+rm -r unsigned3.json &> /dev/null
 
 RESULT=$($BINARY query bank balances $VALIDATOR_2 --node $CHAIN2_NODE -o json)
 BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
@@ -254,6 +279,25 @@ if [ "$VALIDATOR_PEP_NONCE" != "1" ]; then
   echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
   exit 1
 fi
+
+echo "Submit 3rd encrypted tx to pep module on chain fairyring_test_2"
+RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER_3 $AGG_KEY_HEIGHT --from new_temp --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+TARGET_HEIGHT=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("new-encrypted-tx-submitted"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("height"))))[]' | jq -r '.value')
+if [ "$TARGET_HEIGHT" != "$AGG_KEY_HEIGHT" ]; then
+  echo "ERROR: Pep module submit 3rd encrypted tx error. Expected tx to submitted without error with target height '$AGG_KEY_HEIGHT', got '$TARGET_HEIGHT' and '$EVENT_TYPE' | '$CURRENT_BLOCK'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq '.')"
+  echo $RESULT | jq
+  exit 1
+fi
+
+
+RESULT=$($BINARY query bank balances $NEW_ACC_ADDR --node $CHAIN2_NODE -o json)
+BAL_DENOM=$(echo "$RESULT" | jq -r '.balances[0].denom')
+BAL_AMT=$(echo "$RESULT" | jq -r '.balances[0].amount')
+echo "Balance after submitting second encrypted tx: $BAL_AMT$BAL_DENOM"
 
 
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_2 --node $CHAIN2_NODE -o json | jq -r '.block.header.height')
@@ -328,6 +372,7 @@ fi
 
 FIRST_ENCRYPTED_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq -r '.encrypted_tx_array[0].encrypted_txs[0].processed_at_chain_height')
 SECOND_ENCRYPTED_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq -r '.encrypted_tx_array[0].encrypted_txs[1].processed_at_chain_height')
+THIRD_ENCRYPTED_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq -r '.encrypted_tx_array[0].encrypted_txs[2].processed_at_chain_height')
 
 echo "First Encrypted tx processed at height: $FIRST_ENCRYPTED_TX_HEIGHT, 2nd one processed at: $SECOND_ENCRYPTED_TX_HEIGHT"
 
@@ -343,7 +388,80 @@ if [[ "$SECOND_EVENT" != *"coin_received"* ]]; then
   echo "ERROR: Pep module expected second encrypted tx succeeded with events, got: $SECOND_EVENT instead"
   exit 1
 fi
-echo "Second Encrypted TX succeeded with Events: $(echo $SECOND_EVENT | jq) as expected."
+echo "Second Encrypted TX succeeded as expected."
+
+echo "Third Encrypted TX: "
+THIRD_EVENT=$($BINARY q block-results $THIRD_ENCRYPTED_TX_HEIGHT -o json | jq '.finalize_block_events[] | select(.type == "reverted-encrypted-tx") | .attributes[] | select(.key == "reason") | .value')
+if [[ "$THIRD_EVENT" != *"insufficient fees"* ]]; then
+  echo "ERROR: Pep module expected third encrypted tx failed with reason insufficient fee, got: $THIRD_EVENT instead"
+  exit 1
+fi
+echo "Third Encrypted TX Failed with Reason: $THIRD_EVENT as expected."
+
+
+RESULT=$($BINARY query pep show-pep-nonce $VALIDATOR_2 --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE -o json)
+LOOP_PEP_NONCE=$(echo "$RESULT" | jq -r '.pep_nonce.nonce')
+echo "PEP Nonce for the wasm contract loop test: $LOOP_PEP_NONCE"
+RESULT=$($BINARY tx wasm store ./scripts/tests/loop.wasm -y --output json --home $CHAIN_DIR/$CHAINID_2 --gas-prices 1ufairy --chain-id $CHAINID_2 --node $CHAIN2_NODE --from $VALIDATOR_2 --keyring-backend test --gas 2000000)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+
+RESULT=$($BINARY tx wasm instantiate 1 '{}' -y --output json --home $CHAIN_DIR/$CHAINID_2 --gas-prices 1ufairy --chain-id $CHAINID_2 --node $CHAIN2_NODE --from $VALIDATOR_2 --keyring-backend test --admin $VALIDATOR_2 --label foo)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+
+CONTRACT_ADDR=$($BINARY q wasm list-contracts-by-code 1 --output=json | jq -r '.contracts[0]')
+
+$BINARY tx wasm execute $CONTRACT_ADDR '{"identity": "", "pubkey": "", "decryption_key": ""}' -y --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --from $VALIDATOR_2 --keyring-backend test --chain-id $CHAINID_2 --generate-only > execute_loop_unsigned.json
+
+$BINARY tx sign execute_loop_unsigned.json --home $CHAIN_DIR/$CHAINID_2 --gas-prices 1ufairy --account-number 0 --sequence $LOOP_PEP_NONCE --from $VALIDATOR_2 --keyring-backend test --chain-id $CHAINID_2 > execute_loop.json
+TARGET_HEIGHT=$(($($BINARY q pep latest-height --node $CHAIN1_NODE -o json | jq -r '.height') + 15))
+
+$BINARY encrypt $TARGET_HEIGHT '' "$(cat execute_loop.json)" --node $CHAIN2_NODE --home $CHAIN_DIR/$CHAINID_2 > execute_loop.hex
+RESULT=$($BINARY tx pep submit-encrypted-tx $(cat execute_loop.hex) $TARGET_HEIGHT -y --output json --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --from $VALIDATOR_2 --keyring-backend test --chain-id $CHAINID_2)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx $RESULT)
+
+while true; do
+  CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_DIR/$CHAINID_1 --node $CHAIN1_NODE -o json | jq -r '.block.header.height')
+  RESULT=$($BINARY query keyshare list-decryption-keys --node $CHAIN1_NODE -o json)
+  AGG_KEY_HEIGHT=$(echo "$RESULT" | jq -r '.decryption_keys | last | .height')
+  echo "Getting decryption key on chain 1: aggr key height: $AGG_KEY_HEIGHT & Encrypted TX Target Height: $TARGET_HEIGHT"
+  AGG_KEY=$(echo "$RESULT" | jq -r '.decryption_keys | last | .data')
+  if [[ "$AGG_KEY_HEIGHT" -eq "$TARGET_HEIGHT" ]]; then
+    break
+  fi
+  sleep 1
+done
+
+echo "Submit valid aggregated key to pep module on chain fairyring_test_2 from address: $VALIDATOR_2"
+RESULT=$($BINARY tx pep submit-decryption-key $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+echo $RESULT
+check_tx_code $RESULT
+echo $RESULT
+RESULT=$(wait_for_tx $RESULT)
+echo $RESULT
+ACTION=$(echo "$RESULT" | jq -r | jq '.events' | jq 'map(select(any(.type; contains("message"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("action"))))[]' | jq -r '.value')
+if [ "$ACTION" != "/fairyring.pep.MsgSubmitDecryptionKey" ]; then
+  echo "ERROR: Pep module submit decryption key error. Expected tx action to be MsgSubmitDecryptionKey,  got '$ACTION'"
+  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
+  exit 1
+fi
+
+rm execute_loop.hex &> /dev/null
+rm execute_loop.json &> /dev/null
+rm execute_loop_unsigned.json &> /dev/null
+
+echo "If the loop contract bug works, test script will be stucked right here."
+
+$BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq
+LOOP_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq -r '.encrypted_tx_array[1].encrypted_txs[0].processed_at_chain_height')
+LOOP_TC_EVENT=$($BINARY q block-results $LOOP_TX_HEIGHT -o json | jq '.finalize_block_events[] | select(.type == "reverted-encrypted-tx") | .attributes[] | select(.key == "reason") | .value')
+LOOP_TC_EVENT_2=$($BINARY q block-results $LOOP_TX_HEIGHT -o json | jq '.finalize_block_events[] | select(.type == "executed-encrypted-tx") | .attributes[] | select(.key == "events") | .value')
+
+echo "Test loop"
+echo $LOOP_TC_EVENT | jq
+echo $LOOP_TC_EVENT_2 | jq
 
 echo "#############################################"
 echo "Testing general keyshare on source chain"
