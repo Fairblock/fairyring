@@ -1,1 +1,1 @@
-8d0f9a419565f07832c886b48a8ec6dc79b374ee94fcaa7291c07ab83cbb9ac6  fairyring_contract.wasm
+7c4d15da244b9af07d188fea47e7907fdde3e2a9413b1ecf451bc63d47a2b85d  fairyring_contract.wasm

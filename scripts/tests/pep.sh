@@ -918,6 +918,49 @@ echo "Query Contract state"
 RSP=$($BINARY q wasm contract-state smart $CONTRACT_ADDR '{"get_stored_data":{"identity": "'"$TARGET_HEIGHT"'"}}' --node $CHAIN1_NODE -o json)
 echo $RSP
 
+echo "Testing gas capping mechanism in contract callback"
+echo "Creating new General keyshare Request on chain fairyring_test_1"
+RESULT=$($BINARY tx pep request-general-identity 30s loop --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+
+sleep 5
+
+IDENTITY="fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/loop"
+
+echo "Registering contract with identity"
+RESULT=$($BINARY tx pep register-contract $CONTRACT_ADDR $IDENTITY --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+check_tx_code $RESULT
+RESULT=$(wait_for_tx_source $RESULT)
+
+sleep 5
+
+echo "Request Generation of Aggr keyshare"
+RESULT=$($BINARY tx pep request-general-decryption-key $IDENTITY --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+echo "$RESULT"
+check_tx_code $RESULT
+
+sleep 5
+
+EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $IDENTITY)
+EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
+
+while true; do
+  echo "Submitting General Key Share"
+  
+  RESULT=$($BINARY tx keyshare submit-general-keyshare "private-gov-identity" $IDENTITY $EXTRACTED_SHARE 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+  echo "$RESULT"
+  check_tx_err $RESULT
+  if [ $? -eq 0 ]; then
+    break
+  fi
+done
+
+sleep 8
+
+echo "Query Contract state [should fail]"
+RSP=$($BINARY q wasm contract-state smart $CONTRACT_ADDR '{"get_stored_data":{"identity": "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/loop"}}' --node $CHAIN1_NODE -o json)
+echo $RSP
+
 echo "#########################################################"
 echo "# Testing decryption from contract request source chain #"
 echo "#########################################################"
