@@ -114,7 +114,8 @@ func (k Keeper) ExecuteContract(ctx sdk.Context, contractAddr string, msg types.
 	gasLimit := k.MaxContractGas(ctx)
 
 	// Create a new context with a gas meter
-	gasCtx := ctx.WithGasMeter(storetypes.NewGasMeter(gasLimit))
+	gasCtx := ctx
+	gasCtx = gasCtx.WithGasMeter(storetypes.NewGasMeter(gasLimit))
 
 	// Execute the contract within the gas-limited context
 	_, err = k.contractKeeper.Execute(gasCtx, addr, wasmAddr, msgBytes, sdk.Coins{})
