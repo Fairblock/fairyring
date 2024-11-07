@@ -3,6 +3,7 @@ package pep
 import (
 	"bytes"
 	"context"
+	storetypes "cosmossdk.io/store/types"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -819,8 +820,21 @@ func (am AppModule) decryptAndExecuteTx(
 		}
 	}
 
+	defer func(sdkCtx sdk.Context, tx DecryptionTx, startGas uint64) {
+		if r := recover(); r != nil {
+			am.keeper.Logger().Error("recovered from panic in contract execution", "error", r)
+			am.processFailedEncryptedTx(sdkCtx, tx, fmt.Sprintf("panic when handling tx message: %v", r), startGas)
+		}
+	}(ctx, eachTx, startConsumedGas)
+
 	handler := am.msgServiceRouter.Handler(txMsgs[0])
-	handlerResult, err := handler(ctx, txMsgs[0])
+	gasMax := am.keeper.GetParams(ctx).MinGasPrice.Amount.Uint64()
+	if eachTx.ChargedGas != nil {
+		gasMax = eachTx.ChargedGas.Amount.Uint64()
+	}
+	am.keeper.Logger().Info(fmt.Sprintf("What is the gas Max nunmber: %d charged gas ? %d", gasMax, eachTx.ChargedGas.Amount.Uint64()))
+	gasCtx := ctx.WithGasMeter(storetypes.NewGasMeter(gasMax))
+	handlerResult, err := handler(gasCtx, txMsgs[0])
 	if err != nil {
 		am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error when handling tx message: %s", err.Error()), startConsumedGas)
 		return err
