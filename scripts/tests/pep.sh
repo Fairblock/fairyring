@@ -165,7 +165,7 @@ echo "Send 300k ufairy to new account for testing"
 # 900,000 ufairy for submitting tx
 # the underlying tx suppossingly need 200,000ufairy gas
 # 1 ufairy for the up front gas cost when submitting encrypted tx
-$BINARY tx bank send $VALIDATOR_2 $NEW_ACC_ADDR 1100000ufairy --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --keyring-backend test --yes
+$BINARY tx bank send $VALIDATOR_2 $NEW_ACC_ADDR 1200000ufairy --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --keyring-backend test --yes
 
 sleep 5
 
@@ -412,6 +412,12 @@ RESULT=$(wait_for_tx $RESULT)
 
 CONTRACT_ADDR=$($BINARY q wasm list-contracts-by-code 1 --output=json | jq -r '.contracts[0]')
 
+echo ""
+echo ""
+echo "Contract Addr: $CONTRACT_ADDR"
+echo ""
+echo ""
+
 $BINARY tx wasm execute $CONTRACT_ADDR '{"identity": "", "pubkey": "", "decryption_key": ""}' -y --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --from $VALIDATOR_2 --keyring-backend test --chain-id $CHAINID_2 --generate-only > execute_loop_unsigned.json
 
 $BINARY tx sign execute_loop_unsigned.json --home $CHAIN_DIR/$CHAINID_2 --gas-prices 1ufairy --account-number 0 --sequence $LOOP_PEP_NONCE --from $VALIDATOR_2 --keyring-backend test --chain-id $CHAINID_2 > execute_loop.json
@@ -434,13 +440,13 @@ while true; do
   sleep 1
 done
 
+RESULT=$($BINARY query bank balances $VALIDATOR_2 --node $CHAIN2_NODE -o json)
+echo "Bank balance before executing wasm loop contract tx: $(echo $RESULT | jq)"
+
 echo "Submit valid aggregated key to pep module on chain fairyring_test_2 from address: $VALIDATOR_2"
 RESULT=$($BINARY tx pep submit-decryption-key $AGG_KEY_HEIGHT $AGG_KEY --from $VALIDATOR_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
-echo $RESULT
 check_tx_code $RESULT
-echo $RESULT
 RESULT=$(wait_for_tx $RESULT)
-echo $RESULT
 ACTION=$(echo "$RESULT" | jq -r | jq '.events' | jq 'map(select(any(.type; contains("message"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("action"))))[]' | jq -r '.value')
 if [ "$ACTION" != "/fairyring.pep.MsgSubmitDecryptionKey" ]; then
   echo "ERROR: Pep module submit decryption key error. Expected tx action to be MsgSubmitDecryptionKey,  got '$ACTION'"
@@ -454,14 +460,15 @@ rm execute_loop_unsigned.json &> /dev/null
 
 echo "If the loop contract bug works, test script will be stucked right here."
 
-$BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq
 LOOP_TX_HEIGHT=$($BINARY query pep list-encrypted-tx --node $CHAIN2_NODE -o json | jq -r '.encrypted_tx_array[1].encrypted_txs[0].processed_at_chain_height')
 LOOP_TC_EVENT=$($BINARY q block-results $LOOP_TX_HEIGHT -o json | jq '.finalize_block_events[] | select(.type == "reverted-encrypted-tx") | .attributes[] | select(.key == "reason") | .value')
 LOOP_TC_EVENT_2=$($BINARY q block-results $LOOP_TX_HEIGHT -o json | jq '.finalize_block_events[] | select(.type == "executed-encrypted-tx") | .attributes[] | select(.key == "events") | .value')
 
-echo "Test loop"
 echo $LOOP_TC_EVENT | jq
 echo $LOOP_TC_EVENT_2 | jq
+
+RESULT=$($BINARY query bank balances $VALIDATOR_2 --node $CHAIN2_NODE -o json)
+echo "Bank balance AFTER executing wasm loop contract tx: $(echo $RESULT | jq)"
 
 echo "#############################################"
 echo "Testing general keyshare on source chain"
