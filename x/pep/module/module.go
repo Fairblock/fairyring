@@ -832,7 +832,7 @@ func (am AppModule) decryptAndExecuteTx(
 	if eachTx.ChargedGas != nil {
 		gasMax = eachTx.ChargedGas.Amount.Uint64()
 	}
-	am.keeper.Logger().Info(fmt.Sprintf("What is the gas Max nunmber: %d charged gas ? %d", gasMax, eachTx.ChargedGas.Amount.Uint64()))
+
 	gasCtx := ctx.WithGasMeter(storetypes.NewGasMeter(gasMax))
 	handlerResult, err := handler(gasCtx, txMsgs[0])
 	if err != nil {
