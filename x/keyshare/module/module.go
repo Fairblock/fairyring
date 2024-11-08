@@ -182,12 +182,15 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			continue
 		}
 		bondedVal, err := am.stakingKeeper.GetValidator(ctx, sdk.ValAddress(accAddr))
-		if err != nil {
+		if err != nil || !bondedVal.IsBonded() {
 			am.keeper.RemoveValidatorSet(ctx, eachValidator.Validator)
-			continue
-		}
-		if !bondedVal.IsBonded() {
-			am.keeper.RemoveValidatorSet(ctx, eachValidator.Validator)
+			for _, v := range am.keeper.GetAllAuthorizedAddress(ctx) {
+				if v.AuthorizedBy == eachValidator.Validator {
+					am.keeper.RemoveAuthorizedAddress(ctx, v.Target)
+					am.keeper.DecreaseAuthorizedCount(ctx, eachValidator.Validator)
+					break
+				}
+			}
 		}
 	}
 
