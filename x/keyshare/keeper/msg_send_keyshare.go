@@ -62,6 +62,20 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		return nil, types.ErrCommitmentsNotFound
 	}
 
+	pubKey, found := k.GetActivePubkey(ctx)
+	if !found {
+		return nil, types.ErrPubkeyNotFound
+	}
+
+	if ctx.IsCheckTx() && msg.BlockHeight >= pubKey.Expiry {
+		queuedCommits, found := k.GetQueuedCommitments(ctx)
+		if !found {
+			return nil, types.ErrCommitmentsNotFound
+		}
+		k.Logger().Info("IsCheckTX && keyshare height is next epoch, using queued commitments for verification")
+		commitments = queuedCommits
+	}
+
 	commitmentsLen := uint64(len(commitments.Commitments))
 	if msg.KeyshareIndex > commitmentsLen {
 		return nil, types.ErrInvalidKeyshareIndex.Wrap(fmt.Sprintf("Expect Index within: %d, got: %d", commitmentsLen, msg.KeyshareIndex))
