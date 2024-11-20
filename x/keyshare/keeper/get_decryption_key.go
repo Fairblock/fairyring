@@ -53,6 +53,9 @@ func (k Keeper) OnRecvGetDecryptionKeyPacket(
 		)
 	}
 
+	keyshareReq.SignalValidators = true
+	k.SetDecryptionKeyRequest(ctx, keyshareReq)
+
 	return packetAck, nil
 }
 
@@ -111,6 +114,9 @@ func (k Keeper) OnRecvGetPrivateDecryptionKeyPacket(
 			),
 		)
 	}
+
+	keyshareReq.SignalValidators = true
+	k.SetPrivateDecryptionKeyRequest(ctx, keyshareReq)
 
 	return packetAck, nil
 }

@@ -14,6 +14,7 @@ message DecryptionKeyRequest {
   string decryption_key            = 5;
   string proposal_id               = 6; // This is only used when the request is for private governance
   bool sent                        = 7;
+  bool signal_validators           = 8;
 }
 
 // IBCInfo defines the structure to verify request for
@@ -43,4 +44,5 @@ message PrivateDecryptionKeyRequest {
   CounterPartyIBCInfo counterparty = 4; // Used only when the request is made via IBC
   repeated fairyring.common.PrivateDecryptionKey private_decryption_keys = 5;
   bool sent                        = 7;
+  bool signal_validators           = 8;
 }

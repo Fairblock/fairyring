@@ -53,6 +53,7 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 		keyshareRequest.Identity = id
 		keyshareRequest.Pubkey = activePubkey.PublicKey
 		keyshareRequest.DecryptionKey = ""
+		keyshareRequest.SignalValidators = false
 		k.SetDecryptionKeyRequest(ctx, keyshareRequest)
 
 		entry := peptypes.IdentityExecutionEntry{
@@ -98,6 +99,9 @@ func (k Keeper) ProcessPepSignalQueue(ctx sdk.Context) error {
 					),
 				)
 			}
+
+			decryptionKeyReq.SignalValidators = true
+			k.SetDecryptionKeyRequest(ctx, decryptionKeyReq)
 		}
 		k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetIdentity())
 	}
@@ -121,6 +125,7 @@ func (k Keeper) ProcessPrivateRequestQueue(ctx sdk.Context) error {
 		keyshareRequest.Pubkey = activePubkey.PublicKey
 
 		keyshareRequest.PrivateDecryptionKeys = make([]*common.PrivateDecryptionKey, 0)
+		keyshareRequest.SignalValidators = false
 
 		k.SetPrivateDecryptionKeyRequest(ctx, keyshareRequest)
 
@@ -175,6 +180,8 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 					),
 				)
 			}
+			privDecryptionKeyReq.SignalValidators = true
+			k.SetPrivateDecryptionKeyRequest(ctx, privDecryptionKeyReq)
 		}
 		k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetIdentity())
 	}
@@ -222,6 +229,7 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 
 		keyshareRequest.DecryptionKey = ""
 		keyshareRequest.ProposalId = req.GetProposalId()
+		keyshareRequest.SignalValidators = false
 
 		k.SetDecryptionKeyRequest(ctx, keyshareRequest)
 		k.SetRequestCount(ctx, reqCount)
@@ -274,6 +282,8 @@ func (k Keeper) ProcessGovSignalQueue(ctx sdk.Context) error {
 					),
 				)
 			}
+			decryptionKeyReq.SignalValidators = true
+			k.SetDecryptionKeyRequest(ctx, decryptionKeyReq)
 		}
 		k.govKeeper.RemoveSignalQueueEntry(ctx, req.GetProposalId())
 	}

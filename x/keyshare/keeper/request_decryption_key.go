@@ -98,6 +98,7 @@ func (k Keeper) OnRecvRequestDecryptionKeyPacket(
 		keyshareRequest.Identity = data.GetIdentity()
 	}
 	keyshareRequest.Sent = false
+	keyshareRequest.SignalValidators = false
 
 	k.SetDecryptionKeyRequest(ctx, keyshareRequest)
 
@@ -151,6 +152,7 @@ func (k Keeper) OnRecvRequestPrivateDecryptionKeyPacket(
 
 	keyshareRequest.PrivateDecryptionKeys = make([]*commontypes.PrivateDecryptionKey, 0)
 	keyshareRequest.Sent = false
+	keyshareRequest.SignalValidators = false
 
 	k.SetPrivateDecryptionKeyRequest(ctx, keyshareRequest)
 
