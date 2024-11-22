@@ -49,6 +49,7 @@ func (app *App) registerKeyshareModule() (porttypes.IBCModule, error) {
 			app.BankKeeper,
 			app.PepKeeper,
 			app.StakingKeeper,
+			app.WasmKeeper,
 		)); err != nil {
 		return nil, err
 	}

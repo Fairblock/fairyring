@@ -3,19 +3,22 @@ package keeper
 import (
 	"context"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strconv"
 	"time"
-
+"encoding/binary"
 	"cosmossdk.io/math"
+
 
 	distIBE "github.com/FairBlock/DistributedIBE"
 	clienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types"
 	bls "github.com/drand/kyber-bls12381"
 
+    "crypto/sha256"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
-
+  "github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -24,6 +27,73 @@ const (
 )
 
 var SupportedIDTypes = []string{PrivateGovIdentity}
+func computeMessageHash(identity string, keyshare []byte, index uint32) ([]byte, error) {
+    hasher := sha256.New()
+    hasher.Write([]byte(identity))
+    hasher.Write(keyshare)
+    indexBytes := make([]byte, 4)
+    binary.LittleEndian.PutUint32(indexBytes, index)
+    hasher.Write(indexBytes)
+    return hasher.Sum(nil), nil
+}
+func verifySignature(pkBytes []byte, signatureHex string, messageHash []byte) (bool, error) {
+   
+    pubKey := &secp256k1.PubKey{
+        Key: pkBytes,
+    }
+
+ 
+    sigBytes, err := hex.DecodeString(signatureHex)
+    if err != nil {
+        return false, fmt.Errorf("failed to decode signature: %w", err)
+    }
+
+   
+    verified := pubKey.VerifySignature(messageHash, sigBytes)
+    return verified, nil
+}
+func queryRegisteredPublicKeys(k msgServer, ctx sdk.Context, contractAddress string) ([]string, error) {
+ 
+    contractAddr, err := sdk.AccAddressFromBech32(contractAddress)
+    if err != nil {
+        return nil, fmt.Errorf("invalid contract address: %w", err)
+    }
+
+    
+    query := map[string]interface{}{
+        "get_public_keys": map[string]interface{}{},
+    }
+
+    
+    bz, err := json.Marshal(query)
+    if err != nil {
+        return nil, fmt.Errorf("failed to marshal query: %w", err)
+    }
+    k.Logger().Info("Serialized query payload:", "payload", string(bz))
+
+   
+    res, err := k.wasmKeeper.QuerySmart(ctx, contractAddr, bz)
+    if err != nil {
+        return nil, fmt.Errorf("smart query failed: %w", err)
+    }
+
+   
+    k.Logger().Info("Raw query response:", "response", string(res))
+
+ 
+    var rawJsonString = string(res)
+
+  
+    var publicKeys []string
+    err = json.Unmarshal([]byte(rawJsonString), &publicKeys)
+    if err != nil {
+        return nil, fmt.Errorf("failed to unmarshal public keys: %w", err)
+    }
+	k.Logger().Info("PK list:", "list", publicKeys)
+    return publicKeys, nil
+}
+
+
 
 func (k msgServer) SubmitGeneralKeyshare(
 	goCtx context.Context,
@@ -31,26 +101,54 @@ func (k msgServer) SubmitGeneralKeyshare(
 ) (*types.MsgSubmitGeneralKeyshareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// check if validator is registered
-	validatorInfo, found := k.GetValidatorSet(ctx, msg.Creator)
 
-	if !found {
-		authorizedAddrInfo, found := k.GetAuthorizedAddress(ctx, msg.Creator)
-		if !found || !authorizedAddrInfo.IsAuthorized {
-			return nil, types.ErrAddrIsNotValidatorOrAuthorized.Wrap(msg.Creator)
-		}
-
-		authorizedByValInfo, found := k.GetValidatorSet(ctx, authorizedAddrInfo.AuthorizedBy)
-		if !found {
-			return nil, types.ErrAuthorizerIsNotValidator.Wrap(authorizedAddrInfo.AuthorizedBy)
-		}
-		validatorInfo = authorizedByValInfo
-
-		// If the sender is in the validator set & authorized another address to submit key share
-	} else if count := k.GetAuthorizedCount(ctx, msg.Creator); count != 0 {
-		return nil, types.ErrAuthorizedAnotherAddress
+	publicKeys, err := queryRegisteredPublicKeys(k, ctx, "fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v")
+    if err != nil {
+        return nil, types.ErrAddrIsNotValidatorOrAuthorized.Wrapf(err.Error())
+    }
+	verified := false
+	if len(publicKeys) == 0 {
+		return nil, types.ErrAddrIsNotValidatorOrAuthorized.Wrapf("No PKs...")
 	}
+	k.Logger().Info("PK list2:", "list", publicKeys)
+    k.Logger().Info("Number of public keys:", "len", len(publicKeys))
 
+for _, pk := range publicKeys {
+    if pk == "" {
+        k.Logger().Error("Empty pk found in publicKeys")
+        continue
+    }
+
+    k.Logger().Info("Processing pk:", "pk", pk)
+
+    key, err := hex.DecodeString(msg.Keyshare)
+    if err != nil {
+        k.Logger().Error("Failed to decode keyshare:", "error", err)
+        continue
+    }
+
+    messageHash, err := computeMessageHash(msg.IdValue, key, uint32(msg.KeyshareIndex))
+    if err != nil {
+        return nil, types.ErrAddrIsNotValidatorOrAuthorized.Wrapf("failed to compute message hash")
+    }
+
+    pk_bytes,_ := hex.DecodeString(pk)
+    v, err := verifySignature(pk_bytes, msg.Signature, messageHash)
+    if err != nil {
+        k.Logger().Error("Error verifying signature:", "error", err)
+        continue
+    }
+    if v {
+        verified = true
+        k.Logger().Info("Signature verified successfully!")
+        break
+    }
+}
+
+	if !verified{
+		return nil, types.ErrAddrIsNotValidatorOrAuthorized.Wrapf("Not registered")
+	}
+	
 	isSupportedIDType := false
 	for _, v := range SupportedIDTypes {
 		if v == msg.IdType {
@@ -96,22 +194,22 @@ func (k msgServer) SubmitGeneralKeyshare(
 	}
 
 	// Parse the keyshare & commitment then verify it
-	_, _, err := parseKeyshareCommitment(suite, msg.Keyshare, commitments.Commitments[msg.KeyshareIndex-1], uint32(msg.KeyshareIndex), msg.IdValue)
+	_, _, err = parseKeyshareCommitment(suite, msg.Keyshare, commitments.Commitments[msg.KeyshareIndex-1], uint32(msg.KeyshareIndex), msg.IdValue)
 	if err != nil {
 		k.Logger().Error(fmt.Sprintf("Error in parsing & verifying general keyshare & commitment: %s", err.Error()))
 		k.Logger().Error(fmt.Sprintf("General Keyshare is: %v | Commitment is: %v | Index: %d", msg.Keyshare, commitments.Commitments, msg.KeyshareIndex))
 		// Invalid Share, slash validator
 		var consAddr sdk.ConsAddress
 
-		savedConsAddrByte, err := hex.DecodeString(validatorInfo.ConsAddr)
-		if err != nil {
-			return nil, err
-		}
+		// savedConsAddrByte, err := hex.DecodeString(validatorInfo.ConsAddr)
+		// if err != nil {
+		// 	return nil, err
+		// }
 
-		err = consAddr.Unmarshal(savedConsAddrByte)
-		if err != nil {
-			return nil, err
-		}
+		// err = consAddr.Unmarshal(savedConsAddrByte)
+		// if err != nil {
+		// 	return nil, err
+		// }
 
 		k.SlashingKeeper().Slash(
 			ctx, consAddr,
@@ -144,7 +242,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 
 	// Save the new general key share to state
 	k.SetGeneralKeyshare(ctx, generalKeyshare)
-	k.SetLastSubmittedHeight(ctx, validatorInfo.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
+	//k.SetLastSubmittedHeight(ctx, validatorInfo.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
 
 	validatorList := k.GetAllValidatorSet(ctx)
 

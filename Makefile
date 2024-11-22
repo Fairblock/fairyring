@@ -131,12 +131,6 @@ go-mod-cache: go.sum
 
 go.sum: go.mod
 	@echo "--> Ensure dependencies have not been modified"
-	#@go mod verify
-
-draw-deps:
-	@# requires brew install graphviz or apt-get install graphviz
-	go install github.com/RobotsAndPencils/goviz
-	@goviz -i ./cmd/fairyringd -d 2 | dot -Tpng -o dependency-graph.png
 
 clean:
 	rm -rf $(BUILDDIR)/ artifacts/
@@ -145,175 +139,24 @@ distclean: clean
 	rm -rf vendor/
 
 ###############################################################################
-###                                 Devdoc                                  ###
+###                              Fresh Chain                                ###
 ###############################################################################
 
-build-docs:
-	@cd docs && \
-	while read p; do \
-		(git checkout $${p} && npm install && VUEPRESS_BASE="/$${p}/" npm run build) ; \
-		mkdir -p ~/output/$${p} ; \
-		cp -r .vuepress/dist/* ~/output/$${p}/ ; \
-		cp ~/output/$${p}/index.html ~/output ; \
-	done < versions ;
-.PHONY: build-docs
+fresh-chain:
+	@echo "Stopping any running instances..."
+	-@killall fairyringd 2>/dev/null || true
+	@echo "Removing existing data..."
+	-@rm -rf ~/.fairyring
+	@echo "Initializing a fresh chain..."
+	fairyringd init star --chain-id fairyring -o
+	@echo "Adding a genesis account..."
+	fairyringd genesis add-genesis-account star 1000000000000ufairy,1000000000000stake
+	fairyringd genesis gentx star 500000000stake --chain-id fairyring
+	fairyringd genesis collect-gentxs
+	jq '.app_state.keyshare.params.trusted_addresses += ["fairy1vghpa0tuzfza97cwyc085zxuhsyvy3jtgry7vv"]' ~/.fairyring/config/genesis.json > ~/.fairyring/config/genesis_temp.json && mv ~/.fairyring/config/genesis_temp.json ~/.fairyring/config/genesis.json
+	sed -i 's/^minimum-gas-prices *= *""/minimum-gas-prices = "0.001ufairy"/' ~/.fairyring/config/app.toml
+	jq '.app_state.pep.params.is_source_chain = true' ~/.fairyring/config/genesis.json > ~/.fairyring/config/genesis_temp.json && mv ~/.fairyring/config/genesis_temp.json ~/.fairyring/config/genesis.json
+	@echo "Starting the chain..."
+	fairyringd start --home ~/.fairyring --rpc.laddr tcp://127.0.0.1:26659 --api.enable
 
-sync-docs:
-	cd ~/output && \
-	echo "role_arn = ${DEPLOYMENT_ROLE_ARN}" >> /root/.aws/config ; \
-	echo "CI job = ${CIRCLE_BUILD_URL}" >> version.html ; \
-	aws s3 sync . s3://${WEBSITE_BUCKET} --profile terraform --delete ; \
-	aws cloudfront create-invalidation --distribution-id ${CF_DISTRIBUTION_ID} --profile terraform --path "/*" ;
-.PHONY: sync-docs
-
-###############################################################################
-###                        Integration Tests                                ###
-###############################################################################
-
-clear-pipes:
-	@echo "Clearing named pipes..."; \
-	rm /tmp/testfairyringsubmit_tx*; \
- 	rm /tmp/testfairyringnormaltx*;
-
-test-block-tx-limit: init-test-block-limit-framework \
-	test-tx-limit
-	-@rm -rf ./data
-	-@killall fairyringd 2>/dev/null
-
-integration-test-all: init-test-framework \
-	init-relayer \
-	test-keyshare-module
-	-@rm -rf ./data
-	./scripts/tests/stop.sh
-
-devnet-up: init-devnet
-	@echo "Fairyring Devnet is now running in the background, run 'make devnet-down' to stop devnet."
-
-devnet-down:
-	@echo "Killing fairyringd, fairyport, fairyringclient, ShareGenerationClient and removing previous data"
-	-@killall fairyringd 2>/dev/null
-	-@killall fairyport 2>/dev/null
-	-@killall fairyringclient 2>/dev/null
-	-@killall ShareGenerationClient 2>/dev/null
-
-test-tx-limit:
-	@echo "Testing Block tx limit..."
-	./scripts/tests/blockTxLimit.sh
-
-test-keyshare-module:
-	@echo "Testing KeyShare module..."
-	./scripts/tests/keyshare.sh
-
-test-pep-module:
-	@echo "Testing Pep module..."
-	./scripts/tests/pep.sh
-
-test-gov-module:
-	@echo "Testing Gov module..."
-	./scripts/tests/priv_gov.sh
-
-init-relayer:
-	@echo "Initializing hermes relayer..."
-	./scripts/tests/relayer.sh
-	@sleep 2
-
-init-test-block-limit-framework: clean-testing-data install
-	@echo "Initializing fairyring..."
-	./scripts/tests/start_test_block_tx_limit.sh
-	@sleep 3
-
-init-test-framework: clean-testing-data install
-	@echo "Initializing fairyring..."
-	./scripts/tests/start.sh
-	@sleep 3
-
-init-devnet: clean-devnet-data install
-	@echo "Initializing fairyring devnet..."
-	./scripts/devnet/start.sh
-	@sleep 5
-
-clean-devnet-data:
-	@echo "Killing fairyringd, fairyport, fairyringclient, ShareGenerationClient and removing previous data"
-	-@rm -rf ./devnet_data
-	-@killall fairyringd 2>/dev/null
-	-@killall fairyport 2>/dev/null
-	-@killall fairyringclient 2>/dev/null
-	-@killall ShareGenerationClient 2>/dev/null
-
-clean-testing-data:
-	@echo "Killing fairyringd and removing previous data"
-	-@rm -rf ./data
-	-@killall fairyringd 2>/dev/null
-###############################################################################
-###                           Tests & Simulation                            ###
-###############################################################################
-
-PACKAGES_UNIT=$(shell go list ./... | grep -v -e '/tests/e2e')
-TEST_PACKAGES=./...
-TEST_TARGETS := test-unit test-unit-cover test-race test-e2e
-
-test-unit: ARGS=-timeout=5m -tags='norace'
-test-unit: TEST_PACKAGES=$(PACKAGES_UNIT)
-test-unit-cover: ARGS=-timeout=5m -tags='norace' -coverprofile=coverage.txt -covermode=atomic
-test-unit-cover: TEST_PACKAGES=$(PACKAGES_UNIT)
-test-race: ARGS=-timeout=5m -race
-test-race: TEST_PACKAGES=$(PACKAGES_UNIT)
-$(TEST_TARGETS): run-tests
-
-run-tests:
-ifneq (,$(shell which tparse 2>/dev/null))
-	@echo "--> Running tests"
-	@go test -mod=readonly -json $(ARGS) $(TEST_PACKAGES) | tparse
-else
-	@echo "--> Running tests"
-	@go test -mod=readonly $(ARGS) $(TEST_PACKAGES)
-endif
-
-###############################################################################
-###                                Linting                                  ###
-###############################################################################
-
-lint:
-	@echo "--> Running linter"
-	@go run github.com/golangci/golangci-lint/cmd/golangci-lint run --timeout=10m
-
-format:
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/docs/statik/statik.go" -not -path "./tests/mocks/*" -not -name "*.pb.go" -not -name "*.pb.gw.go" -not -name "*.pulsar.go" -not -path "./crypto/keys/secp256k1/*" | xargs gofumpt -w -l
-	golangci-lint run --fix
-.PHONY: format
-
-###############################################################################
-###                                Docker                                   ###
-###############################################################################
-
-test-docker:
-	@docker build -f contrib/Dockerfile.test -t ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD) .
-	@docker tag ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD) ${TEST_DOCKER_REPO}:$(shell git rev-parse --abbrev-ref HEAD | sed 's#/#_#g')
-	@docker tag ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD) ${TEST_DOCKER_REPO}:latest
-
-test-docker-push: test-docker
-	@docker push ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD)
-	@docker push ${TEST_DOCKER_REPO}:$(shell git rev-parse --abbrev-ref HEAD | sed 's#/#_#g')
-	@docker push ${TEST_DOCKER_REPO}:latest
-
-.PHONY: all build-linux install format lint go-mod-cache draw-deps clean build \
-	docker-build-debug docker-build-hermes docker-build-all
-
-
-###############################################################################
-###                                Protobuf                                 ###
-###############################################################################
-proto-gen:
-	@echo "Generating Protobuf files"
-	@sh ./proto/scripts/protocgen.sh
-	@sh ./proto/scripts/protocgen-pulsar.sh
-
-proto-doc:
-	@echo "Generating Protoc docs"
-	@sh ./proto/scripts/protoc-doc-gen.sh
-
-proto-swagger-gen:
-	@echo "Generating Protobuf Swagger"
-	@sh ./proto/scripts/protoc-swagger-gen.sh
-
-.PHONY: proto-gen proto-doc proto-swagger-gen
+.PHONY: all build clean fresh-chain

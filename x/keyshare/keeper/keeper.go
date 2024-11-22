@@ -40,6 +40,7 @@ type (
 		slashingKeeper types.SlashingKeeper
 		stakingKeeper  types.StakingKeeper
 		govKeeper      types.GovKeeper
+		
 	}
 )
 

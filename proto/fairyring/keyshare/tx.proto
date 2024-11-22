@@ -196,6 +196,7 @@ message MsgSubmitGeneralKeyshare {
   uint64 keyshare_index = 5;
   uint64 received_timestamp = 6;
   uint64 received_block_height = 7;
+  string signature = 8;
 }
 
 // MsgSubmitGeneralKeyshareResponse defines the response structure for
