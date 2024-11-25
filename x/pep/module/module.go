@@ -505,6 +505,11 @@ func (am AppModule) handleGasConsumption(ctx sdk.Context, recipient sdk.AccAddre
 	}
 
 	if gasUsed.GT(gasCharged.Amount) {
+		creatorBal := am.bankKeeper.SpendableCoins(ctx, creatorAccount.GetAddress())
+		remainingAmount := gasUsed.Sub(gasCharged.Amount)
+		denomBal := creatorBal.AmountOf(gasCharged.Denom)
+		finalChargeAmount := cosmosmath.MinInt(denomBal, remainingAmount)
+
 		deductFeeErr := ante.DeductFees(
 			am.bankKeeper,
 			ctx,
@@ -512,14 +517,23 @@ func (am AppModule) handleGasConsumption(ctx sdk.Context, recipient sdk.AccAddre
 			sdk.NewCoins(
 				sdk.NewCoin(
 					gasCharged.Denom,
-					gasUsed.Sub(gasCharged.Amount)),
+					finalChargeAmount,
+				),
 			),
 		)
 		if deductFeeErr != nil {
-			am.keeper.Logger().Error("deduct failed tx fee error")
+			am.keeper.Logger().Error(
+				fmt.Sprintf("deduct failed tx fee error, remaining amount: %s, denomBal: %s, charged: %s",
+					remainingAmount.String(),
+					denomBal.String(),
+					finalChargeAmount.String()),
+			)
 			am.keeper.Logger().Error(deductFeeErr.Error())
 		} else {
-			am.keeper.Logger().Info("failed tx fee deducted without error")
+			am.keeper.Logger().Info(fmt.Sprintf(
+				"failed tx fee deducted without error, deducted: %s %s",
+				finalChargeAmount.String(),
+				gasCharged.Denom))
 		}
 	} else {
 		amount := gasCharged.Amount.Sub(gasUsed)
