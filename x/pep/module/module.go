@@ -239,7 +239,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			if len(encryptedTxs.EncryptedTxs) > 0 {
 				am.keeper.SetAllEncryptedTxExpired(ctx, h)
 				am.keeper.Logger().Info(fmt.Sprintf("Updated total %d encrypted txs at block %d to expired", len(encryptedTxs.EncryptedTxs), h))
-				indexes := make([]string, len(encryptedTxs.EncryptedTxs))
+				indexes := make([]string, 0)
 				for _, v := range encryptedTxs.EncryptedTxs {
 					indexes = append(indexes, strconv.FormatUint(v.Index, 10))
 				}
