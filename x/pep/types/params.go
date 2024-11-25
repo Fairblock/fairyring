@@ -21,10 +21,12 @@ var (
 )
 
 var (
-	KeyMinGasPrice       = []byte("MinGasPrice")
-	DefaultMinGasPrice   = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
-	DecryptionKeyPrice   = []byte("PrivateKeysPrice")
-	DefaultKeysharePrice = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
+	KeyMinGasPrice              = []byte("MinGasPrice")
+	DefaultMinGasPrice          = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
+	DecryptionKeyPrice          = []byte("PrivateKeysPrice")
+	DefaultKeysharePrice        = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
+	KeyMaxContractGas           = []byte("MaxContractGas")
+	DefaultContractGas   uint64 = 500000
 )
 
 var (
@@ -50,6 +52,7 @@ func NewParams(
 	minGasPrice *sdk.Coin,
 	isSourceChain bool,
 	decryptionKeyPrice *sdk.Coin,
+	maxContractGas uint64,
 ) Params {
 	return Params{
 		TrustedAddresses:          trAddrs,
@@ -58,6 +61,7 @@ func NewParams(
 		MinGasPrice:               minGasPrice,
 		IsSourceChain:             isSourceChain,
 		PrivateDecryptionKeyPrice: decryptionKeyPrice,
+		MaxContractGas:            maxContractGas,
 	}
 }
 
@@ -70,6 +74,7 @@ func DefaultParams() Params {
 		&DefaultMinGasPrice,
 		DefaultIsSourceChain,
 		&DefaultKeysharePrice,
+		DefaultContractGas,
 	)
 }
 
@@ -82,6 +87,7 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(KeyMinGasPrice, &p.MinGasPrice, validateMinGasPrice),
 		paramtypes.NewParamSetPair(KeyIsSourceChain, &p.IsSourceChain, validateIsSourceChain),
 		paramtypes.NewParamSetPair(DecryptionKeyPrice, &p.PrivateDecryptionKeyPrice, validateMinGasPrice),
+		paramtypes.NewParamSetPair(KeyMaxContractGas, &p.MaxContractGas, validateMaxContractGas),
 	}
 }
 
@@ -108,6 +114,10 @@ func (p Params) Validate() error {
 	}
 
 	if err := validateIsSourceChain(p.IsSourceChain); err != nil {
+		return err
+	}
+
+	if err := validateMaxContractGas(p.MaxContractGas); err != nil {
 		return err
 	}
 
@@ -193,6 +203,16 @@ func validateTrustedCounterParties(v interface{}) error {
 		if len(element.ClientId) < 1 {
 			return fmt.Errorf("client ID at index %d is empty", i)
 		}
+	}
+
+	return nil
+}
+
+// validateMaxContractGas validates the MaxContractGas param
+func validateMaxContractGas(v interface{}) error {
+	_, ok := v.(uint64)
+	if !ok {
+		return fmt.Errorf("invalid parameter type: %T", v)
 	}
 
 	return nil

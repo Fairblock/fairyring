@@ -56,3 +56,7 @@ func (k Keeper) MinGasPrice(ctx context.Context) (res sdk.Coin) {
 func (k Keeper) IsSourceChain(ctx context.Context) (res bool) {
 	return k.GetParams(ctx).IsSourceChain
 }
+
+func (k Keeper) MaxContractGas(ctx context.Context) (res uint64) {
+	return k.GetParams(ctx).MaxContractGas
+}

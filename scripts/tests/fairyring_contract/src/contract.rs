@@ -19,6 +19,13 @@ pub fn execute(
         return Err(StdError::generic_err("Identity cannot be empty"));
     }
 
+    // go into infinite loop for testing 
+    if msg.identity == "fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq/loop" {
+        loop {
+            // Infinite loop
+        }
+    }
+
     // Use the identity directly
     let identity = msg.identity;
 
