@@ -799,8 +799,8 @@ func (am AppModule) decryptAndExecuteTx(
 		if refundAmount.IsZero() {
 			deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, sdk.NewCoins(usedGasFee))
 			if deductFeeErr != nil {
-				am.keeper.Logger().Error("Deduct fee Err")
-				am.keeper.Logger().Error(deductFeeErr.Error())
+				am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error while deducting rest of the fee: %s", err.Error()), startConsumedGas)
+				return deductFeeErr
 			} else {
 				am.keeper.Logger().Info("Fee deducted without error")
 			}
