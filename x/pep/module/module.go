@@ -3,6 +3,7 @@ package pep
 import (
 	"bytes"
 	"context"
+	storetypes "cosmossdk.io/store/types"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -238,7 +239,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			if len(encryptedTxs.EncryptedTxs) > 0 {
 				am.keeper.SetAllEncryptedTxExpired(ctx, h)
 				am.keeper.Logger().Info(fmt.Sprintf("Updated total %d encrypted txs at block %d to expired", len(encryptedTxs.EncryptedTxs), h))
-				indexes := make([]string, len(encryptedTxs.EncryptedTxs))
+				indexes := make([]string, 0)
 				for _, v := range encryptedTxs.EncryptedTxs {
 					indexes = append(indexes, strconv.FormatUint(v.Index, 10))
 				}
@@ -504,6 +505,11 @@ func (am AppModule) handleGasConsumption(ctx sdk.Context, recipient sdk.AccAddre
 	}
 
 	if gasUsed.GT(gasCharged.Amount) {
+		creatorBal := am.bankKeeper.SpendableCoins(ctx, creatorAccount.GetAddress())
+		remainingAmount := gasUsed.Sub(gasCharged.Amount)
+		denomBal := creatorBal.AmountOf(gasCharged.Denom)
+		finalChargeAmount := cosmosmath.MinInt(denomBal, remainingAmount)
+
 		deductFeeErr := ante.DeductFees(
 			am.bankKeeper,
 			ctx,
@@ -511,14 +517,23 @@ func (am AppModule) handleGasConsumption(ctx sdk.Context, recipient sdk.AccAddre
 			sdk.NewCoins(
 				sdk.NewCoin(
 					gasCharged.Denom,
-					gasUsed.Sub(gasCharged.Amount)),
+					finalChargeAmount,
+				),
 			),
 		)
 		if deductFeeErr != nil {
-			am.keeper.Logger().Error("deduct failed tx fee error")
+			am.keeper.Logger().Error(
+				fmt.Sprintf("deduct failed tx fee error, remaining amount: %s, denomBal: %s, charged: %s",
+					remainingAmount.String(),
+					denomBal.String(),
+					finalChargeAmount.String()),
+			)
 			am.keeper.Logger().Error(deductFeeErr.Error())
 		} else {
-			am.keeper.Logger().Info("failed tx fee deducted without error")
+			am.keeper.Logger().Info(fmt.Sprintf(
+				"failed tx fee deducted without error, deducted: %s %s",
+				finalChargeAmount.String(),
+				gasCharged.Denom))
 		}
 	} else {
 		amount := gasCharged.Amount.Sub(gasUsed)
@@ -774,7 +789,7 @@ func (am AppModule) decryptAndExecuteTx(
 			txFee[0].Denom,
 			// Tx Fee Amount Divide Provide Gas => provided gas price
 			// Provided Gas Price * Gas Used => Amount to deduct as gas fee
-			txFee[0].Amount.Quo(gasProvided).Mul(gasUsedInBig),
+			txFee[0].Amount.Mul(gasUsedInBig).Quo(gasProvided),
 		)
 
 		if eachTx.ChargedGas == nil {
@@ -798,8 +813,8 @@ func (am AppModule) decryptAndExecuteTx(
 		if refundAmount.IsZero() {
 			deductFeeErr := ante.DeductFees(am.bankKeeper, ctx, creatorAccount, sdk.NewCoins(usedGasFee))
 			if deductFeeErr != nil {
-				am.keeper.Logger().Error("Deduct fee Err")
-				am.keeper.Logger().Error(deductFeeErr.Error())
+				am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error while deducting rest of the fee: %s", err.Error()), startConsumedGas)
+				return deductFeeErr
 			} else {
 				am.keeper.Logger().Info("Fee deducted without error")
 			}
@@ -819,8 +834,21 @@ func (am AppModule) decryptAndExecuteTx(
 		}
 	}
 
+	defer func(sdkCtx sdk.Context, tx DecryptionTx, startGas uint64) {
+		if r := recover(); r != nil {
+			am.keeper.Logger().Error("recovered from panic in contract execution", "error", r)
+			am.processFailedEncryptedTx(sdkCtx, tx, fmt.Sprintf("panic when handling tx message: %v", r), startGas)
+		}
+	}(ctx, eachTx, startConsumedGas)
+
 	handler := am.msgServiceRouter.Handler(txMsgs[0])
-	handlerResult, err := handler(ctx, txMsgs[0])
+	gasMax := am.keeper.GetParams(ctx).MinGasPrice.Amount.Uint64()
+	if eachTx.ChargedGas != nil {
+		gasMax = eachTx.ChargedGas.Amount.Uint64()
+	}
+
+	gasCtx := ctx.WithGasMeter(storetypes.NewGasMeter(gasMax))
+	handlerResult, err := handler(gasCtx, txMsgs[0])
 	if err != nil {
 		am.processFailedEncryptedTx(ctx, eachTx, fmt.Sprintf("error when handling tx message: %s", err.Error()), startConsumedGas)
 		return err

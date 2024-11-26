@@ -17,6 +17,7 @@ message Params {
   repeated string trusted_addresses = 4 [(gogoproto.moretags) = "yaml:\"trusted_addresses\""];
   cosmos.base.v1beta1.Coin min_gas_price = 5 [(gogoproto.moretags) = "yaml:\"min_gas_price\""];
   cosmos.base.v1beta1.Coin private_decryption_key_price = 6 [(gogoproto.moretags) = "yaml:\"private_decryption_key_price\""];
+  uint64 max_contract_gas = 7 [(gogoproto.moretags) = "yaml:\"max_contract_gas\""];
 }
 
 // TrustedCounterParty defines the structure to store the ibc info
