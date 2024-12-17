@@ -20,7 +20,7 @@ DOCKER := $(shell which docker)
 BUILDDIR ?= $(CURDIR)/build
 
 GO_SYSTEM_VERSION = $(shell go version | cut -c 14- | cut -d' ' -f1 | cut -d'.' -f1-2)
-REQUIRE_GO_VERSION = 1.23
+REQUIRE_GO_VERSION = 1.22
 
 export GO111MODULE = on
 
@@ -91,7 +91,7 @@ endif
 
 check_version:
 ifneq ($(GO_SYSTEM_VERSION), $(REQUIRE_GO_VERSION))
-	@echo "ERROR: Go version 1.23 is required for $(VERSION) of Fairyring."
+	@echo "ERROR: Go version 1.22 is required for $(VERSION) of Fairyring."
 	exit 1
 endif
 

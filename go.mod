@@ -1,6 +1,6 @@
 module github.com/Fairblock/fairyring
 
-go 1.23.4
+go 1.22.4
 
 replace (
 	cosmossdk.io/api => github.com/Fairblock/cosmossdk-api v0.7.5
