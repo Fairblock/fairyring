@@ -1,15 +1,15 @@
 destinationnode:
-  grpcport: 9090
+  grpcport: 9190
   ip: 127.0.0.1
-  port: 26657
+  port: 36657
   protocol: tcp
   chainid: fairyring_devnet
   accountprefix: fairy
 
 fairyringnode:
-  grpcport: 9090
+  grpcport: 9190
   ip: 127.0.0.1
-  port: 26657
+  port: 36657
   protocol: tcp
   chainid: fairyring_devnet
   accountprefix: fairy
