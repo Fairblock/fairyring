@@ -63,6 +63,9 @@ func initRootCmd(
 	encryptCmd := encrypter.EncryptCmd()
 	flags.AddQueryFlagsToCmd(encryptCmd)
 
+	encryptVoteCmd := encrypter.EncryptVoteCmd()
+	flags.AddQueryFlagsToCmd(encryptVoteCmd)
+
 	aggregateCmd := aggregator.AggregateCmd()
 	flags.AddQueryFlagsToCmd(aggregateCmd)
 
@@ -72,6 +75,7 @@ func initRootCmd(
 
 	rootCmd.AddCommand(secp_encrypter.SecpEncrypterCmd())
 	rootCmd.AddCommand(encryptCmd)
+	rootCmd.AddCommand(encryptVoteCmd)
 	rootCmd.AddCommand(aggregateCmd)
 	rootCmd.AddCommand(randomness)
 	rootCmd.AddCommand(sharegenerator.RootCmd)
