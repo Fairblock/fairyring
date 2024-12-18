@@ -3,6 +3,7 @@ package keeper
 import (
 	"errors"
 	"math"
+	"strconv"
 
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
@@ -74,11 +75,8 @@ func (k Keeper) OnRecvRequestDecryptionKeyPacket(
 		isProposalID = false
 	}
 
-	id := data.GetIdentity()
-
 	var keyshareRequest types.DecryptionKeyRequest
 
-	keyshareRequest.Identity = id
 	keyshareRequest.Pubkey = activePubkey.PublicKey
 	keyshareRequest.IbcInfo = &types.IBCInfo{
 		ChannelId: packet.DestinationChannel,
@@ -94,6 +92,12 @@ func (k Keeper) OnRecvRequestDecryptionKeyPacket(
 
 	if isProposalID {
 		keyshareRequest.ProposalId = data.GetProposalId()
+		reqCountString := k.GetRequestCount(ctx)
+		reqCount, _ := strconv.ParseUint(reqCountString, 10, 64)
+		reqCount = reqCount + 1
+
+		keyshareRequest.Identity = types.IdentityFromRequestCount(reqCount)
+		k.SetRequestCount(ctx, reqCount)
 	} else {
 		keyshareRequest.Identity = data.GetIdentity()
 	}
@@ -101,7 +105,7 @@ func (k Keeper) OnRecvRequestDecryptionKeyPacket(
 
 	k.SetDecryptionKeyRequest(ctx, keyshareRequest)
 
-	packetAck.Identity = id
+	packetAck.Identity = keyshareRequest.Identity
 	packetAck.Pubkey = activePubkey.PublicKey
 
 	return packetAck, nil

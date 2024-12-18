@@ -76,6 +76,13 @@ fi
 cp "$HOME/.fairyringclient/config.yml" "$HOME/.fairyringclient/config.yml.backup"
 cp ./scripts/devnet/fairyringclient_config.yml "$HOME/.fairyringclient/config.yml"
 
+if [ ! -f "$HOME/.ShareGenerationClient/config.yml" ]; then
+    ShareGenerationClient config init
+fi
+
+cp "$HOME/.ShareGenerationClient/config.yml" "$HOME/.ShareGenerationClient/config.yml.backup"
+cp ./scripts/devnet/sharegenerationclient_config.yml "$HOME/.ShareGenerationClient/config.yml"
+
 echo "Initializing $CHAINID ..."
 $BINARY init devnet --home $CHAIN_DIR/$CHAINID --default-denom ufairy --chain-id=$CHAINID &> /dev/null
 
