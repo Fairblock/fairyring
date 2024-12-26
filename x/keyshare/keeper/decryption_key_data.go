@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/Fairblock/fairyring/x/keyshare/types"
@@ -58,9 +59,10 @@ func (k Keeper) OnAcknowledgementDecryptionKeyDataPacket(
 ) error {
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
-
+		fmt.Println("\n\n\n\n Ack Error!")
 		// retry sending the packet
 		if data.Retries < MAX_RETRIES {
+			fmt.Println("Retrying Transmission count :", data.Retries, "\n\n\n\n")
 			timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 
 			data.Retries = data.Retries + 1
@@ -79,6 +81,7 @@ func (k Keeper) OnAcknowledgementDecryptionKeyDataPacket(
 		}
 		return nil
 	case *channeltypes.Acknowledgement_Result:
+		fmt.Println("\n\n\n\nReceived Correct Ack for decryptionKey\n\n\n\n")
 		// Decode the packet acknowledgment
 		var packetAck types.DecryptionKeyPacketAck
 
@@ -111,6 +114,8 @@ func (k Keeper) OnTimeoutDecryptionKeyDataPacket(
 
 	// retry sending the packet
 	if data.Retries < MAX_RETRIES {
+		fmt.Println("Retrying Transmission count :", data.Retries, "\n\n\n\n")
+
 		timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
 
 		data.Retries = data.Retries + 1

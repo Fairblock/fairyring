@@ -290,6 +290,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 
 		if decryptionKeyReq.IbcInfo != nil {
 			if decryptionKeyReq.IbcInfo.ChannelId != "" {
+				fmt.Println("\n\n\n\n Transmitting Decryption Key: ", decryptionKeyReq.DecryptionKey)
 				_, err := k.TransmitDecryptionKeyDataPacket(
 					ctx,
 					types.DecryptionKeyDataPacketData{

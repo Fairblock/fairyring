@@ -205,8 +205,10 @@ func (im IBCModule) OnRecvPacket(
 			),
 		)
 	case *types.KeysharePacketData_GetDecryptionKeyPacket:
+		fmt.Println("\n\n\n\nReceived GetDecryptionKey packet")
 		packetAck, err := im.keeper.OnRecvGetDecryptionKeyPacket(ctx, modulePacket, *packet.GetDecryptionKeyPacket)
 		if err != nil {
+			fmt.Println("Err processing request: ", err, "\n\n\n\n")
 			ack = channeltypes.NewErrorAcknowledgement(err)
 		} else {
 			// Encode packet acknowledgment
@@ -275,8 +277,10 @@ func (im IBCModule) OnAcknowledgementPacket(
 	switch packet := modulePacketData.Packet.(type) {
 
 	case *types.KeysharePacketData_DecryptionKeyDataPacket:
+		fmt.Println("\n\n\n\n Received Ack for Decryption Key")
 		err := im.keeper.OnAcknowledgementDecryptionKeyDataPacket(ctx, modulePacket, *packet.DecryptionKeyDataPacket, ack)
 		if err != nil {
+			fmt.Println("Err processing request: ", err, "\n\n\n\n")
 			return err
 		}
 		eventType = types.EventTypeDecryptionKeyDataPacket
@@ -341,8 +345,10 @@ func (im IBCModule) OnTimeoutPacket(
 		}
 
 	case *types.KeysharePacketData_DecryptionKeyDataPacket:
+		fmt.Println("\n\n\n\nTransmission of Decryption Key Timed out\n\n\n\n")
 		err := im.keeper.OnTimeoutDecryptionKeyDataPacket(ctx, modulePacket, *packet.DecryptionKeyDataPacket)
 		if err != nil {
+			fmt.Println("Err processing request: ", err, "\n\n\n\n")
 			return err
 		}
 		// this line is used by starport scaffolding # ibc/packet/module/timeout
