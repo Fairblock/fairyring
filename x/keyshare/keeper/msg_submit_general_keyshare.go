@@ -307,6 +307,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 					uint64(timeoutTimestamp),
 				)
 				if err != nil {
+					fmt.Println("Error Transmitting key ", err, "\n\n\n")
 					return nil, err
 				}
 			}

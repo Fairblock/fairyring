@@ -249,6 +249,7 @@ func (im IBCModule) OnRecvPacket(
 	}
 
 	// NOTE: acknowledgement will be written synchronously during IBC handler execution.
+	fmt.Println("\n\n\n\n Returning Ack: ", ack, "\n\n\n")
 	return ack
 }
 
@@ -259,6 +260,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 	acknowledgement []byte,
 	relayer sdk.AccAddress,
 ) error {
+	fmt.Println("\n\n\n Received Ack Packet \n\n\n")
 	var ack channeltypes.Acknowledgement
 	if err := types.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
 		return errorsmod.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
