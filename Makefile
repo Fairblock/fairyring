@@ -317,3 +317,27 @@ proto-swagger-gen:
 	@sh ./proto/scripts/protoc-swagger-gen.sh
 
 .PHONY: proto-gen proto-doc proto-swagger-gen
+
+
+###############################################################################
+###                              Fresh Chain                                ###
+###############################################################################
+
+fresh-chain:
+	@echo "Stopping any running instances..."
+	-@killall ~/go/bin/fairyringd 2>/dev/null || true
+	@echo "Removing existing data..."
+	-@rm -rf ~/.fairyring
+	@echo "Initializing a fresh chain..."
+	~/go/bin/fairyringd init star --chain-id fairyring -o
+	@echo "Adding a genesis account..."
+	~/go/bin/fairyringd genesis add-genesis-account star 1000000000000ufairy,1000000000000stake
+	~/go/bin/fairyringd genesis gentx star 500000000stake --chain-id fairyring
+	~/go/bin/fairyringd genesis collect-gentxs
+	jq '.app_state.keyshare.params.trusted_addresses += ["fairy1vghpa0tuzfza97cwyc085zxuhsyvy3jtgry7vv"]' ~/.fairyring/config/genesis.json > ~/.fairyring/config/genesis_temp.json && mv ~/.fairyring/config/genesis_temp.json ~/.fairyring/config/genesis.json
+	sed -i 's/^minimum-gas-prices *= *""/minimum-gas-prices = "0.001ufairy"/' ~/.fairyring/config/app.toml
+	jq '.app_state.pep.params.is_source_chain = true' ~/.fairyring/config/genesis.json > ~/.fairyring/config/genesis_temp.json && mv ~/.fairyring/config/genesis_temp.json ~/.fairyring/config/genesis.json
+	@echo "Starting the chain..."
+	~/go/bin/fairyringd start --home ~/.fairyring --rpc.laddr tcp://127.0.0.1:26659 --api.enable
+
+.PHONY: all build clean fresh-chain

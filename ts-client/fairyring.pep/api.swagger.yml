@@ -4,6 +4,107 @@ info:
   name: ''
   description: ''
 paths:
+  /Fairblock/fairyring/pep/decrypt_data/{pubkey}/{decryption_key}/{encrypted_data}:
+    get:
+      operationId: Query_DecryptData
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              decrypted_data:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pubkey
+          in: path
+          required: true
+          type: string
+        - name: decryption_key
+          in: path
+          required: true
+          type: string
+        - name: encrypted_data
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /Fairblock/fairyring/pep/private_identity/{identity}:
+    get:
+      operationId: Query_PrivateIdentity
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              creator:
+                type: string
+              identity:
+                type: string
+              pubkey:
+                type: string
+              private_decryption_keys:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    requester:
+                      type: string
+                    private_keyshares:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          encrypted_keyshare_value:
+                            type: string
+                          encrypted_keyshare_index:
+                            type: string
+                            format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: identity
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /fairyring/pep/encrypted_tx:
     get:
       operationId: Query_EncryptedTxAll
@@ -13,17 +114,17 @@ paths:
           schema:
             type: object
             properties:
-              encryptedTxArray:
+              encrypted_tx_array:
                 type: array
                 items:
                   type: object
                   properties:
-                    encryptedTx:
+                    encrypted_txs:
                       type: array
                       items:
                         type: object
                         properties:
-                          targetHeight:
+                          target_height:
                             type: string
                             format: uint64
                           index:
@@ -33,14 +134,14 @@ paths:
                             type: string
                           creator:
                             type: string
-                          chargedGas:
+                          charged_gas:
                             type: object
                             properties:
                               denom:
                                 type: string
                               amount:
                                 type: string
-                          processedAtChainHeight:
+                          processed_at_chain_height:
                             type: string
                             format: uint64
                           expired:
@@ -98,7 +199,7 @@ paths:
           type: boolean
       tags:
         - Query
-  /fairyring/pep/encrypted_tx/{targetHeight}:
+  /fairyring/pep/encrypted_tx/{target_height}:
     get:
       operationId: Query_EncryptedTxAllFromHeight
       responses:
@@ -107,15 +208,15 @@ paths:
           schema:
             type: object
             properties:
-              encryptedTxArray:
+              encrypted_tx_array:
                 type: object
                 properties:
-                  encryptedTx:
+                  encrypted_txs:
                     type: array
                     items:
                       type: object
                       properties:
-                        targetHeight:
+                        target_height:
                           type: string
                           format: uint64
                         index:
@@ -125,14 +226,14 @@ paths:
                           type: string
                         creator:
                           type: string
-                        chargedGas:
+                        charged_gas:
                           type: object
                           properties:
                             denom:
                               type: string
                             amount:
                               type: string
-                        processedAtChainHeight:
+                        processed_at_chain_height:
                           type: string
                           format: uint64
                         expired:
@@ -156,14 +257,14 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: targetHeight
+        - name: target_height
           in: path
           required: true
           type: string
           format: uint64
       tags:
         - Query
-  /fairyring/pep/encrypted_tx/{targetHeight}/{index}:
+  /fairyring/pep/encrypted_tx/{target_height}/{index}:
     get:
       operationId: Query_EncryptedTx
       responses:
@@ -172,10 +273,10 @@ paths:
           schema:
             type: object
             properties:
-              encryptedTx:
+              encrypted_tx:
                 type: object
                 properties:
-                  targetHeight:
+                  target_height:
                     type: string
                     format: uint64
                   index:
@@ -185,14 +286,14 @@ paths:
                     type: string
                   creator:
                     type: string
-                  chargedGas:
+                  charged_gas:
                     type: object
                     properties:
                       denom:
                         type: string
                       amount:
                         type: string
-                  processedAtChainHeight:
+                  processed_at_chain_height:
                     type: string
                     format: uint64
                   expired:
@@ -216,7 +317,7 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: targetHeight
+        - name: target_height
           in: path
           required: true
           type: string
@@ -228,23 +329,21 @@ paths:
           format: uint64
       tags:
         - Query
-  /fairyring/pep/keyshare:
+  /fairyring/pep/general_identity:
     get:
-      operationId: Query_KeyshareReqAll
+      operationId: Query_GeneralIdentityAll
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              keyshares:
+              request_details_list:
                 type: array
                 items:
                   type: object
                   properties:
                     creator:
-                      type: string
-                    request_id:
                       type: string
                     identity:
                       type: string
@@ -253,7 +352,7 @@ paths:
                     tx_list:
                       type: object
                       properties:
-                        encryptedTx:
+                        encrypted_txs:
                           type: array
                           items:
                             type: object
@@ -267,14 +366,14 @@ paths:
                                 type: string
                               creator:
                                 type: string
-                              chargedGas:
+                              charged_gas:
                                 type: object
                                 properties:
                                   denom:
                                     type: string
                                   amount:
                                     type: string
-                    aggr_keyshare:
+                    decryption_key:
                       type: string
               pagination:
                 type: object
@@ -329,21 +428,19 @@ paths:
           type: boolean
       tags:
         - Query
-  /fairyring/pep/keyshare/{req_id}:
+  /fairyring/pep/general_identity/{identity}:
     get:
-      operationId: Query_KeyshareReq
+      operationId: Query_GeneralIdentity
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              keyshare:
+              request_details:
                 type: object
                 properties:
                   creator:
-                    type: string
-                  request_id:
                     type: string
                   identity:
                     type: string
@@ -352,7 +449,7 @@ paths:
                   tx_list:
                     type: object
                     properties:
-                      encryptedTx:
+                      encrypted_txs:
                         type: array
                         items:
                           type: object
@@ -366,14 +463,14 @@ paths:
                               type: string
                             creator:
                               type: string
-                            chargedGas:
+                            charged_gas:
                               type: object
                               properties:
                                 denom:
                                   type: string
                                 amount:
                                   type: string
-                  aggr_keyshare:
+                  decryption_key:
                     type: string
         default:
           description: An unexpected error response.
@@ -394,7 +491,7 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: req_id
+        - name: identity
           in: path
           required: true
           type: string
@@ -470,6 +567,16 @@ paths:
                         type: string
                       amount:
                         type: string
+                  private_decryption_key_price:
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+                  max_contract_gas:
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -499,7 +606,7 @@ paths:
           schema:
             type: object
             properties:
-              pepNonce:
+              pep_nonce:
                 type: array
                 items:
                   type: object
@@ -571,7 +678,7 @@ paths:
           schema:
             type: object
             properties:
-              pepNonce:
+              pep_nonce:
                 type: object
                 properties:
                   address:
@@ -604,29 +711,29 @@ paths:
           type: string
       tags:
         - Query
-  /fairyring/pep/pub_key:
+  /fairyring/pep/pubkey:
     get:
-      operationId: Query_PubKey
+      operationId: Query_Pubkey
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              activePubKey:
+              active_pubkey:
                 type: object
                 properties:
-                  publicKey:
+                  public_key:
                     type: string
                   creator:
                     type: string
                   expiry:
                     type: string
                     format: uint64
-              queuedPubKey:
+              queued_pubkey:
                 type: object
                 properties:
-                  publicKey:
+                  public_key:
                     type: string
                   creator:
                     type: string
@@ -679,7 +786,7 @@ definitions:
   ActivePublicKey:
     type: object
     properties:
-      publicKey:
+      public_key:
         type: string
       creator:
         type: string
@@ -696,12 +803,12 @@ definitions:
   EncryptedTxArray:
     type: object
     properties:
-      encryptedTx:
+      encrypted_txs:
         type: array
         items:
           type: object
           properties:
-            targetHeight:
+            target_height:
               type: string
               format: uint64
             index:
@@ -711,55 +818,18 @@ definitions:
               type: string
             creator:
               type: string
-            chargedGas:
+            charged_gas:
               type: object
               properties:
                 denom:
                   type: string
                 amount:
                   type: string
-            processedAtChainHeight:
+            processed_at_chain_height:
               type: string
               format: uint64
             expired:
               type: boolean
-  GenEncTxExecutionQueue:
-    type: object
-    properties:
-      creator:
-        type: string
-      request_id:
-        type: string
-      identity:
-        type: string
-      pubkey:
-        type: string
-      tx_list:
-        type: object
-        properties:
-          encryptedTx:
-            type: array
-            items:
-              type: object
-              properties:
-                identity:
-                  type: string
-                index:
-                  type: string
-                  format: uint64
-                data:
-                  type: string
-                creator:
-                  type: string
-                chargedGas:
-                  type: object
-                  properties:
-                    denom:
-                      type: string
-                    amount:
-                      type: string
-      aggr_keyshare:
-        type: string
   GeneralEncryptedTx:
     type: object
     properties:
@@ -772,7 +842,7 @@ definitions:
         type: string
       creator:
         type: string
-      chargedGas:
+      charged_gas:
         type: object
         properties:
           denom:
@@ -782,7 +852,7 @@ definitions:
   GeneralEncryptedTxArray:
     type: object
     properties:
-      encryptedTx:
+      encrypted_txs:
         type: array
         items:
           type: object
@@ -796,13 +866,56 @@ definitions:
               type: string
             creator:
               type: string
-            chargedGas:
+            charged_gas:
               type: object
               properties:
                 denom:
                   type: string
                 amount:
                   type: string
+  IdentityExecutionEntry:
+    type: object
+    properties:
+      creator:
+        type: string
+      identity:
+        type: string
+      pubkey:
+        type: string
+      tx_list:
+        type: object
+        properties:
+          encrypted_txs:
+            type: array
+            items:
+              type: object
+              properties:
+                identity:
+                  type: string
+                index:
+                  type: string
+                  format: uint64
+                data:
+                  type: string
+                creator:
+                  type: string
+                charged_gas:
+                  type: object
+                  properties:
+                    denom:
+                      type: string
+                    amount:
+                      type: string
+      decryption_key:
+        type: string
+  IndexedEncryptedKeyshare:
+    type: object
+    properties:
+      encrypted_keyshare_value:
+        type: string
+      encrypted_keyshare_index:
+        type: string
+        format: uint64
   PageRequest:
     type: object
     properties:
@@ -828,18 +941,38 @@ definitions:
       total:
         type: string
         format: uint64
-  QueryAllEncryptedTxFromHeightResponse:
+  PrivateDecryptionKey:
     type: object
     properties:
-      encryptedTxArray:
+      requester:
+        type: string
+      private_keyshares:
+        type: array
+        items:
+          type: object
+          properties:
+            encrypted_keyshare_value:
+              type: string
+            encrypted_keyshare_index:
+              type: string
+              format: uint64
+  QueryDecryptDataResponse:
+    type: object
+    properties:
+      decrypted_data:
+        type: string
+  QueryEncryptedTxAllFromHeightResponse:
+    type: object
+    properties:
+      encrypted_tx_array:
         type: object
         properties:
-          encryptedTx:
+          encrypted_txs:
             type: array
             items:
               type: object
               properties:
-                targetHeight:
+                target_height:
                   type: string
                   format: uint64
                 index:
@@ -849,32 +982,32 @@ definitions:
                   type: string
                 creator:
                   type: string
-                chargedGas:
+                charged_gas:
                   type: object
                   properties:
                     denom:
                       type: string
                     amount:
                       type: string
-                processedAtChainHeight:
+                processed_at_chain_height:
                   type: string
                   format: uint64
                 expired:
                   type: boolean
-  QueryAllEncryptedTxResponse:
+  QueryEncryptedTxAllResponse:
     type: object
     properties:
-      encryptedTxArray:
+      encrypted_tx_array:
         type: array
         items:
           type: object
           properties:
-            encryptedTx:
+            encrypted_txs:
               type: array
               items:
                 type: object
                 properties:
-                  targetHeight:
+                  target_height:
                     type: string
                     format: uint64
                   index:
@@ -884,14 +1017,14 @@ definitions:
                     type: string
                   creator:
                     type: string
-                  chargedGas:
+                  charged_gas:
                     type: object
                     properties:
                       denom:
                         type: string
                       amount:
                         type: string
-                  processedAtChainHeight:
+                  processed_at_chain_height:
                     type: string
                     format: uint64
                   expired:
@@ -905,17 +1038,43 @@ definitions:
           total:
             type: string
             format: uint64
-  QueryAllKeyshareResponse:
+  QueryEncryptedTxResponse:
     type: object
     properties:
-      keyshares:
+      encrypted_tx:
+        type: object
+        properties:
+          target_height:
+            type: string
+            format: uint64
+          index:
+            type: string
+            format: uint64
+          data:
+            type: string
+          creator:
+            type: string
+          charged_gas:
+            type: object
+            properties:
+              denom:
+                type: string
+              amount:
+                type: string
+          processed_at_chain_height:
+            type: string
+            format: uint64
+          expired:
+            type: boolean
+  QueryGeneralIdentityAllResponse:
+    type: object
+    properties:
+      request_details_list:
         type: array
         items:
           type: object
           properties:
             creator:
-              type: string
-            request_id:
               type: string
             identity:
               type: string
@@ -924,7 +1083,7 @@ definitions:
             tx_list:
               type: object
               properties:
-                encryptedTx:
+                encrypted_txs:
                   type: array
                   items:
                     type: object
@@ -938,14 +1097,14 @@ definitions:
                         type: string
                       creator:
                         type: string
-                      chargedGas:
+                      charged_gas:
                         type: object
                         properties:
                           denom:
                             type: string
                           amount:
                             type: string
-            aggr_keyshare:
+            decryption_key:
               type: string
       pagination:
         type: object
@@ -956,76 +1115,13 @@ definitions:
           total:
             type: string
             format: uint64
-  QueryAllPepNonceResponse:
+  QueryGeneralIdentityResponse:
     type: object
     properties:
-      pepNonce:
-        type: array
-        items:
-          type: object
-          properties:
-            address:
-              type: string
-            nonce:
-              type: string
-              format: uint64
-      pagination:
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-          total:
-            type: string
-            format: uint64
-  QueryGetEncryptedTxResponse:
-    type: object
-    properties:
-      encryptedTx:
-        type: object
-        properties:
-          targetHeight:
-            type: string
-            format: uint64
-          index:
-            type: string
-            format: uint64
-          data:
-            type: string
-          creator:
-            type: string
-          chargedGas:
-            type: object
-            properties:
-              denom:
-                type: string
-              amount:
-                type: string
-          processedAtChainHeight:
-            type: string
-            format: uint64
-          expired:
-            type: boolean
-  QueryGetPepNonceResponse:
-    type: object
-    properties:
-      pepNonce:
-        type: object
-        properties:
-          address:
-            type: string
-          nonce:
-            type: string
-            format: uint64
-  QueryKeyshareResponse:
-    type: object
-    properties:
-      keyshare:
+      request_details:
         type: object
         properties:
           creator:
-            type: string
-          request_id:
             type: string
           identity:
             type: string
@@ -1034,7 +1130,7 @@ definitions:
           tx_list:
             type: object
             properties:
-              encryptedTx:
+              encrypted_txs:
                 type: array
                 items:
                   type: object
@@ -1048,14 +1144,14 @@ definitions:
                       type: string
                     creator:
                       type: string
-                    chargedGas:
+                    charged_gas:
                       type: object
                       properties:
                         denom:
                           type: string
                         amount:
                           type: string
-          aggr_keyshare:
+          decryption_key:
             type: string
   QueryLatestHeightResponse:
     type: object
@@ -1095,23 +1191,92 @@ definitions:
                 type: string
               amount:
                 type: string
-  QueryPubKeyResponse:
+          private_decryption_key_price:
+            type: object
+            properties:
+              denom:
+                type: string
+              amount:
+                type: string
+          max_contract_gas:
+            type: string
+            format: uint64
+  QueryPepNonceAllResponse:
     type: object
     properties:
-      activePubKey:
+      pep_nonce:
+        type: array
+        items:
+          type: object
+          properties:
+            address:
+              type: string
+            nonce:
+              type: string
+              format: uint64
+      pagination:
         type: object
         properties:
-          publicKey:
+          next_key:
+            type: string
+            format: byte
+          total:
+            type: string
+            format: uint64
+  QueryPepNonceResponse:
+    type: object
+    properties:
+      pep_nonce:
+        type: object
+        properties:
+          address:
+            type: string
+          nonce:
+            type: string
+            format: uint64
+  QueryPrivateIdentityResponse:
+    type: object
+    properties:
+      creator:
+        type: string
+      identity:
+        type: string
+      pubkey:
+        type: string
+      private_decryption_keys:
+        type: array
+        items:
+          type: object
+          properties:
+            requester:
+              type: string
+            private_keyshares:
+              type: array
+              items:
+                type: object
+                properties:
+                  encrypted_keyshare_value:
+                    type: string
+                  encrypted_keyshare_index:
+                    type: string
+                    format: uint64
+  QueryPubkeyResponse:
+    type: object
+    properties:
+      active_pubkey:
+        type: object
+        properties:
+          public_key:
             type: string
           creator:
             type: string
           expiry:
             type: string
             format: uint64
-      queuedPubKey:
+      queued_pubkey:
         type: object
         properties:
-          publicKey:
+          public_key:
             type: string
           creator:
             type: string
@@ -1121,7 +1286,7 @@ definitions:
   QueuedPublicKey:
     type: object
     properties:
-      publicKey:
+      public_key:
         type: string
       creator:
         type: string
@@ -1140,7 +1305,7 @@ definitions:
   pep.EncryptedTx:
     type: object
     properties:
-      targetHeight:
+      target_height:
         type: string
         format: uint64
       index:
@@ -1150,14 +1315,14 @@ definitions:
         type: string
       creator:
         type: string
-      chargedGas:
+      charged_gas:
         type: object
         properties:
           denom:
             type: string
           amount:
             type: string
-      processedAtChainHeight:
+      processed_at_chain_height:
         type: string
         format: uint64
       expired:
@@ -1191,6 +1356,16 @@ definitions:
             type: string
           amount:
             type: string
+      private_decryption_key_price:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+      max_contract_gas:
+        type: string
+        format: uint64
   pep.PepNonce:
     type: object
     properties:
@@ -1199,16 +1374,29 @@ definitions:
       nonce:
         type: string
         format: uint64
-  MsgCreateAggregatedKeyShareResponse:
+  MsgRegisterContractResponse:
     type: object
-  MsgGetGeneralKeyshareResponse:
+  MsgRequestGeneralDecryptionKeyResponse:
     type: object
-  MsgRequestGeneralKeyshareResponse:
+  MsgRequestGeneralIdentityResponse:
     type: object
     properties:
-      req_id:
+      identity:
         type: string
+  MsgRequestPrivateDecryptionKeyResponse:
+    type: object
+  MsgRequestPrivateIdentityResponse:
+    type: object
+    properties:
+      identity:
+        type: string
+  MsgSubmitDecryptionKeyResponse:
+    type: object
   MsgSubmitEncryptedTxResponse:
+    type: object
+  MsgSubmitGeneralEncryptedTxResponse:
+    type: object
+  MsgUnregisterContractResponse:
     type: object
   MsgUpdateParamsResponse:
     type: object
@@ -1241,3 +1429,13 @@ definitions:
             type: string
           amount:
             type: string
+      private_decryption_key_price:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+      max_contract_gas:
+        type: string
+        format: uint64

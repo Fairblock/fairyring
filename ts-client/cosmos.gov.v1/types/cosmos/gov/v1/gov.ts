@@ -259,8 +259,8 @@ export interface Proposal {
   /** identity and pubkey are used to submit encrypted votes */
   identity: string;
   pubkey: string;
-  /** aggregated keyshare is used to decrypt the encrypted votes during the tally phase */
-  aggrKeyshare: string;
+  /** decryption key is used to decrypt the encrypted votes during the tally phase */
+  decryptionKey: string;
 }
 
 /** TallyResult defines a standard tally for a governance proposal. */
@@ -619,7 +619,7 @@ function createBaseProposal(): Proposal {
     hasEncryptedVotes: false,
     identity: "",
     pubkey: "",
-    aggrKeyshare: "",
+    decryptionKey: "",
   };
 }
 
@@ -679,8 +679,8 @@ export const Proposal = {
     if (message.pubkey !== "") {
       writer.uint32(146).string(message.pubkey);
     }
-    if (message.aggrKeyshare !== "") {
-      writer.uint32(154).string(message.aggrKeyshare);
+    if (message.decryptionKey !== "") {
+      writer.uint32(154).string(message.decryptionKey);
     }
     return writer;
   },
@@ -823,7 +823,7 @@ export const Proposal = {
             break;
           }
 
-          message.aggrKeyshare = reader.string();
+          message.decryptionKey = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -854,7 +854,7 @@ export const Proposal = {
       hasEncryptedVotes: isSet(object.hasEncryptedVotes) ? Boolean(object.hasEncryptedVotes) : false,
       identity: isSet(object.identity) ? String(object.identity) : "",
       pubkey: isSet(object.pubkey) ? String(object.pubkey) : "",
-      aggrKeyshare: isSet(object.aggrKeyshare) ? String(object.aggrKeyshare) : "",
+      decryptionKey: isSet(object.decryptionKey) ? String(object.decryptionKey) : "",
     };
   },
 
@@ -914,8 +914,8 @@ export const Proposal = {
     if (message.pubkey !== "") {
       obj.pubkey = message.pubkey;
     }
-    if (message.aggrKeyshare !== "") {
-      obj.aggrKeyshare = message.aggrKeyshare;
+    if (message.decryptionKey !== "") {
+      obj.decryptionKey = message.decryptionKey;
     }
     return obj;
   },
@@ -945,7 +945,7 @@ export const Proposal = {
     message.hasEncryptedVotes = object.hasEncryptedVotes ?? false;
     message.identity = object.identity ?? "";
     message.pubkey = object.pubkey ?? "";
-    message.aggrKeyshare = object.aggrKeyshare ?? "";
+    message.decryptionKey = object.decryptionKey ?? "";
     return message;
   },
 };

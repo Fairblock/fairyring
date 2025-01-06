@@ -20,19 +20,19 @@ export interface Status {
   details?: { "@type"?: string }[];
 }
 
-export interface ActivePubKey {
-  publicKey?: string;
+export interface ActivePubkey {
+  public_key?: string;
   creator?: string;
 
   /** @format uint64 */
   expiry?: string;
 
   /** @format uint64 */
-  numberOfValidators?: string;
-  encryptedKeyShares?: { data?: string; validator?: string }[];
+  number_of_validators?: string;
+  encrypted_keyshares?: { data?: string; validator?: string }[];
 }
 
-export interface EncryptedKeyShare {
+export interface EncryptedKeyshare {
   data?: string;
   validator?: string;
 }
@@ -58,84 +58,75 @@ export interface PageResponse {
   total?: string;
 }
 
-export interface QueryAllAggregatedKeyShareResponse {
-  aggregatedKeyShare?: { height?: string; data?: string }[];
+export interface QueryAuthorizedAddressAllResponse {
+  authorized_address?: { target?: string; is_authorized?: boolean; authorized_by?: string }[];
   pagination?: { next_key?: string; total?: string };
 }
 
-export interface QueryAllAuthorizedAddressResponse {
-  authorizedAddress?: { target?: string; isAuthorized?: boolean; authorizedBy?: string }[];
-  pagination?: { next_key?: string; total?: string };
-}
-
-export interface QueryAllGeneralKeyShareResponse {
-  generalKeyShare?: {
-    validator?: string;
-    idType?: string;
-    idValue?: string;
-    keyShare?: string;
-    keyShareIndex?: string;
-    receivedTimestamp?: string;
-    receivedBlockHeight?: string;
-  }[];
-  pagination?: { next_key?: string; total?: string };
-}
-
-export interface QueryAllKeyShareResponse {
-  keyShare?: {
-    validator?: string;
-    blockHeight?: string;
-    keyShare?: string;
-    keyShareIndex?: string;
-    receivedTimestamp?: string;
-    receivedBlockHeight?: string;
-  }[];
-  pagination?: { next_key?: string; total?: string };
-}
-
-export interface QueryAllValidatorSetResponse {
-  validatorSet?: { index?: string; validator?: string; consAddr?: string; isActive?: boolean }[];
-  pagination?: { next_key?: string; total?: string };
+export interface QueryAuthorizedAddressResponse {
+  authorized_address?: { target?: string; is_authorized?: boolean; authorized_by?: string };
 }
 
 export interface QueryCommitmentsResponse {
-  activeCommitments?: { commitments?: string[] };
-  queuedCommitments?: { commitments?: string[] };
+  active_commitments?: { commitments?: string[] };
+  queued_commitments?: { commitments?: string[] };
 }
 
-export interface QueryGetAggregatedKeyShareResponse {
-  aggregatedKeyShare?: { height?: string; data?: string };
+export interface QueryDecryptionKeyAllResponse {
+  decryption_keys?: { height?: string; data?: string }[];
+  pagination?: { next_key?: string; total?: string };
 }
 
-export interface QueryGetAuthorizedAddressResponse {
-  authorizedAddress?: { target?: string; isAuthorized?: boolean; authorizedBy?: string };
+export interface QueryDecryptionKeyResponse {
+  decryption_key?: { height?: string; data?: string };
 }
 
-export interface QueryGetGeneralKeyShareResponse {
-  generalKeyShare?: {
+export interface QueryGeneralKeyshareAllResponse {
+  general_keyshare?: {
     validator?: string;
-    idType?: string;
-    idValue?: string;
-    keyShare?: string;
-    keyShareIndex?: string;
-    receivedTimestamp?: string;
-    receivedBlockHeight?: string;
+    id_type?: string;
+    id_value?: string;
+    keyshare?: string;
+    keyshare_index?: string;
+    received_timestamp?: string;
+    received_block_height?: string;
+  }[];
+  pagination?: { next_key?: string; total?: string };
+}
+
+export interface QueryGeneralKeyshareResponse {
+  general_keyshare?: {
+    validator?: string;
+    id_type?: string;
+    id_value?: string;
+    keyshare?: string;
+    keyshare_index?: string;
+    received_timestamp?: string;
+    received_block_height?: string;
   };
 }
 
-export interface QueryGetKeyShareResponse {
-  keyShare?: {
+export interface QueryKeyshareAllResponse {
+  keyshare?: {
     validator?: string;
-    blockHeight?: string;
-    keyShare?: string;
-    keyShareIndex?: string;
-    receivedTimestamp?: string;
-    receivedBlockHeight?: string;
-  };
+    block_height?: string;
+    keyshare?: string;
+    keyshare_index?: string;
+    received_timestamp?: string;
+    received_block_height?: string;
+  }[];
+  pagination?: { next_key?: string; total?: string };
 }
 
-export interface QueryGetValidatorSetResponse {
-  validatorSet?: { index?: string; validator?: string; consAddr?: string; isActive?: boolean };
+export interface QueryKeyshareResponse {
+  keyshare?: {
+    validator?: string;
+    block_height?: string;
+    keyshare?: string;
+    keyshare_index?: string;
+    received_timestamp?: string;
+    received_block_height?: string;
+  };
 }
 
 export interface QueryParamsResponse {
@@ -146,24 +137,34 @@ export interface QueryParamsResponse {
     trusted_addresses?: string[];
     slash_fraction_no_keyshare?: string;
     slash_fraction_wrong_keyshare?: string;
+    avg_block_time?: number;
   };
 }
 
-export interface QueryPubKeyResponse {
-  activePubKey?: {
-    publicKey?: string;
+export interface QueryPubkeyResponse {
+  active_pubkey?: {
+    public_key?: string;
     creator?: string;
     expiry?: string;
-    numberOfValidators?: string;
-    encryptedKeyShares?: { data?: string; validator?: string }[];
+    number_of_validators?: string;
+    encrypted_keyshares?: { data?: string; validator?: string }[];
   };
-  queuedPubKey?: {
-    publicKey?: string;
+  queued_pubkey?: {
+    public_key?: string;
     creator?: string;
     expiry?: string;
-    numberOfValidators?: string;
-    encryptedKeyShares?: { data?: string; validator?: string }[];
+    number_of_validators?: string;
+    encrypted_keyshares?: { data?: string; validator?: string }[];
   };
+}
+
+export interface QueryValidatorSetAllResponse {
+  validator_set?: { index?: string; validator?: string; cons_addr?: string; is_active?: boolean }[];
+  pagination?: { next_key?: string; total?: string };
+}
+
+export interface QueryValidatorSetResponse {
+  validator_set?: { index?: string; validator?: string; cons_addr?: string; is_active?: boolean };
 }
 
 export interface QueryVerifiableRandomnessResponse {
@@ -173,65 +174,65 @@ export interface QueryVerifiableRandomnessResponse {
   round?: string;
 }
 
-export interface QueuedPubKey {
-  publicKey?: string;
+export interface QueuedPubkey {
+  public_key?: string;
   creator?: string;
 
   /** @format uint64 */
   expiry?: string;
 
   /** @format uint64 */
-  numberOfValidators?: string;
-  encryptedKeyShares?: { data?: string; validator?: string }[];
-}
-
-export interface KeyshareAggregatedKeyShare {
-  /** @format uint64 */
-  height?: string;
-  data?: string;
+  number_of_validators?: string;
+  encrypted_keyshares?: { data?: string; validator?: string }[];
 }
 
 export interface KeyshareAuthorizedAddress {
   target?: string;
-  isAuthorized?: boolean;
-  authorizedBy?: string;
+  is_authorized?: boolean;
+  authorized_by?: string;
 }
 
 export interface KeyshareCommitments {
   commitments?: string[];
 }
 
-export interface KeyshareGeneralKeyShare {
-  validator?: string;
-  idType?: string;
-  idValue?: string;
-  keyShare?: string;
-
+export interface KeyshareDecryptionKey {
   /** @format uint64 */
-  keyShareIndex?: string;
-
-  /** @format uint64 */
-  receivedTimestamp?: string;
-
-  /** @format uint64 */
-  receivedBlockHeight?: string;
+  height?: string;
+  data?: string;
 }
 
-export interface KeyshareKeyShare {
+export interface KeyshareGeneralKeyshare {
+  validator?: string;
+  id_type?: string;
+  id_value?: string;
+  keyshare?: string;
+
+  /** @format uint64 */
+  keyshare_index?: string;
+
+  /** @format uint64 */
+  received_timestamp?: string;
+
+  /** @format uint64 */
+  received_block_height?: string;
+}
+
+export interface KeyshareKeyshare {
   validator?: string;
 
   /** @format uint64 */
-  blockHeight?: string;
-  keyShare?: string;
+  block_height?: string;
+  keyshare?: string;
 
   /** @format uint64 */
-  keyShareIndex?: string;
+  keyshare_index?: string;
 
   /** @format uint64 */
-  receivedTimestamp?: string;
+  received_timestamp?: string;
 
   /** @format uint64 */
-  receivedBlockHeight?: string;
+  received_block_height?: string;
 }
 
 export interface KeyshareParams {
@@ -250,33 +251,21 @@ export interface KeyshareParams {
 
   /** @format byte */
   slash_fraction_wrong_keyshare?: string;
+
+  /** @format float */
+  avg_block_time?: number;
 }
 
 export interface KeyshareValidatorSet {
   index?: string;
   validator?: string;
-  consAddr?: string;
-  isActive?: boolean;
+  cons_addr?: string;
+  is_active?: boolean;
 }
 
 export type MsgCreateAuthorizedAddressResponse = object;
 
-export interface MsgCreateGeneralKeyShareResponse {
-  creator?: string;
-  idType?: string;
-  idValue?: string;
-  keyShare?: string;
-
-  /** @format uint64 */
-  keyShareIndex?: string;
-
-  /** @format uint64 */
-  receivedBlockHeight?: string;
-  success?: boolean;
-  errorMessage?: string;
-}
-
-export type MsgCreateLatestPubKeyResponse = object;
+export type MsgCreateLatestPubkeyResponse = object;
 
 export interface MsgDeRegisterValidatorResponse {
   creator?: string;
@@ -284,7 +273,7 @@ export interface MsgDeRegisterValidatorResponse {
 
 export type MsgDeleteAuthorizedAddressResponse = object;
 
-export type MsgOverrideLatestPubKeyResponse = object;
+export type MsgOverrideLatestPubkeyResponse = object;
 
 export interface MsgRegisterValidatorResponse {
   creator?: string;
@@ -295,15 +284,32 @@ export interface MsgSendKeyshareResponse {
   keyshare?: string;
 
   /** @format uint64 */
-  keyshareIndex?: string;
+  keyshare_index?: string;
 
   /** @format uint64 */
-  blockHeight?: string;
+  block_height?: string;
 
   /** @format uint64 */
-  receivedBlockHeight?: string;
+  received_block_height?: string;
   success?: boolean;
-  errorMessage?: string;
+  error_message?: string;
+}
+
+export type MsgSubmitEncryptedKeyshareResponse = object;
+
+export interface MsgSubmitGeneralKeyshareResponse {
+  creator?: string;
+  id_type?: string;
+  id_value?: string;
+  keyshare?: string;
+
+  /** @format uint64 */
+  keyshare_index?: string;
+
+  /** @format uint64 */
+  received_block_height?: string;
+  success?: boolean;
+  error_message?: string;
 }
 
 export type MsgUpdateAuthorizedAddressResponse = object;
@@ -326,6 +332,9 @@ export interface Params {
 
   /** @format byte */
   slash_fraction_wrong_keyshare?: string;
+
+  /** @format float */
+  avg_block_time?: number;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
@@ -456,50 +465,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryAggregatedKeyShareAll
-   * @request GET:/fairyring/keyshare/aggregated_key_share
-   */
-  queryAggregatedKeyShareAll = (
-    query?: {
-      "pagination.key"?: string;
-      "pagination.offset"?: string;
-      "pagination.limit"?: string;
-      "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
-    },
-    params: RequestParams = {},
-  ) =>
-    this.request<
-      { aggregatedKeyShare?: { height?: string; data?: string }[]; pagination?: { next_key?: string; total?: string } },
-      { code?: number; message?: string; details?: { "@type"?: string }[] }
-    >({
-      path: `/fairyring/keyshare/aggregated_key_share`,
-      method: "GET",
-      query: query,
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryAggregatedKeyShare
-   * @request GET:/fairyring/keyshare/aggregated_key_share/{height}
-   */
-  queryAggregatedKeyShare = (height: string, params: RequestParams = {}) =>
-    this.request<
-      { aggregatedKeyShare?: { height?: string; data?: string } },
-      { code?: number; message?: string; details?: { "@type"?: string }[] }
-    >({
-      path: `/fairyring/keyshare/aggregated_key_share/${height}`,
-      method: "GET",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
    * @name QueryAuthorizedAddressAll
    * @request GET:/fairyring/keyshare/authorized_address
    */
@@ -515,7 +480,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   ) =>
     this.request<
       {
-        authorizedAddress?: { target?: string; isAuthorized?: boolean; authorizedBy?: string }[];
+        authorized_address?: { target?: string; is_authorized?: boolean; authorized_by?: string }[];
         pagination?: { next_key?: string; total?: string };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
@@ -535,7 +500,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    */
   queryAuthorizedAddress = (target: string, params: RequestParams = {}) =>
     this.request<
-      { authorizedAddress?: { target?: string; isAuthorized?: boolean; authorizedBy?: string } },
+      { authorized_address?: { target?: string; is_authorized?: boolean; authorized_by?: string } },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
       path: `/fairyring/keyshare/authorized_address/${target}`,
@@ -552,7 +517,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    */
   queryCommitments = (params: RequestParams = {}) =>
     this.request<
-      { activeCommitments?: { commitments?: string[] }; queuedCommitments?: { commitments?: string[] } },
+      { active_commitments?: { commitments?: string[] }; queued_commitments?: { commitments?: string[] } },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
       path: `/fairyring/keyshare/commitments`,
@@ -564,10 +529,54 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryGeneralKeyShareAll
-   * @request GET:/fairyring/keyshare/general_key_share
+   * @name QueryDecryptionKeyAll
+   * @request GET:/fairyring/keyshare/decryption_key
    */
-  queryGeneralKeyShareAll = (
+  queryDecryptionKeyAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<
+      { decryption_keys?: { height?: string; data?: string }[]; pagination?: { next_key?: string; total?: string } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
+      path: `/fairyring/keyshare/decryption_key`,
+      method: "GET",
+      query: query,
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryDecryptionKey
+   * @request GET:/fairyring/keyshare/decryption_key/{height}
+   */
+  queryDecryptionKey = (height: string, params: RequestParams = {}) =>
+    this.request<
+      { decryption_key?: { height?: string; data?: string } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
+      path: `/fairyring/keyshare/decryption_key/${height}`,
+      method: "GET",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryGeneralKeyshareAll
+   * @request GET:/fairyring/keyshare/general_keyshare
+   */
+  queryGeneralKeyshareAll = (
     query?: {
       "pagination.key"?: string;
       "pagination.offset"?: string;
@@ -579,20 +588,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   ) =>
     this.request<
       {
-        generalKeyShare?: {
+        general_keyshare?: {
           validator?: string;
-          idType?: string;
-          idValue?: string;
-          keyShare?: string;
-          keyShareIndex?: string;
-          receivedTimestamp?: string;
-          receivedBlockHeight?: string;
+          id_type?: string;
+          id_value?: string;
+          keyshare?: string;
+          keyshare_index?: string;
+          received_timestamp?: string;
+          received_block_height?: string;
         }[];
         pagination?: { next_key?: string; total?: string };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
-      path: `/fairyring/keyshare/general_key_share`,
+      path: `/fairyring/keyshare/general_keyshare`,
       method: "GET",
       query: query,
       ...params,
@@ -602,25 +611,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryGeneralKeyShare
-   * @request GET:/fairyring/keyshare/general_key_share/{validator}/{idType}/{idValue}
+   * @name QueryGeneralKeyshare
+   * @request GET:/fairyring/keyshare/general_keyshare/{validator}/{id_type}/{id_value}
    */
-  queryGeneralKeyShare = (validator: string, idType: string, idValue: string, params: RequestParams = {}) =>
+  queryGeneralKeyshare = (validator: string, idType: string, idValue: string, params: RequestParams = {}) =>
     this.request<
       {
-        generalKeyShare?: {
+        general_keyshare?: {
           validator?: string;
-          idType?: string;
-          idValue?: string;
-          keyShare?: string;
-          keyShareIndex?: string;
-          receivedTimestamp?: string;
-          receivedBlockHeight?: string;
+          id_type?: string;
+          id_value?: string;
+          keyshare?: string;
+          keyshare_index?: string;
+          received_timestamp?: string;
+          received_block_height?: string;
         };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
-      path: `/fairyring/keyshare/general_key_share/${validator}/${idType}/${idValue}`,
+      path: `/fairyring/keyshare/general_keyshare/${validator}/${idType}/${idValue}`,
       method: "GET",
       ...params,
     });
@@ -629,10 +638,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryKeyShareAll
-   * @request GET:/fairyring/keyshare/key_share
+   * @name QueryKeyshareAll
+   * @request GET:/fairyring/keyshare/keyshare
    */
-  queryKeyShareAll = (
+  queryKeyshareAll = (
     query?: {
       "pagination.key"?: string;
       "pagination.offset"?: string;
@@ -644,19 +653,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   ) =>
     this.request<
       {
-        keyShare?: {
+        keyshare?: {
           validator?: string;
-          blockHeight?: string;
-          keyShare?: string;
-          keyShareIndex?: string;
-          receivedTimestamp?: string;
-          receivedBlockHeight?: string;
+          block_height?: string;
+          keyshare?: string;
+          keyshare_index?: string;
+          received_timestamp?: string;
+          received_block_height?: string;
         }[];
         pagination?: { next_key?: string; total?: string };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
-      path: `/fairyring/keyshare/key_share`,
+      path: `/fairyring/keyshare/keyshare`,
       method: "GET",
       query: query,
       ...params,
@@ -666,24 +675,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryKeyShare
-   * @request GET:/fairyring/keyshare/key_share/{validator}/{blockHeight}
+   * @name QueryKeyshare
+   * @request GET:/fairyring/keyshare/keyshare/{validator}/{block_height}
    */
-  queryKeyShare = (validator: string, blockHeight: string, params: RequestParams = {}) =>
+  queryKeyshare = (validator: string, blockHeight: string, params: RequestParams = {}) =>
     this.request<
       {
-        keyShare?: {
+        keyshare?: {
           validator?: string;
-          blockHeight?: string;
-          keyShare?: string;
-          keyShareIndex?: string;
-          receivedTimestamp?: string;
-          receivedBlockHeight?: string;
+          block_height?: string;
+          keyshare?: string;
+          keyshare_index?: string;
+          received_timestamp?: string;
+          received_block_height?: string;
         };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
-      path: `/fairyring/keyshare/key_share/${validator}/${blockHeight}`,
+      path: `/fairyring/keyshare/keyshare/${validator}/${blockHeight}`,
       method: "GET",
       ...params,
     });
@@ -705,6 +714,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
           trusted_addresses?: string[];
           slash_fraction_no_keyshare?: string;
           slash_fraction_wrong_keyshare?: string;
+          avg_block_time?: number;
         };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
@@ -718,30 +728,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryPubKey
-   * @request GET:/fairyring/keyshare/pub_key
+   * @name QueryPubkey
+   * @request GET:/fairyring/keyshare/pubkey
    */
-  queryPubKey = (params: RequestParams = {}) =>
+  queryPubkey = (params: RequestParams = {}) =>
     this.request<
       {
-        activePubKey?: {
-          publicKey?: string;
+        active_pubkey?: {
+          public_key?: string;
           creator?: string;
           expiry?: string;
-          numberOfValidators?: string;
-          encryptedKeyShares?: { data?: string; validator?: string }[];
+          number_of_validators?: string;
+          encrypted_keyshares?: { data?: string; validator?: string }[];
         };
-        queuedPubKey?: {
-          publicKey?: string;
+        queued_pubkey?: {
+          public_key?: string;
           creator?: string;
           expiry?: string;
-          numberOfValidators?: string;
-          encryptedKeyShares?: { data?: string; validator?: string }[];
+          number_of_validators?: string;
+          encrypted_keyshares?: { data?: string; validator?: string }[];
         };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
-      path: `/fairyring/keyshare/pub_key`,
+      path: `/fairyring/keyshare/pubkey`,
       method: "GET",
       ...params,
     });
@@ -765,7 +775,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   ) =>
     this.request<
       {
-        validatorSet?: { index?: string; validator?: string; consAddr?: string; isActive?: boolean }[];
+        validator_set?: { index?: string; validator?: string; cons_addr?: string; is_active?: boolean }[];
         pagination?: { next_key?: string; total?: string };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
@@ -785,7 +795,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    */
   queryValidatorSet = (index: string, params: RequestParams = {}) =>
     this.request<
-      { validatorSet?: { index?: string; validator?: string; consAddr?: string; isActive?: boolean } },
+      { validator_set?: { index?: string; validator?: string; cons_addr?: string; is_active?: boolean } },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
       path: `/fairyring/keyshare/validator_set/${index}`,

@@ -135,7 +135,7 @@ export interface QueryProposalResponse {
     has_encrypted_votes?: boolean;
     identity?: string;
     pubkey?: string;
-    aggr_keyshare?: string;
+    decryption_key?: string;
   };
 }
 
@@ -172,7 +172,7 @@ export interface QueryProposalsResponse {
     has_encrypted_votes?: boolean;
     identity?: string;
     pubkey?: string;
-    aggr_keyshare?: string;
+    decryption_key?: string;
   }[];
   pagination?: { next_key?: string; total?: string };
 }
@@ -333,7 +333,7 @@ export interface V1Proposal {
   has_encrypted_votes?: boolean;
   identity?: string;
   pubkey?: string;
-  aggr_keyshare?: string;
+  decryption_key?: string;
 }
 
 export interface V1TallyResult {
@@ -655,7 +655,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
           has_encrypted_votes?: boolean;
           identity?: string;
           pubkey?: string;
-          aggr_keyshare?: string;
+          decryption_key?: string;
         }[];
         pagination?: { next_key?: string; total?: string };
       },
@@ -709,7 +709,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
           has_encrypted_votes?: boolean;
           identity?: string;
           pubkey?: string;
-          aggr_keyshare?: string;
+          decryption_key?: string;
         };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }

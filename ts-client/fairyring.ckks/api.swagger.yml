@@ -1,0 +1,81 @@
+swagger: '2.0'
+info:
+  title: HTTP API Console fairyring.ckks
+  name: ''
+  description: ''
+paths:
+  /Fairblock/fairyring/ckks/params:
+    get:
+      operationId: Query_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+definitions:
+  Any:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  Status:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          properties:
+            '@type':
+              type: string
+          additionalProperties: {}
+  QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        type: object
+  ckks.Params:
+    type: object
+  MsgSubmitGkgShareResponse:
+    type: object
+  MsgSubmitPkgShareResponse:
+    type: object
+  MsgSubmitRkgShareRound1Response:
+    type: object
+  MsgSubmitRkgShareRound2Response:
+    type: object
+  MsgSubmitShamirShareResponse:
+    type: object
+  MsgUpdateParamsResponse:
+    type: object
+  Params:
+    type: object

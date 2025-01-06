@@ -40,6 +40,9 @@ import (
 	"cosmossdk.io/x/feegrant"
 	"cosmossdk.io/x/nft"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
+	ckksmodulev1 "github.com/Fairblock/fairyring/api/fairyring/ckks/module"
+	_ "github.com/Fairblock/fairyring/x/ckks/module" // import for side-effects
+	ckksmoduletypes "github.com/Fairblock/fairyring/x/ckks/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
@@ -99,6 +102,7 @@ var (
 		pepmoduletypes.ModuleName,
 		keysharemoduletypes.ModuleName,
 		wasmtypes.ModuleName,
+		ckksmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -127,6 +131,7 @@ var (
 		keysharemoduletypes.ModuleName,
 		wasmtypes.ModuleName,
 		govtypes.ModuleName,
+		ckksmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -148,6 +153,7 @@ var (
 		pepmoduletypes.ModuleName,
 		keysharemoduletypes.ModuleName,
 		wasmtypes.ModuleName,
+		ckksmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -314,6 +320,10 @@ var (
 			//	Name:   keysharemoduletypes.ModuleName,
 			//	Config: appconfig.WrapAny(&keysharemodulev1.Module{}),
 			//},
+			{
+				Name:   ckksmoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&ckksmodulev1.Module{}),
+			},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},
 	})

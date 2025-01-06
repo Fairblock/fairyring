@@ -256,7 +256,7 @@ paths:
                       type: string
                     pubkey:
                       type: string
-                    aggr_keyshare:
+                    decryption_key:
                       type: string
               pagination:
                 type: object
@@ -432,7 +432,7 @@ paths:
                     type: string
                   pubkey:
                     type: string
-                  aggr_keyshare:
+                  decryption_key:
                     type: string
         default:
           description: An unexpected error response.
@@ -1137,7 +1137,7 @@ definitions:
             type: string
           pubkey:
             type: string
-          aggr_keyshare:
+          decryption_key:
             type: string
   QueryProposalsResponse:
     type: object
@@ -1221,7 +1221,7 @@ definitions:
               type: string
             pubkey:
               type: string
-            aggr_keyshare:
+            decryption_key:
               type: string
       pagination:
         type: object
@@ -1531,7 +1531,7 @@ definitions:
         type: string
       pubkey:
         type: string
-      aggr_keyshare:
+      decryption_key:
         type: string
   v1.TallyResult:
     type: object

@@ -6,111 +6,51 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { QueryFeeEnabledChannelsRequest } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { IncentivizedAcknowledgement } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/ack";
-import { FeeEnabledChannel } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/genesis";
-import { QueryIncentivizedPacketRequest } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { QueryCounterpartyPayeeResponse } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { QueryTotalAckFeesResponse } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { QueryTotalTimeoutFeesRequest } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { QueryTotalTimeoutFeesResponse } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { QueryFeeEnabledChannelResponse } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { PacketFees } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/fee";
-import { MsgPayPacketFeeAsync } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/tx";
-import { QueryTotalRecvFeesResponse } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { QueryIncentivizedPacketsRequest } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { QueryTotalRecvFeesRequest } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { MsgRegisterPayee } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/tx";
-import { MsgPayPacketFee } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/tx";
-import { QueryPayeeRequest } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { QueryFeeEnabledChannelsResponse } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { IdentifiedPacketFees } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/fee";
-import { MsgRegisterCounterpartyPayeeResponse } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/tx";
-import { MsgRegisterCounterpartyPayee } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/tx";
-import { QueryIncentivizedPacketsResponse } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { MsgPayPacketFeeResponse } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/tx";
-import { MsgPayPacketFeeAsyncResponse } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/tx";
-import { QueryCounterpartyPayeeRequest } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { PacketFee } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/fee";
-import { MsgRegisterPayeeResponse } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/tx";
-import { GenesisState } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/genesis";
-import { QueryTotalAckFeesRequest } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { QueryPayeeResponse } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { Fee } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/fee";
-import { RegisteredCounterpartyPayee } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/genesis";
-import { ForwardRelayerAddress } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/genesis";
-import { QueryIncentivizedPacketsForChannelRequest } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { QueryIncentivizedPacketsForChannelResponse } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { QueryFeeEnabledChannelRequest } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { RegisteredPayee } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/genesis";
-import { QueryIncentivizedPacketResponse } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/query";
-import { Metadata } from "./types/../../../../../pkg/mod/github.com/cosmos/ibc-go/v8@v8.2.1/proto/ibc/applications/fee/v1/metadata";
+import { QueryIncentivizedPacketsResponse } from "./types/ibc/applications/fee/v1/query";
+import { QueryTotalRecvFeesResponse } from "./types/ibc/applications/fee/v1/query";
+import { IdentifiedPacketFees } from "./types/ibc/applications/fee/v1/fee";
+import { MsgRegisterCounterpartyPayee } from "./types/ibc/applications/fee/v1/tx";
+import { IncentivizedAcknowledgement } from "./types/ibc/applications/fee/v1/ack";
+import { QueryTotalAckFeesRequest } from "./types/ibc/applications/fee/v1/query";
+import { MsgPayPacketFeeAsyncResponse } from "./types/ibc/applications/fee/v1/tx";
+import { MsgRegisterPayee } from "./types/ibc/applications/fee/v1/tx";
+import { QueryCounterpartyPayeeRequest } from "./types/ibc/applications/fee/v1/query";
+import { QueryCounterpartyPayeeResponse } from "./types/ibc/applications/fee/v1/query";
+import { PacketFee } from "./types/ibc/applications/fee/v1/fee";
+import { GenesisState } from "./types/ibc/applications/fee/v1/genesis";
+import { QueryIncentivizedPacketsRequest } from "./types/ibc/applications/fee/v1/query";
+import { QueryIncentivizedPacketsForChannelRequest } from "./types/ibc/applications/fee/v1/query";
+import { QueryIncentivizedPacketsForChannelResponse } from "./types/ibc/applications/fee/v1/query";
+import { QueryTotalAckFeesResponse } from "./types/ibc/applications/fee/v1/query";
+import { Fee } from "./types/ibc/applications/fee/v1/fee";
+import { FeeEnabledChannel } from "./types/ibc/applications/fee/v1/genesis";
+import { QueryIncentivizedPacketResponse } from "./types/ibc/applications/fee/v1/query";
+import { QueryTotalTimeoutFeesResponse } from "./types/ibc/applications/fee/v1/query";
+import { QueryPayeeResponse } from "./types/ibc/applications/fee/v1/query";
+import { QueryFeeEnabledChannelsRequest } from "./types/ibc/applications/fee/v1/query";
+import { MsgPayPacketFee } from "./types/ibc/applications/fee/v1/tx";
+import { MsgPayPacketFeeResponse } from "./types/ibc/applications/fee/v1/tx";
+import { Metadata } from "./types/ibc/applications/fee/v1/metadata";
+import { QueryFeeEnabledChannelsResponse } from "./types/ibc/applications/fee/v1/query";
+import { PacketFees } from "./types/ibc/applications/fee/v1/fee";
+import { RegisteredCounterpartyPayee } from "./types/ibc/applications/fee/v1/genesis";
+import { MsgRegisterCounterpartyPayeeResponse } from "./types/ibc/applications/fee/v1/tx";
+import { RegisteredPayee } from "./types/ibc/applications/fee/v1/genesis";
+import { MsgRegisterPayeeResponse } from "./types/ibc/applications/fee/v1/tx";
+import { QueryTotalRecvFeesRequest } from "./types/ibc/applications/fee/v1/query";
+import { QueryTotalTimeoutFeesRequest } from "./types/ibc/applications/fee/v1/query";
+import { QueryPayeeRequest } from "./types/ibc/applications/fee/v1/query";
+import { QueryFeeEnabledChannelRequest } from "./types/ibc/applications/fee/v1/query";
+import { ForwardRelayerAddress } from "./types/ibc/applications/fee/v1/genesis";
+import { MsgPayPacketFeeAsync } from "./types/ibc/applications/fee/v1/tx";
+import { QueryIncentivizedPacketRequest } from "./types/ibc/applications/fee/v1/query";
+import { QueryFeeEnabledChannelResponse } from "./types/ibc/applications/fee/v1/query";
 
 
-export { QueryFeeEnabledChannelsRequest, IncentivizedAcknowledgement, FeeEnabledChannel, QueryIncentivizedPacketRequest, QueryCounterpartyPayeeResponse, QueryTotalAckFeesResponse, QueryTotalTimeoutFeesRequest, QueryTotalTimeoutFeesResponse, QueryFeeEnabledChannelResponse, PacketFees, MsgPayPacketFeeAsync, QueryTotalRecvFeesResponse, QueryIncentivizedPacketsRequest, QueryTotalRecvFeesRequest, MsgRegisterPayee, MsgPayPacketFee, QueryPayeeRequest, QueryFeeEnabledChannelsResponse, IdentifiedPacketFees, MsgRegisterCounterpartyPayeeResponse, MsgRegisterCounterpartyPayee, QueryIncentivizedPacketsResponse, MsgPayPacketFeeResponse, MsgPayPacketFeeAsyncResponse, QueryCounterpartyPayeeRequest, PacketFee, MsgRegisterPayeeResponse, GenesisState, QueryTotalAckFeesRequest, QueryPayeeResponse, Fee, RegisteredCounterpartyPayee, ForwardRelayerAddress, QueryIncentivizedPacketsForChannelRequest, QueryIncentivizedPacketsForChannelResponse, QueryFeeEnabledChannelRequest, RegisteredPayee, QueryIncentivizedPacketResponse, Metadata };
+export { QueryIncentivizedPacketsResponse, QueryTotalRecvFeesResponse, IdentifiedPacketFees, MsgRegisterCounterpartyPayee, IncentivizedAcknowledgement, QueryTotalAckFeesRequest, MsgPayPacketFeeAsyncResponse, MsgRegisterPayee, QueryCounterpartyPayeeRequest, QueryCounterpartyPayeeResponse, PacketFee, GenesisState, QueryIncentivizedPacketsRequest, QueryIncentivizedPacketsForChannelRequest, QueryIncentivizedPacketsForChannelResponse, QueryTotalAckFeesResponse, Fee, FeeEnabledChannel, QueryIncentivizedPacketResponse, QueryTotalTimeoutFeesResponse, QueryPayeeResponse, QueryFeeEnabledChannelsRequest, MsgPayPacketFee, MsgPayPacketFeeResponse, Metadata, QueryFeeEnabledChannelsResponse, PacketFees, RegisteredCounterpartyPayee, MsgRegisterCounterpartyPayeeResponse, RegisteredPayee, MsgRegisterPayeeResponse, QueryTotalRecvFeesRequest, QueryTotalTimeoutFeesRequest, QueryPayeeRequest, QueryFeeEnabledChannelRequest, ForwardRelayerAddress, MsgPayPacketFeeAsync, QueryIncentivizedPacketRequest, QueryFeeEnabledChannelResponse };
 
-type sendQueryFeeEnabledChannelsRequestParams = {
-  value: QueryFeeEnabledChannelsRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendIncentivizedAcknowledgementParams = {
-  value: IncentivizedAcknowledgement,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendFeeEnabledChannelParams = {
-  value: FeeEnabledChannel,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryIncentivizedPacketRequestParams = {
-  value: QueryIncentivizedPacketRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryCounterpartyPayeeResponseParams = {
-  value: QueryCounterpartyPayeeResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryTotalAckFeesResponseParams = {
-  value: QueryTotalAckFeesResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryTotalTimeoutFeesRequestParams = {
-  value: QueryTotalTimeoutFeesRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryTotalTimeoutFeesResponseParams = {
-  value: QueryTotalTimeoutFeesResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryFeeEnabledChannelResponseParams = {
-  value: QueryFeeEnabledChannelResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendPacketFeesParams = {
-  value: PacketFees,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgPayPacketFeeAsyncParams = {
-  value: MsgPayPacketFeeAsync,
+type sendQueryIncentivizedPacketsResponseParams = {
+  value: QueryIncentivizedPacketsResponse,
   fee?: StdFee,
   memo?: string
 };
@@ -121,50 +61,8 @@ type sendQueryTotalRecvFeesResponseParams = {
   memo?: string
 };
 
-type sendQueryIncentivizedPacketsRequestParams = {
-  value: QueryIncentivizedPacketsRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryTotalRecvFeesRequestParams = {
-  value: QueryTotalRecvFeesRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgRegisterPayeeParams = {
-  value: MsgRegisterPayee,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgPayPacketFeeParams = {
-  value: MsgPayPacketFee,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryPayeeRequestParams = {
-  value: QueryPayeeRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryFeeEnabledChannelsResponseParams = {
-  value: QueryFeeEnabledChannelsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
 type sendIdentifiedPacketFeesParams = {
   value: IdentifiedPacketFees,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgRegisterCounterpartyPayeeResponseParams = {
-  value: MsgRegisterCounterpartyPayeeResponse,
   fee?: StdFee,
   memo?: string
 };
@@ -175,44 +73,8 @@ type sendMsgRegisterCounterpartyPayeeParams = {
   memo?: string
 };
 
-type sendQueryIncentivizedPacketsResponseParams = {
-  value: QueryIncentivizedPacketsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgPayPacketFeeResponseParams = {
-  value: MsgPayPacketFeeResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgPayPacketFeeAsyncResponseParams = {
-  value: MsgPayPacketFeeAsyncResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendQueryCounterpartyPayeeRequestParams = {
-  value: QueryCounterpartyPayeeRequest,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendPacketFeeParams = {
-  value: PacketFee,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgRegisterPayeeResponseParams = {
-  value: MsgRegisterPayeeResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendGenesisStateParams = {
-  value: GenesisState,
+type sendIncentivizedAcknowledgementParams = {
+  value: IncentivizedAcknowledgement,
   fee?: StdFee,
   memo?: string
 };
@@ -223,26 +85,44 @@ type sendQueryTotalAckFeesRequestParams = {
   memo?: string
 };
 
-type sendQueryPayeeResponseParams = {
-  value: QueryPayeeResponse,
+type sendMsgPayPacketFeeAsyncResponseParams = {
+  value: MsgPayPacketFeeAsyncResponse,
   fee?: StdFee,
   memo?: string
 };
 
-type sendFeeParams = {
-  value: Fee,
+type sendMsgRegisterPayeeParams = {
+  value: MsgRegisterPayee,
   fee?: StdFee,
   memo?: string
 };
 
-type sendRegisteredCounterpartyPayeeParams = {
-  value: RegisteredCounterpartyPayee,
+type sendQueryCounterpartyPayeeRequestParams = {
+  value: QueryCounterpartyPayeeRequest,
   fee?: StdFee,
   memo?: string
 };
 
-type sendForwardRelayerAddressParams = {
-  value: ForwardRelayerAddress,
+type sendQueryCounterpartyPayeeResponseParams = {
+  value: QueryCounterpartyPayeeResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendPacketFeeParams = {
+  value: PacketFee,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendGenesisStateParams = {
+  value: GenesisState,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryIncentivizedPacketsRequestParams = {
+  value: QueryIncentivizedPacketsRequest,
   fee?: StdFee,
   memo?: string
 };
@@ -259,14 +139,20 @@ type sendQueryIncentivizedPacketsForChannelResponseParams = {
   memo?: string
 };
 
-type sendQueryFeeEnabledChannelRequestParams = {
-  value: QueryFeeEnabledChannelRequest,
+type sendQueryTotalAckFeesResponseParams = {
+  value: QueryTotalAckFeesResponse,
   fee?: StdFee,
   memo?: string
 };
 
-type sendRegisteredPayeeParams = {
-  value: RegisteredPayee,
+type sendFeeParams = {
+  value: Fee,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendFeeEnabledChannelParams = {
+  value: FeeEnabledChannel,
   fee?: StdFee,
   memo?: string
 };
@@ -277,143 +163,177 @@ type sendQueryIncentivizedPacketResponseParams = {
   memo?: string
 };
 
+type sendQueryTotalTimeoutFeesResponseParams = {
+  value: QueryTotalTimeoutFeesResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryPayeeResponseParams = {
+  value: QueryPayeeResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryFeeEnabledChannelsRequestParams = {
+  value: QueryFeeEnabledChannelsRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgPayPacketFeeParams = {
+  value: MsgPayPacketFee,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgPayPacketFeeResponseParams = {
+  value: MsgPayPacketFeeResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
 type sendMetadataParams = {
   value: Metadata,
   fee?: StdFee,
   memo?: string
 };
 
-
-type queryFeeEnabledChannelsRequestParams = {
-  value: QueryFeeEnabledChannelsRequest,
+type sendQueryFeeEnabledChannelsResponseParams = {
+  value: QueryFeeEnabledChannelsResponse,
+  fee?: StdFee,
+  memo?: string
 };
 
-type incentivizedAcknowledgementParams = {
-  value: IncentivizedAcknowledgement,
-};
-
-type feeEnabledChannelParams = {
-  value: FeeEnabledChannel,
-};
-
-type queryIncentivizedPacketRequestParams = {
-  value: QueryIncentivizedPacketRequest,
-};
-
-type queryCounterpartyPayeeResponseParams = {
-  value: QueryCounterpartyPayeeResponse,
-};
-
-type queryTotalAckFeesResponseParams = {
-  value: QueryTotalAckFeesResponse,
-};
-
-type queryTotalTimeoutFeesRequestParams = {
-  value: QueryTotalTimeoutFeesRequest,
-};
-
-type queryTotalTimeoutFeesResponseParams = {
-  value: QueryTotalTimeoutFeesResponse,
-};
-
-type queryFeeEnabledChannelResponseParams = {
-  value: QueryFeeEnabledChannelResponse,
-};
-
-type packetFeesParams = {
+type sendPacketFeesParams = {
   value: PacketFees,
+  fee?: StdFee,
+  memo?: string
 };
 
-type msgPayPacketFeeAsyncParams = {
+type sendRegisteredCounterpartyPayeeParams = {
+  value: RegisteredCounterpartyPayee,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgRegisterCounterpartyPayeeResponseParams = {
+  value: MsgRegisterCounterpartyPayeeResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendRegisteredPayeeParams = {
+  value: RegisteredPayee,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgRegisterPayeeResponseParams = {
+  value: MsgRegisterPayeeResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryTotalRecvFeesRequestParams = {
+  value: QueryTotalRecvFeesRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryTotalTimeoutFeesRequestParams = {
+  value: QueryTotalTimeoutFeesRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryPayeeRequestParams = {
+  value: QueryPayeeRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryFeeEnabledChannelRequestParams = {
+  value: QueryFeeEnabledChannelRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendForwardRelayerAddressParams = {
+  value: ForwardRelayerAddress,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgPayPacketFeeAsyncParams = {
   value: MsgPayPacketFeeAsync,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryIncentivizedPacketRequestParams = {
+  value: QueryIncentivizedPacketRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryFeeEnabledChannelResponseParams = {
+  value: QueryFeeEnabledChannelResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+
+type queryIncentivizedPacketsResponseParams = {
+  value: QueryIncentivizedPacketsResponse,
 };
 
 type queryTotalRecvFeesResponseParams = {
   value: QueryTotalRecvFeesResponse,
 };
 
-type queryIncentivizedPacketsRequestParams = {
-  value: QueryIncentivizedPacketsRequest,
-};
-
-type queryTotalRecvFeesRequestParams = {
-  value: QueryTotalRecvFeesRequest,
-};
-
-type msgRegisterPayeeParams = {
-  value: MsgRegisterPayee,
-};
-
-type msgPayPacketFeeParams = {
-  value: MsgPayPacketFee,
-};
-
-type queryPayeeRequestParams = {
-  value: QueryPayeeRequest,
-};
-
-type queryFeeEnabledChannelsResponseParams = {
-  value: QueryFeeEnabledChannelsResponse,
-};
-
 type identifiedPacketFeesParams = {
   value: IdentifiedPacketFees,
-};
-
-type msgRegisterCounterpartyPayeeResponseParams = {
-  value: MsgRegisterCounterpartyPayeeResponse,
 };
 
 type msgRegisterCounterpartyPayeeParams = {
   value: MsgRegisterCounterpartyPayee,
 };
 
-type queryIncentivizedPacketsResponseParams = {
-  value: QueryIncentivizedPacketsResponse,
-};
-
-type msgPayPacketFeeResponseParams = {
-  value: MsgPayPacketFeeResponse,
-};
-
-type msgPayPacketFeeAsyncResponseParams = {
-  value: MsgPayPacketFeeAsyncResponse,
-};
-
-type queryCounterpartyPayeeRequestParams = {
-  value: QueryCounterpartyPayeeRequest,
-};
-
-type packetFeeParams = {
-  value: PacketFee,
-};
-
-type msgRegisterPayeeResponseParams = {
-  value: MsgRegisterPayeeResponse,
-};
-
-type genesisStateParams = {
-  value: GenesisState,
+type incentivizedAcknowledgementParams = {
+  value: IncentivizedAcknowledgement,
 };
 
 type queryTotalAckFeesRequestParams = {
   value: QueryTotalAckFeesRequest,
 };
 
-type queryPayeeResponseParams = {
-  value: QueryPayeeResponse,
+type msgPayPacketFeeAsyncResponseParams = {
+  value: MsgPayPacketFeeAsyncResponse,
 };
 
-type feeParams = {
-  value: Fee,
+type msgRegisterPayeeParams = {
+  value: MsgRegisterPayee,
 };
 
-type registeredCounterpartyPayeeParams = {
-  value: RegisteredCounterpartyPayee,
+type queryCounterpartyPayeeRequestParams = {
+  value: QueryCounterpartyPayeeRequest,
 };
 
-type forwardRelayerAddressParams = {
-  value: ForwardRelayerAddress,
+type queryCounterpartyPayeeResponseParams = {
+  value: QueryCounterpartyPayeeResponse,
+};
+
+type packetFeeParams = {
+  value: PacketFee,
+};
+
+type genesisStateParams = {
+  value: GenesisState,
+};
+
+type queryIncentivizedPacketsRequestParams = {
+  value: QueryIncentivizedPacketsRequest,
 };
 
 type queryIncentivizedPacketsForChannelRequestParams = {
@@ -424,20 +344,100 @@ type queryIncentivizedPacketsForChannelResponseParams = {
   value: QueryIncentivizedPacketsForChannelResponse,
 };
 
-type queryFeeEnabledChannelRequestParams = {
-  value: QueryFeeEnabledChannelRequest,
+type queryTotalAckFeesResponseParams = {
+  value: QueryTotalAckFeesResponse,
 };
 
-type registeredPayeeParams = {
-  value: RegisteredPayee,
+type feeParams = {
+  value: Fee,
+};
+
+type feeEnabledChannelParams = {
+  value: FeeEnabledChannel,
 };
 
 type queryIncentivizedPacketResponseParams = {
   value: QueryIncentivizedPacketResponse,
 };
 
+type queryTotalTimeoutFeesResponseParams = {
+  value: QueryTotalTimeoutFeesResponse,
+};
+
+type queryPayeeResponseParams = {
+  value: QueryPayeeResponse,
+};
+
+type queryFeeEnabledChannelsRequestParams = {
+  value: QueryFeeEnabledChannelsRequest,
+};
+
+type msgPayPacketFeeParams = {
+  value: MsgPayPacketFee,
+};
+
+type msgPayPacketFeeResponseParams = {
+  value: MsgPayPacketFeeResponse,
+};
+
 type metadataParams = {
   value: Metadata,
+};
+
+type queryFeeEnabledChannelsResponseParams = {
+  value: QueryFeeEnabledChannelsResponse,
+};
+
+type packetFeesParams = {
+  value: PacketFees,
+};
+
+type registeredCounterpartyPayeeParams = {
+  value: RegisteredCounterpartyPayee,
+};
+
+type msgRegisterCounterpartyPayeeResponseParams = {
+  value: MsgRegisterCounterpartyPayeeResponse,
+};
+
+type registeredPayeeParams = {
+  value: RegisteredPayee,
+};
+
+type msgRegisterPayeeResponseParams = {
+  value: MsgRegisterPayeeResponse,
+};
+
+type queryTotalRecvFeesRequestParams = {
+  value: QueryTotalRecvFeesRequest,
+};
+
+type queryTotalTimeoutFeesRequestParams = {
+  value: QueryTotalTimeoutFeesRequest,
+};
+
+type queryPayeeRequestParams = {
+  value: QueryPayeeRequest,
+};
+
+type queryFeeEnabledChannelRequestParams = {
+  value: QueryFeeEnabledChannelRequest,
+};
+
+type forwardRelayerAddressParams = {
+  value: ForwardRelayerAddress,
+};
+
+type msgPayPacketFeeAsyncParams = {
+  value: MsgPayPacketFeeAsync,
+};
+
+type queryIncentivizedPacketRequestParams = {
+  value: QueryIncentivizedPacketRequest,
+};
+
+type queryFeeEnabledChannelResponseParams = {
+  value: QueryFeeEnabledChannelResponse,
 };
 
 
@@ -470,157 +470,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendQueryFeeEnabledChannelsRequest({ value, fee, memo }: sendQueryFeeEnabledChannelsRequestParams): Promise<DeliverTxResponse> {
+		async sendQueryIncentivizedPacketsResponse({ value, fee, memo }: sendQueryIncentivizedPacketsResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryFeeEnabledChannelsRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryIncentivizedPacketsResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryFeeEnabledChannelsRequest({ value: QueryFeeEnabledChannelsRequest.fromPartial(value) })
+				let msg = this.queryIncentivizedPacketsResponse({ value: QueryIncentivizedPacketsResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryFeeEnabledChannelsRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendIncentivizedAcknowledgement({ value, fee, memo }: sendIncentivizedAcknowledgementParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendIncentivizedAcknowledgement: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.incentivizedAcknowledgement({ value: IncentivizedAcknowledgement.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendIncentivizedAcknowledgement: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendFeeEnabledChannel({ value, fee, memo }: sendFeeEnabledChannelParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendFeeEnabledChannel: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.feeEnabledChannel({ value: FeeEnabledChannel.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendFeeEnabledChannel: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryIncentivizedPacketRequest({ value, fee, memo }: sendQueryIncentivizedPacketRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryIncentivizedPacketRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryIncentivizedPacketRequest({ value: QueryIncentivizedPacketRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryIncentivizedPacketRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryCounterpartyPayeeResponse({ value, fee, memo }: sendQueryCounterpartyPayeeResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryCounterpartyPayeeResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryCounterpartyPayeeResponse({ value: QueryCounterpartyPayeeResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryCounterpartyPayeeResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryTotalAckFeesResponse({ value, fee, memo }: sendQueryTotalAckFeesResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryTotalAckFeesResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryTotalAckFeesResponse({ value: QueryTotalAckFeesResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryTotalAckFeesResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryTotalTimeoutFeesRequest({ value, fee, memo }: sendQueryTotalTimeoutFeesRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryTotalTimeoutFeesRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryTotalTimeoutFeesRequest({ value: QueryTotalTimeoutFeesRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryTotalTimeoutFeesRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryTotalTimeoutFeesResponse({ value, fee, memo }: sendQueryTotalTimeoutFeesResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryTotalTimeoutFeesResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryTotalTimeoutFeesResponse({ value: QueryTotalTimeoutFeesResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryTotalTimeoutFeesResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryFeeEnabledChannelResponse({ value, fee, memo }: sendQueryFeeEnabledChannelResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryFeeEnabledChannelResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryFeeEnabledChannelResponse({ value: QueryFeeEnabledChannelResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryFeeEnabledChannelResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendPacketFees({ value, fee, memo }: sendPacketFeesParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendPacketFees: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.packetFees({ value: PacketFees.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendPacketFees: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgPayPacketFeeAsync({ value, fee, memo }: sendMsgPayPacketFeeAsyncParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgPayPacketFeeAsync: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgPayPacketFeeAsync({ value: MsgPayPacketFeeAsync.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgPayPacketFeeAsync: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryIncentivizedPacketsResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -638,90 +498,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryIncentivizedPacketsRequest({ value, fee, memo }: sendQueryIncentivizedPacketsRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryIncentivizedPacketsRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryIncentivizedPacketsRequest({ value: QueryIncentivizedPacketsRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryIncentivizedPacketsRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryTotalRecvFeesRequest({ value, fee, memo }: sendQueryTotalRecvFeesRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryTotalRecvFeesRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryTotalRecvFeesRequest({ value: QueryTotalRecvFeesRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryTotalRecvFeesRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgRegisterPayee({ value, fee, memo }: sendMsgRegisterPayeeParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgRegisterPayee: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgRegisterPayee({ value: MsgRegisterPayee.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgRegisterPayee: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgPayPacketFee({ value, fee, memo }: sendMsgPayPacketFeeParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgPayPacketFee: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgPayPacketFee({ value: MsgPayPacketFee.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgPayPacketFee: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryPayeeRequest({ value, fee, memo }: sendQueryPayeeRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryPayeeRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryPayeeRequest({ value: QueryPayeeRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryPayeeRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryFeeEnabledChannelsResponse({ value, fee, memo }: sendQueryFeeEnabledChannelsResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryFeeEnabledChannelsResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryFeeEnabledChannelsResponse({ value: QueryFeeEnabledChannelsResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryFeeEnabledChannelsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendIdentifiedPacketFees({ value, fee, memo }: sendIdentifiedPacketFeesParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendIdentifiedPacketFees: Unable to sign Tx. Signer is not present.')
@@ -733,20 +509,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
 				throw new Error('TxClient:sendIdentifiedPacketFees: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgRegisterCounterpartyPayeeResponse({ value, fee, memo }: sendMsgRegisterCounterpartyPayeeResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgRegisterCounterpartyPayeeResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgRegisterCounterpartyPayeeResponse({ value: MsgRegisterCounterpartyPayeeResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgRegisterCounterpartyPayeeResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -764,101 +526,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryIncentivizedPacketsResponse({ value, fee, memo }: sendQueryIncentivizedPacketsResponseParams): Promise<DeliverTxResponse> {
+		async sendIncentivizedAcknowledgement({ value, fee, memo }: sendIncentivizedAcknowledgementParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryIncentivizedPacketsResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendIncentivizedAcknowledgement: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryIncentivizedPacketsResponse({ value: QueryIncentivizedPacketsResponse.fromPartial(value) })
+				let msg = this.incentivizedAcknowledgement({ value: IncentivizedAcknowledgement.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryIncentivizedPacketsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgPayPacketFeeResponse({ value, fee, memo }: sendMsgPayPacketFeeResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgPayPacketFeeResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgPayPacketFeeResponse({ value: MsgPayPacketFeeResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgPayPacketFeeResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgPayPacketFeeAsyncResponse({ value, fee, memo }: sendMsgPayPacketFeeAsyncResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgPayPacketFeeAsyncResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgPayPacketFeeAsyncResponse({ value: MsgPayPacketFeeAsyncResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgPayPacketFeeAsyncResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendQueryCounterpartyPayeeRequest({ value, fee, memo }: sendQueryCounterpartyPayeeRequestParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendQueryCounterpartyPayeeRequest: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryCounterpartyPayeeRequest({ value: QueryCounterpartyPayeeRequest.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendQueryCounterpartyPayeeRequest: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendPacketFee({ value, fee, memo }: sendPacketFeeParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendPacketFee: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.packetFee({ value: PacketFee.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendPacketFee: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgRegisterPayeeResponse({ value, fee, memo }: sendMsgRegisterPayeeResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgRegisterPayeeResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgRegisterPayeeResponse({ value: MsgRegisterPayeeResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgRegisterPayeeResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.genesisState({ value: GenesisState.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendIncentivizedAcknowledgement: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -876,59 +554,101 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryPayeeResponse({ value, fee, memo }: sendQueryPayeeResponseParams): Promise<DeliverTxResponse> {
+		async sendMsgPayPacketFeeAsyncResponse({ value, fee, memo }: sendMsgPayPacketFeeAsyncResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryPayeeResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgPayPacketFeeAsyncResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryPayeeResponse({ value: QueryPayeeResponse.fromPartial(value) })
+				let msg = this.msgPayPacketFeeAsyncResponse({ value: MsgPayPacketFeeAsyncResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryPayeeResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgPayPacketFeeAsyncResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendFee({ value, fee, memo }: sendFeeParams): Promise<DeliverTxResponse> {
+		async sendMsgRegisterPayee({ value, fee, memo }: sendMsgRegisterPayeeParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendFee: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgRegisterPayee: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.fee({ value: Fee.fromPartial(value) })
+				let msg = this.msgRegisterPayee({ value: MsgRegisterPayee.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendFee: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgRegisterPayee: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendRegisteredCounterpartyPayee({ value, fee, memo }: sendRegisteredCounterpartyPayeeParams): Promise<DeliverTxResponse> {
+		async sendQueryCounterpartyPayeeRequest({ value, fee, memo }: sendQueryCounterpartyPayeeRequestParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendRegisteredCounterpartyPayee: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryCounterpartyPayeeRequest: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.registeredCounterpartyPayee({ value: RegisteredCounterpartyPayee.fromPartial(value) })
+				let msg = this.queryCounterpartyPayeeRequest({ value: QueryCounterpartyPayeeRequest.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendRegisteredCounterpartyPayee: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryCounterpartyPayeeRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendForwardRelayerAddress({ value, fee, memo }: sendForwardRelayerAddressParams): Promise<DeliverTxResponse> {
+		async sendQueryCounterpartyPayeeResponse({ value, fee, memo }: sendQueryCounterpartyPayeeResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendForwardRelayerAddress: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryCounterpartyPayeeResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.forwardRelayerAddress({ value: ForwardRelayerAddress.fromPartial(value) })
+				let msg = this.queryCounterpartyPayeeResponse({ value: QueryCounterpartyPayeeResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendForwardRelayerAddress: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryCounterpartyPayeeResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendPacketFee({ value, fee, memo }: sendPacketFeeParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendPacketFee: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.packetFee({ value: PacketFee.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendPacketFee: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.genesisState({ value: GenesisState.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryIncentivizedPacketsRequest({ value, fee, memo }: sendQueryIncentivizedPacketsRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryIncentivizedPacketsRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryIncentivizedPacketsRequest({ value: QueryIncentivizedPacketsRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryIncentivizedPacketsRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -960,31 +680,45 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendQueryFeeEnabledChannelRequest({ value, fee, memo }: sendQueryFeeEnabledChannelRequestParams): Promise<DeliverTxResponse> {
+		async sendQueryTotalAckFeesResponse({ value, fee, memo }: sendQueryTotalAckFeesResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryFeeEnabledChannelRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendQueryTotalAckFeesResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryFeeEnabledChannelRequest({ value: QueryFeeEnabledChannelRequest.fromPartial(value) })
+				let msg = this.queryTotalAckFeesResponse({ value: QueryTotalAckFeesResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryFeeEnabledChannelRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendQueryTotalAckFeesResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		async sendRegisteredPayee({ value, fee, memo }: sendRegisteredPayeeParams): Promise<DeliverTxResponse> {
+		async sendFee({ value, fee, memo }: sendFeeParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendRegisteredPayee: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendFee: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.registeredPayee({ value: RegisteredPayee.fromPartial(value) })
+				let msg = this.fee({ value: Fee.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendRegisteredPayee: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendFee: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendFeeEnabledChannel({ value, fee, memo }: sendFeeEnabledChannelParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendFeeEnabledChannel: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.feeEnabledChannel({ value: FeeEnabledChannel.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendFeeEnabledChannel: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -1002,6 +736,76 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendQueryTotalTimeoutFeesResponse({ value, fee, memo }: sendQueryTotalTimeoutFeesResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryTotalTimeoutFeesResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryTotalTimeoutFeesResponse({ value: QueryTotalTimeoutFeesResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryTotalTimeoutFeesResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryPayeeResponse({ value, fee, memo }: sendQueryPayeeResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryPayeeResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryPayeeResponse({ value: QueryPayeeResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryPayeeResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryFeeEnabledChannelsRequest({ value, fee, memo }: sendQueryFeeEnabledChannelsRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryFeeEnabledChannelsRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryFeeEnabledChannelsRequest({ value: QueryFeeEnabledChannelsRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryFeeEnabledChannelsRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgPayPacketFee({ value, fee, memo }: sendMsgPayPacketFeeParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgPayPacketFee: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgPayPacketFee({ value: MsgPayPacketFee.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgPayPacketFee: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgPayPacketFeeResponse({ value, fee, memo }: sendMsgPayPacketFeeResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgPayPacketFeeResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgPayPacketFeeResponse({ value: MsgPayPacketFeeResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgPayPacketFeeResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		async sendMetadata({ value, fee, memo }: sendMetadataParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMetadata: Unable to sign Tx. Signer is not present.')
@@ -1016,92 +820,208 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		
-		queryFeeEnabledChannelsRequest({ value }: queryFeeEnabledChannelsRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.QueryFeeEnabledChannelsRequest", value: QueryFeeEnabledChannelsRequest.fromPartial( value ) }  
+		async sendQueryFeeEnabledChannelsResponse({ value, fee, memo }: sendQueryFeeEnabledChannelsResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryFeeEnabledChannelsResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryFeeEnabledChannelsResponse({ value: QueryFeeEnabledChannelsResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:QueryFeeEnabledChannelsRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendQueryFeeEnabledChannelsResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		incentivizedAcknowledgement({ value }: incentivizedAcknowledgementParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.IncentivizedAcknowledgement", value: IncentivizedAcknowledgement.fromPartial( value ) }  
+		async sendPacketFees({ value, fee, memo }: sendPacketFeesParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendPacketFees: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.packetFees({ value: PacketFees.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:IncentivizedAcknowledgement: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendPacketFees: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		feeEnabledChannel({ value }: feeEnabledChannelParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.FeeEnabledChannel", value: FeeEnabledChannel.fromPartial( value ) }  
+		async sendRegisteredCounterpartyPayee({ value, fee, memo }: sendRegisteredCounterpartyPayeeParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendRegisteredCounterpartyPayee: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.registeredCounterpartyPayee({ value: RegisteredCounterpartyPayee.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:FeeEnabledChannel: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendRegisteredCounterpartyPayee: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		queryIncentivizedPacketRequest({ value }: queryIncentivizedPacketRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.QueryIncentivizedPacketRequest", value: QueryIncentivizedPacketRequest.fromPartial( value ) }  
+		async sendMsgRegisterCounterpartyPayeeResponse({ value, fee, memo }: sendMsgRegisterCounterpartyPayeeResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgRegisterCounterpartyPayeeResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgRegisterCounterpartyPayeeResponse({ value: MsgRegisterCounterpartyPayeeResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:QueryIncentivizedPacketRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgRegisterCounterpartyPayeeResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		queryCounterpartyPayeeResponse({ value }: queryCounterpartyPayeeResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.QueryCounterpartyPayeeResponse", value: QueryCounterpartyPayeeResponse.fromPartial( value ) }  
+		async sendRegisteredPayee({ value, fee, memo }: sendRegisteredPayeeParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendRegisteredPayee: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.registeredPayee({ value: RegisteredPayee.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:QueryCounterpartyPayeeResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendRegisteredPayee: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		queryTotalAckFeesResponse({ value }: queryTotalAckFeesResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.QueryTotalAckFeesResponse", value: QueryTotalAckFeesResponse.fromPartial( value ) }  
+		async sendMsgRegisterPayeeResponse({ value, fee, memo }: sendMsgRegisterPayeeResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgRegisterPayeeResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgRegisterPayeeResponse({ value: MsgRegisterPayeeResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:QueryTotalAckFeesResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgRegisterPayeeResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		queryTotalTimeoutFeesRequest({ value }: queryTotalTimeoutFeesRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.QueryTotalTimeoutFeesRequest", value: QueryTotalTimeoutFeesRequest.fromPartial( value ) }  
+		async sendQueryTotalRecvFeesRequest({ value, fee, memo }: sendQueryTotalRecvFeesRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryTotalRecvFeesRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryTotalRecvFeesRequest({ value: QueryTotalRecvFeesRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:QueryTotalTimeoutFeesRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendQueryTotalRecvFeesRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		queryTotalTimeoutFeesResponse({ value }: queryTotalTimeoutFeesResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.QueryTotalTimeoutFeesResponse", value: QueryTotalTimeoutFeesResponse.fromPartial( value ) }  
+		async sendQueryTotalTimeoutFeesRequest({ value, fee, memo }: sendQueryTotalTimeoutFeesRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryTotalTimeoutFeesRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryTotalTimeoutFeesRequest({ value: QueryTotalTimeoutFeesRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:QueryTotalTimeoutFeesResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendQueryTotalTimeoutFeesRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		queryFeeEnabledChannelResponse({ value }: queryFeeEnabledChannelResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.QueryFeeEnabledChannelResponse", value: QueryFeeEnabledChannelResponse.fromPartial( value ) }  
+		async sendQueryPayeeRequest({ value, fee, memo }: sendQueryPayeeRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryPayeeRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryPayeeRequest({ value: QueryPayeeRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:QueryFeeEnabledChannelResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendQueryPayeeRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		packetFees({ value }: packetFeesParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.PacketFees", value: PacketFees.fromPartial( value ) }  
+		async sendQueryFeeEnabledChannelRequest({ value, fee, memo }: sendQueryFeeEnabledChannelRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryFeeEnabledChannelRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryFeeEnabledChannelRequest({ value: QueryFeeEnabledChannelRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:PacketFees: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendQueryFeeEnabledChannelRequest: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		msgPayPacketFeeAsync({ value }: msgPayPacketFeeAsyncParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.MsgPayPacketFeeAsync", value: MsgPayPacketFeeAsync.fromPartial( value ) }  
+		async sendForwardRelayerAddress({ value, fee, memo }: sendForwardRelayerAddressParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendForwardRelayerAddress: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.forwardRelayerAddress({ value: ForwardRelayerAddress.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgPayPacketFeeAsync: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendForwardRelayerAddress: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgPayPacketFeeAsync({ value, fee, memo }: sendMsgPayPacketFeeAsyncParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgPayPacketFeeAsync: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgPayPacketFeeAsync({ value: MsgPayPacketFeeAsync.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgPayPacketFeeAsync: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryIncentivizedPacketRequest({ value, fee, memo }: sendQueryIncentivizedPacketRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryIncentivizedPacketRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryIncentivizedPacketRequest({ value: QueryIncentivizedPacketRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryIncentivizedPacketRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryFeeEnabledChannelResponse({ value, fee, memo }: sendQueryFeeEnabledChannelResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryFeeEnabledChannelResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryFeeEnabledChannelResponse({ value: QueryFeeEnabledChannelResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryFeeEnabledChannelResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		
+		queryIncentivizedPacketsResponse({ value }: queryIncentivizedPacketsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.QueryIncentivizedPacketsResponse", value: QueryIncentivizedPacketsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryIncentivizedPacketsResponse: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -1113,67 +1033,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryIncentivizedPacketsRequest({ value }: queryIncentivizedPacketsRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.QueryIncentivizedPacketsRequest", value: QueryIncentivizedPacketsRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryIncentivizedPacketsRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryTotalRecvFeesRequest({ value }: queryTotalRecvFeesRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.QueryTotalRecvFeesRequest", value: QueryTotalRecvFeesRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryTotalRecvFeesRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgRegisterPayee({ value }: msgRegisterPayeeParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.MsgRegisterPayee", value: MsgRegisterPayee.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgRegisterPayee: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgPayPacketFee({ value }: msgPayPacketFeeParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.MsgPayPacketFee", value: MsgPayPacketFee.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgPayPacketFee: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryPayeeRequest({ value }: queryPayeeRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.QueryPayeeRequest", value: QueryPayeeRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryPayeeRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryFeeEnabledChannelsResponse({ value }: queryFeeEnabledChannelsResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.QueryFeeEnabledChannelsResponse", value: QueryFeeEnabledChannelsResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryFeeEnabledChannelsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
 		identifiedPacketFees({ value }: identifiedPacketFeesParams): EncodeObject {
 			try {
 				return { typeUrl: "/ibc.applications.fee.v1.IdentifiedPacketFees", value: IdentifiedPacketFees.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:IdentifiedPacketFees: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgRegisterCounterpartyPayeeResponse({ value }: msgRegisterCounterpartyPayeeResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.MsgRegisterCounterpartyPayeeResponse", value: MsgRegisterCounterpartyPayeeResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgRegisterCounterpartyPayeeResponse: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -1185,59 +1049,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryIncentivizedPacketsResponse({ value }: queryIncentivizedPacketsResponseParams): EncodeObject {
+		incentivizedAcknowledgement({ value }: incentivizedAcknowledgementParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.applications.fee.v1.QueryIncentivizedPacketsResponse", value: QueryIncentivizedPacketsResponse.fromPartial( value ) }  
+				return { typeUrl: "/ibc.applications.fee.v1.IncentivizedAcknowledgement", value: IncentivizedAcknowledgement.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryIncentivizedPacketsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgPayPacketFeeResponse({ value }: msgPayPacketFeeResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.MsgPayPacketFeeResponse", value: MsgPayPacketFeeResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgPayPacketFeeResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgPayPacketFeeAsyncResponse({ value }: msgPayPacketFeeAsyncResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.MsgPayPacketFeeAsyncResponse", value: MsgPayPacketFeeAsyncResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgPayPacketFeeAsyncResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		queryCounterpartyPayeeRequest({ value }: queryCounterpartyPayeeRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.QueryCounterpartyPayeeRequest", value: QueryCounterpartyPayeeRequest.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:QueryCounterpartyPayeeRequest: Could not create message: ' + e.message)
-			}
-		},
-		
-		packetFee({ value }: packetFeeParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.PacketFee", value: PacketFee.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:PacketFee: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgRegisterPayeeResponse({ value }: msgRegisterPayeeResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.MsgRegisterPayeeResponse", value: MsgRegisterPayeeResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgRegisterPayeeResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		genesisState({ value }: genesisStateParams): EncodeObject {
-			try {
-				return { typeUrl: "/ibc.applications.fee.v1.GenesisState", value: GenesisState.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:GenesisState: Could not create message: ' + e.message)
+				throw new Error('TxClient:IncentivizedAcknowledgement: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -1249,35 +1065,59 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryPayeeResponse({ value }: queryPayeeResponseParams): EncodeObject {
+		msgPayPacketFeeAsyncResponse({ value }: msgPayPacketFeeAsyncResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.applications.fee.v1.QueryPayeeResponse", value: QueryPayeeResponse.fromPartial( value ) }  
+				return { typeUrl: "/ibc.applications.fee.v1.MsgPayPacketFeeAsyncResponse", value: MsgPayPacketFeeAsyncResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryPayeeResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgPayPacketFeeAsyncResponse: Could not create message: ' + e.message)
 			}
 		},
 		
-		fee({ value }: feeParams): EncodeObject {
+		msgRegisterPayee({ value }: msgRegisterPayeeParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.applications.fee.v1.Fee", value: Fee.fromPartial( value ) }  
+				return { typeUrl: "/ibc.applications.fee.v1.MsgRegisterPayee", value: MsgRegisterPayee.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:Fee: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgRegisterPayee: Could not create message: ' + e.message)
 			}
 		},
 		
-		registeredCounterpartyPayee({ value }: registeredCounterpartyPayeeParams): EncodeObject {
+		queryCounterpartyPayeeRequest({ value }: queryCounterpartyPayeeRequestParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.applications.fee.v1.RegisteredCounterpartyPayee", value: RegisteredCounterpartyPayee.fromPartial( value ) }  
+				return { typeUrl: "/ibc.applications.fee.v1.QueryCounterpartyPayeeRequest", value: QueryCounterpartyPayeeRequest.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:RegisteredCounterpartyPayee: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryCounterpartyPayeeRequest: Could not create message: ' + e.message)
 			}
 		},
 		
-		forwardRelayerAddress({ value }: forwardRelayerAddressParams): EncodeObject {
+		queryCounterpartyPayeeResponse({ value }: queryCounterpartyPayeeResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.applications.fee.v1.ForwardRelayerAddress", value: ForwardRelayerAddress.fromPartial( value ) }  
+				return { typeUrl: "/ibc.applications.fee.v1.QueryCounterpartyPayeeResponse", value: QueryCounterpartyPayeeResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:ForwardRelayerAddress: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryCounterpartyPayeeResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		packetFee({ value }: packetFeeParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.PacketFee", value: PacketFee.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:PacketFee: Could not create message: ' + e.message)
+			}
+		},
+		
+		genesisState({ value }: genesisStateParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.GenesisState", value: GenesisState.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:GenesisState: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryIncentivizedPacketsRequest({ value }: queryIncentivizedPacketsRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.QueryIncentivizedPacketsRequest", value: QueryIncentivizedPacketsRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryIncentivizedPacketsRequest: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -1297,19 +1137,27 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		queryFeeEnabledChannelRequest({ value }: queryFeeEnabledChannelRequestParams): EncodeObject {
+		queryTotalAckFeesResponse({ value }: queryTotalAckFeesResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.applications.fee.v1.QueryFeeEnabledChannelRequest", value: QueryFeeEnabledChannelRequest.fromPartial( value ) }  
+				return { typeUrl: "/ibc.applications.fee.v1.QueryTotalAckFeesResponse", value: QueryTotalAckFeesResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:QueryFeeEnabledChannelRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:QueryTotalAckFeesResponse: Could not create message: ' + e.message)
 			}
 		},
 		
-		registeredPayee({ value }: registeredPayeeParams): EncodeObject {
+		fee({ value }: feeParams): EncodeObject {
 			try {
-				return { typeUrl: "/ibc.applications.fee.v1.RegisteredPayee", value: RegisteredPayee.fromPartial( value ) }  
+				return { typeUrl: "/ibc.applications.fee.v1.Fee", value: Fee.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:RegisteredPayee: Could not create message: ' + e.message)
+				throw new Error('TxClient:Fee: Could not create message: ' + e.message)
+			}
+		},
+		
+		feeEnabledChannel({ value }: feeEnabledChannelParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.FeeEnabledChannel", value: FeeEnabledChannel.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:FeeEnabledChannel: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -1321,11 +1169,163 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		queryTotalTimeoutFeesResponse({ value }: queryTotalTimeoutFeesResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.QueryTotalTimeoutFeesResponse", value: QueryTotalTimeoutFeesResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryTotalTimeoutFeesResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryPayeeResponse({ value }: queryPayeeResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.QueryPayeeResponse", value: QueryPayeeResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryPayeeResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryFeeEnabledChannelsRequest({ value }: queryFeeEnabledChannelsRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.QueryFeeEnabledChannelsRequest", value: QueryFeeEnabledChannelsRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryFeeEnabledChannelsRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgPayPacketFee({ value }: msgPayPacketFeeParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.MsgPayPacketFee", value: MsgPayPacketFee.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgPayPacketFee: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgPayPacketFeeResponse({ value }: msgPayPacketFeeResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.MsgPayPacketFeeResponse", value: MsgPayPacketFeeResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgPayPacketFeeResponse: Could not create message: ' + e.message)
+			}
+		},
+		
 		metadata({ value }: metadataParams): EncodeObject {
 			try {
 				return { typeUrl: "/ibc.applications.fee.v1.Metadata", value: Metadata.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:Metadata: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryFeeEnabledChannelsResponse({ value }: queryFeeEnabledChannelsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.QueryFeeEnabledChannelsResponse", value: QueryFeeEnabledChannelsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryFeeEnabledChannelsResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		packetFees({ value }: packetFeesParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.PacketFees", value: PacketFees.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:PacketFees: Could not create message: ' + e.message)
+			}
+		},
+		
+		registeredCounterpartyPayee({ value }: registeredCounterpartyPayeeParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.RegisteredCounterpartyPayee", value: RegisteredCounterpartyPayee.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:RegisteredCounterpartyPayee: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgRegisterCounterpartyPayeeResponse({ value }: msgRegisterCounterpartyPayeeResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.MsgRegisterCounterpartyPayeeResponse", value: MsgRegisterCounterpartyPayeeResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgRegisterCounterpartyPayeeResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		registeredPayee({ value }: registeredPayeeParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.RegisteredPayee", value: RegisteredPayee.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:RegisteredPayee: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgRegisterPayeeResponse({ value }: msgRegisterPayeeResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.MsgRegisterPayeeResponse", value: MsgRegisterPayeeResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgRegisterPayeeResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryTotalRecvFeesRequest({ value }: queryTotalRecvFeesRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.QueryTotalRecvFeesRequest", value: QueryTotalRecvFeesRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryTotalRecvFeesRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryTotalTimeoutFeesRequest({ value }: queryTotalTimeoutFeesRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.QueryTotalTimeoutFeesRequest", value: QueryTotalTimeoutFeesRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryTotalTimeoutFeesRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryPayeeRequest({ value }: queryPayeeRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.QueryPayeeRequest", value: QueryPayeeRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryPayeeRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryFeeEnabledChannelRequest({ value }: queryFeeEnabledChannelRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.QueryFeeEnabledChannelRequest", value: QueryFeeEnabledChannelRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryFeeEnabledChannelRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		forwardRelayerAddress({ value }: forwardRelayerAddressParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.ForwardRelayerAddress", value: ForwardRelayerAddress.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:ForwardRelayerAddress: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgPayPacketFeeAsync({ value }: msgPayPacketFeeAsyncParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.MsgPayPacketFeeAsync", value: MsgPayPacketFeeAsync.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgPayPacketFeeAsync: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryIncentivizedPacketRequest({ value }: queryIncentivizedPacketRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.QueryIncentivizedPacketRequest", value: QueryIncentivizedPacketRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryIncentivizedPacketRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryFeeEnabledChannelResponse({ value }: queryFeeEnabledChannelResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/ibc.applications.fee.v1.QueryFeeEnabledChannelResponse", value: QueryFeeEnabledChannelResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryFeeEnabledChannelResponse: Could not create message: ' + e.message)
 			}
 		},
 		

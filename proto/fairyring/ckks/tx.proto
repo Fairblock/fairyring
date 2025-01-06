@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package fairyring.ckks;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "fairyring/ckks/params.proto";
+
+option go_package = "github.com/Fairblock/fairyring/x/ckks/types";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+  
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams         (MsgUpdateParams        ) returns (MsgUpdateParamsResponse        );
+  rpc SubmitPkgShare       (MsgSubmitPkgShare      ) returns (MsgSubmitPkgShareResponse      );
+  rpc SubmitRkgShareRound1 (MsgSubmitRkgShareRound1) returns (MsgSubmitRkgShareRound1Response);
+  rpc SubmitRkgShareRound2 (MsgSubmitRkgShareRound2) returns (MsgSubmitRkgShareRound2Response);
+  rpc SubmitGkgShare       (MsgSubmitGkgShare      ) returns (MsgSubmitGkgShareResponse      );
+  rpc SubmitShamirShare    (MsgSubmitShamirShare   ) returns (MsgSubmitShamirShareResponse   );
+}
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) =                        "authority";
+  option           (amino.name) = "fairyring/x/ckks/MsgUpdateParams";
+  
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+  
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+message MsgSubmitPkgShare {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  string shareData = 2;
+}
+
+message MsgSubmitPkgShareResponse {}
+
+message MsgSubmitRkgShareRound1 {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  string shareData = 2;
+}
+
+message MsgSubmitRkgShareRound1Response {}
+
+message MsgSubmitRkgShareRound2 {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  string shareData = 2;
+}
+
+message MsgSubmitRkgShareRound2Response {}
+
+message MsgSubmitGkgShare {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  string shareData = 2;
+}
+
+message MsgSubmitGkgShareResponse {}
+
+message MsgSubmitShamirShare {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  string shareList = 2;
+}
+
+message MsgSubmitShamirShareResponse {}
+

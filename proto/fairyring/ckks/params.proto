@@ -1,0 +1,15 @@
+syntax = "proto3";
+package fairyring.ckks;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/Fairblock/fairyring/x/ckks/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "fairyring/x/ckks/Params";
+  option (gogoproto.equal) = true;
+
+  
+}

@@ -21,7 +21,7 @@ export interface Status {
 }
 
 export interface ActivePublicKey {
-  publicKey?: string;
+  public_key?: string;
   creator?: string;
 
   /** @format uint64 */
@@ -34,32 +34,15 @@ export interface Coin {
 }
 
 export interface EncryptedTxArray {
-  encryptedTx?: {
-    targetHeight?: string;
+  encrypted_txs?: {
+    target_height?: string;
     index?: string;
     data?: string;
     creator?: string;
-    chargedGas?: { denom?: string; amount?: string };
-    processedAtChainHeight?: string;
+    charged_gas?: { denom?: string; amount?: string };
+    processed_at_chain_height?: string;
     expired?: boolean;
   }[];
-}
-
-export interface GenEncTxExecutionQueue {
-  creator?: string;
-  request_id?: string;
-  identity?: string;
-  pubkey?: string;
-  tx_list?: {
-    encryptedTx?: {
-      identity?: string;
-      index?: string;
-      data?: string;
-      creator?: string;
-      chargedGas?: { denom?: string; amount?: string };
-    }[];
-  };
-  aggr_keyshare?: string;
 }
 
 export interface GeneralEncryptedTx {
@@ -69,17 +52,40 @@ export interface GeneralEncryptedTx {
   index?: string;
   data?: string;
   creator?: string;
-  chargedGas?: { denom?: string; amount?: string };
+  charged_gas?: { denom?: string; amount?: string };
 }
 
 export interface GeneralEncryptedTxArray {
-  encryptedTx?: {
+  encrypted_txs?: {
     identity?: string;
     index?: string;
     data?: string;
     creator?: string;
-    chargedGas?: { denom?: string; amount?: string };
+    charged_gas?: { denom?: string; amount?: string };
   }[];
+}
+
+export interface IdentityExecutionEntry {
+  creator?: string;
+  identity?: string;
+  pubkey?: string;
+  tx_list?: {
+    encrypted_txs?: {
+      identity?: string;
+      index?: string;
+      data?: string;
+      creator?: string;
+      charged_gas?: { denom?: string; amount?: string };
+    }[];
+  };
+  decryption_key?: string;
+}
+
+export interface IndexedEncryptedKeyshare {
+  encrypted_keyshare_value?: string;
+
+  /** @format uint64 */
+  encrypted_keyshare_index?: string;
 }
 
 export interface PageRequest {
@@ -103,92 +109,90 @@ export interface PageResponse {
   total?: string;
 }
 
-export interface QueryAllEncryptedTxFromHeightResponse {
-  encryptedTxArray?: {
-    encryptedTx?: {
-      targetHeight?: string;
+export interface PrivateDecryptionKey {
+  requester?: string;
+  private_keyshares?: { encrypted_keyshare_value?: string; encrypted_keyshare_index?: string }[];
+}
+
+export interface QueryDecryptDataResponse {
+  decrypted_data?: string;
+}
+
+export interface QueryEncryptedTxAllFromHeightResponse {
+  encrypted_tx_array?: {
+    encrypted_txs?: {
+      target_height?: string;
       index?: string;
       data?: string;
       creator?: string;
-      chargedGas?: { denom?: string; amount?: string };
-      processedAtChainHeight?: string;
+      charged_gas?: { denom?: string; amount?: string };
+      processed_at_chain_height?: string;
       expired?: boolean;
     }[];
   };
 }
 
-export interface QueryAllEncryptedTxResponse {
-  encryptedTxArray?: {
-    encryptedTx?: {
-      targetHeight?: string;
+export interface QueryEncryptedTxAllResponse {
+  encrypted_tx_array?: {
+    encrypted_txs?: {
+      target_height?: string;
       index?: string;
       data?: string;
       creator?: string;
-      chargedGas?: { denom?: string; amount?: string };
-      processedAtChainHeight?: string;
+      charged_gas?: { denom?: string; amount?: string };
+      processed_at_chain_height?: string;
       expired?: boolean;
     }[];
   }[];
   pagination?: { next_key?: string; total?: string };
 }
 
-export interface QueryAllKeyshareResponse {
-  keyshares?: {
-    creator?: string;
-    request_id?: string;
-    identity?: string;
-    pubkey?: string;
-    tx_list?: {
-      encryptedTx?: {
-        identity?: string;
-        index?: string;
-        data?: string;
-        creator?: string;
-        chargedGas?: { denom?: string; amount?: string };
-      }[];
-    };
-    aggr_keyshare?: string;
-  }[];
-  pagination?: { next_key?: string; total?: string };
-}
-
-export interface QueryAllPepNonceResponse {
-  pepNonce?: { address?: string; nonce?: string }[];
-  pagination?: { next_key?: string; total?: string };
-}
-
-export interface QueryGetEncryptedTxResponse {
-  encryptedTx?: {
-    targetHeight?: string;
+export interface QueryEncryptedTxResponse {
+  encrypted_tx?: {
+    target_height?: string;
     index?: string;
     data?: string;
     creator?: string;
-    chargedGas?: { denom?: string; amount?: string };
-    processedAtChainHeight?: string;
+    charged_gas?: { denom?: string; amount?: string };
+    processed_at_chain_height?: string;
     expired?: boolean;
   };
 }
 
-export interface QueryGetPepNonceResponse {
-  pepNonce?: { address?: string; nonce?: string };
-}
-
-export interface QueryKeyshareResponse {
-  keyshare?: {
+export interface QueryGeneralIdentityAllResponse {
+  request_details_list?: {
     creator?: string;
-    request_id?: string;
     identity?: string;
     pubkey?: string;
     tx_list?: {
-      encryptedTx?: {
+      encrypted_txs?: {
         identity?: string;
         index?: string;
         data?: string;
         creator?: string;
-        chargedGas?: { denom?: string; amount?: string };
+        charged_gas?: { denom?: string; amount?: string };
       }[];
     };
-    aggr_keyshare?: string;
+    decryption_key?: string;
+  }[];
+  pagination?: { next_key?: string; total?: string };
+}
+
+export interface QueryGeneralIdentityResponse {
+  request_details?: {
+    creator?: string;
+    identity?: string;
+    pubkey?: string;
+    tx_list?: {
+      encrypted_txs?: {
+        identity?: string;
+        index?: string;
+        data?: string;
+        creator?: string;
+        charged_gas?: { denom?: string; amount?: string };
+      }[];
+    };
+    decryption_key?: string;
   };
 }
 
@@ -204,16 +208,37 @@ export interface QueryParamsResponse {
     trusted_counter_parties?: { client_id?: string; connection_id?: string; channel_id?: string }[];
     trusted_addresses?: string[];
     min_gas_price?: { denom?: string; amount?: string };
+    private_decryption_key_price?: { denom?: string; amount?: string };
+    max_contract_gas?: string;
   };
 }
 
-export interface QueryPubKeyResponse {
-  activePubKey?: { publicKey?: string; creator?: string; expiry?: string };
-  queuedPubKey?: { publicKey?: string; creator?: string; expiry?: string };
+export interface QueryPepNonceAllResponse {
+  pep_nonce?: { address?: string; nonce?: string }[];
+  pagination?: { next_key?: string; total?: string };
+}
+
+export interface QueryPepNonceResponse {
+  pep_nonce?: { address?: string; nonce?: string };
+}
+
+export interface QueryPrivateIdentityResponse {
+  creator?: string;
+  identity?: string;
+  pubkey?: string;
+  private_decryption_keys?: {
+    requester?: string;
+    private_keyshares?: { encrypted_keyshare_value?: string; encrypted_keyshare_index?: string }[];
+  }[];
+}
+
+export interface QueryPubkeyResponse {
+  active_pubkey?: { public_key?: string; creator?: string; expiry?: string };
+  queued_pubkey?: { public_key?: string; creator?: string; expiry?: string };
 }
 
 export interface QueuedPublicKey {
-  publicKey?: string;
+  public_key?: string;
   creator?: string;
 
   /** @format uint64 */
@@ -228,16 +253,16 @@ export interface TrustedCounterParty {
 
 export interface PepEncryptedTx {
   /** @format uint64 */
-  targetHeight?: string;
+  target_height?: string;
 
   /** @format uint64 */
   index?: string;
   data?: string;
   creator?: string;
-  chargedGas?: { denom?: string; amount?: string };
+  charged_gas?: { denom?: string; amount?: string };
 
   /** @format uint64 */
-  processedAtChainHeight?: string;
+  processed_at_chain_height?: string;
   expired?: boolean;
 }
 
@@ -247,6 +272,10 @@ export interface PepParams {
   trusted_counter_parties?: { client_id?: string; connection_id?: string; channel_id?: string }[];
   trusted_addresses?: string[];
   min_gas_price?: { denom?: string; amount?: string };
+  private_decryption_key_price?: { denom?: string; amount?: string };
+
+  /** @format uint64 */
+  max_contract_gas?: string;
 }
 
 export interface PepPepNonce {
@@ -256,15 +285,27 @@ export interface PepPepNonce {
   nonce?: string;
 }
 
-export type MsgCreateAggregatedKeyShareResponse = object;
+export type MsgRegisterContractResponse = object;
 
-export type MsgGetGeneralKeyshareResponse = object;
+export type MsgRequestGeneralDecryptionKeyResponse = object;
 
-export interface MsgRequestGeneralKeyshareResponse {
-  req_id?: string;
+export interface MsgRequestGeneralIdentityResponse {
+  identity?: string;
 }
 
+export type MsgRequestPrivateDecryptionKeyResponse = object;
+
+export interface MsgRequestPrivateIdentityResponse {
+  identity?: string;
+}
+
+export type MsgSubmitDecryptionKeyResponse = object;
+
 export type MsgSubmitEncryptedTxResponse = object;
+
+export type MsgSubmitGeneralEncryptedTxResponse = object;
+
+export type MsgUnregisterContractResponse = object;
 
 export type MsgUpdateParamsResponse = object;
 
@@ -274,6 +315,10 @@ export interface Params {
   trusted_counter_parties?: { client_id?: string; connection_id?: string; channel_id?: string }[];
   trusted_addresses?: string[];
   min_gas_price?: { denom?: string; amount?: string };
+  private_decryption_key_price?: { denom?: string; amount?: string };
+
+  /** @format uint64 */
+  max_contract_gas?: string;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
@@ -404,6 +449,45 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryDecryptData
+   * @request GET:/Fairblock/fairyring/pep/decrypt_data/{pubkey}/{decryption_key}/{encrypted_data}
+   */
+  queryDecryptData = (pubkey: string, decryptionKey: string, encryptedData: string, params: RequestParams = {}) =>
+    this.request<{ decrypted_data?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
+      path: `/Fairblock/fairyring/pep/decrypt_data/${pubkey}/${decryptionKey}/${encryptedData}`,
+      method: "GET",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryPrivateIdentity
+   * @request GET:/Fairblock/fairyring/pep/private_identity/{identity}
+   */
+  queryPrivateIdentity = (identity: string, params: RequestParams = {}) =>
+    this.request<
+      {
+        creator?: string;
+        identity?: string;
+        pubkey?: string;
+        private_decryption_keys?: {
+          requester?: string;
+          private_keyshares?: { encrypted_keyshare_value?: string; encrypted_keyshare_index?: string }[];
+        }[];
+      },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
+      path: `/Fairblock/fairyring/pep/private_identity/${identity}`,
+      method: "GET",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryEncryptedTxAll
    * @request GET:/fairyring/pep/encrypted_tx
    */
@@ -419,14 +503,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   ) =>
     this.request<
       {
-        encryptedTxArray?: {
-          encryptedTx?: {
-            targetHeight?: string;
+        encrypted_tx_array?: {
+          encrypted_txs?: {
+            target_height?: string;
             index?: string;
             data?: string;
             creator?: string;
-            chargedGas?: { denom?: string; amount?: string };
-            processedAtChainHeight?: string;
+            charged_gas?: { denom?: string; amount?: string };
+            processed_at_chain_height?: string;
             expired?: boolean;
           }[];
         }[];
@@ -445,19 +529,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryEncryptedTxAllFromHeight
-   * @request GET:/fairyring/pep/encrypted_tx/{targetHeight}
+   * @request GET:/fairyring/pep/encrypted_tx/{target_height}
    */
   queryEncryptedTxAllFromHeight = (targetHeight: string, params: RequestParams = {}) =>
     this.request<
       {
-        encryptedTxArray?: {
-          encryptedTx?: {
-            targetHeight?: string;
+        encrypted_tx_array?: {
+          encrypted_txs?: {
+            target_height?: string;
             index?: string;
             data?: string;
             creator?: string;
-            chargedGas?: { denom?: string; amount?: string };
-            processedAtChainHeight?: string;
+            charged_gas?: { denom?: string; amount?: string };
+            processed_at_chain_height?: string;
             expired?: boolean;
           }[];
         };
@@ -474,18 +558,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryEncryptedTx
-   * @request GET:/fairyring/pep/encrypted_tx/{targetHeight}/{index}
+   * @request GET:/fairyring/pep/encrypted_tx/{target_height}/{index}
    */
   queryEncryptedTx = (targetHeight: string, index: string, params: RequestParams = {}) =>
     this.request<
       {
-        encryptedTx?: {
-          targetHeight?: string;
+        encrypted_tx?: {
+          target_height?: string;
           index?: string;
           data?: string;
           creator?: string;
-          chargedGas?: { denom?: string; amount?: string };
-          processedAtChainHeight?: string;
+          charged_gas?: { denom?: string; amount?: string };
+          processed_at_chain_height?: string;
           expired?: boolean;
         };
       },
@@ -500,10 +584,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryKeyshareReqAll
-   * @request GET:/fairyring/pep/keyshare
+   * @name QueryGeneralIdentityAll
+   * @request GET:/fairyring/pep/general_identity
    */
-  queryKeyshareReqAll = (
+  queryGeneralIdentityAll = (
     query?: {
       "pagination.key"?: string;
       "pagination.offset"?: string;
@@ -515,27 +599,26 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   ) =>
     this.request<
       {
-        keyshares?: {
+        request_details_list?: {
           creator?: string;
-          request_id?: string;
           identity?: string;
           pubkey?: string;
           tx_list?: {
-            encryptedTx?: {
+            encrypted_txs?: {
               identity?: string;
               index?: string;
               data?: string;
               creator?: string;
-              chargedGas?: { denom?: string; amount?: string };
+              charged_gas?: { denom?: string; amount?: string };
             }[];
           };
-          aggr_keyshare?: string;
+          decryption_key?: string;
         }[];
         pagination?: { next_key?: string; total?: string };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
-      path: `/fairyring/pep/keyshare`,
+      path: `/fairyring/pep/general_identity`,
       method: "GET",
       query: query,
       ...params,
@@ -545,32 +628,31 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryKeyshareReq
-   * @request GET:/fairyring/pep/keyshare/{req_id}
+   * @name QueryGeneralIdentity
+   * @request GET:/fairyring/pep/general_identity/{identity}
    */
-  queryKeyshareReq = (reqId: string, params: RequestParams = {}) =>
+  queryGeneralIdentity = (identity: string, params: RequestParams = {}) =>
     this.request<
       {
-        keyshare?: {
+        request_details?: {
           creator?: string;
-          request_id?: string;
           identity?: string;
           pubkey?: string;
           tx_list?: {
-            encryptedTx?: {
+            encrypted_txs?: {
               identity?: string;
               index?: string;
               data?: string;
               creator?: string;
-              chargedGas?: { denom?: string; amount?: string };
+              charged_gas?: { denom?: string; amount?: string };
             }[];
           };
-          aggr_keyshare?: string;
+          decryption_key?: string;
         };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
-      path: `/fairyring/pep/keyshare/${reqId}`,
+      path: `/fairyring/pep/general_identity/${identity}`,
       method: "GET",
       ...params,
     });
@@ -605,6 +687,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
           trusted_counter_parties?: { client_id?: string; connection_id?: string; channel_id?: string }[];
           trusted_addresses?: string[];
           min_gas_price?: { denom?: string; amount?: string };
+          private_decryption_key_price?: { denom?: string; amount?: string };
+          max_contract_gas?: string;
         };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
@@ -632,7 +716,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     params: RequestParams = {},
   ) =>
     this.request<
-      { pepNonce?: { address?: string; nonce?: string }[]; pagination?: { next_key?: string; total?: string } },
+      { pep_nonce?: { address?: string; nonce?: string }[]; pagination?: { next_key?: string; total?: string } },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
       path: `/fairyring/pep/pep_nonce`,
@@ -650,7 +734,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    */
   queryPepNonce = (address: string, params: RequestParams = {}) =>
     this.request<
-      { pepNonce?: { address?: string; nonce?: string } },
+      { pep_nonce?: { address?: string; nonce?: string } },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
       path: `/fairyring/pep/pep_nonce/${address}`,
@@ -662,18 +746,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryPubKey
-   * @request GET:/fairyring/pep/pub_key
+   * @name QueryPubkey
+   * @request GET:/fairyring/pep/pubkey
    */
-  queryPubKey = (params: RequestParams = {}) =>
+  queryPubkey = (params: RequestParams = {}) =>
     this.request<
       {
-        activePubKey?: { publicKey?: string; creator?: string; expiry?: string };
-        queuedPubKey?: { publicKey?: string; creator?: string; expiry?: string };
+        active_pubkey?: { public_key?: string; creator?: string; expiry?: string };
+        queued_pubkey?: { public_key?: string; creator?: string; expiry?: string };
       },
       { code?: number; message?: string; details?: { "@type"?: string }[] }
     >({
-      path: `/fairyring/pep/pub_key`,
+      path: `/fairyring/pep/pubkey`,
       method: "GET",
       ...params,
     });
