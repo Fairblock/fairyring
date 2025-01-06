@@ -332,9 +332,11 @@ fresh-chain:
 	~/go/bin/fairyringd init star --chain-id fairyring -o
 	@echo "Adding a genesis account..."
 	~/go/bin/fairyringd genesis add-genesis-account star 1000000000000ufairy,1000000000000stake
+	~/go/bin/fairyringd genesis add-genesis-account v2 1000000000000ufairy,1000000000000stake
+	~/go/bin/fairyringd genesis add-genesis-account v3 1000000000000ufairy,1000000000000stake
 	~/go/bin/fairyringd genesis gentx star 500000000stake --chain-id fairyring
 	~/go/bin/fairyringd genesis collect-gentxs
-	jq '.app_state.keyshare.params.trusted_addresses += ["fairy1vghpa0tuzfza97cwyc085zxuhsyvy3jtgry7vv"]' ~/.fairyring/config/genesis.json > ~/.fairyring/config/genesis_temp.json && mv ~/.fairyring/config/genesis_temp.json ~/.fairyring/config/genesis.json
+	jq '.app_state.keyshare.params.trusted_addresses += ["fairy1mklt4k0gjgmj3dl7m3hd9f55hyzl8xycvy8ld2","fairy17jea857wrp88kq2a3e26847hwsexn65afp8sug","fairy1yjaug3h2ydmxut5v36y2w7wmexgad9xhn909u6"]' ~/.fairyring/config/genesis.json > ~/.fairyring/config/genesis_temp.json && mv ~/.fairyring/config/genesis_temp.json ~/.fairyring/config/genesis.json
 	sed -i 's/^minimum-gas-prices *= *""/minimum-gas-prices = "0.001ufairy"/' ~/.fairyring/config/app.toml
 	jq '.app_state.pep.params.is_source_chain = true' ~/.fairyring/config/genesis.json > ~/.fairyring/config/genesis_temp.json && mv ~/.fairyring/config/genesis_temp.json ~/.fairyring/config/genesis.json
 	@echo "Starting the chain..."
