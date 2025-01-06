@@ -1,10 +1,11 @@
 package keeper_test
 
 import (
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"strconv"
 	"testing"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"

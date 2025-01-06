@@ -9668,42 +9668,6 @@ paths:
               Since: cosmos-sdk 0.47
       tags:
         - Msg
-  /Fairblock/fairyring/ckks/params:
-    get:
-      summary: Parameters queries the parameters of the module.
-      operationId: FairyringCkksQuery_Params
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              params:
-                description: params holds all the parameters of this module.
-                type: object
-            description: >-
-              QueryParamsResponse is response type for the Query/Params RPC
-              method.
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
   /fairyring.ckks.Msg/SubmitGkgShare:
     post:
       operationId: FairyringCkksMsg_SubmitGkgShare
@@ -9952,6 +9916,74 @@ paths:
             description: MsgUpdateParams is the Msg/UpdateParams request type.
       tags:
         - Msg
+  /Fairblock/fairyring/ckks/aggregated_rkgr_1:
+    get:
+      summary: Queries a list of AggregatedRkgr1 items.
+      operationId: FairyringCkksQuery_AggregatedRkgr1
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              aggregatedRkR1:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /Fairblock/fairyring/ckks/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: FairyringCkksQuery_Params
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /fairyring.pep.Msg/RegisterContract:
     post:
       summary: |-
@@ -21407,16 +21439,6 @@ definitions:
           min_commission_rate is the chain-wide minimum commission rate that a
           validator can charge their delegators
     description: Params defines the parameters for the x/staking module.
-  fairyring.ckks.Params:
-    type: object
-    description: Params defines the parameters for the module.
-  fairyring.ckks.QueryParamsResponse:
-    type: object
-    properties:
-      params:
-        description: params holds all the parameters of this module.
-        type: object
-    description: QueryParamsResponse is response type for the Query/Params RPC method.
   fairyring.ckks.MsgSubmitGkgShare:
     type: object
     properties:
@@ -21479,6 +21501,21 @@ definitions:
     description: |-
       MsgUpdateParamsResponse defines the response structure for executing a
       MsgUpdateParams message.
+  fairyring.ckks.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  fairyring.ckks.QueryAggregatedRkgr1Response:
+    type: object
+    properties:
+      aggregatedRkR1:
+        type: string
+  fairyring.ckks.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
   fairyring.pep.MsgRegisterContract:
     type: object
     properties:

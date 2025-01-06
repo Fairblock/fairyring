@@ -4,6 +4,37 @@ info:
   name: ''
   description: ''
 paths:
+  /Fairblock/fairyring/ckks/aggregated_rkgr_1:
+    get:
+      operationId: Query_AggregatedRkgr1
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              aggregatedRkR1:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /Fairblock/fairyring/ckks/params:
     get:
       operationId: Query_Params
@@ -58,6 +89,11 @@ definitions:
             '@type':
               type: string
           additionalProperties: {}
+  QueryAggregatedRkgr1Response:
+    type: object
+    properties:
+      aggregatedRkR1:
+        type: string
   QueryParamsResponse:
     type: object
     properties:

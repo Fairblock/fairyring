@@ -6,26 +6,28 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { QueryParamsRequest } from "./types/fairyring/ckks/query";
-import { MsgSubmitRkgShareRound1Response } from "./types/fairyring/ckks/tx";
 import { MsgUpdateParamsResponse } from "./types/fairyring/ckks/tx";
-import { MsgSubmitPkgShare } from "./types/fairyring/ckks/tx";
-import { MsgSubmitRkgShareRound2 } from "./types/fairyring/ckks/tx";
-import { MsgSubmitGkgShareResponse } from "./types/fairyring/ckks/tx";
+import { MsgSubmitRkgShareRound1Response } from "./types/fairyring/ckks/tx";
+import { MsgSubmitShamirShareResponse } from "./types/fairyring/ckks/tx";
 import { QueryParamsResponse } from "./types/fairyring/ckks/query";
-import { GenesisState } from "./types/fairyring/ckks/genesis";
-import { MsgUpdateParams } from "./types/fairyring/ckks/tx";
 import { MsgSubmitPkgShareResponse } from "./types/fairyring/ckks/tx";
-import { MsgSubmitGkgShare } from "./types/fairyring/ckks/tx";
-import { Params } from "./types/fairyring/ckks/params";
 import { MsgSubmitRkgShareRound1 } from "./types/fairyring/ckks/tx";
 import { MsgSubmitRkgShareRound2Response } from "./types/fairyring/ckks/tx";
+import { MsgSubmitGkgShare } from "./types/fairyring/ckks/tx";
+import { MsgUpdateParams } from "./types/fairyring/ckks/tx";
+import { MsgSubmitShamirShare } from "./types/fairyring/ckks/tx";
+import { MsgSubmitPkgShare } from "./types/fairyring/ckks/tx";
+import { MsgSubmitGkgShareResponse } from "./types/fairyring/ckks/tx";
+import { GenesisState } from "./types/fairyring/ckks/genesis";
+import { MsgSubmitRkgShareRound2 } from "./types/fairyring/ckks/tx";
+import { QueryParamsRequest } from "./types/fairyring/ckks/query";
+import { Params } from "./types/fairyring/ckks/params";
 
 
-export { QueryParamsRequest, MsgSubmitRkgShareRound1Response, MsgUpdateParamsResponse, MsgSubmitPkgShare, MsgSubmitRkgShareRound2, MsgSubmitGkgShareResponse, QueryParamsResponse, GenesisState, MsgUpdateParams, MsgSubmitPkgShareResponse, MsgSubmitGkgShare, Params, MsgSubmitRkgShareRound1, MsgSubmitRkgShareRound2Response };
+export { MsgUpdateParamsResponse, MsgSubmitRkgShareRound1Response, MsgSubmitShamirShareResponse, QueryParamsResponse, MsgSubmitPkgShareResponse, MsgSubmitRkgShareRound1, MsgSubmitRkgShareRound2Response, MsgSubmitGkgShare, MsgUpdateParams, MsgSubmitShamirShare, MsgSubmitPkgShare, MsgSubmitGkgShareResponse, GenesisState, MsgSubmitRkgShareRound2, QueryParamsRequest, Params };
 
-type sendQueryParamsRequestParams = {
-  value: QueryParamsRequest,
+type sendMsgUpdateParamsResponseParams = {
+  value: MsgUpdateParamsResponse,
   fee?: StdFee,
   memo?: string
 };
@@ -36,26 +38,8 @@ type sendMsgSubmitRkgShareRound1ResponseParams = {
   memo?: string
 };
 
-type sendMsgUpdateParamsResponseParams = {
-  value: MsgUpdateParamsResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgSubmitPkgShareParams = {
-  value: MsgSubmitPkgShare,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgSubmitRkgShareRound2Params = {
-  value: MsgSubmitRkgShareRound2,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgSubmitGkgShareResponseParams = {
-  value: MsgSubmitGkgShareResponse,
+type sendMsgSubmitShamirShareResponseParams = {
+  value: MsgSubmitShamirShareResponse,
   fee?: StdFee,
   memo?: string
 };
@@ -66,32 +50,8 @@ type sendQueryParamsResponseParams = {
   memo?: string
 };
 
-type sendGenesisStateParams = {
-  value: GenesisState,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgUpdateParamsParams = {
-  value: MsgUpdateParams,
-  fee?: StdFee,
-  memo?: string
-};
-
 type sendMsgSubmitPkgShareResponseParams = {
   value: MsgSubmitPkgShareResponse,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgSubmitGkgShareParams = {
-  value: MsgSubmitGkgShare,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendParamsParams = {
-  value: Params,
   fee?: StdFee,
   memo?: string
 };
@@ -108,53 +68,79 @@ type sendMsgSubmitRkgShareRound2ResponseParams = {
   memo?: string
 };
 
+type sendMsgSubmitGkgShareParams = {
+  value: MsgSubmitGkgShare,
+  fee?: StdFee,
+  memo?: string
+};
 
-type queryParamsRequestParams = {
+type sendMsgUpdateParamsParams = {
+  value: MsgUpdateParams,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgSubmitShamirShareParams = {
+  value: MsgSubmitShamirShare,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgSubmitPkgShareParams = {
+  value: MsgSubmitPkgShare,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgSubmitGkgShareResponseParams = {
+  value: MsgSubmitGkgShareResponse,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendGenesisStateParams = {
+  value: GenesisState,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgSubmitRkgShareRound2Params = {
+  value: MsgSubmitRkgShareRound2,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendQueryParamsRequestParams = {
   value: QueryParamsRequest,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendParamsParams = {
+  value: Params,
+  fee?: StdFee,
+  memo?: string
+};
+
+
+type msgUpdateParamsResponseParams = {
+  value: MsgUpdateParamsResponse,
 };
 
 type msgSubmitRkgShareRound1ResponseParams = {
   value: MsgSubmitRkgShareRound1Response,
 };
 
-type msgUpdateParamsResponseParams = {
-  value: MsgUpdateParamsResponse,
-};
-
-type msgSubmitPkgShareParams = {
-  value: MsgSubmitPkgShare,
-};
-
-type msgSubmitRkgShareRound2Params = {
-  value: MsgSubmitRkgShareRound2,
-};
-
-type msgSubmitGkgShareResponseParams = {
-  value: MsgSubmitGkgShareResponse,
+type msgSubmitShamirShareResponseParams = {
+  value: MsgSubmitShamirShareResponse,
 };
 
 type queryParamsResponseParams = {
   value: QueryParamsResponse,
 };
 
-type genesisStateParams = {
-  value: GenesisState,
-};
-
-type msgUpdateParamsParams = {
-  value: MsgUpdateParams,
-};
-
 type msgSubmitPkgShareResponseParams = {
   value: MsgSubmitPkgShareResponse,
-};
-
-type msgSubmitGkgShareParams = {
-  value: MsgSubmitGkgShare,
-};
-
-type paramsParams = {
-  value: Params,
 };
 
 type msgSubmitRkgShareRound1Params = {
@@ -163,6 +149,42 @@ type msgSubmitRkgShareRound1Params = {
 
 type msgSubmitRkgShareRound2ResponseParams = {
   value: MsgSubmitRkgShareRound2Response,
+};
+
+type msgSubmitGkgShareParams = {
+  value: MsgSubmitGkgShare,
+};
+
+type msgUpdateParamsParams = {
+  value: MsgUpdateParams,
+};
+
+type msgSubmitShamirShareParams = {
+  value: MsgSubmitShamirShare,
+};
+
+type msgSubmitPkgShareParams = {
+  value: MsgSubmitPkgShare,
+};
+
+type msgSubmitGkgShareResponseParams = {
+  value: MsgSubmitGkgShareResponse,
+};
+
+type genesisStateParams = {
+  value: GenesisState,
+};
+
+type msgSubmitRkgShareRound2Params = {
+  value: MsgSubmitRkgShareRound2,
+};
+
+type queryParamsRequestParams = {
+  value: QueryParamsRequest,
+};
+
+type paramsParams = {
+  value: Params,
 };
 
 
@@ -195,17 +217,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendQueryParamsRequest({ value, fee, memo }: sendQueryParamsRequestParams): Promise<DeliverTxResponse> {
+		async sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendQueryParamsRequest: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgUpdateParamsResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.queryParamsRequest({ value: QueryParamsRequest.fromPartial(value) })
+				let msg = this.msgUpdateParamsResponse({ value: MsgUpdateParamsResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendQueryParamsRequest: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -223,59 +245,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgUpdateParamsResponse({ value, fee, memo }: sendMsgUpdateParamsResponseParams): Promise<DeliverTxResponse> {
+		async sendMsgSubmitShamirShareResponse({ value, fee, memo }: sendMsgSubmitShamirShareResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateParamsResponse: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgSubmitShamirShareResponse: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpdateParamsResponse({ value: MsgUpdateParamsResponse.fromPartial(value) })
+				let msg = this.msgSubmitShamirShareResponse({ value: MsgSubmitShamirShareResponse.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateParamsResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgSubmitPkgShare({ value, fee, memo }: sendMsgSubmitPkgShareParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgSubmitPkgShare: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgSubmitPkgShare({ value: MsgSubmitPkgShare.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgSubmitPkgShare: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgSubmitRkgShareRound2({ value, fee, memo }: sendMsgSubmitRkgShareRound2Params): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgSubmitRkgShareRound2: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgSubmitRkgShareRound2({ value: MsgSubmitRkgShareRound2.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgSubmitRkgShareRound2: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgSubmitGkgShareResponse({ value, fee, memo }: sendMsgSubmitGkgShareResponseParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgSubmitGkgShareResponse: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgSubmitGkgShareResponse({ value: MsgSubmitGkgShareResponse.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgSubmitGkgShareResponse: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgSubmitShamirShareResponse: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -293,34 +273,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.genesisState({ value: GenesisState.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgUpdateParams: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgUpdateParams({ value: MsgUpdateParams.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgUpdateParams: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendMsgSubmitPkgShareResponse({ value, fee, memo }: sendMsgSubmitPkgShareResponseParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgSubmitPkgShareResponse: Unable to sign Tx. Signer is not present.')
@@ -332,34 +284,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
 				throw new Error('TxClient:sendMsgSubmitPkgShareResponse: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgSubmitGkgShare({ value, fee, memo }: sendMsgSubmitGkgShareParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgSubmitGkgShare: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.msgSubmitGkgShare({ value: MsgSubmitGkgShare.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgSubmitGkgShare: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendParams({ value, fee, memo }: sendParamsParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendParams: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
-				let msg = this.params({ value: Params.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendParams: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -391,12 +315,138 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		
-		queryParamsRequest({ value }: queryParamsRequestParams): EncodeObject {
-			try {
-				return { typeUrl: "/fairyring.ckks.QueryParamsRequest", value: QueryParamsRequest.fromPartial( value ) }  
+		async sendMsgSubmitGkgShare({ value, fee, memo }: sendMsgSubmitGkgShareParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgSubmitGkgShare: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgSubmitGkgShare({ value: MsgSubmitGkgShare.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:QueryParamsRequest: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgSubmitGkgShare: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgUpdateParams({ value, fee, memo }: sendMsgUpdateParamsParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgUpdateParams: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgUpdateParams({ value: MsgUpdateParams.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgUpdateParams: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgSubmitShamirShare({ value, fee, memo }: sendMsgSubmitShamirShareParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgSubmitShamirShare: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgSubmitShamirShare({ value: MsgSubmitShamirShare.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgSubmitShamirShare: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgSubmitPkgShare({ value, fee, memo }: sendMsgSubmitPkgShareParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgSubmitPkgShare: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgSubmitPkgShare({ value: MsgSubmitPkgShare.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgSubmitPkgShare: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgSubmitGkgShareResponse({ value, fee, memo }: sendMsgSubmitGkgShareResponseParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgSubmitGkgShareResponse: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgSubmitGkgShareResponse({ value: MsgSubmitGkgShareResponse.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgSubmitGkgShareResponse: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendGenesisState({ value, fee, memo }: sendGenesisStateParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendGenesisState: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.genesisState({ value: GenesisState.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendGenesisState: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgSubmitRkgShareRound2({ value, fee, memo }: sendMsgSubmitRkgShareRound2Params): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgSubmitRkgShareRound2: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.msgSubmitRkgShareRound2({ value: MsgSubmitRkgShareRound2.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgSubmitRkgShareRound2: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendQueryParamsRequest({ value, fee, memo }: sendQueryParamsRequestParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendQueryParamsRequest: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.queryParamsRequest({ value: QueryParamsRequest.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendQueryParamsRequest: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendParams({ value, fee, memo }: sendParamsParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendParams: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry});
+				let msg = this.params({ value: Params.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendParams: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		
+		msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.ckks.MsgUpdateParamsResponse", value: MsgUpdateParamsResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -408,35 +458,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgUpdateParamsResponse({ value }: msgUpdateParamsResponseParams): EncodeObject {
+		msgSubmitShamirShareResponse({ value }: msgSubmitShamirShareResponseParams): EncodeObject {
 			try {
-				return { typeUrl: "/fairyring.ckks.MsgUpdateParamsResponse", value: MsgUpdateParamsResponse.fromPartial( value ) }  
+				return { typeUrl: "/fairyring.ckks.MsgSubmitShamirShareResponse", value: MsgSubmitShamirShareResponse.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateParamsResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgSubmitPkgShare({ value }: msgSubmitPkgShareParams): EncodeObject {
-			try {
-				return { typeUrl: "/fairyring.ckks.MsgSubmitPkgShare", value: MsgSubmitPkgShare.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgSubmitPkgShare: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgSubmitRkgShareRound2({ value }: msgSubmitRkgShareRound2Params): EncodeObject {
-			try {
-				return { typeUrl: "/fairyring.ckks.MsgSubmitRkgShareRound2", value: MsgSubmitRkgShareRound2.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgSubmitRkgShareRound2: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgSubmitGkgShareResponse({ value }: msgSubmitGkgShareResponseParams): EncodeObject {
-			try {
-				return { typeUrl: "/fairyring.ckks.MsgSubmitGkgShareResponse", value: MsgSubmitGkgShareResponse.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgSubmitGkgShareResponse: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgSubmitShamirShareResponse: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -448,43 +474,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		genesisState({ value }: genesisStateParams): EncodeObject {
-			try {
-				return { typeUrl: "/fairyring.ckks.GenesisState", value: GenesisState.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:GenesisState: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject {
-			try {
-				return { typeUrl: "/fairyring.ckks.MsgUpdateParams", value: MsgUpdateParams.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgUpdateParams: Could not create message: ' + e.message)
-			}
-		},
-		
 		msgSubmitPkgShareResponse({ value }: msgSubmitPkgShareResponseParams): EncodeObject {
 			try {
 				return { typeUrl: "/fairyring.ckks.MsgSubmitPkgShareResponse", value: MsgSubmitPkgShareResponse.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgSubmitPkgShareResponse: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgSubmitGkgShare({ value }: msgSubmitGkgShareParams): EncodeObject {
-			try {
-				return { typeUrl: "/fairyring.ckks.MsgSubmitGkgShare", value: MsgSubmitGkgShare.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgSubmitGkgShare: Could not create message: ' + e.message)
-			}
-		},
-		
-		params({ value }: paramsParams): EncodeObject {
-			try {
-				return { typeUrl: "/fairyring.ckks.Params", value: Params.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:Params: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -501,6 +495,78 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/fairyring.ckks.MsgSubmitRkgShareRound2Response", value: MsgSubmitRkgShareRound2Response.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgSubmitRkgShareRound2Response: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgSubmitGkgShare({ value }: msgSubmitGkgShareParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.ckks.MsgSubmitGkgShare", value: MsgSubmitGkgShare.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgSubmitGkgShare: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgUpdateParams({ value }: msgUpdateParamsParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.ckks.MsgUpdateParams", value: MsgUpdateParams.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgUpdateParams: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgSubmitShamirShare({ value }: msgSubmitShamirShareParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.ckks.MsgSubmitShamirShare", value: MsgSubmitShamirShare.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgSubmitShamirShare: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgSubmitPkgShare({ value }: msgSubmitPkgShareParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.ckks.MsgSubmitPkgShare", value: MsgSubmitPkgShare.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgSubmitPkgShare: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgSubmitGkgShareResponse({ value }: msgSubmitGkgShareResponseParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.ckks.MsgSubmitGkgShareResponse", value: MsgSubmitGkgShareResponse.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgSubmitGkgShareResponse: Could not create message: ' + e.message)
+			}
+		},
+		
+		genesisState({ value }: genesisStateParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.ckks.GenesisState", value: GenesisState.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:GenesisState: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgSubmitRkgShareRound2({ value }: msgSubmitRkgShareRound2Params): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.ckks.MsgSubmitRkgShareRound2", value: MsgSubmitRkgShareRound2.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgSubmitRkgShareRound2: Could not create message: ' + e.message)
+			}
+		},
+		
+		queryParamsRequest({ value }: queryParamsRequestParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.ckks.QueryParamsRequest", value: QueryParamsRequest.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:QueryParamsRequest: Could not create message: ' + e.message)
+			}
+		},
+		
+		params({ value }: paramsParams): EncodeObject {
+			try {
+				return { typeUrl: "/fairyring.ckks.Params", value: Params.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:Params: Could not create message: ' + e.message)
 			}
 		},
 		

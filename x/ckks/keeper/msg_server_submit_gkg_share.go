@@ -20,9 +20,9 @@ func (k msgServer) SubmitGkgShare(goCtx context.Context, msg *types.MsgSubmitGkg
 		if err != nil {
 			return nil, types.ErrAggregation.Wrap("GKG aggregation failed")
 		}
-		
+
 		gk_str := hex.EncodeToString(gk)
-		
+
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent("aggregated-gkg",
 				sdk.NewAttribute("gk", gk_str),

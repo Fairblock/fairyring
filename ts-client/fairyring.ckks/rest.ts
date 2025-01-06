@@ -20,6 +20,10 @@ export interface Status {
   details?: { "@type"?: string }[];
 }
 
+export interface QueryAggregatedRkgr1Response {
+  aggregatedRkR1?: string;
+}
+
 export interface QueryParamsResponse {
   params?: object;
 }
@@ -164,6 +168,20 @@ export class HttpClient<SecurityDataType = unknown> {
  * @title HTTP API Console fairyring.ckks
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAggregatedRkgr1
+   * @request GET:/Fairblock/fairyring/ckks/aggregated_rkgr_1
+   */
+  queryAggregatedRkgr1 = (params: RequestParams = {}) =>
+    this.request<{ aggregatedRkR1?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
+      path: `/Fairblock/fairyring/ckks/aggregated_rkgr_1`,
+      method: "GET",
+      ...params,
+    });
+
   /**
    * No description
    *

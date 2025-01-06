@@ -12,13 +12,10 @@ const (
 )
 
 const (
-
-	SendRKGRound2EventType= "send-rkg-round2"
-	RKR1Combined = "rk-r1-combined"
-	ShamirSharesSubmitted = "shamir-shares-submitted"
-	ShamirShares = "shamir-shares"
-
-
+	SendRKGRound2EventType = "send-rkg-round2"
+	RKR1Combined           = "rk-r1-combined"
+	ShamirSharesSubmitted  = "shamir-shares-submitted"
+	ShamirShares           = "shamir-shares"
 )
 
 var (

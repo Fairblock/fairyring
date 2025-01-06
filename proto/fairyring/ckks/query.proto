@@ -1,4 +1,5 @@
 syntax = "proto3";
+
 package fairyring.ckks;
 
 import "amino/amino.proto";
@@ -11,20 +12,32 @@ option go_package = "github.com/Fairblock/fairyring/x/ckks/types";
 
 // Query defines the gRPC querier service.
 service Query {
+  
   // Parameters queries the parameters of the module.
-  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/Fairblock/fairyring/ckks/params";
+  
+  }
+  
+  // Queries a list of AggregatedRkgr1 items.
+  rpc AggregatedRkgr1 (QueryAggregatedRkgr1Request) returns (QueryAggregatedRkgr1Response) {
+    option (google.api.http).get = "/Fairblock/fairyring/ckks/aggregated_rkgr_1";
+  
   }
 }
-
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
+  
   // params holds all the parameters of this module.
-  Params params = 1 [
-    (gogoproto.nullable) = false,
-    (amino.dont_omitempty) = true
-  ];
+  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }
+
+message QueryAggregatedRkgr1Request {}
+
+message QueryAggregatedRkgr1Response {
+  string aggregatedRkR1 = 1;
+}
+

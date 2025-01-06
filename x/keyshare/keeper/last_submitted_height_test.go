@@ -1,15 +1,16 @@
 package keeper_test
 
 import (
+	"math/rand"
+	"strconv"
+	"testing"
+
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
 	"github.com/Fairblock/fairyring/testutil/sample"
 	"github.com/Fairblock/fairyring/x/keyshare/keeper"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
-	"math/rand"
-	"strconv"
-	"testing"
 )
 
 func createLastSubmittedHeight(keeper *keeper.Keeper, ctx sdk.Context) (string, string) {

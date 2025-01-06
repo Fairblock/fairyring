@@ -1,6 +1,8 @@
 package keeper_test
 
 import (
+	"testing"
+
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
@@ -8,7 +10,6 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"testing"
 )
 
 func TestParamsQuery(t *testing.T) {

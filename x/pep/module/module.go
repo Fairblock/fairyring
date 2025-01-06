@@ -3,7 +3,6 @@ package pep
 import (
 	"bytes"
 	"context"
-	storetypes "cosmossdk.io/store/types"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -11,6 +10,8 @@ import (
 	"math"
 	"strconv"
 	"strings"
+
+	storetypes "cosmossdk.io/store/types"
 
 	"cosmossdk.io/core/appmodule"
 	cosmosmath "cosmossdk.io/math"

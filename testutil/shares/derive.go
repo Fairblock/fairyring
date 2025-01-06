@@ -2,6 +2,7 @@ package shares
 
 import (
 	"encoding/hex"
+
 	distIBE "github.com/FairBlock/DistributedIBE"
 	bls "github.com/drand/kyber-bls12381"
 )

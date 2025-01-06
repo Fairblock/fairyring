@@ -22,7 +22,7 @@ func (k msgServer) SubmitRkgShareRound2(goCtx context.Context, msg *types.MsgSub
 			return nil, types.ErrAggregation.Wrap("RKG aggregation failed")
 		}
 		rk_r2_str := hex.EncodeToString(rk_r2)
-	//	log.Info("-------------------------------------------------------- RK-R2 = ", rk_r2_str)
+		//	log.Info("-------------------------------------------------------- RK-R2 = ", rk_r2_str)
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent("aggregated-rkg",
 				sdk.NewAttribute("rk", rk_r2_str),

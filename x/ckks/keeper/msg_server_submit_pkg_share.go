@@ -13,23 +13,23 @@ import (
 func (k msgServer) SubmitPkgShare(goCtx context.Context, msg *types.MsgSubmitPkgShare) (*types.MsgSubmitPkgShareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-    k.StorePKGShare(ctx, msg.Creator, []byte(msg.ShareData))
-    // Check if threshold is met
-    if k.IsThresholdMet(ctx, "PKG") {
-       
-        pk ,err := k.AggregatePKGShares(ctx)
+	k.StorePKGShare(ctx, msg.Creator, []byte(msg.ShareData))
+	// Check if threshold is met
+	if k.IsThresholdMet(ctx, "PKG") {
+
+		pk, err := k.AggregatePKGShares(ctx)
 		if err != nil {
-            return nil, types.ErrAggregation.Wrap("PKG aggregation failed")
-        }
-        pkStr := hex.EncodeToString(pk)
-        ctx.EventManager().EmitEvent(
-            sdk.NewEvent("pk-aggregated",
-                sdk.NewAttribute("value", pkStr),
-            ),
-        )
+			return nil, types.ErrAggregation.Wrap("PKG aggregation failed")
+		}
+		pkStr := hex.EncodeToString(pk)
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent("pk-aggregated",
+				sdk.NewAttribute("value", pkStr),
+			),
+		)
 		// log.Info("-------------------------------------------------------- PK = ", pkStr)
-    }
-	
-    return &types.MsgSubmitPkgShareResponse{}, nil
+	}
+
+	return &types.MsgSubmitPkgShareResponse{}, nil
 
 }
