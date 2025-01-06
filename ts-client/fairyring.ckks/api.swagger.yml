@@ -101,6 +101,8 @@ definitions:
         type: object
   ckks.Params:
     type: object
+  MsgKeySwitchRequestResponse:
+    type: object
   MsgSubmitGkgShareResponse:
     type: object
   MsgSubmitPkgShareResponse:

@@ -30,6 +30,8 @@ export interface QueryParamsResponse {
 
 export type CkksParams = object;
 
+export type MsgKeySwitchRequestResponse = object;
+
 export type MsgSubmitGkgShareResponse = object;
 
 export type MsgSubmitPkgShareResponse = object;

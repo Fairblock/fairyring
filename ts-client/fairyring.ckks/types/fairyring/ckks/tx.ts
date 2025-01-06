@@ -59,6 +59,15 @@ export interface MsgSubmitShamirShare {
 export interface MsgSubmitShamirShareResponse {
 }
 
+export interface MsgKeySwitchRequest {
+  creator: string;
+  ct: string;
+  newPk: string;
+}
+
+export interface MsgKeySwitchRequestResponse {
+}
+
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return { authority: "", params: undefined };
 }
@@ -763,6 +772,138 @@ export const MsgSubmitShamirShareResponse = {
   },
 };
 
+function createBaseMsgKeySwitchRequest(): MsgKeySwitchRequest {
+  return { creator: "", ct: "", newPk: "" };
+}
+
+export const MsgKeySwitchRequest = {
+  encode(message: MsgKeySwitchRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.ct !== "") {
+      writer.uint32(18).string(message.ct);
+    }
+    if (message.newPk !== "") {
+      writer.uint32(26).string(message.newPk);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgKeySwitchRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgKeySwitchRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.creator = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.ct = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.newPk = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgKeySwitchRequest {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      ct: isSet(object.ct) ? String(object.ct) : "",
+      newPk: isSet(object.newPk) ? String(object.newPk) : "",
+    };
+  },
+
+  toJSON(message: MsgKeySwitchRequest): unknown {
+    const obj: any = {};
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.ct !== "") {
+      obj.ct = message.ct;
+    }
+    if (message.newPk !== "") {
+      obj.newPk = message.newPk;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgKeySwitchRequest>, I>>(base?: I): MsgKeySwitchRequest {
+    return MsgKeySwitchRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgKeySwitchRequest>, I>>(object: I): MsgKeySwitchRequest {
+    const message = createBaseMsgKeySwitchRequest();
+    message.creator = object.creator ?? "";
+    message.ct = object.ct ?? "";
+    message.newPk = object.newPk ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgKeySwitchRequestResponse(): MsgKeySwitchRequestResponse {
+  return {};
+}
+
+export const MsgKeySwitchRequestResponse = {
+  encode(_: MsgKeySwitchRequestResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgKeySwitchRequestResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgKeySwitchRequestResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgKeySwitchRequestResponse {
+    return {};
+  },
+
+  toJSON(_: MsgKeySwitchRequestResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgKeySwitchRequestResponse>, I>>(base?: I): MsgKeySwitchRequestResponse {
+    return MsgKeySwitchRequestResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgKeySwitchRequestResponse>, I>>(_: I): MsgKeySwitchRequestResponse {
+    const message = createBaseMsgKeySwitchRequestResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -775,6 +916,7 @@ export interface Msg {
   SubmitRkgShareRound2(request: MsgSubmitRkgShareRound2): Promise<MsgSubmitRkgShareRound2Response>;
   SubmitGkgShare(request: MsgSubmitGkgShare): Promise<MsgSubmitGkgShareResponse>;
   SubmitShamirShare(request: MsgSubmitShamirShare): Promise<MsgSubmitShamirShareResponse>;
+  KeySwitchRequest(request: MsgKeySwitchRequest): Promise<MsgKeySwitchRequestResponse>;
 }
 
 export const MsgServiceName = "fairyring.ckks.Msg";
@@ -790,6 +932,7 @@ export class MsgClientImpl implements Msg {
     this.SubmitRkgShareRound2 = this.SubmitRkgShareRound2.bind(this);
     this.SubmitGkgShare = this.SubmitGkgShare.bind(this);
     this.SubmitShamirShare = this.SubmitShamirShare.bind(this);
+    this.KeySwitchRequest = this.KeySwitchRequest.bind(this);
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
@@ -825,6 +968,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgSubmitShamirShare.encode(request).finish();
     const promise = this.rpc.request(this.service, "SubmitShamirShare", data);
     return promise.then((data) => MsgSubmitShamirShareResponse.decode(_m0.Reader.create(data)));
+  }
+
+  KeySwitchRequest(request: MsgKeySwitchRequest): Promise<MsgKeySwitchRequestResponse> {
+    const data = MsgKeySwitchRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "KeySwitchRequest", data);
+    return promise.then((data) => MsgKeySwitchRequestResponse.decode(_m0.Reader.create(data)));
   }
 }
 

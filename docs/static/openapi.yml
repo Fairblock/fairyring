@@ -9668,6 +9668,47 @@ paths:
               Since: cosmos-sdk 0.47
       tags:
         - Msg
+  /fairyring.ckks.Msg/KeySwitchRequest:
+    post:
+      operationId: FairyringCkksMsg_KeySwitchRequest
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              creator:
+                type: string
+              ct:
+                type: string
+              newPk:
+                type: string
+      tags:
+        - Msg
   /fairyring.ckks.Msg/SubmitGkgShare:
     post:
       operationId: FairyringCkksMsg_SubmitGkgShare
@@ -21439,6 +21480,17 @@ definitions:
           min_commission_rate is the chain-wide minimum commission rate that a
           validator can charge their delegators
     description: Params defines the parameters for the x/staking module.
+  fairyring.ckks.MsgKeySwitchRequest:
+    type: object
+    properties:
+      creator:
+        type: string
+      ct:
+        type: string
+      newPk:
+        type: string
+  fairyring.ckks.MsgKeySwitchRequestResponse:
+    type: object
   fairyring.ckks.MsgSubmitGkgShare:
     type: object
     properties:

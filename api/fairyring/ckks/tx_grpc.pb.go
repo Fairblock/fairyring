@@ -26,6 +26,7 @@ const (
 	Msg_SubmitRkgShareRound2_FullMethodName = "/fairyring.ckks.Msg/SubmitRkgShareRound2"
 	Msg_SubmitGkgShare_FullMethodName       = "/fairyring.ckks.Msg/SubmitGkgShare"
 	Msg_SubmitShamirShare_FullMethodName    = "/fairyring.ckks.Msg/SubmitShamirShare"
+	Msg_KeySwitchRequest_FullMethodName     = "/fairyring.ckks.Msg/KeySwitchRequest"
 )
 
 // MsgClient is the client API for Msg service.
@@ -40,6 +41,7 @@ type MsgClient interface {
 	SubmitRkgShareRound2(ctx context.Context, in *MsgSubmitRkgShareRound2, opts ...grpc.CallOption) (*MsgSubmitRkgShareRound2Response, error)
 	SubmitGkgShare(ctx context.Context, in *MsgSubmitGkgShare, opts ...grpc.CallOption) (*MsgSubmitGkgShareResponse, error)
 	SubmitShamirShare(ctx context.Context, in *MsgSubmitShamirShare, opts ...grpc.CallOption) (*MsgSubmitShamirShareResponse, error)
+	KeySwitchRequest(ctx context.Context, in *MsgKeySwitchRequest, opts ...grpc.CallOption) (*MsgKeySwitchRequestResponse, error)
 }
 
 type msgClient struct {
@@ -104,6 +106,15 @@ func (c *msgClient) SubmitShamirShare(ctx context.Context, in *MsgSubmitShamirSh
 	return out, nil
 }
 
+func (c *msgClient) KeySwitchRequest(ctx context.Context, in *MsgKeySwitchRequest, opts ...grpc.CallOption) (*MsgKeySwitchRequestResponse, error) {
+	out := new(MsgKeySwitchRequestResponse)
+	err := c.cc.Invoke(ctx, Msg_KeySwitchRequest_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -116,6 +127,7 @@ type MsgServer interface {
 	SubmitRkgShareRound2(context.Context, *MsgSubmitRkgShareRound2) (*MsgSubmitRkgShareRound2Response, error)
 	SubmitGkgShare(context.Context, *MsgSubmitGkgShare) (*MsgSubmitGkgShareResponse, error)
 	SubmitShamirShare(context.Context, *MsgSubmitShamirShare) (*MsgSubmitShamirShareResponse, error)
+	KeySwitchRequest(context.Context, *MsgKeySwitchRequest) (*MsgKeySwitchRequestResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -140,6 +152,9 @@ func (UnimplementedMsgServer) SubmitGkgShare(context.Context, *MsgSubmitGkgShare
 }
 func (UnimplementedMsgServer) SubmitShamirShare(context.Context, *MsgSubmitShamirShare) (*MsgSubmitShamirShareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitShamirShare not implemented")
+}
+func (UnimplementedMsgServer) KeySwitchRequest(context.Context, *MsgKeySwitchRequest) (*MsgKeySwitchRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KeySwitchRequest not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -262,6 +277,24 @@ func _Msg_SubmitShamirShare_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_KeySwitchRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgKeySwitchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).KeySwitchRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_KeySwitchRequest_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).KeySwitchRequest(ctx, req.(*MsgKeySwitchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -292,6 +325,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SubmitShamirShare",
 			Handler:    _Msg_SubmitShamirShare_Handler,
+		},
+		{
+			MethodName: "KeySwitchRequest",
+			Handler:    _Msg_KeySwitchRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

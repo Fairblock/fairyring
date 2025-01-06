@@ -22,6 +22,7 @@ service Msg {
   rpc SubmitRkgShareRound2 (MsgSubmitRkgShareRound2) returns (MsgSubmitRkgShareRound2Response);
   rpc SubmitGkgShare       (MsgSubmitGkgShare      ) returns (MsgSubmitGkgShareResponse      );
   rpc SubmitShamirShare    (MsgSubmitShamirShare   ) returns (MsgSubmitShamirShareResponse   );
+  rpc KeySwitchRequest     (MsgKeySwitchRequest    ) returns (MsgKeySwitchRequestResponse    );
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
@@ -80,4 +81,13 @@ message MsgSubmitShamirShare {
 }
 
 message MsgSubmitShamirShareResponse {}
+
+message MsgKeySwitchRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string ct      = 2;
+  string newPk   = 3;
+}
+
+message MsgKeySwitchRequestResponse {}
 
