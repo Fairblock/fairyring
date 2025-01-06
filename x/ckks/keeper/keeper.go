@@ -9,10 +9,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/sirupsen/logrus"
-	_ "github.com/sirupsen/logrus"
 	"github.com/tuneinsight/lattigo/v6/core/rlwe"
 	"github.com/tuneinsight/lattigo/v6/multiparty"
+	"github.com/tuneinsight/lattigo/v6/ring"
 	"github.com/tuneinsight/lattigo/v6/utils/sampling"
 
 	"github.com/Fairblock/fairyring/x/ckks/types"
@@ -186,7 +185,7 @@ func (k Keeper) StoreRKGShareRound2(ctx sdk.Context, creator string, share []byt
 }
 
 func (k Keeper) AggregateRKGSharesRound2(ctx sdk.Context) ([]byte, error) {
-	// Retrieve and aggregate PKG shares
+	// Retrieve and aggregate RKG shares
 	shares := k.GetShares(ctx, "RKG-R2:")
 
 	rkg := multiparty.NewRelinearizationKeyGenProtocol(k.params)
@@ -270,6 +269,65 @@ func (k Keeper) SetAggregatedGKGKey(ctx sdk.Context, key []byte) {
 }
 
 //////////////////////////
+/////// PKS //////////////
+//////////////////////////
+
+func (k Keeper) StorePKSShare(ctx sdk.Context, creator string, share []byte) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+	key := []byte(fmt.Sprintf("PKS:%s", creator))
+	store.Set(key, share)
+}
+
+func (k Keeper) GetPKSShare(ctx sdk.Context, creator string) []byte {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+	key := []byte(fmt.Sprintf("PKS:%s", creator))
+	return store.Get(key)
+}
+
+func (k Keeper) AggregatePKSShares(ctx sdk.Context) ([]byte, error) {
+	// Retrieve and aggregate PKS shares
+	shares := k.GetShares(ctx, "PKS:")
+
+	sigmaSmudging := 8 * rlwe.DefaultNoise
+	pcks := make([]multiparty.PublicKeySwitchProtocol, k.GetN(ctx))
+	for i := range pcks {
+		if i == 0 {
+			pcks[i], _ = multiparty.NewPublicKeySwitchProtocol(k.params, ring.DiscreteGaussian{Sigma: sigmaSmudging, Bound: 6 * sigmaSmudging})
+
+		} else {
+			pcks[i] = pcks[0].ShallowCopy()
+		}
+	}
+	shares_ks := make([]multiparty.PublicKeySwitchShare, k.GetN(ctx))
+	for i, pksShare := range shares {
+		
+		var share multiparty.PublicKeySwitchShare
+		err := share.UnmarshalBinary(pksShare)
+		if err != nil {
+			return []byte{}, err
+		}
+		shares_ks[i] = share
+		
+	}
+	for i := 1; i < k.GetThreshold(ctx, "PKS"); i++ {
+		pcks[0].AggregateShares(shares_ks[0], shares_ks[i], &shares_ks[0])
+	}
+
+	pks_value, _ := shares_ks[0].MarshalBinary()
+	k.SetAggregatedPKSKey(ctx, pks_value)
+	return pks_value, nil
+}
+
+func (k Keeper) SetAggregatedPKSKey(ctx sdk.Context, key []byte) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+	store.Set([]byte("aggregated_pks"), key)
+}
+
+
+//////////////////////////
 /////// Helpers //////////
 //////////////////////////
 
@@ -290,7 +348,6 @@ func (k Keeper) GetShares(ctx sdk.Context, pref string) [][]byte {
 
 func (k Keeper) IsThresholdMet(ctx sdk.Context, shareType string) bool {
 	shares := k.GetShares(ctx, shareType)
-	logrus.Info("---------------------- ", shareType, len(shares))
 	threshold := k.GetThreshold(ctx, shareType)
 	return len(shares) >= threshold
 }
@@ -304,6 +361,8 @@ func (k Keeper) GetThreshold(ctx sdk.Context, shareType string) int {
 	case "RKG1":
 		return 2
 	case "RKG2":
+		return 2
+	case "PKS":
 		return 2
 	case "GKG":
 		return 2

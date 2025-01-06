@@ -71,6 +71,12 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Short:          "Send a key-switch-request tx",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "ct"}, {ProtoField: "newPk"}},
 				},
+				{
+					RpcMethod:      "SubmitPksShare",
+					Use:            "submit-pks-share [share-data]",
+					Short:          "Send a submit-pks-share tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "shareData"}},
+				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},
 		},

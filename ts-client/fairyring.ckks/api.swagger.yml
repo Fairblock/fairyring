@@ -107,6 +107,8 @@ definitions:
     type: object
   MsgSubmitPkgShareResponse:
     type: object
+  MsgSubmitPksShareResponse:
+    type: object
   MsgSubmitRkgShareRound1Response:
     type: object
   MsgSubmitRkgShareRound2Response:

@@ -47,6 +47,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgKeySwitchRequest int = 100
 
+	opWeightMsgSubmitPksShare = "op_weight_msg_submit_pks_share"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgSubmitPksShare int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -136,6 +140,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		ckkssimulation.SimulateMsgKeySwitchRequest(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
+	var weightMsgSubmitPksShare int
+	simState.AppParams.GetOrGenerate(opWeightMsgSubmitPksShare, &weightMsgSubmitPksShare, nil,
+		func(_ *rand.Rand) {
+			weightMsgSubmitPksShare = defaultWeightMsgSubmitPksShare
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgSubmitPksShare,
+		ckkssimulation.SimulateMsgSubmitPksShare(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
@@ -189,6 +204,14 @@ func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.Wei
 			defaultWeightMsgKeySwitchRequest,
 			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
 				ckkssimulation.SimulateMsgKeySwitchRequest(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgSubmitPksShare,
+			defaultWeightMsgSubmitPksShare,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				ckkssimulation.SimulateMsgSubmitPksShare(am.accountKeeper, am.bankKeeper, am.keeper)
 				return nil
 			},
 		),

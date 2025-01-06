@@ -36,6 +36,8 @@ export type MsgSubmitGkgShareResponse = object;
 
 export type MsgSubmitPkgShareResponse = object;
 
+export type MsgSubmitPksShareResponse = object;
+
 export type MsgSubmitRkgShareRound1Response = object;
 
 export type MsgSubmitRkgShareRound2Response = object;

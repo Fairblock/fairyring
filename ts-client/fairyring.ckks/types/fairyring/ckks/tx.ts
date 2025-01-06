@@ -68,6 +68,14 @@ export interface MsgKeySwitchRequest {
 export interface MsgKeySwitchRequestResponse {
 }
 
+export interface MsgSubmitPksShare {
+  creator: string;
+  shareData: string;
+}
+
+export interface MsgSubmitPksShareResponse {
+}
+
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return { authority: "", params: undefined };
 }
@@ -904,6 +912,123 @@ export const MsgKeySwitchRequestResponse = {
   },
 };
 
+function createBaseMsgSubmitPksShare(): MsgSubmitPksShare {
+  return { creator: "", shareData: "" };
+}
+
+export const MsgSubmitPksShare = {
+  encode(message: MsgSubmitPksShare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.shareData !== "") {
+      writer.uint32(18).string(message.shareData);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitPksShare {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSubmitPksShare();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.creator = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.shareData = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSubmitPksShare {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      shareData: isSet(object.shareData) ? String(object.shareData) : "",
+    };
+  },
+
+  toJSON(message: MsgSubmitPksShare): unknown {
+    const obj: any = {};
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.shareData !== "") {
+      obj.shareData = message.shareData;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgSubmitPksShare>, I>>(base?: I): MsgSubmitPksShare {
+    return MsgSubmitPksShare.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgSubmitPksShare>, I>>(object: I): MsgSubmitPksShare {
+    const message = createBaseMsgSubmitPksShare();
+    message.creator = object.creator ?? "";
+    message.shareData = object.shareData ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgSubmitPksShareResponse(): MsgSubmitPksShareResponse {
+  return {};
+}
+
+export const MsgSubmitPksShareResponse = {
+  encode(_: MsgSubmitPksShareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitPksShareResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSubmitPksShareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgSubmitPksShareResponse {
+    return {};
+  },
+
+  toJSON(_: MsgSubmitPksShareResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgSubmitPksShareResponse>, I>>(base?: I): MsgSubmitPksShareResponse {
+    return MsgSubmitPksShareResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgSubmitPksShareResponse>, I>>(_: I): MsgSubmitPksShareResponse {
+    const message = createBaseMsgSubmitPksShareResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -917,6 +1042,7 @@ export interface Msg {
   SubmitGkgShare(request: MsgSubmitGkgShare): Promise<MsgSubmitGkgShareResponse>;
   SubmitShamirShare(request: MsgSubmitShamirShare): Promise<MsgSubmitShamirShareResponse>;
   KeySwitchRequest(request: MsgKeySwitchRequest): Promise<MsgKeySwitchRequestResponse>;
+  SubmitPksShare(request: MsgSubmitPksShare): Promise<MsgSubmitPksShareResponse>;
 }
 
 export const MsgServiceName = "fairyring.ckks.Msg";
@@ -933,6 +1059,7 @@ export class MsgClientImpl implements Msg {
     this.SubmitGkgShare = this.SubmitGkgShare.bind(this);
     this.SubmitShamirShare = this.SubmitShamirShare.bind(this);
     this.KeySwitchRequest = this.KeySwitchRequest.bind(this);
+    this.SubmitPksShare = this.SubmitPksShare.bind(this);
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
@@ -974,6 +1101,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgKeySwitchRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "KeySwitchRequest", data);
     return promise.then((data) => MsgKeySwitchRequestResponse.decode(_m0.Reader.create(data)));
+  }
+
+  SubmitPksShare(request: MsgSubmitPksShare): Promise<MsgSubmitPksShareResponse> {
+    const data = MsgSubmitPksShare.encode(request).finish();
+    const promise = this.rpc.request(this.service, "SubmitPksShare", data);
+    return promise.then((data) => MsgSubmitPksShareResponse.decode(_m0.Reader.create(data)));
   }
 }
 

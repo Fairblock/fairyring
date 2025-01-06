@@ -11,7 +11,7 @@ import (
 
 func (k msgServer) SubmitRkgShareRound1(goCtx context.Context, msg *types.MsgSubmitRkgShareRound1) (*types.MsgSubmitRkgShareRound1Response, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	// Store the share
+
 	k.StoreRKGShareRound1(ctx, msg.Creator, []byte(msg.ShareData))
 
 	// Check if threshold is met
@@ -21,7 +21,7 @@ func (k msgServer) SubmitRkgShareRound1(goCtx context.Context, msg *types.MsgSub
 			return nil, types.ErrAggregation.Wrap("RKG aggregation failed")
 		}
 		rk_r1_str := hex.EncodeToString(rk_r1)
-		// logrus.Info("-------------------------------------------------------- RK-R1 = ", rk_r1_str)
+		
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(types.SendRKGRound2EventType,
 				sdk.NewAttribute(types.RKR1Combined, rk_r1_str),

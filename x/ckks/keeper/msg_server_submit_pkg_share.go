@@ -27,7 +27,7 @@ func (k msgServer) SubmitPkgShare(goCtx context.Context, msg *types.MsgSubmitPkg
 				sdk.NewAttribute("value", pkStr),
 			),
 		)
-		// log.Info("-------------------------------------------------------- PK = ", pkStr)
+		
 	}
 
 	return &types.MsgSubmitPkgShareResponse{}, nil
