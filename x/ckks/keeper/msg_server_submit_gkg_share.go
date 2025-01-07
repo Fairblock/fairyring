@@ -11,6 +11,16 @@ import (
 
 func (k msgServer) SubmitGkgShare(goCtx context.Context, msg *types.MsgSubmitGkgShare) (*types.MsgSubmitGkgShareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Prevent repeated shares
+	if k.GetGKGShare(ctx, msg.Creator) != nil {
+		return &types.MsgSubmitGkgShareResponse{}, nil
+	}
+	// Prevent regeneration of GKG
+	if k.GetAggregatedGKGKey(ctx) != nil {
+		return &types.MsgSubmitGkgShareResponse{}, nil
+	}
+
 	// Store the share
 	k.StoreGKGShare(ctx, msg.Creator, []byte(msg.ShareData))
 

@@ -127,6 +127,13 @@ func (k Keeper) SetAggregatedPKGKey(ctx sdk.Context, key []byte) {
 	store.Set([]byte("aggregated_pk"), key)
 }
 
+func (k Keeper) GetAggregatedPKGKey(ctx sdk.Context) []byte {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+	value := store.Get([]byte("aggregated_pk"))
+	return value
+}
+
 //////////////////////////
 /////// RKG-R1 ///////////
 //////////////////////////
@@ -137,7 +144,12 @@ func (k Keeper) StoreRKGShareRound1(ctx sdk.Context, creator string, share []byt
 	key := []byte(fmt.Sprintf("RKG-R1:%s", creator))
 	store.Set(key, share)
 }
-
+func (k Keeper) GetRKGShareRound1(ctx sdk.Context, creator string) []byte {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+	key := []byte(fmt.Sprintf("RKG-R1:%s", creator))
+	return store.Get(key)
+}
 func (k Keeper) AggregateRKGSharesRound1(ctx sdk.Context) ([]byte, error) {
 	// Retrieve and aggregate PKG shares
 	shares := k.GetShares(ctx, "RKG-R1:")
@@ -183,7 +195,12 @@ func (k Keeper) StoreRKGShareRound2(ctx sdk.Context, creator string, share []byt
 	key := []byte(fmt.Sprintf("RKG-R2:%s", creator))
 	store.Set(key, share)
 }
-
+func (k Keeper) GetRKGShareRound2(ctx sdk.Context, creator string) []byte {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+	key := []byte(fmt.Sprintf("RKG-R2:%s", creator))
+	return store.Get(key)
+}
 func (k Keeper) AggregateRKGSharesRound2(ctx sdk.Context) ([]byte, error) {
 	// Retrieve and aggregate RKG shares
 	shares := k.GetShares(ctx, "RKG-R2:")
@@ -214,6 +231,15 @@ func (k Keeper) SetAggregatedRKGKey(ctx sdk.Context, key []byte) {
 	store := prefix.NewStore(storeAdapter, []byte{})
 	store.Set([]byte("aggregated_rk"), key)
 }
+func (k Keeper) GetAggregatedRKGR2Key(ctx sdk.Context) ([]byte, bool) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+	key := store.Get([]byte("aggregated_rk"))
+	if key == nil {
+		return nil, false
+	}
+	return key, true
+}
 
 //////////////////////////
 /////// GKG //////////////
@@ -225,7 +251,13 @@ func (k Keeper) StoreGKGShare(ctx sdk.Context, creator string, share []byte) {
 	key := []byte(fmt.Sprintf("GKG:%s", creator))
 	store.Set(key, share)
 }
-
+func (k Keeper) GetGKGShare(ctx sdk.Context, creator string) []byte {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+	key := []byte(fmt.Sprintf("GKG:%s", creator))
+	share := store.Get(key)
+	return share
+}
 func (k Keeper) AggregateGKGShares(ctx sdk.Context) ([]byte, error) {
 	// Retrieve and aggregate GKG shares
 	shares := k.GetShares(ctx, "GKG:")
@@ -247,7 +279,6 @@ func (k Keeper) AggregateGKGShares(ctx sdk.Context) ([]byte, error) {
 			return []byte{}, err
 		}
 		sharesList[i] = share
-		// gkg[0].AggregateShares(gkg_aggr, share, &gkg_aggr)
 
 	}
 	for i := 1; i < k.GetThreshold(ctx, "GKG"); i++ {
@@ -266,6 +297,11 @@ func (k Keeper) SetAggregatedGKGKey(ctx sdk.Context, key []byte) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, []byte{})
 	store.Set([]byte("aggregated_gk"), key)
+}
+func (k Keeper) GetAggregatedGKGKey(ctx sdk.Context) []byte {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+	return store.Get([]byte("aggregated_gk"))
 }
 
 //////////////////////////
@@ -302,14 +338,14 @@ func (k Keeper) AggregatePKSShares(ctx sdk.Context) ([]byte, error) {
 	}
 	shares_ks := make([]multiparty.PublicKeySwitchShare, k.GetN(ctx))
 	for i, pksShare := range shares {
-		
+
 		var share multiparty.PublicKeySwitchShare
 		err := share.UnmarshalBinary(pksShare)
 		if err != nil {
 			return []byte{}, err
 		}
 		shares_ks[i] = share
-		
+
 	}
 	for i := 1; i < k.GetThreshold(ctx, "PKS"); i++ {
 		pcks[0].AggregateShares(shares_ks[0], shares_ks[i], &shares_ks[0])
@@ -326,6 +362,11 @@ func (k Keeper) SetAggregatedPKSKey(ctx sdk.Context, key []byte) {
 	store.Set([]byte("aggregated_pks"), key)
 }
 
+func (k Keeper) GetAggregatedPKSKey(ctx sdk.Context) []byte {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+	return store.Get([]byte("aggregated_pks"))
+}
 
 //////////////////////////
 /////// Helpers //////////

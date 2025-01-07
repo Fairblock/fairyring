@@ -13,8 +13,17 @@ import (
 func (k msgServer) SubmitPkgShare(goCtx context.Context, msg *types.MsgSubmitPkgShare) (*types.MsgSubmitPkgShareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	// Prevent repeated shares
+	if k.GetPKGShare(ctx, msg.Creator) != nil {
+		return &types.MsgSubmitPkgShareResponse{}, nil
+	}
+	// Prevent regeneration of pkg
+	if k.GetAggregatedPKGKey(ctx) != nil {
+		return &types.MsgSubmitPkgShareResponse{}, nil
+	}
+
 	k.StorePKGShare(ctx, msg.Creator, []byte(msg.ShareData))
-	// Check if threshold is met
+
 	if k.IsThresholdMet(ctx, "PKG") {
 
 		pk, err := k.AggregatePKGShares(ctx)
@@ -27,7 +36,7 @@ func (k msgServer) SubmitPkgShare(goCtx context.Context, msg *types.MsgSubmitPkg
 				sdk.NewAttribute("value", pkStr),
 			),
 		)
-		
+
 	}
 
 	return &types.MsgSubmitPkgShareResponse{}, nil
