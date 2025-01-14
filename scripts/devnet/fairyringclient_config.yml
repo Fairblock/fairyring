@@ -1,9 +1,9 @@
 fairyringnode:
   chainid: fairyring_devnet
   denom: ufairy
-  grpcport: 9090
+  grpcport: 9190
   ip: 127.0.0.1
-  port: 26657
+  port: 36657
   protocol: http
 invalidsharepausethreshold: 5
 metricsport: 2222

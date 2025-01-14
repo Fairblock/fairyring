@@ -12,7 +12,6 @@ echo "#################################################"
 echo ""
 
 BINARY=fairyringd
-ENCRYPTER=vote-encrypter
 GENERATOR=ShareGenerator
 CHAIN_DIR=$(pwd)/data
 CHAINID_1=fairyring_test_1
@@ -80,7 +79,7 @@ fi
 
 
 echo "Encrypting vote with Pub key: '$PUBKEY' and Identity: $IDENTITY"
-ENCVOTE=$($ENCRYPTER "yes" 100 $IDENTITY $PUBKEY)
+ENCVOTE=$(fairyringd encrypt-vote "yes" $IDENTITY 100 $PUBKEY)
 
 
 while true; do

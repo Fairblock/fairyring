@@ -58,7 +58,6 @@ func (k Keeper) OnAcknowledgementDecryptionKeyDataPacket(
 ) error {
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
-
 		// retry sending the packet
 		if data.Retries < MAX_RETRIES {
 			timeoutTimestamp := ctx.BlockTime().Add(time.Second * 20).UnixNano()
