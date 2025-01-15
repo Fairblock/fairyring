@@ -1,6 +1,8 @@
 package keeper
 
 import (
+	"testing"
+
 	"cosmossdk.io/log"
 	"cosmossdk.io/store"
 	"cosmossdk.io/store/metrics"
@@ -26,7 +28,6 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 	"github.com/stretchr/testify/require"
-	"testing"
 
 	"github.com/Fairblock/fairyring/x/keyshare/keeper"
 	"github.com/Fairblock/fairyring/x/keyshare/types"

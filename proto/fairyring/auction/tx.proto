@@ -1,0 +1,88 @@
+syntax = "proto3";
+package fairyring.auction;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "google/protobuf/duration.proto";
+import "fairyring/auction/params.proto";
+
+option go_package = "github.com/Fairblock/fairyring/x/auction/types";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+  rpc CreateAuction(MsgCreateAuction) returns (MsgCreateAuctionResponse);
+  rpc CreateTimedAuction(MsgCreateTimedAuction) returns (MsgCreateTimedAuctionResponse);
+  rpc ResolveAuction(MsgResolveAuction) returns (MsgResolveAuctionResponse);
+  rpc AuthorizeBidder(MsgAuthorizeBidder) returns (MsgAuthorizeBidderResponse);
+}
+
+message MsgCreateAuction {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  google.protobuf.Duration estimated_delay = 2 [(gogoproto.stdduration) = true];
+  string auction_id = 3;
+  bool is_second_price = 4;
+}
+
+message MsgCreateAuctionResponse {
+  string identity = 1;
+  string pubkey = 2;
+}
+
+message MsgCreateTimedAuction {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 resolution_height = 2;
+  string auction_id = 3;
+  bool is_second_price = 4;
+}
+
+message MsgCreateTimedAuctionResponse {
+  string identity = 1;
+  string pubkey = 2;
+}
+
+message MsgResolveAuction {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string identity = 2;
+}
+
+message MsgResolveAuctionResponse {}
+
+message MsgAuthorizeBidder {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string bidder = 2;
+}
+
+message MsgAuthorizeBidderResponse {}
+
+
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "fairyring/x/auction/MsgUpdateParams";
+
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+  //
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}

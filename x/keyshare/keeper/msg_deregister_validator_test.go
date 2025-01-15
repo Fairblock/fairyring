@@ -1,13 +1,14 @@
 package keeper_test
 
 import (
+	"testing"
+
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/sample"
 	"github.com/Fairblock/fairyring/x/keyshare/keeper"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestDeRegisterValidatorMsgServer(t *testing.T) {

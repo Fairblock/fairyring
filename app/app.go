@@ -102,6 +102,7 @@ import (
 	keysharemodulekeeper "github.com/Fairblock/fairyring/x/keyshare/keeper"
 	pepmodulekeeper "github.com/Fairblock/fairyring/x/pep/keeper"
 
+	auctionmodulekeeper "github.com/Fairblock/fairyring/x/auction/keeper"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	"github.com/Fairblock/fairyring/docs"
@@ -169,6 +170,7 @@ type App struct {
 
 	PepKeeper      pepmodulekeeper.Keeper
 	KeyshareKeeper keysharemodulekeeper.Keeper
+	AuctionKeeper  auctionmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// CosmWasm
@@ -317,6 +319,7 @@ func New(
 		&app.CircuitBreakerKeeper,
 		// &app.PepKeeper,
 		// &app.KeyshareKeeper,
+		&app.AuctionKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)
