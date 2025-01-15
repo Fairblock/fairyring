@@ -141,7 +141,7 @@ sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'","
 TRUSTED_PARTIES='{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-0"}'
 
 sed -i -e 's/"trusted_counter_parties": \[\]/"trusted_counter_parties": \['"$TRUSTED_PARTIES"'\]/g' $CHAIN_DIR/$CHAINID/config/genesis.json
-sed -i -e 's/"key_expiry": "100"/"key_expiry": "50  "/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+sed -i -e 's/"key_expiry": "100"/"key_expiry": "50"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 sed -i -e 's/"is_source_chain": false/"is_source_chain": true/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 
 echo "Starting $CHAINID in $CHAIN_DIR..."
