@@ -17,13 +17,13 @@ WALLET_MNEMONIC_5="sleep garage unaware monster slide cruel barely blade sudden 
 
 RLY_MNEMONIC_1="alley afraid soup fall idea toss can goose become valve initial strong forward bright dish figure check leopard decide warfare hub unusual join cart"
 
-P2PPORT=36656
-RPCPORT=36657
+P2PPORT=26656
+RPCPORT=26657
 
-RESTPORT=1417
-ROSETTA=8180
-GRPCPORT=9190
-GRPCWEB=9191
+RESTPORT=1317
+ROSETTA=8080
+GRPCPORT=9090
+GRPCWEB=9091
 
 BLOCK_TIME=5
 
@@ -120,7 +120,7 @@ echo "Changing defaults and ports in app.toml and config.toml files..."
 sed -i -e 's/cors_allowed_origins = \[\]/cors_allowed_origins = \["*"\]/g' $CHAIN_DIR/$CHAINID/config/config.toml
 sed -i -e 's#"tcp://0.0.0.0:26656"#"tcp://0.0.0.0:'"$P2PPORT"'"#g' $CHAIN_DIR/$CHAINID/config/config.toml
 sed -i -e 's#"tcp://127.0.0.1:26657"#"tcp://0.0.0.0:'"$RPCPORT"'"#g' $CHAIN_DIR/$CHAINID/config/config.toml
-sed -i -e 's/timeout_commit = "1s"/timeout_commit = "5s"/g' $CHAIN_DIR/$CHAINID/config/config.toml
+sed -i -e 's/timeout_commit = "5s"/timeout_commit = "5s"/g' $CHAIN_DIR/$CHAINID/config/config.toml
 sed -i -e 's/timeout_propose = "3s"/timeout_propose = "5s"/g' $CHAIN_DIR/$CHAINID/config/config.toml
 sed -i -e 's/index_all_keys = false/index_all_keys = true/g' $CHAIN_DIR/$CHAINID/config/config.toml
 
@@ -141,7 +141,7 @@ sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'","
 TRUSTED_PARTIES='{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-0"}'
 
 sed -i -e 's/"trusted_counter_parties": \[\]/"trusted_counter_parties": \['"$TRUSTED_PARTIES"'\]/g' $CHAIN_DIR/$CHAINID/config/genesis.json
-sed -i -e 's/"key_expiry": "100"/"key_expiry": "1000000"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+sed -i -e 's/"key_expiry": "100"/"key_expiry": "50"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 sed -i -e 's/"is_source_chain": false/"is_source_chain": true/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 
 echo "Starting $CHAINID in $CHAIN_DIR..."
