@@ -47,3 +47,23 @@ func (k Keeper) SetLastExecutedHeight(
 
 	store.Set(types.LastExecutedHeightKey, []byte(height))
 }
+
+// GetLastContractCallbackExecutedHeight gets the last execution height
+func (k Keeper) GetLastContractCallbackExecutedHeight(
+	ctx context.Context,
+) string {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+	return string(store.Get(types.LastContractCallbackExecutedHeightKey))
+}
+
+// SetLastContractCallbackExecutedHeight sets the last execution height
+func (k Keeper) SetLastContractCallbackExecutedHeight(
+	ctx context.Context,
+	height string,
+) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+
+	store.Set(types.LastContractCallbackExecutedHeightKey, []byte(height))
+}

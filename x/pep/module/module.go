@@ -287,6 +287,75 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 			telemetry.IncrCounter(1, types.KeyTotalSuccessEncryptedTx)
 		}
 	}
+	return nil
+}
+
+// EndBlock contains the logic that is automatically triggered at the end of each block.
+// The end block implementation is optional.
+func (am AppModule) EndBlock(cctx context.Context) error {
+	ctx := sdk.UnwrapSDKContext(cctx)
+	params := am.keeper.GetParams(ctx)
+	if !params.IsSourceChain {
+		err := am.keeper.QueryFairyringCurrentKeys(ctx)
+		if err != nil {
+			am.keeper.Logger().Error("Endblocker get keys err", err)
+			am.keeper.Logger().Error(err.Error())
+		}
+	}
+	strHeight := am.keeper.GetLatestHeight(ctx)
+	height, err := strconv.ParseUint(strHeight, 10, 64)
+	if err != nil {
+		am.keeper.Logger().Error("Latest height does not exists in EndBlock")
+		return nil
+	}
+
+	activePubkey, found := am.keeper.GetActivePubkey(ctx)
+	if !found {
+		am.keeper.Logger().Error("Active public key does not exists")
+		return nil
+	}
+
+	if len(activePubkey.Creator) == 0 && len(activePubkey.PublicKey) == 0 {
+		am.keeper.Logger().Error("Active public key does not exists")
+		return nil
+	}
+
+	suite := bls.NewBLS12381Suite()
+
+	publicKeyPoint, err := am.keeper.GetPubkeyPoint(activePubkey.PublicKey, suite)
+	if err != nil {
+		am.keeper.Logger().Error("Unabe to get Pubkey Point with suite")
+		return nil
+	}
+
+	strLastExecutedHeight := am.keeper.GetLastContractCallbackExecutedHeight(ctx)
+	lastExecutedHeight, err := strconv.ParseUint(strLastExecutedHeight, 10, 64)
+
+	if err != nil {
+		am.keeper.Logger().Error("Last ContractCallback executed height not exists in end block")
+		lastExecutedHeight = 0
+	}
+
+	for h := lastExecutedHeight + 1; h <= height; h++ {
+		am.keeper.SetLastContractCallbackExecutedHeight(ctx, strconv.FormatUint(h, 10))
+
+		key, found := am.keeper.GetDecryptionKey(ctx, h)
+		// execute registered contracts
+		contracts, found := am.keeper.GetContractEntriesByID(ctx, strconv.FormatUint(h, 10))
+		if found && len(contracts.Contracts) != 0 {
+			for _, contract := range contracts.Contracts {
+				am.keeper.ExecuteContract(
+					ctx,
+					contract.ContractAddress,
+					types.ExecuteContractMsg{
+						Identity:      strconv.FormatUint(h, 10),
+						Pubkey:        activePubkey.PublicKey,
+						DecryptionKey: key.Data,
+					},
+				)
+			}
+		}
+	}
 
 	// loop over all entries in the general enc tx queue
 	entries := am.keeper.GetAllGenEncTxExecutionQueueEntry(ctx)
@@ -343,27 +412,6 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 
 		am.keeper.Logger().Info("executed txs for entry with req-id: ", entry.Identity)
 		am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
-	}
-	return nil
-}
-
-// EndBlock contains the logic that is automatically triggered at the end of each block.
-// The end block implementation is optional.
-func (am AppModule) EndBlock(cctx context.Context) error {
-	ctx := sdk.UnwrapSDKContext(cctx)
-	params := am.keeper.GetParams(ctx)
-	if !params.IsSourceChain {
-		err := am.keeper.QueryFairyringCurrentKeys(ctx)
-		if err != nil {
-			am.keeper.Logger().Error("Endblocker get keys err", err)
-			am.keeper.Logger().Error(err.Error())
-		}
-	}
-	strHeight := am.keeper.GetLatestHeight(ctx)
-	height, err := strconv.ParseUint(strHeight, 10, 64)
-	if err != nil {
-		am.keeper.Logger().Error("Latest height does not exists in EndBlock")
-		return nil
 	}
 
 	ak, found := am.keeper.GetActivePubkey(ctx)
