@@ -88,6 +88,9 @@ message MsgKeySwitchRequest {
   string creator = 1;
   string ct      = 2;
   string newPk   = 3;
+  string newSk = 4;
+  bool decryption = 5;
+  string handle = 6;
 }
 
 message MsgKeySwitchRequestResponse {}
@@ -96,6 +99,7 @@ message MsgSubmitPksShare {
   option (cosmos.msg.v1.signer) = "creator";
   string creator   = 1;
   string shareData = 2;
+  string handle = 3;
 }
 
 message MsgSubmitPksShareResponse {}

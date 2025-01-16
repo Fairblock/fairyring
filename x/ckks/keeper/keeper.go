@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"encoding/hex"
 	"fmt"
 
 	"cosmossdk.io/core/store"
@@ -281,7 +282,7 @@ func (k Keeper) AggregateGKGShares(ctx sdk.Context) ([]byte, error) {
 		sharesList[i] = share
 
 	}
-	for i := 1; i < k.GetThreshold(ctx, "GKG"); i++ {
+	for i := 1; i < k.GetThreshold(ctx); i++ {
 		gkg[0].AggregateShares(sharesList[0], sharesList[i], &sharesList[0])
 	}
 	galoisKey := rlwe.NewGaloisKey(k.params)
@@ -307,65 +308,161 @@ func (k Keeper) GetAggregatedGKGKey(ctx sdk.Context) []byte {
 //////////////////////////
 /////// PKS //////////////
 //////////////////////////
+// Store a single PKS share under a handle + creator combination.
+func (k Keeper) StorePKSShare(ctx sdk.Context, handle, creator string, share []byte) {
+    storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+    store := prefix.NewStore(storeAdapter, []byte{})
 
-func (k Keeper) StorePKSShare(ctx sdk.Context, creator string, share []byte) {
-	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, []byte{})
-	key := []byte(fmt.Sprintf("PKS:%s", creator))
-	store.Set(key, share)
+    // We include both handle and creator in the key:
+    // "PKS:handle:creator"
+    key := []byte(fmt.Sprintf("PKS:%s:%s", handle, creator))
+    store.Set(key, share)
 }
 
-func (k Keeper) GetPKSShare(ctx sdk.Context, creator string) []byte {
-	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, []byte{})
-	key := []byte(fmt.Sprintf("PKS:%s", creator))
-	return store.Get(key)
+// Retrieve a single PKS share under a specific handle + creator.
+func (k Keeper) GetPKSShare(ctx sdk.Context, handle, creator string) []byte {
+    storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+    store := prefix.NewStore(storeAdapter, []byte{})
+
+    key := []byte(fmt.Sprintf("PKS:%s:%s", handle, creator))
+    return store.Get(key)
 }
 
-func (k Keeper) AggregatePKSShares(ctx sdk.Context) ([]byte, error) {
-	// Retrieve and aggregate PKS shares
-	shares := k.GetShares(ctx, "PKS:")
 
-	sigmaSmudging := 8 * rlwe.DefaultNoise
-	pcks := make([]multiparty.PublicKeySwitchProtocol, k.GetN(ctx))
-	for i := range pcks {
-		if i == 0 {
-			pcks[i], _ = multiparty.NewPublicKeySwitchProtocol(k.params, ring.DiscreteGaussian{Sigma: sigmaSmudging, Bound: 6 * sigmaSmudging})
 
-		} else {
-			pcks[i] = pcks[0].ShallowCopy()
-		}
-	}
-	shares_ks := make([]multiparty.PublicKeySwitchShare, k.GetN(ctx))
-	for i, pksShare := range shares {
+func (k Keeper) AggregatePKSShares(ctx sdk.Context, handle string) (*rlwe.Ciphertext, error) {
+    // Retrieve and aggregate PKS shares for this handle
+	prefixKey := fmt.Sprintf("PKS:%s:", handle)
+    shares := k.GetShares(ctx, prefixKey)
+    if len(shares) == 0 {
+        return nil, fmt.Errorf("no PKS shares found for handle %q", handle)
+    }
 
-		var share multiparty.PublicKeySwitchShare
-		err := share.UnmarshalBinary(pksShare)
-		if err != nil {
-			return []byte{}, err
-		}
-		shares_ks[i] = share
+    // Example protocol logic remains the same:
+    sigmaSmudging := 8 * rlwe.DefaultNoise
+    pcks := make([]multiparty.PublicKeySwitchProtocol, k.GetN(ctx))
+    for i := range pcks {
+        if i == 0 {
+            pcks[i], _ = multiparty.NewPublicKeySwitchProtocol(
+                k.params,
+                ring.DiscreteGaussian{Sigma: sigmaSmudging, Bound: 6 * sigmaSmudging},
+            )
+        } else {
+            pcks[i] = pcks[0].ShallowCopy()
+        }
+    }
 
-	}
-	for i := 1; i < k.GetThreshold(ctx, "PKS"); i++ {
-		pcks[0].AggregateShares(shares_ks[0], shares_ks[i], &shares_ks[0])
-	}
+    sharesKS := make([]multiparty.PublicKeySwitchShare, k.GetN(ctx))
+    for i, pksShare := range shares {
+        var share multiparty.PublicKeySwitchShare
+        err := share.UnmarshalBinary(pksShare)
+        if err != nil {
+            return nil, err
+        }
+        sharesKS[i] = share
+    }
 
-	pks_value, _ := shares_ks[0].MarshalBinary()
-	k.SetAggregatedPKSKey(ctx, pks_value)
-	return pks_value, nil
+    // Aggregate the shares
+    threshold := k.GetThreshold(ctx)
+    for i := 1; i < threshold; i++ {
+        pcks[0].AggregateShares(sharesKS[0], sharesKS[i], &sharesKS[0])
+    }
+
+    // Optionally store the aggregated share for this handle
+    pksValue, _ := sharesKS[0].MarshalBinary()
+    k.SetAggregatedPKSKey(ctx, handle, pksValue)
+
+    // Retrieve the ciphertext for this handle and perform the key-switch
+    ctString, found := k.GetCiphertext(ctx, handle)
+    if !found {
+        return nil, fmt.Errorf("no ciphertext found for handle %q", handle)
+    }
+    ctBytes, err := hex.DecodeString(ctString)
+    if err != nil {
+        return nil, err
+    }
+    var ct rlwe.Ciphertext
+    if err = ct.UnmarshalBinary(ctBytes); err != nil {
+        return nil, err
+    }
+
+    ksCt := rlwe.NewCiphertext(k.params, 1, ct.Level())
+    pcks[0].KeySwitch(&ct, sharesKS[0], ksCt)
+    return ksCt, nil
 }
 
-func (k Keeper) SetAggregatedPKSKey(ctx sdk.Context, key []byte) {
-	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	store := prefix.NewStore(storeAdapter, []byte{})
-	store.Set([]byte("aggregated_pks"), key)
+
+func (k Keeper) SetAggregatedPKSKey(ctx sdk.Context, handle string, key []byte) {
+    storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+    store := prefix.NewStore(storeAdapter, []byte{})
+
+    // E.g., "aggregated_pks:handle"
+    aggregatedKey := []byte(fmt.Sprintf("aggregated_pks:%s", handle))
+    store.Set(aggregatedKey, key)
 }
 
-func (k Keeper) GetAggregatedPKSKey(ctx sdk.Context) []byte {
+// Retrieve the aggregated PKS for a given handle.
+func (k Keeper) GetAggregatedPKSKey(ctx sdk.Context, handle string) []byte {
+    storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+    store := prefix.NewStore(storeAdapter, []byte{})
+
+    aggregatedKey := []byte(fmt.Sprintf("aggregated_pks:%s", handle))
+    return store.Get(aggregatedKey)
+}
+
+
+/////////////////////////////////////////////////////
+/////// Decryption/Re-encryption Requests ///////////
+/////////////////////////////////////////////////////
+
+// SetCiphertext stores the ciphertext using the handle as the key.
+func (k Keeper) SetCiphertext(ctx sdk.Context, handle string, ciphertext string) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, []byte{})
-	return store.Get([]byte("aggregated_pks"))
+    store.Set([]byte(handle), []byte(ciphertext))
+}
+
+// SetDecryptionInfo stores the secret key and marks the handle as associated with decryption.
+func (k Keeper) SetDecryptionInfo(ctx sdk.Context, handle string, secretKey string) {
+    skKey := fmt.Sprintf("%s_sk", handle)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+    store.Set([]byte(skKey), []byte(secretKey))
+
+    decryptionFlagKey := fmt.Sprintf("%s_decryption", handle)
+	store.Set([]byte(decryptionFlagKey), []byte("true"))
+}
+
+// GetCiphertext retrieves the ciphertext associated with the given handle.
+func (k Keeper) GetCiphertext(ctx sdk.Context, handle string) (string, bool) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+    bz := store.Get([]byte(handle))
+    if bz == nil {
+        return "", false
+    }
+    return string(bz), true
+}
+
+// GetSecretKey retrieves the secret key associated with the given handle.
+func (k Keeper) GetSecretKey(ctx sdk.Context, handle string) (string, bool) {
+    skKey := fmt.Sprintf("%s_sk", handle)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+    bz := store.Get([]byte(skKey))
+    if bz == nil {
+        return "", false
+    }
+    return string(bz), true
+}
+
+// IsDecryptionHandle checks if the given handle corresponds to a decryption operation.
+func (k Keeper) IsDecryptionHandle(ctx sdk.Context, handle string) bool {
+    decryptionFlagKey := fmt.Sprintf("%s_decryption", handle)
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+    bz := store.Get([]byte(decryptionFlagKey))
+    return bz != nil && string(bz) == "true"
 }
 
 //////////////////////////
@@ -389,28 +486,14 @@ func (k Keeper) GetShares(ctx sdk.Context, pref string) [][]byte {
 
 func (k Keeper) IsThresholdMet(ctx sdk.Context, shareType string) bool {
 	shares := k.GetShares(ctx, shareType)
-	threshold := k.GetThreshold(ctx, shareType)
+	threshold := k.GetThreshold(ctx)
 	return len(shares) >= threshold
 }
 
 // TODO
-func (k Keeper) GetThreshold(ctx sdk.Context, shareType string) int {
-	// Define thresholds for each share type
-	switch shareType {
-	case "CKG":
-		return 2
-	case "RKG1":
-		return 2
-	case "RKG2":
-		return 2
-	case "PKS":
-		return 2
-	case "GKG":
-		return 2
-	default:
-		return 2
-	}
+func (k Keeper) GetThreshold(ctx sdk.Context) int {
+    return 3
 }
 func (k Keeper) GetN(ctx sdk.Context) int {
-	return 3
+	return 5
 }
