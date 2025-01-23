@@ -8,6 +8,7 @@ import (
 
 	"github.com/Fairblock/fairyring/x/ckks/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sirupsen/logrus"
 	_ "github.com/sirupsen/logrus"
 	"github.com/tuneinsight/lattigo/v6/core/rlwe"
 	"github.com/tuneinsight/lattigo/v6/schemes/ckks"
@@ -24,8 +25,8 @@ func (k msgServer) SubmitPksShare(goCtx context.Context, msg *types.MsgSubmitPks
 	if k.GetAggregatedPKSKey(ctx, msg.Handle) != nil {
 		return &types.MsgSubmitPksShareResponse{}, nil
 	}
-
-	k.StorePKSShare(ctx, msg.Handle, msg.Creator, []byte(msg.ShareData))
+	shareByte,_ := hex.DecodeString(msg.ShareData)
+	k.StorePKSShare(ctx, msg.Handle, msg.Creator, shareByte)
 	// Check if threshold is met
 	prefixKey := fmt.Sprintf("PKS:%s:", msg.Handle)
 	if k.IsThresholdMet(ctx, prefixKey) {
@@ -40,6 +41,7 @@ func (k msgServer) SubmitPksShare(goCtx context.Context, msg *types.MsgSubmitPks
 			sk_byte,_ := hex.DecodeString(sk_str)
 			var sk rlwe.SecretKey
 			sk.UnmarshalBinary(sk_byte)
+			logrus.Info("sk: ",sk_str)
 			decryptor := ckks.NewDecryptor(k.params, &sk)
 
 			// Decrypt the ciphertext
@@ -48,8 +50,9 @@ func (k msgServer) SubmitPksShare(goCtx context.Context, msg *types.MsgSubmitPks
 			encoder.Decode(decrypted, decoded)
 			plaintext := real(decoded[0])
 			var plaintext_str string = strconv.FormatFloat(plaintext, 'f', -2, 64)
+			logrus.Info("dec res: ", plaintext)
 			ctx.EventManager().EmitEvent(
-				sdk.NewEvent("decrypted",
+				sdk.NewEvent("DecryptionResult",
 					sdk.NewAttribute("plaintext", plaintext_str),
 					sdk.NewAttribute("handle", msg.Handle),
 				),
@@ -57,8 +60,9 @@ func (k msgServer) SubmitPksShare(goCtx context.Context, msg *types.MsgSubmitPks
 		} else{
 			ct_bytes,_ := ct.MarshalBinary()
 			ct_string := hex.EncodeToString(ct_bytes)
+			logrus.Info("re-enc res: ", ct_string)
 			ctx.EventManager().EmitEvent(
-				sdk.NewEvent("re-encrypted",
+				sdk.NewEvent("ReEncryptionResult",
 					sdk.NewAttribute("ct", ct_string),
 					sdk.NewAttribute("handle", msg.Handle),
 				),

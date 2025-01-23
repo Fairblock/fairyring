@@ -6,10 +6,12 @@ import (
 
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/log"
+	"cosmossdk.io/math"
 	"cosmossdk.io/store/prefix"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/sirupsen/logrus"
 	"github.com/tuneinsight/lattigo/v6/core/rlwe"
 	"github.com/tuneinsight/lattigo/v6/multiparty"
 	"github.com/tuneinsight/lattigo/v6/ring"
@@ -368,7 +370,7 @@ func (k Keeper) AggregatePKSShares(ctx sdk.Context, handle string) (*rlwe.Cipher
         pcks[0].AggregateShares(sharesKS[0], sharesKS[i], &sharesKS[0])
     }
 
-    // Optionally store the aggregated share for this handle
+    
     pksValue, _ := sharesKS[0].MarshalBinary()
     k.SetAggregatedPKSKey(ctx, handle, pksValue)
 
@@ -377,6 +379,7 @@ func (k Keeper) AggregatePKSShares(ctx sdk.Context, handle string) (*rlwe.Cipher
     if !found {
         return nil, fmt.Errorf("no ciphertext found for handle %q", handle)
     }
+	
     ctBytes, err := hex.DecodeString(ctString)
     if err != nil {
         return nil, err
@@ -490,10 +493,16 @@ func (k Keeper) IsThresholdMet(ctx sdk.Context, shareType string) bool {
 	return len(shares) >= threshold
 }
 
-// TODO
+
 func (k Keeper) GetThreshold(ctx sdk.Context) int {
-    return 3
+	threshold := math.LegacyNewDecFromInt(
+		math.NewInt(2)).Quo(
+		math.LegacyNewDecFromInt(math.NewInt(3))).MulInt64(
+		int64(k.GetN(ctx))).Ceil().TruncateInt64()
+	logrus.Info("+++++++++++++++++++++++++++++++++++++++++", k.GetN(ctx), threshold)
+    return int(threshold)
 }
 func (k Keeper) GetN(ctx sdk.Context) int {
-	return 5
+	p := k.GetParams(ctx)
+	return int(p.NumOfValidators)	
 }

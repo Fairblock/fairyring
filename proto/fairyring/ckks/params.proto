@@ -10,6 +10,6 @@ option go_package = "github.com/Fairblock/fairyring/x/ckks/types";
 message Params {
   option (amino.name) = "fairyring/x/ckks/Params";
   option (gogoproto.equal) = true;
-
+  uint64 num_of_validators = 1 [(gogoproto.moretags) = "yaml:\"num_of_validators\""];
   
 }

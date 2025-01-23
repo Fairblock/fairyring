@@ -21,8 +21,8 @@ func (k msgServer) SubmitPkgShare(goCtx context.Context, msg *types.MsgSubmitPkg
 	if k.GetAggregatedPKGKey(ctx) != nil {
 		return &types.MsgSubmitPkgShareResponse{}, nil
 	}
-
-	k.StorePKGShare(ctx, msg.Creator, []byte(msg.ShareData))
+	share,_ := hex.DecodeString(msg.ShareData)
+	k.StorePKGShare(ctx, msg.Creator, share)
 
 	if k.IsThresholdMet(ctx, "PKG") {
 

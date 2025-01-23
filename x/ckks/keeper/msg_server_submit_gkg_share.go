@@ -20,9 +20,9 @@ func (k msgServer) SubmitGkgShare(goCtx context.Context, msg *types.MsgSubmitGkg
 	if k.GetAggregatedGKGKey(ctx) != nil {
 		return &types.MsgSubmitGkgShareResponse{}, nil
 	}
-
+	share,_ := hex.DecodeString(msg.ShareData)
 	// Store the share
-	k.StoreGKGShare(ctx, msg.Creator, []byte(msg.ShareData))
+	k.StoreGKGShare(ctx, msg.Creator, share)
 
 	// Check if threshold is met
 	if k.IsThresholdMet(ctx, "GKG") {
