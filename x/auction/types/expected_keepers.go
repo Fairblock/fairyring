@@ -6,10 +6,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-type KeyshareKeeper interface {
-	// TODO Add methods imported from keyshare should be defined here
-}
-
 // AccountKeeper defines the expected interface for the Account module.
 type AccountKeeper interface {
 	GetAccount(context.Context, sdk.AccAddress) sdk.AccountI // only used for simulation

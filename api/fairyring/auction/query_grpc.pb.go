@@ -19,12 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Query_Params_FullMethodName            = "/fairyring.auction.Query/Params"
-	Query_Auction_FullMethodName           = "/fairyring.auction.Query/Auction"
-	Query_AuctionAll_FullMethodName        = "/fairyring.auction.Query/AuctionAll"
-	Query_TimedAuction_FullMethodName      = "/fairyring.auction.Query/TimedAuction"
-	Query_TimedAuctionAll_FullMethodName   = "/fairyring.auction.Query/TimedAuctionAll"
-	Query_AuthorizedBidders_FullMethodName = "/fairyring.auction.Query/AuthorizedBidders"
+	Query_Params_FullMethodName     = "/fairyring.auction.Query/Params"
+	Query_Auction_FullMethodName    = "/fairyring.auction.Query/Auction"
+	Query_AuctionAll_FullMethodName = "/fairyring.auction.Query/AuctionAll"
 )
 
 // QueryClient is the client API for Query service.
@@ -35,9 +32,6 @@ type QueryClient interface {
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
 	Auction(ctx context.Context, in *QueryAuctionRequest, opts ...grpc.CallOption) (*QueryAuctionResponse, error)
 	AuctionAll(ctx context.Context, in *QueryAuctionAllRequest, opts ...grpc.CallOption) (*QueryAuctionAllResponse, error)
-	TimedAuction(ctx context.Context, in *QueryTimedAuctionRequest, opts ...grpc.CallOption) (*QueryTimedAuctionResponse, error)
-	TimedAuctionAll(ctx context.Context, in *QueryTimedAuctionAllRequest, opts ...grpc.CallOption) (*QueryTimedAuctionAllResponse, error)
-	AuthorizedBidders(ctx context.Context, in *QueryAuthorizedBiddersRequest, opts ...grpc.CallOption) (*QueryAuthorizedBiddersResponse, error)
 }
 
 type queryClient struct {
@@ -75,33 +69,6 @@ func (c *queryClient) AuctionAll(ctx context.Context, in *QueryAuctionAllRequest
 	return out, nil
 }
 
-func (c *queryClient) TimedAuction(ctx context.Context, in *QueryTimedAuctionRequest, opts ...grpc.CallOption) (*QueryTimedAuctionResponse, error) {
-	out := new(QueryTimedAuctionResponse)
-	err := c.cc.Invoke(ctx, Query_TimedAuction_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *queryClient) TimedAuctionAll(ctx context.Context, in *QueryTimedAuctionAllRequest, opts ...grpc.CallOption) (*QueryTimedAuctionAllResponse, error) {
-	out := new(QueryTimedAuctionAllResponse)
-	err := c.cc.Invoke(ctx, Query_TimedAuctionAll_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *queryClient) AuthorizedBidders(ctx context.Context, in *QueryAuthorizedBiddersRequest, opts ...grpc.CallOption) (*QueryAuthorizedBiddersResponse, error) {
-	out := new(QueryAuthorizedBiddersResponse)
-	err := c.cc.Invoke(ctx, Query_AuthorizedBidders_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // QueryServer is the server API for Query service.
 // All implementations must embed UnimplementedQueryServer
 // for forward compatibility
@@ -110,9 +77,6 @@ type QueryServer interface {
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
 	Auction(context.Context, *QueryAuctionRequest) (*QueryAuctionResponse, error)
 	AuctionAll(context.Context, *QueryAuctionAllRequest) (*QueryAuctionAllResponse, error)
-	TimedAuction(context.Context, *QueryTimedAuctionRequest) (*QueryTimedAuctionResponse, error)
-	TimedAuctionAll(context.Context, *QueryTimedAuctionAllRequest) (*QueryTimedAuctionAllResponse, error)
-	AuthorizedBidders(context.Context, *QueryAuthorizedBiddersRequest) (*QueryAuthorizedBiddersResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -128,15 +92,6 @@ func (UnimplementedQueryServer) Auction(context.Context, *QueryAuctionRequest) (
 }
 func (UnimplementedQueryServer) AuctionAll(context.Context, *QueryAuctionAllRequest) (*QueryAuctionAllResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AuctionAll not implemented")
-}
-func (UnimplementedQueryServer) TimedAuction(context.Context, *QueryTimedAuctionRequest) (*QueryTimedAuctionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TimedAuction not implemented")
-}
-func (UnimplementedQueryServer) TimedAuctionAll(context.Context, *QueryTimedAuctionAllRequest) (*QueryTimedAuctionAllResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TimedAuctionAll not implemented")
-}
-func (UnimplementedQueryServer) AuthorizedBidders(context.Context, *QueryAuthorizedBiddersRequest) (*QueryAuthorizedBiddersResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AuthorizedBidders not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 
@@ -205,60 +160,6 @@ func _Query_AuctionAll_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_TimedAuction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryTimedAuctionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).TimedAuction(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Query_TimedAuction_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).TimedAuction(ctx, req.(*QueryTimedAuctionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Query_TimedAuctionAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryTimedAuctionAllRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).TimedAuctionAll(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Query_TimedAuctionAll_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).TimedAuctionAll(ctx, req.(*QueryTimedAuctionAllRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Query_AuthorizedBidders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAuthorizedBiddersRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).AuthorizedBidders(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Query_AuthorizedBidders_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).AuthorizedBidders(ctx, req.(*QueryAuthorizedBiddersRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // Query_ServiceDesc is the grpc.ServiceDesc for Query service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -277,18 +178,6 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AuctionAll",
 			Handler:    _Query_AuctionAll_Handler,
-		},
-		{
-			MethodName: "TimedAuction",
-			Handler:    _Query_TimedAuction_Handler,
-		},
-		{
-			MethodName: "TimedAuctionAll",
-			Handler:    _Query_TimedAuctionAll_Handler,
-		},
-		{
-			MethodName: "AuthorizedBidders",
-			Handler:    _Query_AuthorizedBidders_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

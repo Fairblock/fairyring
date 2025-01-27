@@ -80,3 +80,32 @@ message IndexedEncryptedKeyshare {
   string encrypted_keyshare_value = 1;
   uint64 encrypted_keyshare_index = 2;
 }
+
+message BidderDetail {
+  string bidder = 1;
+  bool is_authorized = 2;
+}
+
+message Bid {
+  string bidder = 1;
+  string sealed_bid = 2;
+}
+
+message AuctionDetail {
+  string creator = 1;
+  string identity = 2;
+  string pubkey = 3;
+  uint64 auction_id = 4;
+  uint64 resolve_at = 5;
+  repeated Bid bids = 6;
+  bool is_timed = 7;
+  bool is_resolved = 8;
+}
+
+message AuctionDetailList {
+  repeated AuctionDetail auction_detail = 1 [(gogoproto.nullable) = false];
+}
+
+message QueuedAuctionDecryption {
+  AuctionDetail auction_detail = 1;
+}

@@ -2,13 +2,14 @@ package keeper
 
 import (
 	"fmt"
+	"github.com/Fairblock/fairyring/x/auction/types"
 
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/log"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/Fairblock/fairyring/x/auction/types"
+	pepkeeper "github.com/Fairblock/fairyring/x/pep/keeper"
 )
 
 type (
@@ -21,7 +22,7 @@ type (
 		// should be the x/gov module account.
 		authority string
 
-		keyshareKeeper types.KeyshareKeeper
+		pepKeeper pepkeeper.Keeper
 	}
 )
 
@@ -30,8 +31,7 @@ func NewKeeper(
 	storeService store.KVStoreService,
 	logger log.Logger,
 	authority string,
-
-	keyshareKeeper types.KeyshareKeeper,
+	pepKeeper pepkeeper.Keeper,
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
@@ -43,7 +43,7 @@ func NewKeeper(
 		authority:    authority,
 		logger:       logger,
 
-		keyshareKeeper: keyshareKeeper,
+		pepKeeper: pepKeeper,
 	}
 }
 

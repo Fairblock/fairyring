@@ -18,36 +18,51 @@ service Msg {
   // parameters. The authority defaults to the x/gov module account.
   rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
   rpc CreateAuction(MsgCreateAuction) returns (MsgCreateAuctionResponse);
-  rpc CreateTimedAuction(MsgCreateTimedAuction) returns (MsgCreateTimedAuctionResponse);
+  // rpc CreateTimedAuction(MsgCreateTimedAuction) returns (MsgCreateTimedAuctionResponse);
   rpc ResolveAuction(MsgResolveAuction) returns (MsgResolveAuctionResponse);
-  rpc AuthorizeBidder(MsgAuthorizeBidder) returns (MsgAuthorizeBidderResponse);
+  // rpc AuthorizeBidder(MsgAuthorizeBidder) returns (MsgAuthorizeBidderResponse);
+  rpc PlaceBid(MsgPlaceBid) returns (MsgPlaceBidResponse);
+}
+
+message MsgPlaceBid {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string sealed_bid = 2;
+  string auction_identity = 3;
+}
+
+message MsgPlaceBidResponse {
+  string creator = 1;
+  string sealed_bid = 2;
+  string auction_identity = 3;
 }
 
 message MsgCreateAuction {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  google.protobuf.Duration estimated_delay = 2 [(gogoproto.stdduration) = true];
-  string auction_id = 3;
-  bool is_second_price = 4;
+  uint64 resolve_at = 2;
+  bool is_timed = 3;
 }
 
 message MsgCreateAuctionResponse {
   string identity = 1;
   string pubkey = 2;
+  uint64 auction_id = 3;
+  uint64 resolve_at = 4;
 }
 
-message MsgCreateTimedAuction {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
-  uint64 resolution_height = 2;
-  string auction_id = 3;
-  bool is_second_price = 4;
-}
-
-message MsgCreateTimedAuctionResponse {
-  string identity = 1;
-  string pubkey = 2;
-}
+//message MsgCreateTimedAuction {
+//  option (cosmos.msg.v1.signer) = "creator";
+//  string creator = 1;
+//  uint64 resolution_height = 2;
+//  string auction_id = 3;
+//  bool is_second_price = 4;
+//}
+//
+//message MsgCreateTimedAuctionResponse {
+//  string identity = 1;
+//  string pubkey = 2;
+//}
 
 message MsgResolveAuction {
   option (cosmos.msg.v1.signer) = "creator";
@@ -57,13 +72,13 @@ message MsgResolveAuction {
 
 message MsgResolveAuctionResponse {}
 
-message MsgAuthorizeBidder {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
-  string bidder = 2;
-}
-
-message MsgAuthorizeBidderResponse {}
+//message MsgAuthorizeBidder {
+//  option (cosmos.msg.v1.signer) = "creator";
+//  string creator = 1;
+//  string bidder = 2;
+//}
+//
+//message MsgAuthorizeBidderResponse {}
 
 
 // MsgUpdateParams is the Msg/UpdateParams request type.

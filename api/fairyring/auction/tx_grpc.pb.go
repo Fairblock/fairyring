@@ -19,11 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Msg_UpdateParams_FullMethodName       = "/fairyring.auction.Msg/UpdateParams"
-	Msg_CreateAuction_FullMethodName      = "/fairyring.auction.Msg/CreateAuction"
-	Msg_CreateTimedAuction_FullMethodName = "/fairyring.auction.Msg/CreateTimedAuction"
-	Msg_ResolveAuction_FullMethodName     = "/fairyring.auction.Msg/ResolveAuction"
-	Msg_AuthorizeBidder_FullMethodName    = "/fairyring.auction.Msg/AuthorizeBidder"
+	Msg_UpdateParams_FullMethodName   = "/fairyring.auction.Msg/UpdateParams"
+	Msg_CreateAuction_FullMethodName  = "/fairyring.auction.Msg/CreateAuction"
+	Msg_ResolveAuction_FullMethodName = "/fairyring.auction.Msg/ResolveAuction"
+	Msg_PlaceBid_FullMethodName       = "/fairyring.auction.Msg/PlaceBid"
 )
 
 // MsgClient is the client API for Msg service.
@@ -34,9 +33,10 @@ type MsgClient interface {
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
 	CreateAuction(ctx context.Context, in *MsgCreateAuction, opts ...grpc.CallOption) (*MsgCreateAuctionResponse, error)
-	CreateTimedAuction(ctx context.Context, in *MsgCreateTimedAuction, opts ...grpc.CallOption) (*MsgCreateTimedAuctionResponse, error)
+	// rpc CreateTimedAuction(MsgCreateTimedAuction) returns (MsgCreateTimedAuctionResponse);
 	ResolveAuction(ctx context.Context, in *MsgResolveAuction, opts ...grpc.CallOption) (*MsgResolveAuctionResponse, error)
-	AuthorizeBidder(ctx context.Context, in *MsgAuthorizeBidder, opts ...grpc.CallOption) (*MsgAuthorizeBidderResponse, error)
+	// rpc AuthorizeBidder(MsgAuthorizeBidder) returns (MsgAuthorizeBidderResponse);
+	PlaceBid(ctx context.Context, in *MsgPlaceBid, opts ...grpc.CallOption) (*MsgPlaceBidResponse, error)
 }
 
 type msgClient struct {
@@ -65,15 +65,6 @@ func (c *msgClient) CreateAuction(ctx context.Context, in *MsgCreateAuction, opt
 	return out, nil
 }
 
-func (c *msgClient) CreateTimedAuction(ctx context.Context, in *MsgCreateTimedAuction, opts ...grpc.CallOption) (*MsgCreateTimedAuctionResponse, error) {
-	out := new(MsgCreateTimedAuctionResponse)
-	err := c.cc.Invoke(ctx, Msg_CreateTimedAuction_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *msgClient) ResolveAuction(ctx context.Context, in *MsgResolveAuction, opts ...grpc.CallOption) (*MsgResolveAuctionResponse, error) {
 	out := new(MsgResolveAuctionResponse)
 	err := c.cc.Invoke(ctx, Msg_ResolveAuction_FullMethodName, in, out, opts...)
@@ -83,9 +74,9 @@ func (c *msgClient) ResolveAuction(ctx context.Context, in *MsgResolveAuction, o
 	return out, nil
 }
 
-func (c *msgClient) AuthorizeBidder(ctx context.Context, in *MsgAuthorizeBidder, opts ...grpc.CallOption) (*MsgAuthorizeBidderResponse, error) {
-	out := new(MsgAuthorizeBidderResponse)
-	err := c.cc.Invoke(ctx, Msg_AuthorizeBidder_FullMethodName, in, out, opts...)
+func (c *msgClient) PlaceBid(ctx context.Context, in *MsgPlaceBid, opts ...grpc.CallOption) (*MsgPlaceBidResponse, error) {
+	out := new(MsgPlaceBidResponse)
+	err := c.cc.Invoke(ctx, Msg_PlaceBid_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -100,9 +91,10 @@ type MsgServer interface {
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
 	CreateAuction(context.Context, *MsgCreateAuction) (*MsgCreateAuctionResponse, error)
-	CreateTimedAuction(context.Context, *MsgCreateTimedAuction) (*MsgCreateTimedAuctionResponse, error)
+	// rpc CreateTimedAuction(MsgCreateTimedAuction) returns (MsgCreateTimedAuctionResponse);
 	ResolveAuction(context.Context, *MsgResolveAuction) (*MsgResolveAuctionResponse, error)
-	AuthorizeBidder(context.Context, *MsgAuthorizeBidder) (*MsgAuthorizeBidderResponse, error)
+	// rpc AuthorizeBidder(MsgAuthorizeBidder) returns (MsgAuthorizeBidderResponse);
+	PlaceBid(context.Context, *MsgPlaceBid) (*MsgPlaceBidResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -116,14 +108,11 @@ func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*
 func (UnimplementedMsgServer) CreateAuction(context.Context, *MsgCreateAuction) (*MsgCreateAuctionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAuction not implemented")
 }
-func (UnimplementedMsgServer) CreateTimedAuction(context.Context, *MsgCreateTimedAuction) (*MsgCreateTimedAuctionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateTimedAuction not implemented")
-}
 func (UnimplementedMsgServer) ResolveAuction(context.Context, *MsgResolveAuction) (*MsgResolveAuctionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResolveAuction not implemented")
 }
-func (UnimplementedMsgServer) AuthorizeBidder(context.Context, *MsgAuthorizeBidder) (*MsgAuthorizeBidderResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AuthorizeBidder not implemented")
+func (UnimplementedMsgServer) PlaceBid(context.Context, *MsgPlaceBid) (*MsgPlaceBidResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PlaceBid not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -174,24 +163,6 @@ func _Msg_CreateAuction_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_CreateTimedAuction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateTimedAuction)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).CreateTimedAuction(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_CreateTimedAuction_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateTimedAuction(ctx, req.(*MsgCreateTimedAuction))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Msg_ResolveAuction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MsgResolveAuction)
 	if err := dec(in); err != nil {
@@ -210,20 +181,20 @@ func _Msg_ResolveAuction_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_AuthorizeBidder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgAuthorizeBidder)
+func _Msg_PlaceBid_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgPlaceBid)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).AuthorizeBidder(ctx, in)
+		return srv.(MsgServer).PlaceBid(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_AuthorizeBidder_FullMethodName,
+		FullMethod: Msg_PlaceBid_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).AuthorizeBidder(ctx, req.(*MsgAuthorizeBidder))
+		return srv.(MsgServer).PlaceBid(ctx, req.(*MsgPlaceBid))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -244,16 +215,12 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_CreateAuction_Handler,
 		},
 		{
-			MethodName: "CreateTimedAuction",
-			Handler:    _Msg_CreateTimedAuction_Handler,
-		},
-		{
 			MethodName: "ResolveAuction",
 			Handler:    _Msg_ResolveAuction_Handler,
 		},
 		{
-			MethodName: "AuthorizeBidder",
-			Handler:    _Msg_AuthorizeBidder_Handler,
+			MethodName: "PlaceBid",
+			Handler:    _Msg_PlaceBid_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

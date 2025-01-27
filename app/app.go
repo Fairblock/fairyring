@@ -167,6 +167,7 @@ type App struct {
 	ScopedPepKeeper           capabilitykeeper.ScopedKeeper
 	ScopedKeyshareKeeper      capabilitykeeper.ScopedKeeper
 	ScopedGovKeeper           capabilitykeeper.ScopedKeeper
+	ScopedAuctionKeeper       capabilitykeeper.ScopedKeeper
 
 	PepKeeper      pepmodulekeeper.Keeper
 	KeyshareKeeper keysharemodulekeeper.Keeper
@@ -319,7 +320,7 @@ func New(
 		&app.CircuitBreakerKeeper,
 		// &app.PepKeeper,
 		// &app.KeyshareKeeper,
-		&app.AuctionKeeper,
+		// &app.AuctionKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)

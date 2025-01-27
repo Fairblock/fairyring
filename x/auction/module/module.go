@@ -2,25 +2,20 @@ package auction
 
 import (
 	"context"
+	"cosmossdk.io/core/appmodule"
 	"encoding/json"
 	"fmt"
-
-	"cosmossdk.io/core/appmodule"
-	"cosmossdk.io/core/store"
-	"cosmossdk.io/depinject"
-	"cosmossdk.io/log"
+	"github.com/Fairblock/fairyring/x/auction/client/cli"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/spf13/cobra"
 
 	// this line is used by starport scaffolding # 1
 
-	modulev1 "github.com/Fairblock/fairyring/api/fairyring/auction/module"
 	"github.com/Fairblock/fairyring/x/auction/keeper"
 	"github.com/Fairblock/fairyring/x/auction/types"
 )
@@ -85,6 +80,12 @@ func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *r
 	if err := types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientCtx)); err != nil {
 		panic(err)
 	}
+}
+
+// GetTxCmd returns the root Tx command for the module.
+// These commands enrich the AutoCLI tx commands.
+func (AppModuleBasic) GetTxCmd() *cobra.Command {
+	return cli.GetTxCmd()
 }
 
 // ----------------------------------------------------------------------------
@@ -164,53 +165,53 @@ func (am AppModule) IsAppModule() {}
 // ----------------------------------------------------------------------------
 // App Wiring Setup
 // ----------------------------------------------------------------------------
-
-func init() {
-	appmodule.Register(
-		&modulev1.Module{},
-		appmodule.Provide(ProvideModule),
-	)
-}
-
-type ModuleInputs struct {
-	depinject.In
-
-	StoreService store.KVStoreService
-	Cdc          codec.Codec
-	Config       *modulev1.Module
-	Logger       log.Logger
-
-	AccountKeeper  types.AccountKeeper
-	BankKeeper     types.BankKeeper
-	KeyshareKeeper types.KeyshareKeeper
-}
-
-type ModuleOutputs struct {
-	depinject.Out
-
-	AuctionKeeper keeper.Keeper
-	Module        appmodule.AppModule
-}
-
-func ProvideModule(in ModuleInputs) ModuleOutputs {
-	// default to governance authority if not provided
-	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
-	if in.Config.Authority != "" {
-		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
-	}
-	k := keeper.NewKeeper(
-		in.Cdc,
-		in.StoreService,
-		in.Logger,
-		authority.String(),
-		in.KeyshareKeeper,
-	)
-	m := NewAppModule(
-		in.Cdc,
-		k,
-		in.AccountKeeper,
-		in.BankKeeper,
-	)
-
-	return ModuleOutputs{AuctionKeeper: k, Module: m}
-}
+//
+//func init() {
+//	appmodule.Register(
+//		&modulev1.Module{},
+//		appmodule.Provide(ProvideModule),
+//	)
+//}
+//
+//type ModuleInputs struct {
+//	depinject.In
+//
+//	StoreService store.KVStoreService
+//	Cdc          codec.Codec
+//	Config       *modulev1.Module
+//	Logger       log.Logger
+//
+//	AccountKeeper  types.AccountKeeper
+//	BankKeeper     types.BankKeeper
+//	KeyshareKeeper types.KeyshareKeeper
+//}
+//
+//type ModuleOutputs struct {
+//	depinject.Out
+//
+//	AuctionKeeper keeper.Keeper
+//	Module        appmodule.AppModule
+//}
+//
+//func ProvideModule(in ModuleInputs) ModuleOutputs {
+//	// default to governance authority if not provided
+//	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
+//	if in.Config.Authority != "" {
+//		authority = authtypes.NewModuleAddressOrBech32Address(in.Config.Authority)
+//	}
+//	k := keeper.NewKeeper(
+//		in.Cdc,
+//		in.StoreService,
+//		in.Logger,
+//		authority.String(),
+//		in.KeyshareKeeper,
+//	)
+//	m := NewAppModule(
+//		in.Cdc,
+//		k,
+//		in.AccountKeeper,
+//		in.BankKeeper,
+//	)
+//
+//	return ModuleOutputs{AuctionKeeper: k, Module: m}
+//}

@@ -17,6 +17,17 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Use:       "params",
 					Short:     "Shows the parameters of the module",
 				},
+				{
+					RpcMethod:      "Auction",
+					Use:            "show-auction [auction-identity]",
+					Short:          "Show an auction for given identity",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "identity"}},
+				},
+				{
+					RpcMethod: "AuctionAll",
+					Use:       "list-auction",
+					Short:     "List all auctions",
+				},
 				// this line is used by ignite scaffolding # autocli/query
 			},
 		},

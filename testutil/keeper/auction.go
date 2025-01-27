@@ -32,13 +32,13 @@ func AuctionKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
 	authority := authtypes.NewModuleAddress(govtypes.ModuleName)
-
+	pep, _ := PepKeeper(t)
 	k := keeper.NewKeeper(
 		cdc,
 		runtime.NewKVStoreService(storeKey),
 		log.NewNopLogger(),
 		authority.String(),
-		nil,
+		pep,
 	)
 
 	ctx := sdk.NewContext(stateStore, cmtproto.Header{}, false, log.NewNopLogger())

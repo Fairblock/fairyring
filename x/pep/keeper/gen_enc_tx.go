@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	types2 "github.com/Fairblock/fairyring/x/auction/types"
 
 	"cosmossdk.io/store/prefix"
 	storetypes "cosmossdk.io/store/types"
@@ -393,6 +394,95 @@ func (k Keeper) GetAllPrivateSignalQueueEntry(
 
 	for ; iterator.Valid(); iterator.Next() {
 		var val commontypes.GetPrivateDecryptionKey
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+	return
+}
+
+// Auction Queue:
+
+func (k Keeper) GetAuctionQueueEntry(
+	ctx context.Context,
+	resolveHeight uint64,
+	index uint64,
+) (val commontypes.AuctionDetail, found bool) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuctionSealedBidAuctionQueueKeyPrefix))
+
+	b := store.Get(types.SealedBidAuctionQueueKey(
+		resolveHeight,
+		index,
+	))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
+
+func (k Keeper) SetAuctionQueueEntry(
+	ctx context.Context,
+	val commontypes.AuctionDetail,
+) error {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuctionSealedBidAuctionQueueKeyPrefix))
+
+	entry := k.cdc.MustMarshal(&val)
+
+	resolveAt, id, err := types2.DecodeAuctionIdentity(val.GetIdentity())
+	if err != nil {
+		return err
+	}
+
+	store.Set(
+		types.SealedBidAuctionQueueKey(resolveAt, id),
+		entry,
+	)
+
+	return nil
+}
+
+func (k Keeper) RemoveAuctionQueueEntry(
+	ctx context.Context,
+	resolveHeight uint64,
+	index uint64,
+) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuctionSealedBidAuctionQueueKeyPrefix))
+	store.Delete(types.SealedBidAuctionQueueKey(resolveHeight, index))
+}
+
+func (k Keeper) GetAllAuctionQueueEntry(
+	ctx context.Context,
+) (list []commontypes.AuctionDetail) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuctionSealedBidAuctionQueueKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val commontypes.AuctionDetail
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+	return
+}
+
+func (k Keeper) GetAllAuctionQueueEntryByHeight(
+	ctx context.Context,
+	height uint64,
+) (list []commontypes.AuctionDetail) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.AuctionSealedBidAuctionQueueKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, types.SealedBidAuctionQueueHeightKey(height))
+
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val commontypes.AuctionDetail
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}

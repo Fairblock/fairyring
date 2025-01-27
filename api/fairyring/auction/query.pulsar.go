@@ -4,6 +4,7 @@ package auction
 import (
 	_ "cosmossdk.io/api/amino"
 	v1beta1 "cosmossdk.io/api/cosmos/base/query/v1beta1"
+	common "github.com/Fairblock/fairyring/api/fairyring/common"
 	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"
@@ -1384,7 +1385,7 @@ func (x *fastReflection_QueryAuctionResponse) Get(descriptor protoreflect.FieldD
 func (x *fastReflection_QueryAuctionResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
 	case "fairyring.auction.QueryAuctionResponse.auction_detail":
-		x.AuctionDetail = value.Message().Interface().(*AuctionDetail)
+		x.AuctionDetail = value.Message().Interface().(*common.AuctionDetail)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryAuctionResponse"))
@@ -1407,7 +1408,7 @@ func (x *fastReflection_QueryAuctionResponse) Mutable(fd protoreflect.FieldDescr
 	switch fd.FullName() {
 	case "fairyring.auction.QueryAuctionResponse.auction_detail":
 		if x.AuctionDetail == nil {
-			x.AuctionDetail = new(AuctionDetail)
+			x.AuctionDetail = new(common.AuctionDetail)
 		}
 		return protoreflect.ValueOfMessage(x.AuctionDetail.ProtoReflect())
 	default:
@@ -1424,7 +1425,7 @@ func (x *fastReflection_QueryAuctionResponse) Mutable(fd protoreflect.FieldDescr
 func (x *fastReflection_QueryAuctionResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	case "fairyring.auction.QueryAuctionResponse.auction_detail":
-		m := new(AuctionDetail)
+		m := new(common.AuctionDetail)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
@@ -1621,7 +1622,7 @@ func (x *fastReflection_QueryAuctionResponse) ProtoMethods() *protoiface.Methods
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
 				if x.AuctionDetail == nil {
-					x.AuctionDetail = &AuctionDetail{}
+					x.AuctionDetail = &common.AuctionDetail{}
 				}
 				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.AuctionDetail); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
@@ -2100,7 +2101,7 @@ func (x *fastReflection_QueryAuctionAllRequest) ProtoMethods() *protoiface.Metho
 var _ protoreflect.List = (*_QueryAuctionAllResponse_1_list)(nil)
 
 type _QueryAuctionAllResponse_1_list struct {
-	list *[]*AuctionDetail
+	list *[]*common.AuctionDetail
 }
 
 func (x *_QueryAuctionAllResponse_1_list) Len() int {
@@ -2116,18 +2117,18 @@ func (x *_QueryAuctionAllResponse_1_list) Get(i int) protoreflect.Value {
 
 func (x *_QueryAuctionAllResponse_1_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*AuctionDetail)
+	concreteValue := valueUnwrapped.Interface().(*common.AuctionDetail)
 	(*x.list)[i] = concreteValue
 }
 
 func (x *_QueryAuctionAllResponse_1_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*AuctionDetail)
+	concreteValue := valueUnwrapped.Interface().(*common.AuctionDetail)
 	*x.list = append(*x.list, concreteValue)
 }
 
 func (x *_QueryAuctionAllResponse_1_list) AppendMutable() protoreflect.Value {
-	v := new(AuctionDetail)
+	v := new(common.AuctionDetail)
 	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
@@ -2140,7 +2141,7 @@ func (x *_QueryAuctionAllResponse_1_list) Truncate(n int) {
 }
 
 func (x *_QueryAuctionAllResponse_1_list) NewElement() protoreflect.Value {
-	v := new(AuctionDetail)
+	v := new(common.AuctionDetail)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
@@ -2350,7 +2351,7 @@ func (x *fastReflection_QueryAuctionAllResponse) Mutable(fd protoreflect.FieldDe
 	switch fd.FullName() {
 	case "fairyring.auction.QueryAuctionAllResponse.auction_details":
 		if x.AuctionDetails == nil {
-			x.AuctionDetails = []*AuctionDetail{}
+			x.AuctionDetails = []*common.AuctionDetail{}
 		}
 		value := &_QueryAuctionAllResponse_1_list{list: &x.AuctionDetails}
 		return protoreflect.ValueOfList(value)
@@ -2373,7 +2374,7 @@ func (x *fastReflection_QueryAuctionAllResponse) Mutable(fd protoreflect.FieldDe
 func (x *fastReflection_QueryAuctionAllResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	case "fairyring.auction.QueryAuctionAllResponse.auction_details":
-		list := []*AuctionDetail{}
+		list := []*common.AuctionDetail{}
 		return protoreflect.ValueOfList(&_QueryAuctionAllResponse_1_list{list: &list})
 	case "fairyring.auction.QueryAuctionAllResponse.pagination":
 		m := new(v1beta1.PageResponse)
@@ -2594,1870 +2595,7 @@ func (x *fastReflection_QueryAuctionAllResponse) ProtoMethods() *protoiface.Meth
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.AuctionDetails = append(x.AuctionDetails, &AuctionDetail{})
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.AuctionDetails[len(x.AuctionDetails)-1]); err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				iNdEx = postIndex
-			case 2:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
-				}
-				var msglen int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					msglen |= int(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				if msglen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + msglen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				if x.Pagination == nil {
-					x.Pagination = &v1beta1.PageResponse{}
-				}
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Pagination); err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				iNdEx = postIndex
-			default:
-				iNdEx = preIndex
-				skippy, err := runtime.Skip(dAtA[iNdEx:])
-				if err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				if (skippy < 0) || (iNdEx+skippy) < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if (iNdEx + skippy) > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				if !options.DiscardUnknown {
-					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
-				}
-				iNdEx += skippy
-			}
-		}
-
-		if iNdEx > l {
-			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-		}
-		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
-	}
-	return &protoiface.Methods{
-		NoUnkeyedLiterals: struct{}{},
-		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
-		Size:              size,
-		Marshal:           marshal,
-		Unmarshal:         unmarshal,
-		Merge:             nil,
-		CheckInitialized:  nil,
-	}
-}
-
-var (
-	md_QueryTimedAuctionRequest          protoreflect.MessageDescriptor
-	fd_QueryTimedAuctionRequest_identity protoreflect.FieldDescriptor
-)
-
-func init() {
-	file_fairyring_auction_query_proto_init()
-	md_QueryTimedAuctionRequest = File_fairyring_auction_query_proto.Messages().ByName("QueryTimedAuctionRequest")
-	fd_QueryTimedAuctionRequest_identity = md_QueryTimedAuctionRequest.Fields().ByName("identity")
-}
-
-var _ protoreflect.Message = (*fastReflection_QueryTimedAuctionRequest)(nil)
-
-type fastReflection_QueryTimedAuctionRequest QueryTimedAuctionRequest
-
-func (x *QueryTimedAuctionRequest) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryTimedAuctionRequest)(x)
-}
-
-func (x *QueryTimedAuctionRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_auction_query_proto_msgTypes[6]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-var _fastReflection_QueryTimedAuctionRequest_messageType fastReflection_QueryTimedAuctionRequest_messageType
-var _ protoreflect.MessageType = fastReflection_QueryTimedAuctionRequest_messageType{}
-
-type fastReflection_QueryTimedAuctionRequest_messageType struct{}
-
-func (x fastReflection_QueryTimedAuctionRequest_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryTimedAuctionRequest)(nil)
-}
-func (x fastReflection_QueryTimedAuctionRequest_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryTimedAuctionRequest)
-}
-func (x fastReflection_QueryTimedAuctionRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryTimedAuctionRequest
-}
-
-// Descriptor returns message descriptor, which contains only the protobuf
-// type information for the message.
-func (x *fastReflection_QueryTimedAuctionRequest) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryTimedAuctionRequest
-}
-
-// Type returns the message type, which encapsulates both Go and protobuf
-// type information. If the Go type information is not needed,
-// it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryTimedAuctionRequest) Type() protoreflect.MessageType {
-	return _fastReflection_QueryTimedAuctionRequest_messageType
-}
-
-// New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryTimedAuctionRequest) New() protoreflect.Message {
-	return new(fastReflection_QueryTimedAuctionRequest)
-}
-
-// Interface unwraps the message reflection interface and
-// returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryTimedAuctionRequest) Interface() protoreflect.ProtoMessage {
-	return (*QueryTimedAuctionRequest)(x)
-}
-
-// Range iterates over every populated field in an undefined order,
-// calling f for each field descriptor and value encountered.
-// Range returns immediately if f returns false.
-// While iterating, mutating operations may only be performed
-// on the current field descriptor.
-func (x *fastReflection_QueryTimedAuctionRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.Identity != "" {
-		value := protoreflect.ValueOfString(x.Identity)
-		if !f(fd_QueryTimedAuctionRequest_identity, value) {
-			return
-		}
-	}
-}
-
-// Has reports whether a field is populated.
-//
-// Some fields have the property of nullability where it is possible to
-// distinguish between the default value of a field and whether the field
-// was explicitly populated with the default value. Singular message fields,
-// member fields of a oneof, and proto2 scalar fields are nullable. Such
-// fields are populated only if explicitly set.
-//
-// In other cases (aside from the nullable cases above),
-// a proto3 scalar field is populated if it contains a non-zero value, and
-// a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryTimedAuctionRequest) Has(fd protoreflect.FieldDescriptor) bool {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionRequest.identity":
-		return x.Identity != ""
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionRequest"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionRequest does not contain field %s", fd.FullName()))
-	}
-}
-
-// Clear clears the field such that a subsequent Has call reports false.
-//
-// Clearing an extension field clears both the extension type and value
-// associated with the given field number.
-//
-// Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionRequest) Clear(fd protoreflect.FieldDescriptor) {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionRequest.identity":
-		x.Identity = ""
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionRequest"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionRequest does not contain field %s", fd.FullName()))
-	}
-}
-
-// Get retrieves the value for a field.
-//
-// For unpopulated scalars, it returns the default value, where
-// the default value of a bytes scalar is guaranteed to be a copy.
-// For unpopulated composite types, it returns an empty, read-only view
-// of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryTimedAuctionRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
-	switch descriptor.FullName() {
-	case "fairyring.auction.QueryTimedAuctionRequest.identity":
-		value := x.Identity
-		return protoreflect.ValueOfString(value)
-	default:
-		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionRequest"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionRequest does not contain field %s", descriptor.FullName()))
-	}
-}
-
-// Set stores the value for a field.
-//
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType.
-// When setting a composite type, it is unspecified whether the stored value
-// aliases the source's memory in any way. If the composite value is an
-// empty, read-only value, then it panics.
-//
-// Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionRequest.identity":
-		x.Identity = value.Interface().(string)
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionRequest"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionRequest does not contain field %s", fd.FullName()))
-	}
-}
-
-// Mutable returns a mutable reference to a composite type.
-//
-// If the field is unpopulated, it may allocate a composite value.
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType
-// if not already stored.
-// It panics if the field does not contain a composite type.
-//
-// Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionRequest.identity":
-		panic(fmt.Errorf("field identity of message fairyring.auction.QueryTimedAuctionRequest is not mutable"))
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionRequest"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionRequest does not contain field %s", fd.FullName()))
-	}
-}
-
-// NewField returns a new value that is assignable to the field
-// for the given descriptor. For scalars, this returns the default value.
-// For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryTimedAuctionRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionRequest.identity":
-		return protoreflect.ValueOfString("")
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionRequest"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionRequest does not contain field %s", fd.FullName()))
-	}
-}
-
-// WhichOneof reports which field within the oneof is populated,
-// returning nil if none are populated.
-// It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryTimedAuctionRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
-	switch d.FullName() {
-	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.auction.QueryTimedAuctionRequest", d.FullName()))
-	}
-	panic("unreachable")
-}
-
-// GetUnknown retrieves the entire list of unknown fields.
-// The caller may only mutate the contents of the RawFields
-// if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryTimedAuctionRequest) GetUnknown() protoreflect.RawFields {
-	return x.unknownFields
-}
-
-// SetUnknown stores an entire list of unknown fields.
-// The raw fields must be syntactically valid according to the wire format.
-// An implementation may panic if this is not the case.
-// Once stored, the caller must not mutate the content of the RawFields.
-// An empty RawFields may be passed to clear the fields.
-//
-// SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionRequest) SetUnknown(fields protoreflect.RawFields) {
-	x.unknownFields = fields
-}
-
-// IsValid reports whether the message is valid.
-//
-// An invalid message is an empty, read-only value.
-//
-// An invalid message often corresponds to a nil pointer of the concrete
-// message type, but the details are implementation dependent.
-// Validity is not part of the protobuf data model, and may not
-// be preserved in marshaling or other operations.
-func (x *fastReflection_QueryTimedAuctionRequest) IsValid() bool {
-	return x != nil
-}
-
-// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
-// This method may return nil.
-//
-// The returned methods type is identical to
-// "google.golang.org/protobuf/runtime/protoiface".Methods.
-// Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryTimedAuctionRequest) ProtoMethods() *protoiface.Methods {
-	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryTimedAuctionRequest)
-		if x == nil {
-			return protoiface.SizeOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Size:              0,
-			}
-		}
-		options := runtime.SizeInputToOptions(input)
-		_ = options
-		var n int
-		var l int
-		_ = l
-		l = len(x.Identity)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		if x.unknownFields != nil {
-			n += len(x.unknownFields)
-		}
-		return protoiface.SizeOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Size:              n,
-		}
-	}
-
-	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryTimedAuctionRequest)
-		if x == nil {
-			return protoiface.MarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Buf:               input.Buf,
-			}, nil
-		}
-		options := runtime.MarshalInputToOptions(input)
-		_ = options
-		size := options.Size(x)
-		dAtA := make([]byte, size)
-		i := len(dAtA)
-		_ = i
-		var l int
-		_ = l
-		if x.unknownFields != nil {
-			i -= len(x.unknownFields)
-			copy(dAtA[i:], x.unknownFields)
-		}
-		if len(x.Identity) > 0 {
-			i -= len(x.Identity)
-			copy(dAtA[i:], x.Identity)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Identity)))
-			i--
-			dAtA[i] = 0xa
-		}
-		if input.Buf != nil {
-			input.Buf = append(input.Buf, dAtA...)
-		} else {
-			input.Buf = dAtA
-		}
-		return protoiface.MarshalOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Buf:               input.Buf,
-		}, nil
-	}
-	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryTimedAuctionRequest)
-		if x == nil {
-			return protoiface.UnmarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Flags:             input.Flags,
-			}, nil
-		}
-		options := runtime.UnmarshalInputToOptions(input)
-		_ = options
-		dAtA := input.Buf
-		l := len(dAtA)
-		iNdEx := 0
-		for iNdEx < l {
-			preIndex := iNdEx
-			var wire uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				wire |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			fieldNum := int32(wire >> 3)
-			wireType := int(wire & 0x7)
-			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTimedAuctionRequest: wiretype end group for non-group")
-			}
-			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTimedAuctionRequest: illegal tag %d (wire type %d)", fieldNum, wire)
-			}
-			switch fieldNum {
-			case 1:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Identity", wireType)
-				}
-				var stringLen uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.Identity = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
-			default:
-				iNdEx = preIndex
-				skippy, err := runtime.Skip(dAtA[iNdEx:])
-				if err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				if (skippy < 0) || (iNdEx+skippy) < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if (iNdEx + skippy) > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				if !options.DiscardUnknown {
-					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
-				}
-				iNdEx += skippy
-			}
-		}
-
-		if iNdEx > l {
-			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-		}
-		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
-	}
-	return &protoiface.Methods{
-		NoUnkeyedLiterals: struct{}{},
-		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
-		Size:              size,
-		Marshal:           marshal,
-		Unmarshal:         unmarshal,
-		Merge:             nil,
-		CheckInitialized:  nil,
-	}
-}
-
-var (
-	md_QueryTimedAuctionResponse                protoreflect.MessageDescriptor
-	fd_QueryTimedAuctionResponse_auction_detail protoreflect.FieldDescriptor
-)
-
-func init() {
-	file_fairyring_auction_query_proto_init()
-	md_QueryTimedAuctionResponse = File_fairyring_auction_query_proto.Messages().ByName("QueryTimedAuctionResponse")
-	fd_QueryTimedAuctionResponse_auction_detail = md_QueryTimedAuctionResponse.Fields().ByName("auction_detail")
-}
-
-var _ protoreflect.Message = (*fastReflection_QueryTimedAuctionResponse)(nil)
-
-type fastReflection_QueryTimedAuctionResponse QueryTimedAuctionResponse
-
-func (x *QueryTimedAuctionResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryTimedAuctionResponse)(x)
-}
-
-func (x *QueryTimedAuctionResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_auction_query_proto_msgTypes[7]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-var _fastReflection_QueryTimedAuctionResponse_messageType fastReflection_QueryTimedAuctionResponse_messageType
-var _ protoreflect.MessageType = fastReflection_QueryTimedAuctionResponse_messageType{}
-
-type fastReflection_QueryTimedAuctionResponse_messageType struct{}
-
-func (x fastReflection_QueryTimedAuctionResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryTimedAuctionResponse)(nil)
-}
-func (x fastReflection_QueryTimedAuctionResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryTimedAuctionResponse)
-}
-func (x fastReflection_QueryTimedAuctionResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryTimedAuctionResponse
-}
-
-// Descriptor returns message descriptor, which contains only the protobuf
-// type information for the message.
-func (x *fastReflection_QueryTimedAuctionResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryTimedAuctionResponse
-}
-
-// Type returns the message type, which encapsulates both Go and protobuf
-// type information. If the Go type information is not needed,
-// it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryTimedAuctionResponse) Type() protoreflect.MessageType {
-	return _fastReflection_QueryTimedAuctionResponse_messageType
-}
-
-// New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryTimedAuctionResponse) New() protoreflect.Message {
-	return new(fastReflection_QueryTimedAuctionResponse)
-}
-
-// Interface unwraps the message reflection interface and
-// returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryTimedAuctionResponse) Interface() protoreflect.ProtoMessage {
-	return (*QueryTimedAuctionResponse)(x)
-}
-
-// Range iterates over every populated field in an undefined order,
-// calling f for each field descriptor and value encountered.
-// Range returns immediately if f returns false.
-// While iterating, mutating operations may only be performed
-// on the current field descriptor.
-func (x *fastReflection_QueryTimedAuctionResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.AuctionDetail != nil {
-		value := protoreflect.ValueOfMessage(x.AuctionDetail.ProtoReflect())
-		if !f(fd_QueryTimedAuctionResponse_auction_detail, value) {
-			return
-		}
-	}
-}
-
-// Has reports whether a field is populated.
-//
-// Some fields have the property of nullability where it is possible to
-// distinguish between the default value of a field and whether the field
-// was explicitly populated with the default value. Singular message fields,
-// member fields of a oneof, and proto2 scalar fields are nullable. Such
-// fields are populated only if explicitly set.
-//
-// In other cases (aside from the nullable cases above),
-// a proto3 scalar field is populated if it contains a non-zero value, and
-// a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryTimedAuctionResponse) Has(fd protoreflect.FieldDescriptor) bool {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionResponse.auction_detail":
-		return x.AuctionDetail != nil
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionResponse"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionResponse does not contain field %s", fd.FullName()))
-	}
-}
-
-// Clear clears the field such that a subsequent Has call reports false.
-//
-// Clearing an extension field clears both the extension type and value
-// associated with the given field number.
-//
-// Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionResponse) Clear(fd protoreflect.FieldDescriptor) {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionResponse.auction_detail":
-		x.AuctionDetail = nil
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionResponse"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionResponse does not contain field %s", fd.FullName()))
-	}
-}
-
-// Get retrieves the value for a field.
-//
-// For unpopulated scalars, it returns the default value, where
-// the default value of a bytes scalar is guaranteed to be a copy.
-// For unpopulated composite types, it returns an empty, read-only view
-// of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryTimedAuctionResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
-	switch descriptor.FullName() {
-	case "fairyring.auction.QueryTimedAuctionResponse.auction_detail":
-		value := x.AuctionDetail
-		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	default:
-		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionResponse"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionResponse does not contain field %s", descriptor.FullName()))
-	}
-}
-
-// Set stores the value for a field.
-//
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType.
-// When setting a composite type, it is unspecified whether the stored value
-// aliases the source's memory in any way. If the composite value is an
-// empty, read-only value, then it panics.
-//
-// Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionResponse.auction_detail":
-		x.AuctionDetail = value.Message().Interface().(*AuctionDetail)
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionResponse"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionResponse does not contain field %s", fd.FullName()))
-	}
-}
-
-// Mutable returns a mutable reference to a composite type.
-//
-// If the field is unpopulated, it may allocate a composite value.
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType
-// if not already stored.
-// It panics if the field does not contain a composite type.
-//
-// Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionResponse.auction_detail":
-		if x.AuctionDetail == nil {
-			x.AuctionDetail = new(AuctionDetail)
-		}
-		return protoreflect.ValueOfMessage(x.AuctionDetail.ProtoReflect())
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionResponse"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionResponse does not contain field %s", fd.FullName()))
-	}
-}
-
-// NewField returns a new value that is assignable to the field
-// for the given descriptor. For scalars, this returns the default value.
-// For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryTimedAuctionResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionResponse.auction_detail":
-		m := new(AuctionDetail)
-		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionResponse"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionResponse does not contain field %s", fd.FullName()))
-	}
-}
-
-// WhichOneof reports which field within the oneof is populated,
-// returning nil if none are populated.
-// It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryTimedAuctionResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
-	switch d.FullName() {
-	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.auction.QueryTimedAuctionResponse", d.FullName()))
-	}
-	panic("unreachable")
-}
-
-// GetUnknown retrieves the entire list of unknown fields.
-// The caller may only mutate the contents of the RawFields
-// if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryTimedAuctionResponse) GetUnknown() protoreflect.RawFields {
-	return x.unknownFields
-}
-
-// SetUnknown stores an entire list of unknown fields.
-// The raw fields must be syntactically valid according to the wire format.
-// An implementation may panic if this is not the case.
-// Once stored, the caller must not mutate the content of the RawFields.
-// An empty RawFields may be passed to clear the fields.
-//
-// SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionResponse) SetUnknown(fields protoreflect.RawFields) {
-	x.unknownFields = fields
-}
-
-// IsValid reports whether the message is valid.
-//
-// An invalid message is an empty, read-only value.
-//
-// An invalid message often corresponds to a nil pointer of the concrete
-// message type, but the details are implementation dependent.
-// Validity is not part of the protobuf data model, and may not
-// be preserved in marshaling or other operations.
-func (x *fastReflection_QueryTimedAuctionResponse) IsValid() bool {
-	return x != nil
-}
-
-// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
-// This method may return nil.
-//
-// The returned methods type is identical to
-// "google.golang.org/protobuf/runtime/protoiface".Methods.
-// Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryTimedAuctionResponse) ProtoMethods() *protoiface.Methods {
-	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryTimedAuctionResponse)
-		if x == nil {
-			return protoiface.SizeOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Size:              0,
-			}
-		}
-		options := runtime.SizeInputToOptions(input)
-		_ = options
-		var n int
-		var l int
-		_ = l
-		if x.AuctionDetail != nil {
-			l = options.Size(x.AuctionDetail)
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		if x.unknownFields != nil {
-			n += len(x.unknownFields)
-		}
-		return protoiface.SizeOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Size:              n,
-		}
-	}
-
-	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryTimedAuctionResponse)
-		if x == nil {
-			return protoiface.MarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Buf:               input.Buf,
-			}, nil
-		}
-		options := runtime.MarshalInputToOptions(input)
-		_ = options
-		size := options.Size(x)
-		dAtA := make([]byte, size)
-		i := len(dAtA)
-		_ = i
-		var l int
-		_ = l
-		if x.unknownFields != nil {
-			i -= len(x.unknownFields)
-			copy(dAtA[i:], x.unknownFields)
-		}
-		if x.AuctionDetail != nil {
-			encoded, err := options.Marshal(x.AuctionDetail)
-			if err != nil {
-				return protoiface.MarshalOutput{
-					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-					Buf:               input.Buf,
-				}, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
-			i--
-			dAtA[i] = 0xa
-		}
-		if input.Buf != nil {
-			input.Buf = append(input.Buf, dAtA...)
-		} else {
-			input.Buf = dAtA
-		}
-		return protoiface.MarshalOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Buf:               input.Buf,
-		}, nil
-	}
-	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryTimedAuctionResponse)
-		if x == nil {
-			return protoiface.UnmarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Flags:             input.Flags,
-			}, nil
-		}
-		options := runtime.UnmarshalInputToOptions(input)
-		_ = options
-		dAtA := input.Buf
-		l := len(dAtA)
-		iNdEx := 0
-		for iNdEx < l {
-			preIndex := iNdEx
-			var wire uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				wire |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			fieldNum := int32(wire >> 3)
-			wireType := int(wire & 0x7)
-			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTimedAuctionResponse: wiretype end group for non-group")
-			}
-			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTimedAuctionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-			}
-			switch fieldNum {
-			case 1:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field AuctionDetail", wireType)
-				}
-				var msglen int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					msglen |= int(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				if msglen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + msglen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				if x.AuctionDetail == nil {
-					x.AuctionDetail = &AuctionDetail{}
-				}
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.AuctionDetail); err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				iNdEx = postIndex
-			default:
-				iNdEx = preIndex
-				skippy, err := runtime.Skip(dAtA[iNdEx:])
-				if err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				if (skippy < 0) || (iNdEx+skippy) < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if (iNdEx + skippy) > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				if !options.DiscardUnknown {
-					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
-				}
-				iNdEx += skippy
-			}
-		}
-
-		if iNdEx > l {
-			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-		}
-		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
-	}
-	return &protoiface.Methods{
-		NoUnkeyedLiterals: struct{}{},
-		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
-		Size:              size,
-		Marshal:           marshal,
-		Unmarshal:         unmarshal,
-		Merge:             nil,
-		CheckInitialized:  nil,
-	}
-}
-
-var (
-	md_QueryTimedAuctionAllRequest            protoreflect.MessageDescriptor
-	fd_QueryTimedAuctionAllRequest_pagination protoreflect.FieldDescriptor
-)
-
-func init() {
-	file_fairyring_auction_query_proto_init()
-	md_QueryTimedAuctionAllRequest = File_fairyring_auction_query_proto.Messages().ByName("QueryTimedAuctionAllRequest")
-	fd_QueryTimedAuctionAllRequest_pagination = md_QueryTimedAuctionAllRequest.Fields().ByName("pagination")
-}
-
-var _ protoreflect.Message = (*fastReflection_QueryTimedAuctionAllRequest)(nil)
-
-type fastReflection_QueryTimedAuctionAllRequest QueryTimedAuctionAllRequest
-
-func (x *QueryTimedAuctionAllRequest) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryTimedAuctionAllRequest)(x)
-}
-
-func (x *QueryTimedAuctionAllRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_auction_query_proto_msgTypes[8]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-var _fastReflection_QueryTimedAuctionAllRequest_messageType fastReflection_QueryTimedAuctionAllRequest_messageType
-var _ protoreflect.MessageType = fastReflection_QueryTimedAuctionAllRequest_messageType{}
-
-type fastReflection_QueryTimedAuctionAllRequest_messageType struct{}
-
-func (x fastReflection_QueryTimedAuctionAllRequest_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryTimedAuctionAllRequest)(nil)
-}
-func (x fastReflection_QueryTimedAuctionAllRequest_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryTimedAuctionAllRequest)
-}
-func (x fastReflection_QueryTimedAuctionAllRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryTimedAuctionAllRequest
-}
-
-// Descriptor returns message descriptor, which contains only the protobuf
-// type information for the message.
-func (x *fastReflection_QueryTimedAuctionAllRequest) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryTimedAuctionAllRequest
-}
-
-// Type returns the message type, which encapsulates both Go and protobuf
-// type information. If the Go type information is not needed,
-// it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryTimedAuctionAllRequest) Type() protoreflect.MessageType {
-	return _fastReflection_QueryTimedAuctionAllRequest_messageType
-}
-
-// New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryTimedAuctionAllRequest) New() protoreflect.Message {
-	return new(fastReflection_QueryTimedAuctionAllRequest)
-}
-
-// Interface unwraps the message reflection interface and
-// returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryTimedAuctionAllRequest) Interface() protoreflect.ProtoMessage {
-	return (*QueryTimedAuctionAllRequest)(x)
-}
-
-// Range iterates over every populated field in an undefined order,
-// calling f for each field descriptor and value encountered.
-// Range returns immediately if f returns false.
-// While iterating, mutating operations may only be performed
-// on the current field descriptor.
-func (x *fastReflection_QueryTimedAuctionAllRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if x.Pagination != nil {
-		value := protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
-		if !f(fd_QueryTimedAuctionAllRequest_pagination, value) {
-			return
-		}
-	}
-}
-
-// Has reports whether a field is populated.
-//
-// Some fields have the property of nullability where it is possible to
-// distinguish between the default value of a field and whether the field
-// was explicitly populated with the default value. Singular message fields,
-// member fields of a oneof, and proto2 scalar fields are nullable. Such
-// fields are populated only if explicitly set.
-//
-// In other cases (aside from the nullable cases above),
-// a proto3 scalar field is populated if it contains a non-zero value, and
-// a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryTimedAuctionAllRequest) Has(fd protoreflect.FieldDescriptor) bool {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionAllRequest.pagination":
-		return x.Pagination != nil
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionAllRequest"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionAllRequest does not contain field %s", fd.FullName()))
-	}
-}
-
-// Clear clears the field such that a subsequent Has call reports false.
-//
-// Clearing an extension field clears both the extension type and value
-// associated with the given field number.
-//
-// Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionAllRequest) Clear(fd protoreflect.FieldDescriptor) {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionAllRequest.pagination":
-		x.Pagination = nil
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionAllRequest"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionAllRequest does not contain field %s", fd.FullName()))
-	}
-}
-
-// Get retrieves the value for a field.
-//
-// For unpopulated scalars, it returns the default value, where
-// the default value of a bytes scalar is guaranteed to be a copy.
-// For unpopulated composite types, it returns an empty, read-only view
-// of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryTimedAuctionAllRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
-	switch descriptor.FullName() {
-	case "fairyring.auction.QueryTimedAuctionAllRequest.pagination":
-		value := x.Pagination
-		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	default:
-		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionAllRequest"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionAllRequest does not contain field %s", descriptor.FullName()))
-	}
-}
-
-// Set stores the value for a field.
-//
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType.
-// When setting a composite type, it is unspecified whether the stored value
-// aliases the source's memory in any way. If the composite value is an
-// empty, read-only value, then it panics.
-//
-// Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionAllRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionAllRequest.pagination":
-		x.Pagination = value.Message().Interface().(*v1beta1.PageRequest)
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionAllRequest"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionAllRequest does not contain field %s", fd.FullName()))
-	}
-}
-
-// Mutable returns a mutable reference to a composite type.
-//
-// If the field is unpopulated, it may allocate a composite value.
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType
-// if not already stored.
-// It panics if the field does not contain a composite type.
-//
-// Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionAllRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionAllRequest.pagination":
-		if x.Pagination == nil {
-			x.Pagination = new(v1beta1.PageRequest)
-		}
-		return protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionAllRequest"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionAllRequest does not contain field %s", fd.FullName()))
-	}
-}
-
-// NewField returns a new value that is assignable to the field
-// for the given descriptor. For scalars, this returns the default value.
-// For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryTimedAuctionAllRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionAllRequest.pagination":
-		m := new(v1beta1.PageRequest)
-		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionAllRequest"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionAllRequest does not contain field %s", fd.FullName()))
-	}
-}
-
-// WhichOneof reports which field within the oneof is populated,
-// returning nil if none are populated.
-// It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryTimedAuctionAllRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
-	switch d.FullName() {
-	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.auction.QueryTimedAuctionAllRequest", d.FullName()))
-	}
-	panic("unreachable")
-}
-
-// GetUnknown retrieves the entire list of unknown fields.
-// The caller may only mutate the contents of the RawFields
-// if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryTimedAuctionAllRequest) GetUnknown() protoreflect.RawFields {
-	return x.unknownFields
-}
-
-// SetUnknown stores an entire list of unknown fields.
-// The raw fields must be syntactically valid according to the wire format.
-// An implementation may panic if this is not the case.
-// Once stored, the caller must not mutate the content of the RawFields.
-// An empty RawFields may be passed to clear the fields.
-//
-// SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionAllRequest) SetUnknown(fields protoreflect.RawFields) {
-	x.unknownFields = fields
-}
-
-// IsValid reports whether the message is valid.
-//
-// An invalid message is an empty, read-only value.
-//
-// An invalid message often corresponds to a nil pointer of the concrete
-// message type, but the details are implementation dependent.
-// Validity is not part of the protobuf data model, and may not
-// be preserved in marshaling or other operations.
-func (x *fastReflection_QueryTimedAuctionAllRequest) IsValid() bool {
-	return x != nil
-}
-
-// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
-// This method may return nil.
-//
-// The returned methods type is identical to
-// "google.golang.org/protobuf/runtime/protoiface".Methods.
-// Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryTimedAuctionAllRequest) ProtoMethods() *protoiface.Methods {
-	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryTimedAuctionAllRequest)
-		if x == nil {
-			return protoiface.SizeOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Size:              0,
-			}
-		}
-		options := runtime.SizeInputToOptions(input)
-		_ = options
-		var n int
-		var l int
-		_ = l
-		if x.Pagination != nil {
-			l = options.Size(x.Pagination)
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		if x.unknownFields != nil {
-			n += len(x.unknownFields)
-		}
-		return protoiface.SizeOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Size:              n,
-		}
-	}
-
-	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryTimedAuctionAllRequest)
-		if x == nil {
-			return protoiface.MarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Buf:               input.Buf,
-			}, nil
-		}
-		options := runtime.MarshalInputToOptions(input)
-		_ = options
-		size := options.Size(x)
-		dAtA := make([]byte, size)
-		i := len(dAtA)
-		_ = i
-		var l int
-		_ = l
-		if x.unknownFields != nil {
-			i -= len(x.unknownFields)
-			copy(dAtA[i:], x.unknownFields)
-		}
-		if x.Pagination != nil {
-			encoded, err := options.Marshal(x.Pagination)
-			if err != nil {
-				return protoiface.MarshalOutput{
-					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-					Buf:               input.Buf,
-				}, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
-			i--
-			dAtA[i] = 0xa
-		}
-		if input.Buf != nil {
-			input.Buf = append(input.Buf, dAtA...)
-		} else {
-			input.Buf = dAtA
-		}
-		return protoiface.MarshalOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Buf:               input.Buf,
-		}, nil
-	}
-	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryTimedAuctionAllRequest)
-		if x == nil {
-			return protoiface.UnmarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Flags:             input.Flags,
-			}, nil
-		}
-		options := runtime.UnmarshalInputToOptions(input)
-		_ = options
-		dAtA := input.Buf
-		l := len(dAtA)
-		iNdEx := 0
-		for iNdEx < l {
-			preIndex := iNdEx
-			var wire uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				wire |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			fieldNum := int32(wire >> 3)
-			wireType := int(wire & 0x7)
-			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTimedAuctionAllRequest: wiretype end group for non-group")
-			}
-			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTimedAuctionAllRequest: illegal tag %d (wire type %d)", fieldNum, wire)
-			}
-			switch fieldNum {
-			case 1:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
-				}
-				var msglen int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					msglen |= int(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				if msglen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + msglen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				if x.Pagination == nil {
-					x.Pagination = &v1beta1.PageRequest{}
-				}
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Pagination); err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				iNdEx = postIndex
-			default:
-				iNdEx = preIndex
-				skippy, err := runtime.Skip(dAtA[iNdEx:])
-				if err != nil {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
-				}
-				if (skippy < 0) || (iNdEx+skippy) < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if (iNdEx + skippy) > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				if !options.DiscardUnknown {
-					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
-				}
-				iNdEx += skippy
-			}
-		}
-
-		if iNdEx > l {
-			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-		}
-		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
-	}
-	return &protoiface.Methods{
-		NoUnkeyedLiterals: struct{}{},
-		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
-		Size:              size,
-		Marshal:           marshal,
-		Unmarshal:         unmarshal,
-		Merge:             nil,
-		CheckInitialized:  nil,
-	}
-}
-
-var _ protoreflect.List = (*_QueryTimedAuctionAllResponse_1_list)(nil)
-
-type _QueryTimedAuctionAllResponse_1_list struct {
-	list *[]*AuctionDetail
-}
-
-func (x *_QueryTimedAuctionAllResponse_1_list) Len() int {
-	if x.list == nil {
-		return 0
-	}
-	return len(*x.list)
-}
-
-func (x *_QueryTimedAuctionAllResponse_1_list) Get(i int) protoreflect.Value {
-	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
-}
-
-func (x *_QueryTimedAuctionAllResponse_1_list) Set(i int, value protoreflect.Value) {
-	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*AuctionDetail)
-	(*x.list)[i] = concreteValue
-}
-
-func (x *_QueryTimedAuctionAllResponse_1_list) Append(value protoreflect.Value) {
-	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*AuctionDetail)
-	*x.list = append(*x.list, concreteValue)
-}
-
-func (x *_QueryTimedAuctionAllResponse_1_list) AppendMutable() protoreflect.Value {
-	v := new(AuctionDetail)
-	*x.list = append(*x.list, v)
-	return protoreflect.ValueOfMessage(v.ProtoReflect())
-}
-
-func (x *_QueryTimedAuctionAllResponse_1_list) Truncate(n int) {
-	for i := n; i < len(*x.list); i++ {
-		(*x.list)[i] = nil
-	}
-	*x.list = (*x.list)[:n]
-}
-
-func (x *_QueryTimedAuctionAllResponse_1_list) NewElement() protoreflect.Value {
-	v := new(AuctionDetail)
-	return protoreflect.ValueOfMessage(v.ProtoReflect())
-}
-
-func (x *_QueryTimedAuctionAllResponse_1_list) IsValid() bool {
-	return x.list != nil
-}
-
-var (
-	md_QueryTimedAuctionAllResponse                 protoreflect.MessageDescriptor
-	fd_QueryTimedAuctionAllResponse_auction_details protoreflect.FieldDescriptor
-	fd_QueryTimedAuctionAllResponse_pagination      protoreflect.FieldDescriptor
-)
-
-func init() {
-	file_fairyring_auction_query_proto_init()
-	md_QueryTimedAuctionAllResponse = File_fairyring_auction_query_proto.Messages().ByName("QueryTimedAuctionAllResponse")
-	fd_QueryTimedAuctionAllResponse_auction_details = md_QueryTimedAuctionAllResponse.Fields().ByName("auction_details")
-	fd_QueryTimedAuctionAllResponse_pagination = md_QueryTimedAuctionAllResponse.Fields().ByName("pagination")
-}
-
-var _ protoreflect.Message = (*fastReflection_QueryTimedAuctionAllResponse)(nil)
-
-type fastReflection_QueryTimedAuctionAllResponse QueryTimedAuctionAllResponse
-
-func (x *QueryTimedAuctionAllResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_QueryTimedAuctionAllResponse)(x)
-}
-
-func (x *QueryTimedAuctionAllResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_auction_query_proto_msgTypes[9]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-var _fastReflection_QueryTimedAuctionAllResponse_messageType fastReflection_QueryTimedAuctionAllResponse_messageType
-var _ protoreflect.MessageType = fastReflection_QueryTimedAuctionAllResponse_messageType{}
-
-type fastReflection_QueryTimedAuctionAllResponse_messageType struct{}
-
-func (x fastReflection_QueryTimedAuctionAllResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_QueryTimedAuctionAllResponse)(nil)
-}
-func (x fastReflection_QueryTimedAuctionAllResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_QueryTimedAuctionAllResponse)
-}
-func (x fastReflection_QueryTimedAuctionAllResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryTimedAuctionAllResponse
-}
-
-// Descriptor returns message descriptor, which contains only the protobuf
-// type information for the message.
-func (x *fastReflection_QueryTimedAuctionAllResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_QueryTimedAuctionAllResponse
-}
-
-// Type returns the message type, which encapsulates both Go and protobuf
-// type information. If the Go type information is not needed,
-// it is recommended that the message descriptor be used instead.
-func (x *fastReflection_QueryTimedAuctionAllResponse) Type() protoreflect.MessageType {
-	return _fastReflection_QueryTimedAuctionAllResponse_messageType
-}
-
-// New returns a newly allocated and mutable empty message.
-func (x *fastReflection_QueryTimedAuctionAllResponse) New() protoreflect.Message {
-	return new(fastReflection_QueryTimedAuctionAllResponse)
-}
-
-// Interface unwraps the message reflection interface and
-// returns the underlying ProtoMessage interface.
-func (x *fastReflection_QueryTimedAuctionAllResponse) Interface() protoreflect.ProtoMessage {
-	return (*QueryTimedAuctionAllResponse)(x)
-}
-
-// Range iterates over every populated field in an undefined order,
-// calling f for each field descriptor and value encountered.
-// Range returns immediately if f returns false.
-// While iterating, mutating operations may only be performed
-// on the current field descriptor.
-func (x *fastReflection_QueryTimedAuctionAllResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
-	if len(x.AuctionDetails) != 0 {
-		value := protoreflect.ValueOfList(&_QueryTimedAuctionAllResponse_1_list{list: &x.AuctionDetails})
-		if !f(fd_QueryTimedAuctionAllResponse_auction_details, value) {
-			return
-		}
-	}
-	if x.Pagination != nil {
-		value := protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
-		if !f(fd_QueryTimedAuctionAllResponse_pagination, value) {
-			return
-		}
-	}
-}
-
-// Has reports whether a field is populated.
-//
-// Some fields have the property of nullability where it is possible to
-// distinguish between the default value of a field and whether the field
-// was explicitly populated with the default value. Singular message fields,
-// member fields of a oneof, and proto2 scalar fields are nullable. Such
-// fields are populated only if explicitly set.
-//
-// In other cases (aside from the nullable cases above),
-// a proto3 scalar field is populated if it contains a non-zero value, and
-// a repeated field is populated if it is non-empty.
-func (x *fastReflection_QueryTimedAuctionAllResponse) Has(fd protoreflect.FieldDescriptor) bool {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionAllResponse.auction_details":
-		return len(x.AuctionDetails) != 0
-	case "fairyring.auction.QueryTimedAuctionAllResponse.pagination":
-		return x.Pagination != nil
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionAllResponse"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionAllResponse does not contain field %s", fd.FullName()))
-	}
-}
-
-// Clear clears the field such that a subsequent Has call reports false.
-//
-// Clearing an extension field clears both the extension type and value
-// associated with the given field number.
-//
-// Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionAllResponse) Clear(fd protoreflect.FieldDescriptor) {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionAllResponse.auction_details":
-		x.AuctionDetails = nil
-	case "fairyring.auction.QueryTimedAuctionAllResponse.pagination":
-		x.Pagination = nil
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionAllResponse"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionAllResponse does not contain field %s", fd.FullName()))
-	}
-}
-
-// Get retrieves the value for a field.
-//
-// For unpopulated scalars, it returns the default value, where
-// the default value of a bytes scalar is guaranteed to be a copy.
-// For unpopulated composite types, it returns an empty, read-only view
-// of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_QueryTimedAuctionAllResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
-	switch descriptor.FullName() {
-	case "fairyring.auction.QueryTimedAuctionAllResponse.auction_details":
-		if len(x.AuctionDetails) == 0 {
-			return protoreflect.ValueOfList(&_QueryTimedAuctionAllResponse_1_list{})
-		}
-		listValue := &_QueryTimedAuctionAllResponse_1_list{list: &x.AuctionDetails}
-		return protoreflect.ValueOfList(listValue)
-	case "fairyring.auction.QueryTimedAuctionAllResponse.pagination":
-		value := x.Pagination
-		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	default:
-		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionAllResponse"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionAllResponse does not contain field %s", descriptor.FullName()))
-	}
-}
-
-// Set stores the value for a field.
-//
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType.
-// When setting a composite type, it is unspecified whether the stored value
-// aliases the source's memory in any way. If the composite value is an
-// empty, read-only value, then it panics.
-//
-// Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionAllResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionAllResponse.auction_details":
-		lv := value.List()
-		clv := lv.(*_QueryTimedAuctionAllResponse_1_list)
-		x.AuctionDetails = *clv.list
-	case "fairyring.auction.QueryTimedAuctionAllResponse.pagination":
-		x.Pagination = value.Message().Interface().(*v1beta1.PageResponse)
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionAllResponse"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionAllResponse does not contain field %s", fd.FullName()))
-	}
-}
-
-// Mutable returns a mutable reference to a composite type.
-//
-// If the field is unpopulated, it may allocate a composite value.
-// For a field belonging to a oneof, it implicitly clears any other field
-// that may be currently set within the same oneof.
-// For extension fields, it implicitly stores the provided ExtensionType
-// if not already stored.
-// It panics if the field does not contain a composite type.
-//
-// Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionAllResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionAllResponse.auction_details":
-		if x.AuctionDetails == nil {
-			x.AuctionDetails = []*AuctionDetail{}
-		}
-		value := &_QueryTimedAuctionAllResponse_1_list{list: &x.AuctionDetails}
-		return protoreflect.ValueOfList(value)
-	case "fairyring.auction.QueryTimedAuctionAllResponse.pagination":
-		if x.Pagination == nil {
-			x.Pagination = new(v1beta1.PageResponse)
-		}
-		return protoreflect.ValueOfMessage(x.Pagination.ProtoReflect())
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionAllResponse"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionAllResponse does not contain field %s", fd.FullName()))
-	}
-}
-
-// NewField returns a new value that is assignable to the field
-// for the given descriptor. For scalars, this returns the default value.
-// For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_QueryTimedAuctionAllResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
-	switch fd.FullName() {
-	case "fairyring.auction.QueryTimedAuctionAllResponse.auction_details":
-		list := []*AuctionDetail{}
-		return protoreflect.ValueOfList(&_QueryTimedAuctionAllResponse_1_list{list: &list})
-	case "fairyring.auction.QueryTimedAuctionAllResponse.pagination":
-		m := new(v1beta1.PageResponse)
-		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	default:
-		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.auction.QueryTimedAuctionAllResponse"))
-		}
-		panic(fmt.Errorf("message fairyring.auction.QueryTimedAuctionAllResponse does not contain field %s", fd.FullName()))
-	}
-}
-
-// WhichOneof reports which field within the oneof is populated,
-// returning nil if none are populated.
-// It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_QueryTimedAuctionAllResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
-	switch d.FullName() {
-	default:
-		panic(fmt.Errorf("%s is not a oneof field in fairyring.auction.QueryTimedAuctionAllResponse", d.FullName()))
-	}
-	panic("unreachable")
-}
-
-// GetUnknown retrieves the entire list of unknown fields.
-// The caller may only mutate the contents of the RawFields
-// if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_QueryTimedAuctionAllResponse) GetUnknown() protoreflect.RawFields {
-	return x.unknownFields
-}
-
-// SetUnknown stores an entire list of unknown fields.
-// The raw fields must be syntactically valid according to the wire format.
-// An implementation may panic if this is not the case.
-// Once stored, the caller must not mutate the content of the RawFields.
-// An empty RawFields may be passed to clear the fields.
-//
-// SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_QueryTimedAuctionAllResponse) SetUnknown(fields protoreflect.RawFields) {
-	x.unknownFields = fields
-}
-
-// IsValid reports whether the message is valid.
-//
-// An invalid message is an empty, read-only value.
-//
-// An invalid message often corresponds to a nil pointer of the concrete
-// message type, but the details are implementation dependent.
-// Validity is not part of the protobuf data model, and may not
-// be preserved in marshaling or other operations.
-func (x *fastReflection_QueryTimedAuctionAllResponse) IsValid() bool {
-	return x != nil
-}
-
-// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
-// This method may return nil.
-//
-// The returned methods type is identical to
-// "google.golang.org/protobuf/runtime/protoiface".Methods.
-// Consult the protoiface package documentation for details.
-func (x *fastReflection_QueryTimedAuctionAllResponse) ProtoMethods() *protoiface.Methods {
-	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*QueryTimedAuctionAllResponse)
-		if x == nil {
-			return protoiface.SizeOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Size:              0,
-			}
-		}
-		options := runtime.SizeInputToOptions(input)
-		_ = options
-		var n int
-		var l int
-		_ = l
-		if len(x.AuctionDetails) > 0 {
-			for _, e := range x.AuctionDetails {
-				l = options.Size(e)
-				n += 1 + l + runtime.Sov(uint64(l))
-			}
-		}
-		if x.Pagination != nil {
-			l = options.Size(x.Pagination)
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		if x.unknownFields != nil {
-			n += len(x.unknownFields)
-		}
-		return protoiface.SizeOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Size:              n,
-		}
-	}
-
-	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*QueryTimedAuctionAllResponse)
-		if x == nil {
-			return protoiface.MarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Buf:               input.Buf,
-			}, nil
-		}
-		options := runtime.MarshalInputToOptions(input)
-		_ = options
-		size := options.Size(x)
-		dAtA := make([]byte, size)
-		i := len(dAtA)
-		_ = i
-		var l int
-		_ = l
-		if x.unknownFields != nil {
-			i -= len(x.unknownFields)
-			copy(dAtA[i:], x.unknownFields)
-		}
-		if x.Pagination != nil {
-			encoded, err := options.Marshal(x.Pagination)
-			if err != nil {
-				return protoiface.MarshalOutput{
-					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-					Buf:               input.Buf,
-				}, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
-			i--
-			dAtA[i] = 0x12
-		}
-		if len(x.AuctionDetails) > 0 {
-			for iNdEx := len(x.AuctionDetails) - 1; iNdEx >= 0; iNdEx-- {
-				encoded, err := options.Marshal(x.AuctionDetails[iNdEx])
-				if err != nil {
-					return protoiface.MarshalOutput{
-						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-						Buf:               input.Buf,
-					}, err
-				}
-				i -= len(encoded)
-				copy(dAtA[i:], encoded)
-				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
-				i--
-				dAtA[i] = 0xa
-			}
-		}
-		if input.Buf != nil {
-			input.Buf = append(input.Buf, dAtA...)
-		} else {
-			input.Buf = dAtA
-		}
-		return protoiface.MarshalOutput{
-			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-			Buf:               input.Buf,
-		}, nil
-	}
-	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*QueryTimedAuctionAllResponse)
-		if x == nil {
-			return protoiface.UnmarshalOutput{
-				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
-				Flags:             input.Flags,
-			}, nil
-		}
-		options := runtime.UnmarshalInputToOptions(input)
-		_ = options
-		dAtA := input.Buf
-		l := len(dAtA)
-		iNdEx := 0
-		for iNdEx < l {
-			preIndex := iNdEx
-			var wire uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				wire |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			fieldNum := int32(wire >> 3)
-			wireType := int(wire & 0x7)
-			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTimedAuctionAllResponse: wiretype end group for non-group")
-			}
-			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryTimedAuctionAllResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-			}
-			switch fieldNum {
-			case 1:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field AuctionDetails", wireType)
-				}
-				var msglen int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					msglen |= int(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				if msglen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + msglen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.AuctionDetails = append(x.AuctionDetails, &AuctionDetail{})
+				x.AuctionDetails = append(x.AuctionDetails, &common.AuctionDetail{})
 				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.AuctionDetails[len(x.AuctionDetails)-1]); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
@@ -4553,7 +2691,7 @@ func (x *QueryAuthorizedBiddersRequest) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryAuthorizedBiddersRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_auction_query_proto_msgTypes[10]
+	mi := &file_fairyring_auction_query_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4971,7 +3109,7 @@ func (x *fastReflection_QueryAuthorizedBiddersRequest) ProtoMethods() *protoifac
 var _ protoreflect.List = (*_QueryAuthorizedBiddersResponse_1_list)(nil)
 
 type _QueryAuthorizedBiddersResponse_1_list struct {
-	list *[]*BidderDetail
+	list *[]*common.BidderDetail
 }
 
 func (x *_QueryAuthorizedBiddersResponse_1_list) Len() int {
@@ -4987,18 +3125,18 @@ func (x *_QueryAuthorizedBiddersResponse_1_list) Get(i int) protoreflect.Value {
 
 func (x *_QueryAuthorizedBiddersResponse_1_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*BidderDetail)
+	concreteValue := valueUnwrapped.Interface().(*common.BidderDetail)
 	(*x.list)[i] = concreteValue
 }
 
 func (x *_QueryAuthorizedBiddersResponse_1_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*BidderDetail)
+	concreteValue := valueUnwrapped.Interface().(*common.BidderDetail)
 	*x.list = append(*x.list, concreteValue)
 }
 
 func (x *_QueryAuthorizedBiddersResponse_1_list) AppendMutable() protoreflect.Value {
-	v := new(BidderDetail)
+	v := new(common.BidderDetail)
 	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
@@ -5011,7 +3149,7 @@ func (x *_QueryAuthorizedBiddersResponse_1_list) Truncate(n int) {
 }
 
 func (x *_QueryAuthorizedBiddersResponse_1_list) NewElement() protoreflect.Value {
-	v := new(BidderDetail)
+	v := new(common.BidderDetail)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
@@ -5039,7 +3177,7 @@ func (x *QueryAuthorizedBiddersResponse) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryAuthorizedBiddersResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_auction_query_proto_msgTypes[11]
+	mi := &file_fairyring_auction_query_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5204,7 +3342,7 @@ func (x *fastReflection_QueryAuthorizedBiddersResponse) Mutable(fd protoreflect.
 	switch fd.FullName() {
 	case "fairyring.auction.QueryAuthorizedBiddersResponse.bidders":
 		if x.Bidders == nil {
-			x.Bidders = []*BidderDetail{}
+			x.Bidders = []*common.BidderDetail{}
 		}
 		value := &_QueryAuthorizedBiddersResponse_1_list{list: &x.Bidders}
 		return protoreflect.ValueOfList(value)
@@ -5222,7 +3360,7 @@ func (x *fastReflection_QueryAuthorizedBiddersResponse) Mutable(fd protoreflect.
 func (x *fastReflection_QueryAuthorizedBiddersResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	case "fairyring.auction.QueryAuthorizedBiddersResponse.bidders":
-		list := []*BidderDetail{}
+		list := []*common.BidderDetail{}
 		return protoreflect.ValueOfList(&_QueryAuthorizedBiddersResponse_1_list{list: &list})
 	default:
 		if fd.IsExtension() {
@@ -5422,7 +3560,7 @@ func (x *fastReflection_QueryAuthorizedBiddersResponse) ProtoMethods() *protoifa
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Bidders = append(x.Bidders, &BidderDetail{})
+				x.Bidders = append(x.Bidders, &common.BidderDetail{})
 				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Bidders[len(x.Bidders)-1]); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
@@ -5579,7 +3717,7 @@ type QueryAuctionResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	AuctionDetail *AuctionDetail `protobuf:"bytes,1,opt,name=auction_detail,json=auctionDetail,proto3" json:"auction_detail,omitempty"`
+	AuctionDetail *common.AuctionDetail `protobuf:"bytes,1,opt,name=auction_detail,json=auctionDetail,proto3" json:"auction_detail,omitempty"`
 }
 
 func (x *QueryAuctionResponse) Reset() {
@@ -5602,7 +3740,7 @@ func (*QueryAuctionResponse) Descriptor() ([]byte, []int) {
 	return file_fairyring_auction_query_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *QueryAuctionResponse) GetAuctionDetail() *AuctionDetail {
+func (x *QueryAuctionResponse) GetAuctionDetail() *common.AuctionDetail {
 	if x != nil {
 		return x.AuctionDetail
 	}
@@ -5649,8 +3787,8 @@ type QueryAuctionAllResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	AuctionDetails []*AuctionDetail      `protobuf:"bytes,1,rep,name=auction_details,json=auctionDetails,proto3" json:"auction_details,omitempty"`
-	Pagination     *v1beta1.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	AuctionDetails []*common.AuctionDetail `protobuf:"bytes,1,rep,name=auction_details,json=auctionDetails,proto3" json:"auction_details,omitempty"`
+	Pagination     *v1beta1.PageResponse   `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
 func (x *QueryAuctionAllResponse) Reset() {
@@ -5673,7 +3811,7 @@ func (*QueryAuctionAllResponse) Descriptor() ([]byte, []int) {
 	return file_fairyring_auction_query_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *QueryAuctionAllResponse) GetAuctionDetails() []*AuctionDetail {
+func (x *QueryAuctionAllResponse) GetAuctionDetails() []*common.AuctionDetail {
 	if x != nil {
 		return x.AuctionDetails
 	}
@@ -5681,154 +3819,6 @@ func (x *QueryAuctionAllResponse) GetAuctionDetails() []*AuctionDetail {
 }
 
 func (x *QueryAuctionAllResponse) GetPagination() *v1beta1.PageResponse {
-	if x != nil {
-		return x.Pagination
-	}
-	return nil
-}
-
-type QueryTimedAuctionRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Identity string `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
-}
-
-func (x *QueryTimedAuctionRequest) Reset() {
-	*x = QueryTimedAuctionRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_auction_query_proto_msgTypes[6]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *QueryTimedAuctionRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*QueryTimedAuctionRequest) ProtoMessage() {}
-
-// Deprecated: Use QueryTimedAuctionRequest.ProtoReflect.Descriptor instead.
-func (*QueryTimedAuctionRequest) Descriptor() ([]byte, []int) {
-	return file_fairyring_auction_query_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *QueryTimedAuctionRequest) GetIdentity() string {
-	if x != nil {
-		return x.Identity
-	}
-	return ""
-}
-
-type QueryTimedAuctionResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	AuctionDetail *AuctionDetail `protobuf:"bytes,1,opt,name=auction_detail,json=auctionDetail,proto3" json:"auction_detail,omitempty"`
-}
-
-func (x *QueryTimedAuctionResponse) Reset() {
-	*x = QueryTimedAuctionResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_auction_query_proto_msgTypes[7]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *QueryTimedAuctionResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*QueryTimedAuctionResponse) ProtoMessage() {}
-
-// Deprecated: Use QueryTimedAuctionResponse.ProtoReflect.Descriptor instead.
-func (*QueryTimedAuctionResponse) Descriptor() ([]byte, []int) {
-	return file_fairyring_auction_query_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *QueryTimedAuctionResponse) GetAuctionDetail() *AuctionDetail {
-	if x != nil {
-		return x.AuctionDetail
-	}
-	return nil
-}
-
-type QueryTimedAuctionAllRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Pagination *v1beta1.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
-}
-
-func (x *QueryTimedAuctionAllRequest) Reset() {
-	*x = QueryTimedAuctionAllRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_auction_query_proto_msgTypes[8]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *QueryTimedAuctionAllRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*QueryTimedAuctionAllRequest) ProtoMessage() {}
-
-// Deprecated: Use QueryTimedAuctionAllRequest.ProtoReflect.Descriptor instead.
-func (*QueryTimedAuctionAllRequest) Descriptor() ([]byte, []int) {
-	return file_fairyring_auction_query_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *QueryTimedAuctionAllRequest) GetPagination() *v1beta1.PageRequest {
-	if x != nil {
-		return x.Pagination
-	}
-	return nil
-}
-
-type QueryTimedAuctionAllResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	AuctionDetails []*AuctionDetail      `protobuf:"bytes,1,rep,name=auction_details,json=auctionDetails,proto3" json:"auction_details,omitempty"`
-	Pagination     *v1beta1.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
-}
-
-func (x *QueryTimedAuctionAllResponse) Reset() {
-	*x = QueryTimedAuctionAllResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_auction_query_proto_msgTypes[9]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *QueryTimedAuctionAllResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*QueryTimedAuctionAllResponse) ProtoMessage() {}
-
-// Deprecated: Use QueryTimedAuctionAllResponse.ProtoReflect.Descriptor instead.
-func (*QueryTimedAuctionAllResponse) Descriptor() ([]byte, []int) {
-	return file_fairyring_auction_query_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *QueryTimedAuctionAllResponse) GetAuctionDetails() []*AuctionDetail {
-	if x != nil {
-		return x.AuctionDetails
-	}
-	return nil
-}
-
-func (x *QueryTimedAuctionAllResponse) GetPagination() *v1beta1.PageResponse {
 	if x != nil {
 		return x.Pagination
 	}
@@ -5846,7 +3836,7 @@ type QueryAuthorizedBiddersRequest struct {
 func (x *QueryAuthorizedBiddersRequest) Reset() {
 	*x = QueryAuthorizedBiddersRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_auction_query_proto_msgTypes[10]
+		mi := &file_fairyring_auction_query_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5860,7 +3850,7 @@ func (*QueryAuthorizedBiddersRequest) ProtoMessage() {}
 
 // Deprecated: Use QueryAuthorizedBiddersRequest.ProtoReflect.Descriptor instead.
 func (*QueryAuthorizedBiddersRequest) Descriptor() ([]byte, []int) {
-	return file_fairyring_auction_query_proto_rawDescGZIP(), []int{10}
+	return file_fairyring_auction_query_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *QueryAuthorizedBiddersRequest) GetPagination() *v1beta1.PageRequest {
@@ -5875,13 +3865,13 @@ type QueryAuthorizedBiddersResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Bidders []*BidderDetail `protobuf:"bytes,1,rep,name=bidders,proto3" json:"bidders,omitempty"`
+	Bidders []*common.BidderDetail `protobuf:"bytes,1,rep,name=bidders,proto3" json:"bidders,omitempty"`
 }
 
 func (x *QueryAuthorizedBiddersResponse) Reset() {
 	*x = QueryAuthorizedBiddersResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_auction_query_proto_msgTypes[11]
+		mi := &file_fairyring_auction_query_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5895,10 +3885,10 @@ func (*QueryAuthorizedBiddersResponse) ProtoMessage() {}
 
 // Deprecated: Use QueryAuthorizedBiddersResponse.ProtoReflect.Descriptor instead.
 func (*QueryAuthorizedBiddersResponse) Descriptor() ([]byte, []int) {
-	return file_fairyring_auction_query_proto_rawDescGZIP(), []int{11}
+	return file_fairyring_auction_query_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *QueryAuthorizedBiddersResponse) GetBidders() []*BidderDetail {
+func (x *QueryAuthorizedBiddersResponse) GetBidders() []*common.BidderDetail {
 	if x != nil {
 		return x.Bidders
 	}
@@ -5920,150 +3910,92 @@ var file_fairyring_auction_query_proto_rawDesc = []byte{
 	0x65, 0x74, 0x61, 0x31, 0x2f, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e,
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
 	0x2f, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x2a, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
-	0x2f, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x73, 0x65, 0x61, 0x6c, 0x65, 0x64, 0x5f,
-	0x62, 0x69, 0x64, 0x5f, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x22, 0x14, 0x0a, 0x12, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x53, 0x0a, 0x13, 0x51, 0x75, 0x65, 0x72, 0x79,
-	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3c,
-	0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19,
-	0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8,
-	0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x22, 0x31, 0x0a, 0x13,
-	0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x22,
-	0x5f, 0x0a, 0x14, 0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x47, 0x0a, 0x0e, 0x61, 0x75, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x5f, 0x64, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x20, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74,
-	0x69, 0x6f, 0x6e, 0x2e, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x65, 0x74, 0x61, 0x69,
-	0x6c, 0x52, 0x0d, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c,
-	0x22, 0x60, 0x0a, 0x16, 0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x46, 0x0a, 0x0a, 0x70, 0x61,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x23, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
+	0x2f, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x64, 0x5f, 0x74,
+	0x79, 0x70, 0x65, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x14, 0x0a, 0x12, 0x51, 0x75,
+	0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x22, 0x53, 0x0a, 0x13, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3c, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d,
+	0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
+	0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x50, 0x61, 0x72, 0x61,
+	0x6d, 0x73, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70,
+	0x61, 0x72, 0x61, 0x6d, 0x73, 0x22, 0x31, 0x0a, 0x13, 0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x75,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08,
+	0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08,
+	0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x22, 0x5e, 0x0a, 0x14, 0x51, 0x75, 0x65, 0x72,
+	0x79, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x46, 0x0a, 0x0e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x64, 0x65, 0x74, 0x61,
+	0x69, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
+	0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x41, 0x75, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52, 0x0d, 0x61, 0x75, 0x63, 0x74, 0x69,
+	0x6f, 0x6e, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x22, 0x60, 0x0a, 0x16, 0x51, 0x75, 0x65, 0x72,
+	0x79, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x12, 0x46, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e,
+	0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
+	0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x0a,
+	0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0xac, 0x01, 0x0a, 0x17, 0x51,
+	0x75, 0x65, 0x72, 0x79, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x6c, 0x6c, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x48, 0x0a, 0x0f, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f,
+	0x6e, 0x5f, 0x64, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32,
+	0x1f, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d,
+	0x6f, 0x6e, 0x2e, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c,
+	0x52, 0x0e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x73,
+	0x12, 0x47, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61,
+	0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
+	0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x52, 0x0a, 0x70,
+	0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x67, 0x0a, 0x1d, 0x51, 0x75, 0x65,
+	0x72, 0x79, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x42, 0x69, 0x64, 0x64,
+	0x65, 0x72, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x46, 0x0a, 0x0a, 0x70, 0x61,
 	0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26,
 	0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65,
 	0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52,
 	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x22, 0xad, 0x01, 0x0a, 0x17, 0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x75, 0x63, 0x74,
-	0x69, 0x6f, 0x6e, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x49,
-	0x0a, 0x0f, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x64, 0x65, 0x74, 0x61, 0x69, 0x6c,
-	0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
-	0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x41, 0x75, 0x63, 0x74,
-	0x69, 0x6f, 0x6e, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52, 0x0e, 0x61, 0x75, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x73, 0x12, 0x47, 0x0a, 0x0a, 0x70, 0x61, 0x67,
-	0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e,
-	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72,
-	0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x22, 0x36, 0x0a, 0x18, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x69, 0x6d, 0x65, 0x64,
-	0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1a,
-	0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x22, 0x64, 0x0a, 0x19, 0x51, 0x75,
-	0x65, 0x72, 0x79, 0x54, 0x69, 0x6d, 0x65, 0x64, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x47, 0x0a, 0x0e, 0x61, 0x75, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x5f, 0x64, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x20, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74,
-	0x69, 0x6f, 0x6e, 0x2e, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x65, 0x74, 0x61, 0x69,
-	0x6c, 0x52, 0x0d, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c,
-	0x22, 0x65, 0x0a, 0x1b, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x69, 0x6d, 0x65, 0x64, 0x41, 0x75,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
-	0x46, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73,
-	0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e,
-	0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x0a, 0x70, 0x61, 0x67,
-	0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0xb2, 0x01, 0x0a, 0x1c, 0x51, 0x75, 0x65, 0x72,
-	0x79, 0x54, 0x69, 0x6d, 0x65, 0x64, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x6c, 0x6c,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x49, 0x0a, 0x0f, 0x61, 0x75, 0x63, 0x74,
-	0x69, 0x6f, 0x6e, 0x5f, 0x64, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28,
-	0x0b, 0x32, 0x20, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x65, 0x74,
-	0x61, 0x69, 0x6c, 0x52, 0x0e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x65, 0x74, 0x61,
-	0x69, 0x6c, 0x73, 0x12, 0x47, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
-	0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65,
-	0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x67, 0x0a, 0x1d,
-	0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x42,
-	0x69, 0x64, 0x64, 0x65, 0x72, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x46, 0x0a,
-	0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x0b, 0x32, 0x26, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e,
-	0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61,
-	0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e,
-	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x5b, 0x0a, 0x1e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x75,
-	0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x42, 0x69, 0x64, 0x64, 0x65, 0x72, 0x73, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x39, 0x0a, 0x07, 0x62, 0x69, 0x64, 0x64, 0x65,
-	0x72, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
-	0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x42, 0x69, 0x64,
-	0x64, 0x65, 0x72, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52, 0x07, 0x62, 0x69, 0x64, 0x64, 0x65,
-	0x72, 0x73, 0x32, 0x83, 0x07, 0x0a, 0x05, 0x51, 0x75, 0x65, 0x72, 0x79, 0x12, 0x7a, 0x0a, 0x06,
-	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x25, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
-	0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79,
-	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x26, 0x2e,
-	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x21, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1b, 0x12, 0x19, 0x2f,
-	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x89, 0x01, 0x0a, 0x07, 0x41, 0x75, 0x63,
-	0x74, 0x69, 0x6f, 0x6e, 0x12, 0x26, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
-	0x2e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x75,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x27, 0x2e, 0x66,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2d, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x27, 0x12, 0x25, 0x2f,
-	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x2f, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x7b, 0x69, 0x64, 0x65, 0x6e, 0x74,
-	0x69, 0x74, 0x79, 0x7d, 0x12, 0x87, 0x01, 0x0a, 0x0a, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x41, 0x6c, 0x6c, 0x12, 0x29, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
-	0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x75, 0x63,
-	0x74, 0x69, 0x6f, 0x6e, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2a,
-	0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x41,
-	0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x22, 0x82, 0xd3, 0xe4, 0x93,
-	0x02, 0x1c, 0x12, 0x1a, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x61,
-	0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x9e,
-	0x01, 0x0a, 0x0c, 0x54, 0x69, 0x6d, 0x65, 0x64, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12,
-	0x2b, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74,
-	0x69, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x69, 0x6d, 0x65, 0x64, 0x41, 0x75,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2c, 0x2e, 0x66,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x69, 0x6d, 0x65, 0x64, 0x41, 0x75, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x33, 0x82, 0xd3, 0xe4, 0x93,
-	0x02, 0x2d, 0x12, 0x2b, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x61,
-	0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x74, 0x69, 0x6d, 0x65, 0x64, 0x5f, 0x61, 0x75, 0x63,
-	0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x7b, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x7d, 0x12,
-	0x9c, 0x01, 0x0a, 0x0f, 0x54, 0x69, 0x6d, 0x65, 0x64, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x41, 0x6c, 0x6c, 0x12, 0x2e, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
-	0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x69, 0x6d,
-	0x65, 0x64, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x1a, 0x2f, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
-	0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x54, 0x69, 0x6d,
-	0x65, 0x64, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x28, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x22, 0x12, 0x20, 0x2f, 0x66,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x2f, 0x74, 0x69, 0x6d, 0x65, 0x64, 0x5f, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0xa7,
-	0x01, 0x0a, 0x11, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x42, 0x69, 0x64,
-	0x64, 0x65, 0x72, 0x73, 0x12, 0x30, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
-	0x2e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x75,
-	0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x42, 0x69, 0x64, 0x64, 0x65, 0x72, 0x73, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x31, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
-	0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79,
-	0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x42, 0x69, 0x64, 0x64, 0x65, 0x72,
-	0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2d, 0x82, 0xd3, 0xe4, 0x93, 0x02,
-	0x27, 0x12, 0x25, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x61, 0x75,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64,
-	0x5f, 0x62, 0x69, 0x64, 0x64, 0x65, 0x72, 0x73, 0x42, 0xac, 0x01, 0x0a, 0x15, 0x63, 0x6f, 0x6d,
-	0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x42, 0x0a, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01,
-	0x5a, 0x22, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61,
-	0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x61, 0x75, 0x63,
-	0x74, 0x69, 0x6f, 0x6e, 0xa2, 0x02, 0x03, 0x46, 0x41, 0x58, 0xaa, 0x02, 0x11, 0x46, 0x61, 0x69,
-	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0xca, 0x02,
-	0x11, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x41, 0x75, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0xe2, 0x02, 0x1d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x41,
-	0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61,
-	0x74, 0x61, 0xea, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a,
-	0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6f, 0x6e, 0x22, 0x5a, 0x0a, 0x1e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x75, 0x74, 0x68, 0x6f,
+	0x72, 0x69, 0x7a, 0x65, 0x64, 0x42, 0x69, 0x64, 0x64, 0x65, 0x72, 0x73, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x38, 0x0a, 0x07, 0x62, 0x69, 0x64, 0x64, 0x65, 0x72, 0x73, 0x18,
+	0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
+	0x67, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x42, 0x69, 0x64, 0x64, 0x65, 0x72, 0x44,
+	0x65, 0x74, 0x61, 0x69, 0x6c, 0x52, 0x07, 0x62, 0x69, 0x64, 0x64, 0x65, 0x72, 0x73, 0x32, 0x99,
+	0x03, 0x0a, 0x05, 0x51, 0x75, 0x65, 0x72, 0x79, 0x12, 0x7a, 0x0a, 0x06, 0x50, 0x61, 0x72, 0x61,
+	0x6d, 0x73, 0x12, 0x25, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61,
+	0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61,
+	0x6d, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x26, 0x2e, 0x66, 0x61, 0x69, 0x72,
+	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x51, 0x75,
+	0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x21, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1b, 0x12, 0x19, 0x2f, 0x66, 0x61, 0x69, 0x72,
+	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x70, 0x61,
+	0x72, 0x61, 0x6d, 0x73, 0x12, 0x89, 0x01, 0x0a, 0x07, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e,
+	0x12, 0x26, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63,
+	0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f,
+	0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x27, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
+	0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65,
+	0x72, 0x79, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x2d, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x27, 0x12, 0x25, 0x2f, 0x66, 0x61, 0x69, 0x72,
+	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x61, 0x75,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x7b, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x7d,
+	0x12, 0x87, 0x01, 0x0a, 0x0a, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x6c, 0x6c, 0x12,
+	0x29, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e,
+	0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2a, 0x2e, 0x66, 0x61, 0x69,
+	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x51,
+	0x75, 0x65, 0x72, 0x79, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x6c, 0x6c, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x22, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1c, 0x12, 0x1a,
+	0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x61, 0x75, 0x63, 0x74, 0x69,
+	0x6f, 0x6e, 0x2f, 0x61, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0xac, 0x01, 0x0a, 0x15, 0x63,
+	0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x61, 0x75, 0x63,
+	0x74, 0x69, 0x6f, 0x6e, 0x42, 0x0a, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x6f, 0x74, 0x6f,
+	0x50, 0x01, 0x5a, 0x22, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f,
+	0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x61,
+	0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0xa2, 0x02, 0x03, 0x46, 0x41, 0x58, 0xaa, 0x02, 0x11, 0x46,
+	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e,
+	0xca, 0x02, 0x11, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x41, 0x75, 0x63,
+	0x74, 0x69, 0x6f, 0x6e, 0xe2, 0x02, 0x1d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
+	0x5c, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61,
+	0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x12, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
+	0x3a, 0x3a, 0x41, 0x75, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -6078,7 +4010,7 @@ func file_fairyring_auction_query_proto_rawDescGZIP() []byte {
 	return file_fairyring_auction_query_proto_rawDescData
 }
 
-var file_fairyring_auction_query_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_fairyring_auction_query_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_fairyring_auction_query_proto_goTypes = []interface{}{
 	(*QueryParamsRequest)(nil),             // 0: fairyring.auction.QueryParamsRequest
 	(*QueryParamsResponse)(nil),            // 1: fairyring.auction.QueryParamsResponse
@@ -6086,47 +4018,33 @@ var file_fairyring_auction_query_proto_goTypes = []interface{}{
 	(*QueryAuctionResponse)(nil),           // 3: fairyring.auction.QueryAuctionResponse
 	(*QueryAuctionAllRequest)(nil),         // 4: fairyring.auction.QueryAuctionAllRequest
 	(*QueryAuctionAllResponse)(nil),        // 5: fairyring.auction.QueryAuctionAllResponse
-	(*QueryTimedAuctionRequest)(nil),       // 6: fairyring.auction.QueryTimedAuctionRequest
-	(*QueryTimedAuctionResponse)(nil),      // 7: fairyring.auction.QueryTimedAuctionResponse
-	(*QueryTimedAuctionAllRequest)(nil),    // 8: fairyring.auction.QueryTimedAuctionAllRequest
-	(*QueryTimedAuctionAllResponse)(nil),   // 9: fairyring.auction.QueryTimedAuctionAllResponse
-	(*QueryAuthorizedBiddersRequest)(nil),  // 10: fairyring.auction.QueryAuthorizedBiddersRequest
-	(*QueryAuthorizedBiddersResponse)(nil), // 11: fairyring.auction.QueryAuthorizedBiddersResponse
-	(*Params)(nil),                         // 12: fairyring.auction.Params
-	(*AuctionDetail)(nil),                  // 13: fairyring.auction.AuctionDetail
-	(*v1beta1.PageRequest)(nil),            // 14: cosmos.base.query.v1beta1.PageRequest
-	(*v1beta1.PageResponse)(nil),           // 15: cosmos.base.query.v1beta1.PageResponse
-	(*BidderDetail)(nil),                   // 16: fairyring.auction.BidderDetail
+	(*QueryAuthorizedBiddersRequest)(nil),  // 6: fairyring.auction.QueryAuthorizedBiddersRequest
+	(*QueryAuthorizedBiddersResponse)(nil), // 7: fairyring.auction.QueryAuthorizedBiddersResponse
+	(*Params)(nil),                         // 8: fairyring.auction.Params
+	(*common.AuctionDetail)(nil),           // 9: fairyring.common.AuctionDetail
+	(*v1beta1.PageRequest)(nil),            // 10: cosmos.base.query.v1beta1.PageRequest
+	(*v1beta1.PageResponse)(nil),           // 11: cosmos.base.query.v1beta1.PageResponse
+	(*common.BidderDetail)(nil),            // 12: fairyring.common.BidderDetail
 }
 var file_fairyring_auction_query_proto_depIdxs = []int32{
-	12, // 0: fairyring.auction.QueryParamsResponse.params:type_name -> fairyring.auction.Params
-	13, // 1: fairyring.auction.QueryAuctionResponse.auction_detail:type_name -> fairyring.auction.AuctionDetail
-	14, // 2: fairyring.auction.QueryAuctionAllRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
-	13, // 3: fairyring.auction.QueryAuctionAllResponse.auction_details:type_name -> fairyring.auction.AuctionDetail
-	15, // 4: fairyring.auction.QueryAuctionAllResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
-	13, // 5: fairyring.auction.QueryTimedAuctionResponse.auction_detail:type_name -> fairyring.auction.AuctionDetail
-	14, // 6: fairyring.auction.QueryTimedAuctionAllRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
-	13, // 7: fairyring.auction.QueryTimedAuctionAllResponse.auction_details:type_name -> fairyring.auction.AuctionDetail
-	15, // 8: fairyring.auction.QueryTimedAuctionAllResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
-	14, // 9: fairyring.auction.QueryAuthorizedBiddersRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
-	16, // 10: fairyring.auction.QueryAuthorizedBiddersResponse.bidders:type_name -> fairyring.auction.BidderDetail
-	0,  // 11: fairyring.auction.Query.Params:input_type -> fairyring.auction.QueryParamsRequest
-	2,  // 12: fairyring.auction.Query.Auction:input_type -> fairyring.auction.QueryAuctionRequest
-	4,  // 13: fairyring.auction.Query.AuctionAll:input_type -> fairyring.auction.QueryAuctionAllRequest
-	6,  // 14: fairyring.auction.Query.TimedAuction:input_type -> fairyring.auction.QueryTimedAuctionRequest
-	8,  // 15: fairyring.auction.Query.TimedAuctionAll:input_type -> fairyring.auction.QueryTimedAuctionAllRequest
-	10, // 16: fairyring.auction.Query.AuthorizedBidders:input_type -> fairyring.auction.QueryAuthorizedBiddersRequest
-	1,  // 17: fairyring.auction.Query.Params:output_type -> fairyring.auction.QueryParamsResponse
-	3,  // 18: fairyring.auction.Query.Auction:output_type -> fairyring.auction.QueryAuctionResponse
-	5,  // 19: fairyring.auction.Query.AuctionAll:output_type -> fairyring.auction.QueryAuctionAllResponse
-	7,  // 20: fairyring.auction.Query.TimedAuction:output_type -> fairyring.auction.QueryTimedAuctionResponse
-	9,  // 21: fairyring.auction.Query.TimedAuctionAll:output_type -> fairyring.auction.QueryTimedAuctionAllResponse
-	11, // 22: fairyring.auction.Query.AuthorizedBidders:output_type -> fairyring.auction.QueryAuthorizedBiddersResponse
-	17, // [17:23] is the sub-list for method output_type
-	11, // [11:17] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	8,  // 0: fairyring.auction.QueryParamsResponse.params:type_name -> fairyring.auction.Params
+	9,  // 1: fairyring.auction.QueryAuctionResponse.auction_detail:type_name -> fairyring.common.AuctionDetail
+	10, // 2: fairyring.auction.QueryAuctionAllRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
+	9,  // 3: fairyring.auction.QueryAuctionAllResponse.auction_details:type_name -> fairyring.common.AuctionDetail
+	11, // 4: fairyring.auction.QueryAuctionAllResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
+	10, // 5: fairyring.auction.QueryAuthorizedBiddersRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
+	12, // 6: fairyring.auction.QueryAuthorizedBiddersResponse.bidders:type_name -> fairyring.common.BidderDetail
+	0,  // 7: fairyring.auction.Query.Params:input_type -> fairyring.auction.QueryParamsRequest
+	2,  // 8: fairyring.auction.Query.Auction:input_type -> fairyring.auction.QueryAuctionRequest
+	4,  // 9: fairyring.auction.Query.AuctionAll:input_type -> fairyring.auction.QueryAuctionAllRequest
+	1,  // 10: fairyring.auction.Query.Params:output_type -> fairyring.auction.QueryParamsResponse
+	3,  // 11: fairyring.auction.Query.Auction:output_type -> fairyring.auction.QueryAuctionResponse
+	5,  // 12: fairyring.auction.Query.AuctionAll:output_type -> fairyring.auction.QueryAuctionAllResponse
+	10, // [10:13] is the sub-list for method output_type
+	7,  // [7:10] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_fairyring_auction_query_proto_init() }
@@ -6135,7 +4053,6 @@ func file_fairyring_auction_query_proto_init() {
 		return
 	}
 	file_fairyring_auction_params_proto_init()
-	file_fairyring_auction_sealed_bid_auction_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_fairyring_auction_query_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*QueryParamsRequest); i {
@@ -6210,54 +4127,6 @@ func file_fairyring_auction_query_proto_init() {
 			}
 		}
 		file_fairyring_auction_query_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryTimedAuctionRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_fairyring_auction_query_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryTimedAuctionResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_fairyring_auction_query_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryTimedAuctionAllRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_fairyring_auction_query_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryTimedAuctionAllResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_fairyring_auction_query_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*QueryAuthorizedBiddersRequest); i {
 			case 0:
 				return &v.state
@@ -6269,7 +4138,7 @@ func file_fairyring_auction_query_proto_init() {
 				return nil
 			}
 		}
-		file_fairyring_auction_query_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+		file_fairyring_auction_query_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*QueryAuthorizedBiddersResponse); i {
 			case 0:
 				return &v.state
@@ -6288,7 +4157,7 @@ func file_fairyring_auction_query_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_fairyring_auction_query_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

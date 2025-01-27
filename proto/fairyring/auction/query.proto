@@ -6,7 +6,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "fairyring/auction/params.proto";
-import "fairyring/auction/sealed_bid_auction.proto";
+import "fairyring/common/shared_types.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/auction/types";
 
@@ -25,17 +25,9 @@ service Query {
     option (google.api.http).get = "/fairyring/auction/auction";
   }
 
-  rpc TimedAuction(QueryTimedAuctionRequest) returns (QueryTimedAuctionResponse) {
-    option (google.api.http).get = "/fairyring/auction/timed_auction/{identity}";
-  }
-
-  rpc TimedAuctionAll(QueryTimedAuctionAllRequest) returns (QueryTimedAuctionAllResponse) {
-    option (google.api.http).get = "/fairyring/auction/timed_auction";
-  }
-
-  rpc AuthorizedBidders(QueryAuthorizedBiddersRequest) returns (QueryAuthorizedBiddersResponse){
-    option (google.api.http).get = "/fairyring/auction/authorized_bidders";
-  }
+//  rpc AuthorizedBidders(QueryAuthorizedBiddersRequest) returns (QueryAuthorizedBiddersResponse){
+//    option (google.api.http).get = "/fairyring/auction/authorized_bidders";
+//  }
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -55,7 +47,7 @@ message QueryAuctionRequest {
 }
 
 message QueryAuctionResponse {
-  AuctionDetail auction_detail = 1;
+  fairyring.common.AuctionDetail auction_detail = 1;
 }
 
 message QueryAuctionAllRequest {
@@ -63,31 +55,31 @@ message QueryAuctionAllRequest {
 }
 
 message QueryAuctionAllResponse {
-  repeated AuctionDetail auction_details = 1;
+  repeated fairyring.common.AuctionDetail auction_details = 1;
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QueryTimedAuctionRequest {
-  string identity = 1;
-}
-
-message QueryTimedAuctionResponse {
-  AuctionDetail auction_detail = 1;
-}
-
-message QueryTimedAuctionAllRequest {
-  cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryTimedAuctionAllResponse {
-  repeated AuctionDetail auction_details = 1;
-  cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
+//message QueryTimedAuctionRequest {
+//  string identity = 1;
+//}
+//
+//message QueryTimedAuctionResponse {
+//  AuctionDetail auction_detail = 1;
+//}
+//
+//message QueryTimedAuctionAllRequest {
+//  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+//}
+//
+//message QueryTimedAuctionAllResponse {
+//  repeated AuctionDetail auction_details = 1;
+//  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+//}
 
 message QueryAuthorizedBiddersRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
 message QueryAuthorizedBiddersResponse {
-  repeated BidderDetail bidders = 1;
+  repeated fairyring.common.BidderDetail bidders = 1;
 }
