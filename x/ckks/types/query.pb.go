@@ -194,43 +194,129 @@ func (m *QueryAggregatedRkgr1Response) GetAggregatedRkR1() string {
 	return ""
 }
 
+type QueryGetPublicKeyRequest struct {
+}
+
+func (m *QueryGetPublicKeyRequest) Reset()         { *m = QueryGetPublicKeyRequest{} }
+func (m *QueryGetPublicKeyRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetPublicKeyRequest) ProtoMessage()    {}
+func (*QueryGetPublicKeyRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_08d826336a702fc6, []int{4}
+}
+func (m *QueryGetPublicKeyRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetPublicKeyRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetPublicKeyRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetPublicKeyRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetPublicKeyRequest.Merge(m, src)
+}
+func (m *QueryGetPublicKeyRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetPublicKeyRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetPublicKeyRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetPublicKeyRequest proto.InternalMessageInfo
+
+type QueryGetPublicKeyResponse struct {
+	Pk string `protobuf:"bytes,1,opt,name=pk,proto3" json:"pk,omitempty"`
+}
+
+func (m *QueryGetPublicKeyResponse) Reset()         { *m = QueryGetPublicKeyResponse{} }
+func (m *QueryGetPublicKeyResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetPublicKeyResponse) ProtoMessage()    {}
+func (*QueryGetPublicKeyResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_08d826336a702fc6, []int{5}
+}
+func (m *QueryGetPublicKeyResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetPublicKeyResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetPublicKeyResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetPublicKeyResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetPublicKeyResponse.Merge(m, src)
+}
+func (m *QueryGetPublicKeyResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetPublicKeyResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetPublicKeyResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetPublicKeyResponse proto.InternalMessageInfo
+
+func (m *QueryGetPublicKeyResponse) GetPk() string {
+	if m != nil {
+		return m.Pk
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "fairyring.ckks.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "fairyring.ckks.QueryParamsResponse")
 	proto.RegisterType((*QueryAggregatedRkgr1Request)(nil), "fairyring.ckks.QueryAggregatedRkgr1Request")
 	proto.RegisterType((*QueryAggregatedRkgr1Response)(nil), "fairyring.ckks.QueryAggregatedRkgr1Response")
+	proto.RegisterType((*QueryGetPublicKeyRequest)(nil), "fairyring.ckks.QueryGetPublicKeyRequest")
+	proto.RegisterType((*QueryGetPublicKeyResponse)(nil), "fairyring.ckks.QueryGetPublicKeyResponse")
 }
 
 func init() { proto.RegisterFile("fairyring/ckks/query.proto", fileDescriptor_08d826336a702fc6) }
 
 var fileDescriptor_08d826336a702fc6 = []byte{
-	// 403 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x92, 0xcf, 0x6a, 0xdb, 0x40,
-	0x10, 0xc6, 0x25, 0x43, 0x0d, 0xde, 0x82, 0x4b, 0xb7, 0xa6, 0x14, 0xd9, 0x55, 0x8d, 0x0a, 0xc5,
-	0xd8, 0xad, 0x16, 0xd9, 0xa7, 0x1e, 0x6b, 0xa8, 0xcf, 0xae, 0x8e, 0xbd, 0x98, 0x95, 0xba, 0xdd,
-	0x2e, 0xb2, 0xb4, 0xf2, 0xee, 0xba, 0xd4, 0xf4, 0x96, 0x27, 0x08, 0xe4, 0x09, 0x72, 0xf3, 0x31,
-	0x8f, 0xe1, 0xa3, 0x21, 0x97, 0x9c, 0x42, 0xb0, 0x03, 0x79, 0x8d, 0xe0, 0x95, 0xf2, 0xc7, 0x8a,
-	0x12, 0x72, 0x11, 0xcb, 0x7c, 0xdf, 0x7c, 0xf3, 0x9b, 0x41, 0xc0, 0xfa, 0x8d, 0x99, 0x58, 0x08,
-	0x96, 0x50, 0x14, 0x46, 0x91, 0x44, 0xb3, 0x39, 0x11, 0x0b, 0x37, 0x15, 0x5c, 0x71, 0x58, 0xbf,
-	0xd5, 0xdc, 0x9d, 0x66, 0xbd, 0xc6, 0x31, 0x4b, 0x38, 0xd2, 0xdf, 0xcc, 0x62, 0x35, 0x28, 0xa7,
-	0x5c, 0x3f, 0xd1, 0xee, 0x95, 0x57, 0x5b, 0x94, 0x73, 0x3a, 0x25, 0x08, 0xa7, 0x0c, 0xe1, 0x24,
-	0xe1, 0x0a, 0x2b, 0xc6, 0x13, 0x99, 0xab, 0xdd, 0x90, 0xcb, 0x98, 0x4b, 0x14, 0x60, 0x49, 0xb2,
-	0x79, 0xe8, 0xaf, 0x17, 0x10, 0x85, 0x3d, 0x94, 0x62, 0xca, 0x12, 0x6d, 0xce, 0xbd, 0xcd, 0x02,
-	0x5e, 0x8a, 0x05, 0x8e, 0xf3, 0x20, 0xa7, 0x01, 0xe0, 0x8f, 0x5d, 0xfb, 0x58, 0x17, 0x7d, 0x32,
-	0x9b, 0x13, 0xa9, 0x9c, 0x31, 0x78, 0xb3, 0x57, 0x95, 0x29, 0x4f, 0x24, 0x81, 0x5f, 0x41, 0x35,
-	0x6b, 0x7e, 0x67, 0xb6, 0xcd, 0xce, 0xcb, 0xfe, 0x5b, 0x77, 0x7f, 0x3b, 0x37, 0xf3, 0x0f, 0x6b,
-	0xab, 0xf3, 0x0f, 0xc6, 0xf2, 0xea, 0xa4, 0x6b, 0xfa, 0x79, 0x83, 0xf3, 0x1e, 0x34, 0x75, 0xe2,
-	0x37, 0x4a, 0x05, 0xa1, 0x58, 0x91, 0x5f, 0x7e, 0x44, 0x85, 0x77, 0x33, 0x70, 0x04, 0x5a, 0xe5,
-	0x72, 0x3e, 0xf9, 0x13, 0xa8, 0xe3, 0x7b, 0x92, 0xef, 0x69, 0x82, 0x9a, 0x5f, 0xa8, 0xf6, 0x97,
-	0x15, 0xf0, 0x42, 0x07, 0xc1, 0xff, 0xa0, 0x9a, 0xd1, 0x40, 0xa7, 0x48, 0xf9, 0x70, 0x61, 0xeb,
-	0xe3, 0x93, 0x9e, 0x0c, 0xc2, 0xe9, 0x1c, 0x9c, 0x5e, 0x1e, 0x55, 0x1c, 0xd8, 0x46, 0x23, 0xcc,
-	0x44, 0x30, 0xe5, 0x61, 0x84, 0x4a, 0x6f, 0x0b, 0x8f, 0x4d, 0xf0, 0xaa, 0xb0, 0x0a, 0xec, 0x95,
-	0x8e, 0x28, 0xbf, 0x87, 0xf5, 0xf9, 0x79, 0xe6, 0x1c, 0x6c, 0xa0, 0xc1, 0xbe, 0xc0, 0xde, 0xe3,
-	0x60, 0x77, 0x77, 0x9a, 0x88, 0x88, 0x8a, 0x89, 0x37, 0xfc, 0xbe, 0xda, 0xd8, 0xe6, 0x7a, 0x63,
-	0x9b, 0x17, 0x1b, 0xdb, 0x3c, 0xdc, 0xda, 0xc6, 0x7a, 0x6b, 0x1b, 0x67, 0x5b, 0xdb, 0xf8, 0xd9,
-	0xa3, 0x4c, 0xfd, 0x99, 0x07, 0x6e, 0xc8, 0xe3, 0xd2, 0xc0, 0x7f, 0x59, 0xa4, 0x5a, 0xa4, 0x44,
-	0x06, 0x55, 0xfd, 0x1f, 0x0d, 0xae, 0x03, 0x00, 0x00, 0xff, 0xff, 0x29, 0x7e, 0x7c, 0x43, 0x05,
-	0x03, 0x00, 0x00,
+	// 470 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x53, 0x41, 0x6b, 0x14, 0x31,
+	0x18, 0xdd, 0xac, 0xb8, 0xd0, 0x28, 0x2b, 0xc6, 0x22, 0x75, 0x5a, 0xc7, 0x32, 0x82, 0xac, 0xbb,
+	0x3a, 0x71, 0xda, 0x93, 0x47, 0x0b, 0xd6, 0x83, 0x97, 0x75, 0x8e, 0x5e, 0x96, 0xcc, 0x18, 0x63,
+	0xc8, 0xee, 0x24, 0x4d, 0xb2, 0xe2, 0xe0, 0xcd, 0x5f, 0x20, 0x88, 0x3f, 0xc0, 0x9b, 0x47, 0x7f,
+	0x82, 0xc7, 0x1e, 0x0b, 0x5e, 0x3c, 0x89, 0xec, 0x0a, 0xfe, 0x0d, 0xd9, 0x4c, 0xaa, 0xed, 0x9a,
+	0x96, 0xbd, 0x0c, 0xe1, 0x7b, 0xef, 0x7b, 0xef, 0xe5, 0x85, 0x81, 0xd1, 0x4b, 0xc2, 0x75, 0xad,
+	0x79, 0xc5, 0x70, 0x29, 0x84, 0xc1, 0x07, 0x53, 0xaa, 0xeb, 0x54, 0x69, 0x69, 0x25, 0xea, 0xfe,
+	0xc5, 0xd2, 0x05, 0x16, 0x5d, 0x25, 0x13, 0x5e, 0x49, 0xec, 0xbe, 0x0d, 0x25, 0x5a, 0x67, 0x92,
+	0x49, 0x77, 0xc4, 0x8b, 0x93, 0x9f, 0x6e, 0x31, 0x29, 0xd9, 0x98, 0x62, 0xa2, 0x38, 0x26, 0x55,
+	0x25, 0x2d, 0xb1, 0x5c, 0x56, 0xc6, 0xa3, 0xfd, 0x52, 0x9a, 0x89, 0x34, 0xb8, 0x20, 0x86, 0x36,
+	0x7e, 0xf8, 0x75, 0x56, 0x50, 0x4b, 0x32, 0xac, 0x08, 0xe3, 0x95, 0x23, 0x7b, 0xee, 0xe6, 0x52,
+	0x3c, 0x45, 0x34, 0x99, 0x78, 0xa1, 0x64, 0x1d, 0xa2, 0x67, 0x8b, 0xf5, 0xa1, 0x1b, 0xe6, 0xf4,
+	0x60, 0x4a, 0x8d, 0x4d, 0x86, 0xf0, 0xda, 0xa9, 0xa9, 0x51, 0xb2, 0x32, 0x14, 0x3d, 0x84, 0x9d,
+	0x66, 0x79, 0x03, 0x6c, 0x83, 0xde, 0xa5, 0x9d, 0xeb, 0xe9, 0xe9, 0xdb, 0xa5, 0x0d, 0x7f, 0x6f,
+	0xed, 0xf0, 0xc7, 0xad, 0xd6, 0xe7, 0xdf, 0x5f, 0xfa, 0x20, 0xf7, 0x0b, 0xc9, 0x4d, 0xb8, 0xe9,
+	0x14, 0x1f, 0x31, 0xa6, 0x29, 0x23, 0x96, 0xbe, 0xc8, 0x05, 0xd3, 0xd9, 0xb1, 0xe1, 0x3e, 0xdc,
+	0x0a, 0xc3, 0xde, 0xf9, 0x0e, 0xec, 0x92, 0x13, 0x50, 0x9e, 0xb9, 0x04, 0x6b, 0xf9, 0xd2, 0x34,
+	0x89, 0xe0, 0x86, 0xd3, 0x79, 0x42, 0xed, 0x70, 0x5a, 0x8c, 0x79, 0xf9, 0x94, 0xd6, 0xc7, 0x1e,
+	0x03, 0x78, 0x23, 0x80, 0x79, 0x83, 0x2e, 0x6c, 0x2b, 0xe1, 0x45, 0xdb, 0x4a, 0xec, 0x7c, 0xbd,
+	0x00, 0x2f, 0x3a, 0x36, 0x7a, 0x0b, 0x3b, 0xcd, 0xb5, 0x50, 0xb2, 0x7c, 0xdd, 0xff, 0x9b, 0x8b,
+	0x6e, 0x9f, 0xcb, 0x69, 0xcc, 0x92, 0xde, 0xbb, 0x6f, 0xbf, 0x3e, 0xb4, 0x13, 0xb4, 0x8d, 0xf7,
+	0x09, 0xd7, 0xc5, 0x58, 0x96, 0x02, 0x07, 0x1f, 0x09, 0x7d, 0x02, 0xf0, 0xca, 0x52, 0x27, 0x68,
+	0x10, 0xb4, 0x08, 0x17, 0x1b, 0xdd, 0x5b, 0x8d, 0xec, 0x83, 0xed, 0xba, 0x60, 0xf7, 0xd1, 0xe0,
+	0xec, 0x60, 0xff, 0x0a, 0x1f, 0x69, 0xc1, 0xf4, 0x28, 0x43, 0x1f, 0x01, 0xbc, 0x7c, 0xb2, 0x53,
+	0xd4, 0x0b, 0x7a, 0x06, 0x9e, 0x24, 0xba, 0xbb, 0x02, 0xd3, 0x47, 0x7b, 0xe0, 0xa2, 0xf5, 0x51,
+	0xef, 0xec, 0x68, 0x8c, 0xda, 0x91, 0x72, 0x8b, 0x23, 0x41, 0xeb, 0xbd, 0xc7, 0x87, 0xb3, 0x18,
+	0x1c, 0xcd, 0x62, 0xf0, 0x73, 0x16, 0x83, 0xf7, 0xf3, 0xb8, 0x75, 0x34, 0x8f, 0x5b, 0xdf, 0xe7,
+	0x71, 0xeb, 0xf9, 0x80, 0x71, 0xfb, 0x6a, 0x5a, 0xa4, 0xa5, 0x9c, 0x04, 0xd5, 0xde, 0x34, 0x7a,
+	0xb6, 0x56, 0xd4, 0x14, 0x1d, 0xf7, 0xa3, 0xec, 0xfe, 0x09, 0x00, 0x00, 0xff, 0xff, 0x98, 0xc6,
+	0xfc, 0x51, 0xe6, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -249,6 +335,8 @@ type QueryClient interface {
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
 	// Queries a list of AggregatedRkgr1 items.
 	AggregatedRkgr1(ctx context.Context, in *QueryAggregatedRkgr1Request, opts ...grpc.CallOption) (*QueryAggregatedRkgr1Response, error)
+	// Queries a list of GetPublicKey items.
+	GetPublicKey(ctx context.Context, in *QueryGetPublicKeyRequest, opts ...grpc.CallOption) (*QueryGetPublicKeyResponse, error)
 }
 
 type queryClient struct {
@@ -277,12 +365,23 @@ func (c *queryClient) AggregatedRkgr1(ctx context.Context, in *QueryAggregatedRk
 	return out, nil
 }
 
+func (c *queryClient) GetPublicKey(ctx context.Context, in *QueryGetPublicKeyRequest, opts ...grpc.CallOption) (*QueryGetPublicKeyResponse, error) {
+	out := new(QueryGetPublicKeyResponse)
+	err := c.cc.Invoke(ctx, "/fairyring.ckks.Query/GetPublicKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
 	// Queries a list of AggregatedRkgr1 items.
 	AggregatedRkgr1(context.Context, *QueryAggregatedRkgr1Request) (*QueryAggregatedRkgr1Response, error)
+	// Queries a list of GetPublicKey items.
+	GetPublicKey(context.Context, *QueryGetPublicKeyRequest) (*QueryGetPublicKeyResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -294,6 +393,9 @@ func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsReq
 }
 func (*UnimplementedQueryServer) AggregatedRkgr1(ctx context.Context, req *QueryAggregatedRkgr1Request) (*QueryAggregatedRkgr1Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AggregatedRkgr1 not implemented")
+}
+func (*UnimplementedQueryServer) GetPublicKey(ctx context.Context, req *QueryGetPublicKeyRequest) (*QueryGetPublicKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPublicKey not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -336,6 +438,24 @@ func _Query_AggregatedRkgr1_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_GetPublicKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetPublicKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).GetPublicKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fairyring.ckks.Query/GetPublicKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).GetPublicKey(ctx, req.(*QueryGetPublicKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var Query_serviceDesc = _Query_serviceDesc
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "fairyring.ckks.Query",
@@ -348,6 +468,10 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AggregatedRkgr1",
 			Handler:    _Query_AggregatedRkgr1_Handler,
+		},
+		{
+			MethodName: "GetPublicKey",
+			Handler:    _Query_GetPublicKey_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -463,6 +587,59 @@ func (m *QueryAggregatedRkgr1Response) MarshalToSizedBuffer(dAtA []byte) (int, e
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetPublicKeyRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetPublicKeyRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetPublicKeyRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetPublicKeyResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetPublicKeyResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetPublicKeyResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Pk) > 0 {
+		i -= len(m.Pk)
+		copy(dAtA[i:], m.Pk)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Pk)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -510,6 +687,28 @@ func (m *QueryAggregatedRkgr1Response) Size() (n int) {
 	var l int
 	_ = l
 	l = len(m.AggregatedRkR1)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetPublicKeyRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *QueryGetPublicKeyResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Pk)
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
@@ -765,6 +964,138 @@ func (m *QueryAggregatedRkgr1Response) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.AggregatedRkR1 = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetPublicKeyRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetPublicKeyRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetPublicKeyRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetPublicKeyResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetPublicKeyResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetPublicKeyResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pk", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Pk = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

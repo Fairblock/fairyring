@@ -8,7 +8,6 @@ package ckks
 
 import (
 	context "context"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -28,6 +27,8 @@ const (
 	Msg_SubmitShamirShare_FullMethodName    = "/fairyring.ckks.Msg/SubmitShamirShare"
 	Msg_KeySwitchRequest_FullMethodName     = "/fairyring.ckks.Msg/KeySwitchRequest"
 	Msg_SubmitPksShare_FullMethodName       = "/fairyring.ckks.Msg/SubmitPksShare"
+	Msg_DecryptionRequest_FullMethodName    = "/fairyring.ckks.Msg/DecryptionRequest"
+	Msg_SubmitDecShare_FullMethodName       = "/fairyring.ckks.Msg/SubmitDecShare"
 )
 
 // MsgClient is the client API for Msg service.
@@ -44,6 +45,8 @@ type MsgClient interface {
 	SubmitShamirShare(ctx context.Context, in *MsgSubmitShamirShare, opts ...grpc.CallOption) (*MsgSubmitShamirShareResponse, error)
 	KeySwitchRequest(ctx context.Context, in *MsgKeySwitchRequest, opts ...grpc.CallOption) (*MsgKeySwitchRequestResponse, error)
 	SubmitPksShare(ctx context.Context, in *MsgSubmitPksShare, opts ...grpc.CallOption) (*MsgSubmitPksShareResponse, error)
+	DecryptionRequest(ctx context.Context, in *MsgDecryptionRequest, opts ...grpc.CallOption) (*MsgDecryptionRequestResponse, error)
+	SubmitDecShare(ctx context.Context, in *MsgSubmitDecShare, opts ...grpc.CallOption) (*MsgSubmitDecShareResponse, error)
 }
 
 type msgClient struct {
@@ -126,6 +129,24 @@ func (c *msgClient) SubmitPksShare(ctx context.Context, in *MsgSubmitPksShare, o
 	return out, nil
 }
 
+func (c *msgClient) DecryptionRequest(ctx context.Context, in *MsgDecryptionRequest, opts ...grpc.CallOption) (*MsgDecryptionRequestResponse, error) {
+	out := new(MsgDecryptionRequestResponse)
+	err := c.cc.Invoke(ctx, Msg_DecryptionRequest_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) SubmitDecShare(ctx context.Context, in *MsgSubmitDecShare, opts ...grpc.CallOption) (*MsgSubmitDecShareResponse, error) {
+	out := new(MsgSubmitDecShareResponse)
+	err := c.cc.Invoke(ctx, Msg_SubmitDecShare_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -140,6 +161,8 @@ type MsgServer interface {
 	SubmitShamirShare(context.Context, *MsgSubmitShamirShare) (*MsgSubmitShamirShareResponse, error)
 	KeySwitchRequest(context.Context, *MsgKeySwitchRequest) (*MsgKeySwitchRequestResponse, error)
 	SubmitPksShare(context.Context, *MsgSubmitPksShare) (*MsgSubmitPksShareResponse, error)
+	DecryptionRequest(context.Context, *MsgDecryptionRequest) (*MsgDecryptionRequestResponse, error)
+	SubmitDecShare(context.Context, *MsgSubmitDecShare) (*MsgSubmitDecShareResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -170,6 +193,12 @@ func (UnimplementedMsgServer) KeySwitchRequest(context.Context, *MsgKeySwitchReq
 }
 func (UnimplementedMsgServer) SubmitPksShare(context.Context, *MsgSubmitPksShare) (*MsgSubmitPksShareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitPksShare not implemented")
+}
+func (UnimplementedMsgServer) DecryptionRequest(context.Context, *MsgDecryptionRequest) (*MsgDecryptionRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DecryptionRequest not implemented")
+}
+func (UnimplementedMsgServer) SubmitDecShare(context.Context, *MsgSubmitDecShare) (*MsgSubmitDecShareResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitDecShare not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -328,6 +357,42 @@ func _Msg_SubmitPksShare_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_DecryptionRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDecryptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).DecryptionRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_DecryptionRequest_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).DecryptionRequest(ctx, req.(*MsgDecryptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_SubmitDecShare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSubmitDecShare)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).SubmitDecShare(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_SubmitDecShare_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).SubmitDecShare(ctx, req.(*MsgSubmitDecShare))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -366,6 +431,14 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SubmitPksShare",
 			Handler:    _Msg_SubmitPksShare_Handler,
+		},
+		{
+			MethodName: "DecryptionRequest",
+			Handler:    _Msg_DecryptionRequest_Handler,
+		},
+		{
+			MethodName: "SubmitDecShare",
+			Handler:    _Msg_SubmitDecShare_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

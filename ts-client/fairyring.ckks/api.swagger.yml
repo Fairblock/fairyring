@@ -35,6 +35,37 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /Fairblock/fairyring/ckks/get_public_key:
+    get:
+      operationId: Query_GetPublicKey
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              publicKey:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /Fairblock/fairyring/ckks/params:
     get:
       operationId: Query_Params
@@ -46,6 +77,10 @@ paths:
             properties:
               params:
                 type: object
+                properties:
+                  num_of_validators:
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -94,14 +129,31 @@ definitions:
     properties:
       aggregatedRkR1:
         type: string
+  QueryGetPublicKeyResponse:
+    type: object
+    properties:
+      publicKey:
+        type: string
   QueryParamsResponse:
     type: object
     properties:
       params:
         type: object
+        properties:
+          num_of_validators:
+            type: string
+            format: uint64
   ckks.Params:
     type: object
+    properties:
+      num_of_validators:
+        type: string
+        format: uint64
+  MsgDecryptionRequestResponse:
+    type: object
   MsgKeySwitchRequestResponse:
+    type: object
+  MsgSubmitDecShareResponse:
     type: object
   MsgSubmitGkgShareResponse:
     type: object
@@ -119,3 +171,7 @@ definitions:
     type: object
   Params:
     type: object
+    properties:
+      num_of_validators:
+        type: string
+        format: uint64

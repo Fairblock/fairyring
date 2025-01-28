@@ -51,6 +51,14 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgSubmitPksShare int = 100
 
+	opWeightMsgDecryptionRequest = "op_weight_msg_decryption_request"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDecryptionRequest int = 100
+
+	opWeightMsgSubmitDecShare = "op_weight_msg_submit_dec_share"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgSubmitDecShare int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -151,6 +159,28 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		ckkssimulation.SimulateMsgSubmitPksShare(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
+	var weightMsgDecryptionRequest int
+	simState.AppParams.GetOrGenerate(opWeightMsgDecryptionRequest, &weightMsgDecryptionRequest, nil,
+		func(_ *rand.Rand) {
+			weightMsgDecryptionRequest = defaultWeightMsgDecryptionRequest
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDecryptionRequest,
+		ckkssimulation.SimulateMsgDecryptionRequest(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgSubmitDecShare int
+	simState.AppParams.GetOrGenerate(opWeightMsgSubmitDecShare, &weightMsgSubmitDecShare, nil,
+		func(_ *rand.Rand) {
+			weightMsgSubmitDecShare = defaultWeightMsgSubmitDecShare
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgSubmitDecShare,
+		ckkssimulation.SimulateMsgSubmitDecShare(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
@@ -212,6 +242,22 @@ func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.Wei
 			defaultWeightMsgSubmitPksShare,
 			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
 				ckkssimulation.SimulateMsgSubmitPksShare(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgDecryptionRequest,
+			defaultWeightMsgDecryptionRequest,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				ckkssimulation.SimulateMsgDecryptionRequest(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgSubmitDecShare,
+			defaultWeightMsgSubmitDecShare,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				ckkssimulation.SimulateMsgSubmitDecShare(am.accountKeeper, am.bankKeeper, am.keeper)
 				return nil
 			},
 		),

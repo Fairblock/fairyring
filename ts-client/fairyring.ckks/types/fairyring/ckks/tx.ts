@@ -63,6 +63,7 @@ export interface MsgKeySwitchRequest {
   creator: string;
   ct: string;
   newPk: string;
+  handle: string;
 }
 
 export interface MsgKeySwitchRequestResponse {
@@ -71,9 +72,26 @@ export interface MsgKeySwitchRequestResponse {
 export interface MsgSubmitPksShare {
   creator: string;
   shareData: string;
+  handle: string;
 }
 
 export interface MsgSubmitPksShareResponse {
+}
+
+export interface MsgDecryptionRequest {
+  creator: string;
+  ct: string;
+  handle: string;
+}
+
+export interface MsgDecryptionRequestResponse {
+}
+
+export interface MsgSubmitDecShare {
+  creator: string;
+}
+
+export interface MsgSubmitDecShareResponse {
 }
 
 function createBaseMsgUpdateParams(): MsgUpdateParams {
@@ -781,7 +799,7 @@ export const MsgSubmitShamirShareResponse = {
 };
 
 function createBaseMsgKeySwitchRequest(): MsgKeySwitchRequest {
-  return { creator: "", ct: "", newPk: "" };
+  return { creator: "", ct: "", newPk: "", handle: "" };
 }
 
 export const MsgKeySwitchRequest = {
@@ -794,6 +812,9 @@ export const MsgKeySwitchRequest = {
     }
     if (message.newPk !== "") {
       writer.uint32(26).string(message.newPk);
+    }
+    if (message.handle !== "") {
+      writer.uint32(34).string(message.handle);
     }
     return writer;
   },
@@ -826,6 +847,13 @@ export const MsgKeySwitchRequest = {
 
           message.newPk = reader.string();
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.handle = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -840,6 +868,7 @@ export const MsgKeySwitchRequest = {
       creator: isSet(object.creator) ? String(object.creator) : "",
       ct: isSet(object.ct) ? String(object.ct) : "",
       newPk: isSet(object.newPk) ? String(object.newPk) : "",
+      handle: isSet(object.handle) ? String(object.handle) : "",
     };
   },
 
@@ -854,6 +883,9 @@ export const MsgKeySwitchRequest = {
     if (message.newPk !== "") {
       obj.newPk = message.newPk;
     }
+    if (message.handle !== "") {
+      obj.handle = message.handle;
+    }
     return obj;
   },
 
@@ -865,6 +897,7 @@ export const MsgKeySwitchRequest = {
     message.creator = object.creator ?? "";
     message.ct = object.ct ?? "";
     message.newPk = object.newPk ?? "";
+    message.handle = object.handle ?? "";
     return message;
   },
 };
@@ -913,7 +946,7 @@ export const MsgKeySwitchRequestResponse = {
 };
 
 function createBaseMsgSubmitPksShare(): MsgSubmitPksShare {
-  return { creator: "", shareData: "" };
+  return { creator: "", shareData: "", handle: "" };
 }
 
 export const MsgSubmitPksShare = {
@@ -923,6 +956,9 @@ export const MsgSubmitPksShare = {
     }
     if (message.shareData !== "") {
       writer.uint32(18).string(message.shareData);
+    }
+    if (message.handle !== "") {
+      writer.uint32(26).string(message.handle);
     }
     return writer;
   },
@@ -948,6 +984,13 @@ export const MsgSubmitPksShare = {
 
           message.shareData = reader.string();
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.handle = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -961,6 +1004,7 @@ export const MsgSubmitPksShare = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       shareData: isSet(object.shareData) ? String(object.shareData) : "",
+      handle: isSet(object.handle) ? String(object.handle) : "",
     };
   },
 
@@ -972,6 +1016,9 @@ export const MsgSubmitPksShare = {
     if (message.shareData !== "") {
       obj.shareData = message.shareData;
     }
+    if (message.handle !== "") {
+      obj.handle = message.handle;
+    }
     return obj;
   },
 
@@ -982,6 +1029,7 @@ export const MsgSubmitPksShare = {
     const message = createBaseMsgSubmitPksShare();
     message.creator = object.creator ?? "";
     message.shareData = object.shareData ?? "";
+    message.handle = object.handle ?? "";
     return message;
   },
 };
@@ -1029,6 +1077,238 @@ export const MsgSubmitPksShareResponse = {
   },
 };
 
+function createBaseMsgDecryptionRequest(): MsgDecryptionRequest {
+  return { creator: "", ct: "", handle: "" };
+}
+
+export const MsgDecryptionRequest = {
+  encode(message: MsgDecryptionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.ct !== "") {
+      writer.uint32(18).string(message.ct);
+    }
+    if (message.handle !== "") {
+      writer.uint32(26).string(message.handle);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDecryptionRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDecryptionRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.creator = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.ct = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.handle = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgDecryptionRequest {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      ct: isSet(object.ct) ? String(object.ct) : "",
+      handle: isSet(object.handle) ? String(object.handle) : "",
+    };
+  },
+
+  toJSON(message: MsgDecryptionRequest): unknown {
+    const obj: any = {};
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.ct !== "") {
+      obj.ct = message.ct;
+    }
+    if (message.handle !== "") {
+      obj.handle = message.handle;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgDecryptionRequest>, I>>(base?: I): MsgDecryptionRequest {
+    return MsgDecryptionRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgDecryptionRequest>, I>>(object: I): MsgDecryptionRequest {
+    const message = createBaseMsgDecryptionRequest();
+    message.creator = object.creator ?? "";
+    message.ct = object.ct ?? "";
+    message.handle = object.handle ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgDecryptionRequestResponse(): MsgDecryptionRequestResponse {
+  return {};
+}
+
+export const MsgDecryptionRequestResponse = {
+  encode(_: MsgDecryptionRequestResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDecryptionRequestResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDecryptionRequestResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgDecryptionRequestResponse {
+    return {};
+  },
+
+  toJSON(_: MsgDecryptionRequestResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgDecryptionRequestResponse>, I>>(base?: I): MsgDecryptionRequestResponse {
+    return MsgDecryptionRequestResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgDecryptionRequestResponse>, I>>(_: I): MsgDecryptionRequestResponse {
+    const message = createBaseMsgDecryptionRequestResponse();
+    return message;
+  },
+};
+
+function createBaseMsgSubmitDecShare(): MsgSubmitDecShare {
+  return { creator: "" };
+}
+
+export const MsgSubmitDecShare = {
+  encode(message: MsgSubmitDecShare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitDecShare {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSubmitDecShare();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.creator = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSubmitDecShare {
+    return { creator: isSet(object.creator) ? String(object.creator) : "" };
+  },
+
+  toJSON(message: MsgSubmitDecShare): unknown {
+    const obj: any = {};
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgSubmitDecShare>, I>>(base?: I): MsgSubmitDecShare {
+    return MsgSubmitDecShare.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgSubmitDecShare>, I>>(object: I): MsgSubmitDecShare {
+    const message = createBaseMsgSubmitDecShare();
+    message.creator = object.creator ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgSubmitDecShareResponse(): MsgSubmitDecShareResponse {
+  return {};
+}
+
+export const MsgSubmitDecShareResponse = {
+  encode(_: MsgSubmitDecShareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitDecShareResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSubmitDecShareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgSubmitDecShareResponse {
+    return {};
+  },
+
+  toJSON(_: MsgSubmitDecShareResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgSubmitDecShareResponse>, I>>(base?: I): MsgSubmitDecShareResponse {
+    return MsgSubmitDecShareResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgSubmitDecShareResponse>, I>>(_: I): MsgSubmitDecShareResponse {
+    const message = createBaseMsgSubmitDecShareResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -1043,6 +1323,8 @@ export interface Msg {
   SubmitShamirShare(request: MsgSubmitShamirShare): Promise<MsgSubmitShamirShareResponse>;
   KeySwitchRequest(request: MsgKeySwitchRequest): Promise<MsgKeySwitchRequestResponse>;
   SubmitPksShare(request: MsgSubmitPksShare): Promise<MsgSubmitPksShareResponse>;
+  DecryptionRequest(request: MsgDecryptionRequest): Promise<MsgDecryptionRequestResponse>;
+  SubmitDecShare(request: MsgSubmitDecShare): Promise<MsgSubmitDecShareResponse>;
 }
 
 export const MsgServiceName = "fairyring.ckks.Msg";
@@ -1060,6 +1342,8 @@ export class MsgClientImpl implements Msg {
     this.SubmitShamirShare = this.SubmitShamirShare.bind(this);
     this.KeySwitchRequest = this.KeySwitchRequest.bind(this);
     this.SubmitPksShare = this.SubmitPksShare.bind(this);
+    this.DecryptionRequest = this.DecryptionRequest.bind(this);
+    this.SubmitDecShare = this.SubmitDecShare.bind(this);
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
@@ -1107,6 +1391,18 @@ export class MsgClientImpl implements Msg {
     const data = MsgSubmitPksShare.encode(request).finish();
     const promise = this.rpc.request(this.service, "SubmitPksShare", data);
     return promise.then((data) => MsgSubmitPksShareResponse.decode(_m0.Reader.create(data)));
+  }
+
+  DecryptionRequest(request: MsgDecryptionRequest): Promise<MsgDecryptionRequestResponse> {
+    const data = MsgDecryptionRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "DecryptionRequest", data);
+    return promise.then((data) => MsgDecryptionRequestResponse.decode(_m0.Reader.create(data)));
+  }
+
+  SubmitDecShare(request: MsgSubmitDecShare): Promise<MsgSubmitDecShareResponse> {
+    const data = MsgSubmitDecShare.encode(request).finish();
+    const promise = this.rpc.request(this.service, "SubmitDecShare", data);
+    return promise.then((data) => MsgSubmitDecShareResponse.decode(_m0.Reader.create(data)));
   }
 }
 

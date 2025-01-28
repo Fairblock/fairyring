@@ -9700,6 +9700,38 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /Fairblock/fairyring/ckks/get_public_key:
+    get:
+      summary: Queries a list of GetPublicKey items.
+      operationId: FairyringCkksQuery_GetPublicKey
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              publicKey:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /Fairblock/fairyring/ckks/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -9713,6 +9745,10 @@ paths:
               params:
                 description: params holds all the parameters of this module.
                 type: object
+                properties:
+                  num_of_validators:
+                    type: string
+                    format: uint64
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -9736,6 +9772,47 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /fairyring.ckks.Msg/DecryptionRequest:
+    post:
+      operationId: FairyringCkksMsg_DecryptionRequest
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              creator:
+                type: string
+              ct:
+                type: string
+              handle:
+                type: string
+      tags:
+        - Msg
   /fairyring.ckks.Msg/KeySwitchRequest:
     post:
       operationId: FairyringCkksMsg_KeySwitchRequest
@@ -9774,6 +9851,45 @@ paths:
               ct:
                 type: string
               newPk:
+                type: string
+              handle:
+                type: string
+      tags:
+        - Msg
+  /fairyring.ckks.Msg/SubmitDecShare:
+    post:
+      operationId: FairyringCkksMsg_SubmitDecShare
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              creator:
                 type: string
       tags:
         - Msg
@@ -9891,6 +10007,8 @@ paths:
               creator:
                 type: string
               shareData:
+                type: string
+              handle:
                 type: string
       tags:
         - Msg
@@ -10061,6 +10179,10 @@ paths:
               params:
                 description: 'NOTE: All parameters must be supplied.'
                 type: object
+                properties:
+                  num_of_validators:
+                    type: string
+                    format: uint64
             description: MsgUpdateParams is the Msg/UpdateParams request type.
       tags:
         - Msg
@@ -21521,11 +21643,20 @@ definitions:
     description: Params defines the parameters for the x/staking module.
   fairyring.ckks.Params:
     type: object
+    properties:
+      num_of_validators:
+        type: string
+        format: uint64
     description: Params defines the parameters for the module.
   fairyring.ckks.QueryAggregatedRkgr1Response:
     type: object
     properties:
       aggregatedRkR1:
+        type: string
+  fairyring.ckks.QueryGetPublicKeyResponse:
+    type: object
+    properties:
+      publicKey:
         type: string
   fairyring.ckks.QueryParamsResponse:
     type: object
@@ -21533,7 +21664,22 @@ definitions:
       params:
         description: params holds all the parameters of this module.
         type: object
+        properties:
+          num_of_validators:
+            type: string
+            format: uint64
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  fairyring.ckks.MsgDecryptionRequest:
+    type: object
+    properties:
+      creator:
+        type: string
+      ct:
+        type: string
+      handle:
+        type: string
+  fairyring.ckks.MsgDecryptionRequestResponse:
+    type: object
   fairyring.ckks.MsgKeySwitchRequest:
     type: object
     properties:
@@ -21543,7 +21689,16 @@ definitions:
         type: string
       newPk:
         type: string
+      handle:
+        type: string
   fairyring.ckks.MsgKeySwitchRequestResponse:
+    type: object
+  fairyring.ckks.MsgSubmitDecShare:
+    type: object
+    properties:
+      creator:
+        type: string
+  fairyring.ckks.MsgSubmitDecShareResponse:
     type: object
   fairyring.ckks.MsgSubmitGkgShare:
     type: object
@@ -21569,6 +21724,8 @@ definitions:
       creator:
         type: string
       shareData:
+        type: string
+      handle:
         type: string
   fairyring.ckks.MsgSubmitPksShareResponse:
     type: object
@@ -21610,6 +21767,10 @@ definitions:
       params:
         description: 'NOTE: All parameters must be supplied.'
         type: object
+        properties:
+          num_of_validators:
+            type: string
+            format: uint64
     description: MsgUpdateParams is the Msg/UpdateParams request type.
   fairyring.ckks.MsgUpdateParamsResponse:
     type: object

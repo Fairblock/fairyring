@@ -24,6 +24,8 @@ service Msg {
   rpc SubmitShamirShare    (MsgSubmitShamirShare   ) returns (MsgSubmitShamirShareResponse   );
   rpc KeySwitchRequest     (MsgKeySwitchRequest    ) returns (MsgKeySwitchRequestResponse    );
   rpc SubmitPksShare       (MsgSubmitPksShare      ) returns (MsgSubmitPksShareResponse      );
+  rpc DecryptionRequest    (MsgDecryptionRequest   ) returns (MsgDecryptionRequestResponse   );
+  rpc SubmitDecShare       (MsgSubmitDecShare      ) returns (MsgSubmitDecShareResponse      );
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
@@ -88,9 +90,7 @@ message MsgKeySwitchRequest {
   string creator = 1;
   string ct      = 2;
   string newPk   = 3;
-  string newSk = 4;
-  bool decryption = 5;
-  string handle = 6;
+  string handle  = 4;
 }
 
 message MsgKeySwitchRequestResponse {}
@@ -99,8 +99,27 @@ message MsgSubmitPksShare {
   option (cosmos.msg.v1.signer) = "creator";
   string creator   = 1;
   string shareData = 2;
-  string handle = 3;
+  string handle    = 3;
 }
 
 message MsgSubmitPksShareResponse {}
+
+message MsgDecryptionRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string ct      = 2;
+  string handle  = 3;
+}
+
+message MsgDecryptionRequestResponse {}
+
+message MsgSubmitDecShare {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string shareDataPublic = 2;
+  string shareDataSecret = 3;
+  string handle    = 4;
+}
+
+message MsgSubmitDecShareResponse {}
 

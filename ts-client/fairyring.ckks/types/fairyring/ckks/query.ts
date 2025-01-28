@@ -21,6 +21,13 @@ export interface QueryAggregatedRkgr1Response {
   aggregatedRkR1: string;
 }
 
+export interface QueryGetPublicKeyRequest {
+}
+
+export interface QueryGetPublicKeyResponse {
+  publicKey: string;
+}
+
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
@@ -223,12 +230,114 @@ export const QueryAggregatedRkgr1Response = {
   },
 };
 
+function createBaseQueryGetPublicKeyRequest(): QueryGetPublicKeyRequest {
+  return {};
+}
+
+export const QueryGetPublicKeyRequest = {
+  encode(_: QueryGetPublicKeyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPublicKeyRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetPublicKeyRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGetPublicKeyRequest {
+    return {};
+  },
+
+  toJSON(_: QueryGetPublicKeyRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryGetPublicKeyRequest>, I>>(base?: I): QueryGetPublicKeyRequest {
+    return QueryGetPublicKeyRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryGetPublicKeyRequest>, I>>(_: I): QueryGetPublicKeyRequest {
+    const message = createBaseQueryGetPublicKeyRequest();
+    return message;
+  },
+};
+
+function createBaseQueryGetPublicKeyResponse(): QueryGetPublicKeyResponse {
+  return { publicKey: "" };
+}
+
+export const QueryGetPublicKeyResponse = {
+  encode(message: QueryGetPublicKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.publicKey !== "") {
+      writer.uint32(10).string(message.publicKey);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPublicKeyResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetPublicKeyResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.publicKey = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetPublicKeyResponse {
+    return { publicKey: isSet(object.publicKey) ? String(object.publicKey) : "" };
+  },
+
+  toJSON(message: QueryGetPublicKeyResponse): unknown {
+    const obj: any = {};
+    if (message.publicKey !== "") {
+      obj.publicKey = message.publicKey;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryGetPublicKeyResponse>, I>>(base?: I): QueryGetPublicKeyResponse {
+    return QueryGetPublicKeyResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryGetPublicKeyResponse>, I>>(object: I): QueryGetPublicKeyResponse {
+    const message = createBaseQueryGetPublicKeyResponse();
+    message.publicKey = object.publicKey ?? "";
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** Queries a list of AggregatedRkgr1 items. */
   AggregatedRkgr1(request: QueryAggregatedRkgr1Request): Promise<QueryAggregatedRkgr1Response>;
+  /** Queries a list of GetPublicKey items. */
+  GetPublicKey(request: QueryGetPublicKeyRequest): Promise<QueryGetPublicKeyResponse>;
 }
 
 export const QueryServiceName = "fairyring.ckks.Query";
@@ -240,6 +349,7 @@ export class QueryClientImpl implements Query {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
     this.AggregatedRkgr1 = this.AggregatedRkgr1.bind(this);
+    this.GetPublicKey = this.GetPublicKey.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -251,6 +361,12 @@ export class QueryClientImpl implements Query {
     const data = QueryAggregatedRkgr1Request.encode(request).finish();
     const promise = this.rpc.request(this.service, "AggregatedRkgr1", data);
     return promise.then((data) => QueryAggregatedRkgr1Response.decode(_m0.Reader.create(data)));
+  }
+
+  GetPublicKey(request: QueryGetPublicKeyRequest): Promise<QueryGetPublicKeyResponse> {
+    const data = QueryGetPublicKeyRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetPublicKey", data);
+    return promise.then((data) => QueryGetPublicKeyResponse.decode(_m0.Reader.create(data)));
   }
 }
 

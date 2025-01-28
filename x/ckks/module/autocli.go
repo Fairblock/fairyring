@@ -24,6 +24,13 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{},
 				},
 
+				{
+					RpcMethod:      "GetPublicKey",
+					Use:            "get-public-key",
+					Short:          "Query get-public-key",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{},
+				},
+
 				// this line is used by ignite scaffolding # autocli/query
 			},
 		},
@@ -76,6 +83,18 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Use:            "submit-pks-share [share-data]",
 					Short:          "Send a submit-pks-share tx",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "shareData"}},
+				},
+				{
+					RpcMethod:      "DecryptionRequest",
+					Use:            "decryption-request",
+					Short:          "Send a decryption_request tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{},
+				},
+				{
+					RpcMethod:      "SubmitDecShare",
+					Use:            "submit-dec-share",
+					Short:          "Send a submit_dec_share tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{},
 				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},

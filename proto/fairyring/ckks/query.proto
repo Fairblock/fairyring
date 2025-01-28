@@ -24,6 +24,12 @@ service Query {
     option (google.api.http).get = "/Fairblock/fairyring/ckks/aggregated_rkgr_1";
   
   }
+  
+  // Queries a list of GetPublicKey items.
+  rpc GetPublicKey (QueryGetPublicKeyRequest) returns (QueryGetPublicKeyResponse) {
+    option (google.api.http).get = "/Fairblock/fairyring/ckks/get_public_key";
+  
+  }
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
@@ -39,5 +45,13 @@ message QueryAggregatedRkgr1Request {}
 
 message QueryAggregatedRkgr1Response {
   string aggregatedRkR1 = 1;
+}
+
+message QueryGetPublicKeyRequest {
+
+}
+
+message QueryGetPublicKeyResponse {
+  string p = 1;
 }
 

@@ -20,7 +20,7 @@ func (k msgServer) SubmitRkgShareRound2(goCtx context.Context, msg *types.MsgSub
 	if value, _ := k.GetAggregatedRKGR2Key(ctx); value != nil {
 		return &types.MsgSubmitRkgShareRound2Response{}, nil
 	}
-	share,_ := hex.DecodeString(msg.ShareData)
+	share, _ := hex.DecodeString(msg.ShareData)
 	k.StoreRKGShareRound2(ctx, msg.Creator, share)
 
 	// Check if threshold is met

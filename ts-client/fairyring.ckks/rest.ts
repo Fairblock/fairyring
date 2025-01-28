@@ -24,13 +24,24 @@ export interface QueryAggregatedRkgr1Response {
   aggregatedRkR1?: string;
 }
 
-export interface QueryParamsResponse {
-  params?: object;
+export interface QueryGetPublicKeyResponse {
+  publicKey?: string;
 }
 
-export type CkksParams = object;
+export interface QueryParamsResponse {
+  params?: { num_of_validators?: string };
+}
+
+export interface CkksParams {
+  /** @format uint64 */
+  num_of_validators?: string;
+}
+
+export type MsgDecryptionRequestResponse = object;
 
 export type MsgKeySwitchRequestResponse = object;
+
+export type MsgSubmitDecShareResponse = object;
 
 export type MsgSubmitGkgShareResponse = object;
 
@@ -46,7 +57,10 @@ export type MsgSubmitShamirShareResponse = object;
 
 export type MsgUpdateParamsResponse = object;
 
-export type Params = object;
+export interface Params {
+  /** @format uint64 */
+  num_of_validators?: string;
+}
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
@@ -190,11 +204,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryGetPublicKey
+   * @request GET:/Fairblock/fairyring/ckks/get_public_key
+   */
+  queryGetPublicKey = (params: RequestParams = {}) =>
+    this.request<{ publicKey?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
+      path: `/Fairblock/fairyring/ckks/get_public_key`,
+      method: "GET",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryParams
    * @request GET:/Fairblock/fairyring/ckks/params
    */
   queryParams = (params: RequestParams = {}) =>
-    this.request<{ params?: object }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
+    this.request<
+      { params?: { num_of_validators?: string } },
+      { code?: number; message?: string; details?: { "@type"?: string }[] }
+    >({
       path: `/Fairblock/fairyring/ckks/params`,
       method: "GET",
       ...params,

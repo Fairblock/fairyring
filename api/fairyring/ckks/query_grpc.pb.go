@@ -8,7 +8,6 @@ package ckks
 
 import (
 	context "context"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -22,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	Query_Params_FullMethodName          = "/fairyring.ckks.Query/Params"
 	Query_AggregatedRkgr1_FullMethodName = "/fairyring.ckks.Query/AggregatedRkgr1"
+	Query_GetPublicKey_FullMethodName    = "/fairyring.ckks.Query/GetPublicKey"
 )
 
 // QueryClient is the client API for Query service.
@@ -32,6 +32,8 @@ type QueryClient interface {
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
 	// Queries a list of AggregatedRkgr1 items.
 	AggregatedRkgr1(ctx context.Context, in *QueryAggregatedRkgr1Request, opts ...grpc.CallOption) (*QueryAggregatedRkgr1Response, error)
+	// Queries a list of GetPublicKey items.
+	GetPublicKey(ctx context.Context, in *QueryGetPublicKeyRequest, opts ...grpc.CallOption) (*QueryGetPublicKeyResponse, error)
 }
 
 type queryClient struct {
@@ -60,6 +62,15 @@ func (c *queryClient) AggregatedRkgr1(ctx context.Context, in *QueryAggregatedRk
 	return out, nil
 }
 
+func (c *queryClient) GetPublicKey(ctx context.Context, in *QueryGetPublicKeyRequest, opts ...grpc.CallOption) (*QueryGetPublicKeyResponse, error) {
+	out := new(QueryGetPublicKeyResponse)
+	err := c.cc.Invoke(ctx, Query_GetPublicKey_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 // All implementations must embed UnimplementedQueryServer
 // for forward compatibility
@@ -68,6 +79,8 @@ type QueryServer interface {
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
 	// Queries a list of AggregatedRkgr1 items.
 	AggregatedRkgr1(context.Context, *QueryAggregatedRkgr1Request) (*QueryAggregatedRkgr1Response, error)
+	// Queries a list of GetPublicKey items.
+	GetPublicKey(context.Context, *QueryGetPublicKeyRequest) (*QueryGetPublicKeyResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -80,6 +93,9 @@ func (UnimplementedQueryServer) Params(context.Context, *QueryParamsRequest) (*Q
 }
 func (UnimplementedQueryServer) AggregatedRkgr1(context.Context, *QueryAggregatedRkgr1Request) (*QueryAggregatedRkgr1Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AggregatedRkgr1 not implemented")
+}
+func (UnimplementedQueryServer) GetPublicKey(context.Context, *QueryGetPublicKeyRequest) (*QueryGetPublicKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPublicKey not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 
@@ -130,6 +146,24 @@ func _Query_AggregatedRkgr1_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_GetPublicKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetPublicKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).GetPublicKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_GetPublicKey_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).GetPublicKey(ctx, req.(*QueryGetPublicKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Query_ServiceDesc is the grpc.ServiceDesc for Query service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -144,6 +178,10 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AggregatedRkgr1",
 			Handler:    _Query_AggregatedRkgr1_Handler,
+		},
+		{
+			MethodName: "GetPublicKey",
+			Handler:    _Query_GetPublicKey_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
