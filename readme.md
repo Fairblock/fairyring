@@ -37,6 +37,26 @@ Upon running the `./bankMsgWithMemoAndDecryption.sh` script, you will be prompte
 3. Submit the encrypted transaction to the blockchain,
 4. Monitor the network for transaction processing, and show the decrypted result
 
+## Running on the Fairblock AWS Instance
+
+This is a temporary solution if the demo does not run on your machine.
+
+> Reach out to @hashedtitan, a DevRel contributing to Fairblock, on Discord in the #dev channel if you are having issues.
+
+Follow these instructions to run the same demo on an AWS instance.
+
+```bash
+ssh -i "$YOURFILE.pem" ubuntu@ec2-34-201-63-243.compute-1.amazonaws.com
+```
+
+Everything is already set up on the AWS instance, so the test is all that needs to be ran.
+
+```bash
+cd fairyring
+make devnet-up
+./bankMsgWithMemoAndDecryption.sh
+```
+
 ## Demo Details
 
 The provided bash script, `bankMsgWithMemoAndDecryption.sh`, does the following:
