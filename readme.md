@@ -165,4 +165,16 @@ fairyringd list-decrypted-txs $TARGET_HEIGHT --output json | jq
 
 </details>
 
-For more specific questions, please reach out either on [Discord](https://discord.gg/jhNBCCAMPK) or our [open issues repo](TODO-GET-LINK).
+
+## Next Steps
+
+Congratulations! You have now seen an example of encrypting a transaction with a message and transfer amount. 
+
+There are several next steps you can take now anon.
+
+1. Check out the actual time capsule demo app on the FairyRing testnet [here](https://capsule.fairblock.network/).
+2. Check out our other quick starts to see how to build with other networks integrating into FairyRing in our [docs](https://docs.fairblock.network/docs/welcome/quickstart/).
+3. Join our [discord](https://discord.gg/jhNBCCAMPK) and discuss new build ideas! We host frequent developer hours to encourage more novel ideas with confidential computation.
+<!-- 2. Look at an implementation for a local front end and simple app for a time capsule [here](https://github.com/Fairblock/time-capsule). TODO: make this repo public-->
+
+Further tutorials will be shared to showcase how to create more generic applications using `general conditions` instead of the default `block height` condition id used currently within FairyRing.
