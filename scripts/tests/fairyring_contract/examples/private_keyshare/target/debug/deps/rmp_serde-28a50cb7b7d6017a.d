@@ -1,0 +1,10 @@
+/home/grider644/go/src/github.com/FairBlock/fairyring/scripts/tests/fairyring_contract/examples/private_keyshare/target/debug/deps/librmp_serde-28a50cb7b7d6017a.rmeta: /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/lib.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/bytes.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/config.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/decode.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/encode.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/../README.md
+
+/home/grider644/go/src/github.com/FairBlock/fairyring/scripts/tests/fairyring_contract/examples/private_keyshare/target/debug/deps/rmp_serde-28a50cb7b7d6017a.d: /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/lib.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/bytes.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/config.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/decode.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/encode.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/../README.md
+
+/home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/lib.rs:
+/home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/bytes.rs:
+/home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/config.rs:
+/home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/decode.rs:
+/home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/encode.rs:
+/home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rmp-serde-1.3.0/src/../README.md:

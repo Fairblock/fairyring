@@ -1,0 +1,10 @@
+/home/grider644/go/src/github.com/FairBlock/fairyring/scripts/tests/fairyring_contract/examples/private_keyshare/target/debug/deps/libautocfg-65547fcefd0cb2a9.rmeta: /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/lib.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/error.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/rustc.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/version.rs
+
+/home/grider644/go/src/github.com/FairBlock/fairyring/scripts/tests/fairyring_contract/examples/private_keyshare/target/debug/deps/libautocfg-65547fcefd0cb2a9.rlib: /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/lib.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/error.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/rustc.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/version.rs
+
+/home/grider644/go/src/github.com/FairBlock/fairyring/scripts/tests/fairyring_contract/examples/private_keyshare/target/debug/deps/autocfg-65547fcefd0cb2a9.d: /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/lib.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/error.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/rustc.rs /home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/version.rs
+
+/home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/lib.rs:
+/home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/error.rs:
+/home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/rustc.rs:
+/home/grider644/.cargo/registry/src/index.crates.io-6f17d22bba15001f/autocfg-1.4.0/src/version.rs:
