@@ -1,9 +1,12 @@
 package keeper
 
 import (
+	"bytes"
+	"compress/gzip"
 	"encoding/binary"
 	"encoding/hex"
 	"fmt"
+	"io"
 
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/log"
@@ -12,6 +15,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/klauspost/compress/zstd"
+	"github.com/sirupsen/logrus"
 	"github.com/tuneinsight/lattigo/v6/core/rlwe"
 	"github.com/tuneinsight/lattigo/v6/multiparty"
 	"github.com/tuneinsight/lattigo/v6/ring"
@@ -47,21 +52,13 @@ func NewKeeper(
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
 	}
 	crs, _ := sampling.NewKeyedPRNG([]byte{'l', 'a', 't', 't', 'i', 'g', 'o'})
-	LogN := 12
-
-	// Q modulus Q
-	Q := []uint64{0x800004001, 0x40002001} // 65.0000116961637 bits
-
-	// P modulus P
-	P := []uint64{0x4000026001} // 38.00000081692261 bits
-
-	// Lattigo CKKS params
 	params, _ := ckks.NewParametersFromLiteral(ckks.ParametersLiteral{
-		LogN:            LogN,
-		Q:               Q,
-		P:               P,
-		LogDefaultScale: 32,
-	})
+        LogN: 13, // N = 8192
+        LogQ: []int{50, 50, 50, 50, 50},
+        LogP: []int{60, 60},
+        Xs: ring.Ternary{H: 192},
+        LogDefaultScale: 45,
+    })
 	return Keeper{
 		cdc:          cdc,
 		storeService: storeService,
@@ -100,7 +97,28 @@ func (k Keeper) GetPKGShare(ctx sdk.Context, creator string) []byte {
 	key := []byte(fmt.Sprintf("PKG:%s", creator))
 	return store.Get(key)
 }
+func DecompressShares(data []byte) ([]byte, error) {
+    decoder, err := zstd.NewReader(nil)
+    if err != nil {
+        return nil, err
+    }
+    defer decoder.Close()
 
+    // DecodeAll decompresses the entire compressed slice.
+    decompressed, err := decoder.DecodeAll(data, nil)
+    if err != nil {
+        return nil, err
+    }
+    return decompressed, nil
+}
+func DecompressShares1(data []byte) ([]byte, error) {
+    r, err := gzip.NewReader(bytes.NewReader(data))
+    if err != nil {
+        return nil, err
+    }
+    defer r.Close()
+    return io.ReadAll(r)
+}
 func (k Keeper) AggregatePKGShares(ctx sdk.Context) ([]byte, error) {
 	// Retrieve and aggregate PKG shares
 	shares := k.GetShares(ctx, "PKG:")
@@ -111,7 +129,9 @@ func (k Keeper) AggregatePKGShares(ctx sdk.Context) ([]byte, error) {
 
 	for _, ckgShare := range shares {
 		var share multiparty.PublicKeyGenShare
-		err := share.UnmarshalBinary(ckgShare)
+		s1,_ := DecompressShares1(ckgShare)
+		s,_ := DecompressShares(s1)
+		err := share.UnmarshalBinary(s)
 		if err != nil {
 			return []byte{}, err
 		}
@@ -121,6 +141,7 @@ func (k Keeper) AggregatePKGShares(ctx sdk.Context) ([]byte, error) {
 	ckg.GenPublicKey(ckgCombined, crp, pk)
 	pk_value, _ := pk.MarshalBinary()
 	k.SetAggregatedPKGKey(ctx, pk_value)
+	k.RemoveShares(ctx,"PKG:")
 	return pk_value, nil
 }
 
@@ -162,7 +183,9 @@ func (k Keeper) AggregateRKGSharesRound1(ctx sdk.Context) ([]byte, error) {
 	_, rkgCombined1, _ := rkg.AllocateShare()
 	for _, rkgShare := range shares {
 		var share multiparty.RelinearizationKeyGenShare
-		err := share.UnmarshalBinary(rkgShare)
+		s1,_ := DecompressShares1(rkgShare)
+		s,_ := DecompressShares(s1)
+		err := share.UnmarshalBinary(s)
 		if err != nil {
 			return []byte{}, err
 		}
@@ -170,6 +193,7 @@ func (k Keeper) AggregateRKGSharesRound1(ctx sdk.Context) ([]byte, error) {
 	}
 	rk_r1_value, _ := rkgCombined1.MarshalBinary()
 	k.SetAggregatedRKGR1Key(ctx, rk_r1_value)
+	k.RemoveShares(ctx,"RKG-R1:")
 	return rk_r1_value, nil
 }
 
@@ -213,7 +237,9 @@ func (k Keeper) AggregateRKGSharesRound2(ctx sdk.Context) ([]byte, error) {
 	_, rkgCombined1, rkgCombined2 := rkg.AllocateShare()
 	for _, rkgShare := range shares {
 		var share multiparty.RelinearizationKeyGenShare
-		err := share.UnmarshalBinary(rkgShare)
+		s1,_ := DecompressShares1(rkgShare)
+		s,_ := DecompressShares(s1)
+		err := share.UnmarshalBinary(s)
 		if err != nil {
 			return []byte{}, err
 		}
@@ -226,6 +252,7 @@ func (k Keeper) AggregateRKGSharesRound2(ctx sdk.Context) ([]byte, error) {
 	rkg.GenRelinearizationKey(rkgCombined1, rkgCombined2, rlk)
 	rk, _ := rlk.MarshalBinary()
 	k.SetAggregatedRKGKey(ctx, rk)
+	k.RemoveShares(ctx,"RKG-R2:")
 	return rk, nil
 }
 
@@ -277,7 +304,9 @@ func (k Keeper) AggregateGKGShares(ctx sdk.Context) ([]byte, error) {
 	for i, gkgShare := range shares {
 
 		var share multiparty.GaloisKeyGenShare
-		err := share.UnmarshalBinary(gkgShare)
+		s1,_ := DecompressShares1(gkgShare)
+		s,_ := DecompressShares(s1)
+		err := share.UnmarshalBinary(s)
 		if err != nil {
 			return []byte{}, err
 		}
@@ -293,6 +322,7 @@ func (k Keeper) AggregateGKGShares(ctx sdk.Context) ([]byte, error) {
 
 	gk_value, _ := galoisKey.MarshalBinary()
 	k.SetAggregatedGKGKey(ctx, gk_value)
+	k.RemoveShares(ctx,"GKG:")
 	return gk_value, nil
 }
 
@@ -502,10 +532,22 @@ func (k Keeper) GetShares(ctx sdk.Context, pref string) [][]byte {
 	}
 	return shares
 }
+func (k Keeper) RemoveShares(ctx sdk.Context, pref string) {
+    storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+    store := prefix.NewStore(storeAdapter, []byte{})
+    prefixStore := prefix.NewStore(store, []byte(pref))
 
+    iterator := prefixStore.Iterator(nil, nil)
+    defer iterator.Close()
+
+    for ; iterator.Valid(); iterator.Next() {
+        prefixStore.Delete(iterator.Key())
+    }
+}
 func (k Keeper) IsThresholdMet(ctx sdk.Context, shareType string) bool {
 	shares := k.GetShares(ctx, shareType)
 	threshold := k.GetThreshold(ctx)
+	logrus.Info("-----------------------",shareType," ",len(shares))
 	return len(shares) >= threshold
 }
 

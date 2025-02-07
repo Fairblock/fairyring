@@ -1795,8 +1795,8 @@ func (x *fastReflection_MsgSubmitRkgShareRound1) Range(f func(protoreflect.Field
 			return
 		}
 	}
-	if x.ShareData != "" {
-		value := protoreflect.ValueOfString(x.ShareData)
+	if len(x.ShareData) != 0 {
+		value := protoreflect.ValueOfBytes(x.ShareData)
 		if !f(fd_MsgSubmitRkgShareRound1_shareData, value) {
 			return
 		}
@@ -1819,7 +1819,7 @@ func (x *fastReflection_MsgSubmitRkgShareRound1) Has(fd protoreflect.FieldDescri
 	case "fairyring.ckks.MsgSubmitRkgShareRound1.creator":
 		return x.Creator != ""
 	case "fairyring.ckks.MsgSubmitRkgShareRound1.shareData":
-		return x.ShareData != ""
+		return len(x.ShareData) != 0
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.ckks.MsgSubmitRkgShareRound1"))
@@ -1839,7 +1839,7 @@ func (x *fastReflection_MsgSubmitRkgShareRound1) Clear(fd protoreflect.FieldDesc
 	case "fairyring.ckks.MsgSubmitRkgShareRound1.creator":
 		x.Creator = ""
 	case "fairyring.ckks.MsgSubmitRkgShareRound1.shareData":
-		x.ShareData = ""
+		x.ShareData = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.ckks.MsgSubmitRkgShareRound1"))
@@ -1861,7 +1861,7 @@ func (x *fastReflection_MsgSubmitRkgShareRound1) Get(descriptor protoreflect.Fie
 		return protoreflect.ValueOfString(value)
 	case "fairyring.ckks.MsgSubmitRkgShareRound1.shareData":
 		value := x.ShareData
-		return protoreflect.ValueOfString(value)
+		return protoreflect.ValueOfBytes(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.ckks.MsgSubmitRkgShareRound1"))
@@ -1885,7 +1885,7 @@ func (x *fastReflection_MsgSubmitRkgShareRound1) Set(fd protoreflect.FieldDescri
 	case "fairyring.ckks.MsgSubmitRkgShareRound1.creator":
 		x.Creator = value.Interface().(string)
 	case "fairyring.ckks.MsgSubmitRkgShareRound1.shareData":
-		x.ShareData = value.Interface().(string)
+		x.ShareData = value.Bytes()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.ckks.MsgSubmitRkgShareRound1"))
@@ -1926,7 +1926,7 @@ func (x *fastReflection_MsgSubmitRkgShareRound1) NewField(fd protoreflect.FieldD
 	case "fairyring.ckks.MsgSubmitRkgShareRound1.creator":
 		return protoreflect.ValueOfString("")
 	case "fairyring.ckks.MsgSubmitRkgShareRound1.shareData":
-		return protoreflect.ValueOfString("")
+		return protoreflect.ValueOfBytes(nil)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.ckks.MsgSubmitRkgShareRound1"))
@@ -2132,7 +2132,7 @@ func (x *fastReflection_MsgSubmitRkgShareRound1) ProtoMethods() *protoiface.Meth
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ShareData", wireType)
 				}
-				var stringLen uint64
+				var byteLen int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -2142,23 +2142,25 @@ func (x *fastReflection_MsgSubmitRkgShareRound1) ProtoMethods() *protoiface.Meth
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					byteLen |= int(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
+				if byteLen < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
-				postIndex := iNdEx + intStringLen
+				postIndex := iNdEx + byteLen
 				if postIndex < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.ShareData = string(dAtA[iNdEx:postIndex])
+				x.ShareData = append(x.ShareData[:0], dAtA[iNdEx:postIndex]...)
+				if x.ShareData == nil {
+					x.ShareData = []byte{}
+				}
 				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
@@ -8977,7 +8979,7 @@ type MsgSubmitRkgShareRound1 struct {
 	unknownFields protoimpl.UnknownFields
 
 	Creator   string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	ShareData string `protobuf:"bytes,2,opt,name=shareData,proto3" json:"shareData,omitempty"`
+	ShareData []byte `protobuf:"bytes,2,opt,name=shareData,proto3" json:"shareData,omitempty"`
 }
 
 func (x *MsgSubmitRkgShareRound1) Reset() {
@@ -9007,11 +9009,11 @@ func (x *MsgSubmitRkgShareRound1) GetCreator() string {
 	return ""
 }
 
-func (x *MsgSubmitRkgShareRound1) GetShareData() string {
+func (x *MsgSubmitRkgShareRound1) GetShareData() []byte {
 	if x != nil {
 		return x.ShareData
 	}
-	return ""
+	return nil
 }
 
 type MsgSubmitRkgShareRound1Response struct {
@@ -9609,7 +9611,7 @@ var file_fairyring_ckks_tx_proto_rawDesc = []byte{
 	0x6b, 0x67, 0x53, 0x68, 0x61, 0x72, 0x65, 0x52, 0x6f, 0x75, 0x6e, 0x64, 0x31, 0x12, 0x18, 0x0a,
 	0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
 	0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x1c, 0x0a, 0x09, 0x73, 0x68, 0x61, 0x72, 0x65,
-	0x44, 0x61, 0x74, 0x61, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x68, 0x61, 0x72,
+	0x44, 0x61, 0x74, 0x61, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x09, 0x73, 0x68, 0x61, 0x72,
 	0x65, 0x44, 0x61, 0x74, 0x61, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61,
 	0x74, 0x6f, 0x72, 0x22, 0x21, 0x0a, 0x1f, 0x4d, 0x73, 0x67, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74,
 	0x52, 0x6b, 0x67, 0x53, 0x68, 0x61, 0x72, 0x65, 0x52, 0x6f, 0x75, 0x6e, 0x64, 0x31, 0x52, 0x65,

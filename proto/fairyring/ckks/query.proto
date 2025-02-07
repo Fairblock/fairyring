@@ -52,6 +52,6 @@ message QueryGetPublicKeyRequest {
 }
 
 message QueryGetPublicKeyResponse {
-  string p = 1;
+  string pk = 1;
 }
 

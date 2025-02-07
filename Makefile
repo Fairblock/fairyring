@@ -331,17 +331,20 @@ fresh-chain:
 	@echo "Initializing a fresh chain..."
 	~/go/bin/fairyringd init star --chain-id fairyring -o
 	@echo "Adding a genesis account..."
-	~/go/bin/fairyringd genesis add-genesis-account star 1000000000000ufairy,1000000000000stake
-	~/go/bin/fairyringd genesis add-genesis-account v2 1000000000000ufairy,1000000000000stake
-	~/go/bin/fairyringd genesis add-genesis-account v3 1000000000000ufairy,1000000000000stake
-	~/go/bin/fairyringd genesis add-genesis-account v4 1000000000000ufairy,1000000000000stake
-	~/go/bin/fairyringd genesis add-genesis-account v5 1000000000000ufairy,1000000000000stake
+	~/go/bin/fairyringd genesis add-genesis-account star 9000000000000000000000000ufairy,90000000000000000000000stake
+	~/go/bin/fairyringd genesis add-genesis-account v2 9000000000000000000000000ufairy,90000000000000000000000stake
+	~/go/bin/fairyringd genesis add-genesis-account v3 9000000000000000000000000ufairy,90000000000000000000000stake
+	~/go/bin/fairyringd genesis add-genesis-account v4 9000000000000000000000000ufairy,90000000000000000000000stake
+	~/go/bin/fairyringd genesis add-genesis-account v5 9000000000000000000000000ufairy,90000000000000000000000stake
 	~/go/bin/fairyringd genesis gentx star 500000000stake --chain-id fairyring
 	~/go/bin/fairyringd genesis collect-gentxs
 	jq '.app_state.ckks.params.num_of_validators = 5' ~/.fairyring/config/genesis.json > ~/.fairyring/config/genesis_temp.json && mv ~/.fairyring/config/genesis_temp.json ~/.fairyring/config/genesis.json
 	jq '.app_state.keyshare.params.trusted_addresses += ["fairy1mklt4k0gjgmj3dl7m3hd9f55hyzl8xycvy8ld2","fairy17jea857wrp88kq2a3e26847hwsexn65afp8sug","fairy1yjaug3h2ydmxut5v36y2w7wmexgad9xhn909u6","fairy1vg8knvpf0amnqe6cl74jh55qp4kafep06rt704","fairy1j422u93a2x8ycmyla3mx3nm55auhrtj25r2v9z"]' ~/.fairyring/config/genesis.json > ~/.fairyring/config/genesis_temp.json && mv ~/.fairyring/config/genesis_temp.json ~/.fairyring/config/genesis.json
 	sed -i 's/^minimum-gas-prices *= *""/minimum-gas-prices = "0.001ufairy"/' ~/.fairyring/config/app.toml
 	jq '.app_state.pep.params.is_source_chain = true' ~/.fairyring/config/genesis.json > ~/.fairyring/config/genesis_temp.json && mv ~/.fairyring/config/genesis_temp.json ~/.fairyring/config/genesis.json
+	jq '.consensus.params.evidence.max_bytes = "2048576"' ~/.fairyring/config/genesis.json > ~/.fairyring/config/genesis_temp.json && mv ~/.fairyring/config/genesis_temp.json ~/.fairyring/config/genesis.json
+	sed -i 's/^max-recv-msg-size = .*/max-recv-msg-size = "20485760"/' ~/.fairyring/config/app.toml
+	sed -i 's/^max_tx_bytes = .*/max_tx_bytes = "90048576"/' ~/.fairyring/config/config.toml
 	@echo "Starting the chain..."
 	~/go/bin/fairyringd start --home ~/.fairyring --rpc.laddr tcp://127.0.0.1:26659 --api.enable
 

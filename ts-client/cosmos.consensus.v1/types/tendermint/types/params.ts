@@ -53,7 +53,7 @@ export interface EvidenceParams {
   /**
    * This sets the maximum size of total evidence in bytes that can be committed in a single block.
    * and should fall comfortably under the max block bytes.
-   * Default is 1048576 or 1MB
+   * Default is 2048576 or 1MB
    */
   maxBytes: number;
 }

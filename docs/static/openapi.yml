@@ -1904,7 +1904,7 @@ paths:
 
                       and should fall comfortably under the max block bytes.
 
-                      Default is 1048576 or 1MB
+                      Default is 2048576 or 1MB
                 description: >-
                   EvidenceParams determine how we handle evidence of
                   malfeasance.
@@ -19186,7 +19186,7 @@ definitions:
 
               and should fall comfortably under the max block bytes.
 
-              Default is 1048576 or 1MB
+              Default is 2048576 or 1MB
         description: EvidenceParams determine how we handle evidence of malfeasance.
       validator:
         type: object
@@ -19320,7 +19320,7 @@ definitions:
 
           and should fall comfortably under the max block bytes.
 
-          Default is 1048576 or 1MB
+          Default is 2048576 or 1MB
     description: EvidenceParams determine how we handle evidence of malfeasance.
   tendermint.types.ValidatorParams:
     type: object
