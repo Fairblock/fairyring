@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use cosmwasm_std::Coin;
 use cw_storage_plus::{Item, Map};
 use schemars::JsonSchema;
@@ -9,7 +11,9 @@ pub struct IdentityRecord {
     pub creator: String,
     pub encrypted_data: String,
     pub price: Coin,
+    pub private_keyshares: HashMap<String, Vec<String>>,
 }
+
 
 // Storage for identity records (keyed by the identity string)
 pub const RECORDS: Map<&str, IdentityRecord> = Map::new("records");

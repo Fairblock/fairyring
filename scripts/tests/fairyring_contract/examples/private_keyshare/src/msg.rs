@@ -14,7 +14,9 @@ pub struct InstantiateMsg {}
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum ExecuteMsg {
+    RequestPrivateKeyshare { identity: String, secp_pubkey: String },
     RequestIdentity { price: cosmwasm_std::Coin },
+    StoreEncryptedData {identity: String, data: String},
 }
 
 /// Query message – fetch a record by its identity.
@@ -22,12 +24,18 @@ pub enum ExecuteMsg {
 #[serde(rename_all = "snake_case")]
 pub enum QueryMsg {
     GetIdentity { identity: String },
+    GetAllIdentity {},
 }
 
 /// Query response containing the stored identity record.
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct IdentityResponse {
     pub record: crate::state::IdentityRecord,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+pub struct AllIdentitiesResponse {
+    pub records: Vec<crate::state::IdentityRecord>,
 }
 
 ///
