@@ -28,3 +28,6 @@ pub const PENDING_REQUESTS: Map<u64, PendingRequest> = Map::new("pending_request
 
 // A counter to generate unique reply IDs.
 pub const LAST_REPLY_ID: Item<u64> = Item::new("last_reply_id");
+
+// Save Pubkey
+pub const PUBKEY: Item<String> = Item::new("pubkey");

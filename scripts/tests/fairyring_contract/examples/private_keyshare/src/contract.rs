@@ -7,19 +7,20 @@ use crate::error::ContractError;
 use crate::msg::{
     ExecuteMsg, InstantiateMsg, QueryMsg, IdentityResponse, PepRequestMsg, AllIdentitiesResponse, PrivateDecryptionKey,
 };
-use crate::state::{LAST_REPLY_ID, PENDING_REQUESTS, RECORDS, PendingRequest, IdentityRecord};
+use crate::state::{IdentityRecord, PendingRequest, LAST_REPLY_ID, PENDING_REQUESTS, PUBKEY, RECORDS};
 
 // Import your generated request type.
-use fairblock_proto::fairyring::pep::{ MsgRequestPrivateIdentity, MsgRequestPrivateIdentityResponse, MsgRequestPrivateDecryptionKey, MsgRequestPrivateDecryptionKeyResponse, QueryPubkeyRequest, QueryPubkeyResponse};
+use fairblock_proto::fairyring::pep::{ MsgRequestPrivateIdentity, MsgRequestPrivateIdentityResponse, MsgRequestPrivateDecryptionKey, MsgRequestPrivateDecryptionKeyResponse};
 
 #[entry_point]
 pub fn instantiate(
     deps: DepsMut,
     _env: Env,
     _info: MessageInfo,
-    _msg: InstantiateMsg,
+    msg: InstantiateMsg,
 ) -> Result<Response<PepRequestMsg>, ContractError> {
     LAST_REPLY_ID.save(deps.storage, &0)?;
+    PUBKEY.save(deps.storage, &msg.pubkey)?;
     Ok(Response::<PepRequestMsg>::new())
 }
 
@@ -31,11 +32,22 @@ pub fn execute(
     msg: ExecuteMsg,
 ) -> Result<Response<PepRequestMsg>, ContractError> {
     match msg {
+        ExecuteMsg::UpdatePubkey { pubkey } => update_pubkey(deps, env, info, pubkey),
         ExecuteMsg::RequestPrivateKeyshare { identity, secp_pubkey } => execute_request_keyshare(deps, env, info, identity, secp_pubkey),
         ExecuteMsg::RequestIdentity { price } => execute_request_identity(deps, env, info, price),
         ExecuteMsg::StoreEncryptedData { identity, data } => store_encrypted_data(deps, env, info, identity, data),
         ExecuteMsg::ExecuteContractPrivateMsg { identity, private_decryption_key } => execute_private_keys(deps, env, info, identity, private_decryption_key),
     }
+}
+
+fn update_pubkey(
+    deps: DepsMut,
+    _env: Env,
+    _info: MessageInfo,
+    pubkey: String,
+) -> Result<Response<PepRequestMsg>, ContractError> {
+    PUBKEY.save(deps.storage, &pubkey)?;
+    Ok(Response::<PepRequestMsg>::new())
 }
 
 fn execute_private_keys(
@@ -59,7 +71,7 @@ fn execute_private_keys(
 fn execute_request_keyshare(
     deps: DepsMut,
     env: Env,
-    _info: MessageInfo,
+    info: MessageInfo,
     identity: String,
     secp_pubkey: String,
 ) -> Result<Response<PepRequestMsg>, ContractError> {
@@ -71,6 +83,13 @@ fn execute_request_keyshare(
     reply_id += 1;
     LAST_REPLY_ID.save(deps.storage, &reply_id)?;
 
+    // Save the pending request info for use in the reply.
+    let pending = PendingRequest {
+        creator: info.sender.to_string().clone(),
+        price: Coin::new(0u128, "ufairy"),
+    };
+    PENDING_REQUESTS.save(deps.storage, reply_id, &pending)?;
+    
     let msg = MsgRequestPrivateDecryptionKey {
         creator: contract_addr.to_string(),
         identity,
@@ -193,17 +212,7 @@ pub fn reply(
     let keyshare_result = MsgRequestPrivateDecryptionKeyResponse::decode(binary_data.as_slice());
 
     if let Ok(pep_response) = identity_result {
-        // Create the request message
-        let request = QueryPubkeyRequest {};
-        let e = request.encode_to_vec();
-        let d = Binary::new(e);
-
-        // Send the query
-        let raw_response: Binary = deps.querier.query_grpc("/fairyring.pep.Query/Pubkey".to_string(), d)?;
-        
-        let vec_res = raw_response.to_vec();
-        let x = QueryPubkeyResponse::decode(&*vec_res)
-        .expect("Failed to decode Protobuf message");
+        let pubkey = PUBKEY.load(deps.storage)?;
 
         // Process identity response
         let identity = pep_response.identity;
@@ -211,7 +220,7 @@ pub fn reply(
         // Create and store the identity record
         let record = IdentityRecord {
             identity: identity.clone(),
-            pubkey: x.active_pubkey.as_ref().unwrap().public_key.clone(),
+            pubkey: pubkey,
             creator: pending.creator,
             encrypted_data: "".to_string(), // left blank as specified
             price: pending.price,

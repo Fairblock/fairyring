@@ -1,4 +1,4 @@
-use cosmwasm_std::CustomMsg;
+use cosmwasm_std::{CustomMsg, CustomQuery};
 use schemars::JsonSchema;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use serde::ser::SerializeStruct;
@@ -9,12 +9,15 @@ use fairblock_proto::fairyring::pep::MsgRequestPrivateIdentity;
 
 /// Instantiate message (empty for this example)
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-pub struct InstantiateMsg {}
+pub struct InstantiateMsg {
+    pub pubkey: String,
+}
 
 /// Execute message – supports requesting an identity.
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum ExecuteMsg {
+    UpdatePubkey {pubkey: String},
     RequestPrivateKeyshare { identity: String, secp_pubkey: String },
     RequestIdentity { price: cosmwasm_std::Coin },
     StoreEncryptedData {identity: String, data: String},
@@ -43,6 +46,14 @@ pub enum QueryMsg {
     GetIdentity { identity: String },
     GetAllIdentity {},
 }
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum PepQuery {
+    QueryPubkeyRequest {},
+}
+
+impl CustomQuery for PepQuery{}
 
 /// Query response containing the stored identity record.
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
