@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-
+use crate::msg::IndexedEncryptedKeyshare;
 use cosmwasm_std::Coin;
 use cw_storage_plus::{Item, Map};
 use schemars::JsonSchema;
@@ -8,10 +8,11 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct IdentityRecord {
     pub identity: String,
+    pub pubkey: String,
     pub creator: String,
     pub encrypted_data: String,
     pub price: Coin,
-    pub private_keyshares: HashMap<String, Vec<String>>,
+    pub private_keyshares: HashMap<String, Vec<IndexedEncryptedKeyshare>>,
 }
 
 

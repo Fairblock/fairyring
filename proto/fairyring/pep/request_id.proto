@@ -43,3 +43,9 @@ message ExecuteContractMsg {
   string pubkey         = 2;
   string decryption_key = 3;
 }
+
+// ExecuteContractPrivateMsg defines the structure to callback registered contracts with encrypted keyshares
+message ExecuteContractPrivateMsg {
+  string identity       = 1;
+  fairyring.common.PrivateDecryptionKey private_decryption_key = 2;
+}

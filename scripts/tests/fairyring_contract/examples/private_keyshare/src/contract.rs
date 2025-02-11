@@ -1,17 +1,16 @@
 use std::collections::HashMap;
-
 use cosmwasm_std::{
     entry_point, to_json_binary, AnyMsg, Binary, Coin, CosmosMsg, Deps, DepsMut, Env, MessageInfo, Reply, Response, StdResult, SubMsg
 };
 use prost::Message;
 use crate::error::ContractError;
 use crate::msg::{
-    ExecuteMsg, InstantiateMsg, QueryMsg, IdentityResponse, PepRequestMsg, AllIdentitiesResponse,
+    ExecuteMsg, InstantiateMsg, QueryMsg, IdentityResponse, PepRequestMsg, AllIdentitiesResponse, PrivateDecryptionKey,
 };
 use crate::state::{LAST_REPLY_ID, PENDING_REQUESTS, RECORDS, PendingRequest, IdentityRecord};
 
 // Import your generated request type.
-use fairblock_proto::fairyring::pep::{ MsgRequestPrivateIdentity, MsgRequestPrivateIdentityResponse, MsgRequestPrivateDecryptionKey, MsgRequestPrivateDecryptionKeyResponse};
+use fairblock_proto::fairyring::pep::{ MsgRequestPrivateIdentity, MsgRequestPrivateIdentityResponse, MsgRequestPrivateDecryptionKey, MsgRequestPrivateDecryptionKeyResponse, QueryPubkeyRequest, QueryPubkeyResponse};
 
 #[entry_point]
 pub fn instantiate(
@@ -35,7 +34,26 @@ pub fn execute(
         ExecuteMsg::RequestPrivateKeyshare { identity, secp_pubkey } => execute_request_keyshare(deps, env, info, identity, secp_pubkey),
         ExecuteMsg::RequestIdentity { price } => execute_request_identity(deps, env, info, price),
         ExecuteMsg::StoreEncryptedData { identity, data } => store_encrypted_data(deps, env, info, identity, data),
+        ExecuteMsg::ExecuteContractPrivateMsg { identity, private_decryption_key } => execute_private_keys(deps, env, info, identity, private_decryption_key),
     }
+}
+
+fn execute_private_keys(
+    deps: DepsMut,
+    _env: Env,
+    _info: MessageInfo,
+    identity: String,
+    dec_keys: PrivateDecryptionKey,
+) -> Result<Response<PepRequestMsg>, ContractError> {
+
+    let mut record = RECORDS.load(deps.storage, identity.as_str())?;
+    
+    record.private_keyshares.insert(dec_keys.requester.clone(), dec_keys.private_keyshares);
+    RECORDS.save(deps.storage, identity.as_str(), &record)?;
+    Ok(Response::<PepRequestMsg>::new()
+        .add_attribute("action", "store_encrypted_keyshares")
+        .add_attribute("identity", identity)
+        .add_attribute("requester_address", dec_keys.requester))
 }
 
 fn execute_request_keyshare(
@@ -175,12 +193,25 @@ pub fn reply(
     let keyshare_result = MsgRequestPrivateDecryptionKeyResponse::decode(binary_data.as_slice());
 
     if let Ok(pep_response) = identity_result {
+        // Create the request message
+        let request = QueryPubkeyRequest {};
+        let e = request.encode_to_vec();
+        let d = Binary::new(e);
+
+        // Send the query
+        let raw_response: Binary = deps.querier.query_grpc("/fairyring.pep.Query/Pubkey".to_string(), d)?;
+        
+        let vec_res = raw_response.to_vec();
+        let x = QueryPubkeyResponse::decode(&*vec_res)
+        .expect("Failed to decode Protobuf message");
+
         // Process identity response
         let identity = pep_response.identity;
 
         // Create and store the identity record
         let record = IdentityRecord {
             identity: identity.clone(),
+            pubkey: x.active_pubkey.as_ref().unwrap().public_key.clone(),
             creator: pending.creator,
             encrypted_data: "".to_string(), // left blank as specified
             price: pending.price,

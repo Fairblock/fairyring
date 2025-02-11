@@ -9,6 +9,7 @@ import (
 	"cosmossdk.io/math"
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
+	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	clienttypes "github.com/cosmos/ibc-go/v8/modules/core/02-client/types"
 )
@@ -153,6 +154,21 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 		entry, _ := k.pepKeeper.GetPrivateRequest(ctx, privDecryptionKeyReq.Identity)
 		entry.PrivateDecryptionKeys = privDecryptionKeyReq.PrivateDecryptionKeys
 		k.pepKeeper.SetPrivateRequest(ctx, entry)
+
+		// execute registered contracts
+		contracts, found := k.pepKeeper.GetContractEntriesByID(ctx, entry.Identity)
+		if found && len(contracts.Contracts) != 0 {
+			for _, contract := range contracts.Contracts {
+				k.pepKeeper.ExecutePrivateContract(
+					ctx,
+					contract.ContractAddress,
+					peptypes.ExecuteContractPrivateMsg{
+						Identity:             privDecryptionKeyReq.Identity,
+						PrivateDecryptionKey: &kslist,
+					},
+				)
+			}
+		}
 	}
 
 	return &types.MsgSubmitEncryptedKeyshareResponse{}, nil

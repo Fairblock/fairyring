@@ -127,3 +127,35 @@ func (k Keeper) ExecuteContract(ctx sdk.Context, contractAddr string, msg types.
 		}
 	}
 }
+
+func (k Keeper) ExecutePrivateContract(ctx sdk.Context, contractAddr string, msg types.ExecuteContractPrivateMsg) {
+	defer func() {
+		if r := recover(); r != nil {
+			k.logger.Error("recovered from panic in contract execution", "contractAddr", contractAddr, "error", r)
+		}
+	}()
+
+	addr := sdk.MustAccAddressFromBech32(contractAddr)
+	msgBytes, err := json.Marshal(msg)
+	if err != nil {
+		k.logger.Error("error marshalling msg for contract: %s", contractAddr)
+		return
+	}
+
+	wasmAddr := authtypes.NewModuleAddress(wasmtypes.ModuleName)
+	gasLimit := k.MaxContractGas(ctx)
+
+	// Create a new context with a gas meter
+	gasCtx := ctx
+	gasCtx = gasCtx.WithGasMeter(storetypes.NewGasMeter(gasLimit))
+
+	// Execute the contract within the gas-limited context
+	_, err = k.contractKeeper.Execute(gasCtx, addr, wasmAddr, msgBytes, sdk.Coins{})
+	if err != nil {
+		if gasCtx.GasMeter().IsOutOfGas() {
+			k.logger.Error("contract execution failed due to gas limit: %s", contractAddr)
+		} else {
+			k.logger.Error("error executing contract: %s; error: %v", contractAddr, err)
+		}
+	}
+}

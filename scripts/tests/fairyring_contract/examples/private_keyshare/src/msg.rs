@@ -5,6 +5,7 @@ use serde::ser::SerializeStruct;
 
 // Import your generated type.
 use fairblock_proto::fairyring::pep::MsgRequestPrivateIdentity;
+// use fairblock_proto::fairyring::common::PrivateDecryptionKey;
 
 /// Instantiate message (empty for this example)
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -17,6 +18,22 @@ pub enum ExecuteMsg {
     RequestPrivateKeyshare { identity: String, secp_pubkey: String },
     RequestIdentity { price: cosmwasm_std::Coin },
     StoreEncryptedData {identity: String, data: String},
+    ExecuteContractPrivateMsg {identity: String, private_decryption_key: PrivateDecryptionKey},
+}
+
+// This is the message to execute the contract
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub struct PrivateDecryptionKey {
+    pub requester: String,
+    pub private_keyshares: Vec<IndexedEncryptedKeyshare>,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub struct IndexedEncryptedKeyshare {
+    pub encrypted_keyshare_value: String,
+    pub encrypted_keyshare_index: i64,
 }
 
 /// Query message – fetch a record by its identity.

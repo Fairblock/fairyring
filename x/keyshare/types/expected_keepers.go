@@ -95,4 +95,6 @@ type PepKeeper interface {
 	SetDecryptionKey(ctx context.Context, decryptionKey peptypes.DecryptionKey)
 	GetLatestHeight(ctx context.Context) string
 	SetLatestHeight(ctx context.Context, height string)
+	GetContractEntriesByID(ctx context.Context, identity string) (val peptypes.RegisteredContract, found bool)
+	ExecutePrivateContract(ctx sdk.Context, contractAddr string, msg peptypes.ExecuteContractPrivateMsg)
 }
