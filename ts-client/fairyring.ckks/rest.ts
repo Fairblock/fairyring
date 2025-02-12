@@ -25,7 +25,7 @@ export interface QueryAggregatedRkgr1Response {
 }
 
 export interface QueryGetPublicKeyResponse {
-  publicKey?: string;
+  pk?: string;
 }
 
 export interface QueryParamsResponse {
@@ -37,9 +37,13 @@ export interface CkksParams {
   num_of_validators?: string;
 }
 
+export type MsgBootstrapRequestResponse = object;
+
 export type MsgDecryptionRequestResponse = object;
 
 export type MsgKeySwitchRequestResponse = object;
+
+export type MsgSubmitBootstrapShareResponse = object;
 
 export type MsgSubmitDecShareResponse = object;
 
@@ -208,7 +212,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @request GET:/Fairblock/fairyring/ckks/get_public_key
    */
   queryGetPublicKey = (params: RequestParams = {}) =>
-    this.request<{ publicKey?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
+    this.request<{ pk?: string }, { code?: number; message?: string; details?: { "@type"?: string }[] }>({
       path: `/Fairblock/fairyring/ckks/get_public_key`,
       method: "GET",
       ...params,

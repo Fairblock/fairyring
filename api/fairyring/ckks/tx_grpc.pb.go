@@ -8,6 +8,7 @@ package ckks
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -29,6 +30,8 @@ const (
 	Msg_SubmitPksShare_FullMethodName       = "/fairyring.ckks.Msg/SubmitPksShare"
 	Msg_DecryptionRequest_FullMethodName    = "/fairyring.ckks.Msg/DecryptionRequest"
 	Msg_SubmitDecShare_FullMethodName       = "/fairyring.ckks.Msg/SubmitDecShare"
+	Msg_SubmitBootstrapShare_FullMethodName = "/fairyring.ckks.Msg/SubmitBootstrapShare"
+	Msg_BootstrapRequest_FullMethodName     = "/fairyring.ckks.Msg/BootstrapRequest"
 )
 
 // MsgClient is the client API for Msg service.
@@ -47,6 +50,8 @@ type MsgClient interface {
 	SubmitPksShare(ctx context.Context, in *MsgSubmitPksShare, opts ...grpc.CallOption) (*MsgSubmitPksShareResponse, error)
 	DecryptionRequest(ctx context.Context, in *MsgDecryptionRequest, opts ...grpc.CallOption) (*MsgDecryptionRequestResponse, error)
 	SubmitDecShare(ctx context.Context, in *MsgSubmitDecShare, opts ...grpc.CallOption) (*MsgSubmitDecShareResponse, error)
+	SubmitBootstrapShare(ctx context.Context, in *MsgSubmitBootstrapShare, opts ...grpc.CallOption) (*MsgSubmitBootstrapShareResponse, error)
+	BootstrapRequest(ctx context.Context, in *MsgBootstrapRequest, opts ...grpc.CallOption) (*MsgBootstrapRequestResponse, error)
 }
 
 type msgClient struct {
@@ -147,6 +152,24 @@ func (c *msgClient) SubmitDecShare(ctx context.Context, in *MsgSubmitDecShare, o
 	return out, nil
 }
 
+func (c *msgClient) SubmitBootstrapShare(ctx context.Context, in *MsgSubmitBootstrapShare, opts ...grpc.CallOption) (*MsgSubmitBootstrapShareResponse, error) {
+	out := new(MsgSubmitBootstrapShareResponse)
+	err := c.cc.Invoke(ctx, Msg_SubmitBootstrapShare_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) BootstrapRequest(ctx context.Context, in *MsgBootstrapRequest, opts ...grpc.CallOption) (*MsgBootstrapRequestResponse, error) {
+	out := new(MsgBootstrapRequestResponse)
+	err := c.cc.Invoke(ctx, Msg_BootstrapRequest_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -163,6 +186,8 @@ type MsgServer interface {
 	SubmitPksShare(context.Context, *MsgSubmitPksShare) (*MsgSubmitPksShareResponse, error)
 	DecryptionRequest(context.Context, *MsgDecryptionRequest) (*MsgDecryptionRequestResponse, error)
 	SubmitDecShare(context.Context, *MsgSubmitDecShare) (*MsgSubmitDecShareResponse, error)
+	SubmitBootstrapShare(context.Context, *MsgSubmitBootstrapShare) (*MsgSubmitBootstrapShareResponse, error)
+	BootstrapRequest(context.Context, *MsgBootstrapRequest) (*MsgBootstrapRequestResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -199,6 +224,12 @@ func (UnimplementedMsgServer) DecryptionRequest(context.Context, *MsgDecryptionR
 }
 func (UnimplementedMsgServer) SubmitDecShare(context.Context, *MsgSubmitDecShare) (*MsgSubmitDecShareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitDecShare not implemented")
+}
+func (UnimplementedMsgServer) SubmitBootstrapShare(context.Context, *MsgSubmitBootstrapShare) (*MsgSubmitBootstrapShareResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitBootstrapShare not implemented")
+}
+func (UnimplementedMsgServer) BootstrapRequest(context.Context, *MsgBootstrapRequest) (*MsgBootstrapRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BootstrapRequest not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -393,6 +424,42 @@ func _Msg_SubmitDecShare_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_SubmitBootstrapShare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSubmitBootstrapShare)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).SubmitBootstrapShare(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_SubmitBootstrapShare_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).SubmitBootstrapShare(ctx, req.(*MsgSubmitBootstrapShare))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_BootstrapRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgBootstrapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).BootstrapRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_BootstrapRequest_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).BootstrapRequest(ctx, req.(*MsgBootstrapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -439,6 +506,14 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SubmitDecShare",
 			Handler:    _Msg_SubmitDecShare_Handler,
+		},
+		{
+			MethodName: "SubmitBootstrapShare",
+			Handler:    _Msg_SubmitBootstrapShare_Handler,
+		},
+		{
+			MethodName: "BootstrapRequest",
+			Handler:    _Msg_BootstrapRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

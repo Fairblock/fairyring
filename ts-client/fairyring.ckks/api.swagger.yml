@@ -44,7 +44,7 @@ paths:
           schema:
             type: object
             properties:
-              publicKey:
+              pk:
                 type: string
         default:
           description: An unexpected error response.
@@ -132,7 +132,7 @@ definitions:
   QueryGetPublicKeyResponse:
     type: object
     properties:
-      publicKey:
+      pk:
         type: string
   QueryParamsResponse:
     type: object
@@ -149,9 +149,13 @@ definitions:
       num_of_validators:
         type: string
         format: uint64
+  MsgBootstrapRequestResponse:
+    type: object
   MsgDecryptionRequestResponse:
     type: object
   MsgKeySwitchRequestResponse:
+    type: object
+  MsgSubmitBootstrapShareResponse:
     type: object
   MsgSubmitDecShareResponse:
     type: object

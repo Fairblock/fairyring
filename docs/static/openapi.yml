@@ -1904,7 +1904,7 @@ paths:
 
                       and should fall comfortably under the max block bytes.
 
-                      Default is 2048576 or 1MB
+                      Default is 1048576 or 1MB
                 description: >-
                   EvidenceParams determine how we handle evidence of
                   malfeasance.
@@ -9710,7 +9710,7 @@ paths:
           schema:
             type: object
             properties:
-              publicKey:
+              pk:
                 type: string
         default:
           description: An unexpected error response.
@@ -9772,6 +9772,43 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /fairyring.ckks.Msg/BootstrapRequest:
+    post:
+      operationId: FairyringCkksMsg_BootstrapRequest
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              creator:
+                type: string
+      tags:
+        - Msg
   /fairyring.ckks.Msg/DecryptionRequest:
     post:
       operationId: FairyringCkksMsg_DecryptionRequest
@@ -9856,6 +9893,47 @@ paths:
                 type: string
       tags:
         - Msg
+  /fairyring.ckks.Msg/SubmitBootstrapShare:
+    post:
+      operationId: FairyringCkksMsg_SubmitBootstrapShare
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              creator:
+                type: string
+              shareData:
+                type: string
+              handle:
+                type: string
+      tags:
+        - Msg
   /fairyring.ckks.Msg/SubmitDecShare:
     post:
       operationId: FairyringCkksMsg_SubmitDecShare
@@ -9890,6 +9968,12 @@ paths:
             type: object
             properties:
               creator:
+                type: string
+              shareDataPublic:
+                type: string
+              shareDataSecret:
+                type: string
+              handle:
                 type: string
       tags:
         - Msg
@@ -19186,7 +19270,7 @@ definitions:
 
               and should fall comfortably under the max block bytes.
 
-              Default is 2048576 or 1MB
+              Default is 1048576 or 1MB
         description: EvidenceParams determine how we handle evidence of malfeasance.
       validator:
         type: object
@@ -19320,7 +19404,7 @@ definitions:
 
           and should fall comfortably under the max block bytes.
 
-          Default is 2048576 or 1MB
+          Default is 1048576 or 1MB
     description: EvidenceParams determine how we handle evidence of malfeasance.
   tendermint.types.ValidatorParams:
     type: object
@@ -21656,7 +21740,7 @@ definitions:
   fairyring.ckks.QueryGetPublicKeyResponse:
     type: object
     properties:
-      publicKey:
+      pk:
         type: string
   fairyring.ckks.QueryParamsResponse:
     type: object
@@ -21669,6 +21753,13 @@ definitions:
             type: string
             format: uint64
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  fairyring.ckks.MsgBootstrapRequest:
+    type: object
+    properties:
+      creator:
+        type: string
+  fairyring.ckks.MsgBootstrapRequestResponse:
+    type: object
   fairyring.ckks.MsgDecryptionRequest:
     type: object
     properties:
@@ -21693,10 +21784,27 @@ definitions:
         type: string
   fairyring.ckks.MsgKeySwitchRequestResponse:
     type: object
+  fairyring.ckks.MsgSubmitBootstrapShare:
+    type: object
+    properties:
+      creator:
+        type: string
+      shareData:
+        type: string
+      handle:
+        type: string
+  fairyring.ckks.MsgSubmitBootstrapShareResponse:
+    type: object
   fairyring.ckks.MsgSubmitDecShare:
     type: object
     properties:
       creator:
+        type: string
+      shareDataPublic:
+        type: string
+      shareDataSecret:
+        type: string
+      handle:
         type: string
   fairyring.ckks.MsgSubmitDecShareResponse:
     type: object

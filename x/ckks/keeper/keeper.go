@@ -17,9 +17,13 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/klauspost/compress/zstd"
 	"github.com/sirupsen/logrus"
+	"github.com/tuneinsight/lattigo/v6/circuits/ckks/bootstrapping"
 	"github.com/tuneinsight/lattigo/v6/core/rlwe"
 	"github.com/tuneinsight/lattigo/v6/multiparty"
+	"github.com/tuneinsight/lattigo/v6/multiparty/mpckks"
 	"github.com/tuneinsight/lattigo/v6/ring"
+	"github.com/tuneinsight/lattigo/v6/utils"
+	"github.com/tuneinsight/lattigo/v6/utils/bignum"
 	"github.com/tuneinsight/lattigo/v6/utils/sampling"
 
 	"github.com/Fairblock/fairyring/x/ckks/types"
@@ -52,13 +56,23 @@ func NewKeeper(
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
 	}
 	crs, _ := sampling.NewKeyedPRNG([]byte{'l', 'a', 't', 't', 'i', 'g', 'o'})
-	params, _ := ckks.NewParametersFromLiteral(ckks.ParametersLiteral{
-        LogN: 13, // N = 8192
-        LogQ: []int{50, 50, 50, 50, 50},
-        LogP: []int{60, 60},
-        Xs: ring.Ternary{H: 192},
-        LogDefaultScale: 45,
-    })
+	var testPrec45 = ckks.ParametersLiteral{
+		LogN:            10,
+		LogQ:            []int{60, 40,40,40,40,40,40,40},
+		LogP:            []int{61},
+		LogDefaultScale: 40,
+	}
+		schemeParamsLit := testPrec45
+			schemeParamsLit.RingType = ring.ConjugateInvariant
+			btpParamsLit := bootstrapping.ParametersLiteral{}
+	
+	
+			btpParamsLit.LogN = utils.Pointy(schemeParamsLit.LogN)
+			schemeParamsLit.LogNthRoot = schemeParamsLit.LogN + 1
+			schemeParamsLit.LogN--
+	
+			params, _ := ckks.NewParametersFromLiteral(schemeParamsLit)
+	
 	return Keeper{
 		cdc:          cdc,
 		storeService: storeService,
@@ -98,26 +112,26 @@ func (k Keeper) GetPKGShare(ctx sdk.Context, creator string) []byte {
 	return store.Get(key)
 }
 func DecompressShares(data []byte) ([]byte, error) {
-    decoder, err := zstd.NewReader(nil)
-    if err != nil {
-        return nil, err
-    }
-    defer decoder.Close()
+	decoder, err := zstd.NewReader(nil)
+	if err != nil {
+		return nil, err
+	}
+	defer decoder.Close()
 
-    // DecodeAll decompresses the entire compressed slice.
-    decompressed, err := decoder.DecodeAll(data, nil)
-    if err != nil {
-        return nil, err
-    }
-    return decompressed, nil
+	// DecodeAll decompresses the entire compressed slice.
+	decompressed, err := decoder.DecodeAll(data, nil)
+	if err != nil {
+		return nil, err
+	}
+	return decompressed, nil
 }
 func DecompressShares1(data []byte) ([]byte, error) {
-    r, err := gzip.NewReader(bytes.NewReader(data))
-    if err != nil {
-        return nil, err
-    }
-    defer r.Close()
-    return io.ReadAll(r)
+	r, err := gzip.NewReader(bytes.NewReader(data))
+	if err != nil {
+		return nil, err
+	}
+	defer r.Close()
+	return io.ReadAll(r)
 }
 func (k Keeper) AggregatePKGShares(ctx sdk.Context) ([]byte, error) {
 	// Retrieve and aggregate PKG shares
@@ -129,8 +143,8 @@ func (k Keeper) AggregatePKGShares(ctx sdk.Context) ([]byte, error) {
 
 	for _, ckgShare := range shares {
 		var share multiparty.PublicKeyGenShare
-		s1,_ := DecompressShares1(ckgShare)
-		s,_ := DecompressShares(s1)
+		s1, _ := DecompressShares1(ckgShare)
+		s, _ := DecompressShares(s1)
 		err := share.UnmarshalBinary(s)
 		if err != nil {
 			return []byte{}, err
@@ -141,7 +155,7 @@ func (k Keeper) AggregatePKGShares(ctx sdk.Context) ([]byte, error) {
 	ckg.GenPublicKey(ckgCombined, crp, pk)
 	pk_value, _ := pk.MarshalBinary()
 	k.SetAggregatedPKGKey(ctx, pk_value)
-	k.RemoveShares(ctx,"PKG:")
+	k.RemoveShares(ctx, "PKG:")
 	return pk_value, nil
 }
 
@@ -183,8 +197,8 @@ func (k Keeper) AggregateRKGSharesRound1(ctx sdk.Context) ([]byte, error) {
 	_, rkgCombined1, _ := rkg.AllocateShare()
 	for _, rkgShare := range shares {
 		var share multiparty.RelinearizationKeyGenShare
-		s1,_ := DecompressShares1(rkgShare)
-		s,_ := DecompressShares(s1)
+		s1, _ := DecompressShares1(rkgShare)
+		s, _ := DecompressShares(s1)
 		err := share.UnmarshalBinary(s)
 		if err != nil {
 			return []byte{}, err
@@ -193,7 +207,7 @@ func (k Keeper) AggregateRKGSharesRound1(ctx sdk.Context) ([]byte, error) {
 	}
 	rk_r1_value, _ := rkgCombined1.MarshalBinary()
 	k.SetAggregatedRKGR1Key(ctx, rk_r1_value)
-	k.RemoveShares(ctx,"RKG-R1:")
+	k.RemoveShares(ctx, "RKG-R1:")
 	return rk_r1_value, nil
 }
 
@@ -237,8 +251,8 @@ func (k Keeper) AggregateRKGSharesRound2(ctx sdk.Context) ([]byte, error) {
 	_, rkgCombined1, rkgCombined2 := rkg.AllocateShare()
 	for _, rkgShare := range shares {
 		var share multiparty.RelinearizationKeyGenShare
-		s1,_ := DecompressShares1(rkgShare)
-		s,_ := DecompressShares(s1)
+		s1, _ := DecompressShares1(rkgShare)
+		s, _ := DecompressShares(s1)
 		err := share.UnmarshalBinary(s)
 		if err != nil {
 			return []byte{}, err
@@ -252,7 +266,7 @@ func (k Keeper) AggregateRKGSharesRound2(ctx sdk.Context) ([]byte, error) {
 	rkg.GenRelinearizationKey(rkgCombined1, rkgCombined2, rlk)
 	rk, _ := rlk.MarshalBinary()
 	k.SetAggregatedRKGKey(ctx, rk)
-	k.RemoveShares(ctx,"RKG-R2:")
+	k.RemoveShares(ctx, "RKG-R2:")
 	return rk, nil
 }
 
@@ -304,8 +318,8 @@ func (k Keeper) AggregateGKGShares(ctx sdk.Context) ([]byte, error) {
 	for i, gkgShare := range shares {
 
 		var share multiparty.GaloisKeyGenShare
-		s1,_ := DecompressShares1(gkgShare)
-		s,_ := DecompressShares(s1)
+		s1, _ := DecompressShares1(gkgShare)
+		s, _ := DecompressShares(s1)
 		err := share.UnmarshalBinary(s)
 		if err != nil {
 			return []byte{}, err
@@ -322,7 +336,7 @@ func (k Keeper) AggregateGKGShares(ctx sdk.Context) ([]byte, error) {
 
 	gk_value, _ := galoisKey.MarshalBinary()
 	k.SetAggregatedGKGKey(ctx, gk_value)
-	k.RemoveShares(ctx,"GKG:")
+	k.RemoveShares(ctx, "GKG:")
 	return gk_value, nil
 }
 
@@ -450,8 +464,6 @@ func (k Keeper) SetCiphertext(ctx sdk.Context, handle string, ciphertext string)
 	store.Set([]byte(handle), []byte(ciphertext))
 }
 
-
-
 // GetCiphertext retrieves the ciphertext associated with the given handle.
 func (k Keeper) GetCiphertext(ctx sdk.Context, handle string) (string, bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
@@ -469,12 +481,12 @@ func (k Keeper) SetDecSharePublic(ctx sdk.Context, handle string, creator string
 	store := prefix.NewStore(storeAdapter, []byte{})
 
 	key := []byte(handle + "public/" + creator)
-	
+
 	shareBytes, err := share.MarshalBinary()
 	if err != nil {
 		panic(err)
 	}
-	
+
 	store.Set(key, shareBytes)
 }
 
@@ -483,36 +495,136 @@ func (k Keeper) SetDecShareSecret(ctx sdk.Context, handle string, creator string
 	store := prefix.NewStore(storeAdapter, []byte{})
 
 	key := []byte(handle + "secret/" + creator)
-	
+
 	store.Set(key, []byte(share))
 }
-
-
 
 func (k Keeper) IncrementDecShareCount(ctx sdk.Context, handle string) uint64 {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, []byte{})
 
 	key := append([]byte("dec_share_count"), []byte(handle)...)
-	
 
 	var count uint64
 	bz := store.Get(key)
 	if bz != nil {
 		count = binary.BigEndian.Uint64(bz)
 	}
-	
-	
+
 	count++
-	
-	
+
 	countBz := make([]byte, 8)
 	binary.BigEndian.PutUint64(countBz, count)
 	store.Set(key, countBz)
-	
+
 	return count
 }
 
+/////////////////////////////////////////////////////
+/////// Bootstrapping ///////////////////////////////
+/////////////////////////////////////////////////////
+
+func (k Keeper) StoreBootstrapShare(ctx sdk.Context, handle, creator string, share []byte) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+
+	key := []byte(fmt.Sprintf("BOOTSTRAP:%s:%s", handle, creator))
+	store.Set(key, share)
+}
+
+func (k Keeper) GetBootstrapShare(ctx sdk.Context, handle, creator string) []byte {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+
+	key := []byte(fmt.Sprintf("BOOTSTRAP:%s:%s", handle, creator))
+	return store.Get(key)
+}
+
+func (k Keeper) AggregateBootstrapShares(ctx sdk.Context, handle string) (*rlwe.Ciphertext, error) {
+	
+	prefixKey := fmt.Sprintf("BOOTSTRAP:%s:", handle)
+	sharesRaw := k.GetShares(ctx, prefixKey) 
+
+	if len(sharesRaw) == 0 {
+		return nil, fmt.Errorf("no bootstrapping shares found for handle %q", handle)
+	}
+
+	
+	ctHex, found := k.GetCiphertext(ctx, handle)
+	if !found {
+		return nil, fmt.Errorf("no original ciphertext found for handle %q", handle)
+	}
+
+	ctBytes, err := hex.DecodeString(ctHex)
+	if err != nil {
+		return nil, err
+	}
+	var ct rlwe.Ciphertext
+	if err := ct.UnmarshalBinary(ctBytes); err != nil {
+		return nil, err
+	}
+
+	noiseDist := k.params.Xe()
+	prec := uint(256)
+	mltp, err := mpckks.NewMaskedLinearTransformationProtocol(k.params, k.params, prec, noiseDist)
+	if err != nil {
+		return nil, fmt.Errorf("error creating masked transform protocol: %v", err)
+	}
+
+	
+	combinedShare := mltp.AllocateShare(ct.Level(), k.params.MaxLevel())
+
+	
+	for i, raw := range sharesRaw {
+		var sh multiparty.RefreshShare
+		if err := sh.UnmarshalBinary(raw); err != nil {
+			return nil, fmt.Errorf("unmarshal partial refresh share error: %v", err)
+		}
+		if i == 0{
+			combinedShare = sh
+		} else {
+		if err := mltp.AggregateShares(&combinedShare, &sh, &combinedShare); err != nil {
+			return nil, fmt.Errorf("aggregate share error: %v", err)
+		}}
+	}
+
+
+	identityFunc := &mpckks.MaskedLinearTransformationFunc{
+		Decode: true,
+		Encode: true,
+		Func:   func(_ []*bignum.Complex) {},
+	}
+
+	
+	crp := mltp.SampleCRP(k.params.MaxLevel(), k.crs)
+
+	
+	ctOut := ckks.NewCiphertext(k.params, 1, k.params.MaxLevel())
+	if err := mltp.Transform(&ct, identityFunc, crp, combinedShare, ctOut); err != nil {
+		return nil, fmt.Errorf("transform error: ", ct.MetaData, combinedShare.MetaData)
+	}
+
+	
+	k.RemoveShares(ctx, prefixKey)
+
+	return ctOut, nil
+}
+
+func (k Keeper) SetAggregatedBootstrapCiphertext(ctx sdk.Context, handle string, ct []byte) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+
+	key := []byte(fmt.Sprintf("aggregated_bootstrap:%s", handle))
+	store.Set(key, ct)
+}
+
+func (k Keeper) GetAggregatedBootstrapCiphertext(ctx sdk.Context, handle string) []byte {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+
+	key := []byte(fmt.Sprintf("aggregated_bootstrap:%s", handle))
+	return store.Get(key)
+}
 
 //////////////////////////
 /////// Helpers //////////
@@ -533,21 +645,21 @@ func (k Keeper) GetShares(ctx sdk.Context, pref string) [][]byte {
 	return shares
 }
 func (k Keeper) RemoveShares(ctx sdk.Context, pref string) {
-    storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-    store := prefix.NewStore(storeAdapter, []byte{})
-    prefixStore := prefix.NewStore(store, []byte(pref))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, []byte{})
+	prefixStore := prefix.NewStore(store, []byte(pref))
 
-    iterator := prefixStore.Iterator(nil, nil)
-    defer iterator.Close()
+	iterator := prefixStore.Iterator(nil, nil)
+	defer iterator.Close()
 
-    for ; iterator.Valid(); iterator.Next() {
-        prefixStore.Delete(iterator.Key())
-    }
+	for ; iterator.Valid(); iterator.Next() {
+		prefixStore.Delete(iterator.Key())
+	}
 }
 func (k Keeper) IsThresholdMet(ctx sdk.Context, shareType string) bool {
 	shares := k.GetShares(ctx, shareType)
 	threshold := k.GetThreshold(ctx)
-	logrus.Info("-----------------------",shareType," ",len(shares))
+	logrus.Info("-----------------------", shareType, " ", len(shares))
 	return len(shares) >= threshold
 }
 

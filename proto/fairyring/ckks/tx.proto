@@ -26,6 +26,8 @@ service Msg {
   rpc SubmitPksShare       (MsgSubmitPksShare      ) returns (MsgSubmitPksShareResponse      );
   rpc DecryptionRequest    (MsgDecryptionRequest   ) returns (MsgDecryptionRequestResponse   );
   rpc SubmitDecShare       (MsgSubmitDecShare      ) returns (MsgSubmitDecShareResponse      );
+  rpc SubmitBootstrapShare (MsgSubmitBootstrapShare) returns (MsgSubmitBootstrapShareResponse);
+  rpc BootstrapRequest     (MsgBootstrapRequest    ) returns (MsgBootstrapRequestResponse    );
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
@@ -115,11 +117,29 @@ message MsgDecryptionRequestResponse {}
 
 message MsgSubmitDecShare {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
+  string creator         = 1;
   string shareDataPublic = 2;
   string shareDataSecret = 3;
-  string handle    = 4;
+  string handle          = 4;
 }
 
 message MsgSubmitDecShareResponse {}
+
+message MsgSubmitBootstrapShare {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  string shareData = 2;
+  string handle    = 3;
+}
+
+message MsgSubmitBootstrapShareResponse {}
+
+message MsgBootstrapRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string ct      = 2;
+  string handle  = 3;
+}
+
+message MsgBootstrapRequestResponse {}
 

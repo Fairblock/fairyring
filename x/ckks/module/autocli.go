@@ -96,6 +96,18 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Short:          "Send a submit_dec_share tx",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{},
 				},
+				{
+					RpcMethod:      "SubmitBootstrapShare",
+					Use:            "submit-bootstrap-share",
+					Short:          "Send a SubmitBootstrapShare tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{},
+				},
+				{
+					RpcMethod:      "BootstrapRequest",
+					Use:            "bootstrap-request",
+					Short:          "Send a BootstrapRequest tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{},
+				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},
 		},

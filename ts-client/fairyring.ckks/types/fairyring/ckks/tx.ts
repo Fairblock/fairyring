@@ -89,9 +89,28 @@ export interface MsgDecryptionRequestResponse {
 
 export interface MsgSubmitDecShare {
   creator: string;
+  shareDataPublic: string;
+  shareDataSecret: string;
+  handle: string;
 }
 
 export interface MsgSubmitDecShareResponse {
+}
+
+export interface MsgSubmitBootstrapShare {
+  creator: string;
+  shareData: string;
+  handle: string;
+}
+
+export interface MsgSubmitBootstrapShareResponse {
+}
+
+export interface MsgBootstrapRequest {
+  creator: string;
+}
+
+export interface MsgBootstrapRequestResponse {
 }
 
 function createBaseMsgUpdateParams(): MsgUpdateParams {
@@ -1210,13 +1229,22 @@ export const MsgDecryptionRequestResponse = {
 };
 
 function createBaseMsgSubmitDecShare(): MsgSubmitDecShare {
-  return { creator: "" };
+  return { creator: "", shareDataPublic: "", shareDataSecret: "", handle: "" };
 }
 
 export const MsgSubmitDecShare = {
   encode(message: MsgSubmitDecShare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
+    }
+    if (message.shareDataPublic !== "") {
+      writer.uint32(18).string(message.shareDataPublic);
+    }
+    if (message.shareDataSecret !== "") {
+      writer.uint32(26).string(message.shareDataSecret);
+    }
+    if (message.handle !== "") {
+      writer.uint32(34).string(message.handle);
     }
     return writer;
   },
@@ -1235,6 +1263,27 @@ export const MsgSubmitDecShare = {
 
           message.creator = reader.string();
           continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.shareDataPublic = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.shareDataSecret = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.handle = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1245,13 +1294,27 @@ export const MsgSubmitDecShare = {
   },
 
   fromJSON(object: any): MsgSubmitDecShare {
-    return { creator: isSet(object.creator) ? String(object.creator) : "" };
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      shareDataPublic: isSet(object.shareDataPublic) ? String(object.shareDataPublic) : "",
+      shareDataSecret: isSet(object.shareDataSecret) ? String(object.shareDataSecret) : "",
+      handle: isSet(object.handle) ? String(object.handle) : "",
+    };
   },
 
   toJSON(message: MsgSubmitDecShare): unknown {
     const obj: any = {};
     if (message.creator !== "") {
       obj.creator = message.creator;
+    }
+    if (message.shareDataPublic !== "") {
+      obj.shareDataPublic = message.shareDataPublic;
+    }
+    if (message.shareDataSecret !== "") {
+      obj.shareDataSecret = message.shareDataSecret;
+    }
+    if (message.handle !== "") {
+      obj.handle = message.handle;
     }
     return obj;
   },
@@ -1262,6 +1325,9 @@ export const MsgSubmitDecShare = {
   fromPartial<I extends Exact<DeepPartial<MsgSubmitDecShare>, I>>(object: I): MsgSubmitDecShare {
     const message = createBaseMsgSubmitDecShare();
     message.creator = object.creator ?? "";
+    message.shareDataPublic = object.shareDataPublic ?? "";
+    message.shareDataSecret = object.shareDataSecret ?? "";
+    message.handle = object.handle ?? "";
     return message;
   },
 };
@@ -1309,6 +1375,238 @@ export const MsgSubmitDecShareResponse = {
   },
 };
 
+function createBaseMsgSubmitBootstrapShare(): MsgSubmitBootstrapShare {
+  return { creator: "", shareData: "", handle: "" };
+}
+
+export const MsgSubmitBootstrapShare = {
+  encode(message: MsgSubmitBootstrapShare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.shareData !== "") {
+      writer.uint32(18).string(message.shareData);
+    }
+    if (message.handle !== "") {
+      writer.uint32(26).string(message.handle);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitBootstrapShare {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSubmitBootstrapShare();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.creator = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.shareData = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.handle = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSubmitBootstrapShare {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      shareData: isSet(object.shareData) ? String(object.shareData) : "",
+      handle: isSet(object.handle) ? String(object.handle) : "",
+    };
+  },
+
+  toJSON(message: MsgSubmitBootstrapShare): unknown {
+    const obj: any = {};
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    if (message.shareData !== "") {
+      obj.shareData = message.shareData;
+    }
+    if (message.handle !== "") {
+      obj.handle = message.handle;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgSubmitBootstrapShare>, I>>(base?: I): MsgSubmitBootstrapShare {
+    return MsgSubmitBootstrapShare.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgSubmitBootstrapShare>, I>>(object: I): MsgSubmitBootstrapShare {
+    const message = createBaseMsgSubmitBootstrapShare();
+    message.creator = object.creator ?? "";
+    message.shareData = object.shareData ?? "";
+    message.handle = object.handle ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgSubmitBootstrapShareResponse(): MsgSubmitBootstrapShareResponse {
+  return {};
+}
+
+export const MsgSubmitBootstrapShareResponse = {
+  encode(_: MsgSubmitBootstrapShareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitBootstrapShareResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSubmitBootstrapShareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgSubmitBootstrapShareResponse {
+    return {};
+  },
+
+  toJSON(_: MsgSubmitBootstrapShareResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgSubmitBootstrapShareResponse>, I>>(base?: I): MsgSubmitBootstrapShareResponse {
+    return MsgSubmitBootstrapShareResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgSubmitBootstrapShareResponse>, I>>(_: I): MsgSubmitBootstrapShareResponse {
+    const message = createBaseMsgSubmitBootstrapShareResponse();
+    return message;
+  },
+};
+
+function createBaseMsgBootstrapRequest(): MsgBootstrapRequest {
+  return { creator: "" };
+}
+
+export const MsgBootstrapRequest = {
+  encode(message: MsgBootstrapRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgBootstrapRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgBootstrapRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.creator = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgBootstrapRequest {
+    return { creator: isSet(object.creator) ? String(object.creator) : "" };
+  },
+
+  toJSON(message: MsgBootstrapRequest): unknown {
+    const obj: any = {};
+    if (message.creator !== "") {
+      obj.creator = message.creator;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgBootstrapRequest>, I>>(base?: I): MsgBootstrapRequest {
+    return MsgBootstrapRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgBootstrapRequest>, I>>(object: I): MsgBootstrapRequest {
+    const message = createBaseMsgBootstrapRequest();
+    message.creator = object.creator ?? "";
+    return message;
+  },
+};
+
+function createBaseMsgBootstrapRequestResponse(): MsgBootstrapRequestResponse {
+  return {};
+}
+
+export const MsgBootstrapRequestResponse = {
+  encode(_: MsgBootstrapRequestResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgBootstrapRequestResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgBootstrapRequestResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgBootstrapRequestResponse {
+    return {};
+  },
+
+  toJSON(_: MsgBootstrapRequestResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MsgBootstrapRequestResponse>, I>>(base?: I): MsgBootstrapRequestResponse {
+    return MsgBootstrapRequestResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgBootstrapRequestResponse>, I>>(_: I): MsgBootstrapRequestResponse {
+    const message = createBaseMsgBootstrapRequestResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -1325,6 +1623,8 @@ export interface Msg {
   SubmitPksShare(request: MsgSubmitPksShare): Promise<MsgSubmitPksShareResponse>;
   DecryptionRequest(request: MsgDecryptionRequest): Promise<MsgDecryptionRequestResponse>;
   SubmitDecShare(request: MsgSubmitDecShare): Promise<MsgSubmitDecShareResponse>;
+  SubmitBootstrapShare(request: MsgSubmitBootstrapShare): Promise<MsgSubmitBootstrapShareResponse>;
+  BootstrapRequest(request: MsgBootstrapRequest): Promise<MsgBootstrapRequestResponse>;
 }
 
 export const MsgServiceName = "fairyring.ckks.Msg";
@@ -1344,6 +1644,8 @@ export class MsgClientImpl implements Msg {
     this.SubmitPksShare = this.SubmitPksShare.bind(this);
     this.DecryptionRequest = this.DecryptionRequest.bind(this);
     this.SubmitDecShare = this.SubmitDecShare.bind(this);
+    this.SubmitBootstrapShare = this.SubmitBootstrapShare.bind(this);
+    this.BootstrapRequest = this.BootstrapRequest.bind(this);
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
@@ -1403,6 +1705,18 @@ export class MsgClientImpl implements Msg {
     const data = MsgSubmitDecShare.encode(request).finish();
     const promise = this.rpc.request(this.service, "SubmitDecShare", data);
     return promise.then((data) => MsgSubmitDecShareResponse.decode(_m0.Reader.create(data)));
+  }
+
+  SubmitBootstrapShare(request: MsgSubmitBootstrapShare): Promise<MsgSubmitBootstrapShareResponse> {
+    const data = MsgSubmitBootstrapShare.encode(request).finish();
+    const promise = this.rpc.request(this.service, "SubmitBootstrapShare", data);
+    return promise.then((data) => MsgSubmitBootstrapShareResponse.decode(_m0.Reader.create(data)));
+  }
+
+  BootstrapRequest(request: MsgBootstrapRequest): Promise<MsgBootstrapRequestResponse> {
+    const data = MsgBootstrapRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "BootstrapRequest", data);
+    return promise.then((data) => MsgBootstrapRequestResponse.decode(_m0.Reader.create(data)));
   }
 }
 

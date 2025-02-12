@@ -9,7 +9,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/sirupsen/logrus"
 	_ "github.com/sirupsen/logrus"
-
 )
 
 func (k msgServer) SubmitPksShare(goCtx context.Context, msg *types.MsgSubmitPksShare) (*types.MsgSubmitPksShareResponse, error) {
@@ -33,18 +32,17 @@ func (k msgServer) SubmitPksShare(goCtx context.Context, msg *types.MsgSubmitPks
 		if err != nil {
 			return nil, types.ErrAggregation.Wrap("PKS aggregation failed")
 		}
-	
-			ct_bytes, _ := ct.MarshalBinary()
-			ct_string := hex.EncodeToString(ct_bytes)
-			logrus.Info("re-enc res: ", ct_string)
-			ctx.EventManager().EmitEvent(
-				sdk.NewEvent("ReEncryptionResult",
-					sdk.NewAttribute("ct", ct_string),
-					sdk.NewAttribute("handle", msg.Handle),
-				),
-			)
-		}
 
-	
+		ct_bytes, _ := ct.MarshalBinary()
+		ct_string := hex.EncodeToString(ct_bytes)
+		logrus.Info("re-enc res: ", ct_string)
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent("ReEncryptionResult",
+				sdk.NewAttribute("ct", ct_string),
+				sdk.NewAttribute("handle", msg.Handle),
+			),
+		)
+	}
+
 	return &types.MsgSubmitPksShareResponse{}, nil
 }

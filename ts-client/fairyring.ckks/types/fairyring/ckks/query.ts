@@ -25,7 +25,7 @@ export interface QueryGetPublicKeyRequest {
 }
 
 export interface QueryGetPublicKeyResponse {
-  publicKey: string;
+  pk: string;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -274,13 +274,13 @@ export const QueryGetPublicKeyRequest = {
 };
 
 function createBaseQueryGetPublicKeyResponse(): QueryGetPublicKeyResponse {
-  return { publicKey: "" };
+  return { pk: "" };
 }
 
 export const QueryGetPublicKeyResponse = {
   encode(message: QueryGetPublicKeyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.publicKey !== "") {
-      writer.uint32(10).string(message.publicKey);
+    if (message.pk !== "") {
+      writer.uint32(10).string(message.pk);
     }
     return writer;
   },
@@ -297,7 +297,7 @@ export const QueryGetPublicKeyResponse = {
             break;
           }
 
-          message.publicKey = reader.string();
+          message.pk = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -309,13 +309,13 @@ export const QueryGetPublicKeyResponse = {
   },
 
   fromJSON(object: any): QueryGetPublicKeyResponse {
-    return { publicKey: isSet(object.publicKey) ? String(object.publicKey) : "" };
+    return { pk: isSet(object.pk) ? String(object.pk) : "" };
   },
 
   toJSON(message: QueryGetPublicKeyResponse): unknown {
     const obj: any = {};
-    if (message.publicKey !== "") {
-      obj.publicKey = message.publicKey;
+    if (message.pk !== "") {
+      obj.pk = message.pk;
     }
     return obj;
   },
@@ -325,7 +325,7 @@ export const QueryGetPublicKeyResponse = {
   },
   fromPartial<I extends Exact<DeepPartial<QueryGetPublicKeyResponse>, I>>(object: I): QueryGetPublicKeyResponse {
     const message = createBaseQueryGetPublicKeyResponse();
-    message.publicKey = object.publicKey ?? "";
+    message.pk = object.pk ?? "";
     return message;
   },
 };
