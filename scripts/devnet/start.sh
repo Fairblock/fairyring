@@ -6,6 +6,8 @@ CHAINID=fairyring_devnet
 FAIRYRINGCLIENT=fairyringclient
 SHAREGENERATIONCLIENT=ShareGenerationClient
 FAIRYPORT=fairyport
+CONTRACT_DIR=$(pwd)/scripts/tests/fairyring_contract/examples/private_keyshare
+
 
 VAL_MNEMONIC_1="clock post desk civil pottery foster expand merit dash seminar song memory figure uniform spice circle try happy obvious trash crime hybrid hood cushion"
 
@@ -203,3 +205,38 @@ echo "*    Node REST ENDPOINT: http://localhost:$RESTPORT        *"
 echo "*    Node GRPC ENDPOINT: http://localhost:$GRPCPORT        *"
 echo "*******************************************************"
 echo "Devnet data directory: $(pwd)/devnet_data/"
+
+
+echo "###############################"
+echo "# Deploying contract on chain #"
+echo "###############################"
+
+cd $CONTRACT_DIR
+
+echo "Compiling contract"
+cargo build --release --target wasm32-unknown-unknown
+
+echo "Optimizing Contract"
+docker run --rm -v "$(pwd)":/code \
+  --mount type=volume,source="$(basename "$(pwd)")_cache",target=/target \
+  --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
+  cosmwasm/optimizer:0.16.0
+cd -
+
+
+echo "Deploying smart contract on source chain"
+RESULT=$($BINARY tx wasm store $CONTRACT_DIR/artifacts/private_keyshare.wasm --from $WALLET1_ADDR --gas 9000000 --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --broadcast-mode sync --keyring-backend test --fees 9000000ufairy -o json -y)
+check_tx_code $RESULT
+sleep $((BLOCK_TIME*2))
+
+echo "Querying Pubkey on Pep"
+PUB_KEY=$($BINARY query keyshare show-active-pub-key -o json | jq -r '.active_pubkey.public_key')
+
+# Build the JSON payload with the dynamic pubkey
+JSON='{"pubkey": "'"$PUB_KEY"'"}'
+echo $JSON
+
+echo "Instantiating the contract"
+RESULT=$($BINARY tx wasm instantiate 1 "$JSON" --admin $WALLET1_ADDR --from $WALLET1_ADDR --gas 9000000 --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --broadcast-mode sync --keyring-backend test --fees 9000000ufairy --label test_contract_1 -o json -y)
+check_tx_code $RESULT
+sleep $((BLOCK_TIME*2))

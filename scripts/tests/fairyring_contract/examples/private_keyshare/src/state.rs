@@ -31,3 +31,5 @@ pub const LAST_REPLY_ID: Item<u64> = Item::new("last_reply_id");
 
 // Save Pubkey
 pub const PUBKEY: Item<String> = Item::new("pubkey");
+
+pub const REQUESTER: Item<String> = Item::new("requester");

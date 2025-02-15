@@ -13,6 +13,10 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
+type ExecuteMsgWrapper struct {
+	ExecuteContractPrivateMsg types.ExecuteContractPrivateMsg `json:"execute_contract_private_msg"`
+}
+
 // SetContractEntry set a specific contract entry in the store by identity
 func (k Keeper) SetContractEntry(ctx context.Context, contract types.RegisteredContract) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
@@ -136,7 +140,12 @@ func (k Keeper) ExecutePrivateContract(ctx sdk.Context, contractAddr string, msg
 	}()
 
 	addr := sdk.MustAccAddressFromBech32(contractAddr)
-	msgBytes, err := json.Marshal(msg)
+
+	wrappedMsg := ExecuteMsgWrapper{
+		ExecuteContractPrivateMsg: msg,
+	}
+
+	msgBytes, err := json.Marshal(wrappedMsg)
 	if err != nil {
 		k.logger.Error("error marshalling msg for contract: %s", contractAddr)
 		return

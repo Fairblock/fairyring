@@ -7,7 +7,7 @@ use crate::error::ContractError;
 use crate::msg::{
     ExecuteMsg, InstantiateMsg, QueryMsg, IdentityResponse, PepRequestMsg, AllIdentitiesResponse, PrivateDecryptionKey,
 };
-use crate::state::{IdentityRecord, PendingRequest, LAST_REPLY_ID, PENDING_REQUESTS, PUBKEY, RECORDS};
+use crate::state::{IdentityRecord, PendingRequest, LAST_REPLY_ID, PENDING_REQUESTS, PUBKEY, RECORDS, REQUESTER};
 
 // Import your generated request type.
 use fairblock_proto::fairyring::pep::{ MsgRequestPrivateIdentity, MsgRequestPrivateIdentityResponse, MsgRequestPrivateDecryptionKey, MsgRequestPrivateDecryptionKeyResponse};
@@ -59,8 +59,9 @@ fn execute_private_keys(
 ) -> Result<Response<PepRequestMsg>, ContractError> {
 
     let mut record = RECORDS.load(deps.storage, identity.as_str())?;
+    let requester = REQUESTER.load(deps.storage)?;
     
-    record.private_keyshares.insert(dec_keys.requester.clone(), dec_keys.private_keyshares);
+    record.private_keyshares.insert(requester.clone(), dec_keys.private_keyshares);
     RECORDS.save(deps.storage, identity.as_str(), &record)?;
     Ok(Response::<PepRequestMsg>::new()
         .add_attribute("action", "store_encrypted_keyshares")
@@ -89,6 +90,12 @@ fn execute_request_keyshare(
         price: Coin::new(0u128, "ufairy"),
     };
     PENDING_REQUESTS.save(deps.storage, reply_id, &pending)?;
+
+    let mut record = RECORDS.load(deps.storage, identity.as_str())?;
+    record.private_keyshares.insert(info.sender.to_string().clone(), Vec::new());
+    RECORDS.save(deps.storage, identity.as_str(), &record)?;
+
+    REQUESTER.save(deps.storage, &info.sender.to_string())?;
     
     let msg = MsgRequestPrivateDecryptionKey {
         creator: contract_addr.to_string(),
@@ -152,9 +159,6 @@ fn execute_request_identity(
         value: d,
     };
 
-    // // Wrap it in our custom request message.
-    // let pep_request = PepRequestMsg { inner: inner_msg };
-
     // Dispatch as a submessage.
     let cosmos_msg = CosmosMsg::Any(any_msg.clone());
     let sub_msg = SubMsg::reply_on_success(cosmos_msg, reply_id);
@@ -207,36 +211,35 @@ pub fn reply(
         .map(|resp| resp.value.clone())
         .ok_or(ContractError::ReplyMissingData {})?;
 
-    // Attempt to decode both response types
+    // Try decoding as identity response first.
     let identity_result = MsgRequestPrivateIdentityResponse::decode(binary_data.as_slice());
     let keyshare_result = MsgRequestPrivateDecryptionKeyResponse::decode(binary_data.as_slice());
 
     if let Ok(pep_response) = identity_result {
-        let pubkey = PUBKEY.load(deps.storage)?;
+        // Check if identity is valid (non-empty)
+        if !pep_response.identity.is_empty() {
+            let pubkey = PUBKEY.load(deps.storage)?;
+            let identity = pep_response.identity;
+            let record = IdentityRecord {
+                identity: identity.clone(),
+                pubkey,
+                creator: pending.creator,
+                encrypted_data: "".to_string(),
+                price: pending.price,
+                private_keyshares: HashMap::new(),
+            };
+            RECORDS.save(deps.storage, identity.as_str(), &record)?;
+            PENDING_REQUESTS.remove(deps.storage, reply_id);
+            return Ok(Response::<PepRequestMsg>::new()
+                .add_attribute("action", "store_identity")
+                .add_attribute("identity", identity));
+        }
+        // If identity is empty, fall through to try keyshare.
+    }
 
-        // Process identity response
-        let identity = pep_response.identity;
-
-        // Create and store the identity record
-        let record = IdentityRecord {
-            identity: identity.clone(),
-            pubkey: pubkey,
-            creator: pending.creator,
-            encrypted_data: "".to_string(), // left blank as specified
-            price: pending.price,
-            private_keyshares: HashMap::new(),
-        };
-        RECORDS.save(deps.storage, identity.as_str(), &record)?;
-        PENDING_REQUESTS.remove(deps.storage, reply_id);
-
-        return Ok(Response::<PepRequestMsg>::new()
-            .add_attribute("action", "store_identity")
-            .add_attribute("identity", identity));
-    } else if let Ok(_keyshare_response) = keyshare_result {
-
-        // TODO: Define what you want to do with the keyshare response.
-        // If you need to store it, create a storage entry and save it.
-
+    if let Ok(_keyshare_response) = keyshare_result {
+        // Process keyshare response here.
+        // For now, simply return a response indicating a keyshare was processed.
         return Ok(Response::<PepRequestMsg>::new()
             .add_attribute("action", "request_private_keyshare"));
     }
@@ -245,6 +248,7 @@ pub fn reply(
         error: "Unknown response type".to_string(),
     })
 }
+
 
 #[entry_point]
 pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
