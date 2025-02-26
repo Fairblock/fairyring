@@ -3,31 +3,45 @@
 
 _**‼️ All code within this tutorial is purely educational, and it is up to the readers discretion to build their applications following industry standards, practices, and applicable regulations.**_
 
-This tutorial will guide you through using private encryption with general ids. It builds off of the concept of [preparing, encrypting, decrypting, and executing transactions](https://docs.fairblock.network/docs/build/fairyring/fairyring_encrypted_msg) natively within the Fairblock blockchain, FairyRing. The repo can be found [here](https://github.com/Fairblock/fairyring/tree/contracts).
+This tutorial will guide you through using private decryption with general conditions. It builds off of the concept of [preparing, encrypting, decrypting, and executing simple transactions](https://docs.fairblock.network/docs/build/fairyring/fairyring_encrypted_msg) natively within the Fairblock blockchain, FairyRing. The repo can be found [here](https://github.com/Fairblock/fairyring/tree/contracts).
 
-> Instead of a bash script being used to interact directly with the FairyRing network, this tutorial builds off of bash script that ultimately calls a newly deployed rust smart contract to prepare transactions, generates unique tIBE-related ids for them with FairyRing, and carries out the typical encryption process. This is all happening within the FairyRing chain. **Decryption** is carried out such that the keyshares from the FairyRing validators are encrypted with a specific public key associated to a user's wallet.
+> Instead of a bash script being used to interact directly with the FairyRing network, this tutorial uses a bash script that interacts with **a newly deployed rust smart contract to prepare transactions, generates unique tIBE-related ids for them with FairyRing, and carries out the typical encryption process.** This is all happening within the FairyRing chain. **Decryption is carried out such that the keyshares from the FairyRing validators are encrypted with a specific public key associated to a user's wallet.**
 
-By the end, you'll have:
+## What cApps can be Made With Private Decryption and General Conditions?
 
-<!-- recall - we do want to just have one docs page where it links to two repos but outlines the difference between public encryption and private encryption. OK. So the repo READMEs won'rr eally touch on it. Only briefly.  -->
+There really is an endless design space for cApps using Private Decription and General Conditions with FairyRing. Some prime examples could include:
 
-1. Understood the high level difference between cApp design using "General IDs" with:
+1. **Private Data Marketplaces for AI Models (user-owned data for AI models)** - AI models need data, insitutions and users do not want to give data without certain conditions (payment, ethtical integrity of the AI model or company, etc.). Private decryption and general conditions provides the tools to create market places where data sets can be encrypted and given conditions before it can be decrypted and used within an AI model.
+2. **Content Behind Conditions and/or Paywalls - Example Idea: FairyFans:** cApps where subscribers can pay and/or carry out certain conditions in order to decrypt access to content or the content itself. Imagine all your favorite crypto twitter content creators providing end to end encrypted access to their content, all using decentralized, onchain, tech.
+3. **Trusted Solvers for Intent Systems** - cApps that leverage intent systems but require that the solvers used follow specific conditions based on the prepared intent-based transaction. We already see intent apps provide the option to specify to use certain solvers, but that is all anchored in centralized systems. Private decryption and general conditions with fairblock unlocks this feature in a decentralized way.
+
+For more cApp ideas make sure to check out our [Ecosystem page](https://docs.fairblock.network/docs/ecosystem/).
+
+## Key Lessons from this Demo
+
+<!-- recall - we do want to just have one docs page where it links to two repos but outlines the difference between public encryption and private decryption. OK. So the repo READMEs won't really touch on it. Only briefly.  -->
+
+**1. Understood the high level difference between cApp design using "General Conditions" with:**
    - Public Decryption (a future tutorial)
    - Private Decryption (this tutorial)
-2. Walked through an example cApp (smart contract) going through a common payment-gate pattern where the UX flow includes:
-   - cApp providing a service, such as generating loot boxes, that are encrypted using FairyRing, and more specifically "FairyRing Private Encryption," where the contract sends encrypted keyshares (ultimately the decryption key) to users that pay the required service fee.
+**2. Walked through an example cApp (smart contract) going through a common payment-gate pattern where the UX flow includes:**
+   - cApp providing a service, such as generating loot boxes, that are encrypted using FairyRing, and more specifically "FairyRing private decryption," where the contract sends encrypted keyshares (ultimately the decryption key) to users that pay the required service fee.
    - User pays fee, and is able to request the transaction to be decrypted.
    - Encrypted keyshares are sent to the user, where the user's wallet private key is used to encrypt the keyshares. The user then takes the encrypted keyshares, locally decrypts them using their wallet private key, and aggregates them, resulting in the decryption key needed to decrypt the unique passwords offered by the cApp to get through the payment gate. 
 
 Essentially within step 2, developers will walk through the motions of using a rust smart contract within a FairyRing cApp and leverage dynamic confidential computing.
 
+> The common payment-gate pattern is just one example for conditional decryption features. This is really up to you as the cApp developer!
+
 ## Demo Quick Start
 
 Imagine that you're building a FairyRing cApp that provides gamers unique loot boxes. These loot boxes are of course unknown until certain conditions are hit, players finally get 100 mushrooms in a side quest, etc. you know how it is.
 
-Once the condition is hit and the FairyRing validators are notified, the keyshares are generated for the respective loot box. Since each loot box is unique, having a cApp design that uses private encryption makes sense. The gamer who earns the loot box will provide their public address, and that will be used to encrypt the newly generated keyshares. This way those keyshares won't be used to create the aggregated keyshare and thus the decryption key unless it is the appropriate gamer with the public-private key pairing for said wallet.
+<!-- TODO: add Zelda / Link with sunglasses meme -->
 
-This is a powerful smart contract lego piece that pushes cApps into even more exciting territory.
+Once the condition is hit and the FairyRing validators are notified, the keyshares are generated for the respective loot box. Since each loot box is unique, having a cApp design that uses private decryption makes sense. The gamer who earns the loot box will provide their public address, and that will be used to encrypt the newly generated keyshares. This way those keyshares won't be used to create the aggregated keyshare and thus the decryption key unless it is the appropriate gamer with the public-private key pairing for said wallet.
+
+**This is a powerful smart contract lego piece that pushes cApps into even more exciting territory.**
 
 To run this demo, simply download this repo, and switch to this specific feature branch, `contracts`.
 
@@ -43,22 +57,23 @@ make devnet-up
 ./privateEncryptionFairyRingTutorial.sh
 ```
 
-<!-- HASH TODO: make a script that prompts the dev for information instead of having to feed in these long txs. -->
 `make devnet-up` spins up a local FairyRing chain on your machine using docker. The same devnet wallets are spun up everytime. As well, the rust smart contract `contract.rs` is deployed on your local devnet, also at the same address everytime in these tests. That is the smart contract we will be interacting with, we'll call it the `lootbox` contract. 
 
-Upon running the `./privateEncryptionFairyRingTutorial.sh` script, you will be walked through the mentioned user flow as if you were the user and the lootbox cApp was a simple terminal app for now. 
+Upon running the `./privateEncryptionFairyRingTutorial.sh` script, you will see transactions carried out on your devnet in the CLI. It is basically walking through the transaction flow for a lootbox creator encrypting the message containing details about the lootbox, and then a gamer coming along and decrypting it after passing some set of conditions (in this case, a payment). 
 
 > It is important to check out the `contract.rs` file and the comments provided. It acts as a temporary reference for those interested in creating their own cApp using this design pattern.
 
 The steps of the cApp are as follows:
 
-1. The smart contract function `request_identity()` is called.
+_All function calls outlined below are internal to the smart contract, and are done through the public function `execute()`._
+
+1. The smart contract function `execute_request_identity()` is called.
 2. FairyRing is queried to obtain the identities associated to the LootBox contract.
 3. The CLI will prompt you for the newly generated `pubkey` that will be used to encrypt the LootBox details. In this example, we simply represent it as a string. 
 <!-- TODO: I am pretty sure I can just have the pubkey extracted and used further in the respective txs following. -->
 4. The script then encrypts the transaction using FairyRing. This is an offchain event and it is usually carried out by a front end. The encrypted result will then be output to the CLI.
 5. The encrypted tx will then be input to the LootBox function `store_encrypted_data()`.
-6. Now a user comes along who has earned the LootBox, and thus can call the LootBox contract function `request_private_keyshare()`. In order to do this, the unique id for the respective lootbox needs to be known. You are asked for the pubkey to encrypt the keyshares with, and that will be the public address of your wallet. Simply pick a wallet from the fairyring wallet opsion spun up within your devnet.
+6. Now a user comes along who has earned the LootBox, and thus can call the LootBox contract function `execute_request_keyshare()`. In order to do this, the unique id for the respective lootbox needs to be known. You are asked for the pubkey to encrypt the keyshares with, and that will be the public address of your wallet. Simply pick a wallet from the fairyring wallet opsion spun up within your devnet.
 7. The encrypted keyshares will be obtained.
 8. These keyshares are then locally decrypted using your respective wallet's private key, and then aggregated to obtain the LootBox decryption key.
 9. Now the script will call the contract function `decrypt()` which ultimately interacts with FairyRing to decrypt the transaction.
@@ -75,15 +90,13 @@ Digging further into the underlying code within this tutorial, let's go over the
 
 ### Step 1: Generate Unique IDs for Each Transaction
 
-<!-- TODO: not sure if it is called request_identity or execute_request_identity() as seen in the fairyring/scripts/tests/fairyring_contract/examples/private_keyshare/src/contract.rs -->
-
-Within this tutorial, the rust contract creates a unique ID for each transaction each time the function `request_identity()` is called.
+Within this tutorial, the rust contract creates a unique ID for each transaction each time the function `execute_request_identity()` is called.
 
 Unique IDs are generated by creating whatever nomenclature you would like for your specific smart contract transaction, and then communicating with the `pep` module within FairyRing to obtain further name appendices to ensure it is unique in FairyRing.
 
 Unique IDs can be generated as needed, or they can be generated ahead of time. This is a design decision for the cApp developer.
 
-> KEY LESSON FOR DEVS: cApp contracts will need a function that communicates with the `pep` module to generate unique IDs for encrypted contract transactions.
+> **KEY LESSON FOR DEVS: cApp contracts will need a function that communicates with the `pep` module to generate unique IDs for encrypted contract transactions.**
 
 The command that was ran to interact with this example's `request_identity()` function is shown below:
 
@@ -100,8 +113,6 @@ fairyringd tx wasm execute fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txm
 ```
 
 ### Step 2: Query Contract for the Identity Supplied and Register the Contract Against the Identity
-
-<!-- TODO: I think this should be just a return value, how does a cApp work with FairyRing after requesting and identity? Can they not just get the unique id returned to the smart contract, and wouldn't they just do that? So why do they need to interact with the chain state directly for this step, whether it be from a front end team or not? -->
 
 Now that private IDs can be generated from the smart contract, the next portion of the design flow for a developer is to obtain the public address. This is more-so done by the front end team likely. They would query the chain for the respective ids generated from the smart contract.
 
@@ -195,9 +206,7 @@ or
 fairyringd keys list --home ./devnet_data/fairyring_devnet --keyring-backend test
 ```
 
-With the `secp_pubkey` and all other details of the transaction we have been working with up to this point, you can run the below manual bash commands to interat with the smart contract. Really though, the key again here is that the private keyshares are obtained within a rust function for the user. Within said function, there are key calls to FairyRing to obtain the keyshares in an encrypted manner.
-
-<!-- TODO: confirm the above with Apocalypse -->
+With the `secp_pubkey` and all other details of the transaction we have been working with up to this point, you can run the below manual bash commands to interact with the smart contract. Really though, the key again here is that the private keyshares are obtained within a rust function for the user. Within said function, there are key calls to FairyRing to obtain the keyshares in an encrypted manner.
 
 Place holder values for education purposes:
 
@@ -227,11 +236,9 @@ Actual values in the `privateEncryptionFairyRingTutorial.sh` bash script:
 fairyringd q wasm contract-state smart fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v '{"get_all_identity": {}}'
 ```
 
-### Step ??: decrypt enc. keyshares with your private key and aggregate them to create decryption key
+### Step 6: Decrypt Encrypted Keyshares with Your Private Key and Aggregate Them to Create Decryption Key
 
 Now that the user finally has the encrypted keyshares, they can locally user their wallet's private key, decrypt the keyshares and aggregate them using FairyRing. This would be another feature that the cApp would provide to the user likely through their front end.
-
-<!-- TODO: confirm the above. -->
 
 Place holder values for education purposes:
 
@@ -245,7 +252,7 @@ Actual values in the `privateEncryptionFairyRingTutorial.sh` bash script:
 fairyringd aggregate-keyshares '[ { "encrypted_keyshare_value": "e40d13ee893326cf5f55dff94e1c2bb102ca0020b4cc5752775008c05f55a463d483beeec023ff6beba561e25cc19b4f1fd2f7b2002088b3128c0de15ead9bbc01f247ea814d1f44e5e5c8edfeea35ddc767b4eb5624c96888d2cfcaf62b13d3d3842e53dd957c60763c3b6b412366d17456d8ecb7591a169fa71884ec329b2aeda3b9a35eb134d58551ae6805e9b61834e9f09e677f3728356ded2b48d0c02d86f8b3e19cc6ecfb30fb226c1c055d00eb015053022bb95e5e60f03dcfe1e62434d5fe4b2a3833ba2b16276be614b5672530bd883200ffc4d43218a24735877e0b3ba4ebaed164b4fe0a74a5902c954a375ad20c6b5ef2759db602ea13257ccb955f204006ce914f6846168a39c509c99f04224f84102be31cdc84c6b26dabd41357f344d5e8f5d0d702ec01e6053f79162bcca6de71396cd58985163586ca878c8121d884e5", "encrypted_keyshare_index": 1 } ]' "" fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq ef1450bdc18396f2254f52d8c525c0d933a8f146ec2a681eaf319f5899f2f60d
 ```
 
-### Finally Decrypt the encrypted data with dec. key from step 7
+### Step 7: Finally Decrypt the Encrypted Data with Decryption Key from Step 6
 
 Again, this would likely be something offered by the front end for the user. At this point, the user has obtained the decryption key specific to their unique encrypted transaction they have paid for. They now just need to decrypt it, which would simply work with FairyRing behind the scenes.
 
@@ -263,7 +270,7 @@ fairyringd query pep decrypt-data 95fedf802d88dd66532f4a0552c3b6c51d9ef80c63a891
 
 ## Next Steps
 
-Congratulations! You have now seen an example of using a smart contract to encrypt transactions with general conditions and private encryption (private IDs). 
+Congratulations! You have now seen an example of using a smart contract to encrypt transactions with general conditions and private decryption (private IDs). 
 
 There are several next steps you can take now.
 
