@@ -9,7 +9,6 @@ This tutorial will guide you through using private decryption with general condi
 
 A walk through of this demo is show in the video below. Feel free to watch it and follow along with the rest of this page.
 
-<!-- 
 <div style={{ textAlign: "center" }}>
   <iframe
     width="100%"
@@ -22,7 +21,7 @@ A walk through of this demo is show in the video below. Feel free to watch it an
     allowFullScreen
     style={{ maxWidth: "560px" }}
   ></iframe>
-</div> -->
+</div>
 
 To run this demo, simply download this repo, and switch to this specific feature branch, `feat-auction`.
 
