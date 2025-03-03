@@ -7,6 +7,34 @@ This tutorial will guide you through using private decryption with general condi
 
 > Instead of a bash script being used to interact directly with the FairyRing network, this tutorial uses a bash script that interacts with **a newly deployed rust smart contract to prepare transactions, generates unique tIBE-related ids for them with FairyRing, and carries out the typical encryption process.** This is all happening within the FairyRing chain. **Decryption is carried out such that the keyshares from the FairyRing validators are encrypted with a specific public key associated to a user's wallet.**
 
+A walk through of this demo is show in the video below. Feel free to watch it and follow along with the rest of this page.
+
+<!-- 
+<div style={{ textAlign: "center" }}>
+  <iframe
+    width="100%"
+    height="315"
+    src="https://www.youtube.com/embed/AE5qvD7_AjU?si=31hNRD5ilmH7YDPH"
+    title="FairyRing Demo #2 - Private Decryption"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerPolicy="strict-origin-when-cross-origin"
+    allowFullScreen
+    style={{ maxWidth: "560px" }}
+  ></iframe>
+</div> -->
+
+To run this demo, simply download this repo, and switch to this specific feature branch, `feat-auction`.
+
+## What is the Difference Between Public and Private Decryption?
+
+A core concept within Fairblock is "Public, and Private, Decryption." Assuming that you have gone through the foundational parts of the [docs](TODO), you know that the FairyRing validators generate keyshares that are ultimately aggregated to create the Master Decryption Key for a respective encrypted transaction. The default methodology has the Master Decryption Key fully public to anyone watching the FairyRing network, which is fine in certain applications. Some applications may want the Master Decryption Key to be encrypted for one specific user. When this is the case, the keyshares that are ultimately aggregated and used to create the Master Decryption Key, are actually encrypted by the calling user's wallet public key. The user then can decrypt the keyshares, aggregate them to get the Master Decryption Key, without anyone else onchain knowing. This step can be handled by the front-end so the user doesn't have to go through extra steps.
+
+Thus we have the following definitions:
+
+1. Public Decryption - The typical user flow where encrypted messages have their Master Decryption Key exposed as soon as it is generated to anyone listening to the FairyRing.
+2. Private Decryption - The user flow where the validator keyshares, that are used to construct the Master Decryption Key ultimately, are encrypted using the calling user's wallet's public key.
+
 ## What cApps can be Made With Private Decryption and General Conditions?
 
 There really is an endless design space for cApps using Private Decription and General Conditions with FairyRing. Some prime examples could include:
@@ -19,11 +47,10 @@ For more cApp ideas make sure to check out our [Ecosystem page](https://docs.fai
 
 ## Key Lessons from this Demo
 
-<!-- recall - we do want to just have one docs page where it links to two repos but outlines the difference between public encryption and private decryption. OK. So the repo READMEs won't really touch on it. Only briefly.  -->
-
 **1. Understood the high level difference between cApp design using "General Conditions" with:**
    - Public Decryption (a future tutorial)
    - Private Decryption (this tutorial)
+
 **2. Walked through an example cApp (smart contract) going through a common payment-gate pattern where the UX flow includes:**
    - cApp providing a service, such as generating loot boxes, that are encrypted using FairyRing, and more specifically "FairyRing private decryption," where the contract sends encrypted keyshares (ultimately the decryption key) to users that pay the required service fee.
    - User pays fee, and is able to request the transaction to be decrypted.
@@ -36,8 +63,6 @@ Essentially within step 2, developers will walk through the motions of using a r
 ## Demo Quick Start
 
 Imagine that you're building a FairyRing cApp that provides gamers unique loot boxes. These loot boxes are of course unknown until certain conditions are hit, players finally get 100 mushrooms in a side quest, etc. you know how it is.
-
-<!-- TODO: add Zelda / Link with sunglasses meme -->
 
 Once the condition is hit and the FairyRing validators are notified, the keyshares are generated for the respective loot box. Since each loot box is unique, having a cApp design that uses private decryption makes sense. The gamer who earns the loot box will provide their public address, and that will be used to encrypt the newly generated keyshares. This way those keyshares won't be used to create the aggregated keyshare and thus the decryption key unless it is the appropriate gamer with the public-private key pairing for said wallet.
 
@@ -54,23 +79,22 @@ Now, simply run the following and you will have effectively carried out the tuto
 
 ```bash
 make devnet-up
-./privateEncryptionFairyRingTutorial.sh
+./privateDecryptionFairyRingTutorial.sh
 ```
 
 `make devnet-up` spins up a local FairyRing chain on your machine using docker. The same devnet wallets are spun up everytime. As well, the rust smart contract `contract.rs` is deployed on your local devnet, also at the same address everytime in these tests. That is the smart contract we will be interacting with, we'll call it the `lootbox` contract. 
 
-Upon running the `./privateEncryptionFairyRingTutorial.sh` script, you will see transactions carried out on your devnet in the CLI. It is basically walking through the transaction flow for a lootbox creator encrypting the message containing details about the lootbox, and then a gamer coming along and decrypting it after passing some set of conditions (in this case, a payment). 
+Upon running the `./privateDecryptionFairyRingTutorial.sh` script, you will see transactions carried out on your devnet in the CLI. It is basically walking through the transaction flow for a lootbox creator encrypting the message containing details about the lootbox, and then a gamer coming along and decrypting it after passing some set of conditions (in this case, a payment). 
 
 > It is important to check out the `contract.rs` file and the comments provided. It acts as a temporary reference for those interested in creating their own cApp using this design pattern.
 
-The steps of the cApp are as follows:
+**The steps of the cApp are as follows:**
 
 _All function calls outlined below are internal to the smart contract, and are done through the public function `execute()`._
 
 1. The smart contract function `execute_request_identity()` is called.
 2. FairyRing is queried to obtain the identities associated to the LootBox contract.
 3. The CLI will prompt you for the newly generated `pubkey` that will be used to encrypt the LootBox details. In this example, we simply represent it as a string. 
-<!-- TODO: I am pretty sure I can just have the pubkey extracted and used further in the respective txs following. -->
 4. The script then encrypts the transaction using FairyRing. This is an offchain event and it is usually carried out by a front end. The encrypted result will then be output to the CLI.
 5. The encrypted tx will then be input to the LootBox function `store_encrypted_data()`.
 6. Now a user comes along who has earned the LootBox, and thus can call the LootBox contract function `execute_request_keyshare()`. In order to do this, the unique id for the respective lootbox needs to be known. You are asked for the pubkey to encrypt the keyshares with, and that will be the public address of your wallet. Simply pick a wallet from the fairyring wallet opsion spun up within your devnet.
@@ -78,7 +102,7 @@ _All function calls outlined below are internal to the smart contract, and are d
 8. These keyshares are then locally decrypted using your respective wallet's private key, and then aggregated to obtain the LootBox decryption key.
 9. Now the script will call the contract function `decrypt()` which ultimately interacts with FairyRing to decrypt the transaction.
 
-Assumptions:
+**Assumptions:**
 
 1. The actual details of how this LootBox would work, and the actual exchanging of tokens to the LootBox smart contract are not in scope for this tutorial. That is for the app developer, but we're happy to discuss ideas!
 
@@ -106,7 +130,7 @@ Place holder values for education purposes:
 fairyringd tx wasm execute $CONTRACT_ADDRESS '{"request_identity": {"price": {"denom": "ufairy", "amount": "1000"}}}' --from $ACCOUNT_NAME --gas 9000000 --home ./devnet_data/fairyring_devnet --chain-id fairyring_devnet --keyring-backend test
 ```
 
-Actual values in the `privateEncryptionFairyRingTutorial.sh` bash script:
+Actual values in the `privateDecryptionFairyRingTutorial.sh` bash script:
 
 ```bash
 fairyringd tx wasm execute fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v '{"request_identity": {"price": {"denom": "ufairy", "amount": "1000"}}}' --from wallet1 --gas 9000000 --chain-id fairyring_devnet --home ./devnet_data/fairyring_devnet/ --keyring-backend test
@@ -122,7 +146,7 @@ Place holder values for education purposes:
 fairyringd q wasm contract-state smart $CONTRACT_ADDRESS '{"get_all_identity": {}}'
 ```
 
-Actual values in the `privateEncryptionFairyRingTutorial.sh` bash script:
+Actual values in the `privateDecryptionFairyRingTutorial.sh` bash script:
 
 ```bash
 fairyringd q wasm contract-state smart fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v '{"get_all_identity": {}}'
@@ -136,7 +160,7 @@ Place holder values for education purposes:
 fairyringd tx pep register-contract $CONTRACT_ADDRESS $UNIQUE_ID --from $ACCOUNT_NAME --gas 9000000 --chain-id fairyring_devnet --home ./devnet_data/fairyring_devnet --keyring-backend test
 ```
 
-Actual values in the `privateEncryptionFairyRingTutorial.sh` bash script:
+Actual values in the `privateDecryptionFairyRingTutorial.sh` bash script:
 
 ```bash
 fairyringd tx pep register-contract fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v/req-fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq-1 --from wallet1 --gas 9000000 --chain-id fairyring_devnet --home ./devnet_data/fairyring_devnet --keyring-backend test
@@ -154,7 +178,7 @@ Place holder values for education purposes:
 fairyringd encrypt $private_id $PUBLIC_KEY $MESSAGE
 ```
 
-Actual values in the `privateEncryptionFairyRingTutorial.sh` bash script:
+Actual values in the `privateDecryptionFairyRingTutorial.sh` bash script:
 
 ```bash
 fairyringd encrypt fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v/req-fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq-1 95fedf802d88dd66532f4a0552c3b6c51d9ef80c63a891e5c749178b49e77efaf55c56d5d90196afc237f9f3b8dea22d yoyoyo
@@ -180,7 +204,7 @@ Place holder values for education purposes:
 fairyringd tx wasm execute $CONTRACT_ADDRESS '{"store_encrypted_data": {"identity": "$CONTRACT_ADDRESS/req-private-id", "data": "ciphertext"}}' --from wallet1 --gas 9000000 --home ./devnet_data/fairyring_devnet --chain-id fairyring_devnet --keyring-backend test
 ```
 
-Actual values in the `privateEncryptionFairyRingTutorial.sh` bash script:
+Actual values in the `privateDecryptionFairyRingTutorial.sh` bash script:
 
 ```bash
 fairyringd tx wasm execute fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v '{"store_encrypted_data": {"identity": "fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v/req-fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq-1", "data": "6167652d656e6372797074696f6e2e6f72672f76310a2d3e20646973744942450a6f473439336e4470727177786a6947486e454b7a346e75564e6f674733703447797857676d5839446d68414d5132506165772f307a5278486c51706a636f44480a494a4d6f3745584d336562744b424a47364f4a334238543970586972364d696b32324347393439734a744947436666737a6c41424b7359524f513576624247640a7667336844517a6434337350757732464e78444342410a2d2d2d207548594b3943454a7952784b7538574a794a6c644875754673657a6f472b354d564350434f5978326c306b0a14e947c62b5f18ec3fa8821f85b9235131f143df0905dacdbeb8136d651c4e907114270d31d5"}}' --from wallet1 --gas 9000000 --chain-id fairyring_devnet --home ./devnet_data/fairyring_devnet --keyring-backend test
@@ -214,7 +238,7 @@ Place holder values for education purposes:
 fairyringd tx wasm execute $CONTRACT_ADDRESS '{"request_private_keyshare": {"identity": "$CONTRACT_ADDRESS/req-private-id", "secp_pubkey": "$SOME_HEX_KEY"}}' --from $ACCOUNT_NAME --gas 9000000 --chain-id fairyring_devnet --home ./devnet_data/fairyring_devnet --keyring-backend test
 ```
 
-Actual values in the `privateEncryptionFairyRingTutorial.sh` bash script:
+Actual values in the `privateDecryptionFairyRingTutorial.sh` bash script:
 
 ```bash
 fairyringd tx wasm execute fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v '{"request_private_keyshare": {"identity": "fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v/req-fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq-1", "secp_pubkey": "Ak9iJuH5l5/XdmS6U+ojbutXnGzBnQf++HVOfKanVEc+"}}' --amount 400000ufairy --from wallet1 --gas 9000000 --home ./devnet_data/fairyring_devnet --chain-id fairyring_devnet --keyring-backend test
@@ -230,7 +254,7 @@ Place holder values for education purposes:
 fairyringd q wasm contract-state smart $CONTRACT_ADDRESS '{"get_all_identity": {}}'
 ```
 
-Actual values in the `privateEncryptionFairyRingTutorial.sh` bash script:
+Actual values in the `privateDecryptionFairyRingTutorial.sh` bash script:
 
 ```bash
 fairyringd q wasm contract-state smart fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v '{"get_all_identity": {}}'
@@ -246,7 +270,7 @@ Place holder values for education purposes:
 fairyringd aggregate-keyshares [keyshare-list] [identity] [req-address] [priv-key-hex] 
 ```
 
-Actual values in the `privateEncryptionFairyRingTutorial.sh` bash script:
+Actual values in the `privateDecryptionFairyRingTutorial.sh` bash script:
 
 ```bash
 fairyringd aggregate-keyshares '[ { "encrypted_keyshare_value": "e40d13ee893326cf5f55dff94e1c2bb102ca0020b4cc5752775008c05f55a463d483beeec023ff6beba561e25cc19b4f1fd2f7b2002088b3128c0de15ead9bbc01f247ea814d1f44e5e5c8edfeea35ddc767b4eb5624c96888d2cfcaf62b13d3d3842e53dd957c60763c3b6b412366d17456d8ecb7591a169fa71884ec329b2aeda3b9a35eb134d58551ae6805e9b61834e9f09e677f3728356ded2b48d0c02d86f8b3e19cc6ecfb30fb226c1c055d00eb015053022bb95e5e60f03dcfe1e62434d5fe4b2a3833ba2b16276be614b5672530bd883200ffc4d43218a24735877e0b3ba4ebaed164b4fe0a74a5902c954a375ad20c6b5ef2759db602ea13257ccb955f204006ce914f6846168a39c509c99f04224f84102be31cdc84c6b26dabd41357f344d5e8f5d0d702ec01e6053f79162bcca6de71396cd58985163586ca878c8121d884e5", "encrypted_keyshare_index": 1 } ]' "" fairy1m9l358xunhhwds0568za49mzhvuxx9uxdra8sq ef1450bdc18396f2254f52d8c525c0d933a8f146ec2a681eaf319f5899f2f60d
@@ -262,7 +286,7 @@ Place holder values for education purposes:
 fairyringd query pep decrypt-data $PUB_KEY $DEC_KEY $CIPHER 
 ```
 
-Actual values in the `privateEncryptionFairyRingTutorial.sh` bash script:
+Actual values in the `privateDecryptionFairyRingTutorial.sh` bash script:
 
 ```bash
 fairyringd query pep decrypt-data 95fedf802d88dd66532f4a0552c3b6c51d9ef80c63a891e5c749178b49e77efaf55c56d5d90196afc237f9f3b8dea22d 927631e00c368784af0649d57a3eb9e3d55e836772df30c0cdfc19ed0745625415fe5c5f6d89c110457dd56c7bf78b5b10d5e307e8a19aab1f92f3711e16ab4402e0f4551ea972d89b5bfb3e9252e9cceafad554ca3330dee721604ed152eb45 6167652d656e6372797074696f6e2e6f72672f76310a2d3e20646973744942450a6f473439336e4470727177786a6947486e454b7a346e75564e6f674733703447797857676d5839446d68414d5132506165772f307a5278486c51706a636f44480a494a4d6f3745584d336562744b424a47364f4a334238543970586972364d696b32324347393439734a744947436666737a6c41424b7359524f513576624247640a7667336844517a6434337350757732464e78444342410a2d2d2d207548594b3943454a7952784b7538574a794a6c644875754673657a6f472b354d564350434f5978326c306b0a14e947c62b5f18ec3fa8821f85b9235131f143df0905dacdbeb8136d651c4e907114270d31d5 

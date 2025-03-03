@@ -91,7 +91,7 @@ if [[ -z "$ENCRYPTED_KEYSHARE_VALUE" || "$ENCRYPTED_KEYSHARE_VALUE" == "null" ]]
     exit 1
 fi
 
-# Step 9: Wallet-2 aggregates keyshares to obtain the final decryption key
+# Step 8: Wallet-2 aggregates keyshares to obtain the final decryption key
 echo "Aggregating keyshares to obtain decryption key..."
 DECRYPTION_KEY=$(fairyringd aggregate-keyshares "[ { \"encrypted_keyshare_value\": \"$ENCRYPTED_KEYSHARE_VALUE\", \"encrypted_keyshare_index\": 1 } ]" '""' $ACC_ADDR_W2 $PRIV_KEY_HEX_W2)
 
@@ -101,7 +101,7 @@ if [[ -z "$DECRYPTION_KEY" || "$DECRYPTION_KEY" == "null" ]]; then
 fi
 echo "✅ Retrieved DECRYPTION_KEY: $DECRYPTION_KEY"
 
-# Step 10: Wallet-2 decrypts the stored data and compares with original encrypted message
+# Step 9: Wallet-2 decrypts the stored data and compares with original encrypted message
 echo "Decrypting final transaction data..."
 DECRYPTED_MESSAGE=$(fairyringd query pep decrypt-data $FAIRYRING_PUBKEY $DECRYPTION_KEY $ENCRYPTED_DATA -o json | jq -r '.decrypted_data')
 
@@ -115,7 +115,7 @@ else
     exit 1
 fi
 
-# Step 11: Monitor block height and retrieve decrypted transactions
+# Step 10: Monitor block height and retrieve decrypted transactions
 echo "⏳ Waiting for block height to reach target ($TARGET_HEIGHT)..."
 CURRENT_HEIGHT=$(fairyringd query pep latest-height --output json | jq -r '.height')
 
