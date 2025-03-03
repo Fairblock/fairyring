@@ -1,5 +1,5 @@
 
-# 🍄 Fairblock: Building Basic Apps Using Simple Encrypted Transactions
+# 🍄 Fairblock: Building cApps Using Smart Contracts, General Conditions and Private Decryption
 
 _**‼️ All code within this tutorial is purely educational, and it is up to the readers discretion to build their applications following industry standards, practices, and applicable regulations.**_
 
