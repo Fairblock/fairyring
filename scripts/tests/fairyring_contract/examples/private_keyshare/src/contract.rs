@@ -12,6 +12,7 @@ use crate::state::{IdentityRecord, PendingRequest, LAST_REPLY_ID, PENDING_REQUES
 // Import your generated request type.
 use fairblock_proto::fairyring::pep::{ MsgRequestPrivateIdentity, MsgRequestPrivateIdentityResponse, MsgRequestPrivateDecryptionKey, MsgRequestPrivateDecryptionKeyResponse};
 
+// the instantiate function saves the current master pubkey of the chain on the contract
 #[entry_point]
 pub fn instantiate(
     deps: DepsMut,
@@ -40,6 +41,7 @@ pub fn execute(
     }
 }
 
+// the update_pubkey execution msg is used to update the master pubkey saved to the contract
 fn update_pubkey(
     deps: DepsMut,
     _env: Env,
@@ -50,6 +52,8 @@ fn update_pubkey(
     Ok(Response::<PepRequestMsg>::new())
 }
 
+// the execute_private_keys execution msg is called by the pep module
+// when the private keyshares toa registered identity is available
 fn execute_private_keys(
     deps: DepsMut,
     _env: Env,
@@ -69,6 +73,8 @@ fn execute_private_keys(
         .add_attribute("requester_address", dec_keys.requester))
 }
 
+// the execute_request_keyshare execution msg is called by the user
+// via a tx to request for a private keyshares to an existing identity
 fn execute_request_keyshare(
     deps: DepsMut,
     env: Env,
@@ -121,6 +127,8 @@ fn execute_request_keyshare(
         .add_attribute("pending_reply_id", reply_id.to_string()))
 }
 
+// the execute_request_identity execution msg is called
+// by an user via a tx to request a private identity
 fn execute_request_identity(
     deps: DepsMut,
     env: Env,
@@ -169,6 +177,9 @@ fn execute_request_identity(
         .add_attribute("pending_reply_id", reply_id.to_string()))
 }
 
+// the store_encrypted_data execution msg is called by an user via tx
+// to store encrypted data (encrypted locally using a private identity and the master pubkey)
+// on the contract
 fn store_encrypted_data(
     deps: DepsMut,
     _env: Env,
@@ -186,7 +197,10 @@ fn store_encrypted_data(
         .add_attribute("data", data))
 }
 
-
+// the reply function takes care of the responses of the txs made by the contract to the chain.
+// two types of responses are expected from the chain:
+// 1. response for requesting an identity
+// 2. response for requesting private decryption key
 #[entry_point]
 pub fn reply(
     deps: DepsMut,
@@ -249,7 +263,7 @@ pub fn reply(
     })
 }
 
-
+// the contract allows for 2 queries
 #[entry_point]
 pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
@@ -258,11 +272,13 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     }
 }
 
+// the query_identity msg queries the state of a particular identity entry
 fn query_identity(deps: Deps, identity: String) -> StdResult<IdentityResponse> {
     let record = RECORDS.load(deps.storage, identity.as_str())?;
     Ok(IdentityResponse { record })
 }
 
+// the query_all_identities msg queries the state of all identity entries
 fn query_all_identities(deps: Deps) -> StdResult<AllIdentitiesResponse> {
     let records: Vec<IdentityRecord> = RECORDS
         .range(deps.storage, None, None, cosmwasm_std::Order::Ascending)
