@@ -1,0 +1,20 @@
+syntax = "proto3";
+package fairyring.auction;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "fairyring/auction/params.proto";
+import "fairyring/common/shared_types.proto";
+
+option go_package = "github.com/Fairblock/fairyring/x/auction/types";
+
+// GenesisState defines the auction module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+  repeated fairyring.common.AuctionDetailList auction_detail_list = 2 [(gogoproto.nullable) = false];
+  repeated fairyring.common.Bidder registered_bidders = 3 [(gogoproto.nullable) = false];
+}

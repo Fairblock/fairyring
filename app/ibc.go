@@ -6,6 +6,8 @@ import (
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	auction "github.com/Fairblock/fairyring/x/auction/module"
+	auctionmoduletypes "github.com/Fairblock/fairyring/x/auction/types"
 	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
@@ -197,6 +199,10 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	}
 	ibcRouter.AddRoute(keysharemoduletypes.ModuleName, keyshareStack)
 
+	if err := app.registerAuctionModule(); err != nil {
+		return err
+	}
+
 	// Add gov module to IBC Router
 	govIBCModule := ibcfee.NewIBCMiddleware(gov.NewIBCModule(app.GovKeeper), app.IBCFeeKeeper)
 	ibcRouter.AddRoute(govtypes.ModuleName, govIBCModule)
@@ -243,6 +249,7 @@ func RegisterIBC(registry cdctypes.InterfaceRegistry) map[string]appmodule.AppMo
 		// govtypes.ModuleName:            gov.AppModule{},
 		keysharemoduletypes.ModuleName: keysharemodule.AppModule{},
 		pepmoduletypes.ModuleName:      pepmodule.AppModule{},
+		auctionmoduletypes.ModuleName:  auction.AppModule{},
 	}
 
 	for name, m := range modules {

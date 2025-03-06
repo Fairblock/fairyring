@@ -26,11 +26,12 @@ var (
 
 var (
 	// PortKey defines the key to store the port ID in store
-	PortKey               = KeyPrefix("pep-port-")
-	ChannelKey            = KeyPrefix("pep-channel-")
-	LatestHeightKey       = KeyPrefix("pep-latest-height-")
-	LastExecutedHeightKey = KeyPrefix("pep-last-executed-height-")
-	RequestsCountKey      = KeyPrefix("Pep-request-count-")
+	PortKey                               = KeyPrefix("pep-port-")
+	ChannelKey                            = KeyPrefix("pep-channel-")
+	LatestHeightKey                       = KeyPrefix("pep-latest-height-")
+	LastExecutedHeightKey                 = KeyPrefix("pep-last-executed-height-")
+	LastContractCallbackExecutedHeightKey = KeyPrefix("pep-last-contract-callback-executed-height-")
+	RequestsCountKey                      = KeyPrefix("Pep-request-count-")
 )
 
 const (

@@ -40,6 +40,8 @@ import (
 	"cosmossdk.io/x/feegrant"
 	"cosmossdk.io/x/nft"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
+	_ "github.com/Fairblock/fairyring/x/auction/module" // import for side-effects
+	auctionmoduletypes "github.com/Fairblock/fairyring/x/auction/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
@@ -99,6 +101,7 @@ var (
 		pepmoduletypes.ModuleName,
 		keysharemoduletypes.ModuleName,
 		wasmtypes.ModuleName,
+		auctionmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -127,6 +130,7 @@ var (
 		keysharemoduletypes.ModuleName,
 		wasmtypes.ModuleName,
 		govtypes.ModuleName,
+		auctionmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -148,6 +152,7 @@ var (
 		pepmoduletypes.ModuleName,
 		keysharemoduletypes.ModuleName,
 		wasmtypes.ModuleName,
+		auctionmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -171,6 +176,7 @@ var (
 		{Account: icatypes.ModuleName},
 		{Account: pepmoduletypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner, authtypes.Staking}},
 		{Account: keysharemoduletypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner, authtypes.Staking}},
+		{Account: auctionmoduletypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner, authtypes.Staking}},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 
@@ -313,6 +319,10 @@ var (
 			//{
 			//	Name:   keysharemoduletypes.ModuleName,
 			//	Config: appconfig.WrapAny(&keysharemodulev1.Module{}),
+			//},
+			//{
+			//	Name:   auctionmoduletypes.ModuleName,
+			//	Config: appconfig.WrapAny(&auctionmodulev1.Module{}),
 			//},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},

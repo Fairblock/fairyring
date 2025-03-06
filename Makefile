@@ -308,6 +308,10 @@ proto-gen:
 	@sh ./proto/scripts/protocgen.sh
 	@sh ./proto/scripts/protocgen-pulsar.sh
 
+proto-fix:
+	@echo "Fixing proto imports"
+	@sh ./proto/scripts/fix_proto_gen_import.sh
+
 proto-doc:
 	@echo "Generating Protoc docs"
 	@sh ./proto/scripts/protoc-doc-gen.sh

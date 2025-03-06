@@ -1,9 +1,10 @@
 package keeper_test
 
 import (
-	"github.com/Fairblock/fairyring/testutil/sample"
 	"strconv"
 	"testing"
+
+	"github.com/Fairblock/fairyring/testutil/sample"
 
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
 	"github.com/Fairblock/fairyring/testutil/nullify"

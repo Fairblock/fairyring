@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"strconv"
 
 	enc "github.com/FairBlock/DistributedIBE/encryption"
@@ -171,4 +172,79 @@ func EncryptVote(voteOption v1.DecryptedVoteOption, pubKey string, identity stri
 	}
 
 	return hex.EncodeToString(encryptedDataBytes.Bytes()), nil
+}
+
+func EncryptBidCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "encrypt-bid [target-height / id] [pubkey] [bid]",
+		Short: "Encrypt a given bid with current public key",
+		Args:  cobra.ExactArgs(3),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			pubkey := args[1]
+
+			if pubkey == "" {
+				queryClient := types.NewQueryClient(clientCtx)
+
+				res, err := queryClient.Pubkey(context.Background(), &types.QueryPubkeyRequest{})
+				if err != nil {
+					return err
+				}
+
+				if len(res.ActivePubkey.PublicKey) == 0 {
+					return errors.New("active public key not found")
+				}
+
+				pubkey = res.ActivePubkey.PublicKey
+			}
+
+			// encrypt the vote structure
+			encVote, err := EncryptBid(pubkey, args[0], args[2])
+			if err != nil {
+				return err
+			}
+
+			fmt.Println(encVote)
+			return nil
+		},
+	}
+}
+
+func EncryptBid(pubKey, identity, bidAmount string) (string, error) {
+	_, err := sdk.ParseCoinNormalized(bidAmount)
+	if err != nil {
+		return "", err
+	}
+
+	var encryptedBidBytes bytes.Buffer
+	var bidByteBuffer bytes.Buffer
+
+	_, err = bidByteBuffer.WriteString(bidAmount)
+	if err != nil {
+		return "", err
+	}
+
+	// decode hex pubkey and convert to bytes
+	publicKeyByte, err := hex.DecodeString(pubKey)
+	if err != nil {
+		return "", err
+	}
+
+	// create the publickeypoint from the public key bytes
+	suite := bls.NewBLS12381Suite()
+	publicKeyPoint := suite.G1().Point()
+	if err := publicKeyPoint.UnmarshalBinary(publicKeyByte); err != nil {
+		return "", err
+	}
+
+	// encrypt the vote bytes
+	if err := enc.Encrypt(publicKeyPoint, []byte(identity), &encryptedBidBytes, &bidByteBuffer); err != nil {
+		return "", err
+	}
+
+	return hex.EncodeToString(encryptedBidBytes.Bytes()), nil
 }

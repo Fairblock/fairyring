@@ -2,24 +2,21 @@ package keyshare
 
 import (
 	"context"
+	"cosmossdk.io/core/appmodule"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"strconv"
-
 	commontypes "github.com/Fairblock/fairyring/x/common/types"
-	"github.com/cosmos/cosmos-sdk/telemetry"
-
-	"cosmossdk.io/core/appmodule"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
+	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
-
+	"strconv"
 	// this line is used by starport scaffolding # 1
 
 	"github.com/Fairblock/fairyring/x/keyshare/client/cli"

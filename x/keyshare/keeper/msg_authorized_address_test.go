@@ -1,9 +1,10 @@
 package keeper_test
 
 import (
-	"github.com/Fairblock/fairyring/testutil/sample"
 	"strconv"
 	"testing"
+
+	"github.com/Fairblock/fairyring/testutil/sample"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"

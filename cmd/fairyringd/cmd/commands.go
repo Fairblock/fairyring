@@ -66,6 +66,9 @@ func initRootCmd(
 	encryptVoteCmd := encrypter.EncryptVoteCmd()
 	flags.AddQueryFlagsToCmd(encryptVoteCmd)
 
+	encryptBidCmd := encrypter.EncryptBidCmd()
+	flags.AddQueryFlagsToCmd(encryptBidCmd)
+
 	aggregateCmd := aggregator.AggregateCmd()
 	flags.AddQueryFlagsToCmd(aggregateCmd)
 
@@ -76,9 +79,11 @@ func initRootCmd(
 	rootCmd.AddCommand(secp_encrypter.SecpEncrypterCmd())
 	rootCmd.AddCommand(encryptCmd)
 	rootCmd.AddCommand(encryptVoteCmd)
+	rootCmd.AddCommand(encryptBidCmd)
 	rootCmd.AddCommand(aggregateCmd)
 	rootCmd.AddCommand(randomness)
 	rootCmd.AddCommand(sharegenerator.RootCmd)
+	rootCmd.AddCommand(CmdListDecryptedTxs())
 }
 
 func addModuleInitFlags(startCmd *cobra.Command) {

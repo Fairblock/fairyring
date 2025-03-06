@@ -3,6 +3,7 @@ package fairyring.common;
 
 import "gogoproto/gogo.proto";
 import "google/protobuf/duration.proto";
+import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/common/types";
 
@@ -79,4 +80,43 @@ message PrivateDecryptionKey {
 message IndexedEncryptedKeyshare {
   string encrypted_keyshare_value = 1;
   uint64 encrypted_keyshare_index = 2;
+}
+
+message Bid {
+  string bidder = 1;
+  string sealed_bid = 2;
+}
+
+message DecryptedBid {
+  string bidder = 1;
+  cosmos.base.v1beta1.Coin bid = 3;
+}
+
+message AuctionDetail {
+  string creator = 1;
+  string identity = 2;
+  string pubkey = 3;
+  uint64 auction_id = 4;
+  uint64 resolve_at = 5;
+  repeated Bid bids = 6;
+  repeated DecryptedBid decrypted_bids = 7;
+  bool is_timed = 8;
+  bool is_resolved = 9;
+  DecryptedBid winning_bid = 10;
+  string fail_reason = 11;
+  string bid_denom = 12;
+}
+
+message AuctionDetailList {
+  repeated AuctionDetail auction_detail = 1 [(gogoproto.nullable) = false];
+}
+
+message QueuedAuctionDecryption {
+  AuctionDetail auction_detail = 1;
+}
+
+message Bidder {
+  string address = 1;
+  cosmos.base.v1beta1.Coin delegated = 2;
+  bool active = 3;
 }

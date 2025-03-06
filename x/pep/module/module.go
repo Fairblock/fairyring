@@ -8,7 +8,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	types2 "github.com/Fairblock/fairyring/x/auction/types"
+	auctiontypes "github.com/skip-mev/block-sdk/v2/x/auction/types"
 	"math"
+	"slices"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -256,20 +260,20 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 		}
 
 		// execute registered contracts
-		contracts, found := am.keeper.GetContractEntriesByID(ctx, strconv.FormatUint(h, 10))
-		if found && len(contracts.Contracts) != 0 {
-			for _, contract := range contracts.Contracts {
-				am.keeper.ExecuteContract(
-					ctx,
-					contract.ContractAddress,
-					types.ExecuteContractMsg{
-						Identity:      strconv.FormatUint(h, 10),
-						Pubkey:        activePubkey.PublicKey,
-						DecryptionKey: key.Data,
-					},
-				)
-			}
-		}
+		//contracts, found := am.keeper.GetContractEntriesByID(ctx, strconv.FormatUint(h, 10))
+		//if found && len(contracts.Contracts) != 0 {
+		//	for _, contract := range contracts.Contracts {
+		//		am.keeper.ExecuteContract(
+		//			ctx,
+		//			contract.ContractAddress,
+		//			types.ExecuteContractMsg{
+		//				Identity:      strconv.FormatUint(h, 10),
+		//				Pubkey:        activePubkey.PublicKey,
+		//				DecryptionKey: key.Data,
+		//			},
+		//		)
+		//	}
+		//}
 
 		skPoint, err := am.keeper.GetSKPoint(key.Data, suite)
 		if err != nil {
@@ -285,6 +289,75 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 				continue
 			}
 			telemetry.IncrCounter(1, types.KeyTotalSuccessEncryptedTx)
+		}
+	}
+	return nil
+}
+
+// EndBlock contains the logic that is automatically triggered at the end of each block.
+// The end block implementation is optional.
+func (am AppModule) EndBlock(cctx context.Context) error {
+	ctx := sdk.UnwrapSDKContext(cctx)
+	params := am.keeper.GetParams(ctx)
+	if !params.IsSourceChain {
+		err := am.keeper.QueryFairyringCurrentKeys(ctx)
+		if err != nil {
+			am.keeper.Logger().Error("Endblocker get keys err", err)
+			am.keeper.Logger().Error(err.Error())
+		}
+	}
+	strHeight := am.keeper.GetLatestHeight(ctx)
+	height, err := strconv.ParseUint(strHeight, 10, 64)
+	if err != nil {
+		am.keeper.Logger().Error("Latest height does not exists in EndBlock")
+		return nil
+	}
+
+	activePubkey, found := am.keeper.GetActivePubkey(ctx)
+	if !found {
+		am.keeper.Logger().Error("Active public key does not exists")
+		return nil
+	}
+
+	if len(activePubkey.Creator) == 0 && len(activePubkey.PublicKey) == 0 {
+		am.keeper.Logger().Error("Active public key does not exists")
+		return nil
+	}
+
+	suite := bls.NewBLS12381Suite()
+
+	publicKeyPoint, err := am.keeper.GetPubkeyPoint(activePubkey.PublicKey, suite)
+	if err != nil {
+		am.keeper.Logger().Error("Unabe to get Pubkey Point with suite")
+		return nil
+	}
+
+	strLastExecutedHeight := am.keeper.GetLastContractCallbackExecutedHeight(ctx)
+	lastExecutedHeight, err := strconv.ParseUint(strLastExecutedHeight, 10, 64)
+
+	if err != nil {
+		am.keeper.Logger().Error("Last ContractCallback executed height not exists in end block")
+		lastExecutedHeight = 0
+	}
+
+	for h := lastExecutedHeight + 1; h <= height; h++ {
+		am.keeper.SetLastContractCallbackExecutedHeight(ctx, strconv.FormatUint(h, 10))
+
+		key, found := am.keeper.GetDecryptionKey(ctx, h)
+		// execute registered contracts
+		contracts, found := am.keeper.GetContractEntriesByID(ctx, strconv.FormatUint(h, 10))
+		if found && len(contracts.Contracts) != 0 {
+			for _, contract := range contracts.Contracts {
+				am.keeper.ExecuteContract(
+					ctx,
+					contract.ContractAddress,
+					types.ExecuteContractMsg{
+						Identity:      strconv.FormatUint(h, 10),
+						Pubkey:        activePubkey.PublicKey,
+						DecryptionKey: key.Data,
+					},
+				)
+			}
 		}
 	}
 
@@ -344,26 +417,17 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 		am.keeper.Logger().Info("executed txs for entry with req-id: ", entry.Identity)
 		am.keeper.RemoveExecutionQueueEntry(ctx, entry.Identity)
 	}
-	return nil
-}
 
-// EndBlock contains the logic that is automatically triggered at the end of each block.
-// The end block implementation is optional.
-func (am AppModule) EndBlock(cctx context.Context) error {
-	ctx := sdk.UnwrapSDKContext(cctx)
-	params := am.keeper.GetParams(ctx)
-	if !params.IsSourceChain {
-		err := am.keeper.QueryFairyringCurrentKeys(ctx)
-		if err != nil {
-			am.keeper.Logger().Error("Endblocker get keys err", err)
-			am.keeper.Logger().Error(err.Error())
+	auctions := am.keeper.GetAllAuctionQueueEntryByHeight(ctx, height)
+	am.keeper.Logger().Info(fmt.Sprintf("PEP ENDBLOCK All the auctions for height: %d, length: %d, auctions: %v", height, len(auctions), auctions))
+	if bidsDecryptionKey, found := am.keeper.GetDecryptionKey(ctx, height); found {
+		if skPoint, err := am.keeper.GetSKPoint(bidsDecryptionKey.Data, suite); err == nil {
+			am.auctionHandler(ctx, height, auctions, publicKeyPoint, skPoint)
+		} else {
+			am.keeper.Logger().Error("[PEP] [AUCTION] Failed to get decryption key sk point")
 		}
-	}
-	strHeight := am.keeper.GetLatestHeight(ctx)
-	height, err := strconv.ParseUint(strHeight, 10, 64)
-	if err != nil {
-		am.keeper.Logger().Error("Latest height does not exists in EndBlock")
-		return nil
+	} else {
+		am.keeper.Logger().Error(fmt.Sprintf("[PEP] [AUCTION] Decryption key not found for height: %d", height))
 	}
 
 	ak, found := am.keeper.GetActivePubkey(ctx)
@@ -385,6 +449,196 @@ func (am AppModule) EndBlock(cctx context.Context) error {
 		am.keeper.DeleteQueuedPubkey(ctx)
 	}
 	return nil
+}
+
+func (am AppModule) decryptBids(
+	bids []*commontypes.Bid,
+	pubKeyPoint kyber.Point,
+	decryptionPoint kyber.Point,
+) ([]*commontypes.DecryptedBid, []*commontypes.Bid) {
+	allDecryptedBids := make([]*commontypes.DecryptedBid, 0)
+	allInvalidBids := make([]*commontypes.Bid, 0)
+
+	for _, bid := range bids {
+		bidByte, err := hex.DecodeString(bid.SealedBid)
+		if err != nil {
+			am.keeper.Logger().Error(fmt.Sprintf("[PEP] [BidsDecryption] Error decrypting bid when decoding from hex to bytes: %s", err.Error()))
+			allInvalidBids = append(allInvalidBids, bid)
+			continue
+		}
+
+		var decryptedBid bytes.Buffer
+		var bidBuffer bytes.Buffer
+
+		if _, err = bidBuffer.Write(bidByte); err != nil {
+			am.keeper.Logger().Error(fmt.Sprintf("[PEP] [BidsDecryption] Error decrypting bid when writing buffer: %s", err.Error()))
+			allInvalidBids = append(allInvalidBids, bid)
+			continue
+		}
+
+		if err = enc.Decrypt(pubKeyPoint, decryptionPoint, &decryptedBid, &bidBuffer); err != nil {
+			am.keeper.Logger().Error(fmt.Sprintf("[PEP] [BidsDecryption] Error decrypting bid when decrypting: %s", err.Error()))
+			allInvalidBids = append(allInvalidBids, bid)
+			continue
+		}
+
+		bidCoin, err := sdk.ParseCoinNormalized(decryptedBid.String())
+		if err != nil {
+			am.keeper.Logger().Error(fmt.Sprintf("[PEP] [BidsDecryption] Error parsing decrypted bid: %s | Decrypted bid: %s", err.Error()), decryptedBid.String())
+			allInvalidBids = append(allInvalidBids, bid)
+			continue
+		}
+
+		allDecryptedBids = append(allDecryptedBids, &commontypes.DecryptedBid{
+			Bidder: bid.Bidder,
+			Bid:    &bidCoin,
+		})
+	}
+
+	return allDecryptedBids, allInvalidBids
+}
+
+func (am AppModule) bidderEnoughBalance(
+	ctx sdk.Context,
+	bidderAddr sdk.AccAddress,
+	bid *sdk.Coin,
+) bool {
+	coins := am.bankKeeper.SpendableCoins(ctx, bidderAddr)
+	if bid == nil {
+		return false
+	}
+	for _, c := range coins {
+		if c.Denom == bid.Denom && c.Amount.GTE(bid.Amount) {
+			return true
+		}
+	}
+	return false
+}
+
+func (am AppModule) auctionHandler(
+	ctx sdk.Context,
+	currentHeight uint64,
+	auctions []commontypes.AuctionDetail,
+	pubKeyPoint kyber.Point,
+	decryptionPoint kyber.Point,
+) {
+	for _, a := range auctions {
+		resolveAt, auctionIndex, err := types2.DecodeAuctionIdentity(a.Identity)
+		if err != nil {
+			failMsg := fmt.Sprintf("Failed to decode auction identity: %s", err.Error())
+			am.keeper.Logger().Error(fmt.Sprintf("[PEP] [AuctionHandler] %s", failMsg))
+			a.FailReason = failMsg
+			am.keeper.SetAuctionQueueEntry(ctx, a)
+			continue
+		}
+		if a.IsResolved {
+			am.keeper.Logger().Error(fmt.Sprintf("[PEP] [AuctionHandler] auction already resolved, removing from queue: %v", a))
+			am.keeper.RemoveAuctionQueueEntry(ctx, resolveAt, auctionIndex)
+			continue
+		}
+		if resolveAt > currentHeight {
+			am.keeper.Logger().Error(fmt.Sprintf("[PEP] [AuctionHandler] auction not yet reached resolve height: %v", a))
+			continue
+		}
+		if len(a.Bids) == 0 {
+			continue
+		}
+
+		decryptedBids, invalidBids := am.decryptBids(a.Bids, pubKeyPoint, decryptionPoint)
+
+		sort.Slice(decryptedBids, func(i, j int) bool {
+			return decryptedBids[i].Bid.Amount.GT(decryptedBids[j].Bid.Amount)
+		})
+
+		// Remove all decrypted bid with invalid denom
+		decryptedValidDenomBids := make([]*commontypes.DecryptedBid, 0)
+		for _, db := range decryptedBids {
+			if db.Bid.Denom == a.BidDenom {
+				decryptedValidDenomBids = append(decryptedValidDenomBids, db)
+			} else {
+				am.keeper.Logger().Error(fmt.Sprintf("[PEP] [AuctionHandler] invalid bid denom: %s, expecting: %s", db.Bid.Denom, a.BidDenom))
+				invalidBids = append(invalidBids, &commontypes.Bid{
+					Bidder:    db.Bidder,
+					SealedBid: db.Bid.String(),
+				})
+			}
+		}
+
+		// Deduct balance from winner
+		var deductedBid sdk.Coins
+		bidToBeRemoved := make([]int, 0)
+		for bi, b := range decryptedValidDenomBids {
+			bidderAddr, err := sdk.AccAddressFromBech32(b.Bidder)
+			if err != nil {
+				am.keeper.Logger().Error(fmt.Sprintf("[PEP] [AuctionHandler] failed to parse winner address: %s", b.Bidder))
+				continue
+			}
+
+			// If not enough balance to place bid
+			if !am.bidderEnoughBalance(ctx, bidderAddr, b.Bid) {
+				invalidBids = append(invalidBids, &commontypes.Bid{
+					Bidder:    b.Bidder,
+					SealedBid: b.Bid.String(),
+				})
+				bidToBeRemoved = append(bidToBeRemoved, bi)
+				continue
+			}
+			coinsBid := sdk.NewCoins(*b.Bid)
+			if err := am.bankKeeper.SendCoinsFromAccountToModule(ctx, bidderAddr, auctiontypes.ModuleName, coinsBid); err == nil {
+				am.keeper.Logger().Info(fmt.Sprintf("[PEP] [AuctionHandler] successfully deducted coin %s from winner: %s", b.Bid.String(), b.Bidder))
+				deductedBid = coinsBid
+				break
+			} else {
+				am.keeper.Logger().Error(fmt.Sprintf("[PEP] [AuctionHandler] failed to deducted coin %s from winner: %s, error: %s", b.Bid.String(), b.Bidder, err.Error()))
+			}
+		}
+
+		if deductedBid.Empty() {
+			failMsg := fmt.Sprintf("no balance deducted from winner, all bids invalid: %v", a)
+			am.keeper.Logger().Error(fmt.Sprintf("[PEP] [AuctionHandler] %s", failMsg))
+			a.FailReason = failMsg
+			a.Bids = invalidBids
+			am.keeper.SetAuctionQueueEntry(ctx, a)
+			continue
+		}
+
+		// Create a new array containing only the valid bids
+		validBids := make([]*commontypes.DecryptedBid, 0)
+		for bi, b := range decryptedValidDenomBids {
+			if !slices.Contains(bidToBeRemoved, bi) {
+				validBids = append(validBids, b)
+			}
+		}
+
+		am.keeper.Logger().Info(fmt.Sprintf("[PEP] [AuctionHandler] Auction resolved [Now Block height: %d] [latest height: %d] [resolve height: %d], balance deducted from winner, sending bid to auction creator", ctx.BlockHeight(), currentHeight, a.ResolveAt))
+
+		creatorAddr, err := sdk.AccAddressFromBech32(a.Creator)
+		if err != nil {
+			failMsg := fmt.Sprintf("failed to parse creator address: %s", a.Creator)
+			am.keeper.Logger().Error(fmt.Sprintf("[PEP] [AuctionHandler] %s", failMsg))
+			a.FailReason = failMsg
+			a.DecryptedBids = validBids
+			a.Bids = invalidBids
+			am.keeper.SetAuctionQueueEntry(ctx, a)
+			continue
+		}
+
+		if err := am.bankKeeper.SendCoinsFromModuleToAccount(ctx, auctiontypes.ModuleName, creatorAddr, deductedBid); err == nil {
+			am.keeper.Logger().Info(fmt.Sprintf("[PEP] [AuctionHandler] successfully sent winning bid to auction creator %s", a.Creator))
+			// Once successfully resolved, remove encrypted bids
+			// and set decrypted bids
+			a.DecryptedBids = validBids
+			a.Bids = invalidBids
+			am.keeper.SetAuctionQueueEntry(ctx, a)
+		} else {
+			failMsg := fmt.Sprintf("failed to send winning bid from module to creator error: %s", err.Error())
+			am.keeper.Logger().Error(fmt.Sprintf("[PEP] [AuctionHandler] %s", failMsg))
+			a.DecryptedBids = validBids
+			a.Bids = invalidBids
+			a.FailReason = failMsg
+			am.keeper.SetAuctionQueueEntry(ctx, a)
+		}
+	}
 }
 
 // IsOnePerModuleType implements the depinject.OnePerModuleType interface.
