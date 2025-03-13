@@ -1,15 +1,13 @@
+
 # 🍄 Sealed Bid Auctions
 
-_**‼️ All code within this tutorial is purely educational, and it is up to the readers discretion to build their applications following industry standards, practices, and applicable regulations.**_
+_**All code within this tutorial is purely educational, and it is up to the readers discretion to build their applications following industry standards, practices, and applicable regulations.**_
 
-Fairblock offers various MPC schemes for fun and novel dynamic confidential computation. For more background on what Fairblock is and how it works, check out our [docs](https://docs.fairblock.network/docs/welcome/Vision). This tutorial will guide you through using a simple Bash script to create and interact with a timed sealed-bid auctions in Fairblock. The repo can be found [here](https://github.com/Fairblock/fairyring/tree/auction).
+Fairblock offers various MPC schemes for fun and novel dynamic confidential computation. For more background on what Fairblock is and how it works, check out our [docs](https://docs.fairblock.network/docs/welcome/Vision). This tutorial will guide you through using a simple Bash script to create and interact with a timed sealed-bid auctions in Fairblock. 
 
 Sealed-Bid Auctions are a powerful tool, and with Fairblock, they are carried out in a decentralized, highly-performant manner new to the blockchain space. Many application types can be built using this feature including, but not limited to:
 
-1. Dynamic Pricing for Intent Mechanimsms: a
-decentralized protocol in which no single actor controls price discovery. Bids are
-encrypted and revealed only after the bidding period ends, preventing frontrunning,
-shilling, and censorship. All used within multiple facets of an intents protocol.
+1. Dynamic Pricing for Intent Mechanimsms: a decentralized protocol in which no single actor controls price discovery. Bids are encrypted and revealed only after the bidding period ends, preventing frontrunning, shilling, and censorship. All used within multiple facets of an intents protocol.
 2. Fixed-Rate Lending with Leaderless-Auctions: Innovating lending markets using sealed-bid auctions.
 
 For more detailed examples and use cases, check out our [Ecosystem Page](https://docs.fairblock.network/docs/ecosystem/) in our docs!
@@ -18,7 +16,7 @@ For more detailed examples and use cases, check out our [Ecosystem Page](https:/
 
 There are two types of auctions currently available with FairyRing. More to come soon.
    - Timed auctions (covered in this tutorial): the auction is automatically resolved at a defined block height
-   - General auctions (to be covered in the future): the auction has to be manually resolved by a tx from the auctioneer
+   - General auctions (to be covered in the future): the auction is closed by an auctioneer sending a final transaction. This can be a EOA or a smart contract.
 
 By the end, you'll understand how to do the following revolving around auctions:
 
@@ -32,7 +30,7 @@ A quick walk through of this demo is show in the video below. Feel free to watch
   <iframe
     width="100%"
     height="315"
-    src="https://www.youtube.com/embed/G0Pz-iW_Fdk?si=UA_7d-ae1IORqDcH"
+    src="https://www.youtube.com/embed/t6yobak8PMo?si=SxOTXca34GQgESRJ"
     title="FairyRing Demo - Auctions"
     frameBorder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -64,14 +62,14 @@ That's it! You've ran the sealed bid auction using FairyRing's native functional
 
 Upon running the `./test_sealed_bid_auction.sh` script, you will see within your terminal:
 
-1. The creation of an auction
-2. The attempted registration of a bidder with insufficient funds required
-3. The successful registration of a bidder with sufficient funds, and the display of the updated state with bidder's details
-4. Quick tests and resultant echo statements for testing the deregistration of the bidder
-5. Testing timed auction with no bid, where it resolves automatically
-6. Testing time aduction with single bid: showcasing the encrypted transaction, and its decrypted details after the auction ends, and the resultant winner
-7. Testing non-registered bidder trying to bid and being rejected
-8. Testing bid with invalid bid amount (where bid placed is greater than bidder's actual balance) and it failing
+1. The creation of an auction.
+2. The attempted registration of a bidder with insufficient funds required.
+3. The successful registration of a bidder with sufficient funds, and the display of the updated state with bidder's details.
+4. Quick tests and resultant echo statements for testing the deregistration of the bidder.
+5. Testing timed auction with no bid, where it resolves automatically.
+6. Testing time aduction with single bid: showcasing the encrypted.transaction, and its decrypted details after the auction ends, and the resultant winner.
+7. Testing non-registered bidder trying to bid and being rejected.
+8. Testing bid with invalid bid amount (where bid placed is greater than bidder's actual balance) and it failing.
 
 When working with the `x/auction` module there are some important facts to keep in mind:
 
@@ -81,10 +79,12 @@ When working with the `x/auction` module there are some important facts to keep 
 3. A bidder, once registered, can bid all they want in any auction.
 4. A bidder can choose to manually de-register themselves, at which point their staked tokens are returned to them and they are removed from the registered bidders list.
 5. In case of timed auctions, when the target height is reached, the sealed bids are automatically decrypted and the winner is the person with the highest bid.
-   - The bid amount is then automatically deducted from the bidder's account and credited to the auctioneer
+   - The bid amount is then automatically deducted from the bidder's account and credited to the auctioneer.
 6. In case of manual auctions, the same thing happens, but has to be triggered by a tx from the auctioneer to mark the end of the bidding period.
 
-We've outlined what is being shown within the terminal as a result of going through a typical transaction flow with auctions using the `x/auction` module. It is important to go over the actual functions and messages being used within the `test_sealed_bid_auction.sh` script though. 
+We've outlined what is being shown within the terminal as a result of going through a typical transaction flow with auctions using the `x/auction` module. The details cover time-based auctions. Off-the-shelf, FairyRing with the `x/auction` module enable auctions to be held where an auctioneer ends them, versus a specific block height being passed. These auctions, referred to as auctioneer-led auctions, do not require smart contracts, and have an additional command or two to carry out. This will be appended onto this tutorial at a later date.
+
+Now that demo details have been touched upon, it is important to go over the actual functions and messages being used within the `test_sealed_bid_auction.sh` script though. This will provide you with a more comprehensive understanding of the core interactive commands to use when building your own cApp with sealed bid auctions, without smart contracts.
 
 ## Interactions with `x/auction` Module
 
@@ -106,6 +106,7 @@ out=$(fairyringd tx auction create-auction $target_height true ufairy --from wal
 
 <details>
   <summary>Related Transaction Processing</summary>
+
   - **Module:** `x/auction`
   - **Transaction Message Processed:** `MsgCreateAuction` (defined in `x/auction/types/tx.pb.go`)
   - **Processed in MsgServer:** `CreateAuction` function in `keeper/msg_create_auction.go`
@@ -114,6 +115,7 @@ out=$(fairyringd tx auction create-auction $target_height true ufairy --from wal
     - `MsgServer` processes `MsgCreateAuction` and calls `CreateAuction`.
     - The auction details are validated and stored on-chain.
     - An event is emitted to notify the auction was created.
+
 </details>
 
 #### Query Auction List
@@ -124,11 +126,13 @@ fairyringd q auction list-auction --chain-id $CHAIN_ID --node $CHAIN_NODE -o jso
 
 <details>
   <summary>Related Query Processing</summary>
+  
   - **Query Sent:** `QueryAuctionAllRequest`
   - **Processed in QueryServer:** `AuctionAll` function in `keeper/query_auction.go`
   - **What happens:**
     - Fetches all stored auctions.
     - Formats the response as a query output.
+
 </details>
 
 ---
@@ -141,6 +145,7 @@ fairyringd tx auction register-bidder --from wallet1 --chain-id $CHAIN_ID --node
 
 <details>
   <summary>Related Transaction Processing</summary>
+
   - **Module:** `x/auction`
   - **Transaction Message Processed:** `MsgRegisterBidder` (defined in `x/auction/types/tx.pb.go`)
   - **Processed in MsgServer:** `RegisterBidder` function in `keeper/msg_register_bidder.go`
@@ -148,6 +153,7 @@ fairyringd tx auction register-bidder --from wallet1 --chain-id $CHAIN_ID --node
     - Adds the bidder to the auction system.
     - Ensures the bidder meets registration criteria.
     - Emits an event to confirm registration.
+
 </details>
 
 Verify Registration:
@@ -181,6 +187,7 @@ fairyringd tx auction place-bid $auction_id $bid --from wallet1 --keyring-backen
 
 <details>
   <summary>Related Transaction Processing</summary>
+
   - **Module:** `x/auction`
   - **Transaction Message Processed:** `MsgPlaceBid` (defined in `x/auction/types/tx.pb.go`)
   - **Processed in MsgServer:** `PlaceBid` function in `keeper/msg_place_bid.go`
@@ -188,6 +195,7 @@ fairyringd tx auction place-bid $auction_id $bid --from wallet1 --keyring-backen
     - Validates bid amount and auction status.
     - Stores the encrypted bid securely.
     - Emits an event to track the bid placement.
+
 </details>
 
 ---
@@ -206,10 +214,12 @@ fairyringd q auction list-auction --chain-id $CHAIN_ID --node $CHAIN_NODE -o jso
 
 <details>
   <summary>Related Query Processing</summary>
+
   - **Query Sent:** `QueryAuctionAllRequest`
   - **Processed in QueryServer:** `AuctionAll` function in `keeper/query_auction.go`
   - **What happens:**
     - Retrieves the auction's current status.
     - Checks if the auction has concluded.
     - Provides the list of winning bids (if applicable).
+    
 </details>
