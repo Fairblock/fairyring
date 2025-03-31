@@ -15,11 +15,13 @@ func NewMsgRequestPrivateDecryptionKey(
 	creator string,
 	identity string,
 	pubkey string,
+	requester string,
 ) *MsgRequestPrivateDecryptionKey {
 	return &MsgRequestPrivateDecryptionKey{
 		Creator:    creator,
 		Identity:   identity,
 		SecpPubkey: pubkey,
+		Requester:  requester,
 	}
 }
 
@@ -27,6 +29,13 @@ func (msg *MsgRequestPrivateDecryptionKey) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+
+	if msg.Requester != "" {
+		_, err := sdk.AccAddressFromBech32(msg.Requester)
+		if err != nil {
+			return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid requester address (%s)", err)
+		}
 	}
 
 	err = isValidSecp256k1Pubkey(msg.SecpPubkey)

@@ -33,6 +33,7 @@ func (k msgServer) RequestPrivateIdentity(goCtx context.Context, msg *types.MsgR
 		Creator:               msg.Creator,
 		Identity:              identity,
 		Pubkey:                "",
+		CreatedViaContract:    msg.CreatedViaContract,
 		PrivateDecryptionKeys: make([]*commontypes.PrivateDecryptionKey, 0),
 	}
 
@@ -47,10 +48,6 @@ func (k msgServer) RequestPrivateIdentity(goCtx context.Context, msg *types.MsgR
 		}
 
 		k.SetPrivateReqQueueEntry(ctx, entry)
-
-		return &types.MsgRequestPrivateIdentityResponse{
-			Identity: identity,
-		}, nil
 	} else {
 		packetData := kstypes.RequestPrivateDecryptionKeyPacketData{
 			Requester: msg.Creator,
@@ -75,11 +72,19 @@ func (k msgServer) RequestPrivateIdentity(goCtx context.Context, msg *types.MsgR
 				sdk.NewAttribute(types.AttributeKeyIdentity, identity),
 			),
 		)
-
-		return &types.MsgRequestPrivateIdentityResponse{
-			Identity: identity,
-		}, nil
 	}
+
+	if msg.RegisterContract {
+		regMsg := types.NewMsgRegisterContract(msg.Creator, msg.Creator, identity)
+		_, err := k.RegisterContract(ctx, regMsg)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return &types.MsgRequestPrivateIdentityResponse{
+		Identity: identity,
+	}, nil
 }
 
 // TransmitRequestPrivateDecryptionKey transmits the packet over IBC

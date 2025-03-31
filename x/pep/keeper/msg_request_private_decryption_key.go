@@ -22,7 +22,16 @@ func (k msgServer) RequestPrivateDecryptionKey(
 	msg *types.MsgRequestPrivateDecryptionKey,
 ) (*types.MsgRequestPrivateDecryptionKeyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	requester := sdk.MustAccAddressFromBech32(msg.Creator)
+
+	var requester sdk.AccAddress
+	var requester_string string
+	if msg.Requester == "" {
+		requester = sdk.MustAccAddressFromBech32(msg.Creator)
+		requester_string = msg.Creator
+	} else {
+		requester = sdk.MustAccAddressFromBech32(msg.Requester)
+		requester_string = msg.Requester
+	}
 
 	entry, found := k.GetPrivateRequest(ctx, msg.Identity)
 	if !found {
@@ -37,6 +46,10 @@ func (k msgServer) RequestPrivateDecryptionKey(
 		entry.Identity = msg.Identity
 
 		k.SetPrivateRequest(ctx, entry)
+	} else {
+		if entry.CreatedViaContract && (entry.Creator != msg.Creator) {
+			return nil, sdkerrors.Wrapf(types.ErrInvalidSigner, "identity %s can only be accessed via contract %s", msg.Identity, entry.Creator)
+		}
 	}
 
 	params := k.GetParams(ctx)
@@ -56,7 +69,7 @@ func (k msgServer) RequestPrivateDecryptionKey(
 	if params.IsSourceChain {
 		var qentry = commontypes.GetPrivateDecryptionKey{
 			Identity:   msg.Identity,
-			Requester:  msg.Creator,
+			Requester:  requester_string,
 			SecpPubkey: msg.SecpPubkey,
 		}
 
@@ -65,7 +78,7 @@ func (k msgServer) RequestPrivateDecryptionKey(
 	} else {
 		packetData := kstypes.GetPrivateDecryptionKeyPacketData{
 			Identity:   msg.Identity,
-			Requester:  msg.Creator,
+			Requester:  requester_string,
 			SecpPubkey: msg.SecpPubkey,
 		}
 
@@ -84,7 +97,7 @@ func (k msgServer) RequestPrivateDecryptionKey(
 			sdk.NewEvent(
 				types.EventTypeGetPrivateKeyshareRequest,
 				sdk.NewAttribute(types.AttributeKeyIdentity, msg.Identity),
-				sdk.NewAttribute("requester", msg.Creator),
+				sdk.NewAttribute("requester", requester_string),
 				sdk.NewAttribute("scep256k1_pubkey", msg.SecpPubkey),
 			),
 		)

@@ -19,7 +19,8 @@ message PrivateRequest {
   string creator = 1;
   string identity = 2;
   string pubkey = 3;
-  repeated fairyring.common.PrivateDecryptionKey private_decryption_keys = 4;
+  bool created_via_contract = 4;
+  repeated fairyring.common.PrivateDecryptionKey private_decryption_keys = 5;
 }
 
 // ContractDetails defines the structure to store the details of a

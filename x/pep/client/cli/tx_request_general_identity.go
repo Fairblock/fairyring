@@ -15,11 +15,16 @@ var _ = strconv.Itoa(0)
 
 func CmdRequestGeneralIdentity() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "request-general-identity [estimated-delay] [req-id]",
+		Use:   "request-general-identity [estimated-delay] [req-id] [register-contract]",
 		Short: "Broadcast message request-general-identity",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDelay, err := time.ParseDuration(args[0])
+			if err != nil {
+				return err
+			}
+
+			registerContract, err := strconv.ParseBool(args[2])
 			if err != nil {
 				return err
 			}
@@ -33,6 +38,7 @@ func CmdRequestGeneralIdentity() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				argDelay,
 				args[1],
+				registerContract,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

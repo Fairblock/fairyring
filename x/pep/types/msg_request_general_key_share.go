@@ -16,11 +16,13 @@ func NewMsgRequestGeneralIdentity(
 	creator string,
 	estimatedDelay time.Duration,
 	reqID string,
+	registerContract bool,
 ) *MsgRequestGeneralIdentity {
 	return &MsgRequestGeneralIdentity{
-		Creator:        creator,
-		EstimatedDelay: &estimatedDelay,
-		ReqId:          reqID,
+		Creator:          creator,
+		EstimatedDelay:   &estimatedDelay,
+		ReqId:            reqID,
+		RegisterContract: registerContract,
 	}
 }
 

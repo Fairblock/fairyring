@@ -697,7 +697,7 @@ SCEP_PRIV_KEY2="ef1450bdc18396f2254f52d8c525c0d933a8f146ec2a681eaf319f5899f2f60d
 # echo "$SCEP_PUBKEY"
 
 echo "Creating new Private Request in pep module on chain fairyring_test_1"
-RESULT=$($BINARY tx pep request-private-identity test_req_1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-private-identity test_req_1 false --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 5
@@ -711,7 +711,7 @@ echo "Identity for private keyshare request 1 is: $IDENTITY"
 sleep 5
 
 echo "Requesting for private keyshares on Source chain"
-RESULT=$($BINARY tx pep request-private-decryption-key $IDENTITY $SCEP_PUBKEY1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-private-decryption-key $IDENTITY $SCEP_PUBKEY1 "" --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 5
@@ -749,7 +749,7 @@ echo $SHOW_PRIVATE_REQ
 
 echo "Sending get private keyshare request without previous entry"
 REQ_ID="test_req_dummy_1"
-RESULT=$($BINARY tx pep request-private-decryption-key $REQ_ID $SCEP_PUBKEY1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-private-decryption-key $REQ_ID $SCEP_PUBKEY1 "" --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node $CHAIN1_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 5
@@ -794,7 +794,7 @@ echo "Testing private keyshare on destination chain"
 echo "#############################################"
 
 echo "Creating new Private Request in pep module on chain fairyring_test_2"
-RESULT=$($BINARY tx pep request-private-identity test_req_2 --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-private-identity test_req_2 false --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 8
@@ -806,7 +806,7 @@ IDENTITY=$(echo $SHOW_PRIVATE_REQ | jq -r '.identity')
 echo "Identity for private keyshare request 2 is: $IDENTITY"
 
 echo "Requesting for private keyshares on destination chain"
-RESULT=$($BINARY tx pep request-private-decryption-key $IDENTITY $SCEP_PUBKEY2 --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-private-decryption-key $IDENTITY $SCEP_PUBKEY2 "" --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 8
@@ -843,7 +843,7 @@ echo $SHOW_PRIVATE_REQ
 
 echo "Sending get private keyshare request without previous entry"
 REQ_ID="test_req_dummy_2"
-RESULT=$($BINARY tx pep request-private-decryption-key $REQ_ID $SCEP_PUBKEY2 --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-private-decryption-key $REQ_ID $SCEP_PUBKEY2 "" --from $WALLET_2 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_2 --chain-id $CHAINID_2 --node $CHAIN2_NODE --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 5

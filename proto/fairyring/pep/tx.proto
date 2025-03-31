@@ -124,6 +124,7 @@ message MsgRequestGeneralIdentity {
   string creator = 1;
   google.protobuf.Duration estimated_delay = 2 [(gogoproto.stdduration) = true];
   string req_id = 3;
+  bool register_contract = 4;
 }
 
 // MsgRequestGeneralIdentityResponse defines the response structure for executing a
@@ -148,6 +149,8 @@ message MsgRequestPrivateIdentity {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
   string req_id = 2;
+  bool created_via_contract = 3;
+  bool register_contract = 4;
 }
 
 // MsgRequestPrivateIdentityResponse defines the response structure for executing a
@@ -162,6 +165,7 @@ message MsgRequestPrivateDecryptionKey {
   string creator = 1;
   string identity = 2;
   string secp_pubkey = 3;
+  string requester = 4;
 }
 
 // MsgRequestPrivateDecryptionKeyResponse defines the response structure for executing a

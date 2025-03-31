@@ -48,10 +48,6 @@ func (k msgServer) RequestGeneralIdentity(
 		}
 
 		k.SetReqQueueEntry(ctx, entry)
-
-		return &types.MsgRequestGeneralIdentityResponse{
-			Identity: identity,
-		}, nil
 	} else {
 		packetData := kstypes.RequestDecryptionKeyPacketData{
 			Requester: msg.Creator,
@@ -79,11 +75,17 @@ func (k msgServer) RequestGeneralIdentity(
 				sdk.NewAttribute(types.AttributeKeyIdentity, identity),
 			),
 		)
-
-		return &types.MsgRequestGeneralIdentityResponse{
-			Identity: identity,
-		}, nil
 	}
+
+	regMsg := types.NewMsgRegisterContract(msg.Creator, msg.Creator, identity)
+	_, err := k.RegisterContract(ctx, regMsg)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.MsgRequestGeneralIdentityResponse{
+		Identity: identity,
+	}, nil
 }
 
 // TransmitRequestDecryptionKeyPacket transmits the packet over IBC with the specified source port and source channel
