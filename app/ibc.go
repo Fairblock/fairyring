@@ -197,6 +197,10 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	}
 	ibcRouter.AddRoute(keysharemoduletypes.ModuleName, keyshareStack)
 
+	if err := app.registerAuctionModule(); err != nil {
+		return err
+	}
+
 	// Add gov module to IBC Router
 	govIBCModule := ibcfee.NewIBCMiddleware(gov.NewIBCModule(app.GovKeeper), app.IBCFeeKeeper)
 	ibcRouter.AddRoute(govtypes.ModuleName, govIBCModule)

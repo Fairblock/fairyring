@@ -99,6 +99,7 @@ import (
 	fairyabci "github.com/Fairblock/fairyring/abci"
 	ibcconsumertypes "github.com/cosmos/interchain-security/v3/x/ccv/consumer/types"
 
+	auctionmodulekeeper "github.com/Fairblock/fairyring/x/auction/keeper"
 	keysharemodulekeeper "github.com/Fairblock/fairyring/x/keyshare/keeper"
 	pepmodulekeeper "github.com/Fairblock/fairyring/x/pep/keeper"
 
@@ -166,9 +167,11 @@ type App struct {
 	ScopedPepKeeper           capabilitykeeper.ScopedKeeper
 	ScopedKeyshareKeeper      capabilitykeeper.ScopedKeeper
 	ScopedGovKeeper           capabilitykeeper.ScopedKeeper
+	ScopedAuctionKeeper       capabilitykeeper.ScopedKeeper
 
 	PepKeeper      pepmodulekeeper.Keeper
 	KeyshareKeeper keysharemodulekeeper.Keeper
+	AuctionKeeper  auctionmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// CosmWasm
