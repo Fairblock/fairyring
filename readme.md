@@ -1,6 +1,6 @@
 # Overview
 
-**fairyring** abstracts away intensive cryptographic operations for applications built within its chain as well as those built on alternative blockchains.
+Fairyring is a dynamic and decentralized network that hosts app-specific secure and performant confidential computing, such as Homomorphic Encryption, Identity-Based Encryption, ZKP verification, and Decentralized Key Generation. **FairyRing** abstracts away intensive cryptographic operations for applications built within its chain as well as those built on other major ecosystems such as Ethereum, Arbitrum, Solana, and all Cosmos Chains.
 
 ## Quick Start
 
