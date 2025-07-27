@@ -1,7 +1,6 @@
 # Overview
 
-**fairyring** is a Cosmos SDK blockchain that leverages identity-based encryption (IBE) to enable pre-execution privacy on Cosmos SDK app-chains.
-`fairyring` consists of two main components, a blockchain purpose-built for management of decryption keys in a decentralized manner, as well as a Cosmos SDK module that other app-chains can use to integrate with fairyring.
+**fairyring** abstracts away intensive cryptographic operations for applications built within its chain as well as those built on alternative blockchains.
 
 ## Quick Start
 
