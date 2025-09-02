@@ -139,7 +139,7 @@ If any of the lanes fail during `ProcessLane`, the entire proposal is rejected. 
 
 ### Proposal Verification Example
 
-Following the example above, let's say we recieve the same proposal from the network:
+Following the example above, let's say we receive the same proposal from the network:
 
 ```golang
 blockProposal := {
