@@ -20,7 +20,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// SendKeyshare registers a new keyshare submited by a validator for a particular height
+// SendKeyshare registers a new keyshare submitted by a validator for a particular height
 
 func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshare) (*types.MsgSendKeyshareResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
