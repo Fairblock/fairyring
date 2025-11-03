@@ -125,6 +125,7 @@ var (
 // capabilities aren't needed for testing.
 type App struct {
 	*runtime.App
+	veCache           map[uint64]map[string][]byte // height -> consHex -> VE bytes
 	legacyAmino       *codec.LegacyAmino
 	appCodec          codec.Codec
 	txConfig          client.TxConfig
@@ -354,7 +355,15 @@ func New(
 	// 	voteExtHandler.SetHandlers(bApp)
 	// }
 
+	// Register vote-extension handlers + preblocker
+	baseAppOptions = append(baseAppOptions, func(b *baseapp.BaseApp) {
+		b.SetExtendVoteHandler(app.extendVoteHandler())
+		b.SetVerifyVoteExtensionHandler(app.verifyVoteExtensionHandler())
+		b.SetPreBlocker(app.preBlocker())
+	})
+
 	app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
+	app.veCache = make(map[uint64]map[string][]byte)
 
 	// Register legacy modules
 	if err := app.registerIBCModules(appOpts); err != nil {
