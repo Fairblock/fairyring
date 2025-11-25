@@ -14,7 +14,7 @@ import (
 )
 
 // HandlePerBlockShare validates, stores, and maybe-aggregates a per-height share.
-// validator is the registered validator account address (the same string you store in ValidatorSet.Validator).
+// validator is the registered validator account address
 func (k Keeper) HandlePerBlockShare(
 	ctx sdk.Context,
 	validator string,
@@ -22,6 +22,9 @@ func (k Keeper) HandlePerBlockShare(
 	keyshareIndex uint32,
 	shareBytes []byte, // raw G2 bytes (192)
 ) error {
+	ctx.Logger().Info("KeyshareVE/HandlePerBlockShare: begin",
+		"height_for", height, "validator", validator, "idx", keyshareIndex, "raw_len", len(shareBytes))
+
 	// Duplicate guard: one share per (validator,height)
 	if _, found := k.GetKeyshare(ctx, validator, height); found {
 		return types.ErrInvalidShare.Wrapf("duplicate keyshare for height %d from %s", height, validator)
@@ -64,6 +67,8 @@ func (k Keeper) HandlePerBlockShare(
 	}
 	sharePt := suite.G2().Point()
 	if err := sharePt.UnmarshalBinary(shareBytes); err != nil {
+		ctx.Logger().Error("KeyshareVE/HandlePerBlockShare: parse failed",
+			"err", err, "validator", validator, "idx", keyshareIndex)
 		return types.ErrUnmarshallingKeyshare.Wrap(err.Error())
 	}
 	extracted := distIBE.ExtractedKey{SK: sharePt, Index: keyshareIndex}
@@ -83,8 +88,13 @@ func (k Keeper) HandlePerBlockShare(
 	}
 
 	if !distIBE.VerifyShare(suite, newCommitment, extracted, Qid) {
+		ctx.Logger().Error("KeyshareVE/HandlePerBlockShare: sig/commitment verify failed",
+			"height_for", height, "validator", validator, "idx", keyshareIndex)
 		return types.ErrInvalidShare
 	}
+
+	ctx.Logger().Info("KeyshareVE/HandlePerBlockShare: parsed+verified",
+		"idx", keyshareIndex)
 
 	// Persist (store hex to keep state schema stable)
 	shareHex := hex.EncodeToString(shareBytes)
@@ -124,6 +134,9 @@ func (k Keeper) HandlePerBlockShare(
 		}
 	}
 
+	ctx.Logger().Info("KeyshareVE/HandlePerBlockShare: aggregation-threshold",
+		"have", len(listOfShares), "need", expectedThreshold, "validators", len(valset))
+
 	if int64(len(listOfShares)) < expectedThreshold {
 		// not enough shares yet; done for now
 		return nil
@@ -136,6 +149,9 @@ func (k Keeper) HandlePerBlockShare(
 		return err
 	}
 	skHex := hex.EncodeToString(skBytes)
+
+	ctx.Logger().Info("KeyshareVE/HandlePerBlockShare: aggregated",
+		"height_for", height, "num_shares", len(listOfShares))
 
 	k.SetDecryptionKey(ctx, types.DecryptionKey{
 		Height: height,
