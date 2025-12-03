@@ -32,6 +32,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	runtimev2 "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"unsafe"
 	"github.com/spf13/cobra"
 
 	// this line is used by starport scaffolding # 1
@@ -101,7 +103,9 @@ func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncod
 
 // RegisterGRPCGatewayRoutes registers the gRPC Gateway routes for the module.
 func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *runtime.ServeMux) {
-	if err := types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientCtx)); err != nil {
+
+	muxV2 := (*runtimev2.ServeMux)(unsafe.Pointer(mux))
+	if err := types.RegisterQueryHandlerClient(context.Background(), muxV2, types.NewQueryClient(clientCtx)); err != nil {
 		panic(err)
 	}
 }

@@ -31,6 +31,12 @@ const (
 	Query_GeneralIdentityAll_FullMethodName       = "/fairyring.pep.Query/GeneralIdentityAll"
 	Query_PrivateIdentity_FullMethodName          = "/fairyring.pep.Query/PrivateIdentity"
 	Query_DecryptData_FullMethodName              = "/fairyring.pep.Query/DecryptData"
+	Query_VerifyWithdrawRangeProof_FullMethodName = "/fairyring.pep.Query/VerifyWithdrawRangeProof"
+	Query_VerifyTransferRangeProof_FullMethodName = "/fairyring.pep.Query/VerifyTransferRangeProof"
+	Query_VerifyValidityProof_FullMethodName      = "/fairyring.pep.Query/VerifyValidityProof"
+	Query_VerifyEqualityProof_FullMethodName      = "/fairyring.pep.Query/VerifyEqualityProof"
+	Query_VerifyTransferProofs_FullMethodName     = "/fairyring.pep.Query/VerifyTransferProofs"
+	Query_VerifyWithdrawProofs_FullMethodName     = "/fairyring.pep.Query/VerifyWithdrawProofs"
 )
 
 // QueryClient is the client API for Query service.
@@ -61,6 +67,18 @@ type QueryClient interface {
 	PrivateIdentity(ctx context.Context, in *QueryPrivateIdentityRequest, opts ...grpc.CallOption) (*QueryPrivateIdentityResponse, error)
 	// Queries a list of DecryptData items.
 	DecryptData(ctx context.Context, in *QueryDecryptDataRequest, opts ...grpc.CallOption) (*QueryDecryptDataResponse, error)
+	// VerifyWithdrawRangeProof verifies a withdraw range proof (U64)
+	VerifyWithdrawRangeProof(ctx context.Context, in *QueryVerifyWithdrawRangeProofRequest, opts ...grpc.CallOption) (*QueryVerifyWithdrawRangeProofResponse, error)
+	// VerifyTransferRangeProof verifies a transfer range proof (U128)
+	VerifyTransferRangeProof(ctx context.Context, in *QueryVerifyTransferRangeProofRequest, opts ...grpc.CallOption) (*QueryVerifyTransferRangeProofResponse, error)
+	// VerifyValidityProof verifies a validity proof for grouped ciphertexts
+	VerifyValidityProof(ctx context.Context, in *QueryVerifyValidityProofRequest, opts ...grpc.CallOption) (*QueryVerifyValidityProofResponse, error)
+	// VerifyEqualityProof verifies an equality proof between ciphertext and commitment
+	VerifyEqualityProof(ctx context.Context, in *QueryVerifyEqualityProofRequest, opts ...grpc.CallOption) (*QueryVerifyEqualityProofResponse, error)
+	// VerifyTransferProofs verifies all transfer proofs together (equality, range, validity)
+	VerifyTransferProofs(ctx context.Context, in *QueryVerifyTransferProofsRequest, opts ...grpc.CallOption) (*QueryVerifyTransferProofsResponse, error)
+	// VerifyWithdrawProofs verifies all withdraw proofs together (equality, range)
+	VerifyWithdrawProofs(ctx context.Context, in *QueryVerifyWithdrawProofsRequest, opts ...grpc.CallOption) (*QueryVerifyWithdrawProofsResponse, error)
 }
 
 type queryClient struct {
@@ -179,6 +197,60 @@ func (c *queryClient) DecryptData(ctx context.Context, in *QueryDecryptDataReque
 	return out, nil
 }
 
+func (c *queryClient) VerifyWithdrawRangeProof(ctx context.Context, in *QueryVerifyWithdrawRangeProofRequest, opts ...grpc.CallOption) (*QueryVerifyWithdrawRangeProofResponse, error) {
+	out := new(QueryVerifyWithdrawRangeProofResponse)
+	err := c.cc.Invoke(ctx, Query_VerifyWithdrawRangeProof_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) VerifyTransferRangeProof(ctx context.Context, in *QueryVerifyTransferRangeProofRequest, opts ...grpc.CallOption) (*QueryVerifyTransferRangeProofResponse, error) {
+	out := new(QueryVerifyTransferRangeProofResponse)
+	err := c.cc.Invoke(ctx, Query_VerifyTransferRangeProof_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) VerifyValidityProof(ctx context.Context, in *QueryVerifyValidityProofRequest, opts ...grpc.CallOption) (*QueryVerifyValidityProofResponse, error) {
+	out := new(QueryVerifyValidityProofResponse)
+	err := c.cc.Invoke(ctx, Query_VerifyValidityProof_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) VerifyEqualityProof(ctx context.Context, in *QueryVerifyEqualityProofRequest, opts ...grpc.CallOption) (*QueryVerifyEqualityProofResponse, error) {
+	out := new(QueryVerifyEqualityProofResponse)
+	err := c.cc.Invoke(ctx, Query_VerifyEqualityProof_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) VerifyTransferProofs(ctx context.Context, in *QueryVerifyTransferProofsRequest, opts ...grpc.CallOption) (*QueryVerifyTransferProofsResponse, error) {
+	out := new(QueryVerifyTransferProofsResponse)
+	err := c.cc.Invoke(ctx, Query_VerifyTransferProofs_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) VerifyWithdrawProofs(ctx context.Context, in *QueryVerifyWithdrawProofsRequest, opts ...grpc.CallOption) (*QueryVerifyWithdrawProofsResponse, error) {
+	out := new(QueryVerifyWithdrawProofsResponse)
+	err := c.cc.Invoke(ctx, Query_VerifyWithdrawProofs_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 // All implementations must embed UnimplementedQueryServer
 // for forward compatibility
@@ -207,6 +279,18 @@ type QueryServer interface {
 	PrivateIdentity(context.Context, *QueryPrivateIdentityRequest) (*QueryPrivateIdentityResponse, error)
 	// Queries a list of DecryptData items.
 	DecryptData(context.Context, *QueryDecryptDataRequest) (*QueryDecryptDataResponse, error)
+	// VerifyWithdrawRangeProof verifies a withdraw range proof (U64)
+	VerifyWithdrawRangeProof(context.Context, *QueryVerifyWithdrawRangeProofRequest) (*QueryVerifyWithdrawRangeProofResponse, error)
+	// VerifyTransferRangeProof verifies a transfer range proof (U128)
+	VerifyTransferRangeProof(context.Context, *QueryVerifyTransferRangeProofRequest) (*QueryVerifyTransferRangeProofResponse, error)
+	// VerifyValidityProof verifies a validity proof for grouped ciphertexts
+	VerifyValidityProof(context.Context, *QueryVerifyValidityProofRequest) (*QueryVerifyValidityProofResponse, error)
+	// VerifyEqualityProof verifies an equality proof between ciphertext and commitment
+	VerifyEqualityProof(context.Context, *QueryVerifyEqualityProofRequest) (*QueryVerifyEqualityProofResponse, error)
+	// VerifyTransferProofs verifies all transfer proofs together (equality, range, validity)
+	VerifyTransferProofs(context.Context, *QueryVerifyTransferProofsRequest) (*QueryVerifyTransferProofsResponse, error)
+	// VerifyWithdrawProofs verifies all withdraw proofs together (equality, range)
+	VerifyWithdrawProofs(context.Context, *QueryVerifyWithdrawProofsRequest) (*QueryVerifyWithdrawProofsResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -249,6 +333,24 @@ func (UnimplementedQueryServer) PrivateIdentity(context.Context, *QueryPrivateId
 }
 func (UnimplementedQueryServer) DecryptData(context.Context, *QueryDecryptDataRequest) (*QueryDecryptDataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DecryptData not implemented")
+}
+func (UnimplementedQueryServer) VerifyWithdrawRangeProof(context.Context, *QueryVerifyWithdrawRangeProofRequest) (*QueryVerifyWithdrawRangeProofResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyWithdrawRangeProof not implemented")
+}
+func (UnimplementedQueryServer) VerifyTransferRangeProof(context.Context, *QueryVerifyTransferRangeProofRequest) (*QueryVerifyTransferRangeProofResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyTransferRangeProof not implemented")
+}
+func (UnimplementedQueryServer) VerifyValidityProof(context.Context, *QueryVerifyValidityProofRequest) (*QueryVerifyValidityProofResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyValidityProof not implemented")
+}
+func (UnimplementedQueryServer) VerifyEqualityProof(context.Context, *QueryVerifyEqualityProofRequest) (*QueryVerifyEqualityProofResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyEqualityProof not implemented")
+}
+func (UnimplementedQueryServer) VerifyTransferProofs(context.Context, *QueryVerifyTransferProofsRequest) (*QueryVerifyTransferProofsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyTransferProofs not implemented")
+}
+func (UnimplementedQueryServer) VerifyWithdrawProofs(context.Context, *QueryVerifyWithdrawProofsRequest) (*QueryVerifyWithdrawProofsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyWithdrawProofs not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 
@@ -479,6 +581,114 @@ func _Query_DecryptData_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_VerifyWithdrawRangeProof_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryVerifyWithdrawRangeProofRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).VerifyWithdrawRangeProof(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_VerifyWithdrawRangeProof_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).VerifyWithdrawRangeProof(ctx, req.(*QueryVerifyWithdrawRangeProofRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_VerifyTransferRangeProof_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryVerifyTransferRangeProofRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).VerifyTransferRangeProof(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_VerifyTransferRangeProof_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).VerifyTransferRangeProof(ctx, req.(*QueryVerifyTransferRangeProofRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_VerifyValidityProof_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryVerifyValidityProofRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).VerifyValidityProof(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_VerifyValidityProof_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).VerifyValidityProof(ctx, req.(*QueryVerifyValidityProofRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_VerifyEqualityProof_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryVerifyEqualityProofRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).VerifyEqualityProof(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_VerifyEqualityProof_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).VerifyEqualityProof(ctx, req.(*QueryVerifyEqualityProofRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_VerifyTransferProofs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryVerifyTransferProofsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).VerifyTransferProofs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_VerifyTransferProofs_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).VerifyTransferProofs(ctx, req.(*QueryVerifyTransferProofsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_VerifyWithdrawProofs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryVerifyWithdrawProofsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).VerifyWithdrawProofs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_VerifyWithdrawProofs_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).VerifyWithdrawProofs(ctx, req.(*QueryVerifyWithdrawProofsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Query_ServiceDesc is the grpc.ServiceDesc for Query service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -533,6 +743,30 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DecryptData",
 			Handler:    _Query_DecryptData_Handler,
+		},
+		{
+			MethodName: "VerifyWithdrawRangeProof",
+			Handler:    _Query_VerifyWithdrawRangeProof_Handler,
+		},
+		{
+			MethodName: "VerifyTransferRangeProof",
+			Handler:    _Query_VerifyTransferRangeProof_Handler,
+		},
+		{
+			MethodName: "VerifyValidityProof",
+			Handler:    _Query_VerifyValidityProof_Handler,
+		},
+		{
+			MethodName: "VerifyEqualityProof",
+			Handler:    _Query_VerifyEqualityProof_Handler,
+		},
+		{
+			MethodName: "VerifyTransferProofs",
+			Handler:    _Query_VerifyTransferProofs_Handler,
+		},
+		{
+			MethodName: "VerifyWithdrawProofs",
+			Handler:    _Query_VerifyWithdrawProofs_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

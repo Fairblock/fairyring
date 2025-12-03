@@ -1,6 +1,11 @@
 #!/bin/bash
 
-BINARY=fairyringd
+# Use the newly built binary from $HOME/go/bin if available, otherwise fall back to system binary
+if [ -f "$HOME/go/bin/fairyringd" ]; then
+    BINARY="$HOME/go/bin/fairyringd"
+else
+    BINARY=fairyringd
+fi
 CHAIN_DIR=$(pwd)/devnet_data
 CHAINID=fairyring_devnet
 FAIRYRINGCLIENT=fairyringclient
@@ -14,6 +19,7 @@ WALLET_MNEMONIC_2="veteran try aware erosion drink dance decade comic dawn museu
 WALLET_MNEMONIC_3="vacuum burst ordinary enact leaf rabbit gather lend left chase park action dish danger green jeans lucky dish mesh language collect acquire waste load"
 WALLET_MNEMONIC_4="open attitude harsh casino rent attitude midnight debris describe spare cancel crisp olive ride elite gallery leaf buffalo sheriff filter rotate path begin soldier"
 WALLET_MNEMONIC_5="sleep garage unaware monster slide cruel barely blade sudden basic review mimic screen box human wing ritual use smooth ripple tuna ostrich pony eye"
+WALLET_MNEMONIC_6="polar account muffin credit dice holiday honey diesel faculty maze senior curve clap hard similar club evolve wolf stable hedgehog secret used rebuild help"
 
 RLY_MNEMONIC_1="alley afraid soup fall idea toss can goose become valve initial strong forward bright dish figure check leopard decide warfare hub unusual join cart"
 
@@ -93,6 +99,7 @@ echo $WALLET_MNEMONIC_2 | $BINARY keys add wallet2 --home $CHAIN_DIR/$CHAINID --
 echo $WALLET_MNEMONIC_3 | $BINARY keys add wallet3 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
 echo $WALLET_MNEMONIC_4 | $BINARY keys add wallet4 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
 echo $WALLET_MNEMONIC_5 | $BINARY keys add wallet5 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
+echo $WALLET_MNEMONIC_6 | $BINARY keys add wallet6 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
 RLY1_JSON=$(echo $RLY_MNEMONIC_1 | $BINARY keys add rly1 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test --output json)
 echo $RLY1_JSON | jq --arg mnemonic "$RLY_MNEMONIC_1" '. += $ARGS.named'> rly1.json
 
@@ -102,6 +109,7 @@ WALLET2_ADDR=$($BINARY keys show wallet2 --home $CHAIN_DIR/$CHAINID -a --keyring
 WALLET3_ADDR=$($BINARY keys show wallet3 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
 WALLET4_ADDR=$($BINARY keys show wallet4 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
 WALLET5_ADDR=$($BINARY keys show wallet5 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
+WALLET6_ADDR=$($BINARY keys show wallet6 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
 RLY1_ADDR=$($BINARY keys show rly1 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
 
 $BINARY genesis add-genesis-account $VAL1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
@@ -110,6 +118,7 @@ $BINARY genesis add-genesis-account $WALLET2_ADDR 1000000000000ufairy --home $CH
 $BINARY genesis add-genesis-account $WALLET3_ADDR 1000000000000ufairy --vesting-amount 1000000000000ufairy --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
 $BINARY genesis add-genesis-account $WALLET4_ADDR 1000000000000ufairy --vesting-amount 1000000000000ufairy --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
 $BINARY genesis add-genesis-account $WALLET5_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
+$BINARY genesis add-genesis-account $WALLET6_ADDR 100000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
 $BINARY genesis add-genesis-account $RLY1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
 
 echo "Creating and collecting gentx..."
@@ -124,6 +133,22 @@ sed -i -e 's/timeout_commit = "5s"/timeout_commit = "5s"/g' $CHAIN_DIR/$CHAINID/
 sed -i -e 's/timeout_propose = "3s"/timeout_propose = "5s"/g' $CHAIN_DIR/$CHAINID/config/config.toml
 sed -i -e 's/index_all_keys = false/index_all_keys = true/g' $CHAIN_DIR/$CHAINID/config/config.toml
 
+# Increase RPC max request body size to allow large transactions (e.g., 500 transfers with proofs)
+# Default is usually 1MB, increase to 50MB to handle large batch transactions
+if ! grep -q "max_body_bytes" $CHAIN_DIR/$CHAINID/config/config.toml; then
+    # Add max_body_bytes setting to [rpc] section if it doesn't exist
+    sed -i '/\[rpc\]/a max_body_bytes = 52428800' $CHAIN_DIR/$CHAINID/config/config.toml
+else
+    # Update existing max_body_bytes setting
+    sed -i -e 's/^max_body_bytes = .*/max_body_bytes = 52428800/g' $CHAIN_DIR/$CHAINID/config/config.toml
+fi
+
+# Increase CometBFT mempool tx size limit (network-level) to match app and genesis limits
+# Default max_tx_bytes here is usually 1MB; bump to 50MB so large txs pass CheckTx
+if grep -q "^max_tx_bytes" $CHAIN_DIR/$CHAINID/config/config.toml; then
+    sed -i -e 's/^max_tx_bytes = .*/max_tx_bytes = 52428800/g' $CHAIN_DIR/$CHAINID/config/config.toml
+fi
+
 sed -i -e 's/cors = false/cors = true/g' $CHAIN_DIR/$CHAINID/config/app.toml
 sed -i -e 's/enable = false/enable = true/g' $CHAIN_DIR/$CHAINID/config/app.toml
 sed -i -e 's/swagger = false/swagger = true/g' $CHAIN_DIR/$CHAINID/config/app.toml
@@ -131,11 +156,86 @@ sed -i -e 's#"tcp://localhost:1317"#"tcp://localhost:'"$RESTPORT"'"#g' $CHAIN_DI
 sed -i -e 's#":8080"#":'"$ROSETTA"'"#g' $CHAIN_DIR/$CHAINID/config/app.toml
 sed -i -e 's/minimum-gas-prices = ""/minimum-gas-prices = "0ufairy"/g' $CHAIN_DIR/$CHAINID/config/app.toml
 
+# Increase transaction size limits to allow large batch transactions with proofs
+# Default max_tx_bytes is usually 1MB, increase to 50MB
+# First ensure [mempool] section exists
+if ! grep -q "^\[mempool\]" $CHAIN_DIR/$CHAINID/config/app.toml; then
+    echo "" >> $CHAIN_DIR/$CHAINID/config/app.toml
+    echo "[mempool]" >> $CHAIN_DIR/$CHAINID/config/app.toml
+fi
+
+if ! grep -q "^max_tx_bytes" $CHAIN_DIR/$CHAINID/config/app.toml; then
+    # Add max_tx_bytes setting after [mempool] section
+    sed -i '/^\[mempool\]/a max_tx_bytes = 52428800' $CHAIN_DIR/$CHAINID/config/app.toml
+else
+    # Update existing max_tx_bytes setting
+    sed -i -e 's/^max_tx_bytes = .*/max_tx_bytes = 52428800/g' $CHAIN_DIR/$CHAINID/config/app.toml
+fi
+
+# Ensure wasm section exists and enable Stargate queries for CosmWasm contracts
+cat >> $CHAIN_DIR/$CHAINID/config/app.toml << 'EOF'
+
+###############################################################################
+###                           WASM Configuration                            ###
+###############################################################################
+
+[wasm]
+# Maximum gas that can be consumed by a single smart contract query (0 = no limit).
+query_gas_limit = 3000000
+
+# Number of cached modules in wasm VM. 0 = use default.
+lru_size = 0
+
+# Capabilities the node is willing to support. Must include "stargate" to allow
+# contracts to perform Stargate / gRPC queries into SDK modules.
+available_capabilities = [
+  "iterator",
+  "staking",
+  "stargate",
+  "cosmwasm_1_1",
+  "cosmwasm_1_2",
+  "cosmwasm_1_3",
+  "cosmwasm_1_4",
+  "cosmwasm_2_0",
+]
+
+EOF
+
 
 echo "Changing genesis.json..."
 sed -i -e 's/"max_deposit_period": "172800s"/"max_deposit_period": "10s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 sed -i -e 's/"voting_period": "172800s"/"voting_period": "10s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+
+# Increase max_tx_bytes in genesis.json to allow large transactions
+# Default is usually 1MB (1048576), increase to 50MB (52428800)
+# This is the most important setting as it's enforced at consensus level
+# Use jq to properly modify JSON instead of sed to avoid syntax errors
+if command -v jq &> /dev/null; then
+    # Use jq to safely update max_tx_bytes in both block and evidence sections
+    jq '.consensus.params.block.max_tx_bytes = "52428800" | .consensus.params.evidence.max_tx_bytes = "52428800"' $CHAIN_DIR/$CHAINID/config/genesis.json > $CHAIN_DIR/$CHAINID/config/genesis.json.tmp && mv $CHAIN_DIR/$CHAINID/config/genesis.json.tmp $CHAIN_DIR/$CHAINID/config/genesis.json
+else
+    # Fallback to sed if jq is not available - be more careful with JSON syntax
+    if grep -q '"max_tx_bytes"' $CHAIN_DIR/$CHAINID/config/genesis.json; then
+        # Update existing max_tx_bytes (handle both quoted and unquoted numbers)
+        sed -i -e 's/"max_tx_bytes": *"[0-9]*"/"max_tx_bytes": "52428800"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+        sed -i -e 's/"max_tx_bytes": *[0-9]*/"max_tx_bytes": "52428800"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+    else
+        # Add max_tx_bytes after max_bytes, ensuring proper comma placement
+        # For block section
+        sed -i '/"block": {/,/"max_bytes":/ {
+            /"max_bytes":/ {
+                s/"max_bytes": "\([^"]*\)"/"max_bytes": "\1",\n        "max_tx_bytes": "52428800"/
+            }
+        }' $CHAIN_DIR/$CHAINID/config/genesis.json
+        # For evidence section  
+        sed -i '/"evidence": {/,/"max_bytes":/ {
+            /"max_bytes":/ {
+                s/"max_bytes": "\([^"]*\)"/"max_bytes": "\1",\n        "max_tx_bytes": "52428800"/
+            }
+        }' $CHAIN_DIR/$CHAINID/config/genesis.json
+    fi
+fi
 
 sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'","'"$RLY1_ADDR"'","'"$WALLET5_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 TRUSTED_PARTIES='{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-0"}'
@@ -197,6 +297,9 @@ echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet4 --home $CHAIN_DIR/$CHA
 echo ""
 echo "Name: 'wallet5' | Address: $WALLET5_ADDR | (Trusted, for ShareGenerationClient)"
 echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet5 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test)"
+echo ""
+echo "Name: 'wallet6' | Address: $WALLET6_ADDR"
+echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet6 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test)"
 echo "*******************************************************"
 echo "*    Node RPC ENDPOINT: http://localhost:$RPCPORT        *"
 echo "*    Node REST ENDPOINT: http://localhost:$RESTPORT        *"

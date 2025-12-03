@@ -1,21 +1,24 @@
 package app
 
 import (
+	"encoding/json"
+
 	"cosmossdk.io/core/appmodule"
 	storetypes "cosmossdk.io/store/types"
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
+	"github.com/Fairblock/fairyring/wasmbinding"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/gov"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	govv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"github.com/cosmos/gogoproto/proto"
 	"github.com/cosmos/ibc-go/modules/capability"
 	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
@@ -170,15 +173,29 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 		AddRoute(icacontrollertypes.SubModuleName, icaControllerIBCModule).
 		AddRoute(icahosttypes.SubModuleName, icaHostIBCModule)
 
-	acceptList := map[string]proto.Message{
+	// Accepted Stargate queries for contracts - AcceptedQueries is map[string]proto.Message
+	accepted := wasmkeeper.AcceptedQueries{
 		"/fairyring.keyshare.Query/VerifiableRandomness": &keysharemoduletypes.QueryVerifiableRandomnessResponse{},
 		"/fairyring.pep.Query/DecryptData":               &pepmoduletypes.QueryDecryptDataResponse{},
+		"/fairyring.pep.Query/VerifyWithdrawRangeProof":  &pepmoduletypes.QueryVerifyWithdrawRangeProofResponse{},
+		"/fairyring.pep.Query/VerifyTransferRangeProof":  &pepmoduletypes.QueryVerifyTransferRangeProofResponse{},
+		"/fairyring.pep.Query/VerifyValidityProof":       &pepmoduletypes.QueryVerifyValidityProofResponse{},
+		"/fairyring.pep.Query/VerifyEqualityProof":       &pepmoduletypes.QueryVerifyEqualityProofResponse{},
+		"/fairyring.pep.Query/VerifyTransferProofs":      &pepmoduletypes.QueryVerifyTransferProofsResponse{},
+		"/fairyring.pep.Query/VerifyWithdrawProofs":     &pepmoduletypes.QueryVerifyWithdrawProofsResponse{},
 	}
 
 	// Add wasmd to IBC Router
 	wasmStack, err := app.registerWasmModules(appOpts, wasmkeeper.WithQueryPlugins(
 		&wasmkeeper.QueryPlugins{
-			Grpc: wasmkeeper.AcceptListGrpcQuerier(acceptList, app.GRPCQueryRouter(), app.appCodec),
+			Stargate: wasmkeeper.AcceptListStargateQuerier(
+				accepted,
+				app.GRPCQueryRouter(), 
+				app.AppCodec(),      
+			),
+			Custom: func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
+				return wasmbinding.CustomQuerier(app.PepKeeper)(ctx, request)
+			},
 		}))
 	if err != nil {
 		return err

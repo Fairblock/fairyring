@@ -12,7 +12,6 @@ managed:
       - buf.build/googleapis/googleapis
       - buf.build/cosmos/gogo-proto
       - buf.build/cosmos/cosmos-proto
-    override:
 plugins:
   - name: go-pulsar
     out: ./api
