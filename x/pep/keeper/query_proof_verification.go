@@ -141,7 +141,7 @@ func (k Keeper) VerifyTransferRangeProof(goCtx context.Context, req *types.Query
 	}, nil
 }
 
-// VerifyValidityProof verifies a validity proof for grouped ciphertexts
+// VerifyValidityProof verifies a validity proof
 func (k Keeper) VerifyValidityProof(goCtx context.Context, req *types.QueryVerifyValidityProofRequest) (*types.QueryVerifyValidityProofResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -193,7 +193,7 @@ func (k Keeper) VerifyValidityProof(goCtx context.Context, req *types.QueryVerif
 	}, nil
 }
 
-// VerifyEqualityProof verifies an equality proof between ciphertext and commitment
+// VerifyEqualityProof verifies an equality proof 
 func (k Keeper) VerifyEqualityProof(goCtx context.Context, req *types.QueryVerifyEqualityProofRequest) (*types.QueryVerifyEqualityProofResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
