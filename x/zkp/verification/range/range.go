@@ -5,7 +5,7 @@ import (
 	"runtime"
 	"sync"
 
-	"github.com/Fairblock/fairyring/x/pep/verification/common"
+	"github.com/Fairblock/fairyring/x/zkp/verification/common"
 	"github.com/gtank/merlin"
 	"golang.org/x/crypto/sha3"
 )

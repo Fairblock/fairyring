@@ -3,7 +3,7 @@ package commitment
 import (
 	"errors"
 
-	"github.com/Fairblock/fairyring/x/pep/verification/common"
+	"github.com/Fairblock/fairyring/x/zkp/verification/common"
 	"github.com/gtank/merlin"
 )
 
@@ -195,7 +195,7 @@ func (ep EqualityProof) Verify(
 
 	h := &common.H
 
-	// Scalars s (same order as Rust)
+	// Scalars s 
 	var one Scalar
 	one.SetOne()
 

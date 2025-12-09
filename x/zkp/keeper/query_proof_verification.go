@@ -3,10 +3,10 @@ package keeper
 import (
 	"context"
 
-	"github.com/Fairblock/fairyring/x/pep/types"
-	"github.com/Fairblock/fairyring/x/pep/verification/commitment"
-	rangeproof "github.com/Fairblock/fairyring/x/pep/verification/range"
-	"github.com/Fairblock/fairyring/x/pep/verification/validity"
+	"github.com/Fairblock/fairyring/x/zkp/types"
+	"github.com/Fairblock/fairyring/x/zkp/verification/commitment"
+	rangeproof "github.com/Fairblock/fairyring/x/zkp/verification/range"
+	"github.com/Fairblock/fairyring/x/zkp/verification/validity"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -490,3 +490,4 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 		Error: "",
 	}, nil
 }
+

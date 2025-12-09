@@ -3,6 +3,7 @@ package pep
 import (
 	"bytes"
 	"context"
+	storetypes "cosmossdk.io/store/types"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -10,8 +11,6 @@ import (
 	"math"
 	"strconv"
 	"strings"
-
-	storetypes "cosmossdk.io/store/types"
 
 	"cosmossdk.io/core/appmodule"
 	cosmosmath "cosmossdk.io/math"
@@ -27,15 +26,12 @@ import (
 	bls "github.com/drand/kyber-bls12381"
 	"google.golang.org/protobuf/types/known/anypb"
 
-	"unsafe"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	runtimev2 "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/spf13/cobra"
 
 	// this line is used by starport scaffolding # 1
@@ -105,9 +101,7 @@ func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncod
 
 // RegisterGRPCGatewayRoutes registers the gRPC Gateway routes for the module.
 func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *runtime.ServeMux) {
-
-	muxV2 := (*runtimev2.ServeMux)(unsafe.Pointer(mux))
-	if err := types.RegisterQueryHandlerClient(context.Background(), muxV2, types.NewQueryClient(clientCtx)); err != nil {
+	if err := types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientCtx)); err != nil {
 		panic(err)
 	}
 }
@@ -158,8 +152,7 @@ func NewAppModule(
 // RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries
 func (am AppModule) RegisterServices(cfg module.Configurator) {
 	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
-	// Use filtered query server to block ZKP verification queries via gRPC/REST
-	types.RegisterQueryServer(cfg.QueryServer(), keeper.NewFilteredQueryServer(am.keeper))
+	types.RegisterQueryServer(cfg.QueryServer(), am.keeper)
 	m := keeper.NewMigrator(am.keeper)
 	if err := cfg.RegisterMigration(types.ModuleName, 1, m.Migrate1to2); err != nil {
 		panic(fmt.Errorf("failed to migrate x/%s from version 1 to 2: %w", types.ModuleName, err))

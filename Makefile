@@ -307,8 +307,6 @@ proto-gen:
 	@echo "Generating Protobuf files"
 	@sh ./proto/scripts/protocgen.sh
 	@sh ./proto/scripts/protocgen-pulsar.sh
-	@echo "Fixing pulsar common package imports"
-	@find api -name "*.pulsar.go" -exec sed -i 's|cosmossdk.io/api/fairyring/common|github.com/Fairblock/fairyring/api/fairyring/common|g' {} \; 2>/dev/null || true
 
 proto-doc:
 	@echo "Generating Protoc docs"

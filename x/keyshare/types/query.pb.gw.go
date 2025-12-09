@@ -10,833 +10,943 @@ package types
 
 import (
 	"context"
-	"errors"
 	"io"
 	"net/http"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
+	"github.com/golang/protobuf/descriptor"
+	"github.com/golang/protobuf/proto"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/utilities"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
-	proto "github.com/cosmos/gogoproto/proto"
-	"google.golang.org/protobuf/reflect/protoreflect"
-	"google.golang.org/protobuf/runtime/protoimpl"
 )
 
 // Suppress "imported and not used" errors
-var (
-	_ codes.Code
-	_ io.Reader
-	_ status.Status
-	_ = errors.New
-	_ = runtime.String
-	_ = utilities.NewDoubleArray
-	_ = metadata.Join
-)
-
-// Helper function to convert gogo proto.Message to protoreflect.ProtoMessage
-func asProtoReflect(msg proto.Message) protoreflect.ProtoMessage {
-	if msg == nil {
-		return nil
-	}
-	// Type assert to protoreflect.ProtoMessage if possible
-	if pm, ok := msg.(protoreflect.ProtoMessage); ok {
-		return pm
-	}
-	// If not, try to use protoimpl.X.ProtoMessageV2Of
-	return protoimpl.X.ProtoMessageV2Of(msg)
-}
+var _ codes.Code
+var _ io.Reader
+var _ status.Status
+var _ = runtime.String
+var _ = utilities.NewDoubleArray
+var _ = descriptor.ForMessage
+var _ = metadata.Join
 
 func request_Query_Params_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryParamsRequest
-		metadata runtime.ServerMetadata
-	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
+	var protoReq QueryParamsRequest
+	var metadata runtime.ServerMetadata
+
 	msg, err := client.Params(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
+
 }
 
 func local_request_Query_Params_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryParamsRequest
-		metadata runtime.ServerMetadata
-	)
+	var protoReq QueryParamsRequest
+	var metadata runtime.ServerMetadata
+
 	msg, err := server.Params(ctx, &protoReq)
 	return msg, metadata, err
+
 }
 
 func request_Query_Commitments_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryCommitmentsRequest
-		metadata runtime.ServerMetadata
-	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
+	var protoReq QueryCommitmentsRequest
+	var metadata runtime.ServerMetadata
+
 	msg, err := client.Commitments(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
+
 }
 
 func local_request_Query_Commitments_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryCommitmentsRequest
-		metadata runtime.ServerMetadata
-	)
+	var protoReq QueryCommitmentsRequest
+	var metadata runtime.ServerMetadata
+
 	msg, err := server.Commitments(ctx, &protoReq)
 	return msg, metadata, err
+
 }
 
 func request_Query_ValidatorSet_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryValidatorSetRequest
+	var metadata runtime.ServerMetadata
+
 	var (
-		protoReq QueryValidatorSetRequest
-		metadata runtime.ServerMetadata
-		err      error
+		val string
+		ok  bool
+		err error
+		_   = err
 	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
-	val, ok := pathParams["index"]
+
+	val, ok = pathParams["index"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "index")
 	}
+
 	protoReq.Index, err = runtime.String(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "index", err)
 	}
+
 	msg, err := client.ValidatorSet(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
+
 }
 
 func local_request_Query_ValidatorSet_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryValidatorSetRequest
+	var metadata runtime.ServerMetadata
+
 	var (
-		protoReq QueryValidatorSetRequest
-		metadata runtime.ServerMetadata
-		err      error
+		val string
+		ok  bool
+		err error
+		_   = err
 	)
-	val, ok := pathParams["index"]
+
+	val, ok = pathParams["index"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "index")
 	}
+
 	protoReq.Index, err = runtime.String(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "index", err)
 	}
+
 	msg, err := server.ValidatorSet(ctx, &protoReq)
 	return msg, metadata, err
+
 }
 
-var filter_Query_ValidatorSetAll_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+var (
+	filter_Query_ValidatorSetAll_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
 
 func request_Query_ValidatorSetAll_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryValidatorSetAllRequest
-		metadata runtime.ServerMetadata
-	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
+	var protoReq QueryValidatorSetAllRequest
+	var metadata runtime.ServerMetadata
+
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(asProtoReflect(&protoReq), req.Form, filter_Query_ValidatorSetAll_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Query_ValidatorSetAll_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+
 	msg, err := client.ValidatorSetAll(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
+
 }
 
 func local_request_Query_ValidatorSetAll_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryValidatorSetAllRequest
-		metadata runtime.ServerMetadata
-	)
+	var protoReq QueryValidatorSetAllRequest
+	var metadata runtime.ServerMetadata
+
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(asProtoReflect(&protoReq), req.Form, filter_Query_ValidatorSetAll_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Query_ValidatorSetAll_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+
 	msg, err := server.ValidatorSetAll(ctx, &protoReq)
 	return msg, metadata, err
+
 }
 
 func request_Query_Keyshare_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryKeyshareRequest
+	var metadata runtime.ServerMetadata
+
 	var (
-		protoReq QueryKeyshareRequest
-		metadata runtime.ServerMetadata
-		err      error
+		val string
+		ok  bool
+		err error
+		_   = err
 	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
-	val, ok := pathParams["validator"]
+
+	val, ok = pathParams["validator"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "validator")
 	}
+
 	protoReq.Validator, err = runtime.String(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "validator", err)
 	}
+
 	val, ok = pathParams["block_height"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "block_height")
 	}
+
 	protoReq.BlockHeight, err = runtime.Uint64(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "block_height", err)
 	}
+
 	msg, err := client.Keyshare(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
+
 }
 
 func local_request_Query_Keyshare_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryKeyshareRequest
+	var metadata runtime.ServerMetadata
+
 	var (
-		protoReq QueryKeyshareRequest
-		metadata runtime.ServerMetadata
-		err      error
+		val string
+		ok  bool
+		err error
+		_   = err
 	)
-	val, ok := pathParams["validator"]
+
+	val, ok = pathParams["validator"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "validator")
 	}
+
 	protoReq.Validator, err = runtime.String(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "validator", err)
 	}
+
 	val, ok = pathParams["block_height"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "block_height")
 	}
+
 	protoReq.BlockHeight, err = runtime.Uint64(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "block_height", err)
 	}
+
 	msg, err := server.Keyshare(ctx, &protoReq)
 	return msg, metadata, err
+
 }
 
-var filter_Query_KeyshareAll_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+var (
+	filter_Query_KeyshareAll_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
 
 func request_Query_KeyshareAll_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryKeyshareAllRequest
-		metadata runtime.ServerMetadata
-	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
+	var protoReq QueryKeyshareAllRequest
+	var metadata runtime.ServerMetadata
+
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(asProtoReflect(&protoReq), req.Form, filter_Query_KeyshareAll_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Query_KeyshareAll_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+
 	msg, err := client.KeyshareAll(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
+
 }
 
 func local_request_Query_KeyshareAll_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryKeyshareAllRequest
-		metadata runtime.ServerMetadata
-	)
+	var protoReq QueryKeyshareAllRequest
+	var metadata runtime.ServerMetadata
+
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(asProtoReflect(&protoReq), req.Form, filter_Query_KeyshareAll_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Query_KeyshareAll_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+
 	msg, err := server.KeyshareAll(ctx, &protoReq)
 	return msg, metadata, err
+
 }
 
 func request_Query_DecryptionKey_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryDecryptionKeyRequest
+	var metadata runtime.ServerMetadata
+
 	var (
-		protoReq QueryDecryptionKeyRequest
-		metadata runtime.ServerMetadata
-		err      error
+		val string
+		ok  bool
+		err error
+		_   = err
 	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
-	val, ok := pathParams["height"]
+
+	val, ok = pathParams["height"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "height")
 	}
+
 	protoReq.Height, err = runtime.Uint64(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "height", err)
 	}
+
 	msg, err := client.DecryptionKey(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
+
 }
 
 func local_request_Query_DecryptionKey_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryDecryptionKeyRequest
+	var metadata runtime.ServerMetadata
+
 	var (
-		protoReq QueryDecryptionKeyRequest
-		metadata runtime.ServerMetadata
-		err      error
+		val string
+		ok  bool
+		err error
+		_   = err
 	)
-	val, ok := pathParams["height"]
+
+	val, ok = pathParams["height"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "height")
 	}
+
 	protoReq.Height, err = runtime.Uint64(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "height", err)
 	}
+
 	msg, err := server.DecryptionKey(ctx, &protoReq)
 	return msg, metadata, err
+
 }
 
-var filter_Query_DecryptionKeyAll_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+var (
+	filter_Query_DecryptionKeyAll_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
 
 func request_Query_DecryptionKeyAll_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryDecryptionKeyAllRequest
-		metadata runtime.ServerMetadata
-	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
+	var protoReq QueryDecryptionKeyAllRequest
+	var metadata runtime.ServerMetadata
+
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(asProtoReflect(&protoReq), req.Form, filter_Query_DecryptionKeyAll_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Query_DecryptionKeyAll_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+
 	msg, err := client.DecryptionKeyAll(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
+
 }
 
 func local_request_Query_DecryptionKeyAll_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryDecryptionKeyAllRequest
-		metadata runtime.ServerMetadata
-	)
+	var protoReq QueryDecryptionKeyAllRequest
+	var metadata runtime.ServerMetadata
+
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(asProtoReflect(&protoReq), req.Form, filter_Query_DecryptionKeyAll_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Query_DecryptionKeyAll_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+
 	msg, err := server.DecryptionKeyAll(ctx, &protoReq)
 	return msg, metadata, err
+
 }
 
 func request_Query_Pubkey_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryPubkeyRequest
-		metadata runtime.ServerMetadata
-	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
+	var protoReq QueryPubkeyRequest
+	var metadata runtime.ServerMetadata
+
 	msg, err := client.Pubkey(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
+
 }
 
 func local_request_Query_Pubkey_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryPubkeyRequest
-		metadata runtime.ServerMetadata
-	)
+	var protoReq QueryPubkeyRequest
+	var metadata runtime.ServerMetadata
+
 	msg, err := server.Pubkey(ctx, &protoReq)
 	return msg, metadata, err
+
 }
 
 func request_Query_AuthorizedAddress_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryAuthorizedAddressRequest
+	var metadata runtime.ServerMetadata
+
 	var (
-		protoReq QueryAuthorizedAddressRequest
-		metadata runtime.ServerMetadata
-		err      error
+		val string
+		ok  bool
+		err error
+		_   = err
 	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
-	val, ok := pathParams["target"]
+
+	val, ok = pathParams["target"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "target")
 	}
+
 	protoReq.Target, err = runtime.String(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "target", err)
 	}
+
 	msg, err := client.AuthorizedAddress(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
+
 }
 
 func local_request_Query_AuthorizedAddress_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryAuthorizedAddressRequest
+	var metadata runtime.ServerMetadata
+
 	var (
-		protoReq QueryAuthorizedAddressRequest
-		metadata runtime.ServerMetadata
-		err      error
+		val string
+		ok  bool
+		err error
+		_   = err
 	)
-	val, ok := pathParams["target"]
+
+	val, ok = pathParams["target"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "target")
 	}
+
 	protoReq.Target, err = runtime.String(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "target", err)
 	}
+
 	msg, err := server.AuthorizedAddress(ctx, &protoReq)
 	return msg, metadata, err
+
 }
 
-var filter_Query_AuthorizedAddressAll_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+var (
+	filter_Query_AuthorizedAddressAll_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
 
 func request_Query_AuthorizedAddressAll_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryAuthorizedAddressAllRequest
-		metadata runtime.ServerMetadata
-	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
+	var protoReq QueryAuthorizedAddressAllRequest
+	var metadata runtime.ServerMetadata
+
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(asProtoReflect(&protoReq), req.Form, filter_Query_AuthorizedAddressAll_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Query_AuthorizedAddressAll_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+
 	msg, err := client.AuthorizedAddressAll(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
+
 }
 
 func local_request_Query_AuthorizedAddressAll_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryAuthorizedAddressAllRequest
-		metadata runtime.ServerMetadata
-	)
+	var protoReq QueryAuthorizedAddressAllRequest
+	var metadata runtime.ServerMetadata
+
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(asProtoReflect(&protoReq), req.Form, filter_Query_AuthorizedAddressAll_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Query_AuthorizedAddressAll_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+
 	msg, err := server.AuthorizedAddressAll(ctx, &protoReq)
 	return msg, metadata, err
+
 }
 
 func request_Query_GeneralKeyshare_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryGeneralKeyshareRequest
+	var metadata runtime.ServerMetadata
+
 	var (
-		protoReq QueryGeneralKeyshareRequest
-		metadata runtime.ServerMetadata
-		err      error
+		val string
+		ok  bool
+		err error
+		_   = err
 	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
-	val, ok := pathParams["validator"]
+
+	val, ok = pathParams["validator"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "validator")
 	}
+
 	protoReq.Validator, err = runtime.String(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "validator", err)
 	}
+
 	val, ok = pathParams["id_type"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id_type")
 	}
+
 	protoReq.IdType, err = runtime.String(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id_type", err)
 	}
+
 	val, ok = pathParams["id_value"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id_value")
 	}
+
 	protoReq.IdValue, err = runtime.String(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id_value", err)
 	}
+
 	msg, err := client.GeneralKeyshare(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
+
 }
 
 func local_request_Query_GeneralKeyshare_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq QueryGeneralKeyshareRequest
+	var metadata runtime.ServerMetadata
+
 	var (
-		protoReq QueryGeneralKeyshareRequest
-		metadata runtime.ServerMetadata
-		err      error
+		val string
+		ok  bool
+		err error
+		_   = err
 	)
-	val, ok := pathParams["validator"]
+
+	val, ok = pathParams["validator"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "validator")
 	}
+
 	protoReq.Validator, err = runtime.String(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "validator", err)
 	}
+
 	val, ok = pathParams["id_type"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id_type")
 	}
+
 	protoReq.IdType, err = runtime.String(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id_type", err)
 	}
+
 	val, ok = pathParams["id_value"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id_value")
 	}
+
 	protoReq.IdValue, err = runtime.String(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id_value", err)
 	}
+
 	msg, err := server.GeneralKeyshare(ctx, &protoReq)
 	return msg, metadata, err
+
 }
 
-var filter_Query_GeneralKeyshareAll_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+var (
+	filter_Query_GeneralKeyshareAll_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
 
 func request_Query_GeneralKeyshareAll_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryGeneralKeyshareAllRequest
-		metadata runtime.ServerMetadata
-	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
+	var protoReq QueryGeneralKeyshareAllRequest
+	var metadata runtime.ServerMetadata
+
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(asProtoReflect(&protoReq), req.Form, filter_Query_GeneralKeyshareAll_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Query_GeneralKeyshareAll_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+
 	msg, err := client.GeneralKeyshareAll(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
+
 }
 
 func local_request_Query_GeneralKeyshareAll_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryGeneralKeyshareAllRequest
-		metadata runtime.ServerMetadata
-	)
+	var protoReq QueryGeneralKeyshareAllRequest
+	var metadata runtime.ServerMetadata
+
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(asProtoReflect(&protoReq), req.Form, filter_Query_GeneralKeyshareAll_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Query_GeneralKeyshareAll_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+
 	msg, err := server.GeneralKeyshareAll(ctx, &protoReq)
 	return msg, metadata, err
+
 }
 
 func request_Query_VerifiableRandomness_0(ctx context.Context, marshaler runtime.Marshaler, client QueryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryVerifiableRandomnessRequest
-		metadata runtime.ServerMetadata
-	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
+	var protoReq QueryVerifiableRandomnessRequest
+	var metadata runtime.ServerMetadata
+
 	msg, err := client.VerifiableRandomness(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
+
 }
 
 func local_request_Query_VerifiableRandomness_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq QueryVerifiableRandomnessRequest
-		metadata runtime.ServerMetadata
-	)
+	var protoReq QueryVerifiableRandomnessRequest
+	var metadata runtime.ServerMetadata
+
 	msg, err := server.VerifiableRandomness(ctx, &protoReq)
 	return msg, metadata, err
+
 }
 
 // RegisterQueryHandlerServer registers the http handlers for service Query to "mux".
 // UnaryRPC     :call QueryServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterQueryHandlerFromEndpoint instead.
-// GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterQueryHandlerServer(ctx context.Context, mux *runtime.ServeMux, server QueryServer) error {
-	mux.Handle(http.MethodGet, pattern_Query_Params_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_Params_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/fairyring.keyshare.Query/Params", runtime.WithHTTPPathPattern("/fairyring/keyshare/params"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_Params_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_Params_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Query_Params_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_Params_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_Commitments_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_Commitments_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/fairyring.keyshare.Query/Commitments", runtime.WithHTTPPathPattern("/fairyring/keyshare/commitments"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_Commitments_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_Commitments_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Query_Commitments_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_Commitments_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_ValidatorSet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_ValidatorSet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/fairyring.keyshare.Query/ValidatorSet", runtime.WithHTTPPathPattern("/fairyring/keyshare/validator_set/{index}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_ValidatorSet_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_ValidatorSet_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Query_ValidatorSet_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_ValidatorSet_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_ValidatorSetAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_ValidatorSetAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/fairyring.keyshare.Query/ValidatorSetAll", runtime.WithHTTPPathPattern("/fairyring/keyshare/validator_set"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_ValidatorSetAll_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_ValidatorSetAll_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Query_ValidatorSetAll_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_ValidatorSetAll_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_Keyshare_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_Keyshare_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/fairyring.keyshare.Query/Keyshare", runtime.WithHTTPPathPattern("/fairyring/keyshare/keyshare/{validator}/{block_height}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_Keyshare_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_Keyshare_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Query_Keyshare_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_Keyshare_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_KeyshareAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_KeyshareAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/fairyring.keyshare.Query/KeyshareAll", runtime.WithHTTPPathPattern("/fairyring/keyshare/keyshare"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_KeyshareAll_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_KeyshareAll_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Query_KeyshareAll_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_KeyshareAll_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_DecryptionKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_DecryptionKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/fairyring.keyshare.Query/DecryptionKey", runtime.WithHTTPPathPattern("/fairyring/keyshare/decryption_key/{height}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_DecryptionKey_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_DecryptionKey_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Query_DecryptionKey_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_DecryptionKey_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_DecryptionKeyAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_DecryptionKeyAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/fairyring.keyshare.Query/DecryptionKeyAll", runtime.WithHTTPPathPattern("/fairyring/keyshare/decryption_key"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_DecryptionKeyAll_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_DecryptionKeyAll_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Query_DecryptionKeyAll_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_DecryptionKeyAll_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_Pubkey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_Pubkey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/fairyring.keyshare.Query/Pubkey", runtime.WithHTTPPathPattern("/fairyring/keyshare/pubkey"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_Pubkey_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_Pubkey_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Query_Pubkey_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_Pubkey_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_AuthorizedAddress_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_AuthorizedAddress_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/fairyring.keyshare.Query/AuthorizedAddress", runtime.WithHTTPPathPattern("/fairyring/keyshare/authorized_address/{target}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_AuthorizedAddress_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_AuthorizedAddress_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Query_AuthorizedAddress_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_AuthorizedAddress_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_AuthorizedAddressAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_AuthorizedAddressAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/fairyring.keyshare.Query/AuthorizedAddressAll", runtime.WithHTTPPathPattern("/fairyring/keyshare/authorized_address"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_AuthorizedAddressAll_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_AuthorizedAddressAll_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Query_AuthorizedAddressAll_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_AuthorizedAddressAll_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_GeneralKeyshare_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_GeneralKeyshare_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/fairyring.keyshare.Query/GeneralKeyshare", runtime.WithHTTPPathPattern("/fairyring/keyshare/general_keyshare/{validator}/{id_type}/{id_value}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_GeneralKeyshare_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_GeneralKeyshare_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Query_GeneralKeyshare_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_GeneralKeyshare_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_GeneralKeyshareAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_GeneralKeyshareAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/fairyring.keyshare.Query/GeneralKeyshareAll", runtime.WithHTTPPathPattern("/fairyring/keyshare/general_keyshare"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_GeneralKeyshareAll_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_GeneralKeyshareAll_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Query_GeneralKeyshareAll_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_GeneralKeyshareAll_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_VerifiableRandomness_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_VerifiableRandomness_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/fairyring.keyshare.Query/VerifiableRandomness", runtime.WithHTTPPathPattern("/fairyring/keyshare/verifiable_randomness"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Query_VerifiableRandomness_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Query_VerifiableRandomness_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Query_VerifiableRandomness_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_VerifiableRandomness_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
 
 	return nil
@@ -845,24 +955,25 @@ func RegisterQueryHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 // RegisterQueryHandlerFromEndpoint is same as RegisterQueryHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
 func RegisterQueryHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
-	conn, err := grpc.NewClient(endpoint, opts...)
+	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
 	}
 	defer func() {
 		if err != nil {
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 			return
 		}
 		go func() {
 			<-ctx.Done()
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 		}()
 	}()
+
 	return RegisterQueryHandler(ctx, mux, conn)
 }
 
@@ -876,279 +987,348 @@ func RegisterQueryHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc
 // to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "QueryClient".
 // Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "QueryClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "QueryClient" to call the correct interceptors. This client ignores the HTTP middlewares.
+// "QueryClient" to call the correct interceptors.
 func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, client QueryClient) error {
-	mux.Handle(http.MethodGet, pattern_Query_Params_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_Params_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/fairyring.keyshare.Query/Params", runtime.WithHTTPPathPattern("/fairyring/keyshare/params"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_Params_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_Query_Params_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
-	})
-	mux.Handle(http.MethodGet, pattern_Query_Commitments_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/fairyring.keyshare.Query/Commitments", runtime.WithHTTPPathPattern("/fairyring/keyshare/commitments"))
+		resp, md, err := request_Query_Params_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_Commitments_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_Query_Commitments_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_Params_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_ValidatorSet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_Commitments_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/fairyring.keyshare.Query/ValidatorSet", runtime.WithHTTPPathPattern("/fairyring/keyshare/validator_set/{index}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_ValidatorSet_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_Query_ValidatorSet_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
-	})
-	mux.Handle(http.MethodGet, pattern_Query_ValidatorSetAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/fairyring.keyshare.Query/ValidatorSetAll", runtime.WithHTTPPathPattern("/fairyring/keyshare/validator_set"))
+		resp, md, err := request_Query_Commitments_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_ValidatorSetAll_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_Query_ValidatorSetAll_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_Commitments_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_Keyshare_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_ValidatorSet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/fairyring.keyshare.Query/Keyshare", runtime.WithHTTPPathPattern("/fairyring/keyshare/keyshare/{validator}/{block_height}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_Keyshare_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_Query_Keyshare_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
-	})
-	mux.Handle(http.MethodGet, pattern_Query_KeyshareAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/fairyring.keyshare.Query/KeyshareAll", runtime.WithHTTPPathPattern("/fairyring/keyshare/keyshare"))
+		resp, md, err := request_Query_ValidatorSet_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_KeyshareAll_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_Query_KeyshareAll_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_ValidatorSet_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_DecryptionKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_ValidatorSetAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/fairyring.keyshare.Query/DecryptionKey", runtime.WithHTTPPathPattern("/fairyring/keyshare/decryption_key/{height}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_DecryptionKey_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_Query_DecryptionKey_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
-	})
-	mux.Handle(http.MethodGet, pattern_Query_DecryptionKeyAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/fairyring.keyshare.Query/DecryptionKeyAll", runtime.WithHTTPPathPattern("/fairyring/keyshare/decryption_key"))
+		resp, md, err := request_Query_ValidatorSetAll_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_DecryptionKeyAll_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_Query_DecryptionKeyAll_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_ValidatorSetAll_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_Pubkey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_Keyshare_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/fairyring.keyshare.Query/Pubkey", runtime.WithHTTPPathPattern("/fairyring/keyshare/pubkey"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_Pubkey_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_Query_Pubkey_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
-	})
-	mux.Handle(http.MethodGet, pattern_Query_AuthorizedAddress_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/fairyring.keyshare.Query/AuthorizedAddress", runtime.WithHTTPPathPattern("/fairyring/keyshare/authorized_address/{target}"))
+		resp, md, err := request_Query_Keyshare_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_AuthorizedAddress_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_Query_AuthorizedAddress_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_Keyshare_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_AuthorizedAddressAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_KeyshareAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/fairyring.keyshare.Query/AuthorizedAddressAll", runtime.WithHTTPPathPattern("/fairyring/keyshare/authorized_address"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_AuthorizedAddressAll_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_Query_AuthorizedAddressAll_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
-	})
-	mux.Handle(http.MethodGet, pattern_Query_GeneralKeyshare_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/fairyring.keyshare.Query/GeneralKeyshare", runtime.WithHTTPPathPattern("/fairyring/keyshare/general_keyshare/{validator}/{id_type}/{id_value}"))
+		resp, md, err := request_Query_KeyshareAll_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_GeneralKeyshare_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_Query_GeneralKeyshare_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+
+		forward_Query_KeyshareAll_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
-	mux.Handle(http.MethodGet, pattern_Query_GeneralKeyshareAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	mux.Handle("GET", pattern_Query_DecryptionKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/fairyring.keyshare.Query/GeneralKeyshareAll", runtime.WithHTTPPathPattern("/fairyring/keyshare/general_keyshare"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_GeneralKeyshareAll_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_Query_GeneralKeyshareAll_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
-	})
-	mux.Handle(http.MethodGet, pattern_Query_VerifiableRandomness_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/fairyring.keyshare.Query/VerifiableRandomness", runtime.WithHTTPPathPattern("/fairyring/keyshare/verifiable_randomness"))
+		resp, md, err := request_Query_DecryptionKey_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Query_VerifiableRandomness_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+
+		forward_Query_DecryptionKey_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_Query_DecryptionKeyAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Query_VerifiableRandomness_0(annotatedContext, mux, outboundMarshaler, w, req, asProtoReflect(resp), mux.GetForwardResponseOptions()...)
+		resp, md, err := request_Query_DecryptionKeyAll_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Query_DecryptionKeyAll_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
+
+	mux.Handle("GET", pattern_Query_Pubkey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Query_Pubkey_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Query_Pubkey_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_Query_AuthorizedAddress_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Query_AuthorizedAddress_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Query_AuthorizedAddress_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_Query_AuthorizedAddressAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Query_AuthorizedAddressAll_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Query_AuthorizedAddressAll_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_Query_GeneralKeyshare_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Query_GeneralKeyshare_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Query_GeneralKeyshare_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_Query_GeneralKeyshareAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Query_GeneralKeyshareAll_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Query_GeneralKeyshareAll_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_Query_VerifiableRandomness_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Query_VerifiableRandomness_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Query_VerifiableRandomness_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
 var (
-	pattern_Query_Params_0               = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "params"}, ""))
-	pattern_Query_Commitments_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "commitments"}, ""))
-	pattern_Query_ValidatorSet_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "keyshare", "validator_set", "index"}, ""))
-	pattern_Query_ValidatorSetAll_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "validator_set"}, ""))
-	pattern_Query_Keyshare_0             = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "keyshare", "validator", "block_height"}, ""))
-	pattern_Query_KeyshareAll_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 1}, []string{"fairyring", "keyshare"}, ""))
-	pattern_Query_DecryptionKey_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "keyshare", "decryption_key", "height"}, ""))
-	pattern_Query_DecryptionKeyAll_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "decryption_key"}, ""))
-	pattern_Query_Pubkey_0               = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "pubkey"}, ""))
-	pattern_Query_AuthorizedAddress_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "keyshare", "authorized_address", "target"}, ""))
-	pattern_Query_AuthorizedAddressAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "authorized_address"}, ""))
-	pattern_Query_GeneralKeyshare_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"fairyring", "keyshare", "general_keyshare", "validator", "id_type", "id_value"}, ""))
-	pattern_Query_GeneralKeyshareAll_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "general_keyshare"}, ""))
-	pattern_Query_VerifiableRandomness_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "verifiable_randomness"}, ""))
+	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "params"}, "", runtime.AssumeColonVerbOpt(false)))
+
+	pattern_Query_Commitments_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "commitments"}, "", runtime.AssumeColonVerbOpt(false)))
+
+	pattern_Query_ValidatorSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "keyshare", "validator_set", "index"}, "", runtime.AssumeColonVerbOpt(false)))
+
+	pattern_Query_ValidatorSetAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "validator_set"}, "", runtime.AssumeColonVerbOpt(false)))
+
+	pattern_Query_Keyshare_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "keyshare", "validator", "block_height"}, "", runtime.AssumeColonVerbOpt(false)))
+
+	pattern_Query_KeyshareAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 1}, []string{"fairyring", "keyshare"}, "", runtime.AssumeColonVerbOpt(false)))
+
+	pattern_Query_DecryptionKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "keyshare", "decryption_key", "height"}, "", runtime.AssumeColonVerbOpt(false)))
+
+	pattern_Query_DecryptionKeyAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "decryption_key"}, "", runtime.AssumeColonVerbOpt(false)))
+
+	pattern_Query_Pubkey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "pubkey"}, "", runtime.AssumeColonVerbOpt(false)))
+
+	pattern_Query_AuthorizedAddress_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"fairyring", "keyshare", "authorized_address", "target"}, "", runtime.AssumeColonVerbOpt(false)))
+
+	pattern_Query_AuthorizedAddressAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "authorized_address"}, "", runtime.AssumeColonVerbOpt(false)))
+
+	pattern_Query_GeneralKeyshare_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"fairyring", "keyshare", "general_keyshare", "validator", "id_type", "id_value"}, "", runtime.AssumeColonVerbOpt(false)))
+
+	pattern_Query_GeneralKeyshareAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "general_keyshare"}, "", runtime.AssumeColonVerbOpt(false)))
+
+	pattern_Query_VerifiableRandomness_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"fairyring", "keyshare", "verifiable_randomness"}, "", runtime.AssumeColonVerbOpt(false)))
 )
 
 var (
-	forward_Query_Params_0               = runtime.ForwardResponseMessage
-	forward_Query_Commitments_0          = runtime.ForwardResponseMessage
-	forward_Query_ValidatorSet_0         = runtime.ForwardResponseMessage
-	forward_Query_ValidatorSetAll_0      = runtime.ForwardResponseMessage
-	forward_Query_Keyshare_0             = runtime.ForwardResponseMessage
-	forward_Query_KeyshareAll_0          = runtime.ForwardResponseMessage
-	forward_Query_DecryptionKey_0        = runtime.ForwardResponseMessage
-	forward_Query_DecryptionKeyAll_0     = runtime.ForwardResponseMessage
-	forward_Query_Pubkey_0               = runtime.ForwardResponseMessage
-	forward_Query_AuthorizedAddress_0    = runtime.ForwardResponseMessage
+	forward_Query_Params_0 = runtime.ForwardResponseMessage
+
+	forward_Query_Commitments_0 = runtime.ForwardResponseMessage
+
+	forward_Query_ValidatorSet_0 = runtime.ForwardResponseMessage
+
+	forward_Query_ValidatorSetAll_0 = runtime.ForwardResponseMessage
+
+	forward_Query_Keyshare_0 = runtime.ForwardResponseMessage
+
+	forward_Query_KeyshareAll_0 = runtime.ForwardResponseMessage
+
+	forward_Query_DecryptionKey_0 = runtime.ForwardResponseMessage
+
+	forward_Query_DecryptionKeyAll_0 = runtime.ForwardResponseMessage
+
+	forward_Query_Pubkey_0 = runtime.ForwardResponseMessage
+
+	forward_Query_AuthorizedAddress_0 = runtime.ForwardResponseMessage
+
 	forward_Query_AuthorizedAddressAll_0 = runtime.ForwardResponseMessage
-	forward_Query_GeneralKeyshare_0      = runtime.ForwardResponseMessage
-	forward_Query_GeneralKeyshareAll_0   = runtime.ForwardResponseMessage
+
+	forward_Query_GeneralKeyshare_0 = runtime.ForwardResponseMessage
+
+	forward_Query_GeneralKeyshareAll_0 = runtime.ForwardResponseMessage
+
 	forward_Query_VerifiableRandomness_0 = runtime.ForwardResponseMessage
 )

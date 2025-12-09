@@ -15,6 +15,4 @@ plugins:
     out: .
     opt:
       - logtostderr=true
-      - Mcosmos/app/v1alpha1/module.proto=cosmossdk.io/api/cosmos/app/v1alpha1
-      - Mfairyring/pep/module/module.proto=github.com/Fairblock/fairyring/x/pep/module
-      - Mfairyring/keyshare/module/module.proto=github.com/Fairblock/fairyring/x/keyshare/module
+      - allow_colon_final_segments=true
