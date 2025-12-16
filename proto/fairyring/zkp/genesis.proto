@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package fairyring.zkp;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/Fairblock/fairyring/x/zkp/types";
+
+// GenesisState defines the zkp module's genesis state.
+message GenesisState {
+  // this line is used by starport scaffolding # genesis/proto/state
+}
+

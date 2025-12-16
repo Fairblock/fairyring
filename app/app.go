@@ -12,6 +12,7 @@ import (
 	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
 	peptypes "github.com/Fairblock/fairyring/x/pep/types"
+	zkpmodulekeeper "github.com/Fairblock/fairyring/x/zkp/keeper"
 	"github.com/cosmos/ibc-go/modules/capability"
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
 	interchainaccountsmodule "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts"
@@ -172,6 +173,7 @@ type App struct {
 
 	PepKeeper      pepmodulekeeper.Keeper
 	KeyshareKeeper keysharemodulekeeper.Keeper
+	ZkpKeeper      *zkpmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// CosmWasm

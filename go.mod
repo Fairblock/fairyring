@@ -33,6 +33,7 @@ require (
 	github.com/FairBlock/DistributedIBE v0.0.0-20231211202607-d457df6869db
 	github.com/btcsuite/btcd v0.22.3
 	github.com/bufbuild/buf v1.30.0
+	github.com/bwesterb/go-ristretto v1.2.3
 	github.com/cometbft/cometbft v0.38.12
 	github.com/cosmos/cosmos-db v1.0.2
 	github.com/cosmos/cosmos-proto v1.0.0-beta.5
@@ -48,6 +49,7 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.1
+	github.com/gtank/merlin v0.1.1
 	github.com/hashicorp/go-metrics v0.5.3
 	github.com/skip-mev/block-sdk/v2 v2.1.5
 	github.com/spf13/cast v1.6.0
@@ -64,6 +66,7 @@ require (
 
 require (
 	github.com/cockroachdb/fifo v0.0.0-20240606204812-0bbfbd93a7ce // indirect
+	github.com/mimoo/StrobeGo v0.0.0-20181016162300-f8f6d4d2b643 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/regen-network/cosmos-proto v0.3.1 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect

@@ -1,0 +1,120 @@
+syntax = "proto3";
+
+package fairyring.zkp;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/Fairblock/fairyring/x/zkp/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // VerifyWithdrawRangeProof verifies a withdraw range proof (U64)
+  rpc VerifyWithdrawRangeProof(QueryVerifyWithdrawRangeProofRequest) returns (QueryVerifyWithdrawRangeProofResponse) {
+    option (google.api.http).post = "/fairyring/zkp/verify_withdraw_range_proof";
+    option (google.api.http).body = "*";
+  }
+
+  // VerifyTransferRangeProof verifies a transfer range proof (U128)
+  rpc VerifyTransferRangeProof(QueryVerifyTransferRangeProofRequest) returns (QueryVerifyTransferRangeProofResponse) {
+    option (google.api.http).post = "/fairyring/zkp/verify_transfer_range_proof";
+    option (google.api.http).body = "*";
+  }
+
+  // VerifyValidityProof verifies a validity proof for grouped ciphertexts
+  rpc VerifyValidityProof(QueryVerifyValidityProofRequest) returns (QueryVerifyValidityProofResponse) {
+    option (google.api.http).post = "/fairyring/zkp/verify_validity_proof";
+    option (google.api.http).body = "*";
+  }
+
+  // VerifyEqualityProof verifies an equality proof between ciphertext and commitment
+  rpc VerifyEqualityProof(QueryVerifyEqualityProofRequest) returns (QueryVerifyEqualityProofResponse) {
+    option (google.api.http).post = "/fairyring/zkp/verify_equality_proof";
+    option (google.api.http).body = "*";
+  }
+
+  // VerifyTransferProofs verifies all transfer proofs together (equality, range, validity)
+  rpc VerifyTransferProofs(QueryVerifyTransferProofsRequest) returns (QueryVerifyTransferProofsResponse) {
+    option (google.api.http).post = "/fairyring/zkp/verify_transfer_proofs";
+    option (google.api.http).body = "*";
+  }
+
+  // VerifyWithdrawProofs verifies all withdraw proofs together (equality, range)
+  rpc VerifyWithdrawProofs(QueryVerifyWithdrawProofsRequest) returns (QueryVerifyWithdrawProofsResponse) {
+    option (google.api.http).post = "/fairyring/zkp/verify_withdraw_proofs";
+    option (google.api.http).body = "*";
+  }
+}
+
+// QueryVerifyWithdrawRangeProofRequest is request type for the Query/VerifyWithdrawRangeProof RPC method.
+message QueryVerifyWithdrawRangeProofRequest {
+  bytes proof_data = 1; // Serialized BatchedRangeProofU64Data
+}
+
+// QueryVerifyWithdrawRangeProofResponse is response type for the Query/VerifyWithdrawRangeProof RPC method.
+message QueryVerifyWithdrawRangeProofResponse {
+  bool valid = 1;
+  string error = 2; // Empty if valid, error message if invalid
+}
+
+// QueryVerifyTransferRangeProofRequest is request type for the Query/VerifyTransferRangeProof RPC method.
+message QueryVerifyTransferRangeProofRequest {
+  bytes proof_data = 1; // Serialized BatchedRangeProofU128Data
+}
+
+// QueryVerifyTransferRangeProofResponse is response type for the Query/VerifyTransferRangeProof RPC method.
+message QueryVerifyTransferRangeProofResponse {
+  bool valid = 1;
+  string error = 2; // Empty if valid, error message if invalid
+}
+
+// QueryVerifyValidityProofRequest is request type for the Query/VerifyValidityProof RPC method.
+message QueryVerifyValidityProofRequest {
+  bytes proof_data = 1; // Serialized BatchedGroupedCiphertext2HandlesValidityProofData
+}
+
+// QueryVerifyValidityProofResponse is response type for the Query/VerifyValidityProof RPC method.
+message QueryVerifyValidityProofResponse {
+  bool valid = 1;
+  string error = 2; // Empty if valid, error message if invalid
+}
+
+// QueryVerifyEqualityProofRequest is request type for the Query/VerifyEqualityProof RPC method.
+message QueryVerifyEqualityProofRequest {
+  bytes proof_data = 1; // Serialized CiphertextCommitmentEqualityProofData
+}
+
+// QueryVerifyEqualityProofResponse is response type for the Query/VerifyEqualityProof RPC method.
+message QueryVerifyEqualityProofResponse {
+  bool valid = 1;
+  string error = 2; // Empty if valid, error message if invalid
+}
+
+// QueryVerifyTransferProofsRequest is request type for the Query/VerifyTransferProofs RPC method.
+// Contains all proofs needed for transfer verification: equality, range, and validity proofs
+message QueryVerifyTransferProofsRequest {
+  bytes equality_proof_data = 1; // Serialized CiphertextCommitmentEqualityProofData
+  bytes range_proof_data = 2; // Serialized BatchedRangeProofU128Data
+  bytes validity_proof_data = 3; // Serialized BatchedGroupedCiphertext2HandlesValidityProofData
+}
+
+// QueryVerifyTransferProofsResponse is response type for the Query/VerifyTransferProofs RPC method.
+message QueryVerifyTransferProofsResponse {
+  bool valid = 1;
+  string error = 2; // Empty if valid, error message if invalid
+}
+
+// QueryVerifyWithdrawProofsRequest is request type for the Query/VerifyWithdrawProofs RPC method.
+// Contains all proofs needed for withdraw verification: equality and range proofs
+message QueryVerifyWithdrawProofsRequest {
+  bytes equality_proof_data = 1; // Serialized CiphertextCommitmentEqualityProofData
+  bytes range_proof_data = 2; // Serialized BatchedRangeProofU64Data
+}
+
+// QueryVerifyWithdrawProofsResponse is response type for the Query/VerifyWithdrawProofs RPC method.
+message QueryVerifyWithdrawProofsResponse {
+  bool valid = 1;
+  string error = 2; // Empty if valid, error message if invalid
+}
+
