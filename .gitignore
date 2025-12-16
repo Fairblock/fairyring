@@ -1,3 +1,4 @@
+.devnet_deps/
 vue/
 vue/node_modules
 vue/dist

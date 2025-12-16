@@ -6,11 +6,16 @@ if [ -f "$HOME/go/bin/fairyringd" ]; then
 else
     BINARY=fairyringd
 fi
+# ───────────────────────── CONFIG ─────────────────────────
 CHAIN_DIR=$(pwd)/devnet_data
 CHAINID=fairyring_devnet
+
 FAIRYRINGCLIENT=fairyringclient
 SHAREGENERATIONCLIENT=ShareGenerationClient
 FAIRYPORT=fairyport
+
+# Where to clone/build deps if a binary is missing
+DEPS_DIR="$(pwd)/.devnet_deps"
 
 VAL_MNEMONIC_1="clock post desk civil pottery foster expand merit dash seminar song memory figure uniform spice circle try happy obvious trash crime hybrid hood cushion"
 
@@ -33,6 +38,21 @@ GRPCWEB=9091
 
 BLOCK_TIME=5
 
+# ───────────────────── Helper functions ────────────────────
+backup_if_exists() {
+  local f="$1"
+  if [ -f "$f" ]; then
+    cp "$f" "$f.backup.$(date +%s)"
+  fi
+}
+
+need_cmd() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "Missing required command: $1"
+    MISSING=1
+  fi
+}
+
 check_tx_code () {
   local TX_CODE=$(echo "$1" | jq -r '.code')
   if [ "$TX_CODE" != 0 ]; then
@@ -48,16 +68,141 @@ wait_for_tx () {
   echo "$RESULT"
 }
 
+# Ensure GOPATH/bin is in PATH so go-install'ed binaries are visible
+if command -v go >/dev/null 2>&1; then
+  export PATH="$PATH:$(go env GOPATH)/bin"
+fi
+
+# ─────────────── Pre-flight: basic prerequisites ───────────
+MISSING=0
+need_cmd git
+need_cmd go
+need_cmd jq
+need_cmd make
+if [ "$MISSING" -eq 1 ]; then
+  echo "Please install the missing prerequisites above and re-run."
+  exit 1
+fi
+
+mkdir -p "$DEPS_DIR"
+
+# ─────────────── Service installers & configurators ─────────
+ensure_sharegenerationclient() {
+  if ! command -v "$SHAREGENERATIONCLIENT" >/dev/null 2>&1; then
+    echo "Installing $SHAREGENERATIONCLIENT..."
+    local repo="$DEPS_DIR/ShareGenerationClient"
+    if [ ! -d "$repo" ]; then
+      git clone https://github.com/Fairblock/ShareGenerationClient "$repo"
+    fi
+    ( cd "$repo"
+      git fetch --tags
+      git checkout "0.2.0"
+      go mod tidy
+      go install
+    )
+  else
+    echo "$SHAREGENERATIONCLIENT found."
+  fi
+
+  # Config
+  local cfgdir="$HOME/.ShareGenerationClient"
+  local cfg="$cfgdir/config.yml"
+  mkdir -p "$cfgdir"
+  if [ ! -f "$cfg" ]; then
+    echo "Initializing $SHAREGENERATIONCLIENT config..."
+    $SHAREGENERATIONCLIENT config init
+  fi
+  # Overwrite with provided config
+  if [ ! -f "$(pwd)/scripts/devnet/sharegenerationclient_config.yml" ]; then
+    echo "ERROR: Missing devnet config file scripts/devnet/sharegenerationclient_config.yml"
+    exit 1
+  fi
+  backup_if_exists "$cfg"
+  cp -f "$(pwd)/scripts/devnet/sharegenerationclient_config.yml" "$cfg"
+  echo "$SHAREGENERATIONCLIENT config updated at $cfg"
+}
+
+ensure_fairyringclient() {
+  if ! command -v "$FAIRYRINGCLIENT" >/dev/null 2>&1; then
+    echo "Installing $FAIRYRINGCLIENT..."
+    local repo="$DEPS_DIR/fairyringclient"
+    if [ ! -d "$repo" ]; then
+      git clone https://github.com/Fairblock/fairyringclient "$repo"
+    fi
+    ( cd "$repo"
+      git fetch --tags
+      git checkout "v0.7.0"
+      go mod tidy
+      go install
+    )
+  else
+    echo "$FAIRYRINGCLIENT found."
+  fi
+
+  # Config
+  local cfgdir="$HOME/.fairyringclient"
+  local cfg="$cfgdir/config.yml"
+  mkdir -p "$cfgdir"
+  if [ ! -f "$cfg" ]; then
+    echo "Initializing $FAIRYRINGCLIENT config..."
+    $FAIRYRINGCLIENT config init
+  fi
+  if [ ! -f "$(pwd)/scripts/devnet/fairyringclient_config.yml" ]; then
+    echo "ERROR: Missing devnet config file scripts/devnet/fairyringclient_config.yml"
+    exit 1
+  fi
+  backup_if_exists "$cfg"
+  cp -f "$(pwd)/scripts/devnet/fairyringclient_config.yml" "$cfg"
+  echo "$FAIRYRINGCLIENT config updated at $cfg"
+}
+
+ensure_fairyport() {
+  if ! command -v "$FAIRYPORT" >/dev/null 2>&1; then
+    echo "Installing $FAIRYPORT..."
+    local repo="$DEPS_DIR/fairyport"
+    if [ ! -d "$repo" ]; then
+      git clone https://github.com/Fairblock/fairyport "$repo"
+    fi
+    ( cd "$repo"
+      make install
+    )
+  else
+    echo "$FAIRYPORT found."
+  fi
+
+  # Config
+  local cfgdir="$HOME/.fairyport"
+  local cfg="$cfgdir/config.yml"
+  mkdir -p "$cfgdir"
+  if [ ! -f "$cfg" ]; then
+    echo "Initializing $FAIRYPORT config..."
+    $FAIRYPORT init
+  fi
+  if [ ! -f "$(pwd)/scripts/devnet/config.yml" ]; then
+    echo "ERROR: Missing devnet config file scripts/devnet/config.yml (for fairyport)"
+    exit 1
+  fi
+  backup_if_exists "$cfg"
+  cp -f "$(pwd)/scripts/devnet/config.yml" "$cfg"
+  echo "$FAIRYPORT config updated at $cfg"
+}
+
+# ─────────────── Install & configure services FIRST ─────────
+ensure_sharegenerationclient
+ensure_fairyringclient
+ensure_fairyport
+
+# ─────────────── Now proceed with your original flow ────────
 
 # Stop if it is already running
 if pgrep -x "$BINARY" >/dev/null; then
-    echo "Terminating $BINARY..."
-    killall $BINARY
+  echo "Terminating $BINARY..."
+  killall "$BINARY"
 fi
 
 if pgrep -x "hermes" >/dev/null; then
-    echo "Terminating Hermes Relayer..."
-    killall hermes
+  echo "Terminating Hermes Relayer..."
+  killall hermes
 fi
 
 echo "Removing previous data..."
@@ -68,26 +213,6 @@ if ! mkdir -p $CHAIN_DIR/$CHAINID 2>/dev/null; then
     echo "Failed to create chain folder. Aborting..."
     exit 1
 fi
-
-if ! command -v fairyringclient 2>&1 >/dev/null
-then
-    echo "fairyringclient could not be found. Aborting..."
-    exit 1
-fi
-
-if [ ! -f "$HOME/.fairyringclient/config.yml" ]; then
-    fairyringclient config init
-fi
-
-cp "$HOME/.fairyringclient/config.yml" "$HOME/.fairyringclient/config.yml.backup"
-cp ./scripts/devnet/fairyringclient_config.yml "$HOME/.fairyringclient/config.yml"
-
-if [ ! -f "$HOME/.ShareGenerationClient/config.yml" ]; then
-    ShareGenerationClient config init
-fi
-
-cp "$HOME/.ShareGenerationClient/config.yml" "$HOME/.ShareGenerationClient/config.yml.backup"
-cp ./scripts/devnet/sharegenerationclient_config.yml "$HOME/.ShareGenerationClient/config.yml"
 
 echo "Initializing $CHAINID ..."
 $BINARY init devnet --home $CHAIN_DIR/$CHAINID --default-denom ufairy --chain-id=$CHAINID &> /dev/null
@@ -113,7 +238,7 @@ WALLET6_ADDR=$($BINARY keys show wallet6 --home $CHAIN_DIR/$CHAINID -a --keyring
 RLY1_ADDR=$($BINARY keys show rly1 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
 
 $BINARY genesis add-genesis-account $VAL1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
+$BINARY genesis add-genesis-account $WALLET1_ADDR 10000000000000000ufairy,1000000000000fusdc --home $CHAIN_DIR/$CHAINID --keyring-backend test
 $BINARY genesis add-genesis-account $WALLET2_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
 $BINARY genesis add-genesis-account $WALLET3_ADDR 1000000000000ufairy --vesting-amount 1000000000000ufairy --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
 $BINARY genesis add-genesis-account $WALLET4_ADDR 1000000000000ufairy --vesting-amount 1000000000000ufairy --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
@@ -241,7 +366,7 @@ sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'","
 TRUSTED_PARTIES='{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-0"}'
 
 sed -i -e 's/"trusted_counter_parties": \[\]/"trusted_counter_parties": \['"$TRUSTED_PARTIES"'\]/g' $CHAIN_DIR/$CHAINID/config/genesis.json
-sed -i -e 's/"key_expiry": "100"/"key_expiry": "50"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+sed -i -e 's/"key_expiry": "100"/"key_expiry": "1000000"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 sed -i -e 's/"is_source_chain": false/"is_source_chain": true/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 
 echo "Starting $CHAINID in $CHAIN_DIR..."
