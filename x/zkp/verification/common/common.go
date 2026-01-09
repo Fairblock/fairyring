@@ -185,10 +185,19 @@ func CanonicalScalarFromSlice(slice []byte) (Scalar, error) {
 	if len(slice) != 32 {
 		return Scalar{}, ErrDeserialization
 	}
-	var buf32 [32]byte
-	copy(buf32[:], slice)
+	var in [32]byte
+	copy(in[:], slice)
+
 	var s Scalar
-	s.SetBytes(&buf32)
+	s.SetBytes(&in)
+
+	// Enforce canonical encoding: serialization must match input bytes
+	var out [32]byte
+	s.BytesInto(&out)
+	if out != in {
+		return Scalar{}, ErrDeserialization
+	}
+
 	return s, nil
 }
 

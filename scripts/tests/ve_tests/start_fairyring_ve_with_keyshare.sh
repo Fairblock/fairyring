@@ -407,6 +407,7 @@ main() {
   grep -E 'KeyshareVE/' -n "${HOME_DIR}/logs/node.log" | tail -n 200
 
   echo ">> Test complete; shutting down node."
+  kill_existing
 }
 
 main "$@"

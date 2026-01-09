@@ -287,6 +287,9 @@ func (ipp *InnerProductProof) verificationScalars(
 ) ([]Scalar, []Scalar, []Scalar, error) {
 
 	lgN := len(ipp.LVec)
+	if len(ipp.RVec) != lgN {
+		return nil, nil, nil, RangeErrVectorLengthMismatch
+	}
 	if lgN == 0 || lgN >= 32 {
 		return nil, nil, nil, RangeErrInvalidBitSize
 	}
@@ -344,6 +347,24 @@ func (ipp *InnerProductProof) verificationScalars(
 	return chSq, chInvSq, s, nil
 }
 
+func canonicalScalarFrom32(b []byte) (Scalar, error) {
+	if len(b) != 32 {
+		return Scalar{}, RangeErrDeserialization
+	}
+	var in [32]byte
+	copy(in[:], b)
+
+	var s Scalar
+	s.SetBytes(&in)
+
+	var out [32]byte
+	s.BytesInto(&out)
+	if out != in {
+		return Scalar{}, RangeErrDeserialization
+	}
+	return s, nil
+}
+
 func InnerProductProofFromBytes(buf []byte) (InnerProductProof, error) {
 	if len(buf)%32 != 0 {
 		return InnerProductProof{}, RangeErrDeserialization
@@ -373,13 +394,14 @@ func InnerProductProofFromBytes(buf []byte) (InnerProductProof, error) {
 	}
 
 	pos := 2 * lgN * 32
-	var aBytes, bBytes [32]byte
-	copy(aBytes[:], buf[pos:pos+32])
-	copy(bBytes[:], buf[pos+32:pos+64])
-
-	var a, b Scalar
-	a.SetBytes(&aBytes)
-	b.SetBytes(&bBytes)
+	a, err := canonicalScalarFrom32(buf[pos : pos+32])
+	if err != nil {
+		return InnerProductProof{}, err
+	}
+	b, err := canonicalScalarFrom32(buf[pos+32 : pos+64])
+	if err != nil {
+		return InnerProductProof{}, err
+	}
 
 	return InnerProductProof{
 		LVec: LVec,
@@ -411,15 +433,18 @@ func RangeProofFromBytes(buf []byte) (RangeProof, error) {
 	copy(T1[:], buf[64:96])
 	copy(T2[:], buf[96:128])
 
-	var txBytes, txBlindBytes, eBlindBytes [32]byte
-	copy(txBytes[:], buf[128:160])
-	copy(txBlindBytes[:], buf[160:192])
-	copy(eBlindBytes[:], buf[192:224])
-
-	var tx, txBlind, eBlind Scalar
-	tx.SetBytes(&txBytes)
-	txBlind.SetBytes(&txBlindBytes)
-	eBlind.SetBytes(&eBlindBytes)
+	tx, err := canonicalScalarFrom32(buf[128:160])
+	if err != nil {
+		return RangeProof{}, err
+	}
+	txBlind, err := canonicalScalarFrom32(buf[160:192])
+	if err != nil {
+		return RangeProof{}, err
+	}
+	eBlind, err := canonicalScalarFrom32(buf[192:224])
+	if err != nil {
+		return RangeProof{}, err
+	}
 
 	ipp, err := InnerProductProofFromBytes(buf[7*32:])
 	if err != nil {
@@ -464,9 +489,7 @@ func (rp *RangeProof) Verify(
 		if err != nil {
 			return RangeErrMaximumGeneratorLengthExceeded
 		}
-		if err := bpGens.increaseCapacity(nm); err != nil {
-			return RangeErrMaximumGeneratorLengthExceeded
-		}
+		// REMOVE increaseCapacity(nm) here; it's already at maxProofBits
 	} else {
 		bpGens, err = NewRangeProofGens(nm)
 		if err != nil {
@@ -760,24 +783,54 @@ func rangeProofDelta(bitLengths []int, y, z *Scalar) Scalar {
 	return agg
 }
 
-func VerifyWithdrawRange(pd *BatchedRangeProofU64Data) error {
-	commitments := make([]PedersenCommitment, 0, len(pd.Context.Commitments))
-	for _, c := range pd.Context.Commitments {
+func collectRangeCtx(ctx *BatchedRangeProofContext, maxBL uint8) ([]PedersenCommitment, []int, ProofError) {
+	zero := PodPedersenCommitment{} // all-zero bytes
+	seenZero := false
+
+	comms := make([]PedersenCommitment, 0, 8)
+	bits := make([]int, 0, 8)
+
+	for i := 0; i < 8; i++ {
+		c := ctx.Commitments[i]
+		bl := ctx.BitLengths[i]
+
+		if c == zero {
+			seenZero = true
+			if bl != 0 {
+				return nil, nil, ProofErrAlgebraic // padding must have bl == 0
+			}
+			continue
+		}
+
+		// non-zero commitment
+		if seenZero {
+			return nil, nil, ProofErrAlgebraic // no holes: non-zero after padding starts
+		}
+
+		
+		if bl == 0 || bl > maxBL {
+			return nil, nil, ProofErrAlgebraic
+		}
+
 		pc, err := PedersenCommitmentFromPod(c)
 		if err != nil {
-			return ProofErrDeserialization
+			return nil, nil, ProofErrDeserialization
 		}
-		commitments = append(commitments, pc)
+
+		comms = append(comms, pc)
+		bits = append(bits, int(bl))
 	}
 
-	bitLengths := make([]int, len(pd.Context.BitLengths))
-	for i, b := range pd.Context.BitLengths {
-		bitLengths[i] = int(b)
+	if len(comms) == 0 || len(comms) > 8 {
+		return nil, nil, ProofErrAlgebraic
 	}
+	return comms, bits, 0
+}
 
-	n := len(commitments)
-	if n == 0 || n > 8 || n != len(bitLengths) {
-		return ProofErrAlgebraic
+func VerifyWithdrawRange(pd *BatchedRangeProofU64Data) error {
+	commitments, bitLengths, perr := collectRangeCtx(&pd.Context, 64)
+	if perr != 0 {
+		return perr
 	}
 
 	t := newTranscriptRange(&pd.Context)
@@ -787,7 +840,7 @@ func VerifyWithdrawRange(pd *BatchedRangeProofU64Data) error {
 		return ProofErrDeserialization
 	}
 
-	commRefs := make([]*PedersenCommitment, n)
+	commRefs := make([]*PedersenCommitment, len(commitments))
 	for i := range commitments {
 		commRefs[i] = &commitments[i]
 	}
@@ -799,23 +852,9 @@ func VerifyWithdrawRange(pd *BatchedRangeProofU64Data) error {
 }
 
 func VerifyTransferRange(pd *BatchedRangeProofU128Data) error {
-	commitments := make([]PedersenCommitment, 0, len(pd.Context.Commitments))
-	for _, c := range pd.Context.Commitments {
-		pc, err := PedersenCommitmentFromPod(c)
-		if err != nil {
-			return ProofErrDeserialization
-		}
-		commitments = append(commitments, pc)
-	}
-
-	bitLengths := make([]int, len(pd.Context.BitLengths))
-	for i, b := range pd.Context.BitLengths {
-		bitLengths[i] = int(b)
-	}
-
-	n := len(commitments)
-	if n == 0 || n > 8 || n != len(bitLengths) {
-		return ProofErrAlgebraic
+	commitments, bitLengths, perr := collectRangeCtx(&pd.Context, 64)
+	if perr != 0 {
+		return perr
 	}
 
 	t := newTranscriptRange(&pd.Context)
@@ -825,7 +864,7 @@ func VerifyTransferRange(pd *BatchedRangeProofU128Data) error {
 		return ProofErrDeserialization
 	}
 
-	commRefs := make([]*PedersenCommitment, n)
+	commRefs := make([]*PedersenCommitment, len(commitments))
 	for i := range commitments {
 		commRefs[i] = &commitments[i]
 	}
