@@ -14,6 +14,12 @@ FAIRYRINGCLIENT=fairyringclient
 SHAREGENERATIONCLIENT=ShareGenerationClient
 FAIRYPORT=fairyport
 
+# Vote Extensions (required for VE-based keyshare submissions)
+VE_ENABLE_HEIGHT="${VE_ENABLE_HEIGHT:-30}"  # enable vote extensions at this height
+KEYSHARER_INVALID_SHARE_PAUSE_THRESHOLD="${KEYSHARER_INVALID_SHARE_PAUSE_THRESHOLD:-3}"
+# Optional override; if empty we'll derive from val1 key (recommended)
+APP_PRIV_HEX="${APP_PRIV_HEX:-}"
+
 # Where to clone/build deps if a binary is missing
 DEPS_DIR="$(pwd)/.devnet_deps"
 
@@ -338,7 +344,13 @@ sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_
 # Use jq to properly modify JSON instead of sed to avoid syntax errors
 if command -v jq &> /dev/null; then
     # Use jq to safely update max_tx_bytes in both block and evidence sections
-    jq '.consensus.params.block.max_tx_bytes = "52428800" | .consensus.params.evidence.max_tx_bytes = "52428800"' $CHAIN_DIR/$CHAINID/config/genesis.json > $CHAIN_DIR/$CHAINID/config/genesis.json.tmp && mv $CHAIN_DIR/$CHAINID/config/genesis.json.tmp $CHAIN_DIR/$CHAINID/config/genesis.json
+    # ALSO enable vote extensions (required for VE keyshare submissions)
+    jq --arg veh "$VE_ENABLE_HEIGHT" '
+      .consensus.params.abci |= (.consensus.params.abci // {}) |
+      .consensus.params.abci.vote_extensions_enable_height = $veh |
+      .consensus.params.block.max_tx_bytes = "52428800" |
+      .consensus.params.evidence.max_tx_bytes = "52428800"
+    ' $CHAIN_DIR/$CHAINID/config/genesis.json > $CHAIN_DIR/$CHAINID/config/genesis.json.tmp && mv $CHAIN_DIR/$CHAINID/config/genesis.json.tmp $CHAIN_DIR/$CHAINID/config/genesis.json
 else
     # Fallback to sed if jq is not available - be more careful with JSON syntax
     if grep -q '"max_tx_bytes"' $CHAIN_DIR/$CHAINID/config/genesis.json; then
@@ -368,6 +380,25 @@ TRUSTED_PARTIES='{"client_id": "07-tendermint-0", "connection_id": "connection-0
 sed -i -e 's/"trusted_counter_parties": \[\]/"trusted_counter_parties": \['"$TRUSTED_PARTIES"'\]/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 sed -i -e 's/"key_expiry": "100"/"key_expiry": "1000000"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 sed -i -e 's/"is_source_chain": false/"is_source_chain": true/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+
+# ─────────────── Vote Extensions: keysharer.yaml ───────────────
+# Needed so the validator can attach VE payloads (keyshares) during consensus.
+# If APP_PRIV_HEX env var isn't set, derive it from the val1 key in the local keyring.
+if [ -z "$APP_PRIV_HEX" ]; then
+  APP_PRIV_HEX=$(echo y | $BINARY keys export val1 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test 2>/dev/null | tail -n 1 | tr -d '\r\n')
+fi
+
+if [ -z "$APP_PRIV_HEX" ]; then
+  echo "WARN: APP_PRIV_HEX could not be derived; VE keyshare submission may be disabled."
+fi
+
+cat > $CHAIN_DIR/$CHAINID/keysharer.yaml <<EOF
+enabled: true
+validator_account: "$VAL1_ADDR"
+app_secp256k1_priv_hex: "$APP_PRIV_HEX"
+invalid_share_pause_threshold: $KEYSHARER_INVALID_SHARE_PAUSE_THRESHOLD
+EOF
+cp -f $CHAIN_DIR/$CHAINID/keysharer.yaml $CHAIN_DIR/$CHAINID/config/keysharer.yaml
 
 echo "Starting $CHAINID in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID.log"
