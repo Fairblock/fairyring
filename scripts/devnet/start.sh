@@ -1,11 +1,27 @@
 #!/bin/bash
 
-BINARY=fairyringd
+# Use the newly built binary from $HOME/go/bin if available, otherwise fall back to system binary
+if [ -f "$HOME/go/bin/fairyringd" ]; then
+    BINARY="$HOME/go/bin/fairyringd"
+else
+    BINARY=fairyringd
+fi
+# ───────────────────────── CONFIG ─────────────────────────
 CHAIN_DIR=$(pwd)/devnet_data
 CHAINID=fairyring_devnet
+
 FAIRYRINGCLIENT=fairyringclient
 SHAREGENERATIONCLIENT=ShareGenerationClient
 FAIRYPORT=fairyport
+
+# Vote Extensions (required for VE-based keyshare submissions)
+VE_ENABLE_HEIGHT="${VE_ENABLE_HEIGHT:-30}"  # enable vote extensions at this height
+KEYSHARER_INVALID_SHARE_PAUSE_THRESHOLD="${KEYSHARER_INVALID_SHARE_PAUSE_THRESHOLD:-3}"
+# Optional override; if empty we'll derive from val1 key (recommended)
+APP_PRIV_HEX="${APP_PRIV_HEX:-}"
+
+# Where to clone/build deps if a binary is missing
+DEPS_DIR="$(pwd)/.devnet_deps"
 
 VAL_MNEMONIC_1="clock post desk civil pottery foster expand merit dash seminar song memory figure uniform spice circle try happy obvious trash crime hybrid hood cushion"
 
@@ -14,6 +30,7 @@ WALLET_MNEMONIC_2="veteran try aware erosion drink dance decade comic dawn museu
 WALLET_MNEMONIC_3="vacuum burst ordinary enact leaf rabbit gather lend left chase park action dish danger green jeans lucky dish mesh language collect acquire waste load"
 WALLET_MNEMONIC_4="open attitude harsh casino rent attitude midnight debris describe spare cancel crisp olive ride elite gallery leaf buffalo sheriff filter rotate path begin soldier"
 WALLET_MNEMONIC_5="sleep garage unaware monster slide cruel barely blade sudden basic review mimic screen box human wing ritual use smooth ripple tuna ostrich pony eye"
+WALLET_MNEMONIC_6="polar account muffin credit dice holiday honey diesel faculty maze senior curve clap hard similar club evolve wolf stable hedgehog secret used rebuild help"
 
 RLY_MNEMONIC_1="alley afraid soup fall idea toss can goose become valve initial strong forward bright dish figure check leopard decide warfare hub unusual join cart"
 
@@ -26,6 +43,21 @@ GRPCPORT=9090
 GRPCWEB=9091
 
 BLOCK_TIME=5
+
+# ───────────────────── Helper functions ────────────────────
+backup_if_exists() {
+  local f="$1"
+  if [ -f "$f" ]; then
+    cp "$f" "$f.backup.$(date +%s)"
+  fi
+}
+
+need_cmd() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "Missing required command: $1"
+    MISSING=1
+  fi
+}
 
 check_tx_code () {
   local TX_CODE=$(echo "$1" | jq -r '.code')
@@ -42,16 +74,141 @@ wait_for_tx () {
   echo "$RESULT"
 }
 
+# Ensure GOPATH/bin is in PATH so go-install'ed binaries are visible
+if command -v go >/dev/null 2>&1; then
+  export PATH="$PATH:$(go env GOPATH)/bin"
+fi
+
+# ─────────────── Pre-flight: basic prerequisites ───────────
+MISSING=0
+need_cmd git
+need_cmd go
+need_cmd jq
+need_cmd make
+if [ "$MISSING" -eq 1 ]; then
+  echo "Please install the missing prerequisites above and re-run."
+  exit 1
+fi
+
+mkdir -p "$DEPS_DIR"
+
+# ─────────────── Service installers & configurators ─────────
+ensure_sharegenerationclient() {
+  if ! command -v "$SHAREGENERATIONCLIENT" >/dev/null 2>&1; then
+    echo "Installing $SHAREGENERATIONCLIENT..."
+    local repo="$DEPS_DIR/ShareGenerationClient"
+    if [ ! -d "$repo" ]; then
+      git clone https://github.com/Fairblock/ShareGenerationClient "$repo"
+    fi
+    ( cd "$repo"
+      git fetch --tags
+      git checkout "0.2.0"
+      go mod tidy
+      go install
+    )
+  else
+    echo "$SHAREGENERATIONCLIENT found."
+  fi
+
+  # Config
+  local cfgdir="$HOME/.ShareGenerationClient"
+  local cfg="$cfgdir/config.yml"
+  mkdir -p "$cfgdir"
+  if [ ! -f "$cfg" ]; then
+    echo "Initializing $SHAREGENERATIONCLIENT config..."
+    $SHAREGENERATIONCLIENT config init
+  fi
+  # Overwrite with provided config
+  if [ ! -f "$(pwd)/scripts/devnet/sharegenerationclient_config.yml" ]; then
+    echo "ERROR: Missing devnet config file scripts/devnet/sharegenerationclient_config.yml"
+    exit 1
+  fi
+  backup_if_exists "$cfg"
+  cp -f "$(pwd)/scripts/devnet/sharegenerationclient_config.yml" "$cfg"
+  echo "$SHAREGENERATIONCLIENT config updated at $cfg"
+}
+
+ensure_fairyringclient() {
+  if ! command -v "$FAIRYRINGCLIENT" >/dev/null 2>&1; then
+    echo "Installing $FAIRYRINGCLIENT..."
+    local repo="$DEPS_DIR/fairyringclient"
+    if [ ! -d "$repo" ]; then
+      git clone https://github.com/Fairblock/fairyringclient "$repo"
+    fi
+    ( cd "$repo"
+      git fetch --tags
+      git checkout "v0.7.0"
+      go mod tidy
+      go install
+    )
+  else
+    echo "$FAIRYRINGCLIENT found."
+  fi
+
+  # Config
+  local cfgdir="$HOME/.fairyringclient"
+  local cfg="$cfgdir/config.yml"
+  mkdir -p "$cfgdir"
+  if [ ! -f "$cfg" ]; then
+    echo "Initializing $FAIRYRINGCLIENT config..."
+    $FAIRYRINGCLIENT config init
+  fi
+  if [ ! -f "$(pwd)/scripts/devnet/fairyringclient_config.yml" ]; then
+    echo "ERROR: Missing devnet config file scripts/devnet/fairyringclient_config.yml"
+    exit 1
+  fi
+  backup_if_exists "$cfg"
+  cp -f "$(pwd)/scripts/devnet/fairyringclient_config.yml" "$cfg"
+  echo "$FAIRYRINGCLIENT config updated at $cfg"
+}
+
+ensure_fairyport() {
+  if ! command -v "$FAIRYPORT" >/dev/null 2>&1; then
+    echo "Installing $FAIRYPORT..."
+    local repo="$DEPS_DIR/fairyport"
+    if [ ! -d "$repo" ]; then
+      git clone https://github.com/Fairblock/fairyport "$repo"
+    fi
+    ( cd "$repo"
+      make install
+    )
+  else
+    echo "$FAIRYPORT found."
+  fi
+
+  # Config
+  local cfgdir="$HOME/.fairyport"
+  local cfg="$cfgdir/config.yml"
+  mkdir -p "$cfgdir"
+  if [ ! -f "$cfg" ]; then
+    echo "Initializing $FAIRYPORT config..."
+    $FAIRYPORT init
+  fi
+  if [ ! -f "$(pwd)/scripts/devnet/config.yml" ]; then
+    echo "ERROR: Missing devnet config file scripts/devnet/config.yml (for fairyport)"
+    exit 1
+  fi
+  backup_if_exists "$cfg"
+  cp -f "$(pwd)/scripts/devnet/config.yml" "$cfg"
+  echo "$FAIRYPORT config updated at $cfg"
+}
+
+# ─────────────── Install & configure services FIRST ─────────
+ensure_sharegenerationclient
+ensure_fairyringclient
+ensure_fairyport
+
+# ─────────────── Now proceed with your original flow ────────
 
 # Stop if it is already running
 if pgrep -x "$BINARY" >/dev/null; then
-    echo "Terminating $BINARY..."
-    killall $BINARY
+  echo "Terminating $BINARY..."
+  killall "$BINARY"
 fi
 
 if pgrep -x "hermes" >/dev/null; then
-    echo "Terminating Hermes Relayer..."
-    killall hermes
+  echo "Terminating Hermes Relayer..."
+  killall hermes
 fi
 
 echo "Removing previous data..."
@@ -63,26 +220,6 @@ if ! mkdir -p $CHAIN_DIR/$CHAINID 2>/dev/null; then
     exit 1
 fi
 
-if ! command -v fairyringclient 2>&1 >/dev/null
-then
-    echo "fairyringclient could not be found. Aborting..."
-    exit 1
-fi
-
-if [ ! -f "$HOME/.fairyringclient/config.yml" ]; then
-    fairyringclient config init
-fi
-
-cp "$HOME/.fairyringclient/config.yml" "$HOME/.fairyringclient/config.yml.backup"
-cp ./scripts/devnet/fairyringclient_config.yml "$HOME/.fairyringclient/config.yml"
-
-if [ ! -f "$HOME/.ShareGenerationClient/config.yml" ]; then
-    ShareGenerationClient config init
-fi
-
-cp "$HOME/.ShareGenerationClient/config.yml" "$HOME/.ShareGenerationClient/config.yml.backup"
-cp ./scripts/devnet/sharegenerationclient_config.yml "$HOME/.ShareGenerationClient/config.yml"
-
 echo "Initializing $CHAINID ..."
 $BINARY init devnet --home $CHAIN_DIR/$CHAINID --default-denom ufairy --chain-id=$CHAINID &> /dev/null
 
@@ -93,6 +230,7 @@ echo $WALLET_MNEMONIC_2 | $BINARY keys add wallet2 --home $CHAIN_DIR/$CHAINID --
 echo $WALLET_MNEMONIC_3 | $BINARY keys add wallet3 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
 echo $WALLET_MNEMONIC_4 | $BINARY keys add wallet4 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
 echo $WALLET_MNEMONIC_5 | $BINARY keys add wallet5 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
+echo $WALLET_MNEMONIC_6 | $BINARY keys add wallet6 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
 RLY1_JSON=$(echo $RLY_MNEMONIC_1 | $BINARY keys add rly1 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test --output json)
 echo $RLY1_JSON | jq --arg mnemonic "$RLY_MNEMONIC_1" '. += $ARGS.named'> rly1.json
 
@@ -102,14 +240,16 @@ WALLET2_ADDR=$($BINARY keys show wallet2 --home $CHAIN_DIR/$CHAINID -a --keyring
 WALLET3_ADDR=$($BINARY keys show wallet3 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
 WALLET4_ADDR=$($BINARY keys show wallet4 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
 WALLET5_ADDR=$($BINARY keys show wallet5 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
+WALLET6_ADDR=$($BINARY keys show wallet6 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
 RLY1_ADDR=$($BINARY keys show rly1 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
 
 $BINARY genesis add-genesis-account $VAL1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
+$BINARY genesis add-genesis-account $WALLET1_ADDR 10000000000000000ufairy,1000000000000fusdc --home $CHAIN_DIR/$CHAINID --keyring-backend test
 $BINARY genesis add-genesis-account $WALLET2_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
 $BINARY genesis add-genesis-account $WALLET3_ADDR 1000000000000ufairy --vesting-amount 1000000000000ufairy --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
 $BINARY genesis add-genesis-account $WALLET4_ADDR 1000000000000ufairy --vesting-amount 1000000000000ufairy --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
 $BINARY genesis add-genesis-account $WALLET5_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
+$BINARY genesis add-genesis-account $WALLET6_ADDR 100000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
 $BINARY genesis add-genesis-account $RLY1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
 
 echo "Creating and collecting gentx..."
@@ -124,6 +264,22 @@ sed -i -e 's/timeout_commit = "5s"/timeout_commit = "5s"/g' $CHAIN_DIR/$CHAINID/
 sed -i -e 's/timeout_propose = "3s"/timeout_propose = "5s"/g' $CHAIN_DIR/$CHAINID/config/config.toml
 sed -i -e 's/index_all_keys = false/index_all_keys = true/g' $CHAIN_DIR/$CHAINID/config/config.toml
 
+# Increase RPC max request body size to allow large transactions (e.g., 500 transfers with proofs)
+# Default is usually 1MB, increase to 50MB to handle large batch transactions
+if ! grep -q "max_body_bytes" $CHAIN_DIR/$CHAINID/config/config.toml; then
+    # Add max_body_bytes setting to [rpc] section if it doesn't exist
+    sed -i '/\[rpc\]/a max_body_bytes = 52428800' $CHAIN_DIR/$CHAINID/config/config.toml
+else
+    # Update existing max_body_bytes setting
+    sed -i -e 's/^max_body_bytes = .*/max_body_bytes = 52428800/g' $CHAIN_DIR/$CHAINID/config/config.toml
+fi
+
+# Increase CometBFT mempool tx size limit (network-level) to match app and genesis limits
+# Default max_tx_bytes here is usually 1MB; bump to 50MB so large txs pass CheckTx
+if grep -q "^max_tx_bytes" $CHAIN_DIR/$CHAINID/config/config.toml; then
+    sed -i -e 's/^max_tx_bytes = .*/max_tx_bytes = 52428800/g' $CHAIN_DIR/$CHAINID/config/config.toml
+fi
+
 sed -i -e 's/cors = false/cors = true/g' $CHAIN_DIR/$CHAINID/config/app.toml
 sed -i -e 's/enable = false/enable = true/g' $CHAIN_DIR/$CHAINID/config/app.toml
 sed -i -e 's/swagger = false/swagger = true/g' $CHAIN_DIR/$CHAINID/config/app.toml
@@ -131,18 +287,118 @@ sed -i -e 's#"tcp://localhost:1317"#"tcp://localhost:'"$RESTPORT"'"#g' $CHAIN_DI
 sed -i -e 's#":8080"#":'"$ROSETTA"'"#g' $CHAIN_DIR/$CHAINID/config/app.toml
 sed -i -e 's/minimum-gas-prices = ""/minimum-gas-prices = "0ufairy"/g' $CHAIN_DIR/$CHAINID/config/app.toml
 
+# Increase transaction size limits to allow large batch transactions with proofs
+# Default max_tx_bytes is usually 1MB, increase to 50MB
+# First ensure [mempool] section exists
+if ! grep -q "^\[mempool\]" $CHAIN_DIR/$CHAINID/config/app.toml; then
+    echo "" >> $CHAIN_DIR/$CHAINID/config/app.toml
+    echo "[mempool]" >> $CHAIN_DIR/$CHAINID/config/app.toml
+fi
+
+if ! grep -q "^max_tx_bytes" $CHAIN_DIR/$CHAINID/config/app.toml; then
+    # Add max_tx_bytes setting after [mempool] section
+    sed -i '/^\[mempool\]/a max_tx_bytes = 52428800' $CHAIN_DIR/$CHAINID/config/app.toml
+else
+    # Update existing max_tx_bytes setting
+    sed -i -e 's/^max_tx_bytes = .*/max_tx_bytes = 52428800/g' $CHAIN_DIR/$CHAINID/config/app.toml
+fi
+
+# Ensure wasm section exists and enable Stargate queries for CosmWasm contracts
+cat >> $CHAIN_DIR/$CHAINID/config/app.toml << 'EOF'
+
+###############################################################################
+###                           WASM Configuration                            ###
+###############################################################################
+
+[wasm]
+# Maximum gas that can be consumed by a single smart contract query (0 = no limit).
+query_gas_limit = 3000000
+
+# Number of cached modules in wasm VM. 0 = use default.
+lru_size = 0
+
+# Capabilities the node is willing to support. Must include "stargate" to allow
+# contracts to perform Stargate / gRPC queries into SDK modules.
+available_capabilities = [
+  "iterator",
+  "staking",
+  "stargate",
+  "cosmwasm_1_1",
+  "cosmwasm_1_2",
+  "cosmwasm_1_3",
+  "cosmwasm_1_4",
+  "cosmwasm_2_0",
+]
+
+EOF
+
 
 echo "Changing genesis.json..."
 sed -i -e 's/"max_deposit_period": "172800s"/"max_deposit_period": "10s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 sed -i -e 's/"voting_period": "172800s"/"voting_period": "10s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 
+# Increase max_tx_bytes in genesis.json to allow large transactions
+# Default is usually 1MB (1048576), increase to 50MB (52428800)
+# This is the most important setting as it's enforced at consensus level
+# Use jq to properly modify JSON instead of sed to avoid syntax errors
+if command -v jq &> /dev/null; then
+    # Use jq to safely update max_tx_bytes in both block and evidence sections
+    # ALSO enable vote extensions (required for VE keyshare submissions)
+    jq --arg veh "$VE_ENABLE_HEIGHT" '
+      .consensus.params.abci |= (.consensus.params.abci // {}) |
+      .consensus.params.abci.vote_extensions_enable_height = $veh |
+      .consensus.params.block.max_tx_bytes = "52428800" |
+      .consensus.params.evidence.max_tx_bytes = "52428800"
+    ' $CHAIN_DIR/$CHAINID/config/genesis.json > $CHAIN_DIR/$CHAINID/config/genesis.json.tmp && mv $CHAIN_DIR/$CHAINID/config/genesis.json.tmp $CHAIN_DIR/$CHAINID/config/genesis.json
+else
+    # Fallback to sed if jq is not available - be more careful with JSON syntax
+    if grep -q '"max_tx_bytes"' $CHAIN_DIR/$CHAINID/config/genesis.json; then
+        # Update existing max_tx_bytes (handle both quoted and unquoted numbers)
+        sed -i -e 's/"max_tx_bytes": *"[0-9]*"/"max_tx_bytes": "52428800"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+        sed -i -e 's/"max_tx_bytes": *[0-9]*/"max_tx_bytes": "52428800"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+    else
+        # Add max_tx_bytes after max_bytes, ensuring proper comma placement
+        # For block section
+        sed -i '/"block": {/,/"max_bytes":/ {
+            /"max_bytes":/ {
+                s/"max_bytes": "\([^"]*\)"/"max_bytes": "\1",\n        "max_tx_bytes": "52428800"/
+            }
+        }' $CHAIN_DIR/$CHAINID/config/genesis.json
+        # For evidence section  
+        sed -i '/"evidence": {/,/"max_bytes":/ {
+            /"max_bytes":/ {
+                s/"max_bytes": "\([^"]*\)"/"max_bytes": "\1",\n        "max_tx_bytes": "52428800"/
+            }
+        }' $CHAIN_DIR/$CHAINID/config/genesis.json
+    fi
+fi
+
 sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'","'"$RLY1_ADDR"'","'"$WALLET5_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 TRUSTED_PARTIES='{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-0"}'
 
 sed -i -e 's/"trusted_counter_parties": \[\]/"trusted_counter_parties": \['"$TRUSTED_PARTIES"'\]/g' $CHAIN_DIR/$CHAINID/config/genesis.json
-sed -i -e 's/"key_expiry": "100"/"key_expiry": "50"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+sed -i -e 's/"key_expiry": "100"/"key_expiry": "1000000"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 sed -i -e 's/"is_source_chain": false/"is_source_chain": true/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+
+# ─────────────── Vote Extensions: keysharer.yaml ───────────────
+# Needed so the validator can attach VE payloads (keyshares) during consensus.
+# If APP_PRIV_HEX env var isn't set, derive it from the val1 key in the local keyring.
+if [ -z "$APP_PRIV_HEX" ]; then
+  APP_PRIV_HEX=$(echo y | $BINARY keys export val1 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test 2>/dev/null | tail -n 1 | tr -d '\r\n')
+fi
+
+if [ -z "$APP_PRIV_HEX" ]; then
+  echo "WARN: APP_PRIV_HEX could not be derived; VE keyshare submission may be disabled."
+fi
+
+cat > $CHAIN_DIR/$CHAINID/keysharer.yaml <<EOF
+enabled: true
+validator_account: "$VAL1_ADDR"
+app_secp256k1_priv_hex: "$APP_PRIV_HEX"
+invalid_share_pause_threshold: $KEYSHARER_INVALID_SHARE_PAUSE_THRESHOLD
+EOF
+cp -f $CHAIN_DIR/$CHAINID/keysharer.yaml $CHAIN_DIR/$CHAINID/config/keysharer.yaml
 
 echo "Starting $CHAINID in $CHAIN_DIR..."
 echo "Creating log file at $CHAIN_DIR/$CHAINID.log"
@@ -197,6 +453,9 @@ echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet4 --home $CHAIN_DIR/$CHA
 echo ""
 echo "Name: 'wallet5' | Address: $WALLET5_ADDR | (Trusted, for ShareGenerationClient)"
 echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet5 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test)"
+echo ""
+echo "Name: 'wallet6' | Address: $WALLET6_ADDR"
+echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet6 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test)"
 echo "*******************************************************"
 echo "*    Node RPC ENDPOINT: http://localhost:$RPCPORT        *"
 echo "*    Node REST ENDPOINT: http://localhost:$RESTPORT        *"

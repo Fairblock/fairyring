@@ -7,10 +7,12 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/Fairblock/fairyring/app/keysharer"
 	keysharemodule "github.com/Fairblock/fairyring/x/keyshare/module"
 	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
 	peptypes "github.com/Fairblock/fairyring/x/pep/types"
+	zkpmodulekeeper "github.com/Fairblock/fairyring/x/zkp/keeper"
 	"github.com/cosmos/ibc-go/modules/capability"
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
 	interchainaccountsmodule "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts"
@@ -20,6 +22,7 @@ import (
 	"github.com/cosmos/ibc-go/v8/modules/apps/transfer"
 	transfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	ibcmodule "github.com/cosmos/ibc-go/v8/modules/core"
+	"github.com/spf13/cast"
 
 	_ "cosmossdk.io/api/cosmos/tx/config/v1" // import for side-effects
 	"cosmossdk.io/depinject"
@@ -44,6 +47,7 @@ import (
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -169,6 +173,7 @@ type App struct {
 
 	PepKeeper      pepmodulekeeper.Keeper
 	KeyshareKeeper keysharemodulekeeper.Keeper
+	ZkpKeeper      *zkpmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// CosmWasm
@@ -234,6 +239,8 @@ func New(
 		app        = &App{}
 		appBuilder *runtime.AppBuilder
 
+		keyshareCfg keysharer.Config
+
 		// merge the AppConfig and other configuration in one config
 		appConfig = depinject.Configs(
 			AppConfig(),
@@ -291,6 +298,29 @@ func New(
 			),
 		)
 	)
+
+	if loadLatest {
+		homePath := cast.ToString(appOpts.Get(flags.FlagHome))
+		if homePath == "" {
+			homePath = DefaultNodeHome
+		}
+
+		cfg, err := keysharer.LoadConfig(homePath)
+		if err != nil {
+			logger.Error(
+				"KeyshareVE: failed to load keysharer.yaml; keyshare vote extensions will be disabled",
+				"home", homePath,
+				"err", err,
+			)
+		} else {
+			keyshareCfg = cfg
+			logger.Info(
+				"KeyshareVE: loaded keysharer.yaml",
+				"home", homePath,
+				"validator", keyshareCfg.ValidatorAccount,
+			)
+		}
+	}
 
 	if err := depinject.Inject(appConfig,
 		&appBuilder,
@@ -353,6 +383,13 @@ func New(
 	// 	voteExtHandler := NewVoteExtensionHandler()
 	// 	voteExtHandler.SetHandlers(bApp)
 	// }
+
+	// Register vote-extension handlers + preblocker
+	baseAppOptions = append(baseAppOptions, func(b *baseapp.BaseApp) {
+		b.SetExtendVoteHandler(app.extendVoteHandler(keyshareCfg))
+		b.SetVerifyVoteExtensionHandler(app.verifyVoteExtensionHandler())
+		b.SetPreBlocker(app.preBlocker())
+	})
 
 	app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
 
@@ -433,8 +470,12 @@ func New(
 		app.txConfig.TxEncoder(),
 		mempool,
 	)
-	app.App.SetPrepareProposal(proposalHandler.PrepareProposalHandler())
-	app.App.SetProcessProposal(proposalHandler.ProcessProposalHandler())
+
+	rawPrepare := proposalHandler.PrepareProposalHandler()
+	rawProcess := proposalHandler.ProcessProposalHandler()
+
+	app.App.SetPrepareProposal(app.keyshareWrappedPrepareProposal(rawPrepare))
+	app.App.SetProcessProposal(app.keyshareWrappedProcessProposal(rawProcess))
 
 	// Step 7: Set the custom CheckTx handler on BaseApp. This is only required if you
 	// use the keyshare lane.

@@ -12,6 +12,8 @@ import (
 	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	_ "github.com/Fairblock/fairyring/x/pep/module" // import for side-effects
 	pepmoduletypes "github.com/Fairblock/fairyring/x/pep/types"
+	_ "github.com/Fairblock/fairyring/x/zkp/module" // import for side-effects
+	zkpmoduletypes "github.com/Fairblock/fairyring/x/zkp/types"
 	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
@@ -98,6 +100,7 @@ var (
 		// chain modules
 		pepmoduletypes.ModuleName,
 		keysharemoduletypes.ModuleName,
+		zkpmoduletypes.ModuleName,
 		wasmtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}

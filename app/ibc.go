@@ -1,14 +1,18 @@
 package app
 
 import (
+	"encoding/json"
+
 	"cosmossdk.io/core/appmodule"
 	storetypes "cosmossdk.io/store/types"
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	"github.com/Fairblock/fairyring/wasmbinding"
 	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/gov"
@@ -48,6 +52,8 @@ import (
 	keysharemodule "github.com/Fairblock/fairyring/x/keyshare/module"
 	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	pepmoduletypes "github.com/Fairblock/fairyring/x/pep/types"
+	zkpmodule "github.com/Fairblock/fairyring/x/zkp/module"
+	zkpmoduletypes "github.com/Fairblock/fairyring/x/zkp/types"
 )
 
 // registerIBCModules register IBC keepers and non dependency inject modules.
@@ -170,15 +176,33 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 		AddRoute(icacontrollertypes.SubModuleName, icaControllerIBCModule).
 		AddRoute(icahosttypes.SubModuleName, icaHostIBCModule)
 
+	// Register ZKP module first (before wasm modules that depend on it)
+	if err := app.registerZkpModule(); err != nil {
+		return err
+	}
+
 	acceptList := map[string]proto.Message{
 		"/fairyring.keyshare.Query/VerifiableRandomness": &keysharemoduletypes.QueryVerifiableRandomnessResponse{},
 		"/fairyring.pep.Query/DecryptData":               &pepmoduletypes.QueryDecryptDataResponse{},
+		"/fairyring.zkp.Query/VerifyWithdrawRangeProof":  &zkpmoduletypes.QueryVerifyWithdrawRangeProofResponse{},
+		"/fairyring.zkp.Query/VerifyTransferRangeProof":  &zkpmoduletypes.QueryVerifyTransferRangeProofResponse{},
+		"/fairyring.zkp.Query/VerifyValidityProof":       &zkpmoduletypes.QueryVerifyValidityProofResponse{},
+		"/fairyring.zkp.Query/VerifyEqualityProof":       &zkpmoduletypes.QueryVerifyEqualityProofResponse{},
+		"/fairyring.zkp.Query/VerifyTransferProofs":      &zkpmoduletypes.QueryVerifyTransferProofsResponse{},
+		"/fairyring.zkp.Query/VerifyWithdrawProofs":      &zkpmoduletypes.QueryVerifyWithdrawProofsResponse{},
 	}
 
 	// Add wasmd to IBC Router
 	wasmStack, err := app.registerWasmModules(appOpts, wasmkeeper.WithQueryPlugins(
 		&wasmkeeper.QueryPlugins{
-			Grpc: wasmkeeper.AcceptListGrpcQuerier(acceptList, app.GRPCQueryRouter(), app.appCodec),
+			Stargate: wasmkeeper.AcceptListStargateQuerier(
+				acceptList,
+				app.GRPCQueryRouter(),
+				app.AppCodec(),
+			),
+			Custom: func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
+				return wasmbinding.CustomQuerier(app.ZkpKeeper)(ctx, request)
+			},
 		}))
 	if err != nil {
 		return err
@@ -243,6 +267,7 @@ func RegisterIBC(registry cdctypes.InterfaceRegistry) map[string]appmodule.AppMo
 		// govtypes.ModuleName:            gov.AppModule{},
 		keysharemoduletypes.ModuleName: keysharemodule.AppModule{},
 		pepmoduletypes.ModuleName:      pepmodule.AppModule{},
+		zkpmoduletypes.ModuleName:      zkpmodule.AppModule{},
 	}
 
 	for name, m := range modules {

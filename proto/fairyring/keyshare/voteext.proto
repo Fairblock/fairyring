@@ -1,0 +1,11 @@
+syntax = "proto3";
+package fairyring.keyshare;
+
+option go_package = "github.com/Fairblock/fairyring/x/keyshare/types";
+
+// VE payload for per-height keyshare
+message KeyshareVE {
+  uint64 height_for      = 1; // target height (current+1)
+  uint32 keyshare_index  = 2; // validator’s DKG index (>=1)
+  bytes  share           = 3; // G2 point bytes (192), NOT hex/base64
+}
