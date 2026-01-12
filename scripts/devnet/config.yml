@@ -1,18 +1,37 @@
-destinationnode:
-  grpcport: 9090
-  ip: 127.0.0.1
-  port: 26657
-  protocol: tcp
-  chainid: fairyring_devnet
-  accountprefix: fairy
-
-fairyringnode:
-  grpcport: 9090
-  ip: 127.0.0.1
-  port: 26657
-  protocol: tcp
-  chainid: fairyring_devnet
-  accountprefix: fairy
-
-derivepath: m/44'/118'/0'/0/0
-mnemonic: 'alley afraid soup fall idea toss can goose become valve initial strong forward bright dish figure check leopard decide warfare hub unusual join cart'
+config:
+  fairyring:
+    chain_id: fairyring_devnet
+    bech32: fairy
+    contract_address: fairy1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq89ptu2
+    relayer_account_priv_key_hex: a267fb03b3e6dc381550ea0257ace31433698f16248ba111dfb75550364d31fe
+    rpc_endpoint:
+      ip: 127.0.0.1
+      port: 26657
+      protocol: http
+    grpc_endpoint:
+      ip: 127.0.0.1
+      port: 9090
+      protocol: ""
+    websocket_endpoint:
+      ip: 127.0.0.1
+      port: 26657
+      protocol: ws
+    fee_denom: ufairy
+    fee_amount: 0
+    gas_limit: 1500000
+    events:
+      contracts:
+        - fairy1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq89ptu2
+      pep_events_only: False
+    start_height: -1
+  evm:
+    relayer_account_priv_key: 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+    contract_address: 0xec8eeef80bda591e5f909c39c743ec437b8d9e17
+    chain_rpc: ws://127.0.0.1:8545
+    protocol: ws
+    start_height: -1
+metrics:
+  enabled: True
+  listen_addr: :9102
+log:
+  level: info
