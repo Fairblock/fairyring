@@ -61,18 +61,18 @@ WALLET3_ADDR=$($BINARY keys show wallet3 --home $CHAIN_DIR/$CHAINID_1 --keyring-
 
 for i in $(seq 0 $(($TOTAL_TEST_ACC_NUM-1)))
 do
- $BINARY add-genesis-account "test$i" 1000000000000ufairy --home $CHAIN_DIR/$CHAINID_1
+ $BINARY add-genesis-account "test$i" 1000000000000ufair --home $CHAIN_DIR/$CHAINID_1
 done
 
 
 $BINARY keys add "normaltxacc" --home $CHAIN_DIR/$CHAINID_1 --keyring-backend=test
 NORMALTXACC_ADDR=$($BINARY keys show normaltxacc --home $CHAIN_DIR/$CHAINID_1 --keyring-backend test -a)
-$BINARY add-genesis-account $NORMALTXACC_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID_1
+$BINARY add-genesis-account $NORMALTXACC_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID_1
 
 
-$BINARY add-genesis-account $VAL1_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID_1
-$BINARY add-genesis-account $WALLET1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID_1
-$BINARY add-genesis-account $WALLET3_ADDR 1000000000000ufairy --vesting-amount 10000000000stake --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID_1
+$BINARY add-genesis-account $VAL1_ADDR 1000000000000ufair,1000000000000stake --home $CHAIN_DIR/$CHAINID_1
+$BINARY add-genesis-account $WALLET1_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID_1
+$BINARY add-genesis-account $WALLET3_ADDR 1000000000000ufair --vesting-amount 10000000000stake --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID_1
 
 echo "Creating and collecting gentx..."
 $BINARY gentx val1 10000000000stake --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --keyring-backend test

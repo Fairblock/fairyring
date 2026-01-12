@@ -221,7 +221,7 @@ if ! mkdir -p $CHAIN_DIR/$CHAINID 2>/dev/null; then
 fi
 
 echo "Initializing $CHAINID ..."
-$BINARY init devnet --home $CHAIN_DIR/$CHAINID --default-denom ufairy --chain-id=$CHAINID &> /dev/null
+$BINARY init devnet --home $CHAIN_DIR/$CHAINID --default-denom ufair --chain-id=$CHAINID &> /dev/null
 
 echo "Adding genesis accounts..."
 echo $VAL_MNEMONIC_1 | $BINARY keys add val1 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
@@ -243,17 +243,17 @@ WALLET5_ADDR=$($BINARY keys show wallet5 --home $CHAIN_DIR/$CHAINID -a --keyring
 WALLET6_ADDR=$($BINARY keys show wallet6 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
 RLY1_ADDR=$($BINARY keys show rly1 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
 
-$BINARY genesis add-genesis-account $VAL1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET1_ADDR 10000000000000000ufairy,1000000000000fusdc --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET2_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET3_ADDR 1000000000000ufairy --vesting-amount 1000000000000ufairy --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET4_ADDR 1000000000000ufairy --vesting-amount 1000000000000ufairy --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET5_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET6_ADDR 100000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $RLY1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAINID --keyring-backend test
+$BINARY genesis add-genesis-account $VAL1_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
+$BINARY genesis add-genesis-account $WALLET1_ADDR 10000000000000000ufair,1000000000000fusdc --home $CHAIN_DIR/$CHAINID --keyring-backend test
+$BINARY genesis add-genesis-account $WALLET2_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
+$BINARY genesis add-genesis-account $WALLET3_ADDR 1000000000000ufair --vesting-amount 1000000000000ufair --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
+$BINARY genesis add-genesis-account $WALLET4_ADDR 1000000000000ufair --vesting-amount 1000000000000ufair --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
+$BINARY genesis add-genesis-account $WALLET5_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
+$BINARY genesis add-genesis-account $WALLET6_ADDR 100000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
+$BINARY genesis add-genesis-account $RLY1_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
 
 echo "Creating and collecting gentx..."
-$BINARY genesis gentx val1 100000000000ufairy --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --keyring-backend test
+$BINARY genesis gentx val1 100000000000ufair --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --keyring-backend test
 $BINARY genesis collect-gentxs --home $CHAIN_DIR/$CHAINID &> /dev/null
 echo "Changing defaults and ports in app.toml and config.toml files..."
 
@@ -285,7 +285,7 @@ sed -i -e 's/enable = false/enable = true/g' $CHAIN_DIR/$CHAINID/config/app.toml
 sed -i -e 's/swagger = false/swagger = true/g' $CHAIN_DIR/$CHAINID/config/app.toml
 sed -i -e 's#"tcp://localhost:1317"#"tcp://localhost:'"$RESTPORT"'"#g' $CHAIN_DIR/$CHAINID/config/app.toml
 sed -i -e 's#":8080"#":'"$ROSETTA"'"#g' $CHAIN_DIR/$CHAINID/config/app.toml
-sed -i -e 's/minimum-gas-prices = ""/minimum-gas-prices = "0ufairy"/g' $CHAIN_DIR/$CHAINID/config/app.toml
+sed -i -e 's/minimum-gas-prices = ""/minimum-gas-prices = "0ufair"/g' $CHAIN_DIR/$CHAINID/config/app.toml
 
 # Increase transaction size limits to allow large batch transactions with proofs
 # Default max_tx_bytes is usually 1MB, increase to 50MB
@@ -412,7 +412,7 @@ sleep $((BLOCK_TIME*2))
 echo "Setting up Devnet..."
 
 echo "Registering as a validator in keyshare module..."
-RESULT=$($BINARY tx keyshare register-validator --from val1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --node tcp://localhost:$RPCPORT --keyring-backend test --broadcast-mode sync -o json -y)
+RESULT=$($BINARY tx keyshare register-validator --from val1 --gas-prices 1ufair --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --node tcp://localhost:$RPCPORT --keyring-backend test --broadcast-mode sync -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 VALIDATOR_ADDR=$(echo "$RESULT" | jq -r '.events[8].attributes[0].value')

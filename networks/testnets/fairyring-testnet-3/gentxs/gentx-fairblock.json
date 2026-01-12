@@ -22,7 +22,7 @@
           "@type": "/cosmos.crypto.ed25519.PubKey",
           "key": "03vG/iogYilO9qeSoVIJIZl6QC3ARWFgqSwhQ621z3g="
         },
-        "value": { "denom": "ufairy", "amount": "10000000000" }
+        "value": { "denom": "ufair", "amount": "10000000000" }
       }
     ],
     "memo": "cd1cbf64a3e85d511c2a40b9e3e7b2e9b40d5905@172.31.18.9:26656",

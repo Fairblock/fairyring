@@ -1,6 +1,6 @@
 fairyringnode:
   chainid: fairyring_test_1
-  denom: ufairy
+  denom: ufair
   grpcport: 9090
   ip: 127.0.0.1
   port: 16657

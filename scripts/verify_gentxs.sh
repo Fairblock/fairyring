@@ -13,7 +13,7 @@ GREEN='\033[0;32m'
 NO_COLOR='\033[0m' # No Color
 
 # Define expected denom and amount.
-expected_denom="ufairy"
+expected_denom="ufair"
 expected_amount="100000000000"
 
 # Check if a directory was provided.
@@ -80,12 +80,12 @@ do
         
         sleep 1
 
-        sed -i 's/stake/ufairy/g' $GenesisFile
+        sed -i 's/stake/ufair/g' $GenesisFile
 
-        fairyringd add-genesis-account alice 50000000000000ufairy $KerRingCommand
-        fairyringd add-genesis-account $delegator_address 500000000000ufairy
+        fairyringd add-genesis-account alice 50000000000000ufair $KerRingCommand
+        fairyringd add-genesis-account $delegator_address 500000000000ufair
 
-        fairyringd gentx alice 5000000000000ufairy --commission-max-change-rate 0.01 --commission-max-rate 0.2 --commission-rate 0.05 --min-self-delegation 1 --moniker val1 --chain-id fairytest-1 $KerRingCommand > fairyringd_output.txt 2>&1
+        fairyringd gentx alice 5000000000000ufair --commission-max-change-rate 0.01 --commission-max-rate 0.2 --commission-rate 0.05 --min-self-delegation 1 --moniker val1 --chain-id fairytest-1 $KerRingCommand > fairyringd_output.txt 2>&1
         
         sleep 1
 

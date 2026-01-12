@@ -78,7 +78,7 @@ cd "$WORKING_DIR/$GIT_TAG_UPGRADE_FROM"
 $BINARY_FULL_PATH config set client chain-id $CHAIN_ID --home $CHAIN_HOME
 $BINARY_FULL_PATH config set client keyring-backend test --home $CHAIN_HOME
 $BINARY_FULL_PATH config set client broadcast-mode sync --home $CHAIN_HOME
-$BINARY_FULL_PATH config set app minimum-gas-prices 0ufairy --home $CHAIN_HOME
+$BINARY_FULL_PATH config set app minimum-gas-prices 0ufair --home $CHAIN_HOME
 $BINARY_FULL_PATH init test --chain-id $CHAIN_ID --home $CHAIN_HOME --overwrite
 
 cat <<< $(jq '.app_state.gov.params.voting_period = "20s"' $CHAIN_HOME/config/genesis.json) > $CHAIN_HOME/config/genesis.json
@@ -88,8 +88,8 @@ VAL_MNEMONIC_1="clock post desk civil pottery foster expand merit dash seminar s
 
 echo $VAL_MNEMONIC_1 | $BINARY_FULL_PATH keys add validator --keyring-backend test --home $CHAIN_HOME --recover
 $BINARY_FULL_PATH keys add wallet1 --keyring-backend test --home $CHAIN_HOME
-$BINARY_FULL_PATH genesis add-genesis-account validator 100000000000ufairy,10000000000000stake --keyring-backend test --home $CHAIN_HOME
-$BINARY_FULL_PATH genesis add-genesis-account wallet1 100000000000ufairy,10000000000000stake --keyring-backend test --home $CHAIN_HOME
+$BINARY_FULL_PATH genesis add-genesis-account validator 100000000000ufair,10000000000000stake --keyring-backend test --home $CHAIN_HOME
+$BINARY_FULL_PATH genesis add-genesis-account wallet1 100000000000ufair,10000000000000stake --keyring-backend test --home $CHAIN_HOME
 $BINARY_FULL_PATH genesis gentx validator 10000000000stake --chain-id $CHAIN_ID --keyring-backend test --home $CHAIN_HOME
 $BINARY_FULL_PATH genesis collect-gentxs --home $CHAIN_HOME
 
@@ -256,7 +256,7 @@ echo "###########################"
 
 
 echo "Staked account registering as a validator on chain $CHAINID_1"
-RESULT=$($BINARY tx keyshare register-validator --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare register-validator --from $VALIDATOR_1 --gas-prices 1ufair --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 VALIDATOR_ADDR=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("validator"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("creator"))))[]' | jq -r '.value')
@@ -272,7 +272,7 @@ PUB_KEY=$(echo "$GENERATED_RESULT" | jq -r '.MasterPublicKey')
 COMMITS=$(echo "$GENERATED_RESULT" | jq -r '.Commitments[0]')
 
 echo "Trusted address submit pub key on chain $CHAINID_1"
-RESULT=$($BINARY tx keyshare create-latest-pub-key $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VALIDATOR_1"'"}]' --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare create-latest-pub-key $PUB_KEY $COMMITS 1 '[{"data":"'"$GENERATED_SHARE"'","validator":"'"$VALIDATOR_1"'"}]' --from $VALIDATOR_1 --gas-prices 1ufair --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 VALIDATOR_ADDR=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("pubkey"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("creator"))))[]' | jq -r '.value')
@@ -290,7 +290,7 @@ EXTRACTED_RESULT=$($BINARY share-generation derive $GENERATED_SHARE 1 $TARGET_HE
 EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 
 echo "Registered validator submit valid key share on chain $CHAINID_1"
-RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 1 $TARGET_HEIGHT --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx keyshare send-keyshare $EXTRACTED_SHARE 1 $TARGET_HEIGHT --from $VALIDATOR_1 --gas-prices 1ufair --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 AGGRED_SHARE=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("keyshare-aggregated"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("data"))))[]' | jq -r '.value')
@@ -356,8 +356,8 @@ echo "Target account has: $TARGET_BAL $TARGET_BAL_DENOM before encrypted bank se
 
 echo "Signing bank send tx with pep nonce: '$VALIDATOR_PEP_NONCE_BEFORE'"
 echo "Sending 1 $TARGET_BAL_DENOM to target address"
-$BINARY tx bank send $VALIDATOR_1 $WALLET_1 1$TARGET_BAL_DENOM --from $VALIDATOR_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --keyring-backend test --generate-only -o json -y > unsigned.json
-SIGNED_DATA=$($BINARY tx sign unsigned.json --from $VALIDATOR_1 --offline --account-number 0 --sequence $VALIDATOR_PEP_NONCE_BEFORE --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1  --keyring-backend test -y)
+$BINARY tx bank send $VALIDATOR_1 $WALLET_1 1$TARGET_BAL_DENOM --from $VALIDATOR_1 --gas-prices 1ufair --home $CHAIN_HOME --chain-id $CHAINID_1 --keyring-backend test --generate-only -o json -y > unsigned.json
+SIGNED_DATA=$($BINARY tx sign unsigned.json --from $VALIDATOR_1 --offline --account-number 0 --sequence $VALIDATOR_PEP_NONCE_BEFORE --gas-prices 1ufair --home $CHAIN_HOME --chain-id $CHAINID_1  --keyring-backend test -y)
 
 CURRENT_BLOCK=$($BINARY query consensus comet block-latest --home $CHAIN_HOME  -o json | jq -r '.block.header.height')
 TARGET_BLOCK=$(($CURRENT_BLOCK+3))
@@ -373,7 +373,7 @@ echo "Balance before submitting encrypted tx: $BAL_AMT$BAL_DENOM"
 
 
 echo "Submit encrypted tx to pep module on chain $CHAINID_1"
-RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER $TARGET_BLOCK --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep submit-encrypted-tx $CIPHER $TARGET_BLOCK --from $VALIDATOR_1 --gas-prices 1ufair --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 TARGET_HEIGHT=$(echo "$RESULT" | jq '.events' | jq 'map(select(any(.type; contains("new-encrypted-tx-submitted"))))[]' | jq '.attributes' | jq 'map(select(any(.key; contains("height"))))[]' | jq -r '.value')
@@ -414,7 +414,7 @@ echo "# Testing General Keyshare #"
 echo "############################"
 
 echo "Creating new General Enc Request in pep module on chain $CHAIN_ID"
-RESULT=$($BINARY tx pep request-general-keyshare 30s testing123 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-general-keyshare 30s testing123 --from $WALLET_1 --gas-prices 1ufair --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep $(($BLOCK_TIME * 2))
@@ -439,8 +439,8 @@ echo "Target account has: $TARGET_BAL $TARGET_BAL_DENOM before encrypted bank se
 
 echo "Signing bank send tx with pep nonce: '$PEP_NONCE_BEFORE'"
 echo "Sending 1 $TARGET_BAL_DENOM to target address"
-$BINARY tx bank send $WALLET_1 $VALIDATOR_1 1$TARGET_BAL_DENOM --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --keyring-backend test --generate-only -o json -y > unsigned.json
-SIGNED_DATA=$($BINARY tx sign unsigned.json --from $WALLET_1 --offline --account-number 1 --sequence $PEP_NONCE_BEFORE --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1  --keyring-backend test -y)
+$BINARY tx bank send $WALLET_1 $VALIDATOR_1 1$TARGET_BAL_DENOM --from $WALLET_1 --gas-prices 1ufair --home $CHAIN_HOME --chain-id $CHAINID_1 --keyring-backend test --generate-only -o json -y > unsigned.json
+SIGNED_DATA=$($BINARY tx sign unsigned.json --from $WALLET_1 --offline --account-number 1 --sequence $PEP_NONCE_BEFORE --gas-prices 1ufair --home $CHAIN_HOME --chain-id $CHAINID_1  --keyring-backend test -y)
 
 echo "Encrypting signed tx with Pub key: '$PUB_KEY'"
 CIPHER=$($BINARY encrypt $IDENTITY "" $SIGNED_DATA --node tcp://localhost:26657)
@@ -448,7 +448,7 @@ CIPHER=$($BINARY encrypt $IDENTITY "" $SIGNED_DATA --node tcp://localhost:26657)
 rm -r unsigned.json &> /dev/null
 
 echo "Submit general encrypted tx to pep module on chain $CHAIN_ID"
-RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep submit-general-encrypted-tx $CIPHER $REQ_ID --from $WALLET_1 --gas-prices 1ufair --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
@@ -464,7 +464,7 @@ fi
 sleep $BLOCK_TIME
 
 echo "Request Generation of Aggr keyshare"
-RESULT=$($BINARY tx pep get-general-keyshare $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep get-general-keyshare $REQ_ID --from $WALLET_1 --gas-prices 1ufair --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
@@ -476,7 +476,7 @@ EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 while true; do
   echo "Submitting General Key Share"
 
-  RESULT=$($BINARY tx keyshare create-general-key-share "private-gov-identity" $IDENTITY $EXTRACTED_SHARE 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
+  RESULT=$($BINARY tx keyshare create-general-key-share "private-gov-identity" $IDENTITY $EXTRACTED_SHARE 1 --from $VALIDATOR_1 --gas-prices 1ufair --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --broadcast-mode sync --keyring-backend test -o json -y)
   echo "$RESULT"
   check_tx_err $RESULT
   if [ $? -eq 0 ]; then
@@ -508,7 +508,7 @@ SCEP_PRIV_KEY1="a267fb03b3e6dc381550ea0257ace31433698f16248ba111dfb75550364d31fe
 SCEP_PRIV_KEY2="ef1450bdc18396f2254f52d8c525c0d933a8f146ec2a681eaf319f5899f2f60d"
 
 echo "Creating new Private Request in pep module on chain $CHAIN_ID"
-RESULT=$($BINARY tx pep request-private-keyshare test_req_1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-private-keyshare test_req_1 --from $WALLET_1 --gas-prices 1ufair --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep $(($BLOCK_TIME * 2))
@@ -522,7 +522,7 @@ echo "Identity for private keyshare request 1 is: $REQ_ID"
 sleep $(($BLOCK_TIME * 2))
 
 echo "Requesting for private keyshares on Source chain"
-RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID $SCEP_PUBKEY1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID $SCEP_PUBKEY1 --from $WALLET_1 --gas-prices 1ufair --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep $(($BLOCK_TIME * 2))
@@ -537,7 +537,7 @@ ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY1" -k "$EXTRACTED_SHARE")
 while true; do
   echo "Submitting Private Key Share"
 
-  RESULT=$($BINARY tx keyshare submit-encrypted-keyshare $REQ_ID $WALLET_1 $ENC_KS 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+  RESULT=$($BINARY tx keyshare submit-encrypted-keyshare $REQ_ID $WALLET_1 $ENC_KS 1 --from $VALIDATOR_1 --gas-prices 1ufair --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
   echo "$RESULT"
   check_tx_err $RESULT
   if [[ $? -eq 0 ]]; then
@@ -560,7 +560,7 @@ echo $SHOW_PRIVATE_REQ
 
 echo "Sending get private keyshare request without previous entry"
 REQ_ID="test_req_dummy_1"
-RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID $SCEP_PUBKEY1 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep get-private-keyshare $REQ_ID $SCEP_PUBKEY1 --from $WALLET_1 --gas-prices 1ufair --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep $(($BLOCK_TIME * 2))
@@ -577,7 +577,7 @@ ENC_KS=$($BINARY secp-encrypter -p "$SCEP_PUBKEY1" -k "$EXTRACTED_SHARE")
 while true; do
   echo "Submitting Private Key Share"
 
-  RESULT=$($BINARY tx keyshare submit-encrypted-keyshare $REQ_ID $WALLET_1 $ENC_KS 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+  RESULT=$($BINARY tx keyshare submit-encrypted-keyshare $REQ_ID $WALLET_1 $ENC_KS 1 --from $VALIDATOR_1 --gas-prices 1ufair --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
   echo "$RESULT"
   check_tx_err $RESULT
   if [[ $? -eq 0 ]]; then
@@ -643,7 +643,7 @@ docker run --rm -v "$(pwd)":/code \
   cosmwasm/optimizer:0.16.0
 
 echo "Deploying smart contract on source chain"
-RESULT=$($BINARY tx wasm store $CONTRACT_DIR/artifacts/fairyring_contract.wasm --from $WALLET_1 --gas 9000000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test --fees 9000000ufairy -o json -y)
+RESULT=$($BINARY tx wasm store $CONTRACT_DIR/artifacts/fairyring_contract.wasm --from $WALLET_1 --gas 9000000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test --fees 9000000ufair -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT)
 echo $RESULT
@@ -651,13 +651,13 @@ echo $RESULT
 sleep 10
 
 echo "Instantiating the contract"
-RESULT=$($BINARY tx wasm instantiate 1 '{"identity": "init_identity", "pubkey": "init_pubkey", "aggr_keyshare": "init_keyshare"}' --admin $WALLET_1 --from $WALLET_1 --gas 9000000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test --fees 9000000ufairy --label test_contract_1 -o json -y)
+RESULT=$($BINARY tx wasm instantiate 1 '{"identity": "init_identity", "pubkey": "init_pubkey", "aggr_keyshare": "init_keyshare"}' --admin $WALLET_1 --from $WALLET_1 --gas 9000000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test --fees 9000000ufair --label test_contract_1 -o json -y)
 check_tx_code $RESULT
 
 sleep 10
 
 echo "Creating new General keyshare Request on chain fairyring_test_1"
-RESULT=$($BINARY tx pep request-general-keyshare 30s contract123 --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep request-general-keyshare 30s contract123 --from $WALLET_1 --gas-prices 1ufair --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 
 sleep 10
@@ -667,14 +667,14 @@ CONTRACT_ADDR="fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v"
 
 
 echo "Registering contract with identity"
-RESULT=$($BINARY tx pep register-contract $CONTRACT_ADDR $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep register-contract $CONTRACT_ADDR $REQ_ID --from $WALLET_1 --gas-prices 1ufair --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
 check_tx_code $RESULT
 RESULT=$(wait_for_tx_source $RESULT)
 
 sleep 10
 
 echo "Request Generation of Aggr keyshare"
-RESULT=$($BINARY tx pep get-general-keyshare $REQ_ID --from $WALLET_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx pep get-general-keyshare $REQ_ID --from $WALLET_1 --gas-prices 1ufair --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
 echo "$RESULT"
 check_tx_code $RESULT
 
@@ -686,7 +686,7 @@ EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.Keyshare')
 while true; do
   echo "Submitting General Key Share"
 
-  RESULT=$($BINARY tx keyshare create-general-key-share "private-gov-identity" $REQ_ID $EXTRACTED_SHARE 1 --from $VALIDATOR_1 --gas-prices 1ufairy --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
+  RESULT=$($BINARY tx keyshare create-general-key-share "private-gov-identity" $REQ_ID $EXTRACTED_SHARE 1 --from $VALIDATOR_1 --gas-prices 1ufair --gas 900000 --home $CHAIN_HOME --chain-id $CHAINID_1 --node tcp://localhost:26657 --broadcast-mode sync --keyring-backend test -o json -y)
   echo "$RESULT"
   check_tx_err $RESULT
   if [ $? -eq 0 ]; then

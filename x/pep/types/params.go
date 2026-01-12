@@ -22,9 +22,9 @@ var (
 
 var (
 	KeyMinGasPrice              = []byte("MinGasPrice")
-	DefaultMinGasPrice          = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
+	DefaultMinGasPrice          = sdk.NewCoin("ufair", cosmosmath.NewInt(300000))
 	DecryptionKeyPrice          = []byte("PrivateKeysPrice")
-	DefaultKeysharePrice        = sdk.NewCoin("ufairy", cosmosmath.NewInt(300000))
+	DefaultKeysharePrice        = sdk.NewCoin("ufair", cosmosmath.NewInt(300000))
 	KeyMaxContractGas           = []byte("MaxContractGas")
 	DefaultContractGas   uint64 = 500000
 )

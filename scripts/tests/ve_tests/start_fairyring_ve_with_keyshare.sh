@@ -36,7 +36,7 @@ MONIKER="${MONIKER:-node1}"
 KEY_NAME="${KEY_NAME:-validator}"
 KEYRING_BACKEND="${KEYRING_BACKEND:-test}"
 
-DENOM="${DENOM:-ufairy}"
+DENOM="${DENOM:-ufair}"
 STAKE_AMOUNT="${STAKE_AMOUNT:-1000000000000${DENOM}}"
 GENTX_AMOUNT="${GENTX_AMOUNT:-500000000000${DENOM}}"
 GAS_PRICE="${GAS_PRICE:-0${DENOM}}"
@@ -377,7 +377,7 @@ main() {
   echo "Setting up test environment..."
 
   echo "Registering as a validator in keyshare module..."
-  RESULT=$(fairyringd tx keyshare register-validator --from validator --gas-prices 1ufairy --home $HOME_DIR --chain-id $CHAIN_ID --keyring-backend test --broadcast-mode sync -o json -y)
+  RESULT=$(fairyringd tx keyshare register-validator --from validator --gas-prices 1ufair --home $HOME_DIR --chain-id $CHAIN_ID --keyring-backend test --broadcast-mode sync -o json -y)
   check_tx_code $RESULT
   RESULT=$(wait_for_tx $RESULT)
   echo $RESULT

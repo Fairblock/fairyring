@@ -56,7 +56,7 @@ echo "SHARE: $2"
 GENERATED_SHARE=$2
 
 echo "Creating a new proposal on source chain"
-RESULT=$($BINARY tx gov submit-proposal $(pwd)/scripts/tests/draft_proposal.json --from $WALLET_3 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+RESULT=$($BINARY tx gov submit-proposal $(pwd)/scripts/tests/draft_proposal.json --from $WALLET_3 --gas-prices 1ufair --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
 sleep $BLOCK_TIME
 check_tx_code $RESULT
 RESULT=$(wait_for_tx $RESULT "source")
@@ -88,7 +88,7 @@ while true; do
   echo $PUBKEY
   echo $ENCVOTE
 
-  RESULT=$(fairyringd tx gov vote-encrypted 1 $ENCVOTE --from $VAL1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+  RESULT=$(fairyringd tx gov vote-encrypted 1 $ENCVOTE --from $VAL1 --gas-prices 1ufair --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
   echo "$RESULT"
   check_tx_err $RESULT
   if [ $? -eq 0 ]; then
@@ -116,7 +116,7 @@ EXTRACTED_SHARE=$(echo "$EXTRACTED_RESULT" | jq -r '.KeyShare')
 
 while true; do
   echo "Submitting General Key Share"
-  RESULT=$($BINARY tx keyshare submit-general-keyshare "private-gov-identity" $IDENTITY $EXTRACTED_SHARE 1 --from $VAL1 --gas-prices 1ufairy --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
+  RESULT=$($BINARY tx keyshare submit-general-keyshare "private-gov-identity" $IDENTITY $EXTRACTED_SHARE 1 --from $VAL1 --gas-prices 1ufair --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --node tcp://localhost:16657 --broadcast-mode sync --keyring-backend test -o json -y)
   echo "$RESULT"
   check_tx_err $RESULT
   if [ $? -eq 0 ]; then

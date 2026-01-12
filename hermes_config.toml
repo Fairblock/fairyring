@@ -56,7 +56,7 @@ denominator = '3'
 
 [chains.gas_price]
 price = 10
-denom = 'ufairy'
+denom = 'ufair'
 
 [chains.address_type]
 derivation = 'cosmos'
@@ -89,7 +89,7 @@ denominator = '3'
 
 [chains.gas_price]
 price = 10
-denom = 'ufairy'
+denom = 'ufair'
 
 [chains.address_type]
 derivation = 'cosmos'

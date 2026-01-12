@@ -167,7 +167,7 @@
           "address": "fairy1pawwlwrerdpdzv8t95wnywgrxtw7jgcquqd82d",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "15000000000"
             }
           ]
@@ -176,7 +176,7 @@
           "address": "fairy1zrpp7dfav7kancgse2peh3k98u9ueajwvq4w4q",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "15000000000"
             }
           ]
@@ -185,7 +185,7 @@
           "address": "fairy1z7vqmnppcdh6vnyzwetv6ensql33476atzw3qe",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "15000000000"
             }
           ]
@@ -194,7 +194,7 @@
           "address": "fairy1r6q07ne3deq64ezcjwkedcfe6669f0ewpwnxy9",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "15000000000"
             }
           ]
@@ -203,7 +203,7 @@
           "address": "fairy1y0rqaar4h8p40uptmrc7mc36njjn0ztwscekd3",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "15000000000"
             }
           ]
@@ -212,7 +212,7 @@
           "address": "fairy1yk9lp2c5fd9ll4xmr2lcxtlxcxlpzqfj8rw55k",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "15000000000"
             }
           ]
@@ -221,7 +221,7 @@
           "address": "fairy1yhpqdugfmfuhlvekkurnkstf2vl82063ajmfe5",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "15000000000"
             }
           ]
@@ -230,7 +230,7 @@
           "address": "fairy1x0u867tnh00yemxmxf974z56h08tddluz5cv4y",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "15000000000"
             }
           ]
@@ -239,7 +239,7 @@
           "address": "fairy1x7rlp6aezhlydtxf2wf0qja8wah6vpa7kthxcy",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "15000000000"
             }
           ]
@@ -248,7 +248,7 @@
           "address": "fairy1gvafzqsl9uhra3f4v5y9lqr9amr3vpgfq96t2z",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "15000000000"
             }
           ]
@@ -257,7 +257,7 @@
           "address": "fairy1ffm2sadwyurzkgtfhm3ctttc5qxjsgayex8prk",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "15000000000"
             }
           ]
@@ -266,7 +266,7 @@
           "address": "fairy1f6mx8wgea8xdxeswwavh9008uv6d7yga3qqtyv",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "100000000000000"
             }
           ]
@@ -275,7 +275,7 @@
           "address": "fairy1vr35pj50ldvmrzw752eppeggvmcw5rcuyc4axz",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "100000000000000"
             }
           ]
@@ -284,7 +284,7 @@
           "address": "fairy1wxdg22xhjvjpl9arthysad02zgh2w9ulvl3pfr",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "15000000000"
             }
           ]
@@ -293,7 +293,7 @@
           "address": "fairy14qekdkj2nmmwea4ufg9n002a3pud23y8tcf8aa",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "15000000000"
             }
           ]
@@ -302,7 +302,7 @@
           "address": "fairy1uppfkp8dw68myfy5g9ex05fmkaqy05wvc0475q",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "15000000000"
             }
           ]
@@ -311,7 +311,7 @@
           "address": "fairy1uy2slhj2xf2sgssa5jkjf6v663e7wkkpj8glkv",
           "coins": [
             {
-              "denom": "ufairy",
+              "denom": "ufair",
               "amount": "15000000000"
             }
           ]
@@ -328,7 +328,7 @@
     "consensus": null,
     "crisis": {
       "constant_fee": {
-        "denom": "ufairy",
+        "denom": "ufair",
         "amount": "1000"
       }
     },
@@ -384,7 +384,7 @@
                   "key": "GoMDGPo/DcGiWsGduA92xeC2D59b/wteNHVzRs7tdcE="
                 },
                 "value": {
-                  "denom": "ufairy",
+                  "denom": "ufair",
                   "amount": "10000000000"
                 }
               }
@@ -446,7 +446,7 @@
                   "key": "QR0wb1/3kzu/P+plruwnQappqZLvwG92Puk9IQL9WOY="
                 },
                 "value": {
-                  "denom": "ufairy",
+                  "denom": "ufair",
                   "amount": "10000000000"
                 }
               }
@@ -508,7 +508,7 @@
                   "key": "x0fYTmzRZU+NGCKYK8L026CUQ2txAKCGf7FDeHyM4Y8="
                 },
                 "value": {
-                  "denom": "ufairy",
+                  "denom": "ufair",
                   "amount": "10000000000"
                 }
               }
@@ -570,7 +570,7 @@
                   "key": "Y15qnJ6tp+R9zv9gCBr9t8wi/zVviStOrh6IsTnnPtk="
                 },
                 "value": {
-                  "denom": "ufairy",
+                  "denom": "ufair",
                   "amount": "10000000000"
                 }
               }
@@ -632,7 +632,7 @@
                   "key": "6VTDflOpsR49SjCWrJAoYb8hukZK36frxoiAhRrbowc="
                 },
                 "value": {
-                  "denom": "ufairy",
+                  "denom": "ufair",
                   "amount": "10000000000"
                 }
               }
@@ -694,7 +694,7 @@
                   "key": "aFDhEquH/7ZkoS65DNEi/eWbrEPBdz1qVyH/C6/HfYA="
                 },
                 "value": {
-                  "denom": "ufairy",
+                  "denom": "ufair",
                   "amount": "10000000000"
                 }
               }
@@ -756,7 +756,7 @@
                   "key": "sTu5lc04b1li1wScK6S2xfyNYq5S18N4SOdWgOwCnh4="
                 },
                 "value": {
-                  "denom": "ufairy",
+                  "denom": "ufair",
                   "amount": "10000000000"
                 }
               }
@@ -818,7 +818,7 @@
                   "key": "03vG/iogYilO9qeSoVIJIZl6QC3ARWFgqSwhQ621z3g="
                 },
                 "value": {
-                  "denom": "ufairy",
+                  "denom": "ufair",
                   "amount": "10000000000"
                 }
               }
@@ -880,7 +880,7 @@
                   "key": "ENwj6mFELDOOBves5eMxIYt5YAr8utGcZm9egsTCcgs="
                 },
                 "value": {
-                  "denom": "ufairy",
+                  "denom": "ufair",
                   "amount": "10000000000"
                 }
               }
@@ -942,7 +942,7 @@
                   "key": "KtGCaz1hsdM0DlMg5RcXz5On4gixlIl0ZMWxXOEZA84="
                 },
                 "value": {
-                  "denom": "ufairy",
+                  "denom": "ufair",
                   "amount": "10000000000"
                 }
               }
@@ -1004,7 +1004,7 @@
                   "key": "mJRtX/4aVUX23cVtsRuwdPgz/mpzZ/4Muh9YynyV80w="
                 },
                 "value": {
-                  "denom": "ufairy",
+                  "denom": "ufair",
                   "amount": "10000000000"
                 }
               }
@@ -1066,7 +1066,7 @@
                   "key": "2Zg1zywS1H8njK1R2gffA9gOWt03y1uBqQWD4NrqWOQ="
                 },
                 "value": {
-                  "denom": "ufairy",
+                  "denom": "ufair",
                   "amount": "10000000000"
                 }
               }
@@ -1128,7 +1128,7 @@
                   "key": "pBEH+2DS59ziCrF0h7LcPaxmW6EbIcMqPRB7p1KcfHY="
                 },
                 "value": {
-                  "denom": "ufairy",
+                  "denom": "ufair",
                   "amount": "10000000000"
                 }
               }
@@ -1178,7 +1178,7 @@
       "params": {
         "min_deposit": [
           {
-            "denom": "ufairy",
+            "denom": "ufair",
             "amount": "10000000"
           }
         ],
@@ -1300,7 +1300,7 @@
         "annual_provisions": "0.000000000000000000"
       },
       "params": {
-        "mint_denom": "ufairy",
+        "mint_denom": "ufair",
         "inflation_rate_change": "0.130000000000000000",
         "inflation_max": "0.200000000000000000",
         "inflation_min": "0.070000000000000000",
@@ -1325,7 +1325,7 @@
         "pep_channel_id": "channel-0",
         "keyshare_channel_id": "channel-1",
         "min_gas_price": {
-          "denom": "ufairy",
+          "denom": "ufair",
           "amount": "300000"
         },
         "is_source_chain": true
@@ -1362,7 +1362,7 @@
         "max_validators": 100,
         "max_entries": 7,
         "historical_entries": 10000,
-        "bond_denom": "ufairy",
+        "bond_denom": "ufair",
         "min_commission_rate": "0.000000000000000000"
       },
       "last_total_power": "0",

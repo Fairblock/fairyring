@@ -62,14 +62,14 @@ do
   WALLET1_ADDR=$($BINARY keys show wallet1 --home $CHAIN_DIR/$CHAIN_ID/$i --keyring-backend test -a)
   WALLET2_ADDR=$($BINARY keys show wallet2 --home $CHAIN_DIR/$CHAIN_ID/$i --keyring-backend test -a)
 
-  $BINARY genesis add-genesis-account $VAL1_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAIN_ID/$i
-  $BINARY genesis add-genesis-account $WALLET1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAIN_ID/$i
-  $BINARY genesis dd-genesis-account $WALLET2_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAIN_ID/$i
+  $BINARY genesis add-genesis-account $VAL1_ADDR 1000000000000ufair,1000000000000stake --home $CHAIN_DIR/$CHAIN_ID/$i
+  $BINARY genesis add-genesis-account $WALLET1_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAIN_ID/$i
+  $BINARY genesis dd-genesis-account $WALLET2_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAIN_ID/$i
 
   if [ "$i" != "1" ]; then
-    $BINARY genesis add-genesis-account $VAL1_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAIN_ID/1
-    $BINARY genesis add-genesis-account $WALLET1_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAIN_ID/1
-    $BINARY genesis add-genesis-account $WALLET2_ADDR 1000000000000ufairy --home $CHAIN_DIR/$CHAIN_ID/1
+    $BINARY genesis add-genesis-account $VAL1_ADDR 1000000000000ufair,1000000000000stake --home $CHAIN_DIR/$CHAIN_ID/1
+    $BINARY genesis add-genesis-account $WALLET1_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAIN_ID/1
+    $BINARY genesis add-genesis-account $WALLET2_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAIN_ID/1
   fi
 
   echo "[$i] Creating gentx..."
@@ -133,7 +133,7 @@ do
 #  sed -i -e 's/swagger = false/swagger = true/g' $CHAIN_DIR/$CHAIN_ID/1/config/app.toml
   sed -i -e 's#"tcp://localhost:1317"#"tcp://localhost:'"$RESTPORT"'"#g' $CHAIN_DIR/$CHAIN_ID/$i/config/app.toml
 #  sed -i -e 's#":8080"#":'"$ROSETTA"'"#g' $CHAIN_DIR/$CHAIN_ID/1/config/app.toml
-  #sed -i -e 's/minimum-gas-prices = "0stake"/minimum-gas-prices = "1ufairy"/g' $CHAIN_DIR/$CHAIN_ID/1/config/app.toml
+  #sed -i -e 's/minimum-gas-prices = "0stake"/minimum-gas-prices = "1ufair"/g' $CHAIN_DIR/$CHAIN_ID/1/config/app.toml
 done
 
 echo "Updating genesis.json..."

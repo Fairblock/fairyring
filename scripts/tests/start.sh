@@ -91,14 +91,14 @@ WALLET4_ADDR=$($BINARY keys show wallet4 --home $CHAIN_DIR/$CHAINID_2 --keyring-
 RLY1_ADDR=$($BINARY keys show rly1 --home $CHAIN_DIR/$CHAINID_1 --keyring-backend test -a)
 RLY2_ADDR=$($BINARY keys show rly2 --home $CHAIN_DIR/$CHAINID_2 --keyring-backend test -a)
 
-$BINARY genesis add-genesis-account $VAL1_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID_1 --keyring-backend test
-$BINARY genesis add-genesis-account $VAL2_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID_2 --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET1_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID_1 --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET2_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID_2 --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET3_ADDR 1000000000000ufairy,1000000000000stake --vesting-amount 100000000000stake --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID_1 --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET4_ADDR 1000000000000ufairy,1000000000000stake --vesting-amount 100000000000stake --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID_2 --keyring-backend test
-$BINARY genesis add-genesis-account $RLY1_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID_1 --keyring-backend test
-$BINARY genesis add-genesis-account $RLY2_ADDR 1000000000000ufairy,1000000000000stake --home $CHAIN_DIR/$CHAINID_2 --keyring-backend test
+$BINARY genesis add-genesis-account $VAL1_ADDR 1000000000000ufair,1000000000000stake --home $CHAIN_DIR/$CHAINID_1 --keyring-backend test
+$BINARY genesis add-genesis-account $VAL2_ADDR 1000000000000ufair,1000000000000stake --home $CHAIN_DIR/$CHAINID_2 --keyring-backend test
+$BINARY genesis add-genesis-account $WALLET1_ADDR 1000000000000ufair,1000000000000stake --home $CHAIN_DIR/$CHAINID_1 --keyring-backend test
+$BINARY genesis add-genesis-account $WALLET2_ADDR 1000000000000ufair,1000000000000stake --home $CHAIN_DIR/$CHAINID_2 --keyring-backend test
+$BINARY genesis add-genesis-account $WALLET3_ADDR 1000000000000ufair,1000000000000stake --vesting-amount 100000000000stake --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID_1 --keyring-backend test
+$BINARY genesis add-genesis-account $WALLET4_ADDR 1000000000000ufair,1000000000000stake --vesting-amount 100000000000stake --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID_2 --keyring-backend test
+$BINARY genesis add-genesis-account $RLY1_ADDR 1000000000000ufair,1000000000000stake --home $CHAIN_DIR/$CHAINID_1 --keyring-backend test
+$BINARY genesis add-genesis-account $RLY2_ADDR 1000000000000ufair,1000000000000stake --home $CHAIN_DIR/$CHAINID_2 --keyring-backend test
 
 echo "Creating and collecting gentx..."
 $BINARY genesis gentx val1 100000000000stake --home $CHAIN_DIR/$CHAINID_1 --chain-id $CHAINID_1 --keyring-backend test
@@ -116,7 +116,7 @@ sed -i -e 's/enable = false/enable = true/g' $CHAIN_DIR/$CHAINID_1/config/app.to
 sed -i -e 's/swagger = false/swagger = true/g' $CHAIN_DIR/$CHAINID_1/config/app.toml
 sed -i -e 's#"tcp://localhost:1317"#"tcp://localhost:'"$RESTPORT_1"'"#g' $CHAIN_DIR/$CHAINID_1/config/app.toml
 sed -i -e 's#":8080"#":'"$ROSETTA_1"'"#g' $CHAIN_DIR/$CHAINID_1/config/app.toml
-sed -i -e 's/minimum-gas-prices = ""/minimum-gas-prices = "1ufairy"/g' $CHAIN_DIR/$CHAINID_1/config/app.toml
+sed -i -e 's/minimum-gas-prices = ""/minimum-gas-prices = "1ufair"/g' $CHAIN_DIR/$CHAINID_1/config/app.toml
 
 sed -i -e 's#"tcp://0.0.0.0:26656"#"tcp://0.0.0.0:'"$P2PPORT_2"'"#g' $CHAIN_DIR/$CHAINID_2/config/config.toml
 sed -i -e 's#"tcp://127.0.0.1:26657"#"tcp://0.0.0.0:'"$RPCPORT_2"'"#g' $CHAIN_DIR/$CHAINID_2/config/config.toml
@@ -128,7 +128,7 @@ sed -i -e 's/0.0.0.0:9090/0.0.0.0:'"$GRPCPORT_2"'/g' $CHAIN_DIR/$CHAINID_2/confi
 sed -i -e 's/swagger = false/swagger = true/g' $CHAIN_DIR/$CHAINID_2/config/app.toml
 sed -i -e 's#"tcp://localhost:1317"#"tcp://localhost:'"$RESTPORT_2"'"#g' $CHAIN_DIR/$CHAINID_2/config/app.toml
 sed -i -e 's#":8080"#":'"$ROSETTA_2"'"#g' $CHAIN_DIR/$CHAINID_2/config/app.toml
-sed -i -e 's/minimum-gas-prices = ""/minimum-gas-prices = "1ufairy"/g' $CHAIN_DIR/$CHAINID_2/config/app.toml
+sed -i -e 's/minimum-gas-prices = ""/minimum-gas-prices = "1ufair"/g' $CHAIN_DIR/$CHAINID_2/config/app.toml
 
 echo "Changing genesis.json..."
 sed -i -e 's/"voting_period": "172800s"/"voting_period": "60s"/g' $CHAIN_DIR/$CHAINID_1/config/genesis.json

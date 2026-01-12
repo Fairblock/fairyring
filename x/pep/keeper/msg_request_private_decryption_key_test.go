@@ -23,7 +23,7 @@ func TestGetPrivateKeyshares(t *testing.T) {
 	creator := "cosmos1nm0rrq86ucezaf8uj35pq9fpwr5r82cl8sc7p5"
 	requester := sdk.AccAddress(creator)
 
-	price := sdk.NewInt64Coin("ufairy", 0)
+	price := sdk.NewInt64Coin("ufair", 0)
 	params := types.Params{
 		PrivateDecryptionKeyPrice: &price,
 		IsSourceChain:             true,

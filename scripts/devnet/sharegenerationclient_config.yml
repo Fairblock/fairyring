@@ -1,7 +1,7 @@
 checkinterval: 5
 fairyringnode:
   chainid: fairyring_devnet
-  denom: ufairy
+  denom: ufair
   grpcport: 9090
   ip: 127.0.0.1
   port: 26657
