@@ -221,6 +221,7 @@ message MsgSubmitEncryptedKeyshare {
   uint64 received_timestamp = 5;
   uint64 received_block_height = 6;
   string requester = 7;
+  string secp_pubkey = 8;
 }
 
 // MsgSubmitEncryptedKeyshareResponse defines the response structure for

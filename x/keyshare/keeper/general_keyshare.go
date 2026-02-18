@@ -88,6 +88,7 @@ func (k Keeper) SetPrivateKeyshare(ctx context.Context, encKeyshare types.Valida
 		encKeyshare.Validator,
 		encKeyshare.Identity,
 		encKeyshare.Requester,
+		encKeyshare.SecpPubkey,
 	), b)
 }
 
@@ -97,6 +98,7 @@ func (k Keeper) GetPrivateKeyshare(
 	validator string,
 	identity string,
 	requester string,
+	secpPubkey string,
 ) (val types.ValidatorEncryptedKeyshare, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateKeyshareKeyPrefix))
@@ -105,6 +107,7 @@ func (k Keeper) GetPrivateKeyshare(
 		validator,
 		identity,
 		requester,
+		secpPubkey,
 	))
 	if b == nil {
 		return val, false
@@ -120,6 +123,7 @@ func (k Keeper) RemovePrivateKeyshare(
 	validator string,
 	identiy string,
 	requester string,
+	secpPubkey string,
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.PrivateKeyshareKeyPrefix))
@@ -127,6 +131,7 @@ func (k Keeper) RemovePrivateKeyshare(
 		validator,
 		identiy,
 		requester,
+		secpPubkey,
 	))
 }
 

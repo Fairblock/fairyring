@@ -72,6 +72,7 @@ message RequestPrivateDecryptionKey {
 message PrivateDecryptionKey {
   string requester = 1;
   repeated IndexedEncryptedKeyshare private_keyshares = 2;
+  string secp_pubkey = 3;
 }
 
 // IndexedEncryptedKeyshare defines the storage of submitted encrypted

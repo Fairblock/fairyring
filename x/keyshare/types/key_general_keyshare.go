@@ -38,6 +38,7 @@ func PrivateKeyshareKey(
 	validator string,
 	identity string,
 	requester string,
+	secpPubkey string,
 ) []byte {
 	var key []byte
 
@@ -51,6 +52,10 @@ func PrivateKeyshareKey(
 
 	requesterBytes := []byte(requester)
 	key = append(key, requesterBytes...)
+	key = append(key, []byte("/")...)
+
+	secpPubkeyBytes := []byte(secpPubkey)
+	key = append(key, secpPubkeyBytes...)
 	key = append(key, []byte("/")...)
 
 	return key

@@ -166,7 +166,19 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 
 			}
 
-			if len(privDecryptionKeyReq.PrivateDecryptionKeys) == 0 {
+			// Emit signal if this (requester,secp_pubkey) pair has not been satisfied yet.
+			needSignal := true
+			for _, entry := range privDecryptionKeyReq.PrivateDecryptionKeys {
+				if entry == nil {
+					continue
+				}
+				if entry.Requester == req.Requester && entry.SecpPubkey == req.SecpPubkey && len(entry.PrivateKeyshares) != 0 {
+					needSignal = false
+					break
+				}
+			}
+
+			if needSignal {
 				ctx.EventManager().EmitEvent(
 					sdk.NewEvent(types.StartSendEncryptedKeyshareEventType,
 						sdk.NewAttribute(types.StartSendGeneralKeyshareEventIdentity, req.Identity),

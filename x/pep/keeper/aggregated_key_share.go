@@ -114,7 +114,28 @@ func (k Keeper) OnRecvPrivDecryptionKeyDataPacket(
 		return packetAck, errors.New("request not found for this id")
 	}
 
-	entry.PrivateDecryptionKeys = data.PrivateDecryptionKey
+	// Merge/upsert by (requester,secp_pubkey) so the same requester can have multiple keys per identity.
+	for _, incoming := range data.PrivateDecryptionKey {
+		if incoming == nil {
+			continue
+		}
+
+		replaced := false
+		for i, existing := range entry.PrivateDecryptionKeys {
+			if existing == nil {
+				continue
+			}
+			if existing.Requester == incoming.Requester && existing.SecpPubkey == incoming.SecpPubkey {
+				entry.PrivateDecryptionKeys[i] = incoming
+				replaced = true
+				break
+			}
+		}
+
+		if !replaced {
+			entry.PrivateDecryptionKeys = append(entry.PrivateDecryptionKeys, incoming)
+		}
+	}
 	k.SetPrivateRequest(ctx, entry)
 
 	return packetAck, nil

@@ -36,5 +36,5 @@ message ValidatorEncryptedKeyshare {
   uint64 received_timestamp = 5;
   uint64 received_block_height = 6;
   string identity = 7;
+  string secp_pubkey = 8;
 }
-

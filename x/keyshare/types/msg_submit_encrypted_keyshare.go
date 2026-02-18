@@ -14,6 +14,7 @@ func NewMsgSubmitEncryptedKeyshare(
 	creator string,
 	identity string,
 	requester string,
+	secpPubkey string,
 	encryptedKeyshare string,
 	keyshareIndex uint64,
 ) *MsgSubmitEncryptedKeyshare {
@@ -23,6 +24,7 @@ func NewMsgSubmitEncryptedKeyshare(
 		EncryptedKeyshare: encryptedKeyshare,
 		KeyshareIndex:     keyshareIndex,
 		Requester:         requester,
+		SecpPubkey:        secpPubkey,
 	}
 }
 
@@ -32,8 +34,8 @@ func (msg *MsgSubmitEncryptedKeyshare) ValidateBasic() error {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 
-	if msg.Identity == "" || msg.EncryptedKeyshare == "" || msg.Requester == "" {
-		return errors.New("identity, encryptedKeyshares and requester cannot be blank")
+	if msg.Identity == "" || msg.EncryptedKeyshare == "" || msg.Requester == "" || msg.SecpPubkey == "" {
+		return errors.New("identity, encryptedKeyshares and requester and secp pubkey cannot be blank")
 	}
 
 	return nil

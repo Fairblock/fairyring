@@ -76,6 +76,7 @@ func TestEncryptedKeyshareMsgServerCreate(t *testing.T) {
 			expected.Creator,
 			expected.Identity,
 			expected.Creator,
+			"",
 		)
 		require.True(t, found)
 		require.Equal(t, expected.Creator, rst.Validator)

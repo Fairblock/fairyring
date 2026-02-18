@@ -59,6 +59,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 		ReceivedTimestamp:   msg.ReceivedTimestamp,
 		ReceivedBlockHeight: msg.ReceivedBlockHeight,
 		Identity:            msg.Identity,
+		SecpPubkey:          msg.SecpPubkey,
 	}
 
 	// Save the new private keyshare to state
@@ -71,7 +72,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 	var stateEncryptedKeyshares []types.ValidatorEncryptedKeyshare
 
 	for _, eachValidator := range validatorList {
-		eachPrivDecryptionKeyReq, found := k.GetPrivateKeyshare(ctx, eachValidator.Validator, msg.Identity, msg.Requester)
+		eachPrivDecryptionKeyReq, found := k.GetPrivateKeyshare(ctx, eachValidator.Validator, msg.Identity, msg.Requester, msg.SecpPubkey)
 		if !found {
 			continue
 		}
@@ -110,7 +111,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 
 	if len(privDecryptionKeyReq.PrivateDecryptionKeys) != 0 {
 		for _, entry := range privDecryptionKeyReq.PrivateDecryptionKeys {
-			if entry.Requester == msg.Requester && len(entry.PrivateKeyshares) != 0 {
+			if entry.Requester == msg.Requester && entry.SecpPubkey == msg.SecpPubkey && len(entry.PrivateKeyshares) != 0 {
 				return &types.MsgSubmitEncryptedKeyshareResponse{}, nil
 			}
 		}
@@ -125,6 +126,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 		kslist.PrivateKeyshares = append(kslist.PrivateKeyshares, &indexedKeyshare)
 	}
 	kslist.Requester = msg.Requester
+	kslist.SecpPubkey = msg.SecpPubkey
 
 	privDecryptionKeyReq.PrivateDecryptionKeys = append(privDecryptionKeyReq.PrivateDecryptionKeys, &kslist)
 	k.SetPrivateDecryptionKeyRequest(ctx, privDecryptionKeyReq)
