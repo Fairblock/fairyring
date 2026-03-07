@@ -132,7 +132,7 @@ The `ProcessProposal` handler is called by the ABCI++ application when a new blo
 1. Determine the order of lanes it wants to verify the proposal with. If the application is configured to utilize the Block SDK module, it will fetch the governance configured order of lanes and use that. Otherwise, it will use the order defined in your [`app.go`](../tests/app/app.go) file (see our test app as an example).
 2. After determining the order, it will chain together all of the lane's `ProcessLane` methods into a single `ProcessProposal` method.
 3. Given that the proposal contains contiguous sections of transactions from a given lane, each lane will verify the transactions that belong to it and return the remaining transactions to verify for the next lane - see [`ProcessLane`](../block/base/abci.go).
-4. After determining and verifiying the transactions that belong to it, the lane will attempt to update the current proposal - so as to replicate the exact same steps done in `PrepareProposal`. If the lane is unable to update the proposal, it will return an error and the proposal will be rejected.
+4. After determining and verifying the transactions that belong to it, the lane will attempt to update the current proposal - so as to replicate the exact same steps done in `PrepareProposal`. If the lane is unable to update the proposal, it will return an error and the proposal will be rejected.
 5. Once all lanes have been called and no transactions are left to verify, the proposal outputted by `ProcessProposal` should be the same as the proposal outputted by `PrepareProposal`!
 
 If any of the lanes fail during `ProcessLane`, the entire proposal is rejected. There ensures that there is always parity between the proposal built and the proposal verified.
