@@ -256,7 +256,7 @@ func (m *CounterPartyIBCInfo) GetPortId() string {
 	return ""
 }
 
-// PrivateDecryptionKeyRequest defines the stroage structure for private
+// PrivateDecryptionKeyRequest defines the storage structure for private
 // encrypted and unaggregated decryption key requests
 type PrivateDecryptionKeyRequest struct {
 	Identity              string                        `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
