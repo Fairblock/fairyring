@@ -851,6 +851,65 @@ func VerifyWithdrawRange(pd *BatchedRangeProofU64Data) error {
 	return nil
 }
 
+type PodU64 [8]byte
+
+type WithdrawBatchedRangeProofContext struct {
+	Commitments [8]PodPedersenCommitment
+	BitLengths  [8]uint8
+	Nonce       PodU64
+}
+
+type WithdrawBatchedRangeProofU64Data struct {
+	Context WithdrawBatchedRangeProofContext
+	Proof   PodRangeProofU64
+}
+
+
+func VerifyWithdrawRangeWithNonce(pd *WithdrawBatchedRangeProofU64Data) error {
+	baseCtx := BatchedRangeProofContext{
+		Commitments: pd.Context.Commitments,
+		BitLengths:  pd.Context.BitLengths,
+	}
+	commitments, bitLengths, perr := collectRangeCtx(&baseCtx, 64)
+	if perr != 0 {
+		return perr
+	}
+
+	t := newWithdrawTranscriptRange(&pd.Context)
+
+	rp, err := RangeProofFromPodU64(pd.Proof)
+	if err != nil {
+		return ProofErrDeserialization
+	}
+
+	commRefs := make([]*PedersenCommitment, len(commitments))
+	for i := range commitments {
+		commRefs[i] = &commitments[i]
+	}
+
+	if err := rp.Verify(commRefs, bitLengths, t); err != nil {
+		return ProofErrAlgebraic
+	}
+	return nil
+}
+
+func newWithdrawTranscriptRange(ctx *WithdrawBatchedRangeProofContext) *merlin.Transcript {
+	t := merlin.NewTranscript("withdraw-batched-range-proof-instruction")
+
+	var commitsBytes [8 * 32]byte
+	for i := 0; i < len(ctx.Commitments); i++ {
+		copy(commitsBytes[32*i:32*(i+1)], ctx.Commitments[i].Bytes[:])
+	}
+	t.AppendMessage([]byte("commitments"), commitsBytes[:])
+
+	bitBytes := ctx.BitLengths
+	t.AppendMessage([]byte("bit-lengths"), bitBytes[:])
+
+	t.AppendMessage([]byte("nonce"), ctx.Nonce[:])
+
+	return t
+}
+
 func VerifyTransferRange(pd *BatchedRangeProofU128Data) error {
 	commitments, bitLengths, perr := collectRangeCtx(&pd.Context, 64)
 	if perr != 0 {

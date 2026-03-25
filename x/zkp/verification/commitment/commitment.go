@@ -325,3 +325,64 @@ func newSplTranscript(ctx *CiphertextCommitmentEqualityProofContext) *merlin.Tra
 	return t
 }
 
+type PodU64 [8]byte
+
+type WithdrawCiphertextCommitmentEqualityProofContext struct {
+	Pubkey     PodElGamalPubkey
+	Ciphertext PodElGamalCiphertext
+	Commitment PodPedersenCommitment
+	Nonce      PodU64
+}
+
+type WithdrawCiphertextCommitmentEqualityProofData struct {
+	Context WithdrawCiphertextCommitmentEqualityProofContext
+	Proof   PodCiphertextCommitmentEqualityProof
+}
+
+func VerifyWithdrawEqualityProof(pd *WithdrawCiphertextCommitmentEqualityProofData) error {
+	var pk ElGamalPubkey
+	if err := pk.FromPod(pd.Context.Pubkey); err != nil {
+		return ErrProofDeserialization
+	}
+
+	var ct ElGamalCiphertext
+	if err := ct.FromPod(pd.Context.Ciphertext); err != nil {
+		return ErrProofDeserialization
+	}
+
+	cm, err := PedersenCommitmentFromPod(pd.Context.Commitment)
+	if err != nil {
+		return ErrProofDeserialization
+	}
+
+	raw := pd.Proof.AsBytes()
+	proof, err := EqualityProofFromBytes(&raw)
+	if err != nil {
+		return ErrProofDeserialization
+	}
+
+	t := newWithdrawSplTranscript(&pd.Context)
+
+	if err := proof.Verify(&pk, &ct, cm, t); err != nil {
+		return ErrProofAlgebraic
+	}
+	return nil
+}
+
+func newWithdrawSplTranscript(ctx *WithdrawCiphertextCommitmentEqualityProofContext) *merlin.Transcript {
+	t := merlin.NewTranscript("withdraw-ciphertext-commitment-equality-instruction")
+
+	t.AppendMessage([]byte("pubkey"), ctx.Pubkey.Bytes[:])
+
+	var ctBytes [2 * U]byte
+	copy(ctBytes[0*U:1*U], ctx.Ciphertext.Commitment[:])
+	copy(ctBytes[1*U:2*U], ctx.Ciphertext.Handle[:])
+	t.AppendMessage([]byte("ciphertext"), ctBytes[:])
+
+	t.AppendMessage([]byte("commitment"), ctx.Commitment.Bytes[:])
+
+	t.AppendMessage([]byte("nonce"), ctx.Nonce[:])
+
+	return t
+}
+

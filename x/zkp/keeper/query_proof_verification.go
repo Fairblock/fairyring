@@ -11,24 +11,22 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// VerifyWithdrawRangeProof verifies a withdraw range proof (U64)
+// VerifyWithdrawRangeProof verifies a withdraw range proof (U64) with nonce binding.
 func (k Keeper) VerifyWithdrawRangeProof(goCtx context.Context, req *types.QueryVerifyWithdrawRangeProofRequest) (*types.QueryVerifyWithdrawRangeProofResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	// Deserialize proof data
-	if len(req.ProofData) < 8*32+8+672 {
+	if len(req.ProofData) < 8*32+8+8+672 {
 		return &types.QueryVerifyWithdrawRangeProofResponse{
 			Valid: false,
 			Error: "invalid proof data length",
 		}, nil
 	}
 
-	var proofData rangeproof.BatchedRangeProofU64Data
+	var proofData rangeproof.WithdrawBatchedRangeProofU64Data
 	offset := 0
 
-	// Deserialize commitments
 	for i := 0; i < 8; i++ {
 		if offset+32 > len(req.ProofData) {
 			return &types.QueryVerifyWithdrawRangeProofResponse{
@@ -40,7 +38,6 @@ func (k Keeper) VerifyWithdrawRangeProof(goCtx context.Context, req *types.Query
 		offset += 32
 	}
 
-	// Deserialize bit lengths
 	for i := 0; i < 8; i++ {
 		if offset >= len(req.ProofData) {
 			return &types.QueryVerifyWithdrawRangeProofResponse{
@@ -52,7 +49,15 @@ func (k Keeper) VerifyWithdrawRangeProof(goCtx context.Context, req *types.Query
 		offset++
 	}
 
-	// Deserialize proof
+	if offset+8 > len(req.ProofData) {
+		return &types.QueryVerifyWithdrawRangeProofResponse{
+			Valid: false,
+			Error: "invalid nonce data",
+		}, nil
+	}
+	copy(proofData.Context.Nonce[:], req.ProofData[offset:offset+8])
+	offset += 8
+
 	if offset+672 > len(req.ProofData) {
 		return &types.QueryVerifyWithdrawRangeProofResponse{
 			Valid: false,
@@ -61,8 +66,7 @@ func (k Keeper) VerifyWithdrawRangeProof(goCtx context.Context, req *types.Query
 	}
 	copy(proofData.Proof[:], req.ProofData[offset:offset+672])
 
-	// Verify proof using the verification module
-	err := rangeproof.VerifyWithdrawRange(&proofData)
+	err := rangeproof.VerifyWithdrawRangeWithNonce(&proofData)
 	if err != nil {
 		return &types.QueryVerifyWithdrawRangeProofResponse{
 			Valid: false,
@@ -394,17 +398,16 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 	}
 
 	// Verify equality proof
-	if len(req.EqualityProofData) < 320 {
+	if len(req.EqualityProofData) < 328 {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
 			Error: "invalid equality proof data length",
 		}, nil
 	}
 
-	var equalityProofData commitment.CiphertextCommitmentEqualityProofData
+	var equalityProofData commitment.WithdrawCiphertextCommitmentEqualityProofData
 	offset := 0
 
-	// Deserialize equality proof
 	copy(equalityProofData.Context.Pubkey.Bytes[:], req.EqualityProofData[offset:offset+32])
 	offset += 32
 	copy(equalityProofData.Context.Ciphertext.Commitment[:], req.EqualityProofData[offset:offset+32])
@@ -413,6 +416,8 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 	offset += 32
 	copy(equalityProofData.Context.Commitment.Bytes[:], req.EqualityProofData[offset:offset+32])
 	offset += 32
+	copy(equalityProofData.Context.Nonce[:], req.EqualityProofData[offset:offset+8])
+	offset += 8
 	copy(equalityProofData.Proof.Y0[:], req.EqualityProofData[offset:offset+32])
 	offset += 32
 	copy(equalityProofData.Proof.Y1[:], req.EqualityProofData[offset:offset+32])
@@ -425,7 +430,7 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 	offset += 32
 	copy(equalityProofData.Proof.Zr[:], req.EqualityProofData[offset:offset+32])
 
-	err := commitment.VerifyEqualityProof(&equalityProofData)
+	err := commitment.VerifyWithdrawEqualityProof(&equalityProofData)
 	if err != nil {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
@@ -434,17 +439,16 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 	}
 
 	// Verify range proof
-	if len(req.RangeProofData) < 8*32+8+672 {
+	if len(req.RangeProofData) < 8*32+8+8+672 {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
 			Error: "invalid range proof data length",
 		}, nil
 	}
 
-	var rangeProofData rangeproof.BatchedRangeProofU64Data
+	var rangeProofData rangeproof.WithdrawBatchedRangeProofU64Data
 	offset = 0
 
-	// Deserialize range proof commitments
 	for i := 0; i < 8; i++ {
 		if offset+32 > len(req.RangeProofData) {
 			return &types.QueryVerifyWithdrawProofsResponse{
@@ -456,7 +460,6 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 		offset += 32
 	}
 
-	// Deserialize bit lengths
 	for i := 0; i < 8; i++ {
 		if offset >= len(req.RangeProofData) {
 			return &types.QueryVerifyWithdrawProofsResponse{
@@ -468,7 +471,15 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 		offset++
 	}
 
-	// Deserialize proof
+	if offset+8 > len(req.RangeProofData) {
+		return &types.QueryVerifyWithdrawProofsResponse{
+			Valid: false,
+			Error: "invalid range proof nonce data",
+		}, nil
+	}
+	copy(rangeProofData.Context.Nonce[:], req.RangeProofData[offset:offset+8])
+	offset += 8
+
 	if offset+672 > len(req.RangeProofData) {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
@@ -477,7 +488,7 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 	}
 	copy(rangeProofData.Proof[:], req.RangeProofData[offset:offset+672])
 
-	err = rangeproof.VerifyWithdrawRange(&rangeProofData)
+	err = rangeproof.VerifyWithdrawRangeWithNonce(&rangeProofData)
 	if err != nil {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
