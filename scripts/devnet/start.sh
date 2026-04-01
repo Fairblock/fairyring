@@ -1,4 +1,20 @@
 #!/bin/bash
+# Configuration-only script: initializes chain data on first run and updates service configs.
+# Does NOT start, stop, or restart any services — those are managed via systemd.
+#
+# Usage:
+#   make devnet-up            # build binary + run this script
+#
+# After running (first time):
+#   sudo cp scripts/devnet/systemd/*.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now fairyring
+#   ./scripts/devnet/register-validator.sh   # once fairyring is up
+#   sudo systemctl enable --now fairyringclient sharegenerationclient fairyport
+#
+# Config update (subsequent runs, preserves all chain data):
+#   make devnet-up
+#   sudo systemctl restart fairyringclient sharegenerationclient fairyport
 
 # Use the newly built binary from $HOME/go/bin if available, otherwise fall back to system binary
 if [ -f "$HOME/go/bin/fairyringd" ]; then
@@ -6,6 +22,7 @@ if [ -f "$HOME/go/bin/fairyringd" ]; then
 else
     BINARY=fairyringd
 fi
+
 # ───────────────────────── CONFIG ─────────────────────────
 CHAIN_DIR=$(pwd)/devnet_data
 CHAINID=fairyring_devnet
@@ -36,7 +53,6 @@ RLY_MNEMONIC_1="alley afraid soup fall idea toss can goose become valve initial 
 
 P2PPORT=26656
 RPCPORT=26657
-
 RESTPORT=1317
 ROSETTA=8080
 GRPCPORT=9090
@@ -57,21 +73,6 @@ need_cmd() {
     echo "Missing required command: $1"
     MISSING=1
   fi
-}
-
-check_tx_code () {
-  local TX_CODE=$(echo "$1" | jq -r '.code')
-  if [ "$TX_CODE" != 0 ]; then
-    echo "ERROR: Tx failed with code: $TX_CODE"
-    exit 1
-  fi
-}
-
-wait_for_tx () {
-  sleep $BLOCK_TIME
-  local TXHASH=$(echo "$1" | jq -r '.txhash')
-  RESULT=$($BINARY q tx --type=hash $TXHASH --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --node tcp://localhost:$RPCPORT -o json)
-  echo "$RESULT"
 }
 
 # Ensure GOPATH/bin is in PATH so go-install'ed binaries are visible
@@ -118,7 +119,6 @@ ensure_sharegenerationclient() {
     echo "Initializing $SHAREGENERATIONCLIENT config..."
     $SHAREGENERATIONCLIENT config init
   fi
-  # Overwrite with provided config
   if [ ! -f "$(pwd)/scripts/devnet/sharegenerationclient_config.yml" ]; then
     echo "ERROR: Missing devnet config file scripts/devnet/sharegenerationclient_config.yml"
     exit 1
@@ -193,118 +193,99 @@ ensure_fairyport() {
   echo "$FAIRYPORT config updated at $cfg"
 }
 
-# ─────────────── Install & configure services FIRST ─────────
+# ─────────────── Install & configure services ─────────────
 ensure_sharegenerationclient
 ensure_fairyringclient
 ensure_fairyport
 
-# ─────────────── Now proceed with your original flow ────────
+# ─────────────── Chain initialization (first run only) ────
+# If genesis.json already exists, the chain has been initialized — skip to
+# avoid overwriting data.  Re-running this script is safe and idempotent.
+if [ ! -f "$CHAIN_DIR/$CHAINID/config/genesis.json" ]; then
+  echo "First-time chain initialization..."
 
-# Stop if it is already running
-if pgrep -x "$BINARY" >/dev/null; then
-  echo "Terminating $BINARY..."
-  killall "$BINARY"
-fi
-
-if pgrep -x "hermes" >/dev/null; then
-  echo "Terminating Hermes Relayer..."
-  killall hermes
-fi
-
-echo "Removing previous data..."
-rm -rf $CHAIN_DIR/$CHAINID &> /dev/null
-
-# Add directories for both chains, exit if an error occurs
-if ! mkdir -p $CHAIN_DIR/$CHAINID 2>/dev/null; then
+  if ! mkdir -p $CHAIN_DIR/$CHAINID 2>/dev/null; then
     echo "Failed to create chain folder. Aborting..."
     exit 1
-fi
+  fi
 
-echo "Initializing $CHAINID ..."
-$BINARY init devnet --home $CHAIN_DIR/$CHAINID --default-denom ufair --chain-id=$CHAINID &> /dev/null
+  echo "Initializing $CHAINID ..."
+  $BINARY init devnet --home $CHAIN_DIR/$CHAINID --default-denom ufair --chain-id=$CHAINID &> /dev/null
 
-echo "Adding genesis accounts..."
-echo $VAL_MNEMONIC_1 | $BINARY keys add val1 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
-echo $WALLET_MNEMONIC_1 | $BINARY keys add wallet1 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
-echo $WALLET_MNEMONIC_2 | $BINARY keys add wallet2 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
-echo $WALLET_MNEMONIC_3 | $BINARY keys add wallet3 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
-echo $WALLET_MNEMONIC_4 | $BINARY keys add wallet4 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
-echo $WALLET_MNEMONIC_5 | $BINARY keys add wallet5 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
-echo $WALLET_MNEMONIC_6 | $BINARY keys add wallet6 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
-RLY1_JSON=$(echo $RLY_MNEMONIC_1 | $BINARY keys add rly1 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test --output json)
-echo $RLY1_JSON | jq --arg mnemonic "$RLY_MNEMONIC_1" '. += $ARGS.named'> rly1.json
+  echo "Adding genesis accounts..."
+  echo $VAL_MNEMONIC_1 | $BINARY keys add val1 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
+  echo $WALLET_MNEMONIC_1 | $BINARY keys add wallet1 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
+  echo $WALLET_MNEMONIC_2 | $BINARY keys add wallet2 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
+  echo $WALLET_MNEMONIC_3 | $BINARY keys add wallet3 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
+  echo $WALLET_MNEMONIC_4 | $BINARY keys add wallet4 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
+  echo $WALLET_MNEMONIC_5 | $BINARY keys add wallet5 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
+  echo $WALLET_MNEMONIC_6 | $BINARY keys add wallet6 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
+  echo $RLY_MNEMONIC_1 | $BINARY keys add rly1 --home $CHAIN_DIR/$CHAINID --recover --keyring-backend test
 
-VAL1_ADDR=$($BINARY keys show val1 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
-WALLET1_ADDR=$($BINARY keys show wallet1 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
-WALLET2_ADDR=$($BINARY keys show wallet2 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
-WALLET3_ADDR=$($BINARY keys show wallet3 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
-WALLET4_ADDR=$($BINARY keys show wallet4 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
-WALLET5_ADDR=$($BINARY keys show wallet5 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
-WALLET6_ADDR=$($BINARY keys show wallet6 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
-RLY1_ADDR=$($BINARY keys show rly1 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
+  _VAL1_ADDR=$($BINARY keys show val1 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
+  _WALLET1_ADDR=$($BINARY keys show wallet1 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
+  _WALLET2_ADDR=$($BINARY keys show wallet2 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
+  _WALLET3_ADDR=$($BINARY keys show wallet3 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
+  _WALLET4_ADDR=$($BINARY keys show wallet4 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
+  _WALLET5_ADDR=$($BINARY keys show wallet5 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
+  _WALLET6_ADDR=$($BINARY keys show wallet6 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
+  _RLY1_ADDR=$($BINARY keys show rly1 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test)
 
-$BINARY genesis add-genesis-account $VAL1_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET1_ADDR 10000000000000000ufair,1000000000000fusdc --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET2_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET3_ADDR 1000000000000ufair --vesting-amount 1000000000000ufair --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET4_ADDR 1000000000000ufair --vesting-amount 1000000000000ufair --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET5_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET6_ADDR 100000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $RLY1_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
+  $BINARY genesis add-genesis-account $_VAL1_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
+  $BINARY genesis add-genesis-account $_WALLET1_ADDR 10000000000000000ufair,1000000000000fusdc --home $CHAIN_DIR/$CHAINID --keyring-backend test
+  $BINARY genesis add-genesis-account $_WALLET2_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
+  $BINARY genesis add-genesis-account $_WALLET3_ADDR 1000000000000ufair --vesting-amount 1000000000000ufair --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
+  $BINARY genesis add-genesis-account $_WALLET4_ADDR 1000000000000ufair --vesting-amount 1000000000000ufair --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
+  $BINARY genesis add-genesis-account $_WALLET5_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
+  $BINARY genesis add-genesis-account $_WALLET6_ADDR 100000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
+  $BINARY genesis add-genesis-account $_RLY1_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
 
-echo "Creating and collecting gentx..."
-$BINARY genesis gentx val1 100000000000ufair --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --keyring-backend test
-$BINARY genesis collect-gentxs --home $CHAIN_DIR/$CHAINID &> /dev/null
-echo "Changing defaults and ports in app.toml and config.toml files..."
+  echo "Creating and collecting gentx..."
+  $BINARY genesis gentx val1 100000000000ufair --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --keyring-backend test
+  $BINARY genesis collect-gentxs --home $CHAIN_DIR/$CHAINID &> /dev/null
 
-sed -i -e 's/cors_allowed_origins = \[\]/cors_allowed_origins = \["*"\]/g' $CHAIN_DIR/$CHAINID/config/config.toml
-sed -i -e 's#"tcp://0.0.0.0:26656"#"tcp://0.0.0.0:'"$P2PPORT"'"#g' $CHAIN_DIR/$CHAINID/config/config.toml
-sed -i -e 's#"tcp://127.0.0.1:26657"#"tcp://0.0.0.0:'"$RPCPORT"'"#g' $CHAIN_DIR/$CHAINID/config/config.toml
-sed -i -e 's/timeout_commit = "5s"/timeout_commit = "5s"/g' $CHAIN_DIR/$CHAINID/config/config.toml
-sed -i -e 's/timeout_propose = "3s"/timeout_propose = "5s"/g' $CHAIN_DIR/$CHAINID/config/config.toml
-sed -i -e 's/index_all_keys = false/index_all_keys = true/g' $CHAIN_DIR/$CHAINID/config/config.toml
+  echo "Changing defaults and ports in app.toml and config.toml files..."
 
-# Increase RPC max request body size to allow large transactions (e.g., 500 transfers with proofs)
-# Default is usually 1MB, increase to 50MB to handle large batch transactions
-if ! grep -q "max_body_bytes" $CHAIN_DIR/$CHAINID/config/config.toml; then
-    # Add max_body_bytes setting to [rpc] section if it doesn't exist
-    sed -i '/\[rpc\]/a max_body_bytes = 52428800' $CHAIN_DIR/$CHAINID/config/config.toml
-else
-    # Update existing max_body_bytes setting
-    sed -i -e 's/^max_body_bytes = .*/max_body_bytes = 52428800/g' $CHAIN_DIR/$CHAINID/config/config.toml
-fi
+  sed -i -e 's/cors_allowed_origins = \[\]/cors_allowed_origins = \["*"\]/g' $CHAIN_DIR/$CHAINID/config/config.toml
+  sed -i -e 's#"tcp://0.0.0.0:26656"#"tcp://0.0.0.0:'"$P2PPORT"'"#g' $CHAIN_DIR/$CHAINID/config/config.toml
+  sed -i -e 's#"tcp://127.0.0.1:26657"#"tcp://0.0.0.0:'"$RPCPORT"'"#g' $CHAIN_DIR/$CHAINID/config/config.toml
+  sed -i -e 's/timeout_commit = "5s"/timeout_commit = "5s"/g' $CHAIN_DIR/$CHAINID/config/config.toml
+  sed -i -e 's/timeout_propose = "3s"/timeout_propose = "5s"/g' $CHAIN_DIR/$CHAINID/config/config.toml
+  sed -i -e 's/index_all_keys = false/index_all_keys = true/g' $CHAIN_DIR/$CHAINID/config/config.toml
 
-# Increase CometBFT mempool tx size limit (network-level) to match app and genesis limits
-# Default max_tx_bytes here is usually 1MB; bump to 50MB so large txs pass CheckTx
-if grep -q "^max_tx_bytes" $CHAIN_DIR/$CHAINID/config/config.toml; then
-    sed -i -e 's/^max_tx_bytes = .*/max_tx_bytes = 52428800/g' $CHAIN_DIR/$CHAINID/config/config.toml
-fi
+  # Increase RPC max request body size to allow large transactions (e.g., 500 transfers with proofs)
+  if ! grep -q "max_body_bytes" $CHAIN_DIR/$CHAINID/config/config.toml; then
+      sed -i '/\[rpc\]/a max_body_bytes = 52428800' $CHAIN_DIR/$CHAINID/config/config.toml
+  else
+      sed -i -e 's/^max_body_bytes = .*/max_body_bytes = 52428800/g' $CHAIN_DIR/$CHAINID/config/config.toml
+  fi
 
-sed -i -e 's/cors = false/cors = true/g' $CHAIN_DIR/$CHAINID/config/app.toml
-sed -i -e 's/enable = false/enable = true/g' $CHAIN_DIR/$CHAINID/config/app.toml
-sed -i -e 's/swagger = false/swagger = true/g' $CHAIN_DIR/$CHAINID/config/app.toml
-sed -i -e 's#"tcp://localhost:1317"#"tcp://localhost:'"$RESTPORT"'"#g' $CHAIN_DIR/$CHAINID/config/app.toml
-sed -i -e 's#":8080"#":'"$ROSETTA"'"#g' $CHAIN_DIR/$CHAINID/config/app.toml
-sed -i -e 's/minimum-gas-prices = ""/minimum-gas-prices = "0ufair"/g' $CHAIN_DIR/$CHAINID/config/app.toml
+  # Increase CometBFT mempool tx size limit
+  if grep -q "^max_tx_bytes" $CHAIN_DIR/$CHAINID/config/config.toml; then
+      sed -i -e 's/^max_tx_bytes = .*/max_tx_bytes = 52428800/g' $CHAIN_DIR/$CHAINID/config/config.toml
+  fi
 
-# Increase transaction size limits to allow large batch transactions with proofs
-# Default max_tx_bytes is usually 1MB, increase to 50MB
-# First ensure [mempool] section exists
-if ! grep -q "^\[mempool\]" $CHAIN_DIR/$CHAINID/config/app.toml; then
-    echo "" >> $CHAIN_DIR/$CHAINID/config/app.toml
-    echo "[mempool]" >> $CHAIN_DIR/$CHAINID/config/app.toml
-fi
+  sed -i -e 's/cors = false/cors = true/g' $CHAIN_DIR/$CHAINID/config/app.toml
+  sed -i -e 's/enable = false/enable = true/g' $CHAIN_DIR/$CHAINID/config/app.toml
+  sed -i -e 's/swagger = false/swagger = true/g' $CHAIN_DIR/$CHAINID/config/app.toml
+  sed -i -e 's#"tcp://localhost:1317"#"tcp://localhost:'"$RESTPORT"'"#g' $CHAIN_DIR/$CHAINID/config/app.toml
+  sed -i -e 's#":8080"#":'"$ROSETTA"'"#g' $CHAIN_DIR/$CHAINID/config/app.toml
+  sed -i -e 's/minimum-gas-prices = ""/minimum-gas-prices = "0ufair"/g' $CHAIN_DIR/$CHAINID/config/app.toml
 
-if ! grep -q "^max_tx_bytes" $CHAIN_DIR/$CHAINID/config/app.toml; then
-    # Add max_tx_bytes setting after [mempool] section
-    sed -i '/^\[mempool\]/a max_tx_bytes = 52428800' $CHAIN_DIR/$CHAINID/config/app.toml
-else
-    # Update existing max_tx_bytes setting
-    sed -i -e 's/^max_tx_bytes = .*/max_tx_bytes = 52428800/g' $CHAIN_DIR/$CHAINID/config/app.toml
-fi
+  # Increase transaction size limits to allow large batch transactions
+  if ! grep -q "^\[mempool\]" $CHAIN_DIR/$CHAINID/config/app.toml; then
+      echo "" >> $CHAIN_DIR/$CHAINID/config/app.toml
+      echo "[mempool]" >> $CHAIN_DIR/$CHAINID/config/app.toml
+  fi
 
-# Ensure wasm section exists and enable Stargate queries for CosmWasm contracts
-cat >> $CHAIN_DIR/$CHAINID/config/app.toml << 'EOF'
+  if ! grep -q "^max_tx_bytes" $CHAIN_DIR/$CHAINID/config/app.toml; then
+      sed -i '/^\[mempool\]/a max_tx_bytes = 52428800' $CHAIN_DIR/$CHAINID/config/app.toml
+  else
+      sed -i -e 's/^max_tx_bytes = .*/max_tx_bytes = 52428800/g' $CHAIN_DIR/$CHAINID/config/app.toml
+  fi
+
+  # Ensure wasm section exists and enable Stargate queries for CosmWasm contracts
+  cat >> $CHAIN_DIR/$CHAINID/config/app.toml << 'EOF'
 
 ###############################################################################
 ###                           WASM Configuration                            ###
@@ -332,58 +313,41 @@ available_capabilities = [
 
 EOF
 
+  echo "Changing genesis.json..."
+  sed -i -e 's/"max_deposit_period": "172800s"/"max_deposit_period": "10s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+  sed -i -e 's/"voting_period": "172800s"/"voting_period": "10s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+  sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
 
-echo "Changing genesis.json..."
-sed -i -e 's/"max_deposit_period": "172800s"/"max_deposit_period": "10s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
-sed -i -e 's/"voting_period": "172800s"/"voting_period": "10s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
-sed -i -e 's/"reward_delay_time": "604800s"/"reward_delay_time": "0s"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+  # Increase max_tx_bytes and enable vote extensions
+  jq --arg veh "$VE_ENABLE_HEIGHT" '
+    .consensus.params.abci |= (.consensus.params.abci // {}) |
+    .consensus.params.abci.vote_extensions_enable_height = $veh |
+    .consensus.params.block.max_tx_bytes = "52428800" |
+    .consensus.params.evidence.max_tx_bytes = "52428800"
+  ' $CHAIN_DIR/$CHAINID/config/genesis.json > $CHAIN_DIR/$CHAINID/config/genesis.json.tmp && mv $CHAIN_DIR/$CHAINID/config/genesis.json.tmp $CHAIN_DIR/$CHAINID/config/genesis.json
 
-# Increase max_tx_bytes in genesis.json to allow large transactions
-# Default is usually 1MB (1048576), increase to 50MB (52428800)
-# This is the most important setting as it's enforced at consensus level
-# Use jq to properly modify JSON instead of sed to avoid syntax errors
-if command -v jq &> /dev/null; then
-    # Use jq to safely update max_tx_bytes in both block and evidence sections
-    # ALSO enable vote extensions (required for VE keyshare submissions)
-    jq --arg veh "$VE_ENABLE_HEIGHT" '
-      .consensus.params.abci |= (.consensus.params.abci // {}) |
-      .consensus.params.abci.vote_extensions_enable_height = $veh |
-      .consensus.params.block.max_tx_bytes = "52428800" |
-      .consensus.params.evidence.max_tx_bytes = "52428800"
-    ' $CHAIN_DIR/$CHAINID/config/genesis.json > $CHAIN_DIR/$CHAINID/config/genesis.json.tmp && mv $CHAIN_DIR/$CHAINID/config/genesis.json.tmp $CHAIN_DIR/$CHAINID/config/genesis.json
+  sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$_VAL1_ADDR"'","'"$_RLY1_ADDR"'","'"$_WALLET5_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+  TRUSTED_PARTIES='{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-0"}'
+  sed -i -e 's/"trusted_counter_parties": \[\]/"trusted_counter_parties": \['"$TRUSTED_PARTIES"'\]/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+  sed -i -e 's/"key_expiry": "100"/"key_expiry": "1000000"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+  sed -i -e 's/"is_source_chain": false/"is_source_chain": true/g' $CHAIN_DIR/$CHAINID/config/genesis.json
+
+  echo "Chain initialized."
 else
-    # Fallback to sed if jq is not available - be more careful with JSON syntax
-    if grep -q '"max_tx_bytes"' $CHAIN_DIR/$CHAINID/config/genesis.json; then
-        # Update existing max_tx_bytes (handle both quoted and unquoted numbers)
-        sed -i -e 's/"max_tx_bytes": *"[0-9]*"/"max_tx_bytes": "52428800"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
-        sed -i -e 's/"max_tx_bytes": *[0-9]*/"max_tx_bytes": "52428800"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
-    else
-        # Add max_tx_bytes after max_bytes, ensuring proper comma placement
-        # For block section
-        sed -i '/"block": {/,/"max_bytes":/ {
-            /"max_bytes":/ {
-                s/"max_bytes": "\([^"]*\)"/"max_bytes": "\1",\n        "max_tx_bytes": "52428800"/
-            }
-        }' $CHAIN_DIR/$CHAINID/config/genesis.json
-        # For evidence section  
-        sed -i '/"evidence": {/,/"max_bytes":/ {
-            /"max_bytes":/ {
-                s/"max_bytes": "\([^"]*\)"/"max_bytes": "\1",\n        "max_tx_bytes": "52428800"/
-            }
-        }' $CHAIN_DIR/$CHAINID/config/genesis.json
-    fi
+  echo "Chain data found at $CHAIN_DIR/$CHAINID — skipping genesis initialization."
 fi
 
-sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'","'"$RLY1_ADDR"'","'"$WALLET5_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID/config/genesis.json
-TRUSTED_PARTIES='{"client_id": "07-tendermint-0", "connection_id": "connection-0", "channel_id": "channel-0"}'
+# ─────────────── Read addresses from keyring (always) ────────
+# Keys are derived from fixed mnemonics so these are always stable.
+VAL1_ADDR=$($BINARY keys show val1 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test 2>/dev/null)
+WALLET1_ADDR=$($BINARY keys show wallet1 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test 2>/dev/null)
+WALLET2_ADDR=$($BINARY keys show wallet2 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test 2>/dev/null)
+WALLET3_ADDR=$($BINARY keys show wallet3 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test 2>/dev/null)
+WALLET4_ADDR=$($BINARY keys show wallet4 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test 2>/dev/null)
+WALLET5_ADDR=$($BINARY keys show wallet5 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test 2>/dev/null)
+WALLET6_ADDR=$($BINARY keys show wallet6 --home $CHAIN_DIR/$CHAINID -a --keyring-backend test 2>/dev/null)
 
-sed -i -e 's/"trusted_counter_parties": \[\]/"trusted_counter_parties": \['"$TRUSTED_PARTIES"'\]/g' $CHAIN_DIR/$CHAINID/config/genesis.json
-sed -i -e 's/"key_expiry": "100"/"key_expiry": "1000000"/g' $CHAIN_DIR/$CHAINID/config/genesis.json
-sed -i -e 's/"is_source_chain": false/"is_source_chain": true/g' $CHAIN_DIR/$CHAINID/config/genesis.json
-
-# ─────────────── Vote Extensions: keysharer.yaml ───────────────
-# Needed so the validator can attach VE payloads (keyshares) during consensus.
-# If APP_PRIV_HEX env var isn't set, derive it from the val1 key in the local keyring.
+# ─────────────── keysharer.yaml (always refresh) ─────────────
 if [ -z "$APP_PRIV_HEX" ]; then
   APP_PRIV_HEX=$(echo y | $BINARY keys export val1 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test 2>/dev/null | tail -n 1 | tr -d '\r\n')
 fi
@@ -400,65 +364,148 @@ invalid_share_pause_threshold: $KEYSHARER_INVALID_SHARE_PAUSE_THRESHOLD
 EOF
 cp -f $CHAIN_DIR/$CHAINID/keysharer.yaml $CHAIN_DIR/$CHAINID/config/keysharer.yaml
 
-echo "Starting $CHAINID in $CHAIN_DIR..."
-echo "Creating log file at $CHAIN_DIR/$CHAINID.log"
-$BINARY start --log_level info --log_format json --home $CHAIN_DIR/$CHAINID --pruning=nothing --grpc.address="0.0.0.0:$GRPCPORT" > $CHAIN_DIR/$CHAINID.log 2>&1 &
+# ─────────────── Generate systemd service files ──────────────
+# These are written to scripts/devnet/systemd/ with fully-resolved paths.
+# Install them with:
+#   sudo cp scripts/devnet/systemd/*.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+SYSTEMD_DIR="$(pwd)/scripts/devnet/systemd"
+mkdir -p "$SYSTEMD_DIR"
 
-rm rly1.json &> /dev/null
+SERVICE_USER="${SERVICE_USER:-$(id -u -n)}"
+SCRIPTS_DEVNET_DIR="$(pwd)/scripts/devnet"
 
-echo "Waiting Devnet to run..."
-sleep $((BLOCK_TIME*2))
+# Resolve absolute binary paths
+BINARY_ABS="$BINARY"
+[ -f "$HOME/go/bin/fairyringd" ] && BINARY_ABS="$HOME/go/bin/fairyringd"
+FAIRYRINGCLIENT_ABS="$(command -v "$FAIRYRINGCLIENT" 2>/dev/null || echo "$(go env GOPATH)/bin/$FAIRYRINGCLIENT")"
+SHAREGENERATIONCLIENT_ABS="$(command -v "$SHAREGENERATIONCLIENT" 2>/dev/null || echo "$(go env GOPATH)/bin/$SHAREGENERATIONCLIENT")"
+FAIRYPORT_ABS="$(command -v "$FAIRYPORT" 2>/dev/null || echo "$(go env GOPATH)/bin/$FAIRYPORT")"
 
-echo "Setting up Devnet..."
+cat > "$SYSTEMD_DIR/fairyring.service" <<EOF
+[Unit]
+Description=FairyRing Blockchain Node
+After=network.target
 
-echo "Registering as a validator in keyshare module..."
-RESULT=$($BINARY tx keyshare register-validator --from val1 --gas-prices 1ufair --home $CHAIN_DIR/$CHAINID --chain-id $CHAINID --node tcp://localhost:$RPCPORT --keyring-backend test --broadcast-mode sync -o json -y)
-check_tx_code $RESULT
-RESULT=$(wait_for_tx $RESULT)
-VALIDATOR_ADDR=$(echo "$RESULT" | jq -r '.events[8].attributes[0].value')
-if [ "$VALIDATOR_ADDR" != "$VAL1_ADDR" ]; then
-  echo "ERROR: KeyShare module register validator error. Expected registered validator address '$VAL1_ADDR', got '$VALIDATOR_ADDR'"
-  echo "ERROR MESSAGE: $(echo "$RESULT" | jq -r '.raw_log')"
-  echo "$RESULT" | jq
-  exit 1
-fi
+[Service]
+Type=simple
+User=$SERVICE_USER
+ExecStart=$BINARY_ABS start --log_level info --log_format json --home $CHAIN_DIR/$CHAINID --pruning=nothing --grpc.address=0.0.0.0:$GRPCPORT
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65535
+StandardOutput=journal
+StandardError=journal
 
+[Install]
+WantedBy=multi-user.target
+EOF
 
-echo "Starting FairyRingClient..."
-cd "$(pwd)/scripts/devnet"
-$FAIRYRINGCLIENT start --config fairyringclient_config.yml > $CHAIN_DIR/fairyringclient.log 2>&1 &
-echo "Starting ShareGenerationClient..."
-sleep $BLOCK_TIME
-$SHAREGENERATIONCLIENT start --config sharegenerationclient_config.yml > $CHAIN_DIR/sharegenerationclient.log 2>&1 &
-echo "Starting FairyPort..."
-sleep $BLOCK_TIME
-$FAIRYPORT start --config config.yml > $CHAIN_DIR/fairyport.log 2>&1 &
+cat > "$SYSTEMD_DIR/fairyringclient.service" <<EOF
+[Unit]
+Description=FairyRing Client
+After=network.target fairyring.service
+Requires=fairyring.service
 
+[Service]
+Type=simple
+User=$SERVICE_USER
+WorkingDirectory=$SCRIPTS_DEVNET_DIR
+ExecStart=$FAIRYRINGCLIENT_ABS start --config $SCRIPTS_DEVNET_DIR/fairyringclient_config.yml
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+cat > "$SYSTEMD_DIR/sharegenerationclient.service" <<EOF
+[Unit]
+Description=ShareGeneration Client
+After=network.target fairyring.service fairyringclient.service
+
+[Service]
+Type=simple
+User=$SERVICE_USER
+WorkingDirectory=$SCRIPTS_DEVNET_DIR
+ExecStart=$SHAREGENERATIONCLIENT_ABS start --config $SCRIPTS_DEVNET_DIR/sharegenerationclient_config.yml
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+cat > "$SYSTEMD_DIR/fairyport.service" <<EOF
+[Unit]
+Description=FairyPort
+After=network.target fairyring.service
+
+[Service]
+Type=simple
+User=$SERVICE_USER
+WorkingDirectory=$SCRIPTS_DEVNET_DIR
+ExecStart=$FAIRYPORT_ABS start --config $SCRIPTS_DEVNET_DIR/config.yml
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+echo "Systemd service files written to $SYSTEMD_DIR/"
+
+# ─────────────── Summary ─────────────────────────────────────
+echo ""
 echo "*********************************************************"
-echo "*  Done Setting up Fairyring Devnet and is now running  *"
+echo "*       Fairyring Devnet Configuration Complete         *"
 echo "*********************************************************"
 echo "*      Available Wallet Addresses & Private keys:       *"
 echo "---------------------------------------------------------"
 echo "Name: 'wallet1' | Address: $WALLET1_ADDR"
-echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet1 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test)"
+echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet1 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test 2>/dev/null | tail -n 1)"
 echo ""
 echo "Name: 'wallet2' | Address: $WALLET2_ADDR"
-echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet2 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test)"
+echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet2 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test 2>/dev/null | tail -n 1)"
 echo ""
 echo "Name: 'wallet3' | Address: $WALLET3_ADDR"
-echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet3 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test)"
+echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet3 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test 2>/dev/null | tail -n 1)"
 echo ""
 echo "Name: 'wallet4' | Address: $WALLET4_ADDR"
-echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet4 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test)"
+echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet4 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test 2>/dev/null | tail -n 1)"
 echo ""
 echo "Name: 'wallet5' | Address: $WALLET5_ADDR | (Trusted, for ShareGenerationClient)"
-echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet5 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test)"
+echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet5 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test 2>/dev/null | tail -n 1)"
 echo ""
 echo "Name: 'wallet6' | Address: $WALLET6_ADDR"
-echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet6 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test)"
+echo "PRIVATE KEY: $(echo y | $BINARY keys export wallet6 --home $CHAIN_DIR/$CHAINID --unsafe --unarmored-hex --keyring-backend test 2>/dev/null | tail -n 1)"
 echo "*******************************************************"
 echo "*    Node RPC ENDPOINT: http://localhost:$RPCPORT        *"
 echo "*    Node REST ENDPOINT: http://localhost:$RESTPORT        *"
 echo "*    Node GRPC ENDPOINT: http://localhost:$GRPCPORT        *"
 echo "*******************************************************"
 echo "Devnet data directory: $(pwd)/devnet_data/"
+echo ""
+echo "─── Next steps ─────────────────────────────────────────────"
+echo "1. Install systemd service files:"
+echo "   make devnet-install-services"
+echo "   (or: sudo cp scripts/devnet/systemd/*.service /etc/systemd/system/ && sudo systemctl daemon-reload)"
+echo ""
+echo "2. Start the chain node:"
+echo "   sudo systemctl enable --now fairyring"
+echo ""
+echo "3. Register validator (first time only, once fairyring is running):"
+echo "   ./scripts/devnet/register-validator.sh"
+echo ""
+echo "4. Start remaining services:"
+echo "   sudo systemctl enable --now fairyringclient sharegenerationclient fairyport"
+echo ""
+echo "To restart services after a config update:"
+echo "   sudo systemctl restart fairyringclient sharegenerationclient fairyport"
+echo "────────────────────────────────────────────────────────────"

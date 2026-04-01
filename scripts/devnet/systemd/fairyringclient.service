@@ -1,0 +1,17 @@
+[Unit]
+Description=FairyRing Client
+After=network.target fairyring.service
+Requires=fairyring.service
+
+[Service]
+Type=simple
+User=mani
+WorkingDirectory=/Users/mani/fairyring/scripts/devnet
+ExecStart=/Users/mani/.gvm/pkgsets/go1.22.5/global/bin/fairyringclient start --config /Users/mani/fairyring/scripts/devnet/fairyringclient_config.yml
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

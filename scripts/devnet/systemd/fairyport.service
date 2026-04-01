@@ -1,0 +1,16 @@
+[Unit]
+Description=FairyPort
+After=network.target fairyring.service
+
+[Service]
+Type=simple
+User=mani
+WorkingDirectory=/Users/mani/fairyring/scripts/devnet
+ExecStart=/Users/mani/go/bin/fairyport start --config /Users/mani/fairyring/scripts/devnet/config.yml
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -186,15 +186,24 @@ integration-test-all: init-test-framework \
 	-@rm -rf ./data
 	./scripts/tests/stop.sh
 
-devnet-up: init-devnet
-	@echo "Fairyring Devnet is now running in the background, run 'make devnet-down' to stop devnet."
+devnet-up: install
+	@echo "Configuring Fairyring devnet (existing chain data is preserved)..."
+	./scripts/devnet/start.sh
+
+devnet-install-services:
+	@echo "Installing systemd service files..."
+	sudo cp scripts/devnet/systemd/*.service /etc/systemd/system/
+	sudo systemctl daemon-reload
+	@echo "Done. Start with: sudo systemctl enable --now fairyring fairyringclient sharegenerationclient fairyport"
 
 devnet-down:
-	@echo "Killing fairyringd, fairyport, fairyringclient, ShareGenerationClient and removing previous data"
-	-@killall fairyringd 2>/dev/null
-	-@killall fairyport 2>/dev/null
-	-@killall fairyringclient 2>/dev/null
-	-@killall ShareGenerationClient 2>/dev/null
+	@echo "Stopping Fairyring devnet services..."
+	-@sudo systemctl stop fairyport 2>/dev/null; true
+	-@sudo systemctl stop sharegenerationclient 2>/dev/null; true
+	-@sudo systemctl stop fairyringclient 2>/dev/null; true
+	-@sudo systemctl stop fairyring 2>/dev/null; true
+
+devnet-fresh: clean-devnet-data devnet-up
 
 test-tx-limit:
 	@echo "Testing Block tx limit..."
@@ -227,18 +236,14 @@ init-test-framework: clean-testing-data install
 	./scripts/tests/start.sh
 	@sleep 3
 
-init-devnet: clean-devnet-data install
+init-devnet: install
 	@echo "Initializing fairyring devnet..."
 	./scripts/devnet/start.sh
-	@sleep 5
 
 clean-devnet-data:
-	@echo "Killing fairyringd, fairyport, fairyringclient, ShareGenerationClient and removing previous data"
+	@echo "Stopping services and removing devnet data..."
+	-@sudo systemctl stop fairyport fairyringclient sharegenerationclient fairyring 2>/dev/null; true
 	-@rm -rf ./devnet_data
-	-@killall fairyringd 2>/dev/null
-	-@killall fairyport 2>/dev/null
-	-@killall fairyringclient 2>/dev/null
-	-@killall ShareGenerationClient 2>/dev/null
 
 clean-testing-data:
 	@echo "Killing fairyringd and removing previous data"

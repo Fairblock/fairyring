@@ -1,0 +1,16 @@
+[Unit]
+Description=ShareGeneration Client
+After=network.target fairyring.service fairyringclient.service
+
+[Service]
+Type=simple
+User=mani
+WorkingDirectory=/Users/mani/fairyring/scripts/devnet
+ExecStart=/Users/mani/.gvm/pkgsets/go1.22.5/global/bin/ShareGenerationClient start --config /Users/mani/fairyring/scripts/devnet/sharegenerationclient_config.yml
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
