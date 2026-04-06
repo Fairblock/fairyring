@@ -489,7 +489,6 @@ func (rp *RangeProof) Verify(
 		if err != nil {
 			return RangeErrMaximumGeneratorLengthExceeded
 		}
-		// REMOVE increaseCapacity(nm) here; it's already at maxProofBits
 	} else {
 		bpGens, err = NewRangeProofGens(nm)
 		if err != nil {

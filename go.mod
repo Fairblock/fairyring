@@ -68,6 +68,7 @@ require (
 	github.com/cockroachdb/fifo v0.0.0-20240606204812-0bbfbd93a7ce // indirect
 	github.com/mimoo/StrobeGo v0.0.0-20181016162300-f8f6d4d2b643 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
+	github.com/regen-network/cosmos-proto v0.3.1 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
 )
 

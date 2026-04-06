@@ -6,7 +6,9 @@ import (
 	"github.com/Fairblock/fairyring/x/zkp/types"
 	"github.com/Fairblock/fairyring/x/zkp/verification/commitment"
 	rangeproof "github.com/Fairblock/fairyring/x/zkp/verification/range"
+	"github.com/Fairblock/fairyring/x/zkp/verification/transferctx"
 	"github.com/Fairblock/fairyring/x/zkp/verification/validity"
+	"github.com/Fairblock/fairyring/x/zkp/verification/withdrawctx"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -263,7 +265,7 @@ func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVeri
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	// Verify equality proof
+	// Deserialize equality proof
 	if len(req.EqualityProofData) < 320 {
 		return &types.QueryVerifyTransferProofsResponse{
 			Valid: false,
@@ -295,15 +297,7 @@ func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVeri
 	offset += 32
 	copy(equalityProofData.Proof.Zr[:], req.EqualityProofData[offset:offset+32])
 
-	err := commitment.VerifyEqualityProof(&equalityProofData)
-	if err != nil {
-		return &types.QueryVerifyTransferProofsResponse{
-			Valid: false,
-			Error: "equality proof verification failed: " + err.Error(),
-		}, nil
-	}
-
-	// Verify range proof
+	// Deserialize range proof
 	if len(req.RangeProofData) < 8*32+8+736 {
 		return &types.QueryVerifyTransferProofsResponse{
 			Valid: false,
@@ -347,15 +341,7 @@ func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVeri
 	}
 	copy(rangeProofData.Proof[:], req.RangeProofData[offset:offset+736])
 
-	err = rangeproof.VerifyTransferRange(&rangeProofData)
-	if err != nil {
-		return &types.QueryVerifyTransferProofsResponse{
-			Valid: false,
-			Error: "range proof verification failed: " + err.Error(),
-		}, nil
-	}
-
-	// Verify validity proof
+	// Deserialize validity proof
 	if len(req.ValidityProofData) < 416 {
 		return &types.QueryVerifyTransferProofsResponse{
 			Valid: false,
@@ -377,6 +363,46 @@ func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVeri
 	offset += 96
 	copy(validityProofData.Proof.Bytes[:], req.ValidityProofData[offset:offset+160])
 
+	if len(req.SenderPubkey) != 32 || len(req.RecipientPubkey) != 32 ||
+		len(req.CurrentBalanceCommitment) != 32 || len(req.CurrentBalanceHandle) != 32 {
+		return &types.QueryVerifyTransferProofsResponse{
+			Valid: false,
+			Error: "transfer binding verification failed: missing or invalid pubkey/balance fields (expected 32-byte values)",
+		}, nil
+	}
+
+	err := transferctx.VerifyBindings(
+		&equalityProofData,
+		&rangeProofData,
+		&validityProofData,
+		req.CurrentBalanceCommitment,
+		req.CurrentBalanceHandle,
+		req.SenderPubkey,
+		req.RecipientPubkey,
+	)
+	if err != nil {
+		return &types.QueryVerifyTransferProofsResponse{
+			Valid: false,
+			Error: "transfer binding verification failed: " + err.Error(),
+		}, nil
+	}
+
+	err = commitment.VerifyEqualityProof(&equalityProofData)
+	if err != nil {
+		return &types.QueryVerifyTransferProofsResponse{
+			Valid: false,
+			Error: "equality proof verification failed: " + err.Error(),
+		}, nil
+	}
+
+	err = rangeproof.VerifyTransferRange(&rangeProofData)
+	if err != nil {
+		return &types.QueryVerifyTransferProofsResponse{
+			Valid: false,
+			Error: "range proof verification failed: " + err.Error(),
+		}, nil
+	}
+
 	err = validity.VerifyValidityProof(&validityProofData)
 	if err != nil {
 		return &types.QueryVerifyTransferProofsResponse{
@@ -397,7 +423,7 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	// Verify equality proof
+	// Deserialize equality proof
 	if len(req.EqualityProofData) < 328 {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
@@ -430,15 +456,7 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 	offset += 32
 	copy(equalityProofData.Proof.Zr[:], req.EqualityProofData[offset:offset+32])
 
-	err := commitment.VerifyWithdrawEqualityProof(&equalityProofData)
-	if err != nil {
-		return &types.QueryVerifyWithdrawProofsResponse{
-			Valid: false,
-			Error: "equality proof verification failed: " + err.Error(),
-		}, nil
-	}
-
-	// Verify range proof
+	// Deserialize range proof
 	if len(req.RangeProofData) < 8*32+8+8+672 {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
@@ -487,6 +505,36 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 		}, nil
 	}
 	copy(rangeProofData.Proof[:], req.RangeProofData[offset:offset+672])
+
+	if len(req.UserPubkey) != 32 || len(req.CiphertextCommitment) != 32 || len(req.CiphertextHandle) != 32 {
+		return &types.QueryVerifyWithdrawProofsResponse{
+			Valid: false,
+			Error: "withdraw binding verification failed: missing or invalid pubkey/ciphertext fields (expected 32-byte values)",
+		}, nil
+	}
+
+	err := withdrawctx.VerifyBindings(
+		&equalityProofData,
+		&rangeProofData,
+		req.UserPubkey,
+		req.CiphertextCommitment,
+		req.CiphertextHandle,
+		req.ExpectedNonce,
+	)
+	if err != nil {
+		return &types.QueryVerifyWithdrawProofsResponse{
+			Valid: false,
+			Error: "withdraw binding verification failed: " + err.Error(),
+		}, nil
+	}
+
+	err = commitment.VerifyWithdrawEqualityProof(&equalityProofData)
+	if err != nil {
+		return &types.QueryVerifyWithdrawProofsResponse{
+			Valid: false,
+			Error: "equality proof verification failed: " + err.Error(),
+		}, nil
+	}
 
 	err = rangeproof.VerifyWithdrawRangeWithNonce(&rangeProofData)
 	if err != nil {

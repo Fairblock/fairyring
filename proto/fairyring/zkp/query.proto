@@ -92,11 +92,16 @@ message QueryVerifyEqualityProofResponse {
 }
 
 // QueryVerifyTransferProofsRequest is request type for the Query/VerifyTransferProofs RPC method.
-// Contains all proofs needed for transfer verification: equality, range, and validity proofs
+// Contains all proofs needed for transfer verification: equality, range, and validity proofs,
+// plus binding data checked after ZK verification (pubkeys, current balance ciphertext).
 message QueryVerifyTransferProofsRequest {
   bytes equality_proof_data = 1; // Serialized CiphertextCommitmentEqualityProofData
   bytes range_proof_data = 2; // Serialized BatchedRangeProofU128Data
   bytes validity_proof_data = 3; // Serialized BatchedGroupedCiphertext2HandlesValidityProofData
+  bytes sender_pubkey = 4; // 32 bytes, expected sender ElGamal pubkey
+  bytes recipient_pubkey = 5; // 32 bytes, expected recipient ElGamal pubkey
+  bytes current_balance_commitment = 6; // c1 of encrypted available balance (32 bytes)
+  bytes current_balance_handle = 7; // c2 of encrypted available balance (32 bytes)
 }
 
 // QueryVerifyTransferProofsResponse is response type for the Query/VerifyTransferProofs RPC method.
@@ -106,10 +111,14 @@ message QueryVerifyTransferProofsResponse {
 }
 
 // QueryVerifyWithdrawProofsRequest is request type for the Query/VerifyWithdrawProofs RPC method.
-// Contains all proofs needed for withdraw verification: equality and range proofs
+// Contains withdraw proofs plus binding data (user pubkey, ciphertext, expected nonce).
 message QueryVerifyWithdrawProofsRequest {
-  bytes equality_proof_data = 1; // Serialized CiphertextCommitmentEqualityProofData
-  bytes range_proof_data = 2; // Serialized BatchedRangeProofU64Data
+  bytes equality_proof_data = 1; // Serialized WithdrawCiphertextCommitmentEqualityProofData
+  bytes range_proof_data = 2; // Serialized WithdrawBatchedRangeProofU64Data
+  bytes user_pubkey = 3; // 32 bytes, expected user ElGamal pubkey
+  bytes ciphertext_commitment = 4; // c1 of encrypted available balance (32 bytes)
+  bytes ciphertext_handle = 5; // c2 of encrypted available balance (32 bytes)
+  uint64 expected_nonce = 6; // must match nonces embedded in both proofs
 }
 
 // QueryVerifyWithdrawProofsResponse is response type for the Query/VerifyWithdrawProofs RPC method.
