@@ -121,8 +121,8 @@ func (e RangeProofVerificationError) Error() string {
 type ProofError int
 
 const (
-	ProofErrDeserialization ProofError = iota
-	ProofErrAlgebraic
+	ProofErrDeserialization ProofError = 1
+	ProofErrAlgebraic       ProofError = 2
 )
 
 func (e ProofError) Error() string {
