@@ -4,16 +4,15 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"fmt"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	zkpmodulekeeper "github.com/Fairblock/fairyring/x/zkp/keeper"
 	zkpmoduletypes "github.com/Fairblock/fairyring/x/zkp/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// CustomQuerier returns a function that handles CosmWasm custom queries
-func CustomQuerier(zkpKeeper *zkpmodulekeeper.Keeper) func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
-	return func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
-		// Parse the custom query
+func CustomQuerier(zkpKeeper *zkpmodulekeeper.Keeper) func(ctx sdk.Context, caller sdk.AccAddress, request json.RawMessage) ([]byte, error) {
+	return func(ctx sdk.Context, caller sdk.AccAddress, request json.RawMessage) ([]byte, error) {
 		var query struct {
 			VerifyTransferProofs *TransferProofsQuery `json:"verify_transfer_proofs,omitempty"`
 			VerifyWithdrawProofs *WithdrawProofsQuery `json:"verify_withdraw_proofs,omitempty"`
@@ -23,9 +22,11 @@ func CustomQuerier(zkpKeeper *zkpmodulekeeper.Keeper) func(ctx sdk.Context, requ
 			return nil, err
 		}
 
-		// Handle VerifyTransferProofs query
 		if query.VerifyTransferProofs != nil {
-			// Decode base64 strings to []byte
+			if err := enforceTrustedContract(ctx, zkpKeeper, caller); err != nil {
+				return nil, err
+			}
+
 			equalityData, err := base64.StdEncoding.DecodeString(query.VerifyTransferProofs.EqualityProofData)
 			if err != nil {
 				return nil, err
@@ -70,7 +71,6 @@ func CustomQuerier(zkpKeeper *zkpmodulekeeper.Keeper) func(ctx sdk.Context, requ
 				return nil, err
 			}
 
-			// Return response as JSON
 			response := map[string]interface{}{
 				"valid": resp.Valid,
 				"error": resp.Error,
@@ -78,9 +78,11 @@ func CustomQuerier(zkpKeeper *zkpmodulekeeper.Keeper) func(ctx sdk.Context, requ
 			return json.Marshal(response)
 		}
 
-		// Handle VerifyWithdrawProofs query
 		if query.VerifyWithdrawProofs != nil {
-			// Decode base64 strings to []byte
+			if err := enforceTrustedContract(ctx, zkpKeeper, caller); err != nil {
+				return nil, err
+			}
+
 			equalityData, err := base64.StdEncoding.DecodeString(query.VerifyWithdrawProofs.EqualityProofData)
 			if err != nil {
 				return nil, err
@@ -116,7 +118,6 @@ func CustomQuerier(zkpKeeper *zkpmodulekeeper.Keeper) func(ctx sdk.Context, requ
 				return nil, err
 			}
 
-			// Return response as JSON
 			response := map[string]interface{}{
 				"valid": resp.Valid,
 				"error": resp.Error,
@@ -128,8 +129,17 @@ func CustomQuerier(zkpKeeper *zkpmodulekeeper.Keeper) func(ctx sdk.Context, requ
 	}
 }
 
-// TransferProofsQuery represents the CosmWasm query structure for transfer proofs
-// CosmWasm Binary types are serialized as base64 strings in JSON
+func enforceTrustedContract(ctx sdk.Context, zkpKeeper *zkpmodulekeeper.Keeper, caller sdk.AccAddress) error {
+	if len(caller) == 0 {
+		return fmt.Errorf("caller contract address is required for ZKP verification queries")
+	}
+	contractAddr := caller.String()
+	if !zkpKeeper.IsTrustedContract(ctx, contractAddr) {
+		return fmt.Errorf("contract %s is not authorized for ZKP verification", contractAddr)
+	}
+	return nil
+}
+
 type TransferProofsQuery struct {
 	EqualityProofData        string `json:"equality_proof_data"`
 	RangeProofData           string `json:"range_proof_data"`
@@ -140,8 +150,6 @@ type TransferProofsQuery struct {
 	CurrentBalanceHandle     string `json:"current_balance_handle"`
 }
 
-// WithdrawProofsQuery represents the CosmWasm query structure for withdraw proofs
-// CosmWasm Binary types are serialized as base64 strings in JSON
 type WithdrawProofsQuery struct {
 	EqualityProofData      string `json:"equality_proof_data"`
 	RangeProofData         string `json:"range_proof_data"`

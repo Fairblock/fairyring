@@ -23,8 +23,8 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// GenesisState defines the zkp module's genesis state.
 type GenesisState struct {
+	TrustedContracts []string `protobuf:"bytes,1,rep,name=trusted_contracts,json=trustedContracts,proto3" json:"trusted_contracts,omitempty"`
 }
 
 func (m *GenesisState) Reset()         { *m = GenesisState{} }
@@ -100,6 +100,15 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.TrustedContracts) > 0 {
+		for iNdEx := len(m.TrustedContracts) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.TrustedContracts[iNdEx])
+			copy(dAtA[i:], m.TrustedContracts[iNdEx])
+			i = encodeVarintGenesis(dAtA, i, uint64(len(m.TrustedContracts[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -120,7 +129,20 @@ func (m *GenesisState) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if len(m.TrustedContracts) > 0 {
+		for _, s := range m.TrustedContracts {
+			l = len(s)
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
 	return n
+}
+
+func (m *GenesisState) GetTrustedContracts() []string {
+	if m != nil {
+		return m.TrustedContracts
+	}
+	return nil
 }
 
 func sovGenesis(x uint64) (n int) {
@@ -158,6 +180,38 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: GenesisState: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TrustedContracts", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TrustedContracts = append(m.TrustedContracts, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipGenesis(dAtA[iNdEx:])

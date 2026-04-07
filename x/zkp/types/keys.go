@@ -1,18 +1,25 @@
 package types
 
+import (
+	storetypes "cosmossdk.io/store/types"
+)
+
 const (
-	// ModuleName defines the module name
 	ModuleName = "zkp"
-
-	// StoreKey defines the primary module store key
-	StoreKey = ModuleName
-
-	// MemStoreKey defines the in-memory store key
+	StoreKey   = ModuleName
 	MemStoreKey = "mem_zkp"
+
+	GasVerifyEqualityProof      storetypes.Gas = 50_000
+	GasVerifyValidityProof      storetypes.Gas = 60_000
+	GasVerifyWithdrawRangeProof storetypes.Gas = 80_000
+	GasVerifyTransferRangeProof storetypes.Gas = 100_000
+	GasVerifyTransferProofs     storetypes.Gas = 250_000
+	GasVerifyWithdrawProofs     storetypes.Gas = 150_000
 )
 
 var (
-	ParamsKey = []byte("p_zkp")
+	ParamsKey              = []byte("p_zkp")
+	TrustedContractPrefix  = []byte("tc/")
 )
 
 func KeyPrefix(p string) []byte {

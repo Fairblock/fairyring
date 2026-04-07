@@ -1,8 +1,6 @@
 package app
 
 import (
-	"encoding/json"
-
 	"cosmossdk.io/core/appmodule"
 	storetypes "cosmossdk.io/store/types"
 	"github.com/CosmWasm/wasmd/x/wasm"
@@ -12,7 +10,6 @@ import (
 	pepmodule "github.com/Fairblock/fairyring/x/pep/module"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/gov"
@@ -193,17 +190,19 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	}
 
 	// Add wasmd to IBC Router
-	wasmStack, err := app.registerWasmModules(appOpts, wasmkeeper.WithQueryPlugins(
-		&wasmkeeper.QueryPlugins{
-			Stargate: wasmkeeper.AcceptListStargateQuerier(
-				acceptList,
-				app.GRPCQueryRouter(),
-				app.AppCodec(),
-			),
-			Custom: func(ctx sdk.Context, request json.RawMessage) ([]byte, error) {
-				return wasmbinding.CustomQuerier(app.ZkpKeeper)(ctx, request)
-			},
-		}))
+	wasmStack, err := app.registerWasmModules(appOpts, wasmkeeper.WithQueryHandlerDecorator(
+		func(old wasmkeeper.WasmVMQueryHandler) wasmkeeper.WasmVMQueryHandler {
+			return wasmbinding.NewQueryHandler(
+				old,
+				app.ZkpKeeper,
+				wasmkeeper.AcceptListStargateQuerier(
+					acceptList,
+					app.GRPCQueryRouter(),
+					app.AppCodec(),
+				),
+			)
+		},
+	))
 	if err != nil {
 		return err
 	}

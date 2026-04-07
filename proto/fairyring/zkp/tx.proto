@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package fairyring.zkp;
+
+import "cosmos/msg/v1/msg.proto";
+
+option go_package = "github.com/Fairblock/fairyring/x/zkp/types";
+
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  rpc AddTrustedContract(MsgAddTrustedContract) returns (MsgAddTrustedContractResponse);
+  rpc RemoveTrustedContract(MsgRemoveTrustedContract) returns (MsgRemoveTrustedContractResponse);
+}
+
+message MsgAddTrustedContract {
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
+  string contract_address = 2;
+}
+
+message MsgAddTrustedContractResponse {}
+
+message MsgRemoveTrustedContract {
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
+  string contract_address = 2;
+}
+
+message MsgRemoveTrustedContractResponse {}

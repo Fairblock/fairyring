@@ -105,10 +105,11 @@ func NewAppModule(
 	}
 }
 
-// RegisterServices registers a gRPC query service to respond to the module-specific gRPC queries
 func (am AppModule) RegisterServices(cfg module.Configurator) {
-	// Use filtered query server to block ZKP verification queries via gRPC/REST
-	types.RegisterQueryServer(cfg.QueryServer(), keeper.NewFilteredQueryServer(am.keeper))
+	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
+	filteredServer := keeper.NewFilteredQueryServer(am.keeper)
+	types.RegisterQueryServer(cfg.QueryServer(), filteredServer)
+	types.RegisterTrustedContractsQueryServer(cfg.QueryServer(), filteredServer.(types.TrustedContractsQueryServer))
 }
 
 // RegisterInvariants registers the invariants of the module. If an invariant deviates from its predicted value, the InvariantRegistry triggers appropriate logic (most often the chain will be halted)

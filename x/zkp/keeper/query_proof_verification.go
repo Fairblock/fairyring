@@ -3,6 +3,8 @@ package keeper
 import (
 	"context"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/Fairblock/fairyring/x/zkp/types"
 	"github.com/Fairblock/fairyring/x/zkp/verification/commitment"
 	rangeproof "github.com/Fairblock/fairyring/x/zkp/verification/range"
@@ -13,11 +15,13 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// VerifyWithdrawRangeProof verifies a withdraw range proof (U64) with nonce binding.
 func (k Keeper) VerifyWithdrawRangeProof(goCtx context.Context, req *types.QueryVerifyWithdrawRangeProofRequest) (*types.QueryVerifyWithdrawRangeProofResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	ctx.GasMeter().ConsumeGas(types.GasVerifyWithdrawRangeProof, "verify_withdraw_range_proof")
 
 	if len(req.ProofData) < 8*32+8+8+672 {
 		return &types.QueryVerifyWithdrawRangeProofResponse{
@@ -82,13 +86,14 @@ func (k Keeper) VerifyWithdrawRangeProof(goCtx context.Context, req *types.Query
 	}, nil
 }
 
-// VerifyTransferRangeProof verifies a transfer range proof (U128)
 func (k Keeper) VerifyTransferRangeProof(goCtx context.Context, req *types.QueryVerifyTransferRangeProofRequest) (*types.QueryVerifyTransferRangeProofResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	// Deserialize proof data
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	ctx.GasMeter().ConsumeGas(types.GasVerifyTransferRangeProof, "verify_transfer_range_proof")
+
 	if len(req.ProofData) < 8*32+8+736 {
 		return &types.QueryVerifyTransferRangeProofResponse{
 			Valid: false,
@@ -147,14 +152,14 @@ func (k Keeper) VerifyTransferRangeProof(goCtx context.Context, req *types.Query
 	}, nil
 }
 
-// VerifyValidityProof verifies a validity proof
 func (k Keeper) VerifyValidityProof(goCtx context.Context, req *types.QueryVerifyValidityProofRequest) (*types.QueryVerifyValidityProofResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	// Deserialize proof data
-	// Expected size: 32 (first_pubkey) + 32 (second_pubkey) + 96 (grouped_ciphertext_lo) + 96 (grouped_ciphertext_hi) + 160 (proof) = 416 bytes
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	ctx.GasMeter().ConsumeGas(types.GasVerifyValidityProof, "verify_validity_proof")
+
 	if len(req.ProofData) < 416 {
 		return &types.QueryVerifyValidityProofResponse{
 			Valid: false,
@@ -199,14 +204,14 @@ func (k Keeper) VerifyValidityProof(goCtx context.Context, req *types.QueryVerif
 	}, nil
 }
 
-// VerifyEqualityProof verifies an equality proof 
 func (k Keeper) VerifyEqualityProof(goCtx context.Context, req *types.QueryVerifyEqualityProofRequest) (*types.QueryVerifyEqualityProofResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	// Deserialize proof data
-	// Expected size: 32 (pubkey) + 64 (ciphertext) + 32 (commitment) + 192 (proof) = 320 bytes
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	ctx.GasMeter().ConsumeGas(types.GasVerifyEqualityProof, "verify_equality_proof")
+
 	if len(req.ProofData) < 320 {
 		return &types.QueryVerifyEqualityProofResponse{
 			Valid: false,
@@ -259,13 +264,14 @@ func (k Keeper) VerifyEqualityProof(goCtx context.Context, req *types.QueryVerif
 	}, nil
 }
 
-// VerifyTransferProofs verifies all transfer proofs together (equality, range, validity)
 func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVerifyTransferProofsRequest) (*types.QueryVerifyTransferProofsResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	// Deserialize equality proof
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	ctx.GasMeter().ConsumeGas(types.GasVerifyTransferProofs, "verify_transfer_proofs")
+
 	if len(req.EqualityProofData) < 320 {
 		return &types.QueryVerifyTransferProofsResponse{
 			Valid: false,
@@ -417,13 +423,14 @@ func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVeri
 	}, nil
 }
 
-// VerifyWithdrawProofs verifies all withdraw proofs together (equality, range)
 func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVerifyWithdrawProofsRequest) (*types.QueryVerifyWithdrawProofsResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	// Deserialize equality proof
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	ctx.GasMeter().ConsumeGas(types.GasVerifyWithdrawProofs, "verify_withdraw_proofs")
+
 	if len(req.EqualityProofData) < 328 {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
