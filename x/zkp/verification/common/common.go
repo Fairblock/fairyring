@@ -144,7 +144,13 @@ func ValidateAndAppendPoint(
 	label []byte,
 	p *CompressedRistretto,
 ) error {
-	if p.IsIdentity() {
+	pt, ok := p.Decompress()
+	if !ok {
+		return ErrDeserialization
+	}
+	var zero Point
+	zero.SetZero()
+	if pt.Equals(&zero) {
 		return ErrDeserialization
 	}
 	t.AppendMessage(label, p[:])
