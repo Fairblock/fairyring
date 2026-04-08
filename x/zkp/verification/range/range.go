@@ -284,29 +284,35 @@ func (g *generatorsChain) nextPoint() Point {
 func (ipp *InnerProductProof) verificationScalars(
 	n int,
 	t *merlin.Transcript,
-) ([]Scalar, []Scalar, []Scalar, error) {
+) ([]Scalar, []Scalar, []Scalar, []*Point, []*Point, error) {
 
 	lgN := len(ipp.LVec)
 	if len(ipp.RVec) != lgN {
-		return nil, nil, nil, RangeErrVectorLengthMismatch
+		return nil, nil, nil, nil, nil, RangeErrVectorLengthMismatch
 	}
 	if lgN == 0 || lgN >= 32 {
-		return nil, nil, nil, RangeErrInvalidBitSize
+		return nil, nil, nil, nil, nil, RangeErrInvalidBitSize
 	}
 	if n != (1 << lgN) {
-		return nil, nil, nil, RangeErrInvalidBitSize
+		return nil, nil, nil, nil, nil, RangeErrInvalidBitSize
 	}
 
 	rangeProofInnerProductDomainSeparator(t, uint64(n))
 
 	challenges := make([]Scalar, 0, lgN)
+	lPoints := make([]*Point, 0, lgN)
+	rPoints := make([]*Point, 0, lgN)
 	for i := 0; i < lgN; i++ {
-		if err := validateAndAppendPointRP(t, []byte("L"), &ipp.LVec[i]); err != nil {
-			return nil, nil, nil, err
+		lPoint, err := validateAndAppendPointRPDecoded(t, []byte("L"), &ipp.LVec[i])
+		if err != nil {
+			return nil, nil, nil, nil, nil, err
 		}
-		if err := validateAndAppendPointRP(t, []byte("R"), &ipp.RVec[i]); err != nil {
-			return nil, nil, nil, err
+		rPoint, err := validateAndAppendPointRPDecoded(t, []byte("R"), &ipp.RVec[i])
+		if err != nil {
+			return nil, nil, nil, nil, nil, err
 		}
+		lPoints = append(lPoints, lPoint)
+		rPoints = append(rPoints, rPoint)
 		u := challengeScalarRP(t, []byte("u"))
 		challenges = append(challenges, u)
 	}
@@ -316,7 +322,7 @@ func (ipp *InnerProductProof) verificationScalars(
 
 	allInv, err := batchInvertScalars(chInv)
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, nil, nil, nil, nil, err
 	}
 
 	for i := 0; i < lgN; i++ {
@@ -344,7 +350,7 @@ func (ipp *InnerProductProof) verificationScalars(
 		s = append(s, prod)
 	}
 
-	return chSq, chInvSq, s, nil
+	return chSq, chInvSq, s, lPoints, rPoints, nil
 }
 
 func canonicalScalarFrom32(b []byte) (Scalar, error) {
@@ -498,10 +504,12 @@ func (rp *RangeProof) Verify(
 
 	rangeProofDomainSeparator(t, uint64(nm))
 
-	if err := validateAndAppendPointRP(t, []byte("A"), &rp.A); err != nil {
+	A, err := validateAndAppendPointRPDecoded(t, []byte("A"), &rp.A)
+	if err != nil {
 		return err
 	}
-	if err := validateAndAppendPointRP(t, []byte("S"), &rp.S); err != nil {
+	S, err := validateAndAppendPointRPDecoded(t, []byte("S"), &rp.S)
+	if err != nil {
 		return err
 	}
 
@@ -513,10 +521,12 @@ func (rp *RangeProof) Verify(
 	var minusZ Scalar
 	minusZ.Neg(&z)
 
-	if err := validateAndAppendPointRP(t, []byte("T_1"), &rp.T1); err != nil {
+	T1, err := validateAndAppendPointRPDecoded(t, []byte("T_1"), &rp.T1)
+	if err != nil {
 		return err
 	}
-	if err := validateAndAppendPointRP(t, []byte("T_2"), &rp.T2); err != nil {
+	T2, err := validateAndAppendPointRPDecoded(t, []byte("T_2"), &rp.T2)
+	if err != nil {
 		return err
 	}
 
@@ -529,7 +539,7 @@ func (rp *RangeProof) Verify(
 	w := challengeScalarRP(t, []byte("w"))
 	_ = challengeScalarRP(t, []byte("c"))
 
-	xSq, xInvSq, sVec, err := rp.IPPProof.verificationScalars(nm, t)
+	xSq, xInvSq, sVec, lPoints, rPoints, err := rp.IPPProof.verificationScalars(nm, t)
 	if err != nil {
 		return err
 	}
@@ -676,23 +686,6 @@ func (rp *RangeProof) Verify(
 	points := make([]*Point, 0,
 		len(scalars))
 
-	A, ok := rp.A.Decompress()
-	if !ok {
-		return RangeErrMultiscalarMul
-	}
-	S, ok := rp.S.Decompress()
-	if !ok {
-		return RangeErrMultiscalarMul
-	}
-	T1, ok := rp.T1.Decompress()
-	if !ok {
-		return RangeErrMultiscalarMul
-	}
-	T2, ok := rp.T2.Decompress()
-	if !ok {
-		return RangeErrMultiscalarMul
-	}
-
 	points = append(points, A)
 	points = append(points, S)
 	points = append(points, T1)
@@ -700,20 +693,8 @@ func (rp *RangeProof) Verify(
 	points = append(points, H)
 	points = append(points, G)
 
-	for i := range rp.IPPProof.LVec {
-		Li, ok := rp.IPPProof.LVec[i].Decompress()
-		if !ok {
-			return RangeErrMultiscalarMul
-		}
-		points = append(points, Li)
-	}
-	for i := range rp.IPPProof.RVec {
-		Ri, ok := rp.IPPProof.RVec[i].Decompress()
-		if !ok {
-			return RangeErrMultiscalarMul
-		}
-		points = append(points, Ri)
-	}
+	points = append(points, lPoints...)
+	points = append(points, rPoints...)
 
 	Gs := bpGens.G(nm)
 	Hs := bpGens.H(nm)
@@ -951,16 +932,18 @@ func newTranscriptRange(ctx *BatchedRangeProofContext) *merlin.Transcript {
 	return t
 }
 
-func validateAndAppendPointRP(
+
+
+func validateAndAppendPointRPDecoded(
 	t *merlin.Transcript,
 	label []byte,
 	c *CompressedRistretto,
-) error {
-	err := common.ValidateAndAppendPoint(t, label, c)
+) (*Point, error) {
+	pt, err := common.ValidateAndAppendPointDecoded(t, label, c)
 	if err != nil {
-		return RangeErrValidationError
+		return nil, RangeErrValidationError
 	}
-	return nil
+	return pt, nil
 }
 
 func rangeProofInnerProductDomainSeparator(t *merlin.Transcript, n uint64) {

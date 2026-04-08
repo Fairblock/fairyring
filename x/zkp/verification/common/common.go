@@ -139,22 +139,31 @@ func AppendPoint(t *merlin.Transcript, label []byte, c *CompressedRistretto) {
 	t.AppendMessage(label, c[:])
 }
 
+func ValidateAndAppendPointDecoded(
+	t *merlin.Transcript,
+	label []byte,
+	p *CompressedRistretto,
+) (*Point, error) {
+	pt, ok := p.Decompress()
+	if !ok {
+		return nil, ErrDeserialization
+	}
+	var zero Point
+	zero.SetZero()
+	if pt.Equals(&zero) {
+		return nil, ErrDeserialization
+	}
+	t.AppendMessage(label, p[:])
+	return pt, nil
+}
+
 func ValidateAndAppendPoint(
 	t *merlin.Transcript,
 	label []byte,
 	p *CompressedRistretto,
 ) error {
-	pt, ok := p.Decompress()
-	if !ok {
-		return ErrDeserialization
-	}
-	var zero Point
-	zero.SetZero()
-	if pt.Equals(&zero) {
-		return ErrDeserialization
-	}
-	t.AppendMessage(label, p[:])
-	return nil
+	_, err := ValidateAndAppendPointDecoded(t, label, p)
+	return err
 }
 
 func VartimeMultiScalarMul(scalars []*Scalar, points []*Point) Point {
