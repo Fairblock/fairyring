@@ -261,7 +261,10 @@ func (ep EqualityProof) Verify(
 		y2,                       // Y_2
 	}
 
-	check := common.VartimeMultiScalarMul(scalars, points)
+	check, err := common.VartimeMultiScalarMul(scalars, points)
+	if err != nil {
+		return ErrProofAlgebraic
+	}
 
 	var id Point
 	id.SetZero()

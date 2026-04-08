@@ -166,19 +166,22 @@ func ValidateAndAppendPoint(
 	return err
 }
 
-func VartimeMultiScalarMul(scalars []*Scalar, points []*Point) Point {
+func VartimeMultiScalarMul(scalars []*Scalar, points []*Point) (Point, error) {
 	var acc Point
 	acc.SetZero()
 	n := len(scalars)
 	if len(points) != n {
-		return acc
+		return acc, ErrVectorLengthMismatch
 	}
 	for i := 0; i < n; i++ {
+		if scalars[i] == nil || points[i] == nil {
+			return acc, ErrInvalidInput
+		}
 		var tmp Point
 		tmp.ScalarMult(points[i], scalars[i])
 		acc.Add(&acc, &tmp)
 	}
-	return acc
+	return acc, nil
 }
 
 func RistrettoPointFromSlice(slice []byte) (CompressedRistretto, error) {

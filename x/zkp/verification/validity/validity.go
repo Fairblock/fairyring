@@ -246,7 +246,10 @@ func (p GroupedCiphertext2HandlesValidityProof) Verify(
 		Y2,        // Y_2
 	}
 
-	check := common.VartimeMultiScalarMul(scalars, points)
+	check, err := common.VartimeMultiScalarMul(scalars, points)
+	if err != nil {
+		return ErrValidityInvalidProof
+	}
 
 	var id Point
 	id.SetZero()
