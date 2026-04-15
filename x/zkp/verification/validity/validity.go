@@ -162,8 +162,9 @@ func (p GroupedCiphertext2HandlesValidityProof) Verify(
 	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_1"), &p.Y1); err != nil {
 		return err
 	}
-
-	common.AppendPoint(transcript, []byte("Y_2"), &p.Y2)
+	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_2"), &p.Y2); err != nil {
+		return err
+	}
 
 	c := common.ChallengeScalar(transcript, []byte("c"))
 
