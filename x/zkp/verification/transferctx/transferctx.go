@@ -35,6 +35,10 @@ func VerifyBindings(
 		return errors.New("equality and range proof commitments do not match")
 	}
 
+	if !bytes.Equal(vp.Context.GroupedCiphertextLo.Bytes[0:32], rp.Context.Commitments[1].Bytes[:]) {
+		return errors.New("transfer amount commitment not bound to range proof")
+	}
+
 	gc, err := validity.GroupedElGamalCiphertext2FromBytes(vp.Context.GroupedCiphertextLo.Bytes[:])
 	if err != nil {
 		return errors.New("failed to deserialize ciphertexts")
