@@ -20,6 +20,9 @@ KEYSHARER_INVALID_SHARE_PAUSE_THRESHOLD="${KEYSHARER_INVALID_SHARE_PAUSE_THRESHO
 # Optional override; if empty we'll derive from val1 key (recommended)
 APP_PRIV_HEX="${APP_PRIV_HEX:-}"
 
+# ZKP module: genesis trusted CosmWasm contract
+ZKP_GENESIS_TRUSTED_CONTRACT="${ZKP_GENESIS_TRUSTED_CONTRACT:-fairy14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9stsyf7v}"
+
 # Where to clone/build deps if a binary is missing
 DEPS_DIR="$(pwd)/.devnet_deps"
 
@@ -372,6 +375,13 @@ else
             }
         }' $CHAIN_DIR/$CHAINID/config/genesis.json
     fi
+fi
+
+# ZKP module: trusted CosmWasm contracts at genesis
+if command -v jq &> /dev/null; then
+  jq --arg addr "$ZKP_GENESIS_TRUSTED_CONTRACT" \
+    '.app_state.zkp //= {} | .app_state.zkp.trusted_contracts = [$addr]' \
+    $CHAIN_DIR/$CHAINID/config/genesis.json > $CHAIN_DIR/$CHAINID/config/genesis.json.tmp && mv $CHAIN_DIR/$CHAINID/config/genesis.json.tmp $CHAIN_DIR/$CHAINID/config/genesis.json
 fi
 
 sed -i -e 's/"trusted_addresses": \[\]/"trusted_addresses": \["'"$VAL1_ADDR"'","'"$RLY1_ADDR"'","'"$WALLET5_ADDR"'"\]/g' $CHAIN_DIR/$CHAINID/config/genesis.json
