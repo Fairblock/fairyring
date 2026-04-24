@@ -8,6 +8,9 @@ import (
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgUpdateParams{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgAddTrustedContract{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
@@ -16,4 +19,3 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }
-

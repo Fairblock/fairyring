@@ -22,11 +22,11 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 var _ types.MsgServer = msgServer{}
 
 func (ms msgServer) AddTrustedContract(goCtx context.Context, msg *types.MsgAddTrustedContract) (*types.MsgAddTrustedContractResponse, error) {
-	if ms.GetAuthority() != msg.Authority {
-		return nil, errorsmod.Wrapf(govtypes.ErrInvalidSigner, "unauthorized: expected %s, got %s", ms.GetAuthority(), msg.Authority)
-	}
-
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	authority := ms.GetAuthority(ctx)
+	if authority != msg.Authority {
+		return nil, errorsmod.Wrapf(govtypes.ErrInvalidSigner, "unauthorized: expected %s, got %s", authority, msg.Authority)
+	}
 
 	if ms.IsTrustedContract(ctx, msg.ContractAddress) {
 		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "contract %s is already trusted", msg.ContractAddress)
@@ -44,11 +44,11 @@ func (ms msgServer) AddTrustedContract(goCtx context.Context, msg *types.MsgAddT
 }
 
 func (ms msgServer) RemoveTrustedContract(goCtx context.Context, msg *types.MsgRemoveTrustedContract) (*types.MsgRemoveTrustedContractResponse, error) {
-	if ms.GetAuthority() != msg.Authority {
-		return nil, errorsmod.Wrapf(govtypes.ErrInvalidSigner, "unauthorized: expected %s, got %s", ms.GetAuthority(), msg.Authority)
-	}
-
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	authority := ms.GetAuthority(ctx)
+	if authority != msg.Authority {
+		return nil, errorsmod.Wrapf(govtypes.ErrInvalidSigner, "unauthorized: expected %s, got %s", authority, msg.Authority)
+	}
 
 	if !ms.IsTrustedContract(ctx, msg.ContractAddress) {
 		return nil, errorsmod.Wrapf(sdkerrors.ErrNotFound, "contract %s is not in the trusted list", msg.ContractAddress)

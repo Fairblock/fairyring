@@ -556,4 +556,3 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 		Error: "",
 	}, nil
 }
-

@@ -45,6 +45,15 @@ service Query {
     option (google.api.http).post = "/fairyring/zkp/verify_withdraw_proofs";
     option (google.api.http).body = "*";
   }
+
+  rpc TrustedContracts(TrustedContractsRequest) returns (TrustedContractsResponse) {
+    option (google.api.http).get = "/fairyring/zkp/trusted_contracts";
+  }
+}
+
+message TrustedContractsRequest {}
+message TrustedContractsResponse {
+  repeated string ContractAddresses = 1; // List of trusted contract addresses
 }
 
 // QueryVerifyWithdrawRangeProofRequest is request type for the Query/VerifyWithdrawRangeProof RPC method.

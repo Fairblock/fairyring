@@ -6,8 +6,6 @@ import (
 	zkpmodule "github.com/Fairblock/fairyring/x/zkp/module"
 	zkptypes "github.com/Fairblock/fairyring/x/zkp/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 )
 
 func (app *App) registerZkpModule() error {
@@ -21,7 +19,6 @@ func (app *App) registerZkpModule() error {
 		app.AppCodec(),
 		runtime.NewKVStoreService(app.GetKey(zkptypes.StoreKey)),
 		app.Logger(),
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
 
 	if err := app.RegisterModules(
@@ -34,4 +31,3 @@ func (app *App) registerZkpModule() error {
 
 	return nil
 }
-
