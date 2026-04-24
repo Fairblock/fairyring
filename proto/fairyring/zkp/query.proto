@@ -5,11 +5,17 @@ package fairyring.zkp;
 import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
+import "fairyring/zkp/params.proto";
 
 option go_package = "github.com/Fairblock/fairyring/x/zkp/types";
 
 // Query defines the gRPC querier service.
 service Query {
+  // Params queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/fairyring/zkp/params";
+  }
+
   // VerifyWithdrawRangeProof verifies a withdraw range proof (U64)
   rpc VerifyWithdrawRangeProof(QueryVerifyWithdrawRangeProofRequest) returns (QueryVerifyWithdrawRangeProofResponse) {
     option (google.api.http).post = "/fairyring/zkp/verify_withdraw_range_proof";
@@ -51,7 +57,20 @@ service Query {
   }
 }
 
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
 message TrustedContractsRequest {}
+
 message TrustedContractsResponse {
   repeated string ContractAddresses = 1; // List of trusted contract addresses
 }

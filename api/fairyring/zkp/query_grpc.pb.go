@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	Query_Params_FullMethodName                   = "/fairyring.zkp.Query/Params"
 	Query_VerifyWithdrawRangeProof_FullMethodName = "/fairyring.zkp.Query/VerifyWithdrawRangeProof"
 	Query_VerifyTransferRangeProof_FullMethodName = "/fairyring.zkp.Query/VerifyTransferRangeProof"
 	Query_VerifyValidityProof_FullMethodName      = "/fairyring.zkp.Query/VerifyValidityProof"
@@ -32,6 +33,8 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type QueryClient interface {
+	// Params queries the parameters of the module.
+	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
 	// VerifyWithdrawRangeProof verifies a withdraw range proof (U64)
 	VerifyWithdrawRangeProof(ctx context.Context, in *QueryVerifyWithdrawRangeProofRequest, opts ...grpc.CallOption) (*QueryVerifyWithdrawRangeProofResponse, error)
 	// VerifyTransferRangeProof verifies a transfer range proof (U128)
@@ -53,6 +56,15 @@ type queryClient struct {
 
 func NewQueryClient(cc grpc.ClientConnInterface) QueryClient {
 	return &queryClient{cc}
+}
+
+func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error) {
+	out := new(QueryParamsResponse)
+	err := c.cc.Invoke(ctx, Query_Params_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *queryClient) VerifyWithdrawRangeProof(ctx context.Context, in *QueryVerifyWithdrawRangeProofRequest, opts ...grpc.CallOption) (*QueryVerifyWithdrawRangeProofResponse, error) {
@@ -122,6 +134,8 @@ func (c *queryClient) TrustedContracts(ctx context.Context, in *TrustedContracts
 // All implementations must embed UnimplementedQueryServer
 // for forward compatibility
 type QueryServer interface {
+	// Params queries the parameters of the module.
+	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
 	// VerifyWithdrawRangeProof verifies a withdraw range proof (U64)
 	VerifyWithdrawRangeProof(context.Context, *QueryVerifyWithdrawRangeProofRequest) (*QueryVerifyWithdrawRangeProofResponse, error)
 	// VerifyTransferRangeProof verifies a transfer range proof (U128)
@@ -142,6 +156,9 @@ type QueryServer interface {
 type UnimplementedQueryServer struct {
 }
 
+func (UnimplementedQueryServer) Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
+}
 func (UnimplementedQueryServer) VerifyWithdrawRangeProof(context.Context, *QueryVerifyWithdrawRangeProofRequest) (*QueryVerifyWithdrawRangeProofResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyWithdrawRangeProof not implemented")
 }
@@ -174,6 +191,24 @@ type UnsafeQueryServer interface {
 
 func RegisterQueryServer(s grpc.ServiceRegistrar, srv QueryServer) {
 	s.RegisterService(&Query_ServiceDesc, srv)
+}
+
+func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryParamsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Params(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_Params_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Params(ctx, req.(*QueryParamsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Query_VerifyWithdrawRangeProof_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -309,6 +344,10 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "fairyring.zkp.Query",
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Params",
+			Handler:    _Query_Params_Handler,
+		},
 		{
 			MethodName: "VerifyWithdrawRangeProof",
 			Handler:    _Query_VerifyWithdrawRangeProof_Handler,

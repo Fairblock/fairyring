@@ -24,6 +24,14 @@ func (f *FilteredQueryServer) TrustedContracts(goCtx context.Context, req *types
 	return &types.TrustedContractsResponse{ContractAddresses: contracts}, nil
 }
 
+func (f *FilteredQueryServer) Params(goCtx context.Context, req *types.QueryParamsRequest) (*types.QueryParamsResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	return &types.QueryParamsResponse{Params: f.keeper.GetParams(ctx)}, nil
+}
+
 func (f *FilteredQueryServer) VerifyWithdrawRangeProof(ctx context.Context, req *types.QueryVerifyWithdrawRangeProofRequest) (*types.QueryVerifyWithdrawRangeProofResponse, error) {
 	return nil, status.Errorf(codes.PermissionDenied, "ZKP verification queries are only accessible through CosmWasm contracts, not via gRPC or REST API")
 }
