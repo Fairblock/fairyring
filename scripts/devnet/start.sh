@@ -377,10 +377,15 @@ else
     fi
 fi
 
-# ZKP module: trusted CosmWasm contracts at genesis
+# ZKP module: trusted CosmWasm contracts and authority at genesis
 if command -v jq &> /dev/null; then
-  jq --arg addr "$ZKP_GENESIS_TRUSTED_CONTRACT" \
-    '.app_state.zkp //= {} | .app_state.zkp.trusted_contracts = [$addr]' \
+  jq \
+    --arg addr "$ZKP_GENESIS_TRUSTED_CONTRACT" \
+    --arg authority "$WALLET1_ADDR" \
+    '.app_state.zkp //= {} |
+     .app_state.zkp.trusted_contracts = [$addr] |
+     .app_state.zkp.params //= {} |
+     .app_state.zkp.params.authority = $authority' \
     $CHAIN_DIR/$CHAINID/config/genesis.json > $CHAIN_DIR/$CHAINID/config/genesis.json.tmp && mv $CHAIN_DIR/$CHAINID/config/genesis.json.tmp $CHAIN_DIR/$CHAINID/config/genesis.json
 fi
 
