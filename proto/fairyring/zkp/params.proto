@@ -1,0 +1,15 @@
+syntax = "proto3";
+package fairyring.zkp;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/Fairblock/fairyring/x/zkp/types";
+
+// Params defines the parameters for the zkp module.
+message Params {
+  option (amino.name) = "github.com/Fairblock/fairyring/x/zkp/Params";
+  option (gogoproto.equal) = true;
+
+  string authority = 1 [(gogoproto.moretags) = "yaml:\"authority\""];
+}

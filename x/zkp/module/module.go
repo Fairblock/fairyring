@@ -12,9 +12,10 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
 
+	"cosmossdk.io/core/appmodule"
+	"github.com/Fairblock/fairyring/x/zkp/client/cli"
 	"github.com/Fairblock/fairyring/x/zkp/keeper"
 	"github.com/Fairblock/fairyring/x/zkp/types"
-	"cosmossdk.io/core/appmodule"
 )
 
 var (
@@ -81,7 +82,7 @@ func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *r
 // GetTxCmd returns the root Tx command for the module.
 // These commands enrich the AutoCLI tx commands.
 func (a AppModuleBasic) GetTxCmd() *cobra.Command {
-	return nil // ZKP module has no transactions
+	return cli.GetTxCmd()
 }
 
 // ----------------------------------------------------------------------------
@@ -109,7 +110,6 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 	types.RegisterMsgServer(cfg.MsgServer(), keeper.NewMsgServerImpl(am.keeper))
 	filteredServer := keeper.NewFilteredQueryServer(am.keeper)
 	types.RegisterQueryServer(cfg.QueryServer(), filteredServer)
-	types.RegisterTrustedContractsQueryServer(cfg.QueryServer(), filteredServer.(types.TrustedContractsQueryServer))
 }
 
 // RegisterInvariants registers the invariants of the module. If an invariant deviates from its predicted value, the InvariantRegistry triggers appropriate logic (most often the chain will be halted)
@@ -140,4 +140,3 @@ func (am AppModule) IsAppModule() {}
 
 // IsOnePerModuleType implements the appmodule.AppModule interface.
 func (am AppModule) IsOnePerModuleType() {}
-

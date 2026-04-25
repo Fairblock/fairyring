@@ -18,12 +18,18 @@ func NewFilteredQueryServer(keeper Keeper) types.QueryServer {
 	return &FilteredQueryServer{keeper: keeper}
 }
 
-var _ types.TrustedContractsQueryServer = &FilteredQueryServer{}
-
-func (f *FilteredQueryServer) TrustedContracts(goCtx context.Context, req *types.QueryTrustedContractsRequest) (*types.QueryTrustedContractsResponse, error) {
+func (f *FilteredQueryServer) TrustedContracts(goCtx context.Context, req *types.TrustedContractsRequest) (*types.TrustedContractsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	contracts := f.keeper.GetAllTrustedContracts(ctx)
-	return &types.QueryTrustedContractsResponse{ContractAddresses: contracts}, nil
+	return &types.TrustedContractsResponse{ContractAddresses: contracts}, nil
+}
+
+func (f *FilteredQueryServer) Params(goCtx context.Context, req *types.QueryParamsRequest) (*types.QueryParamsResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	return &types.QueryParamsResponse{Params: f.keeper.GetParams(ctx)}, nil
 }
 
 func (f *FilteredQueryServer) VerifyWithdrawRangeProof(ctx context.Context, req *types.QueryVerifyWithdrawRangeProofRequest) (*types.QueryVerifyWithdrawRangeProofResponse, error) {
@@ -49,4 +55,3 @@ func (f *FilteredQueryServer) VerifyTransferProofs(ctx context.Context, req *typ
 func (f *FilteredQueryServer) VerifyWithdrawProofs(ctx context.Context, req *types.QueryVerifyWithdrawProofsRequest) (*types.QueryVerifyWithdrawProofsResponse, error) {
 	return nil, status.Errorf(codes.PermissionDenied, "ZKP verification queries are only accessible through CosmWasm contracts, not via gRPC or REST API")
 }
-

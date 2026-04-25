@@ -1,8 +1,6 @@
 package keeper
 
 import (
-	"fmt"
-
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/log"
 	"cosmossdk.io/store/prefix"
@@ -18,7 +16,6 @@ type (
 		cdc          codec.BinaryCodec
 		storeService store.KVStoreService
 		logger       log.Logger
-		authority    string
 	}
 )
 
@@ -26,21 +23,16 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeService store.KVStoreService,
 	logger log.Logger,
-	authority string,
 ) *Keeper {
-	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
-		panic(fmt.Sprintf("invalid authority address: %s", authority))
-	}
 	return &Keeper{
 		cdc:          cdc,
 		storeService: storeService,
 		logger:       logger,
-		authority:    authority,
 	}
 }
 
-func (k Keeper) GetAuthority() string {
-	return k.authority
+func (k Keeper) GetAuthority(ctx sdk.Context) string {
+	return k.GetParams(ctx).Authority
 }
 
 func (k Keeper) Logger() log.Logger {

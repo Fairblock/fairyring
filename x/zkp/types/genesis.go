@@ -7,10 +7,18 @@ import (
 )
 
 func DefaultGenesis() *GenesisState {
-	return &GenesisState{}
+	return &GenesisState{
+		Params: DefaultParams(),
+	}
 }
 
 func (gs GenesisState) Validate() error {
+	if gs.Params.Authority != "" {
+		if err := gs.Params.Validate(); err != nil {
+			return fmt.Errorf("invalid params: %w", err)
+		}
+	}
+
 	seen := make(map[string]bool)
 	for i, addr := range gs.TrustedContracts {
 		if _, err := sdk.AccAddressFromBech32(addr); err != nil {
@@ -23,4 +31,3 @@ func (gs GenesisState) Validate() error {
 	}
 	return nil
 }
-
