@@ -216,6 +216,9 @@ func TestVerifyBindingsRejectsInvalidGroupedCiphertext(t *testing.T) {
 	fx := tcFixture(t)
 	bad := tcInvalidBytes()
 	copy(fx.vp.Context.GroupedCiphertextLo.Bytes[0:32], bad[:])
+	// Keep the raw binding equal so this test reaches GroupedElGamalCiphertext2FromBytes.
+	// The malformed bytes should fail during grouped ciphertext deserialization,
+	// not at the earlier byte-equality binding check.
 	fx.rp.Context.Commitments[1].Bytes = bad
 
 	err := VerifyBindings(&fx.eq, &fx.rp, &fx.vp, fx.currentC1[:], fx.currentC2[:], fx.senderPK[:], fx.recipientPK[:])

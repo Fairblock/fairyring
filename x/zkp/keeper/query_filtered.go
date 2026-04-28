@@ -19,6 +19,9 @@ func NewFilteredQueryServer(keeper Keeper) types.QueryServer {
 }
 
 func (f *FilteredQueryServer) TrustedContracts(goCtx context.Context, req *types.TrustedContractsRequest) (*types.TrustedContractsResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	contracts := f.keeper.GetAllTrustedContracts(ctx)
 	return &types.TrustedContractsResponse{ContractAddresses: contracts}, nil
