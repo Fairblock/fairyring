@@ -154,6 +154,24 @@ func (p GroupedCiphertext2HandlesValidityProof) Verify(
 	secondHandle *DecryptHandle,
 	transcript *merlin.Transcript,
 ) error {
+	var id Point
+	id.SetZero()
+	if firstPubkey.P.Equals(&id) {
+		return ErrValidityInvalidProof
+	}
+	if secondPubkey.P.Equals(&id) {
+		return ErrValidityInvalidProof
+	}
+	if commitment.P.Equals(&id) {
+		return ErrValidityInvalidProof
+	}
+	if firstHandle.P.Equals(&id) {
+		return ErrValidityInvalidProof
+	}
+	if secondHandle.P.Equals(&id) {
+		return ErrValidityInvalidProof
+	}
+
 	groupedCiphertextValidityProofDomainSeparator(transcript, 2)
 
 	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_0"), &p.Y0); err != nil {
@@ -252,8 +270,6 @@ func (p GroupedCiphertext2HandlesValidityProof) Verify(
 		return ErrValidityInvalidProof
 	}
 
-	var id Point
-	id.SetZero()
 	if check.Equals(&id) {
 		return nil
 	}

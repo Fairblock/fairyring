@@ -487,6 +487,13 @@ func (rp *RangeProof) Verify(
 	if nm <= 0 || !isPowerOfTwo(nm) {
 		return RangeErrInvalidBitSize
 	}
+	var id Point
+	id.SetZero()
+	for _, V := range comms {
+		if V == nil || V.P.Equals(&id) {
+			return RangeErrValidationError
+		}
+	}
 
 	var bpGens *RangeProofGens
 	var err error
@@ -721,8 +728,6 @@ func (rp *RangeProof) Verify(
 		return RangeErrMultiscalarMul
 	}
 
-	var id Point
-	id.SetZero()
 	if res.Equals(&id) {
 		return nil
 	}

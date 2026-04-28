@@ -159,6 +159,21 @@ func (ep EqualityProof) Verify(
 	commitment *PedersenCommitment,
 	transcript *merlin.Transcript,
 ) error {
+	var id Point
+	id.SetZero()
+	if pubkey.P.Equals(&id) {
+		return ErrProofAlgebraic
+	}
+	if ciphertext.Commitment.P.Equals(&id) {
+		return ErrProofAlgebraic
+	}
+	if ciphertext.Handle.P.Equals(&id) {
+		return ErrProofAlgebraic
+	}
+	if commitment.P.Equals(&id) {
+		return ErrProofAlgebraic
+	}
+
 	ciphertextCommitmentEqualityProofDomainSeparator(transcript)
 
 	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_0"), &ep.Y0); err != nil {
@@ -266,8 +281,6 @@ func (ep EqualityProof) Verify(
 		return ErrProofAlgebraic
 	}
 
-	var id Point
-	id.SetZero()
 	if check.Equals(&id) {
 		return nil
 	}
