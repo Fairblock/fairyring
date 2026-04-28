@@ -544,7 +544,6 @@ func (rp *RangeProof) Verify(
 	appendScalarRP(t, []byte("e_blinding"), &rp.EBlinding)
 
 	w := challengeScalarRP(t, []byte("w"))
-	_ = challengeScalarRP(t, []byte("c"))
 
 	xSq, xInvSq, sVec, lPoints, rPoints, err := rp.IPPProof.verificationScalars(nm, t)
 	if err != nil {
