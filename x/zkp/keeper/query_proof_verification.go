@@ -23,7 +23,7 @@ func (k Keeper) VerifyWithdrawRangeProof(goCtx context.Context, req *types.Query
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	ctx.GasMeter().ConsumeGas(types.GasVerifyWithdrawRangeProof, "verify_withdraw_range_proof")
 
-	if len(req.ProofData) < 8*32+8+8+672 {
+	if len(req.ProofData) != 8*32+8+8+672 {
 		return &types.QueryVerifyWithdrawRangeProofResponse{
 			Valid: false,
 			Error: "invalid proof data length",
@@ -94,7 +94,7 @@ func (k Keeper) VerifyTransferRangeProof(goCtx context.Context, req *types.Query
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	ctx.GasMeter().ConsumeGas(types.GasVerifyTransferRangeProof, "verify_transfer_range_proof")
 
-	if len(req.ProofData) < 8*32+8+736 {
+	if len(req.ProofData) != 8*32+8+736 {
 		return &types.QueryVerifyTransferRangeProofResponse{
 			Valid: false,
 			Error: "invalid proof data length",
@@ -160,7 +160,7 @@ func (k Keeper) VerifyValidityProof(goCtx context.Context, req *types.QueryVerif
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	ctx.GasMeter().ConsumeGas(types.GasVerifyValidityProof, "verify_validity_proof")
 
-	if len(req.ProofData) < 416 {
+	if len(req.ProofData) != 416 {
 		return &types.QueryVerifyValidityProofResponse{
 			Valid: false,
 			Error: "invalid proof data length",
@@ -212,7 +212,7 @@ func (k Keeper) VerifyEqualityProof(goCtx context.Context, req *types.QueryVerif
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	ctx.GasMeter().ConsumeGas(types.GasVerifyEqualityProof, "verify_equality_proof")
 
-	if len(req.ProofData) < 320 {
+	if len(req.ProofData) != 320 {
 		return &types.QueryVerifyEqualityProofResponse{
 			Valid: false,
 			Error: "invalid proof data length",
@@ -272,7 +272,7 @@ func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVeri
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	ctx.GasMeter().ConsumeGas(types.GasVerifyTransferProofs, "verify_transfer_proofs")
 
-	if len(req.EqualityProofData) < 320 {
+	if len(req.EqualityProofData) != 320 {
 		return &types.QueryVerifyTransferProofsResponse{
 			Valid: false,
 			Error: "invalid equality proof data length",
@@ -304,7 +304,7 @@ func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVeri
 	copy(equalityProofData.Proof.Zr[:], req.EqualityProofData[offset:offset+32])
 
 	// Deserialize range proof
-	if len(req.RangeProofData) < 8*32+8+736 {
+	if len(req.RangeProofData) != 8*32+8+736 {
 		return &types.QueryVerifyTransferProofsResponse{
 			Valid: false,
 			Error: "invalid range proof data length",
@@ -348,7 +348,7 @@ func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVeri
 	copy(rangeProofData.Proof[:], req.RangeProofData[offset:offset+736])
 
 	// Deserialize validity proof
-	if len(req.ValidityProofData) < 416 {
+	if len(req.ValidityProofData) != 416 {
 		return &types.QueryVerifyTransferProofsResponse{
 			Valid: false,
 			Error: "invalid validity proof data length",
@@ -431,7 +431,7 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	ctx.GasMeter().ConsumeGas(types.GasVerifyWithdrawProofs, "verify_withdraw_proofs")
 
-	if len(req.EqualityProofData) < 328 {
+	if len(req.EqualityProofData) != 328 {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
 			Error: "invalid equality proof data length",
@@ -464,7 +464,7 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 	copy(equalityProofData.Proof.Zr[:], req.EqualityProofData[offset:offset+32])
 
 	// Deserialize range proof
-	if len(req.RangeProofData) < 8*32+8+8+672 {
+	if len(req.RangeProofData) != 8*32+8+8+672 {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
 			Error: "invalid range proof data length",
