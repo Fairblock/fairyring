@@ -2,7 +2,11 @@ package rangeproof
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
+	"os"
+	"path/filepath"
+	"runtime"
 	"testing"
 
 	"github.com/Fairblock/fairyring/x/zkp/verification/common"
@@ -497,4 +501,98 @@ func TestLeadingZeros32(t *testing.T) {
 			t.Fatalf("leadingZeros32(%#x) = %d, want %d", in, got, want)
 		}
 	}
+}
+
+type sharedGeneratorVectorsRange struct {
+	H      string            `json:"h"`
+	GChain map[string]string `json:"g_chain"`
+	HChain map[string]string `json:"h_chain"`
+}
+
+func decodeHex32Range(t *testing.T, s string) [32]byte {
+	t.Helper()
+	if len(s) != 64 {
+		t.Fatalf("hex length = %d, want 64", len(s))
+	}
+	var out [32]byte
+	for i := 0; i < 32; i++ {
+		var v byte
+		for j := 0; j < 2; j++ {
+			c := s[i*2+j]
+			v <<= 4
+			switch {
+			case c >= '0' && c <= '9':
+				v |= c - '0'
+			case c >= 'a' && c <= 'f':
+				v |= c - 'a' + 10
+			default:
+				t.Fatalf("invalid hex char %q", c)
+			}
+		}
+		out[i] = v
+	}
+	return out
+}
+
+func TestRangeGeneratorChainMatchesRustReferenceVectors(t *testing.T) {
+	_, file, _, ok := runtime.Caller(0)
+	if !ok {
+		t.Fatal("runtime.Caller failed")
+	}
+	vectorsPath := filepath.Join(filepath.Dir(file), "../../../../test-vectors/generator_vectors.json")
+	raw, err := os.ReadFile(vectorsPath)
+	if err != nil {
+		t.Fatalf("read vectors: %v", err)
+	}
+	var vectors sharedGeneratorVectorsRange
+	if err := json.Unmarshal(raw, &vectors); err != nil {
+		t.Fatalf("unmarshal vectors: %v", err)
+	}
+	gcG := newGeneratorsChain([]byte("G"))
+	for i := 0; i <= 128; i++ {
+		p := gcG.nextPoint()
+		if i == 0 || i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 6 || i == 7 || i == 128 {
+			wantHex, exists := vectors.GChain[itoaRange(i)]
+			if !exists {
+				t.Fatalf("missing G checkpoint %d", i)
+			}
+			want := decodeHex32Range(t, wantHex)
+			var got [32]byte
+			p.BytesInto(&got)
+			if got != want {
+				t.Fatalf("G[%d] mismatch: got %x want %x", i, got, want)
+			}
+		}
+	}
+
+	gcH := newGeneratorsChain([]byte("H"))
+	for i := 0; i <= 128; i++ {
+		p := gcH.nextPoint()
+		if i == 0 || i == 1 || i == 2 || i == 3 || i == 4 || i == 5 || i == 6 || i == 7 || i == 128 {
+			wantHex, exists := vectors.HChain[itoaRange(i)]
+			if !exists {
+				t.Fatalf("missing H checkpoint %d", i)
+			}
+			want := decodeHex32Range(t, wantHex)
+			var got [32]byte
+			p.BytesInto(&got)
+			if got != want {
+				t.Fatalf("H[%d] mismatch: got %x want %x", i, got, want)
+			}
+		}
+	}
+}
+
+func itoaRange(v int) string {
+	if v == 0 {
+		return "0"
+	}
+	var buf [20]byte
+	i := len(buf)
+	for v > 0 {
+		i--
+		buf[i] = byte('0' + (v % 10))
+		v /= 10
+	}
+	return string(buf[i:])
 }

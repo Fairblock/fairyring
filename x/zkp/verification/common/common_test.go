@@ -2,11 +2,21 @@ package common
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
+	"os"
+	"path/filepath"
+	"runtime"
 	"testing"
 
 	"github.com/gtank/merlin"
 )
+
+type sharedGeneratorVectors struct {
+	H      string            `json:"h"`
+	GChain map[string]string `json:"g_chain"`
+	HChain map[string]string `json:"h_chain"`
+}
 
 func testScalar(t *testing.T, v uint64) Scalar {
 	t.Helper()
@@ -278,5 +288,57 @@ func TestChallengeScalarDeterminism(t *testing.T) {
 	}
 	if build([]byte("same")) == build([]byte("different")) {
 		t.Fatal("different transcript unexpectedly produced same challenge")
+	}
+}
+
+func mustDecodeHex32Common(t *testing.T, s string) [32]byte {
+	t.Helper()
+	b, err := os.ReadFile(s)
+	if err != nil {
+		t.Fatalf("read file: %v", err)
+	}
+	var out sharedGeneratorVectors
+	if err := json.Unmarshal(b, &out); err != nil {
+		t.Fatalf("unmarshal vectors: %v", err)
+	}
+	return decodeHex32Common(t, out.H)
+}
+
+func decodeHex32Common(t *testing.T, s string) [32]byte {
+	t.Helper()
+	if len(s) != 64 {
+		t.Fatalf("hex length = %d, want 64", len(s))
+	}
+	var out [32]byte
+	for i := 0; i < 32; i++ {
+		var v byte
+		for j := 0; j < 2; j++ {
+			c := s[i*2+j]
+			v <<= 4
+			switch {
+			case c >= '0' && c <= '9':
+				v |= c - '0'
+			case c >= 'a' && c <= 'f':
+				v |= c - 'a' + 10
+			default:
+				t.Fatalf("invalid hex char %q", c)
+			}
+		}
+		out[i] = v
+	}
+	return out
+}
+
+func TestGeneratorHMatchesRustReferenceVector(t *testing.T) {
+	_, file, _, ok := runtime.Caller(0)
+	if !ok {
+		t.Fatal("runtime.Caller failed")
+	}
+	vectorsPath := filepath.Join(filepath.Dir(file), "../../../../test-vectors/generator_vectors.json")
+	want := mustDecodeHex32Common(t, vectorsPath)
+	var got [32]byte
+	H.BytesInto(&got)
+	if got != want {
+		t.Fatalf("H mismatch: got %x want %x", got, want)
 	}
 }
