@@ -291,6 +291,70 @@ func TestChallengeScalarDeterminism(t *testing.T) {
 	}
 }
 
+func TestValidateAndAppendPointDecodedMatchesOriginalPoint(t *testing.T) {
+	encoded := CompressedRistretto(testPointBytes(t, 19))
+	tr := merlin.NewTranscript("decode")
+	decoded, err := ValidateAndAppendPointDecoded(tr, []byte("P"), &encoded)
+	if err != nil {
+		t.Fatalf("expected valid point to decode, got %v", err)
+	}
+	original, ok := encoded.Decompress()
+	if !ok {
+		t.Fatal("expected valid point encoding to decompress")
+	}
+	if !decoded.Equals(original) {
+		t.Fatal("decoded point mismatch")
+	}
+}
+
+func TestAppendHelpersAffectTranscriptChallenges(t *testing.T) {
+	build := func(sVal uint64, pVal uint64) [32]byte {
+		tr := merlin.NewTranscript("append-helpers")
+		s := testScalar(t, sVal)
+		p := CompressedRistretto(testPointBytes(t, pVal))
+		AppendScalar(tr, []byte("s"), &s)
+		AppendPoint(tr, []byte("p"), &p)
+		return testScalarBytesFromScalar(t, ChallengeScalar(tr, []byte("c")))
+	}
+
+	if build(3, 5) != build(3, 5) {
+		t.Fatal("append helper transcript is not deterministic")
+	}
+	if build(3, 5) == build(4, 5) {
+		t.Fatal("scalar append mutation did not change challenge")
+	}
+	if build(3, 5) == build(3, 6) {
+		t.Fatal("point append mutation did not change challenge")
+	}
+}
+
+func TestVartimeMultiScalarMulLinearComposition(t *testing.T) {
+	s1 := testScalar(t, 2)
+	s2 := testScalar(t, 3)
+	s3 := testScalar(t, 5)
+	p1 := testPoint(t, 7)
+	p2 := testPoint(t, 11)
+	p3 := testPoint(t, 13)
+
+	left, err := VartimeMultiScalarMul([]*Scalar{&s1, &s2, &s3}, []*Point{&p1, &p2, &p3})
+	if err != nil {
+		t.Fatalf("left multiscalar failed: %v", err)
+	}
+	rightA, err := VartimeMultiScalarMul([]*Scalar{&s1, &s2}, []*Point{&p1, &p2})
+	if err != nil {
+		t.Fatalf("rightA multiscalar failed: %v", err)
+	}
+	rightB, err := VartimeMultiScalarMul([]*Scalar{&s3}, []*Point{&p3})
+	if err != nil {
+		t.Fatalf("rightB multiscalar failed: %v", err)
+	}
+	var right Point
+	right.Add(&rightA, &rightB)
+	if !left.Equals(&right) {
+		t.Fatal("multiscalar linear composition mismatch")
+	}
+}
+
 func mustDecodeHex32Common(t *testing.T, s string) [32]byte {
 	t.Helper()
 	b, err := os.ReadFile(s)

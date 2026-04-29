@@ -270,3 +270,111 @@ func TestDirectKeeperGRPCCompositeProofsRequireBindingFields(t *testing.T) {
 		require.Equal(t, "withdraw binding verification failed: missing or invalid pubkey/ciphertext fields (expected 32-byte values)", resp.Error)
 	})
 }
+
+func TestDirectKeeperGRPCProofVerificationRejectsWellFormedButInvalidPayloads(t *testing.T) {
+	fx := newZkpGRPCTestFixture(t, nil)
+	defer fx.closer()
+
+	t.Run("withdraw range proof", func(t *testing.T) {
+		resp, err := fx.client.VerifyWithdrawRangeProof(context.Background(), &types.QueryVerifyWithdrawRangeProofRequest{
+			ProofData: make([]byte, 8*32+8+8+672),
+		})
+		require.NoError(t, err)
+		require.False(t, resp.Valid)
+		require.Equal(t, "algebraic relation failed", resp.Error)
+	})
+
+	t.Run("transfer range proof", func(t *testing.T) {
+		resp, err := fx.client.VerifyTransferRangeProof(context.Background(), &types.QueryVerifyTransferRangeProofRequest{
+			ProofData: make([]byte, 8*32+8+736),
+		})
+		require.NoError(t, err)
+		require.False(t, resp.Valid)
+		require.Equal(t, "algebraic relation failed", resp.Error)
+	})
+
+	t.Run("validity proof", func(t *testing.T) {
+		resp, err := fx.client.VerifyValidityProof(context.Background(), &types.QueryVerifyValidityProofRequest{
+			ProofData: make([]byte, 416),
+		})
+		require.NoError(t, err)
+		require.False(t, resp.Valid)
+		require.Equal(t, "validity proof: invalid proof", resp.Error)
+	})
+
+	t.Run("equality proof", func(t *testing.T) {
+		resp, err := fx.client.VerifyEqualityProof(context.Background(), &types.QueryVerifyEqualityProofRequest{
+			ProofData: make([]byte, 320),
+		})
+		require.NoError(t, err)
+		require.False(t, resp.Valid)
+		require.Equal(t, "algebraic relation failed", resp.Error)
+	})
+}
+
+func TestDirectKeeperGRPCCompositeProofsBindingAndVerificationFailures(t *testing.T) {
+	fx := newZkpGRPCTestFixture(t, nil)
+	defer fx.closer()
+
+	zero32 := make([]byte, 32)
+	nonZero32 := make([]byte, 32)
+	nonZero32[0] = 1
+
+	t.Run("transfer proof bundle binding mismatch", func(t *testing.T) {
+		resp, err := fx.client.VerifyTransferProofs(context.Background(), &types.QueryVerifyTransferProofsRequest{
+			EqualityProofData:         make([]byte, 320),
+			RangeProofData:            make([]byte, 8*32+8+736),
+			ValidityProofData:         make([]byte, 416),
+			SenderPubkey:              nonZero32,
+			RecipientPubkey:           zero32,
+			CurrentBalanceCommitment:  zero32,
+			CurrentBalanceHandle:      zero32,
+		})
+		require.NoError(t, err)
+		require.False(t, resp.Valid)
+		require.Equal(t, "transfer binding verification failed: sender pubkey mismatch", resp.Error)
+	})
+
+	t.Run("transfer proof bundle verification stage", func(t *testing.T) {
+		resp, err := fx.client.VerifyTransferProofs(context.Background(), &types.QueryVerifyTransferProofsRequest{
+			EqualityProofData:         make([]byte, 320),
+			RangeProofData:            make([]byte, 8*32+8+736),
+			ValidityProofData:         make([]byte, 416),
+			SenderPubkey:              zero32,
+			RecipientPubkey:           zero32,
+			CurrentBalanceCommitment:  zero32,
+			CurrentBalanceHandle:      zero32,
+		})
+		require.NoError(t, err)
+		require.False(t, resp.Valid)
+		require.Equal(t, "equality proof verification failed: algebraic relation failed", resp.Error)
+	})
+
+	t.Run("withdraw proof bundle nonce mismatch", func(t *testing.T) {
+		resp, err := fx.client.VerifyWithdrawProofs(context.Background(), &types.QueryVerifyWithdrawProofsRequest{
+			EqualityProofData:      make([]byte, 328),
+			RangeProofData:         make([]byte, 8*32+8+8+672),
+			UserPubkey:             zero32,
+			CiphertextCommitment:   zero32,
+			CiphertextHandle:       zero32,
+			ExpectedNonce:          1,
+		})
+		require.NoError(t, err)
+		require.False(t, resp.Valid)
+		require.Equal(t, "withdraw binding verification failed: withdraw equality proof nonce mismatch", resp.Error)
+	})
+
+	t.Run("withdraw proof bundle verification stage", func(t *testing.T) {
+		resp, err := fx.client.VerifyWithdrawProofs(context.Background(), &types.QueryVerifyWithdrawProofsRequest{
+			EqualityProofData:      make([]byte, 328),
+			RangeProofData:         make([]byte, 8*32+8+8+672),
+			UserPubkey:             zero32,
+			CiphertextCommitment:   zero32,
+			CiphertextHandle:       zero32,
+			ExpectedNonce:          0,
+		})
+		require.NoError(t, err)
+		require.False(t, resp.Valid)
+		require.Equal(t, "equality proof verification failed: algebraic relation failed", resp.Error)
+	})
+}

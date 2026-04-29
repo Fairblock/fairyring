@@ -335,3 +335,63 @@ func TestVerifyWithdrawEqualityProofRejectsAlgebraicallyInvalidButWellFormedProo
 		t.Fatalf("expected algebraic failure for random well-formed withdraw proof, got %v", err)
 	}
 }
+
+func cBuildProofObjects(t *testing.T) (*EqualityProof, *ElGamalPubkey, *ElGamalCiphertext, *PedersenCommitment, *CiphertextCommitmentEqualityProofContext) {
+	t.Helper()
+	pd := cBaseEqualityData(t)
+	var pk ElGamalPubkey
+	if err := pk.FromPod(pd.Context.Pubkey); err != nil {
+		t.Fatalf("pubkey decode failed: %v", err)
+	}
+	var ct ElGamalCiphertext
+	if err := ct.FromPod(pd.Context.Ciphertext); err != nil {
+		t.Fatalf("ciphertext decode failed: %v", err)
+	}
+	cm, err := PedersenCommitmentFromPod(pd.Context.Commitment)
+	if err != nil {
+		t.Fatalf("commitment decode failed: %v", err)
+	}
+	raw := pd.Proof.AsBytes()
+	proof, err := EqualityProofFromBytes(&raw)
+	if err != nil {
+		t.Fatalf("proof decode failed: %v", err)
+	}
+	return proof, &pk, &ct, cm, &pd.Context
+}
+
+func TestEqualityProofVerifyRejectsIdentityInputs(t *testing.T) {
+	cases := []struct {
+		name string
+		mut  func(*ElGamalPubkey, *ElGamalCiphertext, *PedersenCommitment)
+	}{
+		{"identity pubkey", func(pk *ElGamalPubkey, _ *ElGamalCiphertext, _ *PedersenCommitment) { pk.P.SetZero() }},
+		{"identity ciphertext commitment", func(_ *ElGamalPubkey, ct *ElGamalCiphertext, _ *PedersenCommitment) {
+			ct.Commitment.P.SetZero()
+		}},
+		{"identity ciphertext handle", func(_ *ElGamalPubkey, ct *ElGamalCiphertext, _ *PedersenCommitment) {
+			ct.Handle.P.SetZero()
+		}},
+		{"identity pedersen commitment", func(_ *ElGamalPubkey, _ *ElGamalCiphertext, cm *PedersenCommitment) {
+			cm.P.SetZero()
+		}},
+	}
+	for _, tt := range cases {
+		t.Run(tt.name, func(t *testing.T) {
+			proof, pk, ct, cm, ctx := cBuildProofObjects(t)
+			tt.mut(pk, ct, cm)
+			err := proof.Verify(pk, ct, cm, newSplTranscript(ctx))
+			if !errors.Is(err, ErrProofAlgebraic) {
+				t.Fatalf("expected ErrProofAlgebraic, got %v", err)
+			}
+		})
+	}
+}
+
+func TestEqualityProofVerifyRejectsMalformedPointEncoding(t *testing.T) {
+	proof, pk, ct, cm, ctx := cBuildProofObjects(t)
+	proof.Y0 = common.CompressedRistretto(cInvalidPointBytes())
+	err := proof.Verify(pk, ct, cm, newSplTranscript(ctx))
+	if !errors.Is(err, common.ErrDeserialization) {
+		t.Fatalf("expected point deserialization error, got %v", err)
+	}
+}

@@ -297,3 +297,67 @@ func TestVerifyValidityProofRejectsAlgebraicallyInvalidButWellFormedProof(t *tes
 		t.Fatalf("expected random well-formed validity proof to fail, got %v", err)
 	}
 }
+
+func vBuildProofObjects(t *testing.T) (*GroupedCiphertext2HandlesValidityProof, *PedersenCommitment, *ElGamalPubkey, *ElGamalPubkey, *DecryptHandle, *DecryptHandle, *BatchedGroupedCiphertext2HandlesValidityProofContext) {
+	t.Helper()
+	pd := vBaseData(t)
+	grouped, err := GroupedElGamalCiphertext2FromPod(pd.Context.GroupedCiphertextLo)
+	if err != nil {
+		t.Fatalf("grouped ciphertext decode failed: %v", err)
+	}
+	var first ElGamalPubkey
+	if err := first.FromPod(pd.Context.FirstPubkey); err != nil {
+		t.Fatalf("first pubkey decode failed: %v", err)
+	}
+	var second ElGamalPubkey
+	if err := second.FromPod(pd.Context.SecondPubkey); err != nil {
+		t.Fatalf("second pubkey decode failed: %v", err)
+	}
+	inner, err := GroupedCiphertext2HandlesValidityProofFromBytes(pd.Proof.Bytes[:])
+	if err != nil {
+		t.Fatalf("proof decode failed: %v", err)
+	}
+	return inner, &grouped.Commitment, &first, &second, &grouped.Handles[0], &grouped.Handles[1], &pd.Context
+}
+
+func TestGroupedValidityProofVerifyRejectsIdentityInputs(t *testing.T) {
+	cases := []struct {
+		name string
+		mut  func(*PedersenCommitment, *ElGamalPubkey, *ElGamalPubkey, *DecryptHandle, *DecryptHandle)
+	}{
+		{"identity first pubkey", func(_ *PedersenCommitment, first *ElGamalPubkey, _ *ElGamalPubkey, _ *DecryptHandle, _ *DecryptHandle) {
+			first.P.SetZero()
+		}},
+		{"identity second pubkey", func(_ *PedersenCommitment, _ *ElGamalPubkey, second *ElGamalPubkey, _ *DecryptHandle, _ *DecryptHandle) {
+			second.P.SetZero()
+		}},
+		{"identity commitment", func(c *PedersenCommitment, _ *ElGamalPubkey, _ *ElGamalPubkey, _ *DecryptHandle, _ *DecryptHandle) {
+			c.P.SetZero()
+		}},
+		{"identity first handle", func(_ *PedersenCommitment, _ *ElGamalPubkey, _ *ElGamalPubkey, h0 *DecryptHandle, _ *DecryptHandle) {
+			h0.P.SetZero()
+		}},
+		{"identity second handle", func(_ *PedersenCommitment, _ *ElGamalPubkey, _ *ElGamalPubkey, _ *DecryptHandle, h1 *DecryptHandle) {
+			h1.P.SetZero()
+		}},
+	}
+	for _, tt := range cases {
+		t.Run(tt.name, func(t *testing.T) {
+			proof, c, first, second, h0, h1, ctx := vBuildProofObjects(t)
+			tt.mut(c, first, second, h0, h1)
+			err := proof.Verify(c, first, second, h0, h1, ctx.NewTranscript())
+			if !errors.Is(err, ErrValidityInvalidProof) {
+				t.Fatalf("expected ErrValidityInvalidProof, got %v", err)
+			}
+		})
+	}
+}
+
+func TestGroupedValidityProofVerifyRejectsMalformedPointEncoding(t *testing.T) {
+	proof, c, first, second, h0, h1, ctx := vBuildProofObjects(t)
+	proof.Y0 = common.CompressedRistretto(vInvalidPointBytes())
+	err := proof.Verify(c, first, second, h0, h1, ctx.NewTranscript())
+	if !errors.Is(err, common.ErrDeserialization) {
+		t.Fatalf("expected point deserialization error, got %v", err)
+	}
+}

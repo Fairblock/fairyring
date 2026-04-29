@@ -411,6 +411,17 @@ func TestBatchInvertScalarsWithZero(t *testing.T) {
 	}
 }
 
+func TestBatchInvertScalarsEmptyInput(t *testing.T) {
+	allInv, err := batchInvertScalars(nil)
+	if err != nil {
+		t.Fatalf("batchInvertScalars(nil): %v", err)
+	}
+	one := rpScalar(t, 1)
+	if rpScalarBytesFromScalar(t, allInv) != rpScalarBytesFromScalar(t, one) {
+		t.Fatal("empty inversion product must be one")
+	}
+}
+
 func TestMultiscalarMulParallelMatchesSerial(t *testing.T) {
 	scalars := []Scalar{rpScalar(t, 2), rpScalar(t, 3), rpScalar(t, 5), rpScalar(t, 7), rpScalar(t, 11)}
 	points := []*Point{}
@@ -500,6 +511,57 @@ func TestLeadingZeros32(t *testing.T) {
 		if got := leadingZeros32(in); got != want {
 			t.Fatalf("leadingZeros32(%#x) = %d, want %d", in, got, want)
 		}
+	}
+}
+
+func TestRangeProofDeltaMatchesIndependentConstruction(t *testing.T) {
+	y := rpScalar(t, 7)
+	z := rpScalar(t, 11)
+	bitLengths := []int{16, 32, 64}
+
+	got := rangeProofDelta(bitLengths, &y, &z)
+
+	manualSumPowers := func(base Scalar, n int) Scalar {
+		var sum Scalar
+		var term Scalar
+		term.SetOne()
+		for i := 0; i < n; i++ {
+			sum.Add(&sum, &term)
+			var next Scalar
+			next.Mul(&term, &base)
+			term = next
+		}
+		return sum
+	}
+
+	nm := 0
+	for _, bl := range bitLengths {
+		nm += bl
+	}
+	sumY := manualSumPowers(y, nm)
+	var z2 Scalar
+	z2.Mul(&z, &z)
+	var zMinusZ2 Scalar
+	zMinusZ2.Sub(&z, &z2)
+	var want Scalar
+	want.Mul(&zMinusZ2, &sumY)
+	var expZ Scalar
+	expZ.Mul(&z2, &z)
+	two := rpScalar(t, 2)
+	for _, bl := range bitLengths {
+		sum2 := manualSumPowers(two, bl)
+		var term Scalar
+		term.Mul(&expZ, &sum2)
+		var negTerm Scalar
+		negTerm.Neg(&term)
+		want.Add(&want, &negTerm)
+		var nextExp Scalar
+		nextExp.Mul(&expZ, &z)
+		expZ = nextExp
+	}
+
+	if rpScalarBytesFromScalar(t, got) != rpScalarBytesFromScalar(t, want) {
+		t.Fatal("rangeProofDelta mismatch")
 	}
 }
 
