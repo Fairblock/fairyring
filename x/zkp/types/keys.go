@@ -13,6 +13,8 @@ const (
 	GasVerifyValidityProof      storetypes.Gas = 60_000
 	GasVerifyWithdrawRangeProof storetypes.Gas = 80_000
 	GasVerifyTransferRangeProof storetypes.Gas = 100_000
+	GasRangeProofPerBitU64      storetypes.Gas = 500
+	GasRangeProofPerBitU128     storetypes.Gas = 500
 	GasVerifyTransferProofs     storetypes.Gas = 250_000
 	GasVerifyWithdrawProofs     storetypes.Gas = 150_000
 )

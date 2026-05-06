@@ -260,13 +260,16 @@ func TestVartimeMultiScalarMul(t *testing.T) {
 	}
 }
 
-func TestVartimeMultiScalarMulRejectsBadInputs(t *testing.T) {
+func TestVartimeMultiScalarMulLengthMismatch(t *testing.T) {
 	s := testScalar(t, 1)
-	p := testPoint(t, 1)
-
 	if _, err := VartimeMultiScalarMul([]*Scalar{&s}, []*Point{}); !errors.Is(err, ErrVectorLengthMismatch) {
 		t.Fatalf("expected vector length error, got %v", err)
 	}
+}
+
+func TestVartimeMultiScalarMulRejectsNilOperands(t *testing.T) {
+	s := testScalar(t, 1)
+	p := testPoint(t, 1)
 	if _, err := VartimeMultiScalarMul([]*Scalar{nil}, []*Point{&p}); !errors.Is(err, ErrInvalidInput) {
 		t.Fatalf("expected invalid scalar error, got %v", err)
 	}

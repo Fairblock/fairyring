@@ -199,6 +199,18 @@ func zkpSwapRangeProofCommitmentSlots01(t *testing.T, proof []byte) []byte {
 	return out
 }
 
+func zkpCorruptRangeProofScalarTail(t *testing.T, proof []byte) []byte {
+	t.Helper()
+	require.GreaterOrEqual(t, len(proof), 64, "range proof must include scalar tail")
+	out := make([]byte, len(proof))
+	copy(out, proof)
+	start := len(out) - 32
+	for i := start; i < len(out); i++ {
+		out[i] ^= 0x5a
+	}
+	return out
+}
+
 func zkpApplyVectorMutation(t *testing.T, family string, payload, binding json.RawMessage, m zkpVectorMut) (json.RawMessage, json.RawMessage) {
 	t.Helper()
 	var p zkpMutParams
@@ -418,29 +430,134 @@ func zkpRunVerificationVectorCase(t *testing.T, k *keeper.Keeper, goCtx context.
 	return false, ""
 }
 
+func zkpExecVectorBase(t *testing.T, k *keeper.Keeper, goCtx context.Context, vc *zkpVerificationVector) {
+	t.Helper()
+	zkpAssertVectorProofByteLengths(t, vc)
+	valid, errMsg := zkpRunVerificationVectorCase(t, k, goCtx, vc, vc.Payload, vc.Binding)
+	require.Equal(t, vc.ExpectedValid, valid, "error: %s", errMsg)
+	if vc.ExpectedValid {
+		require.Empty(t, errMsg)
+	}
+}
+
+func zkpExecVectorMutations(t *testing.T, k *keeper.Keeper, goCtx context.Context, vc *zkpVerificationVector) {
+	t.Helper()
+	for j := range vc.Mutations {
+		mut := &vc.Mutations[j]
+		t.Run(mut.ID, func(t *testing.T) {
+			pay, bind := zkpApplyVectorMutation(t, vc.Family, vc.Payload, vc.Binding, *mut)
+			v, e := zkpRunVerificationVectorCase(t, k, goCtx, vc, pay, bind)
+			require.Equal(t, mut.ExpectedValid, v, "error: %s", e)
+			require.True(t, zkpMutationErrMatches(e, mut.ExpectedErrorContains), "got %q want contains %q", e, mut.ExpectedErrorContains)
+		})
+	}
+}
+
+func zkpVerificationTestEnv(t *testing.T) (*keeper.Keeper, context.Context) {
+	t.Helper()
+	k, sdkCtx := newZkpKeeperForGRPCTest(t)
+	return k, sdk.WrapSDKContext(sdkCtx)
+}
+
 func TestZkpVerificationVectorsAgainstKeeper(t *testing.T) {
 	root := zkpLoadVerificationVectors(t)
-	k, sdkCtx := newZkpKeeperForGRPCTest(t)
-	goCtx := sdk.WrapSDKContext(sdkCtx)
+	k, goCtx := zkpVerificationTestEnv(t)
 
 	for i := range root.VerificationVectors {
 		vc := &root.VerificationVectors[i]
 		t.Run(vc.ID, func(t *testing.T) {
-			zkpAssertVectorProofByteLengths(t, vc)
-			valid, errMsg := zkpRunVerificationVectorCase(t, k, goCtx, vc, vc.Payload, vc.Binding)
-			require.Equal(t, vc.ExpectedValid, valid, "error: %s", errMsg)
-			if vc.ExpectedValid {
-				require.Empty(t, errMsg)
-			}
-			for j := range vc.Mutations {
-				mut := &vc.Mutations[j]
-				t.Run(mut.ID, func(t *testing.T) {
-					pay, bind := zkpApplyVectorMutation(t, vc.Family, vc.Payload, vc.Binding, *mut)
-					v, e := zkpRunVerificationVectorCase(t, k, goCtx, vc, pay, bind)
-					require.Equal(t, mut.ExpectedValid, v, "error: %s", e)
-					require.True(t, zkpMutationErrMatches(e, mut.ExpectedErrorContains), "got %q want contains %q", e, mut.ExpectedErrorContains)
-				})
-			}
+			zkpExecVectorBase(t, k, goCtx, vc)
+			zkpExecVectorMutations(t, k, goCtx, vc)
+		})
+	}
+}
+
+func TestRangeProofVerifyHappyPath(t *testing.T) {
+	root := zkpLoadVerificationVectors(t)
+	k, goCtx := zkpVerificationTestEnv(t)
+	for i := range root.VerificationVectors {
+		vc := &root.VerificationVectors[i]
+		if !vc.ExpectedValid {
+			continue
+		}
+		if vc.Family != "transfer_range" && vc.Family != "withdraw_range" {
+			continue
+		}
+		t.Run(vc.ID, func(t *testing.T) {
+			zkpExecVectorBase(t, k, goCtx, vc)
+		})
+	}
+}
+
+func TestRangeProofVerifyMalformedCommitments(t *testing.T) {
+	root := zkpLoadVerificationVectors(t)
+	k, goCtx := zkpVerificationTestEnv(t)
+	for i := range root.VerificationVectors {
+		vc := &root.VerificationVectors[i]
+		if !vc.ExpectedValid || len(vc.Mutations) == 0 {
+			continue
+		}
+		if vc.Family != "transfer_range" && vc.Family != "withdraw_range" {
+			continue
+		}
+		t.Run(vc.ID, func(t *testing.T) {
+			zkpExecVectorMutations(t, k, goCtx, vc)
+
+			var pl payloadRange
+			require.NoError(t, json.Unmarshal(vc.Payload, &pl))
+			raw := zkpDecodeHex(t, pl.ProofDataHex)
+
+			t.Run("swap_commitment_slots", func(t *testing.T) {
+				swapped := zkpSwapRangeProofCommitmentSlots01(t, raw)
+				mut := pl
+				mut.ProofDataHex = hex.EncodeToString(swapped)
+				payload, err := json.Marshal(mut)
+				require.NoError(t, err)
+
+				v, e := zkpRunVerificationVectorCase(t, k, goCtx, vc, payload, vc.Binding)
+				require.False(t, v, "swapping commitments must invalidate range proof")
+				require.True(t, zkpMutationErrMatches(e, "verification failed"), "got %q", e)
+			})
+
+			t.Run("wrong_scalars_tail", func(t *testing.T) {
+				corrupt := zkpCorruptRangeProofScalarTail(t, raw)
+				mut := pl
+				mut.ProofDataHex = hex.EncodeToString(corrupt)
+				payload, err := json.Marshal(mut)
+				require.NoError(t, err)
+
+				v, e := zkpRunVerificationVectorCase(t, k, goCtx, vc, payload, vc.Binding)
+				require.False(t, v, "corrupting scalar tail must invalidate range proof")
+				require.True(t, zkpMutationErrMatches(e, "verification failed"), "got %q", e)
+			})
+		})
+	}
+}
+
+func TestEqualityProofVerifyHappyPath(t *testing.T) {
+	root := zkpLoadVerificationVectors(t)
+	k, goCtx := zkpVerificationTestEnv(t)
+	for i := range root.VerificationVectors {
+		vc := &root.VerificationVectors[i]
+		if !vc.ExpectedValid || vc.Family != "equality" {
+			continue
+		}
+		t.Run(vc.ID, func(t *testing.T) {
+			zkpExecVectorBase(t, k, goCtx, vc)
+		})
+	}
+}
+
+func TestValidityProofVerifyHappyPath(t *testing.T) {
+	root := zkpLoadVerificationVectors(t)
+	k, goCtx := zkpVerificationTestEnv(t)
+	for i := range root.VerificationVectors {
+		vc := &root.VerificationVectors[i]
+		if !vc.ExpectedValid || vc.Family != "validity" {
+			continue
+		}
+		t.Run(vc.ID, func(t *testing.T) {
+			zkpExecVectorBase(t, k, goCtx, vc)
 		})
 	}
 }

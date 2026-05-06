@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/Fairblock/fairyring/x/zkp/verification/common"
+	"github.com/Fairblock/fairyring/x/zkp/verification/internal/transcriptgold"
 )
 
 func cScalar(t *testing.T, v uint64) Scalar {
@@ -274,7 +275,7 @@ func TestWithdrawTranscriptBindsNonce(t *testing.T) {
 		Commitment: pd.Context.Commitment,
 	}
 
-	normal := newSplTranscript(&normalCtx)
+	normal := NewEqualityInstructionTranscript(&normalCtx)
 	withdraw := newWithdrawSplTranscript(&pd.Context)
 	cNormal := common.ChallengeScalar(normal, []byte("c"))
 	cWithdraw := common.ChallengeScalar(withdraw, []byte("c"))
@@ -288,6 +289,39 @@ func TestWithdrawTranscriptBindsNonce(t *testing.T) {
 	cWithdraw2 := common.ChallengeScalar(withdraw2, []byte("c"))
 	if cScalarBytesFromScalar(t, cWithdraw) == cScalarBytesFromScalar(t, cWithdraw2) {
 		t.Fatal("nonce change must change withdraw transcript challenge")
+	}
+}
+
+func TestEqualityProofTranscriptParity(t *testing.T) {
+	vec, err := transcriptgold.LoadTranscriptVectors()
+	if err != nil {
+		t.Fatalf("load golden vectors: %v", err)
+	}
+	wantC, err := transcriptgold.ParseHex32(vec.Equality.C)
+	if err != nil {
+		t.Fatalf("golden c: %v", err)
+	}
+	wantW, err := transcriptgold.ParseHex32(vec.Equality.W)
+	if err != nil {
+		t.Fatalf("golden w: %v", err)
+	}
+
+	pd := cBaseEqualityData(t)
+	raw := pd.Proof.AsBytes()
+	ep, err := EqualityProofFromBytes(&raw)
+	if err != nil {
+		t.Fatalf("decode proof: %v", err)
+	}
+	tr := NewEqualityInstructionTranscript(&pd.Context)
+	c, w, err := EqualityProofFiatShamirChallenges(tr, ep)
+	if err != nil {
+		t.Fatalf("fiat-shamir: %v", err)
+	}
+	if cScalarBytesFromScalar(t, c) != wantC {
+		t.Fatalf("c does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if cScalarBytesFromScalar(t, w) != wantW {
+		t.Fatalf("w does not match golden vector (regenerate with gencmd or fix Rust transcript)")
 	}
 }
 
@@ -379,7 +413,7 @@ func TestEqualityProofVerifyRejectsIdentityInputs(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			proof, pk, ct, cm, ctx := cBuildProofObjects(t)
 			tt.mut(pk, ct, cm)
-			err := proof.Verify(pk, ct, cm, newSplTranscript(ctx))
+			err := proof.Verify(pk, ct, cm, NewEqualityInstructionTranscript(ctx))
 			if !errors.Is(err, ErrProofAlgebraic) {
 				t.Fatalf("expected ErrProofAlgebraic, got %v", err)
 			}
@@ -390,7 +424,7 @@ func TestEqualityProofVerifyRejectsIdentityInputs(t *testing.T) {
 func TestEqualityProofVerifyRejectsMalformedPointEncoding(t *testing.T) {
 	proof, pk, ct, cm, ctx := cBuildProofObjects(t)
 	proof.Y0 = common.CompressedRistretto(cInvalidPointBytes())
-	err := proof.Verify(pk, ct, cm, newSplTranscript(ctx))
+	err := proof.Verify(pk, ct, cm, NewEqualityInstructionTranscript(ctx))
 	if !errors.Is(err, common.ErrDeserialization) {
 		t.Fatalf("expected point deserialization error, got %v", err)
 	}

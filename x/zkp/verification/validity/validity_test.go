@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/Fairblock/fairyring/x/zkp/verification/common"
+	"github.com/Fairblock/fairyring/x/zkp/verification/internal/transcriptgold"
 )
 
 func vScalar(t *testing.T, n uint64) Scalar {
@@ -243,6 +244,45 @@ func TestValidityTranscriptDeterministicAndContextSensitive(t *testing.T) {
 	mutated.SecondPubkey.Bytes[0] ^= 0x01
 	if challenge(pd.Context) == challenge(mutated) {
 		t.Fatal("mutating context did not change transcript challenge")
+	}
+}
+
+func TestValidityProofTranscriptParity(t *testing.T) {
+	vec, err := transcriptgold.LoadTranscriptVectors()
+	if err != nil {
+		t.Fatalf("load golden vectors: %v", err)
+	}
+	wantT, err := transcriptgold.ParseHex32(vec.Validity.T)
+	if err != nil {
+		t.Fatalf("golden t: %v", err)
+	}
+	wantC, err := transcriptgold.ParseHex32(vec.Validity.C)
+	if err != nil {
+		t.Fatalf("golden c: %v", err)
+	}
+	wantW, err := transcriptgold.ParseHex32(vec.Validity.W)
+	if err != nil {
+		t.Fatalf("golden w: %v", err)
+	}
+
+	pd := vBaseData(t)
+	inner, err := GroupedCiphertext2HandlesValidityProofFromBytes(pd.Proof.Bytes[:])
+	if err != nil {
+		t.Fatalf("decode proof: %v", err)
+	}
+	tr := pd.Context.NewTranscript()
+	tCh, c, w, err := BatchedGroupedValidityFiatShamirChallenges(tr, inner, 2)
+	if err != nil {
+		t.Fatalf("fiat-shamir: %v", err)
+	}
+	if vScalarBytesFromScalar(t, tCh) != wantT {
+		t.Fatalf("t does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if vScalarBytesFromScalar(t, c) != wantC {
+		t.Fatalf("c does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if vScalarBytesFromScalar(t, w) != wantW {
+		t.Fatalf("w does not match golden vector (regenerate with gencmd or fix Rust transcript)")
 	}
 }
 

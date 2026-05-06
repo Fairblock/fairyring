@@ -311,7 +311,7 @@ func VerifyEqualityProof(
 		return ErrProofDeserialization
 	}
 
-	t := newSplTranscript(&pd.Context)
+	t := NewEqualityInstructionTranscript(&pd.Context)
 
 	if err := proof.Verify(&pk, &ct, cm, t); err != nil {
 		return ErrProofAlgebraic
@@ -323,7 +323,30 @@ func ciphertextCommitmentEqualityProofDomainSeparator(t *merlin.Transcript) {
 	t.AppendMessage([]byte("dom-sep"), []byte("ciphertext-commitment-equality-proof"))
 }
 
-func newSplTranscript(ctx *CiphertextCommitmentEqualityProofContext) *merlin.Transcript {
+// EqualityProofFiatShamirChallenges returns Merlin Fiat–Shamir scalars (c, w) after appending the
+// ciphertext-commitment-equality proof domain separator and proof messages to transcript.
+func EqualityProofFiatShamirChallenges(transcript *merlin.Transcript, ep *EqualityProof) (c Scalar, w Scalar, err error) {
+	ciphertextCommitmentEqualityProofDomainSeparator(transcript)
+	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_0"), &ep.Y0); err != nil {
+		return Scalar{}, Scalar{}, err
+	}
+	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_1"), &ep.Y1); err != nil {
+		return Scalar{}, Scalar{}, err
+	}
+	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_2"), &ep.Y2); err != nil {
+		return Scalar{}, Scalar{}, err
+	}
+	c = common.ChallengeScalar(transcript, []byte("c"))
+	common.AppendScalar(transcript, []byte("z_s"), &ep.Zs)
+	common.AppendScalar(transcript, []byte("z_x"), &ep.Zx)
+	common.AppendScalar(transcript, []byte("z_r"), &ep.Zr)
+	w = common.ChallengeScalar(transcript, []byte("w"))
+	return c, w, nil
+}
+
+// NewEqualityInstructionTranscript returns the Merlin transcript after the
+// ciphertext-commitment-equality instruction prefix (pubkey, ciphertext, commitment).
+func NewEqualityInstructionTranscript(ctx *CiphertextCommitmentEqualityProofContext) *merlin.Transcript {
 	t := merlin.NewTranscript("ciphertext-commitment-equality-instruction")
 
 	// pubkey

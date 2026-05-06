@@ -284,6 +284,7 @@ func (g *generatorsChain) nextPoint() Point {
 func (ipp *InnerProductProof) verificationScalars(
 	n int,
 	t *merlin.Transcript,
+	rawUOut *[]Scalar,
 ) ([]Scalar, []Scalar, []Scalar, []*Point, []*Point, error) {
 
 	lgN := len(ipp.LVec)
@@ -300,6 +301,9 @@ func (ipp *InnerProductProof) verificationScalars(
 	rangeProofInnerProductDomainSeparator(t, uint64(n))
 
 	challenges := make([]Scalar, 0, lgN)
+	if rawUOut != nil {
+		*rawUOut = (*rawUOut)[:0]
+	}
 	lPoints := make([]*Point, 0, lgN)
 	rPoints := make([]*Point, 0, lgN)
 	for i := 0; i < lgN; i++ {
@@ -314,6 +318,9 @@ func (ipp *InnerProductProof) verificationScalars(
 		lPoints = append(lPoints, lPoint)
 		rPoints = append(rPoints, rPoint)
 		u := challengeScalarRP(t, []byte("u"))
+		if rawUOut != nil {
+			*rawUOut = append(*rawUOut, u)
+		}
 		challenges = append(challenges, u)
 	}
 
@@ -545,7 +552,7 @@ func (rp *RangeProof) Verify(
 
 	w := challengeScalarRP(t, []byte("w"))
 
-	xSq, xInvSq, sVec, lPoints, rPoints, err := rp.IPPProof.verificationScalars(nm, t)
+	xSq, xInvSq, sVec, lPoints, rPoints, err := rp.IPPProof.verificationScalars(nm, t, nil)
 	if err != nil {
 		return err
 	}
@@ -733,6 +740,71 @@ func (rp *RangeProof) Verify(
 	return RangeErrAlgebraicRelation
 }
 
+
+type RangeProofFiatShamirState struct {
+	Y, Z, X, W Scalar
+	U          []Scalar
+	D          Scalar
+}
+
+
+func RangeProofFiatShamirChallenges(
+	transcript *merlin.Transcript,
+	rp *RangeProof,
+	comms []*PedersenCommitment,
+	bitLengths []int,
+) (out RangeProofFiatShamirState, err error) {
+	if len(comms) != len(bitLengths) {
+		return out, RangeErrVectorLengthMismatch
+	}
+	nm := 0
+	for _, bl := range bitLengths {
+		nm += bl
+	}
+	if nm <= 0 || !isPowerOfTwo(nm) {
+		return out, RangeErrInvalidBitSize
+	}
+	var id Point
+	id.SetZero()
+	for _, V := range comms {
+		if V == nil || V.P.Equals(&id) {
+			return out, RangeErrValidationError
+		}
+	}
+
+	rangeProofDomainSeparator(transcript, uint64(nm))
+	if _, err := validateAndAppendPointRPDecoded(transcript, []byte("A"), &rp.A); err != nil {
+		return out, err
+	}
+	if _, err := validateAndAppendPointRPDecoded(transcript, []byte("S"), &rp.S); err != nil {
+		return out, err
+	}
+	out.Y = challengeScalarRP(transcript, []byte("y"))
+	out.Z = challengeScalarRP(transcript, []byte("z"))
+	if _, err := validateAndAppendPointRPDecoded(transcript, []byte("T_1"), &rp.T1); err != nil {
+		return out, err
+	}
+	if _, err := validateAndAppendPointRPDecoded(transcript, []byte("T_2"), &rp.T2); err != nil {
+		return out, err
+	}
+	out.X = challengeScalarRP(transcript, []byte("x"))
+	appendScalarRP(transcript, []byte("t_x"), &rp.Tx)
+	appendScalarRP(transcript, []byte("t_x_blinding"), &rp.TxBlinding)
+	appendScalarRP(transcript, []byte("e_blinding"), &rp.EBlinding)
+	out.W = challengeScalarRP(transcript, []byte("w"))
+	var rawU []Scalar
+	if _, _, _, _, _, ierr := rp.IPPProof.verificationScalars(nm, transcript, &rawU); ierr != nil {
+		return out, ierr
+	}
+	out.U = rawU
+	a := rp.IPPProof.A
+	b := rp.IPPProof.B
+	appendScalarRP(transcript, []byte("ipp_a"), &a)
+	appendScalarRP(transcript, []byte("ipp_b"), &b)
+	out.D = challengeScalarRP(transcript, []byte("d"))
+	return out, nil
+}
+
 func rangeProofDelta(bitLengths []int, y, z *Scalar) Scalar {
 	nm := 0
 	for _, bl := range bitLengths {
@@ -817,7 +889,7 @@ func VerifyWithdrawRange(pd *BatchedRangeProofU64Data) error {
 		return perr
 	}
 
-	t := newTranscriptRange(&pd.Context)
+	t := NewBatchedRangeInstructionTranscript(&pd.Context)
 
 	rp, err := RangeProofFromPodU64(pd.Proof)
 	if err != nil {
@@ -894,13 +966,25 @@ func newWithdrawTranscriptRange(ctx *WithdrawBatchedRangeProofContext) *merlin.T
 	return t
 }
 
+// NewBatchedRangeProofInstructionTranscript returns the Merlin transcript prefix used for transfer
+// U128 range proofs (commitments and bit-lengths), matching VerifyTransferRange.
+func NewBatchedRangeProofInstructionTranscript(ctx *BatchedRangeProofContext) *merlin.Transcript {
+	return NewBatchedRangeInstructionTranscript(ctx)
+}
+
+// BatchedRangeStatement extracts Pedersen commitments and bit-lengths from a batched context,
+// respecting padding rules used by VerifyTransferRange (maxBL caps active commitments).
+func BatchedRangeStatement(ctx *BatchedRangeProofContext, maxBL uint8) ([]PedersenCommitment, []int, ProofError) {
+	return collectRangeCtx(ctx, maxBL)
+}
+
 func VerifyTransferRange(pd *BatchedRangeProofU128Data) error {
 	commitments, bitLengths, perr := collectRangeCtx(&pd.Context, 64)
 	if perr != 0 {
 		return perr
 	}
 
-	t := newTranscriptRange(&pd.Context)
+	t := NewBatchedRangeInstructionTranscript(&pd.Context)
 
 	rp, err := RangeProofFromPodU128(pd.Proof)
 	if err != nil {
@@ -918,7 +1002,9 @@ func VerifyTransferRange(pd *BatchedRangeProofU128Data) error {
 	return nil
 }
 
-func newTranscriptRange(ctx *BatchedRangeProofContext) *merlin.Transcript {
+// NewBatchedRangeInstructionTranscript builds the Merlin transcript for the batched range
+// statement (protocol label, commitments, bit-lengths) before range-proof domain separation.
+func NewBatchedRangeInstructionTranscript(ctx *BatchedRangeProofContext) *merlin.Transcript {
 	t := merlin.NewTranscript("batched-range-proof-instruction")
 
 	var commitsBytes [8 * 32]byte

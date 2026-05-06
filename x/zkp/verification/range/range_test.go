@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/Fairblock/fairyring/x/zkp/verification/common"
+	"github.com/Fairblock/fairyring/x/zkp/verification/internal/transcriptgold"
 	"github.com/gtank/merlin"
 )
 
@@ -562,6 +563,76 @@ func TestRangeProofDeltaMatchesIndependentConstruction(t *testing.T) {
 
 	if rpScalarBytesFromScalar(t, got) != rpScalarBytesFromScalar(t, want) {
 		t.Fatal("rangeProofDelta mismatch")
+	}
+}
+
+func TestRangeProofTranscriptParity(t *testing.T) {
+	vec, err := transcriptgold.LoadTranscriptVectors()
+	if err != nil {
+		t.Fatalf("load golden vectors: %v", err)
+	}
+	g := vec.Range
+	parse := func(label, hexStr string) [32]byte {
+		t.Helper()
+		b, err := transcriptgold.ParseHex32(hexStr)
+		if err != nil {
+			t.Fatalf("%s: %v", label, err)
+		}
+		return b
+	}
+	wantY := parse("golden y", g.Y)
+	wantZ := parse("golden z", g.Z)
+	wantX := parse("golden x", g.X)
+	wantW := parse("golden w", g.W)
+	wantD := parse("golden d", g.D)
+	if len(g.U) != 6 {
+		t.Fatalf("golden u length %d, want 6", len(g.U))
+	}
+	wantU := make([][32]byte, 6)
+	for i := range wantU {
+		wantU[i] = parse("golden u", g.U[i])
+	}
+
+	ctx := BatchedRangeProofContext{}
+	ctx.Commitments[0] = rpPodCommit(t, 1)
+	ctx.BitLengths[0] = 64
+
+	rp, err := RangeProofFromBytes(rpValidProofBytes(t, 6))
+	if err != nil {
+		t.Fatalf("proof parse failed: %v", err)
+	}
+	pc, err := PedersenCommitmentFromPod(ctx.Commitments[0])
+	if err != nil {
+		t.Fatalf("commitment: %v", err)
+	}
+	comm := pc
+	tr := NewBatchedRangeInstructionTranscript(&ctx)
+	state, err := RangeProofFiatShamirChallenges(tr, &rp, []*PedersenCommitment{&comm}, []int{64})
+	if err != nil {
+		t.Fatalf("fiat-shamir: %v", err)
+	}
+	if rpScalarBytesFromScalar(t, state.Y) != wantY {
+		t.Fatal("y does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if rpScalarBytesFromScalar(t, state.Z) != wantZ {
+		t.Fatal("z does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if rpScalarBytesFromScalar(t, state.X) != wantX {
+		t.Fatal("x does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if rpScalarBytesFromScalar(t, state.W) != wantW {
+		t.Fatal("w does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if rpScalarBytesFromScalar(t, state.D) != wantD {
+		t.Fatal("d does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if len(state.U) != len(wantU) {
+		t.Fatalf("u len %d, want %d", len(state.U), len(wantU))
+	}
+	for i := range wantU {
+		if rpScalarBytesFromScalar(t, state.U[i]) != wantU[i] {
+			t.Fatalf("u[%d] does not match golden vector (regenerate with gencmd or fix Rust transcript)", i)
+		}
 	}
 }
 

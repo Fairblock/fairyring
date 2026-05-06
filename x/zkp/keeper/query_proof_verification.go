@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 
+	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/Fairblock/fairyring/x/zkp/types"
@@ -14,6 +15,20 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
+
+func rangeBitLengthGas(bitLengths [8]uint8, maxPerCommit uint8, perBit storetypes.Gas) storetypes.Gas {
+	var total storetypes.Gas
+	for _, bl := range bitLengths {
+		if bl == 0 {
+			continue
+		}
+		if bl > maxPerCommit {
+			bl = maxPerCommit
+		}
+		total += storetypes.Gas(bl) * perBit
+	}
+	return total
+}
 
 func (k Keeper) VerifyWithdrawRangeProof(goCtx context.Context, req *types.QueryVerifyWithdrawRangeProofRequest) (*types.QueryVerifyWithdrawRangeProofResponse, error) {
 	if req == nil {
@@ -54,6 +69,10 @@ func (k Keeper) VerifyWithdrawRangeProof(goCtx context.Context, req *types.Query
 		proofData.Context.BitLengths[i] = req.ProofData[offset]
 		offset++
 	}
+	ctx.GasMeter().ConsumeGas(
+		rangeBitLengthGas(proofData.Context.BitLengths, 64, types.GasRangeProofPerBitU64),
+		"verify_withdraw_range_proof_bitlength",
+	)
 
 	if offset+8 > len(req.ProofData) {
 		return &types.QueryVerifyWithdrawRangeProofResponse{
@@ -127,6 +146,10 @@ func (k Keeper) VerifyTransferRangeProof(goCtx context.Context, req *types.Query
 		proofData.Context.BitLengths[i] = req.ProofData[offset]
 		offset++
 	}
+	ctx.GasMeter().ConsumeGas(
+		rangeBitLengthGas(proofData.Context.BitLengths, 64, types.GasRangeProofPerBitU128),
+		"verify_transfer_range_proof_bitlength",
+	)
 
 	// Deserialize proof
 	if offset+736 > len(req.ProofData) {

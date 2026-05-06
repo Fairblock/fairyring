@@ -433,3 +433,29 @@ func batchedGroupedCiphertextValidityProofDomainSeparator(t *merlin.Transcript, 
 	t.AppendMessage([]byte("handles"), buf[:])
 }
 
+// BatchedGroupedValidityFiatShamirChallenges returns (t, c, w) after walking the transcript used in
+// BatchedGroupedCiphertext2HandlesValidityProof.Verify.
+func BatchedGroupedValidityFiatShamirChallenges(
+	transcript *merlin.Transcript,
+	inner *GroupedCiphertext2HandlesValidityProof,
+	handles uint64,
+) (t Scalar, c Scalar, w Scalar, err error) {
+	batchedGroupedCiphertextValidityProofDomainSeparator(transcript, handles)
+	t = common.ChallengeScalar(transcript, []byte("t"))
+	groupedCiphertextValidityProofDomainSeparator(transcript, handles)
+	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_0"), &inner.Y0); err != nil {
+		return Scalar{}, Scalar{}, Scalar{}, err
+	}
+	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_1"), &inner.Y1); err != nil {
+		return Scalar{}, Scalar{}, Scalar{}, err
+	}
+	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_2"), &inner.Y2); err != nil {
+		return Scalar{}, Scalar{}, Scalar{}, err
+	}
+	c = common.ChallengeScalar(transcript, []byte("c"))
+	common.AppendScalar(transcript, []byte("z_r"), &inner.Zr)
+	common.AppendScalar(transcript, []byte("z_x"), &inner.Zx)
+	w = common.ChallengeScalar(transcript, []byte("w"))
+	return t, c, w, nil
+}
+
