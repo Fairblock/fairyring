@@ -2,46 +2,52 @@ package validity
 
 import (
 	"bytes"
+	"encoding/hex"
+	"encoding/json"
 	"errors"
+	"os"
+	"path/filepath"
+	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/Fairblock/fairyring/x/zkp/verification/common"
 	"github.com/Fairblock/fairyring/x/zkp/verification/internal/transcriptgold"
 )
 
-func vScalar(t *testing.T, n uint64) Scalar {
-	t.Helper()
+func vScalar(tb testing.TB, n uint64) Scalar {
+	tb.Helper()
 	var s Scalar
 	s.SetUint64(n)
 	return s
 }
 
-func vScalarBytes(t *testing.T, n uint64) [32]byte {
-	t.Helper()
-	s := vScalar(t, n)
+func vScalarBytes(tb testing.TB, n uint64) [32]byte {
+	tb.Helper()
+	s := vScalar(tb, n)
 	var out [32]byte
 	s.BytesInto(&out)
 	return out
 }
 
-func vScalarBytesFromScalar(t *testing.T, s Scalar) [32]byte {
-	t.Helper()
+func vScalarBytesFromScalar(tb testing.TB, s Scalar) [32]byte {
+	tb.Helper()
 	var out [32]byte
 	s.BytesInto(&out)
 	return out
 }
 
-func vPoint(t *testing.T, n uint64) Point {
-	t.Helper()
-	s := vScalar(t, n)
+func vPoint(tb testing.TB, n uint64) Point {
+	tb.Helper()
+	s := vScalar(tb, n)
 	var p Point
 	p.ScalarMult(&common.G, &s)
 	return p
 }
 
-func vPointBytes(t *testing.T, n uint64) [32]byte {
-	t.Helper()
-	p := vPoint(t, n)
+func vPointBytes(tb testing.TB, n uint64) [32]byte {
+	tb.Helper()
+	p := vPoint(tb, n)
 	var out [32]byte
 	p.BytesInto(&out)
 	return out
@@ -55,26 +61,26 @@ func vInvalidPointBytes() [32]byte {
 	return out
 }
 
-func vGroupedCiphertextBytes(t *testing.T, commit, handle0, handle1 uint64) [96]byte {
-	t.Helper()
+func vGroupedCiphertextBytes(tb testing.TB, commit, handle0, handle1 uint64) [96]byte {
+	tb.Helper()
 	var out [96]byte
-	c := vPointBytes(t, commit)
-	h0 := vPointBytes(t, handle0)
-	h1 := vPointBytes(t, handle1)
+	c := vPointBytes(tb, commit)
+	h0 := vPointBytes(tb, handle0)
+	h1 := vPointBytes(tb, handle1)
 	copy(out[0:32], c[:])
 	copy(out[32:64], h0[:])
 	copy(out[64:96], h1[:])
 	return out
 }
 
-func vBaseProofBytes(t *testing.T) [160]byte {
-	t.Helper()
+func vBaseProofBytes(tb testing.TB) [160]byte {
+	tb.Helper()
 	var out [160]byte
-	y0 := vPointBytes(t, 10)
-	y1 := vPointBytes(t, 11)
-	y2 := vPointBytes(t, 12)
-	zr := vScalarBytes(t, 13)
-	zx := vScalarBytes(t, 14)
+	y0 := vPointBytes(tb, 10)
+	y1 := vPointBytes(tb, 11)
+	y2 := vPointBytes(tb, 12)
+	zr := vScalarBytes(tb, 13)
+	zx := vScalarBytes(tb, 14)
 	copy(out[0:32], y0[:])
 	copy(out[32:64], y1[:])
 	copy(out[64:96], y2[:])
@@ -83,16 +89,16 @@ func vBaseProofBytes(t *testing.T) [160]byte {
 	return out
 }
 
-func vBaseData(t *testing.T) BatchedGroupedCiphertext2HandlesValidityProofData {
-	t.Helper()
+func vBaseData(tb testing.TB) BatchedGroupedCiphertext2HandlesValidityProofData {
+	tb.Helper()
 	return BatchedGroupedCiphertext2HandlesValidityProofData{
 		Context: BatchedGroupedCiphertext2HandlesValidityProofContext{
-			FirstPubkey:         PodElGamalPubkey{Bytes: vPointBytes(t, 1)},
-			SecondPubkey:        PodElGamalPubkey{Bytes: vPointBytes(t, 2)},
-			GroupedCiphertextLo: PodGroupedElGamalCiphertext2Handles{Bytes: vGroupedCiphertextBytes(t, 3, 4, 5)},
-			GroupedCiphertextHi: PodGroupedElGamalCiphertext2Handles{Bytes: vGroupedCiphertextBytes(t, 6, 7, 8)},
+			FirstPubkey:         PodElGamalPubkey{Bytes: vPointBytes(tb, 1)},
+			SecondPubkey:        PodElGamalPubkey{Bytes: vPointBytes(tb, 2)},
+			GroupedCiphertextLo: PodGroupedElGamalCiphertext2Handles{Bytes: vGroupedCiphertextBytes(tb, 3, 4, 5)},
+			GroupedCiphertextHi: PodGroupedElGamalCiphertext2Handles{Bytes: vGroupedCiphertextBytes(tb, 6, 7, 8)},
 		},
-		Proof: PodBatchedGroupedCiphertext2HandlesValidityProof{Bytes: vBaseProofBytes(t)},
+		Proof: PodBatchedGroupedCiphertext2HandlesValidityProof{Bytes: vBaseProofBytes(tb)},
 	}
 }
 
@@ -283,6 +289,93 @@ func TestValidityProofTranscriptParity(t *testing.T) {
 	}
 	if vScalarBytesFromScalar(t, w) != wantW {
 		t.Fatalf("w does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+}
+
+func BenchmarkValidityProofVerification(b *testing.B) {
+	base := vBaseData(b)
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		pd := base
+		_ = VerifyValidityProof(&pd)
+	}
+}
+
+func BenchmarkValidityProofVerificationRealProof(b *testing.B) {
+	type vector struct {
+		Family        string `json:"family"`
+		ExpectedValid bool   `json:"expected_valid"`
+		Payload       struct {
+			ProofDataHex string `json:"proof_data_hex"`
+		} `json:"payload"`
+	}
+	type root struct {
+		VerificationVectors []vector `json:"verification_vectors"`
+	}
+	load := func(b *testing.B) root {
+		b.Helper()
+		_, file, _, ok := runtime.Caller(0)
+		if !ok {
+			b.Fatal("runtime.Caller failed")
+		}
+		p := filepath.Join(filepath.Dir(file), "../../../../test-vectors/zkp_verification_vectors.json")
+		raw, err := os.ReadFile(p)
+		if err != nil {
+			b.Fatalf("read vectors: %v", err)
+		}
+		var r root
+		if err := json.Unmarshal(raw, &r); err != nil {
+			b.Fatalf("unmarshal vectors: %v", err)
+		}
+		return r
+	}
+	decodeHex := func(b *testing.B, s string) []byte {
+		b.Helper()
+		s = strings.TrimPrefix(strings.ToLower(strings.TrimSpace(s)), "0x")
+		out, err := hex.DecodeString(s)
+		if err != nil {
+			b.Fatalf("decode hex: %v", err)
+		}
+		return out
+	}
+	decodeValidity := func(b *testing.B, raw []byte) BatchedGroupedCiphertext2HandlesValidityProofData {
+		b.Helper()
+		if len(raw) != 416 {
+			b.Fatalf("validity proof length: got %d", len(raw))
+		}
+		var pd BatchedGroupedCiphertext2HandlesValidityProofData
+		offset := 0
+		copy(pd.Context.FirstPubkey.Bytes[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.SecondPubkey.Bytes[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.GroupedCiphertextLo.Bytes[:], raw[offset:offset+96])
+		offset += 96
+		copy(pd.Context.GroupedCiphertextHi.Bytes[:], raw[offset:offset+96])
+		offset += 96
+		copy(pd.Proof.Bytes[:], raw[offset:offset+160])
+		return pd
+	}
+
+	var validityRaw []byte
+	r := load(b)
+	for i := range r.VerificationVectors {
+		v := r.VerificationVectors[i]
+		if v.ExpectedValid && v.Family == "validity" && v.Payload.ProofDataHex != "" {
+			validityRaw = decodeHex(b, v.Payload.ProofDataHex)
+			break
+		}
+	}
+	if validityRaw == nil {
+		b.Fatal("missing valid validity vector")
+	}
+
+	pd := decodeValidity(b, validityRaw)
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = VerifyValidityProof(&pd)
 	}
 }
 

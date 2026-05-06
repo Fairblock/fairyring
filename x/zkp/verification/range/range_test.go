@@ -2,11 +2,13 @@ package rangeproof
 
 import (
 	"bytes"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/Fairblock/fairyring/x/zkp/verification/common"
@@ -14,71 +16,71 @@ import (
 	"github.com/gtank/merlin"
 )
 
-func rpScalar(t *testing.T, v uint64) Scalar {
-	t.Helper()
+func rpScalar(tb testing.TB, v uint64) Scalar {
+	tb.Helper()
 	var s Scalar
 	s.SetUint64(v)
 	return s
 }
 
-func rpScalarBytes(t *testing.T, v uint64) [32]byte {
-	t.Helper()
-	s := rpScalar(t, v)
+func rpScalarBytes(tb testing.TB, v uint64) [32]byte {
+	tb.Helper()
+	s := rpScalar(tb, v)
 	var out [32]byte
 	s.BytesInto(&out)
 	return out
 }
 
-func rpScalarBytesFromScalar(t *testing.T, s Scalar) [32]byte {
-	t.Helper()
+func rpScalarBytesFromScalar(tb testing.TB, s Scalar) [32]byte {
+	tb.Helper()
 	var out [32]byte
 	s.BytesInto(&out)
 	return out
 }
 
-func rpPoint(t *testing.T, v uint64) Point {
-	t.Helper()
-	s := rpScalar(t, v)
+func rpPoint(tb testing.TB, v uint64) Point {
+	tb.Helper()
+	s := rpScalar(tb, v)
 	var p Point
 	p.ScalarMult(G, &s)
 	return p
 }
 
-func rpPointBytes(t *testing.T, v uint64) [32]byte {
-	t.Helper()
-	p := rpPoint(t, v)
+func rpPointBytes(tb testing.TB, v uint64) [32]byte {
+	tb.Helper()
+	p := rpPoint(tb, v)
 	var out [32]byte
 	p.BytesInto(&out)
 	return out
 }
 
-func rpPodCommit(t *testing.T, v uint64) PodPedersenCommitment {
-	t.Helper()
-	return PodPedersenCommitment{Bytes: rpPointBytes(t, v)}
+func rpPodCommit(tb testing.TB, v uint64) PodPedersenCommitment {
+	tb.Helper()
+	return PodPedersenCommitment{Bytes: rpPointBytes(tb, v)}
 }
 
-func rpValidProofBytes(t *testing.T, lgN int) []byte {
-	t.Helper()
+func rpValidProofBytes(tb testing.TB, lgN int) []byte {
+	tb.Helper()
 	if lgN <= 0 {
 		lgN = 1
 	}
 	buf := make([]byte, 0, (7+2*lgN+2)*32)
 	for i := uint64(1); i <= 4; i++ {
-		b := rpPointBytes(t, i)
+		b := rpPointBytes(tb, i)
 		buf = append(buf, b[:]...)
 	}
 	for i := uint64(1); i <= 3; i++ {
-		b := rpScalarBytes(t, i)
+		b := rpScalarBytes(tb, i)
 		buf = append(buf, b[:]...)
 	}
 	for i := 0; i < lgN; i++ {
-		l := rpPointBytes(t, uint64(10+i))
-		r := rpPointBytes(t, uint64(20+i))
+		l := rpPointBytes(tb, uint64(10+i))
+		r := rpPointBytes(tb, uint64(20+i))
 		buf = append(buf, l[:]...)
 		buf = append(buf, r[:]...)
 	}
-	a := rpScalarBytes(t, 31)
-	b := rpScalarBytes(t, 32)
+	a := rpScalarBytes(tb, 31)
+	b := rpScalarBytes(tb, 32)
 	buf = append(buf, a[:]...)
 	buf = append(buf, b[:]...)
 	return buf
@@ -634,6 +636,176 @@ func TestRangeProofTranscriptParity(t *testing.T) {
 			t.Fatalf("u[%d] does not match golden vector (regenerate with gencmd or fix Rust transcript)", i)
 		}
 	}
+}
+
+func BenchmarkRangeProofVerificationScaling(b *testing.B) {
+	cases := []struct {
+		name       string
+		commitment int
+		totalBits  int
+		lgN        int
+	}{
+		{name: "bits_64", commitment: 1, totalBits: 64, lgN: 6},
+		{name: "bits_128", commitment: 2, totalBits: 128, lgN: 7},
+		{name: "bits_256", commitment: 4, totalBits: 256, lgN: 8},
+		{name: "bits_512", commitment: 8, totalBits: 512, lgN: 9},
+	}
+
+	for _, tc := range cases {
+		b.Run(tc.name, func(b *testing.B) {
+			var ctx BatchedRangeProofContext
+			bitLengths := make([]int, tc.commitment)
+			commitments := make([]*PedersenCommitment, tc.commitment)
+			for i := 0; i < tc.commitment; i++ {
+				ctx.Commitments[i] = rpPodCommit(b, uint64(i+1))
+				ctx.BitLengths[i] = 64
+				bitLengths[i] = 64
+				pc, err := PedersenCommitmentFromPod(ctx.Commitments[i])
+				if err != nil {
+					b.Fatalf("commitment[%d]: %v", i, err)
+				}
+				commitments[i] = &pc
+			}
+
+			rp, err := RangeProofFromBytes(rpValidProofBytes(b, tc.lgN))
+			if err != nil {
+				b.Fatalf("proof parse failed: %v", err)
+			}
+
+			bytesProcessed := int64(tc.totalBits / 8)
+			b.SetBytes(bytesProcessed)
+			b.ReportAllocs()
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				tr := NewBatchedRangeInstructionTranscript(&ctx)
+				_ = rp.Verify(commitments, bitLengths, tr)
+			}
+			b.StopTimer()
+
+			nsPerByte := float64(b.Elapsed().Nanoseconds()) / float64(b.N*int(bytesProcessed))
+			b.ReportMetric(nsPerByte, "ns/byte")
+		})
+	}
+}
+
+func BenchmarkRangeProofVerificationRealProofs(b *testing.B) {
+	type vector struct {
+		Family        string `json:"family"`
+		ExpectedValid bool   `json:"expected_valid"`
+		Payload       struct {
+			ProofDataHex string `json:"proof_data_hex"`
+		} `json:"payload"`
+	}
+	type root struct {
+		VerificationVectors []vector `json:"verification_vectors"`
+	}
+	load := func(b *testing.B) root {
+		b.Helper()
+		_, file, _, ok := runtime.Caller(0)
+		if !ok {
+			b.Fatal("runtime.Caller failed")
+		}
+		p := filepath.Join(filepath.Dir(file), "../../../../test-vectors/zkp_verification_vectors.json")
+		raw, err := os.ReadFile(p)
+		if err != nil {
+			b.Fatalf("read vectors: %v", err)
+		}
+		var r root
+		if err := json.Unmarshal(raw, &r); err != nil {
+			b.Fatalf("unmarshal vectors: %v", err)
+		}
+		return r
+	}
+	decodeHex := func(b *testing.B, s string) []byte {
+		b.Helper()
+		s = strings.TrimPrefix(strings.ToLower(strings.TrimSpace(s)), "0x")
+		out, err := hex.DecodeString(s)
+		if err != nil {
+			b.Fatalf("decode hex: %v", err)
+		}
+		return out
+	}
+
+	var transferRaw, withdrawRaw []byte
+	r := load(b)
+	for i := range r.VerificationVectors {
+		v := r.VerificationVectors[i]
+		if !v.ExpectedValid || v.Payload.ProofDataHex == "" {
+			continue
+		}
+		switch v.Family {
+		case "transfer_range":
+			if transferRaw == nil {
+				transferRaw = decodeHex(b, v.Payload.ProofDataHex)
+			}
+		case "withdraw_range":
+			if withdrawRaw == nil {
+				withdrawRaw = decodeHex(b, v.Payload.ProofDataHex)
+			}
+		}
+	}
+	if transferRaw == nil || withdrawRaw == nil {
+		b.Fatal("missing valid transfer_range or withdraw_range vectors")
+	}
+
+	decodeTransfer := func(b *testing.B, raw []byte) BatchedRangeProofU128Data {
+		b.Helper()
+		if len(raw) != 8*32+8+736 {
+			b.Fatalf("transfer proof length: got %d", len(raw))
+		}
+		var pd BatchedRangeProofU128Data
+		offset := 0
+		for i := 0; i < 8; i++ {
+			copy(pd.Context.Commitments[i].Bytes[:], raw[offset:offset+32])
+			offset += 32
+		}
+		for i := 0; i < 8; i++ {
+			pd.Context.BitLengths[i] = raw[offset]
+			offset++
+		}
+		copy(pd.Proof[:], raw[offset:offset+736])
+		return pd
+	}
+	decodeWithdraw := func(b *testing.B, raw []byte) WithdrawBatchedRangeProofU64Data {
+		b.Helper()
+		if len(raw) != 8*32+8+8+672 {
+			b.Fatalf("withdraw proof length: got %d", len(raw))
+		}
+		var pd WithdrawBatchedRangeProofU64Data
+		offset := 0
+		for i := 0; i < 8; i++ {
+			copy(pd.Context.Commitments[i].Bytes[:], raw[offset:offset+32])
+			offset += 32
+		}
+		for i := 0; i < 8; i++ {
+			pd.Context.BitLengths[i] = raw[offset]
+			offset++
+		}
+		copy(pd.Context.Nonce[:], raw[offset:offset+8])
+		offset += 8
+		copy(pd.Proof[:], raw[offset:offset+672])
+		return pd
+	}
+
+	b.Run("bits_64_withdraw", func(b *testing.B) {
+		pd := decodeWithdraw(b, withdrawRaw)
+		b.SetBytes(8)
+		b.ReportAllocs()
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			_ = VerifyWithdrawRangeWithNonce(&pd)
+		}
+	})
+
+	b.Run("bits_128_transfer", func(b *testing.B) {
+		pd := decodeTransfer(b, transferRaw)
+		b.SetBytes(16)
+		b.ReportAllocs()
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			_ = VerifyTransferRange(&pd)
+		}
+	})
 }
 
 type sharedGeneratorVectorsRange struct {

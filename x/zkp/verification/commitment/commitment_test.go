@@ -2,46 +2,52 @@ package commitment
 
 import (
 	"bytes"
+	"encoding/hex"
+	"encoding/json"
 	"errors"
+	"os"
+	"path/filepath"
+	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/Fairblock/fairyring/x/zkp/verification/common"
 	"github.com/Fairblock/fairyring/x/zkp/verification/internal/transcriptgold"
 )
 
-func cScalar(t *testing.T, v uint64) Scalar {
-	t.Helper()
+func cScalar(tb testing.TB, v uint64) Scalar {
+	tb.Helper()
 	var s Scalar
 	s.SetUint64(v)
 	return s
 }
 
-func cScalarBytes(t *testing.T, v uint64) [32]byte {
-	t.Helper()
-	s := cScalar(t, v)
+func cScalarBytes(tb testing.TB, v uint64) [32]byte {
+	tb.Helper()
+	s := cScalar(tb, v)
 	var out [32]byte
 	s.BytesInto(&out)
 	return out
 }
 
-func cScalarBytesFromScalar(t *testing.T, s Scalar) [32]byte {
-	t.Helper()
+func cScalarBytesFromScalar(tb testing.TB, s Scalar) [32]byte {
+	tb.Helper()
 	var out [32]byte
 	s.BytesInto(&out)
 	return out
 }
 
-func cPoint(t *testing.T, v uint64) Point {
-	t.Helper()
-	s := cScalar(t, v)
+func cPoint(tb testing.TB, v uint64) Point {
+	tb.Helper()
+	s := cScalar(tb, v)
 	var p Point
 	p.ScalarMult(&common.G, &s)
 	return p
 }
 
-func cPointBytes(t *testing.T, v uint64) [32]byte {
-	t.Helper()
-	p := cPoint(t, v)
+func cPointBytes(tb testing.TB, v uint64) [32]byte {
+	tb.Helper()
+	p := cPoint(tb, v)
 	var out [32]byte
 	p.BytesInto(&out)
 	return out
@@ -55,28 +61,28 @@ func cInvalidPointBytes() [32]byte {
 	return out
 }
 
-func cBaseEqualityData(t *testing.T) CiphertextCommitmentEqualityProofData {
-	t.Helper()
+func cBaseEqualityData(tb testing.TB) CiphertextCommitmentEqualityProofData {
+	tb.Helper()
 	return CiphertextCommitmentEqualityProofData{
 		Context: CiphertextCommitmentEqualityProofContext{
-			Pubkey:     PodElGamalPubkey{Bytes: cPointBytes(t, 2)},
-			Ciphertext: PodElGamalCiphertext{Commitment: cPointBytes(t, 3), Handle: cPointBytes(t, 4)},
-			Commitment: PodPedersenCommitment{Bytes: cPointBytes(t, 5)},
+			Pubkey:     PodElGamalPubkey{Bytes: cPointBytes(tb, 2)},
+			Ciphertext: PodElGamalCiphertext{Commitment: cPointBytes(tb, 3), Handle: cPointBytes(tb, 4)},
+			Commitment: PodPedersenCommitment{Bytes: cPointBytes(tb, 5)},
 		},
 		Proof: PodCiphertextCommitmentEqualityProof{
-			Y0: cPointBytes(t, 6),
-			Y1: cPointBytes(t, 7),
-			Y2: cPointBytes(t, 8),
-			Zs: cScalarBytes(t, 9),
-			Zx: cScalarBytes(t, 10),
-			Zr: cScalarBytes(t, 11),
+			Y0: cPointBytes(tb, 6),
+			Y1: cPointBytes(tb, 7),
+			Y2: cPointBytes(tb, 8),
+			Zs: cScalarBytes(tb, 9),
+			Zx: cScalarBytes(tb, 10),
+			Zr: cScalarBytes(tb, 11),
 		},
 	}
 }
 
-func cBaseWithdrawData(t *testing.T) WithdrawCiphertextCommitmentEqualityProofData {
-	t.Helper()
-	base := cBaseEqualityData(t)
+func cBaseWithdrawData(tb testing.TB) WithdrawCiphertextCommitmentEqualityProofData {
+	tb.Helper()
+	base := cBaseEqualityData(tb)
 	return WithdrawCiphertextCommitmentEqualityProofData{
 		Context: WithdrawCiphertextCommitmentEqualityProofContext{
 			Pubkey:     base.Context.Pubkey,
@@ -323,6 +329,177 @@ func TestEqualityProofTranscriptParity(t *testing.T) {
 	if cScalarBytesFromScalar(t, w) != wantW {
 		t.Fatalf("w does not match golden vector (regenerate with gencmd or fix Rust transcript)")
 	}
+}
+
+func BenchmarkEqualityProofVerification(b *testing.B) {
+	cases := []struct {
+		name string
+		run  func(*testing.B)
+	}{
+		{
+			name: "transfer",
+			run: func(b *testing.B) {
+				base := cBaseEqualityData(b)
+				b.ReportAllocs()
+				b.ResetTimer()
+				for i := 0; i < b.N; i++ {
+					pd := base
+					_ = VerifyEqualityProof(&pd)
+				}
+			},
+		},
+		{
+			name: "withdraw",
+			run: func(b *testing.B) {
+				base := cBaseWithdrawData(b)
+				b.ReportAllocs()
+				b.ResetTimer()
+				for i := 0; i < b.N; i++ {
+					pd := base
+					_ = VerifyWithdrawEqualityProof(&pd)
+				}
+			},
+		},
+	}
+	for _, tc := range cases {
+		b.Run(tc.name, tc.run)
+	}
+}
+
+func BenchmarkEqualityProofVerificationRealProofs(b *testing.B) {
+	type vector struct {
+		Family        string `json:"family"`
+		ExpectedValid bool   `json:"expected_valid"`
+		Payload       struct {
+			ProofDataHex         string `json:"proof_data_hex"`
+			EqualityProofDataHex string `json:"equality_proof_data_hex"`
+		} `json:"payload"`
+	}
+	type root struct {
+		VerificationVectors []vector `json:"verification_vectors"`
+	}
+	load := func(b *testing.B) root {
+		b.Helper()
+		_, file, _, ok := runtime.Caller(0)
+		if !ok {
+			b.Fatal("runtime.Caller failed")
+		}
+		p := filepath.Join(filepath.Dir(file), "../../../../test-vectors/zkp_verification_vectors.json")
+		raw, err := os.ReadFile(p)
+		if err != nil {
+			b.Fatalf("read vectors: %v", err)
+		}
+		var r root
+		if err := json.Unmarshal(raw, &r); err != nil {
+			b.Fatalf("unmarshal vectors: %v", err)
+		}
+		return r
+	}
+	decodeHex := func(b *testing.B, s string) []byte {
+		b.Helper()
+		s = strings.TrimPrefix(strings.ToLower(strings.TrimSpace(s)), "0x")
+		out, err := hex.DecodeString(s)
+		if err != nil {
+			b.Fatalf("decode hex: %v", err)
+		}
+		return out
+	}
+	decodeEq := func(b *testing.B, raw []byte) CiphertextCommitmentEqualityProofData {
+		b.Helper()
+		if len(raw) != 320 {
+			b.Fatalf("equality proof length: got %d", len(raw))
+		}
+		var pd CiphertextCommitmentEqualityProofData
+		offset := 0
+		copy(pd.Context.Pubkey.Bytes[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.Ciphertext.Commitment[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.Ciphertext.Handle[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.Commitment.Bytes[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Y0[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Y1[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Y2[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Zs[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Zx[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Zr[:], raw[offset:offset+32])
+		return pd
+	}
+	decodeWithdrawEq := func(b *testing.B, raw []byte) WithdrawCiphertextCommitmentEqualityProofData {
+		b.Helper()
+		if len(raw) != 328 {
+			b.Fatalf("withdraw equality proof length: got %d", len(raw))
+		}
+		var pd WithdrawCiphertextCommitmentEqualityProofData
+		offset := 0
+		copy(pd.Context.Pubkey.Bytes[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.Ciphertext.Commitment[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.Ciphertext.Handle[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.Commitment.Bytes[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.Nonce[:], raw[offset:offset+8])
+		offset += 8
+		copy(pd.Proof.Y0[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Y1[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Y2[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Zs[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Zx[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Zr[:], raw[offset:offset+32])
+		return pd
+	}
+
+	var eqRaw, withdrawEqRaw []byte
+	r := load(b)
+	for i := range r.VerificationVectors {
+		v := r.VerificationVectors[i]
+		if !v.ExpectedValid {
+			continue
+		}
+		if v.Family == "equality" && eqRaw == nil && v.Payload.ProofDataHex != "" {
+			eqRaw = decodeHex(b, v.Payload.ProofDataHex)
+		}
+		if v.Family == "withdraw_composite" && withdrawEqRaw == nil && v.Payload.EqualityProofDataHex != "" {
+			withdrawEqRaw = decodeHex(b, v.Payload.EqualityProofDataHex)
+		}
+	}
+	if eqRaw == nil {
+		b.Fatal("missing valid equality vector")
+	}
+	if withdrawEqRaw == nil {
+		b.Fatal("missing valid withdraw equality vector")
+	}
+
+	b.Run("transfer", func(b *testing.B) {
+		pd := decodeEq(b, eqRaw)
+		b.ReportAllocs()
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			_ = VerifyEqualityProof(&pd)
+		}
+	})
+	b.Run("withdraw", func(b *testing.B) {
+		pd := decodeWithdrawEq(b, withdrawEqRaw)
+		b.ReportAllocs()
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			_ = VerifyWithdrawEqualityProof(&pd)
+		}
+	})
 }
 
 func TestVerifyWithdrawEqualityProofRejectsMalformedContextAndProof(t *testing.T) {
