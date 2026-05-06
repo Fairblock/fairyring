@@ -733,6 +733,26 @@ expect_wasm_query_fail_contains() {
   pass "expected wasm query failure observed: $needle"
 }
 
+
+expect_wasm_query_fail_before_keeper() {
+  local contract="$1"
+  local msg="$2"
+  local out rc
+  set +e
+  out="$(wasm_smart_query "$contract" "$msg" 2>&1)"
+  rc=$?
+  set -e
+  if [[ "$rc" == "0" ]]; then
+    echo "$out" >&2
+    fail "expected wasm smart query to fail before reaching keeper, but it succeeded"
+  fi
+  if grep -qi "invalid equality proof data length" <<<"$out"; then
+    echo "$out" >&2
+    fail "payload reached keeper-side length gate; wasm/query layer should have rejected it first"
+  fi
+  pass "wasm query rejected before keeper: $(echo "$out" | head -n1)"
+}
+
 extract_query_valid() {
   jq -r 'if (.data? | type) == "object" then .data.valid else .valid end'
 }
@@ -771,6 +791,16 @@ oversized_b64() {
   python3 - <<'PY'
 import base64
 print(base64.b64encode(bytes([7]) * 16384).decode())
+PY
+}
+
+
+huge_b64() {
+  local size_bytes="${HUGE_PAYLOAD_BYTES:-786432}"
+  python3 - "$size_bytes" <<'PY'
+import base64, sys
+n = int(sys.argv[1])
+print(base64.b64encode(bytes([0xab]) * n).decode())
 PY
 }
 
@@ -815,16 +845,19 @@ run_prebuilt_zkp_query_tester_cases() {
   fi
   [[ -n "$ZKP_QUERY_TESTER_WASM" ]] || fail "RUN_ZKP_QUERY_TESTER=1 requires ZKP_QUERY_TESTER_WASM=/path/to/prebuilt_tester.wasm"
 
-  local short oversized zero32 withdraw_short withdraw_bad64 transfer_short transfer_oversized withdraw_oversized_bad64
+  local short oversized huge zero32 withdraw_short withdraw_bad64
+  local transfer_short transfer_oversized transfer_huge withdraw_oversized_bad64
   store_and_instantiate_tester_contract "$ZKP_QUERY_TESTER_WASM"
 
   short="$(short_b64)"
   oversized="$(oversized_b64)"
+  huge="$(huge_b64)"
   zero32="$(zero32_b64)"
   withdraw_short="$(make_withdraw_query_short "$short" "$zero32")"
   withdraw_bad64="$(make_withdraw_query_bad_base64 "$short" "$zero32")"
   transfer_short="$(make_transfer_query_payload "$short" "$zero32")"
   transfer_oversized="$(make_transfer_query_payload "$oversized" "$zero32")"
+  transfer_huge="$(make_transfer_query_payload "$huge" "$zero32")"
   withdraw_oversized_bad64="$(make_withdraw_query_bad_base64 "${oversized}%%%bad%%%" "$zero32")"
 
   assert_trusted_not_contains "$TESTER_CONTRACT_ADDR"
@@ -844,13 +877,16 @@ run_prebuilt_zkp_query_tester_cases() {
   log "Tester Case 5: malformed base64 is rejected in wasm binding before keeper verification"
   expect_wasm_query_fail_contains "$TESTER_CONTRACT_ADDR" "$withdraw_bad64" "base64"
 
-  log "Tester Case 6: oversized valid base64 reaches keeper and fails proof-length checks"
+  log "Tester Case 6: moderately oversized valid base64 reaches keeper and fails proof-length checks"
   expect_wasm_query_valid_false_contains "$TESTER_CONTRACT_ADDR" "$transfer_oversized" "invalid equality proof data length"
 
   log "Tester Case 7: oversized malformed base64 is rejected in wasm binding before keeper verification"
   expect_wasm_query_fail_contains "$TESTER_CONTRACT_ADDR" "$withdraw_oversized_bad64" "base64"
 
-  log "Tester Case 8: removing trust blocks the custom ZKP query path again"
+  log "Tester Case 8: huge valid base64 payload is rejected by wasm/query layer before keeper sees it"
+  expect_wasm_query_fail_before_keeper "$TESTER_CONTRACT_ADDR" "$transfer_huge"
+
+  log "Tester Case 9: removing trust blocks the custom ZKP query path again"
   remove_trusted_contract "$TESTER_CONTRACT_ADDR"
   expect_wasm_query_fail_contains "$TESTER_CONTRACT_ADDR" "$withdraw_short" "not authorized"
 }

@@ -331,6 +331,55 @@ func TestEqualityProofTranscriptParity(t *testing.T) {
 	}
 }
 
+func TestEqualityProofTranscriptParityCase2(t *testing.T) {
+	vec, err := transcriptgold.LoadTranscriptVectors()
+	if err != nil {
+		t.Fatalf("load golden vectors: %v", err)
+	}
+	wantC, err := transcriptgold.ParseHex32(vec.EqualityCase2.C)
+	if err != nil {
+		t.Fatalf("golden case2 c: %v", err)
+	}
+	wantW, err := transcriptgold.ParseHex32(vec.EqualityCase2.W)
+	if err != nil {
+		t.Fatalf("golden case2 w: %v", err)
+	}
+
+	// Matches prover-side deterministic constructor:
+	// equality_fixture(12,13,14,15,16,17,18,19,20,21)
+	pd := CiphertextCommitmentEqualityProofData{
+		Context: CiphertextCommitmentEqualityProofContext{
+			Pubkey:     PodElGamalPubkey{Bytes: cPointBytes(t, 12)},
+			Ciphertext: PodElGamalCiphertext{Commitment: cPointBytes(t, 13), Handle: cPointBytes(t, 14)},
+			Commitment: PodPedersenCommitment{Bytes: cPointBytes(t, 15)},
+		},
+		Proof: PodCiphertextCommitmentEqualityProof{
+			Y0: cPointBytes(t, 16),
+			Y1: cPointBytes(t, 17),
+			Y2: cPointBytes(t, 18),
+			Zs: cScalarBytes(t, 19),
+			Zx: cScalarBytes(t, 20),
+			Zr: cScalarBytes(t, 21),
+		},
+	}
+	raw := pd.Proof.AsBytes()
+	ep, err := EqualityProofFromBytes(&raw)
+	if err != nil {
+		t.Fatalf("decode case2 proof: %v", err)
+	}
+	tr := NewEqualityInstructionTranscript(&pd.Context)
+	c, w, err := EqualityProofFiatShamirChallenges(tr, ep)
+	if err != nil {
+		t.Fatalf("fiat-shamir case2: %v", err)
+	}
+	if cScalarBytesFromScalar(t, c) != wantC {
+		t.Fatalf("case2 c does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if cScalarBytesFromScalar(t, w) != wantW {
+		t.Fatalf("case2 w does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+}
+
 func BenchmarkEqualityProofVerification(b *testing.B) {
 	cases := []struct {
 		name string

@@ -274,6 +274,12 @@ else
 	@go test -mod=readonly $(ARGS) $(TEST_PACKAGES)
 endif
 
+FUZZTIME ?= 30s
+test-zkp-fuzz:
+	@echo "--> Fuzzing ZKP proof-data deserialization for $(FUZZTIME)"
+	@go test -mod=readonly -run=^$$ -fuzz=^FuzzProofDataDeserialization$$ -fuzztime=$(FUZZTIME) ./x/zkp/keeper/...
+.PHONY: test-zkp-fuzz
+
 ###############################################################################
 ###                                Linting                                  ###
 ###############################################################################

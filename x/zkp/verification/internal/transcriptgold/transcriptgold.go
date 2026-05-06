@@ -15,9 +15,12 @@ var transcriptVectorsJSON []byte
 
 // TranscriptVectors contains prover-exported challenge vectors.
 type TranscriptVectors struct {
-	Equality EqualityFixture
-	Range    RangeFixture
-	Validity ValidityFixture
+	Equality      EqualityFixture
+	Range         RangeFixture
+	Validity      ValidityFixture
+	EqualityCase2 EqualityFixture
+	RangeCase2    RangeFixture
+	ValidityCase2 ValidityFixture
 }
 
 type EqualityFixture struct {
@@ -40,10 +43,17 @@ type ValidityFixture struct {
 	W string `json:"w"`
 }
 
+type additionalFixtures struct {
+	EqualityCase2 EqualityFixture `json:"equality_transfer_fixture_case2"`
+	RangeTwo64    RangeFixture    `json:"range_batched_two64_fixture"`
+	ValidityCase2 ValidityFixture `json:"validity_batched_2handles_fixture_case2"`
+}
+
 type vectorsFile struct {
-	Equality EqualityFixture `json:"equality_transfer_fixture"`
-	Range    RangeFixture    `json:"range_batched_single64_fixture"`
-	Validity ValidityFixture `json:"validity_batched_2handles_fixture"`
+	Equality   EqualityFixture    `json:"equality_transfer_fixture"`
+	Range      RangeFixture       `json:"range_batched_single64_fixture"`
+	Validity   ValidityFixture    `json:"validity_batched_2handles_fixture"`
+	Additional additionalFixtures `json:"additional_fixtures"`
 }
 
 // LoadTranscriptVectors parses the embedded golden vector file.
@@ -53,9 +63,12 @@ func LoadTranscriptVectors() (TranscriptVectors, error) {
 		return TranscriptVectors{}, fmt.Errorf("transcriptgold: json: %w", err)
 	}
 	return TranscriptVectors{
-		Equality: raw.Equality,
-		Range:    raw.Range,
-		Validity: raw.Validity,
+		Equality:      raw.Equality,
+		Range:         raw.Range,
+		Validity:      raw.Validity,
+		EqualityCase2: raw.Additional.EqualityCase2,
+		RangeCase2:    raw.Additional.RangeTwo64,
+		ValidityCase2: raw.Additional.ValidityCase2,
 	}, nil
 }
 

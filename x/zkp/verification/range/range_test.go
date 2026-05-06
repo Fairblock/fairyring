@@ -638,6 +638,113 @@ func TestRangeProofTranscriptParity(t *testing.T) {
 	}
 }
 
+func TestRangeProofTranscriptParityCase2(t *testing.T) {
+	vec, err := transcriptgold.LoadTranscriptVectors()
+	if err != nil {
+		t.Fatalf("load golden vectors: %v", err)
+	}
+	g := vec.RangeCase2
+	parse := func(label, hexStr string) [32]byte {
+		t.Helper()
+		b, err := transcriptgold.ParseHex32(hexStr)
+		if err != nil {
+			t.Fatalf("%s: %v", label, err)
+		}
+		return b
+	}
+	wantY := parse("golden case2 y", g.Y)
+	wantZ := parse("golden case2 z", g.Z)
+	wantX := parse("golden case2 x", g.X)
+	wantW := parse("golden case2 w", g.W)
+	wantD := parse("golden case2 d", g.D)
+	if len(g.U) != 7 {
+		t.Fatalf("golden case2 u length %d, want 7", len(g.U))
+	}
+	wantU := make([][32]byte, 7)
+	for i := range wantU {
+		wantU[i] = parse("golden case2 u", g.U[i])
+	}
+
+	// Matches prover-side deterministic constructor:
+	// range_fixture(&[2,3], &[64,64], 7)
+	ctx := BatchedRangeProofContext{}
+	ctx.Commitments[0] = rpPodCommit(t, 2)
+	ctx.Commitments[1] = rpPodCommit(t, 3)
+	ctx.BitLengths[0] = 64
+	ctx.BitLengths[1] = 64
+
+	rpCase2Bytes := func() []byte {
+		// [A|S|T1|T2|tx|txb|eb|L0|R0|...|L6|R6|a|b]
+		// A,S,T1,T2 = point(1..4)
+		// tx,txb,eb = scalar(1..3)
+		// Li = point(10+i), Ri = point(20+i), i=0..6
+		// a,b = scalar(31),scalar(32)
+		buf := make([]byte, 0, (7+2*7+2)*32)
+		for i := uint64(1); i <= 4; i++ {
+			b := rpPointBytes(t, i)
+			buf = append(buf, b[:]...)
+		}
+		for i := uint64(1); i <= 3; i++ {
+			b := rpScalarBytes(t, i)
+			buf = append(buf, b[:]...)
+		}
+		for i := uint64(0); i < 7; i++ {
+			l := rpPointBytes(t, 10+i)
+			r := rpPointBytes(t, 20+i)
+			buf = append(buf, l[:]...)
+			buf = append(buf, r[:]...)
+		}
+		a := rpScalarBytes(t, 31)
+		b := rpScalarBytes(t, 32)
+		buf = append(buf, a[:]...)
+		buf = append(buf, b[:]...)
+		return buf
+	}()
+
+	rp, err := RangeProofFromBytes(rpCase2Bytes)
+	if err != nil {
+		t.Fatalf("case2 proof parse failed: %v", err)
+	}
+	pc0, err := PedersenCommitmentFromPod(ctx.Commitments[0])
+	if err != nil {
+		t.Fatalf("case2 commitment[0]: %v", err)
+	}
+	pc1, err := PedersenCommitmentFromPod(ctx.Commitments[1])
+	if err != nil {
+		t.Fatalf("case2 commitment[1]: %v", err)
+	}
+	comm0 := pc0
+	comm1 := pc1
+	tr := NewBatchedRangeInstructionTranscript(&ctx)
+	state, err := RangeProofFiatShamirChallenges(tr, &rp, []*PedersenCommitment{&comm0, &comm1}, []int{64, 64})
+	if err != nil {
+		t.Fatalf("case2 fiat-shamir: %v", err)
+	}
+	if rpScalarBytesFromScalar(t, state.Y) != wantY {
+		t.Fatal("case2 y does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if rpScalarBytesFromScalar(t, state.Z) != wantZ {
+		t.Fatal("case2 z does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if rpScalarBytesFromScalar(t, state.X) != wantX {
+		t.Fatal("case2 x does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if rpScalarBytesFromScalar(t, state.W) != wantW {
+		t.Fatal("case2 w does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if rpScalarBytesFromScalar(t, state.D) != wantD {
+		t.Fatal("case2 d does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if len(state.U) != len(wantU) {
+		t.Fatalf("case2 u len %d, want %d", len(state.U), len(wantU))
+	}
+	for i := range wantU {
+		if rpScalarBytesFromScalar(t, state.U[i]) != wantU[i] {
+			t.Fatalf("case2 u[%d] does not match golden vector (regenerate with gencmd or fix Rust transcript)", i)
+		}
+	}
+}
+
 func BenchmarkRangeProofVerificationScaling(b *testing.B) {
 	cases := []struct {
 		name       string

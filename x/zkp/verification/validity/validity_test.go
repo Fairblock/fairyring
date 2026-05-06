@@ -292,6 +292,69 @@ func TestValidityProofTranscriptParity(t *testing.T) {
 	}
 }
 
+func TestValidityProofTranscriptParityCase2(t *testing.T) {
+	vec, err := transcriptgold.LoadTranscriptVectors()
+	if err != nil {
+		t.Fatalf("load golden vectors: %v", err)
+	}
+	wantT, err := transcriptgold.ParseHex32(vec.ValidityCase2.T)
+	if err != nil {
+		t.Fatalf("golden case2 t: %v", err)
+	}
+	wantC, err := transcriptgold.ParseHex32(vec.ValidityCase2.C)
+	if err != nil {
+		t.Fatalf("golden case2 c: %v", err)
+	}
+	wantW, err := transcriptgold.ParseHex32(vec.ValidityCase2.W)
+	if err != nil {
+		t.Fatalf("golden case2 w: %v", err)
+	}
+
+	// Matches prover-side deterministic constructor:
+	// validity_fixture(22,23,(24,25,26),(27,28,29),30,31,32,33,34)
+	pd := BatchedGroupedCiphertext2HandlesValidityProofData{
+		Context: BatchedGroupedCiphertext2HandlesValidityProofContext{
+			FirstPubkey:         PodElGamalPubkey{Bytes: vPointBytes(t, 22)},
+			SecondPubkey:        PodElGamalPubkey{Bytes: vPointBytes(t, 23)},
+			GroupedCiphertextLo: PodGroupedElGamalCiphertext2Handles{Bytes: vGroupedCiphertextBytes(t, 24, 25, 26)},
+			GroupedCiphertextHi: PodGroupedElGamalCiphertext2Handles{Bytes: vGroupedCiphertextBytes(t, 27, 28, 29)},
+		},
+		Proof: PodBatchedGroupedCiphertext2HandlesValidityProof{Bytes: func() [160]byte {
+			var out [160]byte
+			y0 := vPointBytes(t, 30)
+			y1 := vPointBytes(t, 31)
+			y2 := vPointBytes(t, 32)
+			zr := vScalarBytes(t, 33)
+			zx := vScalarBytes(t, 34)
+			copy(out[0:32], y0[:])
+			copy(out[32:64], y1[:])
+			copy(out[64:96], y2[:])
+			copy(out[96:128], zr[:])
+			copy(out[128:160], zx[:])
+			return out
+		}()},
+	}
+
+	inner, err := GroupedCiphertext2HandlesValidityProofFromBytes(pd.Proof.Bytes[:])
+	if err != nil {
+		t.Fatalf("decode case2 proof: %v", err)
+	}
+	tr := pd.Context.NewTranscript()
+	tCh, c, w, err := BatchedGroupedValidityFiatShamirChallenges(tr, inner, 2)
+	if err != nil {
+		t.Fatalf("fiat-shamir case2: %v", err)
+	}
+	if vScalarBytesFromScalar(t, tCh) != wantT {
+		t.Fatalf("case2 t does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if vScalarBytesFromScalar(t, c) != wantC {
+		t.Fatalf("case2 c does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if vScalarBytesFromScalar(t, w) != wantW {
+		t.Fatalf("case2 w does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+}
+
 func BenchmarkValidityProofVerification(b *testing.B) {
 	base := vBaseData(b)
 	b.ReportAllocs()
