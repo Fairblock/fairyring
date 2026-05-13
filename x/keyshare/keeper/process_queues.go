@@ -188,7 +188,7 @@ func (k Keeper) ProcessPrivateSignalQueue(ctx sdk.Context) error {
 				)
 			}
 		}
-		k.pepKeeper.RemoveSignalQueueEntry(ctx, req.GetIdentity())
+		k.pepKeeper.RemovePrivateSignalQueueEntry(ctx, req.GetIdentity())
 	}
 	return nil
 }
