@@ -10,6 +10,7 @@ import (
 	"github.com/Fairblock/fairyring/x/zkp/verification/common"
 	rangeproof "github.com/Fairblock/fairyring/x/zkp/verification/range"
 	"github.com/Fairblock/fairyring/x/zkp/verification/validity"
+	"github.com/gtank/merlin"
 )
 
 // VerifyBindings checks consistency between proofs and expected pubkeys / encrypted balance
@@ -59,6 +60,73 @@ func VerifyBindings(
 	}
 	if !bytes.Equal(remC2[:], eq.Context.Ciphertext.Handle[:]) {
 		return errors.New("remaining balance handle mismatch")
+	}
+	return nil
+}
+
+func NewTransferInstructionTranscript(
+	eq *commitment.CiphertextCommitmentEqualityProofData,
+	rp *rangeproof.BatchedRangeProofU128Data,
+	vp *validity.BatchedGroupedCiphertext2HandlesValidityProofData,
+	currentC1, currentC2, senderPK, recipientPK []byte,
+) *merlin.Transcript {
+	t := merlin.NewTranscript("transfer-proof-instruction")
+
+	t.AppendMessage([]byte("sender-pubkey"), senderPK)
+	t.AppendMessage([]byte("recipient-pubkey"), recipientPK)
+
+	var currentCt [64]byte
+	copy(currentCt[0:32], currentC1)
+	copy(currentCt[32:64], currentC2)
+	t.AppendMessage([]byte("current-ciphertext"), currentCt[:])
+
+	t.AppendMessage([]byte("equality-pubkey"), eq.Context.Pubkey.Bytes[:])
+	var eqCt [64]byte
+	copy(eqCt[0:32], eq.Context.Ciphertext.Commitment[:])
+	copy(eqCt[32:64], eq.Context.Ciphertext.Handle[:])
+	t.AppendMessage([]byte("equality-ciphertext"), eqCt[:])
+	t.AppendMessage([]byte("equality-commitment"), eq.Context.Commitment.Bytes[:])
+
+	var rangeCommits [8 * 32]byte
+	for i := 0; i < 8; i++ {
+		copy(rangeCommits[32*i:32*(i+1)], rp.Context.Commitments[i].Bytes[:])
+	}
+	t.AppendMessage([]byte("range-commitments"), rangeCommits[:])
+
+	var rangeBits [8]byte
+	for i := 0; i < 8; i++ {
+		rangeBits[i] = rp.Context.BitLengths[i]
+	}
+	t.AppendMessage([]byte("range-bit-lengths"), rangeBits[:])
+
+	t.AppendMessage([]byte("validity-first-pubkey"), vp.Context.FirstPubkey.Bytes[:])
+	t.AppendMessage([]byte("validity-second-pubkey"), vp.Context.SecondPubkey.Bytes[:])
+	t.AppendMessage([]byte("grouped-ciphertext-lo"), vp.Context.GroupedCiphertextLo.Bytes[:])
+	t.AppendMessage([]byte("grouped-ciphertext-hi"), vp.Context.GroupedCiphertextHi.Bytes[:])
+
+	return t
+}
+
+func VerifyTransferProofs(
+	eq *commitment.CiphertextCommitmentEqualityProofData,
+	rp *rangeproof.BatchedRangeProofU128Data,
+	vp *validity.BatchedGroupedCiphertext2HandlesValidityProofData,
+	currentC1, currentC2, senderPK, recipientPK []byte,
+) error {
+	if err := VerifyBindings(eq, rp, vp, currentC1, currentC2, senderPK, recipientPK); err != nil {
+		return err
+	}
+
+	transcript := NewTransferInstructionTranscript(eq, rp, vp, currentC1, currentC2, senderPK, recipientPK)
+
+	if err := commitment.VerifyEqualityProofWithTranscript(eq, transcript); err != nil {
+		return err
+	}
+	if err := rangeproof.VerifyTransferRangeWithTranscript(rp, transcript); err != nil {
+		return err
+	}
+	if err := validity.VerifyValidityProofWithTranscript(vp, transcript); err != nil {
+		return err
 	}
 	return nil
 }

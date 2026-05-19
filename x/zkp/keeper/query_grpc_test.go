@@ -257,7 +257,7 @@ func TestDirectKeeperGRPCCompositeProofsRequireBindingFields(t *testing.T) {
 		})
 		require.NoError(t, err)
 		require.False(t, resp.Valid)
-		require.Equal(t, "transfer binding verification failed: missing or invalid pubkey/balance fields (expected 32-byte values)", resp.Error)
+		require.Equal(t, "transfer proof verification failed: missing or invalid pubkey/balance fields (expected 32-byte values)", resp.Error)
 	})
 
 	t.Run("withdraw proof bundle requires binding fields", func(t *testing.T) {
@@ -267,7 +267,7 @@ func TestDirectKeeperGRPCCompositeProofsRequireBindingFields(t *testing.T) {
 		})
 		require.NoError(t, err)
 		require.False(t, resp.Valid)
-		require.Equal(t, "withdraw binding verification failed: missing or invalid pubkey/ciphertext fields (expected 32-byte values)", resp.Error)
+		require.Equal(t, "withdraw proof verification failed: missing or invalid pubkey/ciphertext fields (expected 32-byte values)", resp.Error)
 	})
 }
 
@@ -332,7 +332,7 @@ func TestDirectKeeperGRPCCompositeProofsBindingAndVerificationFailures(t *testin
 		})
 		require.NoError(t, err)
 		require.False(t, resp.Valid)
-		require.Equal(t, "transfer binding verification failed: sender pubkey mismatch", resp.Error)
+		require.Equal(t, "transfer proof verification failed: sender pubkey mismatch", resp.Error)
 	})
 
 	t.Run("transfer proof bundle verification stage", func(t *testing.T) {
@@ -347,7 +347,7 @@ func TestDirectKeeperGRPCCompositeProofsBindingAndVerificationFailures(t *testin
 		})
 		require.NoError(t, err)
 		require.False(t, resp.Valid)
-		require.Equal(t, "equality proof verification failed: algebraic relation failed", resp.Error)
+		require.Equal(t, "transfer proof verification failed: algebraic relation failed", resp.Error)
 	})
 
 	t.Run("withdraw proof bundle nonce mismatch", func(t *testing.T) {
@@ -361,7 +361,7 @@ func TestDirectKeeperGRPCCompositeProofsBindingAndVerificationFailures(t *testin
 		})
 		require.NoError(t, err)
 		require.False(t, resp.Valid)
-		require.Equal(t, "withdraw binding verification failed: withdraw equality proof nonce mismatch", resp.Error)
+		require.Equal(t, "withdraw proof verification failed: withdraw equality proof nonce mismatch", resp.Error)
 	})
 
 	t.Run("withdraw proof bundle verification stage", func(t *testing.T) {
@@ -375,6 +375,6 @@ func TestDirectKeeperGRPCCompositeProofsBindingAndVerificationFailures(t *testin
 		})
 		require.NoError(t, err)
 		require.False(t, resp.Valid)
-		require.Equal(t, "equality proof verification failed: algebraic relation failed", resp.Error)
+		require.Equal(t, "withdraw proof verification failed: algebraic relation failed", resp.Error)
 	})
 }
