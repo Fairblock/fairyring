@@ -21,9 +21,11 @@ func TestMsgGetPrivateKeyshares_ValidateBasic(t *testing.T) {
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
-			name: "valid address",
+			name: "valid message",
 			msg: MsgRequestPrivateDecryptionKey{
-				Creator: sample.AccAddress(),
+				Creator:    sample.AccAddress(),
+				Identity:   "test_identity",
+				SecpPubkey: "Anm+Zn753LusVaBilc6HCwcCm/zbLc4o2VnygVsW+BeY",
 			},
 		},
 	}

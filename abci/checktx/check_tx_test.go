@@ -1,6 +1,9 @@
 package checktx_test
 
 import (
+	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"testing"
 
@@ -9,318 +12,313 @@ import (
 	"cosmossdk.io/store"
 	storetypes "cosmossdk.io/store/types"
 
+	"github.com/Fairblock/fairyring/abci/checktx"
+	fairytestutils "github.com/Fairblock/fairyring/lanes/keyshare/testutils"
+	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 	cometabci "github.com/cometbft/cometbft/abci/types"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	db "github.com/cosmos/cosmos-db"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/suite"
-
-	"github.com/skip-mev/block-sdk/v2/abci/checktx"
+	signerextraction "github.com/skip-mev/block-sdk/v2/adapters/signer_extraction_adapter"
 	"github.com/skip-mev/block-sdk/v2/block"
-	mevlanetestutils "github.com/skip-mev/block-sdk/v2/lanes/mev/testutils"
-	"github.com/skip-mev/block-sdk/v2/testutils"
-	auctiontypes "github.com/skip-mev/block-sdk/v2/x/auction/types"
+	lanebase "github.com/skip-mev/block-sdk/v2/block/base"
+	defaultlane "github.com/skip-mev/block-sdk/v2/lanes/base"
+	blocksdkutils "github.com/skip-mev/block-sdk/v2/testutils"
+	"github.com/stretchr/testify/suite"
 )
 
 type CheckTxTestSuite struct {
-	mevlanetestutils.MEVLaneTestSuiteBase
+	fairytestutils.MEVLaneTestSuiteBase
 }
 
 func TestCheckTxTestSuite(t *testing.T) {
 	suite.Run(t, new(CheckTxTestSuite))
 }
 
-func (s *CheckTxTestSuite) TestCheckTxMempoolParity() {
-	bidTx, _, err := testutils.CreateAuctionTx(
-		s.EncCfg.TxConfig,
-		s.Accounts[0],
-		sdk.NewCoin(s.GasTokenDenom, math.NewInt(100)),
-		0,
-		0,
-		nil,
-		100,
-	)
-	s.Require().NoError(err)
-
-	// create a tx that should not be inserted in the mev-lane
-	bidTx2, _, err := testutils.CreateAuctionTx(
-		s.EncCfg.TxConfig,
-		s.Accounts[0],
-		sdk.NewCoin(s.GasTokenDenom, math.NewInt(100)),
-		1,
-		0,
-		nil,
-		100,
-	)
-	s.Require().NoError(err)
-
-	txs := map[sdk.Tx]bool{
-		bidTx: true,
-	}
-
-	mevLane := s.InitLane(math.LegacyOneDec(), txs)
-	mempool, err := block.NewLanedMempool(s.Ctx.Logger(), []block.Lane{mevLane})
-	s.Require().NoError(err)
-
-	ba := &baseApp{
-		s.Ctx,
-	}
-	mevLaneHandler := checktx.NewMEVCheckTxHandler(
-		ba,
-		s.EncCfg.TxConfig.TxDecoder(),
-		mevLane,
-		s.SetUpAnteHandler(txs),
-		ba.CheckTx,
-	).CheckTx()
-
-	handler := checktx.NewMempoolParityCheckTx(
-		s.Ctx.Logger(),
-		mempool,
-		s.EncCfg.TxConfig.TxDecoder(),
-		mevLaneHandler,
-	).CheckTx()
-
-	// test that a bid can be successfully inserted to mev-lane on CheckTx
-	s.Run("test bid insertion on CheckTx", func() {
-		txBz, err := s.EncCfg.TxConfig.TxEncoder()(bidTx)
-		s.Require().NoError(err)
-
-		// check tx
-		res, err := handler(&cometabci.RequestCheckTx{Tx: txBz, Type: cometabci.CheckTxType_New})
-		s.Require().NoError(err)
-
-		s.Require().Equal(uint32(0), res.Code)
-
-		// check that the mev-lane contains the bid
-		s.Require().True(mevLane.Contains(bidTx))
-	})
-
-	// test that a bid-tx (not in mev-lane) can be removed from the mempool on ReCheck
-	s.Run("test bid removal on ReCheckTx", func() {
-		// assert that the mev-lane does not contain the bidTx2
-		s.Require().False(mevLane.Contains(bidTx2))
-
-		// check tx
-		txBz, err := s.EncCfg.TxConfig.TxEncoder()(bidTx2)
-		s.Require().NoError(err)
-
-		res, err := handler(&cometabci.RequestCheckTx{Tx: txBz, Type: cometabci.CheckTxType_Recheck})
-		s.Require().NoError(err)
-
-		s.Require().Equal(uint32(1), res.Code)
-	})
+func (s *CheckTxTestSuite) SetupTest() {
+	s.MEVLaneTestSuiteBase.SetupTest()
+	peptypes.RegisterInterfaces(s.EncCfg.InterfaceRegistry)
 }
 
-func (s *CheckTxTestSuite) TestRemovalOnRecheckTx() {
-	// create a tx that should not be inserted in the mev-lane
-	tx, _, err := testutils.CreateAuctionTx(
-		s.EncCfg.TxConfig,
-		s.Accounts[0],
-		sdk.NewCoin(s.GasTokenDenom, math.NewInt(100)),
-		1,
-		0,
-		nil,
-		100,
-	)
-	s.Require().NoError(err)
-
-	mevLane := s.InitLane(math.LegacyOneDec(), nil)
-	mempool, err := block.NewLanedMempool(s.Ctx.Logger(), []block.Lane{mevLane})
-	s.Require().NoError(err)
-
-	handler := checktx.NewMempoolParityCheckTx(
-		s.Ctx.Logger(),
-		mempool,
-		s.EncCfg.TxConfig.TxDecoder(),
-		func(*cometabci.RequestCheckTx) (*cometabci.ResponseCheckTx, error) {
-			// always fail
-			return &cometabci.ResponseCheckTx{Code: 1}, nil
+func (s *CheckTxTestSuite) newDefaultMempool() (*block.LanedMempool, error) {
+	defaultLane := defaultlane.NewDefaultLane(
+		lanebase.LaneConfig{
+			Logger:          s.Ctx.Logger(),
+			TxEncoder:       s.EncCfg.TxConfig.TxEncoder(),
+			TxDecoder:       s.EncCfg.TxConfig.TxDecoder(),
+			MaxBlockSpace:   math.LegacyOneDec(),
+			SignerExtractor: signerextraction.NewDefaultAdapter(),
+			MaxTxs:          1000,
 		},
-	).CheckTx()
+		lanebase.DefaultMatchHandler(),
+	)
 
-	s.Run("tx is removed on check-tx failure when re-check", func() {
-		// check that tx exists in mempool
-		txBz, err := s.EncCfg.TxConfig.TxEncoder()(tx)
-		s.Require().NoError(err)
-
-		s.Require().NoError(mempool.Insert(s.Ctx, tx))
-		s.Require().True(mempool.Contains(tx))
-
-		// check tx
-		res, err := handler(&cometabci.RequestCheckTx{Tx: txBz, Type: cometabci.CheckTxType_Recheck})
-		s.Require().NoError(err)
-
-		s.Require().Equal(uint32(1), res.Code)
-
-		// check that tx is removed from mempool
-		s.Require().False(mempool.Contains(tx))
-	})
+	return block.NewLanedMempool(s.Ctx.Logger(), []block.Lane{defaultLane})
 }
 
 func (s *CheckTxTestSuite) TestMempoolParityCheckTx() {
+	validTx, err := blocksdkutils.CreateRandomTx(
+		s.EncCfg.TxConfig,
+		s.Accounts[0],
+		0,
+		1,
+		0,
+		0,
+		sdk.NewCoin(s.GasTokenDenom, math.NewInt(100)),
+	)
+	s.Require().NoError(err)
+
+	validTxBz, err := s.EncCfg.TxConfig.TxEncoder()(validTx)
+	s.Require().NoError(err)
+
 	s.Run("tx fails tx-decoding", func() {
 		handler := checktx.NewMempoolParityCheckTx(
 			s.Ctx.Logger(),
 			nil,
 			s.EncCfg.TxConfig.TxDecoder(),
-			nil,
+			func(*cometabci.RequestCheckTx) (*cometabci.ResponseCheckTx, error) {
+				s.Fail("wrapped check-tx handler must not be called when decoding fails")
+				return nil, nil
+			},
 		)
 
 		res, err := handler.CheckTx()(&cometabci.RequestCheckTx{Tx: []byte("invalid-tx")})
 		s.Require().NoError(err)
-
 		s.Require().Equal(uint32(1), res.Code)
 	})
-}
 
-func (s *CheckTxTestSuite) TestMEVCheckTxHandler() {
-	txs := map[sdk.Tx]bool{}
-
-	mevLane := s.InitLane(math.LegacyOneDec(), txs)
-	mempool, err := block.NewLanedMempool(s.Ctx.Logger(), []block.Lane{mevLane})
-	s.Require().NoError(err)
-
-	ba := &baseApp{
-		s.Ctx,
-	}
-
-	acc := s.Accounts[0]
-	// create a tx that should not be inserted in the mev-lane
-	normalTx, err := testutils.CreateRandomTxBz(s.EncCfg.TxConfig, acc, 0, 1, 0, 0)
-	s.Require().NoError(err)
-
-	var gotTx []byte
-	mevLaneHandler := checktx.NewMEVCheckTxHandler(
-		ba,
-		s.EncCfg.TxConfig.TxDecoder(),
-		mevLane,
-		s.SetUpAnteHandler(txs),
-		func(req *cometabci.RequestCheckTx) (*cometabci.ResponseCheckTx, error) {
-			// expect the above free tx to be sent here
-			gotTx = req.Tx
-			return &cometabci.ResponseCheckTx{
-				Code: uint32(0),
-			}, nil
-		},
-	).CheckTx()
-
-	handler := checktx.NewMempoolParityCheckTx(
-		s.Ctx.Logger(),
-		mempool,
-		s.EncCfg.TxConfig.TxDecoder(),
-		mevLaneHandler,
-	).CheckTx()
-
-	// test that a normal tx can be successfully inserted to the mempool
-	s.Run("test non-mev tx insertion on CheckTx", func() {
-		res, err := handler(&cometabci.RequestCheckTx{Tx: normalTx, Type: cometabci.CheckTxType_New})
+	s.Run("new tx delegates to wrapped check-tx handler", func() {
+		mempool, err := s.newDefaultMempool()
 		s.Require().NoError(err)
 
+		called := false
+		handler := checktx.NewMempoolParityCheckTx(
+			s.Ctx.Logger(),
+			mempool,
+			s.EncCfg.TxConfig.TxDecoder(),
+			func(req *cometabci.RequestCheckTx) (*cometabci.ResponseCheckTx, error) {
+				called = true
+				s.Require().Equal(validTxBz, req.Tx)
+				return &cometabci.ResponseCheckTx{Code: cometabci.CodeTypeOK}, nil
+			},
+		)
+
+		res, err := handler.CheckTx()(&cometabci.RequestCheckTx{Tx: validTxBz, Type: cometabci.CheckTxType_New})
+		s.Require().NoError(err)
 		s.Require().Equal(uint32(0), res.Code)
-		s.Require().Equal(normalTx, gotTx)
+		s.Require().True(called)
+	})
+
+	s.Run("recheck fails when tx is not in app-side mempool", func() {
+		mempool, err := s.newDefaultMempool()
+		s.Require().NoError(err)
+
+		handler := checktx.NewMempoolParityCheckTx(
+			s.Ctx.Logger(),
+			mempool,
+			s.EncCfg.TxConfig.TxDecoder(),
+			func(*cometabci.RequestCheckTx) (*cometabci.ResponseCheckTx, error) {
+				s.Fail("wrapped check-tx handler must not be called when rechecked tx is absent from the app-side mempool")
+				return nil, nil
+			},
+		)
+
+		res, err := handler.CheckTx()(&cometabci.RequestCheckTx{Tx: validTxBz, Type: cometabci.CheckTxType_Recheck})
+		s.Require().NoError(err)
+		s.Require().Equal(uint32(1), res.Code)
+	})
+
+	s.Run("recheck failure removes tx from app-side mempool", func() {
+		mempool, err := s.newDefaultMempool()
+		s.Require().NoError(err)
+
+		s.Require().NoError(mempool.Insert(s.Ctx, validTx))
+		s.Require().True(mempool.Contains(validTx))
+
+		handler := checktx.NewMempoolParityCheckTx(
+			s.Ctx.Logger(),
+			mempool,
+			s.EncCfg.TxConfig.TxDecoder(),
+			func(*cometabci.RequestCheckTx) (*cometabci.ResponseCheckTx, error) {
+				return &cometabci.ResponseCheckTx{Code: 1}, nil
+			},
+		)
+
+		res, err := handler.CheckTx()(&cometabci.RequestCheckTx{Tx: validTxBz, Type: cometabci.CheckTxType_Recheck})
+		s.Require().NoError(err)
+		s.Require().Equal(uint32(1), res.Code)
+		s.Require().False(mempool.Contains(validTx))
 	})
 }
 
-func (s *CheckTxTestSuite) TestValidateBidTx() {
-	validBidTx, bundled, err := testutils.CreateAuctionTx(
-		s.EncCfg.TxConfig,
-		s.Accounts[0],
-		sdk.NewCoin(s.GasTokenDenom, math.NewInt(100)),
-		0,
-		0,
-		[]testutils.Account{s.Accounts[0]},
-		100,
-	)
-	s.Require().NoError(err)
-
-	txBz, err := s.EncCfg.TxConfig.TxEncoder()(validBidTx)
-	s.Require().NoError(err)
-
-	// create an invalid bid-tx (nested)
-	bidMsg := auctiontypes.NewMsgAuctionBid(s.Accounts[0].Address, sdk.NewCoin(s.GasTokenDenom, math.NewInt(100)), [][]byte{
-		txBz,
-	})
-	nestedBidTx, err := testutils.CreateTx(
+func (s *CheckTxTestSuite) TestKeyshareCheckTxHandler() {
+	creator := s.Accounts[0].Address.String()
+	keyshareMsg := peptypes.NewMsgSubmitDecryptionKey(creator, 10, "decryption-key-data")
+	keyshareTx, err := blocksdkutils.CreateTx(
 		s.EncCfg.TxConfig,
 		s.Accounts[0],
 		0,
 		0,
-		[]sdk.Msg{bidMsg},
+		[]sdk.Msg{keyshareMsg},
 	)
 	s.Require().NoError(err)
 
-	// create an invalid bid-tx (signer invalid)
-	invalidBidMsg := auctiontypes.MsgAuctionBid{
-		Bidder:       "",
-		Bid:          sdk.NewCoin(s.GasTokenDenom, math.NewInt(100)),
-		Transactions: nil,
-	}
-	invalidBidTx, err := testutils.CreateTx(
-		s.EncCfg.TxConfig,
-		s.Accounts[0],
-		0,
-		0,
-		[]sdk.Msg{&invalidBidMsg},
-	)
+	keyshareTxBz, err := s.EncCfg.TxConfig.TxEncoder()(keyshareTx)
 	s.Require().NoError(err)
 
-	// create a tx that should not be inserted in the mev-lane
+	normalTxBz, err := blocksdkutils.CreateRandomTxBz(s.EncCfg.TxConfig, s.Accounts[1], 0, 1, 0, 0)
 	s.Require().NoError(err)
 
-	txs := map[sdk.Tx]bool{
-		validBidTx:   true,
-		bundled[0]:   true,
-		nestedBidTx:  true,
-		invalidBidTx: true,
-	}
+	s.Run("non-keyshare tx is delegated to baseapp check-tx", func() {
+		lane := newFakeKeyshareLane(s.EncCfg.TxConfig.TxEncoder())
+		called := false
+		ba := &baseApp{
+			ctx: s.Ctx,
+			checkTx: func(req *cometabci.RequestCheckTx) (*cometabci.ResponseCheckTx, error) {
+				called = true
+				s.Require().Equal(normalTxBz, req.Tx)
+				return &cometabci.ResponseCheckTx{Code: cometabci.CodeTypeOK}, nil
+			},
+		}
 
-	mevLane := s.InitLane(math.LegacyOneDec(), txs)
+		handler := checktx.NewKeyshareCheckTxHandler(
+			ba,
+			s.EncCfg.TxConfig.TxDecoder(),
+			lane,
+			s.SetUpAnteHandler(map[sdk.Tx]bool{}),
+			ba.CheckTx,
+		).CheckTx()
 
-	ba := &baseApp{
-		s.Ctx,
-	}
-	mevLaneHandler := checktx.NewMEVCheckTxHandler(
-		ba,
-		s.EncCfg.TxConfig.TxDecoder(),
-		mevLane,
-		s.SetUpAnteHandler(txs),
-		ba.CheckTx,
-	)
-	s.Run("expected bid-tx", func() {
-		bundledTx, err := s.EncCfg.TxConfig.TxEncoder()(bundled[0])
+		res, err := handler(&cometabci.RequestCheckTx{Tx: normalTxBz, Type: cometabci.CheckTxType_New})
 		s.Require().NoError(err)
-
-		_, err = mevLaneHandler.ValidateBidTx(s.Ctx, validBidTx, &auctiontypes.BidInfo{
-			Transactions: [][]byte{bundledTx},
-		})
-		s.Require().NoError(err)
+		s.Require().Equal(uint32(0), res.Code)
+		s.Require().True(called)
+		s.Require().Empty(lane.inserted)
 	})
 
-	s.Run("nested bid-tx", func() {
-		nestedBidTxBz, err := s.EncCfg.TxConfig.TxEncoder()(nestedBidTx)
-		s.Require().NoError(err)
-
-		_, err = mevLaneHandler.ValidateBidTx(s.Ctx, nestedBidTx, &auctiontypes.BidInfo{
-			Transactions: [][]byte{nestedBidTxBz},
+	s.Run("valid keyshare tx is validated and inserted into keyshare lane", func() {
+		lane := newFakeKeyshareLane(s.EncCfg.TxConfig.TxEncoder())
+		lane.track(keyshareTx, &peptypes.DecryptionKey{
+			Height:  keyshareMsg.Height,
+			Data:    keyshareMsg.Data,
+			Creator: keyshareMsg.Creator,
 		})
+
+		ba := &baseApp{
+			ctx: s.Ctx,
+			checkTx: func(*cometabci.RequestCheckTx) (*cometabci.ResponseCheckTx, error) {
+				s.Fail("baseapp check-tx must not be called for keyshare txs")
+				return nil, nil
+			},
+		}
+
+		handler := checktx.NewKeyshareCheckTxHandler(
+			ba,
+			s.EncCfg.TxConfig.TxDecoder(),
+			lane,
+			s.SetUpAnteHandler(map[sdk.Tx]bool{keyshareTx: true}),
+			ba.CheckTx,
+		).CheckTx()
+
+		res, err := handler(&cometabci.RequestCheckTx{Tx: keyshareTxBz, Type: cometabci.CheckTxType_New})
+		s.Require().NoError(err)
+		s.Require().Equal(uint32(0), res.Code)
+		s.Require().Len(lane.inserted, 1)
+
+		insertedTxBz, err := s.EncCfg.TxConfig.TxEncoder()(lane.inserted[0])
+		s.Require().NoError(err)
+		s.Require().Equal(keyshareTxBz, insertedTxBz)
+	})
+
+	s.Run("invalid keyshare tx is rejected before insertion", func() {
+		lane := newFakeKeyshareLane(s.EncCfg.TxConfig.TxEncoder())
+		lane.track(keyshareTx, &peptypes.DecryptionKey{
+			Height:  keyshareMsg.Height,
+			Data:    keyshareMsg.Data,
+			Creator: keyshareMsg.Creator,
+		})
+
+		ba := &baseApp{ctx: s.Ctx}
+		handler := checktx.NewKeyshareCheckTxHandler(
+			ba,
+			s.EncCfg.TxConfig.TxDecoder(),
+			lane,
+			s.SetUpAnteHandler(map[sdk.Tx]bool{keyshareTx: false}),
+			ba.CheckTx,
+		).CheckTx()
+
+		res, err := handler(&cometabci.RequestCheckTx{Tx: keyshareTxBz, Type: cometabci.CheckTxType_New})
 		s.Require().Error(err)
-		s.Require().Contains(err.Error(), "bundled tx cannot be a bid tx")
+		s.Require().Equal(uint32(1), res.Code)
+		s.Require().Empty(lane.inserted)
 	})
+}
 
-	s.Run("invalid bid-tx", func() {
-		invalidBidTxBz, err := s.EncCfg.TxConfig.TxEncoder()(invalidBidTx)
-		s.Require().NoError(err)
+type fakeKeyshareLane struct {
+	txEncoder sdk.TxEncoder
+	tracked   map[string]*peptypes.DecryptionKey
+	inserted  []sdk.Tx
+}
 
-		_, err = mevLaneHandler.ValidateBidTx(s.Ctx, invalidBidTx, &auctiontypes.BidInfo{
-			Transactions: [][]byte{invalidBidTxBz},
-		})
-		s.Require().Error(err)
-		s.Require().Contains(err.Error(), "failed to get bid info")
-	})
+func newFakeKeyshareLane(txEncoder sdk.TxEncoder) *fakeKeyshareLane {
+	return &fakeKeyshareLane{
+		txEncoder: txEncoder,
+		tracked:   map[string]*peptypes.DecryptionKey{},
+	}
+}
+
+func (l *fakeKeyshareLane) track(tx sdk.Tx, info *peptypes.DecryptionKey) {
+	hash, err := l.hash(tx)
+	if err != nil {
+		panic(err)
+	}
+	l.tracked[hash] = info
+}
+
+func (l *fakeKeyshareLane) GetDecryptionKeyInfo(tx sdk.Tx) (*peptypes.DecryptionKey, error) {
+	hash, err := l.hash(tx)
+	if err != nil {
+		return nil, err
+	}
+	return l.tracked[hash], nil
+}
+
+func (l *fakeKeyshareLane) Insert(_ context.Context, tx sdk.Tx) error {
+	l.inserted = append(l.inserted, tx)
+	return nil
+}
+
+func (l *fakeKeyshareLane) Remove(tx sdk.Tx) error {
+	targetHash, err := l.hash(tx)
+	if err != nil {
+		return err
+	}
+
+	for i, inserted := range l.inserted {
+		insertedHash, err := l.hash(inserted)
+		if err != nil {
+			return err
+		}
+		if insertedHash == targetHash {
+			l.inserted = append(l.inserted[:i], l.inserted[i+1:]...)
+			return nil
+		}
+	}
+	return nil
+}
+
+func (l *fakeKeyshareLane) hash(tx sdk.Tx) (string, error) {
+	bz, err := l.txEncoder(tx)
+	if err != nil {
+		return "", err
+	}
+	hash := sha256.Sum256(bz)
+	return hex.EncodeToString(hash[:]), nil
 }
 
 type baseApp struct {
-	ctx sdk.Context
+	ctx     sdk.Context
+	checkTx checktx.CheckTx
 }
 
 // CommitMultiStore is utilized to retrieve the latest committed state.
@@ -331,7 +329,10 @@ func (ba *baseApp) CommitMultiStore() storetypes.CommitMultiStore {
 
 // CheckTx is baseapp's CheckTx method that checks the validity of a
 // transaction.
-func (baseApp) CheckTx(_ *cometabci.RequestCheckTx) (*cometabci.ResponseCheckTx, error) {
+func (ba *baseApp) CheckTx(req *cometabci.RequestCheckTx) (*cometabci.ResponseCheckTx, error) {
+	if ba.checkTx != nil {
+		return ba.checkTx(req)
+	}
 	return nil, fmt.Errorf("not implemented")
 }
 
