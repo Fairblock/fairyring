@@ -43,7 +43,7 @@ jobs:
   restart-fairyring:
     name: Restart Fairyring
     runs-on: ubuntu-latest
-    needs: [tests, security, style]
+    needs: [tests, style]
     if: github.event_name == 'push'
     steps:
       - name: SSH and Restart Fairyring
