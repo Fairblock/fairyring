@@ -31,7 +31,6 @@ var (
 	cachedRangeProofGensErr  error
 )
 
-
 func getCachedRangeProofGens() (*RangeProofGens, error) {
 	cachedRangeProofGensOnce.Do(func() {
 		cachedRangeProofGens, cachedRangeProofGensErr = NewRangeProofGens(maxProofBits)
@@ -740,13 +739,11 @@ func (rp *RangeProof) Verify(
 	return RangeErrAlgebraicRelation
 }
 
-
 type RangeProofFiatShamirState struct {
 	Y, Z, X, W Scalar
 	U          []Scalar
 	D          Scalar
 }
-
 
 func RangeProofFiatShamirChallenges(
 	transcript *merlin.Transcript,
@@ -863,7 +860,6 @@ func collectRangeCtx(ctx *BatchedRangeProofContext, maxBL uint8) ([]PedersenComm
 			return nil, nil, ProofErrAlgebraic // no holes: non-zero after padding starts
 		}
 
-		
 		if bl == 0 || bl > maxBL {
 			return nil, nil, ProofErrAlgebraic
 		}
@@ -919,7 +915,6 @@ type WithdrawBatchedRangeProofU64Data struct {
 	Context WithdrawBatchedRangeProofContext
 	Proof   PodRangeProofU64
 }
-
 
 func VerifyWithdrawRangeWithNonce(pd *WithdrawBatchedRangeProofU64Data) error {
 	baseCtx := BatchedRangeProofContext{
@@ -1021,8 +1016,6 @@ func NewBatchedRangeInstructionTranscript(ctx *BatchedRangeProofContext) *merlin
 
 	return t
 }
-
-
 
 func validateAndAppendPointRPDecoded(
 	t *merlin.Transcript,
@@ -1236,7 +1229,6 @@ func fromUniformBytesRistretto(uniform [64]byte) Point {
 	return out
 }
 
-
 func leadingZeros32(x uint32) int {
 	if x == 0 {
 		return 32
@@ -1266,4 +1258,3 @@ func putU64LE(dst []byte, v uint64) {
 	dst[6] = byte(v >> 48)
 	dst[7] = byte(v >> 56)
 }
-

@@ -32,11 +32,11 @@ func FuzzProofDataDeserialization(f *testing.F) {
 		_, _ = k.VerifyValidityProof(goCtx, &types.QueryVerifyValidityProofRequest{ProofData: raw})
 		_, _ = k.VerifyEqualityProof(goCtx, &types.QueryVerifyEqualityProofRequest{ProofData: raw})
 		_, _ = k.VerifyTransferProofs(goCtx, &types.QueryVerifyTransferProofsRequest{
-			EqualityProofData: raw,
-			RangeProofData:    raw,
-			ValidityProofData: raw,
-			SenderPubkey:      raw,
-			RecipientPubkey:   raw,
+			EqualityProofData:        raw,
+			RangeProofData:           raw,
+			ValidityProofData:        raw,
+			SenderPubkey:             raw,
+			RecipientPubkey:          raw,
 			CurrentBalanceCommitment: raw,
 			CurrentBalanceHandle:     raw,
 		})

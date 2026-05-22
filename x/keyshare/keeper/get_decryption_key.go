@@ -101,28 +101,28 @@ func (k Keeper) OnRecvGetPrivateDecryptionKeyPacket(
 	}
 
 	// Emit signal if this (requester,secp_pubkey) pair has not been satisfied yet.
-needSignal := true
-for _, entry := range keyshareReq.PrivateDecryptionKeys {
-    if entry == nil {
-        continue
-    }
-    if entry.Requester == data.Requester && entry.SecpPubkey == data.SecpPubkey && len(entry.PrivateKeyshares) != 0 {
-        needSignal = false
-        break
-    }
-}
+	needSignal := true
+	for _, entry := range keyshareReq.PrivateDecryptionKeys {
+		if entry == nil {
+			continue
+		}
+		if entry.Requester == data.Requester && entry.SecpPubkey == data.SecpPubkey && len(entry.PrivateKeyshares) != 0 {
+			needSignal = false
+			break
+		}
+	}
 
-if needSignal {
-    k.Logger().Info("Got OnRecvGetPrivateKeysharePacket")
+	if needSignal {
+		k.Logger().Info("Got OnRecvGetPrivateKeysharePacket")
 
-    ctx.EventManager().EmitEvent(
-        sdk.NewEvent(types.StartSendEncryptedKeyshareEventType,
-            sdk.NewAttribute(types.StartSendGeneralKeyshareEventIdentity, data.Identity),
-            sdk.NewAttribute(types.StartSendEncryptedKeyshareEventRequester, data.Requester),
-            sdk.NewAttribute(types.StartSendEncryptedKeyshareEventPubkey, data.SecpPubkey),
-        ),
-    )
-}
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(types.StartSendEncryptedKeyshareEventType,
+				sdk.NewAttribute(types.StartSendGeneralKeyshareEventIdentity, data.Identity),
+				sdk.NewAttribute(types.StartSendEncryptedKeyshareEventRequester, data.Requester),
+				sdk.NewAttribute(types.StartSendEncryptedKeyshareEventPubkey, data.SecpPubkey),
+			),
+		)
+	}
 
 	return packetAck, nil
 }

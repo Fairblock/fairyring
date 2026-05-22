@@ -210,7 +210,7 @@ func (ep EqualityProof) Verify(
 
 	h := &common.H
 
-	// Scalars s 
+	// Scalars s
 	var one Scalar
 	one.SetOne()
 
@@ -424,4 +424,3 @@ func newWithdrawSplTranscript(ctx *WithdrawCiphertextCommitmentEqualityProofCont
 
 	return t
 }
-

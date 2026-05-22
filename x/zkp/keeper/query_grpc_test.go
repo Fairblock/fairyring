@@ -322,13 +322,13 @@ func TestDirectKeeperGRPCCompositeProofsBindingAndVerificationFailures(t *testin
 
 	t.Run("transfer proof bundle binding mismatch", func(t *testing.T) {
 		resp, err := fx.client.VerifyTransferProofs(context.Background(), &types.QueryVerifyTransferProofsRequest{
-			EqualityProofData:         make([]byte, 320),
-			RangeProofData:            make([]byte, 8*32+8+736),
-			ValidityProofData:         make([]byte, 416),
-			SenderPubkey:              nonZero32,
-			RecipientPubkey:           zero32,
-			CurrentBalanceCommitment:  zero32,
-			CurrentBalanceHandle:      zero32,
+			EqualityProofData:        make([]byte, 320),
+			RangeProofData:           make([]byte, 8*32+8+736),
+			ValidityProofData:        make([]byte, 416),
+			SenderPubkey:             nonZero32,
+			RecipientPubkey:          zero32,
+			CurrentBalanceCommitment: zero32,
+			CurrentBalanceHandle:     zero32,
 		})
 		require.NoError(t, err)
 		require.False(t, resp.Valid)
@@ -337,13 +337,13 @@ func TestDirectKeeperGRPCCompositeProofsBindingAndVerificationFailures(t *testin
 
 	t.Run("transfer proof bundle verification stage", func(t *testing.T) {
 		resp, err := fx.client.VerifyTransferProofs(context.Background(), &types.QueryVerifyTransferProofsRequest{
-			EqualityProofData:         make([]byte, 320),
-			RangeProofData:            make([]byte, 8*32+8+736),
-			ValidityProofData:         make([]byte, 416),
-			SenderPubkey:              zero32,
-			RecipientPubkey:           zero32,
-			CurrentBalanceCommitment:  zero32,
-			CurrentBalanceHandle:      zero32,
+			EqualityProofData:        make([]byte, 320),
+			RangeProofData:           make([]byte, 8*32+8+736),
+			ValidityProofData:        make([]byte, 416),
+			SenderPubkey:             zero32,
+			RecipientPubkey:          zero32,
+			CurrentBalanceCommitment: zero32,
+			CurrentBalanceHandle:     zero32,
 		})
 		require.NoError(t, err)
 		require.False(t, resp.Valid)
@@ -352,12 +352,12 @@ func TestDirectKeeperGRPCCompositeProofsBindingAndVerificationFailures(t *testin
 
 	t.Run("withdraw proof bundle nonce mismatch", func(t *testing.T) {
 		resp, err := fx.client.VerifyWithdrawProofs(context.Background(), &types.QueryVerifyWithdrawProofsRequest{
-			EqualityProofData:      make([]byte, 328),
-			RangeProofData:         make([]byte, 8*32+8+8+672),
-			UserPubkey:             zero32,
-			CiphertextCommitment:   zero32,
-			CiphertextHandle:       zero32,
-			ExpectedNonce:          1,
+			EqualityProofData:    make([]byte, 328),
+			RangeProofData:       make([]byte, 8*32+8+8+672),
+			UserPubkey:           zero32,
+			CiphertextCommitment: zero32,
+			CiphertextHandle:     zero32,
+			ExpectedNonce:        1,
 		})
 		require.NoError(t, err)
 		require.False(t, resp.Valid)
@@ -366,12 +366,12 @@ func TestDirectKeeperGRPCCompositeProofsBindingAndVerificationFailures(t *testin
 
 	t.Run("withdraw proof bundle verification stage", func(t *testing.T) {
 		resp, err := fx.client.VerifyWithdrawProofs(context.Background(), &types.QueryVerifyWithdrawProofsRequest{
-			EqualityProofData:      make([]byte, 328),
-			RangeProofData:         make([]byte, 8*32+8+8+672),
-			UserPubkey:             zero32,
-			CiphertextCommitment:   zero32,
-			CiphertextHandle:       zero32,
-			ExpectedNonce:          0,
+			EqualityProofData:    make([]byte, 328),
+			RangeProofData:       make([]byte, 8*32+8+8+672),
+			UserPubkey:           zero32,
+			CiphertextCommitment: zero32,
+			CiphertextHandle:     zero32,
+			ExpectedNonce:        0,
 		})
 		require.NoError(t, err)
 		require.False(t, resp.Valid)

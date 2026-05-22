@@ -244,4 +244,3 @@ func DecryptHandleFromBytes(b []byte) (*DecryptHandle, error) {
 	}
 	return &DecryptHandle{P: p}, nil
 }
-

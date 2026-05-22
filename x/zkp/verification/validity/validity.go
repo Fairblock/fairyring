@@ -458,4 +458,3 @@ func BatchedGroupedValidityFiatShamirChallenges(
 	w = common.ChallengeScalar(transcript, []byte("w"))
 	return t, c, w, nil
 }
-

@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	ModuleName = "zkp"
-	StoreKey   = ModuleName
+	ModuleName  = "zkp"
+	StoreKey    = ModuleName
 	MemStoreKey = "mem_zkp"
 
 	GasVerifyEqualityProof      storetypes.Gas = 50_000
@@ -20,11 +20,10 @@ const (
 )
 
 var (
-	ParamsKey              = []byte("p_zkp")
-	TrustedContractPrefix  = []byte("tc/")
+	ParamsKey             = []byte("p_zkp")
+	TrustedContractPrefix = []byte("tc/")
 )
 
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
-

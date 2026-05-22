@@ -105,12 +105,12 @@ func CustomQuerier(zkpKeeper *zkpmodulekeeper.Keeper) func(ctx sdk.Context, call
 			}
 
 			req := &zkpmoduletypes.QueryVerifyWithdrawProofsRequest{
-				EqualityProofData:   equalityData,
-				RangeProofData:      rangeData,
-				UserPubkey:          userPK,
+				EqualityProofData:    equalityData,
+				RangeProofData:       rangeData,
+				UserPubkey:           userPK,
 				CiphertextCommitment: ctC1,
-				CiphertextHandle:    ctC2,
-				ExpectedNonce:       query.VerifyWithdrawProofs.ExpectedNonce,
+				CiphertextHandle:     ctC2,
+				ExpectedNonce:        query.VerifyWithdrawProofs.ExpectedNonce,
 			}
 
 			resp, err := zkpKeeper.VerifyWithdrawProofs(ctx, req)
@@ -151,11 +151,10 @@ type TransferProofsQuery struct {
 }
 
 type WithdrawProofsQuery struct {
-	EqualityProofData      string `json:"equality_proof_data"`
-	RangeProofData         string `json:"range_proof_data"`
-	UserPubkey             string `json:"user_pubkey"`
-	CiphertextCommitment   string `json:"ciphertext_commitment"`
-	CiphertextHandle       string `json:"ciphertext_handle"`
-	ExpectedNonce          uint64 `json:"expected_nonce"`
+	EqualityProofData    string `json:"equality_proof_data"`
+	RangeProofData       string `json:"range_proof_data"`
+	UserPubkey           string `json:"user_pubkey"`
+	CiphertextCommitment string `json:"ciphertext_commitment"`
+	CiphertextHandle     string `json:"ciphertext_handle"`
+	ExpectedNonce        uint64 `json:"expected_nonce"`
 }
-
