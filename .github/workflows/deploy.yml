@@ -53,10 +53,7 @@ jobs:
           username: mani
           key: ${{ secrets.GCP_SSH_KEY }}
           script: |
-            cd /home/mani/fairyring
-            git pull origin anonymous-transfer
-            make devnet-down
-            make devnet-up
+            /home/mani/scripts/deploy-fairyring.sh
 
   deploy-contracts:
     name: Deploy Contracts
