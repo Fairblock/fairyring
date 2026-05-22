@@ -1008,10 +1008,7 @@ func NewBatchedRangeInstructionTranscript(ctx *BatchedRangeProofContext) *merlin
 	}
 	t.AppendMessage([]byte("commitments"), commitsBytes[:])
 
-	var bitBytes [8]byte
-	for i := 0; i < len(ctx.BitLengths); i++ {
-		bitBytes[i] = ctx.BitLengths[i]
-	}
+	bitBytes := ctx.BitLengths
 	t.AppendMessage([]byte("bit-lengths"), bitBytes[:])
 
 	return t
@@ -1239,12 +1236,6 @@ func leadingZeros32(x uint32) int {
 		x <<= 1
 	}
 	return n
-}
-
-func newNegScalar(s *Scalar) Scalar {
-	var out Scalar
-	out.Neg(s)
-	return out
 }
 
 func putU64LE(dst []byte, v uint64) {

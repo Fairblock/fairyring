@@ -163,10 +163,10 @@ func (k Keeper) SetRequestCount(ctx sdk.Context, requestNumber uint64) {
 	store.Set(types.RequestsCountKey, []byte(strconv.FormatUint(requestNumber, 10)))
 }
 
-func (k Keeper) SetWasmKeeper(wk types.WasmKeeper) {
+func (k *Keeper) SetWasmKeeper(wk types.WasmKeeper) {
 	k.wasmKeeper = wk
 }
 
-func (k Keeper) SetContractKeeper(ck types.ContractKeeper) {
+func (k *Keeper) SetContractKeeper(ck types.ContractKeeper) {
 	k.contractKeeper = ck
 }

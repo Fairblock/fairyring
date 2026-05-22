@@ -243,7 +243,8 @@ func TestValidityTranscriptDeterministicAndContextSensitive(t *testing.T) {
 		return vScalarBytesFromScalar(t, s)
 	}
 
-	if challenge(pd.Context) != challenge(pd.Context) {
+	r1, r2 := challenge(pd.Context), challenge(pd.Context)
+	if r1 != r2 {
 		t.Fatal("same validity context did not produce deterministic challenge")
 	}
 	mutated := pd.Context

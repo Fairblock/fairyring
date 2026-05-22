@@ -286,7 +286,8 @@ func TestChallengeScalarDeterminism(t *testing.T) {
 		return testScalarBytesFromScalar(t, s)
 	}
 
-	if build([]byte("same")) != build([]byte("same")) {
+	r1, r2 := build([]byte("same")), build([]byte("same"))
+	if r1 != r2 {
 		t.Fatal("same transcript did not produce deterministic challenge")
 	}
 	if build([]byte("same")) == build([]byte("different")) {
@@ -320,7 +321,8 @@ func TestAppendHelpersAffectTranscriptChallenges(t *testing.T) {
 		return testScalarBytesFromScalar(t, ChallengeScalar(tr, []byte("c")))
 	}
 
-	if build(3, 5) != build(3, 5) {
+	r1, r2 := build(3, 5), build(3, 5)
+	if r1 != r2 {
 		t.Fatal("append helper transcript is not deterministic")
 	}
 	if build(3, 5) == build(4, 5) {

@@ -32,11 +32,7 @@ import (
 	"github.com/Fairblock/fairyring/x/keyshare/types"
 )
 
-var (
-	bondedAcc    = authtypes.NewEmptyModuleAccount(stakingtypes.BondedPoolName)
-	notBondedAcc = authtypes.NewEmptyModuleAccount(stakingtypes.NotBondedPoolName)
-	PKs          = simtestutil.CreateTestPubKeys(500)
-)
+var PKs = simtestutil.CreateTestPubKeys(500)
 
 func KeyshareKeeper(t testing.TB) (keeper.Keeper, sdk.Context, pepkeeper.Keeper) {
 	storeKey := storetypes.NewKVStoreKey(types.StoreKey)
