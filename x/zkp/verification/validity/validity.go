@@ -375,8 +375,13 @@ func (ctx *BatchedGroupedCiphertext2HandlesValidityProofContext) NewTranscript()
 func VerifyValidityProof(
 	p *BatchedGroupedCiphertext2HandlesValidityProofData,
 ) error {
-	transcript := p.Context.NewTranscript()
+	return VerifyValidityProofWithTranscript(p, p.Context.NewTranscript())
+}
 
+func VerifyValidityProofWithTranscript(
+	p *BatchedGroupedCiphertext2HandlesValidityProofData,
+	transcript *merlin.Transcript,
+) error {
 	var firstPubkey ElGamalPubkey
 	if err := firstPubkey.FromPod(p.Context.FirstPubkey); err != nil {
 		return ErrValidityInvalidProof

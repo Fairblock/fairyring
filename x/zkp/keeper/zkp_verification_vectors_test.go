@@ -177,9 +177,7 @@ func zkpMutationErrMatches(actual, needle string) bool {
 			strings.Contains(la, "invalid equality proof data length") ||
 			strings.Contains(la, "invalid range proof data length") ||
 			strings.Contains(la, "invalid validity proof data length") ||
-			strings.Contains(la, "equality proof verification failed:") ||
-			strings.Contains(la, "range proof verification failed:") ||
-			strings.Contains(la, "validity proof verification failed:")
+			strings.Contains(la, "transfer proof verification failed:")
 	case "deserialization":
 		return strings.Contains(la, "deserialization") ||
 			strings.Contains(la, "algebraic relation failed") ||

@@ -9,6 +9,7 @@ import (
 
 	"github.com/Fairblock/fairyring/x/zkp/verification/commitment"
 	rangeproof "github.com/Fairblock/fairyring/x/zkp/verification/range"
+	"github.com/gtank/merlin"
 )
 
 func VerifyBindings(
@@ -40,6 +41,66 @@ func VerifyBindings(
 	}
 	if !bytes.Equal(eq.Context.Commitment.Bytes[:], rp.Context.Commitments[0].Bytes[:]) {
 		return errors.New("equality and range proof commitments do not match")
+	}
+	return nil
+}
+
+func NewWithdrawInstructionTranscript(
+	eq *commitment.WithdrawCiphertextCommitmentEqualityProofData,
+	rp *rangeproof.WithdrawBatchedRangeProofU64Data,
+	userPK []byte,
+	expectedNonce uint64,
+) *merlin.Transcript {
+	t := merlin.NewTranscript("withdraw-proof-instruction")
+
+	t.AppendMessage([]byte("user-pubkey"), userPK)
+
+	var nonceBytes [8]byte
+	binary.LittleEndian.PutUint64(nonceBytes[:], expectedNonce)
+	t.AppendMessage([]byte("nonce"), nonceBytes[:])
+
+	t.AppendMessage([]byte("equality-pubkey"), eq.Context.Pubkey.Bytes[:])
+	var eqCt [64]byte
+	copy(eqCt[0:32], eq.Context.Ciphertext.Commitment[:])
+	copy(eqCt[32:64], eq.Context.Ciphertext.Handle[:])
+	t.AppendMessage([]byte("equality-ciphertext"), eqCt[:])
+	t.AppendMessage([]byte("equality-commitment"), eq.Context.Commitment.Bytes[:])
+	t.AppendMessage([]byte("equality-nonce"), eq.Context.Nonce[:])
+
+	var rangeCommits [8 * 32]byte
+	for i := 0; i < 8; i++ {
+		copy(rangeCommits[32*i:32*(i+1)], rp.Context.Commitments[i].Bytes[:])
+	}
+	t.AppendMessage([]byte("range-commitments"), rangeCommits[:])
+
+	var rangeBits [8]byte
+	for i := 0; i < 8; i++ {
+		rangeBits[i] = rp.Context.BitLengths[i]
+	}
+	t.AppendMessage([]byte("range-bit-lengths"), rangeBits[:])
+
+	t.AppendMessage([]byte("range-nonce"), rp.Context.Nonce[:])
+
+	return t
+}
+
+func VerifyWithdrawProofs(
+	eq *commitment.WithdrawCiphertextCommitmentEqualityProofData,
+	rp *rangeproof.WithdrawBatchedRangeProofU64Data,
+	userPK, ciphertextC1, ciphertextC2 []byte,
+	expectedNonce uint64,
+) error {
+	if err := VerifyBindings(eq, rp, userPK, ciphertextC1, ciphertextC2, expectedNonce); err != nil {
+		return err
+	}
+
+	transcript := NewWithdrawInstructionTranscript(eq, rp, userPK, expectedNonce)
+
+	if err := commitment.VerifyWithdrawEqualityProofWithTranscript(eq, transcript); err != nil {
+		return err
+	}
+	if err := rangeproof.VerifyWithdrawRangeWithNonceWithTranscript(rp, transcript); err != nil {
+		return err
 	}
 	return nil
 }

@@ -396,11 +396,11 @@ func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVeri
 		len(req.CurrentBalanceCommitment) != 32 || len(req.CurrentBalanceHandle) != 32 {
 		return &types.QueryVerifyTransferProofsResponse{
 			Valid: false,
-			Error: "transfer binding verification failed: missing or invalid pubkey/balance fields (expected 32-byte values)",
+			Error: "transfer proof verification failed: missing or invalid pubkey/balance fields (expected 32-byte values)",
 		}, nil
 	}
 
-	err := transferctx.VerifyBindings(
+	err := transferctx.VerifyTransferProofs(
 		&equalityProofData,
 		&rangeProofData,
 		&validityProofData,
@@ -412,31 +412,7 @@ func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVeri
 	if err != nil {
 		return &types.QueryVerifyTransferProofsResponse{
 			Valid: false,
-			Error: "transfer binding verification failed: " + err.Error(),
-		}, nil
-	}
-
-	err = commitment.VerifyEqualityProof(&equalityProofData)
-	if err != nil {
-		return &types.QueryVerifyTransferProofsResponse{
-			Valid: false,
-			Error: "equality proof verification failed: " + err.Error(),
-		}, nil
-	}
-
-	err = rangeproof.VerifyTransferRange(&rangeProofData)
-	if err != nil {
-		return &types.QueryVerifyTransferProofsResponse{
-			Valid: false,
-			Error: "range proof verification failed: " + err.Error(),
-		}, nil
-	}
-
-	err = validity.VerifyValidityProof(&validityProofData)
-	if err != nil {
-		return &types.QueryVerifyTransferProofsResponse{
-			Valid: false,
-			Error: "validity proof verification failed: " + err.Error(),
+			Error: "transfer proof verification failed: " + err.Error(),
 		}, nil
 	}
 
@@ -539,11 +515,11 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 	if len(req.UserPubkey) != 32 || len(req.CiphertextCommitment) != 32 || len(req.CiphertextHandle) != 32 {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
-			Error: "withdraw binding verification failed: missing or invalid pubkey/ciphertext fields (expected 32-byte values)",
+			Error: "withdraw proof verification failed: missing or invalid pubkey/ciphertext fields (expected 32-byte values)",
 		}, nil
 	}
 
-	err := withdrawctx.VerifyBindings(
+	err := withdrawctx.VerifyWithdrawProofs(
 		&equalityProofData,
 		&rangeProofData,
 		req.UserPubkey,
@@ -554,23 +530,7 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 	if err != nil {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
-			Error: "withdraw binding verification failed: " + err.Error(),
-		}, nil
-	}
-
-	err = commitment.VerifyWithdrawEqualityProof(&equalityProofData)
-	if err != nil {
-		return &types.QueryVerifyWithdrawProofsResponse{
-			Valid: false,
-			Error: "equality proof verification failed: " + err.Error(),
-		}, nil
-	}
-
-	err = rangeproof.VerifyWithdrawRangeWithNonce(&rangeProofData)
-	if err != nil {
-		return &types.QueryVerifyWithdrawProofsResponse{
-			Valid: false,
-			Error: "range proof verification failed: " + err.Error(),
+			Error: "withdraw proof verification failed: " + err.Error(),
 		}, nil
 	}
 
