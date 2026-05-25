@@ -917,6 +917,10 @@ type WithdrawBatchedRangeProofU64Data struct {
 }
 
 func VerifyWithdrawRangeWithNonce(pd *WithdrawBatchedRangeProofU64Data) error {
+	return VerifyWithdrawRangeWithNonceWithTranscript(pd, newWithdrawTranscriptRange(&pd.Context))
+}
+
+func VerifyWithdrawRangeWithNonceWithTranscript(pd *WithdrawBatchedRangeProofU64Data, t *merlin.Transcript) error {
 	baseCtx := BatchedRangeProofContext{
 		Commitments: pd.Context.Commitments,
 		BitLengths:  pd.Context.BitLengths,
@@ -925,8 +929,6 @@ func VerifyWithdrawRangeWithNonce(pd *WithdrawBatchedRangeProofU64Data) error {
 	if perr != 0 {
 		return perr
 	}
-
-	t := newWithdrawTranscriptRange(&pd.Context)
 
 	rp, err := RangeProofFromPodU64(pd.Proof)
 	if err != nil {
@@ -974,12 +976,14 @@ func BatchedRangeStatement(ctx *BatchedRangeProofContext, maxBL uint8) ([]Peders
 }
 
 func VerifyTransferRange(pd *BatchedRangeProofU128Data) error {
+	return VerifyTransferRangeWithTranscript(pd, NewBatchedRangeInstructionTranscript(&pd.Context))
+}
+
+func VerifyTransferRangeWithTranscript(pd *BatchedRangeProofU128Data, t *merlin.Transcript) error {
 	commitments, bitLengths, perr := collectRangeCtx(&pd.Context, 64)
 	if perr != 0 {
 		return perr
 	}
-
-	t := NewBatchedRangeInstructionTranscript(&pd.Context)
 
 	rp, err := RangeProofFromPodU128(pd.Proof)
 	if err != nil {

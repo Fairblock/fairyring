@@ -290,6 +290,14 @@ func (ep EqualityProof) Verify(
 func VerifyEqualityProof(
 	pd *CiphertextCommitmentEqualityProofData,
 ) error {
+	t := NewEqualityInstructionTranscript(&pd.Context)
+	return VerifyEqualityProofWithTranscript(pd, t)
+}
+
+func VerifyEqualityProofWithTranscript(
+	pd *CiphertextCommitmentEqualityProofData,
+	t *merlin.Transcript,
+) error {
 	var pk ElGamalPubkey
 	if err := pk.FromPod(pd.Context.Pubkey); err != nil {
 		return ErrProofDeserialization
@@ -310,8 +318,6 @@ func VerifyEqualityProof(
 	if err != nil {
 		return ErrProofDeserialization
 	}
-
-	t := NewEqualityInstructionTranscript(&pd.Context)
 
 	if err := proof.Verify(&pk, &ct, cm, t); err != nil {
 		return ErrProofAlgebraic
@@ -379,6 +385,13 @@ type WithdrawCiphertextCommitmentEqualityProofData struct {
 }
 
 func VerifyWithdrawEqualityProof(pd *WithdrawCiphertextCommitmentEqualityProofData) error {
+	return VerifyWithdrawEqualityProofWithTranscript(pd, newWithdrawSplTranscript(&pd.Context))
+}
+
+func VerifyWithdrawEqualityProofWithTranscript(
+	pd *WithdrawCiphertextCommitmentEqualityProofData,
+	t *merlin.Transcript,
+) error {
 	var pk ElGamalPubkey
 	if err := pk.FromPod(pd.Context.Pubkey); err != nil {
 		return ErrProofDeserialization
@@ -399,8 +412,6 @@ func VerifyWithdrawEqualityProof(pd *WithdrawCiphertextCommitmentEqualityProofDa
 	if err != nil {
 		return ErrProofDeserialization
 	}
-
-	t := newWithdrawSplTranscript(&pd.Context)
 
 	if err := proof.Verify(&pk, &ct, cm, t); err != nil {
 		return ErrProofAlgebraic
