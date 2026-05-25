@@ -33,7 +33,7 @@ type GenerateResult struct {
 func GeneratePubKeyAndShares(totalNumberOfValidator uint32) (*GenerateResult, error) {
 	t := int(math.Ceil(float64(totalNumberOfValidator) * (2.0 / 3.0)))
 
-	shares, mpk, _, err := distIBE.GenerateShares(totalNumberOfValidator, uint32(t))  // #nosec G115
+	shares, mpk, _, err := distIBE.GenerateShares(totalNumberOfValidator, uint32(t)) // #nosec G115
 	if err != nil {
 		return nil, err
 	}

@@ -103,8 +103,8 @@ func (k Keeper) HandlePerBlockShare(
 		BlockHeight:         height,
 		Keyshare:            shareHex,
 		KeyshareIndex:       uint64(keyshareIndex),
-		ReceivedTimestamp:   uint64(ctx.BlockTime().Unix()),  // #nosec G115
-		ReceivedBlockHeight: uint64(ctx.BlockHeight()),  // #nosec G115
+		ReceivedTimestamp:   uint64(ctx.BlockTime().Unix()), // #nosec G115
+		ReceivedBlockHeight: uint64(ctx.BlockHeight()),      // #nosec G115
 	})
 
 	// Update "last submitted height" marker
@@ -114,7 +114,7 @@ func (k Keeper) HandlePerBlockShare(
 	expectedThreshold := math.LegacyNewDecFromInt(
 		math.NewInt(types.KeyAggregationThresholdNumerator)).Quo(
 		math.LegacyNewDecFromInt(math.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
-		int64(activePK.NumberOfValidators)).Ceil().TruncateInt64()  // #nosec G115
+		int64(activePK.NumberOfValidators)).Ceil().TruncateInt64() // #nosec G115
 
 	// collect all shares present for this height
 	valset := k.GetAllValidatorSet(ctx)
@@ -124,7 +124,7 @@ func (k Keeper) HandlePerBlockShare(
 	for _, vs := range valset {
 		if ks, ok := k.GetKeyshare(ctx, vs.Validator, height); ok {
 			// parse stored share & corresponding commitment into the proper structs
-			keyshare, commitment, err := parseKeyshareCommitmentForHeight(suite, ks.Keyshare, commitments.Commitments[ks.KeyshareIndex-1], uint32(ks.KeyshareIndex), ibeID)  // #nosec G115
+			keyshare, commitment, err := parseKeyshareCommitmentForHeight(suite, ks.Keyshare, commitments.Commitments[ks.KeyshareIndex-1], uint32(ks.KeyshareIndex), ibeID) // #nosec G115
 			if err != nil {
 				k.Logger().Error("preblock: failed to parse stored keyshare/commitment", "err", err, "validator", vs.Validator, "height", height)
 				continue

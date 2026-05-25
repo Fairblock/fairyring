@@ -89,7 +89,7 @@ func (k msgServer) SubmitEncryptedKeyshare(goCtx context.Context, msg *types.Msg
 	expectedThreshold := math.LegacyNewDecFromInt(
 		math.NewInt(types.KeyAggregationThresholdNumerator)).Quo(
 		math.LegacyNewDecFromInt(math.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
-		int64(activePubkey.NumberOfValidators)).Ceil().TruncateInt64()  // #nosec G115
+		int64(activePubkey.NumberOfValidators)).Ceil().TruncateInt64() // #nosec G115
 
 	// Emit Keyshare Submitted Event
 	ctx.EventManager().EmitEvent(

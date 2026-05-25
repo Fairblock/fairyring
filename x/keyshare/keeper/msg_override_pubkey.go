@@ -29,7 +29,7 @@ func (k msgServer) OverrideLatestPubkey(
 		Commitments: msg.Commitments,
 	}
 
-	expHeight := params.KeyExpiry + uint64(ctx.BlockHeight())  // #nosec G115
+	expHeight := params.KeyExpiry + uint64(ctx.BlockHeight()) // #nosec G115
 
 	if _, found := k.GetActivePubkey(ctx); found {
 		k.DeleteActivePubkey(ctx)

@@ -29,7 +29,7 @@ func (k Keeper) ProcessPepRequestQueue(ctx sdk.Context) error {
 		delay := req.EstimatedDelay
 		avgBlockTime := k.AvgBlockTime(ctx)
 		blockDelay := uint64(math.Ceil(delay.Seconds() / float64(avgBlockTime)))
-		currentHeight := uint64(ctx.BlockHeight())  // #nosec G115
+		currentHeight := uint64(ctx.BlockHeight()) // #nosec G115
 		executionHeight := currentHeight + blockDelay
 		if executionHeight > activePubkey.Expiry {
 			queuedPubkey, found := k.GetQueuedPubkey(ctx)
@@ -205,7 +205,7 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 		avgBlockTime := k.AvgBlockTime(ctx)
 		blockDelay := uint64(math.Ceil(delay.Seconds() / float64(avgBlockTime)))
 
-		currentHeight := uint64(ctx.BlockHeight())  // #nosec G115
+		currentHeight := uint64(ctx.BlockHeight()) // #nosec G115
 		executionHeight := currentHeight + blockDelay
 
 		if executionHeight > activePubkey.Expiry {
@@ -248,7 +248,7 @@ func (k Keeper) ProcessGovRequestQueue(ctx sdk.Context) error {
 		proposal.Identity = id
 		proposal.Pubkey = keyshareRequest.Pubkey
 
-		k.govKeeper.SetProposal(ctx, proposal)  // #nosec G104
+		k.govKeeper.SetProposal(ctx, proposal) // #nosec G104
 
 		k.govKeeper.RemoveReqQueueEntry(ctx, req.GetProposalId())
 	}

@@ -140,8 +140,8 @@ func (handler *KeyshareCheckTxHandler) CheckTx() CheckTx {
 
 		return &cometabci.ResponseCheckTx{
 			Code:      cometabci.CodeTypeOK,
-			GasWanted: int64(gasInfo.GasWanted),  // #nosec G115
-			GasUsed:   int64(gasInfo.GasUsed),  // #nosec G115
+			GasWanted: int64(gasInfo.GasWanted), // #nosec G115
+			GasUsed:   int64(gasInfo.GasUsed),   // #nosec G115
 		}, nil
 	}
 }

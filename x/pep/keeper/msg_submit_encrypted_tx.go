@@ -15,7 +15,7 @@ func (k msgServer) SubmitEncryptedTx(goCtx context.Context, msg *types.MsgSubmit
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	params := k.GetParams(ctx)
 
-	height := uint64(ctx.BlockHeight())  // #nosec G115
+	height := uint64(ctx.BlockHeight()) // #nosec G115
 
 	if !params.IsSourceChain {
 		strHeight := k.GetLatestHeight(ctx)
