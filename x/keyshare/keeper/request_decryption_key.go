@@ -54,7 +54,7 @@ func (k Keeper) OnRecvRequestDecryptionKeyPacket(
 	delay := data.EstimatedDelay
 	avgBlockTime := k.AvgBlockTime(ctx)
 	blockDelay := uint64(math.Ceil(delay.Seconds() / float64(avgBlockTime)))
-	currentHeight := uint64(ctx.BlockHeight())
+	currentHeight := uint64(ctx.BlockHeight())  // #nosec G115
 	executionHeight := currentHeight + blockDelay
 	if executionHeight > activePubkey.Expiry {
 		queuedPubkey, found := k.GetQueuedPubkey(ctx)

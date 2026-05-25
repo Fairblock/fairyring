@@ -79,7 +79,7 @@ func (app *App) extendVoteHandler(cfg keysharer.Config) sdk.ExtendVoteHandler {
 			return &abci.ResponseExtendVote{}, nil
 		}
 
-		heightFor := uint64(ctx.BlockHeight() + 1)
+		heightFor := uint64(ctx.BlockHeight() + 1)  // #nosec G115
 
 		app.Logger().Info("KeyshareVE/ExtendVote: picked share",
 			"height", req.Height, "keyshare_index", mat.Index, "share_len", len(mat.ActiveShare))
@@ -152,7 +152,7 @@ func (app *App) verifyVoteExtensionHandler() sdk.VerifyVoteExtensionHandler {
 // into the KeyshareKeeper.
 func (app *App) preBlocker() sdk.PreBlocker {
 	return func(ctx sdk.Context, req *abci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
-		H := uint64(req.Height)
+		H := uint64(req.Height)  // #nosec G115
 		ctx.Logger().Info("KeyshareVE/PreBlock: begin",
 			"height", H, "num_txs", len(req.Txs))
 

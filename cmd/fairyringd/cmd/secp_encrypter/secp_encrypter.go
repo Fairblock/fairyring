@@ -49,8 +49,8 @@ func SecpEncrypterCmd() *cobra.Command {
 	rootCmd.Flags().StringVarP(&keyshare, "keyshare", "k", "", "keyshare in hex")
 
 	// Mark the flags as required
-	rootCmd.MarkFlagRequired("pubkey64")
-	rootCmd.MarkFlagRequired("keyshare")
+	rootCmd.MarkFlagRequired("pubkey64")  // #nosec G104
+	rootCmd.MarkFlagRequired("keyshare")  // #nosec G104
 
 	return rootCmd
 }

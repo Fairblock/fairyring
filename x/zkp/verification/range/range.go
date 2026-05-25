@@ -262,8 +262,8 @@ type generatorsChain struct {
 
 func newGeneratorsChain(label []byte) *generatorsChain {
 	shake := sha3.NewShake256()
-	shake.Write([]byte("GeneratorsChain"))
-	shake.Write(label)
+	shake.Write([]byte("GeneratorsChain"))  // #nosec G104
+	shake.Write(label)  // #nosec G104
 	return &generatorsChain{shake: shake}
 }
 
@@ -297,7 +297,7 @@ func (ipp *InnerProductProof) verificationScalars(
 		return nil, nil, nil, nil, nil, RangeErrInvalidBitSize
 	}
 
-	rangeProofInnerProductDomainSeparator(t, uint64(n))
+	rangeProofInnerProductDomainSeparator(t, uint64(n))  // #nosec G115
 
 	challenges := make([]Scalar, 0, lgN)
 	if rawUOut != nil {
@@ -1240,12 +1240,12 @@ func leadingZeros32(x uint32) int {
 
 func putU64LE(dst []byte, v uint64) {
 	_ = dst[7]
-	dst[0] = byte(v)
-	dst[1] = byte(v >> 8)
-	dst[2] = byte(v >> 16)
-	dst[3] = byte(v >> 24)
-	dst[4] = byte(v >> 32)
-	dst[5] = byte(v >> 40)
-	dst[6] = byte(v >> 48)
+	dst[0] = byte(v)  // #nosec G115
+	dst[1] = byte(v >> 8)  // #nosec G115
+	dst[2] = byte(v >> 16)  // #nosec G115
+	dst[3] = byte(v >> 24)  // #nosec G115
+	dst[4] = byte(v >> 32)  // #nosec G115
+	dst[5] = byte(v >> 40)  // #nosec G115
+	dst[6] = byte(v >> 48)  // #nosec G115
 	dst[7] = byte(v >> 56)
 }

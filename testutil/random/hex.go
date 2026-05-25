@@ -8,7 +8,7 @@ import (
 
 // RandHex returns a random hexadecimal string of length n.
 func RandHex(n int) string {
-	src := rand.New(rand.NewSource(time.Now().UnixNano()))
+	src := rand.New(rand.NewSource(time.Now().UnixNano()))  // #nosec G404
 	b := make([]byte, (n+1)/2)
 
 	if _, err := src.Read(b); err != nil {

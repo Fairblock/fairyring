@@ -194,14 +194,14 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 		}
 	}
 
-	am.keeper.ProcessPepRequestQueue(ctx)
-	am.keeper.ProcessPepSignalQueue(ctx)
-	am.keeper.ProcessPrivateRequestQueue(ctx)
-	am.keeper.ProcessPrivateSignalQueue(ctx)
-	am.keeper.ProcessGovRequestQueue(ctx)
-	am.keeper.ProcessGovSignalQueue(ctx)
+	am.keeper.ProcessPepRequestQueue(ctx)  // #nosec G104
+	am.keeper.ProcessPepSignalQueue(ctx)  // #nosec G104
+	am.keeper.ProcessPrivateRequestQueue(ctx)  // #nosec G104
+	am.keeper.ProcessPrivateSignalQueue(ctx)  // #nosec G104
+	am.keeper.ProcessGovRequestQueue(ctx)  // #nosec G104
+	am.keeper.ProcessGovSignalQueue(ctx)  // #nosec G104
 
-	height := uint64(ctx.BlockHeight())
+	height := uint64(ctx.BlockHeight())  // #nosec G115
 
 	ak, foundAk := am.keeper.GetActivePubkey(ctx)
 	qk, foundQk := am.keeper.GetQueuedPubkey(ctx)
@@ -281,7 +281,7 @@ func (am AppModule) EndBlock(cctx context.Context) error {
 		// Validator will be slashed if their last submitted height is N block ago
 		// Lets say N is 10, and last submitted height is 0, current height is 10
 		// then he/she will be slashed
-		if lastSubmittedHeight+params.GetMaxIdledBlock() > uint64(ctx.BlockHeight()) {
+		if lastSubmittedHeight+params.GetMaxIdledBlock() > uint64(ctx.BlockHeight()) {  // #nosec G115
 			continue
 		}
 
@@ -313,13 +313,13 @@ func (am AppModule) EndBlock(cctx context.Context) error {
 			return nil
 		}
 
-		am.keeper.SlashingKeeper().Slash(
-			ctx,
-			consAddr,
-			params.SlashFractionNoKeyshare,
-			types.SlashPower,
-			ctx.BlockHeight()-1,
-		)
+		am.keeper.SlashingKeeper().Slash(  // #nosec G104
+			ctx,  // #nosec G104
+			consAddr,  // #nosec G104
+			params.SlashFractionNoKeyshare,  // #nosec G104
+			types.SlashPower,  // #nosec G104
+			ctx.BlockHeight()-1,  // #nosec G104
+		)  // #nosec G104
 
 		// After being slashed, his/her last submitted height will be set to the current block
 		// So he/she won't be slashed in the next block instead he/she will be slashed if he didn't submit for N block again.

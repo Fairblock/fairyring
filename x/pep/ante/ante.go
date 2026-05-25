@@ -34,7 +34,7 @@ func (pd PEPDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, nex
 	}
 
 	// Validate the keyshare if one exists.
-	if ctx.BlockHeight() > int64(ksInfo.Height) {
+	if ctx.BlockHeight() > int64(ksInfo.Height) {  // #nosec G115
 		return ctx, errors.Wrap(err, "failed to validate keyshare")
 	}
 

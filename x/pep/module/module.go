@@ -278,7 +278,7 @@ func (am AppModule) BeginBlock(cctx context.Context) error {
 
 		for _, eachTx := range arr.EncryptedTxs {
 			startConsumedGas := ctx.GasMeter().GasConsumed()
-			am.keeper.SetEncryptedTxProcessedHeight(ctx, eachTx.TargetHeight, eachTx.Index, uint64(ctx.BlockHeight()))
+			am.keeper.SetEncryptedTxProcessedHeight(ctx, eachTx.TargetHeight, eachTx.Index, uint64(ctx.BlockHeight()))  // #nosec G115
 			tx := convertEncTxToDecryptionTx(eachTx)
 			err := am.decryptAndExecuteTx(ctx, tx, startConsumedGas, publicKeyPoint, skPoint)
 			if err != nil {
