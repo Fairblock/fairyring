@@ -95,3 +95,17 @@ jobs:
           key: ${{ secrets.GCP_SSH_KEY }}
           script: |
             /home/mani/scripts/deploy-fairyport.sh
+  restart-fairycloak:
+    name: Restart Fairycloak
+    runs-on: ubuntu-latest
+    needs: restart-fairyport
+    if: github.event_name == 'push'
+    steps:
+      - name: SSH and Restart Fairycloak
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.GCP_HOST }}
+          username: mani
+          key: ${{ secrets.GCP_SSH_KEY }}
+          script: |
+            /home/mani/scripts/deploy-fairycloak.sh
