@@ -167,9 +167,6 @@ func (ep EqualityProof) Verify(
 	if ciphertext.Commitment.P.Equals(&id) {
 		return ErrProofAlgebraic
 	}
-	if ciphertext.Handle.P.Equals(&id) {
-		return ErrProofAlgebraic
-	}
 	if commitment.P.Equals(&id) {
 		return ErrProofAlgebraic
 	}
