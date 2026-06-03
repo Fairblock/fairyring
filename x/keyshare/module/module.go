@@ -310,16 +310,25 @@ func (am AppModule) EndBlock(cctx context.Context) error {
 		if !inCurrentEpoch {
 			am.keeper.Logger().Info(fmt.Sprintf("Validator: %s not in the current epoch, updating last submitted height to current block height.", eachValidator.Validator))
 			am.keeper.SetLastSubmittedHeight(ctx, eachValidator.Validator, strconv.FormatInt(ctx.BlockHeight(), 10))
-			return nil
+			continue
 		}
 
-		am.keeper.SlashingKeeper().Slash( // #nosec G104
-			ctx,                            // #nosec G104
-			consAddr,                       // #nosec G104
-			params.SlashFractionNoKeyshare, // #nosec G104
-			types.SlashPower,               // #nosec G104
-			ctx.BlockHeight()-1,            // #nosec G104
-		) // #nosec G104
+		power, err := am.keeper.GetValidatorConsensusPower(ctx, eachValidator.Validator)
+		if err != nil {
+			am.keeper.Logger().Error(fmt.Sprintf("Error while retrieving validator %s consensus power: %s", eachValidator.Validator, err.Error()))
+			continue
+		}
+
+		if err := am.keeper.SlashingKeeper().Slash(
+			ctx,
+			consAddr,
+			params.SlashFractionNoKeyshare,
+			power,
+			ctx.BlockHeight()-1,
+		); err != nil {
+			am.keeper.Logger().Error(fmt.Sprintf("Error while slashing idle validator %s: %s", eachValidator.Validator, err.Error()))
+			continue
+		}
 
 		// After being slashed, his/her last submitted height will be set to the current block
 		// So he/she won't be slashed in the next block instead he/she will be slashed if he didn't submit for N block again.

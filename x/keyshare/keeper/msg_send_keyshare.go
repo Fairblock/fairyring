@@ -100,12 +100,20 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			return nil, err
 		}
 
-		k.slashingKeeper.Slash( // #nosec G104
-			ctx, consAddr, // #nosec G104
-			k.SlashFractionWrongKeyshare(ctx), // #nosec G104
-			types.SlashPower,                  // #nosec G104
-			ctx.BlockHeight()-1,               // #nosec G104
-		) // #nosec G104
+		power, err := k.GetValidatorConsensusPower(ctx, validatorInfo.Validator)
+		if err != nil {
+			return nil, err
+		}
+
+		if err := k.slashingKeeper.Slash(
+			ctx,
+			consAddr,
+			k.SlashFractionWrongKeyshare(ctx),
+			power,
+			ctx.BlockHeight()-1,
+		); err != nil {
+			return nil, err
+		}
 
 		return &types.MsgSendKeyshareResponse{
 			Creator:             msg.Creator,

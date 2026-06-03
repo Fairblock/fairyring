@@ -25,6 +25,10 @@ func (k Keeper) GetParams(ctx context.Context) (params types.Params) {
 
 // SetParams set the params
 func (k Keeper) SetParams(ctx context.Context, params types.Params) error {
+	if err := params.Validate(); err != nil {
+		return err
+	}
+
 	store := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	bz, err := k.cdc.Marshal(&params)
 	if err != nil {
@@ -66,6 +70,6 @@ func (k Keeper) MaxIdledBlock(ctx sdk.Context) (res uint64) {
 }
 
 // AvgBlockTime returns the MaxIdledBlock param
-func (k Keeper) AvgBlockTime(ctx sdk.Context) (res float32) {
+func (k Keeper) AvgBlockTime(ctx sdk.Context) (res float64) {
 	return k.GetParams(ctx).AvgBlockTime
 }

@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	stdmath "math"
 
 	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -43,7 +44,7 @@ var (
 
 var (
 	KeyAvgBlockTime             = []byte("KeyAvgBlockTime")
-	DefaultAvgBlockTime float32 = 5.6
+	DefaultAvgBlockTime float64 = 5.6
 )
 
 // ParamKeyTable the param key table for launch module
@@ -59,7 +60,7 @@ func NewParams(
 	noKeyshareFraction math.LegacyDec,
 	wrongKeyshareFraction math.LegacyDec,
 	maxIdledBlock uint64,
-	avgBlockTime float32,
+	avgBlockTime float64,
 ) Params {
 	return Params{
 		KeyExpiry:                  keyExp,
@@ -111,14 +112,34 @@ func (p Params) Validate() error {
 	if err := validateMinimumBonded(p.MinimumBonded); err != nil {
 		return err
 	}
+
+	if err := validateSlashFractionNoKeyshare(p.SlashFractionNoKeyshare); err != nil {
+		return err
+	}
+
+	if err := validateSlashFractionWrongKeyshare(p.SlashFractionWrongKeyshare); err != nil {
+		return err
+	}
+
+	if err := validateMaxIdledBlock(p.MaxIdledBlock); err != nil {
+		return err
+	}
+
+	if err := validateAvgBlockTime(p.AvgBlockTime); err != nil {
+		return err
+	}
+
 	return nil
 }
 
 // validateKeyExpiry validates the KeyExpiry param
 func validateKeyExpiry(v interface{}) error {
-	_, ok := v.(uint64)
+	val, ok := v.(uint64)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+	if val == 0 {
+		return fmt.Errorf("key expiry must be greater than 0")
 	}
 
 	return nil
@@ -145,9 +166,12 @@ func validateTrustedAddresses(v interface{}) error {
 
 // validates the MinimumBonded param
 func validateMinimumBonded(v interface{}) error {
-	_, ok := v.(uint64)
+	val, ok := v.(uint64)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+	if val == 0 {
+		return fmt.Errorf("minimum bonded amount must be greater than 0")
 	}
 
 	return nil
@@ -179,9 +203,12 @@ func validateSlashFractionWrongKeyshare(v interface{}) error {
 
 // validateMaxIdledBlock validates the MaxIdledBlock param
 func validateMaxIdledBlock(v interface{}) error {
-	_, ok := v.(uint64)
+	val, ok := v.(uint64)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+	if val == 0 {
+		return fmt.Errorf("max idled block must be greater than 0")
 	}
 
 	return nil
@@ -189,9 +216,12 @@ func validateMaxIdledBlock(v interface{}) error {
 
 // validateAvgBlockTime validates the AvgBlockTime param
 func validateAvgBlockTime(v interface{}) error {
-	_, ok := v.(float32)
+	val, ok := v.(float64)
 	if !ok {
 		return fmt.Errorf("invalid parameter type: %T", v)
+	}
+	if val <= 0 || stdmath.IsNaN(val) || stdmath.IsInf(val, 0) {
+		return fmt.Errorf("average block time must be a finite value greater than 0")
 	}
 
 	return nil
