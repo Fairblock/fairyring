@@ -7,6 +7,7 @@ import (
 	keysharemoduletypes "github.com/Fairblock/fairyring/x/keyshare/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	ibcfee "github.com/cosmos/ibc-go/v8/modules/apps/29-fee"
 	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
 )
@@ -29,7 +30,7 @@ func (app *App) registerKeyshareModule() (porttypes.IBCModule, error) {
 		app.AppCodec(),
 		runtime.NewKVStoreService(app.GetKey(keysharemoduletypes.StoreKey)),
 		app.Logger(),
-		authtypes.NewModuleAddress(keysharemoduletypes.ModuleName).String(),
+		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 		app.GetIBCKeeper,
 		scopedKeyshareKeeper,
 		app.AccountKeeper,
