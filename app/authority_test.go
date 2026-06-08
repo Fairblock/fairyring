@@ -8,12 +8,18 @@ import (
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/stretchr/testify/require"
 
 	"github.com/Fairblock/fairyring/app"
 )
+
+func init() {
+	config := sdk.GetConfig()
+	config.SetBech32PrefixForAccount(app.AccountAddressPrefix, app.AccountAddressPrefix+"pub")
+}
 
 // TestCustomModuleAuthoritiesUseGovModuleAccount prevents the custom modules
 // from being wired to their own module accounts. MsgUpdateParams proposals are
@@ -27,13 +33,13 @@ func TestCustomModuleAuthoritiesUseGovModuleAccount(t *testing.T) {
 		flags.FlagHome: t.TempDir(),
 	}
 
-	fairyringApp, err := app.New(log.NewNopLogger(), db, nil, false, appOpts)
+	fairyringApp, err := app.New(log.NewNopLogger(), db, nil, true, appOpts)
 	require.NoError(t, err)
 
 	expected := authtypes.NewModuleAddress(govtypes.ModuleName).String()
 	require.Equal(t, expected, fairyringApp.PepKeeper.GetAuthority())
 	require.Equal(t, expected, fairyringApp.KeyshareKeeper.GetAuthority())
 
-	ctx := fairyringApp.NewContextLegacy(false, cmtproto.Header{})
+	ctx := fairyringApp.NewUncachedContext(false, cmtproto.Header{})
 	require.Equal(t, expected, fairyringApp.ZkpKeeper.GetAuthority(ctx))
 }
