@@ -31,6 +31,7 @@ func (app *App) extendVoteHandler(cfg keysharer.Config) sdk.ExtendVoteHandler {
 		// Load state
 		activePK, ok := app.KeyshareKeeper.GetActivePubkey(ctx)
 		if !ok {
+			app.Logger().Info("KeyshareVE/ExtendVote: no active pubkey yet")
 			return &abci.ResponseExtendVote{}, nil
 		}
 		var qpk keysharetypes.QueuedPubkey
@@ -51,6 +52,8 @@ func (app *App) extendVoteHandler(cfg keysharer.Config) sdk.ExtendVoteHandler {
 				}
 				b, derr := keysharer.DecryptECIES(priv, ek.Data)
 				if derr != nil {
+					app.Logger().Error("KeyshareVE/ExtendVote: failed to decrypt active encrypted keyshare",
+						"validator", cfg.ValidatorAccount, "err", derr)
 					return &abci.ResponseExtendVote{}, nil
 				}
 				mat.ActiveShare = b
@@ -70,12 +73,21 @@ func (app *App) extendVoteHandler(cfg keysharer.Config) sdk.ExtendVoteHandler {
 						if mat.Index == 0 {
 							mat.Index = uint32(i + 1)
 						}
+					} else {
+						app.Logger().Error("KeyshareVE/ExtendVote: failed to decrypt queued encrypted keyshare",
+							"validator", cfg.ValidatorAccount, "err", derr)
 					}
 					break
 				}
 			}
 		}
 		if mat.Index == 0 || len(mat.ActiveShare) == 0 {
+			app.Logger().Info("KeyshareVE/ExtendVote: no decryptable active keyshare for validator",
+				"validator", cfg.ValidatorAccount,
+				"active_encrypted_keyshares", len(activePK.EncryptedKeyshares),
+				"queued_encrypted_keyshares", len(qpk.EncryptedKeyshares),
+				"active_expiry", activePK.Expiry,
+				"queued_expiry", qpk.Expiry)
 			return &abci.ResponseExtendVote{}, nil
 		}
 
@@ -86,16 +98,19 @@ func (app *App) extendVoteHandler(cfg keysharer.Config) sdk.ExtendVoteHandler {
 
 		scalar, idx, err := keysharer.SelectShare(mat, heightFor)
 		if err != nil {
+			app.Logger().Error("KeyshareVE/ExtendVote: SelectShare failed", "height_for", heightFor, "err", err)
 			return &abci.ResponseExtendVote{}, nil
 		}
 
 		extracted, err := keysharer.ExtractFromShare(scalar, idx, []byte(strconv.FormatUint(heightFor, 10)))
 		if err != nil {
+			app.Logger().Error("KeyshareVE/ExtendVote: ExtractFromShare failed", "height_for", heightFor, "idx", idx, "err", err)
 			return &abci.ResponseExtendVote{}, nil
 		}
 
 		ext, err := keysharer.MakeVE(heightFor, idx, extracted)
 		if err != nil {
+			app.Logger().Error("KeyshareVE/ExtendVote: MakeVE failed", "height_for", heightFor, "idx", idx, "err", err)
 			return &abci.ResponseExtendVote{}, nil
 		}
 

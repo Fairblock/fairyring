@@ -7,6 +7,7 @@ import (
 	"cosmossdk.io/math"
 	distIBE "github.com/FairBlock/DistributedIBE"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
+	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"
@@ -158,6 +159,28 @@ func (k Keeper) HandlePerBlockShare(
 		Data:   skHex,
 	})
 	k.SetDecryptionKeyLength(ctx, k.GetDecryptionKeyLength(ctx)+1)
+
+	// Mirror the aggregated blockwise key into PEP as well.
+	// PEP's BeginBlock executor reads blockwise decryption keys and latest height
+	// from the PEP keeper, while vote-extension aggregation stores the key in
+	// x/keyshare. The legacy MsgSendKeyshare path already did this mirror; keep
+	// the vote-extension path equivalent so SubmitEncryptedTx can execute.
+	k.pepKeeper.SetDecryptionKey(ctx, peptypes.DecryptionKey{
+		Height: height,
+		Data:   skHex,
+	})
+
+	latestHeight, err := strconv.ParseUint(k.pepKeeper.GetLatestHeight(ctx), 10, 64)
+	if err != nil {
+		latestHeight = 0
+	}
+
+	if latestHeight < height {
+		k.pepKeeper.SetLatestHeight(ctx, strconv.FormatUint(height, 10))
+	}
+
+	ctx.Logger().Info("KeyshareVE/HandlePerBlockShare: mirrored aggregated key to pep",
+		"height_for", height, "pep_latest_height", k.pepKeeper.GetLatestHeight(ctx))
 
 	return nil
 }

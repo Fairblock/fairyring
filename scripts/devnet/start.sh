@@ -252,7 +252,7 @@ $BINARY genesis add-genesis-account $WALLET2_ADDR 1000000000000ufair --home $CHA
 $BINARY genesis add-genesis-account $WALLET3_ADDR 1000000000000ufair --vesting-amount 1000000000000ufair --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
 $BINARY genesis add-genesis-account $WALLET4_ADDR 1000000000000ufair --vesting-amount 1000000000000ufair --vesting-start-time $(date +%s) --vesting-end-time $(($(date '+%s') + 100000023)) --home $CHAIN_DIR/$CHAINID --keyring-backend test
 $BINARY genesis add-genesis-account $WALLET5_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
-$BINARY genesis add-genesis-account $WALLET6_ADDR 100000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
+$BINARY genesis add-genesis-account $WALLET6_ADDR 10000000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
 $BINARY genesis add-genesis-account $RLY1_ADDR 1000000000000ufair --home $CHAIN_DIR/$CHAINID --keyring-backend test
 
 echo "Creating and collecting gentx..."

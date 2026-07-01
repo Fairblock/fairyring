@@ -148,3 +148,26 @@ func TestEncryptedTxGetAll(t *testing.T) {
 		nullify.Fill(keeper.GetAllEncryptedArray(ctx)),
 	)
 }
+
+func TestEncryptedTxAppendPreservesAcceptedOrder(t *testing.T) {
+	keeper, ctx := keepertest.PepKeeper(t)
+	targetHeight := uint64(12345)
+	payloads := []string{"a", "b", "c", "d", "e"}
+
+	for i, payload := range payloads {
+		idx := keeper.AppendEncryptedTx(ctx, types.EncryptedTx{
+			Creator:      sample.AccAddress(),
+			Data:         payload,
+			TargetHeight: targetHeight,
+		})
+		require.Equal(t, uint64(i), idx)
+	}
+
+	arr := keeper.GetEncryptedTxAllFromHeight(ctx, targetHeight)
+	require.Len(t, arr.EncryptedTxs, len(payloads))
+
+	for i, payload := range payloads {
+		require.Equal(t, uint64(i), arr.EncryptedTxs[i].Index)
+		require.Equal(t, payload, arr.EncryptedTxs[i].Data)
+	}
+}
