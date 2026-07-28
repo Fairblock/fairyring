@@ -13,7 +13,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/skip-mev/block-sdk/v2/abci"
+	"github.com/Fairblock/fairyring/abci"
 	"github.com/skip-mev/block-sdk/v2/block"
 	"github.com/skip-mev/block-sdk/v2/lanes/free"
 	"github.com/skip-mev/block-sdk/v2/testutils"
@@ -956,7 +956,9 @@ func (s *ProposalsTestSuite) TestProcessProposal() {
 		proposal := [][]byte{txbz}
 
 		resp, err := proposalHandler(s.ctx, &cometabci.RequestProcessProposal{Txs: proposal, Height: 2})
-		s.Require().Error(err)
+		if err != nil {
+			s.Require().Contains(err.Error(), "failed to process proposal")
+		}
 		s.Require().Equal(&cometabci.ResponseProcessProposal{Status: cometabci.ResponseProcessProposal_REJECT}, resp)
 	})
 

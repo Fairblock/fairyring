@@ -35,7 +35,7 @@ type ShareMaterial struct {
 
 func LoadConfig(home string) (Config, error) {
 	path := filepath.Join(home, "keysharer.yaml")
-	bz, err := os.ReadFile(path)
+	bz, err := os.ReadFile(path) // #nosec G304
 	if err != nil {
 		return Config{}, err
 	}

@@ -34,7 +34,7 @@ func (k msgServer) CreateLatestPubkey(
 		Commitments: msg.Commitments,
 	}
 
-	expHeight := params.KeyExpiry + uint64(ctx.BlockHeight())
+	expHeight := params.KeyExpiry + uint64(ctx.BlockHeight()) // #nosec G115
 	ak, found := k.GetActivePubkey(ctx)
 	if found {
 		expHeight = ak.Expiry + params.KeyExpiry

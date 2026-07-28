@@ -1,7 +1,6 @@
 package app
 
 import (
-	"bytes"
 	"encoding/json"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -13,47 +12,6 @@ import (
 // It just wraps the ExtendedCommitInfo (which contains all the vote extensions).
 type keyshareInjectedTx struct {
 	ExtendedCommitInfo abci.ExtendedCommitInfo `json:"extended_commit_info"`
-}
-
-// equalExtendedCommitInfo does a shallow equality check on ExtendedCommitInfo.
-// This is used in ProcessProposal to ensure the injected data matches
-// ProposedLastCommit, so the proposer can't smuggle in fake VEs.
-func equalExtendedCommitInfo(a, b *abci.ExtendedCommitInfo) bool {
-	if a == nil || b == nil {
-		return a == nil && b == nil
-	}
-
-	if a.Round != b.Round {
-		return false
-	}
-
-	if len(a.Votes) != len(b.Votes) {
-		return false
-	}
-
-	for i := range a.Votes {
-		av, bv := a.Votes[i], b.Votes[i]
-
-		if av.BlockIdFlag != bv.BlockIdFlag {
-			return false
-		}
-
-		// Validator fields
-		if !bytes.Equal(av.Validator.Address, bv.Validator.Address) ||
-			av.Validator.Power != bv.Validator.Power {
-			return false
-		}
-
-		// Vote extension payload + its signature
-		if !bytes.Equal(av.VoteExtension, bv.VoteExtension) {
-			return false
-		}
-		if !bytes.Equal(av.ExtensionSignature, bv.ExtensionSignature) {
-			return false
-		}
-	}
-
-	return true
 }
 
 // keyshareWrappedPrepareProposal wraps an underlying PrepareProposalHandler

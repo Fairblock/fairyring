@@ -130,6 +130,24 @@ mnemonic_for_node() {
 
 app_priv_for_node() {
   local i="$1"
+  local idx=$((i-1))
+  local home="${HOME_DIRS[$idx]}"
+  local keyname="${KEY_NAMES[$idx]}"
+  local exported=""
+
+  # Prefer the actual local keyring private key. The hard-coded APP_PRIV_HEX_*
+  # values are only fallbacks; if they drift from the mnemonic/keyring,
+  # validators will emit empty VEs because they cannot decrypt their shares.
+  exported=$(echo y | fairyringd keys export "${keyname}" \
+    --home "${home}" \
+    --unsafe --unarmored-hex \
+    --keyring-backend "${KEYRING_BACKEND}" 2>/dev/null | tail -n 1 | tr -d '\r\n' || true)
+
+  if [[ -n "${exported}" ]]; then
+    echo "${exported}"
+    return 0
+  fi
+
   case "$i" in
     1) echo "$APP_PRIV_HEX_1" ;;
     2) echo "$APP_PRIV_HEX_2" ;;
@@ -507,6 +525,124 @@ extract_registered_validator_addr() {
   echo "$addr"
 }
 
+wait_for_keyshare_decryption_key() {
+  local deadline h keys_json
+  deadline=$(( $(date +%s) + BLOCK_TIMEOUT ))
+  echo ">> Waiting for a VE-aggregated keyshare decryption key..." >&2
+
+  while true; do
+    keys_json=$(fairyringd q keyshare list-decryption-keys \
+      --home "${HOME_DIRS[0]}" \
+      --chain-id "$CHAIN_ID" \
+      --node "$NODE1_RPC_TCP" \
+      -o json 2>/dev/null || true)
+
+    h=$(echo "${keys_json:-{}}" | jq -r '(.decryption_keys // []) | if length == 0 then empty else max_by(.height|tonumber).height end' 2>/dev/null || true)
+    if [[ -n "${h}" && "${h}" != "null" ]]; then
+      echo ">> ✅ Found keyshare decryption key at height ${h}" >&2
+      echo "${h}"
+      return 0
+    fi
+
+    if (( $(date +%s) > deadline )); then
+      echo "ERROR: Timed out waiting for a keyshare decryption key." >&2
+      fairyringd q keyshare list-decryption-keys --home "${HOME_DIRS[0]}" --chain-id "$CHAIN_ID" --node "$NODE1_RPC_TCP" -o json || true
+      exit 1
+    fi
+    sleep 1
+  done
+}
+
+assert_pep_decryption_key_mirror() {
+  local height keyshare_key pep_latest
+  height=$(wait_for_keyshare_decryption_key)
+
+  echo ">> Querying x/keyshare decryption key at height ${height}..."
+  keyshare_key=$(fairyringd q keyshare show-decryption-key "${height}" \
+    --home "${HOME_DIRS[0]}" \
+    --chain-id "$CHAIN_ID" \
+    --node "$NODE1_RPC_TCP" \
+    -o json | jq -r '.decryption_key.data // empty')
+
+  if [[ -z "${keyshare_key}" ]]; then
+    echo "ERROR: x/keyshare decryption key at height ${height} is empty." >&2
+    exit 1
+  fi
+
+  echo ">> Querying x/pep latest-height to confirm VE key mirror..."
+  pep_latest=$(fairyringd q pep latest-height \
+    --home "${HOME_DIRS[0]}" \
+    --chain-id "$CHAIN_ID" \
+    --node "$NODE1_RPC_TCP" \
+    -o json | jq -r '.height | tonumber')
+
+  if (( pep_latest < height )); then
+    echo "ERROR: x/pep latest-height was not updated by VE aggregation. keyshare_height=${height}, pep_latest_height=${pep_latest}" >&2
+    exit 1
+  fi
+
+  echo ">> ✅ x/pep mirror check passed: pep latest-height=${pep_latest}, keyshare decryption-key height=${height}"
+}
+
+write_sharegenerationclient_config() {
+  local cfg="${BASE_HOME}/sharegenerationclient_config.yml"
+  local wallet_priv=""
+
+  wallet_priv=$(echo y | fairyringd keys export wallet1 \
+    --home "${HOME_DIRS[0]}" \
+    --unsafe --unarmored-hex \
+    --keyring-backend "${KEYRING_BACKEND}" 2>/dev/null | tail -n 1 | tr -d '\r\n' || true)
+
+  if [[ -z "${wallet_priv}" ]]; then
+    echo "ERROR: Could not export wallet1 private key for ShareGenerationClient config." >&2
+    exit 1
+  fi
+
+  cat > "${cfg}" <<YAML
+checkinterval: 1
+fairyringnode:
+  chainid: ${CHAIN_ID}
+  denom: ${DENOM}
+  grpcport: ${GRPC_PORTS[0]}
+  ip: 127.0.0.1
+  port: ${RPC_PORTS[0]}
+  protocol: http
+privatekey: ${wallet_priv}
+YAML
+
+  echo "${cfg}"
+}
+
+wait_for_active_pubkey() {
+  local deadline pubkey out
+  deadline=$(( $(date +%s) + BLOCK_TIMEOUT ))
+  echo ">> Waiting for x/keyshare active pubkey from ShareGenerationClient..."
+
+  while true; do
+    out=$(fairyringd q keyshare show-active-pub-key \
+      --home "${HOME_DIRS[0]}" \
+      --chain-id "$CHAIN_ID" \
+      --node "$NODE1_RPC_TCP" \
+      -o json 2>/dev/null || true)
+
+    pubkey=$(echo "${out:-{}}" | jq -r '.active_pubkey.public_key // empty' 2>/dev/null || true)
+    if [[ -n "${pubkey}" ]]; then
+      echo ">> ✅ Active keyshare pubkey is available."
+      return 0
+    fi
+
+    if (( $(date +%s) > deadline )); then
+      echo "ERROR: Timed out waiting for x/keyshare active pubkey." >&2
+      echo ">> ShareGenerationClient log tail:" >&2
+      tail -n 120 "${BASE_HOME}/sharegenerationclient.log" >&2 || true
+      echo ">> Current x/keyshare active pubkey query:" >&2
+      fairyringd q keyshare show-active-pub-key --home "${HOME_DIRS[0]}" --chain-id "$CHAIN_ID" --node "$NODE1_RPC_TCP" -o json >&2 || true
+      exit 1
+    fi
+    sleep 1
+  done
+}
+
 register_all_validators_keyshare() {
   echo ">> Registering all validators in keyshare module..."
   for i in $(seq 1 $NODE_COUNT); do
@@ -563,10 +699,13 @@ main() {
   register_all_validators_keyshare
 
   echo ">> Starting ShareGenerationClient..."
+  local sgc_cfg
+  sgc_cfg=$(write_sharegenerationclient_config)
   ShareGenerationClient start \
-    --config /home/grider644/go/src/github.com/FairBlock/fairyring/scripts/devnet/sharegenerationclient_config.yml \
+    --config "${sgc_cfg}" \
     > "${BASE_HOME}/sharegenerationclient.log" 2>&1 &
-  sleep $BLOCK_TIME
+
+  wait_for_active_pubkey
 
   # Ensure we cross VE activation
   local pre=$(( VE_HEIGHT - 1 ))
@@ -583,6 +722,8 @@ main() {
     echo ">> [${MONIKERS[$idx]}] KeyshareVE trace (last 120 lines)…"
     grep -E 'KeyshareVE/' -n "${HOME_DIRS[$idx]}/logs/node.log" | tail -n 120 || true
   done
+
+  assert_pep_decryption_key_mirror
 
   echo ">> Test complete."
 }

@@ -45,11 +45,11 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		return nil, types.ErrAuthorizedAnotherAddress
 	}
 
-	if uint64(ctx.BlockHeight()) > msg.BlockHeight {
+	if uint64(ctx.BlockHeight()) > msg.BlockHeight { // #nosec G115
 		return nil, types.ErrInvalidBlockHeight.Wrapf("key share height is lower than the current block height, expected height: %d, got: %d", ctx.BlockHeight(), msg.BlockHeight)
 	}
 
-	if msg.BlockHeight > uint64(ctx.BlockHeight())+1 {
+	if msg.BlockHeight > uint64(ctx.BlockHeight())+1 { // #nosec G115
 		return nil, types.ErrInvalidBlockHeight.Wrapf("key share height is higher than the current block height + 1, expected max height to be: %d, got: %d", ctx.BlockHeight()+1, msg.BlockHeight)
 	}
 
@@ -82,7 +82,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	}
 
 	// Parse the keyshare & commitment then verify it
-	_, _, err := parseKeyshareCommitment(suite, msg.Message, commitments.Commitments[msg.KeyshareIndex-1], uint32(msg.KeyshareIndex), ibeID)
+	_, _, err := parseKeyshareCommitment(suite, msg.Message, commitments.Commitments[msg.KeyshareIndex-1], uint32(msg.KeyshareIndex), ibeID) // #nosec G115
 	if err != nil {
 		defer telemetry.IncrCounter(1, types.KeyTotalInvalidKeyshareSubmitted)
 		k.Logger().Error(fmt.Sprintf("Error in parsing & verifying keyshare & commitment: %s", err.Error()))
@@ -100,18 +100,26 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			return nil, err
 		}
 
-		k.slashingKeeper.Slash(
-			ctx, consAddr,
+		power, err := k.GetValidatorConsensusPower(ctx, validatorInfo.Validator)
+		if err != nil {
+			return nil, err
+		}
+
+		if err := k.slashingKeeper.Slash(
+			ctx,
+			consAddr,
 			k.SlashFractionWrongKeyshare(ctx),
-			types.SlashPower,
+			power,
 			ctx.BlockHeight()-1,
-		)
+		); err != nil {
+			return nil, err
+		}
 
 		return &types.MsgSendKeyshareResponse{
 			Creator:             msg.Creator,
 			Keyshare:            msg.Message,
 			KeyshareIndex:       msg.KeyshareIndex,
-			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+			ReceivedBlockHeight: uint64(ctx.BlockHeight()), // #nosec G115
 			BlockHeight:         msg.BlockHeight,
 			Success:             false,
 			ErrorMessage:        "Invalid Keyshare",
@@ -123,8 +131,8 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		BlockHeight:         msg.BlockHeight,
 		Keyshare:            msg.Message,
 		KeyshareIndex:       msg.KeyshareIndex,
-		ReceivedTimestamp:   uint64(ctx.BlockTime().Unix()),
-		ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+		ReceivedTimestamp:   uint64(ctx.BlockTime().Unix()), // #nosec G115
+		ReceivedBlockHeight: uint64(ctx.BlockHeight()),      // #nosec G115
 	}
 
 	// Save the new keyshare to state
@@ -157,7 +165,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 	expectedThreshold := math.LegacyNewDecFromInt(
 		math.NewInt(types.KeyAggregationThresholdNumerator)).Quo(
 		math.LegacyNewDecFromInt(math.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
-		int64(activePubkey.NumberOfValidators)).Ceil().TruncateInt64()
+		int64(activePubkey.NumberOfValidators)).Ceil().TruncateInt64() // #nosec G115
 
 	// Emit Keyshare Submitted Event
 	ctx.EventManager().EmitEvent(
@@ -186,7 +194,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			Creator:             msg.Creator,
 			Keyshare:            msg.Message,
 			KeyshareIndex:       msg.KeyshareIndex,
-			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+			ReceivedBlockHeight: uint64(ctx.BlockHeight()), // #nosec G115
 			BlockHeight:         msg.BlockHeight,
 			Success:             true,
 		}, nil
@@ -201,7 +209,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 			k.Logger().Error(fmt.Sprintf("KeyshareIndex: %d should not higher or equals to commitments length: %d", eachKeyshare.KeyshareIndex, commitmentsLen))
 			continue
 		}
-		keyshare, commitment, err := parseKeyshareCommitment(suite, eachKeyshare.Keyshare, commitments.Commitments[eachKeyshare.KeyshareIndex-1], uint32(eachKeyshare.KeyshareIndex), ibeID)
+		keyshare, commitment, err := parseKeyshareCommitment(suite, eachKeyshare.Keyshare, commitments.Commitments[eachKeyshare.KeyshareIndex-1], uint32(eachKeyshare.KeyshareIndex), ibeID) // #nosec G115
 		if err != nil {
 			k.Logger().Error(err.Error())
 			continue
@@ -267,7 +275,7 @@ func (k msgServer) SendKeyshare(goCtx context.Context, msg *types.MsgSendKeyshar
 		Creator:             msg.Creator,
 		Keyshare:            msg.Message,
 		KeyshareIndex:       msg.KeyshareIndex,
-		ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+		ReceivedBlockHeight: uint64(ctx.BlockHeight()), // #nosec G115
 		BlockHeight:         msg.BlockHeight,
 		Success:             true,
 	}, nil

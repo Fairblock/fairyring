@@ -7,6 +7,7 @@ import (
 	"cosmossdk.io/math"
 	distIBE "github.com/FairBlock/DistributedIBE"
 	"github.com/Fairblock/fairyring/x/keyshare/types"
+	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/drand/kyber"
 	bls "github.com/drand/kyber-bls12381"
@@ -103,8 +104,8 @@ func (k Keeper) HandlePerBlockShare(
 		BlockHeight:         height,
 		Keyshare:            shareHex,
 		KeyshareIndex:       uint64(keyshareIndex),
-		ReceivedTimestamp:   uint64(ctx.BlockTime().Unix()),
-		ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+		ReceivedTimestamp:   uint64(ctx.BlockTime().Unix()), // #nosec G115
+		ReceivedBlockHeight: uint64(ctx.BlockHeight()),      // #nosec G115
 	})
 
 	// Update "last submitted height" marker
@@ -114,7 +115,7 @@ func (k Keeper) HandlePerBlockShare(
 	expectedThreshold := math.LegacyNewDecFromInt(
 		math.NewInt(types.KeyAggregationThresholdNumerator)).Quo(
 		math.LegacyNewDecFromInt(math.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
-		int64(activePK.NumberOfValidators)).Ceil().TruncateInt64()
+		int64(activePK.NumberOfValidators)).Ceil().TruncateInt64() // #nosec G115
 
 	// collect all shares present for this height
 	valset := k.GetAllValidatorSet(ctx)
@@ -124,7 +125,7 @@ func (k Keeper) HandlePerBlockShare(
 	for _, vs := range valset {
 		if ks, ok := k.GetKeyshare(ctx, vs.Validator, height); ok {
 			// parse stored share & corresponding commitment into the proper structs
-			keyshare, commitment, err := parseKeyshareCommitmentForHeight(suite, ks.Keyshare, commitments.Commitments[ks.KeyshareIndex-1], uint32(ks.KeyshareIndex), ibeID)
+			keyshare, commitment, err := parseKeyshareCommitmentForHeight(suite, ks.Keyshare, commitments.Commitments[ks.KeyshareIndex-1], uint32(ks.KeyshareIndex), ibeID) // #nosec G115
 			if err != nil {
 				k.Logger().Error("preblock: failed to parse stored keyshare/commitment", "err", err, "validator", vs.Validator, "height", height)
 				continue
@@ -158,6 +159,28 @@ func (k Keeper) HandlePerBlockShare(
 		Data:   skHex,
 	})
 	k.SetDecryptionKeyLength(ctx, k.GetDecryptionKeyLength(ctx)+1)
+
+	// Mirror the aggregated blockwise key into PEP as well.
+	// PEP's BeginBlock executor reads blockwise decryption keys and latest height
+	// from the PEP keeper, while vote-extension aggregation stores the key in
+	// x/keyshare. The legacy MsgSendKeyshare path already did this mirror; keep
+	// the vote-extension path equivalent so SubmitEncryptedTx can execute.
+	k.pepKeeper.SetDecryptionKey(ctx, peptypes.DecryptionKey{
+		Height: height,
+		Data:   skHex,
+	})
+
+	latestHeight, err := strconv.ParseUint(k.pepKeeper.GetLatestHeight(ctx), 10, 64)
+	if err != nil {
+		latestHeight = 0
+	}
+
+	if latestHeight < height {
+		k.pepKeeper.SetLatestHeight(ctx, strconv.FormatUint(height, 10))
+	}
+
+	ctx.Logger().Info("KeyshareVE/HandlePerBlockShare: mirrored aggregated key to pep",
+		"height_for", height, "pep_latest_height", k.pepKeeper.GetLatestHeight(ctx))
 
 	return nil
 }

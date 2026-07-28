@@ -3,32 +3,51 @@ package keeper
 import (
 	"context"
 
+	storetypes "cosmossdk.io/store/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/Fairblock/fairyring/x/zkp/types"
 	"github.com/Fairblock/fairyring/x/zkp/verification/commitment"
 	rangeproof "github.com/Fairblock/fairyring/x/zkp/verification/range"
+	"github.com/Fairblock/fairyring/x/zkp/verification/transferctx"
 	"github.com/Fairblock/fairyring/x/zkp/verification/validity"
+	"github.com/Fairblock/fairyring/x/zkp/verification/withdrawctx"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-// VerifyWithdrawRangeProof verifies a withdraw range proof (U64)
+func rangeBitLengthGas(bitLengths [8]uint8, maxPerCommit uint8, perBit storetypes.Gas) storetypes.Gas {
+	var total storetypes.Gas
+	for _, bl := range bitLengths {
+		if bl == 0 {
+			continue
+		}
+		if bl > maxPerCommit {
+			bl = maxPerCommit
+		}
+		total += storetypes.Gas(bl) * perBit
+	}
+	return total
+}
+
 func (k Keeper) VerifyWithdrawRangeProof(goCtx context.Context, req *types.QueryVerifyWithdrawRangeProofRequest) (*types.QueryVerifyWithdrawRangeProofResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	// Deserialize proof data
-	if len(req.ProofData) < 8*32+8+672 {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	ctx.GasMeter().ConsumeGas(types.GasVerifyWithdrawRangeProof, "verify_withdraw_range_proof")
+
+	if len(req.ProofData) != 8*32+8+8+672 {
 		return &types.QueryVerifyWithdrawRangeProofResponse{
 			Valid: false,
 			Error: "invalid proof data length",
 		}, nil
 	}
 
-	var proofData rangeproof.BatchedRangeProofU64Data
+	var proofData rangeproof.WithdrawBatchedRangeProofU64Data
 	offset := 0
 
-	// Deserialize commitments
 	for i := 0; i < 8; i++ {
 		if offset+32 > len(req.ProofData) {
 			return &types.QueryVerifyWithdrawRangeProofResponse{
@@ -40,7 +59,6 @@ func (k Keeper) VerifyWithdrawRangeProof(goCtx context.Context, req *types.Query
 		offset += 32
 	}
 
-	// Deserialize bit lengths
 	for i := 0; i < 8; i++ {
 		if offset >= len(req.ProofData) {
 			return &types.QueryVerifyWithdrawRangeProofResponse{
@@ -51,8 +69,20 @@ func (k Keeper) VerifyWithdrawRangeProof(goCtx context.Context, req *types.Query
 		proofData.Context.BitLengths[i] = req.ProofData[offset]
 		offset++
 	}
+	ctx.GasMeter().ConsumeGas(
+		rangeBitLengthGas(proofData.Context.BitLengths, 64, types.GasRangeProofPerBitU64),
+		"verify_withdraw_range_proof_bitlength",
+	)
 
-	// Deserialize proof
+	if offset+8 > len(req.ProofData) {
+		return &types.QueryVerifyWithdrawRangeProofResponse{
+			Valid: false,
+			Error: "invalid nonce data",
+		}, nil
+	}
+	copy(proofData.Context.Nonce[:], req.ProofData[offset:offset+8])
+	offset += 8
+
 	if offset+672 > len(req.ProofData) {
 		return &types.QueryVerifyWithdrawRangeProofResponse{
 			Valid: false,
@@ -61,8 +91,7 @@ func (k Keeper) VerifyWithdrawRangeProof(goCtx context.Context, req *types.Query
 	}
 	copy(proofData.Proof[:], req.ProofData[offset:offset+672])
 
-	// Verify proof using the verification module
-	err := rangeproof.VerifyWithdrawRange(&proofData)
+	err := rangeproof.VerifyWithdrawRangeWithNonce(&proofData)
 	if err != nil {
 		return &types.QueryVerifyWithdrawRangeProofResponse{
 			Valid: false,
@@ -76,14 +105,15 @@ func (k Keeper) VerifyWithdrawRangeProof(goCtx context.Context, req *types.Query
 	}, nil
 }
 
-// VerifyTransferRangeProof verifies a transfer range proof (U128)
 func (k Keeper) VerifyTransferRangeProof(goCtx context.Context, req *types.QueryVerifyTransferRangeProofRequest) (*types.QueryVerifyTransferRangeProofResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	// Deserialize proof data
-	if len(req.ProofData) < 8*32+8+736 {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	ctx.GasMeter().ConsumeGas(types.GasVerifyTransferRangeProof, "verify_transfer_range_proof")
+
+	if len(req.ProofData) != 8*32+8+736 {
 		return &types.QueryVerifyTransferRangeProofResponse{
 			Valid: false,
 			Error: "invalid proof data length",
@@ -116,6 +146,10 @@ func (k Keeper) VerifyTransferRangeProof(goCtx context.Context, req *types.Query
 		proofData.Context.BitLengths[i] = req.ProofData[offset]
 		offset++
 	}
+	ctx.GasMeter().ConsumeGas(
+		rangeBitLengthGas(proofData.Context.BitLengths, 64, types.GasRangeProofPerBitU128),
+		"verify_transfer_range_proof_bitlength",
+	)
 
 	// Deserialize proof
 	if offset+736 > len(req.ProofData) {
@@ -141,15 +175,15 @@ func (k Keeper) VerifyTransferRangeProof(goCtx context.Context, req *types.Query
 	}, nil
 }
 
-// VerifyValidityProof verifies a validity proof
 func (k Keeper) VerifyValidityProof(goCtx context.Context, req *types.QueryVerifyValidityProofRequest) (*types.QueryVerifyValidityProofResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	// Deserialize proof data
-	// Expected size: 32 (first_pubkey) + 32 (second_pubkey) + 96 (grouped_ciphertext_lo) + 96 (grouped_ciphertext_hi) + 160 (proof) = 416 bytes
-	if len(req.ProofData) < 416 {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	ctx.GasMeter().ConsumeGas(types.GasVerifyValidityProof, "verify_validity_proof")
+
+	if len(req.ProofData) != 416 {
 		return &types.QueryVerifyValidityProofResponse{
 			Valid: false,
 			Error: "invalid proof data length",
@@ -193,15 +227,15 @@ func (k Keeper) VerifyValidityProof(goCtx context.Context, req *types.QueryVerif
 	}, nil
 }
 
-// VerifyEqualityProof verifies an equality proof 
 func (k Keeper) VerifyEqualityProof(goCtx context.Context, req *types.QueryVerifyEqualityProofRequest) (*types.QueryVerifyEqualityProofResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	// Deserialize proof data
-	// Expected size: 32 (pubkey) + 64 (ciphertext) + 32 (commitment) + 192 (proof) = 320 bytes
-	if len(req.ProofData) < 320 {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	ctx.GasMeter().ConsumeGas(types.GasVerifyEqualityProof, "verify_equality_proof")
+
+	if len(req.ProofData) != 320 {
 		return &types.QueryVerifyEqualityProofResponse{
 			Valid: false,
 			Error: "invalid proof data length",
@@ -253,14 +287,15 @@ func (k Keeper) VerifyEqualityProof(goCtx context.Context, req *types.QueryVerif
 	}, nil
 }
 
-// VerifyTransferProofs verifies all transfer proofs together (equality, range, validity)
 func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVerifyTransferProofsRequest) (*types.QueryVerifyTransferProofsResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	// Verify equality proof
-	if len(req.EqualityProofData) < 320 {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	ctx.GasMeter().ConsumeGas(types.GasVerifyTransferProofs, "verify_transfer_proofs")
+
+	if len(req.EqualityProofData) != 320 {
 		return &types.QueryVerifyTransferProofsResponse{
 			Valid: false,
 			Error: "invalid equality proof data length",
@@ -291,16 +326,8 @@ func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVeri
 	offset += 32
 	copy(equalityProofData.Proof.Zr[:], req.EqualityProofData[offset:offset+32])
 
-	err := commitment.VerifyEqualityProof(&equalityProofData)
-	if err != nil {
-		return &types.QueryVerifyTransferProofsResponse{
-			Valid: false,
-			Error: "equality proof verification failed: " + err.Error(),
-		}, nil
-	}
-
-	// Verify range proof
-	if len(req.RangeProofData) < 8*32+8+736 {
+	// Deserialize range proof
+	if len(req.RangeProofData) != 8*32+8+736 {
 		return &types.QueryVerifyTransferProofsResponse{
 			Valid: false,
 			Error: "invalid range proof data length",
@@ -343,16 +370,8 @@ func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVeri
 	}
 	copy(rangeProofData.Proof[:], req.RangeProofData[offset:offset+736])
 
-	err = rangeproof.VerifyTransferRange(&rangeProofData)
-	if err != nil {
-		return &types.QueryVerifyTransferProofsResponse{
-			Valid: false,
-			Error: "range proof verification failed: " + err.Error(),
-		}, nil
-	}
-
-	// Verify validity proof
-	if len(req.ValidityProofData) < 416 {
+	// Deserialize validity proof
+	if len(req.ValidityProofData) != 416 {
 		return &types.QueryVerifyTransferProofsResponse{
 			Valid: false,
 			Error: "invalid validity proof data length",
@@ -373,11 +392,27 @@ func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVeri
 	offset += 96
 	copy(validityProofData.Proof.Bytes[:], req.ValidityProofData[offset:offset+160])
 
-	err = validity.VerifyValidityProof(&validityProofData)
+	if len(req.SenderPubkey) != 32 || len(req.RecipientPubkey) != 32 ||
+		len(req.CurrentBalanceCommitment) != 32 || len(req.CurrentBalanceHandle) != 32 {
+		return &types.QueryVerifyTransferProofsResponse{
+			Valid: false,
+			Error: "transfer proof verification failed: missing or invalid pubkey/balance fields (expected 32-byte values)",
+		}, nil
+	}
+
+	err := transferctx.VerifyTransferProofs(
+		&equalityProofData,
+		&rangeProofData,
+		&validityProofData,
+		req.CurrentBalanceCommitment,
+		req.CurrentBalanceHandle,
+		req.SenderPubkey,
+		req.RecipientPubkey,
+	)
 	if err != nil {
 		return &types.QueryVerifyTransferProofsResponse{
 			Valid: false,
-			Error: "validity proof verification failed: " + err.Error(),
+			Error: "transfer proof verification failed: " + err.Error(),
 		}, nil
 	}
 
@@ -387,24 +422,24 @@ func (k Keeper) VerifyTransferProofs(goCtx context.Context, req *types.QueryVeri
 	}, nil
 }
 
-// VerifyWithdrawProofs verifies all withdraw proofs together (equality, range)
 func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVerifyWithdrawProofsRequest) (*types.QueryVerifyWithdrawProofsResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	// Verify equality proof
-	if len(req.EqualityProofData) < 320 {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	ctx.GasMeter().ConsumeGas(types.GasVerifyWithdrawProofs, "verify_withdraw_proofs")
+
+	if len(req.EqualityProofData) != 328 {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
 			Error: "invalid equality proof data length",
 		}, nil
 	}
 
-	var equalityProofData commitment.CiphertextCommitmentEqualityProofData
+	var equalityProofData commitment.WithdrawCiphertextCommitmentEqualityProofData
 	offset := 0
 
-	// Deserialize equality proof
 	copy(equalityProofData.Context.Pubkey.Bytes[:], req.EqualityProofData[offset:offset+32])
 	offset += 32
 	copy(equalityProofData.Context.Ciphertext.Commitment[:], req.EqualityProofData[offset:offset+32])
@@ -413,6 +448,8 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 	offset += 32
 	copy(equalityProofData.Context.Commitment.Bytes[:], req.EqualityProofData[offset:offset+32])
 	offset += 32
+	copy(equalityProofData.Context.Nonce[:], req.EqualityProofData[offset:offset+8])
+	offset += 8
 	copy(equalityProofData.Proof.Y0[:], req.EqualityProofData[offset:offset+32])
 	offset += 32
 	copy(equalityProofData.Proof.Y1[:], req.EqualityProofData[offset:offset+32])
@@ -425,26 +462,17 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 	offset += 32
 	copy(equalityProofData.Proof.Zr[:], req.EqualityProofData[offset:offset+32])
 
-	err := commitment.VerifyEqualityProof(&equalityProofData)
-	if err != nil {
-		return &types.QueryVerifyWithdrawProofsResponse{
-			Valid: false,
-			Error: "equality proof verification failed: " + err.Error(),
-		}, nil
-	}
-
-	// Verify range proof
-	if len(req.RangeProofData) < 8*32+8+672 {
+	// Deserialize range proof
+	if len(req.RangeProofData) != 8*32+8+8+672 {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
 			Error: "invalid range proof data length",
 		}, nil
 	}
 
-	var rangeProofData rangeproof.BatchedRangeProofU64Data
+	var rangeProofData rangeproof.WithdrawBatchedRangeProofU64Data
 	offset = 0
 
-	// Deserialize range proof commitments
 	for i := 0; i < 8; i++ {
 		if offset+32 > len(req.RangeProofData) {
 			return &types.QueryVerifyWithdrawProofsResponse{
@@ -456,7 +484,6 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 		offset += 32
 	}
 
-	// Deserialize bit lengths
 	for i := 0; i < 8; i++ {
 		if offset >= len(req.RangeProofData) {
 			return &types.QueryVerifyWithdrawProofsResponse{
@@ -468,7 +495,15 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 		offset++
 	}
 
-	// Deserialize proof
+	if offset+8 > len(req.RangeProofData) {
+		return &types.QueryVerifyWithdrawProofsResponse{
+			Valid: false,
+			Error: "invalid range proof nonce data",
+		}, nil
+	}
+	copy(rangeProofData.Context.Nonce[:], req.RangeProofData[offset:offset+8])
+	offset += 8
+
 	if offset+672 > len(req.RangeProofData) {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
@@ -477,11 +512,25 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 	}
 	copy(rangeProofData.Proof[:], req.RangeProofData[offset:offset+672])
 
-	err = rangeproof.VerifyWithdrawRange(&rangeProofData)
+	if len(req.UserPubkey) != 32 || len(req.CiphertextCommitment) != 32 || len(req.CiphertextHandle) != 32 {
+		return &types.QueryVerifyWithdrawProofsResponse{
+			Valid: false,
+			Error: "withdraw proof verification failed: missing or invalid pubkey/ciphertext fields (expected 32-byte values)",
+		}, nil
+	}
+
+	err := withdrawctx.VerifyWithdrawProofs(
+		&equalityProofData,
+		&rangeProofData,
+		req.UserPubkey,
+		req.CiphertextCommitment,
+		req.CiphertextHandle,
+		req.ExpectedNonce,
+	)
 	if err != nil {
 		return &types.QueryVerifyWithdrawProofsResponse{
 			Valid: false,
-			Error: "range proof verification failed: " + err.Error(),
+			Error: "withdraw proof verification failed: " + err.Error(),
 		}, nil
 	}
 
@@ -490,4 +539,3 @@ func (k Keeper) VerifyWithdrawProofs(goCtx context.Context, req *types.QueryVeri
 		Error: "",
 	}, nil
 }
-

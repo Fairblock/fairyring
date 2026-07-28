@@ -76,7 +76,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 				IdValue:             msg.IdValue,
 				Keyshare:            msg.Keyshare,
 				KeyshareIndex:       msg.KeyshareIndex,
-				ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+				ReceivedBlockHeight: uint64(ctx.BlockHeight()), // #nosec G115
 				Success:             true,
 			}, nil
 		}
@@ -96,7 +96,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 	}
 
 	// Parse the keyshare & commitment then verify it
-	_, _, err := parseKeyshareCommitment(suite, msg.Keyshare, commitments.Commitments[msg.KeyshareIndex-1], uint32(msg.KeyshareIndex), msg.IdValue)
+	_, _, err := parseKeyshareCommitment(suite, msg.Keyshare, commitments.Commitments[msg.KeyshareIndex-1], uint32(msg.KeyshareIndex), msg.IdValue) // #nosec G115
 	if err != nil {
 		k.Logger().Error(fmt.Sprintf("Error in parsing & verifying general keyshare & commitment: %s", err.Error()))
 		k.Logger().Error(fmt.Sprintf("General Keyshare is: %v | Commitment is: %v | Index: %d", msg.Keyshare, commitments.Commitments, msg.KeyshareIndex))
@@ -113,12 +113,20 @@ func (k msgServer) SubmitGeneralKeyshare(
 			return nil, err
 		}
 
-		k.SlashingKeeper().Slash(
-			ctx, consAddr,
+		power, err := k.GetValidatorConsensusPower(ctx, validatorInfo.Validator)
+		if err != nil {
+			return nil, err
+		}
+
+		if err := k.SlashingKeeper().Slash(
+			ctx,
+			consAddr,
 			k.SlashFractionWrongKeyshare(ctx),
-			types.SlashPower,
+			power,
 			ctx.BlockHeight()-1,
-		)
+		); err != nil {
+			return nil, err
+		}
 
 		return &types.MsgSubmitGeneralKeyshareResponse{
 			Creator:             msg.Creator,
@@ -126,7 +134,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 			IdValue:             msg.IdValue,
 			Keyshare:            msg.Keyshare,
 			KeyshareIndex:       msg.KeyshareIndex,
-			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+			ReceivedBlockHeight: uint64(ctx.BlockHeight()), // #nosec G115
 			Success:             false,
 			ErrorMessage:        "Invalid General Keyshare",
 		}, nil
@@ -138,8 +146,8 @@ func (k msgServer) SubmitGeneralKeyshare(
 		IdValue:             msg.IdValue,
 		Keyshare:            msg.Keyshare,
 		KeyshareIndex:       msg.KeyshareIndex,
-		ReceivedTimestamp:   uint64(ctx.BlockTime().Unix()),
-		ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+		ReceivedTimestamp:   uint64(ctx.BlockTime().Unix()), // #nosec G115
+		ReceivedBlockHeight: uint64(ctx.BlockHeight()),      // #nosec G115
 	}
 
 	// Save the new general key share to state
@@ -174,7 +182,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 	expectedThreshold := math.LegacyNewDecFromInt(
 		math.NewInt(types.KeyAggregationThresholdNumerator)).Quo(
 		math.LegacyNewDecFromInt(math.NewInt(types.KeyAggregationThresholdDenominator))).MulInt64(
-		int64(activePubkey.NumberOfValidators)).Ceil().TruncateInt64()
+		int64(activePubkey.NumberOfValidators)).Ceil().TruncateInt64() // #nosec G115
 
 	// Emit Keyshare Submitted Event
 	ctx.EventManager().EmitEvent(
@@ -197,7 +205,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 			IdValue:             msg.IdValue,
 			Keyshare:            msg.Keyshare,
 			KeyshareIndex:       msg.KeyshareIndex,
-			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+			ReceivedBlockHeight: uint64(ctx.BlockHeight()), // #nosec G115
 			Success:             true,
 		}, nil
 	}
@@ -217,7 +225,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 				IdValue:             msg.IdValue,
 				Keyshare:            msg.Keyshare,
 				KeyshareIndex:       msg.KeyshareIndex,
-				ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+				ReceivedBlockHeight: uint64(ctx.BlockHeight()), // #nosec G115
 				Success:             true,
 			}, nil
 		}
@@ -232,7 +240,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 			k.Logger().Error(fmt.Sprintf("KeyshareIndex: %d should not higher or equals to commitments length: %d", eachKeyshare.KeyshareIndex, commitmentsLen))
 			continue
 		}
-		keyshare, commitment, err := parseKeyshareCommitment(suite, eachKeyshare.Keyshare, commitments.Commitments[eachKeyshare.KeyshareIndex-1], uint32(eachKeyshare.KeyshareIndex), msg.IdValue)
+		keyshare, commitment, err := parseKeyshareCommitment(suite, eachKeyshare.Keyshare, commitments.Commitments[eachKeyshare.KeyshareIndex-1], uint32(eachKeyshare.KeyshareIndex), msg.IdValue) // #nosec G115
 		if err != nil {
 			k.Logger().Error(err.Error())
 			continue
@@ -275,7 +283,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 			IdValue:             msg.IdValue,
 			Keyshare:            msg.Keyshare,
 			KeyshareIndex:       msg.KeyshareIndex,
-			ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+			ReceivedBlockHeight: uint64(ctx.BlockHeight()), // #nosec G115
 		}
 		decryptionKeyReq, found := k.GetDecryptionKeyRequest(ctx, msg.IdValue)
 		if !found {
@@ -324,7 +332,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 				}
 
 				proposal.DecryptionKey = decryptionKeyReq.DecryptionKey
-				k.govKeeper.SetProposal(ctx, proposal)
+				k.govKeeper.SetProposal(ctx, proposal) // #nosec G104
 			} else {
 				val, _ := k.pepKeeper.GetEntry(ctx, decryptionKeyReq.Identity)
 				val.DecryptionKey = decryptionKeyReq.DecryptionKey
@@ -340,7 +348,7 @@ func (k msgServer) SubmitGeneralKeyshare(
 		IdValue:             msg.IdValue,
 		Keyshare:            msg.Keyshare,
 		KeyshareIndex:       msg.KeyshareIndex,
-		ReceivedBlockHeight: uint64(ctx.BlockHeight()),
+		ReceivedBlockHeight: uint64(ctx.BlockHeight()), // #nosec G115
 		Success:             true,
 	}, nil
 }

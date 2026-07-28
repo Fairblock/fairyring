@@ -139,31 +139,49 @@ func AppendPoint(t *merlin.Transcript, label []byte, c *CompressedRistretto) {
 	t.AppendMessage(label, c[:])
 }
 
+func ValidateAndAppendPointDecoded(
+	t *merlin.Transcript,
+	label []byte,
+	p *CompressedRistretto,
+) (*Point, error) {
+	pt, ok := p.Decompress()
+	if !ok {
+		return nil, ErrDeserialization
+	}
+	var zero Point
+	zero.SetZero()
+	if pt.Equals(&zero) {
+		return nil, ErrDeserialization
+	}
+	t.AppendMessage(label, p[:])
+	return pt, nil
+}
+
 func ValidateAndAppendPoint(
 	t *merlin.Transcript,
 	label []byte,
 	p *CompressedRistretto,
 ) error {
-	if p.IsIdentity() {
-		return ErrDeserialization
-	}
-	t.AppendMessage(label, p[:])
-	return nil
+	_, err := ValidateAndAppendPointDecoded(t, label, p)
+	return err
 }
 
-func VartimeMultiScalarMul(scalars []*Scalar, points []*Point) Point {
+func VartimeMultiScalarMul(scalars []*Scalar, points []*Point) (Point, error) {
 	var acc Point
 	acc.SetZero()
 	n := len(scalars)
 	if len(points) != n {
-		return acc
+		return acc, ErrVectorLengthMismatch
 	}
 	for i := 0; i < n; i++ {
+		if scalars[i] == nil || points[i] == nil {
+			return acc, ErrInvalidInput
+		}
 		var tmp Point
 		tmp.ScalarMult(points[i], scalars[i])
 		acc.Add(&acc, &tmp)
 	}
-	return acc
+	return acc, nil
 }
 
 func RistrettoPointFromSlice(slice []byte) (CompressedRistretto, error) {
@@ -226,4 +244,3 @@ func DecryptHandleFromBytes(b []byte) (*DecryptHandle, error) {
 	}
 	return &DecryptHandle{P: p}, nil
 }
-

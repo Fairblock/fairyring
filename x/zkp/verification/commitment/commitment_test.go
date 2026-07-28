@@ -1,0 +1,657 @@
+package commitment
+
+import (
+	"bytes"
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"os"
+	"path/filepath"
+	"runtime"
+	"strings"
+	"testing"
+
+	"github.com/Fairblock/fairyring/x/zkp/verification/common"
+	"github.com/Fairblock/fairyring/x/zkp/verification/internal/transcriptgold"
+)
+
+func cScalar(tb testing.TB, v uint64) Scalar {
+	tb.Helper()
+	var s Scalar
+	s.SetUint64(v)
+	return s
+}
+
+func cScalarBytes(tb testing.TB, v uint64) [32]byte {
+	tb.Helper()
+	s := cScalar(tb, v)
+	var out [32]byte
+	s.BytesInto(&out)
+	return out
+}
+
+func cScalarBytesFromScalar(tb testing.TB, s Scalar) [32]byte {
+	tb.Helper()
+	var out [32]byte
+	s.BytesInto(&out)
+	return out
+}
+
+func cPoint(tb testing.TB, v uint64) Point {
+	tb.Helper()
+	s := cScalar(tb, v)
+	var p Point
+	p.ScalarMult(&common.G, &s)
+	return p
+}
+
+func cPointBytes(tb testing.TB, v uint64) [32]byte {
+	tb.Helper()
+	p := cPoint(tb, v)
+	var out [32]byte
+	p.BytesInto(&out)
+	return out
+}
+
+func cInvalidPointBytes() [32]byte {
+	var out [32]byte
+	for i := range out {
+		out[i] = 0xff
+	}
+	return out
+}
+
+func cBaseEqualityData(tb testing.TB) CiphertextCommitmentEqualityProofData {
+	tb.Helper()
+	return CiphertextCommitmentEqualityProofData{
+		Context: CiphertextCommitmentEqualityProofContext{
+			Pubkey:     PodElGamalPubkey{Bytes: cPointBytes(tb, 2)},
+			Ciphertext: PodElGamalCiphertext{Commitment: cPointBytes(tb, 3), Handle: cPointBytes(tb, 4)},
+			Commitment: PodPedersenCommitment{Bytes: cPointBytes(tb, 5)},
+		},
+		Proof: PodCiphertextCommitmentEqualityProof{
+			Y0: cPointBytes(tb, 6),
+			Y1: cPointBytes(tb, 7),
+			Y2: cPointBytes(tb, 8),
+			Zs: cScalarBytes(tb, 9),
+			Zx: cScalarBytes(tb, 10),
+			Zr: cScalarBytes(tb, 11),
+		},
+	}
+}
+
+func cBaseWithdrawData(tb testing.TB) WithdrawCiphertextCommitmentEqualityProofData {
+	tb.Helper()
+	base := cBaseEqualityData(tb)
+	return WithdrawCiphertextCommitmentEqualityProofData{
+		Context: WithdrawCiphertextCommitmentEqualityProofContext{
+			Pubkey:     base.Context.Pubkey,
+			Ciphertext: base.Context.Ciphertext,
+			Commitment: base.Context.Commitment,
+			Nonce:      PodU64{1, 2, 3, 4, 5, 6, 7, 8},
+		},
+		Proof: base.Proof,
+	}
+}
+
+func TestPodCiphertextCommitmentEqualityProofAsBytesLayout(t *testing.T) {
+	proof := PodCiphertextCommitmentEqualityProof{
+		Y0: cScalarBytes(t, 1),
+		Y1: cScalarBytes(t, 2),
+		Y2: cScalarBytes(t, 3),
+		Zs: cScalarBytes(t, 4),
+		Zx: cScalarBytes(t, 5),
+		Zr: cScalarBytes(t, 6),
+	}
+	got := proof.AsBytes()
+	fields := [][32]byte{proof.Y0, proof.Y1, proof.Y2, proof.Zs, proof.Zx, proof.Zr}
+	for i, want := range fields {
+		start := i * U
+		if !bytes.Equal(got[start:start+U], want[:]) {
+			t.Fatalf("field %d not copied at expected offset", i)
+		}
+	}
+}
+
+func TestElGamalPubkeyFromPod(t *testing.T) {
+	var pk ElGamalPubkey
+	valid := PodElGamalPubkey{Bytes: cPointBytes(t, 7)}
+	if err := pk.FromPod(valid); err != nil {
+		t.Fatalf("valid pubkey rejected: %v", err)
+	}
+	var got [32]byte
+	pk.P.BytesInto(&got)
+	if got != valid.Bytes {
+		t.Fatalf("pubkey round-trip mismatch")
+	}
+
+	invalid := PodElGamalPubkey{Bytes: cInvalidPointBytes()}
+	if err := pk.FromPod(invalid); err == nil {
+		t.Fatal("expected invalid pubkey encoding to fail")
+	}
+}
+
+func TestElGamalCiphertextFromPod(t *testing.T) {
+	valid := PodElGamalCiphertext{Commitment: cPointBytes(t, 3), Handle: cPointBytes(t, 4)}
+	var ct ElGamalCiphertext
+	if err := ct.FromPod(valid); err != nil {
+		t.Fatalf("valid ciphertext rejected: %v", err)
+	}
+	if ct.Commitment.ToBytes() != valid.Commitment || ct.Handle.ToBytes() != valid.Handle {
+		t.Fatalf("ciphertext round-trip mismatch")
+	}
+
+	badCommit := valid
+	badCommit.Commitment = cInvalidPointBytes()
+	if err := ct.FromPod(badCommit); err == nil || err.Error() != "bad C" {
+		t.Fatalf("expected bad C error, got %v", err)
+	}
+
+	badHandle := valid
+	badHandle.Handle = cInvalidPointBytes()
+	if err := ct.FromPod(badHandle); err == nil || err.Error() != "bad D" {
+		t.Fatalf("expected bad D error, got %v", err)
+	}
+}
+
+func TestPedersenCommitmentFromPod(t *testing.T) {
+	pod := PodPedersenCommitment{Bytes: cPointBytes(t, 11)}
+	pc, err := PedersenCommitmentFromPod(pod)
+	if err != nil {
+		t.Fatalf("valid commitment rejected: %v", err)
+	}
+	if pc.ToBytes() != pod.Bytes {
+		t.Fatalf("commitment round-trip mismatch")
+	}
+
+	bad := PodPedersenCommitment{Bytes: cInvalidPointBytes()}
+	if _, err := PedersenCommitmentFromPod(bad); err == nil || err.Error() != "bad commit" {
+		t.Fatalf("expected bad commit error, got %v", err)
+	}
+}
+
+func TestEqualityProofFromBytes(t *testing.T) {
+	base := cBaseEqualityData(t)
+	raw := base.Proof.AsBytes()
+	proof, err := EqualityProofFromBytes(&raw)
+	if err != nil {
+		t.Fatalf("validly encoded proof rejected: %v", err)
+	}
+	if proof.Y0 != common.CompressedRistretto(base.Proof.Y0) ||
+		proof.Y1 != common.CompressedRistretto(base.Proof.Y1) ||
+		proof.Y2 != common.CompressedRistretto(base.Proof.Y2) {
+		t.Fatalf("proof points decoded in wrong order")
+	}
+	if cScalarBytesFromScalar(t, proof.Zs) != base.Proof.Zs ||
+		cScalarBytesFromScalar(t, proof.Zx) != base.Proof.Zx ||
+		cScalarBytesFromScalar(t, proof.Zr) != base.Proof.Zr {
+		t.Fatalf("proof scalars decoded in wrong order")
+	}
+}
+
+func TestEqualityProofFromBytesRejectsNonCanonicalScalars(t *testing.T) {
+	base := cBaseEqualityData(t)
+	raw := base.Proof.AsBytes()
+	for _, off := range []int{3 * U, 4 * U, 5 * U} {
+		mutated := raw
+		for i := off; i < off+U; i++ {
+			mutated[i] = 0xff
+		}
+		if _, err := EqualityProofFromBytes(&mutated); !errors.Is(err, common.ErrDeserialization) {
+			t.Fatalf("expected scalar at offset %d to fail canonical check, got %v", off, err)
+		}
+	}
+}
+
+func TestVerifyEqualityProofRejectsMalformedContext(t *testing.T) {
+	cases := []struct {
+		name string
+		mut  func(*CiphertextCommitmentEqualityProofData)
+	}{
+		{"bad pubkey", func(pd *CiphertextCommitmentEqualityProofData) { pd.Context.Pubkey.Bytes = cInvalidPointBytes() }},
+		{"bad ciphertext commitment", func(pd *CiphertextCommitmentEqualityProofData) {
+			pd.Context.Ciphertext.Commitment = cInvalidPointBytes()
+		}},
+		{"bad ciphertext handle", func(pd *CiphertextCommitmentEqualityProofData) { pd.Context.Ciphertext.Handle = cInvalidPointBytes() }},
+		{"bad pedersen commitment", func(pd *CiphertextCommitmentEqualityProofData) { pd.Context.Commitment.Bytes = cInvalidPointBytes() }},
+	}
+	for _, tt := range cases {
+		t.Run(tt.name, func(t *testing.T) {
+			pd := cBaseEqualityData(t)
+			tt.mut(&pd)
+			if err := VerifyEqualityProof(&pd); !errors.Is(err, ErrProofDeserialization) {
+				t.Fatalf("expected deserialization error, got %v", err)
+			}
+		})
+	}
+}
+
+func TestVerifyEqualityProofRejectsMalformedProofScalars(t *testing.T) {
+	cases := []struct {
+		name string
+		mut  func(*CiphertextCommitmentEqualityProofData)
+	}{
+		{"bad Zs", func(pd *CiphertextCommitmentEqualityProofData) { pd.Proof.Zs = cInvalidPointBytes() }},
+		{"bad Zx", func(pd *CiphertextCommitmentEqualityProofData) { pd.Proof.Zx = cInvalidPointBytes() }},
+		{"bad Zr", func(pd *CiphertextCommitmentEqualityProofData) { pd.Proof.Zr = cInvalidPointBytes() }},
+	}
+	for _, tt := range cases {
+		t.Run(tt.name, func(t *testing.T) {
+			pd := cBaseEqualityData(t)
+			tt.mut(&pd)
+			if err := VerifyEqualityProof(&pd); !errors.Is(err, ErrProofDeserialization) {
+				t.Fatalf("expected proof deserialization error, got %v", err)
+			}
+		})
+	}
+}
+
+func TestVerifyEqualityProofRejectsMalformedProofPoints(t *testing.T) {
+	cases := []struct {
+		name string
+		mut  func(*CiphertextCommitmentEqualityProofData)
+	}{
+		{"bad Y0", func(pd *CiphertextCommitmentEqualityProofData) { pd.Proof.Y0 = cInvalidPointBytes() }},
+		{"bad Y1", func(pd *CiphertextCommitmentEqualityProofData) { pd.Proof.Y1 = cInvalidPointBytes() }},
+		{"bad Y2", func(pd *CiphertextCommitmentEqualityProofData) { pd.Proof.Y2 = cInvalidPointBytes() }},
+	}
+	for _, tt := range cases {
+		t.Run(tt.name, func(t *testing.T) {
+			pd := cBaseEqualityData(t)
+			tt.mut(&pd)
+			if err := VerifyEqualityProof(&pd); !errors.Is(err, ErrProofAlgebraic) {
+				t.Fatalf("expected proof algebraic error for malformed point, got %v", err)
+			}
+		})
+	}
+}
+
+func TestVerifyEqualityProofRejectsAlgebraicallyInvalidButWellFormedProof(t *testing.T) {
+	pd := cBaseEqualityData(t)
+	if err := VerifyEqualityProof(&pd); !errors.Is(err, ErrProofAlgebraic) {
+		t.Fatalf("expected algebraic failure for random well-formed proof, got %v", err)
+	}
+}
+
+func TestWithdrawTranscriptBindsNonce(t *testing.T) {
+	pd := cBaseWithdrawData(t)
+	normalCtx := CiphertextCommitmentEqualityProofContext{
+		Pubkey:     pd.Context.Pubkey,
+		Ciphertext: pd.Context.Ciphertext,
+		Commitment: pd.Context.Commitment,
+	}
+
+	normal := NewEqualityInstructionTranscript(&normalCtx)
+	withdraw := newWithdrawSplTranscript(&pd.Context)
+	cNormal := common.ChallengeScalar(normal, []byte("c"))
+	cWithdraw := common.ChallengeScalar(withdraw, []byte("c"))
+	if cScalarBytesFromScalar(t, cNormal) == cScalarBytesFromScalar(t, cWithdraw) {
+		t.Fatal("withdraw transcript must differ from non-withdraw transcript because it includes nonce/domain")
+	}
+
+	pd2 := pd
+	pd2.Context.Nonce[0] ^= 0xff
+	withdraw2 := newWithdrawSplTranscript(&pd2.Context)
+	cWithdraw2 := common.ChallengeScalar(withdraw2, []byte("c"))
+	if cScalarBytesFromScalar(t, cWithdraw) == cScalarBytesFromScalar(t, cWithdraw2) {
+		t.Fatal("nonce change must change withdraw transcript challenge")
+	}
+}
+
+func TestEqualityProofTranscriptParity(t *testing.T) {
+	vec, err := transcriptgold.LoadTranscriptVectors()
+	if err != nil {
+		t.Fatalf("load golden vectors: %v", err)
+	}
+	wantC, err := transcriptgold.ParseHex32(vec.Equality.C)
+	if err != nil {
+		t.Fatalf("golden c: %v", err)
+	}
+	wantW, err := transcriptgold.ParseHex32(vec.Equality.W)
+	if err != nil {
+		t.Fatalf("golden w: %v", err)
+	}
+
+	pd := cBaseEqualityData(t)
+	raw := pd.Proof.AsBytes()
+	ep, err := EqualityProofFromBytes(&raw)
+	if err != nil {
+		t.Fatalf("decode proof: %v", err)
+	}
+	tr := NewEqualityInstructionTranscript(&pd.Context)
+	c, w, err := EqualityProofFiatShamirChallenges(tr, ep)
+	if err != nil {
+		t.Fatalf("fiat-shamir: %v", err)
+	}
+	if cScalarBytesFromScalar(t, c) != wantC {
+		t.Fatalf("c does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if cScalarBytesFromScalar(t, w) != wantW {
+		t.Fatalf("w does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+}
+
+func TestEqualityProofTranscriptParityCase2(t *testing.T) {
+	vec, err := transcriptgold.LoadTranscriptVectors()
+	if err != nil {
+		t.Fatalf("load golden vectors: %v", err)
+	}
+	wantC, err := transcriptgold.ParseHex32(vec.EqualityCase2.C)
+	if err != nil {
+		t.Fatalf("golden case2 c: %v", err)
+	}
+	wantW, err := transcriptgold.ParseHex32(vec.EqualityCase2.W)
+	if err != nil {
+		t.Fatalf("golden case2 w: %v", err)
+	}
+
+	// Matches prover-side deterministic constructor:
+	// equality_fixture(12,13,14,15,16,17,18,19,20,21)
+	pd := CiphertextCommitmentEqualityProofData{
+		Context: CiphertextCommitmentEqualityProofContext{
+			Pubkey:     PodElGamalPubkey{Bytes: cPointBytes(t, 12)},
+			Ciphertext: PodElGamalCiphertext{Commitment: cPointBytes(t, 13), Handle: cPointBytes(t, 14)},
+			Commitment: PodPedersenCommitment{Bytes: cPointBytes(t, 15)},
+		},
+		Proof: PodCiphertextCommitmentEqualityProof{
+			Y0: cPointBytes(t, 16),
+			Y1: cPointBytes(t, 17),
+			Y2: cPointBytes(t, 18),
+			Zs: cScalarBytes(t, 19),
+			Zx: cScalarBytes(t, 20),
+			Zr: cScalarBytes(t, 21),
+		},
+	}
+	raw := pd.Proof.AsBytes()
+	ep, err := EqualityProofFromBytes(&raw)
+	if err != nil {
+		t.Fatalf("decode case2 proof: %v", err)
+	}
+	tr := NewEqualityInstructionTranscript(&pd.Context)
+	c, w, err := EqualityProofFiatShamirChallenges(tr, ep)
+	if err != nil {
+		t.Fatalf("fiat-shamir case2: %v", err)
+	}
+	if cScalarBytesFromScalar(t, c) != wantC {
+		t.Fatalf("case2 c does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+	if cScalarBytesFromScalar(t, w) != wantW {
+		t.Fatalf("case2 w does not match golden vector (regenerate with gencmd or fix Rust transcript)")
+	}
+}
+
+func BenchmarkEqualityProofVerification(b *testing.B) {
+	cases := []struct {
+		name string
+		run  func(*testing.B)
+	}{
+		{
+			name: "transfer",
+			run: func(b *testing.B) {
+				base := cBaseEqualityData(b)
+				b.ReportAllocs()
+				b.ResetTimer()
+				for i := 0; i < b.N; i++ {
+					pd := base
+					_ = VerifyEqualityProof(&pd)
+				}
+			},
+		},
+		{
+			name: "withdraw",
+			run: func(b *testing.B) {
+				base := cBaseWithdrawData(b)
+				b.ReportAllocs()
+				b.ResetTimer()
+				for i := 0; i < b.N; i++ {
+					pd := base
+					_ = VerifyWithdrawEqualityProof(&pd)
+				}
+			},
+		},
+	}
+	for _, tc := range cases {
+		b.Run(tc.name, tc.run)
+	}
+}
+
+func BenchmarkEqualityProofVerificationRealProofs(b *testing.B) {
+	type vector struct {
+		Family        string `json:"family"`
+		ExpectedValid bool   `json:"expected_valid"`
+		Payload       struct {
+			ProofDataHex         string `json:"proof_data_hex"`
+			EqualityProofDataHex string `json:"equality_proof_data_hex"`
+		} `json:"payload"`
+	}
+	type root struct {
+		VerificationVectors []vector `json:"verification_vectors"`
+	}
+	load := func(b *testing.B) root {
+		b.Helper()
+		_, file, _, ok := runtime.Caller(0)
+		if !ok {
+			b.Fatal("runtime.Caller failed")
+		}
+		p := filepath.Join(filepath.Dir(file), "../../../../test-vectors/zkp_verification_vectors.json")
+		raw, err := os.ReadFile(p)
+		if err != nil {
+			b.Fatalf("read vectors: %v", err)
+		}
+		var r root
+		if err := json.Unmarshal(raw, &r); err != nil {
+			b.Fatalf("unmarshal vectors: %v", err)
+		}
+		return r
+	}
+	decodeHex := func(b *testing.B, s string) []byte {
+		b.Helper()
+		s = strings.TrimPrefix(strings.ToLower(strings.TrimSpace(s)), "0x")
+		out, err := hex.DecodeString(s)
+		if err != nil {
+			b.Fatalf("decode hex: %v", err)
+		}
+		return out
+	}
+	decodeEq := func(b *testing.B, raw []byte) CiphertextCommitmentEqualityProofData {
+		b.Helper()
+		if len(raw) != 320 {
+			b.Fatalf("equality proof length: got %d", len(raw))
+		}
+		var pd CiphertextCommitmentEqualityProofData
+		offset := 0
+		copy(pd.Context.Pubkey.Bytes[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.Ciphertext.Commitment[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.Ciphertext.Handle[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.Commitment.Bytes[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Y0[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Y1[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Y2[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Zs[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Zx[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Zr[:], raw[offset:offset+32])
+		return pd
+	}
+	decodeWithdrawEq := func(b *testing.B, raw []byte) WithdrawCiphertextCommitmentEqualityProofData {
+		b.Helper()
+		if len(raw) != 328 {
+			b.Fatalf("withdraw equality proof length: got %d", len(raw))
+		}
+		var pd WithdrawCiphertextCommitmentEqualityProofData
+		offset := 0
+		copy(pd.Context.Pubkey.Bytes[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.Ciphertext.Commitment[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.Ciphertext.Handle[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.Commitment.Bytes[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Context.Nonce[:], raw[offset:offset+8])
+		offset += 8
+		copy(pd.Proof.Y0[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Y1[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Y2[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Zs[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Zx[:], raw[offset:offset+32])
+		offset += 32
+		copy(pd.Proof.Zr[:], raw[offset:offset+32])
+		return pd
+	}
+
+	var eqRaw, withdrawEqRaw []byte
+	r := load(b)
+	for i := range r.VerificationVectors {
+		v := r.VerificationVectors[i]
+		if !v.ExpectedValid {
+			continue
+		}
+		if v.Family == "equality" && eqRaw == nil && v.Payload.ProofDataHex != "" {
+			eqRaw = decodeHex(b, v.Payload.ProofDataHex)
+		}
+		if v.Family == "withdraw_composite" && withdrawEqRaw == nil && v.Payload.EqualityProofDataHex != "" {
+			withdrawEqRaw = decodeHex(b, v.Payload.EqualityProofDataHex)
+		}
+	}
+	if eqRaw == nil {
+		b.Fatal("missing valid equality vector")
+	}
+	if withdrawEqRaw == nil {
+		b.Fatal("missing valid withdraw equality vector")
+	}
+
+	b.Run("transfer", func(b *testing.B) {
+		pd := decodeEq(b, eqRaw)
+		b.ReportAllocs()
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			_ = VerifyEqualityProof(&pd)
+		}
+	})
+	b.Run("withdraw", func(b *testing.B) {
+		pd := decodeWithdrawEq(b, withdrawEqRaw)
+		b.ReportAllocs()
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			_ = VerifyWithdrawEqualityProof(&pd)
+		}
+	})
+}
+
+func TestVerifyWithdrawEqualityProofRejectsMalformedContextAndProof(t *testing.T) {
+	cases := []struct {
+		name string
+		mut  func(*WithdrawCiphertextCommitmentEqualityProofData)
+	}{
+		{"bad pubkey", func(pd *WithdrawCiphertextCommitmentEqualityProofData) {
+			pd.Context.Pubkey.Bytes = cInvalidPointBytes()
+		}},
+		{"bad ciphertext commitment", func(pd *WithdrawCiphertextCommitmentEqualityProofData) {
+			pd.Context.Ciphertext.Commitment = cInvalidPointBytes()
+		}},
+		{"bad ciphertext handle", func(pd *WithdrawCiphertextCommitmentEqualityProofData) {
+			pd.Context.Ciphertext.Handle = cInvalidPointBytes()
+		}},
+		{"bad pedersen commitment", func(pd *WithdrawCiphertextCommitmentEqualityProofData) {
+			pd.Context.Commitment.Bytes = cInvalidPointBytes()
+		}},
+		{"bad Zs", func(pd *WithdrawCiphertextCommitmentEqualityProofData) { pd.Proof.Zs = cInvalidPointBytes() }},
+	}
+	for _, tt := range cases {
+		t.Run(tt.name, func(t *testing.T) {
+			pd := cBaseWithdrawData(t)
+			tt.mut(&pd)
+			if err := VerifyWithdrawEqualityProof(&pd); !errors.Is(err, ErrProofDeserialization) {
+				t.Fatalf("expected deserialization error, got %v", err)
+			}
+		})
+	}
+}
+
+func TestVerifyWithdrawEqualityProofRejectsMalformedPointProof(t *testing.T) {
+	pd := cBaseWithdrawData(t)
+	pd.Proof.Y0 = cInvalidPointBytes()
+	if err := VerifyWithdrawEqualityProof(&pd); !errors.Is(err, ErrProofAlgebraic) {
+		t.Fatalf("expected proof algebraic error for malformed point, got %v", err)
+	}
+}
+
+func TestVerifyWithdrawEqualityProofRejectsAlgebraicallyInvalidButWellFormedProof(t *testing.T) {
+	pd := cBaseWithdrawData(t)
+	if err := VerifyWithdrawEqualityProof(&pd); !errors.Is(err, ErrProofAlgebraic) {
+		t.Fatalf("expected algebraic failure for random well-formed withdraw proof, got %v", err)
+	}
+}
+
+func cBuildProofObjects(t *testing.T) (*EqualityProof, *ElGamalPubkey, *ElGamalCiphertext, *PedersenCommitment, *CiphertextCommitmentEqualityProofContext) {
+	t.Helper()
+	pd := cBaseEqualityData(t)
+	var pk ElGamalPubkey
+	if err := pk.FromPod(pd.Context.Pubkey); err != nil {
+		t.Fatalf("pubkey decode failed: %v", err)
+	}
+	var ct ElGamalCiphertext
+	if err := ct.FromPod(pd.Context.Ciphertext); err != nil {
+		t.Fatalf("ciphertext decode failed: %v", err)
+	}
+	cm, err := PedersenCommitmentFromPod(pd.Context.Commitment)
+	if err != nil {
+		t.Fatalf("commitment decode failed: %v", err)
+	}
+	raw := pd.Proof.AsBytes()
+	proof, err := EqualityProofFromBytes(&raw)
+	if err != nil {
+		t.Fatalf("proof decode failed: %v", err)
+	}
+	return proof, &pk, &ct, cm, &pd.Context
+}
+
+func TestEqualityProofVerifyRejectsIdentityInputs(t *testing.T) {
+	cases := []struct {
+		name string
+		mut  func(*ElGamalPubkey, *ElGamalCiphertext, *PedersenCommitment)
+	}{
+		{"identity pubkey", func(pk *ElGamalPubkey, _ *ElGamalCiphertext, _ *PedersenCommitment) { pk.P.SetZero() }},
+		{"identity ciphertext commitment", func(_ *ElGamalPubkey, ct *ElGamalCiphertext, _ *PedersenCommitment) {
+			ct.Commitment.P.SetZero()
+		}},
+		{"identity ciphertext handle", func(_ *ElGamalPubkey, ct *ElGamalCiphertext, _ *PedersenCommitment) {
+			ct.Handle.P.SetZero()
+		}},
+		{"identity pedersen commitment", func(_ *ElGamalPubkey, _ *ElGamalCiphertext, cm *PedersenCommitment) {
+			cm.P.SetZero()
+		}},
+	}
+	for _, tt := range cases {
+		t.Run(tt.name, func(t *testing.T) {
+			proof, pk, ct, cm, ctx := cBuildProofObjects(t)
+			tt.mut(pk, ct, cm)
+			err := proof.Verify(pk, ct, cm, NewEqualityInstructionTranscript(ctx))
+			if !errors.Is(err, ErrProofAlgebraic) {
+				t.Fatalf("expected ErrProofAlgebraic, got %v", err)
+			}
+		})
+	}
+}
+
+func TestEqualityProofVerifyRejectsMalformedPointEncoding(t *testing.T) {
+	proof, pk, ct, cm, ctx := cBuildProofObjects(t)
+	proof.Y0 = common.CompressedRistretto(cInvalidPointBytes())
+	err := proof.Verify(pk, ct, cm, NewEqualityInstructionTranscript(ctx))
+	if !errors.Is(err, common.ErrDeserialization) {
+		t.Fatalf("expected point deserialization error, got %v", err)
+	}
+}

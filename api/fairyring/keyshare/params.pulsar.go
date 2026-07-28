@@ -186,8 +186,8 @@ func (x *fastReflection_Params) Range(f func(protoreflect.FieldDescriptor, proto
 			return
 		}
 	}
-	if x.AvgBlockTime != float32(0) || math.Signbit(float64(x.AvgBlockTime)) {
-		value := protoreflect.ValueOfFloat32(x.AvgBlockTime)
+	if x.AvgBlockTime != float64(0) || math.Signbit(x.AvgBlockTime) {
+		value := protoreflect.ValueOfFloat64(x.AvgBlockTime)
 		if !f(fd_Params_avg_block_time, value) {
 			return
 		}
@@ -220,7 +220,7 @@ func (x *fastReflection_Params) Has(fd protoreflect.FieldDescriptor) bool {
 	case "fairyring.keyshare.Params.slash_fraction_wrong_keyshare":
 		return len(x.SlashFractionWrongKeyshare) != 0
 	case "fairyring.keyshare.Params.avg_block_time":
-		return x.AvgBlockTime != float32(0) || math.Signbit(float64(x.AvgBlockTime))
+		return x.AvgBlockTime != float64(0) || math.Signbit(x.AvgBlockTime)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.Params"))
@@ -250,7 +250,7 @@ func (x *fastReflection_Params) Clear(fd protoreflect.FieldDescriptor) {
 	case "fairyring.keyshare.Params.slash_fraction_wrong_keyshare":
 		x.SlashFractionWrongKeyshare = nil
 	case "fairyring.keyshare.Params.avg_block_time":
-		x.AvgBlockTime = float32(0)
+		x.AvgBlockTime = float64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.Params"))
@@ -290,7 +290,7 @@ func (x *fastReflection_Params) Get(descriptor protoreflect.FieldDescriptor) pro
 		return protoreflect.ValueOfBytes(value)
 	case "fairyring.keyshare.Params.avg_block_time":
 		value := x.AvgBlockTime
-		return protoreflect.ValueOfFloat32(value)
+		return protoreflect.ValueOfFloat64(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.Params"))
@@ -326,7 +326,7 @@ func (x *fastReflection_Params) Set(fd protoreflect.FieldDescriptor, value proto
 	case "fairyring.keyshare.Params.slash_fraction_wrong_keyshare":
 		x.SlashFractionWrongKeyshare = value.Bytes()
 	case "fairyring.keyshare.Params.avg_block_time":
-		x.AvgBlockTime = float32(value.Float())
+		x.AvgBlockTime = value.Float()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.Params"))
@@ -392,7 +392,7 @@ func (x *fastReflection_Params) NewField(fd protoreflect.FieldDescriptor) protor
 	case "fairyring.keyshare.Params.slash_fraction_wrong_keyshare":
 		return protoreflect.ValueOfBytes(nil)
 	case "fairyring.keyshare.Params.avg_block_time":
-		return protoreflect.ValueOfFloat32(float32(0))
+		return protoreflect.ValueOfFloat64(float64(0))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.keyshare.Params"))
@@ -485,8 +485,8 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.AvgBlockTime != 0 || math.Signbit(float64(x.AvgBlockTime)) {
-			n += 5
+		if x.AvgBlockTime != 0 || math.Signbit(x.AvgBlockTime) {
+			n += 9
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -517,11 +517,11 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.AvgBlockTime != 0 || math.Signbit(float64(x.AvgBlockTime)) {
-			i -= 4
-			binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(x.AvgBlockTime))))
+		if x.AvgBlockTime != 0 || math.Signbit(x.AvgBlockTime) {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(x.AvgBlockTime))))
 			i--
-			dAtA[i] = 0x3d
+			dAtA[i] = 0x39
 		}
 		if len(x.SlashFractionWrongKeyshare) > 0 {
 			i -= len(x.SlashFractionWrongKeyshare)
@@ -768,16 +768,16 @@ func (x *fastReflection_Params) ProtoMethods() *protoiface.Methods {
 				}
 				iNdEx = postIndex
 			case 7:
-				if wireType != 5 {
+				if wireType != 1 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field AvgBlockTime", wireType)
 				}
-				var v uint32
-				if (iNdEx + 4) > l {
+				var v uint64
+				if (iNdEx + 8) > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				v = uint32(binary.LittleEndian.Uint32(dAtA[iNdEx:]))
-				iNdEx += 4
-				x.AvgBlockTime = float32(math.Float32frombits(v))
+				v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+				iNdEx += 8
+				x.AvgBlockTime = float64(math.Float64frombits(v))
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -838,7 +838,7 @@ type Params struct {
 	TrustedAddresses           []string `protobuf:"bytes,4,rep,name=trusted_addresses,json=trustedAddresses,proto3" json:"trusted_addresses,omitempty"`
 	SlashFractionNoKeyshare    []byte   `protobuf:"bytes,5,opt,name=slash_fraction_no_keyshare,json=slashFractionNoKeyshare,proto3" json:"slash_fraction_no_keyshare,omitempty"`
 	SlashFractionWrongKeyshare []byte   `protobuf:"bytes,6,opt,name=slash_fraction_wrong_keyshare,json=slashFractionWrongKeyshare,proto3" json:"slash_fraction_wrong_keyshare,omitempty"`
-	AvgBlockTime               float32  `protobuf:"fixed32,7,opt,name=avg_block_time,json=avgBlockTime,proto3" json:"avg_block_time,omitempty"`
+	AvgBlockTime               float64  `protobuf:"fixed64,7,opt,name=avg_block_time,json=avgBlockTime,proto3" json:"avg_block_time,omitempty"`
 }
 
 func (x *Params) Reset() {
@@ -903,7 +903,7 @@ func (x *Params) GetSlashFractionWrongKeyshare() []byte {
 	return nil
 }
 
-func (x *Params) GetAvgBlockTime() float32 {
+func (x *Params) GetAvgBlockTime() float64 {
 	if x != nil {
 		return x.AvgBlockTime
 	}
@@ -955,7 +955,7 @@ var file_fairyring_keyshare_params_proto_rawDesc = []byte{
 	0x6c, 0x61, 0x73, 0x68, 0x46, 0x72, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x57, 0x72, 0x6f, 0x6e,
 	0x67, 0x4b, 0x65, 0x79, 0x73, 0x68, 0x61, 0x72, 0x65, 0x12, 0x3f, 0x0a, 0x0e, 0x61, 0x76, 0x67,
 	0x5f, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x07, 0x20, 0x01, 0x28,
-	0x02, 0x42, 0x19, 0xf2, 0xde, 0x1f, 0x15, 0x79, 0x61, 0x6d, 0x6c, 0x3a, 0x22, 0x61, 0x76, 0x67,
+	0x01, 0x42, 0x19, 0xf2, 0xde, 0x1f, 0x15, 0x79, 0x61, 0x6d, 0x6c, 0x3a, 0x22, 0x61, 0x76, 0x67,
 	0x5f, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x22, 0x52, 0x0c, 0x61, 0x76,
 	0x67, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x54, 0x69, 0x6d, 0x65, 0x3a, 0x39, 0xe8, 0xa0, 0x1f, 0x01,
 	0x8a, 0xe7, 0xb0, 0x2a, 0x30, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f,

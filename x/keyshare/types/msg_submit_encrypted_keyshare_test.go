@@ -21,9 +21,14 @@ func TestMsgSubmitEncryptedKeyshare_ValidateBasic(t *testing.T) {
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
-			name: "valid address",
+			name: "valid message",
 			msg: MsgSubmitEncryptedKeyshare{
-				Creator: sample.AccAddress(),
+				Creator:           sample.AccAddress(),
+				Identity:          "test_identity",
+				Requester:         sample.AccAddress(),
+				SecpPubkey:        "test_secp_pubkey",
+				EncryptedKeyshare: "test_encrypted_keyshare",
+				KeyshareIndex:     1,
 			},
 		},
 	}

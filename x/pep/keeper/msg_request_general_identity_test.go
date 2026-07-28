@@ -81,7 +81,7 @@ func TestOnAcknowledgementRequestDecryptionKeyPacket(t *testing.T) {
 	require.NoError(t, err)
 
 	// Ensure entry is created
-	entry, found := k.GetEntry(ctx, "test_request_id")
+	entry, found := k.GetEntry(ctx, "test_identity")
 	require.True(t, found)
 	require.Equal(t, "test_identity", entry.Identity)
 	require.Equal(t, "test_pubkey", entry.Pubkey)

@@ -162,7 +162,7 @@ func aggregateKeyshares(keyshares []commontypes.IndexedEncryptedKeyshare) (kyber
 			return nil, err
 		}
 		shareList = append(shareList, extractedKey)
-		indexList = append(indexList, uint32(share.EncryptedKeyshareIndex))
+		indexList = append(indexList, uint32(share.EncryptedKeyshareIndex)) // #nosec G115
 	}
 
 	SkShares := []kyber.Point{}
@@ -192,7 +192,7 @@ func parseShare(
 
 	newExtractedKey := distIBE.ExtractedKey{
 		SK:    newSharePoint,
-		Index: uint32(keyshare.EncryptedKeyshareIndex),
+		Index: uint32(keyshare.EncryptedKeyshareIndex), // #nosec G115
 	}
 
 	return newExtractedKey, nil

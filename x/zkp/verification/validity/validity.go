@@ -154,6 +154,24 @@ func (p GroupedCiphertext2HandlesValidityProof) Verify(
 	secondHandle *DecryptHandle,
 	transcript *merlin.Transcript,
 ) error {
+	var id Point
+	id.SetZero()
+	if firstPubkey.P.Equals(&id) {
+		return ErrValidityInvalidProof
+	}
+	if secondPubkey.P.Equals(&id) {
+		return ErrValidityInvalidProof
+	}
+	if commitment.P.Equals(&id) {
+		return ErrValidityInvalidProof
+	}
+	if firstHandle.P.Equals(&id) {
+		return ErrValidityInvalidProof
+	}
+	if secondHandle.P.Equals(&id) {
+		return ErrValidityInvalidProof
+	}
+
 	groupedCiphertextValidityProofDomainSeparator(transcript, 2)
 
 	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_0"), &p.Y0); err != nil {
@@ -162,8 +180,9 @@ func (p GroupedCiphertext2HandlesValidityProof) Verify(
 	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_1"), &p.Y1); err != nil {
 		return err
 	}
-
-	common.AppendPoint(transcript, []byte("Y_2"), &p.Y2)
+	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_2"), &p.Y2); err != nil {
+		return err
+	}
 
 	c := common.ChallengeScalar(transcript, []byte("c"))
 
@@ -246,10 +265,11 @@ func (p GroupedCiphertext2HandlesValidityProof) Verify(
 		Y2,        // Y_2
 	}
 
-	check := common.VartimeMultiScalarMul(scalars, points)
+	check, err := common.VartimeMultiScalarMul(scalars, points)
+	if err != nil {
+		return ErrValidityInvalidProof
+	}
 
-	var id Point
-	id.SetZero()
 	if check.Equals(&id) {
 		return nil
 	}
@@ -355,8 +375,13 @@ func (ctx *BatchedGroupedCiphertext2HandlesValidityProofContext) NewTranscript()
 func VerifyValidityProof(
 	p *BatchedGroupedCiphertext2HandlesValidityProofData,
 ) error {
-	transcript := p.Context.NewTranscript()
+	return VerifyValidityProofWithTranscript(p, p.Context.NewTranscript())
+}
 
+func VerifyValidityProofWithTranscript(
+	p *BatchedGroupedCiphertext2HandlesValidityProofData,
+	transcript *merlin.Transcript,
+) error {
 	var firstPubkey ElGamalPubkey
 	if err := firstPubkey.FromPod(p.Context.FirstPubkey); err != nil {
 		return ErrValidityInvalidProof
@@ -413,3 +438,28 @@ func batchedGroupedCiphertextValidityProofDomainSeparator(t *merlin.Transcript, 
 	t.AppendMessage([]byte("handles"), buf[:])
 }
 
+// BatchedGroupedValidityFiatShamirChallenges returns (t, c, w) after walking the transcript used in
+// BatchedGroupedCiphertext2HandlesValidityProof.Verify.
+func BatchedGroupedValidityFiatShamirChallenges(
+	transcript *merlin.Transcript,
+	inner *GroupedCiphertext2HandlesValidityProof,
+	handles uint64,
+) (t Scalar, c Scalar, w Scalar, err error) {
+	batchedGroupedCiphertextValidityProofDomainSeparator(transcript, handles)
+	t = common.ChallengeScalar(transcript, []byte("t"))
+	groupedCiphertextValidityProofDomainSeparator(transcript, handles)
+	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_0"), &inner.Y0); err != nil {
+		return Scalar{}, Scalar{}, Scalar{}, err
+	}
+	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_1"), &inner.Y1); err != nil {
+		return Scalar{}, Scalar{}, Scalar{}, err
+	}
+	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_2"), &inner.Y2); err != nil {
+		return Scalar{}, Scalar{}, Scalar{}, err
+	}
+	c = common.ChallengeScalar(transcript, []byte("c"))
+	common.AppendScalar(transcript, []byte("z_r"), &inner.Zr)
+	common.AppendScalar(transcript, []byte("z_x"), &inner.Zx)
+	w = common.ChallengeScalar(transcript, []byte("w"))
+	return t, c, w, nil
+}

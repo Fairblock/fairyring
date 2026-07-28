@@ -23,7 +23,7 @@ func (k Keeper) GeneralIdentity(
 
 	ctx := sdk.UnwrapSDKContext(c)
 
-	entry, found := k.GetEntry(ctx, req.Identity)
+	entry, found := k.GetEntryWithTxList(ctx, req.Identity)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")
 	}
@@ -43,15 +43,17 @@ func (k Keeper) GeneralIdentityAll(
 
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.GenEncTxKeyPrefix))
+	entryStore := prefix.NewStore(store, types.KeyPrefix(types.GenEncTxEntryKeyPrefix))
 
 	var keyshares []*types.IdentityExecutionEntry
 
-	pageRes, err := query.Paginate(store, req.Pagination, func(key []byte, value []byte) error {
+	pageRes, err := query.Paginate(entryStore, req.Pagination, func(key []byte, value []byte) error {
 		var keyshare types.IdentityExecutionEntry
 		if err := k.cdc.Unmarshal(value, &keyshare); err != nil {
 			return err
 		}
 
+		keyshare = identityEntryWithTxList(keyshare, k.getGeneralEncryptedTxsByIdentity(ctx, keyshare.Identity))
 		keyshares = append(keyshares, &keyshare)
 		return nil
 	})

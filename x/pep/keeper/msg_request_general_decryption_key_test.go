@@ -40,7 +40,7 @@ func TestGetGeneralKeyshare(t *testing.T) {
 
 	msg = &types.MsgRequestGeneralDecryptionKey{
 		Creator:  "unauthorized_creator",
-		Identity: "test_req_id",
+		Identity: "test_identity",
 	}
 
 	_, err = srv.RequestGeneralDecryptionKey(goCtx, msg)
@@ -52,14 +52,14 @@ func TestGetGeneralKeyshare(t *testing.T) {
 
 	msg = &types.MsgRequestGeneralDecryptionKey{
 		Creator:  "authorized_creator",
-		Identity: "test_req_id",
+		Identity: "test_identity",
 	}
 
 	_, err = srv.RequestGeneralDecryptionKey(goCtx, msg)
 	require.NoError(t, err)
 
 	// Ensure the correct request is stored
-	req, found := k.GetSignalQueueEntry(ctx, "test_req_id")
+	req, found := k.GetSignalQueueEntry(ctx, "test_identity")
 	require.True(t, found)
 	require.NotNil(t, req)
 	require.Equal(t, "test_identity", req.Identity)

@@ -58,15 +58,46 @@ func TestGeneralEncryptedTxAppend(t *testing.T) {
 		Creator:  sample.AccAddress(),
 	}
 	keeper.AppendTxToEntry(ctx, out[0].Identity, appendTx1)
-	_, found := keeper.GetEntry(ctx, out[0].Identity)
+	_, found := keeper.GetEntryWithTxList(ctx, out[0].Identity)
 	require.True(t, found)
+}
+
+func TestGeneralEncryptedTxAppendPreservesAcceptedOrder(t *testing.T) {
+	keeper, ctx := keepertest.PepKeeper(t)
+	identity := random.RandHex(32)
+	keeper.SetEntry(ctx, types.IdentityExecutionEntry{
+		Creator:       sample.AccAddress(),
+		Identity:      identity,
+		Pubkey:        random.RandHex(32),
+		DecryptionKey: random.RandHex(32),
+	})
+
+	payloads := []string{"a", "b", "c", "d", "e"}
+	for i, payload := range payloads {
+		idx := keeper.AppendTxToEntry(ctx, identity, types.GeneralEncryptedTx{
+			Creator: sample.AccAddress(),
+			Data:    payload,
+		})
+		require.Equal(t, uint64(i), idx)
+	}
+
+	entry, found := keeper.GetEntryWithTxList(ctx, identity)
+	require.True(t, found)
+	require.NotNil(t, entry.TxList)
+	require.Len(t, entry.TxList.EncryptedTxs, len(payloads))
+
+	for i, payload := range payloads {
+		require.Equal(t, uint64(i), entry.TxList.EncryptedTxs[i].Index)
+		require.Equal(t, payload, entry.TxList.EncryptedTxs[i].Data)
+		require.Equal(t, identity, entry.TxList.EncryptedTxs[i].Identity)
+	}
 }
 
 func TestEntryGet(t *testing.T) {
 	keeper, ctx := keepertest.PepKeeper(t)
 	items := createNGeneralEncryptedTxEntry(&keeper, ctx, 10)
 	for _, item := range items {
-		out, found := keeper.GetEntry(ctx, item.Identity)
+		out, found := keeper.GetEntryWithTxList(ctx, item.Identity)
 		require.True(t, found)
 		require.Equal(t, nullify.Fill(out), nullify.Fill(item))
 	}

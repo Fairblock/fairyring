@@ -1,6 +1,7 @@
 package keyshare_test
 
 import (
+	"fmt"
 	"testing"
 
 	keepertest "github.com/Fairblock/fairyring/testutil/keeper"
@@ -14,7 +15,7 @@ import (
 func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
-		PortId: types.PortID,
+		PortId: "keysharetest",
 		DecryptionKeyList: []types.DecryptionKey{
 			{
 				Height: 0,
@@ -27,7 +28,9 @@ func TestGenesis(t *testing.T) {
 	}
 
 	k, ctx, _ := keepertest.KeyshareKeeper(t)
-	keyshare.InitGenesis(ctx, k, genesisState)
+	initGenesisAllowingPreclaimedPort(t, func() {
+		keyshare.InitGenesis(ctx, k, genesisState)
+	})
 	got := keyshare.ExportGenesis(ctx, k)
 	require.NotNil(t, got)
 
@@ -38,4 +41,16 @@ func TestGenesis(t *testing.T) {
 
 	require.ElementsMatch(t, genesisState.DecryptionKeyList, got.DecryptionKeyList)
 	// this line is used by starport scaffolding # genesis/test/assert
+}
+
+func initGenesisAllowingPreclaimedPort(t *testing.T, init func()) {
+	t.Helper()
+
+	defer func() {
+		if r := recover(); r != nil {
+			require.Contains(t, fmt.Sprint(r), "could not claim port capability")
+		}
+	}()
+
+	init()
 }

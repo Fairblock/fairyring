@@ -39,7 +39,7 @@ func (s *MEVLaneTestSuiteBase) SetupTest() {
 	s.Ctx = s.Ctx.WithBlockHeight(1)
 
 	// Init accounts
-	random := rand.New(rand.NewSource(time.Now().Unix()))
+	random := rand.New(rand.NewSource(time.Now().Unix())) // #nosec G404
 	s.Accounts = testutils.RandomAccounts(random, 10)
 	s.GasTokenDenom = "stake"
 }

@@ -20,7 +20,7 @@ DOCKER := $(shell which docker)
 BUILDDIR ?= $(CURDIR)/build
 
 GO_SYSTEM_VERSION = $(shell go version | cut -c 14- | cut -d' ' -f1 | cut -d'.' -f1-2)
-REQUIRE_GO_VERSION = 1.22
+REQUIRE_GO_VERSION = 1.23
 
 export GO111MODULE = on
 
@@ -189,6 +189,11 @@ integration-test-all: init-test-framework \
 devnet-up: init-devnet
 	@echo "Fairyring Devnet is now running in the background, run 'make devnet-down' to stop devnet."
 
+prod-config: install
+	@echo "Configuring fairyring, fairyringclient, ShareGenerationClient and fairyport (no data reset, no processes started)..."
+	./scripts/devnet/prod-config.sh
+	@echo "Run 'make devnet-down' if you need to stop any already-running processes."
+
 devnet-down:
 	@echo "Killing fairyringd, fairyport, fairyringclient, ShareGenerationClient and removing previous data"
 	-@killall fairyringd 2>/dev/null
@@ -268,6 +273,12 @@ else
 	@echo "--> Running tests"
 	@go test -mod=readonly $(ARGS) $(TEST_PACKAGES)
 endif
+
+FUZZTIME ?= 30s
+test-zkp-fuzz:
+	@echo "--> Fuzzing ZKP proof-data deserialization for $(FUZZTIME)"
+	@go test -mod=readonly -run=^$$ -fuzz=^FuzzProofDataDeserialization$$ -fuzztime=$(FUZZTIME) ./x/zkp/keeper/...
+.PHONY: test-zkp-fuzz
 
 ###############################################################################
 ###                                Linting                                  ###

@@ -159,6 +159,18 @@ func (ep EqualityProof) Verify(
 	commitment *PedersenCommitment,
 	transcript *merlin.Transcript,
 ) error {
+	var id Point
+	id.SetZero()
+	if pubkey.P.Equals(&id) {
+		return ErrProofAlgebraic
+	}
+	if ciphertext.Commitment.P.Equals(&id) {
+		return ErrProofAlgebraic
+	}
+	if commitment.P.Equals(&id) {
+		return ErrProofAlgebraic
+	}
+
 	ciphertextCommitmentEqualityProofDomainSeparator(transcript)
 
 	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_0"), &ep.Y0); err != nil {
@@ -195,7 +207,7 @@ func (ep EqualityProof) Verify(
 
 	h := &common.H
 
-	// Scalars s 
+	// Scalars s
 	var one Scalar
 	one.SetOne()
 
@@ -261,10 +273,11 @@ func (ep EqualityProof) Verify(
 		y2,                       // Y_2
 	}
 
-	check := common.VartimeMultiScalarMul(scalars, points)
+	check, err := common.VartimeMultiScalarMul(scalars, points)
+	if err != nil {
+		return ErrProofAlgebraic
+	}
 
-	var id Point
-	id.SetZero()
 	if check.Equals(&id) {
 		return nil
 	}
@@ -273,6 +286,14 @@ func (ep EqualityProof) Verify(
 
 func VerifyEqualityProof(
 	pd *CiphertextCommitmentEqualityProofData,
+) error {
+	t := NewEqualityInstructionTranscript(&pd.Context)
+	return VerifyEqualityProofWithTranscript(pd, t)
+}
+
+func VerifyEqualityProofWithTranscript(
+	pd *CiphertextCommitmentEqualityProofData,
+	t *merlin.Transcript,
 ) error {
 	var pk ElGamalPubkey
 	if err := pk.FromPod(pd.Context.Pubkey); err != nil {
@@ -295,8 +316,6 @@ func VerifyEqualityProof(
 		return ErrProofDeserialization
 	}
 
-	t := newSplTranscript(&pd.Context)
-
 	if err := proof.Verify(&pk, &ct, cm, t); err != nil {
 		return ErrProofAlgebraic
 	}
@@ -307,7 +326,30 @@ func ciphertextCommitmentEqualityProofDomainSeparator(t *merlin.Transcript) {
 	t.AppendMessage([]byte("dom-sep"), []byte("ciphertext-commitment-equality-proof"))
 }
 
-func newSplTranscript(ctx *CiphertextCommitmentEqualityProofContext) *merlin.Transcript {
+// EqualityProofFiatShamirChallenges returns Merlin Fiat–Shamir scalars (c, w) after appending the
+// ciphertext-commitment-equality proof domain separator and proof messages to transcript.
+func EqualityProofFiatShamirChallenges(transcript *merlin.Transcript, ep *EqualityProof) (c Scalar, w Scalar, err error) {
+	ciphertextCommitmentEqualityProofDomainSeparator(transcript)
+	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_0"), &ep.Y0); err != nil {
+		return Scalar{}, Scalar{}, err
+	}
+	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_1"), &ep.Y1); err != nil {
+		return Scalar{}, Scalar{}, err
+	}
+	if err := common.ValidateAndAppendPoint(transcript, []byte("Y_2"), &ep.Y2); err != nil {
+		return Scalar{}, Scalar{}, err
+	}
+	c = common.ChallengeScalar(transcript, []byte("c"))
+	common.AppendScalar(transcript, []byte("z_s"), &ep.Zs)
+	common.AppendScalar(transcript, []byte("z_x"), &ep.Zx)
+	common.AppendScalar(transcript, []byte("z_r"), &ep.Zr)
+	w = common.ChallengeScalar(transcript, []byte("w"))
+	return c, w, nil
+}
+
+// NewEqualityInstructionTranscript returns the Merlin transcript after the
+// ciphertext-commitment-equality instruction prefix (pubkey, ciphertext, commitment).
+func NewEqualityInstructionTranscript(ctx *CiphertextCommitmentEqualityProofContext) *merlin.Transcript {
 	t := merlin.NewTranscript("ciphertext-commitment-equality-instruction")
 
 	// pubkey
@@ -325,3 +367,68 @@ func newSplTranscript(ctx *CiphertextCommitmentEqualityProofContext) *merlin.Tra
 	return t
 }
 
+type PodU64 [8]byte
+
+type WithdrawCiphertextCommitmentEqualityProofContext struct {
+	Pubkey     PodElGamalPubkey
+	Ciphertext PodElGamalCiphertext
+	Commitment PodPedersenCommitment
+	Nonce      PodU64
+}
+
+type WithdrawCiphertextCommitmentEqualityProofData struct {
+	Context WithdrawCiphertextCommitmentEqualityProofContext
+	Proof   PodCiphertextCommitmentEqualityProof
+}
+
+func VerifyWithdrawEqualityProof(pd *WithdrawCiphertextCommitmentEqualityProofData) error {
+	return VerifyWithdrawEqualityProofWithTranscript(pd, newWithdrawSplTranscript(&pd.Context))
+}
+
+func VerifyWithdrawEqualityProofWithTranscript(
+	pd *WithdrawCiphertextCommitmentEqualityProofData,
+	t *merlin.Transcript,
+) error {
+	var pk ElGamalPubkey
+	if err := pk.FromPod(pd.Context.Pubkey); err != nil {
+		return ErrProofDeserialization
+	}
+
+	var ct ElGamalCiphertext
+	if err := ct.FromPod(pd.Context.Ciphertext); err != nil {
+		return ErrProofDeserialization
+	}
+
+	cm, err := PedersenCommitmentFromPod(pd.Context.Commitment)
+	if err != nil {
+		return ErrProofDeserialization
+	}
+
+	raw := pd.Proof.AsBytes()
+	proof, err := EqualityProofFromBytes(&raw)
+	if err != nil {
+		return ErrProofDeserialization
+	}
+
+	if err := proof.Verify(&pk, &ct, cm, t); err != nil {
+		return ErrProofAlgebraic
+	}
+	return nil
+}
+
+func newWithdrawSplTranscript(ctx *WithdrawCiphertextCommitmentEqualityProofContext) *merlin.Transcript {
+	t := merlin.NewTranscript("withdraw-ciphertext-commitment-equality-instruction")
+
+	t.AppendMessage([]byte("pubkey"), ctx.Pubkey.Bytes[:])
+
+	var ctBytes [2 * U]byte
+	copy(ctBytes[0*U:1*U], ctx.Ciphertext.Commitment[:])
+	copy(ctBytes[1*U:2*U], ctx.Ciphertext.Handle[:])
+	t.AppendMessage([]byte("ciphertext"), ctBytes[:])
+
+	t.AppendMessage([]byte("commitment"), ctx.Commitment.Bytes[:])
+
+	t.AppendMessage([]byte("nonce"), ctx.Nonce[:])
+
+	return t
+}

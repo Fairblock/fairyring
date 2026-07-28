@@ -16,6 +16,1633 @@ import (
 )
 
 var (
+	md_QueryParamsRequest protoreflect.MessageDescriptor
+)
+
+func init() {
+	file_fairyring_zkp_query_proto_init()
+	md_QueryParamsRequest = File_fairyring_zkp_query_proto.Messages().ByName("QueryParamsRequest")
+}
+
+var _ protoreflect.Message = (*fastReflection_QueryParamsRequest)(nil)
+
+type fastReflection_QueryParamsRequest QueryParamsRequest
+
+func (x *QueryParamsRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryParamsRequest)(x)
+}
+
+func (x *QueryParamsRequest) slowProtoReflect() protoreflect.Message {
+	mi := &file_fairyring_zkp_query_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_QueryParamsRequest_messageType fastReflection_QueryParamsRequest_messageType
+var _ protoreflect.MessageType = fastReflection_QueryParamsRequest_messageType{}
+
+type fastReflection_QueryParamsRequest_messageType struct{}
+
+func (x fastReflection_QueryParamsRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryParamsRequest)(nil)
+}
+func (x fastReflection_QueryParamsRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryParamsRequest)
+}
+func (x fastReflection_QueryParamsRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryParamsRequest
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_QueryParamsRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryParamsRequest
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_QueryParamsRequest) Type() protoreflect.MessageType {
+	return _fastReflection_QueryParamsRequest_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_QueryParamsRequest) New() protoreflect.Message {
+	return new(fastReflection_QueryParamsRequest)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_QueryParamsRequest) Interface() protoreflect.ProtoMessage {
+	return (*QueryParamsRequest)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_QueryParamsRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_QueryParamsRequest) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryParamsRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.QueryParamsRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryParamsRequest) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryParamsRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.QueryParamsRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_QueryParamsRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryParamsRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.QueryParamsRequest does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryParamsRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryParamsRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.QueryParamsRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryParamsRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryParamsRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.QueryParamsRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_QueryParamsRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryParamsRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.QueryParamsRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_QueryParamsRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.zkp.QueryParamsRequest", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_QueryParamsRequest) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryParamsRequest) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_QueryParamsRequest) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_QueryParamsRequest) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*QueryParamsRequest)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*QueryParamsRequest)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*QueryParamsRequest)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryParamsRequest: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryParamsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var (
+	md_QueryParamsResponse        protoreflect.MessageDescriptor
+	fd_QueryParamsResponse_params protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_fairyring_zkp_query_proto_init()
+	md_QueryParamsResponse = File_fairyring_zkp_query_proto.Messages().ByName("QueryParamsResponse")
+	fd_QueryParamsResponse_params = md_QueryParamsResponse.Fields().ByName("params")
+}
+
+var _ protoreflect.Message = (*fastReflection_QueryParamsResponse)(nil)
+
+type fastReflection_QueryParamsResponse QueryParamsResponse
+
+func (x *QueryParamsResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryParamsResponse)(x)
+}
+
+func (x *QueryParamsResponse) slowProtoReflect() protoreflect.Message {
+	mi := &file_fairyring_zkp_query_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_QueryParamsResponse_messageType fastReflection_QueryParamsResponse_messageType
+var _ protoreflect.MessageType = fastReflection_QueryParamsResponse_messageType{}
+
+type fastReflection_QueryParamsResponse_messageType struct{}
+
+func (x fastReflection_QueryParamsResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryParamsResponse)(nil)
+}
+func (x fastReflection_QueryParamsResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryParamsResponse)
+}
+func (x fastReflection_QueryParamsResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryParamsResponse
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_QueryParamsResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryParamsResponse
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_QueryParamsResponse) Type() protoreflect.MessageType {
+	return _fastReflection_QueryParamsResponse_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_QueryParamsResponse) New() protoreflect.Message {
+	return new(fastReflection_QueryParamsResponse)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_QueryParamsResponse) Interface() protoreflect.ProtoMessage {
+	return (*QueryParamsResponse)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_QueryParamsResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.Params != nil {
+		value := protoreflect.ValueOfMessage(x.Params.ProtoReflect())
+		if !f(fd_QueryParamsResponse_params, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_QueryParamsResponse) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "fairyring.zkp.QueryParamsResponse.params":
+		return x.Params != nil
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryParamsResponse"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.QueryParamsResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryParamsResponse) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "fairyring.zkp.QueryParamsResponse.params":
+		x.Params = nil
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryParamsResponse"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.QueryParamsResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_QueryParamsResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "fairyring.zkp.QueryParamsResponse.params":
+		value := x.Params
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryParamsResponse"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.QueryParamsResponse does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryParamsResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "fairyring.zkp.QueryParamsResponse.params":
+		x.Params = value.Message().Interface().(*Params)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryParamsResponse"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.QueryParamsResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryParamsResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "fairyring.zkp.QueryParamsResponse.params":
+		if x.Params == nil {
+			x.Params = new(Params)
+		}
+		return protoreflect.ValueOfMessage(x.Params.ProtoReflect())
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryParamsResponse"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.QueryParamsResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_QueryParamsResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "fairyring.zkp.QueryParamsResponse.params":
+		m := new(Params)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryParamsResponse"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.QueryParamsResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_QueryParamsResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.zkp.QueryParamsResponse", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_QueryParamsResponse) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryParamsResponse) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_QueryParamsResponse) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_QueryParamsResponse) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*QueryParamsResponse)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		if x.Params != nil {
+			l = options.Size(x.Params)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*QueryParamsResponse)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.Params != nil {
+			encoded, err := options.Marshal(x.Params)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*QueryParamsResponse)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryParamsResponse: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryParamsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Params", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.Params == nil {
+					x.Params = &Params{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Params); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var (
+	md_TrustedContractsRequest protoreflect.MessageDescriptor
+)
+
+func init() {
+	file_fairyring_zkp_query_proto_init()
+	md_TrustedContractsRequest = File_fairyring_zkp_query_proto.Messages().ByName("TrustedContractsRequest")
+}
+
+var _ protoreflect.Message = (*fastReflection_TrustedContractsRequest)(nil)
+
+type fastReflection_TrustedContractsRequest TrustedContractsRequest
+
+func (x *TrustedContractsRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_TrustedContractsRequest)(x)
+}
+
+func (x *TrustedContractsRequest) slowProtoReflect() protoreflect.Message {
+	mi := &file_fairyring_zkp_query_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_TrustedContractsRequest_messageType fastReflection_TrustedContractsRequest_messageType
+var _ protoreflect.MessageType = fastReflection_TrustedContractsRequest_messageType{}
+
+type fastReflection_TrustedContractsRequest_messageType struct{}
+
+func (x fastReflection_TrustedContractsRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_TrustedContractsRequest)(nil)
+}
+func (x fastReflection_TrustedContractsRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_TrustedContractsRequest)
+}
+func (x fastReflection_TrustedContractsRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_TrustedContractsRequest
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_TrustedContractsRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_TrustedContractsRequest
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_TrustedContractsRequest) Type() protoreflect.MessageType {
+	return _fastReflection_TrustedContractsRequest_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_TrustedContractsRequest) New() protoreflect.Message {
+	return new(fastReflection_TrustedContractsRequest)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_TrustedContractsRequest) Interface() protoreflect.ProtoMessage {
+	return (*TrustedContractsRequest)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_TrustedContractsRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_TrustedContractsRequest) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.TrustedContractsRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.TrustedContractsRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_TrustedContractsRequest) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.TrustedContractsRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.TrustedContractsRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_TrustedContractsRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.TrustedContractsRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.TrustedContractsRequest does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_TrustedContractsRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.TrustedContractsRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.TrustedContractsRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_TrustedContractsRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.TrustedContractsRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.TrustedContractsRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_TrustedContractsRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.TrustedContractsRequest"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.TrustedContractsRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_TrustedContractsRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.zkp.TrustedContractsRequest", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_TrustedContractsRequest) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_TrustedContractsRequest) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_TrustedContractsRequest) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_TrustedContractsRequest) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*TrustedContractsRequest)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*TrustedContractsRequest)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*TrustedContractsRequest)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: TrustedContractsRequest: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: TrustedContractsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var _ protoreflect.List = (*_TrustedContractsResponse_1_list)(nil)
+
+type _TrustedContractsResponse_1_list struct {
+	list *[]string
+}
+
+func (x *_TrustedContractsResponse_1_list) Len() int {
+	if x.list == nil {
+		return 0
+	}
+	return len(*x.list)
+}
+
+func (x *_TrustedContractsResponse_1_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfString((*x.list)[i])
+}
+
+func (x *_TrustedContractsResponse_1_list) Set(i int, value protoreflect.Value) {
+	valueUnwrapped := value.String()
+	concreteValue := valueUnwrapped
+	(*x.list)[i] = concreteValue
+}
+
+func (x *_TrustedContractsResponse_1_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.String()
+	concreteValue := valueUnwrapped
+	*x.list = append(*x.list, concreteValue)
+}
+
+func (x *_TrustedContractsResponse_1_list) AppendMutable() protoreflect.Value {
+	panic(fmt.Errorf("AppendMutable can not be called on message TrustedContractsResponse at list field ContractAddresses as it is not of Message kind"))
+}
+
+func (x *_TrustedContractsResponse_1_list) Truncate(n int) {
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_TrustedContractsResponse_1_list) NewElement() protoreflect.Value {
+	v := ""
+	return protoreflect.ValueOfString(v)
+}
+
+func (x *_TrustedContractsResponse_1_list) IsValid() bool {
+	return x.list != nil
+}
+
+var (
+	md_TrustedContractsResponse                   protoreflect.MessageDescriptor
+	fd_TrustedContractsResponse_ContractAddresses protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_fairyring_zkp_query_proto_init()
+	md_TrustedContractsResponse = File_fairyring_zkp_query_proto.Messages().ByName("TrustedContractsResponse")
+	fd_TrustedContractsResponse_ContractAddresses = md_TrustedContractsResponse.Fields().ByName("ContractAddresses")
+}
+
+var _ protoreflect.Message = (*fastReflection_TrustedContractsResponse)(nil)
+
+type fastReflection_TrustedContractsResponse TrustedContractsResponse
+
+func (x *TrustedContractsResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_TrustedContractsResponse)(x)
+}
+
+func (x *TrustedContractsResponse) slowProtoReflect() protoreflect.Message {
+	mi := &file_fairyring_zkp_query_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_TrustedContractsResponse_messageType fastReflection_TrustedContractsResponse_messageType
+var _ protoreflect.MessageType = fastReflection_TrustedContractsResponse_messageType{}
+
+type fastReflection_TrustedContractsResponse_messageType struct{}
+
+func (x fastReflection_TrustedContractsResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_TrustedContractsResponse)(nil)
+}
+func (x fastReflection_TrustedContractsResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_TrustedContractsResponse)
+}
+func (x fastReflection_TrustedContractsResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_TrustedContractsResponse
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_TrustedContractsResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_TrustedContractsResponse
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_TrustedContractsResponse) Type() protoreflect.MessageType {
+	return _fastReflection_TrustedContractsResponse_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_TrustedContractsResponse) New() protoreflect.Message {
+	return new(fastReflection_TrustedContractsResponse)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_TrustedContractsResponse) Interface() protoreflect.ProtoMessage {
+	return (*TrustedContractsResponse)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_TrustedContractsResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if len(x.ContractAddresses) != 0 {
+		value := protoreflect.ValueOfList(&_TrustedContractsResponse_1_list{list: &x.ContractAddresses})
+		if !f(fd_TrustedContractsResponse_ContractAddresses, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_TrustedContractsResponse) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "fairyring.zkp.TrustedContractsResponse.ContractAddresses":
+		return len(x.ContractAddresses) != 0
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.TrustedContractsResponse"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.TrustedContractsResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_TrustedContractsResponse) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "fairyring.zkp.TrustedContractsResponse.ContractAddresses":
+		x.ContractAddresses = nil
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.TrustedContractsResponse"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.TrustedContractsResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_TrustedContractsResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "fairyring.zkp.TrustedContractsResponse.ContractAddresses":
+		if len(x.ContractAddresses) == 0 {
+			return protoreflect.ValueOfList(&_TrustedContractsResponse_1_list{})
+		}
+		listValue := &_TrustedContractsResponse_1_list{list: &x.ContractAddresses}
+		return protoreflect.ValueOfList(listValue)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.TrustedContractsResponse"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.TrustedContractsResponse does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_TrustedContractsResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "fairyring.zkp.TrustedContractsResponse.ContractAddresses":
+		lv := value.List()
+		clv := lv.(*_TrustedContractsResponse_1_list)
+		x.ContractAddresses = *clv.list
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.TrustedContractsResponse"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.TrustedContractsResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_TrustedContractsResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "fairyring.zkp.TrustedContractsResponse.ContractAddresses":
+		if x.ContractAddresses == nil {
+			x.ContractAddresses = []string{}
+		}
+		value := &_TrustedContractsResponse_1_list{list: &x.ContractAddresses}
+		return protoreflect.ValueOfList(value)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.TrustedContractsResponse"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.TrustedContractsResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_TrustedContractsResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "fairyring.zkp.TrustedContractsResponse.ContractAddresses":
+		list := []string{}
+		return protoreflect.ValueOfList(&_TrustedContractsResponse_1_list{list: &list})
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.TrustedContractsResponse"))
+		}
+		panic(fmt.Errorf("message fairyring.zkp.TrustedContractsResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_TrustedContractsResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in fairyring.zkp.TrustedContractsResponse", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_TrustedContractsResponse) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_TrustedContractsResponse) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_TrustedContractsResponse) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_TrustedContractsResponse) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*TrustedContractsResponse)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		if len(x.ContractAddresses) > 0 {
+			for _, s := range x.ContractAddresses {
+				l = len(s)
+				n += 1 + l + runtime.Sov(uint64(l))
+			}
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*TrustedContractsResponse)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.ContractAddresses) > 0 {
+			for iNdEx := len(x.ContractAddresses) - 1; iNdEx >= 0; iNdEx-- {
+				i -= len(x.ContractAddresses[iNdEx])
+				copy(dAtA[i:], x.ContractAddresses[iNdEx])
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ContractAddresses[iNdEx])))
+				i--
+				dAtA[i] = 0xa
+			}
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*TrustedContractsResponse)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: TrustedContractsResponse: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: TrustedContractsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ContractAddresses", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.ContractAddresses = append(x.ContractAddresses, string(dAtA[iNdEx:postIndex]))
+				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var (
 	md_QueryVerifyWithdrawRangeProofRequest            protoreflect.MessageDescriptor
 	fd_QueryVerifyWithdrawRangeProofRequest_proof_data protoreflect.FieldDescriptor
 )
@@ -35,7 +1662,7 @@ func (x *QueryVerifyWithdrawRangeProofRequest) ProtoReflect() protoreflect.Messa
 }
 
 func (x *QueryVerifyWithdrawRangeProofRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_zkp_query_proto_msgTypes[0]
+	mi := &file_fairyring_zkp_query_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -459,7 +2086,7 @@ func (x *QueryVerifyWithdrawRangeProofResponse) ProtoReflect() protoreflect.Mess
 }
 
 func (x *QueryVerifyWithdrawRangeProofResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_zkp_query_proto_msgTypes[1]
+	mi := &file_fairyring_zkp_query_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -931,7 +2558,7 @@ func (x *QueryVerifyTransferRangeProofRequest) ProtoReflect() protoreflect.Messa
 }
 
 func (x *QueryVerifyTransferRangeProofRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_zkp_query_proto_msgTypes[2]
+	mi := &file_fairyring_zkp_query_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1355,7 +2982,7 @@ func (x *QueryVerifyTransferRangeProofResponse) ProtoReflect() protoreflect.Mess
 }
 
 func (x *QueryVerifyTransferRangeProofResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_zkp_query_proto_msgTypes[3]
+	mi := &file_fairyring_zkp_query_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1827,7 +3454,7 @@ func (x *QueryVerifyValidityProofRequest) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryVerifyValidityProofRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_zkp_query_proto_msgTypes[4]
+	mi := &file_fairyring_zkp_query_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2251,7 +3878,7 @@ func (x *QueryVerifyValidityProofResponse) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryVerifyValidityProofResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_zkp_query_proto_msgTypes[5]
+	mi := &file_fairyring_zkp_query_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2723,7 +4350,7 @@ func (x *QueryVerifyEqualityProofRequest) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryVerifyEqualityProofRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_zkp_query_proto_msgTypes[6]
+	mi := &file_fairyring_zkp_query_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3147,7 +4774,7 @@ func (x *QueryVerifyEqualityProofResponse) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryVerifyEqualityProofResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_zkp_query_proto_msgTypes[7]
+	mi := &file_fairyring_zkp_query_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3600,10 +5227,14 @@ func (x *fastReflection_QueryVerifyEqualityProofResponse) ProtoMethods() *protoi
 }
 
 var (
-	md_QueryVerifyTransferProofsRequest                     protoreflect.MessageDescriptor
-	fd_QueryVerifyTransferProofsRequest_equality_proof_data protoreflect.FieldDescriptor
-	fd_QueryVerifyTransferProofsRequest_range_proof_data    protoreflect.FieldDescriptor
-	fd_QueryVerifyTransferProofsRequest_validity_proof_data protoreflect.FieldDescriptor
+	md_QueryVerifyTransferProofsRequest                            protoreflect.MessageDescriptor
+	fd_QueryVerifyTransferProofsRequest_equality_proof_data        protoreflect.FieldDescriptor
+	fd_QueryVerifyTransferProofsRequest_range_proof_data           protoreflect.FieldDescriptor
+	fd_QueryVerifyTransferProofsRequest_validity_proof_data        protoreflect.FieldDescriptor
+	fd_QueryVerifyTransferProofsRequest_sender_pubkey              protoreflect.FieldDescriptor
+	fd_QueryVerifyTransferProofsRequest_recipient_pubkey           protoreflect.FieldDescriptor
+	fd_QueryVerifyTransferProofsRequest_current_balance_commitment protoreflect.FieldDescriptor
+	fd_QueryVerifyTransferProofsRequest_current_balance_handle     protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -3612,6 +5243,10 @@ func init() {
 	fd_QueryVerifyTransferProofsRequest_equality_proof_data = md_QueryVerifyTransferProofsRequest.Fields().ByName("equality_proof_data")
 	fd_QueryVerifyTransferProofsRequest_range_proof_data = md_QueryVerifyTransferProofsRequest.Fields().ByName("range_proof_data")
 	fd_QueryVerifyTransferProofsRequest_validity_proof_data = md_QueryVerifyTransferProofsRequest.Fields().ByName("validity_proof_data")
+	fd_QueryVerifyTransferProofsRequest_sender_pubkey = md_QueryVerifyTransferProofsRequest.Fields().ByName("sender_pubkey")
+	fd_QueryVerifyTransferProofsRequest_recipient_pubkey = md_QueryVerifyTransferProofsRequest.Fields().ByName("recipient_pubkey")
+	fd_QueryVerifyTransferProofsRequest_current_balance_commitment = md_QueryVerifyTransferProofsRequest.Fields().ByName("current_balance_commitment")
+	fd_QueryVerifyTransferProofsRequest_current_balance_handle = md_QueryVerifyTransferProofsRequest.Fields().ByName("current_balance_handle")
 }
 
 var _ protoreflect.Message = (*fastReflection_QueryVerifyTransferProofsRequest)(nil)
@@ -3623,7 +5258,7 @@ func (x *QueryVerifyTransferProofsRequest) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryVerifyTransferProofsRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_zkp_query_proto_msgTypes[8]
+	mi := &file_fairyring_zkp_query_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3697,6 +5332,30 @@ func (x *fastReflection_QueryVerifyTransferProofsRequest) Range(f func(protorefl
 			return
 		}
 	}
+	if len(x.SenderPubkey) != 0 {
+		value := protoreflect.ValueOfBytes(x.SenderPubkey)
+		if !f(fd_QueryVerifyTransferProofsRequest_sender_pubkey, value) {
+			return
+		}
+	}
+	if len(x.RecipientPubkey) != 0 {
+		value := protoreflect.ValueOfBytes(x.RecipientPubkey)
+		if !f(fd_QueryVerifyTransferProofsRequest_recipient_pubkey, value) {
+			return
+		}
+	}
+	if len(x.CurrentBalanceCommitment) != 0 {
+		value := protoreflect.ValueOfBytes(x.CurrentBalanceCommitment)
+		if !f(fd_QueryVerifyTransferProofsRequest_current_balance_commitment, value) {
+			return
+		}
+	}
+	if len(x.CurrentBalanceHandle) != 0 {
+		value := protoreflect.ValueOfBytes(x.CurrentBalanceHandle)
+		if !f(fd_QueryVerifyTransferProofsRequest_current_balance_handle, value) {
+			return
+		}
+	}
 }
 
 // Has reports whether a field is populated.
@@ -3718,6 +5377,14 @@ func (x *fastReflection_QueryVerifyTransferProofsRequest) Has(fd protoreflect.Fi
 		return len(x.RangeProofData) != 0
 	case "fairyring.zkp.QueryVerifyTransferProofsRequest.validity_proof_data":
 		return len(x.ValidityProofData) != 0
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.sender_pubkey":
+		return len(x.SenderPubkey) != 0
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.recipient_pubkey":
+		return len(x.RecipientPubkey) != 0
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.current_balance_commitment":
+		return len(x.CurrentBalanceCommitment) != 0
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.current_balance_handle":
+		return len(x.CurrentBalanceHandle) != 0
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryVerifyTransferProofsRequest"))
@@ -3740,6 +5407,14 @@ func (x *fastReflection_QueryVerifyTransferProofsRequest) Clear(fd protoreflect.
 		x.RangeProofData = nil
 	case "fairyring.zkp.QueryVerifyTransferProofsRequest.validity_proof_data":
 		x.ValidityProofData = nil
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.sender_pubkey":
+		x.SenderPubkey = nil
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.recipient_pubkey":
+		x.RecipientPubkey = nil
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.current_balance_commitment":
+		x.CurrentBalanceCommitment = nil
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.current_balance_handle":
+		x.CurrentBalanceHandle = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryVerifyTransferProofsRequest"))
@@ -3764,6 +5439,18 @@ func (x *fastReflection_QueryVerifyTransferProofsRequest) Get(descriptor protore
 		return protoreflect.ValueOfBytes(value)
 	case "fairyring.zkp.QueryVerifyTransferProofsRequest.validity_proof_data":
 		value := x.ValidityProofData
+		return protoreflect.ValueOfBytes(value)
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.sender_pubkey":
+		value := x.SenderPubkey
+		return protoreflect.ValueOfBytes(value)
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.recipient_pubkey":
+		value := x.RecipientPubkey
+		return protoreflect.ValueOfBytes(value)
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.current_balance_commitment":
+		value := x.CurrentBalanceCommitment
+		return protoreflect.ValueOfBytes(value)
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.current_balance_handle":
+		value := x.CurrentBalanceHandle
 		return protoreflect.ValueOfBytes(value)
 	default:
 		if descriptor.IsExtension() {
@@ -3791,6 +5478,14 @@ func (x *fastReflection_QueryVerifyTransferProofsRequest) Set(fd protoreflect.Fi
 		x.RangeProofData = value.Bytes()
 	case "fairyring.zkp.QueryVerifyTransferProofsRequest.validity_proof_data":
 		x.ValidityProofData = value.Bytes()
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.sender_pubkey":
+		x.SenderPubkey = value.Bytes()
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.recipient_pubkey":
+		x.RecipientPubkey = value.Bytes()
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.current_balance_commitment":
+		x.CurrentBalanceCommitment = value.Bytes()
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.current_balance_handle":
+		x.CurrentBalanceHandle = value.Bytes()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryVerifyTransferProofsRequest"))
@@ -3817,6 +5512,14 @@ func (x *fastReflection_QueryVerifyTransferProofsRequest) Mutable(fd protoreflec
 		panic(fmt.Errorf("field range_proof_data of message fairyring.zkp.QueryVerifyTransferProofsRequest is not mutable"))
 	case "fairyring.zkp.QueryVerifyTransferProofsRequest.validity_proof_data":
 		panic(fmt.Errorf("field validity_proof_data of message fairyring.zkp.QueryVerifyTransferProofsRequest is not mutable"))
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.sender_pubkey":
+		panic(fmt.Errorf("field sender_pubkey of message fairyring.zkp.QueryVerifyTransferProofsRequest is not mutable"))
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.recipient_pubkey":
+		panic(fmt.Errorf("field recipient_pubkey of message fairyring.zkp.QueryVerifyTransferProofsRequest is not mutable"))
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.current_balance_commitment":
+		panic(fmt.Errorf("field current_balance_commitment of message fairyring.zkp.QueryVerifyTransferProofsRequest is not mutable"))
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.current_balance_handle":
+		panic(fmt.Errorf("field current_balance_handle of message fairyring.zkp.QueryVerifyTransferProofsRequest is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryVerifyTransferProofsRequest"))
@@ -3835,6 +5538,14 @@ func (x *fastReflection_QueryVerifyTransferProofsRequest) NewField(fd protorefle
 	case "fairyring.zkp.QueryVerifyTransferProofsRequest.range_proof_data":
 		return protoreflect.ValueOfBytes(nil)
 	case "fairyring.zkp.QueryVerifyTransferProofsRequest.validity_proof_data":
+		return protoreflect.ValueOfBytes(nil)
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.sender_pubkey":
+		return protoreflect.ValueOfBytes(nil)
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.recipient_pubkey":
+		return protoreflect.ValueOfBytes(nil)
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.current_balance_commitment":
+		return protoreflect.ValueOfBytes(nil)
+	case "fairyring.zkp.QueryVerifyTransferProofsRequest.current_balance_handle":
 		return protoreflect.ValueOfBytes(nil)
 	default:
 		if fd.IsExtension() {
@@ -3917,6 +5628,22 @@ func (x *fastReflection_QueryVerifyTransferProofsRequest) ProtoMethods() *protoi
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
+		l = len(x.SenderPubkey)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.RecipientPubkey)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.CurrentBalanceCommitment)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.CurrentBalanceHandle)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -3945,6 +5672,34 @@ func (x *fastReflection_QueryVerifyTransferProofsRequest) ProtoMethods() *protoi
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.CurrentBalanceHandle) > 0 {
+			i -= len(x.CurrentBalanceHandle)
+			copy(dAtA[i:], x.CurrentBalanceHandle)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.CurrentBalanceHandle)))
+			i--
+			dAtA[i] = 0x3a
+		}
+		if len(x.CurrentBalanceCommitment) > 0 {
+			i -= len(x.CurrentBalanceCommitment)
+			copy(dAtA[i:], x.CurrentBalanceCommitment)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.CurrentBalanceCommitment)))
+			i--
+			dAtA[i] = 0x32
+		}
+		if len(x.RecipientPubkey) > 0 {
+			i -= len(x.RecipientPubkey)
+			copy(dAtA[i:], x.RecipientPubkey)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.RecipientPubkey)))
+			i--
+			dAtA[i] = 0x2a
+		}
+		if len(x.SenderPubkey) > 0 {
+			i -= len(x.SenderPubkey)
+			copy(dAtA[i:], x.SenderPubkey)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.SenderPubkey)))
+			i--
+			dAtA[i] = 0x22
 		}
 		if len(x.ValidityProofData) > 0 {
 			i -= len(x.ValidityProofData)
@@ -4118,6 +5873,142 @@ func (x *fastReflection_QueryVerifyTransferProofsRequest) ProtoMethods() *protoi
 					x.ValidityProofData = []byte{}
 				}
 				iNdEx = postIndex
+			case 4:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SenderPubkey", wireType)
+				}
+				var byteLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					byteLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if byteLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + byteLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.SenderPubkey = append(x.SenderPubkey[:0], dAtA[iNdEx:postIndex]...)
+				if x.SenderPubkey == nil {
+					x.SenderPubkey = []byte{}
+				}
+				iNdEx = postIndex
+			case 5:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field RecipientPubkey", wireType)
+				}
+				var byteLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					byteLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if byteLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + byteLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.RecipientPubkey = append(x.RecipientPubkey[:0], dAtA[iNdEx:postIndex]...)
+				if x.RecipientPubkey == nil {
+					x.RecipientPubkey = []byte{}
+				}
+				iNdEx = postIndex
+			case 6:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field CurrentBalanceCommitment", wireType)
+				}
+				var byteLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					byteLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if byteLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + byteLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.CurrentBalanceCommitment = append(x.CurrentBalanceCommitment[:0], dAtA[iNdEx:postIndex]...)
+				if x.CurrentBalanceCommitment == nil {
+					x.CurrentBalanceCommitment = []byte{}
+				}
+				iNdEx = postIndex
+			case 7:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field CurrentBalanceHandle", wireType)
+				}
+				var byteLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					byteLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if byteLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + byteLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.CurrentBalanceHandle = append(x.CurrentBalanceHandle[:0], dAtA[iNdEx:postIndex]...)
+				if x.CurrentBalanceHandle == nil {
+					x.CurrentBalanceHandle = []byte{}
+				}
+				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -4175,7 +6066,7 @@ func (x *QueryVerifyTransferProofsResponse) ProtoReflect() protoreflect.Message 
 }
 
 func (x *QueryVerifyTransferProofsResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_zkp_query_proto_msgTypes[9]
+	mi := &file_fairyring_zkp_query_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4628,9 +6519,13 @@ func (x *fastReflection_QueryVerifyTransferProofsResponse) ProtoMethods() *proto
 }
 
 var (
-	md_QueryVerifyWithdrawProofsRequest                     protoreflect.MessageDescriptor
-	fd_QueryVerifyWithdrawProofsRequest_equality_proof_data protoreflect.FieldDescriptor
-	fd_QueryVerifyWithdrawProofsRequest_range_proof_data    protoreflect.FieldDescriptor
+	md_QueryVerifyWithdrawProofsRequest                       protoreflect.MessageDescriptor
+	fd_QueryVerifyWithdrawProofsRequest_equality_proof_data   protoreflect.FieldDescriptor
+	fd_QueryVerifyWithdrawProofsRequest_range_proof_data      protoreflect.FieldDescriptor
+	fd_QueryVerifyWithdrawProofsRequest_user_pubkey           protoreflect.FieldDescriptor
+	fd_QueryVerifyWithdrawProofsRequest_ciphertext_commitment protoreflect.FieldDescriptor
+	fd_QueryVerifyWithdrawProofsRequest_ciphertext_handle     protoreflect.FieldDescriptor
+	fd_QueryVerifyWithdrawProofsRequest_expected_nonce        protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -4638,6 +6533,10 @@ func init() {
 	md_QueryVerifyWithdrawProofsRequest = File_fairyring_zkp_query_proto.Messages().ByName("QueryVerifyWithdrawProofsRequest")
 	fd_QueryVerifyWithdrawProofsRequest_equality_proof_data = md_QueryVerifyWithdrawProofsRequest.Fields().ByName("equality_proof_data")
 	fd_QueryVerifyWithdrawProofsRequest_range_proof_data = md_QueryVerifyWithdrawProofsRequest.Fields().ByName("range_proof_data")
+	fd_QueryVerifyWithdrawProofsRequest_user_pubkey = md_QueryVerifyWithdrawProofsRequest.Fields().ByName("user_pubkey")
+	fd_QueryVerifyWithdrawProofsRequest_ciphertext_commitment = md_QueryVerifyWithdrawProofsRequest.Fields().ByName("ciphertext_commitment")
+	fd_QueryVerifyWithdrawProofsRequest_ciphertext_handle = md_QueryVerifyWithdrawProofsRequest.Fields().ByName("ciphertext_handle")
+	fd_QueryVerifyWithdrawProofsRequest_expected_nonce = md_QueryVerifyWithdrawProofsRequest.Fields().ByName("expected_nonce")
 }
 
 var _ protoreflect.Message = (*fastReflection_QueryVerifyWithdrawProofsRequest)(nil)
@@ -4649,7 +6548,7 @@ func (x *QueryVerifyWithdrawProofsRequest) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryVerifyWithdrawProofsRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_zkp_query_proto_msgTypes[10]
+	mi := &file_fairyring_zkp_query_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4717,6 +6616,30 @@ func (x *fastReflection_QueryVerifyWithdrawProofsRequest) Range(f func(protorefl
 			return
 		}
 	}
+	if len(x.UserPubkey) != 0 {
+		value := protoreflect.ValueOfBytes(x.UserPubkey)
+		if !f(fd_QueryVerifyWithdrawProofsRequest_user_pubkey, value) {
+			return
+		}
+	}
+	if len(x.CiphertextCommitment) != 0 {
+		value := protoreflect.ValueOfBytes(x.CiphertextCommitment)
+		if !f(fd_QueryVerifyWithdrawProofsRequest_ciphertext_commitment, value) {
+			return
+		}
+	}
+	if len(x.CiphertextHandle) != 0 {
+		value := protoreflect.ValueOfBytes(x.CiphertextHandle)
+		if !f(fd_QueryVerifyWithdrawProofsRequest_ciphertext_handle, value) {
+			return
+		}
+	}
+	if x.ExpectedNonce != uint64(0) {
+		value := protoreflect.ValueOfUint64(x.ExpectedNonce)
+		if !f(fd_QueryVerifyWithdrawProofsRequest_expected_nonce, value) {
+			return
+		}
+	}
 }
 
 // Has reports whether a field is populated.
@@ -4736,6 +6659,14 @@ func (x *fastReflection_QueryVerifyWithdrawProofsRequest) Has(fd protoreflect.Fi
 		return len(x.EqualityProofData) != 0
 	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.range_proof_data":
 		return len(x.RangeProofData) != 0
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.user_pubkey":
+		return len(x.UserPubkey) != 0
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.ciphertext_commitment":
+		return len(x.CiphertextCommitment) != 0
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.ciphertext_handle":
+		return len(x.CiphertextHandle) != 0
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.expected_nonce":
+		return x.ExpectedNonce != uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryVerifyWithdrawProofsRequest"))
@@ -4756,6 +6687,14 @@ func (x *fastReflection_QueryVerifyWithdrawProofsRequest) Clear(fd protoreflect.
 		x.EqualityProofData = nil
 	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.range_proof_data":
 		x.RangeProofData = nil
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.user_pubkey":
+		x.UserPubkey = nil
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.ciphertext_commitment":
+		x.CiphertextCommitment = nil
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.ciphertext_handle":
+		x.CiphertextHandle = nil
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.expected_nonce":
+		x.ExpectedNonce = uint64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryVerifyWithdrawProofsRequest"))
@@ -4778,6 +6717,18 @@ func (x *fastReflection_QueryVerifyWithdrawProofsRequest) Get(descriptor protore
 	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.range_proof_data":
 		value := x.RangeProofData
 		return protoreflect.ValueOfBytes(value)
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.user_pubkey":
+		value := x.UserPubkey
+		return protoreflect.ValueOfBytes(value)
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.ciphertext_commitment":
+		value := x.CiphertextCommitment
+		return protoreflect.ValueOfBytes(value)
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.ciphertext_handle":
+		value := x.CiphertextHandle
+		return protoreflect.ValueOfBytes(value)
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.expected_nonce":
+		value := x.ExpectedNonce
+		return protoreflect.ValueOfUint64(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryVerifyWithdrawProofsRequest"))
@@ -4802,6 +6753,14 @@ func (x *fastReflection_QueryVerifyWithdrawProofsRequest) Set(fd protoreflect.Fi
 		x.EqualityProofData = value.Bytes()
 	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.range_proof_data":
 		x.RangeProofData = value.Bytes()
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.user_pubkey":
+		x.UserPubkey = value.Bytes()
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.ciphertext_commitment":
+		x.CiphertextCommitment = value.Bytes()
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.ciphertext_handle":
+		x.CiphertextHandle = value.Bytes()
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.expected_nonce":
+		x.ExpectedNonce = value.Uint()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryVerifyWithdrawProofsRequest"))
@@ -4826,6 +6785,14 @@ func (x *fastReflection_QueryVerifyWithdrawProofsRequest) Mutable(fd protoreflec
 		panic(fmt.Errorf("field equality_proof_data of message fairyring.zkp.QueryVerifyWithdrawProofsRequest is not mutable"))
 	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.range_proof_data":
 		panic(fmt.Errorf("field range_proof_data of message fairyring.zkp.QueryVerifyWithdrawProofsRequest is not mutable"))
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.user_pubkey":
+		panic(fmt.Errorf("field user_pubkey of message fairyring.zkp.QueryVerifyWithdrawProofsRequest is not mutable"))
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.ciphertext_commitment":
+		panic(fmt.Errorf("field ciphertext_commitment of message fairyring.zkp.QueryVerifyWithdrawProofsRequest is not mutable"))
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.ciphertext_handle":
+		panic(fmt.Errorf("field ciphertext_handle of message fairyring.zkp.QueryVerifyWithdrawProofsRequest is not mutable"))
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.expected_nonce":
+		panic(fmt.Errorf("field expected_nonce of message fairyring.zkp.QueryVerifyWithdrawProofsRequest is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryVerifyWithdrawProofsRequest"))
@@ -4843,6 +6810,14 @@ func (x *fastReflection_QueryVerifyWithdrawProofsRequest) NewField(fd protorefle
 		return protoreflect.ValueOfBytes(nil)
 	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.range_proof_data":
 		return protoreflect.ValueOfBytes(nil)
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.user_pubkey":
+		return protoreflect.ValueOfBytes(nil)
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.ciphertext_commitment":
+		return protoreflect.ValueOfBytes(nil)
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.ciphertext_handle":
+		return protoreflect.ValueOfBytes(nil)
+	case "fairyring.zkp.QueryVerifyWithdrawProofsRequest.expected_nonce":
+		return protoreflect.ValueOfUint64(uint64(0))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: fairyring.zkp.QueryVerifyWithdrawProofsRequest"))
@@ -4920,6 +6895,21 @@ func (x *fastReflection_QueryVerifyWithdrawProofsRequest) ProtoMethods() *protoi
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
+		l = len(x.UserPubkey)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.CiphertextCommitment)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.CiphertextHandle)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.ExpectedNonce != 0 {
+			n += 1 + runtime.Sov(uint64(x.ExpectedNonce))
+		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -4948,6 +6938,32 @@ func (x *fastReflection_QueryVerifyWithdrawProofsRequest) ProtoMethods() *protoi
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.ExpectedNonce != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.ExpectedNonce))
+			i--
+			dAtA[i] = 0x30
+		}
+		if len(x.CiphertextHandle) > 0 {
+			i -= len(x.CiphertextHandle)
+			copy(dAtA[i:], x.CiphertextHandle)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.CiphertextHandle)))
+			i--
+			dAtA[i] = 0x2a
+		}
+		if len(x.CiphertextCommitment) > 0 {
+			i -= len(x.CiphertextCommitment)
+			copy(dAtA[i:], x.CiphertextCommitment)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.CiphertextCommitment)))
+			i--
+			dAtA[i] = 0x22
+		}
+		if len(x.UserPubkey) > 0 {
+			i -= len(x.UserPubkey)
+			copy(dAtA[i:], x.UserPubkey)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.UserPubkey)))
+			i--
+			dAtA[i] = 0x1a
 		}
 		if len(x.RangeProofData) > 0 {
 			i -= len(x.RangeProofData)
@@ -5080,6 +7096,127 @@ func (x *fastReflection_QueryVerifyWithdrawProofsRequest) ProtoMethods() *protoi
 					x.RangeProofData = []byte{}
 				}
 				iNdEx = postIndex
+			case 3:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field UserPubkey", wireType)
+				}
+				var byteLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					byteLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if byteLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + byteLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.UserPubkey = append(x.UserPubkey[:0], dAtA[iNdEx:postIndex]...)
+				if x.UserPubkey == nil {
+					x.UserPubkey = []byte{}
+				}
+				iNdEx = postIndex
+			case 4:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field CiphertextCommitment", wireType)
+				}
+				var byteLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					byteLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if byteLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + byteLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.CiphertextCommitment = append(x.CiphertextCommitment[:0], dAtA[iNdEx:postIndex]...)
+				if x.CiphertextCommitment == nil {
+					x.CiphertextCommitment = []byte{}
+				}
+				iNdEx = postIndex
+			case 5:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field CiphertextHandle", wireType)
+				}
+				var byteLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					byteLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if byteLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + byteLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.CiphertextHandle = append(x.CiphertextHandle[:0], dAtA[iNdEx:postIndex]...)
+				if x.CiphertextHandle == nil {
+					x.CiphertextHandle = []byte{}
+				}
+				iNdEx = postIndex
+			case 6:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ExpectedNonce", wireType)
+				}
+				x.ExpectedNonce = 0
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					x.ExpectedNonce |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -5137,7 +7274,7 @@ func (x *QueryVerifyWithdrawProofsResponse) ProtoReflect() protoreflect.Message 
 }
 
 func (x *QueryVerifyWithdrawProofsResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_fairyring_zkp_query_proto_msgTypes[11]
+	mi := &file_fairyring_zkp_query_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5602,6 +7739,131 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// QueryParamsRequest is request type for the Query/Params RPC method.
+type QueryParamsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *QueryParamsRequest) Reset() {
+	*x = QueryParamsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_fairyring_zkp_query_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryParamsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryParamsRequest) ProtoMessage() {}
+
+// Deprecated: Use QueryParamsRequest.ProtoReflect.Descriptor instead.
+func (*QueryParamsRequest) Descriptor() ([]byte, []int) {
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{0}
+}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+type QueryParamsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// params holds all the parameters of this module.
+	Params *Params `protobuf:"bytes,1,opt,name=params,proto3" json:"params,omitempty"`
+}
+
+func (x *QueryParamsResponse) Reset() {
+	*x = QueryParamsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_fairyring_zkp_query_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryParamsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryParamsResponse) ProtoMessage() {}
+
+// Deprecated: Use QueryParamsResponse.ProtoReflect.Descriptor instead.
+func (*QueryParamsResponse) Descriptor() ([]byte, []int) {
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *QueryParamsResponse) GetParams() *Params {
+	if x != nil {
+		return x.Params
+	}
+	return nil
+}
+
+type TrustedContractsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *TrustedContractsRequest) Reset() {
+	*x = TrustedContractsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_fairyring_zkp_query_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *TrustedContractsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TrustedContractsRequest) ProtoMessage() {}
+
+// Deprecated: Use TrustedContractsRequest.ProtoReflect.Descriptor instead.
+func (*TrustedContractsRequest) Descriptor() ([]byte, []int) {
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{2}
+}
+
+type TrustedContractsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ContractAddresses []string `protobuf:"bytes,1,rep,name=ContractAddresses,proto3" json:"ContractAddresses,omitempty"` // List of trusted contract addresses
+}
+
+func (x *TrustedContractsResponse) Reset() {
+	*x = TrustedContractsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_fairyring_zkp_query_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *TrustedContractsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TrustedContractsResponse) ProtoMessage() {}
+
+// Deprecated: Use TrustedContractsResponse.ProtoReflect.Descriptor instead.
+func (*TrustedContractsResponse) Descriptor() ([]byte, []int) {
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *TrustedContractsResponse) GetContractAddresses() []string {
+	if x != nil {
+		return x.ContractAddresses
+	}
+	return nil
+}
+
 // QueryVerifyWithdrawRangeProofRequest is request type for the Query/VerifyWithdrawRangeProof RPC method.
 type QueryVerifyWithdrawRangeProofRequest struct {
 	state         protoimpl.MessageState
@@ -5614,7 +7876,7 @@ type QueryVerifyWithdrawRangeProofRequest struct {
 func (x *QueryVerifyWithdrawRangeProofRequest) Reset() {
 	*x = QueryVerifyWithdrawRangeProofRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_zkp_query_proto_msgTypes[0]
+		mi := &file_fairyring_zkp_query_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5628,7 +7890,7 @@ func (*QueryVerifyWithdrawRangeProofRequest) ProtoMessage() {}
 
 // Deprecated: Use QueryVerifyWithdrawRangeProofRequest.ProtoReflect.Descriptor instead.
 func (*QueryVerifyWithdrawRangeProofRequest) Descriptor() ([]byte, []int) {
-	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{0}
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *QueryVerifyWithdrawRangeProofRequest) GetProofData() []byte {
@@ -5651,7 +7913,7 @@ type QueryVerifyWithdrawRangeProofResponse struct {
 func (x *QueryVerifyWithdrawRangeProofResponse) Reset() {
 	*x = QueryVerifyWithdrawRangeProofResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_zkp_query_proto_msgTypes[1]
+		mi := &file_fairyring_zkp_query_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5665,7 +7927,7 @@ func (*QueryVerifyWithdrawRangeProofResponse) ProtoMessage() {}
 
 // Deprecated: Use QueryVerifyWithdrawRangeProofResponse.ProtoReflect.Descriptor instead.
 func (*QueryVerifyWithdrawRangeProofResponse) Descriptor() ([]byte, []int) {
-	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{1}
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *QueryVerifyWithdrawRangeProofResponse) GetValid() bool {
@@ -5694,7 +7956,7 @@ type QueryVerifyTransferRangeProofRequest struct {
 func (x *QueryVerifyTransferRangeProofRequest) Reset() {
 	*x = QueryVerifyTransferRangeProofRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_zkp_query_proto_msgTypes[2]
+		mi := &file_fairyring_zkp_query_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5708,7 +7970,7 @@ func (*QueryVerifyTransferRangeProofRequest) ProtoMessage() {}
 
 // Deprecated: Use QueryVerifyTransferRangeProofRequest.ProtoReflect.Descriptor instead.
 func (*QueryVerifyTransferRangeProofRequest) Descriptor() ([]byte, []int) {
-	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{2}
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *QueryVerifyTransferRangeProofRequest) GetProofData() []byte {
@@ -5731,7 +7993,7 @@ type QueryVerifyTransferRangeProofResponse struct {
 func (x *QueryVerifyTransferRangeProofResponse) Reset() {
 	*x = QueryVerifyTransferRangeProofResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_zkp_query_proto_msgTypes[3]
+		mi := &file_fairyring_zkp_query_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5745,7 +8007,7 @@ func (*QueryVerifyTransferRangeProofResponse) ProtoMessage() {}
 
 // Deprecated: Use QueryVerifyTransferRangeProofResponse.ProtoReflect.Descriptor instead.
 func (*QueryVerifyTransferRangeProofResponse) Descriptor() ([]byte, []int) {
-	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{3}
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *QueryVerifyTransferRangeProofResponse) GetValid() bool {
@@ -5774,7 +8036,7 @@ type QueryVerifyValidityProofRequest struct {
 func (x *QueryVerifyValidityProofRequest) Reset() {
 	*x = QueryVerifyValidityProofRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_zkp_query_proto_msgTypes[4]
+		mi := &file_fairyring_zkp_query_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5788,7 +8050,7 @@ func (*QueryVerifyValidityProofRequest) ProtoMessage() {}
 
 // Deprecated: Use QueryVerifyValidityProofRequest.ProtoReflect.Descriptor instead.
 func (*QueryVerifyValidityProofRequest) Descriptor() ([]byte, []int) {
-	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{4}
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *QueryVerifyValidityProofRequest) GetProofData() []byte {
@@ -5811,7 +8073,7 @@ type QueryVerifyValidityProofResponse struct {
 func (x *QueryVerifyValidityProofResponse) Reset() {
 	*x = QueryVerifyValidityProofResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_zkp_query_proto_msgTypes[5]
+		mi := &file_fairyring_zkp_query_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5825,7 +8087,7 @@ func (*QueryVerifyValidityProofResponse) ProtoMessage() {}
 
 // Deprecated: Use QueryVerifyValidityProofResponse.ProtoReflect.Descriptor instead.
 func (*QueryVerifyValidityProofResponse) Descriptor() ([]byte, []int) {
-	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{5}
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *QueryVerifyValidityProofResponse) GetValid() bool {
@@ -5854,7 +8116,7 @@ type QueryVerifyEqualityProofRequest struct {
 func (x *QueryVerifyEqualityProofRequest) Reset() {
 	*x = QueryVerifyEqualityProofRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_zkp_query_proto_msgTypes[6]
+		mi := &file_fairyring_zkp_query_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5868,7 +8130,7 @@ func (*QueryVerifyEqualityProofRequest) ProtoMessage() {}
 
 // Deprecated: Use QueryVerifyEqualityProofRequest.ProtoReflect.Descriptor instead.
 func (*QueryVerifyEqualityProofRequest) Descriptor() ([]byte, []int) {
-	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{6}
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *QueryVerifyEqualityProofRequest) GetProofData() []byte {
@@ -5891,7 +8153,7 @@ type QueryVerifyEqualityProofResponse struct {
 func (x *QueryVerifyEqualityProofResponse) Reset() {
 	*x = QueryVerifyEqualityProofResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_zkp_query_proto_msgTypes[7]
+		mi := &file_fairyring_zkp_query_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5905,7 +8167,7 @@ func (*QueryVerifyEqualityProofResponse) ProtoMessage() {}
 
 // Deprecated: Use QueryVerifyEqualityProofResponse.ProtoReflect.Descriptor instead.
 func (*QueryVerifyEqualityProofResponse) Descriptor() ([]byte, []int) {
-	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{7}
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *QueryVerifyEqualityProofResponse) GetValid() bool {
@@ -5923,21 +8185,26 @@ func (x *QueryVerifyEqualityProofResponse) GetError() string {
 }
 
 // QueryVerifyTransferProofsRequest is request type for the Query/VerifyTransferProofs RPC method.
-// Contains all proofs needed for transfer verification: equality, range, and validity proofs
+// Contains all proofs needed for transfer verification: equality, range, and validity proofs,
+// plus binding data checked after ZK verification (pubkeys, current balance ciphertext).
 type QueryVerifyTransferProofsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	EqualityProofData []byte `protobuf:"bytes,1,opt,name=equality_proof_data,json=equalityProofData,proto3" json:"equality_proof_data,omitempty"` // Serialized CiphertextCommitmentEqualityProofData
-	RangeProofData    []byte `protobuf:"bytes,2,opt,name=range_proof_data,json=rangeProofData,proto3" json:"range_proof_data,omitempty"`          // Serialized BatchedRangeProofU128Data
-	ValidityProofData []byte `protobuf:"bytes,3,opt,name=validity_proof_data,json=validityProofData,proto3" json:"validity_proof_data,omitempty"` // Serialized BatchedGroupedCiphertext2HandlesValidityProofData
+	EqualityProofData        []byte `protobuf:"bytes,1,opt,name=equality_proof_data,json=equalityProofData,proto3" json:"equality_proof_data,omitempty"`                      // Serialized CiphertextCommitmentEqualityProofData
+	RangeProofData           []byte `protobuf:"bytes,2,opt,name=range_proof_data,json=rangeProofData,proto3" json:"range_proof_data,omitempty"`                               // Serialized BatchedRangeProofU128Data
+	ValidityProofData        []byte `protobuf:"bytes,3,opt,name=validity_proof_data,json=validityProofData,proto3" json:"validity_proof_data,omitempty"`                      // Serialized BatchedGroupedCiphertext2HandlesValidityProofData
+	SenderPubkey             []byte `protobuf:"bytes,4,opt,name=sender_pubkey,json=senderPubkey,proto3" json:"sender_pubkey,omitempty"`                                       // 32 bytes, expected sender ElGamal pubkey
+	RecipientPubkey          []byte `protobuf:"bytes,5,opt,name=recipient_pubkey,json=recipientPubkey,proto3" json:"recipient_pubkey,omitempty"`                              // 32 bytes, expected recipient ElGamal pubkey
+	CurrentBalanceCommitment []byte `protobuf:"bytes,6,opt,name=current_balance_commitment,json=currentBalanceCommitment,proto3" json:"current_balance_commitment,omitempty"` // c1 of encrypted available balance (32 bytes)
+	CurrentBalanceHandle     []byte `protobuf:"bytes,7,opt,name=current_balance_handle,json=currentBalanceHandle,proto3" json:"current_balance_handle,omitempty"`             // c2 of encrypted available balance (32 bytes)
 }
 
 func (x *QueryVerifyTransferProofsRequest) Reset() {
 	*x = QueryVerifyTransferProofsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_zkp_query_proto_msgTypes[8]
+		mi := &file_fairyring_zkp_query_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5951,7 +8218,7 @@ func (*QueryVerifyTransferProofsRequest) ProtoMessage() {}
 
 // Deprecated: Use QueryVerifyTransferProofsRequest.ProtoReflect.Descriptor instead.
 func (*QueryVerifyTransferProofsRequest) Descriptor() ([]byte, []int) {
-	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{8}
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *QueryVerifyTransferProofsRequest) GetEqualityProofData() []byte {
@@ -5975,6 +8242,34 @@ func (x *QueryVerifyTransferProofsRequest) GetValidityProofData() []byte {
 	return nil
 }
 
+func (x *QueryVerifyTransferProofsRequest) GetSenderPubkey() []byte {
+	if x != nil {
+		return x.SenderPubkey
+	}
+	return nil
+}
+
+func (x *QueryVerifyTransferProofsRequest) GetRecipientPubkey() []byte {
+	if x != nil {
+		return x.RecipientPubkey
+	}
+	return nil
+}
+
+func (x *QueryVerifyTransferProofsRequest) GetCurrentBalanceCommitment() []byte {
+	if x != nil {
+		return x.CurrentBalanceCommitment
+	}
+	return nil
+}
+
+func (x *QueryVerifyTransferProofsRequest) GetCurrentBalanceHandle() []byte {
+	if x != nil {
+		return x.CurrentBalanceHandle
+	}
+	return nil
+}
+
 // QueryVerifyTransferProofsResponse is response type for the Query/VerifyTransferProofs RPC method.
 type QueryVerifyTransferProofsResponse struct {
 	state         protoimpl.MessageState
@@ -5988,7 +8283,7 @@ type QueryVerifyTransferProofsResponse struct {
 func (x *QueryVerifyTransferProofsResponse) Reset() {
 	*x = QueryVerifyTransferProofsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_zkp_query_proto_msgTypes[9]
+		mi := &file_fairyring_zkp_query_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6002,7 +8297,7 @@ func (*QueryVerifyTransferProofsResponse) ProtoMessage() {}
 
 // Deprecated: Use QueryVerifyTransferProofsResponse.ProtoReflect.Descriptor instead.
 func (*QueryVerifyTransferProofsResponse) Descriptor() ([]byte, []int) {
-	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{9}
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *QueryVerifyTransferProofsResponse) GetValid() bool {
@@ -6020,20 +8315,24 @@ func (x *QueryVerifyTransferProofsResponse) GetError() string {
 }
 
 // QueryVerifyWithdrawProofsRequest is request type for the Query/VerifyWithdrawProofs RPC method.
-// Contains all proofs needed for withdraw verification: equality and range proofs
+// Contains withdraw proofs plus binding data (user pubkey, ciphertext, expected nonce).
 type QueryVerifyWithdrawProofsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	EqualityProofData []byte `protobuf:"bytes,1,opt,name=equality_proof_data,json=equalityProofData,proto3" json:"equality_proof_data,omitempty"` // Serialized CiphertextCommitmentEqualityProofData
-	RangeProofData    []byte `protobuf:"bytes,2,opt,name=range_proof_data,json=rangeProofData,proto3" json:"range_proof_data,omitempty"`          // Serialized BatchedRangeProofU64Data
+	EqualityProofData    []byte `protobuf:"bytes,1,opt,name=equality_proof_data,json=equalityProofData,proto3" json:"equality_proof_data,omitempty"`        // Serialized WithdrawCiphertextCommitmentEqualityProofData
+	RangeProofData       []byte `protobuf:"bytes,2,opt,name=range_proof_data,json=rangeProofData,proto3" json:"range_proof_data,omitempty"`                 // Serialized WithdrawBatchedRangeProofU64Data
+	UserPubkey           []byte `protobuf:"bytes,3,opt,name=user_pubkey,json=userPubkey,proto3" json:"user_pubkey,omitempty"`                               // 32 bytes, expected user ElGamal pubkey
+	CiphertextCommitment []byte `protobuf:"bytes,4,opt,name=ciphertext_commitment,json=ciphertextCommitment,proto3" json:"ciphertext_commitment,omitempty"` // c1 of encrypted available balance (32 bytes)
+	CiphertextHandle     []byte `protobuf:"bytes,5,opt,name=ciphertext_handle,json=ciphertextHandle,proto3" json:"ciphertext_handle,omitempty"`             // c2 of encrypted available balance (32 bytes)
+	ExpectedNonce        uint64 `protobuf:"varint,6,opt,name=expected_nonce,json=expectedNonce,proto3" json:"expected_nonce,omitempty"`                     // must match nonces embedded in both proofs
 }
 
 func (x *QueryVerifyWithdrawProofsRequest) Reset() {
 	*x = QueryVerifyWithdrawProofsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_zkp_query_proto_msgTypes[10]
+		mi := &file_fairyring_zkp_query_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6047,7 +8346,7 @@ func (*QueryVerifyWithdrawProofsRequest) ProtoMessage() {}
 
 // Deprecated: Use QueryVerifyWithdrawProofsRequest.ProtoReflect.Descriptor instead.
 func (*QueryVerifyWithdrawProofsRequest) Descriptor() ([]byte, []int) {
-	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{10}
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *QueryVerifyWithdrawProofsRequest) GetEqualityProofData() []byte {
@@ -6064,6 +8363,34 @@ func (x *QueryVerifyWithdrawProofsRequest) GetRangeProofData() []byte {
 	return nil
 }
 
+func (x *QueryVerifyWithdrawProofsRequest) GetUserPubkey() []byte {
+	if x != nil {
+		return x.UserPubkey
+	}
+	return nil
+}
+
+func (x *QueryVerifyWithdrawProofsRequest) GetCiphertextCommitment() []byte {
+	if x != nil {
+		return x.CiphertextCommitment
+	}
+	return nil
+}
+
+func (x *QueryVerifyWithdrawProofsRequest) GetCiphertextHandle() []byte {
+	if x != nil {
+		return x.CiphertextHandle
+	}
+	return nil
+}
+
+func (x *QueryVerifyWithdrawProofsRequest) GetExpectedNonce() uint64 {
+	if x != nil {
+		return x.ExpectedNonce
+	}
+	return 0
+}
+
 // QueryVerifyWithdrawProofsResponse is response type for the Query/VerifyWithdrawProofs RPC method.
 type QueryVerifyWithdrawProofsResponse struct {
 	state         protoimpl.MessageState
@@ -6077,7 +8404,7 @@ type QueryVerifyWithdrawProofsResponse struct {
 func (x *QueryVerifyWithdrawProofsResponse) Reset() {
 	*x = QueryVerifyWithdrawProofsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_fairyring_zkp_query_proto_msgTypes[11]
+		mi := &file_fairyring_zkp_query_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6091,7 +8418,7 @@ func (*QueryVerifyWithdrawProofsResponse) ProtoMessage() {}
 
 // Deprecated: Use QueryVerifyWithdrawProofsResponse.ProtoReflect.Descriptor instead.
 func (*QueryVerifyWithdrawProofsResponse) Descriptor() ([]byte, []int) {
-	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{11}
+	return file_fairyring_zkp_query_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *QueryVerifyWithdrawProofsResponse) GetValid() bool {
@@ -6118,151 +8445,204 @@ var file_fairyring_zkp_query_proto_rawDesc = []byte{
 	0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f,
 	0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x22, 0x45, 0x0a, 0x24, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79,
-	0x57, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77, 0x52, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f,
-	0x6f, 0x66, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f,
-	0x6f, 0x66, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x09, 0x70,
-	0x72, 0x6f, 0x6f, 0x66, 0x44, 0x61, 0x74, 0x61, 0x22, 0x53, 0x0a, 0x25, 0x51, 0x75, 0x65, 0x72,
-	0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x57, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77, 0x52,
-	0x61, 0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08,
-	0x52, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0x45, 0x0a,
-	0x24, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x54, 0x72, 0x61, 0x6e,
-	0x73, 0x66, 0x65, 0x72, 0x52, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x5f, 0x64,
-	0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x6f, 0x66,
-	0x44, 0x61, 0x74, 0x61, 0x22, 0x53, 0x0a, 0x25, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72,
-	0x69, 0x66, 0x79, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x52, 0x61, 0x6e, 0x67, 0x65,
-	0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a,
+	0x6f, 0x1a, 0x1a, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x7a, 0x6b, 0x70,
+	0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x14, 0x0a,
+	0x12, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x22, 0x4f, 0x0a, 0x13, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61,
+	0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x38, 0x0a, 0x06, 0x70, 0x61,
+	0x72, 0x61, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x66, 0x61, 0x69,
+	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d,
+	0x73, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70, 0x61,
+	0x72, 0x61, 0x6d, 0x73, 0x22, 0x19, 0x0a, 0x17, 0x54, 0x72, 0x75, 0x73, 0x74, 0x65, 0x64, 0x43,
+	0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22,
+	0x48, 0x0a, 0x18, 0x54, 0x72, 0x75, 0x73, 0x74, 0x65, 0x64, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61,
+	0x63, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2c, 0x0a, 0x11, 0x43,
+	0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x65, 0x73,
+	0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x11, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74,
+	0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x65, 0x73, 0x22, 0x45, 0x0a, 0x24, 0x51, 0x75, 0x65,
+	0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x57, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77,
+	0x52, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x44, 0x61, 0x74, 0x61,
+	0x22, 0x53, 0x0a, 0x25, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x57,
+	0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77, 0x52, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f,
+	0x66, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c,
+	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x12,
+	0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
+	0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0x45, 0x0a, 0x24, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65,
+	0x72, 0x69, 0x66, 0x79, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x52, 0x61, 0x6e, 0x67,
+	0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a,
+	0x0a, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x0c, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x44, 0x61, 0x74, 0x61, 0x22, 0x53, 0x0a, 0x25,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x54, 0x72, 0x61, 0x6e, 0x73,
+	0x66, 0x65, 0x72, 0x52, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x65,
+	0x72, 0x72, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f,
+	0x72, 0x22, 0x40, 0x0a, 0x1f, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79,
+	0x56, 0x61, 0x6c, 0x69, 0x64, 0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x5f, 0x64, 0x61,
+	0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x44,
+	0x61, 0x74, 0x61, 0x22, 0x4e, 0x0a, 0x20, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69,
+	0x66, 0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x12, 0x14, 0x0a,
+	0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72,
+	0x72, 0x6f, 0x72, 0x22, 0x40, 0x0a, 0x1f, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69,
+	0x66, 0x79, 0x45, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x5f,
+	0x64, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x6f,
+	0x66, 0x44, 0x61, 0x74, 0x61, 0x22, 0x4e, 0x0a, 0x20, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65,
+	0x72, 0x69, 0x66, 0x79, 0x45, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f,
+	0x66, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c,
+	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x12,
+	0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
+	0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0xf0, 0x02, 0x0a, 0x20, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56,
+	0x65, 0x72, 0x69, 0x66, 0x79, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x50, 0x72, 0x6f,
+	0x6f, 0x66, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x2e, 0x0a, 0x13, 0x65, 0x71,
+	0x75, 0x61, 0x6c, 0x69, 0x74, 0x79, 0x5f, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x5f, 0x64, 0x61, 0x74,
+	0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x11, 0x65, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x74,
+	0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x44, 0x61, 0x74, 0x61, 0x12, 0x28, 0x0a, 0x10, 0x72, 0x61,
+	0x6e, 0x67, 0x65, 0x5f, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x0c, 0x52, 0x0e, 0x72, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66,
+	0x44, 0x61, 0x74, 0x61, 0x12, 0x2e, 0x0a, 0x13, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x69, 0x74, 0x79,
+	0x5f, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x0c, 0x52, 0x11, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66,
+	0x44, 0x61, 0x74, 0x61, 0x12, 0x23, 0x0a, 0x0d, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x70,
+	0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x0c, 0x73, 0x65, 0x6e,
+	0x64, 0x65, 0x72, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x29, 0x0a, 0x10, 0x72, 0x65, 0x63,
+	0x69, 0x70, 0x69, 0x65, 0x6e, 0x74, 0x5f, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x05, 0x20,
+	0x01, 0x28, 0x0c, 0x52, 0x0f, 0x72, 0x65, 0x63, 0x69, 0x70, 0x69, 0x65, 0x6e, 0x74, 0x50, 0x75,
+	0x62, 0x6b, 0x65, 0x79, 0x12, 0x3c, 0x0a, 0x1a, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x5f,
+	0x62, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x5f, 0x63, 0x6f, 0x6d, 0x6d, 0x69, 0x74, 0x6d, 0x65,
+	0x6e, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x18, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e,
+	0x74, 0x42, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x43, 0x6f, 0x6d, 0x6d, 0x69, 0x74, 0x6d, 0x65,
+	0x6e, 0x74, 0x12, 0x34, 0x0a, 0x16, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x5f, 0x62, 0x61,
+	0x6c, 0x61, 0x6e, 0x63, 0x65, 0x5f, 0x68, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x18, 0x07, 0x20, 0x01,
+	0x28, 0x0c, 0x52, 0x14, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x42, 0x61, 0x6c, 0x61, 0x6e,
+	0x63, 0x65, 0x48, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x22, 0x4f, 0x0a, 0x21, 0x51, 0x75, 0x65, 0x72,
+	0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x50,
+	0x72, 0x6f, 0x6f, 0x66, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a,
 	0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x76, 0x61,
 	0x6c, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0x40, 0x0a, 0x1f, 0x51, 0x75, 0x65,
-	0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x69, 0x74, 0x79,
-	0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a,
-	0x70, 0x72, 0x6f, 0x6f, 0x66, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c,
-	0x52, 0x09, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x44, 0x61, 0x74, 0x61, 0x22, 0x4e, 0x0a, 0x20, 0x51,
-	0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x69,
-	0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
-	0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05,
-	0x76, 0x61, 0x6c, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0x40, 0x0a, 0x1f, 0x51,
-	0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x45, 0x71, 0x75, 0x61, 0x6c, 0x69,
-	0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d,
-	0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x0c, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x44, 0x61, 0x74, 0x61, 0x22, 0x4e, 0x0a,
-	0x20, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x45, 0x71, 0x75, 0x61,
-	0x6c, 0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08,
-	0x52, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0xac, 0x01,
-	0x0a, 0x20, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x54, 0x72, 0x61,
-	0x6e, 0x73, 0x66, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x12, 0x2e, 0x0a, 0x13, 0x65, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x74, 0x79, 0x5f, 0x70,
-	0x72, 0x6f, 0x6f, 0x66, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52,
-	0x11, 0x65, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x44, 0x61,
-	0x74, 0x61, 0x12, 0x28, 0x0a, 0x10, 0x72, 0x61, 0x6e, 0x67, 0x65, 0x5f, 0x70, 0x72, 0x6f, 0x6f,
-	0x66, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x0e, 0x72, 0x61,
-	0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x44, 0x61, 0x74, 0x61, 0x12, 0x2e, 0x0a, 0x13,
-	0x76, 0x61, 0x6c, 0x69, 0x64, 0x69, 0x74, 0x79, 0x5f, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x5f, 0x64,
-	0x61, 0x74, 0x61, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x11, 0x76, 0x61, 0x6c, 0x69, 0x64,
-	0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x44, 0x61, 0x74, 0x61, 0x22, 0x4f, 0x0a, 0x21,
-	0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x54, 0x72, 0x61, 0x6e, 0x73,
-	0x66, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08,
-	0x52, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0x7c, 0x0a,
-	0x20, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x57, 0x69, 0x74, 0x68,
-	0x64, 0x72, 0x61, 0x77, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x12, 0x2e, 0x0a, 0x13, 0x65, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x74, 0x79, 0x5f, 0x70, 0x72,
-	0x6f, 0x6f, 0x66, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x11,
-	0x65, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x44, 0x61, 0x74,
-	0x61, 0x12, 0x28, 0x0a, 0x10, 0x72, 0x61, 0x6e, 0x67, 0x65, 0x5f, 0x70, 0x72, 0x6f, 0x6f, 0x66,
-	0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x0e, 0x72, 0x61, 0x6e,
-	0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x44, 0x61, 0x74, 0x61, 0x22, 0x4f, 0x0a, 0x21, 0x51,
-	0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x57, 0x69, 0x74, 0x68, 0x64, 0x72,
-	0x61, 0x77, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52,
-	0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x32, 0xb5, 0x08, 0x0a,
-	0x05, 0x51, 0x75, 0x65, 0x72, 0x79, 0x12, 0xbc, 0x01, 0x0a, 0x18, 0x56, 0x65, 0x72, 0x69, 0x66,
-	0x79, 0x57, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77, 0x52, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x72,
-	0x6f, 0x6f, 0x66, 0x12, 0x33, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
-	0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x57,
-	0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77, 0x52, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f,
-	0x66, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x34, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
-	0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65,
-	0x72, 0x69, 0x66, 0x79, 0x57, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77, 0x52, 0x61, 0x6e, 0x67,
-	0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x35,
-	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x2f, 0x3a, 0x01, 0x2a, 0x22, 0x2a, 0x2f, 0x66, 0x61, 0x69, 0x72,
-	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x7a, 0x6b, 0x70, 0x2f, 0x76, 0x65, 0x72, 0x69, 0x66, 0x79,
-	0x5f, 0x77, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77, 0x5f, 0x72, 0x61, 0x6e, 0x67, 0x65, 0x5f,
-	0x70, 0x72, 0x6f, 0x6f, 0x66, 0x12, 0xbc, 0x01, 0x0a, 0x18, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79,
-	0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x52, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f,
-	0x6f, 0x66, 0x12, 0x33, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a,
-	0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x54, 0x72,
-	0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x52, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x34, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
-	0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72,
-	0x69, 0x66, 0x79, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x52, 0x61, 0x6e, 0x67, 0x65,
-	0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x35, 0x82,
-	0xd3, 0xe4, 0x93, 0x02, 0x2f, 0x3a, 0x01, 0x2a, 0x22, 0x2a, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79,
-	0x72, 0x69, 0x6e, 0x67, 0x2f, 0x7a, 0x6b, 0x70, 0x2f, 0x76, 0x65, 0x72, 0x69, 0x66, 0x79, 0x5f,
-	0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x5f, 0x72, 0x61, 0x6e, 0x67, 0x65, 0x5f, 0x70,
-	0x72, 0x6f, 0x6f, 0x66, 0x12, 0xa7, 0x01, 0x0a, 0x13, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x56,
-	0x61, 0x6c, 0x69, 0x64, 0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x12, 0x2e, 0x2e, 0x66,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65,
-	0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x69, 0x74, 0x79,
-	0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2f, 0x2e, 0x66,
-	0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65,
-	0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x69, 0x74, 0x79,
-	0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2f, 0x82,
-	0xd3, 0xe4, 0x93, 0x02, 0x29, 0x3a, 0x01, 0x2a, 0x22, 0x24, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79,
-	0x72, 0x69, 0x6e, 0x67, 0x2f, 0x7a, 0x6b, 0x70, 0x2f, 0x76, 0x65, 0x72, 0x69, 0x66, 0x79, 0x5f,
-	0x76, 0x61, 0x6c, 0x69, 0x64, 0x69, 0x74, 0x79, 0x5f, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x12, 0xa7,
-	0x01, 0x0a, 0x13, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x45, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x74,
-	0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x12, 0x2e, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
-	0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69,
-	0x66, 0x79, 0x45, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2f, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
-	0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69,
-	0x66, 0x79, 0x45, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2f, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x29, 0x3a,
-	0x01, 0x2a, 0x22, 0x24, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x7a,
-	0x6b, 0x70, 0x2f, 0x76, 0x65, 0x72, 0x69, 0x66, 0x79, 0x5f, 0x65, 0x71, 0x75, 0x61, 0x6c, 0x69,
-	0x74, 0x79, 0x5f, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x12, 0xab, 0x01, 0x0a, 0x14, 0x56, 0x65, 0x72,
-	0x69, 0x66, 0x79, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x6f, 0x66,
-	0x73, 0x12, 0x2f, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b,
-	0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x54, 0x72, 0x61,
-	0x6e, 0x73, 0x66, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x1a, 0x30, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a,
-	0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x54, 0x72,
-	0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x30, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x2a, 0x3a, 0x01, 0x2a, 0x22,
-	0x25, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x7a, 0x6b, 0x70, 0x2f,
-	0x76, 0x65, 0x72, 0x69, 0x66, 0x79, 0x5f, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x5f,
-	0x70, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x12, 0xab, 0x01, 0x0a, 0x14, 0x56, 0x65, 0x72, 0x69, 0x66,
-	0x79, 0x57, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x12,
-	0x2f, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e,
+	0x28, 0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0xa6, 0x02, 0x0a, 0x20, 0x51, 0x75,
+	0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x57, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61,
+	0x77, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x2e,
+	0x0a, 0x13, 0x65, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x74, 0x79, 0x5f, 0x70, 0x72, 0x6f, 0x6f, 0x66,
+	0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x11, 0x65, 0x71, 0x75,
+	0x61, 0x6c, 0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x44, 0x61, 0x74, 0x61, 0x12, 0x28,
+	0x0a, 0x10, 0x72, 0x61, 0x6e, 0x67, 0x65, 0x5f, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x5f, 0x64, 0x61,
+	0x74, 0x61, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x0e, 0x72, 0x61, 0x6e, 0x67, 0x65, 0x50,
+	0x72, 0x6f, 0x6f, 0x66, 0x44, 0x61, 0x74, 0x61, 0x12, 0x1f, 0x0a, 0x0b, 0x75, 0x73, 0x65, 0x72,
+	0x5f, 0x70, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x0a, 0x75,
+	0x73, 0x65, 0x72, 0x50, 0x75, 0x62, 0x6b, 0x65, 0x79, 0x12, 0x33, 0x0a, 0x15, 0x63, 0x69, 0x70,
+	0x68, 0x65, 0x72, 0x74, 0x65, 0x78, 0x74, 0x5f, 0x63, 0x6f, 0x6d, 0x6d, 0x69, 0x74, 0x6d, 0x65,
+	0x6e, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x14, 0x63, 0x69, 0x70, 0x68, 0x65, 0x72,
+	0x74, 0x65, 0x78, 0x74, 0x43, 0x6f, 0x6d, 0x6d, 0x69, 0x74, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x2b,
+	0x0a, 0x11, 0x63, 0x69, 0x70, 0x68, 0x65, 0x72, 0x74, 0x65, 0x78, 0x74, 0x5f, 0x68, 0x61, 0x6e,
+	0x64, 0x6c, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x10, 0x63, 0x69, 0x70, 0x68, 0x65,
+	0x72, 0x74, 0x65, 0x78, 0x74, 0x48, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x12, 0x25, 0x0a, 0x0e, 0x65,
+	0x78, 0x70, 0x65, 0x63, 0x74, 0x65, 0x64, 0x5f, 0x6e, 0x6f, 0x6e, 0x63, 0x65, 0x18, 0x06, 0x20,
+	0x01, 0x28, 0x04, 0x52, 0x0d, 0x65, 0x78, 0x70, 0x65, 0x63, 0x74, 0x65, 0x64, 0x4e, 0x6f, 0x6e,
+	0x63, 0x65, 0x22, 0x4f, 0x0a, 0x21, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66,
+	0x79, 0x57, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x12, 0x14, 0x0a,
+	0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72,
+	0x72, 0x6f, 0x72, 0x32, 0xb5, 0x0a, 0x0a, 0x05, 0x51, 0x75, 0x65, 0x72, 0x79, 0x12, 0x6e, 0x0a,
+	0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x21, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
+	0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72,
+	0x61, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x66, 0x61, 0x69,
+	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79,
+	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1d,
+	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x17, 0x12, 0x15, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x2f, 0x7a, 0x6b, 0x70, 0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0xbc, 0x01,
+	0x0a, 0x18, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x57, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77,
+	0x52, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x12, 0x33, 0x2e, 0x66, 0x61, 0x69,
+	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79,
+	0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x57, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77, 0x52, 0x61,
+	0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x34, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e,
 	0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x57, 0x69, 0x74, 0x68, 0x64,
-	0x72, 0x61, 0x77, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x30, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70,
-	0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x57, 0x69, 0x74, 0x68,
-	0x64, 0x72, 0x61, 0x77, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x22, 0x30, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x2a, 0x3a, 0x01, 0x2a, 0x22, 0x25, 0x2f,
-	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x7a, 0x6b, 0x70, 0x2f, 0x76, 0x65,
-	0x72, 0x69, 0x66, 0x79, 0x5f, 0x77, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77, 0x5f, 0x70, 0x72,
-	0x6f, 0x6f, 0x66, 0x73, 0x42, 0x94, 0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69,
-	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x42, 0x0a, 0x51, 0x75, 0x65, 0x72,
-	0x79, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x1e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
-	0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79,
-	0x72, 0x69, 0x6e, 0x67, 0x2f, 0x7a, 0x6b, 0x70, 0xa2, 0x02, 0x03, 0x46, 0x5a, 0x58, 0xaa, 0x02,
-	0x0d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x5a, 0x6b, 0x70, 0xca, 0x02,
-	0x0d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x5a, 0x6b, 0x70, 0xe2, 0x02,
-	0x19, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x5a, 0x6b, 0x70, 0x5c, 0x47,
-	0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e, 0x46, 0x61, 0x69,
-	0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x5a, 0x6b, 0x70, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x72, 0x61, 0x77, 0x52, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x35, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x2f, 0x3a, 0x01, 0x2a,
+	0x22, 0x2a, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x7a, 0x6b, 0x70,
+	0x2f, 0x76, 0x65, 0x72, 0x69, 0x66, 0x79, 0x5f, 0x77, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77,
+	0x5f, 0x72, 0x61, 0x6e, 0x67, 0x65, 0x5f, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x12, 0xbc, 0x01, 0x0a,
+	0x18, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x52,
+	0x61, 0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x12, 0x33, 0x2e, 0x66, 0x61, 0x69, 0x72,
+	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56,
+	0x65, 0x72, 0x69, 0x66, 0x79, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x52, 0x61, 0x6e,
+	0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x34,
+	0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51,
+	0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66,
+	0x65, 0x72, 0x52, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x35, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x2f, 0x3a, 0x01, 0x2a, 0x22,
+	0x2a, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x7a, 0x6b, 0x70, 0x2f,
+	0x76, 0x65, 0x72, 0x69, 0x66, 0x79, 0x5f, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x5f,
+	0x72, 0x61, 0x6e, 0x67, 0x65, 0x5f, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x12, 0xa7, 0x01, 0x0a, 0x13,
+	0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x69, 0x74, 0x79, 0x50, 0x72,
+	0x6f, 0x6f, 0x66, 0x12, 0x2e, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
+	0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x56,
+	0x61, 0x6c, 0x69, 0x64, 0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x2f, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e,
+	0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x56,
+	0x61, 0x6c, 0x69, 0x64, 0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2f, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x29, 0x3a, 0x01, 0x2a, 0x22,
+	0x24, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x7a, 0x6b, 0x70, 0x2f,
+	0x76, 0x65, 0x72, 0x69, 0x66, 0x79, 0x5f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x69, 0x74, 0x79, 0x5f,
+	0x70, 0x72, 0x6f, 0x6f, 0x66, 0x12, 0xa7, 0x01, 0x0a, 0x13, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79,
+	0x45, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x74, 0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x12, 0x2e, 0x2e,
+	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75,
+	0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x45, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x74,
+	0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2f, 0x2e,
+	0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75,
+	0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x45, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x74,
+	0x79, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2f,
+	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x29, 0x3a, 0x01, 0x2a, 0x22, 0x24, 0x2f, 0x66, 0x61, 0x69, 0x72,
+	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x7a, 0x6b, 0x70, 0x2f, 0x76, 0x65, 0x72, 0x69, 0x66, 0x79,
+	0x5f, 0x65, 0x71, 0x75, 0x61, 0x6c, 0x69, 0x74, 0x79, 0x5f, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x12,
+	0xab, 0x01, 0x0a, 0x14, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66,
+	0x65, 0x72, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x12, 0x2f, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
+	0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65,
+	0x72, 0x69, 0x66, 0x79, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x6f,
+	0x66, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x30, 0x2e, 0x66, 0x61, 0x69, 0x72,
+	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56,
+	0x65, 0x72, 0x69, 0x66, 0x79, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x50, 0x72, 0x6f,
+	0x6f, 0x66, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x30, 0x82, 0xd3, 0xe4,
+	0x93, 0x02, 0x2a, 0x3a, 0x01, 0x2a, 0x22, 0x25, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x2f, 0x7a, 0x6b, 0x70, 0x2f, 0x76, 0x65, 0x72, 0x69, 0x66, 0x79, 0x5f, 0x74, 0x72,
+	0x61, 0x6e, 0x73, 0x66, 0x65, 0x72, 0x5f, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x12, 0xab, 0x01,
+	0x0a, 0x14, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x57, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77,
+	0x50, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x12, 0x2f, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69,
+	0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72, 0x69,
+	0x66, 0x79, 0x57, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x73,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x30, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72,
+	0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x65, 0x72,
+	0x69, 0x66, 0x79, 0x57, 0x69, 0x74, 0x68, 0x64, 0x72, 0x61, 0x77, 0x50, 0x72, 0x6f, 0x6f, 0x66,
+	0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x30, 0x82, 0xd3, 0xe4, 0x93, 0x02,
+	0x2a, 0x3a, 0x01, 0x2a, 0x22, 0x25, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67,
+	0x2f, 0x7a, 0x6b, 0x70, 0x2f, 0x76, 0x65, 0x72, 0x69, 0x66, 0x79, 0x5f, 0x77, 0x69, 0x74, 0x68,
+	0x64, 0x72, 0x61, 0x77, 0x5f, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x73, 0x12, 0x8d, 0x01, 0x0a, 0x10,
+	0x54, 0x72, 0x75, 0x73, 0x74, 0x65, 0x64, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x73,
+	0x12, 0x26, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70,
+	0x2e, 0x54, 0x72, 0x75, 0x73, 0x74, 0x65, 0x64, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74,
+	0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x27, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79,
+	0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b, 0x70, 0x2e, 0x54, 0x72, 0x75, 0x73, 0x74, 0x65, 0x64,
+	0x43, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x28, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x22, 0x12, 0x20, 0x2f, 0x66, 0x61, 0x69, 0x72,
+	0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x7a, 0x6b, 0x70, 0x2f, 0x74, 0x72, 0x75, 0x73, 0x74, 0x65,
+	0x64, 0x5f, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x61, 0x63, 0x74, 0x73, 0x42, 0x94, 0x01, 0x0a, 0x11,
+	0x63, 0x6f, 0x6d, 0x2e, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x7a, 0x6b,
+	0x70, 0x42, 0x0a, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a,
+	0x1e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70,
+	0x69, 0x2f, 0x66, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x7a, 0x6b, 0x70, 0xa2,
+	0x02, 0x03, 0x46, 0x5a, 0x58, 0xaa, 0x02, 0x0d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
+	0x67, 0x2e, 0x5a, 0x6b, 0x70, 0xca, 0x02, 0x0d, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
+	0x67, 0x5c, 0x5a, 0x6b, 0x70, 0xe2, 0x02, 0x19, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e,
+	0x67, 0x5c, 0x5a, 0x6b, 0x70, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74,
+	0x61, 0xea, 0x02, 0x0e, 0x46, 0x61, 0x69, 0x72, 0x79, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x5a,
+	0x6b, 0x70, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -6277,39 +8657,49 @@ func file_fairyring_zkp_query_proto_rawDescGZIP() []byte {
 	return file_fairyring_zkp_query_proto_rawDescData
 }
 
-var file_fairyring_zkp_query_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_fairyring_zkp_query_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_fairyring_zkp_query_proto_goTypes = []interface{}{
-	(*QueryVerifyWithdrawRangeProofRequest)(nil),  // 0: fairyring.zkp.QueryVerifyWithdrawRangeProofRequest
-	(*QueryVerifyWithdrawRangeProofResponse)(nil), // 1: fairyring.zkp.QueryVerifyWithdrawRangeProofResponse
-	(*QueryVerifyTransferRangeProofRequest)(nil),  // 2: fairyring.zkp.QueryVerifyTransferRangeProofRequest
-	(*QueryVerifyTransferRangeProofResponse)(nil), // 3: fairyring.zkp.QueryVerifyTransferRangeProofResponse
-	(*QueryVerifyValidityProofRequest)(nil),       // 4: fairyring.zkp.QueryVerifyValidityProofRequest
-	(*QueryVerifyValidityProofResponse)(nil),      // 5: fairyring.zkp.QueryVerifyValidityProofResponse
-	(*QueryVerifyEqualityProofRequest)(nil),       // 6: fairyring.zkp.QueryVerifyEqualityProofRequest
-	(*QueryVerifyEqualityProofResponse)(nil),      // 7: fairyring.zkp.QueryVerifyEqualityProofResponse
-	(*QueryVerifyTransferProofsRequest)(nil),      // 8: fairyring.zkp.QueryVerifyTransferProofsRequest
-	(*QueryVerifyTransferProofsResponse)(nil),     // 9: fairyring.zkp.QueryVerifyTransferProofsResponse
-	(*QueryVerifyWithdrawProofsRequest)(nil),      // 10: fairyring.zkp.QueryVerifyWithdrawProofsRequest
-	(*QueryVerifyWithdrawProofsResponse)(nil),     // 11: fairyring.zkp.QueryVerifyWithdrawProofsResponse
+	(*QueryParamsRequest)(nil),                    // 0: fairyring.zkp.QueryParamsRequest
+	(*QueryParamsResponse)(nil),                   // 1: fairyring.zkp.QueryParamsResponse
+	(*TrustedContractsRequest)(nil),               // 2: fairyring.zkp.TrustedContractsRequest
+	(*TrustedContractsResponse)(nil),              // 3: fairyring.zkp.TrustedContractsResponse
+	(*QueryVerifyWithdrawRangeProofRequest)(nil),  // 4: fairyring.zkp.QueryVerifyWithdrawRangeProofRequest
+	(*QueryVerifyWithdrawRangeProofResponse)(nil), // 5: fairyring.zkp.QueryVerifyWithdrawRangeProofResponse
+	(*QueryVerifyTransferRangeProofRequest)(nil),  // 6: fairyring.zkp.QueryVerifyTransferRangeProofRequest
+	(*QueryVerifyTransferRangeProofResponse)(nil), // 7: fairyring.zkp.QueryVerifyTransferRangeProofResponse
+	(*QueryVerifyValidityProofRequest)(nil),       // 8: fairyring.zkp.QueryVerifyValidityProofRequest
+	(*QueryVerifyValidityProofResponse)(nil),      // 9: fairyring.zkp.QueryVerifyValidityProofResponse
+	(*QueryVerifyEqualityProofRequest)(nil),       // 10: fairyring.zkp.QueryVerifyEqualityProofRequest
+	(*QueryVerifyEqualityProofResponse)(nil),      // 11: fairyring.zkp.QueryVerifyEqualityProofResponse
+	(*QueryVerifyTransferProofsRequest)(nil),      // 12: fairyring.zkp.QueryVerifyTransferProofsRequest
+	(*QueryVerifyTransferProofsResponse)(nil),     // 13: fairyring.zkp.QueryVerifyTransferProofsResponse
+	(*QueryVerifyWithdrawProofsRequest)(nil),      // 14: fairyring.zkp.QueryVerifyWithdrawProofsRequest
+	(*QueryVerifyWithdrawProofsResponse)(nil),     // 15: fairyring.zkp.QueryVerifyWithdrawProofsResponse
+	(*Params)(nil), // 16: fairyring.zkp.Params
 }
 var file_fairyring_zkp_query_proto_depIdxs = []int32{
-	0,  // 0: fairyring.zkp.Query.VerifyWithdrawRangeProof:input_type -> fairyring.zkp.QueryVerifyWithdrawRangeProofRequest
-	2,  // 1: fairyring.zkp.Query.VerifyTransferRangeProof:input_type -> fairyring.zkp.QueryVerifyTransferRangeProofRequest
-	4,  // 2: fairyring.zkp.Query.VerifyValidityProof:input_type -> fairyring.zkp.QueryVerifyValidityProofRequest
-	6,  // 3: fairyring.zkp.Query.VerifyEqualityProof:input_type -> fairyring.zkp.QueryVerifyEqualityProofRequest
-	8,  // 4: fairyring.zkp.Query.VerifyTransferProofs:input_type -> fairyring.zkp.QueryVerifyTransferProofsRequest
-	10, // 5: fairyring.zkp.Query.VerifyWithdrawProofs:input_type -> fairyring.zkp.QueryVerifyWithdrawProofsRequest
-	1,  // 6: fairyring.zkp.Query.VerifyWithdrawRangeProof:output_type -> fairyring.zkp.QueryVerifyWithdrawRangeProofResponse
-	3,  // 7: fairyring.zkp.Query.VerifyTransferRangeProof:output_type -> fairyring.zkp.QueryVerifyTransferRangeProofResponse
-	5,  // 8: fairyring.zkp.Query.VerifyValidityProof:output_type -> fairyring.zkp.QueryVerifyValidityProofResponse
-	7,  // 9: fairyring.zkp.Query.VerifyEqualityProof:output_type -> fairyring.zkp.QueryVerifyEqualityProofResponse
-	9,  // 10: fairyring.zkp.Query.VerifyTransferProofs:output_type -> fairyring.zkp.QueryVerifyTransferProofsResponse
-	11, // 11: fairyring.zkp.Query.VerifyWithdrawProofs:output_type -> fairyring.zkp.QueryVerifyWithdrawProofsResponse
-	6,  // [6:12] is the sub-list for method output_type
-	0,  // [0:6] is the sub-list for method input_type
-	0,  // [0:0] is the sub-list for extension type_name
-	0,  // [0:0] is the sub-list for extension extendee
-	0,  // [0:0] is the sub-list for field type_name
+	16, // 0: fairyring.zkp.QueryParamsResponse.params:type_name -> fairyring.zkp.Params
+	0,  // 1: fairyring.zkp.Query.Params:input_type -> fairyring.zkp.QueryParamsRequest
+	4,  // 2: fairyring.zkp.Query.VerifyWithdrawRangeProof:input_type -> fairyring.zkp.QueryVerifyWithdrawRangeProofRequest
+	6,  // 3: fairyring.zkp.Query.VerifyTransferRangeProof:input_type -> fairyring.zkp.QueryVerifyTransferRangeProofRequest
+	8,  // 4: fairyring.zkp.Query.VerifyValidityProof:input_type -> fairyring.zkp.QueryVerifyValidityProofRequest
+	10, // 5: fairyring.zkp.Query.VerifyEqualityProof:input_type -> fairyring.zkp.QueryVerifyEqualityProofRequest
+	12, // 6: fairyring.zkp.Query.VerifyTransferProofs:input_type -> fairyring.zkp.QueryVerifyTransferProofsRequest
+	14, // 7: fairyring.zkp.Query.VerifyWithdrawProofs:input_type -> fairyring.zkp.QueryVerifyWithdrawProofsRequest
+	2,  // 8: fairyring.zkp.Query.TrustedContracts:input_type -> fairyring.zkp.TrustedContractsRequest
+	1,  // 9: fairyring.zkp.Query.Params:output_type -> fairyring.zkp.QueryParamsResponse
+	5,  // 10: fairyring.zkp.Query.VerifyWithdrawRangeProof:output_type -> fairyring.zkp.QueryVerifyWithdrawRangeProofResponse
+	7,  // 11: fairyring.zkp.Query.VerifyTransferRangeProof:output_type -> fairyring.zkp.QueryVerifyTransferRangeProofResponse
+	9,  // 12: fairyring.zkp.Query.VerifyValidityProof:output_type -> fairyring.zkp.QueryVerifyValidityProofResponse
+	11, // 13: fairyring.zkp.Query.VerifyEqualityProof:output_type -> fairyring.zkp.QueryVerifyEqualityProofResponse
+	13, // 14: fairyring.zkp.Query.VerifyTransferProofs:output_type -> fairyring.zkp.QueryVerifyTransferProofsResponse
+	15, // 15: fairyring.zkp.Query.VerifyWithdrawProofs:output_type -> fairyring.zkp.QueryVerifyWithdrawProofsResponse
+	3,  // 16: fairyring.zkp.Query.TrustedContracts:output_type -> fairyring.zkp.TrustedContractsResponse
+	9,  // [9:17] is the sub-list for method output_type
+	1,  // [1:9] is the sub-list for method input_type
+	1,  // [1:1] is the sub-list for extension type_name
+	1,  // [1:1] is the sub-list for extension extendee
+	0,  // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_fairyring_zkp_query_proto_init() }
@@ -6317,9 +8707,10 @@ func file_fairyring_zkp_query_proto_init() {
 	if File_fairyring_zkp_query_proto != nil {
 		return
 	}
+	file_fairyring_zkp_params_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_fairyring_zkp_query_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryVerifyWithdrawRangeProofRequest); i {
+			switch v := v.(*QueryParamsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6331,7 +8722,7 @@ func file_fairyring_zkp_query_proto_init() {
 			}
 		}
 		file_fairyring_zkp_query_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryVerifyWithdrawRangeProofResponse); i {
+			switch v := v.(*QueryParamsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6343,7 +8734,7 @@ func file_fairyring_zkp_query_proto_init() {
 			}
 		}
 		file_fairyring_zkp_query_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryVerifyTransferRangeProofRequest); i {
+			switch v := v.(*TrustedContractsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6355,7 +8746,7 @@ func file_fairyring_zkp_query_proto_init() {
 			}
 		}
 		file_fairyring_zkp_query_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryVerifyTransferRangeProofResponse); i {
+			switch v := v.(*TrustedContractsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6367,7 +8758,7 @@ func file_fairyring_zkp_query_proto_init() {
 			}
 		}
 		file_fairyring_zkp_query_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryVerifyValidityProofRequest); i {
+			switch v := v.(*QueryVerifyWithdrawRangeProofRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6379,7 +8770,7 @@ func file_fairyring_zkp_query_proto_init() {
 			}
 		}
 		file_fairyring_zkp_query_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryVerifyValidityProofResponse); i {
+			switch v := v.(*QueryVerifyWithdrawRangeProofResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6391,7 +8782,7 @@ func file_fairyring_zkp_query_proto_init() {
 			}
 		}
 		file_fairyring_zkp_query_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryVerifyEqualityProofRequest); i {
+			switch v := v.(*QueryVerifyTransferRangeProofRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6403,7 +8794,7 @@ func file_fairyring_zkp_query_proto_init() {
 			}
 		}
 		file_fairyring_zkp_query_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryVerifyEqualityProofResponse); i {
+			switch v := v.(*QueryVerifyTransferRangeProofResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6415,7 +8806,7 @@ func file_fairyring_zkp_query_proto_init() {
 			}
 		}
 		file_fairyring_zkp_query_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryVerifyTransferProofsRequest); i {
+			switch v := v.(*QueryVerifyValidityProofRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6427,7 +8818,7 @@ func file_fairyring_zkp_query_proto_init() {
 			}
 		}
 		file_fairyring_zkp_query_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryVerifyTransferProofsResponse); i {
+			switch v := v.(*QueryVerifyValidityProofResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6439,7 +8830,7 @@ func file_fairyring_zkp_query_proto_init() {
 			}
 		}
 		file_fairyring_zkp_query_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryVerifyWithdrawProofsRequest); i {
+			switch v := v.(*QueryVerifyEqualityProofRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6451,6 +8842,54 @@ func file_fairyring_zkp_query_proto_init() {
 			}
 		}
 		file_fairyring_zkp_query_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryVerifyEqualityProofResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_fairyring_zkp_query_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryVerifyTransferProofsRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_fairyring_zkp_query_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryVerifyTransferProofsResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_fairyring_zkp_query_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryVerifyWithdrawProofsRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_fairyring_zkp_query_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*QueryVerifyWithdrawProofsResponse); i {
 			case 0:
 				return &v.state
@@ -6469,7 +8908,7 @@ func file_fairyring_zkp_query_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_fairyring_zkp_query_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

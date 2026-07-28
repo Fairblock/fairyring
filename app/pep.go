@@ -8,6 +8,7 @@ import (
 	peptypes "github.com/Fairblock/fairyring/x/pep/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	ibcfee "github.com/cosmos/ibc-go/v8/modules/apps/29-fee"
 	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
 )
@@ -31,7 +32,7 @@ func (app *App) registerPepModule() (porttypes.IBCModule, error) {
 		app.AppCodec(),
 		runtime.NewKVStoreService(app.GetKey(peptypes.StoreKey)),
 		app.Logger(),
-		authtypes.NewModuleAddress(peptypes.ModuleName).String(),
+		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 		app.GetIBCKeeper,
 		scopedPepKeeper,
 		app.AccountKeeper,

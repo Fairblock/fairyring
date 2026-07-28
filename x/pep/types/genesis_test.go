@@ -22,6 +22,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
+				Params: types.DefaultParams(),
 				PortId: types.PortID,
 				RequestIdList: []types.RequestId{
 					{

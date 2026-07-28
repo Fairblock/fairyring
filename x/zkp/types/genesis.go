@@ -1,14 +1,33 @@
 package types
 
-// DefaultGenesis returns the default genesis state
+import (
+	"fmt"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
+
 func DefaultGenesis() *GenesisState {
-	return &GenesisState{}
+	return &GenesisState{
+		Params: DefaultParams(),
+	}
 }
 
-// Validate performs basic genesis state validation returning an error upon any
-// failure.
 func (gs GenesisState) Validate() error {
-	// this line is used by starport scaffolding # genesis/types/validate
+	if gs.Params.Authority != "" {
+		if err := gs.Params.Validate(); err != nil {
+			return fmt.Errorf("invalid params: %w", err)
+		}
+	}
+
+	seen := make(map[string]bool)
+	for i, addr := range gs.TrustedContracts {
+		if _, err := sdk.AccAddressFromBech32(addr); err != nil {
+			return fmt.Errorf("invalid trusted contract address at index %d: %w", i, err)
+		}
+		if seen[addr] {
+			return fmt.Errorf("duplicate trusted contract address at index %d: %s", i, addr)
+		}
+		seen[addr] = true
+	}
 	return nil
 }
-
