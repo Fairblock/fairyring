@@ -1,0 +1,127 @@
+name: Build Linux AMD64 Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing GitHub release tag
+        required: true
+        default: v1.0.0
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-linux-amd64-${{ inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build fairyringd
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    env:
+      TAG: ${{ inputs.tag }}
+      GOOS: linux
+      GOARCH: amd64
+      CGO_ENABLED: "1"
+
+    steps:
+      - name: Check out release tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Install Linux build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes \
+            build-essential \
+            libusb-1.0-0-dev \
+            libudev-dev
+
+      - name: Verify checked-out tag
+        run: |
+          set -euo pipefail
+
+          ACTUAL_TAG="$(git describe --tags --exact-match)"
+
+          if [[ "${ACTUAL_TAG}" != "${TAG}" ]]; then
+            echo "Expected tag ${TAG}, checked out ${ACTUAL_TAG}"
+            exit 1
+          fi
+
+          echo "Building tag ${ACTUAL_TAG}"
+          git rev-parse HEAD
+
+      - name: Build fairyringd
+        run: |
+          set -euo pipefail
+          make build
+
+      - name: Verify binary
+        run: |
+          set -euo pipefail
+
+          test -x build/fairyringd
+          file build/fairyringd
+          build/fairyringd version --long
+
+      - name: Package release asset
+        id: package
+        run: |
+          set -euo pipefail
+
+          ARCHIVE="fairyringd-${TAG}-linux-amd64.tar.gz"
+          CHECKSUM="${ARCHIVE}.sha256"
+
+          mkdir -p dist/package
+          install -m 0755 build/fairyringd dist/package/fairyringd
+
+          tar \
+            --directory dist/package \
+            --owner=0 \
+            --group=0 \
+            --numeric-owner \
+            --create \
+            --gzip \
+            --file "dist/${ARCHIVE}" \
+            fairyringd
+
+          (
+            cd dist
+            sha256sum "${ARCHIVE}" > "${CHECKSUM}"
+          )
+
+          cat "dist/${CHECKSUM}"
+
+          echo "archive=${ARCHIVE}" >> "${GITHUB_OUTPUT}"
+          echo "checksum=${CHECKSUM}" >> "${GITHUB_OUTPUT}"
+
+      - name: Confirm release exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release view "${TAG}" --repo "${GITHUB_REPOSITORY}"
+
+      - name: Upload assets to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          gh release upload "${TAG}" \
+            "dist/${{ steps.package.outputs.archive }}" \
+            "dist/${{ steps.package.outputs.checksum }}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --clobber
