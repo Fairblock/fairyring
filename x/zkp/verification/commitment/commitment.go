@@ -164,9 +164,6 @@ func (ep EqualityProof) Verify(
 	if pubkey.P.Equals(&id) {
 		return ErrProofAlgebraic
 	}
-	if ciphertext.Commitment.P.Equals(&id) {
-		return ErrProofAlgebraic
-	}
 	if commitment.P.Equals(&id) {
 		return ErrProofAlgebraic
 	}
