@@ -167,13 +167,24 @@ func (app *App) verifyVoteExtensionHandler() sdk.VerifyVoteExtensionHandler {
 // into the KeyshareKeeper.
 func (app *App) preBlocker() sdk.PreBlocker {
 	return func(ctx sdk.Context, req *abci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
+		// Preserve the runtime module pre-block lifecycle before applying the
+		// Fairyring-specific keyshare vote-extension logic. In particular,
+		// x/upgrade is configured as a module pre-blocker and must run here.
+		moduleResp, err := app.App.PreBlocker(ctx, req)
+		if err != nil {
+			return nil, err
+		}
+		if moduleResp == nil {
+			moduleResp = &sdk.ResponsePreBlock{}
+		}
+
 		H := uint64(req.Height) // #nosec G115
 		ctx.Logger().Info("KeyshareVE/PreBlock: begin",
 			"height", H, "num_txs", len(req.Txs))
 
 		if len(req.Txs) == 0 {
-			// No injected tx; nothing to do.
-			return &sdk.ResponsePreBlock{}, nil
+			// No injected tx; module pre-blockers have still run above.
+			return moduleResp, nil
 		}
 
 		// Decode injected tx from tx[0]
@@ -182,7 +193,7 @@ func (app *App) preBlocker() sdk.PreBlocker {
 			// If this fails, we don't want to halt the chain; just log and skip VE logic.
 			ctx.Logger().Error("KeyshareVE/PreBlock: failed to decode injected VE tx",
 				"err", err)
-			return &sdk.ResponsePreBlock{}, nil
+			return moduleResp, nil
 		}
 
 		ec := injected.ExtendedCommitInfo
@@ -237,7 +248,7 @@ func (app *App) preBlocker() sdk.PreBlocker {
 				"val", valAcct, "height_for", ve.HeightFor, "idx", ve.KeyshareIndex)
 		}
 
-		return &sdk.ResponsePreBlock{}, nil
+		return moduleResp, nil
 	}
 }
 
