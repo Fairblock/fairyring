@@ -672,6 +672,8 @@ github.com/Fairblock/cosmos-sdk v0.50.8-fairyring-2 h1:a8ydCHdZgxA7rZUOTq1Mxy++M
 github.com/Fairblock/cosmos-sdk v0.50.8-fairyring-2/go.mod h1:jmeO72xKJKgxmRtY/aQPLl1y7b9Wz9xIwi8T9K5rjwU=
 github.com/Fairblock/cosmossdk-api v0.7.5 h1:2NON/rKYquaTpISPn5sOZTP80a2moKg7YN+HI7wi5Wk=
 github.com/Fairblock/cosmossdk-api v0.7.5/go.mod h1:IcxpYS5fMemZGqyYtErK7OqvdM0C8kdW3dq8Q/XIG38=
+github.com/Fairblock/iavl v1.1.5-0.20260929115005-02ebca787aa6 h1:QBIJHT8qxMlUFzkOPBWvrldOgriXoLheXfCOOHlhK1I=
+github.com/Fairblock/iavl v1.1.5-0.20260929115005-02ebca787aa6/go.mod h1:vCYmRQUJU1wwj0oRD3wMEtOM9sJNDP+GFMaXmIxZ/rU=
 github.com/Fairblock/wasmd v0.50.6-fairyring h1:P5bEeEQbyLew8dD/kXP1JSjBB6ersyhORcnuYQp3+nI=
 github.com/Fairblock/wasmd v0.50.6-fairyring/go.mod h1:f0oj8Oy6bzleydH5ytWMqQD7DCp23b2VKkdsTVmiLrE=
 github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c/go.mod h1:X0CRv0ky0k6m906ixxpzmDRLvX58TFUKS2eePweuyxk=
