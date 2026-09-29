@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Fairblock/fairyring/x/zkp/types"
-	"github.com/cosmos/cosmos-sdk/types/module"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
+	"github.com/Fairblock/fairyring/x/zkp/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/module"
 )
 
 const (
