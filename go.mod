@@ -7,6 +7,7 @@ replace (
 	github.com/CosmWasm/wasmd => github.com/Fairblock/wasmd v0.50.6-fairyring
 	github.com/cosmos/cosmos-sdk => github.com/Fairblock/cosmos-sdk v0.50.8-fairyring-2
 	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.11.0
+	github.com/cosmos/iavl => github.com/Fairblock/iavl v1.1.5-0.20260929115005-02ebca787aa6
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	// replace broken goleveldb
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
