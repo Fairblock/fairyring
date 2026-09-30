@@ -136,9 +136,12 @@ func (app *App) maybeScheduleZKPIAVLRepairEmergency(
 		)
 	}
 
-	if !app.ZkpKeeper.IsTrustedContract(ctx, zkpRepairArbitrumTrustedContract) {
+	// In the incident state, the fast-node/query view still contains the
+	// Arbitrum trusted-contract key, but canonical IAVL traversal does not.
+	// The repair handler deliberately materializes it back into canonical IAVL.
+	if app.ZkpKeeper.IsTrustedContract(ctx, zkpRepairArbitrumTrustedContract) {
 		return fmt.Errorf(
-			"expected Arbitrum trusted contract %s is absent",
+			"Arbitrum trusted contract %s is unexpectedly present in canonical pre-repair state",
 			zkpRepairArbitrumTrustedContract,
 		)
 	}
