@@ -42,7 +42,7 @@ func TestZKPIAVLRepairEmergencyPreBlockSameHeight(t *testing.T) {
 	currentVM := fairyringApp.ModuleManager.GetVersionMap()
 	require.Len(t, currentVM, zkpIAVLRepairExpectedCurrentVersionEntries)
 
-	storedVM := cloneVersionMap(currentVM)
+	storedVM := cloneZKPIAVLRepairVersionMap(currentVM)
 	for moduleName := range zkpRepairExistingUntrackedModules {
 		delete(storedVM, moduleName)
 	}
