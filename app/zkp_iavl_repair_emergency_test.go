@@ -16,6 +16,22 @@ import (
 )
 
 func TestZKPIAVLRepairEmergencyPreBlockSameHeight(t *testing.T) {
+	tests := []struct {
+		name             string
+		arbitrumPrestate bool
+	}{
+		{name: "arbitrum_absent", arbitrumPrestate: false},
+		{name: "arbitrum_present", arbitrumPrestate: true},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			testZKPIAVLRepairEmergencyPreBlockSameHeight(t, tc.arbitrumPrestate)
+		})
+	}
+}
+
+func testZKPIAVLRepairEmergencyPreBlockSameHeight(t *testing.T, arbitrumPrestate bool) {
 	db := dbm.NewMemDB()
 	t.Cleanup(func() {
 		require.NoError(t, db.Close())
@@ -56,8 +72,13 @@ func TestZKPIAVLRepairEmergencyPreBlockSameHeight(t *testing.T) {
 			zkptypes.NewParams(zkpIAVLRepairBrokenAuthority),
 		),
 	)
-	require.False(
+
+	if arbitrumPrestate {
+		fairyringApp.ZkpKeeper.StoreTrustedContract(ctx, zkpRepairArbitrumTrustedContract)
+	}
+	require.Equal(
 		t,
+		arbitrumPrestate,
 		fairyringApp.ZkpKeeper.IsTrustedContract(ctx, zkpRepairArbitrumTrustedContract),
 	)
 	require.False(t, fairyringApp.ZkpKeeper.IsTrustedContract(ctx, zkpIAVLRepairBaseContract))
