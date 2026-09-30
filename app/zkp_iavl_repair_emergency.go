@@ -26,7 +26,7 @@ const (
 	zkpIAVLRepairExpectedCurrentVersionEntries = 31
 )
 
-func cloneVersionMap(vm module.VersionMap) module.VersionMap {
+func cloneZKPIAVLRepairVersionMap(vm module.VersionMap) module.VersionMap {
 	out := make(module.VersionMap, len(vm))
 	for name, version := range vm {
 		out[name] = version
@@ -55,7 +55,7 @@ func validateZKPIAVLRepairEmergencyVersionMap(
 	}
 
 	prepared, err := prepareZKPIAVLRepairVersionMap(
-		cloneVersionMap(storedVM),
+		cloneZKPIAVLRepairVersionMap(storedVM),
 		currentVM,
 	)
 	if err != nil {
@@ -108,6 +108,7 @@ func (app *App) maybeScheduleZKPIAVLRepairEmergency(
 		return fmt.Errorf("repair upgrade handler %q is not registered", zkpIAVLRepairUpgradeName)
 	}
 
+	planAlreadyPresent := false
 	plan, err := app.UpgradeKeeper.GetUpgradePlan(ctx)
 	switch {
 	case err == nil:
@@ -118,12 +119,10 @@ func (app *App) maybeScheduleZKPIAVLRepairEmergency(
 				plan.Height,
 			)
 		}
-		// The exact repair plan is already present. Let the normal x/upgrade
-		// pre-blocker execute it rather than rewriting state.
-		return nil
+		planAlreadyPresent = true
 	case errors.Is(err, upgradetypes.ErrNoUpgradePlanFound):
 		// Expected governance-free hard-fork path: continue through guards and
-		// schedule the plan at the current height.
+		// schedule the plan at the current height after validating state.
 	case err != nil:
 		return fmt.Errorf("read existing upgrade plan: %w", err)
 	}
@@ -160,6 +159,10 @@ func (app *App) maybeScheduleZKPIAVLRepairEmergency(
 		app.ModuleManager.GetVersionMap(),
 	); err != nil {
 		return err
+	}
+
+	if planAlreadyPresent {
+		return nil
 	}
 
 	plan = upgradetypes.Plan{
