@@ -166,7 +166,22 @@ func (app *App) verifyVoteExtensionHandler() sdk.VerifyVoteExtensionHandler {
 // ExtendedCommitInfo.Votes[*].VoteExtension, and forwards valid keyshares
 // into the KeyshareKeeper.
 func (app *App) preBlocker() sdk.PreBlocker {
+	return app.preBlockerWithZKPIAVLRepairEmergencyHeight(
+		zkpIAVLRepairEmergencyActivationHeight,
+	)
+}
+
+func (app *App) preBlockerWithZKPIAVLRepairEmergencyHeight(
+	activationHeight int64,
+) sdk.PreBlocker {
 	return func(ctx sdk.Context, req *abci.RequestFinalizeBlock) (*sdk.ResponsePreBlock, error) {
+		// If the incident-only activation height matches, schedule the repair plan
+		// into this exact FinalizeBlock context before the runtime module pre-block
+		// lifecycle. x/upgrade can then execute the plan in this same block.
+		if err := app.maybeScheduleZKPIAVLRepairEmergency(ctx, activationHeight); err != nil {
+			return nil, err
+		}
+
 		// Preserve the runtime module pre-block lifecycle before applying the
 		// Fairyring-specific keyshare vote-extension logic. In particular,
 		// x/upgrade is configured as a module pre-blocker and must run here.
