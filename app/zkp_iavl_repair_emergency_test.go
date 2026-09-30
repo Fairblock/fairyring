@@ -56,7 +56,10 @@ func TestZKPIAVLRepairEmergencyPreBlockSameHeight(t *testing.T) {
 			zkptypes.NewParams(zkpIAVLRepairBrokenAuthority),
 		),
 	)
-	fairyringApp.ZkpKeeper.StoreTrustedContract(ctx, zkpRepairArbitrumTrustedContract)
+	require.False(
+		t,
+		fairyringApp.ZkpKeeper.IsTrustedContract(ctx, zkpRepairArbitrumTrustedContract),
+	)
 	require.False(t, fairyringApp.ZkpKeeper.IsTrustedContract(ctx, zkpIAVLRepairBaseContract))
 
 	_, err = fairyringApp.UpgradeKeeper.GetUpgradePlan(ctx)
