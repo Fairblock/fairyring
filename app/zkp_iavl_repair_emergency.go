@@ -136,15 +136,11 @@ func (app *App) maybeScheduleZKPIAVLRepairEmergency(
 		)
 	}
 
-	// In the incident state, the fast-node/query view still contains the
-	// Arbitrum trusted-contract key, but canonical IAVL traversal does not.
-	// The repair handler deliberately materializes it back into canonical IAVL.
-	if app.ZkpKeeper.IsTrustedContract(ctx, zkpRepairArbitrumTrustedContract) {
-		return fmt.Errorf(
-			"Arbitrum trusted contract %s is unexpectedly present in canonical pre-repair state",
-			zkpRepairArbitrumTrustedContract,
-		)
-	}
+	// Do not gate scheduling on Arbitrum pre-repair visibility. The incident
+	// state can expose the same key differently through iteration, point lookup,
+	// and proof traversal, and later writes can change which path is observable.
+	// The repair handler idempotently materializes the Arbitrum trusted-contract
+	// key into canonical IAVL state regardless of its pre-repair visibility.
 
 	if app.ZkpKeeper.IsTrustedContract(ctx, zkpIAVLRepairBaseContract) {
 		return fmt.Errorf(
